@@ -129,14 +129,14 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     TableColumn checkCol = _table.getColumnModel().getColumn(0);
     TableColumn descCol = _table.getColumnModel().getColumn(1);
     TableColumn actCol = _table.getColumnModel().getColumn(2);
-    checkCol.setMinWidth(30);
-    checkCol.setMaxWidth(30);
+    checkCol.setMinWidth(35);
+    checkCol.setMaxWidth(35);
     checkCol.setWidth(30);
     descCol.setMinWidth(200);
     descCol.setWidth(200);
-    actCol.setMinWidth(80);
-    actCol.setMaxWidth(80);
-    actCol.setWidth(80);
+    actCol.setMinWidth(50);
+    actCol.setMaxWidth(50);
+    actCol.setWidth(50);
 
     _criticsLabel.setBounds(2, 2, 300, 25);
     content.add(_criticsLabel);
@@ -443,9 +443,9 @@ implements VetoableChangeListener, DelayedVChangeListener {
   public int getColumnCount() { return 3; }
 
   public String  getColumnName(int c) {
-    if (c == 0) return "X";
+    if (c == 0) return "Active";
     if (c == 1) return "Headline";
-    if (c == 2) return "Active";
+    if (c == 2) return "Snoozed";
     return "XXX";
   }
 
@@ -469,7 +469,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
     Critic cr = (Critic) _target.elementAt(row);
     if (col == 0) return cr.isEnabled() ? Boolean.TRUE : Boolean.FALSE;
     if (col == 1) return cr.getHeadline();
-    if (col == 2) return cr.isActive() ? "Active" : "Inactive";
+    if (col == 2) return cr.isActive() ? "no" : "yes";
     return "CR-" + row*2+col; // for debugging
   }
 
