@@ -79,12 +79,12 @@ public class CrReturnWithoutCall extends CrUML {
   } 
 
 
-  public VectorSet computeOffenders(UMLSequenceDiagram sd) { 
+  public VectorSet computeOffenders(UMLSequenceDiagram sd) {
 
     Vector figs = sd.getLayer().getContents();
     VectorSet offs = null;
     int size = figs.size();
-     
+
     for (int i=0; i<size; i++) {
       if (figs.elementAt(i) instanceof FigSeqLink) {
         FigSeqLink fsl = (FigSeqLink) figs.elementAt(i);
@@ -95,41 +95,42 @@ public class CrReturnWithoutCall extends CrUML {
           Iterator it = col.iterator();
           while (it.hasNext()) {
             MStimulus ms = (MStimulus) it.next();
-            if (ms.getDispatchAction() instanceof MReturnAction) {
+            if (ms.getDispatchAction() != null && ms.getDispatchAction() instanceof MReturnAction) {
               found = true;
               Vector edges = ((FigSeqObject)fsl.getDestFigNode()).getFigEdges();
               for (int j=0; j<edges.size(); j++) {
                 FigSeqLink second = (FigSeqLink) edges.elementAt(j);
-	MLink ml2 = (MLink) second.getOwner();
+	        MLink ml2 = (MLink) second.getOwner();
                 if (ml2.getStimuli() != null) {
                   Collection col2 = ml2.getStimuli();
                   Iterator it2 = col2.iterator();
-	  while (it2.hasNext()) {
- 	    MStimulus ms2 = (MStimulus) it2.next();
-	    if ((ms2.getDispatchAction() instanceof MCallAction || ms2.getDispatchAction() instanceof MSendAction) 
-		&& second.getPortNumber(figs) < fsl.getPortNumber(figs)
-		&& ms.getSender() == ms2.getReceiver()) {
- 	      found = false;
+	          while (it2.hasNext()) {
+ 	            MStimulus ms2 = (MStimulus) it2.next();
+	            if (ms2.getDispatchAction() != null && (ms2.getDispatchAction() instanceof MCallAction || ms2.getDispatchAction() instanceof MSendAction)
+		        && second.getPortNumber(figs) < fsl.getPortNumber(figs)
+		        && ms.getSender() == ms2.getReceiver()) {
+ 	                found = false;
                     }
- 	  }
-	}
+
+    	          }
+                }
               }
             }
           }
-        }
 
-        if (found) {
-          if (offs == null) {
-            offs = new VectorSet();
-            offs.addElement(sd);
+          if (found) {
+            if (offs == null) {
+              offs = new VectorSet();
+              offs.addElement(sd);
+            }
+            offs.addElement(fsl);
           }
-          offs.addElement(fsl);
-        }    
+        }
       }
-    }  
+    }
 
-    return offs; 
-  } 
+    return offs;
+  }
 
 } /* end class CrReturnWithoutCall.java */
 
