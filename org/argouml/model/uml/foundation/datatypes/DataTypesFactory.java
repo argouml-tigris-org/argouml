@@ -45,8 +45,23 @@ import ru.novosoft.uml.foundation.data_types.MTypeExpression;
  * Factory to create UML classes for the UML
  * Foundation::DataTypes package.
  *
+ * This class contains all create, remove and build methods for DataType 
+ * modelelements.
+ * Create methods create an empty modelelement. In the case of datatypes,
+ * they are not registred with the event pump since they do not fire
+ * any events. Remove methods remove a modelelement. In the case of datatypes 
+ * the implementation is empty and only given as a placeholder.
+ * Build methods create a modelelement but also instantiate the modelelement, 
+ * for example with defaults.
+ * 
+ * Helper methods for DataTypes should not be placed here. Helper methods are 
+ * methods like getReturnParameters. These should be placed in DataTypeHelper 
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @author jaap.branderhorst@xs4all.nl
+ * 
+ * @see org.argouml.model.uml.foundation.datatypes.DataTypesHelper
+ * @see org.argouml.model.uml.UmlFactory
  */
 
 public class DataTypesFactory extends AbstractUmlModelFactory {
@@ -196,6 +211,62 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 	super.initialize(multiplicity);
 	return multiplicity;
     }
+
+   /** Remove an instance of a UML ActionExpression.
+     */
+    public void  removeActionExpression(MActionExpression modelelement) {
+    }
+
+    /** Remove an instance of a UML ArgListsExpression.
+     */
+    public void  removeArgListsExpression(MArgListsExpression modelelement) {
+    }
+
+    /** Remove an instance of a UML BooleanExpression.
+     */
+    public void  removeBooleanExpression(MBooleanExpression modelelement) {
+    }
+
+    /** Remove an instance of a UML Expression.
+     */
+    public void  removeExpression(MExpression modelelement) {
+    }
+
+    /** Remove an instance of a UML IterationExpression.
+     */
+    public void  removeIterationExpression(MIterationExpression modelelement) {
+    }
+
+    /** Remove an instance of a UML MappingExpression.
+     */
+    public void  removeMappingExpression(MMappingExpression modelelement) {
+    }
+
+    /** Remove an instance of a UML ObjectSetExpression.
+     */
+    public void  removeObjectSetExpression(MObjectSetExpression modelelement) {
+    }
+
+    /** Remove an instance of a UML ProcedureExpression.
+     */
+    public void  removeProcedureExpression(MProcedureExpression modelelement) {
+    }
+
+    /** Remove an instance of a UML TimeExpression.
+     */
+    public void  removeTimeExpression(MTimeExpression modelelement) {
+    }
+
+    /** Remove an instance of a UML TypeExpression.
+     */
+    public void  removeTypeExpression(MTypeExpression modelelement) {
+    }
+
+    /** Remove an instance of a UML Multiplicity.
+     */
+    public void  removeMultiplicity(MMultiplicity modelelement) {
+    }
+
 
 
 }
