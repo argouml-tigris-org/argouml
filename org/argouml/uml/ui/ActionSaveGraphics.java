@@ -241,7 +241,7 @@ public class ActionSaveGraphics
 	    int response =
 		JOptionPane.showConfirmDialog(pb, t, t,
 					      JOptionPane.YES_NO_OPTION);
-	    if (response == JOptionPane.NO_OPTION) {
+	    if (response != JOptionPane.YES_OPTION) {
 		return false;
 	    }
 	}
