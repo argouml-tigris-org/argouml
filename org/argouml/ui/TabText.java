@@ -39,7 +39,8 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.toolbar.ToolBar;
 
-/** A tab that contains textual information.
+/** 
+ * A tab that contains textual information.
  */
 public class TabText
     extends TabSpawnable
@@ -70,8 +71,9 @@ public class TabText
         this(title, false);
     }
 
-    /** Create a text tab and optionally request a toolbar.
-     *  @since ARGO0.9.4
+    /** 
+     * Create a text tab and optionally request a toolbar.
+     * @since ARGO0.9.4
      *
      * @param title the title
      * @param withToolbar true if a toolbar is needed
@@ -132,6 +134,8 @@ public class TabText
     }
 
     /**
+     * Refresh the text of the tab.
+     * 
      * @see org.argouml.ui.TabTarget#refresh()
      */
     public void refresh() {
@@ -140,7 +144,8 @@ public class TabText
     }
 
     /**
-     * the target must not be null.
+     * This tab pane is enabled if there is a target, 
+     * i.e. the target must not be null.
      *
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
@@ -149,6 +154,8 @@ public class TabText
     }
 
     /**
+     * The target has changed, so let's generate some text to be shown.
+     * 
      * @param t the object to be "generated" = make a string of it
      * @return the generated text
      */
@@ -157,12 +164,15 @@ public class TabText
     }
 
     /**
+     * The user has edited the text in the textfield, so let's parse it now,
+     * and update the model.
+     * 
      * @param s the string to parse
      */
     protected void parseText(String s) {
         if (s == null)
             s = "(null)";
-        LOG.debug("parsing text:" + s); // THN
+        LOG.debug("parsing text:" + s); 
     }
 
     ////////////////////////////////////////////////////////////////

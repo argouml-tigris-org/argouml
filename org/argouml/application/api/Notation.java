@@ -56,19 +56,16 @@ public final class Notation implements PropertyChangeListener {
         Logger.getLogger(Notation.class);
 
     /**
-     * The name of the default Argo notation.  This notation is
-     * part of Argo core distribution.
+     * The name of the default ArgoUML notation.  This notation is
+     * part of ArgoUML core distribution.
      */
     private static NotationName notationArgo =
         org.argouml.uml.generator.GeneratorDisplay.getInstance().getNotation();
-
-    /**
-     * The name of the Argo java-like notation.  This notation is
-     * part of Argo core distribution.
+    /*
+     * Remark:
+     * There is also a java-like notation, which is also
+     * part of ArgoUML core distribution.
      */
-    // public static final NotationName NOTATION_JAVA =
-    // org.argouml.language.java.generator.GeneratorJava
-    // .getInstance().getNotation();
 
     /**
      * The configuration key for the preferred notation.
@@ -131,12 +128,8 @@ public final class Notation implements PropertyChangeListener {
 
     private static final Notation SINGLETON = new Notation();
 
-    // private ArrayList _providers = null;
-    // private NotationProvider2 _defaultProvider = null;
 
     private Notation() {
-        // _providers = new ArrayList();
-        // _defaultNotation = org.argouml.language.uml.NotationUml;
         Configuration.addListener(KEY_USE_GUILLEMOTS, this);
         Configuration.addListener(KEY_DEFAULT_NOTATION, this);
         Configuration.addListener(KEY_UML_NOTATION_ONLY, this);
@@ -187,17 +180,15 @@ public final class Notation implements PropertyChangeListener {
                 Configuration.getString(
                     KEY_DEFAULT_NOTATION,
                     notationArgo.getConfigurationValue()));
-        // TODO:
         // This is needed for the case when the default notation is
         // not loaded at this point.
-        // We need then to refetch the default notation from the configuration
-        // at a later stage.
         if (n == null) {
-            n = NotationNameImpl.findNotation("Uml.1.3");
+            n = NotationNameImpl.findNotation("UML 1.3");
 	}
         LOG.debug("default notation is " + n.getConfigurationValue());
         return n;
     }
+    
     ////////////////////////////////////////////////////////////////
     // class accessors
 
@@ -627,14 +618,15 @@ public final class Notation implements PropertyChangeListener {
      * Uses the class of the object to determine which method to
      * invoke. Only actually looks for MOperation and MAttribute. All others
      * invoke the simpler version with no documented flag, so taking the
-     * default version.<p>
+     * default version.
      *
      * @param ctx        The context to look up the notation generator.
      *
      * @param o          The object to generate.
      *
-     * @param documented  A flag of unknown meaning. Only has any effect for
-     *                    Operations and Attributes.
+     * @param documented  This flag only has any effect for
+     *                    Operations and Attributes. See 
+     *                    GeneratorJava.generateConstraintEnrichedDocComment().
      *
      * @return            The generated string.
      */
@@ -655,14 +647,15 @@ public final class Notation implements PropertyChangeListener {
      * Uses the class of the object to determine which method to
      * invoke. Only actually looks for MOperation and MAttribute. All others
      * invoke the simpler version with no documented flag, so taking the
-     * default version.<p>
+     * default version.
      *
      * @param nn         The notation name.
      *
      * @param o          The object to generate.
      *
-     * @param documented  A flag of unknown meaning. Only has any effect for
-     *                    Operations and Attributes.
+     * @param documented  This flag only has any effect for
+     *                    Operations and Attributes. See 
+     *                    GeneratorJava.generateConstraintEnrichedDocComment().
      *
      * @return            The generated string.
      */
@@ -799,14 +792,11 @@ public final class Notation implements PropertyChangeListener {
      * @return the notation name
      */
     public static NotationName getNotation(NotationContext context) {
-        // TODO: base it on the configuration.
-        // Make sure you check the ModelElement to see if it has
-        // an override on the notation.
-
         // UML is the default language
         if (Configuration.getBoolean(Notation.KEY_UML_NOTATION_ONLY, false)) {
             return notationArgo;
         }
+        // Otherwise we use the given context
         return context.getContextNotation();
     }
 
@@ -970,8 +960,8 @@ public final class Notation implements PropertyChangeListener {
     /**
      * Create a versioned notation name with an icon.
      *
-     * @param k1 the name (?)
-     * @param k2 the version (?)
+     * @param k1 the name (e.g. UML)
+     * @param k2 the version (e.g. 1.3)
      * @param icon the icon
      * @return the notation name
      */

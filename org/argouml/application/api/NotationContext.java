@@ -39,4 +39,9 @@ public interface NotationContext {
      * @return null if the context does not wish to name a specific notation
      */
     NotationName getContextNotation();
+    
+    /**
+     * @param nn the new notationName
+     */
+    void setContextNotation(NotationName nn);
 }

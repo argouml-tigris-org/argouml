@@ -69,7 +69,6 @@ import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdgePoly;
@@ -100,11 +99,6 @@ public abstract class FigEdgeModelElement
      * be removed from the diagram.
      */
     private boolean removeFromDiagram = true;
-
-    /**
-     * <code>BUNDLE</code>
-     */
-    protected static final String BUNDLE = "UMLMenu";
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -138,7 +132,7 @@ public abstract class FigEdgeModelElement
      */
     private FigText stereo = new FigText(10, 30, 90, 20);
 
-    private ItemUID id;
+    private ItemUID itemUid;
 
     /**
      * The current notation for this fig. The notation is for example
@@ -175,6 +169,7 @@ public abstract class FigEdgeModelElement
         setBetweenNearestPoints(true);
         ((FigPoly) _fig).setRectilinear(false);
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
+        currentNotationName = Notation.getDefaultNotation();
     }
 
     /**
@@ -203,7 +198,7 @@ public abstract class FigEdgeModelElement
      * @param newId the new UID
      */
     public void setItemUID(ItemUID newId) {
-        id = newId;
+        itemUid = newId;
     }
 
     /**
@@ -211,7 +206,7 @@ public abstract class FigEdgeModelElement
      * @return the UID
      */
     public ItemUID getItemUID() {
-        return id;
+        return itemUid;
     }
 
     /**
@@ -668,13 +663,26 @@ public abstract class FigEdgeModelElement
     }
 
     /**
+     * @see org.argouml.application.api.NotationContext#setContextNotation(org.argouml.application.api.NotationName)
+     */
+    public void setContextNotation(NotationName nn) {
+        currentNotationName = nn;
+    }
+
+    /**
      * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent event) {
         PropertyChangeEvent changeEvent =
-	    (PropertyChangeEvent) event.getSource();
-	currentNotationName =
-	    Notation.findNotation((String) changeEvent.getNewValue());
+            (PropertyChangeEvent) event.getSource();
+        if (changeEvent.getPropertyName().equals("argo.notation.only.uml")) {
+            if (changeEvent.getNewValue().equals("true")) { 
+                setContextNotation(Notation.getDefaultNotation());
+            }
+        } else {
+            setContextNotation(
+                Notation.findNotation((String) changeEvent.getNewValue()));
+        }
         renderingChanged();
         damage();
     }
