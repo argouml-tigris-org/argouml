@@ -117,10 +117,25 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     /** needs documenting */
     public static int _numNotValid;
     
+    /**
+     * The ToDoList instance that is also the validity checking thread.
+     * this thread should probably be factored out...
+     */
+    private static ToDoList theInstance;
+    
+    /**
+     * state variable for whether the validity checking thread is paused
+     * (waiting).
+     */
+    private boolean isPaused;
+    
     ////////////////////////////////////////////////////////////////
     // constructor
     
-    /** needs documenting */
+    /** 
+     * creates a new todolist. use getInstance() if you want to create the 
+     * validity checking thread.
+     */
     public ToDoList() {
     
 	_items = new Vector(100);
@@ -129,6 +144,17 @@ public class ToDoList extends Observable implements Runnable, Serializable {
 	_longestToDoList = 0;
 	_numNotValid = 0;
 	_RecentOffenderItems = new Vector();
+    }
+    
+    /**
+     * returns the validity checking thread instance.
+     */
+    public static ToDoList getInstance(){
+        
+        if(theInstance == null){
+            theInstance = new ToDoList();
+        }
+        return theInstance;
     }
     
     /** Start a Thread to delete old items from the ToDoList. */
@@ -144,6 +170,18 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     public void run() {
         Vector removes = new Vector();
         while (true) {
+            
+            // the validity checking thread should wait if disabled.
+            synchronized (this) {
+                if(isPaused){
+                    try{
+                        this.wait();
+                    }catch (InterruptedException ignore) {
+                        cat.error("InterruptedException!!!", ignore);
+                    }
+                }
+            }
+            
             forceValidityCheck(removes);
             removes.removeAllElements();
             try { Thread.sleep(3000); }
@@ -199,6 +237,29 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         recomputeAllOffenders();
         recomputeAllPosters();
         fireToDoItemsRemoved(removes);
+    }
+    
+    
+    public void pause(){
+        isPaused = true;
+    }
+    
+    public synchronized void resume(){
+        notifyAll();
+    }
+    
+    public boolean isPaused(){
+        return isPaused;
+    }
+    
+    /**
+     * sets the pause state.
+     * if set to false, calls resume() also to start working.
+     */
+    public void setPaused(boolean paused){
+        isPaused = paused;
+        if(!isPaused)
+            resume();
     }
     
     ////////////////////////////////////////////////////////////////
