@@ -26,6 +26,9 @@ package org.argouml.uml.reveng;
 
 import java.beans.PropertyVetoException;
 import java.util.Vector;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
@@ -41,6 +44,7 @@ import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.presentation.Fig;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -245,8 +249,10 @@ public class DiagramInterface {
      */
     public void addClass(Object newClass, boolean minimise) {
         
-        FigClass newClassFig = new FigClass( currentGM, newClass);
+        // if the class is not in the current diagram, add it:
         if (currentGM.canAddNode(newClass)) {
+            
+        FigClass newClassFig = new FigClass( currentGM, newClass);
             currentLayer.add( newClassFig);
             currentGM.addNode(newClass);
             currentLayer.putInPosition(newClassFig);
@@ -255,6 +261,20 @@ public class DiagramInterface {
             newClassFig.setOperationVisible(!minimise);
             
             newClassFig.setSize(newClassFig.getMinimumSize());
+        }
+        // the class is in the diagram
+        // so we are on a second pass,
+        // find the fig for this class can update its visible state.
+        else{
+            FigClass existingFig = null;
+            List figs = new ArrayList();
+            currentLayer.getContentsNoEdges(figs);
+            for(int i=0;i<figs.size();i++){
+                Fig fig = (Fig)figs.get(i);
+                if(newClass == fig.getOwner())
+                    existingFig = (FigClass)fig;
+            }
+            existingFig.renderingChanged();
         }
         
         // add edges
@@ -270,17 +290,33 @@ public class DiagramInterface {
      */
     public void addInterface(Object newInterface, boolean minimise) {
         
-        FigInterface     newInterfaceFig =
+        
+        // if the Interface is not in the current diagram, add it:
+        if (currentGM.canAddNode(newInterface)) {
+        
+            FigInterface     newInterfaceFig =
 	    new FigInterface( currentGM, newInterface);
         
-        if (currentGM.canAddNode(newInterface)) {
             currentLayer.add( newInterfaceFig);
             currentGM.addNode(newInterface);
             currentLayer.putInPosition(newInterfaceFig);
             
             newInterfaceFig.setOperationVisible(!minimise);
-            
             newInterfaceFig.setSize(newInterfaceFig.getMinimumSize());
+        }
+        // the class is in the diagram
+        // so we are on a second pass,
+        // find the fig for this class can update its visible state.
+        else{
+            FigInterface existingFig = null;
+            List figs = new ArrayList();
+            currentLayer.getContentsNoEdges(figs);
+            for(int i=0;i<figs.size();i++){
+                Fig fig = (Fig)figs.get(i);
+                if(newInterface == fig.getOwner())
+                    existingFig = (FigInterface)fig;
+            }
+            existingFig.renderingChanged();
         }
         
         // add edges
