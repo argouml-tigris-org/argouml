@@ -235,7 +235,14 @@ ItemListener{
      */
     private Collection findNodes(Object modelElement){
         
-        return (Set)modelElementMap.get(modelElement);
+        Collection nodes = (Collection)modelElementMap.get(modelElement);
+        
+        if(nodes == null){
+            return Collections.EMPTY_LIST;
+        }
+        else{
+            return nodes;
+        }
     }
     
     /**
