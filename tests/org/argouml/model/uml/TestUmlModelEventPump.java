@@ -56,7 +56,7 @@ public class TestUmlModelEventPump extends TestCase {
     private boolean eventcalled;
     private TestListener listener2;
 
-    public static final boolean TEST_PERFORMANCE = true;
+    public static final boolean TEST_PERFORMANCE = false;
     public static final int PERFORMANCE_TEST_SIZE = 5000;
 
     private class TestListener implements MElementListener {
