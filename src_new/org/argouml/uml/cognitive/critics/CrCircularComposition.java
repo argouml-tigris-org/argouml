@@ -35,18 +35,16 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Enumeration;
 import org.apache.log4j.Category;
 
-
-
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.GenCompositeClasses;
 import org.tigris.gef.util.VectorSet;
+
 import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**  */
-
 public class CrCircularComposition extends CrUML {
     protected static Category cat =
 	Category.getInstance(CrCircularComposition.class);
@@ -60,25 +58,24 @@ public class CrCircularComposition extends CrUML {
 							  
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
-	MClassifier cls = (MClassifier) dm;
 	VectorSet reach =
-	    (new VectorSet(cls)).reachable(GenCompositeClasses.SINGLETON);
-	if (reach.contains(cls)) return PROBLEM_FOUND;
+	    (new VectorSet(dm)).reachable(GenCompositeClasses.SINGLETON);
+	if (reach.contains(dm)) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
 							      
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	MClassifier cls = (MClassifier) dm;
-	VectorSet offs = computeOffenders(cls);
+	
+        VectorSet offs = computeOffenders(dm);
 	return new ToDoItem(this, offs, dsgr);
     }
 								  
-    protected VectorSet computeOffenders(MClassifier dm) {
+    protected VectorSet computeOffenders(Object dm) {
 	VectorSet offs = new VectorSet(dm);
 	VectorSet above = offs.reachable(GenCompositeClasses.SINGLETON);
 	Enumeration enum = above.elements();
 	while (enum.hasMoreElements()) {
-	    MClassifier cls2 = (MClassifier) enum.nextElement();
+	    Object cls2 = enum.nextElement();
 	    VectorSet trans =
 		(new VectorSet(cls2)).reachable(GenCompositeClasses.SINGLETON);
 	    if (trans.contains(dm)) offs.addElement(cls2);
@@ -89,7 +86,7 @@ public class CrCircularComposition extends CrUML {
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
-	MClassifier dm = (MClassifier) offs.firstElement();
+	Object dm =  offs.firstElement();
 	if (!predicate(dm, dsgr)) return false;
 	VectorSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -23,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CrAssocNameConflict.java
 // Classes: CrAssocNameConflict
 // Original Author: jrobbins@ics.uci.edu
@@ -38,10 +35,6 @@ import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
-
 
 /** Well-formedness rule [2] for MNamespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -57,14 +50,12 @@ public class CrAssocNameConflict extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isANamespace(dm))) return NO_PROBLEM;
-	MNamespace ns = (MNamespace) dm;
-	Collection oes = ns.getOwnedElements();
+	Collection oes = ModelFacade.getOwnedElements(dm);
 	if (oes == null) return NO_PROBLEM;
 	Vector namesSeen = new Vector();
 	Iterator enum = oes.iterator();
 	while (enum.hasNext()) {
-	    MModelElement me = (MModelElement) enum.next();
-	    if (!(ModelFacade.isAAssociation(me))) continue;
+	    if (!(ModelFacade.isAAssociation(enum.next()))) continue;
 	    // TODO: not implemented yet
 	}
 	return NO_PROBLEM;

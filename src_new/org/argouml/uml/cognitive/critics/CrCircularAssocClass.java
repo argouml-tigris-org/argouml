@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CrCircularAssocClass.java
 // Classes: CrCircularAssocClass
 // Original Author: jrobbins@ics.uci.edu
@@ -33,8 +31,6 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-
-
 
 /** Well-formedness rule [2] for MAssociationClass. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
