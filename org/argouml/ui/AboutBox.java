@@ -38,7 +38,7 @@ import org.tigris.gef.util.*;
 /** This is what you see after you click the About
  * button in the toolbar.
  */
-public class AboutBox extends JFrame {
+public class AboutBox extends JDialog {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -75,7 +75,16 @@ public class AboutBox extends JFrame {
   ////////////////////////////////////////////////////////////////
   // constructor
   public AboutBox() {
-    super("About Argo/UML");
+    this((Frame)null,false);
+  }
+
+  public AboutBox(Frame owner) {
+    this(owner,false);
+  }
+
+  public AboutBox(Frame owner, boolean modal) {
+    super(owner,modal);
+    this.setTitle("About Argo/UML");
     String iconName = "Splash";
     ImageIcon splashImage = ResourceLoader.lookupIconResource(iconName, iconName);
     int imgWidth = splashImage.getIconWidth();
