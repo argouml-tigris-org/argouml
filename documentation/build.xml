@@ -3,6 +3,9 @@
 <!-- ArgoUML Manuals & Documentation Build file                              -->
 <!-- Author: Kunle Odutola  31-March-2001                                    -->
 <!--                                                                         -->
+<!-- Modified: Jeremy Bennett  30-November-2001 Comments over use of 'ant'   -->
+<!--           alone rather than build.sh or build.bath clarified            -->
+<!--                                                                         -->
 <!-- Parts borrowed from the ArgoUML build file                              -->
 <!--                                                                         -->
 <!-- ======================================================================= -->
@@ -28,7 +31,8 @@ Frequently Asked Questions
 
 1. What tools do I need to use this build file?
 
-	You need the following to be able to build the ArgoUML Manuals and Documentation:
+	You need the following to be able to build the ArgoUML Manuals and
+	Documentation:
 	- The Java 2 SDK installed on your machine. It is recommended that you 
 	  install JDK version 1.2.2 or later. Note that you need the JDK and 
 	  not just the JRE. Many tools such as javadoc are only available in 
@@ -51,31 +55,38 @@ Frequently Asked Questions
 	setup up in your shell (using AUTOEXEC.BAT on Windows 9x/Me or .login on
 	Linux/Unix) and not in a batch file for it to work. To set up your 
 	environment, check the following:
-	a)	Set an environment variable called JAVA_HOME to your JDK's 
+	a) Set an environment variable called JAVA_HOME to your JDK's 
 	   installation directory. This needed by the build tool Ant.
 	   Examples of what you might do:
  	        	On Windows       -  set JAVA_HOME=D:\jdk1.3
  	        	On Linux\Unix    -  export JAVA_HOME=/usr/local/jdk1.3
-	b) If you've installed Ant yourself then you need to: 
+	b) If you've installed Ant yourself (but *NOT* if you'd using Ant
+	   delivered with Argo/UML) then you need to: 
 	   i)	 Set the environment variable ANT_HOME to the Ant install directory.
  	         	On Windows       -  set ANT_HOME=D:\Applications\Ant
  	         	On Linux\Unix    -  export ANT_HOME=/usr/local/ant
 	   ii) Add ANT_HOME/bin to your PATH :-
-	         	On Windows 		-	set PATH=%PATH%;%ANT_HOME%\bin
-					On Linux/Unix		-	export PATH=$(PATH);$(ANT_HOME)/bin
+	         	On Windows 	     -  set PATH=%PATH%;%ANT_HOME%\bin
+			On Linux/Unix    -  export PATH=$(PATH);$(ANT_HOME)/bin
 	
 3. What the instructions for building the manual ?
 
-	a) Read and follow the instructions for the following FAQs:
-			i)	 "What tools do I need to use this build file?"
+	a) Read and follow the instructions above for the following FAQs:
+			i)  "What tools do I need to use this build file?"
 			ii) "I have all the tools, what next?"
-   b) Change your current working directory to the directory where this file 
-      is located under the ArgoUML installation directory (or under the 
-      ArgoUML checkout directory if you are using CVS)
-	c)	Type the following command:
-        build        ( alternatively you may type 'ant' without the quotes if )
-                     ( you installed Ant yourself                             )
-	d)	This will display a "build usage help page" that describes the different 
+      b) Change your current working directory to the directory where this file 
+         is located under the ArgoUML installation directory (or under the 
+         ArgoUML checkout directory if you are using CVS)
+	c) Type the following command:
+			On Windows		- build
+			On Linux/Unix	- ./build.sh
+	   Note that under Linux/Unix, you should ensure build.sh is executable by
+	   using 'chmod ugo+x build.sh' if necessary.
+         ( alternatively you may type 'ant' without the quotes *only* if    )
+         ( you installed Ant yourself. You should also ensure you have Fop  )
+         ( installed, since this is used to build PDF, and is not picked up )
+	   ( from the argouml distribution by plain 'ant'                     )
+	d) This will display a "build usage help page" that describes the different 
 	   build targets available with this file and how to invoke them.
 	
 
@@ -458,3 +469,4 @@ After these operations the file will still be visible in the GUI.
 		<delete file="${name}-${version}.tar.gz"/>
 	</target>	
 </project>
+
