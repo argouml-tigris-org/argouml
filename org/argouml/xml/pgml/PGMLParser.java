@@ -23,6 +23,10 @@
 
 package org.argouml.xml.pgml;
 import java.util.*;
+import org.xml.sax.AttributeList;
+import org.tigris.gef.presentation.FigNode;
+// the following two ugly package dependency is for restoring compartment visibility
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
 
 public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
@@ -154,6 +158,49 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
   private String[] _entityPaths = { "/org/argouml/xml/dtd/","/org/tigris/gef/xml/dtd/" };
   protected String[] getEntityPaths() {
     return _entityPaths;
+  }
+
+  // --------- restoring visibility of node compartments -----------
+
+  protected FigNode _previousNode = null;
+
+  public void startElement(String elementName,AttributeList attrList) {
+    //System.out.println("startElement("+elementName+",AttributeList)"+_elementState+";"+_nestedGroups);
+    if (_elementState == NODE_STATE && elementName.equals("group") &&
+        _currentNode != null && _currentNode instanceof FigClass && attrList != null) {
+      // compartment of class figure detected
+      String descr = attrList.getValue("description").trim();
+      if (descr.endsWith("[0, 0, 0, 0]") || descr.endsWith("[0,0,0,0]")) {
+        // the detected compartment need to be hidden
+        ((FigClass)_currentNode).enableSizeChecking(false);
+        if (_currentNode != _previousNode) {
+          // it's the first compartment of the class: attributes (in our case!)
+          ((FigClass)_currentNode).setAttributeVisible(false);
+        } else {
+          // never reached due to bug in GEF (see below)
+          ((FigClass)_currentNode).setOperationVisible(false);
+        }
+        ((FigClass)_currentNode).enableSizeChecking(true);
+      }
+      _previousNode = _currentNode; // remember for next compartment
+    }
+    // The following should not be necessary, but because of a bug in GEF's
+    // PGMLParser, the second FigGroup (which is the operations compartment)
+    // is parsed in the wrong state (DEFAULT_STATE). Result: _currentNode is
+    // lost (set to null). Solution: use saved version in _previousNode and
+    // watch _nestedGroups in order to decide which compartment is parsed.
+    // This code should work even with a fixed PGMLParser of GEF.
+    if (_elementState == 0 && elementName.equals("group") &&
+        _previousNode != null && _nestedGroups > 0) { // DEFAULT_STATE is private :-(
+      String descr = attrList.getValue("description").trim();
+      if (descr.endsWith("[0, 0, 0, 0]") || descr.endsWith("[0,0,0,0]")) {
+        ((FigClass)_previousNode).enableSizeChecking(false);
+        ((FigClass)_previousNode).setOperationVisible(false);
+        ((FigClass)_previousNode).enableSizeChecking(true);
+      }
+    }
+    // OK, that's all with hiding compartments. Now business as usual...
+    super.startElement(elementName,attrList);
   }
 } /* end class PGMLParser */
 
