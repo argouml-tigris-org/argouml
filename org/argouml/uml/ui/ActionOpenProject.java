@@ -134,14 +134,11 @@ public class ActionOpenProject extends ActionFileOperations
                     // store last directory. We should rely on GEF
                     // only for Diagrams. Bob Tarling 15 Jan 2004.
                     Globals.setLastDirectory(path);
-                    URL url = theFile.toURL();
-                    if (url != null) {
-                        if (loadProject(url)) {
-                            // notification of menu bar
-                            GenericArgoMenuBar menuBar =
-                                (GenericArgoMenuBar) pb.getJMenuBar();
-                            menuBar.addFileSaved(theFile.getCanonicalPath());
-                        }
+                    if (loadProject(theFile)) {
+                        // notification of menu bar
+                        GenericArgoMenuBar menuBar =
+                            (GenericArgoMenuBar) pb.getJMenuBar();
+                        menuBar.addFileSaved(theFile.getCanonicalPath());
                     }
                 }
             }
@@ -158,15 +155,7 @@ public class ActionOpenProject extends ActionFileOperations
      * @return true if it is OK.
      */
     public boolean doCommand(String argument) {
-        final URL url;
-        try {
-            url = new URL(argument);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-            LOG.error("Incorrectly formatted URL.", e);
-            return false;
-        }
-        return loadProject(url);
+        return loadProject(new File(argument));
     }
 
 } /* end class ActionOpenProject */

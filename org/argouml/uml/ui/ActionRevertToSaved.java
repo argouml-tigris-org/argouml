@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import java.io.File;
 import java.text.MessageFormat;
 
 import javax.swing.JOptionPane;
@@ -84,7 +85,7 @@ public class ActionRevertToSaved extends ActionFileOperations {
                   JOptionPane.YES_NO_OPTION);
 
         if (response == JOptionPane.YES_OPTION) {
-            loadProject(p.getURL());
+            loadProject(new File(p.getURL().getFile()));
         }
     }
 }

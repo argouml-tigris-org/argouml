@@ -29,7 +29,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.net.URL;
 
 import javax.swing.JProgressBar;
 import javax.swing.text.JTextComponent;
@@ -174,17 +173,17 @@ public class XmiFilePersister extends AbstractFilePersister {
      * throwing an exception or by having the
      * ArgoParser.SINGLETON.getLastLoadStatus() set to not true.
      *
-     * @param url The URL to load the project from.
+     * @param file The file to load the project from.
      * @return The newly loaded project.
      * @throws OpenException if the file can not be opened
      *
-     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.net.URL,
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File,
      *  javax.swing.JProgressBar, javax.swing.text.JTextComponent)
      */
-    public Project doLoad(URL url, JProgressBar progressBar, JTextComponent prorgessText) throws OpenException {
+    public Project doLoad(File file, JProgressBar progressBar, JTextComponent prorgessText) throws OpenException {
         try {
             Project p = new Project();
-            XMIParser.getSingleton().readModels(p, url);
+            XMIParser.getSingleton().readModels(p, file.toURL());
             Object model = XMIParser.getSingleton().getCurModel();
             Model.getUmlHelper().addListenersToModel(model);
             p.setUUIDRefs(XMIParser.getSingleton().getUUIDRefs());

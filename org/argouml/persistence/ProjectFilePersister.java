@@ -54,16 +54,4 @@ public interface ProjectFilePersister {
      * @throws OpenException when we fail to open from this url
      */
     public Project doLoad(File file, JProgressBar progressBar, JTextComponent progressText) throws OpenException;
-
-    /**
-     * @param url the url of the project to load
-     * @param progressBar the progress bar given by the GUI to indicate
-     * progress.
-     * @param progressText the JTextComponent given by the GUI where the
-     * persistance mechanism can describe prorgess.
-     * @return the Project
-     * @throws OpenException when we fail to open from this url
-     */
-    public Project doLoad(URL url, JProgressBar progressBar, JTextComponent progressText) throws OpenException;
-
 }
