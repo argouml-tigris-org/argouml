@@ -30,25 +30,16 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.Color;
-import java.util.Vector;
-
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
 public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
@@ -70,12 +61,7 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
     protected JScrollPane incomingScroll;
     protected JScrollPane outgoingScroll;
-
-    ////////////////////////////////////////////////////////////////
-    // contructors
-    public PropPanelStateVertex(String name, int columns) {
-	this(name, null, columns);
-    }
+    protected JScrollPane containerScroll;
 
     /**
      * Constructor for PropPanelStateVertex.
@@ -93,7 +79,10 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
         JList outgoingList = new UMLLinkedList(this, new UMLStateVertexOutgoingListModel(this));
         outgoingScroll = new JScrollPane(outgoingList);
         
-        // TODO: add a combobox for the CompositeState that contains this StateVertex
+        JList compositeList = new UMLLinkedList(this, new UMLStateVertexContainerListModel(this));
+        compositeList.setVisibleRowCount(1);
+        containerScroll = new JScrollPane(compositeList);
+        
         new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
         new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
         new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
@@ -101,91 +90,7 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
         
     }
 
-    /**
-     * Constructor for PropPanelStateVertex.
-     */
-    public PropPanelStateVertex() {
-        super();
-    }
-
-    public PropPanelStateVertex(String name,ImageIcon icon, int columns) {
-	super(name, icon, columns);
-
-	Class mclass = MStateVertex.class;
-
-	JList incomingList = new UMLList(new UMLReflectionListModel(this,"incomings",true,"getIncomings",null,null,null),true);
-	incomingList.setForeground(Color.blue);
-	incomingList.setVisibleRowCount(1);
-	incomingList.setFont(smallFont);
-        incomingScroll = new JScrollPane(incomingList);
-
-	JList outgoingList = new UMLList(new UMLReflectionListModel(this,"outgoings",true,"getOutgoings",null,null,null),true);
-	outgoingList.setForeground(Color.blue);
-	outgoingList.setVisibleRowCount(1);
-	outgoingList.setFont(smallFont);
-        outgoingScroll = new JScrollPane(outgoingList);
-
-
-	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
-    }
-
-    public void navigateUp() {
-        Object target = getTarget();
-        if(target instanceof MStateVertex) {
-            MStateVertex elem = (MStateVertex) target;
-            MStateVertex container = elem.getContainer();
-            if(container != null) {
-                navigateTo(container);
-            }
-        }
-    }
-
-      public MStateMachine getStateMachine() {
-        MStateMachine machine = null;
-        Object target = getTarget();
-        if(target instanceof MState) {
-            machine = ((MState) target).getStateMachine();
-        }
-        return machine;
-    }
-
-    public java.util.List getIncomings() {
-        java.util.Collection incomings = null;
-        Object target = getTarget();
-        if(target instanceof MStateVertex) {
-            incomings = ((MStateVertex) target).getIncomings();
-        }
-        return new Vector(incomings);
-    }
-
-    public java.util.List getOutgoings() {
-        java.util.Collection outgoings = null;
-        Object target = getTarget();
-        if(target instanceof MStateVertex) {
-            outgoings = ((MStateVertex) target).getOutgoings();
-        }
-        return new Vector(outgoings);
-    }
-
-      public void removeElement() {
-	//overrides removeElement in PropPanel
-        Object target = getTarget();
-        if(target instanceof MStateVertex) {
-            MStateVertex sv = (MStateVertex) target;
-
-            Object newTarget = sv.getContainer();
-
-            UmlFactory.getFactory().delete(sv);
-
-            if(newTarget != null) {
-                navigateTo(newTarget);
-            }
-        }
-    }
-
+    
 
 } /* end class PropPanelStateVertex */
 

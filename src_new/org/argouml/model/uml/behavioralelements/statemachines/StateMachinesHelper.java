@@ -29,6 +29,8 @@ import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
  * Helper class for UML BehavioralElements::StateMachines Package.
@@ -181,6 +183,19 @@ public class StateMachinesHelper {
             throw new IllegalArgumentException("Event either null or not an instance of MEvent");
         }
         ((MTransition) transition).setTrigger((MEvent) event);
+    }
+    
+    /**
+     * Returns true if a statemachine may be added to the given context. To
+     * decouple ArgoUML as much as possible from the NSUML model, the parameter
+     * of the method is of type Object.
+     * @param context
+     * @return boolean
+     */
+    public boolean isAddingStatemachineAllowed(Object context) {
+        if (context instanceof MBehavioralFeature || context instanceof MClassifier)
+            return true;
+        return false;
     }
 
 }

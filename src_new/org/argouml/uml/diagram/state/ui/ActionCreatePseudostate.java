@@ -28,13 +28,11 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.util.*;
-import java.beans.*;
+import java.util.Hashtable;
 
 import org.argouml.ui.CmdCreateNode;
-
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 
 
@@ -64,7 +62,7 @@ public class ActionCreatePseudostate extends CmdCreateNode {
     Object newNode = super.makeNode();
     MPseudostateKind kind = (MPseudostateKind) _args.get("kind");
     ((MPseudostate)newNode).setKind(kind);
-
+    
     return newNode;
   }
 

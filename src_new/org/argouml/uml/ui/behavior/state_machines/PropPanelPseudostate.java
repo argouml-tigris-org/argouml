@@ -64,7 +64,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
 
         addField(Argo.localize("UMLMenu", "label.name"), nameField);
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
         
         JPanel kindPanel = new JPanel(new GridLayout(0, 2));
         UMLRadioButton junctionButton =

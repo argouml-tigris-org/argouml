@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,39 +21,40 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: PropPanelFinalState.java
-// Classes: PropPanelFinalState
-// Original Author: 5heyden
-// $Id:
-
+// $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.util.ConfigLoader;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
-public class PropPanelFinalState extends PropPanelState {
+/**
+ * @since Dec 15, 2002
+ * @author jaap.branderhorst@xs4all.nl
+ */
+public class UMLStateVertexContainerListModel extends UMLModelElementListModel2 {
 
-    public PropPanelFinalState() {
-        super("Final State",_finalStateIcon, ConfigLoader.getTabPropsOrientation());
-
-        addField(Argo.localize("UMLMenu", "label.name"), nameField);
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-        addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
-        addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
-        // TODO: maybe we should add a doactivity
-        
-        add(LabelledLayout.getSeperator());
-        
-        addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);        
-
+    /**
+     * Constructor for UMLStateVertexIncomingListModel.
+     * @param container
+     */
+    public UMLStateVertexContainerListModel(UMLUserInterfaceContainer container) {
+        super(container, "container");
     }
 
-} /* end class PropPanelFinalState */
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        removeAllElements();
+        addElement(((MStateVertex)getTarget()).getContainer());
+    }
 
-
-
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
+     */
+    protected boolean isValidElement(MBase element) {
+        return ((MStateVertex)getTarget()).getContainer() == element;
+    }
+}
