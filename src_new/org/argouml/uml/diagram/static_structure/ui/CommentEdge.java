@@ -25,6 +25,7 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.UUIDManager;
@@ -112,5 +113,12 @@ public class CommentEdge {
             if (ModelFacade.isAComment(dest))
                 Model.getCoreHelper().removeAnnotatedElement(dest, source);
         }
+    }
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        // This is the tooltip of a comment link
+        return Translator.localize("misc.tooltip.commentlink");
     }
 }
