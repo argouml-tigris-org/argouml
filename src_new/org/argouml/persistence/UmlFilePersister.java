@@ -570,7 +570,8 @@ public class UmlFilePersister extends AbstractFilePersister
     private MemberFilePersister getMemberFilePersister(String tag) {
         MemberFilePersister persister = null;
         if (tag.equals("pgml")) {
-            persister = new DiagramMemberFilePersister();
+            persister = PersistenceManager.getInstance()
+                .getDiagramMemberFilePersister();
         } else if (tag.equals("todo")) {
             persister = new TodoListMemberFilePersister();
         } else if (tag.equals("xmi")) {
