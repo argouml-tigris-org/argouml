@@ -299,6 +299,9 @@ public class ElementImpl implements Element, Highlightable {
   public void firePropertyChange(String propertyName,
 				 Object oldValue, Object newValue) {
     firePropertyChangeNoCritique(propertyName, oldValue, newValue);
+    PropertyChangeEvent evt =
+      new PropertyChangeEvent(this, propertyName, oldValue, newValue);
+    if (_staticListener != null) _staticListener.propertyChange(evt);
   }
 
   public void firePropertyChangeNoCritique(String propertyName,
@@ -307,7 +310,6 @@ public class ElementImpl implements Element, Highlightable {
     if (oldValue != null && oldValue.equals(newValue)) return;
     PropertyChangeEvent evt =
       new PropertyChangeEvent(this, propertyName, oldValue, newValue);
-    if (_staticListener != null) _staticListener.propertyChange(evt);
     //System.out.println("fire _propertyListeners.size() = " +
     //_propertyListeners.size());
     for (int i = 0; i < _propertyListeners.size(); i++) {
