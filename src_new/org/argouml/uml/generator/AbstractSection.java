@@ -150,7 +150,7 @@ abstract public class AbstractSection
             second = line.indexOf(END2);
         }
         String s = null;
-        if ( (first > 0) && (second > 0) ) {
+        if ( (first >= 0) && (second >= 0) ) {
             first = first + new String(BEGIN).length();
             s = line.substring(first, second);
         }
