@@ -64,6 +64,12 @@ public class CrNodesOverlap extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Diagram)) return NO_PROBLEM;
     Diagram d = (Diagram) dm;
+
+    // fixes bug #669. Sequencediagrams always overlap, so there is 
+    // always a problem
+    if (dm instanceof org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram)
+        return NO_PROBLEM;
+
     VectorSet offs = computeOffenders(d);
     if (offs == null) return NO_PROBLEM;
     return PROBLEM_FOUND;
