@@ -65,7 +65,7 @@ public final class ResourceLoaderWrapper {
     private static ImageIcon joinIcon =
 	ResourceLoader.lookupIconResource("Join");
     private static ImageIcon branchIcon =
-	ResourceLoader.lookupIconResource("Branch");
+	ResourceLoader.lookupIconResource("Choice");
     private static ImageIcon junctionIcon =
         ResourceLoader.lookupIconResource("Junction"); 
     private static ImageIcon finalStateIcon =

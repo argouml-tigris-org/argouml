@@ -38,6 +38,8 @@ import org.argouml.model.ModelFacade;
 
 public class CrNoTransitions extends CrUML {
 
+    /** constructor 
+     */
     public CrNoTransitions() {
 	setHeadline("Add Transitions to <ocl>self</ocl>");
 	addSupportedDecision(CrUML.decSTATE_MACHINES);
@@ -46,6 +48,13 @@ public class CrNoTransitions extends CrUML {
 	addTrigger("outgoing");
     }
 
+    /** This is the decision routine for the critic. 
+     * 
+     * @param dm is the UML entity (an NSUML object) that is being checked. 
+     * @param dsgr is for future development and can be ignored.
+     * 
+     * @return boolean problem found
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAStateVertex(dm))) return NO_PROBLEM;
 	Object sv = /*(MStateVertex)*/ dm;
@@ -58,7 +67,14 @@ public class CrNoTransitions extends CrUML {
 	boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
 	boolean needsIncoming = incoming == null || incoming.size() == 0;
 	if (ModelFacade.isAPseudostate(sv)) {
-	    if (ModelFacade.getKind(sv).equals(ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
+	    Object k = ModelFacade.getPseudostateKind(sv);
+	    if (k.equals(ModelFacade.BRANCH_PSEUDOSTATEKIND)) {
+	        return NO_PROBLEM;
+	    }
+	    if (k.equals(ModelFacade.JUNCTION_PSEUDOSTATEKIND)) {
+	        return NO_PROBLEM;
+	    }
+	    if (k.equals(ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
                 needsIncoming = false;
             }
 	}

@@ -326,13 +326,13 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a pseudostate initialized as a branch pseudostate. The
+     * Builds a pseudostate initialized as a choice pseudostate. The
      * pseudostate will be a subvertix of the given
      * compositestate. The parameter compositeState is of type Object
      * to decouple the factory and NSUML as much as possible from the
      * rest of ArgoUML.<p>
      *
-     * @param compositeState
+     * @param compositeState the parent
      * @return MPseudostate
      */
     public MPseudostate buildPseudoState(Object compositeState) {

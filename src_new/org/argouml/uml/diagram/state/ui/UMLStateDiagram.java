@@ -84,9 +84,7 @@ public class UMLStateDiagram extends UMLDiagram {
 
     protected static Action _actionBranchPseudoState =
         new ActionCreatePseudostate(
-            ModelFacade.BRANCH_PSEUDOSTATEKIND,
-            /* TODO: The next line shall be changed into "Choice" for V0.17.1.*/
-            "Branch");
+            ModelFacade.BRANCH_PSEUDOSTATEKIND, "Choice");
 
     protected static Action _actionForkPseudoState =
         new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, "Fork");
@@ -115,11 +113,12 @@ public class UMLStateDiagram extends UMLDiagram {
         new ActionCreatePseudostate(
             ModelFacade.JUNCTION_PSEUDOSTATEKIND,
             "Junction"); 
+
+    protected static int stateDiagramSerial = 1;
     
     ////////////////////////////////////////////////////////////////
     // contructors
 
-    protected static int _StateDiagramSerial = 1;
     /** 
      *  this constructor is used to build a dummy statechart diagram so
      *  that a project will load properly.
@@ -131,6 +130,10 @@ public class UMLStateDiagram extends UMLDiagram {
         } catch (PropertyVetoException pve) { }
     }
 
+    /** constructor 
+     * @param namespace the NameSpace for the new diagram
+     * @param sm the StateMachine
+     */
     public UMLStateDiagram(Object namespace, Object sm) {
         this();
 
@@ -146,12 +149,12 @@ public class UMLStateDiagram extends UMLDiagram {
             }
         }
         if (namespace != null && ModelFacade.getName(namespace) != null) {
-            String name = null, diag_name = ModelFacade.getName(namespace);
+            String name = null, diagramName = ModelFacade.getName(namespace);
             int number =
                 (ModelFacade.getBehaviors(namespace)) == null
                     ? 0
                     : ModelFacade.getBehaviors(namespace).size();
-            name = diag_name + " " + (number++);
+            name = diagramName + " " + (number++);
             LOG.info("UMLStateDiagram constructor: String name = " + name);
             try {
                 setName(name);
@@ -165,6 +168,7 @@ public class UMLStateDiagram extends UMLDiagram {
     /**
      * The owner of a statechart diagram is the statechart diagram
      * it's showing.
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
     public Object getOwner() {
         StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
@@ -241,13 +245,16 @@ public class UMLStateDiagram extends UMLDiagram {
 
     }
 
+    /**
+     * @return the StateMachine belonging to this diagram
+     */
     public Object getStateMachine() {
         return /*(MStateMachine)*/
          ((StateDiagramGraphModel) getGraphModel()).getMachine();
     }
 
     /**
-     * @param sm
+     * @param sm Set the StateMachine for this diagram.
      */
     public void setStateMachine(Object sm) {
 
@@ -260,6 +267,7 @@ public class UMLStateDiagram extends UMLDiagram {
     /**
      * Get the actions from which to create a toolbar or equivalent
      * graphic triggers.
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
         Object actions[] =
@@ -270,8 +278,7 @@ public class UMLStateDiagram extends UMLDiagram {
 	    null,
 	    _actionStartPseudoState,
 	    _actionFinalPseudoState,
-	    /* TODO: The next line shall be uncommented in V0.17.1. */
-	    /*_actionJunctionPseudoState,*/
+	    _actionJunctionPseudoState,
 	    _actionBranchPseudoState,
 	    _actionForkPseudoState,
 	    _actionJoinPseudoState,
@@ -284,10 +291,13 @@ public class UMLStateDiagram extends UMLDiagram {
         return actions;
     }
 
+    /** Creates a name for the diagram.
+     * @return the new diagram name
+     */
     protected static String getNewDiagramName() {
         String name = null;
-        name = "Statechart Diagram " + _StateDiagramSerial;
-        _StateDiagramSerial++;
+        name = "Statechart Diagram " + stateDiagramSerial;
+        stateDiagramSerial++;
         if (!ProjectManager.getManager().getCurrentProject()
                  .isValidDiagramName(name)) {
             name = getNewDiagramName();
@@ -299,6 +309,7 @@ public class UMLStateDiagram extends UMLDiagram {
      * This diagram listens to NSUML events from its Statemachine;
      * When the Statemachine is removed, we also want to delete this
      * diagram too.
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
 
