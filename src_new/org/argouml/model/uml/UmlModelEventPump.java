@@ -249,13 +249,29 @@ public final class UmlModelEventPump implements MElementListener {
         if (eventNames.length == 0)
             throw new IllegalArgumentException("Tried to remove an empty eventName list");
         for (int i = 0; i < eventNames.length; i++) {
-            List listenerList = (List)_listenerModelEventsMap.get(getKey(modelElement, eventNames[i]));
-            if (listenerList == null) 
-                throw new IllegalStateException("No listener registred");
+            executeRemoveModelEventListener(listener, modelElement, eventNames[i]);
+        }
+    }
+    
+    /**
+     * Convinience method to remove a listener to some event.
+     * @param listener
+     * @param modelElement
+     * @param eventName
+     */
+    public void removeModelEventListener(MElementListener listener, MBase modelElement, String eventName) {
+        if (listener == null || modelElement == null || eventName == null) 
+            throw new IllegalArgumentException("Tried to remove null listener from null modelelement");
+        executeRemoveModelEventListener(listener, modelElement, eventName);
+    }
+    
+    private void executeRemoveModelEventListener(MElementListener listener, MBase elem, String eventName) {
+        List listenerList = (List)_listenerModelEventsMap.get(getKey(elem, eventName));
+        if (listenerList != null) {   
             listenerList.remove(listener);
             if (listenerList.isEmpty())
-                _listenerModelEventsMap.remove(getKey(modelElement, eventNames[i]));
-        }
+                _listenerModelEventsMap.remove(getKey(elem, eventName));
+        }    
     }
     
     
