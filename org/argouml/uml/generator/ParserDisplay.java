@@ -48,7 +48,9 @@ import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ProfileJava;
+import org.argouml.uml.generator.GeneratorDisplay.MsgPtr;
 import org.argouml.util.MyTokenizer;
 
 import ru.novosoft.uml.model_management.MModel;
@@ -510,13 +512,15 @@ public class ParserDisplay extends Parser {
         int end = indexOfNextCheckedSemicolon(text, start);
         if (end == -1) {
             //no text? remove op!
-            ModelFacade.removeFeature(cls, op);
+            ProjectManager.getManager().getCurrentProject().moveToTrash(op);
+            TargetManager.getInstance().setTarget(cls);
             return;
         }
         String s = text.substring(start, end).trim();
         if (s == null || s.length() == 0) {
             //no non-whitechars in text? remove op!
-            ModelFacade.removeFeature(cls, op);
+            ProjectManager.getManager().getCurrentProject().moveToTrash(op);
+            TargetManager.getInstance().setTarget(cls);
             return;
         }
         parseOperation(s, op);
@@ -573,13 +577,15 @@ public class ParserDisplay extends Parser {
         int end = indexOfNextCheckedSemicolon(text, start);
         if (end == -1) {
             //no text? remove attr!
-            ModelFacade.removeFeature(cls, at);
+            ProjectManager.getManager().getCurrentProject().moveToTrash(at);
+            TargetManager.getInstance().setTarget(cls);
             return;
         }
         String s = text.substring(start, end).trim();
         if (s == null || s.length() == 0) {
             //no non-whitechars in text? remove attr!
-            ModelFacade.removeFeature(cls, at);
+            ProjectManager.getManager().getCurrentProject().moveToTrash(at);
+            TargetManager.getInstance().setTarget(cls);
             return;
         }
         parseAttribute(s, at);
