@@ -797,6 +797,16 @@ public class UmlFactory extends AbstractUmlModelFactory {
     }
 
     /**
+     * The Project may check if a certain MBase has been removed.
+     * 
+     * @param o the object to be checked
+     * @return true if removed
+     */
+    public boolean isRemoved(Object o) {
+        return ((MBase) o).isRemoved();
+    }
+    
+    /**
      * Factored this method out of delete to simplify the design of the delete
      * operation
      * @param elem

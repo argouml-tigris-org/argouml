@@ -919,9 +919,9 @@ public class Project implements java.io.Serializable, TargetListener {
         if (ModelFacade.isABase(obj)) { // an object that can be represented
             ProjectBrowser.getInstance().getEditorPane()
         		.removePresentationFor(obj, getDiagrams());
-            // UmlModelEventPump.getPump().stopPumpingEvents();
+
             UmlFactory.getFactory().delete(obj);
-            // UmlModelEventPump.getPump().startPumpingEvents();
+
             if (members.contains(obj)) {
                 members.remove(obj);
             }
@@ -929,6 +929,19 @@ public class Project implements java.io.Serializable, TargetListener {
                 models.remove(obj);
             }           
             needSave = true;
+            
+            // scan if some diagrams need to be deleted, too
+            // copy diagrams, otherwise ConcurrentModificationException
+            Collection c = new ArrayList(diagrams);
+            Iterator i = c.iterator();
+            while (i.hasNext()) {
+                Object d = i.next();
+                if (d instanceof UMLDiagram) {
+                    if (((UMLDiagram) d).needsToBeRemoved()) {
+                        moveToTrash(d);
+                    }
+                }    
+            }
         } else {
             if (obj instanceof ArgoDiagram) {
                 removeProjectMemberDiagram((ArgoDiagram) obj);
