@@ -560,8 +560,8 @@ public abstract class PropPanel
      * proppanels are interested, these components should register
      * themselves.<p>
      *
-     * @deprecated As of ArgoUml version unknown(earlier than 0.13.5),
-     *             replaced by
+     * @deprecated by Jaap 3 Nov 2002 (ArgoUml version unknown -
+     * earlier than 0.13.5), replaced by
      * {@link org.argouml.model.uml.UmlModelEventPump#addModelEventListener(
      *            Object , Object)}.
      *             since components should register themselves.

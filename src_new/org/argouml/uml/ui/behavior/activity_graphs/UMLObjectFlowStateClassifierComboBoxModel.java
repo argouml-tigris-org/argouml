@@ -48,7 +48,7 @@ public class UMLObjectFlowStateClassifierComboBoxModel
     public UMLObjectFlowStateClassifierComboBoxModel() {
         super("classifier", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, 
-                (Class) ModelFacade.CLASSIFIER, "type");
+                ModelFacade.CLASSIFIER, "type");
     }
     
     /**

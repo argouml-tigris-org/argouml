@@ -97,12 +97,14 @@ public class ActionGenerateAll extends UMLAction {
 		Object selected = selectedObjects.next();
 		if (ModelFacade.isAPackage(selected)) {
 		    addCollection(ModelManagementHelper.getHelper()
-				  .getAllModelElementsOfKind(selected,
-					  (Class) ModelFacade.CLASS),
+				  .getAllModelElementsOfKind(
+                                      selected,
+		                      ModelFacade.CLASS),
 				  classes);
 		    addCollection(ModelManagementHelper.getHelper()
-				  .getAllModelElementsOfKind(selected,
-					  (Class) ModelFacade.INTERFACE),
+				  .getAllModelElementsOfKind(
+                                      selected,
+			              ModelFacade.INTERFACE),
 				  classes);
 		} else if (ModelFacade.isAClass(selected)
 			   || ModelFacade.isAInterface(selected)) {

@@ -52,7 +52,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         super("type", false);
         UmlModelEventPump.getPump()
 	    .addClassModelEventListener(this,
-					(Class) ModelFacade.NAMESPACE,
+					ModelFacade.NAMESPACE,
 					"ownedElement");
     }
 

@@ -40,7 +40,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
     public UMLReceptionSignalComboBoxModel() {
         super("signal", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, 
-                (Class) ModelFacade.NAMESPACE, "ownedElement");
+                ModelFacade.NAMESPACE, "ownedElement");
     }
 
     /**

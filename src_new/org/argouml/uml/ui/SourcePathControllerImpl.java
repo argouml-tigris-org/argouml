@@ -108,7 +108,7 @@ public class SourcePathControllerImpl implements SourcePathController {
     public Collection getAllModelElementsWithSourcePath() {
         Collection elems =
             ModelManagementHelper.getHelper().getAllModelElementsOfKind(
-                (Class) ModelFacade.MODELELEMENT);
+                ModelFacade.MODELELEMENT);
         
         ArrayList mElemsWithSrcPath = new ArrayList();
         

@@ -52,7 +52,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
         if (extend == null) return;
         Object ns = ModelFacade.getNamespace(extend);
         addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(
-                ns, (Class) ModelFacade.USE_CASE));
+                ns, ModelFacade.USE_CASE));
         if (ModelFacade.getBase(extend) != null) {
             removeElement(ModelFacade.getBase(extend));
         }
@@ -83,7 +83,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
     public void targetRemoved(TargetEvent e) {
         // if (e.getNewTarget() != getTarget())
         UmlModelEventPump.getPump().removeClassModelEventListener(this, 
-                    (Class) ModelFacade.NAMESPACE, "ownedElement");
+                    ModelFacade.NAMESPACE, "ownedElement");
         super.targetRemoved(e);
     }
     /**
@@ -91,7 +91,7 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
      */
     public void targetSet(TargetEvent e) {
         UmlModelEventPump.getPump().addClassModelEventListener(this, 
-                (Class) ModelFacade.NAMESPACE, "ownedElement");
+                ModelFacade.NAMESPACE, "ownedElement");
         super.targetSet(e);
     }
 }
