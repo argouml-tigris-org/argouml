@@ -627,7 +627,7 @@ public abstract class FigEdgeModelElement
         }
         if (newOwner != null) {
             if (Model.getFacade().isAModelElement(newOwner)) {
-                Model.getPump().addModelEventListener(this, oldOwner);
+                Model.getPump().addModelEventListener(this, newOwner);
                 
                 if (UUIDHelper.getInstance().getUUID(newOwner) == null) {
                     Model.getCoreHelper().setUUID(newOwner,
