@@ -102,6 +102,13 @@ public class ModelFacade {
     }
 
     ////////////////////////////////////////////////////////////////
+    // constants
+
+   	public static final short ACC_PUBLIC    = 1;
+    public static final short ACC_PRIVATE   = 2;
+    public static final short ACC_PROTECTED = 3;
+
+    ////////////////////////////////////////////////////////////////
     // Recognizer methods for the UML model (in alphabetic order)
 
     /** Recognizer for Association.
@@ -1119,6 +1126,19 @@ public class ModelFacade {
     }
 
     /**
+       Return the tagged values iterator of a model element.
+
+       @param element The tagged values belong to this.
+       @return The tagged values iterator
+     */
+    public static Iterator getTaggedValues(Object modelElement) {
+        if (modelElement != null && modelElement instanceof MModelElement) {
+            return ((MModelElement)modelElement).getTaggedValues().iterator();
+        }
+        return null;
+    }
+
+    /**
        Return the tagged value with a specific tag.
 
        @param element The tagged value belongs to this.
@@ -1164,6 +1184,8 @@ public class ModelFacade {
             return ((MModel)o).lookup(name);
         if (o instanceof MNamespace)
             return ((MNamespace)o).lookup(name);
+        if (o instanceof MClassifier)
+            return ((MClassifier)o).lookup(name);
         return null;
     }
 
@@ -1192,6 +1214,80 @@ public class ModelFacade {
             && cls instanceof MClassifier
             && feature instanceof MFeature) {
             ((MClassifier)cls).removeFeature((MFeature)feature);
+        }
+    }
+
+    /**
+     * Sets a name of some modelelement.
+     * @param model element
+     * @param name
+     */
+    public static void setName(Object o, String name) {
+        if (o != null && o instanceof MModelElement) {
+            ((MModelElement)o).setName(name);
+        }
+    }
+
+    /**
+     * Sets a namespace of some modelelement.
+     * @param model element
+     * @param namespace
+     */
+    public static void setNamespace(Object o, Object ns) {
+        if (o != null && o instanceof MModelElement && ns != null && ns instanceof MNamespace) {
+            ((MModelElement)o).setNamespace((MNamespace)ns);
+        }
+    }
+
+    /**
+     * Set the visibility of some modelelement.
+     * @param model element
+     * @param visibility
+     */
+    public static void setVisibility(Object o, short v) {
+        if (o != null && o instanceof MModelElement) {
+            if(v == ACC_PRIVATE) {
+                ((MModelElement)o).setVisibility(MVisibilityKind.PRIVATE);
+            }
+            else if(v == ACC_PROTECTED) {
+                ((MModelElement)o).setVisibility(MVisibilityKind.PROTECTED);
+            }
+            else if(v == ACC_PUBLIC) {
+                ((MModelElement)o).setVisibility(MVisibilityKind.PUBLIC);
+            }
+        }
+    }
+
+    /**
+     * Sets if of some classifier is abstract.
+     * @param classifier
+     * @param flag
+     */
+    public static void setAbstract(Object o, boolean flag) {
+        if (o != null && o instanceof MClassifier) {
+            ((MClassifier)o).setAbstract(flag);
+        }
+    }
+
+    /**
+     * Sets if of some classifier is a leaf.
+     * @param classifier
+     * @param flag
+     */
+    public static void setLeaf(Object o, boolean flag) {
+        if (o != null && o instanceof MClassifier) {
+            ((MClassifier)o).setLeaf(flag);
+        }
+    }
+
+    /**
+     * Sets if of some classifier is a root.
+     * @param classifier
+     * @param flag
+     */
+    public static void setRoot(Object o, boolean flag) {
+        if (o != null && o instanceof MClassifier) {
+            ((MClassifier)o).setRoot(flag);
         }
     }
 

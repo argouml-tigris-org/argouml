@@ -46,12 +46,12 @@ import ru.novosoft.uml.model_management.MModel;
  * This class implements an event pump for all modelevents (MEvents with the current
  * NSUML model). Two kinds of listeners can be registred to the pump: listeners
  * to class events and listeners to object events. The pump dispatches all
- * events fired by objects of a certain class to the class listeners (listeners 
+ * events fired by objects of a certain class to the class listeners (listeners
  * that are registred via addClassModelEventListener). Furthermore, it dispatches
  * all events to listeners that are registered for a certain object if this object
  * fired the original event.
  * <p>
- * Maybe this class should dispatch a thread to handle the incoming event in the 
+ * Maybe this class should dispatch a thread to handle the incoming event in the
  * future.</p>
  * @since Oct 14, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -103,10 +103,10 @@ public final class UmlModelEventPump implements MElementListener {
     /**
      * Adds a listener that listens to all modelevents that are named eventNames
      * and that occur to instances of a given modelClass.
-     * 
+     *
      * <p>
-     * If you want the listener to be registred for remove events (that is: an 
-     * instance of the class the listener is listening too is removed), then you 
+     * If you want the listener to be registred for remove events (that is: an
+     * instance of the class the listener is listening too is removed), then you
      * have to register for the eventname "remove"
      * </p>
      * @param listener
@@ -148,8 +148,8 @@ public final class UmlModelEventPump implements MElementListener {
      * Adds a listener to events fired by metaClass modelClass. All events fired
      * by instances of modelClass or instances of its subclasses will be pumped
      * to the listener.
-     * 
-     * <p><em>Note:</em> Due to the fact that ALL events are pumped for some 
+     *
+     * <p><em>Note:</em> Due to the fact that ALL events are pumped for some
      * metaclass and it's children, this is a very powerfull method but also
      * one that can hog performance. Use this with care!</p>
      * @param listener
@@ -200,7 +200,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Removes a listener that listens to all modelevents fired by instances of 
+     * Removes a listener that listens to all modelevents fired by instances of
      * modelClass and that have the original name eventNames.
      * @param listener
      * @param modelClass
@@ -234,7 +234,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Removes a listener that listens to all modelevents fired by instances of 
+     * Removes a listener that listens to all modelevents fired by instances of
      * modelClass.
      * @param listener
      * @param modelClass
@@ -283,23 +283,25 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Adds a listener to modelevents that are fired by some given modelelement and that 
+     * Adds a listener to modelevents that are fired by some given modelelement and that
      * have the name eventNames.
-     * 
+     *
      * <p>
-     * If you want the listener to be registred for remove events (that is: the 
-     * instance the listener is listening too is removed), then you have to 
+     * If you want the listener to be registred for remove events (that is: the
+     * instance the listener is listening too is removed), then you have to
      * register for the eventname "remove"
      * </p>
      * @param listener
      * @param modelelement
      * @param eventNames
      */
-    public void addModelEventListener(MElementListener listener, MBase modelelement, String[] eventNames) {
+    public void addModelEventListener(Object listener, Object modelelement, String[] eventNames) {
         if (listener == null || modelelement == null || eventNames == null || eventNames.length == 0)
             throw new IllegalArgumentException("Null or empty arguments while adding a modelelement listener");
+        if (!(listener instanceof MElementListener) || !(modelelement instanceof MBase))
+            throw new IllegalArgumentException("Wrong argument types while adding a modelelement listener");
         for (int i = 0; i < eventNames.length; i++) {
-            executeAddModelEventListener(listener, modelelement, eventNames[i]);
+            executeAddModelEventListener((MElementListener)listener, (MBase)modelelement, eventNames[i]);
         }
     }
 
@@ -309,27 +311,31 @@ public final class UmlModelEventPump implements MElementListener {
      * @param modelClass
      * @param eventName
      */
-    public void addModelEventListener(MElementListener listener, MBase modelelement, String eventName) {
+    public void addModelEventListener(Object listener, Object modelelement, String eventName) {
         if (listener == null || modelelement == null || eventName == null)
             throw new IllegalArgumentException("Tried to add null listener to null class");
+        if (!(listener instanceof MElementListener) || !(modelelement instanceof MBase))
+            throw new IllegalArgumentException("Wrong argument types while adding a modelelement listener");
         if (eventName.equals(""))
             throw new IllegalArgumentException("Tried to add an empty eventname");
-        executeAddModelEventListener(listener, modelelement, eventName);
+        executeAddModelEventListener((MElementListener)listener, (MBase)modelelement, eventName);
     }
 
     /**
      * Adds a listener to all events fired by some modelelement.
-     * 
-     * <p><em>Note:</em> Due to the fact that ALL events are pumped for some 
+     *
+     * <p><em>Note:</em> Due to the fact that ALL events are pumped for some
      * modelelement, this is a rather powerfull method but also
      * one that can hog performance. Use this with care!</p>
      * @param listener
      * @param modelElement
      */
-    public void addModelEventListener(MElementListener listener, MBase modelelement) {
+    public void addModelEventListener(Object listener, Object modelelement) {
         if (listener == null || modelelement == null)
             throw new IllegalArgumentException("Tried to add null listener to null class");
-        executeAddModelEventListener(listener, modelelement, null);
+        if (!(listener instanceof MElementListener) || !(modelelement instanceof MBase))
+            throw new IllegalArgumentException("Wrong argument types while adding a modelelement listener");
+        executeAddModelEventListener((MElementListener)listener, (MBase)modelelement, null);
     }
 
     private synchronized void executeAddModelEventListener(MElementListener listener, MBase modelelement, String eventName) {
@@ -347,7 +353,7 @@ public final class UmlModelEventPump implements MElementListener {
 
     /**
      * Removes a listener that listens to modelevents with name eventNames that
-     * are fired by the given modelelement. 
+     * are fired by the given modelelement.
      * @param listener The listener to remove
      * @param modelElement The modelelement that fires the events the listener is listening to
      * @param eventNames The list of event names the listener is interested in
@@ -527,9 +533,9 @@ public final class UmlModelEventPump implements MElementListener {
     }
 
     /**
-     * Returns a set of listenerEventName objects. Each object is a pair of 
+     * Returns a set of listenerEventName objects. Each object is a pair of
      * a listener that is interested in certain events defined by a given eventname
-     * This method is called by AbstractUmlFactory when initializing a new 
+     * This method is called by AbstractUmlFactory when initializing a new
      * modelelement.
      * @param modelClass
      * @return Set
@@ -551,7 +557,7 @@ public final class UmlModelEventPump implements MElementListener {
      * the interfaces directly realized by the class but also all interfaces
      * realized by the interfaces themselves.
      * @param modelClass. The class for which we are searching for interfaces
-     * @return Set the set with all interfaces. It is empty if there are no 
+     * @return Set the set with all interfaces. It is empty if there are no
      * interfaces
      */
     private Set getInterfaces(Class modelClass) {
