@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -371,12 +370,8 @@ public class PropPanelOperation extends PropPanelModelElement {
 
     public void setParameters(Collection newParams) {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            if (newParams instanceof java.util.List) {
-                ((MOperation) target).setParameters((java.util.List) newParams);
-            } else {
-                ((MOperation) target).setParameters(new ArrayList(newParams));
-            }
+        if (ModelFacade.isAOperation(target)) {
+            ModelFacade.setParameters(target, newParams);
         }
     }
 

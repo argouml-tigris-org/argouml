@@ -66,6 +66,9 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      * @return the value of the tagged value
      */
     protected String getProperty() {
-        return ModelFacade.getTaggedValue(getTarget(), this.getEventName()).toString();
+        String property = null;
+        String eventName = this.getEventName();
+        Object taggedValue = ModelFacade.getTaggedValue(getTarget(), eventName);
+        return (String)taggedValue;
     }
 }

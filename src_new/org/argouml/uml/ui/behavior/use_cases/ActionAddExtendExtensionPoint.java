@@ -52,7 +52,7 @@ public class ActionAddExtendExtensionPoint extends AbstractActionAddModelElement
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        ((MExtend) getTarget()).setExtensionPoints(selected);
+        ModelFacade.setExtensionPoints(getTarget(), selected);
     }
 
     /**

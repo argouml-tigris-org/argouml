@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,10 +25,8 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionSetMultiplicity;
-
-import ru.novosoft.uml.foundation.core.MStructuralFeature;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 
 /**
  * Action to set the multiplicity of a structural feature.
@@ -56,10 +52,9 @@ public class ActionSetStructuralFeatureMultiplicity
     public void setSelectedItem(Object item, Object target) {
         if (target != null && org.argouml.model.ModelFacade.isAStructuralFeature(target)) {
             if (org.argouml.model.ModelFacade.isAMultiplicity(item)) {
-                ((MStructuralFeature) target).setMultiplicity(
-                    (MMultiplicity) item);
+                ModelFacade.setMultiplicity(target, item);
             } else
-                 ((MStructuralFeature) target).setMultiplicity(null);
+                 ModelFacade.setMultiplicity(target, null);
 
         }
     }

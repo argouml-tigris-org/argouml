@@ -237,7 +237,7 @@ public class ParserDisplay extends Parser {
 			    MCallConcurrencyKind kind =
 				MCallConcurrencyKind.SEQUENTIAL;
 			    if (ModelFacade.isAOperation(element))
-				((MOperation) element).setConcurrency(kind);
+				ModelFacade.setConcurrency(element, kind);
 			}
 		    });
 	_operationSpecialStrings[1] =
@@ -250,7 +250,7 @@ public class ParserDisplay extends Parser {
 			    if (value != null && value.equalsIgnoreCase("false"))
 				kind = MCallConcurrencyKind.SEQUENTIAL;
 			    if (ModelFacade.isAOperation(element))
-				((MOperation) element).setConcurrency(kind);
+				ModelFacade.setConcurrency(element, kind);
 			}
 		    });
 	_operationSpecialStrings[2] =
@@ -263,7 +263,7 @@ public class ParserDisplay extends Parser {
 			    if (value != null && value.equalsIgnoreCase("false"))
 				kind = MCallConcurrencyKind.SEQUENTIAL;
 			    if (ModelFacade.isAOperation(element))
-				((MOperation) element).setConcurrency(kind);
+				ModelFacade.setConcurrency(element, kind);
 			}
 		    });
 	_operationSpecialStrings[3] =
@@ -277,7 +277,7 @@ public class ParserDisplay extends Parser {
 			    else if ("concurrent".equalsIgnoreCase(value))
 				kind = MCallConcurrencyKind.CONCURRENT;
 			    if (ModelFacade.isAOperation(element))
-				((MOperation) element).setConcurrency(kind);
+				ModelFacade.setConcurrency(element, kind);
 			}
 		    });
 	_operationSpecialStrings[4] =
@@ -299,7 +299,7 @@ public class ParserDisplay extends Parser {
 			    if (value != null && value.equalsIgnoreCase("false"))
 				isLeaf = false;
 			    if (ModelFacade.isAOperation(element))
-				((MOperation) element).setLeaf(isLeaf);
+				ModelFacade.setLeaf(element, isLeaf);
 			}
 		    });
 	_operationSpecialStrings[6] =

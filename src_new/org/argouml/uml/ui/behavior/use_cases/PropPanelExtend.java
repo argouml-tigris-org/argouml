@@ -174,7 +174,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         // Set the condition body.
 
-        ((MExtend) target).setCondition(UmlFactory.getFactory().getDataTypes().createBooleanExpression(null, condBody));
+        ModelFacade.setCondition(target, UmlFactory.getFactory().getDataTypes().createBooleanExpression(null,condBody));
     }
 
 

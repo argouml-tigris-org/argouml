@@ -153,7 +153,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
             //   can't do immediate circular generalization
             //
             if (parent != child && parent != oldParent) {
-                ((MGeneralization)generalization).setParent(parent);
+                ModelFacade.setParent(generalization, parent);
             } else {
                 //
                 //   force a refresh of the panel

@@ -43,6 +43,7 @@ import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
+import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
 import ru.novosoft.uml.behavior.activity_graphs.MPartition;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
@@ -70,6 +71,7 @@ import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MFinalState;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
@@ -3369,12 +3371,12 @@ public class ModelFacade {
      * @param me model element
      */
     public static void addOwnedElement(Object ns, Object me) {
-        if (ns != null
-            && ns instanceof MNamespace
-            && me != null
-            && me instanceof MModelElement) {
+        if (ns instanceof MNamespace && me instanceof MModelElement) {
             ((MNamespace) ns).addOwnedElement((MModelElement) me);
+            return;
         }
+        throw new IllegalArgumentException("Unrecognized object " + ns
+					   + " or " + me);
     }
 
     /**
@@ -3630,10 +3632,8 @@ public class ModelFacade {
      * @param expression
      */
     public static void setDefaultValue(Object p, Object expr) {
-        if (p != null
-            && p instanceof MParameter
-            && (expr == null || expr instanceof MExpression)) {
-            ((MParameter) p).setDefaultValue((MExpression) expr);
+        if (p instanceof MParameter && expr instanceof MExpression) {
+            ((MParameter)p).setDefaultValue((MExpression)expr);
         }
     }
 
@@ -3643,9 +3643,8 @@ public class ModelFacade {
      * @param expression
      */
     public static void setInitialValue(Object at, Object expr) {
-        if (at != null
-            && at instanceof MAttribute
-            && (expr == null || expr instanceof MExpression)) {
+        if (at instanceof MAttribute
+                && (expr == null || expr instanceof MExpression)) {
             ((MAttribute) at).setInitialValue((MExpression) expr);
         }
     }
@@ -3756,25 +3755,33 @@ public class ModelFacade {
     }
 
     /**
-     * Sets a multiplicity of some attribute or association end.
-     * @param attribute or association end
-     * @param multiplicity as string OR multiplicity object
+     * Sets a multiplicity of some model element.
+     * @param target model element
+     * @param mult multiplicity as string OR multiplicity object
      */
-    public static void setMultiplicity(Object o, Object mult) {
-        // FIXME: the implementation is ugly, because I have no spec at hand...
-        if (o == null)
-            return;
-        if (mult != null && !(mult instanceof MMultiplicity)) {
-			if (mult instanceof String) {
-                mult = ("1_N".equals(mult)) ? MMultiplicity.M1_N : MMultiplicity.M1_1;
-			} else
-                return;
-		}
-        if (o instanceof MAttribute) {
-            ((MAttribute) o).setMultiplicity((MMultiplicity)mult);
-        } else if (o instanceof MAssociationEnd) {
-            ((MAssociationEnd) o).setMultiplicity((MMultiplicity)mult);
+    public static void setMultiplicity(Object target, Object mult) {
+        if (mult instanceof String) {
+            mult = ("1_N".equals(mult)) ? MMultiplicity.M1_N : MMultiplicity.M1_1;
         }
+        
+        if (target instanceof MAssociationRole) {
+            ((MAssociationRole)target).setMultiplicity((MMultiplicity)mult);
+            return;
+        }
+        if (target instanceof MClassifierRole) {
+            ((MClassifierRole)target).setMultiplicity((MMultiplicity)mult);
+            return;
+        }
+        if (target instanceof MStructuralFeature) {
+            ((MStructuralFeature)target).setMultiplicity((MMultiplicity)mult);
+            return;
+        }
+        if (target instanceof MAssociationEnd) {
+            ((MAssociationEnd)target).setMultiplicity((MMultiplicity)mult);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + mult);
     }
 
     /**
@@ -3783,7 +3790,7 @@ public class ModelFacade {
      * @param classifier vector
      */
     public static void setClassifiers(Object o, Vector v) {
-        if (o != null && o instanceof MInstance) {
+        if (o instanceof MInstance) {
             ((MInstance) o).setClassifiers(v);
         }
     }
@@ -3794,7 +3801,7 @@ public class ModelFacade {
      * @param name
      */
     public static void setName(Object o, String name) {
-        if (o != null && o instanceof MModelElement) {
+        if (o instanceof MModelElement) {
             ((MModelElement) o).setName(name);
         }
     }
@@ -3853,6 +3860,32 @@ public class ModelFacade {
                 ((MFeature) f).setOwnerScope(MScopeKind.INSTANCE);
             }
         }
+    }
+
+    /**
+     * Sets the extension points of some use cases.
+     * @param target the use case
+     * @param extensionPoints
+     */
+    public static void setParameters(Object target, Collection parameters) {
+        if (target instanceof MObjectFlowState) {
+            ((MObjectFlowState)target).setParameters(parameters);
+            return;
+        }
+        if (target instanceof MClassifier) {
+            ((MClassifier)target).setParameters(parameters);
+            return;
+        }
+        if (target instanceof MEvent && parameters instanceof List) {
+            ((MEvent)target).setParameters((List)parameters);
+            return;
+        }
+        if (target instanceof MBehavioralFeature && parameters instanceof List) {
+            ((MBehavioralFeature)target).setParameters((List)parameters);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + parameters);
     }
 
     /**
@@ -3992,6 +4025,20 @@ public class ModelFacade {
     }
 
     /**
+     * Sets the extension points of some use cases.
+     * @param target the use case
+     * @param extensionPoints
+     */
+    public static void setExtensionPoints(Object target, Collection extensionPoints) {
+        if (target instanceof MUseCase && extensionPoints instanceof List) {
+            ((MUseCase)target).setExtensionPoints((List)extensionPoints);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + extensionPoints);
+    }
+
+    /**
      * Sets the features of some model element.
      * @param element the model element to set features to
      * @param features the list of features
@@ -4107,13 +4154,19 @@ public class ModelFacade {
     }
 
     /**
-     * Sets if of some classifier is a leaf.
+     * Sets if of some model element is a leaf.
      * @param classifier
      * @param flag
      */
     public static void setLeaf(Object o, boolean flag) {
-        if (o != null && o instanceof MClassifier) {
-            ((MClassifier) o).setLeaf(flag);
+        if (o instanceof MReception) {
+            ((MReception) o).setLeaf(flag);
+        }
+        if (o instanceof MOperation) {
+            ((MOperation) o).setLeaf(flag);
+        }
+        if (o instanceof MGeneralizableElement) {
+            ((MGeneralizableElement) o).setLeaf(flag);
         }
     }
 
@@ -4123,9 +4176,26 @@ public class ModelFacade {
      * @param flag
      */
     public static void setRoot(Object o, boolean flag) {
-        if (o != null && o instanceof MClassifier) {
+        if (o instanceof MClassifier) {
             ((MClassifier) o).setRoot(flag);
         }
+    }
+
+    /**
+     * Set some parameters kind
+     * @param parameter
+     */
+    public static void setKind(Object target, Object kind) {
+        if (target instanceof MParameter && kind instanceof MParameterDirectionKind) {
+            ((MParameter)target).setKind((MParameterDirectionKind)kind);
+            return;
+        }
+        if (target instanceof MPseudostate && kind instanceof MPseudostateKind) {
+            ((MPseudostate)target).setKind((MPseudostateKind)kind);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + kind);
     }
 
     /**
@@ -4166,6 +4236,20 @@ public class ModelFacade {
         if (p != null && p instanceof MParameter) {
             ((MParameter) p).setKind(MParameterDirectionKind.RETURN);
         }
+    }
+
+    /**
+     * Sets the parent of a generalization.
+     * @param target generalization
+     * @param parent generalizable element (parent)
+     */
+    public static void setParent(Object target, Object parent) {
+        if (target instanceof MGeneralization && parent instanceof MGeneralizableElement) {
+            ((MGeneralization)target).setParent((MGeneralizableElement)parent);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + parent);
     }
 
     /**
