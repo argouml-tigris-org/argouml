@@ -116,8 +116,14 @@ ArgoUML shall implement everything in the UML 1.3 model.
 	  <listitem>
 	    <para>Choice of JRE</para>
 	    <para>
-It shall be possible to run ArgoUML with any Java2 compliant JRE.
-</para>
+		We will support any JRE compatible with the Sun specification one version
+		behind the most recent stable JRE from Sun.
+		A stable JRE is considered to be one that has had a second non-beta release.
+	    </para>
+	    <para>
+                This is to allow ArgoUML to gradually take on board new stable features of
+                the Java language while still offering users some choice of JRE.
+	    </para>
 	  </listitem>
 
 	  <listitem>
