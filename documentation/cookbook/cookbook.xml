@@ -30,7 +30,7 @@
          </authorgroup>
          <legalnotice>
              <para>
- Copyright (c) 1996-2001 The Regents of the University of California. All
+ Copyright (c) 1996-2002 The Regents of the University of California. All
  Rights Reserved. Permission to use, copy, modify, and distribute this
  software and its documentation without fee, and without a written
  agreement is hereby granted, provided that the above copyright notice
@@ -82,13 +82,14 @@ should help to transfer the knowledge from the old experts to them.
 Please feel free to send more questions and/or answers to the 
 <ulink url="mailto:dev@argouml.tigris.org">dev mailing list</ulink>!
 </para>
+    </sect1>
 
-      <sect2>
-	<title>What to do if you want to contribute</title>
-	<para>
+    <sect1>
+      <title>How to contribute</title>
+      <para>
 You can help, there are big tasks and small tasks waiting for you.
 </para>
-	<para>
+      <para>
 Here is a suggestion on how you could become
 part of the ArgoUML Project.
 This could be perceived as a ladder to climb but remember
@@ -97,8 +98,11 @@ and time spent by you.
 You get no price for climbing higher, you just get more 
 responsibility in the project and more work.
 </para>
-	<para>
+      <para>
 	  <orderedlist numeration="arabic">
+	  <listitem>
+	    <para>Use the tool.</para>
+	  </listitem>
 	    <listitem>
 	      <para>Subscribe to the dev list.</para>
 	      <para>
@@ -142,8 +146,11 @@ how Issuezilla works.
 		  </listitem>
 		  <listitem>
 		    <para>
-Look at Issuezilla and verify issues according to the
-verification process.
+From this on you can report bugs yourself directly in Issuezilla.
+</para>
+		    <para>
+You can also verify issues according to the
+verification process (see <xref linkend="verify_resolved_fixed"/>).
 </para>
 		    <para>
 This help you in understanding the terminology used in the project
@@ -230,7 +237,6 @@ With this you are part of the core team developing ArgoUML.
 	    </listitem>
 	  </orderedlist>
 </para>
-      </sect2>
     </sect1>
 
     <sect1>
@@ -286,12 +292,11 @@ If you are in a hurry:
 <programlisting>
 C:\Work>set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
 C:\Work>cvs login   (use guest as password)
-C:\Work>cvs checkout argouml/lib argouml/src_new
+C:\Work>cvs checkout argouml_src
 C:\Work>set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work>set ANT_HOME=C:\Work\argouml
 C:\Work>cd argouml\src_new
 C:\Work\argouml\src_new>build run
-
 </programlisting>
 A window from the newly compiled ArgoUML opens after a while!
 </para>
@@ -327,13 +332,13 @@ How this is done is described in
 	<itemizedlist>
 	  <listitem>
 	    <para>
-CVS for obtaining the latest files via internet and fetching
-and sending in source code updates.
+CVS for obtaining the latest files via internet and getting
+and committing source code updates.
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>
-JDK, at least version 1.2.2 (includes the java compiler)
+JDK, at least version 1.3 (includes the java compiler)
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -350,26 +355,47 @@ get when you check out from CVS.
 </para>
 	<itemizedlist>
 	  <listitem>
+	    <indexterm>
+	      <primary>ANT</primary>
+	    </indexterm>
 	    <para>
-ANT, the Java make tool to manage compiling and packaging.
+ANT, the tool to manage compiling and packaging.
 </para>
 	  </listitem>
 	  <listitem>
+	    <indexterm>
+	      <primary>ANTLR</primary>
+	    </indexterm>
 	    <para>
-ANTLR, for regenerating the built-in parser. Not strictly needed.
+ANTLR, for regenerating the built-in parser.
+Only needed if you are working with the antlr input files.
 </para>
 	  </listitem>
+	</itemizedlist>
+	<para>
+For building the documentation from docbook format, 
+these tools are also provided with the development environment that
+you get when you check out from CVS.
+</para>
+	<itemizedlist>
 	  <listitem>
 	    <para>
 saxon for building documentation from docbook format.
 </para>
 	  </listitem>
 	  <listitem>
+	    <indexterm>
+	      <primary>Docbook</primary>
+	      <secondary>XSL stylesheets</secondary>
+	    </indexterm>
 	    <para>
 Docbook XSL stylesheets.
 </para>
 	  </listitem>
 	  <listitem>
+	    <indexterm>
+	      <primary>fop</primary>
+	    </indexterm>
 	    <para>
 fop for generating pdf versions of the docbook format.
 </para>
@@ -467,19 +493,25 @@ Then you do the actual checking out.
 <command>cvs checkout <replaceable>modulename</replaceable></command>.
 </para>
       <para>
-The CVS modules you need to check out to build ArgoUML are
-<parameter>argouml/lib</parameter>,
-<parameter>argouml/tools</parameter>, and
-<parameter>argouml/src_new</parameter>.
+The CVS modules you need to check out to build ArgoUML is
+<parameter>argouml_src</parameter>.
+This will check out the directories
+<filename class="directory">argouml/lib</filename>
+<filename class="directory">argouml/tools</filename>
+and
+<filename class="directory">argouml/src_new</filename>.
 </para>
       <para>
-If you want to build to documentation you check out the modules
-<parameter>argouml/lib</parameter>,
-<parameter>argouml/tools</parameter>, and
-<parameter>argouml/documentation</parameter>.
+If you want to build to documentation you check out the module
+<parameter>argouml_doc</parameter>.
+This will check out the directories
+<filename class="directory">argouml/lib</filename>
+<filename class="directory">argouml/tools</filename>
+and
+<filename class="directory">argouml/documentation</filename>.
 </para>
       <para>
-If you want to work with the web site you check out the module
+If you want to work with the web site you check out the directory
 <parameter>argouml/www</parameter>.
 </para>
       <para>
@@ -489,6 +521,10 @@ That is no problem except for the extra use of bandwidth and disk space
 but if you have plenty of both, get it all, and eventually you will
 see how everything is used for a purpose in the project.
 </para>
+      <para>
+If you don't want to acquire a tigris login to do this you can use the
+"guest" account with the password "guest".
+</para>
     </sect1>
  <sect1 id="Build">
      <title id="Build_term">Build Process</title>
@@ -496,14 +532,23 @@ see how everything is used for a purpose in the project.
 	<primary>Building</primary>
 	<secondary>ArgoUML</secondary>
       </indexterm>
+      <indexterm>
+	<primary>ANT</primary>
+      </indexterm>
      <para>
-     The ArgoUML build process is driven by ant, and it is highly recommend that you stick to that. There are people known to build from JBuilder or Netbeans, but always make sure that your work compile with the plain vanilla build process.
+The ArgoUML build process is driven by ANT, and it is highly recommend
+that you stick to that.
+There are people known to build from JBuilder or Netbeans, but always
+make sure that your work compile with the plain vanilla build process.
      </para>
       <para>
 Ant is a tool written in java developed for Apache that reads an xml-file
 with rules telling what to compile to what result and what files to include
 in what jar-file.
 </para>
+      <indexterm>
+	<primary><filename>build.xml</filename></primary>
+      </indexterm>
       <para>
 The rule file is named <filename>build.xml</filename>.
 There is one of those in every separately built directory
@@ -513,9 +558,9 @@ There is one of those in every separately built directory
 </para>
 
       <sect2>
-	<title>How ant is run from the ArgoUML development environment</title>
+	<title>How ANT is run from the ArgoUML development environment</title>
 	<indexterm>
-	  <primary>ant</primary>
+	  <primary>ANT</primary>
 	  <secondary>how it is used</secondary>
 	</indexterm>
 	<para>
@@ -565,8 +610,6 @@ your checked out copy of ArgoUML under Unix.
 	  <orderedlist>
 	    <listitem>
 	      <para><command>JAVA_HOME=<replaceable>/where/you/have/installed/jdk</replaceable></command></para>
-	    </listitem>
-	    <listitem>
 	      <para><command>export JAVA_HOME</command></para>
 	      <para>
 This is for sh-style shells like sh, ksh, zsh and bash. If you use
@@ -657,7 +700,7 @@ or want to compile and run again.
 	    <secondary>javadoc</secondary>
 	  </indexterm>
 	  <para>
-By running ant again using <command>build prepare-docs</command>
+By running ANT again using <command>build prepare-docs</command>
 the javadoc documentation is generated and put into
 <filename class="directory">argouml/build/javadocs</filename>.
 </para>
@@ -717,12 +760,11 @@ The conversion is done whenever you need to look at the result or when
 you want to present the final result on the web site.
 </para>
 	  <para>
-There is currently four different books generated in this way, 
-each its own directory. They are cookbook (this document), faq, 
+There is currently three different books generated in this way, 
+each its own directory. They are cookbook (this document), 
 manual and quick-guide. They are all generated and stored in the
 exact same way except for the name of the directory that is one
 of <filename class="directory">cookbook</filename>,
-<filename class="directory">faq</filename>, 
 <filename class="directory">manual</filename> or 
 <filename class="directory">quick-guide</filename>.
 Below I will reference this directory using 
@@ -752,7 +794,7 @@ how a certain version of the documentation was generated.
 The documentation is generated using <command>build docs</command>.
 </para>
 	      <para>
-This generates all four books and the result appears in 
+This generates all three books and the result appears in 
 <filename class="directory">argouml/build/documentation/defaulthtml/<replaceable>book</replaceable></filename>,
 <filename class="directory">argouml/build/documentation/printablehtml/<replaceable>book</replaceable></filename>, and
 <filename class="directory">argouml/build/documentation/pdf/<replaceable>book</replaceable></filename>.
@@ -849,13 +891,12 @@ In order to do this you need to check out the whole of the
 You also need the directory
 <filename class="directory">argouml/lib</filename> and
 <filename class="directory">argouml/tools</filename>
-that contains the tools used: ant, Fop, saxon, ...
+that contains the tools used: ANT, Fop, saxon, ...
 </para>
 	  <para>
 The subdirectories of
 <filename class="directory">argouml/documentation</filename>,
 <filename class="directory">cookbook</filename>,
-<filename class="directory">faq</filename>,
 <filename class="directory">manual</filename>, and
 <filename class="directory">quick-guide</filename>
 each contain one of the four books.
@@ -882,7 +923,7 @@ contains all the required pictures for all the books.
 It might be that some other developer has made a misstake in checking
 in things that contains error, or forgotten to check in some files
 in a change.
-Look at the last couple of day on the
+Look at the last couple of hours on the
 <ulink url="http://argouml.tigris.org/servlets/BrowseList?listName=dev">
 developers mailing list</ulink>!
 It is probably on fire.
@@ -891,7 +932,10 @@ It is probably on fire.
 Another reason for problems is an unclean local source tree.
 This means that if you have updated different parts of your source 
 tree at different times it might contains inconsistencies.
-If you suspect this, remove your checked out copy completely and 
+If you suspect this, first try fix it by doing
+<command>build clean</command> and <command>cvs update -d</command>
+before trying to build again.
+If that doesn't work remove your checked out copy completely and 
 get it all again through CVS.
 </para>
 	  <para>
@@ -912,9 +956,10 @@ If nothing helps, ask the
 	  </indexterm>
 	  <para>
 You need to have a developer role in the ArgoUML project.
-If you don't then you are at the mercy of a person that does.
+If you don't then you cannot do commit yourself.
 Discuss what you have done and how best to test it on the
 <ulink url="mailto:dev@argouml.tigris.org">developers mailing list</ulink>!
+Eventually someone will commit it for you.
 </para>
 	  <para>
 Furthermore the checkout of your copy need to be done with your
@@ -958,30 +1003,20 @@ What needs to be done when one actually does a release:
       <para>
 	<orderedlist>
 	  <listitem>
-	    <para>Modify <filename>build.xml</filename>!</para>
+	    <para>Modify <filename>default.properties</filename>!</para>
 	    <para>
-The target to change is <methodname>setversion</methodname>
-where you will need to change the
-property names accordingly.
+The property to change is 
+<methodname>argo.release.version</methodname>
+where you will set the version number.
 </para>
 	    <para>
 For release 0.9.8 it should look like this:
 <programlisting>
-  &lt;!-- These cannot be changed in .ant.properties --&gt;
-  &lt;target name="setversion"&gt;
-    &lt;property name="thisversion" value="0.9.8"/&gt;
-  &lt;/target&gt;
+#
+# Argo version
+#
+argo.release.version=0.9.8
 </programlisting>
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Make sure that the <filename>Splash.gif</filename> file is updated.
-</para>
-	    <para>
-For 0.10 the text is Verdana 28 points Bold without any antialiasing.
-(This was the most lookalike that Linus Tolke could find while 
-doing the release.)
 </para>
 	  </listitem>
 	  <listitem>
@@ -999,7 +1034,7 @@ you need to remove the tag you mistakenly put there and start over.
 	    <para>Make sure you have a clean copy of the source!</para>
 	    <para>
 This is done by checking out from the tag using the command
-<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml</command>
+<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml_src</command>
 </para>
 	  </listitem>
 	  <listitem>
@@ -1045,6 +1080,17 @@ The according command line CVS command is
 <command>cvs tag VERSION_<replaceable>X_Y_Z</replaceable></command>
 when your are standing in the
 <filename class="directory">argouml</filename>-directory.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Open the repository for commits towards the next version.
+</para>
+	    <para>
+This is done by setting the <methodname>argo.release.version</methodname>
+in <filename>default.properties</filename> to 
+PRE-<replaceable>Number of next release</replaceable>
+and commiting.
 </para>
 	  </listitem>
 	  <listitem>
@@ -1098,12 +1144,82 @@ The reason that this has happened is that one of the developers
 has made a misstake.
 You now must decide a way forward.
 </para>
-	<para>
-Fix the problem yourself.
+	<sect3 id="release_work_fix_problem_yourself">
+	  <title>Fix the problem yourself.</title>
+	  <para>
+If the problem is obvious to you and you can fix it quickly, do so.
+This is done by doing the following:
+<itemizedlist>
+	      <listitem>
+		<para>Make the release tag into a branch</para>
+		<para>
+<command>cvs rtag -b -r VERSION_<replaceable>X_Y_Z</replaceable>_F BRANCH_<replaceable>X_Y_Z</replaceable></command>
 </para>
-	<para>
-Delay the release waiting for the developer to fix the problem.
+	      </listitem>
+	      <listitem>
+		<para>Update you checked out copy to be on that branch</para>
+		<para>
+<command>cvs update -r BRANCH_<replaceable>X_Y_Z</replaceable></command>
 </para>
+	      </listitem>
+	      <listitem>
+		<para>Fix the problem in your checked out copy</para>
+	      </listitem>
+	      <listitem>
+		<para>Commit the problem in the branch</para>
+		<para>
+<command>cvs commit -m'Fix of problem blabla'</command>
+</para>
+	      </listitem>
+	      <listitem>
+		<para>Continue the build process</para>
+		<para>
+This is done by restarting the <command>build dist-release</command>-command
+and from that point on working in the branch instead of at the tag.
+</para>
+	      </listitem>
+	      <listitem>
+		<para>
+Explain to the culprit what misstakes he has made and how to fix it.
+</para>
+		<para>
+It is now his responsibility to make sure that the problem will not
+appear in the next version.
+He can do this either by merging in your fix or by fixing the problem
+in some other way.
+</para>
+		<para>
+At this point an in-detail description of how poor programming skills
+the culprit has and how ugly his mother is, is probably in place but
+please keep it constructive!
+Remember, you might be misstaken when you guess who the responsible are.
+</para>
+	      </listitem>
+	    </itemizedlist>
+</para>
+	</sect3>
+
+	<sect3>
+	  <title>
+Delay the release waiting for someone to fix the problem.
+</title>
+	  <para>
+Create the branch as described in 
+<xref linkend="release_work_fix_problem_yourself"/>.
+Then tell the culprit and everyone on the developer list
+what the problem is and that it is to be fixed in the
+release branch a.s.a.p.
+</para>
+	  <para>
+Monitor the changes made to the branch to verify that
+noone commits anything else but the solutions to the
+problems.
+</para>
+	  <para>
+When you get notified that it is completed, 
+update your checked out copy and continue the release work.
+</para>
+	</sect3>
       </sect2>
 
 
@@ -3708,10 +3824,10 @@ domain of ArgoUML.
 	    <listitem>
 	      <para>
 Help with the improvements on ArgoUML by pin-pointing where ArgoUML
-needs to be modified to allow for localisation.
+needs to be modified to allow for localization.
 </para>
 	      <para>
-As ArgoUML is originally built without localisation we still have a
+As ArgoUML is originally built without localization we still have a
 big backlog of stuff in the GUI that is not localisable just by
 modifying the resource bundles. 
 Each such thing is a Defect and shall be corrected.
@@ -3724,12 +3840,12 @@ See that the used libraries also provides their part in that language.
 	      <para>
 This is mostly GEF since GEF is central both when it comes to 
 the fact that it has localized strings of its own but also
-because it handles parts of the localisation.
+because it handles parts of the localization.
 </para>
 	      <para>
 This means discussing with the teams developing the underlaying package
-as to how best to provide the localisation for those parts. 
-Either by providing localisation for that team to include in the
+as to how best to provide the localization for those parts. 
+Either by providing localization for that team to include in the
 package or by having ArgoUML overriding that package in that respect.
 </para>
 	    </listitem>
@@ -3738,7 +3854,7 @@ package or by having ArgoUML overriding that package in that respect.
 </para>
       </sect2>
       <sect2>
-	<title>Ambitions for localisation</title>
+	<title>Ambitions for localization</title>
 	<para>
 Let me (Linus Tolke, May 2002) try to define the levels of
 ambition for us to try to make it possible to discuss where
@@ -4441,10 +4557,6 @@ the documentation from the XML-source to HTML and PDF.
 </para>
 	      </listitem>
 	      <listitem>
-		<para><filename class="directory">faq</filename></para>
-		<para>XML-source code for the User FAQ.</para>
-	      </listitem>
-	      <listitem>
 		<para><filename class="directory">images</filename></para>
 		<para>Pictures for all documents are collected here.</para>
 	      </listitem>
@@ -4831,10 +4943,14 @@ the issues discussed recently in the user community.
 
 
 <chapter id="cvs">
-<title>Employed CVS standards</title>
+    <title>How to work with CVS</title>
     <indexterm>
       <primary>CVS</primary>
       <secondary>standards</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>CVS</primary>
+      <secondary>how to work with</secondary>
     </indexterm>
     <indexterm>
       <primary>Standards</primary>
@@ -4849,12 +4965,27 @@ the issues discussed recently in the user community.
 <para>We use the following standards in Argo/UML:
 <itemizedlist>
           <listitem><para>Released versions get the tag <emphasis>VERSION_X_X_X</emphasis></para></listitem>
-          <listitem><para>Versions which are considered stable in between official releases get build numbers assigned to them: <emphasis>VERSION_X_X_X_BLDYYY</emphasis></para></listitem>
-          <listitem><para>Developers working on code, with an unspecified due date are requested to put the code into a branch if it is deemed useful that the code can be shared. Developer branches follow the scheme: <emphasis>work_explanation_owner</emphasis>, where 
+          <listitem>
+	    <para>
+Developers working on code, with an unspecified due date are requested
+to put the code into a branch if it is deemed useful that the code can
+be shared. Developer branches follow the scheme:
+<emphasis>work_<replaceable>explanation</replaceable>_<replaceable>owner</replaceable></emphasis>, where
             <itemizedlist>
-              <listitem><para>work is a literal</para></listitem>
-              <listitem><para>explanation is something like javahelp, propertypanel, cppcodegeneration</para></listitem>
-              <listitem><para>owner is a self explaining code for the owner of the branch, e.g. tlach (Thierry Lach) or mklink (Markus Klink).</para></listitem>
+		<listitem><para>work is a literal</para></listitem>
+		<listitem>
+		  <para>
+<replaceable>explanation</replaceable> is something like javahelp,
+propertypanel, cppcodegeneration
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+<replaceable>owner</replaceable> is a self explaining code for the
+owner of the branch, 
+e.g. tlach (Thierry Lach) or mklink (Markus Klink).
+</para>
+		</listitem>
               </itemizedlist>
 </para>
           </listitem>
@@ -4866,6 +4997,35 @@ the issues discussed recently in the user community.
 	<title>How do I ...?</title>
 	<para>
 	  <itemizedlist>
+	    <listitem>
+	      <para>
+...commit stuff?
+</para>
+	      <para>
+You have made, the change, tested it and are satisfied with it.
+</para>
+	      <para>
+Do a <command>cvs update -d</command> and see that only the files 
+you have changed are marked as modified.
+If files are updated or patched by this command, 
+please recompile and test again.
+</para>
+	      <para>
+Do a <command>cvs diff</command> on each of the files and verify that
+only the lines you have changed are modified.
+</para>
+	      <para>
+Do a single <command>cvs commit</command> for all the files included
+in the change.
+This reduces the risk that someone else updates in the middle of your 
+work and also reduces the amount of notifications of commits sent out.
+Include changes to documentation and JUnit tests if applicable.
+</para>
+	      <para>
+Don't forget to update the corresponding issue (if any) in Issuezilla 
+i.e. set it to RESOLVED/FIXED.
+</para>
+	    </listitem>
 	    <listitem>
 	      <para>
 ...get my update or patch into CVS if I don't have CVS write rights?
@@ -5057,28 +5217,37 @@ The coding style for ArgoUML is the following
     <itemizedlist>
       <listitem>
 	<para>
-Each file starts with some header info: file, classes in this file,
-original author's email address, and version control info.
+Each file starts with some header info: 
+file, 
+version info, 
+copyright notice,
+classes in this file (if more than one),
+original author (if you want).
+Like this:
+<programlisting>
+// $Id$
+// Copyright ...
+
+// Classes: blabla, blabla
+// Original Author: who ever
+</programlisting>
 </para>
       </listitem>
       <listitem>
 	<para>
-I am using the 
+Use the 
 <programlisting>
 import ...*;
 </programlisting>
 command to keep the code short. 
-I prefer to let name conflicts arrise so that I can catch them, rather
+We prefer to let name conflicts arrise so that I can catch them, rather
 than always use explicit package.class names and end up with code that
 cannot be changed to the package-name-only style.
-(Note: This means that if you make a zip file for use in your
-CLASSPATH, you must use a version of the zip tool that includes
-directory entries.)
 </para>
       </listitem>
       <listitem>
 	<para>
-All instance variables are protected and their names begin with an underscore.
+All instance variables are private and their names begin with an underscore.
 If the variable should be accessible then add public or protected
 accessor methods with the same name as the variable without the
 underscore with "get" or "set" prepended.
@@ -5099,7 +5268,7 @@ If a method will fit comfortably on one line, then put it on one line.
 Use javadoc for each class, instance variable, and method. 
 In general do not put comments in the body of a method. 
 If you are doing something complex enough to need a comment, consider
-breaking it out into its own commented method.
+breaking it out into its own private commented method.
 </para>
       </listitem>
       <listitem>
@@ -5123,7 +5292,7 @@ Name constants with all upper case and underscores, e.g.,
       </listitem>
       <listitem>
 	<para>
-To emphasize clusters of classes I am using what I call the binomial
+To emphasize clusters of classes we are using what we call the binomial
 naming style (I am sure others have thought of this also): 
 The root class of the cluster has a short name (e.g., Layer), 
 other members of the cluster use that name as a prefix (e.g., LayerGrid).
@@ -5133,6 +5302,22 @@ having to look at a class inheritance diagram.
 It is also very nice when you have to look at an alphabetical list
 of classes. I try to name class clusters so that they are not lexigraphically close others (e.g., the Net cluster
 used to be named Model, but that lexigraphically overlapped the Mode cluster).
+</para>
+      </listitem>
+      <listitem>
+	<para>
+We indent 4 steps, tab stops at every eight position.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+If possible use lines shorter than 80 charaters wide.
+</para>
+      </listitem>
+      <listitem>
+	<para>
+Open brace on same line (at end).
+Both for if/while/for and for class and functions definitions.
 </para>
       </listitem>
       <listitem>
@@ -5284,10 +5469,100 @@ Here is the big picture of the life of an Issue.
 	  <imagedata fileref="images/cookbook/IssueBigPicture.gif" format="GIF"/>
 	</imageobject>
       </mediaobject>
-      <para>
-The rest of the section handles the processes that take the Issue form
-the Resolved level and further down.
+      <sect2>
+	<title>Priorities</title>
+	<indexterm>
+	  <primary>Priorities</primary>
+	  <secondary>on Issues</secondary>
+	</indexterm>
+	<indexterm>
+	  <primary>Issue</primary>
+	  <secondary>Priority</secondary>
+	</indexterm>
+	<para>
+The priorities are used in the following manner in ArgoUML:
+<itemizedlist>
+	    <listitem>
+	      <para>P1 - Fatal error</para>
+	      <para>
+ArgoUML cannot start.
+Crashes program, jvm or computer.
 </para>
+	    </listitem>
+	    <listitem>
+	      <para>P2 - Serious error</para>
+	      <para>
+Information lost.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>P3 - Not so serious error</para>
+	      <para>
+Functions not working.
+Strange behavior.
+Exceptions logged.
+Excessive logging.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>P4 - Confusing behavior</para>
+	      <para>
+Incorrect help texts and documentation.
+Inconsistant behavior.
+UI not updated.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>P5 - Small problems</para>
+	      <para>
+Spelling errors.
+Ugly icons.
+</para>
+	    </listitem>
+	  </itemizedlist>
+</para>
+      </sect2>
+
+      <sect2>
+	<title>Resolutions</title>
+	<indexterm>
+	  <primary>Resolution</primary>
+	  <secondary>of Issues</secondary>
+	</indexterm>
+	<indexterm>
+	  <primary>Issue</primary>
+	  <secondary>Resolution</secondary>
+	</indexterm>
+	<para>
+This is what the different resolutions mean and how they are used when
+an issue is resolved in the ArgoUML project.
+This is to be read as an addendum to the 
+<ulink url="http://argouml.tigris.org/project/www/docs/issue_lifecycle.html">
+Tigris definition of the resolutions
+</ulink>.
+<itemizedlist>
+	    <listitem>
+	      <para>LATER and REMIND</para>
+	      <para>
+Not used.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>WORKSFORME</para>
+	      <para>
+This means that it works in a released version of ArgoUML.
+State the version in the comment.
+</para>
+	      <para>
+If the version stated by the reporter in the issue is not
+the same as the version in the comment then this probably 
+means that problem was fixed in some release without anyone
+noticing that this problem was fixed.
+</para>
+	    </listitem>
+	  </itemizedlist>
+</para>
+      </sect2>
     </sect1>
 
     <sect1 id="resolve_issue">
