@@ -38,7 +38,9 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLClassifierComboBoxModel;
@@ -47,6 +49,7 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLStimulusListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
@@ -57,43 +60,35 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class PropPanelObject extends PropPanelModelElement {
 
-    public  PropPanelObject() {
-	super("Object",_objectIcon,2);
+    public PropPanelObject() {
+	super("Object", _objectIcon, ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = MObject.class;
+	Class mclass = (Class)ModelFacade.OBJECT;
 
-	addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-	addField(getNameTextField(),1,0,0);
+	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 	
-	addCaption("Classifier:",2,0,0);   	
 	UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",true,MClassifier.class,true);
 	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
-	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),clsComboBox),2,0,0);
+	addField("Classifier:", new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),clsComboBox));
 	
-	addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
-	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()),3,0,0);
+	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
    
-	addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
-	addLinkField(getNamespaceComboBox(),4,0,0);
+	addLinkField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-	addCaption("Stimuli sent:",1,1,0.25);
+        add(LabelledLayout.getSeperator());
+        
 	JList sentList = new UMLList(new UMLStimulusListModel(this,null,true,"sent"),true);
 	sentList.setForeground(Color.blue);
-	sentList.setVisibleRowCount(1);
 	JScrollPane sentScroll = new JScrollPane(sentList);
-	addField(sentScroll,1,1,0.25);
+	addField("Stimuli sent:", sentScroll);
 
-	addCaption("Stimuli received:",2,1,0.25);
 	JList receivedList = new UMLList(new UMLStimulusListModel(this,null,true,"received"),true);
 	receivedList.setForeground(Color.blue);
-	receivedList.setVisibleRowCount(1);
 	JScrollPane receivedScroll= new JScrollPane(receivedList);
-	addField(receivedScroll,2,1,0.25);
+	addField("Stimuli received:", receivedScroll);
 	
 	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
-	
 	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
-     
     }
     
 
@@ -114,7 +109,7 @@ public class PropPanelObject extends PropPanelModelElement {
         return classifier instanceof MClassifier;
     }
 
-     public MClassifier getClassifier() {
+    public MClassifier getClassifier() {
         MClassifier classifier = null;
         Object target = getTarget();
         if(target instanceof MInstance) {
@@ -122,12 +117,12 @@ public class PropPanelObject extends PropPanelModelElement {
         //    I'll have to figure out what that means
         //            classifier = ((MInstance) target).getClassifier();
 
-	    // at the moment , we only deal with one classifier
-	    Collection col = ((MInstance)target).getClassifiers();
-		Iterator iter = col.iterator();
-		if (iter.hasNext()) {
-		    classifier = (MClassifier)iter.next();
-        }
+        // at the moment , we only deal with one classifier
+        Collection col = ((MInstance)target).getClassifiers();
+            Iterator iter = col.iterator();
+            if (iter.hasNext()) {
+                classifier = (MClassifier)iter.next();
+            }
         }
         return classifier;
     }
@@ -178,13 +173,4 @@ public class PropPanelObject extends PropPanelModelElement {
         UmlFactory.getFactory().delete(target);
 	if(newTarget != null) TargetManager.getInstance().setTarget(newTarget);
     }
-
-
-
-            
-
-   
-  
-
-
 }

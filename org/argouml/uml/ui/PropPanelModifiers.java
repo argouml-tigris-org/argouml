@@ -44,23 +44,18 @@ import org.argouml.uml.ui.*;
  * <p>A modifier panel is restricted to a specific number of columns. It only
  *   adds {@link UMLCheckBox} entities.
  */
-
 public class PropPanelModifiers extends JPanel {
-
+    
     /**
      * <p>Creates a {@link JPanel} based on a {@link GridLayout} with a
      *   specified number of columns and arbitrary number of rows.<p>
      *
      * @param numCols  The number of colums in the {@link GridLayout}
      */
-
     public PropPanelModifiers(int numCols) {
-
         // Just invoke the parent constructor with the GridLayout.
-
         super(new GridLayout(0, numCols));
     }
-
 
     /**
      * <p>Overloading of the add method, that adds a UMLCheckBox with specified
@@ -80,12 +75,9 @@ public class PropPanelModifiers extends JPanel {
      * @param container     PropPanel that contains this PropPanelModifiers
      *                      panel.
      */
-
     public void add(String propertyName, Class elementClass, String getMethod,
                     String setMethod, String label, PropPanel container) {
-        
         // Build up the check box
-
         UMLReflectionBooleanProperty rbp;
         UMLCheckBox                  cb;
 
@@ -94,8 +86,7 @@ public class PropPanelModifiers extends JPanel {
         cb  = new UMLCheckBox(container.localize(label), container, rbp);
 
         // Now invoke the parent add method
-
         add(cb);
     }
-
 }  /* end class PropPanelModifiers */
+

@@ -47,7 +47,11 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
   ////////////////////////////////////////////////////////////////
   // contructors
     public PropPanelNamespace(String panelName, ImageIcon icon, int columns) {
-        super(panelName,icon,columns);
+        super(panelName, icon, columns);
+    }
+    
+    public PropPanelNamespace(String panelName, ImageIcon icon, Orientation orientation) {
+        super(panelName, icon, orientation);
     }
     
     public PropPanelNamespace(String title, Orientation orientation) {
@@ -55,7 +59,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
     }
 
     public PropPanelNamespace(String panelName,int columns) {
-        this(panelName,null,columns);
+        this(panelName, null, columns);
     }
 
     public void addClass() {

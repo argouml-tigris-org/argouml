@@ -41,6 +41,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -51,11 +52,6 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
-
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 
 /**
  * <p>Builds the property panel for a use case.</p>
@@ -85,7 +81,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
     	addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceComboBox());
 		
 	PropPanelModifiers mPanel = new PropPanelModifiers(3);
-        Class mclass = MUseCase.class;
+        Class mclass = (Class)ModelFacade.USE_CASE;
         
     // since when do we know abstract usecases?
     //    mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
@@ -144,13 +140,12 @@ public class PropPanelUseCase extends PropPanelClassifier {
     public void newUseCase() {
         Object target = getTarget();
 
-        if(target instanceof MUseCase) {
-            MNamespace ns = ((MUseCase) target).getNamespace();
-
+        if(ModelFacade.isAUseCase(target)) {
+            Object ns = ModelFacade.getNamespace(target);
+            
             if(ns != null) {
-                MUseCase useCase = UseCasesFactory.getFactory().createUseCase();
-
-                ns.addOwnedElement(useCase);
+                Object useCase = UseCasesFactory.getFactory().createUseCase();
+                ModelFacade.addOwnedElement(ns, useCase);
                 TargetManager.getInstance().setTarget(useCase);
             }
         }
@@ -165,25 +160,11 @@ public class PropPanelUseCase extends PropPanelClassifier {
      * <p>This code uses getFactory and adds the extension point explicitly to
      *   the, making its associated use case the current use case.</p>
      */
-
     public void newExtensionPoint() {
         Object target = getTarget();
 
-        if(target instanceof MUseCase) {
-            MUseCase   useCase = (MUseCase) target;
-            MNamespace ns      = useCase.getNamespace();
-
-            MExtensionPoint extensionPoint =
-                    UseCasesFactory.getFactory().buildExtensionPoint(useCase);
-            TargetManager.getInstance().setTarget(extensionPoint);
-            
+        if (ModelFacade.isAUseCase(target)) {
+            TargetManager.getInstance().setTarget(UseCasesFactory.getFactory().buildExtensionPoint(target));
         }
     }
-
-
-    
-    
-   
-
-
 } /* end class PropPanelUseCase */

@@ -42,6 +42,8 @@ import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
@@ -57,6 +59,7 @@ import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.MActionExpression;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
@@ -117,14 +120,14 @@ public class ModelFacade {
     public static final short SEQUENTIAL = 2;
     
     // Types of line
-    public static final Object GENERALIZATION   = MGeneralization.class;
-    public static final Object ASSOCIATION_ROLE = MAssociationRole.class;
-    public static final Object ASSOCIATION      = MAssociation.class;
-    public static final Object DEPENDENCY       = MDependency.class;
     public static final Object ABSTRACTION      = MAbstraction.class;
-    public static final Object LINK             = MLink.class;
+    public static final Object ASSOCIATION      = MAssociation.class;
+    public static final Object ASSOCIATION_ROLE = MAssociationRole.class;
+    public static final Object DEPENDENCY       = MDependency.class;
     public static final Object EXTEND           = MExtend.class;
+    public static final Object GENERALIZATION   = MGeneralization.class;
     public static final Object INCLUDE          = MInclude.class;
+    public static final Object LINK             = MLink.class;
     public static final Object PERMISSION       = MPermission.class;
     public static final Object USAGE            = MUsage.class;
 
@@ -143,7 +146,13 @@ public class ModelFacade {
     public static final Object USE_CASE           = MUseCase.class;
     
     // Invisible model elements
+    public static final Object ACTION             = MAction.class;
+    public static final Object ACTION_EXPRESSION  = MActionExpression.class;
+    public static final Object ASSOCIATION_END    = MAssociationEnd.class;
+    public static final Object CALL_ACTION        = MCallAction.class;
+    public static final Object NAMESPACE          = MNamespace.class;
     public static final Object RECEPTION          = MReception.class;
+    public static final Object STEREOTYPE         = MStereotype.class;
     
     /** Constructor that forbids instantiation.
      */
@@ -348,6 +357,24 @@ public class ModelFacade {
         return handle instanceof MNamespace;
     }
 
+    /** Recognizer for a Node
+     *
+     * @param handle candidate
+     * @returns true if handle is a Node
+     */
+    public static boolean isANode(Object handle) {
+        return handle instanceof MNode;
+    }
+
+    /** Recognizer for a NodeInstance
+     *
+     * @param handle candidate
+     * @returns true if handle is a NodeInstance
+     */
+    public static boolean isANodeInstance(Object handle) {
+        return handle instanceof MNodeInstance;
+    }
+
     /**
      * Recognizer for Operation
      *
@@ -429,6 +456,15 @@ public class ModelFacade {
      */
     public static boolean isATransition(Object handle) {
         return handle instanceof MTransition;
+    }
+
+    /** Recognizer for a Use Case
+     *
+     * @param handle candidate
+     * @returns true if handle is a Transition
+     */
+    public static boolean isAUseCase(Object handle) {
+        return handle instanceof MUseCase;
     }
 
     /** Recognizer for attributes that are changeable
@@ -1097,6 +1133,19 @@ public class ModelFacade {
     }
 
     /**
+     * Returns a collection with all residents belonging to the given
+     * node.
+     * @param handle
+     * @return Collection
+     */
+    public static Collection getResidents(Object handle) {
+        if (isANode(handle)) {
+            return ((MNode)handle).getResidents();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
      * Gets the source for some given transitions.
      * @param handle
      * @return Object
@@ -1134,6 +1183,7 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+    
     /**
      * Returns a collection with all subvertices belonging to the given
      * composite state.

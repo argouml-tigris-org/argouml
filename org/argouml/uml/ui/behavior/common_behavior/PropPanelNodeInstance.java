@@ -33,11 +33,14 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLClassifierComboBoxModel;
 import org.argouml.uml.ui.UMLComboBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
@@ -46,31 +49,21 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class PropPanelNodeInstance extends PropPanelModelElement {
     public PropPanelNodeInstance() {
-        super("Node Instance", _nodeInstanceIcon,2);
+        super("Node Instance", _nodeInstanceIcon, ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = MNodeInstance.class;
+	Class mclass = (Class)ModelFacade.NODE_INSTANCE;
 	
-	addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-	addField(getNameTextField(),1,0,0);
+	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 
-    addCaption("Classifier:",2,0,0);
-    UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
+        UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
 	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
-   	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),clsComboBox),2,0,0);
+        addField("Classifier:", new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),clsComboBox));
 
-
-	addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
-	addField(getStereotypeBox(),3,0,0);
-
-
-	addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
-	addField(getNamespaceComboBox(),4,0,0);
-
+	addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
 	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);	
 	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
-
-
     }
 
     public boolean isAcceptibleClassifier(MModelElement classifier) {
@@ -95,7 +88,6 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
 	    }
 	    // add classifier
 	    inst.addClassifier( element);
-
         }
     }
 
@@ -111,10 +103,7 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
                     classifier = (MClassifier)iter.next();
                 }
             }
-		    
         }
         return classifier;
     }
-
-
 }
