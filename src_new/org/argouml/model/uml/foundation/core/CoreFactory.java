@@ -703,6 +703,15 @@ public class CoreFactory extends AbstractUmlModelFactory {
      */
     public MGeneralization buildGeneralization(MGeneralizableElement child, MGeneralizableElement parent) {
         if (parent.getParents().contains(child)) return null;
+        if (!child.getClass().equals(parent.getClass())) return null;
+        Iterator it = parent.getGeneralizations().iterator();
+        while (it.hasNext()) {
+        	MGeneralization gen = (MGeneralization)it.next();
+        	if (gen.getParent().equals(child)) return null;
+        }
+        if (parent.getNamespace() == null) return null;
+        if (parent.isLeaf()) return null;
+        if (child.isRoot()) return null;
 
         MGeneralization gen = createGeneralization();
         gen.setParent(parent);

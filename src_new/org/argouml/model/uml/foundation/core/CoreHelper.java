@@ -575,7 +575,7 @@ public class CoreHelper {
 		while (it.hasNext()) {
 			MGeneralization gen = (MGeneralization)it.next();
 			MGeneralizableElement client = gen.getChild();
-			if (client instanceof MClass) {
+			if (client instanceof MClassifier) {
 				list.add(client);
 			}
 		}
