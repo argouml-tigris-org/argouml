@@ -57,7 +57,7 @@ public class ActionNewPseudoState extends AbstractActionNewModelElement {
      * @param n the to be localized name for the pseudostate kind
      */
     public ActionNewPseudoState(Object k, String n) {
-        this();
+        super();
         kind = k;
         putValue(Action.NAME, Translator.localize(n));
     }
