@@ -123,6 +123,7 @@ import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.core.MTemplateParameter;
 import ru.novosoft.uml.foundation.core.MUsage;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MElementImport;
@@ -145,8 +146,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */
-    private static UmlFactory SINGLETON =
-                   new UmlFactory();
+    private static final UmlFactory SINGLETON = new UmlFactory();
 
     /** Singleton instance access method.
      */
@@ -154,13 +154,69 @@ public class UmlFactory extends AbstractUmlModelFactory {
         return SINGLETON;
     }
 
-    /** Don't allow instantiation.
+    // Types of line
+    public static final Object GENERALIZATION = MGeneralization.class;
+    public static final Object ASSOCIATION_ROLE = MAssociationRole.class;
+    
+    // Types of node
+    public static final Object CLASSIFIER_ROLE = MClassifierRole.class;
+
+    // A list of valid connections between elements, the connection type first and then
+    // the elements to be connected
+    private Object[][] validGrid = {
+        {ASSOCIATION_ROLE, CLASSIFIER_ROLE, CLASSIFIER_ROLE},
+        {GENERALIZATION,   CLASSIFIER_ROLE, CLASSIFIER_ROLE}
+    };
+        
+    /** Don't allow external instantiation.
      *  Create a logger.
      */
     private UmlFactory() {
-        logger =Category.getInstance("org.argouml.model.uml.factory");
+        logger = Category.getInstance("org.argouml.model.uml.factory");
     }
 
+    /** Create a new connection model element (a relationship or link) between any
+     *  existing node model elements.
+     *  TODO Bob Tarling: currently only coded for collaboration diagram
+     *  introduce other diagrams slowly.
+     */
+    public Object buildConnection(Object fromElement, Object toElement, Object connectionType) throws UmlException {
+        return buildConnection(fromElement, null, toElement, null, connectionType, null);
+    }
+    public Object buildConnection(Object fromElement, Object fromStyle, Object toElement, Object toStyle, Object connectionType, Object unidirectional) throws UmlException {
+        
+        // TODO Bob Tarling - validate against validGrid first.
+        
+        Object connection = null;
+        try {
+            if (connectionType == ASSOCIATION_ROLE) {
+                connection = getCollaborations().buildAssociationRole(
+                    (MClassifierRole)fromElement, 
+                    (MAggregationKind)fromStyle, 
+                    (MClassifierRole)toElement, 
+                    (MAggregationKind)toStyle, 
+                    (Boolean)unidirectional);
+            } else if (connectionType == GENERALIZATION) {
+                connection = getCore().buildGeneralization((MClassifierRole)fromElement, (MClassifierRole)toElement);
+            }
+      
+        } catch (Exception ex) {
+            throw new IllegalModelElementConnection("Cannot make a " + 
+                        connectionType.getClass().getName() +
+                         " between a " + fromElement.getClass().getName() +
+                         " and a " + toElement.getClass().getName(), ex);
+        }
+        
+        if (connection == null) {
+            throw new IllegalModelElementConnection("Cannot make a " + 
+                        connectionType.getClass().getName() +
+                         " between a " + fromElement.getClass().getName() +
+                         " and a " + toElement.getClass().getName());
+        }
+        
+        return connection;
+    }
+    
     /** Returns the package factory for the UML
      *  package Foundation::ExtensionMechanisms.
      *
