@@ -1,42 +1,99 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.4. Notation</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter 5. Inside the components"><link rel="previous" href="ch05s03.html" title="5.3. Critics and other cognitive tools"><link rel="next" href="ch05s05.html" title="5.5. Diagrams"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.4. Notation</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 5. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="notation"></a>5.4. Notation</h2></div></div><a class="indexterm" name="d0e2642"></a><p><a name="comp-notation-purpose"></a>
-Purpose - to provide the different possibilities on how
-classes, methods and attributes are to be shown in diagrams
-and property panels.
+   <title>5.4. Code generations and Reverse Engineering - Java</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter 5. Inside the components"><link rel="previous" href="ch05s03.html" title="5.3. Diagrams"><link rel="next" href="ch05s05.html" title="5.5. The GUI Framework"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.4. Code generations and Reverse Engineering - Java</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 5. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="java"></a>5.4. Code generations and Reverse Engineering - Java</h2></div></div><a class="indexterm" name="d0e4242"></a><a class="indexterm" name="d0e4247"></a><a class="indexterm" name="d0e4252"></a><a class="indexterm" name="d0e4257"></a><a class="indexterm" name="d0e4262"></a><a class="indexterm" name="d0e4267"></a><p>
+Purpose - two purposes:
+to allow the model to be converted into java code and updated either
+in java or in the model;
+to allow some java code to be coverted into a model.
 </p><p>
-The interfaces <tt>NotationProvider</tt> and 
-<tt>NotationContext</tt> are used to
-provide linkages to different code generators.
-A class which can ask for different notations, such as the source box,
-or a <tt>FigClass</tt>, extends 
-<tt>NotationContext</tt>. 
-When processed, a <tt>NotationContext</tt> gets asked
-what <tt>NotationName</tt> it wants or null to indicate
-it doesn't care.
-If the <tt>NotationName</tt> is null, then the value of
-the menu selection "Edit-&gt;Notation" are used. 
-The <tt>NotationName</tt> is
-used to find the correct <tt>NotationProvider</tt>.
-That <tt>NotationProvider</tt> gets called, and the
-results are passed to the <tt>NotationContext</tt> for
-it to do what it needs.
+The java things are located in 
+<tt>org.argouml.language.java</tt>.
 </p><p>
-This module contains the following main class types:
-</p><div class="itemizedlist"><ul type="disc"><li><p>
-<tt>NotationProviderFactory</tt>
-</p></li><li><p>
-<tt>Notation</tt>,
-<tt>NotationContext</tt>,
-<tt>NotationProvider</tt>
-</p></li></ul></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2703"></a>5.4.1. Collaborations for Notation</h3></div></div><p>
-Notations are used by the diagrams and tabs to provide the correct
-syntax when showing code.
-</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-notation-to-comp-codegenreveng"></a>5.4.1.1. Notation uses Code Generation and Reverse Engineering</h4></div></div><p>
-For generating parts of the java-notation, parts of the
-java code generation is used.
-</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-notation-to-comp-plugins"></a>5.4.1.2. Notation uses Plugin-Module API</h4></div></div><p>
-Currently not!
-</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-notation-to-comp-logging"></a>5.4.1.3. Notation uses Logging</h4></div></div><p>Currently not.</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_notation"></a>5.4.2. How do I ...?</h3></div></div><div class="itemizedlist"><ul type="disc"><li><p>...add a new notation?</p><p>
-Use the PluggableNotation api!
-</p></li></ul></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.3. Critics and other cognitive tools&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.5. Diagrams</td></tr></table></div></body></html>
+The Java component is a Layer 3 component. See <a href="ch04s06.html" title="4.6. Layer 3 - Description of components">Section 4.6</a>.
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_reverse"></a>5.4.1. How do I ...?</h3></div></div><p>...</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e4288"></a>5.4.2. Which sources are involved?</h3></div></div><p>
+The package org.argouml.uml.reveng is supposed to hold those classes
+that are common to all RE packages. At the moment this is the Import
+class which is mainly responsible to recognize directories, get their
+content and parse every known source file in them. These are only java
+files at them moment, but there might be other languages like C++ in
+the future. With this concept you could mix several languages within
+a project. The DiagramInterface is used to visualize generated NSUML
+metamodel objects then.
+</p><p>
+The package org.argouml.uml.reveng.java holds the Java specific parts
+of the current RE code. C++ RE might go to org.argouml.uml.reveng.cc,
+or so...
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e4295"></a>5.4.3. How is the grammar of the target language implemented?</h3></div></div><p>
+It's a Antlr (<a href="http://www.antlr.org" target="_top">http://www.antlr.org</a>)
+grammar, based on the Antlr Java parser
+example. The main difference is the missing AST (Abstract Syntax Tree)
+generation and treeparser. So the original example generates a AST
+(a treelike data structure) and then traverses this tree, while the
+ArgoUML code parses the source file and generates NSUML objects
+directly from the sources. This was done to avoid the memory usage
+of an AST and the frequent GC while parsing many source files.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e4303"></a>5.4.4. Which model/diagram elements are generated?</h3></div></div><p>
+The *context classes hold the current context for a package, class
+etc. When the required information for a object is available, the
+corresponding NSUML object is created and passed to the DiagramInterface
+to visualize it.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e4308"></a>5.4.5. Which layout algorithm is used?</h3></div></div><p>
+The classes in org.argouml.uml.diagram.static_structure.layout.* hold
+the Classdiagram layout code. No layout for other diagram types yet.
+It's based on a ranking scheme for classes and interfaces. The rank of
+a class/interface depends on the total number of (direct or indirect)
+superclasses. So if class B extends A (with rank(A)=0), then rank(B)=1.
+If C extends B, then rank(C)=2 since it has 2 superclasses A,B. An
+implemented interface is treated similar to a extended class. The
+objects are placed in rows then, that depend on their rank.
+rank(0)=1st row. rank(1) =2nd row (below the 1st one) etc. Example:
+</p><div class="mediaobject"><img src="images/examples/example1.gif"></div><p>
+In the next diagramm, a link goes to a object that is not in the row
+above:
+</p><div class="mediaobject"><img src="images/examples/example2.gif"></div><p>
+In this case, insert virtual objects which are linked to the actual
+target and link to them:
+</p><div class="mediaobject"><img src="images/examples/example3.gif"></div><p>
+The object are sorted within their row then to minimize crossing links
+then. Compute the average value of the vertical positions of all linked
+object in the row above. Example: we have 2 ranks 0 and 1 with 3
+classes each:
+</p><blockquote class="blockquote"><p>
+A B C : rank 0
+</p><p>
+D E F : rank 1
+</p></blockquote><p>
+We give the superclasses an index in their rank (assuming that they are
+already sorted):
+</p><blockquote class="blockquote"><p>
+A:0, B:1, C:2
+</p></blockquote><p>
+D, E, F have the following links (A, B, C could be interfaces, so I allow
+links to multiple superclasses here):
+</p><blockquote class="blockquote"><p>
+D -&gt; C
+</p><p>
+E -&gt; A and C
+</p><p>
+F -&gt; A and B
+</p></blockquote><p>
+Compute the average value of the indexes:
+</p><blockquote class="blockquote"><p>
+D = 2 (C has index 2 / 1 link)
+</p><p>
+E = 0 + 2 / 2 = 1 (A=0, C=2 divide by 2 links)
+</p><p>
+F = 0 + 1 / 2 = 0.5 (A=0, B=1, 2 links)
+</p></blockquote><p>
+Then sort the subclasses by that value:
+</p><blockquote class="blockquote"><p>
+F(is 0.5), E(is 1), D(is 2)
+</p></blockquote><p>
+So the placement is:
+</p><blockquote class="blockquote"><p>
+A B C
+</p><p>
+(here are the links, but I can't hardly paint them as ASCIIs)
+</p><p>
+F E D
+</p></blockquote></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s03.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.3. Diagrams&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.5. The GUI Framework</td></tr></table></div></body></html>

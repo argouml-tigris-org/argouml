@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>2.4. The JUnit test cases</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter 2. Building from source"><link rel="previous" href="ch02s03.html" title="2.3. Build Process"><link rel="next" href="ch02s05.html" title="2.5. Making a release"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.4. The JUnit test cases</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 2. Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e954"></a>2.4. The JUnit test cases</h2></div></div><a class="indexterm" name="d0e957"></a><a class="indexterm" name="d0e960"></a><a class="indexterm" name="d0e963"></a><p>
+   <title>2.4. The JUnit test cases</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter 2. Building from source"><link rel="previous" href="ch02s03.html" title="2.3. Build Process"><link rel="next" href="ch02s05.html" title="2.5. Making a release"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.4. The JUnit test cases</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 2. Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e1005"></a>2.4. The JUnit test cases</h2></div></div><a class="indexterm" name="d0e1008"></a><a class="indexterm" name="d0e1011"></a><a class="indexterm" name="d0e1014"></a><p>
 ArgoUML has a set of automatic test cases using JUnit-framework
 for testing the insides of the code.
 The purpose of these are to help in pin-pointing problems with
@@ -10,7 +10,7 @@ The JUnit test cases are residing at two different places in the
 source repository and run in two different ways.
 They are never distributed with ArgoUML but merely a tool for
 developers.
-</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e970"></a>2.4.1. New style JUnit test cases</h3></div></div><p>
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1021"></a>2.4.1. New style JUnit test cases</h3></div></div><p>
 By running the command
 <b>build tests</b>
 from <tt>src_new</tt>
@@ -25,7 +25,7 @@ Testcases shall be located under
 <tt>argouml/tests/org/argouml</tt>
 and the filenames shall be like
 <tt>Test<i><tt>*</tt></i>.java</tt>.
-</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e999"></a>2.4.2. Old style JUnit test cases</h3></div></div><p>
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1050"></a>2.4.2. Old style JUnit test cases</h3></div></div><p>
 This chapter describes the old way of doing JUnit test cases.
 </p><p>
 The JUnit module is an ArgoUML module that is used to contain all 
@@ -54,7 +54,7 @@ should have a JUnit test case called
 stored in the file
 <tt>modules/junit/src/org/argouml/<i><tt>x/y</tt></i>/Test<i><tt>z</tt></i>.java</tt>
 containing all the Unit Test Cases for that class.
-</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="run_junit_testcases"></a>2.4.2.1. How to run the old style test cases</h4></div></div><a class="indexterm" name="d0e1058"></a><p>
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="run_junit_testcases"></a>2.4.2.1. How to run the old style test cases</h4></div></div><a class="indexterm" name="d0e1109"></a><p>
 This is a simple description on how to run the JUnit Test Cases.
 </p><div class="orderedlist"><ol type="1"><li><p>
 Check out all you need to build ArgoUML and the modules/junit
@@ -107,7 +107,7 @@ no "Errors" and no "Failures".
 </p><p>
 If there are "Errors" or "Failures" they you can hopefully easily
 pinpoint the problem.
-</p></li></ol></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e1137"></a>2.4.2.2. How to write a test case</h4></div></div><a class="indexterm" name="d0e1140"></a><a class="indexterm" name="d0e1143"></a><a class="indexterm" name="d0e1146"></a><p>
+</p></li></ol></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e1188"></a>2.4.2.2. How to write a test case</h4></div></div><a class="indexterm" name="d0e1191"></a><a class="indexterm" name="d0e1194"></a><a class="indexterm" name="d0e1197"></a><p>
 Now this will make all you java-enthusiasts go nuts!
 We have both classnames and method names that need to have a special
 syntax.
@@ -144,7 +144,7 @@ They serve as a guarantee that the public interface of a class will
 ever loose any of the functionality provided by its signature in an
 uncontrolled way in just the same way as the test-methods serve as a
 guarantee that no features will ever be lost.
-</p><div class="example"><p><b>Example 2.1. A complete example</b></p><a class="indexterm" name="d0e1180"></a><p>
+</p><div class="example"><p><b>Example 2.1. A complete example</b></p><a class="indexterm" name="d0e1231"></a><p>
 <pre class="programlisting">
 package org.argouml.uml.ui;
 import junit.framework.*;
@@ -193,7 +193,7 @@ public class TestUMLAction extends TestCase {
     }
 }
 </pre>
-</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e1190"></a>2.4.2.3. The TestAll class</h4></div></div><a class="indexterm" name="d0e1193"></a><p>
+</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e1241"></a>2.4.2.3. The TestAll class</h4></div></div><a class="indexterm" name="d0e1244"></a><p>
 The TestAll class goes through all directories under 
 <tt>modules/junit/build/classes</tt>
 and finds all class-files beginning with "Test".

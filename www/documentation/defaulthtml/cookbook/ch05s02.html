@@ -1,82 +1,190 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.2. Model</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter 5. Inside the components"><link rel="previous" href="ch05.html" title="Chapter 5. Inside the components"><link rel="next" href="ch05s03.html" title="5.3. Critics and other cognitive tools"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.2. Model</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 5. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s03.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="model"></a>5.2. Model</h2></div></div><p><a name="comp-model-purpose"></a>
-Purpose - to provide an interface to the NSUML model and also
-to the GEF diagrams that in a consistant way adds all ArgoUML-specifics 
-at every object creation, modification, and deletion.
+   <title>5.2. Critics and other cognitive tools</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter 5. Inside the components"><link rel="previous" href="ch05.html" title="Chapter 5. Inside the components"><link rel="next" href="ch05s03.html" title="5.3. Diagrams"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.2. Critics and other cognitive tools</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 5. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s03.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="critics"></a>5.2. Critics and other cognitive tools</h2></div></div><a class="indexterm" name="d0e2243"></a><a class="indexterm" name="d0e2246"></a><a class="indexterm" name="d0e2249"></a><p><a name="comp-critics-purpose"></a>
+Purpose - to provide cognitive help for the User.
+This help is based on the current model that the User works with.
 </p><p>
-ArgoUML uses several factories and helperclasses to manipulate the NSUML
-model. 
-The NSUML model itself does not define enough 'business' logic
-to be directly used and the factories and helperclasses provide a
-centralized place for accessing this 'business' logic.
-Per section of chapter 2 of the UML 1.3 specification there is one factory
-and one helper. They are placed in their own package. The package name
-convention is:
-<tt>org.argouml.model.uml.SECTIONNAME</tt> 
-where sectionname is one of the following:
-</p><div class="itemizedlist"><ul type="disc"><li><p>foundation</p></li><li><p>foundation.core</p></li><li><p>foundation.extensionmechanisms</p></li><li><p>foundation.datatypes</p></li><li><p>behavioralelements</p></li><li><p>behavioralelements.commonbehaviour</p></li><li><p>behavioralelements.statemachines</p></li><li><p>behavioralelements.usecases</p></li><li><p>behavioralelements.collaborations</p></li><li><p>behavioralelements.activitygraphs</p></li><li><p>modelmanagement</p></li></ul></div><p>
+The Critics are located in <tt>org.argouml.cognitive</tt>.
 </p><p>
-Each package has at least a helper and a factory in it. 
-The factories contain all methods that deal with 
-creating and building modelelements.
-The helpers contain all utility methods needed to manipulate
-the modelelements.
+The Critics is a Layer 3 component. See <a href="ch04s06.html" title="4.6. Layer 3 - Description of components">Section 4.6</a>.
 </p><p>
-Both helpers and factories are singletons. 
-The static method to access them is
-<tt>getFactory</tt> for the factory
-and <tt>getHelper</tt> for the helper.
-</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2197"></a>5.2.1. Factories</h3></div></div><p>
-The factories contain at least for each modelelement a create method.
-Example: <tt>createClass</tt>
-resides in <tt>CoreFactory</tt> in the package
-<tt>org.argouml.model.uml.foundation.core</tt>.
-Besides that, there are several buildmethods to build classes.
-The build methods have a signature like
-<code class="methodsynopsis">  <span class="modifier">public&nbsp;</span><span class="type">MODELELEMENT&nbsp;</span><span class="methodname">buildMODELELEMENTNAME</span>(<span class="methodparam"><span class="parameter">params</span></span>);</code>.
+The Critics component depend on the Model that it works against to take
+all decisions
+and the To Do Items used to present the information.
 </p><p>
-Each build method verifies the wellformednessrules
-as defined in the UML spec 1.3. 
-The reason for this is that NS-UML does not enforce 
-the wellformedness rules even though non-wellformed UML can lead to
-non-wellformed XMI which leads to saving/loading issues and 
-all kinds of illegal states of argouml.
+This component contains the following main class types:
+</p><div class="itemizedlist"><ul type="disc"><li><p>
+Critics provide help to find artifacts in
+the model that do not obey simple design "rules" or 
+"best practises".
+</p></li><li><p>
+Checklists provide help for the user to suggest and
+keep track of considerations that the user should make
+for each design element.
+Checklists are currently (0.9.5 and 0.9.6) turned off.
+</p></li><li><p>
+ToDoItems provide a way for the Critics to communicate
+its knowledge to the User and let the User start Wizards.
+</p></li><li><p>
+Wizards are step by step instructions that fixes problems
+found by the Critics.
+</p></li></ul></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2280"></a>5.2.1. Main classes</h3></div></div><p>Here is an illustration of the main classes implementing critics</p><div class="mediaobject"><img src="images/cookbook/critics.gif"></div><p>Critics are currently located in:
+</p><div class="itemizedlist"><ul type="disc"><li><p>org.argouml.cognitive.critics</p><p>
+These are basic critics, which are very general in nature. For example
+ArgoUML keeps nagging when Modelelements overlap, which makes the
+Diagram hard to read.
 </p><p>
-If you want to create an element you shall use the create methods
-in the factories.
-You are strongly advised to use a build method or, if there is
-none that suits your needs, to build one thereby reusing the allready
-existing build methods and utility methods in the helpers. 
-One reason for this is that the eventlisteners for
-the newly create modelelement are setup correctly.
-</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2230"></a>5.2.2. Helpers</h3></div></div><p>
-The helpers contain all utility methods for manipulating modelelements. 
-For example, they contain methods to get all modelelements 
-of a certain class out of the model 
-(see <tt>getAllModelelementsOfKind</tt> in 
-<tt>ModelmanagementHelper</tt>).
+This package also contain the base classes for the handling.
+</p></li><li><p>org.argouml.uml.cognitive.critics</p><p>
+These are Critics which are directly related to UML issues (well, more
+or less). For example, it will nag when a class has two many
+operations, because that makes it hard to maintain the particular
+class.
 </p><p>
-To find a utility method you need to know where it is.
-As a rule of thumb, a utility method for some modelelement 
-is defined in the helper that corresponds with the section
-in the UML specification.
-For example, all utility methods for manipulating classes 
-are defined in <tt>CoreHelper</tt>.
+This package also contains Wizards used by these Critiques.
+</p></li><li><p>org.argouml.pattern.cognitive.critics</p><p>These are critics related to patterns. Currently they deal only with the Singleton pattern</p></li><li><p>org.argouml.language.java.cognitive.critics</p><p>These are critics which deal with java specific issues. Currently this is only a warning agains modelling multiple inheritance.</p></li></ul></div><p>
 </p><p>
-There are a few exceptions to this rule, mainly if 
-the utility method deals with two modelelements 
-that correspond to different sections in the UML
-specification.
-Then you have to look in both corresponding helpers and you
-will probably find what you are searching for.
-</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2248"></a>5.2.3. Collaborations for Model</h3></div></div><p>
-The Model does not use much of the other parts of ArgoUML.
-It is provided for use of others.
-</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-model-to-comp-diagrams"></a>5.2.3.1. Model uses Diagrams</h4></div></div><p>Not at all!</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-model-to-comp-saveload"></a>5.2.3.2. Model uses Saving/Loading</h4></div></div><p>Not at all!</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-model-to-comp-notation"></a>5.2.3.3. Model uses Notation</h4></div></div><p>Not at all!</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-model-to-comp-codegenreveng"></a>5.2.3.4. Model uses Code Generation and Reverse Engineering</h4></div></div><p>Not at all!</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-model-to-comp-critics"></a>5.2.3.5. Model uses the Cognitive stuff</h4></div></div><p>Not at all!</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-model-to-comp-help"></a>5.2.3.6. Model uses Help System</h4></div></div><p>Not at all!</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-model-to-comp-internationalization"></a>5.2.3.7. Model uses Internationalization</h4></div></div><p>Not at all!</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-model-to-comp-plugins"></a>5.2.3.8. Model uses Plugin-Module API</h4></div></div><p>Not at all!</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="comp-model-to-comp-logging"></a>5.2.3.9. Model uses Logging</h4></div></div><p>
-Currently not.
-</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_model"></a>5.2.4. How do I...?</h3></div></div><div class="itemizedlist"><ul type="disc"><li><p>...create a new create method?</p><p>
-Create it in the correct factory.
-</p></li><li><p>...create a new utility method?</p><p>
-Create it in the correct helper.
-</p></li></ul></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 5. Inside the components&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.3. Critics and other cognitive tools</td></tr></table></div></body></html>
+Base classes for Wizards is <tt>org.argouml.kernel.Wizard</tt>.
+</p><p>
+Checklists are located in the package org.argouml.cognitive.checklist.
+</p><p>
+Helper classes for To Do Items, To Do Pane, Wizards and the Knowledge Types
+is located in the package org.argouml.cognitive.ui.
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_critics"></a>5.2.2. How do I ...?</h3></div></div><p>
+</p><div class="itemizedlist"><ul type="disc"><li><p>...create a new critique?</p><p>
+Currently the only way to add a new critique is to write a class that
+implements it so that is described here.
+There have however been ideas on a possibility to build critics in
+some other way in the future, as a set of rules instead of java code.
+</p><p>
+Create a new critic class, of the form 
+<tt>Cr<i><tt>XxxxYyyyZzzz</tt></i></tt>, 
+extending <tt>CrUML</tt>.
+Typically your new class will go in the package
+<tt>org.argouml.uml.cognitive.critics</tt>,
+but it could go in one of the other
+<tt>cognitive.critics</tt> packages.
+</p><p>
+Write a constructor, which takes no argouments and calls the following
+methods of <tt>CrUML</tt>:
+</p><div class="itemizedlist"><ul type="round"><li><p>
+<b>setResource("Cr<i><tt>XxxxYyyyZzzz</tt></i>");</b>
+to set up the locale specific text for 
+the critic headline (the one liner that appears in the to-do pane)
+and
+the critic description (the detailed explanation that appears in 
+the to-do tab of the details pane).
+</p></li><li><p>
+<b>addSupportedDecision(CrUML.dec<i><tt>AAAA</tt></i>);</b>
+where <i><tt>AAAA</tt></i> is the design issue category
+this critic falls into
+(examples include STORAGE, PATTERN METHODS).
+</p></li><li><p>
+<b>setPriority(ToDoItem.<i><tt>BBB</tt></i>_PRIORITY);</b>
+where <i><tt>BBB</tt></i> is one of
+<tt>LOW</tt>, <tt>MEDIUM</tt> or 
+<tt>HIGH</tt>, to set the priority for the critic 
+in the to-do pane.
+</p></li><li><p>
+<b>addTrigger("<i><tt>UML MetaClass</tt></i>");</b>
+where <i><tt>UML MetaClass</tt></i> is a UML MetaClass,
+with initial lower capital, e.g. "associationEnd".
+The intention is that critics should only trigger for elements (or
+children) of particular UML metaclasses.
+I (Jeremy Bennett february 2002) believe this code is not yet working
+so you can probably leave it out.
+You can have multiple calls to this method for different metaclasses.
+</p></li></ul></div><p>
+After this add a method 
+<b>public boolean predicate2(Object dm, Designer dsgr);</b>.
+This is the decision routine for the critic.
+<i><tt>dm</tt></i> is the UML entity (an NSUML object)
+that is being checked.
+The second argument, <i><tt>dsgr</tt></i> is for future
+development and can be ignored.
+The <tt>Critic</tt> class conveniently defines
+two boolean constants 
+<tt>NO_PROBLEM</tt> and 
+<tt>PROBLEM_FOUND</tt> to be returned
+according to whether the object is OK, or triggers the critic.
+</p><p>
+<i><tt>dm</tt></i> may be any UML object, 
+so the first action is to see if it is an
+artifact of interest and if not return 
+<tt>NO_PROBLEM</tt>.
+</p><p>
+The remaining code should examine <i><tt>dm</tt></i> and
+return <tt>NO_PROBLEM</tt> or
+<tt>PROBLEM_FOUND</tt> as appropriate.
+</p><p>
+Having written the code you need to add the text for the headline and
+description to the cognitive resource bundles. 
+These are in the package 
+<tt>org.argouml.i18n</tt>, 
+in the file
+<tt>UMLCognitiveResourceBundle.java</tt>.
+You need to add two keys for the head and description,
+which will be named respectively
+<tt>Cr<i><tt>XxxxYyyyZzzz</tt></i>_head</tt>
+and
+<tt>Cr<i><tt>XxxxYyyyZzzz</tt></i>_desc</tt>.
+There are plenty of examples to look at there.
+The other files 
+(<tt>UMLCognitiveResourceBundle_en_GB.java</tt>,
+<tt>UMLCognitiveResourceBundle_es.java</tt>, ...
+for
+British English,
+Spanish, ...
+respectively)
+are the responsibility of the corresponding language team.
+Notify the language teams that there is work to be done.
+</p><p>
+In method <tt>Init</tt>
+of the class <tt>org.argouml.uml.cognitive.critics.Init</tt>, 
+add two statements:
+<pre class="programlisting">
+  public static Critic <i><tt>crXxxxxYyyyZzzz</tt></i> = new <i><tt>CrXxxxxYyyyZzzz</tt></i>();
+...
+  Agency.register(<i><tt>crXxxxxYyyyZzzz</tt></i>, <i><tt>DesignMaterialCls</tt></i>);
+</pre>
+If you want to add a critic to a design material 
+which is not already declared (for example the Extend class), 
+you will have to add a third statement to the 
+<tt>Init</tt> method as well, which is:
+<pre class="programlisting">
+  java.lang.Class <i><tt>XxxYyyyZzCls</tt></i> = <i><tt>MXxxYyyyZzImpl</tt></i>.class;
+</pre>
+where <i><tt>MXxxYyyyZzImpl</tt></i>.class should be part of the NovoSoft UML package.
+</p><p>
+Finally you should get a new section added to the user manual reference
+section on critics.
+The purpose of this is to collect all the details and rationale around
+this critic to complement the short text in the description.
+It should go in the ref_critics.xml file and have an id tag
+named critics.<i><tt>CrXxxYyyyZzzz</tt></i>.
+</p></li><li><p>...write the test in a critique?</p><p>
+The critiques tests are essentially a combination of conditions 
+that are to be fulfilled.
+The conditions are often simple tests on simple model elements.
+</p><p>
+The class
+<tt>org.argouml.cognitive.critics.CriticUtils</tt>
+contains static routines that are commonly needed when writing
+<tt>predicate2</tt>
+(for example to test if a class has a constructor).
+If you find you are writing code that may be of wider use than just
+your critic, you should add it to
+<tt>CriticUtils</tt>
+rather than putting it in your critic.
+</p><p>
+For commented examples to copy, look at
+<tt>org.argouml.pattern.cognitive.critics.CrConsiderSingleton</tt>,
+<tt>org.argouml.pattern.cognitive.critics.CrSingletonViolated</tt> and
+<tt>org.argouml.uml.cognitive.critics.CrConstructorNeeded</tt>.
+</p></li><li><p>...fix a critique?</p><p>Locate the critique and insert some logging code. You should make sure that you understand all the implications of changes, therefore it is a good idea to see what makes the critic nag in the first place. But rest assured: some of the critics haven't been updated to reflect the latest changes in ArgoUML, so this is a procedure which is well worth digging into, since it gives you also some exposure to related NSUML elements.</p></li><li><p>...change the text of a critique?</p><p>
+The texts of the critics should be in the according localization files
+and resource bundles. Be careful: in some critics the text is still in
+the critic, but if you change that, you will notice that it doesn't
+have any effect.
+</p></li></ul></div><p>
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e2558"></a>5.2.3. org.argouml.cognitive.critics.* class diagram</h3></div></div><div class="mediaobject"><img src="images/screenshots/argocogcriticsreduced.png"></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 5. Inside the components&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.3. Diagrams</td></tr></table></div></body></html>

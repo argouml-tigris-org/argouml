@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>2.5. Making a release</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter 2. Building from source"><link rel="previous" href="ch02s04.html" title="2.4. The JUnit test cases"><link rel="next" href="ch02s06.html" title="2.6. Mailing Lists"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.5. Making a release</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 2. Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s06.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="release_process"></a>2.5. Making a release</h2></div></div><a class="indexterm" name="d0e1213"></a><p>
+   <title>2.5. Making a release</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter 2. Building from source"><link rel="previous" href="ch02s04.html" title="2.4. The JUnit test cases"><link rel="next" href="ch03.html" title="Chapter 3. ArgoUML requirements"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.5. Making a release</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 2. Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch03.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="release_process"></a>2.5. Making a release</h2></div></div><a class="indexterm" name="d0e1264"></a><p>
 To simplify for the person that is actually doing the release work
 and to make sure that everything is done in the exact same way 
 every time and nothing is forgotten,
@@ -11,34 +11,34 @@ If you, the release responsible, finds it unhelpful, please remove it!
 </p><p>
 What needs to be done when one actually does a release:
 </p><p>
-	</p><div class="orderedlist"><ol type="1"><li><p>Modify <tt>default.properties</tt> if necessary!</p><p>
-The property to change is 
-<tt>argo.core.version</tt>
-where you will set the version number.
-</p><p>
-For release 0.9.8 it should look like this:
-<pre class="programlisting">
-#
-# Argo version
-#
-argo.core.version=0.9.8
-</pre>
-</p></li><li><p>Tag the whole CVS repository with the freeze tag!</p><p>
+	</p><div class="orderedlist"><ol type="1"><li><p>Tag the whole CVS repository with the freeze tag!</p><p>
 Normally this tag is "VERSION_<i><tt>X_Y_Z</tt></i>_F",
 e.g. VERSION_0_9_7_F.
 The according command line CVS command is 
 <b>cvs rtag VERSION_<i><tt>X_Y_Z</tt></i>_F argouml</b>.
-In case you make a mistake doing that (you shouldn't really), 
-you need to remove the tag you mistakenly put there and start over.
+(Because of a problem on the Tigris site, this doesn't work, 
+instead make sure you have a complete checked out copy of ArgoUML,
+go to the root directory and run the command
+<b>cvs tag VERSION_<i><tt>X_Y_Z</tt></i>_F argouml</b>.)
 </p></li><li><p>Make sure you have a clean copy of the source!</p><p>
 This is done by checking out from the tag using the command
 <b>cvs co -r VERSION_<i><tt>X_Y_Z</tt></i>_F argouml_modules</b>
-</p></li><li><p>Build the release with <b>build dist-release</b>!</p><p>
+and
+<b>cvs co -r VERSION_<i><tt>X_Y_Z</tt></i>_F argouml/tests</b>
+in a new directory.
+</p></li><li><p>
+Build the release with <b>build dist-release</b>!
+</p><p>
+This is done in the 
+<tt>argouml/src_new</tt>
+directory.
+</p><p>
 The output should be the files
 ArgoUML-<i><tt>VERSION</tt></i>-libs.tar.gz,
 ArgoUML-<i><tt>VERSION</tt></i>-libs.zip,
 ArgoUML-<i><tt>VERSION</tt></i>-src.tar.gz,
 ArgoUML-<i><tt>VERSION</tt></i>-src.zip,
+ArgoUML-<i><tt>VERSION</tt></i>-app.tgz,
 ArgoUML-<i><tt>VERSION</tt></i>.tar.gz, and
 ArgoUML-<i><tt>VERSION</tt></i>.zip
 in the top-level argouml directory.
@@ -48,13 +48,25 @@ Either the tar or zip-file is tested by unpacking, starting and then
 running through the test cases.
 Currently there isn't any defined test cases.
 </p><p>
-All JUnit test cases are run by 
-cd:ing to the <tt>modules/junit</tt> source directory,
-running <b>build run</b>,
+All JUnit test cases are run by
+</p><div class="itemizedlist"><ul type="disc"><li><p>
+Run the JUnit test cases in
+<tt>argouml/tests</tt>
+by issueing the command
+<b>build tests</b>!
+</p><p>
+There should not be any failed tests.
+</p></li><li><p>
+Run the JUnit test cases in 
+<tt>modules/junit</tt>
+by cd:ing to
+<tt>modules/junit</tt>
+and running <b>build run</b>,
 invoking JUnit tests from the Tools menu,
 specifying the Test Case TestAll,
 and running.
 No problems shall be found.
+</p></li></ul></div><p>
 </p><p>
 If the tests did not pass See <a href="ch02s05.html#release_process_test_failed" title="2.5.1. The release did not work">Section 2.5.1</a>.
 </p></li><li><p>Tag the whole repository with the release tag!</p><p>
@@ -80,6 +92,8 @@ libraries needed to compile
 source code without libraries
 </p></li><li><p>complete set</p><p>
 binary distribution, including all libraries
+</p></li><li><p>application bundle</p><p>
+binary distribution, runnable as application bundle
 </p></li></ul></div><p>
 </p></li><li><p>
 Contact Jason Robbins to make the new Webstart version available!
@@ -99,21 +113,23 @@ to report bugs on the new release.
 Make sure that the upcoming releases have 
 target milestones created for them.
 </p></li><li><p>
-Change the target milestones of all the non yet resolved issues to ---.
+Change the target milestones of all the non yet resolved issues 
+for this release to ---.
 </p></li><li><p>Other stuff.</p><p>
 This can also be a good time to change all 
 RESOLVED/REMIND and RESOLVED/LATER.
-Seach for them and Reopen them.
+Search for them and Reopen them.
 </p></li></ol></div></li><li><p>Make announcements!</p><p>
 The announcement shall include a list of what has changed.
 </p><p>
-Write to the dev, users and announce lists.
+Write a News announcements and a short note on 
+the dev, users and announce lists.
 Announcer should make sure that he/she is already subscribed to all lists.
 </p><p>
 Freshmeat: currently Thierry Lach does the freshmeat announcements
 which require a login so just inform him.
 </p></li></ol></div><p>
-</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="release_process_test_failed"></a>2.5.1. The release did not work</h3></div></div><a class="indexterm" name="d0e1401"></a><p>
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="release_process_test_failed"></a>2.5.1. The release did not work</h3></div></div><a class="indexterm" name="d0e1481"></a><p>
 This shouldn't happen! This really shouldn't happen!
 </p><p>
 The reason that this has happened is that one of the developers 
@@ -144,7 +160,7 @@ the culprit has and how ugly his mother is, is probably in place but
 please keep it constructive!
 Remember, you might be misstaken when you guess who the responsible is.
 </p></li></ul></div><p>
-</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e1466"></a>2.5.1.2. 
+</p></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e1546"></a>2.5.1.2. 
 Delay the release waiting for someone to fix the problem.
 </h4></div></div><p>
 Create the branch as described in 
@@ -159,4 +175,4 @@ problems.
 </p><p>
 When you get notified that it is completed, 
 update your checked out copy and continue the release work.
-</p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch02s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">2.4. The JUnit test cases&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;2.6. Mailing Lists</td></tr></table></div></body></html>
+</p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">2.4. The JUnit test cases&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;Chapter 3. ArgoUML requirements</td></tr></table></div></body></html>
