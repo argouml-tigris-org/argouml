@@ -24,10 +24,15 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  * The model for the signal combobox on the reception proppanel.
@@ -51,8 +56,10 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
         if (org.argouml.model.ModelFacade.isAReception(target)) {
             Object rec = /*(MReception)*/ target;
             removeAllElements();
+            Project p = ProjectManager.getManager().getCurrentProject();
+            MNamespace model = (MModel) p.getRoot();
             setElements(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKind((Class) ModelFacade.SIGNAL));
+                    .getAllModelElementsOfKindWithModel(model, ModelFacade.SIGNAL));
             setSelectedItem(ModelFacade.getSignal(rec));
         }
 

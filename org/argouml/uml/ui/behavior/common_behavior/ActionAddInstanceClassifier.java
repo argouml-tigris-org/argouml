@@ -27,6 +27,8 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
@@ -75,8 +77,10 @@ public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
     protected Vector getChoices() {
         Vector ret = new Vector();
         if (getTarget() != null) {
+            Project p = ProjectManager.getManager().getCurrentProject();
+            Object model = p.getRoot();
             ret.addAll(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKind(choiceClass));
+                    .getAllModelElementsOfKindWithModel(model, choiceClass));
         }
         return ret;
     }
