@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -919,8 +919,8 @@ public class FigUseCase extends FigNodeModelElement {
         public Point connectionPoint(Point anotherPt) {
             double rx = _w / 2;
             double ry = _h / 2;
-            double dx = anotherPt.x - _x;
-            double dy = anotherPt.y - _y;
+            double dx = anotherPt.x - (_x + rx);
+            double dy = anotherPt.y - (_y + ry);
             double dd = ry * ry * dx * dx + rx * rx * dy * dy;
             double mu = rx * ry / Math.sqrt(dd);
 
