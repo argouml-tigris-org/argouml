@@ -86,7 +86,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     // contructors
 
     /**
-     * Constructor.
+     * This constructor is used to build a dummy collaboration diagram so
+     * that a project will load properly.
      */
     public UMLCollaborationDiagram() {
         try {
@@ -116,6 +117,17 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         setNamespace(namespace);
     }
 
+    /**
+     * The owner of a collaboration diagram is the collaboration
+     * it's showing.
+     * 
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
+     */
+    public Object getOwner() {
+        CollabDiagramGraphModel gm = (CollabDiagramGraphModel) getGraphModel();
+        return gm.getCollaboration();
+    }
+    
     /**
      * @return the number of UML messages in the diagram
      */
@@ -168,6 +180,25 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
     }
 
+    /**
+     * Called by the PGML parser to initialize the 
+     * diagram. First the parser creates a diagram via the
+     * default constructor. Then this method is called.
+     *
+     * @see org.tigris.gef.base.Diagram#initialize(Object)
+     */
+    public void initialize(Object owner) {
+        collaboration = owner;
+        Object ns = 
+            Model.getFacade().getRepresentedClassifier(collaboration);
+        if (ns == null)
+            ns = Model.getFacade().getRepresentedOperation(collaboration);
+        setNamespace(ns);
+        
+        super.initialize(owner);
+    }
+
+    
     /**
      * Get the actions from which to create a toolbar or equivalent
      * graphic triggers.

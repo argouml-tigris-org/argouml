@@ -326,4 +326,10 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	}
     }
 
+    /**
+     * @return returns the collaboration
+     */
+    public Object getCollaboration() {
+        return collab;
+    }
 } /* end class CollabDiagramGraphModel */
