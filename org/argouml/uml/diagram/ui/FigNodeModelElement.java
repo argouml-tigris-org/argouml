@@ -89,6 +89,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDManager;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.util.Trash;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -522,7 +523,8 @@ public abstract class FigNodeModelElement
     public String getTipString(MouseEvent me) {
         ToDoItem item = hitClarifier(me.getX(), me.getY());
         String tip = "";
-        if (item != null)
+        if (item != null 
+            && Globals.curEditor().getSelectionManager().containsFig(this))
             tip = item.getHeadline() + " ";
         else if (getOwner() != null)
             tip = getOwner().toString();
