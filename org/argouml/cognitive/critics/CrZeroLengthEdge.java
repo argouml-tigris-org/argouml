@@ -36,13 +36,13 @@ import org.tigris.gef.presentation.*;
 import org.argouml.cognitive.*;
 import org.argouml.uml.cognitive.critics.*;
 
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
-
+/** A critic to detect when an edge is very short in order to suggest to
+ *  improve the layout of the diagram.
+ */
 public class CrZeroLengthEdge extends CrUML {
   ////////////////////////////////////////////////////////////////
   // constants
-  public static int THRESHOLD = 12;
+  public static int THRESHOLD = 20;
   
   ////////////////////////////////////////////////////////////////
   // constructor
