@@ -15,12 +15,10 @@
 
         <module name="ConstantName"/>
         <module name="EmptyBlock">
-          <property name="tokens" value="LITERAL_CATCH"/>
-          <!-- require a comment, change to stmt to require a statement -->
-          <property name="option" value="text"/>
+	  <!-- All except catch and for. -->
+          <property name="tokens" value="LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_IF,LITERAL_TRY,LITERAL_WHILE,STATIC_INIT"/>
         </module>
 
-        <module name="EmptyForIteratorPad"/>
         <module name="EqualsHashCode"/>
         <module name="FileLength"/>
         <module name="GenericIllegalRegexp">
@@ -93,6 +91,11 @@
         <module name="WhitespaceAround"/>
 
     <!-- To enable later:
+
+        <module name="EmptyBlock">
+          <property name="tokens" value="LITERAL_CATCH"/>
+          <property name="option" value="text"/>
+        </module>
 
         <module name="LeftCurly">
             <property name="option" value="nl"/>
