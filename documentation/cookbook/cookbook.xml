@@ -5002,7 +5002,10 @@ used to be named Model, but that lexigraphically overlapped the Mode cluster).
       </listitem>
       <listitem>
 	<para>
-When in doubt, follow Sun java style conventions.
+For everything else follow
+<ulink url="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html">
+Code Conventions for the Java Programming Language
+</ulink>!
 </para>
       </listitem>
     </itemizedlist>
