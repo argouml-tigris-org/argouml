@@ -80,8 +80,6 @@ public class FigMNodeInstance extends FigNodeModelElement {
     addFig(_name);
     addFig(_test);
 
-    Rectangle r = getBounds();
-    setBounds(r.x, r.y, r.width, r.height);
   }
 
   public FigMNodeInstance(GraphModel gm, Object node) {
@@ -159,12 +157,6 @@ public class FigMNodeInstance extends FigNodeModelElement {
     else {
         _stereo.setText(Notation.generateStereotype(this, stereo));
     }
-    
-    Rectangle oldBounds = getBounds();
-    _stereo.calcBounds();
-    calcBounds();
-    firePropChange("bounds", oldBounds, getBounds());
-
   }
 
   ////////////////////////////////////////////////////////////////
