@@ -42,10 +42,14 @@ import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
 /** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
-
+ *  Semantics. OMG document ad/97-08-04. 
+ */
 public class CrNameConfusion extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrNameConfusion() {
 	setHeadline("Revise Name to Avoid Confusion");
 	addSupportedDecision(CrUML.decNAMING);
@@ -54,6 +58,10 @@ public class CrNameConfusion extends CrUML {
 	addTrigger("name");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
 	Object me = /*(MModelElement)*/ dm;
@@ -62,6 +70,10 @@ public class CrNameConfusion extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /**
+     * @param dm the given modelelement
+     * @return the vectorset of offenders
+     */
     public VectorSet computeOffenders(Object/*MModelElement*/ dm) {
 	Object ns = ModelFacade.getNamespace(dm);
 	VectorSet res = new VectorSet(dm);
@@ -80,20 +92,28 @@ public class CrNameConfusion extends CrUML {
 	    String meName = ModelFacade.getName(me2);
 	    if (meName == null || meName.equals("")) continue;
 	    String compareName = meName;
-	    if (confusable(stripped2, strip(compareName)) &&
-		!dmNameStr.equals(compareName)) {
+	    if (confusable(stripped2, strip(compareName)) 
+                && !dmNameStr.equals(compareName)) {
 		res.addElement(me2);
 	    }
 	}
 	return res;
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Object me = /*(MModelElement)*/ dm;
 	VectorSet offs = computeOffenders(me);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#stillValid(
+     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
@@ -104,11 +124,22 @@ public class CrNameConfusion extends CrUML {
 	return res;
     }
 
+    /**
+     * @param stripped1 given string 1
+     * @param stripped2 given string 2
+     * @return true if the both  iven strings are confusingly similar
+     */
     public boolean confusable(String stripped1, String stripped2) {
 	int countDiffs = countDiffs(stripped1, stripped2);
 	return countDiffs <= 1;
     }
 
+    /**
+     * @param s1 given string 1
+     * @param s2 given string 2
+     * @return positive int, representing the number of different chars, or 
+     *         if the lengths differ more than 2, this length difference
+     */
     public int countDiffs(String s1, String s2) {
 	int len = Math.min(s1.length(), s2.length());
 	int count = Math.abs(s1.length() - s2.length());
@@ -119,6 +150,10 @@ public class CrNameConfusion extends CrUML {
 	return count;
     }
 
+    /**
+     * @param s the given string
+     * @return the string s with all non-letters/digits stripped off
+     */
     public String strip(String s) {
 	StringBuffer res = new StringBuffer(s.length());
 	int len = s.length();
@@ -133,11 +168,17 @@ public class CrNameConfusion extends CrUML {
 	return res.toString();
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
     public Icon getClarifier() {
-	return ClClassName.TheInstance;
+	return ClClassName.getTheInstance();
     }
 
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     */
     public void initWizard(Wizard w) {
 	if (w instanceof WizManyNames) {
 	    ToDoItem item = w.getToDoItem();
@@ -150,6 +191,10 @@ public class CrNameConfusion extends CrUML {
 	    ((WizManyNames) w).setMEs(item.getOffenders().asVector());
 	}
     }
+    
+    /**
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
     public Class getWizardClass(ToDoItem item) {
 	return WizManyNames.class;
     }

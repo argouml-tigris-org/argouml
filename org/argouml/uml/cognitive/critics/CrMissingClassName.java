@@ -38,10 +38,14 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 /** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
-
+ *  Semantics. OMG document ad/97-08-04. 
+ */
 public class CrMissingClassName extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrMissingClassName() {
 	setHeadline("Choose a Name");
 	addSupportedDecision(CrUML.decNAMING);
@@ -49,6 +53,10 @@ public class CrMissingClassName extends CrUML {
 	addTrigger("name");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
 	Object e = /*(MModelElement)*/ dm;
@@ -58,10 +66,16 @@ public class CrMissingClassName extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
     public Icon getClarifier() {
-	return ClClassName.TheInstance;
+	return ClClassName.getTheInstance();
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
@@ -70,12 +84,17 @@ public class CrMissingClassName extends CrUML {
 	    String sug = "ClassName";
 	    int count = 1;
 	    if (ModelFacade.getNamespace(me) != null)
-		count = ModelFacade.getOwnedElements(ModelFacade.getNamespace(me)).size();
+		count = ModelFacade
+		    .getOwnedElements(ModelFacade.getNamespace(me)).size();
 	    sug = ModelFacade.getUMLClassName(me) + (count + 1);
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
+    
+    /**
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrMissingClassName.java */

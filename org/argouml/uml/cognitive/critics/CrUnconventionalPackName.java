@@ -42,6 +42,10 @@ import org.argouml.model.ModelFacade;
  */
 public class CrUnconventionalPackName extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrUnconventionalPackName() {
 	setHeadline("Revise Package Name <ocl>self</ocl>");
 	addSupportedDecision(CrUML.decNAMING);
@@ -49,6 +53,10 @@ public class CrUnconventionalPackName extends CrUML {
 	addTrigger("name");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAPackage(dm))) return NO_PROBLEM;
 
@@ -64,10 +72,16 @@ public class CrUnconventionalPackName extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
     public Icon getClarifier() {
-	return ClClassName.TheInstance;
+	return ClClassName.getTheInstance();
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
@@ -87,6 +101,10 @@ public class CrUnconventionalPackName extends CrUML {
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
+    
+    /**
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrUnconventionalPackName */
