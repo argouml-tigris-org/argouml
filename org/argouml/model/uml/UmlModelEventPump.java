@@ -36,7 +36,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.w3c.dom.Document;
@@ -654,7 +653,31 @@ public final class UmlModelEventPump implements MElementListener {
     EventListenerHashMap getEventListenerMap() {
         return _listenerMap;
     }
+    
+    /**
+     * changes the NSUML event policy in order to stop udating the ui.
+     */
+    public void stopPumpingEvents() {
 
+	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_DISABLED);
+    }
+    
+    /**
+     * changes the NSUML event policy in order to start udating the ui.
+     */
+    public void startPumpingEvents() {
+
+	MFactoryImpl.flushEvents();
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+    }
+    
+    /**
+     * changes the NSUML event policy to flush model events.
+     */
+    public void flushModelEvents() {
+
+	MFactoryImpl.flushEvents();
+    }
 }
 
 /**
@@ -1313,5 +1336,5 @@ class EventTreeDefinition {
         return null;
 
     }
-
+    
 }
