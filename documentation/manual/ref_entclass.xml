@@ -2514,13 +2514,13 @@ Lists any specialized package (i.e. for
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for New signal -->
+        <!-- Entry for Add signal -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/signal.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>New
+          </imageobject></inlinemediaobject></guiicon> <literal>Add
             signal</literal></term>
 
           <listitem><para>This creates a new signal, navigating immediately to
@@ -2533,7 +2533,7 @@ Lists any specialized package (i.e. for
             </para></caution></listitem>
         </varlistentry>
 
-        <!-- Entry for Add recepption -->
+        <!-- Entry for Add reception -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
