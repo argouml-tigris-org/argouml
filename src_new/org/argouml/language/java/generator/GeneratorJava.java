@@ -483,11 +483,11 @@ public class GeneratorJava
         // pick out return type
         Object/*MParameter*/ rp =
 	    UmlHelper.getHelper().getCore().getReturnParameter(op);
-        if (rp != null) {
+        if (rp != null && !constructor) {
             Object/*MClassifier*/ returnType = ModelFacade.getType(rp);
-            if (returnType == null && !constructor) {
+            if (returnType == null) {
                 sb.append("void ");
-            } else if (returnType != null) {
+            } else {
                 sb.append(generateClassifierRef(returnType)).append(' ');
             }
         }

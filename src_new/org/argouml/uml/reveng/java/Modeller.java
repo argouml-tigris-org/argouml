@@ -745,7 +745,9 @@ public class Modeller
 	String typeName;
 	Object mClassifier;
 
-	if (returnType == null) {
+	if (returnType == null ||
+            ("void".equals(returnType) &&
+             name.equals(ModelFacade.getName(parseState.getClassifier())))) {
 	    // Constructor
 	    ModelFacade.setStereotype(mOperation, 
                 getStereotype(mOperation, "create", "BehavioralFeature" ));
