@@ -922,13 +922,27 @@ Check overriding and implementing methods.
 CVS Repository.
 </para>
 	<para>
-Host: cvs.tigris.org
-Repository path: /cvs
-User: <replaceable>Your Tigris user.</replaceable>
-Password: <replaceable>Your Tigris password.</replaceable>
-Connection type: pserver
-Use Default Port.
-</para>
+		<itemizedlist>
+			<listitem>
+				Host: cvs.tigris.org
+			</listitem>
+			<listitem>
+				Repository path: /cvs
+			</listitem>
+			<listitem>
+				User: <replaceable>Your Tigris username.</replaceable>
+			</listitem>
+			<listitem>
+				Password: <replaceable>Your Tigris password.</replaceable>
+			</listitem>
+			<listitem>
+				Connection type: pserver
+			</listitem>
+			<listitem>
+				Use Default Port.
+			</listitem>
+		</itemizedlist>
+	</para>
       </listitem>
 
       <listitem>
