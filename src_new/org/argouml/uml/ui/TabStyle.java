@@ -24,8 +24,6 @@
 
 // File: TabStyle.java
 // Classes: TabStyle
-// Original Author:
-// $Id$
 
 // 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
 // use case style panel that handles optional display of extension points.
@@ -86,7 +84,20 @@ import org.tigris.gef.presentation.Fig;
  * <li>org.argouml.ui.SPFigNodeModelElement
  * </ul>
  * If a stylepanel had been found, it will be stored in a cache, which can also
- * be initialized in <code>initPanels()</code>
+ * be initialized in <code>initPanels()</code> <p>
+ * 
+ * According the decision taken in issue 502, this tab is renamed "Presentation"
+ * for the user. And the Presentation tab shall contain presentation options, 
+ * and no semantic UML properties (which belong inthe "Properties" panel). 
+ * In contrast, the diagram pop-up menu for a model element 
+ * may access both presentation options as well as semantic UML properties. <p>
+ * 
+ * Note also that the semantic properties of a UML model element exist in one 
+ * copy only but the presentation options exist in one copy per diagram 
+ * that the model element is showing in. E.g. a class could have 
+ * attributes hidden in one diagram and showing in another. So, for the user 
+ * it would be very logical to seperate these 2 kinds of settings 
+ * on different tabs.
  *  
  */
 public class TabStyle extends TabSpawnable implements TabFigTarget,
@@ -135,7 +146,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
     }
 
     /**
-     * initialize the hashtable of pre lookup panels.
+     * Initialize the hashtable of pre lookup panels.
      *  
      */
     protected void initPanels() {
@@ -145,7 +156,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
     /**
      * Adds a style panel to the internal list. This allows a plugin to add and
      * register a new style panel at run-time. This property style will then be
-     * displayed in the detatils pane whenever an element of the given metaclass
+     * displayed in the details pane whenever an element of the given metaclass
      * is selected.
      * 
      * @param c
@@ -241,7 +252,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
     }
 
     /**
-     * find stylepanel for a given target class.
+     * Find the stylepanel for a given target class.
      * 
      * @param targetClass
      *            the target class
@@ -332,7 +343,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
     }
 
     /**
-     * return the current target for this stylepanel.
+     * Return the current target for this stylepanel.
      * 
      * @see org.argouml.ui.TabTarget#getTarget()
      */
