@@ -649,7 +649,6 @@ public abstract class PropPanel
     public void targetSet(TargetEvent e) {
         // how to handle empty target lists?
         // probably the TabProps should only show an empty pane in that case
-        fireTargetEvent(e);
         setTarget(e.getNewTarget());
         fireTargetEvent(e);
     }
