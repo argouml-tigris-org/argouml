@@ -42,6 +42,9 @@ import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     protected static Category cat = Category.getInstance(PGMLParser.class);
 
+  protected int _privateTextDepth = 0;
+  protected StringBuffer _privateText = new StringBuffer();
+
   ////////////////////////////////////////////////////////////////
   // static variables
 
@@ -181,6 +184,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
   protected FigNode _previousNode = null;
 
+  /**
+   * Called by the XML framework when an entity starts.
+   */
   public void startElement(String elementName,AttributeList attrList) {
     cat.debug("startElement("+elementName+",AttributeList)"+_elementState+";"+_nestedGroups);
     if (_elementState == NODE_STATE && elementName.equals("group") &&
@@ -222,8 +228,94 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         ((FigNodeModelElement)_previousNode).enableSizeChecking(true);
       }
     }
+
+    if ("private".equals(elementName)) {
+      _privateTextDepth++;
+    }
+
     // OK, that's all with hiding compartments. Now business as usual...
     super.startElement(elementName,attrList);
+  }
+
+  /**
+   * Called by the PGML framework when there are characters inside an XML
+   * entity. We need to save them if it would turn out to be a private
+   * entity.
+   */
+  public void characters(char[] ch, int start, int length) {
+    if (_privateTextDepth == 1)
+      _privateText.append(ch, start, length);
+    super.characters(ch, start, length);
+  }
+
+  /**
+   * Sets the ItemUID value of the current element in the file.
+   */
+  protected void setElementItemUID(String id) {
+    switch (_elementState) {
+    case 0:
+      if (_diagram instanceof org.argouml.ui.ArgoDiagram) {
+        ((org.argouml.ui.ArgoDiagram) _diagram).setItemUID(new org.argouml.cognitive.ItemUID(id));
+      }
+      System.out.println("SetUID: diagram: " + _diagram);
+      break;
+
+    case 46:
+      if (_currentNode instanceof org.argouml.uml.diagram.ui.FigNodeModelElement) {
+        ((org.argouml.uml.diagram.ui.FigNodeModelElement) _currentNode).setItemUID(new org.argouml.cognitive.ItemUID(id));
+      }
+      if (_currentNode instanceof org.argouml.uml.diagram.static_structure.ui.FigNote) {
+        ((org.argouml.uml.diagram.static_structure.ui.FigNote) _currentNode).setItemUID(new org.argouml.cognitive.ItemUID(id));
+      }
+      System.out.println("SetUID: node: " + _currentNode);
+      break;
+
+    case 56:
+      if (_currentEdge instanceof org.argouml.uml.diagram.ui.FigEdgeModelElement) {
+        ((org.argouml.uml.diagram.ui.FigEdgeModelElement) _currentEdge).setItemUID(new org.argouml.cognitive.ItemUID(id));
+      }
+      System.out.println("SetUID: edge: " + _currentEdge);
+      break;
+
+    default:
+      System.out.println("SetUID state: " + _elementState);
+    }
+  }
+
+  /**
+   * Utility class to pair a name and a value String together.
+   */
+  protected class NameVal {
+    String name;
+    String value;
+  }
+
+  /**
+   * Splits a name value pair into a NameVal instance. A name value pair is
+   * a String on the form <name = ["] value ["]>.
+   * 
+   * @param str A String with a name value pair.
+   * @return A NameVal, or null if they could not be split.
+   */
+  protected NameVal splitNameVal(String str) {
+    NameVal rv = null;
+    int lqpos, rqpos;
+    int eqpos = str.indexOf('=');
+
+    if (eqpos < 0)
+      return null;
+
+    lqpos = str.indexOf('"', eqpos);
+    rqpos = str.lastIndexOf('"');
+
+    if (lqpos < 0 || rqpos <= lqpos)
+      return null;
+
+    rv = new NameVal();
+    rv.name = str.substring(0, eqpos);
+    rv.value = str.substring(lqpos+1, rqpos);
+
+    return rv;
   }
   
   public synchronized Diagram readDiagram(InputStream is, boolean closeStream) {
@@ -278,6 +370,32 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * @see org.xml.sax.DocumentHandler#endElement(java.lang.String)
      */
     public void endElement(String arg0)  {
+	if ("private".equals(arg0)) {
+	    if (_privateTextDepth == 1) {
+		String str = _privateText.toString();
+		StringTokenizer st = new StringTokenizer(str, "\n");
+
+		while (st.hasMoreElements()) {
+		    str = st.nextToken();
+		    NameVal nval = splitNameVal(str);
+		    System.out.println("Private Element: \"" + str + "\"");
+
+		    if (nval != null) {
+			System.out.println("Private Element: \"" + nval.name + "\" \"" + nval.value + "\"");
+			if ("ItemUID".equals(nval.name.trim())) {
+			    nval.value = nval.value.trim();
+			    if (nval.value.length() > 0)
+				setElementItemUID(nval.value);
+			}
+		    }
+		}
+	    }
+
+	    _privateTextDepth--;
+	    if (_privateTextDepth == 0)
+		_privateText = new StringBuffer();
+	}
+
         switch (_elementState) {
             case NODE_STATE: 
                 Object own = _currentNode.getOwner();
@@ -292,6 +410,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 }
                 break;
         }
+
         super.endElement(arg0);
     }
 
