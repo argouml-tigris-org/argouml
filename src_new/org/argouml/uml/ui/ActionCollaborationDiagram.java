@@ -107,7 +107,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
      */
     public boolean shouldBeEnabled() {
 
-        Object target = TargetManager.getInstance().getTarget();
+        Object target = TargetManager.getInstance().getModelTarget();
         if (org.argouml.model.ModelFacade.isANamespace(target))
             return isValidNamespace(target);
         else
