@@ -1755,7 +1755,7 @@ public class GeneratorJava
        @return the Java package name
     */
     public String getPackageName(Object namespace) {
-        if (namespace == null || ModelFacade.isANamespace(namespace) || ModelFacade.getNamespace(namespace) == null)
+        if (namespace == null || !ModelFacade.isANamespace(namespace) || ModelFacade.getNamespace(namespace) == null)
             return "";
         String packagePath = ModelFacade.getName(namespace);
         while ((namespace = ModelFacade.getNamespace(namespace)) != null) {
