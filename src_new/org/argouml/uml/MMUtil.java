@@ -365,6 +365,57 @@ public class MMUtil {
         assoc.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		return assoc;
 	}
+    
+    /**
+     * Builds an association class from a class and two classifiers that should
+     * be associated. Both ends of the associationclass are navigable.
+     * @param cl
+     * @param assoc
+     * @return MAssociationClass
+     */
+    public MAssociationClass buildAssociatonClass(MClass cl, MClassifier end1, MClassifier end2) { 
+       MAssociationClass assoc = new MAssociationClassImpl();
+       assoc.setName(cl.getName());
+       assoc.setAbstract(cl.isAbstract());
+       assoc.setActive(cl.isActive());
+       assoc.setAssociationEnds(cl.getAssociationEnds());
+       assoc.setClassifierRoles(cl.getClassifierRoles());
+       assoc.setClassifierRoles1(cl.getClassifierRoles1());
+       assoc.setClassifiersInState(cl.getClassifiersInState());
+       assoc.setClientDependencies(cl.getClientDependencies());
+       assoc.setCollaborations(cl.getCollaborations());
+       assoc.setCollaborations1(cl.getCollaborations1());
+       assoc.setComments(cl.getComments());
+       assoc.setConstraints(cl.getConstraints());
+       assoc.setCreateActions(cl.getCreateActions());
+       assoc.setFeatures(cl.getFeatures());
+       assoc.setExtensions(cl.getExtensions());
+       assoc.setGeneralizations(cl.getGeneralizations());
+       assoc.setInstances(cl.getInstances());
+       assoc.setLeaf(cl.isLeaf());
+       assoc.setNamespace(cl.getNamespace());
+       assoc.setObjectFlowStates(cl.getObjectFlowStates());
+       assoc.setParameters(cl.getParameters());
+       assoc.setParticipants(cl.getParticipants());
+       assoc.setPartitions1(cl.getPartitions1());
+       assoc.setPowertypeRanges(cl.getPowertypeRanges());
+       assoc.setPresentations(cl.getPresentations());
+       assoc.setRoot(cl.isRoot());
+       assoc.setSourceFlows(cl.getSourceFlows());
+       assoc.setSpecification(cl.isSpecification());
+       assoc.setStereotype(cl.getStereotype());
+       assoc.setStructuralFeatures(cl.getStructuralFeatures());
+       assoc.setTaggedValues(cl.getTaggedValues());
+       assoc.setVisibility(cl.getVisibility());
+       buildAssociationEnd(assoc, null, end1,null, null, true, null, null, null, null, null);
+       buildAssociationEnd(assoc, null, end2,null, null, true, null, null, null, null, null);
+       assoc.setUUID(UUIDManager.SINGLETON.getNewUUID());
+       return assoc;
+    }
+    
+    public MAssociationClass buildAssociationClass(MClassifier end1, MClassifier end2) {
+        return buildAssociatonClass(buildClass(), end1, end2);
+    }   
 
 	public MGeneralization buildGeneralization(MGeneralizableElement child, MGeneralizableElement parent) {
 	    if (parent.getParents().contains(child)) return null;
@@ -665,6 +716,39 @@ public class MMUtil {
 	cls.addFeature(oper);
 	oper.setOwner(cls);
 	return oper;
+    }
+    
+    /**
+     * Builds a default implementation for a class.
+     * @return MClass
+     */
+    public MClass buildClass() {
+        MClass cl = new MClassImpl();
+        // cl.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+        ProjectBrowser.TheInstance.getProject().getModel().addOwnedElement(cl);
+        cl.setName("annon");
+        cl.setUUID(UUIDManager.SINGLETON.getNewUUID());
+        cl.setStereotype(null);
+        cl.setAbstract(false);
+        cl.setActive(false);
+        cl.setRoot(false);
+        cl.setLeaf(false);
+        cl.setSpecification(false);
+        cl.setVisibility(MVisibilityKind.PUBLIC);
+        return cl;
+    }
+    
+    public MClass buildClass(String name) {
+        MClass cl = buildClass();
+        cl.setName(name);
+        return cl;
+    }
+    
+    public MClass buildClass(String name, MNamespace ns) {
+        MClass cl = buildClass();
+        cl.setName(name);
+        cl.setNamespace(ns);
+        return cl;
     }
 
 
@@ -1022,19 +1106,28 @@ public class MMUtil {
 		}
 	}
 
-	// this method removes ALL paramters of the given operation which have
-	// the MParamterDirectionType RETURN and adds the new parameter, which
-	// gets RETURN by default
-
+    /**
+     * Build a returnparameter. Removes all current return parameters from the
+     * operation and adds the supplied parameter. The directionkind of the 
+     * parameter will be return. The name will be equal to the name of the last
+     * found return parameter or the default value "return" if no return
+     * parameter was present in the operation.
+     * @param operation
+     * @param newReturnParameter
+     */
 	public void setReturnParameter(MOperation operation, MParameter newReturnParameter) {
-
 		Iterator params = operation.getParameters().iterator();
+        String name = "return";
 		while (params.hasNext()) {
 			MParameter parameter = (MParameter)params.next();
 			if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
 				operation.removeParameter(parameter);
+                if (parameter.getName() != null || parameter.getName() == "") {
+                    name = parameter.getName();
+                }
 			}
 		}
+        newReturnParameter.setName(name);
 		newReturnParameter.setKind(MParameterDirectionKind.RETURN);
 		operation.addParameter(0, newReturnParameter);
 	}
