@@ -419,34 +419,35 @@ public class Modeller
 	    }
 	}
 
-	for (Iterator i = interfaces.iterator(); i.hasNext(); ) {
-	    String interfaceName = (String) i.next();
-	    try {
-		Object mInterface =
-		    getContext(interfaceName)
-		        .getInterface(getClassifierName(interfaceName));
-		Object mAbstraction =
-		    getAbstraction(currentPackage, mInterface, mClass);
-		if (ModelFacade.getSuppliers(mAbstraction).size() == 0) {
-		    ModelFacade.addSupplier(mAbstraction, mInterface);
-		    ModelFacade.addClient(mAbstraction, mClass);
+	if (interfaces != null) {
+		for (Iterator i = interfaces.iterator(); i.hasNext(); ) {
+			String interfaceName = (String) i.next();
+			try {
+				Object mInterface =
+					getContext(interfaceName)
+					.getInterface(getClassifierName(interfaceName));
+				Object mAbstraction =
+					getAbstraction(currentPackage, mInterface, mClass);
+				if (ModelFacade.getSuppliers(mAbstraction).size() == 0) {
+					ModelFacade.addSupplier(mAbstraction, mInterface);
+					ModelFacade.addClient(mAbstraction, mClass);
+				}
+				ModelFacade.setNamespace(mAbstraction, currentPackage);
+				ModelFacade.setStereotype(mAbstraction,
+						getStereotype("realize"));
+			}
+			catch (ClassifierNotFoundException e) {
+				// Currently if a classifier cannot be found in the
+				// model/classpath then information will be lost from
+				// source files, because the classifier cannot be
+				// created on the fly.
+				LOG.warn("Modeller.java: a classifier that was in the source"
+						+ " file could not be generated in the model "
+						+ "(to generate a abstraction)- information lost",
+						e);
+			}
 		}
-		ModelFacade.setNamespace(mAbstraction, currentPackage);
-		ModelFacade.setStereotype(mAbstraction,
-					  getStereotype("realize"));
-	    }
-	    catch (ClassifierNotFoundException e) {
-		// Currently if a classifier cannot be found in the
-		// model/classpath then information will be lost from
-		// source files, because the classifier cannot be
-		// created on the fly.
-		LOG.warn("Modeller.java: a classifier that was in the source"
-			 + " file could not be generated in the model "
-			 + "(to generate a abstraction)- information lost",
-                         e);
-	    }
 	}
-
     }
 
     /**
