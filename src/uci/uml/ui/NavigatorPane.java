@@ -40,6 +40,7 @@ import uci.uml.ui.nav.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.model_management.*;
 
 /** The upper-left pane of the main Argo/UML window.  This shows the
  *  contents of the current project in one of several ways that are
@@ -178,7 +179,7 @@ implements ItemListener, TreeSelectionListener {
   }
 
 
-  /** called when the user clicks once on an item in the tree. */ 
+  /** called when the user clicks once on an item in the tree. */
   public void mySingleClick(int row, TreePath path) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
@@ -192,7 +193,7 @@ implements ItemListener, TreeSelectionListener {
     _clicksInNavPane++;
   }
 
-  /** called when the user clicks twice on an item in the tree. */ 
+  /** called when the user clicks twice on an item in the tree. */
   public void myDoubleClick(int row, TreePath path) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
@@ -279,54 +280,65 @@ implements ItemListener, TreeSelectionListener {
 
     class NavigatorMouseListener extends MouseAdapter {
     public void mouseClicked(MouseEvent me) {
-      //if (me.isConsumed()) return;
-      int row = _tree.getRowForLocation(me.getX(), me.getY());
-      TreePath path = _tree.getPathForLocation(me.getX(), me.getY());
-      if (row != -1) {
-	if (me.getClickCount() == 1) mySingleClick(row, path);
-	else if (me.getClickCount() >= 2) myDoubleClick(row, path);
+      //
+      //   if this platform's popup trigger is occurs on a click
+      //       then do the popup
+      if(me.isPopupTrigger()) {
+        me.consume();
+        showPopupMenu(me);
+      }
+      else
+      {
+        //
+        //    otherwise expand the tree?
+        //
+        //if (me.isConsumed()) return;
+        int row = _tree.getRowForLocation(me.getX(), me.getY());
+        TreePath path = _tree.getPathForLocation(me.getX(), me.getY());
+        if (row != -1) {
+	  if (me.getClickCount() == 1) mySingleClick(row, path);
+	  else if (me.getClickCount() >= 2) myDoubleClick(row, path);
+        }
 	//me.consume();
-
       }
     }
-    public void mousePressed(MouseEvent me) {
-      Vector tailActions = new Vector();
-      if (me.isPopupTrigger() ||
-	  me.getModifiers() == InputEvent.BUTTON3_MASK) {
+
+    public void showPopupMenu(MouseEvent me)
+    {
         //TreeCellEditor tce = _tree.getCellEditor();
         JPopupMenu popup = new JPopupMenu("test");
-	Object obj = getSelectedObject();
+        Object obj = getSelectedObject();
 	if (obj instanceof PopupGenerator) {
-	  Vector actions = ((PopupGenerator)obj).getPopUpActions(me);
+          Vector actions = ((PopupGenerator)obj).getPopUpActions(me);
 	  int size = actions.size();
-	  for (int i = 0; i < size; ++i) {
-	    AbstractAction a = (AbstractAction) actions.elementAt(i);
-	    popup.add(a);
-	  }
+          for (int i = 0; i < size; ++i) {
+	    popup.add((AbstractAction) actions.elementAt(i));
+          }
 	}
-	else if (obj instanceof MClassifier) {
-	  popup.add(new ActionGoToDetails("Properties"));
-	  popup.add(new ActionAddExistingNode("Add to Diagram",obj));
-	  // goto state diagram
-	  // goto collaboration diagram(s)
-	  tailActions.addElement(Actions.RemoveFromModel);
-	}
-	else if (obj instanceof MUseCase) {
-	  popup.add(new ActionGoToDetails("Properties"));
-	  // goto activity diagram
-	  tailActions.addElement(Actions.RemoveFromModel);
-	}
+        else if (obj instanceof MClassifier || obj instanceof MUseCase
+            || obj instanceof MActor || obj instanceof MPackage) {
+          popup.add(new ActionGoToDetails("Properties"));
+          popup.add(new ActionAddExistingNode("Add to Diagram",obj));
+	  popup.add(Actions.RemoveFromModel);
+        }
 	else if (obj instanceof MModelElement || obj instanceof Diagram) {
-	  popup.add(new ActionGoToDetails("Properties")); //was CmdUMLProperties
-	  tailActions.addElement(Actions.RemoveFromModel);
-	}
-	int size = tailActions.size();
-	for (int i = 0; i < size; ++i) {
-	  AbstractAction a = (AbstractAction) tailActions.elementAt(i);
-	  popup.add(a);
-	}
-	popup.show(NavigatorPane.this, me.getX(), me.getY()+25);
+          popup.add(new ActionGoToDetails("Properties"));
+	  popup.add(Actions.RemoveFromModel);
+        }
+      popup.show(_tree,me.getX(),me.getY());
+    }
+
+    public void mousePressed(MouseEvent me) {
+      if (me.isPopupTrigger()) {
         me.consume();
+	showPopupMenu(me);
+      }
+    }
+
+    public void mouseReleased(MouseEvent me) {
+      if (me.isPopupTrigger()) {
+        me.consume();
+	showPopupMenu(me);
       }
     }
 

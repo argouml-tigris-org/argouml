@@ -35,7 +35,7 @@ all: classes archive
 classes: acmeDir gefDir umlDir argoumlDir criticsDir
 
 
-archive:: objdir gefDir umlDir argoumlDir criticsDir 
+archive:: objdir gefDir umlDir argoumlDir criticsDir acmeDir
 	@if [ ! -d $(OUT_DIR)/xml/dtd ] ; \
 		then $(MKDIR) $(OUT_DIR)/xml/dtd ; \
 	fi

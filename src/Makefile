@@ -44,17 +44,17 @@ include Makefile.config
 
 UCI_DIR=$(ARGO_DIR)/uci
 
-VER_NAME=argouml08RC1
+VER_NAME=argouml08
 
-JAR_NAME=argouml08RC1
+JAR_NAME=argouml08
 
-SRC_NAME=argosrc08RC1
+SRC_NAME=argosrc08
 
 
 all: classes jar
 
 jar:
-	( $(CD) $(UCI_DIR) ; \
+	( $(CD) $(ARGO_DIR) ; \
 	$(MAKE) $(MAKEFLAGS) TARGET=archive archive )
 	( $(CD) $(OBJ_DIR) ; \
 	$(JAVA_AR) cvfm $(JAR_NAME).jar $(UCI_DIR)/argouml.mf uci )
@@ -231,14 +231,6 @@ argouml:
 	uci/util/*.class \
 	uci/graph/*.class \
 	uci/beans/editors/*.class \
-	uci/uml/Foundation/Core/*.class \
-	uci/uml/Foundation/Data_Types/*.class \
-	uci/uml/Foundation/Extension_Mechanisms/*.class \
-	uci/uml/Model_Management/*.class \
-	uci/uml/Behavioral_Elements/Common_Behavior/*.class \
-	uci/uml/Behavioral_Elements/Use_Cases/*.class \
-	uci/uml/Behavioral_Elements/State_Machines/*.class \
-	uci/uml/Behavioral_Elements/Collaborations/*.class \
 	uci/uml/templates/*.argo \
 	uci/uml/templates/*.pgml \
 	uci/uml/templates/*.xmi \
@@ -261,6 +253,7 @@ argouml:
 	uci/uml/ui/todo/*.class \
 	uci/uml/ui/style/*.class \
 	uci/uml/ui/props/*.class \
+	uci/uml/util/*.class \
 	uci/uml/visual/*.class \
 	uci/uml/ocl/*.class \
 	uci/uml/*.class \

@@ -130,6 +130,15 @@ public class MMUtil {
 		return gen;
 	}
 
+	public MDependency buildDependency(MModelElement client, MModelElement supplier) {
+		MDependency dep = new MDependencyImpl();
+		dep.addSupplier(supplier);
+		dep.addClient(client);
+		if (supplier.getNamespace() != null) dep.setNamespace(supplier.getNamespace());
+		else if (client.getNamespace() != null) dep.setNamespace(client.getNamespace());
+		return dep;
+	}
+
 	public MAbstraction buildRealization(MModelElement client, MModelElement supplier) {
 		MAbstraction realization = new MAbstractionImpl();
 		realization.setStereotype((MStereotype)STANDARDS.lookup("realize"));

@@ -78,8 +78,6 @@ implements TabModelTarget {
 
     _panels.put(MClassImpl.class, new PropPanelClass());
     _panels.put(Diagram.class, new PropPanelDiagram());
-    // FigText has no owner, so we do it directly
-    _panels.put(FigText.class, new PropPanelString());
     _panels.put(MModelImpl.class, new PropPanelModel());
     _panels.put(MUseCaseImpl.class, new PropPanelUseCase());
 
@@ -105,6 +103,7 @@ implements TabModelTarget {
 		while (targetClass != null && newPanel == null) {
 			newPanel = findPanelFor(targetClass);
 			targetClass = targetClass.getSuperclass();
+			if (targetClass == java.lang.Object.class) break;
 		}
 		if (newPanel instanceof JPanel) {
 			newPanel.setTarget(_target);

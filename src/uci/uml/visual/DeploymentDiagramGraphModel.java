@@ -307,7 +307,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
    	
 	  if (edgeClass == MDependencyImpl.class) {
 	    // nsuml: using Binding as default
-	    MDependency dep = MMUtil.SINGLETON.buildBinding(fromCom, toCom);
+	    MDependency dep = MMUtil.SINGLETON.buildDependency(fromCom, toCom);
 	    addEdge(dep);
 	    return dep;
 	  }
@@ -320,7 +320,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
 	  if (edgeClass == MDependencyImpl.class) {
 	    // nsuml: using Binding as default
-	    MDependency dep = MMUtil.SINGLETON.buildBinding(fromComI, toComI);
+	    MDependency dep = MMUtil.SINGLETON.buildDependency(fromComI, toComI);
 	    addEdge(dep);
 	    return dep;
 	  }
@@ -338,7 +338,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    }
  	    else if (edgeClass == MDependencyImpl.class) {
 	      // nsuml: using Binding as default
-	      MDependency dep = MMUtil.SINGLETON.buildBinding(fromCls, toCls);
+	      MDependency dep = MMUtil.SINGLETON.buildDependency(fromCls, toCls);
 	      addEdge(dep);
 	      return dep;
 	    }
@@ -361,7 +361,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    }
  	    else if (edgeClass == MDependencyImpl.class) {
 	      // nsuml: using Binding as default
-	      MDependency dep = MMUtil.SINGLETON.buildBinding(fromCls, toIntf);
+	      MDependency dep = MMUtil.SINGLETON.buildDependency(fromCls, toIntf);
 	      addEdge(dep);
 	      return dep;
 	    }
@@ -385,7 +385,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    }
  	    else if (edgeClass == MDependencyImpl.class) {
 	      // nsuml: using Binding as default
-	      MDependency dep = MMUtil.SINGLETON.buildBinding(fromIntf, toCls);
+	      MDependency dep = MMUtil.SINGLETON.buildDependency(fromIntf, toCls);
 	      addEdge(dep);
 	      return dep;
 	    }
@@ -403,7 +403,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
  	if (edgeClass == MDependencyImpl.class) {
 	  // nsuml: using Binding as default
-	  MDependency dep = MMUtil.SINGLETON.buildBinding(fromIntf, toIntf);
+	  MDependency dep = MMUtil.SINGLETON.buildDependency(fromIntf, toIntf);
 	  addEdge(dep);
 	  return dep;
 	}
@@ -432,7 +432,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     	}
  	else if (edgeClass == MDependencyImpl.class) {
 	  // nsuml: using Binding as default
-	  MDependency dep = MMUtil.SINGLETON.buildBinding(fromObj, toObj);
+	  MDependency dep = MMUtil.SINGLETON.buildDependency(fromObj, toObj);
 	  addEdge(dep);
 	  return dep;
 	}

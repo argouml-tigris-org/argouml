@@ -316,7 +316,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	    }
 	    else if (edgeClass == MDependencyImpl.class) {
 			// nsuml: using Binding as default
-			MDependency dep = MMUtil.SINGLETON.buildBinding(fromCls, toCls);
+			MDependency dep = MMUtil.SINGLETON.buildDependency(fromCls, toCls);
 			addEdge(dep);
 			return dep;
 	    }
@@ -334,7 +334,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	//do I have to check the namespace here? (Toby)
 		  if (edgeClass == MDependencyImpl.class) {
 			  // nsuml: using Usage as default
-			  MDependency dep = MMUtil.SINGLETON.buildUsage(fromPack, toPack);
+			  MDependency dep = MMUtil.SINGLETON.buildDependency(fromPack, toPack);
 			  addEdge(dep);
 			  return dep;
 		  }
@@ -403,8 +403,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	  return gen;
 	}
 	else if (edgeClass == MDependencyImpl.class) {
-		//nsuml: using Binding
-	MDependency dep = new MBindingImpl();
+	MDependency dep = new MDependencyImpl();
 		dep.addSupplier(fromIntf);
 		dep.addClient(toIntf);
 		addEdge(dep);
