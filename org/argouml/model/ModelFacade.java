@@ -4739,6 +4739,14 @@ public class ModelFacade {
             ((MMethod) m).setBody((MProcedureExpression) expr);
             return;
         }
+
+        if (m != null
+            && m instanceof MConstraint
+            && (expr == null || expr instanceof MBooleanExpression)) {
+            ((MConstraint) m).setBody((MBooleanExpression) expr);
+            return;
+        }
+
         if (m instanceof MExpression) {
             MExpression expression = (MExpression) m;
             MExpressionEditor expressionEditor =
