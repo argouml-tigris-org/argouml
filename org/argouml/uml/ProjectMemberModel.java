@@ -75,10 +75,12 @@ public class ProjectMemberModel extends ProjectMember {
   public MModel getModel() { return _model; }
   protected void setModel(MModel model) { _model = model; }
 
-  public String getName() {
-    return _project.getBaseName() + FILE_EXT;
-  }
-  public void setName(String s) { }
+    // public String getName() {
+    // return _project.getBaseName() + FILE_EXT;
+    // }
+
+    // public void setName(String s) { }
+
   public String getType() { return MEMBER_TYPE; }
   public String getFileExtension() { return FILE_EXT; }
 

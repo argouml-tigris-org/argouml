@@ -359,11 +359,20 @@ public class Project implements java.io.Serializable {
   // accessors
   // needs-more-work
 
-  public String getBaseName() {
-    String n = getName();
-    if (!n.endsWith(FILE_EXT)) return n;
-    return n.substring(0, n.length() - FILE_EXT.length());
-  }
+    /**
+     * Added Eugenio's patches to load 0.8.1 projects.
+     */  
+    public String getBaseName() {
+	String n = getName();
+	
+	if (n.endsWith(FILE_EXT)) {
+	    return n.substring(0, n.length() - FILE_EXT.length());
+	}
+	if (n.endsWith(".argo")) {
+	    return n.substring(0, n.length() - ".argo".length());
+	}
+	return n;
+    }
 
   public String getName() {
     // needs-more-work: maybe separate name
