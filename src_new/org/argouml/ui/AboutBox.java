@@ -211,7 +211,7 @@ public class AboutBox extends JFrame {
 
   ////////////////////////////////////////////////////////////////
   // static methods
-    static String packageList[] = new String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","java.lang"};
+    static String packageList[] = new String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.xml.sax","java.lang"};
     static String getVersionInfo(String packageList[])
     {
 	String in = "";
