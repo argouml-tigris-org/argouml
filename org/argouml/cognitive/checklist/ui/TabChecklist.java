@@ -130,7 +130,22 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
 
   public void refresh() { setTarget(_target); }
 
-  public boolean shouldBeEnabled() { return _shouldBeEnabled; }
+  public boolean shouldBeEnabled(Object target) {
+  
+    if (!(target instanceof MModelElement)) {
+      _shouldBeEnabled = false;
+      return _shouldBeEnabled;
+    }
+    _shouldBeEnabled = true;
+    MModelElement me = (MModelElement) target;
+    Checklist cl = CheckManager.getChecklistFor(me);
+    if (cl == null) {
+      _shouldBeEnabled = false;
+      return _shouldBeEnabled;
+    }
+    
+    return _shouldBeEnabled;
+  }
 
   public void resizeColumns() {
     _table.sizeColumnsToFit(0);

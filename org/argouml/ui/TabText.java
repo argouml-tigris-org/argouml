@@ -118,7 +118,10 @@ implements TabModelTarget, DocumentListener {
       setTarget(_target);
   }
 
-  public boolean shouldBeEnabled() { return _shouldBeEnabled; }
+  /**
+   * the target must not be null.
+   */
+  public boolean shouldBeEnabled(Object target) { return (target != null); }
 
   protected String genText() {
     cat.debug("TabText.genText() called");
