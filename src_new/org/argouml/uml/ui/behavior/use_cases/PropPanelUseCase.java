@@ -108,6 +108,10 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
 	addSeperator();
 
+        addField(Translator.localize("UMLMenu", "label.association-ends"), 
+            getAssociationEndScroll());
+
+        
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
                 Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace",
