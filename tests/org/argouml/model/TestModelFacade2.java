@@ -37,13 +37,13 @@ import ru.novosoft.uml.behavior.activity_graphs.MPartition;
 /**
  * Tests some specific methods in ModelFacade.<p>
  *
- * This is a complement to the tests in {@link TestModelFacade} and 
+ * This is a complement to the tests in {@link TestModelFacade} and
  * {@link TestModelFacade3} that makes a lot more general tests.<p>
  *
- * As opposed to the tests in {@link TestModelFacade} and 
+ * As opposed to the tests in {@link TestModelFacade} and
  * {@link TestModelFacade3} that are run on a whole set of objects,
  * these tests are maintained manually.
- * 
+ *
  * @author Linus Tolke
  */
 public class TestModelFacade2 extends TestCase {
@@ -68,7 +68,7 @@ public class TestModelFacade2 extends TestCase {
 	    // We expected an error to be thrown.
 	}
     }
-    
+
     /**
      * Test that the correct error is thrown for a setName with illegal name.
      */
@@ -79,11 +79,10 @@ public class TestModelFacade2 extends TestCase {
             'i', 'n', 'c', 'o', 'r', 'r', 'e', 'c', 't', ':',
             Character.MAX_VALUE,
         }));
-        assertTrue("0xFFFF is not filtered out of the name of a modelelement", 
-                ModelFacade.getName(ob).indexOf(0xffff) == -1);
+        assertTrue("0xFFFF is not filtered out of the name of a modelelement",
+                ModelFacade.getName(ob).indexOf(Character.MAX_VALUE) == -1);
     }
-    
-   
+
 
     /**
      * Test for setModelElementContainer.
@@ -115,5 +114,30 @@ public class TestModelFacade2 extends TestCase {
 	ModelFacade.removeTaggedValue(cls, "fooValue");
 	ModelFacade.removeTaggedValue(cls, "nonExistingValue");
 	assertNull(ModelFacade.getTaggedValue(cls, "fooValue"));
+    }
+
+    /**
+     * Test the stereotypes.
+     */
+    public void testGetStereotypes() {
+	UmlFactory fy = UmlFactory.getFactory();
+	Object cls = fy.getCore().buildClass();
+
+	Collection coll1 = ModelFacade.getStereotypes(cls);
+	assertEquals(0, coll1.size());
+
+	Object stereotype =
+	    fy.getExtensionMechanisms().buildStereotype(
+	            "TestStereotype",
+	            ModelFacade.getNamespace(cls));
+
+	ModelFacade.setStereotype(cls, stereotype);
+
+	Collection coll2 = ModelFacade.getStereotypes(cls);
+
+	assertEquals(1, coll2.size());
+	assertTrue(coll2.contains(stereotype));
+	assertEquals(stereotype,
+	             ModelFacade.getStereotypes(cls).iterator().next());
     }
 }
