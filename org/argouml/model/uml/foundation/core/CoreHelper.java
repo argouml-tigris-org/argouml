@@ -492,9 +492,9 @@ public class CoreHelper {
      * @param to is the model element where dependency ends
      * @return a newly created dependency.
      */
-    public MDependency buildSupportDependency(MModelElement from,
+    public Object buildSupportDependency(MModelElement from,
 					      MModelElement to) {
-        MDependency dep = CoreFactory.getFactory().buildDependency(from, to);
+        Object dep = CoreFactory.getFactory().buildDependency(from, to);
         ExtensionMechanismsFactory.getFactory()
 	    .buildStereotype(dep, "support", getCurrentModel());
         return dep;

@@ -1139,24 +1139,26 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param supplierObj is the supplier
      * @return MDependency
      */
-    public MDependency buildDependency(Object clientObj,
+    public Object buildDependency(Object clientObj,
 				       Object supplierObj) {
 
 	MModelElement client = (MModelElement) clientObj;
 	MModelElement supplier = (MModelElement) supplierObj;
 	if (client == null
-	    || supplier == null
-	    || client.getNamespace() == null
-	    || supplier.getNamespace() == null)
+                || supplier == null
+                || client.getNamespace() == null
+                || supplier.getNamespace() == null) {
 	    throw new IllegalArgumentException("client or supplier is null "
 					       + "or their namespaces.");
+	}
 	MDependency dep = createDependency();
 	dep.addSupplier(supplier);
 	dep.addClient(client);
-	if (supplier.getNamespace() != null)
+	if (supplier.getNamespace() != null) {
 	    dep.setNamespace(supplier.getNamespace());
-	else if (client.getNamespace() != null)
+	} else if (client.getNamespace() != null) {
 	    dep.setNamespace(client.getNamespace());
+	}
 	return dep;
     }
 
@@ -1553,7 +1555,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param element is the model element
      * @return MComment
      */
-    public MComment buildComment(Object/*MModelElement*/ element) {
+    public Object buildComment(Object element) {
         MModelElement elementToComment = (MModelElement) element;
 	MComment comment = createComment();
 	if (elementToComment != null) {
@@ -1571,7 +1573,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * does not have a namespace.
      * @return The comment build
      */
-    public MComment buildComment() {
+    private MComment buildComment() {
         MComment comment = createComment();
         Object ns = null;
         ArgoDiagram diagram = 
@@ -1622,7 +1624,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param constrElement The constrained element.
      * @return MConstraint
      */
-    public MConstraint buildConstraint(Object/*MModelElement*/ constrElement) {
+    public Object buildConstraint(Object constrElement) {
         MModelElement constrainedElement = (MModelElement) constrElement;
 	if (constrainedElement == null)
 	    throw new IllegalArgumentException("the constrained element is "
