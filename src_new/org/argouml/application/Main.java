@@ -603,7 +603,6 @@ class PreloadClasses implements Runnable {
         c = java.lang.reflect.Modifier.class;
         c = java.util.TooManyListenersException.class;
         c = org.argouml.kernel.DelayedChangeNotify.class;
-        c = org.argouml.kernel.HistoryItemResolve.class;
         c = org.argouml.kernel.Wizard.class;
         c = org.argouml.ui.Clarifier.class;
         c = org.argouml.ui.StylePanelFig.class;
