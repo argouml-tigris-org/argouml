@@ -120,10 +120,12 @@ public class TestAll extends TestCase {
 	throws Throwable {
 	try {
 	    File classRoot = new File("build/classes");
+	    TestSuite suite = new TestSuite();
+	    if (classRoot == null) // No test cases found.
+		return suite;
 	    ClassFinder classFinder = new ClassFinder(classRoot);
 	    TestCaseLoader testCaseLoader = new TestCaseLoader();
 	    testCaseLoader.loadTestCases(classFinder.getClasses());
-	    TestSuite suite = new TestSuite();
 	    int numberOfTests = addAllTests(suite, testCaseLoader.getClasses());
 	    System.out.println("Number of test classes found: " + numberOfTests);
 	    return suite;
