@@ -176,19 +176,11 @@ public class ParserDisplay extends Parser {
   /** The vector of CustomSeparators to use when tokenizing attributes */
   private Vector _attributeCustomSep;
 
-  /** The acceptible base classes for attribute stereotypes */
-  private String _attributeBases[] = {"Attribute", "StructuralFeature",
-	"Feature", "ModelElement", null};
-
   /** The array of special properties for operations */
   private PropertySpecialString _operationSpecialStrings[];
 
   /** The vector of CustomSeparators to use when tokenizing attributes */
   private Vector _operationCustomSep;
-
-  /** The acceptible base classes for operation stereotypes */
-  private String _operationBases[] = {"Operation", "BehavioralFeature",
-	"Feature", "ModelElement", null};
 
   /** The vector of CustomSeparators to use when tokenizing parameters */
   private Vector _parameterCustomSep;
@@ -363,6 +355,93 @@ public class ParserDisplay extends Parser {
             ep.setName(newEp.getName());
             ep.setLocation(newEp.getLocation());
         }
+    }
+
+    /**
+     * Parses a model element, ie reads a string on the format:
+     * <br>[<< stereotype >>] [name]
+     * <br>and assigns the properties to the passed MModelElement.
+     *
+     * @param me The MModelElement <i>text</i> describes.
+     * @param text A String on the above format.
+     * @throws java.text.ParseException when it detects an error in the
+     *	attribute string. See also ParseError.getErrorOffset().
+     */
+    public void parseModelElement(MModelElement me, String text)
+              throws ParseException {
+	MyTokenizer st;
+
+	Vector path = null;
+	String name = null;
+	String stereotype = null;
+	String token;
+
+	try {
+	    st = new MyTokenizer(text, " ,\t,<<,>>,::,.");
+	    while (st.hasMoreTokens()) {
+		token = st.nextToken();
+
+		if (" ".equals(token) || "\t".equals(token)) {
+		    ; // Do nothing
+		} else if ("<<".equals(token)) {
+		    if (stereotype != null)
+			throw new ParseException("Element cannot have " +
+			    "two stereotypes", st.getTokenIndex());
+
+		    stereotype = "";
+		    while (true) {
+			token = st.nextToken();
+			if (">>".equals(token))
+			    break;
+			stereotype += token;
+		    }
+		} else if ("::".equals(token) || ".".equals(token)) {
+		    if (name == null)
+			throw new ParseException("Element cannot have " +
+			    "anonymous qualifiers", st.getTokenIndex());
+
+		    if (path == null)
+			path = new Vector();
+		    path.add(name);
+		    name = null;
+		} else {
+		    if (name != null)
+			throw new ParseException("Element cannot have " +
+			    "two word names or qualifiers", st.getTokenIndex());
+
+		    name = token;
+		}
+	    }
+	} catch (NoSuchElementException nsee) {
+	    throw new ParseException("Unexpected end of element", text.length());
+	} catch (ParseException pre) {
+	    throw pre;
+	}
+
+	if (path != null && name == null)
+	    throw new ParseException("Qualified names must end with a name", 0);
+
+	if (name != null)
+		me.setName(name);
+
+	if (stereotype != null) {
+	    stereotype = stereotype.trim();
+	    MStereotype stereo = getStereotype(me, stereotype);
+
+	    if (stereo != null)
+		me.setStereotype(stereo);
+	    else if ("".equals(stereotype))
+		me.setStereotype(null);
+	}
+
+//	if (path != null) {
+//	    MNamespace nsp = ;
+//
+//	    if (nsp == null)
+//		throw new ParseException("Unable to resolve namespace", 0);
+//
+//	    me.setNamespace(nsp);
+//	}
     }
 
 
@@ -806,8 +885,7 @@ public class ParserDisplay extends Parser {
 
     if (stereotype != null) {
 	stereotype = stereotype.trim();
-	MStereotype stereo = getStereotype(op.getModel(), stereotype,
-		_operationBases);
+	MStereotype stereo = getStereotype(op, stereotype);
 	if (stereo != null)
 	    op.setStereotype(stereo);
 	else if ("".equals(stereotype))
@@ -1258,8 +1336,7 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 
     if (stereotype != null) {
 	stereotype = stereotype.trim();
-	MStereotype stereo = getStereotype(attr.getModel(), stereotype,
-		_attributeBases);
+	MStereotype stereo = getStereotype(attr, stereotype);
 	if (stereo != null)
 	    attr.setStereotype(stereo);
 	else if ("".equals(stereotype))
@@ -1352,12 +1429,13 @@ nextProp:
    * Recursively search a hive of a model for a MStereotype with the name
    * given in name.
    *
+   * @param obj The MModelElement to be suitable for.
    * @param root The MModelElement to search from.
    * @param name The name of the MStereotype to search for.
    * @return An MStereotype named name, or null if none is found.
    */
-  private MStereotype recFindStereotype(MModelElement root, String name,
-	    String base[]) {
+  private MStereotype recFindStereotype(MModelElement obj, MModelElement root,
+					String name) {
     MStereotype stereo;
 
     if (root == null)
@@ -1365,15 +1443,8 @@ nextProp:
 
     if (root instanceof MStereotype &&
 	name.equals(root.getName())) {
-	int i;
-	for (i = 0; base != null && i < base.length; i++) {
-	    String bc = ((MStereotype)root).getBaseClass();
-	    if ((base[i] == null && bc == null) ||
-		(base[i] != null && base[i].equals(bc)))
-		break;
-	}
 
-	if (base == null || i < base.length)
+	if (ExtensionMechanismsHelper.getHelper().isValidStereoType(obj, (MStereotype)root))
 	    return (MStereotype) root;
 	else
 	    _cat.debug("Missed stereotype " + ((MStereotype)root).getBaseClass());
@@ -1395,7 +1466,7 @@ nextProp:
     Iterator iter = ownedElements.iterator();
 
     while(iter.hasNext()) {
-	stereo = recFindStereotype((MModelElement) iter.next(), name, base);
+	stereo = recFindStereotype(obj, (MModelElement) iter.next(), name);
 	if (stereo != null)
 	    return stereo;
     }
@@ -1451,29 +1522,29 @@ nextProp:
    * <p>TODO: Should create the MStereotype under root if it
    * isn't found.
    *
-   * @param root A tree of MModelElements to search.
+   * @param obj A MModelElements to find a suitable stereotype for.
    * @param name The name of the MStereotype to search for.
    * @return An MStereotype named name, or possibly null.
    */
-  private MStereotype getStereotype(MModelElement root, String name,
-	    String base[]) {
+  private MStereotype getStereotype(MModelElement obj, String name) {
+    MModel root = obj.getModel();
     MStereotype stereo;
     boolean phantom = false;
 
-    stereo = recFindStereotype(root, name, base);
+    stereo = recFindStereotype(obj, root, name);
     if (stereo == null) {
 	stereo = recFindStereotype(
+		obj,
 		ProfileJava.getInstance().getProfileModel(),
-		name,
-		base);
+		name);
 
 	// This (if it exist) is a phantom stereotype...
 	phantom = true;
     }
 
     if (stereo != null && phantom) {
-	if (root instanceof MModel) {
-	    MNamespace targetNS = findNamespace(stereo.getNamespace(), (MModel)root);
+	if (root != null) {
+	    MNamespace targetNS = findNamespace(stereo.getNamespace(), root);
 	    MStereotype clone = null;
 	    try {
 		clone = (MStereotype) stereo.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});

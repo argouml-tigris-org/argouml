@@ -42,6 +42,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.text.ParseException;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
@@ -71,6 +72,7 @@ import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDManager;
+import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.ActionProperties;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Selection;
@@ -469,7 +471,14 @@ public abstract class FigNodeModelElement
             MModelElement me = (MModelElement) getOwner();
             if (me == null)
                 return;
-            me.setName(ft.getText());
+            try {
+                ParserDisplay.SINGLETON.parseModelElement(me, ft.getText().trim());
+                ProjectBrowser.TheInstance.getStatusBar().showStatus("");
+		updateNameText();
+            } catch (ParseException pe) {
+                ProjectBrowser.TheInstance.getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+            }
+            //me.setName(ft.getText());
         }
     }
 
