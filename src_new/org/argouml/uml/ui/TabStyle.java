@@ -158,8 +158,11 @@ public class TabStyle
                     return;
                 } else {
                     t = col.iterator().next();
+                    if (!(t instanceof Fig)) return;
                 }
-            } 
+            } else {
+                return;
+            }
       
         }
 

@@ -43,107 +43,115 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
 
-public class StylePanel extends TabSpawnable
-implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, ActionListener {
-    protected static Category cat = 
-        Category.getInstance(StylePanel.class);
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  protected Fig    _target;
+public class StylePanel
+    extends TabSpawnable
+    implements
+        TabFigTarget,
+        ItemListener,
+        DocumentListener,
+        ListSelectionListener,
+        ActionListener {
+    protected static Category cat = Category.getInstance(StylePanel.class);
+    ////////////////////////////////////////////////////////////////
+    // instance vars
+    protected Fig _target;
 
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    public StylePanel(String title) {
+        super(title);
+        GridBagLayout gb = new GridBagLayout();
+        setLayout(gb);
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 0.0;
+        c.weighty = 0.0;
+        c.ipadx = 3;
+        c.ipady = 3;
+    }
 
-  public StylePanel(String title) {
-    super(title);
-    GridBagLayout gb = new GridBagLayout();
-    setLayout(gb);
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.weighty = 0.0;
-    c.ipadx = 3; c.ipady = 3;
-  }
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
+    public void setTarget(Object t) {
+        if (!(t instanceof Fig)) {
+            if (ModelFacade.isABase(t)) {
+                Project p = ProjectManager.getManager().getCurrentProject();
+                Collection col = p.findFigsForMember(t);
+                if (col == null || col.isEmpty()) {
+                    return;
+                } else {
+                    t = col.iterator().next();
+                    if (!(t instanceof Fig)) return;
+                }
+            } else {
+                return;
+            }
 
+        }
+        _target = (Fig) t;
+        refresh();
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    public Object getTarget() {
+        return _target;
+    }
 
-  public void setTarget(Object t) {
-      if (!(t instanceof Fig)) {
-                  if (ModelFacade.isABase(t)) {
-                      Project p = ProjectManager.getManager().getCurrentProject();
-                      Collection col = p.findFigsForMember(t);
-                      if (col == null || col.isEmpty()) {
-                          return;
-                      } else {
-                          t = col.iterator().next();
-                      }
-                  } 
-                
-              }
-    _target = (Fig)t;
-    refresh();
-  }
+    public void refresh() {
+        //_tableModel.setTarget(_target);
+        //_table.setModel(_tableModel);
+    }
 
+    /**
+     * style panels ony apply when a Fig is selected.
+     */
+    public boolean shouldBeEnabled(Object target) {
+        ArgoDiagram diagram =
+            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        target =
+            (target instanceof Fig) ? target : diagram.getContainingFig(target);
+        return (target instanceof Fig);
+    }
 
-  public Object getTarget() { return _target; }
+    ////////////////////////////////////////////////////////////////
+    // actions
 
-  public void refresh() {
-    //_tableModel.setTarget(_target);
-    //_table.setModel(_tableModel);
-  }
+    ////////////////////////////////////////////////////////////////
+    // document event handling
 
-  /**
-   * style panels ony apply when a Fig is selected.
-   */
-  public boolean shouldBeEnabled(Object target) { 
-      ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-      target = (target instanceof Fig) ? target : diagram.getContainingFig(target);
-      return (target instanceof Fig) ; 
-  }
+    public void insertUpdate(DocumentEvent e) {
+        cat.debug(getClass().getName() + " insert");
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // actions
+    public void removeUpdate(DocumentEvent e) {
+        insertUpdate(e);
+    }
 
+    public void changedUpdate(DocumentEvent e) {
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // document event handling
+    ////////////////////////////////////////////////////////////////
+    // combobox event handling
 
-  public void insertUpdate(DocumentEvent e) {
-    cat.debug(getClass().getName() + " insert");
-  }
+    public void itemStateChanged(ItemEvent e) {
+        Object src = e.getSource();
+    }
 
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
+    /////////////////////////////////////////////////////////////////
+    // ListSelectionListener implemention
 
-  public void changedUpdate(DocumentEvent e) {
-  }
+    public void valueChanged(ListSelectionEvent lse) {
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // combobox event handling
+    /////////////////////////////////////////////////////////////////
+    // ActionListener implementation
 
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-  }
+    public void actionPerformed(ActionEvent ae) {
+        Object src = ae.getSource();
+        //if (src == _config) doConfig();
+    }
 
-  /////////////////////////////////////////////////////////////////
-  // ListSelectionListener implemention
-
-  public void valueChanged(ListSelectionEvent lse) {
-  }
-
-  
-  /////////////////////////////////////////////////////////////////
-  // ActionListener implementation
-
-  public void actionPerformed(ActionEvent ae) {
-    Object src = ae.getSource();
-    //if (src == _config) doConfig();
-  }
-
-  
     /* (non-Javadoc)
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
@@ -167,6 +175,3 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
     }
 
 } /* end class StylePanel */
-
-
-
