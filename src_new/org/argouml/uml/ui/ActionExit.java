@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,9 +35,10 @@ import java.text.MessageFormat;
 import javax.swing.*;
 
 /** Action to exit ArgoUML.
- * @stereotype singleton
  */
-public class ActionExit extends UMLAction {
+public class ActionExit extends UMLAction 
+    implements CommandLineInterface
+{
   
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -52,7 +53,7 @@ public class ActionExit extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // constructors
   
-    protected ActionExit() {
+    public ActionExit() {
 	super ("action.exit", NO_ICON);
 	active = false;
     }
@@ -96,8 +97,19 @@ public class ActionExit extends UMLAction {
 	}
 	if (!active) {
 	    Configuration.save();
-	    ArgoSecurityManager.getInstance().setAllowExit (true);
-	    System.exit (0);
+	    doCommand(null);
 	}
+    }
+
+
+    /** Execute this action from the command line.
+     *
+     * @param argument is not used.
+     * @return true if it is OK.
+     */
+    public boolean doCommand(String argument) {
+        ArgoSecurityManager.getInstance().setAllowExit (true);
+        System.exit (0);
+	return true;
     }
 } /* end class ActionExit */

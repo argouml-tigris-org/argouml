@@ -1011,6 +1011,43 @@ ${Name} Build file
     <antcall target="junit-report-create"/>
   </target>
 
+
+  <!-- =================================================================== -->
+  <!-- Run the tests that test the command line stuff.                     -->
+  <!-- These tests does not have error conditions to test against like the -->
+  <!-- JUnit test cases. Instead, if they hang or exit with error they     -->
+  <!-- have failed.                                                        -->
+  <!-- =================================================================== -->
+  <target name="clitests" depends="compile" 
+          description="Run tests that test the command line stuff.">
+
+    <!-- Don't do anything. -->
+    <java classname="org.argouml.application.Main" 
+          classpath="${argo.build.classes};${classpath}"
+          fork="yes">
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+        <arg value="-batch"/>
+    </java>
+
+    <!-- Exit. -->
+    <java classname="org.argouml.application.Main" 
+          classpath="${argo.build.classes};${classpath}"
+          fork="yes">
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+        <arg value="-nosplash"/>
+        <arg value="-batch"/>
+        <arg value="-command"/>
+        <arg value="org.argouml.uml.ui.ActionExit"/>
+    </java>
+
+  </target>
+
   <!-- =================================================================== -->
   <!-- Run the both kind of tests.                                         -->
   <!-- =================================================================== -->
