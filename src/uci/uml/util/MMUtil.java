@@ -165,7 +165,26 @@ public class MMUtil {
 		return usage;
 	}
 
-	/** This method returns all attributes of a given Classifier
+	/** This method returns all Interfaces of which this class is a realization.
+	 * @param cls  the class you want to have the interfaces for
+	 * @return a collection of the Interfaces
+	 */
+
+	public Collection getSpecifications(MClass cls) {
+
+		Collection result = new Vector();
+		Collection deps = cls.getClientDependencies();
+		Iterator depIterator = deps.iterator();
+
+		while (depIterator.hasNext()) {
+			MDependency dep = (MDependency)depIterator.next();
+			if ((dep instanceof MAbstraction) && ((getRealizationStereotype()).equals(dep.getStereotype())))
+				result.add(dep);
+		}
+		return result;
+	}
+
+	/** This method returns all attributes of a given Classifier.
 	 *
 	 * @param classifier the classifier you want to have the attributes for
 	 * @return a collection of the attributes

@@ -51,7 +51,24 @@ import uci.uml.util.MMUtil;
 
 public class GeneratorJava extends Generator {
 
-  public static GeneratorJava SINGLETON = new GeneratorJava();
+  public static GeneratorJava SINGLETON = null; //new GeneratorJava();
+
+  static {
+      // Read Generator class from Property "argo.generator":
+      String generatorClass=System.getProperty("argo.generator");
+      if (generatorClass!=null) {
+	  try {
+	      SINGLETON=(GeneratorJava)Class.forName(generatorClass).newInstance();
+	      System.out.println("Using Generator "+generatorClass+".");
+	  } catch (Exception e) {
+	      System.out.println("Generator "+generatorClass+" not found, using GeneratorJava.");
+	  }
+      }
+      if (SINGLETON==null)
+	  SINGLETON= new GeneratorJava();
+  }
+
+  public final static String fileSep=System.getProperty("file.separator");
 
   /** Two spaces used for indenting code in classes. */
   public static String INDENT = "  ";
@@ -60,51 +77,42 @@ public class GeneratorJava extends Generator {
     return SINGLETON.generate(o);
   }
 
-  public static void GenerateFile(MClassifier cls, String path) {
+  public static String GenerateFile(MClassifier cls, String path) {
+    // GenerateFile now returns the full path name of the
+    // the generated file. 
     String name = cls.getName();
-    if (name == null || name.length() == 0) return;
+    if (name == null || name.length() == 0) return null;
     String filename = name + ".java";
-    if (!path.endsWith("/")) path += "/";
-    File f = new File(path);
-    if (!f.isDirectory()) {
-      if (!f.mkdir()) {
-	System.out.println(" could not make directory");
-	return;
-      }
-    }
+    if (!path.endsWith(fileSep)) path += fileSep;
 
     String packagePath = cls.getNamespace().getName();
-    MNamespace parent = cls.getNamespace();
+    MNamespace parent = cls.getNamespace().getNamespace();
     while (parent != null) {
       packagePath = parent.getName() + "." + packagePath;
       parent = parent.getNamespace();
     }
 
-    int dotIndex = packagePath.indexOf(".");
-    while (dotIndex != -1) {
-      path += packagePath.substring(0, dotIndex) + "/";
-      packagePath = packagePath.substring(dotIndex + 1);
-      dotIndex = packagePath.indexOf(".");
-      f = new File(path);
+	int lastIndex=-1;
+    do {
+      File f = new File(path);
       if (!f.isDirectory()) {
-	if (!f.mkdir()) {
-	  System.out.println(" could not make directory");
-	  return;
-	}
+		  if (!f.mkdir()) {
+			  System.out.println(" could not make directory "+path);
+			  return null;
+		  }
       }
-    }
-    path += packagePath.substring(0) + "/";
-    f = new File(path);
-    if (!f.isDirectory()) {
-      if (!f.mkdir()) {
-	System.out.println(" could not make directory:" + f);
-	return;
-      }
-    }
+	  if (lastIndex == packagePath.length())
+		  break;
+	  int index = packagePath.indexOf(".", lastIndex+1);
+	  if (index == -1)
+		  index = packagePath.length();
+      path += packagePath.substring(lastIndex+1, index) + fileSep;
+	  lastIndex = index;
+	} while (true);
     String pathname = path + filename;
     //String pathname = path + filename;
     // needs-more-work: package, project basepath, tagged values to configure
-    String header = SINGLETON.generateHeader(cls, pathname);
+    String header = SINGLETON.generateHeader(cls, pathname, packagePath);
     String src = SINGLETON.generate(cls);
     FileOutputStream fos = null;
     try {
@@ -117,15 +125,14 @@ public class GeneratorJava extends Generator {
       try { if (fos != null) fos.close(); }
       catch (IOException exp) { }
     }
+    return pathname;
   }
 
-  public String generateHeader(MClassifier cls, String pathname) {
+  public String generateHeader(MClassifier cls, String pathname, String packagePath) {
     String s = "";
     //needs-more-work: add user-defined copyright
-    s += "// FILE: " + pathname +"\n\n";
-    MNamespace ns = cls.getNamespace();
-    String pack = ns.getName();
-    if (pack.length() > 0) s += "package " + pack + ";\n";
+    s += "// FILE: " + pathname.replace('\\','/') +"\n\n";
+    if (packagePath.length() > 0) s += "package " + packagePath + ";\n";
     s += "import com.sun.java.util.collections.*;\n";
 
     s += "\n";
@@ -241,9 +248,11 @@ public class GeneratorJava extends Generator {
     String baseClass = generateGeneralzation(cls.getGeneralizations());
     if (!baseClass.equals("")) s += "extends " + baseClass + " ";
 
-	// nsuml: realizations!
-//     String interfaces = generateSpecification(cls.getSpecializations());
-//     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
+    // nsuml: realizations!
+	if (cls instanceof MClass) {
+		String interfaces = generateSpecification((MClass)cls);
+		if (!interfaces.equals("")) s += "implements " + interfaces + " ";
+	}
 	s += "{\n";
 
     s += INDENT + generateTaggedValues(cls);
@@ -296,9 +305,10 @@ public class GeneratorJava extends Generator {
 	s += generateConstraints((MModelElement)bf);
 	
 	// there is no ReturnType in behavioral feature (nsuml)
-	//if (!(cls instanceof MInterface))
-	//  s += generateDefaultReturnStatement(bf.getReturnType());
-	//s += terminator2;
+	if (cls instanceof MClassImpl && bf instanceof MOperation) {
+	    s += generateMethodBody((MOperation)bf);
+	}
+	s += terminator2 + "\n";
       }
     }
     s += "\n";
@@ -306,7 +316,14 @@ public class GeneratorJava extends Generator {
     return s;
   }
 
-  public String generateDefaultReturnStatement(MClassImpl cls) {
+  public String generateMethodBody(MOperation op) {
+    // pick out return type
+    MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+    MClassifier returnType = rp.getType();
+      return generateDefaultReturnStatement(returnType);
+  }
+
+  public String generateDefaultReturnStatement(MClassifier cls) {
     if (cls == null) return "";
 
     String clsName = cls.getName();
@@ -405,7 +422,10 @@ public class GeneratorJava extends Generator {
 
   public String generateAssociationEnd(MAssociationEnd ae) {
     if (!ae.isNavigable()) return "";
-    String s = INDENT + "protected ";
+    //String s = INDENT + "protected ";
+    String s = INDENT + "public ";
+    // must be public or generate public navigation method!
+
     if (MScopeKind.CLASSIFIER.equals(ae.getTargetScope()))
 	s += "static ";
 //     String n = ae.getName();
@@ -473,29 +493,31 @@ public class GeneratorJava extends Generator {
     return generateClassList(classes);
   }
 
-  public String generateSpecification(Collection realizations) {
-    if (realizations == null) return "";
-    String s = "";
-    Iterator clsEnum = realizations.iterator();
-    while (clsEnum.hasNext()) {
-      MGeneralization r = (MGeneralization)clsEnum.next();
-      s += generateClassifierRef(r.getPowertype());
-      System.out.println("sup=" + r.getPowertype());
-      if (clsEnum.hasNext()) s += ", ";
-    }
-    return s;
-  }
-
-  public String generateClassList(Collection classifiers) {
-    String s = "";
-    if (classifiers == null) return "";
-    Iterator clsEnum = classifiers.iterator();
-    while (clsEnum.hasNext()) {
-      s += generateClassifierRef((MClassifier)clsEnum.next());
-      if (clsEnum.hasNext()) s += ", ";
-    }
-    return s;
-  }
+    //  public String generateSpecification(Collection realizations) {
+	public String generateSpecification(MClass cls) {
+		Collection realizations = MMUtil.SINGLETON.getSpecifications(cls);
+		if (realizations == null) return "";
+		String s = "";
+		Iterator clsEnum = realizations.iterator();
+		while (clsEnum.hasNext()) {
+			MGeneralization r = (MGeneralization)clsEnum.next();
+			s += generateClassifierRef(r.getPowertype());
+			System.out.println("sup=" + r.getPowertype());
+			if (clsEnum.hasNext()) s += ", ";
+		}
+		return s;
+	}
+	
+	public String generateClassList(Collection classifiers) {
+		String s = "";
+		if (classifiers == null) return "";
+		Iterator clsEnum = classifiers.iterator();
+		while (clsEnum.hasNext()) {
+			s += generateClassifierRef((MClassifier)clsEnum.next());
+			if (clsEnum.hasNext()) s += ", ";
+		}
+		return s;
+	}
 
   public String generateVisibility(MVisibilityKind vis) {
     //if (vis == null) return "";

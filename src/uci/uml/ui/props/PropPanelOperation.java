@@ -309,24 +309,25 @@ implements ItemListener {
   }
   
   public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    if (src == _keywordsField) {
-//       System.out.println("attr keywords now is " +
-// 			 _keywordsField.getSelectedItem());
-      setTargetKeywords();
-    }
-    else if (src == _visField) {
-//       System.out.println("attr MVisibilityKind now is " +
-// 			 _visField.getSelectedItem());
-      setTargetVisibility();
-    }
-    else if (src == _typeField) {
-//       System.out.println("attr type now is " +
-// 			 _typeField.getSelectedItem());
-      setTargetType();
-    }
+	  if (e.getStateChange() == ItemEvent.SELECTED) {
+		  Object src = e.getSource();
+		  if (src == _keywordsField) {
+			  //       System.out.println("attr keywords now is " +
+			  // 			 _keywordsField.getSelectedItem());
+			  setTargetKeywords();
+		  }
+		  else if (src == _visField) {
+			  //       System.out.println("attr MVisibilityKind now is " +
+			  // 			 _visField.getSelectedItem());
+			  setTargetVisibility();
+		  }
+		  else if (src == _typeField) {
+			  //       System.out.println("attr type now is " +
+			  // 			 _typeField.getSelectedItem());
+			  setTargetType();
+		  }
+	  }
   }
-
 
   
 } /* end class PropPanelOperation */
