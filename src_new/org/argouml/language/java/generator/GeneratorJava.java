@@ -1421,14 +1421,23 @@ implements PluggableNotation, FileGenerator {
   public String generateStateBody(MState m) {
     Argo.log.info("GeneratorJava: generating state body");
     StringBuffer sb = new StringBuffer(80);
-    MAction entry = m.getEntry();
-    MAction exit = m.getExit();
-    if (entry != null) {
-      String entryStr = Generate(entry);
+    MAction entryAction = m.getEntry();
+    MAction exitAction = m.getExit();
+    MAction doAction = m.getDoActivity();
+
+    if (entryAction != null) {
+      String entryStr = Generate(entryAction);
       if (entryStr.length() > 0) sb.append("entry / ").append(entryStr);
     }
-    if (exit != null) {
-      String exitStr = Generate(exit);
+    if (doAction != null) {
+	String doStr = Generate(doAction);
+	if (doStr.length() > 0) {
+	    if (sb.length() > 0) sb.append('\n');
+	    sb.append("do / ").append(doStr);
+	}
+    }
+    if (exitAction != null) {
+      String exitStr = Generate(exitAction);
       if (sb.length() > 0) sb.append('\n');
       if (exitStr.length() > 0) sb.append("exit / ").append(exitStr);
     }
