@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
@@ -62,19 +63,21 @@ import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Orientation;
 import org.argouml.swingext.Vertical;
 import org.argouml.ui.menubar.GenericArgoMenuBar;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionExit;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.util.VectorSet;
-import org.workingfrog.i18n.swing.I18NJFrame;
 
 /** The main window of the ArgoUML application. */
 
 public class ProjectBrowser
-    extends I18NJFrame
-    implements IStatusBar, PropertyChangeListener {
+    extends JFrame
+    implements IStatusBar, PropertyChangeListener, TargetListener {
 
     protected static Category cat = Category.getInstance(ProjectBrowser.class);
 
@@ -208,6 +211,10 @@ public class ProjectBrowser
         // adds this as listener to projectmanager so it gets updated when the 
         // project changes
         ProjectManager.getManager().addPropertyChangeListener(this);
+        
+        // adds this as listener to TargetManager so gets notified
+        // when the active diagram changes
+        TargetManager.getInstance().addTargetListener(this);
 
         isDoingSelection = false;
     }
@@ -421,10 +428,29 @@ public class ProjectBrowser
         if (title == null || "".equals(title)) {
             setTitle(getAppName());
         } else {
-            super.setTitle(getAppName() + " - " + title);
+            String changeIndicator = ProjectManager.getManager()
+                .getCurrentProject().getSaveRegistry().hasChanged()
+                ? " *" : "";
+            ArgoDiagram activeDiagram = ProjectManager.getManager()
+                .getCurrentProject().getActiveDiagram();
+            if (activeDiagram != null) {
+                super.setTitle(title + " - " + activeDiagram.getName()
+                    + " - " + getAppName() + changeIndicator);
+            }
+            else {
+                super.setTitle(title + " - " + getAppName() + changeIndicator);
+            }
         }
     }
 
+    /**
+     * Updates the window title to contain the latest values for 
+     * project name, active diagram, and save status.
+     */
+    protected void updateTitle() {
+        setTitle(ProjectManager.getManager().getCurrentProject().getName());
+    }
+    
     public String getAppName() {
         return _appName;
     }
@@ -900,7 +926,6 @@ public class ProjectBrowser
      * java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-
         // the project changed
         if (evt.getPropertyName()
             .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
@@ -916,22 +941,30 @@ public class ProjectBrowser
 
         // the save state changed
         else if (evt.getPropertyName()
-		 .equals(ProjectManager.SAVE_STATE_PROPERTY_NAME))
-	{
-
-            String oldTitle = super.getTitle();
-            if (((Boolean) evt.getNewValue()).booleanValue() == true
-                && !oldTitle.endsWith("*")) {
-
-                super.setTitle(oldTitle + " *");
-            } else if (
-		       ((Boolean) evt.getNewValue()).booleanValue() == false
-		       && oldTitle.endsWith("*")) {
-
-                super.setTitle(oldTitle.substring(0, oldTitle.length() - 2));
-            }
+            .equals(ProjectManager.SAVE_STATE_PROPERTY_NAME))
+        {
+            updateTitle();
         }
     }
+
+    /////////////////////////////////////////////////////////////////////////
+    // TargetListener methods implemented so notified when selected
+    // diagram changes. Uses this to update the window title.
+    
+    public void targetAdded(TargetEvent e) {
+    }
+
+    public void targetRemoved(TargetEvent e) {
+    }
+
+    public void targetSet(TargetEvent e) {
+        Object[] targets = e.getNewTargets();
+        if (targets != null && targets.length >= 1 && targets[0] instanceof UMLDiagram)
+        {
+            updateTitle();
+        }
+    }    
+    // End TargetListener methods
 
     /**
      * Returns the todopane. 
@@ -983,5 +1016,5 @@ public class ProjectBrowser
     public static synchronized void setSplash(boolean splash) {
         _Splash = splash;
     }
-
+    
 } /* end class ProjectBrowser */

@@ -250,9 +250,7 @@ public abstract class UMLDiagram
     private Object[] getShapeActions() {
         Object actions[] = {
             null,
-            getShapePopupActions(),
-            null,
-            _diagramName.getJComponent()
+            getShapePopupActions()
         };
         return actions;
     }
