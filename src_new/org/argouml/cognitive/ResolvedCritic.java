@@ -63,9 +63,9 @@ public class ResolvedCritic
     {
 	this.critic = critic;
 	if (offenders != null && offenders.size() > 0)
-	    offenders = new Vector(offenders);
+	    this.offenders = new Vector(offenders);
 	else
-	    offenders = null;
+	    this.offenders = null;
     }
 
     /**
