@@ -1724,31 +1724,38 @@ nextProp:
     return null;
   }
 
+  /** parse user input for state bodies and assign the individual
+   * lines to according actions or transistions.
+   */
   public void parseStateBody(MState st, String s) {
       //remove all old transitions; TODO: this should be done better!!
       st.setEntry(null);
       st.setExit(null);
+      st.setDoActivity(null);
 
       Collection trans = new ArrayList();
-      java.util.StringTokenizer lines = new java.util.StringTokenizer(s, "\n\r");
+      java.util.StringTokenizer lines = 
+          new java.util.StringTokenizer(s, "\n\r");
       while (lines.hasMoreTokens()) {
-	  String line = lines.nextToken().trim();
-	  if (line.startsWith("entry")) parseStateEntyAction(st, line);
-	  else if (line.startsWith("exit")) parseStateExitAction(st, line);
-	  else {
-	      MTransition t = parseTransition(
-	          UmlFactory.getFactory().getStateMachines().createTransition(),
-                  line);
+          String line = lines.nextToken().trim();
+          if (line.startsWith("entry")) parseStateEntyAction(st, line);
+          else if (line.startsWith("exit")) parseStateExitAction(st, line);
+          else if (line.startsWith("do")) parseStateDoAction(st,line);
+          else {
+              MTransition t = 
+                  parseTransition(UmlFactory.getFactory().
+                                  getStateMachines().createTransition(),line);
  
 
-	      if (t == null) continue;
-	      _cat.debug("just parsed:" + GeneratorDisplay.Generate(t));
-	      t.setStateMachine(st.getStateMachine());
-	      t.setTarget(st);
-	      t.setSource(st);
-	      trans.add(t);
+              if (t == null) continue;
+              _cat.debug("just parsed:" + GeneratorDisplay.Generate(t));
+              t.setStateMachine(st.getStateMachine());
+              t.setTarget(st);
+              t.setSource(st);
+              trans.add(t);
+          }
 	  }
-      }
+      
 
       Vector internals = new Vector(st.getInternalTransitions());
       Vector oldinternals = new Vector(st.getInternalTransitions());
@@ -1761,7 +1768,7 @@ nextProp:
       st.setInternalTransitions(trans);
   }
 
-    public void parseStateEntyAction(MState st, String s) {
+  public void parseStateEntyAction(MState st, String s) {
     if (s.startsWith("entry") && s.indexOf("/") > -1)
 	s = s.substring(s.indexOf("/")+1).trim();
     MCallAction entryAction=(MCallAction)parseAction(s);
@@ -1775,6 +1782,14 @@ nextProp:
     MCallAction exitAction=(MCallAction)parseAction(s);
     exitAction.setName("anon");
     st.setExit(exitAction);
+  }
+
+  public void parseStateDoAction(MState st, String s) {
+        if (s.startsWith("do") && s.indexOf("/") > -1)
+            s = s.substring(s.indexOf("/")+1).trim();
+        MCallAction doAction=(MCallAction)parseAction(s);
+        doAction.setName("anon");
+        st.setDoActivity(doAction);
   }
 
   /** Parse a line of the form: "name: trigger [guard] / actions" */
