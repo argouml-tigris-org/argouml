@@ -50,6 +50,7 @@ public class CrConsiderFacade extends CrUML {
 
   public boolean predicate2(Object dm, Designer dsgr) {
       return NO_PROBLEM;
+      /*
     cat.debug("predicate2 on " + dm);
     if (!(dm instanceof MPackage) && 
 	!(dm instanceof MModel || dm instanceof MSubsystem))
@@ -65,7 +66,7 @@ public class CrConsiderFacade extends CrUML {
 		if (!(CriticUtils.sameNamespace(me, mod))) return NO_PROBLEM;
     }
     return PROBLEM_FOUND;
-    
+      */
   }
 
 } /* end class CrEmptyPackage */
