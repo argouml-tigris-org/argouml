@@ -56,9 +56,6 @@ public class PerspectiveManager {
     
     private List rules;
     
-    private static final String RULES_PACKAGE = 
-        "org.argouml.ui.explorer.rules.";
-    
     /**
      * @return the instance (singleton)
      */
@@ -156,12 +153,11 @@ public class PerspectiveManager {
     }
     
     /**
-     * tries to load user defined perspectives, if it can't it
-     * calls oldLoadDefaultPerspectives() to load the default perspectives.
+     * Tries to load user defined perspectives, if it can't it
+     * loads the (predefined) default perspectives.
      */
-    public void loadDefaultPerspectives() {
+    public void loadUserPerspectives() {
         
-//        oldLoadDefaultPerspectives();
         try {
 	    String userPerspectives = 
 		Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES,
@@ -219,12 +215,12 @@ public class PerspectiveManager {
 	    }
 	    // no user defined perspectives, so load defaults.
 	    else {
-		oldLoadDefaultPerspectives();
+		loadDefaultPerspectives();
 	    }
         
 	    // one last check that some loaded.
 	    if (getPerspectives().size() == 0) {
-		oldLoadDefaultPerspectives();
+		loadDefaultPerspectives();
 	    }
         } catch (Exception e1) {
             int i = 0;
@@ -232,11 +228,20 @@ public class PerspectiveManager {
     }
         
     /**
-     * loads a default set of perspectives.
+     * Loads a pre-defined default set of perspectives.
      */
-    public void oldLoadDefaultPerspectives() {
+    public void loadDefaultPerspectives() {
+        Collection c = getDefaultPerspectives();
+        
+        addAllPerspectives(c);
+    }
+    
+    /**
+     * @return a collection of default perspectives (i.e. the predefined ones)
+     */
+    public Collection getDefaultPerspectives() {
         ExplorerPerspective classPerspective = 
-            new ExplorerPerspective("Class centric");
+            new ExplorerPerspective("combobox.item.class-centric");
         classPerspective.addRule(new GoProjectToModel());
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
         classPerspective.addRule(new GoNamespaceToDiagram());
@@ -322,15 +327,17 @@ public class PerspectiveManager {
         transitionsPerspective.addRule(new GoTransitionToSource());
         transitionsPerspective.addRule(new GoTransitionToTarget());
         
-        addPerspective(packagePerspective);
-        addPerspective(classPerspective);
-        addPerspective(diagramPerspective);
-        addPerspective(inheritancePerspective);
-        addPerspective(associationsPerspective);
-        addPerspective(statePerspective);
-        addPerspective(transitionsPerspective);
+        Collection c = new ArrayList();
+        c.add(packagePerspective);
+        c.add(classPerspective);
+        c.add(diagramPerspective);
+        c.add(inheritancePerspective);
+        c.add(associationsPerspective);
+        c.add(statePerspective);
+        c.add(transitionsPerspective);
+        return c;
     }
-    
+
     /**
      * hard coded rules library for now, it is quite a lot of work to 
      * get all possible rule names in "org.argouml.ui.explorer.rules" from
