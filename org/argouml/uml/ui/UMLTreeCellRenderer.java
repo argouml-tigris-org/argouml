@@ -29,20 +29,13 @@ import java.awt.Component;
 import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JTree;
-import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
-import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
-import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
 /**
  * UMTreeCellRenderer determines how the entries in the Navigationpane
@@ -57,20 +50,6 @@ import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
     // get localised strings once only
-    private static String activity =
-	Translator.localize("label.activity-diagram");
-    private static String sequence =
-	Translator.localize("label.sequence-diagram");
-    private static String collaboration =
-	Translator.localize("label.collaboration-diagram");
-    private static String deployment =
-	Translator.localize("label.deployment-diagram");
-    private static String state =
-	Translator.localize("label.state-chart-diagram");
-    private static String usecase =
-	Translator.localize("label.usecase-diagram");
-    private static String classDiag =
-	Translator.localize("label.class-diagram");
     private static String name = Translator.localize("label.name");
     private static String typeName = Translator.localize("label.type");
 
@@ -108,34 +87,18 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
         if (r instanceof JLabel) {
             JLabel lab = (JLabel) r;
 
-            Icon icon =
-                ResourceLoaderWrapper.getInstance().lookupIcon(
-                    value);
-
+            // setting the icon
+            Icon icon = ResourceLoaderWrapper.getInstance().lookupIcon(value);
             if (icon != null) {
                 lab.setIcon(icon);
             }
 
-            // setting the tooltip
+            // setting the tooltip to type and name
             String type = null;
             if (ModelFacade.isAModelElement(value)) {
                 type = ModelFacade.getUMLClassName(value);
             } else if (value instanceof UMLDiagram) {
-                if (value instanceof UMLActivityDiagram) {
-                    type = activity;
-                } else if (value instanceof UMLSequenceDiagram) {
-                    type = sequence;
-                } else if (value instanceof UMLCollaborationDiagram) {
-                    type = collaboration;
-                } else if (value instanceof UMLDeploymentDiagram) {
-                    type = deployment;
-                } else if (value instanceof UMLStateDiagram) {
-                    type = state;
-                } else if (value instanceof UMLUseCaseDiagram) {
-                    type = usecase;
-                } else if (value instanceof UMLClassDiagram) {
-                    type = classDiag;
-                }
+                type = ((UMLDiagram) value).getLabelName();
             }
 
             if (type != null) {
