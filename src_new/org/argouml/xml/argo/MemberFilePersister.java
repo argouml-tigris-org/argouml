@@ -24,7 +24,10 @@
 
 package org.argouml.xml.argo;
 
+import java.io.InputStream;
+
 import org.argouml.kernel.OpenException;
+import org.argouml.kernel.Project;
 
 /**
  * A base class file persister for project members.
@@ -35,14 +38,16 @@ public abstract class MemberFilePersister {
      * Load the member based on instance variables
      * which should have been setup in the constructor.
      *
-     * @throws SAXException on any parsing errors.
-     * @param instance the instance of the tag to load.
+     * @param project the project to persist
+     * @param inputStream the inputStream to parse to load the member.
+     * @throws OpenException on any parsing errors.
      */
-    public abstract void load() throws OpenException;
+    public abstract void load(Project project, InputStream inputStream)
+        throws OpenException;
     
     /**
      * Gets the tag name which is the root tag for this member.
      * @return tag name.
      */
-    public abstract String getTag();
+    public abstract String getMainTag();
 }
