@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -37,12 +34,12 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 
-import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
@@ -240,11 +237,14 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	MStateVertex fromSV = (MStateVertex) fromPort;
 	MStateVertex toSV = (MStateVertex) toPort;
 
-	if (org.argouml.model.ModelFacade.isAFinalState(fromSV))	return false;
-	if (org.argouml.model.ModelFacade.isAPseudostate(toSV))
-	    if (MPseudostateKind.INITIAL
-		.equals(((MPseudostate) toSV).getKind()))
+	if (org.argouml.model.ModelFacade.isAFinalState(fromSV)) {
+            return false;
+        }
+	if (org.argouml.model.ModelFacade.isAPseudostate(toSV)) {
+	    if (MPseudostateKind.INITIAL.equals(ModelFacade.getKind(toSV))) {
 		return false;
+            }
+        }
 
 	return true;
     }
@@ -269,7 +269,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	    return null;
 	if (org.argouml.model.ModelFacade.isAPseudostate(toSV))
 	    if (MPseudostateKind.INITIAL
-		.equals(((MPseudostate) toSV).getKind()))
+		.equals(ModelFacade.getKind(toSV)))
 		return null;
 
 	if (edgeClass == MTransition.class) {
