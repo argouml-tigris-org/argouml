@@ -21,12 +21,11 @@ public class DimensionUtility {
         throw new Error("ActionUtility is just a container for static methods");
     }
 
-    /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its
+    /** Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its
      * width and height increased by the width and height of another <code>Dimension</code>.
      *
-     * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter add      The <code>Dimension</code> whose length and breadth are to be taken as
+     * @param original The <code>Dimension</code> to be added to.
+     * @param add      The <code>Dimension</code> whose length and breadth are to be taken as
      *                     the added values.
      * @return The resulting <code>Dimension</code>.
      */
@@ -34,12 +33,11 @@ public class DimensionUtility {
         return new Dimension((int)(original.getWidth() + add.getWidth()), (int)(original.getHeight() + add.getHeight()));
     }
 
-    /**
-     * Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its
+    /** Create a new <code>Dimension</code> from an existing <code>Dimension</code> with its
      * width and height increased by the width and height of an <code>Insets</code> object.
      *
-     * @parameter original The <code>Dimension</code> to be added to.
-     * @parameter add    The <code>Insets</code> object whose width and height are to be taken as
+     * @param original The <code>Dimension</code> to be added to.
+     * @param add    The <code>Insets</code> object whose width and height are to be taken as
      *                   the added values.
      * @return The resulting <code>Dimension</code>.
      */
