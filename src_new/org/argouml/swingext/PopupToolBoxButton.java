@@ -19,11 +19,15 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager2;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
@@ -274,5 +278,47 @@ public class PopupToolBoxButton extends JButton {
         public float getLayoutAlignmentX(Container target) {return (float)0.5;}
         public float getLayoutAlignmentY(Container target) {return (float)0.5;}
 
+    }
+    
+    public class ToolBox extends Toolbar {
+
+        int _rows;
+        int _cols;
+        ArrayList _actions = new ArrayList();
+        MouseListener _mouseListener;
+
+        /** Creates a new instance of ToolBoxx */
+        public ToolBox(int rows, int cols) {
+            super();
+            _rows = rows;
+            _cols = cols;
+            setLayout(new GridLayout(_rows,_cols));
+        }
+
+        public JButton add(Action action) {
+            _actions.add(action);
+            return super.add(action);
+        }
+
+        public void setButtonMouseListener(MouseListener mouseListener) {
+            _mouseListener = mouseListener;
+        }
+
+        /**
+         * Occasionally the ToolBox gets in a state where a button
+         * shows rollover status at the wrong time.
+         * The only way to get around this is to rebuild the ToolBox.
+         */
+        public void rebuild() {
+            super.removeAll();
+            Iterator it = _actions.iterator();
+            while(it.hasNext()) {
+                final Action a = (Action)it.next();
+                JButton button = super.add(a);
+                if (_mouseListener != null) {
+                    button.addMouseListener(_mouseListener);
+                }
+            }
+        }    
     }
 }
