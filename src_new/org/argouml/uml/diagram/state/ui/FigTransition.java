@@ -52,6 +52,12 @@ import ru.novosoft.uml.MElementEvent;
 public class FigTransition extends FigEdgeModelElement {
     
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
+    
+    /**
+     * If <code>dashed</code> is true, then the transition represents 
+     * "object flow". 
+     * If the line is solid, then it represents "control flow".
+     */
     private boolean dashed = false; 
     
     ////////////////////////////////////////////////////////////////
