@@ -121,12 +121,12 @@ public class FigMNodeInstance extends FigNodeModelElement {
 
     public Selection makeSelection() {
         return new SelectionNodeInstance(this);
-    }   
+    }
 
     public Dimension getMinimumSize() {
         Dimension stereoDim = _stereo.getMinimumSize();
         Dimension nameDim = _name.getMinimumSize();
-        int w = Math.max(stereoDim.width, nameDim.width) + 20;
+        int w = Math.max(stereoDim.width, nameDim.width + 1) + 20;
         int h = stereoDim.height + nameDim.height + 20;
         return new Dimension(w, h);
     }
@@ -141,7 +141,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
 
         Dimension stereoDim = _stereo.getMinimumSize();
         Dimension nameDim = _name.getMinimumSize();
-        _name.setBounds(x, y + stereoDim.height + 1, w, nameDim.height);
+        _name.setBounds(x + 1, y + stereoDim.height + 1, w - 1, nameDim.height);
         _stereo.setBounds(x + 1, y + 1, w - 2, stereoDim.height);
         _x = x;
         _y = y;
@@ -192,13 +192,13 @@ public class FigMNodeInstance extends FigNodeModelElement {
     }
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        // super.textEdited(ft); 
+        // super.textEdited(ft);
         MNodeInstance noi = (MNodeInstance) getOwner();
         if (ft == _name) {
             String s = ft.getText().trim();
             // why ever...
             //       if (s.length()>0) {
-            //         s = s.substring(0, (s.length() - 1)); 
+            //         s = s.substring(0, (s.length() - 1));
             //      }
             ParserDisplay.SINGLETON.parseNodeInstance(noi, s);
         }
