@@ -70,8 +70,6 @@ import org.argouml.util.ConfigLoader;
  *
  * There are requests to have the cursor automatically
  * be set to the primary field.
- *
- * $Id$
  */
 public class DetailsPane
     extends JPanel
@@ -82,15 +80,15 @@ public class DetailsPane
 {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(DetailsPane.class);
+    private static final Logger LOG = Logger.getLogger(DetailsPane.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public static int WIDTH = 690;
-    public static int HEIGHT = 520;
-    public static int INITIAL_WIDTH = 400;
-    public static int INITIAL_HEIGHT = 200;
+    public static final int WIDTH = 690;
+    public static final int HEIGHT = 520;
+    public static final int INITIAL_WIDTH = 400;
+    public static final int INITIAL_HEIGHT = 200;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -108,7 +106,7 @@ public class DetailsPane
     /** 
      * The current target
      */
-    private Object _target;
+    private Object currentTarget;
 
     /**
      * a list of all the tabs, which are JPanels, in the JTabbedPane _tabs.
@@ -121,23 +119,18 @@ public class DetailsPane
     protected int _lastNonNullTab = -1;
 
     /**
-     *
-     */
-    private Orientation orientation;
-
-    /**
      * The list with targetlisteners, this are the property panels
      * managed by TabProps It should only contain one listener at a
      * time.
      */
-    private EventListenerList _listenerList = new EventListenerList();
+    private EventListenerList listenerList = new EventListenerList();
 
     /**
      * Adds a listener.
      * @param listener the listener to add
      */
     private void addTargetListener(TargetListener listener) {
-        _listenerList.add(TargetListener.class, listener);
+        listenerList.add(TargetListener.class, listener);
     }
 
     /**
@@ -145,7 +138,7 @@ public class DetailsPane
      * @param listener the listener to remove
      */
     private void removeTargetListener(TargetListener listener) {
-        _listenerList.remove(TargetListener.class, listener);
+        listenerList.remove(TargetListener.class, listener);
     }
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -162,9 +155,8 @@ public class DetailsPane
      * @param orientation is the orientation.
      */
     public DetailsPane(String pane, Orientation orientation) {
-        cat.info("making DetailsPane(" + pane + ")");
+        LOG.info("making DetailsPane(" + pane + ")");
 
-        this.orientation = orientation;
         ConfigLoader.loadTabs(_tabPanels, pane, orientation);
         setLayout(new BorderLayout());
         setFont(new Font("Dialog", Font.PLAIN, 10));
@@ -242,16 +234,11 @@ public class DetailsPane
     /**
      * Sets the target of the Details pane to either be a
      * selected model element or
-     * the owner(model element) of a selected fig.
+     * the owner(model element) of a selected fig.<p>
      *
-     * <p>Decides which panels to enable.
-     * @deprecated As of ArgoUml version 0.13.5,
-     *             replaced by
-     *             {@link org.argouml.ui.targetmanager.TargetListener},
-     *             will become non-public in 
-     * the future
+     * Decides which panels to enable.
      */
-    public void setTarget(Object target) {
+    private void setTarget(Object target) {
         enableTabs(target);
         if (target != null) {
             boolean tabSelected = false;
@@ -326,7 +313,7 @@ public class DetailsPane
                 _tabs.setSelectedIndex(-1);
             }
         }
-        _target = target;
+        currentTarget = target;
 
     }
 
@@ -334,9 +321,12 @@ public class DetailsPane
      * Returns the current model target.
      */
     public Object getTarget() {
-        return _target;
+        return currentTarget;
     }
 
+    /**
+     * @see java.awt.Component#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
         return new Dimension(100, 100);
     }
@@ -447,7 +437,7 @@ public class DetailsPane
      *  otherwise.
      */
     public void stateChanged(ChangeEvent e) {
-        cat.debug("DetailsPane state changed");
+        LOG.debug("DetailsPane state changed");
         Component sel = _tabs.getSelectedComponent();
 
         // update the tab
@@ -483,7 +473,7 @@ public class DetailsPane
     public void mySingleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        cat.debug("single: " + _tabs.getComponentAt(tab).toString());
+        LOG.debug("single: " + _tabs.getComponentAt(tab).toString());
     }
 
     /**
@@ -493,7 +483,7 @@ public class DetailsPane
     public void myDoubleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        cat.debug("double: " + _tabs.getComponentAt(tab).toString());
+        LOG.debug("double: " + _tabs.getComponentAt(tab).toString());
         JPanel t = (JPanel) _tabPanels.elementAt(tab);
         if (t instanceof TabSpawnable)
 	    ((TabSpawnable) t).spawn();
@@ -547,6 +537,9 @@ public class DetailsPane
      */
     protected Icon _leftArrowIcon = new LeftArrowIcon();
 
+    /**
+     * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
+     */
     public int getQuadrant() {
         return Q_BOTTOM_RIGHT;
     }
@@ -557,7 +550,6 @@ public class DetailsPane
      * @param orientation the required orientation
      */
     public void setOrientation(Orientation orientation) {
-        this.orientation = orientation;
         for (int i = 0; i < _tabPanels.size(); i++) {
             JPanel t = (JPanel) _tabPanels.elementAt(i);
             if (t instanceof Orientable) {
@@ -624,7 +616,7 @@ public class DetailsPane
     }
     private void fireTargetSet(TargetEvent targetEvent) {
         //          Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
@@ -635,7 +627,7 @@ public class DetailsPane
 
     private void fireTargetAdded(TargetEvent targetEvent) {
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
 
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
@@ -647,7 +639,7 @@ public class DetailsPane
 
     private void fireTargetRemoved(TargetEvent targetEvent) {
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
