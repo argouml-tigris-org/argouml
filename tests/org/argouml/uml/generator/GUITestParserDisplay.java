@@ -443,25 +443,23 @@ public class GUITestParserDisplay extends TestCase {
      *
      * @throws ParseException if the parsing fails.
      */
-    public void testOperationName()
-	throws ParseException
-    {
-	MOperation op;
-	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-
-	MNamespace ns =  (MNamespace)
-	    ProjectManager.getManager().getCurrentProject().getModel();
-
-	cl.setNamespace(ns);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkName(op, OPER01, "name");
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkName(op, OPER02, "name");
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkName(op, OPER03, "name2");
+    public void testOperationName() throws ParseException {
+        MOperation op;
+        Object cl = UmlFactory.getFactory().getCore().buildClass();
+        
+        MNamespace ns =  (MNamespace)
+            ProjectManager.getManager().getCurrentProject().getModel();
+        
+        ModelFacade.setNamespace(cl, ns);
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkName(op, OPER01, "name");
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkName(op, OPER02, "name");
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkName(op, OPER03, "name2");
     }
 
     /**
@@ -469,26 +467,24 @@ public class GUITestParserDisplay extends TestCase {
      *
      * @throws ParseException if the parsing fails.
      */
-    public void testOperationType()
-	throws ParseException
-    {
-	MOperation op;
-	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-
-	MNamespace ns =  (MNamespace)
-	    ProjectManager.getManager().getCurrentProject().getModel();
-
-	cl.setNamespace(ns);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkType(op, OPER01, "void");
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkType(op, OPER02, "int");
-	checkType(op, OPER01, "int");
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkType(op, OPER03, "String");
+    public void testOperationType() throws ParseException {
+        MOperation op;
+        Object cl = UmlFactory.getFactory().getCore().buildClass();
+        
+        MNamespace ns =  (MNamespace)
+            ProjectManager.getManager().getCurrentProject().getModel();
+        
+        ModelFacade.setNamespace(cl, ns);
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkType(op, OPER01, "void");
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkType(op, OPER02, "int");
+        checkType(op, OPER01, "int");
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkType(op, OPER03, "String");
     }
 
     /**
@@ -496,29 +492,27 @@ public class GUITestParserDisplay extends TestCase {
      *
      * @throws ParseException if the parsing fails.
      */
-    public void testOperationVisibility()
-	throws ParseException
-    {
-	MOperation op;
-	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-	MNamespace ns =  (MNamespace)
-	    ProjectManager.getManager().getCurrentProject().getModel();
-
-	cl.setNamespace(ns);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkVisibility(op, OPER01, "public");
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkVisibility(op, OPER02, "private");
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkVisibility(op, OPER03, "protected");
-	checkVisibility(op, OPER01, "protected");
-	checkVisibility(op, OPER02, "private");
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkVisibility(op, OPER04, "protected");
+    public void testOperationVisibility() throws ParseException {
+        MOperation op;
+        Object cl = UmlFactory.getFactory().getCore().buildClass();
+        MNamespace ns =  (MNamespace)
+            ProjectManager.getManager().getCurrentProject().getModel();
+        
+        ModelFacade.setNamespace(cl, ns);
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkVisibility(op, OPER01, "public");
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkVisibility(op, OPER02, "private");
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkVisibility(op, OPER03, "protected");
+        checkVisibility(op, OPER01, "protected");
+        checkVisibility(op, OPER02, "private");
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkVisibility(op, OPER04, "protected");
     }
 
     /**
@@ -526,42 +520,40 @@ public class GUITestParserDisplay extends TestCase {
      *
      * @throws ParseException if the parsing fails.
      */
-    public void testOperationParameters()
-	throws ParseException
-    {
-	MOperation op;
-	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-	MNamespace ns =  (MNamespace)
-	    ProjectManager.getManager().getCurrentProject().getModel();
-
-	cl.setNamespace(ns);
-
-	String res1[] = {
-	};
-	String res2[] = {
-	    "in", "foo", "float", "0" 
-	};
-	String res3[] = {
-	    "out",
-	    "foo",
-	    "double",
-	    "0.",
-	    "inout",
-	    "bar",
-	    "String",
-	    "\"\"some\"\"" 
-	};
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkParameters(op, OPER01, res1);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkParameters(op, OPER02, res2);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkParameters(op, OPER03, res3);
-	checkParameters(op, OPER01, res1);
-	checkParameters(op, OPER02, res2);
+    public void testOperationParameters() throws ParseException {
+        MOperation op;
+        Object cl = UmlFactory.getFactory().getCore().buildClass();
+        MNamespace ns =  (MNamespace)
+            ProjectManager.getManager().getCurrentProject().getModel();
+        
+        ModelFacade.setNamespace(cl, ns);
+        
+        String res1[] = {
+        };
+        String res2[] = {
+            "in", "foo", "float", "0" 
+        };
+        String res3[] = {
+            "out",
+            "foo",
+            "double",
+            "0.",
+            "inout",
+            "bar",
+            "String",
+            "\"\"some\"\"" 
+        };
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkParameters(op, OPER01, res1);
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkParameters(op, OPER02, res2);
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkParameters(op, OPER03, res3);
+        checkParameters(op, OPER01, res1);
+        checkParameters(op, OPER02, res2);
     }
 
     /**
@@ -569,35 +561,33 @@ public class GUITestParserDisplay extends TestCase {
      *
      * @throws ParseException if the parsing fails.
      */
-    public void testOperationProperties()
-	throws ParseException
-    {
-	MOperation op;
-	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-	MNamespace ns =  (MNamespace)
-	    ProjectManager.getManager().getCurrentProject().getModel();
-
-	cl.setNamespace(ns);
-
-	String res1[] = {
-	    "abstract", null,
-	    "concurrency", null,
-	    "concurrent", null,
-	    "guarded", null,
-	    "leaf", null,
-	    "query", null,
-	    "root", null,
-	    "sequential", null 
-	};
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkProperties(op, OPER01, res1);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkProperties(op, OPER02, res1);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkProperties(op, OPER03, res1);
+    public void testOperationProperties() throws ParseException {
+        MOperation op;
+        Object cl = UmlFactory.getFactory().getCore().buildClass();
+        MNamespace ns =  (MNamespace)
+            ProjectManager.getManager().getCurrentProject().getModel();
+        
+        ModelFacade.setNamespace(cl, ns);
+        
+        String res1[] = {
+            "abstract", null,
+            "concurrency", null,
+            "concurrent", null,
+            "guarded", null,
+            "leaf", null,
+            "query", null,
+            "root", null,
+            "sequential", null 
+        };
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkProperties(op, OPER01, res1);
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkProperties(op, OPER02, res1);
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkProperties(op, OPER03, res1);
     }
 
     /**
@@ -609,11 +599,11 @@ public class GUITestParserDisplay extends TestCase {
 	throws ParseException
     {
 	MOperation op;
-	MClass cl = UmlFactory.getFactory().getCore().buildClass();
+	Object cl = UmlFactory.getFactory().getCore().buildClass();
 	MNamespace ns =  (MNamespace)
 	    ProjectManager.getManager().getCurrentProject().getModel();
 
-	cl.setNamespace(ns);
+	ModelFacade.setNamespace(cl, ns);
 
 	op = UmlFactory.getFactory().getCore().buildOperation(cl);
 	softAddStereotype("opstereo1", op);
@@ -635,24 +625,24 @@ public class GUITestParserDisplay extends TestCase {
      * Test the parsing of an operation's parse exceptions.
      */
     public void testOperationParseExceptions() {
-	MOperation op;
-	MClass cl = UmlFactory.getFactory().getCore().buildClass();
-	MNamespace ns =  (MNamespace)
-	    ProjectManager.getManager().getCurrentProject().getModel();
-
-	cl.setNamespace(ns);
-
-	op = UmlFactory.getFactory().getCore().buildOperation(cl);
-	checkThrows(op, NOPER01, true, false, false);
-	checkThrows(op, NOPER02, true, false, false);
-	checkThrows(op, NOPER03, true, false, false);
-	checkThrows(op, NOPER04, true, false, false);
-	checkThrows(op, NOPER05, true, false, false);
-	checkThrows(op, NOPER06, true, false, false);
-	checkThrows(op, NOPER07, true, false, false);
-	checkThrows(op, NOPER08, true, false, false);
-	checkThrows(op, NOPER09, true, false, false);
-	checkThrows(op, NOPER10, true, false, false);
+        MOperation op;
+        Object cl = UmlFactory.getFactory().getCore().buildClass();
+        MNamespace ns =  (MNamespace)
+            ProjectManager.getManager().getCurrentProject().getModel();
+        
+        ModelFacade.setNamespace(cl, ns);
+        
+        op = UmlFactory.getFactory().getCore().buildOperation(cl);
+        checkThrows(op, NOPER01, true, false, false);
+        checkThrows(op, NOPER02, true, false, false);
+        checkThrows(op, NOPER03, true, false, false);
+        checkThrows(op, NOPER04, true, false, false);
+        checkThrows(op, NOPER05, true, false, false);
+        checkThrows(op, NOPER06, true, false, false);
+        checkThrows(op, NOPER07, true, false, false);
+        checkThrows(op, NOPER08, true, false, false);
+        checkThrows(op, NOPER09, true, false, false);
+        checkThrows(op, NOPER10, true, false, false);
     }
 
     private void checkName(Object attr, String text, String name)

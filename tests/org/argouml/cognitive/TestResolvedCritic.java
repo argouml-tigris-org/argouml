@@ -40,81 +40,81 @@ public class TestResolvedCritic extends TestCase {
     }
 
     public void testConstructors() {
-	MClass testmc = CoreFactory.getFactory().buildClass();
-	Critic c = new Critic();
-	String crString = "class org.argouml.cognitive.critics.Critic";
-	ResolvedCritic rc;
-	Vector vec = new Vector();
-	VectorSet set = new VectorSet();
-
-	/* ResolvedCritic(String, Vector) */
-
-	rc = new ResolvedCritic("rc", null);
-	assertTrue("getCritic simple", "rc".equals(rc.getCritic()));
-	assertTrue(
-		   "getOffenderList simple",
-		   (rc.getOffenderList() == null
-		    || rc.getOffenderList().size() == 0));
-
-	vec.add("str1");
-	rc = new ResolvedCritic("rc2", vec);
-	assertTrue("getCritic 2nd", "rc2".equals(rc.getCritic()));
-	assertTrue(
-		   "getOffenderList 2nd",
-		   rc.getOffenderList() != null
-		   && "str1".equals(rc.getOffenderList().get(0)));
-
-	/* ResolvedCritic(Critic, VectorSet) */
-
-	try {
-	    rc = new ResolvedCritic(c, null);
-	    System.out.println(rc.getCritic());
-	    assertTrue("getCritic 1", crString.equals(rc.getCritic()));
-	    assertTrue(
-		       "getOffenderList 1",
-		       rc.getOffenderList() == null
-		       || rc.getOffenderList().size() == 0);
-	} catch (UnresolvableException ure1) {
-	    assertTrue("create 1 with MClass", false);
-	}
-
-	set.addElement(testmc);
-	try {
-	    rc = new ResolvedCritic(c, set);
-
-	    assertTrue("getCritic 2", crString.equals(rc.getCritic()));
-	    assertTrue(
-		       "assigns id 2",
-		       ItemUID.getIDOfObject(testmc, false) != null);
-	    assertTrue(
-		       "getOffenderList 2",
-		       rc.getOffenderList() != null
-		       && (ItemUID.getIDOfObject(testmc, false).equals(
-				   rc.getOffenderList().get(0))));
-	} catch (UnresolvableException ure1) {
-	    assertTrue("create 2 with MClass", false);
-	}
-
-	/* ResolvedCritic(Critic, VectorSet, boolean) */
-
-	/* testmc should now have an ItemUID so we should be able to
-	 * create without adding a new ItemUID */
-	try {
-	    rc = new ResolvedCritic(c, set, false);
-
-	    assertTrue("getCritic 3", crString.equals(rc.getCritic()));
-	    assertTrue(
-		       "assigns id 3",
-		       ItemUID.getIDOfObject(testmc, false) != null);
-	    assertTrue(
-		       "getOffenderList 3",
-		       rc.getOffenderList() != null
-		       && (ItemUID.getIDOfObject(testmc, false).equals(
-				   rc.getOffenderList().get(0))));
-	} catch (UnresolvableException ure1) {
-	    assertTrue("create 3 with MClass", false);
-	}
-	set.remove(testmc);
+        Object testmc = CoreFactory.getFactory().buildClass();
+        Critic c = new Critic();
+        String crString = "class org.argouml.cognitive.critics.Critic";
+        ResolvedCritic rc;
+        Vector vec = new Vector();
+        VectorSet set = new VectorSet();
+        
+        /* ResolvedCritic(String, Vector) */
+        
+        rc = new ResolvedCritic("rc", null);
+        assertTrue("getCritic simple", "rc".equals(rc.getCritic()));
+        assertTrue(
+        	   "getOffenderList simple",
+        	   (rc.getOffenderList() == null
+        	    || rc.getOffenderList().size() == 0));
+        
+        vec.add("str1");
+        rc = new ResolvedCritic("rc2", vec);
+        assertTrue("getCritic 2nd", "rc2".equals(rc.getCritic()));
+        assertTrue(
+        	   "getOffenderList 2nd",
+        	   rc.getOffenderList() != null
+        	   && "str1".equals(rc.getOffenderList().get(0)));
+        
+        /* ResolvedCritic(Critic, VectorSet) */
+        
+        try {
+            rc = new ResolvedCritic(c, null);
+            System.out.println(rc.getCritic());
+            assertTrue("getCritic 1", crString.equals(rc.getCritic()));
+            assertTrue(
+        	       "getOffenderList 1",
+        	       rc.getOffenderList() == null
+        	       || rc.getOffenderList().size() == 0);
+        } catch (UnresolvableException ure1) {
+            assertTrue("create 1 with MClass", false);
+        }
+        
+        set.addElement(testmc);
+        try {
+            rc = new ResolvedCritic(c, set);
+        
+            assertTrue("getCritic 2", crString.equals(rc.getCritic()));
+            assertTrue(
+        	       "assigns id 2",
+        	       ItemUID.getIDOfObject(testmc, false) != null);
+            assertTrue(
+        	       "getOffenderList 2",
+        	       rc.getOffenderList() != null
+        	       && (ItemUID.getIDOfObject(testmc, false).equals(
+        			   rc.getOffenderList().get(0))));
+        } catch (UnresolvableException ure1) {
+            assertTrue("create 2 with MClass", false);
+        }
+        
+        /* ResolvedCritic(Critic, VectorSet, boolean) */
+        
+        /* testmc should now have an ItemUID so we should be able to
+         * create without adding a new ItemUID */
+        try {
+            rc = new ResolvedCritic(c, set, false);
+        
+            assertTrue("getCritic 3", crString.equals(rc.getCritic()));
+            assertTrue(
+        	       "assigns id 3",
+        	       ItemUID.getIDOfObject(testmc, false) != null);
+            assertTrue(
+        	       "getOffenderList 3",
+        	       rc.getOffenderList() != null
+        	       && (ItemUID.getIDOfObject(testmc, false).equals(
+        			   rc.getOffenderList().get(0))));
+        } catch (UnresolvableException ure1) {
+            assertTrue("create 3 with MClass", false);
+        }
+        set.remove(testmc);
     }
 
     public void testEquals() {

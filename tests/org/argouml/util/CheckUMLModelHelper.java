@@ -226,15 +226,16 @@ public class CheckUMLModelHelper {
         }
     } 
     
-    public static void isValidStereoType(TestCase tc, 
+    public static void isValidStereoType(
+            TestCase tc, 
             AbstractUmlModelFactory f, 
             String[] names) {
         try {
             MNamespace ns = CoreFactory.getFactory().createNamespace();
-            MClass clazz = CoreFactory.getFactory().buildClass(ns);
+            Object clazz = CoreFactory.getFactory().buildClass(ns);
             MStereotype stereo1 = ExtensionMechanismsFactory.getFactory()
                     .buildStereotype(clazz, "test1", ns);
-	    for (int i = 0; i < names.length; i++) {
+            for (int i = 0; i < names.length; i++) {
                 try {
                     Method m = f.getClass()
                         .getMethod("create" + names[i], new Class[] {});

@@ -60,7 +60,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ns = ModelManagementFactory.getFactory().createModel();
-        elem = CoreFactory.getFactory().buildClass(ns);
+        elem = (MModelElement)CoreFactory.getFactory().buildClass(ns);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLModelElementConstraintListModel();

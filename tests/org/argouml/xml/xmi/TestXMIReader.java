@@ -71,13 +71,14 @@ public class TestXMIReader extends TestCase {
      * @throws Exception
      */
     public void testReadReturnParameter()
-	throws IOException, MalformedURLException, IllegalFormatException,
-	       Exception
-    {
+        throws IOException, 
+               MalformedURLException, 
+               IllegalFormatException,
+	           Exception {
         // next statement should be in an ArgoTestCase or something,  
         // is almost always needed
         Project p = ProjectManager.getManager().makeEmptyProject();
-        MClass clazz = CoreFactory.getFactory().buildClass(p.getModel());
+        Object clazz = CoreFactory.getFactory().buildClass(p.getModel());
         MOperation oper = CoreFactory.getFactory().buildOperation(clazz);
         ModelFacade.setType(oper.getParameter(0), p.findType("String"));
         File file = new File("test.zargo");

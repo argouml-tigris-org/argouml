@@ -671,7 +671,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         				       + "was null or "
         				       + "was instanceof "
         				       + "MAssociationClass");
-        return buildAssociationClass(buildClass(), end1, end2);
+        return buildAssociationClass((MClass)buildClass(), end1, end2);
     }
 
     /**
@@ -966,30 +966,27 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param supplier
      * @return MBinding
      */
-    public MBinding buildBinding(MModelElement client,
+    private MBinding buildBinding(MModelElement client,
 				 MModelElement supplier) {
-	// 2002-07-08
-	// Jaap Branderhorst
-	// checked for existence of client
-	Collection clientDependencies = supplier.getClientDependencies();
-	if (!clientDependencies.isEmpty()) {
-	    if (clientDependencies.contains(client)) {
-		throw new IllegalArgumentException(
-						   "Supplier has allready "
-						   + "client "
-						   + client.getName()
-						   + " as Client");
-	    }
-	}
-	// end new code
-	MBinding binding = createBinding();
-	binding.addSupplier(supplier);
-	binding.addClient(client);
-	if (supplier.getNamespace() != null)
-	    binding.setNamespace(supplier.getNamespace());
-	else if (client.getNamespace() != null)
-	    binding.setNamespace(client.getNamespace());
-	return binding;
+        Collection clientDependencies = supplier.getClientDependencies();
+        if (!clientDependencies.isEmpty()
+                && clientDependencies.contains(client)) {
+            throw new IllegalArgumentException(
+            				   "Supplier has already "
+            				   + "client "
+            				   + client.getName()
+            				   + " as Client");
+        }
+        // end new code
+        MBinding binding = createBinding();
+        binding.addSupplier(supplier);
+        binding.addClient(client);
+        if (supplier.getNamespace() != null) {
+            binding.setNamespace(supplier.getNamespace());
+        } else if (client.getNamespace() != null) {
+            binding.setNamespace(client.getNamespace());
+        }
+        return binding;
     }
 
     /**
@@ -997,19 +994,19 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * any model element by default. Users should not forget to add ownership
      * @return MClass
      */
-    public MClass buildClass() {
-	MClass cl = createClass();
-	// cl.setNamespace(ProjectBrowser.getInstance().getProject()
-	// .getModel());
-	cl.setName("");
-	cl.setStereotype(null);
-	cl.setAbstract(false);
-	cl.setActive(false);
-	cl.setRoot(false);
-	cl.setLeaf(false);
-	cl.setSpecification(false);
-	cl.setVisibility(MVisibilityKind.PUBLIC);
-	return cl;
+    public Object buildClass() {
+        MClass cl = createClass();
+        // cl.setNamespace(ProjectBrowser.getInstance().getProject()
+        // .getModel());
+        cl.setName("");
+        cl.setStereotype(null);
+        cl.setAbstract(false);
+        cl.setActive(false);
+        cl.setRoot(false);
+        cl.setLeaf(false);
+        cl.setSpecification(false);
+        cl.setVisibility(MVisibilityKind.PUBLIC);
+        return cl;
     }
 
     /**
@@ -1019,11 +1016,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return MClass
      * @see #buildClass()
      */
-    public MClass buildClass(Object owner) {
-	MClass cl = buildClass();
-	if (owner instanceof MNamespace)
-	    cl.setNamespace((MNamespace) owner);
-	return cl;
+    public Object buildClass(Object owner) {
+        Object clazz = buildClass();
+        if (owner instanceof MNamespace)
+            ModelFacade.setNamespace(clazz, (MNamespace) owner);
+        return clazz;
     }
 
     /**
@@ -1033,10 +1030,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return MClass
      * @see #buildClass()
      */
-    public MClass buildClass(String name) {
-	MClass cl = buildClass();
-	cl.setName(name);
-	return cl;
+    public Object buildClass(String name) {
+        Object clazz = buildClass();
+        ModelFacade.setName(clazz, name);
+        return clazz;
     }
 
     /**
@@ -1047,12 +1044,13 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return MClass
      * @see #buildClass()
      */
-    public MClass buildClass(String name, Object owner) {
-	MClass cl = buildClass();
-	cl.setName(name);
-	if (owner instanceof MNamespace)
-	    cl.setNamespace((MNamespace) owner);
-	return cl;
+    public Object buildClass(String name, Object owner) {
+        Object clazz = buildClass();
+        ModelFacade.setName(clazz, name);
+        if (owner instanceof MNamespace) {
+            ModelFacade.setNamespace(clazz, (MNamespace) owner);
+        }
+        return clazz;
     }
 
     /**

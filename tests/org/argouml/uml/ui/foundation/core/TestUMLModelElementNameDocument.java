@@ -26,6 +26,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
@@ -42,7 +43,7 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class TestUMLModelElementNameDocument extends TestCase {
     
-    private MModelElement elem = null;
+    private Object elem = null;
     private int oldEventPolicy;
     private UMLModelElementNameDocument model;
     private MModel ns;
@@ -84,27 +85,24 @@ public class TestUMLModelElementNameDocument extends TestCase {
         model = null;
     }
     
-    public void testSetName()
-	throws BadLocationException
-    {
-        elem.setName("test");
-	assertEquals("test", model.getText(0, model.getLength()));
+    public void testSetName() throws BadLocationException {
+        ModelFacade.setName(elem, "test");
+        assertEquals("test", model.getText(0, model.getLength()));
     }
     
-    public void testRemoveName()
-	throws BadLocationException
+    public void testRemoveName() throws BadLocationException
     {
-        elem.setName("test");
-        elem.setName(null);
-	assertEquals("", model.getText(0, model.getLength()));
+        ModelFacade.setName(elem, "test");
+        ModelFacade.setName(elem, "");
+        assertEquals("", model.getText(0, model.getLength()));
     }
     
     public void testInsertString()
 	throws BadLocationException
     {
-        elem.setName("");
-	model.insertString(0, "test", null);
-        assertEquals("test", elem.getName());
+        ModelFacade.setName(elem, "");
+    	model.insertString(0, "test", null);
+        assertEquals("test", ModelFacade.getName(elem));
     }
     
     public void testRemoveString() 
@@ -112,30 +110,30 @@ public class TestUMLModelElementNameDocument extends TestCase {
     {
 	model.insertString(0, "test", null);
 	model.remove(0, model.getLength());
-        assertEquals("", elem.getName());
+        assertEquals("", ModelFacade.getName(elem));
     }
     
     public void testAppendString()
 	throws BadLocationException
     {
-        elem.setName("test");
-	model.insertString(model.getLength(), "test", null);
-        assertEquals("testtest", elem.getName());
+        ModelFacade.setName(elem, "test");
+    	model.insertString(model.getLength(), "test", null);
+        assertEquals("testtest", ModelFacade.getName(elem));
     }
     
     public void testInsertStringHalfway()
 	throws BadLocationException
     {
-        elem.setName("test");
-	model.insertString(1, "test", null);
-        assertEquals("ttestest", elem.getName());
+        ModelFacade.setName(elem, "test");
+    	model.insertString(1, "test", null);
+        assertEquals("ttestest", ModelFacade.getName(elem));
     }
     
     public void testRemoveStringHalfway()
 	throws BadLocationException
     {
-        elem.setName("test");
-	model.remove(1, model.getLength() - 2);
-        assertEquals("tt", elem.getName());
+        ModelFacade.setName(elem, "test");
+    	model.remove(1, model.getLength() - 2);
+        assertEquals("tt", ModelFacade.getName(elem));
     }
 }

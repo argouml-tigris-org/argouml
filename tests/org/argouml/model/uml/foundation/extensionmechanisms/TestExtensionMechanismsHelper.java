@@ -54,7 +54,7 @@ public class TestExtensionMechanismsHelper extends TestCase {
         // this test does not work yet since there are problems with
         // isolating the project from the projectbrowser
         MNamespace ns = CoreFactory.getFactory().createNamespace();
-        MClass clazz = CoreFactory.getFactory().buildClass(ns);
+        Object clazz = CoreFactory.getFactory().buildClass(ns);
         MStereotype stereo1 =
 	    ExtensionMechanismsFactory.getFactory().buildStereotype(clazz,
 								    "test1");

@@ -104,94 +104,94 @@ public class TestItemUID extends TestCase {
     }
 
     public void testAssignIDsToObjects() {
-	MClass testmc = CoreFactory.getFactory().buildClass();
-	UMLActivityDiagram actdiag = new UMLActivityDiagram();
-	UMLClassDiagram classdiag = new UMLClassDiagram();
-	UMLCollaborationDiagram colldiag = new UMLCollaborationDiagram();
-	UMLDeploymentDiagram depdiag = new UMLDeploymentDiagram();
-	UMLSequenceDiagram seqdiag = new UMLSequenceDiagram();
-	UMLStateDiagram statediag = new UMLStateDiagram();
-	UMLUseCaseDiagram ucdiag = new UMLUseCaseDiagram();
-
-	FigActionState figactionstate = new FigActionState();
-
-	// FigAssociationRole figassociationrole = new FigAssociationRole();
-	FigClassifierRole figclassifierrole = new FigClassifierRole();
-
-	FigComponent figcomponent = new FigComponent();
-	FigComponentInstance figcomponentinstance = new FigComponentInstance();
-	FigMNode figmnode = new FigMNode();
-	FigMNodeInstance figmnodeinstance = new FigMNodeInstance();
-	FigObject figobject = new FigObject();
-
-	FigBranchState figbranchstate = new FigBranchState();
-	FigCompositeState figcompositestate = new FigCompositeState();
-	FigDeepHistoryState figdeephistorystate = new FigDeepHistoryState();
-	FigFinalState figfinalstate = new FigFinalState();
-	FigForkState figforkstate = new FigForkState();
-	FigHistoryState fighistorystate = new FigHistoryState();
-	FigInitialState figinitialstate = new FigInitialState();
-	FigJoinState figjoinstate = new FigJoinState();
-	FigShallowHistoryState figshallowhistorystate =
-	    new FigShallowHistoryState();
-	//FigState figstate = new FigState();
-	FigTransition figtransition = new FigTransition();
-
-	FigClass figclass = new FigClass();
-	FigEdgeNote figedgenote = new FigEdgeNote();
-	FigInstance figinstance = new FigInstance();
-	FigInterface figinterface = new FigInterface();
-	FigLink figlink = new FigLink();
-	FigPackage figpackage = new FigPackage();
-
-	FigActor figactor = new FigActor();
-	FigExtend figextend = new FigExtend();
-	FigInclude figinclude = new FigInclude();
-	FigUseCase figusecase = new FigUseCase();
-
-	checkAssignIDToObject(testmc, true, true);
-	checkAssignIDToObject(actdiag, true, true);
-	checkAssignIDToObject(classdiag, true, true);
-	checkAssignIDToObject(colldiag, true, true);
-	checkAssignIDToObject(depdiag, true, true);
-	checkAssignIDToObject(seqdiag, true, true);
-	checkAssignIDToObject(statediag, true, true);
-	checkAssignIDToObject(ucdiag, true, true);
-
-	checkAssignIDToObject(figactionstate, true, true);
-
-	//checkAssignIDToObject(figassociationrole, true, true);
-	checkAssignIDToObject(figclassifierrole, true, true);
-
-	checkAssignIDToObject(figcomponent, true, true);
-	checkAssignIDToObject(figcomponentinstance, true, true);
-	checkAssignIDToObject(figmnode, true, true);
-	checkAssignIDToObject(figmnodeinstance, true, true);
-	checkAssignIDToObject(figobject, true, true);
-
-	checkAssignIDToObject(figbranchstate, true, true);
-	checkAssignIDToObject(figcompositestate, true, true);
-	checkAssignIDToObject(figdeephistorystate, true, true);
-	checkAssignIDToObject(figfinalstate, true, true);
-	checkAssignIDToObject(figforkstate, true, true);
-	checkAssignIDToObject(fighistorystate, true, true);
-	checkAssignIDToObject(figinitialstate, true, true);
-	checkAssignIDToObject(figjoinstate, true, true);
-	checkAssignIDToObject(figshallowhistorystate, true, true);
-	//checkAssignIDToObject(figstate, true, true);
-	checkAssignIDToObject(figtransition, true, true);
-
-	checkAssignIDToObject(figclass, true, true);
-	checkAssignIDToObject(figedgenote, true, true);
-	checkAssignIDToObject(figinstance, true, true);
-	checkAssignIDToObject(figinterface, true, true);
-	checkAssignIDToObject(figlink, true, true);
-	checkAssignIDToObject(figpackage, true, true);
-
-	checkAssignIDToObject(figactor, true, true);
-	checkAssignIDToObject(figextend, true, true);
-	checkAssignIDToObject(figinclude, true, true);
-	checkAssignIDToObject(figusecase, true, true);
+        Object testmc = CoreFactory.getFactory().buildClass();
+        UMLActivityDiagram actdiag = new UMLActivityDiagram();
+        UMLClassDiagram classdiag = new UMLClassDiagram();
+        UMLCollaborationDiagram colldiag = new UMLCollaborationDiagram();
+        UMLDeploymentDiagram depdiag = new UMLDeploymentDiagram();
+        UMLSequenceDiagram seqdiag = new UMLSequenceDiagram();
+        UMLStateDiagram statediag = new UMLStateDiagram();
+        UMLUseCaseDiagram ucdiag = new UMLUseCaseDiagram();
+        
+        FigActionState figactionstate = new FigActionState();
+        
+        // FigAssociationRole figassociationrole = new FigAssociationRole();
+        FigClassifierRole figclassifierrole = new FigClassifierRole();
+        
+        FigComponent figcomponent = new FigComponent();
+        FigComponentInstance figcomponentinstance = new FigComponentInstance();
+        FigMNode figmnode = new FigMNode();
+        FigMNodeInstance figmnodeinstance = new FigMNodeInstance();
+        FigObject figobject = new FigObject();
+        
+        FigBranchState figbranchstate = new FigBranchState();
+        FigCompositeState figcompositestate = new FigCompositeState();
+        FigDeepHistoryState figdeephistorystate = new FigDeepHistoryState();
+        FigFinalState figfinalstate = new FigFinalState();
+        FigForkState figforkstate = new FigForkState();
+        FigHistoryState fighistorystate = new FigHistoryState();
+        FigInitialState figinitialstate = new FigInitialState();
+        FigJoinState figjoinstate = new FigJoinState();
+        FigShallowHistoryState figshallowhistorystate =
+            new FigShallowHistoryState();
+        //FigState figstate = new FigState();
+        FigTransition figtransition = new FigTransition();
+        
+        FigClass figclass = new FigClass();
+        FigEdgeNote figedgenote = new FigEdgeNote();
+        FigInstance figinstance = new FigInstance();
+        FigInterface figinterface = new FigInterface();
+        FigLink figlink = new FigLink();
+        FigPackage figpackage = new FigPackage();
+        
+        FigActor figactor = new FigActor();
+        FigExtend figextend = new FigExtend();
+        FigInclude figinclude = new FigInclude();
+        FigUseCase figusecase = new FigUseCase();
+        
+        checkAssignIDToObject(testmc, true, true);
+        checkAssignIDToObject(actdiag, true, true);
+        checkAssignIDToObject(classdiag, true, true);
+        checkAssignIDToObject(colldiag, true, true);
+        checkAssignIDToObject(depdiag, true, true);
+        checkAssignIDToObject(seqdiag, true, true);
+        checkAssignIDToObject(statediag, true, true);
+        checkAssignIDToObject(ucdiag, true, true);
+        
+        checkAssignIDToObject(figactionstate, true, true);
+        
+        //checkAssignIDToObject(figassociationrole, true, true);
+        checkAssignIDToObject(figclassifierrole, true, true);
+        
+        checkAssignIDToObject(figcomponent, true, true);
+        checkAssignIDToObject(figcomponentinstance, true, true);
+        checkAssignIDToObject(figmnode, true, true);
+        checkAssignIDToObject(figmnodeinstance, true, true);
+        checkAssignIDToObject(figobject, true, true);
+        
+        checkAssignIDToObject(figbranchstate, true, true);
+        checkAssignIDToObject(figcompositestate, true, true);
+        checkAssignIDToObject(figdeephistorystate, true, true);
+        checkAssignIDToObject(figfinalstate, true, true);
+        checkAssignIDToObject(figforkstate, true, true);
+        checkAssignIDToObject(fighistorystate, true, true);
+        checkAssignIDToObject(figinitialstate, true, true);
+        checkAssignIDToObject(figjoinstate, true, true);
+        checkAssignIDToObject(figshallowhistorystate, true, true);
+        //checkAssignIDToObject(figstate, true, true);
+        checkAssignIDToObject(figtransition, true, true);
+        
+        checkAssignIDToObject(figclass, true, true);
+        checkAssignIDToObject(figedgenote, true, true);
+        checkAssignIDToObject(figinstance, true, true);
+        checkAssignIDToObject(figinterface, true, true);
+        checkAssignIDToObject(figlink, true, true);
+        checkAssignIDToObject(figpackage, true, true);
+        
+        checkAssignIDToObject(figactor, true, true);
+        checkAssignIDToObject(figextend, true, true);
+        checkAssignIDToObject(figinclude, true, true);
+        checkAssignIDToObject(figusecase, true, true);
     }
 
     private void checkAssignIDToObject(
