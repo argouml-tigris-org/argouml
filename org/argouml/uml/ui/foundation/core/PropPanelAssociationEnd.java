@@ -35,14 +35,13 @@ import javax.swing.border.TitledBorder;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.GridLayout2;
-
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLMultiplicityComboBox;
+import org.argouml.uml.ui.UMLMultiplicityComboBox2;
+import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.util.ConfigLoader;
 
@@ -66,10 +65,14 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     /**
      * The combobox for the multiplicity of this type.
-     * TODO: should be changed into a textfield so the user can edit it more
-     * easily.
      */
-    protected JComboBox _multiplicityComboBox;
+    protected UMLComboBox2 _multiplicityComboBox;
+    
+    /** 
+     * Model for the MultiplicityComboBox 
+     */
+    private static UMLMultiplicityComboBoxModel multiplicityComboBoxModel;
+    
 
     /**
      * The checkbox that shows if this association end is navigable.
@@ -145,7 +148,6 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     protected void createControls(Class mclass) {
         _typeCombobox = new UMLComboBox2(new UMLAssociationEndTypeComboBoxModel(), ActionSetAssociationEndType.SINGLETON, true);
-        _multiplicityComboBox = new UMLMultiplicityComboBox(this, mclass);
         JList associationList = new UMLLinkedList(new UMLAssociationEndAssociationListModel());
         associationList.setVisibleRowCount(1);
         _associationScroll = new JScrollPane(associationList);
@@ -167,7 +169,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     protected void positionControls() {
         addField(_associationLabel, _associationScroll);
         addField(Translator.localize("UMLMenu", "label.type"), _typeCombobox);
-        addField(Translator.localize("UMLMenu", "label.multiplicity"), _multiplicityComboBox);
+        addField(Translator.localize("UMLMenu", "label.multiplicity"), getMultiplicityComboBox());
 
         addSeperator();
 
@@ -193,6 +195,25 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     }
 
     protected void setAssociationLabel(String label) {
+    }
+    
+    /**
+     * Returns the multiplicityComboBox.
+     * @return UMLMultiplicityComboBox2
+     */
+    protected UMLComboBox2 getMultiplicityComboBox() {
+	if (_multiplicityComboBox == null) {
+	    if (multiplicityComboBoxModel == null) {
+		multiplicityComboBoxModel =
+		    new UMLAssociationEndMultiplicityComboBoxModel();
+	    }
+	    _multiplicityComboBox =
+		new UMLMultiplicityComboBox2(
+				 multiplicityComboBoxModel,
+				 ActionSetAssociationEndMultiplicity.SINGLETON);
+	    _multiplicityComboBox.setEditable(true);
+	}
+	return _multiplicityComboBox;
     }
 
     /**
