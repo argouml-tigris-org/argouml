@@ -23,7 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.events;
-import org.argouml.application.api.*;
+import org.argouml.application.api.ArgoModule;
 
 /** ArgoModuleEvent is used to notify interested parties
  *  that the module which is the event source
