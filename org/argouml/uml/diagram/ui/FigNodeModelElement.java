@@ -70,6 +70,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   public static Font ITALIC_LABEL_FONT;
   public final int MARGIN = 2;
 
+  protected static final int ROWHEIGHT = 17; // min. 17, used to calculate y pos of FigText items in a compartment
+  protected static final int STEREOHEIGHT = 18;
 
   static {
     LABEL_FONT = MetalLookAndFeel.getSubTextFont();
@@ -85,6 +87,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   protected Vector _enclosedFigs = new Vector();
   protected Fig _encloser = null;
   protected boolean _readyToEdit = true;
+  protected boolean suppressCalcBounds = false;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -363,8 +366,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   ////////////////////////////////////////////////////////////////
   // event handlers - MouseListener implementation
 
-  /** If the user double clicks on anu part of this FigNode, pass it
-   *  down to one of the internal Figs.  This allows the user to
+  /** If the user double clicks on any part of this FigNode, pass it
+   *  down to one of the internal Figs. This allows the user to
    *  initiate direct text editing. */
 	public void mouseClicked(MouseEvent me) {
 		if (!_readyToEdit) {
@@ -387,8 +390,11 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 			if (f instanceof MouseListener) ((MouseListener)f).mouseClicked(me);
 			else if (f instanceof FigGroup) {
 				//this enables direct text editing for sub figs of a FigGroup object:
-				f = ((FigGroup)f).hitFig(r);
-				if (f instanceof MouseListener) ((MouseListener)f).mouseClicked(me);
+				Fig f2 = ((FigGroup)f).hitFig(r);
+				if (f2 instanceof MouseListener)
+				  ((MouseListener)f2).mouseClicked(me);
+				else
+				  createFeatureIn((FigGroup)f,me);
 			}
 		}
 		me.consume();
@@ -445,6 +451,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     updateStereotypeText();
   }
 
+  protected void createFeatureIn(FigGroup fg, InputEvent me) {
+    // must be overridden to make sense
+    // (I didn't want to make it abstract because it might not be required)
+  }
 
 	public void propertySet(MElementEvent mee) {
 	    //if (_group != null) _group.propertySet(mee);
@@ -508,19 +518,52 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
  /** This default implementation simply requests the default notation.
   */
-    public NotationName getContextNotation() { return null; }
+  public NotationName getContextNotation() { return null; }
 
-    public void notationChanged(ArgoNotationEvent event) {
+  public void notationChanged(ArgoNotationEvent event) {
 	renderingChanged();
         damage();
-    }
+  }
 
-    public void notationAdded(ArgoNotationEvent event) { }
-    public void notationRemoved(ArgoNotationEvent event) { }
-    public void notationProviderAdded(ArgoNotationEvent event) { }
-    public void notationProviderRemoved(ArgoNotationEvent event) { }
+  public void notationAdded(ArgoNotationEvent event) { }
+  public void notationRemoved(ArgoNotationEvent event) { }
+  public void notationProviderAdded(ArgoNotationEvent event) { }
+  public void notationProviderRemoved(ArgoNotationEvent event) { }
 
-    public void renderingChanged() {
-    }
+  public void renderingChanged() {
+  }
 
+  public void calcBounds() {
+	if (suppressCalcBounds)
+	    return;
+	super.calcBounds();
+  }
+
+  /** returns the new size of the FigGroup (either attributes or operations)
+      after calculation new bounds for all sub-figs, considering their
+      minimal sizes; FigGroup need not be displayed; no update event is fired */
+  protected Dimension getUpdatedSize(FigGroup fg, int x, int y, int w, int h) {
+	int newW = w;
+	int n = fg.getFigs().size()-1;
+	int newH = Math.max(h,ROWHEIGHT*Math.max(1,n)+1);
+	int step = (n>0) ? newH / n : 0; // width step between FigText objects
+	//int maxA = Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
+
+	//set new bounds for all included figs
+	Enumeration figs = fg.elements();
+	Fig bigPort = (Fig)figs.nextElement();
+	Fig fi;
+	int fw, yy = y;
+	while (figs.hasMoreElements()) {
+	  fi = (Fig)figs.nextElement();
+	  fw = fi.getMinimumSize().width;
+	  fi.setBounds(x+1,yy+1,fw,ROWHEIGHT-2);
+	  if (newW < fw+2)
+	      newW = fw+2;
+	  yy += step;
+	}
+	bigPort.setBounds(x,y,newW,newH); // rectangle containing all following FigText objects
+	fg.calcBounds();
+	return new Dimension(newW,newH);
+  }
 } /* end class FigNodeModelElement */

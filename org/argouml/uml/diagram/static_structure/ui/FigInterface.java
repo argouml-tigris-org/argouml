@@ -53,9 +53,6 @@ public class FigInterface extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // constants
 
-  private static final int ROWHEIGHT = 17; // min. 17, used to calculate y pos of FigText items in _operVec
-  private static final int STEREOHEIGHT = 18;
-
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -64,9 +61,9 @@ public class FigInterface extends FigNodeModelElement {
   protected FigRect _operBigPort;
   protected FigRect _stereoLineBlinder;
   public MElementResidence resident = new MElementResidenceImpl();
-  private boolean suppressCalcBounds = false;
 
   protected Vector mOpers = new Vector();
+  protected CompartmentFigText highlightedFigText = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -206,23 +203,60 @@ public class FigInterface extends FigNodeModelElement {
   public void mousePressed(MouseEvent me) {
     super.mousePressed(me);
     boolean targetIsSet = false;
+    int i = 0;
     Editor ce = Globals.curEditor();
     Selection sel = ce.getSelectionManager().findSelectionFor(this);
     if (sel instanceof SelectionClass)
       ((SelectionClass)sel).hideButtons();
+    unhighlight();
     //display op properties if necessary:
     Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
 	Fig f = hitFig(r);
     if (f == _operVec) {
 	  Vector v = _operVec.getFigs();
-	  int i = mOpers.size() * (me.getY() - f.getY() - 3) / _operVec.getHeight();
+	  i = mOpers.size() * (me.getY() - f.getY() - 3) / _operVec.getHeight();
 	  if (i >= 0 && i < mOpers.size() && i < v.size()-1) {
 	    ProjectBrowser.TheInstance.setTarget(mOpers.elementAt(i));
 	    targetIsSet = true;
+	    f = (Fig)v.elementAt(i+1);
+		((CompartmentFigText)f).setHighlighted(true);
+		highlightedFigText = (CompartmentFigText)f;
 	  }
 	}
 	if (targetIsSet == false)
 	  ProjectBrowser.TheInstance.setTarget(getOwner());
+  }
+
+  public void mouseExited(MouseEvent me) {
+    super.mouseExited(me);
+    unhighlight();
+  }
+
+  public void keyPressed(KeyEvent ke) {
+    int key = ke.getKeyCode();
+    if (key == KeyEvent.VK_TAB) {
+      CompartmentFigText ft = unhighlight();
+      if (ft != null) {
+        int i = _operVec.getFigs().indexOf(ft);
+        if (i != -1) {
+          if (ke.isShiftDown()) {
+            ft = (CompartmentFigText)getPreviousVisibleFeature(ft,i);
+          } else {
+            ft = (CompartmentFigText)getNextVisibleFeature(ft,i);
+          }
+          if (ft != null) {
+	        ft.setHighlighted(true);
+	        highlightedFigText = ft;
+	        return;
+          }
+        }
+      }
+    } else if (key == KeyEvent.VK_ENTER && highlightedFigText != null) {
+      highlightedFigText.startTextEditor(ke);
+	  ke.consume();
+	  return;
+    }
+    super.keyPressed(ke);
   }
 
   public void setEnclosingFig(Fig encloser) {
@@ -269,10 +303,74 @@ public class FigInterface extends FigNodeModelElement {
     if (cls == null) return;
     int i = _operVec.getFigs().indexOf(ft);
 	if (i != -1) {
-	  if (i > 0 && i <= mOpers.size())
-	    ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)mOpers.elementAt(i-1),ft.getText());
+	  if (i > 0 && i <= mOpers.size()) {
+	    ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)mOpers.elementAt(i-1),ft.getText().trim());
+	    highlightedFigText = (CompartmentFigText)ft;
+	    highlightedFigText.setHighlighted(true);
+	  }
 	  return;
 	}
+  }
+
+  protected FigText getPreviousVisibleFeature(FigText ft, int i) {
+	FigText ft2 = null;
+	Vector v = _operVec.getFigs();
+	if (i < 1 || i >= v.size() || !((FigText)v.elementAt(i)).isDisplayed())
+	  return null;
+	do {
+	  i--;
+	  if (i < 1)
+		i = v.size() - 1;
+	  ft2 = (FigText)v.elementAt(i);
+	  if (!ft2.isDisplayed())
+	    ft2 = null;
+	} while (ft2 == null);
+	return ft2;
+  }
+
+  protected FigText getNextVisibleFeature(FigText ft, int i) {
+	FigText ft2 = null;
+	Vector v = _operVec.getFigs();
+	if (i < 1 || i >= v.size() || !((FigText)v.elementAt(i)).isDisplayed())
+	  return null;
+	do {
+	  i++;
+	  if (i >= v.size())
+		i = 1;
+	  ft2 = (FigText)v.elementAt(i);
+	  if (!ft2.isDisplayed())
+	    ft2 = null;
+	} while (ft2 == null);
+	return ft2;
+  }
+
+  protected void createFeatureIn(FigGroup fg, InputEvent ie) {
+	CompartmentFigText ft = null;
+    MClassifier cls = (MClassifier)getOwner();
+    if (cls == null)
+      return;
+	ActionAddOperation.SINGLETON.actionPerformed(null);
+	ft = (CompartmentFigText)fg.getFigs().lastElement();
+	if (ft != null) {
+	  ft.startTextEditor(ie);
+	  ft.setHighlighted(true);
+	  highlightedFigText = ft;
+    }
+  }
+
+  protected CompartmentFigText unhighlight() {
+    CompartmentFigText ft;
+    Vector v = _operVec.getFigs();
+    int i;
+    for (i = 1; i < v.size(); i++) {
+      ft = (CompartmentFigText)v.elementAt(i);
+      if (ft.isHighlighted()) {
+        ft.setHighlighted(false);
+	    highlightedFigText = null;
+        return ft;
+      }
+    }
+    return null;
   }
 
   protected void modelChanged() {
@@ -292,7 +390,7 @@ public class FigInterface extends FigNodeModelElement {
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
 	    if (figs.size() <= ocounter) {
-	      oper = new MyFigText(xpos+1, ypos+1+(ocounter-1)*ROWHEIGHT, 0, ROWHEIGHT-2, _operBigPort); // bounds not relevant here
+	      oper = new CompartmentFigText(xpos+1, ypos+1+(ocounter-1)*ROWHEIGHT, 0, ROWHEIGHT-2, _operBigPort); // bounds not relevant here
           oper.setFilled(false);
           oper.setLineWidth(0);
           oper.setFont(LABEL_FONT);
@@ -388,51 +486,6 @@ public class FigInterface extends FigNodeModelElement {
 	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
 	updateEdges();
 	firePropChange("bounds", oldBounds, getBounds());
-  }
-
-  public void calcBounds() {
-	if (suppressCalcBounds)
-	    return;
-	super.calcBounds();
-  }
-
-  /** returns the new size of the FigGroup (either attributes or operations)
-      after calculation new bounds for all sub-figs, considering their
-      minimal sizes; FigGroup need not be displayed; no update event is fired */
-  protected Dimension getUpdatedSize(FigGroup fg, int x, int y, int w, int h) {
-	int newW = w;
-	int n = fg.getFigs().size()-1;
-	int newH = Math.max(h,ROWHEIGHT*Math.max(1,n)+1);
-	int step = (n>0) ? newH / n : 0; // width step between FigText objects
-	//int maxA = Toolkit.getDefaultToolkit().getFontMetrics(LABEL_FONT).getMaxAscent();
-
-	//set new bounds for all included figs
-	Enumeration figs = fg.elements();
-	Fig bigPort = (Fig)figs.nextElement();
-	Fig fi;
-	int fw, yy = y;
-	while (figs.hasMoreElements()) {
-	  fi = (Fig)figs.nextElement();
-	  fw = fi.getMinimumSize().width;
-	  fi.setBounds(x+1,yy+1,fw,ROWHEIGHT-2);
-	  if (newW < fw+2)
-	      newW = fw+2;
-	  yy += step;
-	}
-	bigPort.setBounds(x,y,newW,newH); // rectangle containing all following FigText objects
-	fg.calcBounds();
-	return new Dimension(newW,newH);
-  }
-
-  private class MyFigText extends FigText
-  {
-	private Fig refFig;
-	public MyFigText(int x, int y, int w, int h, Fig aFig) {super(x,y,w,h,true); refFig=aFig;}
-	public void setLineWidth(int w) {super.setLineWidth(0);}
-	public int getLineWidth() {return 1;} // don't dare to throw away these fakes!
-	public boolean getFilled() {return true;}
-	public Color getFillColor() {return refFig.getFillColor();}
-	public Color getLineColor() {return refFig.getLineColor();}
   }
 } /* end class FigInterface */
 
