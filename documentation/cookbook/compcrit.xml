@@ -179,7 +179,7 @@ The String parameter is ignored.
 		</listitem>
 		<listitem>
 		  <para>
-<command>addSupportedDecision(CrUML.dec<replaceable>AAAA</replaceable>);</command>
+<command>addSupportedDecision(UMLDecision.dec<replaceable>AAAA</replaceable>);</command>
 where <replaceable>AAAA</replaceable> is the design issue category
 this critic falls into
 (examples include STORAGE, PATTERN METHODS).
