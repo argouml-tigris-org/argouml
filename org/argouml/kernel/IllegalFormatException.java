@@ -45,22 +45,4 @@ public class IllegalFormatException extends Exception {
     public IllegalFormatException(String message) {
         super(message);
     }
-
-    /**
-     * Constructor for IllegalFormatException.
-     * @param message
-     * @param cause
-     */
-    public IllegalFormatException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * Constructor for IllegalFormatException.
-     * @param cause
-     */
-    public IllegalFormatException(Throwable cause) {
-        super(cause);
-    }
-
 }
