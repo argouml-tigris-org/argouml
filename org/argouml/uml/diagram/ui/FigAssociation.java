@@ -252,10 +252,12 @@ public class FigAssociation extends FigEdgeModelElement {
         }
         computeRoute();
         calcBounds();
+        Object obj = ProjectBrowser.TheInstance.getTarget();
         Iterator editors = getLayer().getEditors().iterator();
         while (editors.hasNext()) {
-            ((Editor)editors.next()).damageAll(); 
+            ((Editor)editors.next()).damaged(this); 
         }
+        ProjectBrowser.TheInstance.setTarget(obj);
     }
     MMultiplicity mult0 = ae0.getMultiplicity();
     MMultiplicity mult1 = ae1.getMultiplicity();
