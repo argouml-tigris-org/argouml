@@ -778,12 +778,10 @@ public class Project implements java.io.Serializable {
         int size = _members.size();
     
         try {
-
-            // make sure to save the XMI file first so we get the id references
-            // 2002-07-15
-            // Jaap Branderhorst
-            // The diagram files are saved first. The line of comment before mine is strange
-            // therefore.
+	    // First we save all objects that are not XMI objects i.e. the
+	    // diagrams (first for loop).
+	    // The we save all XMI objects (second for loop).
+	    // This is because order is important on saving.
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (!(p.getType().equalsIgnoreCase("xmi"))){
