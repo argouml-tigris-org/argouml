@@ -73,7 +73,6 @@ public class WizNavigable extends UMLWizard {
 	    option1 = "Navigable Toward " + Model.getFacade().getName(cls1);
         }
 
-	// TODO: put in class names
 	res.addElement(option0);
 	res.addElement(option1);
 	res.addElement(option2);
