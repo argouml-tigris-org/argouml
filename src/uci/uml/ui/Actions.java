@@ -33,7 +33,7 @@ class UMLAction extends AbstractAction {
   }
 
   protected static String imageName(String name) {
-    return "Images/" + stripJunk(name) + ".gif";
+    return "/Images/" + stripJunk(name) + ".gif";
   }
   
   public static void updateAllEnabled() {
@@ -234,9 +234,10 @@ class ActionClassWizard extends UMLAction {
   }
 } /* end class ActionClassWizard */
 
+
 class ActionClass extends UMLAction {
   uci.gef.Cmd _cmdCreateNode = new
-  uci.gef.CmdCreateNode(uci.gef.demo.SampleNode2.class, "SampleNode2");
+  uci.gef.CmdCreateNode(uci.uml.Foundation.Core.Class.class, "Class");
   
   public ActionClass() { super("Class"); }
 

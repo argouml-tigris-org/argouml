@@ -40,6 +40,15 @@ public class FigEdgeLine extends FigEdge {
   protected void computeRoute() {
     Point srcPt = _sourcePortFig.center();
     Point dstPt = _destPortFig.center();
+
+    if (_useNearest) {
+      //? two iterations of refinement, maybe should be a for-loop
+      srcPt = _sourcePortFig.connectionPoint(dstPt);
+      dstPt = _destPortFig.connectionPoint(srcPt);      
+      srcPt = _sourcePortFig.connectionPoint(dstPt);
+      dstPt = _destPortFig.connectionPoint(srcPt);
+    }
+
     ((FigLine) _fig).setShape(srcPt, dstPt);
     calcBounds();
   }

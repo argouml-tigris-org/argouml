@@ -48,7 +48,7 @@ public class BasicApplication {
     _gf = new JGraphFrame();
     _gf.reshape(10, 10, 200, 200);
     _gf.show();
-    //_gf.setToolBar(new PaletteFig());
+    //_gf.setToolBar(new SamplePalette()); //needs-more-work 
   }
 
   ////////////////////////////////////////////////////////////////

@@ -40,6 +40,7 @@ public class Geometry {
     int c = 0;
     if (p.x < x1) c = 0; else if (p.x > x2) c = 2; else c = 1;
     if (p.y < y1) c += 0; else if (p.y > y2) c += 6; else c += 3;
+    System.out.println("Case " + c);
     switch (c) {
     case 0: res.x = x1;  res.y = y1;  return; // above, left
     case 1: res.x = p.x; res.y = y1;  return; // above
@@ -97,10 +98,14 @@ public class Geometry {
     }
   }
 
-  public static Point ptClosestTo(Point p1, Point p2, Point p) {
+  public static Point ptClosestTo(int x1, int y1, int x2, int y2, Point p) {
     Point res = new Point(0,0);
-    ptClosestTo(p1.x, p1.y, p2.x, p2.y, p, res);
+    ptClosestTo(x1, y1, x2, y2, p, res);
     return res;
+  }
+
+  public static Point ptClosestTo(Point p1, Point p2, Point p) {
+    return ptClosestTo(p1.x, p1.y, p2.x, p2.y, p);
   }
 
   private static Point tempPoint = new Point(0, 0);

@@ -36,7 +36,12 @@ public class AssociationEnd extends ModelElementImpl {
     setMultiplicity(m);
     setAggregation(a);
   }
-      
+
+  public AssociationEnd(Classifier c) {
+    super();
+    setType(c);
+  }
+
   public boolean getIsNavigable() { return _isNavigable; }
   public void setIsNavigable(boolean x) {
     _isNavigable = x;

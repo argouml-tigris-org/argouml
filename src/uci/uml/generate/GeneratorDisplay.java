@@ -293,6 +293,7 @@ public class GeneratorDisplay extends Generator {
   }
 
   public String generateMultiplicity(Multiplicity m) {
+    if (m == null) { System.out.println("null Multiplicity"); return ""; }
     if (m == Multiplicity.ZERO_OR_MORE) return ANY_RANGE;
     String s = "";
     Vector v = m.getRange();

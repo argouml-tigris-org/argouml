@@ -53,7 +53,7 @@ implements MouseListener, GraphNodeHooks  {
   /** Nodes may have a list of predefined FigNode's that give the
    *  node different looks. Needs-More-Work: This code is not fully
    *  operational right now. */
-  protected Hashtable _presentations = new Hashtable();
+  //protected Hashtable _presentations = new Hashtable();
 
   ////////////////////////////////////////////////////////////////
   // constructors and related methods
@@ -93,7 +93,7 @@ implements MouseListener, GraphNodeHooks  {
   public void addPort(NetPort p) { _ports.addElement(p); }
 
   /** returns the FigNodeList */
-  public Hashtable getPresentations() { return _presentations; }
+  //public Hashtable getPresentations() { return _presentations; }
 
   ////////////////////////////////////////////////////////////////
   // Editor API
@@ -115,11 +115,13 @@ implements MouseListener, GraphNodeHooks  {
    *  node in the given Layer.  If no such FigNode already exists,
    *  instanciate a new one. */
   public FigNode presentationFor(Layer lay) {
-    FigNode fn = (FigNode) lay.presentationFor(this);
-    if (null == fn) {
-      fn = makePresentation(lay);
-      _presentations.put(lay, fn);
+    FigNode fn;
+    if (lay != null) {
+      fn = (FigNode) lay.presentationFor(this);
+      if (fn != null) return fn;
     }
+    fn = makePresentation(lay);
+    //_presentations.put(lay, fn);
     return fn;
   }
 

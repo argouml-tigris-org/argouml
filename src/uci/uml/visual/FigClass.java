@@ -25,10 +25,9 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.util.*;
-import uci.util.*;
-import uci.ui.*;
+
 import uci.gef.*;
-import uci.uml.*;
+import uci.graph.*;
 
 /** Class to display graphics for a UML Class in a diagram.
  *  <A HREF="../features.html#graph_visualization_nodes">
@@ -39,58 +38,62 @@ import uci.uml.*;
 
 public class FigClass extends FigNode {
 
-  FigText _class, _attrib, _oper;
-
-  public FigClass()
-  {
-    super(new uci.gef.demo.SampleNode());
-    setLocation(50,50);
-    setSize(100,70);
-  }
-
-  public FigClass(NetNode nn, Vector figs) {
-    super(nn, figs);
-    _class = new FigText(10,10,90,20, Color.blue, "Times", 10);
-    _class.setExpandOnly(true);
-    _class.setText("Class data");
-    _attrib = new FigText(10,30,90,20, Color.blue, "Times", 10);
-    _attrib.setExpandOnly(true);
-    _attrib.setText("Attrib data");
-    _attrib.setAlignment("Left");
+  public final int MARGIN = 2;
+  
+  FigText _clss;
+  FigText _attr;
+  FigText _oper;
+  FigRect _bigPort;
+  
+  public FigClass(GraphModel gm, Object node) {
+    super(node);
+    Color handleColor = Globals.getPrefs().getHandleColor();
+    _bigPort = new FigRect(8, 8, 92, 62, handleColor, Color.lightGray);
+    _clss = new FigText(10,10,90,20, Color.blue, "Times", 10);
+    _clss.setExpandOnly(true);
+    _clss.setText("Class data");
+    _attr = new FigText(10,30,90,20, Color.blue, "Times", 10);
+    _attr.setExpandOnly(true);
+    _attr.setText("Attrib data");
+    _attr.setAlignment("Left");
     _oper = new FigText(10,50,90,20, Color.blue, "Times", 10);
     _oper.setExpandOnly(true);
     _oper.setText("Function data");
     _oper.setAlignment("Left");
-    addFig(_class);
-    addFig(_attrib);
+    addFig(_bigPort);
+    addFig(_clss);
+    addFig(_attr);
     addFig(_oper);
+    //Vector ports = gm.getPorts(node);
+    //Object onlyPort = ports.firstElement();
+    Object onlyPort = node; //this kngl should be in the GraphModel
+    bindPort(onlyPort, _bigPort);
     setBlinkPorts(true); 
   }
 
 
-  /** Paints the FigClass to the given Graphics. */
-  public void paint(Graphics g) {
-    super.paint(g);
-    if (_highlight) {
-      g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
-      g.drawRect(_x - 3, _y - 3, _w + 6 - 1, _h + 6 - 1);
-      g.drawRect(_x - 2, _y - 2, _w + 4 - 1, _h + 4 - 1);
-    }
-  }
+//   /** Paints the FigClass to the given Graphics. */
+//   public void paint(Graphics g) {
+//     super.paint(g);
+//     if (_highlight) {
+//       g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
+//       g.drawRect(_x - 3, _y - 3, _w + 6 - 1, _h + 6 - 1);
+//       g.drawRect(_x - 2, _y - 2, _w + 4 - 1, _h + 4 - 1);
+//     }
+//   }
 
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
-    Fig bigPort = (Fig) getPortFigs().firstElement();
-
+    if (_clss == null) return;
     int leftSide = x+10;
     int widthP = w-10;
     int topSide = y+10;
     int heightP = h-10;
 
-    _class.setBounds(leftSide, topSide, widthP, (heightP/3));
-    _attrib.setBounds(leftSide, topSide + (heightP/3), widthP, (heightP/3));
+    _clss.setBounds(leftSide, topSide, widthP, (heightP/3));
+    _attr.setBounds(leftSide, topSide + (heightP/3), widthP, (heightP/3));
     _oper.setBounds(leftSide, topSide + (heightP/3) * 2, widthP, (heightP/3));
-    bigPort.setBounds(x,y,w+10,h+10);
+    _bigPort.setBounds(leftSide, topSide, widthP, heightP);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
   }

@@ -24,6 +24,7 @@
 package uci.gef;
 
 import java.util.*;
+import com.sun.java.swing.ImageIcon;
 
 /** Cmd that sets the next global editor mode. The global editor
  *  mode effects the next editor that you move the mouse into. For
@@ -67,6 +68,21 @@ public class CmdSetMode extends Cmd {
 
   public CmdSetMode(Class modeClass, String arg, Object value) {
     super("Set Editor Mode");
+    _modeArgs = new Hashtable(1);
+    _modeArgs.put(arg, value);
+    setArg("desiredModeClass", modeClass);
+  }
+
+  public CmdSetMode(Class modeClass, String arg, Object value, String name) {
+    super(name);
+    _modeArgs = new Hashtable(1);
+    _modeArgs.put(arg, value);
+    setArg("desiredModeClass", modeClass);
+  }
+
+    public CmdSetMode(Class modeClass, String arg, Object value,
+		    String name, ImageIcon icon) {
+    super(null, name, icon);
     _modeArgs = new Hashtable(1);
     _modeArgs.put(arg, value);
     setArg("desiredModeClass", modeClass);

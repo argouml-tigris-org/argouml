@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
+import com.sun.java.swing.border.*;
 
 import uci.ui.*;
 import uci.graph.*;
@@ -21,6 +22,7 @@ implements IStatusBar, Cloneable {
   protected JGraph _graph = new JGraph();
   protected JLabel _statusbar = new JLabel("status bar");
   protected ToolBar _toolbar = new PaletteFig();
+  protected JPanel _mainPanel = new JPanel(new BorderLayout());
   protected JPanel _graphPanel = new JPanel(new BorderLayout());
   protected JMenuBar _menubar = new JMenuBar();
 
@@ -38,9 +40,12 @@ implements IStatusBar, Cloneable {
     setUpMenus();
     content.setLayout(new BorderLayout());
     content.add(_menubar, BorderLayout.NORTH);    
-    _graphPanel.add(_toolbar, BorderLayout.NORTH);
     _graphPanel.add(_graph, BorderLayout.CENTER);
-    content.add(_graphPanel, BorderLayout.CENTER);
+    _graphPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+
+    _mainPanel.add(_toolbar, BorderLayout.NORTH);
+    _mainPanel.add(_graphPanel, BorderLayout.CENTER);
+    content.add(_mainPanel, BorderLayout.CENTER);
     content.add(_statusbar, BorderLayout.SOUTH);
   }
 
@@ -222,7 +227,10 @@ implements IStatusBar, Cloneable {
     return _graph.getEditor().getGraphEdgeRenderer();
   }
   
-  public void setToolBar(ToolBar tb) { _toolbar = tb; }
+  public void setToolBar(ToolBar tb) {
+    _toolbar = tb;
+    _mainPanel.add(_toolbar, BorderLayout.NORTH);    
+  }
   public ToolBar getToolBar() { return _toolbar; }
 
   

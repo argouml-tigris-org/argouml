@@ -8,6 +8,11 @@ import java.beans.*;
 
 public class ToolBar extends JToolBar {
 
+
+  public ToolBar() {
+    setFloatable(false);
+  }
+  
   /**
    * Add a new JButton which dispatches the action.
    *

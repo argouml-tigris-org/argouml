@@ -97,7 +97,19 @@ public class JGraph extends JPanel implements Cloneable {
 
   public void setGraphModel(GraphModel gm) { _editor.setGraphModel(gm); }
   public GraphModel getGraphModel() { return _editor.getGraphModel(); }
-  
+
+  public void setGraphNodeRenderer(GraphNodeRenderer r) {
+    _editor.setGraphNodeRenderer(r); }
+  public GraphNodeRenderer getGraphNodeRenderer() {
+    return _editor.getGraphNodeRenderer();
+  }
+
+  public void setGraphEdgeRenderer(GraphEdgeRenderer r) {
+    _editor.setGraphEdgeRenderer(r); }
+  public GraphEdgeRenderer getGraphEdgeRenderer() {
+    return _editor.getGraphEdgeRenderer();
+  }
+
   public boolean isManagingFocus() { return true; }
 
 

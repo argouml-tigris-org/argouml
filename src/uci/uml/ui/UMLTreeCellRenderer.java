@@ -63,7 +63,7 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   }
 
   protected static String imageName(String name) {
-    return "Images/Tree" + stripJunk(name) + ".gif";
+    return "/Images/Tree" + stripJunk(name) + ".gif";
   }
   
   protected static String stripJunk(String s) {

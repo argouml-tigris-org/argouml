@@ -237,7 +237,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
       int x = me.getX(), y = me.getY();
       Fig underMouse = _editor.hit(x, y);
       if (underMouse instanceof FigNode) {
-	NetPort startPort = ((FigNode) underMouse).hitPort(x, y);
+	Object startPort = ((FigNode) underMouse).hitPort(x, y);
 	if (startPort != null) {
 	  //user clicked on a port, now drag an edge
 	  Mode createArc = new ModeCreateArc(_editor);

@@ -53,6 +53,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
   protected FigNode _destFigNode;
   /** Fig that presents the edge. */
   protected Fig _fig;
+  protected boolean _useNearest = false;
   protected boolean _highlight = false;
   /** The ArrowHead at the start of the line */
   ArrowHead _arrowHeadStart = new ArrowHeadNone();
@@ -64,11 +65,11 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigEdge(Fig s, Fig d, FigNode sp, FigNode dp, Object edge) {
+  public FigEdge(Fig s, Fig d, FigNode sfn, FigNode dfn, Object edge) {
     _sourcePortFig = s;
     _destPortFig = d;
-    _sourceFigNode = sp;
-    _destFigNode = dp;
+    sourceFigNode(sfn);
+    destFigNode(dfn);
     setOwner(edge);
     _fig = makeEdgeFig();
   }
@@ -84,9 +85,19 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
 
   public void destPortFig(Fig fig) { _destPortFig = fig; }
 
-  public void sourceFigNode(FigNode pers) {_sourceFigNode = pers; }
+  public void sourceFigNode(FigNode fn) {
+    // assert fn != null
+    if (_sourceFigNode != null) _sourceFigNode.removeFigEdge(this);
+    _sourceFigNode = fn;
+    fn.addFigEdge(this);
+  }
 
-  public void destFigNode(FigNode pers) { _destFigNode = pers; }
+  public void destFigNode(FigNode fn) {
+    // assert fn != null
+    if (_destFigNode != null) _destFigNode.removeFigEdge(this);
+    _destFigNode = fn;
+    fn.addFigEdge(this);
+  }
 
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
@@ -125,6 +136,9 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
   public void removePathItem(PathItem goneItem) {
     _pathItems.removeElement(goneItem);    
   }
+
+  public boolean getBetweenNearestPoints() { return _useNearest; }
+  public void setBetweenNearestPoints(boolean un) { _useNearest = un; }
 
   ////////////////////////////////////////////////////////////////
   // Routing related methods

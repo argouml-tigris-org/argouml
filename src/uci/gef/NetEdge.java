@@ -116,8 +116,11 @@ public abstract class NetEdge extends NetPrimitive {
 
   /** The Fig to use in views of a given type */
   public FigEdge presentationFor(Layer lay) {
-    FigEdge fe = (FigEdge) lay.presentationFor(this);
-    if (fe != null) return fe;
+    FigEdge fe;
+    if (lay != null) {
+      fe = (FigEdge) lay.presentationFor(this);
+      if (fe != null) return fe;
+    }
     NetNode sourceNode = _sourcePort.getParentNode();
     NetNode destNode = _destPort.getParentNode();
     FigNode sourceFigNode = sourceNode.presentationFor(lay);

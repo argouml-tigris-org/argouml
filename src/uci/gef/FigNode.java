@@ -41,17 +41,29 @@ import uci.graph.*;
 
 public class FigNode extends FigGroup
 implements MouseListener, PropertyChangeListener {
+  ////////////////////////////////////////////////////////////////
+  // constants
+  
+  /** Constants useful for determining what side (north, south, east,
+   * or west) a port is located on. Maybe this should really be in
+   * FigNode. */
+  public static final double ang45 = Math.PI / 4;
+  public static final double ang135 = 3*Math.PI / 4;
+  public static final double ang225 = 5*Math.PI / 4;
+  public static final double ang315 = 7*Math.PI / 4;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
   /** True if you want ports to show when the mouse moves in and
    *  be invisible otherwise. */
-  public boolean _blinkPorts = false;
+  protected boolean _blinkPorts = false;
 
   /** True when we want to draw the user's attention to this FigNode. */
-  public boolean _highlight = false;
+  protected boolean _highlight = false;
 
+  protected Vector _figEdges = new Vector(); 
+  
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -83,35 +95,41 @@ implements MouseListener, PropertyChangeListener {
   public boolean getBlinkPorts() { return _blinkPorts; }
 
 
+  public void addFigEdge(FigEdge fe) { _figEdges.addElement(fe); }
+  public void removeFigEdge(FigEdge fe) { _figEdges.removeElement(fe); }
+
   /** Reply a collection of FigEdge's for all the edges that
    *  are connected to ports of the node being
    *  displayed. Needs-More-Work: this code is really slow. */
-  protected Vector figEdges() {
-    Vector figEdges = new Vector();
-    if (!(_layer instanceof LayerPerspective)) return figEdges;
-    GraphModel gm = ((LayerPerspective)_layer).getGraphModel();
-    Vector edges = new Vector();
-    Enumeration figEnum =  elements();
-    while (figEnum.hasMoreElements()) {
-      Fig f = (Fig) figEnum.nextElement();
-      Object port = f.getOwner();
-      if (port == null) continue;
-      Enumeration ins = gm.getInEdges(port).elements();
-      while (ins.hasMoreElements()) edges.addElement(ins.nextElement());
 
-      Enumeration outs = gm.getInEdges(port).elements();
-      while (outs.hasMoreElements()) edges.addElement(outs.nextElement());
-    }
-    figEnum = _layer.elements();
-    while (figEnum.hasMoreElements()) {
-      Fig f = (Fig) figEnum.nextElement();
-      Object owner = f.getOwner();
-      if (owner != null && edges.contains(owner)) {
-	figEdges.addElement(f);
-      }
-    }
-    return figEdges;
-  }
+//   protected Vector figEdges() {
+//     Vector figEdges = new Vector();
+//     if (!(_layer instanceof LayerPerspective)) return figEdges;
+//     GraphModel gm = ((LayerPerspective)_layer).getGraphModel();
+//     Vector edges = new Vector();
+//     Enumeration figEnum =  elements();
+//     while (figEnum.hasMoreElements()) {
+//       Fig f = (Fig) figEnum.nextElement();
+//       Object port = f.getOwner();
+//       if (port == null) continue;
+//       Vector ins = gm.getInEdges(port);
+//       Enumeration inEnum = ins.elements();
+//       while (inEnum.hasMoreElements()) edges.addElement(inEnum.nextElement());
+
+//       Vector outs = gm.getInEdges(port);
+//       Enumeration outEnum = outs.elements();
+//       while (outEnum.hasMoreElements()) edges.addElement(outEnum.nextElement());
+//     }
+//     figEnum = _layer.elements();
+//     while (figEnum.hasMoreElements()) {
+//       Fig f = (Fig) figEnum.nextElement();
+//       Object owner = f.getOwner();
+//       if (owner != null && edges.contains(owner)) {
+// 	figEdges.addElement(f);
+//       }
+//     }
+//     return figEdges;
+//   }
 
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
@@ -129,7 +147,7 @@ implements MouseListener, PropertyChangeListener {
 
   /** When a FigNode is damaged, all of its arcs may need repainting. */
   public void startTrans() {
-    Enumeration arcPers = figEdges().elements();
+    Enumeration arcPers = _figEdges.elements();
     while (arcPers.hasMoreElements()) {
       Fig f = (Fig) arcPers.nextElement();
       f.startTrans();
@@ -138,7 +156,7 @@ implements MouseListener, PropertyChangeListener {
   }
 
   public void endTrans() {
-    Enumeration arcPers = figEdges().elements();
+    Enumeration arcPers = _figEdges.elements();
     while (arcPers.hasMoreElements()) {
       Fig f = (Fig) arcPers.nextElement();
       f.endTrans();
@@ -147,7 +165,7 @@ implements MouseListener, PropertyChangeListener {
   }
 
   public void delete() {
-    Enumeration arcPers = figEdges().elements();
+    Enumeration arcPers = _figEdges.elements();
     while (arcPers.hasMoreElements()) {
       Fig f = (Fig) arcPers.nextElement();
       f.delete();
@@ -186,22 +204,34 @@ implements MouseListener, PropertyChangeListener {
    *  <A HREF="../features.html#graph_visualization_ports">
    *  <TT>FEATURE: graph_visualization_ports</TT></A>
    */
-  public final NetPort hitPort(Point p) { return hitPort(p.x, p.y); }
+  public final Object hitPort(Point p) { return hitPort(p.x, p.y); }
 
   /** Reply the port that "owns" the Fig under the given point, or
    *  null if none.
    *  <A HREF="../features.html#graph_visualization_ports">
    *  <TT>FEATURE: graph_visualization_ports</TT></A>
    */
-  public NetPort hitPort(int x, int y) {
+  public Object hitPort(int x, int y) {
     Fig f = hitFig(new Rectangle(x, y, 1, 1)); //?
     if (f != null) {
       Object own = f.getOwner();
-      if (own instanceof NetPort) return (NetPort) own;
+      return own;
     }
     return null;
   }
 
+
+  public Object deepHitPort(int x, int y) {
+    Enumeration figs = elements();
+    while (figs.hasMoreElements()) {
+      Fig f = (Fig) figs.nextElement();
+      Object own = f.getOwner();
+      // assumes ports are always filled
+      if (f.contains(x, y) && own != null) return own;
+    }
+    return null;
+  }
+  
   /** Reply the Fig that displays the given NetPort.
    *  <A HREF="../features.html#graph_visualization_ports">
    *  <TT>FEATURE: graph_visualization_ports</TT></A>
@@ -226,6 +256,52 @@ implements MouseListener, PropertyChangeListener {
     return res;
   }
 
+
+  ////////////////////////////////////////////////////////////////
+  // diagram-level operations
+
+  /** Reply the port's sector within the current view.  This version
+   *  works precisely with square FigNodes the angxx constants
+   *  should be removed and calculated by the port if non-square
+   *  FigNodes will be used.
+   *
+   *  <pre>Sectors
+   *		      \  1   /
+   *		       \    /
+   *		        \  /
+   *		     2   \/   -2
+   *			 /\
+   *		        /  \
+   *		       /    \
+   *		      /  -1  \ </pre>
+   **/
+
+  public int getPortSector(Fig portFig) {
+    Rectangle nodeBBox = getBounds();
+    Rectangle portBBox = portFig.getBounds();
+    int nbbCenterX = nodeBBox.x + nodeBBox.width / 2;
+    int nbbCenterY = nodeBBox.y + nodeBBox.height / 2;
+    int pbbCenterX = portBBox.x + portBBox.width / 2;
+    int pbbCenterY = portBBox.y + portBBox.height / 2;
+
+    if (portFig != null) {
+      int dx = (pbbCenterX - nbbCenterX) * nodeBBox.height;
+      int dy = (pbbCenterY - nbbCenterY) * nodeBBox.width;
+      double dist = Math.sqrt(dx * dx + dy * dy);
+      double ang;
+      if (dy > 0) ang = Math.acos(dx / dist);
+      else ang = Math.acos(dx / dist) + Math.PI;
+
+      if (ang < ang45) return 2;
+      else if (ang < ang135) return 1;
+      else if (ang < ang225) return -2;
+      else if (ang < ang315) return -1;
+      else return 2;
+    }
+    return -1;
+  }
+
+  
   ////////////////////////////////////////////////////////////////
   // painting methods
 

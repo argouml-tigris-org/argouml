@@ -310,11 +310,20 @@ public class FigPoly extends Fig {
     }
   }
 
+  public Point getPoints(int i) { return new Point(_xpoints[i], _ypoints[i]); }
 
+  
   /** When the user drags the handles, move individual points */
   public void setPoints(Handle h, int mX, int mY) {
     moveVertex(h, mX, mY, false);
   }
+
+
+  // needs-more-work: untested
+  public Point connectionPoint(Point anotherPt) {
+    return Geometry.ptClosestTo(_xpoints, _ypoints, _npoints, anotherPt);
+  }
+
 
   ////////////////////////////////////////////////////////////////
   // painting methods

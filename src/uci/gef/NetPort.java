@@ -40,13 +40,6 @@ public class NetPort extends NetPrimitive implements GraphPortHooks {
   // constants
   public static String DEFAULT_EDGE_CLASS = "uci.gef.demo.SampleEdge";
 
-  /** Constants useful for determining what side (north, south, east,
-   * or west) a port is located on. Maybe this should really be in
-   * FigNode. */
-  public static final double ang45 = Math.PI / 4;
-  public static final double ang135 = 3*Math.PI / 4;
-  public static final double ang225 = 5*Math.PI / 4;
-  public static final double ang315 = 7*Math.PI / 4;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -161,50 +154,6 @@ public class NetPort extends NetPrimitive implements GraphPortHooks {
     return myNode.canConnectTo(gm, otherNode, anotherPort, this);
   }
 
-  ////////////////////////////////////////////////////////////////
-  // diagram-level operations
-
-  /** Reply the port's sector within the current view.  This version
-   *  works precisely with square FigNodes the angxx constants
-   *  should be removed and calculated by the port if non-square
-   *  FigNodes will be used.
-   *
-   *  <pre>Sectors
-   *		      \  1   /
-   *		       \    /
-   *		        \  /
-   *		     2   \/   -2
-   *			 /\
-   *		        /  \
-   *		       /    \
-   *		      /  -1  \ </pre>
-   **/
-
-  public int getPortSector(FigNode nodePers) {
-    Rectangle nodeBBox = nodePers.getBounds();
-    Fig portPaint = nodePers.getPortFig(this);
-    Rectangle portBBox = portPaint.getBounds();
-    int nbbCenterX = nodeBBox.x + nodeBBox.width / 2;
-    int nbbCenterY = nodeBBox.y + nodeBBox.height / 2;
-    int pbbCenterX = portBBox.x + portBBox.width / 2;
-    int pbbCenterY = portBBox.y + portBBox.height / 2;
-
-    if (portPaint != null) {
-      int dx = (pbbCenterX - nbbCenterX) * nodeBBox.height;
-      int dy = (pbbCenterY - nbbCenterY) * nodeBBox.width;
-      double dist = Math.sqrt(dx * dx + dy * dy);
-      double ang;
-      if (dy > 0) ang = Math.acos(dx / dist);
-      else ang = Math.acos(dx / dist) + Math.PI;
-
-      if (ang < ang45) return 2;
-      else if (ang < ang135) return 1;
-      else if (ang < ang225) return -2;
-      else if (ang < ang315) return -1;
-      else return 2;
-    }
-    return -1;
-  }
 
 } /* end class NetPort */
 

@@ -119,19 +119,19 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
   // needs-more-work: what about Objects that are not NetPrimitives
   public void add(Fig f) {
     super.add(f);
-    if (f instanceof FigNode && _gm instanceof MutableGraphModel)
-      ((MutableGraphModel)_gm).addNode((NetNode)f.getOwner());
-    else if (f instanceof FigEdge && _gm instanceof MutableGraphModel)
-      ((MutableGraphModel)_gm).addEdge((NetEdge)f.getOwner());
+//     if (f instanceof FigNode && _gm instanceof MutableGraphModel)
+//       ((MutableGraphModel)_gm).addNode((NetNode)f.getOwner());
+//     else if (f instanceof FigEdge && _gm instanceof MutableGraphModel)
+//       ((MutableGraphModel)_gm).addEdge((NetEdge)f.getOwner());
   }
 
   /** Remove the given Fig from this layer. */
   public void remove(Fig f) {
     super.remove(f);
-    if (f instanceof FigNode && _gm instanceof MutableGraphModel)
-      ((MutableGraphModel)_gm).removeNode((NetNode)f.getOwner());
-    else if (f instanceof FigEdge && _gm instanceof MutableGraphModel)
-      ((MutableGraphModel)_gm).removeEdge((NetEdge)f.getOwner());
+//     if (f instanceof FigNode && _gm instanceof MutableGraphModel)
+//       ((MutableGraphModel)_gm).removeNode((NetNode)f.getOwner());
+//     else if (f instanceof FigEdge && _gm instanceof MutableGraphModel)
+//       ((MutableGraphModel)_gm).removeEdge((NetEdge)f.getOwner());
   }
 
   ////////////////////////////////////////////////////////////////

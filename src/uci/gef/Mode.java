@@ -96,6 +96,10 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener  {
 
   public void setArgs(Hashtable args) { _args = args; }
   public Hashtable getArgs() { return _args; }
+  public Object getArg(String s) {
+    if (_args == null) return null;
+    return _args.get(s);
+  }
 
   /** Set all keybindings */
   public void keybindings(Hashtable kb) { _keybindings = kb; }

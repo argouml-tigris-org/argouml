@@ -13,6 +13,7 @@ import uci.ui.*;
 import uci.util.*;
 import uci.gef.*;
 import uci.gef.event.*;
+import uci.uml.visual.*;
 
 
 public class ClassDiagramEditor extends TabSpawnable
@@ -35,6 +36,25 @@ implements TabModelTarget, GraphSelectionListener {
   protected static Action _actionSelect = new CmdSetMode(ModeSelect.class, "Select");
   protected static Action _actionClassWizard = new ActionClassWizard();
   protected static Action _actionClass = new ActionClass();
+  
+  protected static Action _actionClass2 = new
+    CmdCreateNode(uci.uml.Foundation.Core.Class.class, "Class");
+
+  protected static Action _actionInterface = new
+    CmdCreateNode(uci.uml.Foundation.Core.Interface.class, "Interface");
+
+  protected static Action _actionAssoc = new
+    CmdSetMode(ModeCreateArc.class,
+	     "edgeClass", uci.uml.Foundation.Core.Association.class,
+	     "Association");
+  //,
+  //loadIconResource(imageName("Association"), "Association"));
+
+  protected static Action _actionGeneralize = new
+    CmdSetMode(ModeCreateArc.class,
+	     "edgeClass", uci.uml.Foundation.Core.Generalization.class,
+	     "Generalization");
+
   protected static Action _actionRectangle = new CmdSetMode(ModeCreateFigRect.class, "Rectangle");
   protected static Action _actionRRectangle = new CmdSetMode(ModeCreateFigRRect.class, "RRect");
   protected static Action _actionCircle = new CmdSetMode(ModeCreateFigCircle.class, "Circle");
@@ -47,12 +67,19 @@ implements TabModelTarget, GraphSelectionListener {
   ////////////////////////////////////////////////////////////////
   // constructor
   
-  public ClassDiagramEditor() { this(new JGraph()); }
+  public ClassDiagramEditor() {
+    this(new JGraph(new ClassDiagramGraphModel()));
+    // needs-more-work: pass project as a constructor arg?
+    // or should I get the graph model from the Diagram object?
+  }
 
   public ClassDiagramEditor(JGraph jg) {
     super("Diagram");
     setLayout(new BorderLayout());
     _graph = jg;
+    ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton
+    _graph.setGraphNodeRenderer(rend);
+    _graph.setGraphEdgeRenderer(rend);
     uci.gef.Globals.setStatusBar(ProjectBrowser.TheInstance);
     initToolBar();
     //_graph.setToolBar(_toolBar); //I wish this had worked...
@@ -65,19 +92,7 @@ implements TabModelTarget, GraphSelectionListener {
     _graph.addGraphSelectionListener(this);
   }
 
-  
-  
-  protected static ImageIcon loadIconResource(String imgName, String desc) {
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = ClassDiagramEditor.class.getResource(imgName);
-      return new ImageIcon(imgURL, desc);
-    }
-    catch (Exception ex) {
-      return new ImageIcon(desc);
-    }
-  }
-  
+    
 
   public Object clone() {
     try {
@@ -99,14 +114,19 @@ implements TabModelTarget, GraphSelectionListener {
     _toolBar.addSeparator();
     _toolBar.add(_actionSelect);
 
-    ImageIcon assocUp = loadIconResource("Association.gif", "");
-    ImageIcon assocDown = loadIconResource("AssociationInverse.gif", "");
-    ImageIcon inherUp = loadIconResource("Inheritance.gif", "");
-    ImageIcon inherDown = loadIconResource("InheritanceInverse.gif", "");
-    _lineModeBG = _toolBar.addRadioGroup("Association", assocUp, assocDown,
-					 "Inheritance", inherUp, inherDown);
+//     ImageIcon assocUp = loadIconResource("Association", "");
+//     ImageIcon assocDown = loadIconResource("AssociationInverse", "");
+//     ImageIcon inherUp = loadIconResource("Inheritance", "");
+//     ImageIcon inherDown = loadIconResource("InheritanceInverse", "");
+//     _lineModeBG = _toolBar.addRadioGroup("Association", assocUp, assocDown,
+// 					 "Inheritance", inherUp, inherDown);
 
-    _toolBar.add(_actionClass);
+    //needs-more-work: these form an mutually exclusive sticky group
+    // ToolBar should support that
+    _toolBar.add(_actionClass2);
+    _toolBar.add(_actionAssoc);
+    _toolBar.add(_actionGeneralize);
+    _toolBar.addSeparator();
     _toolBar.add(_actionRectangle);
     _toolBar.add(_actionRRectangle);
     _toolBar.add(_actionCircle);
@@ -141,5 +161,33 @@ implements TabModelTarget, GraphSelectionListener {
     _graph.removeGraphSelectionListener(listener);
   }
 
+
+  ////////////////////////////////////////////////////////////////
+  // utility methods
+
+  protected static ImageIcon loadIconResource(String imgName, String desc) {
+    ImageIcon res = null;
+    try {
+      java.net.URL imgURL = ClassDiagramEditor.class.getResource(imgName);
+      return new ImageIcon(imgURL, desc);
+    }
+    catch (Exception ex) { return new ImageIcon(desc); }
+  }
+
+
+  
+  protected static String imageName(String name) {
+    return "/Images/" + stripJunk(name) + ".gif";
+  }
+
+  protected static String stripJunk(String s) {
+    String res = "";
+    int len = s.length();
+    for (int i = 0; i < len; i++) {
+      char c = s.charAt(i);
+      if (Character.isJavaLetterOrDigit(c)) res += c;
+    }
+    return res;
+  }
 
 }

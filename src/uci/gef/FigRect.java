@@ -52,6 +52,14 @@ public class FigRect extends Fig {
   }
 
   ////////////////////////////////////////////////////////////////
+  // Fig methods
+
+  public Point connectionPoint(Point anotherPt) {
+    return Geometry.ptClosestTo(getBounds(), anotherPt);
+  }
+
+  
+  ////////////////////////////////////////////////////////////////
   // painting methods
 
   /** Paint this FigRect */

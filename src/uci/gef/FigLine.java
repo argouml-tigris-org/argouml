@@ -149,6 +149,10 @@ public class FigLine extends Fig {
   }
 
 
+  public Point connectionPoint(Point anotherPt) {
+    return Geometry.ptClosestTo(_x1, _y1, _x2, _y2, anotherPt);
+  }
+
   ////////////////////////////////////////////////////////////////
   // Fig API
 

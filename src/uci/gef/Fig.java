@@ -517,7 +517,11 @@ implements java.io.Serializable  {
    *  given point. For example, you may want the arc to end on the edge
    *  of a port that is nearest the given point. By default this is
    *  center(). */
-  public Point connectionPoint(Point anotherPt) { return center(); }
+  //  public Point connectionPoint(Point anotherPt) { return center(); }
+
+  public Point connectionPoint(Point anotherPt) {
+    return Geometry.ptClosestTo(getBounds(), anotherPt);
+  }
 
   /** Resize the object for drag on creation. It bypasses the things
    *  done in resize so that the position of the object can be kept as

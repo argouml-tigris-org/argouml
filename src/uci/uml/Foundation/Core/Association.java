@@ -37,6 +37,14 @@ implements IAssociation {
     addConnection(dst);
   }
 
+  public Association(Classifier srcC, Classifier dstC) { 
+    super();
+    AssociationEnd src = new AssociationEnd(srcC);
+    AssociationEnd dst = new AssociationEnd(dstC);
+    addConnection(src);
+    addConnection(dst);
+  }
+
   public Vector getConnection() { return _connection; }
   public void setConnection(Vector x) {
     _connection = x;
