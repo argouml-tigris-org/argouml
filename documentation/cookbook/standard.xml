@@ -130,6 +130,46 @@ Code Conventions for the Java Programming Language
 </para>
       </listitem>
     </itemizedlist>
+
+    <para>
+For the <filename>build.xml</filename> files we use the following rules.
+</para>
+    <itemizedlist>
+      <listitem>
+        <para>
+Be careful when downloading stuff.
+</para>
+        <para>
+ArgoUML is supposed to be a self-contains development environment.
+Some times it is better to have things downloaded from the ant script
+instead of from the cvs repository.
+In that case separate the download-targets from the target that does
+building so that it is easy for everyone to know when their 
+development machine is working against the internet and when it is not.     
+</para>
+      </listitem>
+
+      <listitem>
+        <para>
+Public targets shall have description.
+Non-public targets shall not have description 
+(write xml comments or echos instead).
+</para>
+      </listitem>
+
+      <listitem>
+        <para>
+Use ant-builtins for everything.
+</para>
+        <para>
+ArgoUML is supposed to be a self-contains development environment.
+If you feel tempted to use other tools (perl, sed, nsgmls), don't!
+They are probably not present in all environments where we want to
+run a development environment.
+</para>
+      </listitem>
+    </itemizedlist>
+
     <sect1>
       <title>Settings for Eclipse</title>
       <author>Linus Tolke</author>
