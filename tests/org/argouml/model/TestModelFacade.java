@@ -23,16 +23,22 @@
 
 package org.argouml.model;
 
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.Map;
+
+import junit.framework.Test;
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
 
 import org.argouml.model.uml.Uml;
 
 /**
  * @author Thierry Lach
  */
-public class TestModelFacade extends GenericFacadeTestFixture
-{
+public class TestModelFacade extends TestCase {
+
+	private ModelFacade facade = null;
 
 	/**
 	 * Constructor for TestModelFacade.
@@ -43,27 +49,62 @@ public class TestModelFacade extends GenericFacadeTestFixture
 		super(arg0);
 	}
 
-	/*
-	 * @see TestCase#setUp()
-	 */
-	protected void setUp() throws Exception
-	{
-		super.setUp();
-	}
+	public static Test suite() {
+		TestSuite suite = new TestSuite("Tests for " + TestModelFacade.class.getPackage().getName());
 
-	/*
-	 * @see TestCase#tearDown()
-	 */
-	protected void tearDown() throws Exception {
-		super.tearDown();
-	}
-
-	public void testAll() {
 		Map elements = Uml.getUmlClassList();
 		Iterator i = elements.keySet().iterator();
 		while (i.hasNext()) {
-			runGenericTests((String) i.next());
+			suite.addTest(new TestModelFacade((String) i.next()));
 		}
+
+		return suite;
+	}
+
+	/** Test a specific element
+	 *  @see junit.framework.TestCase#runTest()
+	 */
+	protected void runTest() throws Throwable {
+		String objectType = getName();
+		Uml.UmlEntity umlClass = (Uml.UmlEntity) Uml.getUmlClassList().get(objectType);
+		// Ensure that the type is part of Uml class.    	
+		assertNotNull("Uml class does not know about '" + objectType +"'",	umlClass);
+
+		boolean hasFacade = umlClass instanceof Uml.UmlFacadeEntity;
+
+		Class[] classes = new Class[1];
+		classes[0] = Object.class;
+		Object[] args = new Object[1];
+        
+		Method methodIsA = null;
+		Boolean rc = null;
+		try {
+			methodIsA = ModelFacade.class.getDeclaredMethod("isA" + objectType, classes);
+
+			args[0] = null;
+			rc = null;
+			rc = (Boolean)methodIsA.invoke(facade, args);
+			assertNotNull("isA" + objectType + " called with null", rc);
+			assertTrue("isA" + objectType + " called with null", ! rc.booleanValue());
+
+			args[0] = new Object();
+			rc = null;
+			rc = (Boolean)methodIsA.invoke(facade, args);
+			assertNotNull("isA" + objectType + " called with new Object()", rc);
+			assertTrue("isA" + objectType + " called with new Object()", ! rc.booleanValue());
+			assertTrue("Should not be able to call isA" + objectType, ! hasFacade);
+		}
+		catch (Exception e) {
+			assertTrue("Cannot execute ModelFacade.isA" + objectType + " because of " + e, hasFacade);
+		}
+	}
+
+	/** @see junit.framework.TestCase#setUp()
+	 */
+	protected void setUp() throws Exception {
+		super.setUp();
+		facade = ModelFacade.getFacade();
+		assertNotNull("Cound not get ModelFacade", facade);
 	}
 
 }
