@@ -547,7 +547,7 @@ implements PluggableNotation, FileGenerator {
         }
       }
     }
-    sb.append("} /* end ").append(classifierKeyword).append(' ').append(generatedName).append(" */\n");
+    sb.append("} /* end ").append(classifierKeyword).append(' ').append(generatedName).append(" */\n?>");
 
     return sb.toString();
   }
