@@ -350,15 +350,16 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
-  <target depends="init" name="prepare">
+  <target name="prepare" depends="init">
     <!-- create directories -->
     <echo message="Preparing the build directories"/>
     <mkdir dir="${argo.build.dir}"/>
     <mkdir dir="${argo.build.dir}/ext"/>
     <mkdir dir="${argo.build.dir}"/>
 
-    <uptodate property="version.is.current" targetfile="${argo.src.dir}/${version.package}/ArgoVersion.java">
-	    <srcfiles dir="${argo.src.dir}/templates">
+    <uptodate property="version.is.current"
+              targetfile="${argo.src.dir}/${version.package}/ArgoVersion.java">
+      <srcfiles dir="${argo.src.dir}/templates">
           <include name="ArgoVersion.template"/>
       </srcfiles>
       <srcfiles dir="${argo.src.dir}">
@@ -565,9 +566,14 @@ Property files to be searched:
       <classpath>
 	  <path refid="argo.compile.classpath"/>
       </classpath>
-      <link href="${jdk.javadoc.link}" offline="true" packagelistLoc="${jdk.javadoc.link}"/>
-      <link href="${log4j.javadoc.link}" offline="true" packagelistLoc="${log4j.javadoc.link}"/>
-      <link href="${xerces.javadoc.link}" offline="true" packagelistLoc="${xerces.javadoc.link}"/>
+      <link href="${jdk.javadoc.link}" offline="true"
+            packagelistLoc="${jdk.javadoc.packagelist}"/>
+      <link href="${log4j.javadoc.link}" offline="true"
+            packagelistLoc="${log4j.javadoc.packagelist}"/>
+      <link href="${xerces.javadoc.link}" offline="true"
+            packagelistLoc="${xerces.javadoc.packagelist}"/>
+      <link href="${jmi.javadoc.link}" offline="true"
+            packagelistLoc="${jmi.javadoc.packagelist}"/>
 
     </javadoc>
 
@@ -1249,7 +1255,7 @@ you will have to resurrect them using cvs update.
   <!-- Creates the whole distribution                                      -->
   <!-- =================================================================== -->
   <target name="dist-all"
-          depends="dist,dist-src,dist-lib,dist-appbund,dist-modules">
+          depends="dist,dist-src,dist-lib,dist-appbund,dist-modules,dist-javawebstart">
      <copy file="${argo.src.dir}/templates/release_html.template"
            tofile="${argo.dist.dir}/index.html">
        <filterset>
