@@ -36,7 +36,7 @@ import java.util.*;
 import java.io.*;
 import javax.swing.*;
 
-/** 
+/**
  * The <code>Argo</code> class provides static methods and definitions
  * that can be used as helpers throughout the Argo code.
  *
@@ -46,7 +46,7 @@ import javax.swing.*;
  * used methods in a single class, it attempts to decrease the
  * complexity of the overall code while increasing its own complexity.
  *
- * The 
+ * The
  *
  * These include
  * <ul>
@@ -56,7 +56,7 @@ import javax.swing.*;
  * <li>methods for environment manipulation</li>
  * <li>methods for console <code>log4j</code> logging</li>
  * </ul>
- * 
+ *
  */
 
 public class Argo {
@@ -109,21 +109,21 @@ public class Argo {
    */
   public static final ConfigurationKey KEY_SCREEN_HEIGHT = Configuration.makeKey("screen", "height");
 
-  /** Key for screen horizontal split
+  /** Key for southwest pane width
    */
-  public static final ConfigurationKey KEY_SCREEN_HSPLIT = Configuration.makeKey("screen", "split", "horizontal");
+  public static final ConfigurationKey KEY_SCREEN_SOUTHWEST_WIDTH = Configuration.makeKey("screen", "southwest", "width");
 
-  /** Key for screen top vertical split
+  /** Key for west pane width
    */
-  public static final ConfigurationKey KEY_SCREEN_VSPLITTOP = Configuration.makeKey("screen", "split", "vertical", "top");
+  public static final ConfigurationKey KEY_SCREEN_WEST_WIDTH = Configuration.makeKey("screen", "west", "width");
 
-  /** Key for screen top vertical split
+  /** Key for south pane height
    */
-  public static final ConfigurationKey KEY_SCREEN_VSPLITBOTTOM = Configuration.makeKey("screen", "split", "vertical", "bottom");
+  public static final ConfigurationKey KEY_SCREEN_SOUTH_HEIGHT = Configuration.makeKey("screen", "south", "height");
 
   /** Key for theme
    */
-    public static final ConfigurationKey KEY_SCREEN_THEME = Configuration.makeKey("screen", "theme");
+  public static final ConfigurationKey KEY_SCREEN_THEME = Configuration.makeKey("screen", "theme");
 
   /** Key for user email address
    */
@@ -175,7 +175,7 @@ public class Argo {
        // use what gef thinks.
        return Configuration.getString(KEY_STARTUP_DIR,
 		      org.tigris.gef.base.Globals.getLastDirectory());
-   } 
+   }
 
    /** Helper for localization to eliminate the need to import
     *  the gef util library.
@@ -233,7 +233,7 @@ public class Argo {
 
        // Add the ThrowableRenderer
        hier.getRendererMap().put(Throwable.class, tr);
- 
+
        // Set up the argo console logger in its own hierarchy
        Category cat = hier.getInstance(CONSOLE_LOG);
        cat.addAppender(
@@ -246,9 +246,9 @@ public class Argo {
        if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
            cat.getRoot().getHierarchy().disableAll();
        }
-       
+
        // Set log here.  No going back.
-       log = cat; 
+       log = cat;
     }
 
 }

@@ -38,7 +38,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.*;
-import org.tigris.gef.util.*;            
+import org.tigris.gef.util.*;
 
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
@@ -167,7 +167,6 @@ implements ItemListener, TreeSelectionListener, QuadrantPanel {
     _tree.setSelectionPath(path);
   }
 
-  public Dimension getPreferredSize() { return new Dimension(220, 500); }
   public Dimension getMinimumSize() { return new Dimension(120, 100); }
 
   ////////////////////////////////////////////////////////////////
@@ -190,7 +189,7 @@ implements ItemListener, TreeSelectionListener, QuadrantPanel {
   }
 
 
-  /** called when the user clicks once on an item in the tree. */ 
+  /** called when the user clicks once on an item in the tree. */
   public void mySingleClick(int row, TreePath path) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
@@ -204,7 +203,7 @@ implements ItemListener, TreeSelectionListener, QuadrantPanel {
     _clicksInNavPane++;
   }
 
-  /** called when the user clicks twice on an item in the tree. */ 
+  /** called when the user clicks twice on an item in the tree. */
   public void myDoubleClick(int row, TreePath path) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
@@ -294,7 +293,7 @@ implements ItemListener, TreeSelectionListener, QuadrantPanel {
     final protected String menuLocalize(String key) {
 	return Localizer.localize("Tree",key);
     }
- 
+
   ////////////////////////////////////////////////////////////////
   // inner classes
 
@@ -332,7 +331,7 @@ implements ItemListener, TreeSelectionListener, QuadrantPanel {
 	    }
 	}
         else if (obj instanceof MClassifier || obj instanceof MUseCase
-		 || obj instanceof MActor || obj instanceof MPackage 
+		 || obj instanceof MActor || obj instanceof MPackage
 		 || obj instanceof MStateVertex || obj instanceof MInstance) {
 			popup.add(new ActionGoToDetails(menuLocalize("Properties")));
 			popup.add(new ActionAddExistingNode(menuLocalize("Add to Diagram"),obj));

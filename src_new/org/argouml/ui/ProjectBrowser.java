@@ -55,13 +55,8 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   ////////////////////////////////////////////////////////////////
   // constants
 
-//   public static int WIDTH = 800;
-//   public static int HEIGHT = 600;
-//   public static int INITIAL_WIDTH = 400; // for showing progress bar
-//   public static int INITIAL_HEIGHT = 200;
-
-  public static int DEFAULT_VSPLIT = 270;
-  public static int DEFAULT_HSPLIT = 512;
+  private static int DEFAULT_COMPONENTWIDTH = 220;
+  private static int DEFAULT_COMPONENTHEIGHT = 200;
 
   ////////////////////////////////////////////////////////////////
   // class variables
@@ -512,39 +507,33 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
 
   protected Component createPanels() {
+    // Set preferred sizes from config file
+    _toDoPane.setPreferredSize(new Dimension(
+        Configuration.getInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, DEFAULT_COMPONENTWIDTH),
+        Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+    ));
+
+    _detailsPane.setPreferredSize(new Dimension(
+        0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+    ));
+
+    _navPane.setPreferredSize(new Dimension(
+        Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTWIDTH),0
+    ));
+
+    // Create BorderSplitPane and place components inside
     _borderSplitPane = new BorderSplitPane();
     _borderSplitPane.add(_toDoPane, BorderSplitPane.SOUTHWEST);
     _borderSplitPane.add(_detailsPane, BorderSplitPane.SOUTH);
     _borderSplitPane.add(_navPane, BorderSplitPane.WEST);
     _borderSplitPane.add(_multiPane);
 
-
-    //_topSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _navPane, _multiPane);
-    //_botSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _toDoPane, _detailsPane);
-    //_mainSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _topSplit, _botSplit);
-    //_topSplit.setDividerSize(2);
-    //_topSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_VSPLITTOP, DEFAULT_VSPLIT));
-
-    //_botSplit.setDividerSize(2);
-    //_botSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, DEFAULT_VSPLIT));
-
-    //_mainSplit.setDividerSize(2);
-    //_mainSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_HSPLIT, DEFAULT_HSPLIT));
-
-    //_botSplit.setOneTouchExpandable(true);
-
     // Enable the property listeners after all changes are done
     // (includes component listeners)
     if (_componentResizer == null) _componentResizer = new ComponentResizer();
     _navPane.addComponentListener(_componentResizer);
     _toDoPane.addComponentListener(_componentResizer);
-
-    // needs-more-work:  Listen for a specific property.  JDK1.3 has
-    // JSplitPane.DIVIDER_LOCATION_PROPERTY.
-
-    // _topSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, this);
-    // _botSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, this);
-    // _mainSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, this);
+    _detailsPane.addComponentListener(_componentResizer);
 
     return _borderSplitPane;
   }
@@ -1034,21 +1023,31 @@ class ComponentResizer extends ComponentAdapter {
   public void componentResized(ComponentEvent ce) {
     Component c = ce.getComponent();
     if (c instanceof NavigatorPane) {
+        Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, c.getWidth());
 
 	// Got the 2 and the 4 by experimentation.  This is equivalent
 	// to jdk 1.3 property JSplitPane.DIVIDER_LOCATION_PROPERTY.
 	// If the width and height are not adjusted by this amount,
 	// the divider will slowly creep after close and open.
-	Configuration.setInteger(Argo.KEY_SCREEN_VSPLITTOP, c.getWidth() + 2);
-	Configuration.setInteger(Argo.KEY_SCREEN_HSPLIT, c.getHeight() + 4);
+	//Configuration.setInteger(Argo.KEY_SCREEN_VSPLITTOP, c.getWidth() + 2);
+	//Configuration.setInteger(Argo.KEY_SCREEN_HSPLIT, c.getHeight() + 4);
 
     }
     else if (c instanceof ToDoPane) {
+        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, c.getWidth());
 	// Got the 2 by experimentation.  This is equivalent to jdk 1.3
 	// property JSplitPane.DIVIDER_LOCATION_PROPERTY.  If the width
 	// is not adjusted by this amount, the divider will slowly creep
 	// after close and open.
-	Configuration.setInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, c.getWidth() + 2);
+	//Configuration.setInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, c.getWidth() + 2);
+    }
+    else if (c instanceof DetailsPane) {
+        Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, c.getHeight());
+        // Got the 2 by experimentation.  This is equivalent to jdk 1.3
+        // property JSplitPane.DIVIDER_LOCATION_PROPERTY.  If the width
+        // is not adjusted by this amount, the divider will slowly creep
+        // after close and open.
+        //Configuration.setInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, c.getWidth() + 2);
     }
     else if (c instanceof ProjectBrowser) {
       Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, c.getWidth());

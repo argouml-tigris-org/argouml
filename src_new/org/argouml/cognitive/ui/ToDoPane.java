@@ -131,7 +131,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
 
     //_combo.removeAllItems(); // broken in Swing-1.0.3?
     java.util.Enumeration persEnum = _perspectives.elements();
-    while (persEnum.hasMoreElements()) 
+    while (persEnum.hasMoreElements())
       _combo.addItem(persEnum.nextElement());
 
     if (pers.isEmpty()) _curPerspective = null;
@@ -183,7 +183,6 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
     updateTree();
   }
 
-  public Dimension getPreferredSize() { return new Dimension(220, 100); }
   public Dimension getMinimumSize() { return new Dimension(120, 100); }
 
   ////////////////////////////////////////////////////////////////
@@ -229,7 +228,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
   // needs-more-work: what should the difference be between a single
   // and double click?
 
-  /** called when the user clicks once on an item in the tree. */ 
+  /** called when the user clicks once on an item in the tree. */
   public void mySingleClick(int row, TreePath path) {
     _clicksInToDoPane++;
     if (getSelectedObject() == null) return;
@@ -238,7 +237,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
     //System.out.println("1: " + getSelectedObject().toString());
   }
 
-  /** called when the user clicks once on an item in the tree. */ 
+  /** called when the user clicks once on an item in the tree. */
   public void myDoubleClick(int row, TreePath path) {
     _dblClicksInToDoPane++;
     if (getSelectedObject() == null) return;
