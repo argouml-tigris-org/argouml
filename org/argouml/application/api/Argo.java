@@ -71,6 +71,8 @@ public class Argo
     public static final String ARGOINI = "/org/argouml/argo.ini";
 
     /** Key for menu resource bundle.
+     *
+     * @deprecated in 0.15.1. Replaced by menu and action properties.
      */
     public static final String MENU_BUNDLE = "CoreMenu";
 
