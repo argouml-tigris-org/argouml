@@ -55,6 +55,7 @@ import ru.novosoft.uml.model_management.*;
 
 import org.argouml.uml.MMUtil;
 
+
 /** Generator subclass to generate text for display in diagrams in in
  * text fields in the Argo/UML user interface.  The generated code
  * looks a lot like (invalid) Java.  The idea is that other generators
@@ -164,16 +165,75 @@ implements PluggableNotation {
     }
     return s;
   }
-
+  
+  protected String generateMultiplicity(MAttribute attr) {
+  	MMultiplicity multi = attr.getMultiplicity();
+  	if (multi != null) {
+  		if (multi.equals(MMultiplicity.M1_1)) return " ";
+  		StringBuffer sb = new StringBuffer();
+  		sb.append(" [");
+  		List ranges = multi.getRanges();
+  		Iterator it = ranges.iterator();
+  		while (it.hasNext()) {
+  			MMultiplicityRange range = (MMultiplicityRange)it.next();
+  			sb.append(" ").append(range.getLower()).append("..").append(range.getUpper()).append(" ");
+  		}
+  		sb.append("] ");
+  		return sb.toString();
+  	}
+  	return "";
+  }
+	
+	
   public String generateAttribute(MAttribute attr, boolean documented) {
+  	String visibility = generateVisibility(attr.getVisibility());
+  	String name = attr.getName();
+  	String multiplicity = generateMultiplicity(attr.getMultiplicity());
+    String type = attr.getType().getName();
+    String initialValue = attr.getInitialValue().getBody();
+    
+    String finall = attr.getChangeability().equals(MChangeableKind.FROZEN) ? "final" : "";
+    String properties = "";
+    if (finall.length() > 0) {
+    	properties = "{ " + finall + " }";
+    }
+   
+ 
+  	StringBuffer sb = new StringBuffer();
+  	if ((visibility != null) && (visibility.length() > 0)) {
+  		sb.append(visibility).append(" ");
+  	}
+  	if ((name != null) && (name.length() > 0)) {
+  		sb.append(name).append(" ");
+  	}
+  	if ((multiplicity != null) && (multiplicity.length() > 0)) {
+  		sb.append(multiplicity).append(" ");
+  	}
+  	if ((type != null) && (type.length() > 0)) {
+  		sb.append(": ").append(type).append(" ");
+  	}
+  	if ((initialValue != null) && (initialValue.length() > 0)) {
+  		sb.append(initialValue).append(" ");
+  	}
+  	if (properties.length() > 0) {
+  		sb.append(properties);
+  	}
+  	return sb.toString().trim();
+  
+  	
+  	/*
+  	 * 2002-07-22
+  	 * Jaap Branderhorst
+  	 * This does not comply to the UML 1.3 spec
+  	 * so rewritten it. (Patch to issue 765 and 558)
+  	 * Start old code
+  	
     String s = "";
     s += generateVisibility(attr);
+    s += generateMultiplicity(attr);
     s += generateScope(attr);
     s += generateChangability(attr);
-    /*	if (!(attr.getMultiplicity() == null)) {
-		if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
- 			s += generateMultiplicity(attr.getMultiplicity()) + " ";
-			}*/
+    
 
     String slash = "";
     // not in nsuml: if (attr.containsStereotype(MStereotype.DERIVED)) slash = "/";
@@ -197,6 +257,8 @@ implements PluggableNotation {
 
 	// System.out.println("generated attribute string: "+s);
     return s;
+    */
+    
   }
 
 
@@ -443,12 +505,7 @@ implements PluggableNotation {
   }
 
   public String generateVisibility(MFeature f) {
-    MVisibilityKind vis = f.getVisibility();
-    //if (vis == null) return "";
-    if (MVisibilityKind.PUBLIC.equals(vis)) return "+";
-    if (MVisibilityKind.PRIVATE.equals(vis)) return "-";
-    if (MVisibilityKind.PROTECTED.equals(vis)) return "#";
-    return "";
+  	return generateVisibility(f.getVisibility());
   }
 
   public String generateScope(MFeature f) {
