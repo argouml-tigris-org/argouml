@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer;
 
 import java.util.*;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import org.argouml.model.ModelFacade;
 
@@ -41,35 +42,38 @@ public class NameOrder
     public NameOrder() {
     }
     
-    public int compare(Object obj, Object obj1) {
+    public int compare(Object obj1, Object obj2) {
+	if (obj1 instanceof DefaultMutableTreeNode) {
+	    DefaultMutableTreeNode node = (DefaultMutableTreeNode) obj1;
+	    obj1 = node.getUserObject();
+	}
+
+	if (obj2 instanceof DefaultMutableTreeNode) {
+	    DefaultMutableTreeNode node = (DefaultMutableTreeNode) obj2;
+	    obj2 = node.getUserObject();
+	}
         
-        ExplorerTreeNode node = (ExplorerTreeNode)obj;
-        ExplorerTreeNode node1 = (ExplorerTreeNode)obj1;
-        
-        Object userObject = node.getUserObject();
-        Object userObject1 = node1.getUserObject();
-        
-        return compareUserObjects(userObject,userObject1);
+        return compareUserObjects(obj1, obj2);
     }
     
     /**
      * alphabetic ordering of user object names instead of type names
      */
     protected int compareUserObjects(Object obj, Object obj1){
-        
-        if((ModelFacade.isADiagram(obj) ||
-        ModelFacade.isABase(obj) )&&
-        (ModelFacade.isADiagram(obj1) ||
-        ModelFacade.isABase(obj1) )){
-            
-            String name = ModelFacade.getName(obj)==null?"":ModelFacade.getName(obj);
-            String name1 = ModelFacade.getName(obj1)==null?"":ModelFacade.getName(obj1);
-            
+        if ((ModelFacade.isADiagram(obj) ||
+	     ModelFacade.isABase(obj) )&&
+	    (ModelFacade.isADiagram(obj1) ||
+	     ModelFacade.isABase(obj1) )){
+	    String name = ModelFacade.getName(obj) == null ?
+		    "" : ModelFacade.getName(obj);
+	    String name1 = ModelFacade.getName(obj1) == null ?
+		    "" : ModelFacade.getName(obj1);
             int ret = name.compareTo(name1);
-            return ret;
-        }
-        else
-            return 0;
+
+	    return ret;
+	}
+
+	return 0;
     }
     
     public String toString(){
