@@ -1,5 +1,4 @@
-// $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,24 +23,53 @@
 
 package org.argouml.model.uml;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+
+import junit.framework.TestCase;
 
 /**
- * @author Thierry Lach
+ * @author Thierry
  */
-public class UmlTestSuite {
+public class TestUml extends TestCase
+{
 
-	/** Test suite for this package
-	 * 
-	 * @return the junit test suite
+	/**
+	 * Constructor for Uml.
+	 * @param arg0
 	 */
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Tests for " + UmlTestSuite.class.getPackage().getName());
-		suite.addTestSuite(TestUml.class);
-		suite.addTestSuite(TestCopyHelper.class);
-        suite.addTestSuite(TestUmlModelEventPump.class);
-        return suite;
-    }
+	public TestUml(String arg0)
+	{
+		super(arg0);
+	}
 
+	/*
+	 * @see TestCase#setUp()
+	 */
+	protected void setUp() throws Exception
+	{
+		super.setUp();
+	}
+
+	/*
+	 * @see TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+
+	public void testUmlClassList() {
+		Map map = Uml.getUmlClassList();
+		Set keys = map.keySet();
+		for (Iterator i = keys.iterator(); i.hasNext(); ) {
+			Object key = i.next();
+			Class type = (Class)map.get(key);
+			String typeName = type.getName().toUpperCase();
+			String expected = key.toString().toUpperCase();
+			assertEquals("Not the correct class",
+                         type.getName().toUpperCase(),
+                         "ORG.ARGOUML.MODEL.UML.UML$TYPE" + key.toString().toUpperCase());
+		}
+	}
 }
