@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -65,13 +65,11 @@ public class PropPanelSignal extends PropPanelModelElement {
         super("Signal", lookupIcon("SignalSending"), 
                 ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class) ModelFacade.SIGNAL;
-
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), 
+        addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
 
         addSeperator();
@@ -84,14 +82,14 @@ public class PropPanelSignal extends PropPanelModelElement {
         JScrollPane contextScroll = new JScrollPane(
                 contextList, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, 
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        addField(Translator.localize("UMLMenu", "label.contexts"), 
+        addField(Translator.localize("label.contexts"), 
                 contextScroll);        
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
         new PropPanelButton(this, getButtonPanel(), 
                 lookupIcon("SignalSending"), 
-                Translator.localize("UMLMenu", "button.new-signal"), 
+                Translator.localize("button.new-signal"), 
                 "newSignal", null);
         addButton(new PropPanelButton2(this, 
                 new ActionRemoveFromModel()));   
@@ -147,7 +145,7 @@ public class PropPanelSignal extends PropPanelModelElement {
 	    choices.addAll(CoreHelper.getHelper().getAllBehavioralFeatures());
 	    selected.addAll(ModelFacade.getContexts(signal));
 	    UMLAddDialog dialog = new UMLAddDialog(choices, selected, 
-                Translator.localize("UMLMenu", "dialog.title.add-contexts"), 
+                Translator.localize("dialog.title.add-contexts"), 
                 true, true);
 	    int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
 	    if (returnValue == JOptionPane.OK_OPTION) {

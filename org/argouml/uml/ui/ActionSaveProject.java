@@ -140,12 +140,12 @@ public class ActionSaveProject extends UMLAction {
 	try {
 	    if (file.exists() && !overwrite) {
 	        String sConfirm = 
-	            MessageFormat.format(Translator.localize("Actions",
+	            MessageFormat.format(Translator.localize(
 	                "optionpane.save-project-confirm-overwrite"),
 	                new Object[] {file} );
 	        int nResult = 
 	            JOptionPane.showConfirmDialog(pb, sConfirm,
-                        Translator.localize("Actions", 
+                        Translator.localize(
             		    "optionpane.save-project-confirm-overwrite-title"),
             				  JOptionPane.YES_NO_OPTION,
             				  JOptionPane.QUESTION_MESSAGE);
@@ -156,7 +156,7 @@ public class ActionSaveProject extends UMLAction {
 	    }
       
 	    String sStatus =
-		MessageFormat.format(Translator.localize("Actions",
+		MessageFormat.format(Translator.localize(
 			"label.save-project-status-writing"),
 				     new Object[] {file} );
 	    pb.showStatus (sStatus);
@@ -177,7 +177,7 @@ public class ActionSaveProject extends UMLAction {
 	    project.postSave();
 
 	    sStatus =
-		MessageFormat.format(Translator.localize("Actions", 
+		MessageFormat.format(Translator.localize(
 			"label.save-project-status-wrote"),
 				     new Object[] {project.getURL()} );
 	    pb.showStatus(sStatus);
@@ -197,12 +197,12 @@ public class ActionSaveProject extends UMLAction {
 	}
 	catch (FileNotFoundException fnfe) {
 	    String sMessage = 
-		MessageFormat.format(Translator.localize("Actions",
+		MessageFormat.format(Translator.localize(
 		        "optionpane.save-project-file-not-found"),
 				     new Object[] {fnfe.getMessage()} );
       
 	    JOptionPane.showMessageDialog(pb, sMessage,
-	            Translator.localize("Actions",
+	            Translator.localize(
 			    "optionpane.save-project-file-not-found-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
@@ -210,12 +210,12 @@ public class ActionSaveProject extends UMLAction {
 	}
 	catch (IOException ioe) {
 	    String sMessage = 
-		MessageFormat.format(Translator.localize("Actions",
+		MessageFormat.format(Translator.localize(
 			"optionpane.save-project-io-exception"),
 				     new Object[] {ioe.getMessage()} );
       
 	    JOptionPane.showMessageDialog(pb, sMessage,
-	            Translator.localize("Actions", 
+	            Translator.localize(
 			    "optionpane.save-project-io-exception-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
@@ -223,12 +223,12 @@ public class ActionSaveProject extends UMLAction {
 	}
 	catch (Exception ex) {
 	    String sMessage = 
-		MessageFormat.format(Translator.localize("Actions",
+		MessageFormat.format(Translator.localize(
 			"optionpane.save-project-general-exception"),
 				     new Object[] {ex.getMessage()} );
       
 	    JOptionPane.showMessageDialog(pb, sMessage,
-	            Translator.localize("Actions",
+	            Translator.localize(
 			    "optionpane.save-project-general-exception-title"),
 					  JOptionPane.ERROR_MESSAGE);
       

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,12 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
-// labels "Generalizes:" and "Specializes:" for inheritance.
-
-// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
-// "Generalizations:" and "Specializations".
 
 package org.argouml.uml.ui.foundation.core;
 
@@ -71,16 +65,15 @@ public class PropPanelClass extends PropPanelClassifier {
      */
     public PropPanelClass() {
         super("Class", ConfigLoader.getTabPropsOrientation());
-        Class mclass = (Class) ModelFacade.CLASS;
 
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new
-        // UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        // addField(Translator.localize("label.stereotype"), new
+        // UMLComboBoxNavigator(this, Translator.localize(
         // "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
         getModifiersPanel().add(new UMLClassActiveCheckBox());
         add(getModifiersPanel());
@@ -88,24 +81,24 @@ public class PropPanelClass extends PropPanelClassifier {
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.client-dependencies"),
+        addField(Translator.localize("label.client-dependencies"),
                 getClientDependencyScroll());
-        addField(Translator.localize("UMLMenu", "label.supplier-dependencies"),
+        addField(Translator.localize("label.supplier-dependencies"),
                 getSupplierDependencyScroll());
-        addField(Translator.localize("UMLMenu", "label.generalizations"),
+        addField(Translator.localize("label.generalizations"),
                 getGeneralizationScroll());
-        addField(Translator.localize("UMLMenu", "label.specializations"),
+        addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.attributes"),
+        addField(Translator.localize("label.attributes"),
                 getAttributeScroll());
-        addField(Translator.localize("UMLMenu", "label.association-ends"),
+        addField(Translator.localize("label.association-ends"),
                 getAssociationEndScroll());
-        addField(Translator.localize("UMLMenu", "label.operations"),
+        addField(Translator.localize("label.operations"),
                 getOperationScroll());
-        addField(Translator.localize("UMLMenu", "label.owned-elements"),
+        addField(Translator.localize("label.owned-elements"),
                 getOwnedElementsScroll());
 
         addButton(new PropPanelButton2(this,
@@ -116,11 +109,11 @@ public class PropPanelClass extends PropPanelClassifier {
                         ActionAddOperation.getSingleton()));
         addButton(new PropPanelButton2(this, getActionNewReception()));
         new PropPanelButton(this, getButtonPanel(), lookupIcon("InnerClass"), 
-                Translator.localize("UMLMenu", "button.new-inner-class"),
+                Translator.localize("button.new-inner-class"),
                 "addInnerClass", null);
         new PropPanelButton(this, getButtonPanel(), lookupIcon("Class"), 
                 Translator.localize(
-                "UMLMenu", "button.new-class"), "newClass", null);
+                "button.new-class"), "newClass", null);
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 

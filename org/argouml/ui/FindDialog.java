@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,7 +45,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import org.argouml.i18n.Translator;
@@ -58,7 +57,8 @@ import org.tigris.gef.util.PredicateStringMatch;
 import org.tigris.gef.util.PredicateType;
 
 
-/** This is one of the few classes in Argo that is
+/**
+ * This is one of the few classes in Argo that is
  * self running (i.e. not modal).
  *
  * The search is buggy and needs work.
@@ -89,8 +89,6 @@ public class FindDialog extends ArgoDialog
     private JComboBox   location    = new JComboBox();
     private JComboBox   type        = new JComboBox();
     private JPanel      typeDetails = new JPanel();
-    private JTextField  tag         = new JTextField();
-    private JTextField  val         = new JTextField();
 
     private JTabbedPane results     = new JTabbedPane();
     private JPanel      help        = new JPanel();
@@ -131,7 +129,7 @@ public class FindDialog extends ArgoDialog
         tabs.setEnabledAt(2, false);
 
         initConstraintsTab();
-        tabs.addTab(Translator.localize("UMLMenu", "tab.constraints"),
+        tabs.addTab(Translator.localize("tab.constraints"),
 		     constraintsTab);
         tabs.setEnabledAt(3, false);
 
@@ -431,7 +429,6 @@ public class FindDialog extends ArgoDialog
             new PredicateFind(eNamePred, pNamePred, dNamePred, typePred);
 
         ChildGenFind gen = ChildGenFind.getSingleton();
-        ProjectBrowser pb = ProjectBrowser.getInstance();
         Object root = ProjectManager.getManager().getCurrentProject();
 
         TabResults newResults = new TabResults();

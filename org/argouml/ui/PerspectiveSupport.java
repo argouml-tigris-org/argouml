@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,9 +32,7 @@ import org.argouml.i18n.Translator;
 
 /**
  * Helper class for tree models that provides help building perspectives
- * out of gorules.
- *
- * <p>$Id$
+ * out of gorules.<p>
  *
  * @author  alexb
  * @since 0.13.5, Created on 15 April 2003
@@ -60,13 +58,14 @@ public class PerspectiveSupport {
      * @param n the name to be localized
      */
     public PerspectiveSupport(String n) {
-        
-        name = Translator.localize("Tree", n);
+        name = Translator.localize(n);
         goRules = new Vector();
     }
     
     /**
-     * The constructor.
+     * The constructor.<p>
+     * 
+     * TODO: Is this constructor used? What is the purpose with it?
      * 
      * @param n the name to be localized
      * @param subs the go rules

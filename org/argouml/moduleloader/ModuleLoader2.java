@@ -565,7 +565,7 @@ public class ModuleLoader2 {
      * Only add it as a module if it is a module (i.e. it implements the
      * {@link ModuleInterface} interface.
      *
-     * @param classloader The ClassLoader to load from.
+     * @param classLoader The ClassLoader to load from.
      * @param classname The name.
      */
     private void addClass(ClassLoader classLoader, String classname) {

@@ -44,8 +44,7 @@ public class ActionNewDestroyAction extends ActionNewAction {
      */
     protected ActionNewDestroyAction() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", 
-                "button.new-destroyaction"));
+        putValue(Action.NAME, Translator.localize("button.new-destroyaction"));
     }
     
     

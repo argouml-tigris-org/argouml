@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -41,15 +40,12 @@ import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
 
 /**
- * The properties panel for a Generalization.
+ * The properties panel for a Generalization.<p>
  * 
  * TODO: this property panel needs refactoring to remove dependency on old gui
  * components.
  */
 public class PropPanelGeneralization extends PropPanelModelElement {
-
-    private static final Logger LOG = Logger
-            .getLogger(PropPanelGeneralization.class);
 
     private JTextField discriminatorTextField;
 
@@ -72,33 +68,31 @@ public class PropPanelGeneralization extends PropPanelModelElement {
      */
     public PropPanelGeneralization() {
         super("Generalization", ConfigLoader.getTabPropsOrientation());
-        Class mclass = (Class) ModelFacade.GENERALIZATION;
-
         Class[] namesToWatch = {(Class) ModelFacade.STEREOTYPE,
             (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
         setNameEventListening(namesToWatch);
 
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
 
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
 
-        addField(Translator.localize("UMLMenu", "label.discriminator"),
+        addField(Translator.localize("label.discriminator"),
                 getDiscriminatorTextField());
 
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.parent"),
+        addField(Translator.localize("label.parent"),
                 getParentScroll());
 
-        addField(Translator.localize("UMLMenu", "label.child"),
+        addField(Translator.localize("label.child"),
                 getChildScroll());
 
-        addField(Translator.localize("UMLMenu", "label.powertype"),
+        addField(Translator.localize("label.powertype"),
                 new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(),
                         ActionSetGeneralizationPowertype.getInstance()));
 

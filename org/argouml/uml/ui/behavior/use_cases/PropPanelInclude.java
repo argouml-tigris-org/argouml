@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelInclude.java
-// Classes: PropPanelInclude
-// Original Author: mail@jeremybennett.com
-
 package org.argouml.uml.ui.behavior.use_cases;
 
 import javax.swing.JComboBox;
@@ -46,9 +42,9 @@ import org.argouml.util.ConfigLoader;
  * semantic meaning of its own, we derive directly from
  * PropPanelModelElement (as other children of Relationship do).<p>
  *
+ * @author Jeremy Bennett
  */
 public class PropPanelInclude extends PropPanelModelElement {
-
 
     /**
      * Constructor. Builds up the various fields required.
@@ -56,17 +52,17 @@ public class PropPanelInclude extends PropPanelModelElement {
     public PropPanelInclude() {
         super("Include", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
 		 getNameTextField());
-//        addField(Translator.localize("UMLMenu", "label.stereotype"),
+//        addField(Translator.localize("label.stereotype"),
 //		 new UMLComboBoxNavigator(this,
 //					  Translator.localize(
 //					      "UMLMenu",
 //					      "tooltip.nav-stereo"),
 //					  getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
 		 getNamespaceScroll());
 
         addSeperator();
@@ -74,13 +70,13 @@ public class PropPanelInclude extends PropPanelModelElement {
         JComboBox baseBox =
 	    new UMLComboBox2(new UMLIncludeBaseComboBoxModel(),
 			     ActionSetIncludeBase.getInstance());
-        addField(Translator.localize("UMLMenu", "label.usecase-base"),
+        addField(Translator.localize("label.usecase-base"),
 		 baseBox);
 
         JComboBox additionBox =
 	    new UMLComboBox2(new UMLIncludeAdditionComboBoxModel(),
 			     ActionSetIncludeAddition.getInstance());
-        addField(Translator.localize("UMLMenu", "label.addition"),
+        addField(Translator.localize("label.addition"),
 		 additionBox);
 
    /*

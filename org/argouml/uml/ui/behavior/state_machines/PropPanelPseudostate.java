@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelPseudostate.java
-// Classes: PropPanelPseudostate
-// Original Author: your email address here
-// $Id$
-
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
@@ -35,7 +30,7 @@ import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Property Panbel for the collection of pseudostates (branch, fork, ...). It
+ * Property Panel for the collection of pseudostates (branch, fork, ...). It
  * dynamically sets its name to the pseudostate used.
  */
 public class PropPanelPseudostate extends PropPanelStateVertex {
@@ -47,23 +42,21 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
     public PropPanelPseudostate() {
         super("Pseudostate", null, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class) ModelFacade.PSEUDOSTATE;
-
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-//        addField(Translator.localize("UMLMenu", "label.stereotype"),
+//        addField(Translator.localize("label.stereotype"),
 //                new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
 //                        "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.container"),
+        addField(Translator.localize("label.container"),
                 getContainerScroll());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.incoming"),
+        addField(Translator.localize("label.incoming"),
                 getIncomingScroll());
-        addField(Translator.localize("UMLMenu", "label.outgoing"),
+        addField(Translator.localize("label.outgoing"),
                 getOutgoingScroll());
 
     }

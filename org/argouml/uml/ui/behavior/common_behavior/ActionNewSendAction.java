@@ -44,7 +44,7 @@ public class ActionNewSendAction extends ActionNewAction {
      */
     protected ActionNewSendAction() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", 
+        putValue(Action.NAME, Translator.localize(
                 "button.new-sendaction"));
     }
     

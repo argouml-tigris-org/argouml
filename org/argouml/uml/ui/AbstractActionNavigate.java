@@ -45,8 +45,7 @@ public abstract class AbstractActionNavigate extends UMLAction {
      * The constructor.
      */
     public AbstractActionNavigate() {
-        this(Translator.localize(
-                "UMLMenu", "button.go-up"), true);
+        this(Translator.localize("button.go-up"), true);
     }
 
     /**
@@ -55,8 +54,8 @@ public abstract class AbstractActionNavigate extends UMLAction {
      */
     public AbstractActionNavigate(String name, boolean hasIcon) {
         super(name, true, hasIcon);
-        putValue(Action.SMALL_ICON, ResourceLoaderWrapper
-                .lookupIconResource("NavigateUp"));
+        putValue(Action.SMALL_ICON,
+                 ResourceLoaderWrapper.lookupIconResource("NavigateUp"));
     }
     
     /**

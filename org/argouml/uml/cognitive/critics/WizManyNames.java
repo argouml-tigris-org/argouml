@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: WizManyNames.java
-// Classes: WizManyNames
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Vector;
@@ -36,19 +29,21 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.ui.WizStepManyTextFields;
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 
-/** A non-modal wizard to help the user change the name of a
- *  MModelElement to a better name. */
+/**
+ * A non-modal wizard to help the user change the name of a
+ * MModelElement to a better name.
+ * 
+ * @author jrobbins
+ */
 
 public class WizManyNames extends Wizard {
     private static final Logger LOG = Logger.getLogger(WizManyNames.class);
 					      
     private String instructions =
 	"Please change the name of the offending model element.";
-    private String label = Translator.localize("UMLMenu", "label.name");
     private Vector mes = null;
 							  
     private WizStepManyTextFields step1 = null;

@@ -53,8 +53,7 @@ public class ActionNewReception extends AbstractActionNewModelElement {
      */
     public ActionNewReception() { 
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", 
-                                                  "button.new-reception"));
+        putValue(Action.NAME, Translator.localize("button.new-reception"));
     }
     
     /**

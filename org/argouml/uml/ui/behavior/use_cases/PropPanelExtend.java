@@ -68,17 +68,17 @@ public class PropPanelExtend extends PropPanelModelElement {
     public PropPanelExtend() {
         super("Extend", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
 		 getNameTextField());
-//        addField(Translator.localize("UMLMenu", "label.stereotype"),
+//        addField(Translator.localize("label.stereotype"),
 //		 new UMLComboBoxNavigator(this,
 //					  Translator.localize(
 //					      "UMLMenu",
 //					      "tooltip.nav-stereo"),
 //					  getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
 		 getNamespaceScroll());
 
         addSeperator();
@@ -87,11 +87,11 @@ public class PropPanelExtend extends PropPanelModelElement {
         // Link to the two ends. This is done as a drop down. First for the
         // base use case.
 
-        addField(Translator.localize("UMLMenu", "label.usecase-base"),
+        addField(Translator.localize("label.usecase-base"),
 		 new UMLComboBox2(new UMLExtendBaseComboBoxModel(),
 				  ActionSetExtendBase.getInstance()));
 
-        addField(Translator.localize("UMLMenu", "label.extension"),
+        addField(Translator.localize("label.extension"),
 		 new UMLComboBox2(new UMLExtendExtensionComboBoxModel(),
 				  ActionSetExtendExtension.getInstance()));
 
@@ -99,7 +99,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 	    new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(),
 		ActionAddExtendExtensionPoint.getInstance(),
 		ActionNewExtendExtensionPoint.SINGLETON);
-        addField(Translator.localize("UMLMenu", "label.extension-points"),
+        addField(Translator.localize("label.extension-points"),
 		new JScrollPane(extensionPointList));
 
         addSeperator();

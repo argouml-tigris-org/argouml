@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,51 +66,49 @@ public class PropPanelDataType extends PropPanelClassifier {
         super("DataType", lookupIcon("DataType"), 
                 ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class) ModelFacade.DATATYPE;
-
-        //addField(Translator.localize("UMLMenu", "label.name"),
+        //addField(Translator.localize("label.name"),
         //        getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"),
-        //        new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        // addField(Translator.localize("label.stereotype"),
+        //        new UMLComboBoxNavigator(this, Translator.localize(
         //                "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
         add(getModifiersPanel());
 
         addSeperator();
 
         add(getNamespaceVisibilityPanel());
-        addField(Translator.localize("UMLMenu", "label.client-dependencies"),
+        addField(Translator.localize("label.client-dependencies"),
                 getClientDependencyScroll());
-        addField(Translator.localize("UMLMenu", "label.supplier-dependencies"),
+        addField(Translator.localize("label.supplier-dependencies"),
                 getSupplierDependencyScroll());
-        addField(Translator.localize("UMLMenu", "label.generalizations"),
+        addField(Translator.localize("label.generalizations"),
                 getGeneralizationScroll());
-        addField(Translator.localize("UMLMenu", "label.specializations"),
+        addField(Translator.localize("label.specializations"),
                 getSpecializationScroll());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.operations"),
+        addField(Translator.localize("label.operations"),
                 getOperationScroll());
 
-        addField(Translator.localize("UMLMenu", "label.literals"),
+        addField(Translator.localize("label.literals"),
                 getAttributeScroll());
 
         addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
         new PropPanelButton(this, getButtonPanel(), lookupIcon("DataType"), 
-                Translator.localize("UMLMenu", "button.new-datatype"), 
+                Translator.localize("button.new-datatype"), 
                 "newDataType", null);
         new PropPanelButton(this, getButtonPanel(), lookupIcon("NewAttribute"), 
-            Translator.localize("UMLMenu", "button.new-enumeration-literal"),
+            Translator.localize("button.new-enumeration-literal"),
             "addAttribute", null);
 
         new PropPanelButton(this, getButtonPanel(), lookupIcon("NewOperation"), 
                 Translator.localize(
-                "UMLMenu", "button.new-operation"), "addOperation", null);
+                "button.new-operation"), "addOperation", null);
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 

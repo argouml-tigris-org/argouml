@@ -59,8 +59,6 @@ public class PropPanelNodeInstance extends PropPanelInstance {
         super("Node Instance", lookupIcon("NodeInstance"), 
                 ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class) ModelFacade.NODE_INSTANCE;
-
         addField(Translator.localize("label.name"), getNameTextField());
 
         addField(Translator.localize("label.stereotype"), 
@@ -77,7 +75,7 @@ public class PropPanelNodeInstance extends PropPanelInstance {
         addField("Stimuli received:", getStimuliReceiverScroll());
         
         JList resList = new UMLLinkedList(new UMLContainerResidentListModel());
-        addField(Translator.localize("UMLMenu", "label.residents"), 
+        addField(Translator.localize("label.residents"), 
                 new JScrollPane(resList));
         
         addSeperator();
@@ -87,7 +85,7 @@ public class PropPanelNodeInstance extends PropPanelInstance {
                 new JScrollPane(new UMLMutableLinkedList(
 	                new UMLInstanceClassifierListModel(), 
 	            a, null, null, true));
-	addField(Translator.localize("UMLMenu", "label.classifiers"), 
+	addField(Translator.localize("label.classifiers"), 
                     classifierScroll);
 
 

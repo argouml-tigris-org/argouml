@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,13 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
-// labels "Generalizes:" and "Specializes:" for inheritance.
-
-// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
-// "Generalizations:" and "Specializations".
-
 
 package org.argouml.uml.ui.foundation.core;
 
@@ -54,64 +47,62 @@ public class PropPanelInterface extends PropPanelClassifier {
     public PropPanelInterface() {
 	super("Interface", ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = (Class) ModelFacade.INTERFACE;
-
-	addField(Translator.localize("UMLMenu", "label.name"), 
-            getNameTextField());
-	// addField(Translator.localize("UMLMenu", "label.stereotype"),
-        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+	addField(Translator.localize("label.name"), getNameTextField());
+	// addField(Translator.localize("label.stereotype"),
+        //     new UMLComboBoxNavigator(this, Translator.localize(
         //         "tooltip.nav-stereo"), getStereotypeBox()));
-	addField(Translator.localize("UMLMenu", "label.stereotype"), 
+	addField(Translator.localize("label.stereotype"), 
             getStereotypeBox());
-	addField(Translator.localize("UMLMenu", "label.namespace"), 
+	addField(Translator.localize("label.namespace"), 
             getNamespaceComboBox());
 	/*
 	  JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", 
+	  modifiersPanel.add(new UMLCheckBox(Translator.localize(
 	      "checkbox.visibility.public-uc"),this,
-	      new UMLEnumerationBooleanProperty("visibility",mclass,
+	      new UMLEnumerationBooleanProperty("visibility",
+	                                        ModelFacade.INTERFACE,
 	      "getVisibility","setVisibility",MVisibilityKind.class,
 	      MVisibilityKind.PUBLIC,null)));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", 
+	  modifiersPanel.add(new UMLCheckBox(Translator.localize(
 	      "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty(
-	      "isAbstract",mclass,"isAbstract","setAbstract")));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", 
+	      "isAbstract",ModelFacade.INTERFACE,"isAbstract","setAbstract")));
+	  modifiersPanel.add(new UMLCheckBox(Translator.localize(
 	      "checkbox.final-uc"),this,new UMLReflectionBooleanProperty(
-	      "isLeaf",mclass,"isLeaf","setLeaf")));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", 
+	      "isLeaf",ModelFacade.INTERFACE,"isLeaf","setLeaf")));
+	  modifiersPanel.add(new UMLCheckBox(Translator.localize(
 	      "checkbox.root-uc"),this,new UMLReflectionBooleanProperty(
-	      "isRoot",mclass,"isRoot","setRoot")));
+	      "isRoot",ModelFacade.INTERFACE,"isRoot","setRoot")));
 	*/
 	add( getModifiersPanel());
 	add(getNamespaceVisibilityPanel());
 
 	addSeperator();
 
-	addField(Translator.localize("UMLMenu", "label.generalizations"), 
+	addField(Translator.localize("label.generalizations"), 
             getGeneralizationScroll());
-	addField(Translator.localize("UMLMenu", "label.specializations"), 
+	addField(Translator.localize("label.specializations"), 
             getSpecializationScroll());
 
 	addSeperator();
 
-	addField(Translator.localize("UMLMenu", "label.association-ends"), 
+	addField(Translator.localize("label.association-ends"), 
             getAssociationEndScroll());
-	addField(Translator.localize("UMLMenu", "label.operations"), 
+	addField(Translator.localize("label.operations"), 
             getFeatureScroll());
 
 	addButton(new PropPanelButton2(this, 
             new ActionNavigateNamespace()));
 	new PropPanelButton(this, getButtonPanel(), lookupIcon("NewOperation"), 
             Translator.localize(
-            "UMLMenu", "button.new-operation"), "addOperation", null);
+            "button.new-operation"), "addOperation", null);
 	//new PropPanelButton(this,buttonPanel,generalizationIcon, 
-	//    Translator.localize("UMLMenu", "button.new-generalization"),
+	//    Translator.localize("button.new-generalization"),
         //    "addGeneralization",null);
 	//new PropPanelButton(this,buttonPanel,realizationIcon, 
-        //    Translator.localize("UMLMenu", "button.new-realization"),
+        //    Translator.localize("button.new-realization"),
         //    "addRealization",null);
 	new PropPanelButton(this, getButtonPanel(), lookupIcon("Reception"), 
-            Translator.localize("UMLMenu", "button.new-reception"), 
+            Translator.localize("button.new-reception"), 
             getActionNewReception());
 	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }

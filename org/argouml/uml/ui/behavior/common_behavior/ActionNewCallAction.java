@@ -44,7 +44,7 @@ public class ActionNewCallAction extends ActionNewAction {
      */
     protected ActionNewCallAction() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", 
+        putValue(Action.NAME, Translator.localize(
                 "button.new-callaction"));
     }
     

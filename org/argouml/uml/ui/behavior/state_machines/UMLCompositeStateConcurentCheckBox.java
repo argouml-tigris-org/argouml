@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
@@ -39,7 +38,7 @@ public class UMLCompositeStateConcurentCheckBox extends UMLCheckBox2 {
      * Constructor for UMLCompositeStateConcurentCheckBox.
      */
     public UMLCompositeStateConcurentCheckBox() {
-         super(Translator.localize("UMLMenu", "label.concurrent"), 
+         super(Translator.localize("label.concurrent"), 
             ActionSetCompositeStateConcurrent.getInstance(), 
             "isConcurent");
     }

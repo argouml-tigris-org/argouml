@@ -44,7 +44,7 @@ public class ActionNewReturnAction extends ActionNewAction {
      */
     protected ActionNewReturnAction() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", 
+        putValue(Action.NAME, Translator.localize(
                 "button.new-returnaction"));
     }
     

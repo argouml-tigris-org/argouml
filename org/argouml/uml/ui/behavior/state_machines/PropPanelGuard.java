@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,13 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-
-
-// File: PropPanelState.java
-// Classes: PropPanelState
-// Original Author: your email address here
-// $Id$
 
 package org.argouml.uml.ui.behavior.state_machines;
 
@@ -64,19 +57,19 @@ public class PropPanelGuard extends PropPanelModelElement {
     public PropPanelGuard() {
         super("Guard", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        // addField(Translator.localize("label.stereotype"), 
         // new UMLComboBoxNavigator(this, Translator.localize(
-        // "UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        // "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), 
+        addField(Translator.localize("label.namespace"), 
                 getNamespaceScroll());
 
         JList transitionList = new UMLLinkedList(
                 new UMLGuardTransitionListModel());
-        addField(Translator.localize("UMLMenu", "label.transition"), 
+        addField(Translator.localize("label.transition"), 
                 new JScrollPane(transitionList));
 
         addSeperator();
@@ -97,7 +90,7 @@ public class PropPanelGuard extends PropPanelModelElement {
 
 	new PropPanelButton(this, getButtonPanel(), 
             ResourceLoaderWrapper.lookupIconResource("NavigateUp"), 
-            Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+            Translator.localize("button.go-up"), "navigateUp", null);
 	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,8 +46,6 @@ import org.tigris.gef.base.Diagram;
  * resolve found objects to strings.
  */
 public class TMResults extends AbstractTableModel {
-
-    private static final String BUNDLE = "Label";
 
     private Vector rowObjects;
     private Vector diagrams;
@@ -149,7 +147,7 @@ public class TMResults extends AbstractTableModel {
 		} else if (d instanceof UMLSequenceDiagram) {
 		    name = "label.sequence-diagram";
 		}
-		return Translator.localize(BUNDLE, name);
+		return Translator.localize(name);
 	    case 1 :
 		return d.getName();
 	    case 2 :
@@ -163,8 +161,9 @@ public class TMResults extends AbstractTableModel {
         }
         if (ModelFacade.isAModelElement(rowObj)) {
             Diagram d = null;
-            if (diagrams != null)
+            if (diagrams != null) {
                 d = (Diagram) diagrams.elementAt(row);
+            }
             switch (col) {
 	    case 0 :
 		return ModelFacade.getUMLClassName(rowObj);

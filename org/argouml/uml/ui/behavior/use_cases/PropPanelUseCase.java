@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,20 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelUseCase.java
-// Classes: PropPanelUseCase
-// Original Author: your email address here
-// $Id$
-
-// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
-// labels "Generalizes:" for inheritance (needs Specializes some time).
-
-// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Specializes field
-// added. Factoring to use PropPanelModifiers and tidying up of layout.
-
-// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Tool tip changed to
-// "Add use case".
-
 package org.argouml.uml.ui.behavior.use_cases;
 
 import javax.swing.JList;
@@ -55,32 +41,31 @@ import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
 
 /**
- * <p>Builds the property panel for a use case.</p>
+ * Builds the property panel for a use case.<p>
  *
- * <p>This is a type of Classifier, and like other Classifiers can have
- *   attributes and operations (some processes use these to define
- *   requirements). <em>Note</em>. ArgoUML does not currently support separate
- *   compartments on the display for this.</p>
+ * This is a type of Classifier, and like other Classifiers can have
+ * attributes and operations (some processes use these to define
+ * requirements). <em>Note</em>. ArgoUML does not currently support separate
+ * compartments on the display for this.<p>
  */
-
 public class PropPanelUseCase extends PropPanelClassifier {
 
     /**
-     * <p>Constructor. Builds up the various fields required.</p>
+     * Constructor. Builds up the various fields required.<p>
      */
     public PropPanelUseCase() {
         // Invoke the Classifier constructor, but passing in our name and
         // representation and requesting 3 columns
         super("UseCase", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
-    	// addField(Translator.localize("UMLMenu", "label.stereotype"), 
-        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+    	// addField(Translator.localize("label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize( 
         //     "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
-    	addField(Translator.localize("UMLMenu", "label.namespace"), 
+    	addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
 
 	
@@ -92,34 +77,34 @@ public class PropPanelUseCase extends PropPanelClassifier {
 	JList extensionPoints = new UMLMutableLinkedList(
             new UMLUseCaseExtensionPointListModel(), null, 
             ActionNewUseCaseExtensionPoint.SINGLETON);
-	addField(Translator.localize("UMLMenu", "label.extension-points"),
+	addField(Translator.localize("label.extension-points"),
 		 new JScrollPane(extensionPoints));
 
 	addSeperator();
 
-	addField(Translator.localize("UMLMenu", "label.generalizations"), 
+	addField(Translator.localize("label.generalizations"), 
             getGeneralizationScroll());
-	addField(Translator.localize("UMLMenu", "label.specializations"), 
+	addField(Translator.localize("label.specializations"), 
             getSpecializationScroll());
 
 	JList extendsList = new UMLLinkedList(new UMLUseCaseExtendListModel());
-	addField(Translator.localize("UMLMenu", "label.extends"),
+	addField(Translator.localize("label.extends"),
 		 new JScrollPane(extendsList));
 
 	JList includesList = new UMLLinkedList(
             new UMLUseCaseIncludeListModel());
-	addField(Translator.localize("UMLMenu", "label.includes"),
+	addField(Translator.localize("label.includes"),
 		 new JScrollPane(includesList));
 
 	addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.association-ends"), 
+        addField(Translator.localize("label.association-ends"), 
             getAssociationEndScroll());
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
         new PropPanelButton(this, getButtonPanel(), lookupIcon("UseCase"),
-                Translator.localize("UMLMenu", "button.new-usecase"), 
+                Translator.localize("button.new-usecase"), 
                 "newUseCase", null);
         new PropPanelButton(this, getButtonPanel(), 
                 lookupIcon("ExtensionPoint"),
@@ -127,10 +112,9 @@ public class PropPanelUseCase extends PropPanelClassifier {
                 "newExtensionPoint",
                 null);
         new PropPanelButton(this, getButtonPanel(), lookupIcon("Reception"), 
-                Translator.localize("UMLMenu", "button.new-reception"), 
+                Translator.localize("button.new-reception"), 
                 getActionNewReception());
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
-
     }
 
 

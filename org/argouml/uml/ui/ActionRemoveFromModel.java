@@ -217,14 +217,12 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 // he/she is sure
                 String confirmStr =
                     MessageFormat.format(Translator.localize(
-			    "Actions",
 			    "optionpane.remove-from-model-confirm-delete"),
 					 new Object[] {
 					     diagram.getName(), "" 
 					 });
 		String text =
 		    Translator.localize(
-			"Actions",
 			"optionpane.remove-from-model-confirm-delete-title");
                 int response =
                     JOptionPane.showConfirmDialog(ProjectBrowser.getInstance(),
@@ -265,7 +263,6 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         if (count > 1) {
             confirmStr +=
 		Translator.localize(
-		    "Actions",
 		    "optionpane.remove-from-model-will-remove-from-diagrams");
             doAsk = true;
         }
@@ -274,7 +271,6 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         if (beh != null && beh.size() > 0) {
             confirmStr +=
 		Translator.localize(
-			"Actions",
 			"optionpane.remove-from-model-will-remove-subdiagram");
             doAsk = true;
         }
@@ -287,14 +283,12 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         if (name == null || name.equals("")) {
             name =
 		Translator.localize(
-			"Actions",
 			"optionpane.remove-from-model-anon-element-name");
         }
 
         confirmStr =
             MessageFormat.format(
                     Translator.localize(
-			    "Actions",
 			    "optionpane.remove-from-model-confirm-delete"),
 		    new Object[] {
 			name, confirmStr 
@@ -304,7 +298,6 @@ public class ActionRemoveFromModel extends UMLChangeAction {
 		    pb,
 		    confirmStr,
 		    Translator.localize(
-			"Actions",
 			"optionpane.remove-from-model-confirm-delete-title"),
 		    JOptionPane.YES_NO_OPTION);
 

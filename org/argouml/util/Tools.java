@@ -51,30 +51,30 @@ public class Tools {
 
     private static void getComponentVersionInfo(StringBuffer sb, String pn) 
     {
-        sb.append(Translator.localize("label", "label.package")).append(": ");
+        sb.append(Translator.localize("label.package")).append(": ");
         sb.append(pn);
         sb.append('\n');
         Package pkg = Package.getPackage(pn);
         if (pkg == null) {
-            sb.append(Translator.localize("label", "label.no-version"));
+            sb.append(Translator.localize("label.no-version"));
         }
         else {
             String in = pkg.getImplementationTitle();
             if (in != null) {
-                sb.append(Translator.localize("label", "label.component"));
+                sb.append(Translator.localize("label.component"));
 		sb.append(": ");
                 sb.append(in);
             }
             in = pkg.getImplementationVendor();
             if (in != null) {
-                sb.append(Translator.localize("label", "label.by"));
+                sb.append(Translator.localize("label.by"));
 		sb.append(": ");
                 sb.append(in);
             }
             in = pkg.getImplementationVersion();
             if (in != null) {
                 sb.append(", ");
-		sb.append(Translator.localize("label", "label.version"));
+		sb.append(Translator.localize("label.version"));
 		sb.append(" ");
                 sb.append(in);
                 sb.append('\n');
@@ -120,8 +120,7 @@ public class Tools {
                 sb.append("\n");
             }
             catch (Exception ex) {
-                sb.append(Translator.localize("label", 
-                        "label.error-sax-factory"));
+                sb.append(Translator.localize("label.error-sax-factory"));
             }
 
             for (int i = 0; i < PACKAGELIST.length; i++) {
@@ -140,16 +139,16 @@ public class Tools {
 
 
             sb.append("\n");
-            sb.append(Translator.localize("label", "label.os"));
+            sb.append(Translator.localize("label.os"));
             sb.append(System.getProperty("os.name", "unknown"));
             sb.append('\n');
-            sb.append(Translator.localize("label", "label.os-version"));
+            sb.append(Translator.localize("label.os-version"));
             sb.append(System.getProperty("os.version", "unknown"));
             sb.append('\n');
-            sb.append(Translator.localize("label", "label.language"));
+            sb.append(Translator.localize("label.language"));
             sb.append(Locale.getDefault().getLanguage());
             sb.append('\n');
-            sb.append(Translator.localize("label", "label.country"));
+            sb.append(Translator.localize("label.country"));
             sb.append(Locale.getDefault().getCountry());
             sb.append('\n');
             sb.append('\n');

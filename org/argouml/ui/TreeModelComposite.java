@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,13 +30,11 @@ import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
 
 /**
- * This class is the TreeModel for the navigator and todo list panels.
+ * This class is the TreeModel for the navigator and todo list panels.<p>
  *
- * <p>It is called <strong>Composite</strong> because there are a set of rules
+ * It is called <strong>Composite</strong> because there are a set of rules
  * that determine how to link parents to children in the tree. Those
- * rules can now be found in PerspectiveSupport.
- *
- * <p>$Id$
+ * rules can now be found in PerspectiveSupport.<p>
  */
 public class TreeModelComposite extends TreeModelSupport implements TreeModel {
 
@@ -55,7 +53,6 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
      * @param name the name that will be localized
      */
     public TreeModelComposite(String name) {
-
         super(name);
     }
 

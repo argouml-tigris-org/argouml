@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,22 +24,24 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.*;
-import org.argouml.application.security.*;
-import org.argouml.i18n.Translator;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
-/** Action to exit ArgoUML.
+import org.argouml.application.api.CommandLineInterface;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
+
+/**
+ * Action to exit ArgoUML.
  */
 public class ActionExit extends UMLAction 
-    implements CommandLineInterface
-{
+    implements CommandLineInterface {
   
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -78,7 +80,7 @@ public class ActionExit extends UMLAction
 	if (p != null && p.needsSave() && !active) {
 	    active = true;
 	    String t = 
-		MessageFormat.format(Translator.localize("Actions",
+		MessageFormat.format(Translator.localize(
 			"optionpane.exit-save-changes-to"),
 			new Object[] {p.getName()} );
 	    int response = 
@@ -113,7 +115,8 @@ public class ActionExit extends UMLAction
     }
 
 
-    /** Execute this action from the command line.
+    /**
+     * Execute this action from the command line.
      *
      * @param argument is not used.
      * @return true if it is OK.

@@ -216,7 +216,6 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
                     } catch (Exception ex) {
                         String sMessage =
                             MessageFormat.format(Translator.localize(
-				  "Actions",
 				  "optionpane.save-project-general-exception"),
 						 new Object[] {
 						     ex.getMessage()
@@ -224,7 +223,6 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
 
 			String sTitle =
 			    Translator.localize(
-				"Actions",
 				"optionpane."
 				+ "save-project-general-exception-title"
 			    );

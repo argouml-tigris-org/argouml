@@ -86,8 +86,7 @@ public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
-        return Translator.localize("UMLMenu", 
-                "dialog.title.add-specifications");
+        return Translator.localize("dialog.title.add-specifications");
     }
 
     /**

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelAttribute.java
-// Classes: PropPanelAttribute
-// Original Author: jrobbins@ics.uci.edu
-// Refactored by: jaap.branderhorst@xs4all.nl
-// $Id$
-
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
@@ -45,6 +39,8 @@ import org.argouml.util.ConfigLoader;
 /**
  * The properties panel for an Attribute.
  *
+ * @author jrobbins
+ * @author jaap.branderhorst
  */
 public class PropPanelAttribute extends PropPanelStructuralFeature {
 
@@ -55,35 +51,37 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
     public PropPanelAttribute() {
         super("Attribute", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
         //	addField(
-        //	    Translator.localize("UMLMenu", "label.stereotype"),
+        //	    Translator.localize("label.stereotype"),
         //		new UMLComboBoxNavigator(
         //		 this,
         //		 Translator.localize("UMLMenu", "tooltip.nav-stereo"),
         //					  getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.owner"),
+        addField(Translator.localize("label.owner"),
                 getOwnerScroll());
-        addField(Translator.localize("UMLMenu", "label.multiplicity"),
+        addField(Translator.localize("label.multiplicity"),
                 getMultiplicityComboBox());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.type"),
-                new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
-                        "tooltip.nav-class"), getTypeComboBox()));
+        addField(Translator.localize("label.type"),
+                new UMLComboBoxNavigator(
+                        this, 
+                        Translator.localize("tooltip.nav-class"), 
+                        getTypeComboBox()));
 
-        // addField(Translator.localize("UMLMenu", "label.initial-value"), new
+        // addField(Translator.localize("label.initial-value"), new
         // JScrollPane(new UMLLinkedList(new
         // UMLAttributeInitialValueListModel())));
         // TODO: The following line is my hack fix for the above line.
         // this fixes issue 1378 but re-introduces a deprecated class
         // IMO the initial value should not be a combo or a list
         // but a simple text field. Bob Tarling 12 Feb 2004.
-        addField(Translator.localize("UMLMenu", "label.initial-value"),
+        addField(Translator.localize("label.initial-value"),
                 new UMLInitialValueComboBox(this));
 
         add(getVisibilityPanel());

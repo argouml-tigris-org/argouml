@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,19 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-// File: PropPanelNode.java
-// Classes: PropPanelNode
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
-
-// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Changed to use the
-// labels "Generalizes:" and "Specializes:" for inheritance.
-
-// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Labels corrected to
-// "Generalizations:" and "Specializations".
-
-
 package org.argouml.uml.ui.foundation.core;
 
 import java.util.Collection;
@@ -54,6 +41,8 @@ import org.argouml.util.ConfigLoader;
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
+ *
+ * @author 5eichler
  */
 public class PropPanelNode extends PropPanelClassifier {
 
@@ -65,18 +54,16 @@ public class PropPanelNode extends PropPanelClassifier {
         super("Node", lookupIcon("Node"), 
                 ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class) ModelFacade.NODE;
-
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
 
         
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
-        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        // addField(Translator.localize("label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize(
         //     "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), 
+        addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
 
         add(getModifiersPanel());
@@ -90,13 +77,13 @@ public class PropPanelNode extends PropPanelClassifier {
         addSeperator();
 
         JList resList = new UMLLinkedList(new UMLContainerResidentListModel());
-        addField(Translator.localize("UMLMenu", "label.residents"), 
+        addField(Translator.localize("label.residents"), 
                 new JScrollPane(resList));
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
         new PropPanelButton(this, getButtonPanel(), lookupIcon("Reception"), 
-                Translator.localize("UMLMenu", "button.new-reception"), 
+                Translator.localize("button.new-reception"), 
                 getActionNewReception());
         addButton(new PropPanelButton2(this, 
                 new ActionRemoveFromModel()));   

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,12 +50,12 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationL
 import org.argouml.util.ConfigLoader;
 
 
-/** PropPanelPackage defines the Property Panel for MPackage elements.
+/**
+ * PropPanelPackage defines the Property Panel for MPackage elements.
  */
 public class PropPanelPackage extends PropPanelNamespace  {
 
     private JPanel modifiersPanel = new JPanel();
-    private PropPanelButton stereotypeButton;
     private JScrollPane generalizationScroll;
     private JScrollPane specializationScroll;
 
@@ -92,14 +92,14 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * should override to place the elements the way they want.
      */
     protected void placeElements() {
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
-        //      new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        // addField(Translator.localize("label.stereotype"), 
+        //      new UMLComboBoxNavigator(this, Translator.localize( 
         //          "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), 
+        addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
 
         add(getNamespaceVisibilityPanel());
@@ -109,7 +109,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
         modifiersPanel =
             new JPanel(new GridLayout2()); 
         modifiersPanel.setBorder(
-            new TitledBorder(Translator.localize("UMLMenu", 
+            new TitledBorder(Translator.localize( 
                     "label.modifiers")));
         
         modifiersPanel.add(
@@ -121,18 +121,18 @@ public class PropPanelPackage extends PropPanelNamespace  {
         
         add(modifiersPanel);
         addSeperator();
-        addField(Translator.localize("UMLMenu", "label.generalizations"), 
+        addField(Translator.localize("label.generalizations"),
                 getGeneralizationScroll());
-        addField(Translator.localize("UMLMenu", "label.specializations"), 
+        addField(Translator.localize("label.specializations"), 
                 getSpecializationScroll());
         addSeperator();
-        addField(Translator.localize("UMLMenu", "label.owned-elements"), 
+        addField(Translator.localize("label.owned-elements"), 
                 getOwnedElementsScroll());
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
         new PropPanelButton(this, getButtonPanel(), lookupIcon("Package"), 
-                Translator.localize("UMLMenu", "button.new-package"), 
+                Translator.localize("button.new-package"), 
                 "addPackage", null);
         addButton(new PropPanelButton2(this, 
             new ActionRemoveFromModel()));

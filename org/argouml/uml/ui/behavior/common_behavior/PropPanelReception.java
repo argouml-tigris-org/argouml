@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
 import org.argouml.swingext.GridLayout2;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -53,17 +52,15 @@ public class PropPanelReception extends PropPanelModelElement {
         super("Reception", lookupIcon("Reception"), ConfigLoader
                 .getTabPropsOrientation());
 
-        Class mclass = (Class) ModelFacade.RECEPTION;
-
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
 
-        JPanel modifiersPanel = new JPanel(new GridLayout2(0, 2,
-                GridLayout2.ROWCOLPREFERRED));
+        JPanel modifiersPanel =
+            new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));
 
         modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
@@ -71,12 +68,12 @@ public class PropPanelReception extends PropPanelModelElement {
         // Reception are by definition never queries! see WFRs.
         // therefore do not provide the according checkbox!
 
-        addField(Translator.localize("UMLMenu", "label.modifiers"),
+        addField(Translator.localize("label.modifiers"),
                 modifiersPanel);
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.signal"),
+        addField(Translator.localize("label.signal"),
                 new UMLReceptionSignalComboBox(this,
                         new UMLReceptionSignalComboBoxModel()));
 
@@ -87,7 +84,7 @@ public class PropPanelReception extends PropPanelModelElement {
         JScrollPane specificationScroll = new JScrollPane(specText,
                 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        addField(Translator.localize("UMLMenu", "label.specification"),
+        addField(Translator.localize("label.specification"),
                 specificationScroll);
 
         addButton(new PropPanelButton2(this,

@@ -44,7 +44,7 @@ public class ActionNewUninterpretedAction extends ActionNewAction {
      */
     protected ActionNewUninterpretedAction() {
         super();
-        putValue(Action.NAME, Translator.localize("UMLMenu", 
+        putValue(Action.NAME, Translator.localize(
                 "button.new-uninterpretedaction"));
     }
     

@@ -51,13 +51,6 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public class PropPanelObject extends PropPanelInstance {
 
-    private JScrollPane stimuliSenderScroll;
-    private JScrollPane stimuliReceiverScroll;
-    
-    private static UMLInstanceSenderStimulusListModel 
-        stimuliSenderListModel;
-    private static UMLInstanceReceiverStimulusListModel 
-        stimuliReceiverListModel;
     /**
      * Constructor.
      */
@@ -65,11 +58,9 @@ public class PropPanelObject extends PropPanelInstance {
 	super("Object", lookupIcon("Object"), 
             ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = (Class) ModelFacade.OBJECT;
-
 	addField(Translator.localize("label.name"), getNameTextField());
 
-	addField(Translator.localize("UMLMenu", "label.stereotype"), 
+	addField(Translator.localize("label.stereotype"), 
 	    getStereotypeBox());
 
 	addField(Translator.localize("label.namespace"),
@@ -90,7 +81,7 @@ public class PropPanelObject extends PropPanelInstance {
             new UMLMutableLinkedList(
 	    new UMLInstanceClassifierListModel(), 
 	            action, null, null, true));
-	addField(Translator.localize("UMLMenu", "label.classifiers"), 
+	addField(Translator.localize("label.classifiers"), 
             classifierScroll);
 
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
@@ -45,16 +44,16 @@ public class PropPanelFlow extends PropPanelRelationship {
     }
 
     private void initialize() {
-        addField(Translator.localize("UMLMenu", "label.name"), 
+        addField(Translator.localize("label.name"), 
                 getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        // addField(Translator.localize("label.stereotype"), 
         //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
         //     "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), 
+        addField(Translator.localize("label.namespace"), 
                 getNamespaceScroll());
-        addField(Translator.localize("UMLMenu", "label.constraints"), 
+        addField(Translator.localize("label.constraints"), 
                 getConstraintScroll());
 
         addSeperator();

@@ -78,7 +78,7 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
      */
     protected String getAddDialogTitle() {
-	return Translator.localize("UMLMenu", "dialog.add-associations");
+	return Translator.localize("dialog.add-associations");
     }
 
     /**

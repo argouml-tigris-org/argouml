@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,11 +37,11 @@ import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.presentation.Fig;
 
 
-/** A command to set selected figs to their preferred size or minimum size.
+/**
+ * A command to set selected figs to their preferred size or minimum size.
  * 
  * @author Markus Klink
  */
-
 public class CmdSetPreferredSize extends Cmd {
 
     /** constant for PREFERRED_SIZE */
@@ -52,12 +52,13 @@ public class CmdSetPreferredSize extends Cmd {
     
     private int mode;
 
-    /** Constructor for the command.
+    /**
+     * Constructor for the command.
+     *
      * @param theMode one of the defined constants
      */
     public CmdSetPreferredSize(int theMode) {
-	super(Translator.localize("action", 
-			    "action.set-" + wordFor(theMode) + "-size"));
+	super(Translator.localize("action.set-" + wordFor(theMode) + "-size"));
         mode = theMode;
     }
 
@@ -91,7 +92,8 @@ public class CmdSetPreferredSize extends Cmd {
     }
 
 
-    /** set all the figs in the selection or passed by param "figs" to the 
+    /**
+     * Set all the figs in the selection or passed by param "figs" to the 
      * size according to the mode of the command.
      */
     public void doIt() {

@@ -46,35 +46,33 @@ import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
 /**
  * UMTreeCellRenderer determines how the entries in the Navigationpane
- * and ToDoList will be represented graphically.
+ * and ToDoList will be represented graphically.<p>
  *
- * <p>In particular it makes decisions about the icons
- *  to use in order to display a Navigationpane artifact depending on the kind
- *  of object to be displayed.
+ * In particular it makes decisions about the icons
+ * to use in order to display a Navigationpane artifact depending on the kind
+ * of object to be displayed.<p>
  *
  * This class must be efficient as it is called many 1000's of times.
  */
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
-    private static final String BUNDLE = "UMLMenu";
-
     // get localised strings once only
     private static String activity =
-	Translator.localize(BUNDLE, "label.activity-diagram");
+	Translator.localize("label.activity-diagram");
     private static String sequence =
-	Translator.localize(BUNDLE, "label.sequence-diagram");
+	Translator.localize("label.sequence-diagram");
     private static String collaboration =
-	Translator.localize(BUNDLE, "label.collaboration-diagram");
+	Translator.localize("label.collaboration-diagram");
     private static String deployment =
-	Translator.localize(BUNDLE, "label.deployment-diagram");
+	Translator.localize("label.deployment-diagram");
     private static String state =
-	Translator.localize(BUNDLE, "label.state-chart-diagram");
+	Translator.localize("label.state-chart-diagram");
     private static String usecase =
-	Translator.localize(BUNDLE, "label.usecase-diagram");
+	Translator.localize("label.usecase-diagram");
     private static String classDiag =
-	Translator.localize(BUNDLE, "label.class-diagram");
-    private static String name = Translator.localize(BUNDLE, "label.name");
-    private static String typeName = Translator.localize(BUNDLE, "label.type");
+	Translator.localize("label.class-diagram");
+    private static String name = Translator.localize("label.name");
+    private static String typeName = Translator.localize("label.type");
     
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
@@ -91,7 +89,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
         boolean expanded,
         boolean leaf,
         int row,
-        boolean hasFocus) {
+        boolean hasFocusParam) {
             
 	if (value instanceof DefaultMutableTreeNode) {
 	    value = ((DefaultMutableTreeNode) value).getUserObject();
@@ -105,7 +103,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 expanded,
                 leaf,
                 row,
-                hasFocus);
+                hasFocusParam);
 
         if (r instanceof JLabel) {
             JLabel lab = (JLabel) r;
@@ -114,28 +112,30 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 ResourceLoaderWrapper.getInstance().lookupIcon(
                     value);
 
-            if (icon != null)
+            if (icon != null) {
                 lab.setIcon(icon);
+            }
 
             // setting the tooltip
             String type = null;
             if (ModelFacade.isAModelElement(value)) {
                 type = ModelFacade.getUMLClassName(value);
             } else if (value instanceof UMLDiagram) {
-                if (value instanceof UMLActivityDiagram)
+                if (value instanceof UMLActivityDiagram) {
                     type = activity;
-                else if (value instanceof UMLSequenceDiagram)
+                } else if (value instanceof UMLSequenceDiagram) {
                     type = sequence;
-                else if (value instanceof UMLCollaborationDiagram)
+                } else if (value instanceof UMLCollaborationDiagram) {
                     type = collaboration;
-                else if (value instanceof UMLDeploymentDiagram)
+                } else if (value instanceof UMLDeploymentDiagram) {
                     type = deployment;
-                else if (value instanceof UMLStateDiagram)
+                } else if (value instanceof UMLStateDiagram) {
                     type = state;
-                else if (value instanceof UMLUseCaseDiagram)
+                } else if (value instanceof UMLUseCaseDiagram) {
                     type = usecase;
-                else if (value instanceof UMLClassDiagram)
+                } else if (value instanceof UMLClassDiagram) {
                     type = classDiag;
+                }
             }
             
             if (type != null) {
@@ -149,8 +149,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 buf.append(' ');
                 buf.append(type);
                 lab.setToolTipText(buf.toString());
-            }
-            else {
+            } else {
                 lab.setToolTipText(lab.getText());
             }
         }

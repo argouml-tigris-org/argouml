@@ -58,15 +58,7 @@ import org.tigris.toolbar.ToolBar;
  */
 public class NavigatorPane
     extends JPanel
-    implements QuadrantPanel
-{
-    private static final String BUNDLE = "statusmsg";
-    
-    /** for collecting user statistics */
-    private static int clicksInNavPane = 0;
-    /** for collecting user statistics */
-    private static int navPerspectivesChanged = 0;
-    
+    implements QuadrantPanel {
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -161,7 +153,6 @@ public class NavigatorPane
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
 	    splash.getStatusBar().showStatus(Translator.localize(
-                    BUNDLE, 
 		    "statusmsg.bar.making-navigator-pane-perspectives"));
             splash.getStatusBar().showProgress(25);
         }
@@ -186,7 +177,6 @@ public class NavigatorPane
      * @see org.argouml.uml.ui.ActionRemoveFromModel
      * @see org.argouml.uml.ui.ActionAddDiagram
      * @see org.argouml.uml.ui.foundation.core.PropPanelGeneralization
-     * @see org.argouml.uml.ui.UMLReflectionListModel
      */
     public void forceUpdate() {
     }

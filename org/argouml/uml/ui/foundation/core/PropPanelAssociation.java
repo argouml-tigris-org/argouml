@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -71,27 +71,27 @@ public class PropPanelAssociation extends PropPanelRelationship {
      */
     public PropPanelAssociation() {
         this("Association", ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("UMLMenu", "label.name"),
+        addField(Translator.localize("label.name"),
                 getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new
-        // UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        // addField(Translator.localize("label.stereotype"), new
+        // UMLComboBoxNavigator(this, Translator.localize(
         // "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
+        addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"),
+        addField(Translator.localize("label.namespace"),
                 getNamespaceComboBox());
         add(modifiersPanel);
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.association-ends"),
+        addField(Translator.localize("label.association-ends"),
                 assocEndScroll);
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.association-roles"),
+        addField(Translator.localize("label.association-roles"),
                 associationRoleScroll);
-        addField(Translator.localize("UMLMenu", "label.association-links"),
+        addField(Translator.localize("label.association-links"),
                 linksScroll);
 
         addButton(new PropPanelButton2(this,
@@ -126,8 +126,8 @@ public class PropPanelAssociation extends PropPanelRelationship {
     private void initialize() {
 
         modifiersPanel = new JPanel(new GridLayout2());
-        modifiersPanel.setBorder(new TitledBorder(Translator.localize(
-                "UMLMenu", "label.modifiers")));
+        modifiersPanel.setBorder(new TitledBorder(
+                Translator.localize("label.modifiers")));
         modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
