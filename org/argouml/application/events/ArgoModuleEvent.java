@@ -41,5 +41,8 @@ public class ArgoModuleEvent extends ArgoEvent {
         super(eventType, src);
     }
 
+    /** Indicates the start of the range for events.
+     * @return the first id reserved for module events. 
+     */
     public int getEventStartRange() { return ANY_MODULE_EVENT; }
 }
