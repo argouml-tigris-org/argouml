@@ -47,6 +47,7 @@ public class FoundationHelper {
 
     
     /** Singleton instance access method.
+     * @return the singleton instance of the helper
      */
     public static FoundationHelper getHelper() {
         return SINGLETON;
