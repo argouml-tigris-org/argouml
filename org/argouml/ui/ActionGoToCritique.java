@@ -35,6 +35,10 @@ import java.awt.event.ActionEvent;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.uml.ui.UMLAction;
 
+/**
+ * Action to display the todo pane.
+ *
+ */
 public class ActionGoToCritique extends UMLAction {
     private ToDoItem item = null;
 

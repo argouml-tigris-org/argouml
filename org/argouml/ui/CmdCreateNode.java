@@ -48,7 +48,7 @@ import org.argouml.model.uml.UmlFactory;
  */
 public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
-    private static Logger LOG = Logger.getLogger(CmdCreateNode.class);
+    private static final Logger LOG = Logger.getLogger(CmdCreateNode.class);
 
     private static Hashtable cache = new Hashtable();
 

@@ -88,12 +88,12 @@ public class DetailsPane
     /**
      * The currently selected todo item.
      */
-    protected Object _item = null;
+    private Object selectedTodoItem = null;
 
     /**
      * The top level pane, which is a tabbed pane.
      */
-    protected JTabbedPane _tabs = new JTabbedPane();
+    private JTabbedPane topLevelTabbedPane = new JTabbedPane();
 
     /** 
      * The current target
@@ -103,12 +103,12 @@ public class DetailsPane
     /**
      * a list of all the tabs, which are JPanels, in the JTabbedPane _tabs.
      */
-    protected Vector _tabPanels = new Vector();
+    private Vector tabPanelList = new Vector();
 
     /**
      * index of the selected tab in the JTabbedPane.
      */
-    protected int _lastNonNullTab = -1;
+    private int lastNonNullTab = -1;
 
     /**
      * The list with targetlisteners, this are the property panels
@@ -149,47 +149,47 @@ public class DetailsPane
     public DetailsPane(String pane, Orientation orientation) {
         LOG.info("making DetailsPane(" + pane + ")");
 
-        ConfigLoader.loadTabs(_tabPanels, pane, orientation);
+        ConfigLoader.loadTabs(tabPanelList, pane, orientation);
         setLayout(new BorderLayout());
         setFont(new Font("Dialog", Font.PLAIN, 10));
-        add(_tabs, BorderLayout.CENTER);
+        add(topLevelTabbedPane, BorderLayout.CENTER);
 
-        for (int i = 0; i < _tabPanels.size(); i++) {
+        for (int i = 0; i < tabPanelList.size(); i++) {
             String title = "tab";
-            JPanel t = (JPanel) _tabPanels.elementAt(i);
+            JPanel t = (JPanel) tabPanelList.elementAt(i);
             if (t instanceof TabSpawnable)
                 title = ((TabSpawnable) t).getTitle();
             title = Translator.localize("UMLMenu", title);
             if (t instanceof TabToDoTarget) {
-                _tabs.addTab(title, _leftArrowIcon, t);
+                topLevelTabbedPane.addTab(title, leftArrowIcon, t);
             } else if (t instanceof TabModelTarget) {
-                _tabs.addTab(title, _upArrowIcon, t);
+                topLevelTabbedPane.addTab(title, upArrowIcon, t);
             } else if (t instanceof TabFigTarget) {
-                _tabs.addTab(title, _upArrowIcon, t);
+                topLevelTabbedPane.addTab(title, upArrowIcon, t);
             } else {
-                _tabs.addTab(title, t);
+                topLevelTabbedPane.addTab(title, t);
             }
         }
 
         // set the tab that should be shown on first entrance
-        _lastNonNullTab = -1;
-        Component[] tabs = _tabs.getComponents();
+        lastNonNullTab = -1;
+        Component[] tabs = topLevelTabbedPane.getComponents();
         for (int i = 0; i < tabs.length; i++) {
             // tabprops should be shown if loaded
             if (tabs[i] instanceof TabProps) {
-                _lastNonNullTab = i;
+                lastNonNullTab = i;
                 break;
             }
             // default if there is no tabprops if there is no tabtodo
-            // either, this will result in _lastNonNullTab = -1
+            // either, this will result in lastNonNullTab = -1
             if (tabs[i] instanceof TabToDo) {
-                _lastNonNullTab = i;
+                lastNonNullTab = i;
             }
         }
         setTarget(null);
-        _item = null;
-        _tabs.addMouseListener(this);
-        _tabs.addChangeListener(this);
+        selectedTodoItem = null;
+        topLevelTabbedPane.addMouseListener(this);
+        topLevelTabbedPane.addChangeListener(this);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -201,22 +201,22 @@ public class DetailsPane
      * @return the JTabbedPane.
      */
     public JTabbedPane getTabs() {
-        return _tabs;
+        return topLevelTabbedPane;
     }
 
     /**
      * Selects the to do tab, and sets the target of that tab.<p>
-     *
+     * @param item the selected todo item
      * @return true if ? Yes when? TODO: Explain.
      */
     public boolean setToDoItem(Object item) {
-        _item = item;
+        selectedTodoItem = item;
         enableTabs(item);
-        for (int i = 0; i < _tabPanels.size(); i++) {
-            JPanel t = (JPanel) _tabPanels.elementAt(i);
+        for (int i = 0; i < tabPanelList.size(); i++) {
+            JPanel t = (JPanel) tabPanelList.elementAt(i);
             if (t instanceof TabToDoTarget) {
-                ((TabToDoTarget) t).setTarget(_item);
-                _tabs.setSelectedComponent(t);
+                ((TabToDoTarget) t).setTarget(selectedTodoItem);
+                topLevelTabbedPane.setSelectedComponent(t);
                 return true;
             }
         }
@@ -234,29 +234,29 @@ public class DetailsPane
         enableTabs(target);
         if (target != null) {
             boolean tabSelected = false;
-            for (int i = _lastNonNullTab; i >= 1; i--) {
-                Component tab = _tabs.getComponentAt(i);
+            for (int i = lastNonNullTab; i >= 1; i--) {
+                Component tab = topLevelTabbedPane.getComponentAt(i);
                 if (tab instanceof TabTarget) {
                     if (((TabTarget) tab).shouldBeEnabled(target)) {
                         if (!(tab instanceof TargetListener))
 			    ((TabTarget) tab).setTarget(target);
-                        _tabs.setSelectedIndex(i);
+                        topLevelTabbedPane.setSelectedIndex(i);
                         tabSelected = true;
-                        _lastNonNullTab = i;
+                        lastNonNullTab = i;
                         break;
                     }
                 }
             }
             if (!tabSelected) {
-                for (int i = _lastNonNullTab + 1;
-		     i < _tabs.getTabCount();
+                for (int i = lastNonNullTab + 1;
+		     i < topLevelTabbedPane.getTabCount();
 		     i++) {
-                    Component tab = _tabs.getComponentAt(i);
+                    Component tab = topLevelTabbedPane.getComponentAt(i);
                     if (tab instanceof TabTarget) {
                         if (((TabTarget) tab).shouldBeEnabled(target)) {
-                            _tabs.setSelectedIndex(i);
+                            topLevelTabbedPane.setSelectedIndex(i);
                             ((TabTarget) tab).setTarget(target);
-                            _lastNonNullTab = i;
+                            lastNonNullTab = i;
                             tabSelected = true;
                             break;
                         }
@@ -265,9 +265,9 @@ public class DetailsPane
             }
             // default tab todo
             if (!tabSelected) {
-                JPanel tab = (JPanel) _tabPanels.get(0);
+                JPanel tab = (JPanel) tabPanelList.get(0);
                 if (!(tab instanceof TabToDo)) {
-                    Iterator it = _tabPanels.iterator();
+                    Iterator it = tabPanelList.iterator();
                     while (it.hasNext()) {
                         Object o = it.next();
                         if (o instanceof TabToDo) {
@@ -277,18 +277,18 @@ public class DetailsPane
                     }
                 }
                 if (tab instanceof TabToDo) {
-                    _tabs.setSelectedComponent(tab);
+                    topLevelTabbedPane.setSelectedComponent(tab);
                     ((TabToDo) tab).setTarget(target);
-                    _lastNonNullTab = _tabs.getSelectedIndex();
+                    lastNonNullTab = topLevelTabbedPane.getSelectedIndex();
                 }
             }
 
         } else {
             // default tab todo
             JPanel tab =
-                _tabPanels.isEmpty() ? null : (JPanel) _tabPanels.get(0);
+                tabPanelList.isEmpty() ? null : (JPanel) tabPanelList.get(0);
             if (!(tab instanceof TabToDo)) {
-                Iterator it = _tabPanels.iterator();
+                Iterator it = tabPanelList.iterator();
                 while (it.hasNext()) {
                     Object o = it.next();
                     if (o instanceof TabToDo) {
@@ -298,11 +298,11 @@ public class DetailsPane
                 }
             }
             if (tab instanceof TabToDo) {
-                _tabs.setSelectedComponent(tab);
+                topLevelTabbedPane.setSelectedComponent(tab);
                 ((TabToDo) tab).setTarget(target);
 
             } else {
-                _tabs.setSelectedIndex(-1);
+                topLevelTabbedPane.setSelectedIndex(-1);
             }
         }
         currentTarget = target;
@@ -311,6 +311,7 @@ public class DetailsPane
 
     /**
      * Returns the current model target.
+     * @return the current model target
      */
     public Object getTarget() {
         return currentTarget;
@@ -333,8 +334,8 @@ public class DetailsPane
      * @return index of the tab of the given name
      */
     public int getIndexOfNamedTab(String tabName) {
-        for (int i = 0; i < _tabPanels.size(); i++) {
-            String title = _tabs.getTitleAt(i);
+        for (int i = 0; i < tabPanelList.size(); i++) {
+            String title = topLevelTabbedPane.getTitleAt(i);
             if (title != null && title.equals(tabName))
                 return i;
         }
@@ -348,10 +349,10 @@ public class DetailsPane
      * @return the tab of the given name
      */
     public JPanel getNamedTab(String tabName) {
-        for (int i = 0; i < _tabPanels.size(); i++) {
-            String title = _tabs.getTitleAt(i);
+        for (int i = 0; i < tabPanelList.size(); i++) {
+            String title = topLevelTabbedPane.getTitleAt(i);
             if (title != null && title.equals(tabName))
-                return (JPanel) _tabs.getComponentAt(i);
+                return (JPanel) topLevelTabbedPane.getComponentAt(i);
         }
         return null;
     }
@@ -362,34 +363,44 @@ public class DetailsPane
      * @return the number of tab pages
      */
     public int getTabCount() {
-        return _tabPanels.size();
+        return tabPanelList.size();
     }
 
+    /**
+     * Selects a tab by given name.
+     * @param tabName the given name
+     * @return true if the named tab has been found
+     */
     public boolean selectTabNamed(String tabName) {
         int index = getIndexOfNamedTab(tabName);
         if (index != -1) {
-            _tabs.setSelectedIndex(index);
+            topLevelTabbedPane.setSelectedIndex(index);
             return true;
         }
         return false;
     }
 
     /**
-     * Heper method to add a Property panel for a given class.
+     * Helper method to add a Property panel for a given class.
+     *
+     * @param c the given class
+     * @param p the given property panel
      */
     public void addToPropTab(Class c, PropPanel p) {
-        for (int i = 0; i < _tabPanels.size(); i++) {
-            if (_tabPanels.elementAt(i) instanceof TabProps) {
-                ((TabProps) _tabPanels.elementAt(i)).addPanel(c, p);
+        for (int i = 0; i < tabPanelList.size(); i++) {
+            if (tabPanelList.elementAt(i) instanceof TabProps) {
+                ((TabProps) tabPanelList.elementAt(i)).addPanel(c, p);
             }
         }
     }
 
     /**
      * returns the Property panel in the Details Pane.
+     *
+     * @return the property panel
      */
     public TabProps getTabProps() {
-        Iterator iter = _tabPanels.iterator();
+        Iterator iter = tabPanelList.iterator();
         Object o;
         while (iter.hasNext()) {
             o = iter.next();
@@ -402,9 +413,12 @@ public class DetailsPane
 
     /**
      * returns the tab instance of the specified class
+     *
+     * @param tabClass the given class
+     * @return the tab instance for the given class
      */
     public TabSpawnable getTab(Class tabClass) {
-        Iterator iter = _tabPanels.iterator();
+        Iterator iter = tabPanelList.iterator();
         Object o;
         while (iter.hasNext()) {
             o = iter.next();
@@ -427,14 +441,16 @@ public class DetailsPane
      * 
      * old notes: called when the user selects a new tab, by clicking or
      *  otherwise.
+     *
+     * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
      */
     public void stateChanged(ChangeEvent e) {
         LOG.debug("DetailsPane state changed");
-        Component sel = _tabs.getSelectedComponent();
+        Component sel = topLevelTabbedPane.getSelectedComponent();
 
         // update the tab
-        if (_lastNonNullTab >= 0) {
-	    Object tab = _tabPanels.get(_lastNonNullTab);
+        if (lastNonNullTab >= 0) {
+	    Object tab = tabPanelList.get(lastNonNullTab);
 	    if (tab instanceof TargetListener)
 		removeTargetListener((TargetListener) tab);
 	}
@@ -453,51 +469,68 @@ public class DetailsPane
         
         if (target != null
             && ModelFacade.isABase(target)
-            && _tabs.getSelectedIndex() > 0)
-            _lastNonNullTab = _tabs.getSelectedIndex();
+            && topLevelTabbedPane.getSelectedIndex() > 0)
+            lastNonNullTab = topLevelTabbedPane.getSelectedIndex();
 
     }
 
     /**
      * no action currently executed here.
      * called when the user clicks once on a tab.
+     *
+     * @param tab the index of the clicked tab
      */
     public void mySingleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        LOG.debug("single: " + _tabs.getComponentAt(tab).toString());
+        LOG.debug("single: " 
+                + topLevelTabbedPane.getComponentAt(tab).toString());
     }
 
     /**
      * Spawns a new tab.
      * called when the user clicks twice on a tab.
+     *
+     * @param tab the index of the clicked tab
      */
     public void myDoubleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
-        LOG.debug("double: " + _tabs.getComponentAt(tab).toString());
-        JPanel t = (JPanel) _tabPanels.elementAt(tab);
+        LOG.debug("double: " 
+                + topLevelTabbedPane.getComponentAt(tab).toString());
+        JPanel t = (JPanel) tabPanelList.elementAt(tab);
         if (t instanceof TabSpawnable)
 	    ((TabSpawnable) t).spawn();
     }
 
     /**
      * empty, no action taken.
+     *
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
      */
     public void mousePressed(MouseEvent me) {
     }
+    
     /**
      * empty, no action taken.
+     *
+     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
     public void mouseReleased(MouseEvent me) {
     }
+    
     /**
      * empty, no action taken.
+     *
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
      */
     public void mouseEntered(MouseEvent me) {
     }
+    
     /**
      * empty, no action taken.
+     *
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
      */
     public void mouseExited(MouseEvent me) {
     }
@@ -505,11 +538,13 @@ public class DetailsPane
     /**
      * if(the mouse click is not in the bounds of the tabbed panel)
      *      then call mySingleClick() or myDoubleClick()
+     *
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
-        int tab = _tabs.getSelectedIndex();
+        int tab = topLevelTabbedPane.getSelectedIndex();
         if (tab != -1) {
-            Rectangle tabBounds = _tabs.getBoundsAt(tab);
+            Rectangle tabBounds = topLevelTabbedPane.getBoundsAt(tab);
             if (!tabBounds.contains(me.getX(), me.getY()))
                 return;
             if (me.getClickCount() == 1)
@@ -522,12 +557,12 @@ public class DetailsPane
     /**
      * graphic that goes on the tab label
      */
-    protected Icon _upArrowIcon = new UpArrowIcon();
+    private Icon upArrowIcon = new UpArrowIcon();
 
     /**
      * graphic that goes on the tab label
      */
-    protected Icon _leftArrowIcon = new LeftArrowIcon();
+    private Icon leftArrowIcon = new LeftArrowIcon();
 
     /**
      * @see org.argouml.application.api.QuadrantPanel#getQuadrant()
@@ -542,8 +577,8 @@ public class DetailsPane
      * @param orientation the required orientation
      */
     public void setOrientation(Orientation orientation) {
-        for (int i = 0; i < _tabPanels.size(); i++) {
-            JPanel t = (JPanel) _tabPanels.elementAt(i);
+        for (int i = 0; i < tabPanelList.size(); i++) {
+            JPanel t = (JPanel) tabPanelList.elementAt(i);
             if (t instanceof Orientable) {
                 Orientable o = (Orientable) t;
                 o.setOrientation(orientation);
@@ -585,8 +620,8 @@ public class DetailsPane
 
         // iterate through the tabbed panels to determine wether they
         // should be enabled. 
-        for (int i = 0; i < _tabPanels.size(); i++) {
-            JPanel tab = (JPanel) _tabPanels.elementAt(i);
+        for (int i = 0; i < tabPanelList.size(); i++) {
+            JPanel tab = (JPanel) tabPanelList.elementAt(i);
             boolean shouldEnable = false;
             if (tab instanceof TargetListener) {
                 if (tab instanceof TabTarget) {
@@ -602,7 +637,7 @@ public class DetailsPane
                 }
             }
 
-            _tabs.setEnabledAt(i, shouldEnable);
+            topLevelTabbedPane.setEnabledAt(i, shouldEnable);
 
         }
 
