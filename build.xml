@@ -97,20 +97,9 @@ If something went wrong, go to the FAQ section below.
 Also, you'll note that reusing a single JVM instance for each task, increases tremendously the performance of the whole build system, compared to other tools (i.e. make or shell scripts) where a new JVM is started for each task.
 
 
-
 Build targets
 =============
-
-These are the meaningful targets for this build file:
-
--   compile      -> compiles your source code to ../build/classes
--   run          -> runs ArgoUML from compiled source
--   package      -> generates a jar file, ../build/argouml09.jar
--   dist         -> generates distribution .tar.gz and .zip files in ../build/dist
--   prepare-docs -> writes the documentation to ../build/doc
--   clean        -> cleans up (deletes) the build directory
--   distclean    -> cleans up the distribution directory
--   usage        -> show this message (default)
+See the usage target.
 
 ====================================== FAQ =====================================
 
@@ -247,26 +236,26 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Help on usage                                                       -->
   <!-- =================================================================== -->
   <target name="usage" depends="init">
-    <echo message=""/>
-    <echo message=""/>
-    <echo message="${Name} Build file"/>
-    <echo message="-------------------------------------------------------------"/>
-    <echo message=""/>
-    <echo message=" available targets are:"/>
-    <echo message=""/>
-    <echo message="   compile      --> compiles the source code to the tree under ${build.dir}"/>
-    <echo message="   run          --> runs ArgoUML from compiled source"/>
-    <echo message="   package      --> generates the ${name}.jar file"/>
-    <echo message="   dist         --> generates ${Name} .tar.gz and .zip files into ${dist.dir}"/>
-    <echo message="   prepare-docs --> writes the documentation to ${docs.dir}"/>
-    <echo message="   clean        --> cleans up the ${build.dir} directory"/>
-    <echo message="   distclean    --> cleans up the distribution directory, ${dist.dir}"/>
-    <echo message="   usage        --> show this message (default)"/>
-    <echo message=""/>
-    <echo message=" See the comments inside the build.xml file for more details."/>
-    <echo message="-------------------------------------------------------------"/>
-    <echo message=""/>
-    <echo message=""/>
+    <echo>
+
+${Name} Build file
+-------------------------------------------------------------
+
+ available targets are:
+
+   compile      --> compiles the source code to the tree under ${build.dir}
+   run          --> runs ArgoUML from compiled source
+   package      --> generates the ${name}.jar file
+   dist         --> generates ${Name} .tar.gz and .zip files into ${dist.dir}
+   prepare-docs --> writes the documentation to ${docs.dir}
+   clean        --> cleans up the ${build.dir} directory
+   distclean    --> cleans up the distribution directory, ${dist.dir}
+   jdepend      --> obtain design quality metrics by applying JDepend
+   usage        --> show this message (default)
+
+ See the comments inside the build.xml file for more details.
+-------------------------------------------------------------
+    </echo>
   </target>
 
   <!-- =================================================================== -->
@@ -599,6 +588,32 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	    <include name="argouml.sh"/>
         </fileset>
     </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Perform JDepend to find about the structure in ArgoUML.             -->
+  <!-- =================================================================== -->
+  <target name="jdepend" depends="init">
+    <echo>
+CC - Concrete Class Count 
+AC - Abstract Class (and Interface) Count 
+Ca - Afferent Couplings (Ca) 
+Ce - Efferent Couplings (Ce) 
+A - Abstractness (0-1) 
+I - Instability (0-1) 
+D - Distance from the Main Sequence (0-1) 
+Cyclic - If the package contains a dependency cycle 
+
+For details see http://www.clarkware.com/software/JDepend.html.
+    </echo>
+    <java classname="jdepend.swingui.JDepend" 
+          fork="true"
+          failonerror="true">
+      <arg value="."/> 
+      <classpath>
+	<pathelement location="../tools/lib/jdepend.jar"/>
+      </classpath>
+    </java>
   </target>
 
 </project>
