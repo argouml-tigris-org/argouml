@@ -23,14 +23,12 @@
 
 package org.argouml.cognitive;
 
-import java.lang.reflect.*;
-
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
-import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import org.apache.log4j.Category;
+
+import ru.novosoft.uml.MBase;
 
 /**
  * Instances of this class is supposed to be attached to other instances
