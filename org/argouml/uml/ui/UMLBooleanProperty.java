@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,19 +28,27 @@ import java.beans.PropertyVetoException;
 import org.apache.log4j.Logger;
 import ru.novosoft.uml.MElementEvent;
 
-/** This abstract base class is used to define derived classes that interact
- * with the UMLRadioButton and UMLCheckBox user interface components.
+/**
+ * This abstract base class is used to define derived classes that interact
+ * with the UMLRadioButton and UMLCheckBox user interface components.<p>
  *
- *  @author Curt Arnold
+ * @author Curt Arnold
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by nothing?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
+ * TODO: What is it replaced by?
  */
-abstract public class UMLBooleanProperty  {
+public abstract class UMLBooleanProperty  {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = 
         Logger.getLogger(UMLBooleanProperty.class);
+
+    private static final Logger LOG =
+	Logger.getLogger(UMLBooleanProperty.class);
 
     private String _propertyName;
     
@@ -57,14 +65,15 @@ abstract public class UMLBooleanProperty  {
      *   @param element Element whose property will be changed.
      *   @param newState new state of property.
      */
-    abstract public void setProperty(Object element, boolean newState) throws PropertyVetoException;
+    public abstract void setProperty(Object element, boolean newState)
+	throws PropertyVetoException;
     
     /**
      *   Retreives current state of property.
      *   @param element Elements whose property will be retrieved.
      *   @return current state of property.
      */
-    abstract public boolean getProperty(Object element);
+    public abstract boolean getProperty(Object element);
     
     /**
      *   Returns true if a specific NSUML event should have an affect
@@ -75,9 +84,14 @@ abstract public class UMLBooleanProperty  {
      */
     public boolean isAffected(MElementEvent event) {
         String propName = event.getName();
-	cat.debug("eventName: " + propName);
-        if (_propertyName == null || propName == null || propName.equals(_propertyName)) 
+	LOG.debug("eventName: " + propName);
+        if (_propertyName == null
+	    || propName == null
+	    || propName.equals(_propertyName)) {
+
             return true;
+
+	}
         return false;
     }
     

@@ -72,7 +72,7 @@ public class FigMNode extends FigNodeModelElement {
 
 	addFig(_bigPort);
 	addFig(_cover);
-	addFig(_stereo);
+	addFig(getStereotypeFig());
 	addFig(getNameFig());
 	addFig(_test);
     }
@@ -93,8 +93,8 @@ public class FigMNode extends FigNodeModelElement {
 	Iterator it = figClone.getFigs(null).iterator();
 	figClone._bigPort = (FigRect) it.next();
 	figClone._cover = (FigCube) it.next();
-	figClone._stereo = (FigText) it.next();
-	figClone._name = (FigText) it.next();
+	figClone.setStereotypeFig((FigText) it.next());
+	figClone.setNameFig((FigText) it.next());
 	figClone._test = (FigRect) it.next();
 	return figClone;
     }
@@ -105,8 +105,8 @@ public class FigMNode extends FigNodeModelElement {
     public void setLineColor(Color c) {
 	//     super.setLineColor(c);
 	_cover.setLineColor(c);
-	_stereo.setFilled(false);
-	_stereo.setLineWidth(0);
+	getStereotypeFig().setFilled(false);
+	getStereotypeFig().setLineWidth(0);
 	getNameFig().setFilled(false);
 	getNameFig().setLineWidth(0);
 	_test.setLineColor(c);
@@ -117,7 +117,7 @@ public class FigMNode extends FigNodeModelElement {
     }
 
     public Dimension getMinimumSize() {
-	Dimension stereoDim = _stereo.getMinimumSize();
+	Dimension stereoDim = getStereotypeFig().getMinimumSize();
 	Dimension nameDim = getNameFig().getMinimumSize();
 
 	int w = Math.max(stereoDim.width, nameDim.width + 1);
@@ -134,11 +134,11 @@ public class FigMNode extends FigNodeModelElement {
 	_bigPort.setBounds(x , y, w , h);
 	_cover.setBounds(x , y, w, h);
 
-	Dimension stereoDim = _stereo.getMinimumSize();
+	Dimension stereoDim = getStereotypeFig().getMinimumSize();
 	Dimension nameDim = getNameFig().getMinimumSize();
 	getNameFig().setBounds(x + 1, y + stereoDim.height + 1,
 			       w - 1, nameDim.height);
-	_stereo.setBounds(x + 1, y + 1, w - 2, stereoDim.height);
+	getStereotypeFig().setBounds(x + 1, y + 1, w - 2, stereoDim.height);
 	_x = x; _y = y; _w = w; _h = h;
 	firePropChange("bounds", oldBounds, getBounds());
 	updateEdges();
@@ -182,10 +182,14 @@ public class FigMNode extends FigNodeModelElement {
         }
 	if (stereo == null
 	    || ModelFacade.getName(stereo) == null
-	    || ModelFacade.getName(stereo).length() == 0)
-	    _stereo.setText("");
-	else {
-	    _stereo.setText(Notation.generateStereotype(this, stereo));
+	    || ModelFacade.getName(stereo).length() == 0) {
+
+	    setStereotype("");
+
+	} else {
+
+	    setStereotype(Notation.generateStereotype(this, stereo));
+
 	}
     }
 

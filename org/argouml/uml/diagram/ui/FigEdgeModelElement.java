@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,8 +25,6 @@
 // File: FigEdgeModelElement.java
 // Classes: FigEdgeModelElement
 // Original Author: abonner
-
-// $Id$
 
 package org.argouml.uml.diagram.ui;
 
@@ -83,7 +81,6 @@ import org.argouml.util.Trash;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigEdgePoly;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
@@ -94,9 +91,10 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
 
-/** Abstract class to display diagram arcs for UML ModelElements that
- *  look like arcs and that have editiable names. */
-
+/**
+ * Abstract class to display diagram arcs for UML ModelElements that
+ * look like arcs and that have editiable names.
+ */
 public abstract class FigEdgeModelElement
     extends FigEdgePoly
     implements
@@ -109,7 +107,14 @@ public abstract class FigEdgeModelElement
         NotationContext,
         ArgoNotationEventListener {
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat =
+        Logger.getLogger(FigEdgeModelElement.class);
+
+    private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
         
     protected static final String BUNDLE = "UMLMenu";
@@ -383,24 +388,24 @@ public abstract class FigEdgeModelElement
         String pName = pve.getPropertyName();
         if (pName.equals("editing")
             && Boolean.FALSE.equals(pve.getNewValue())) {
-            cat.debug("finished editing");
+            LOG.debug("finished editing");
             try {
                 textEdited((FigText) src);
                 calcBounds();
                 endTrans();
             } catch (PropertyVetoException ex) {
-                cat.error(
-			  "could not parse the text entered. Propertyvetoexception",
-			  ex);
+                LOG.error("could not parse the text entered.", ex);
             }
         } else
             super.propertyChange(pve);
     }
 
-    /** This method is called after the user finishes editing a text
-     *  field that is in the FigEdgeModelElement.  Determine which field
-     *  and update the model.  This class handles the name, subclasses
-     *  should override to handle other text elements. */
+    /**
+     * This method is called after the user finishes editing a text
+     * field that is in the FigEdgeModelElement.  Determine which field
+     * and update the model.  This class handles the name, subclasses
+     * should override to handle other text elements.
+     */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == _name) {
             if (getOwner() == null)
@@ -456,9 +461,11 @@ public abstract class FigEdgeModelElement
     ////////////////////////////////////////////////////////////////
     // internal methods
 
-    /** This is called aftern any part of the UML MModelElement has
-     *  changed. This method automatically updates the name FigText.
-     *  Subclasses should override and update other parts. */
+    /**
+     * This is called aftern any part of the UML MModelElement has
+     * changed. This method automatically updates the name FigText.
+     * Subclasses should override and update other parts.<p>
+     */
     protected void modelChanged(MElementEvent e) {
         if (e == null
             || (e.getSource() == getOwner() && "name".equals(e.getName())))
@@ -479,7 +486,8 @@ public abstract class FigEdgeModelElement
         
         if (getOwner() == null)
             return;
-        String nameStr = Notation.generate(this, ModelFacade.getName(getOwner()));
+        String nameStr =
+	    Notation.generate(this, ModelFacade.getName(getOwner()));
         _name.setText(nameStr);
     }
 
@@ -489,7 +497,8 @@ public abstract class FigEdgeModelElement
         }
         Object stereotype = null;
         if (ModelFacade.getStereotypes(getOwner()).size() > 0) {
-            stereotype = ModelFacade.getStereotypes(getOwner()).iterator().next();
+            stereotype =
+		ModelFacade.getStereotypes(getOwner()).iterator().next();
         }
         if (stereotype == null) {
             _stereo.setText("");
@@ -509,11 +518,15 @@ public abstract class FigEdgeModelElement
             Object oldOwner = getOwner();
 
             if (org.argouml.model.ModelFacade.isAModelElement(oldOwner))
-                UmlModelEventPump.getPump().removeModelEventListener(this,oldOwner);
+                UmlModelEventPump.getPump().removeModelEventListener(this,
+								     oldOwner);
             if (org.argouml.model.ModelFacade.isAModelElement(newOwner)) {
-                UmlModelEventPump.getPump().addModelEventListener(this, newOwner);
-                if (ModelFacade.getUUID(newOwner) == null)
-                    ModelFacade.setUUID(newOwner, UUIDManager.SINGLETON.getNewUUID());
+                UmlModelEventPump.getPump().addModelEventListener(this,
+								  newOwner);
+                if (ModelFacade.getUUID(newOwner) == null) {
+                    ModelFacade.setUUID(newOwner,
+					UUIDManager.getInstance().getNewUUID());
+		}
             }
             modelChanged(null);
         }
@@ -521,23 +534,25 @@ public abstract class FigEdgeModelElement
     }
 
     public void propertySet(MElementEvent mee) {
-        
         modelChanged(mee);
         damage();
     }
+
     public void listRoleItemSet(MElementEvent mee) {
         
         modelChanged(mee);
         damage();
     }
+
     public void recovered(MElementEvent mee) {
         
         modelChanged(mee);
         damage();
     }
+
     public void removed(MElementEvent mee) {
         
-        cat.debug("deleting: " + this + mee);
+        LOG.debug("deleting: " + this + mee);
         if (mee.getSource() == getOwner())
             this.delete();
         else {
@@ -546,11 +561,13 @@ public abstract class FigEdgeModelElement
         }
 
     }
+
     public void roleAdded(MElementEvent mee) {
         
         modelChanged(mee);
         damage();
     }
+
     public void roleRemoved(MElementEvent mee) {
         
         modelChanged(mee);
@@ -575,7 +592,8 @@ public abstract class FigEdgeModelElement
         super.dispose();
     }
 
-    /** This default implementation simply requests the default notation.
+    /**
+     * This default implementation simply requests the default notation.
      */
     public NotationName getContextNotation() {
         return _currentNotationName;
@@ -627,7 +645,8 @@ public abstract class FigEdgeModelElement
      * @return true if the point is not further than maxDist away from the
      * polygon, otherwise false.
      */
-    private boolean isPolyDistLessThan(Polygon poly, int x, int y, double maxDist) {
+    private boolean isPolyDistLessThan(Polygon poly, int x, int y,
+				       double maxDist) {
 	int vx, vy;
 	int px, py;
 	int dx, dy;
@@ -636,16 +655,19 @@ public abstract class FigEdgeModelElement
 
 	for (int i = 0; i + 1 < poly.npoints; i++) {
 	    // Ignore zero length legs, since these have no direction vector
-	    if (poly.xpoints[i] == poly.xpoints[i+1] &&
-		poly.ypoints[i] == poly.ypoints[i+1])
+	    if (poly.xpoints[i] == poly.xpoints[i + 1]
+		&& poly.ypoints[i] == poly.ypoints[i + 1]) {
+
 		continue;
+
+	    }
 
 	    // Translate origo to the beginning of the leg
 	    tx = x - poly.xpoints[i];
 	    ty = y - poly.ypoints[i];
 	    // Get the direction vector of the leg
-	    vx = poly.xpoints[i+1] - poly.xpoints[i];
-	    vy = poly.ypoints[i+1] - poly.ypoints[i];
+	    vx = poly.xpoints[i + 1] - poly.xpoints[i];
+	    vy = poly.ypoints[i + 1] - poly.ypoints[i];
 	    // Projection constant, (t * v) / (v * v)
 	    vk = (double) (tx * vx + ty * vy) / (vx * vx + vy * vy);
 	    // Project the point on the direction vector
@@ -673,13 +695,13 @@ public abstract class FigEdgeModelElement
 	return false;
     }
 
-// TODO Explain the added value of this method to that given in
+// TODO: Explain the added value of this method to that given in
 // the GEF bas class. If this does actually add any value then
 // implement in GEF, not ArgoUML.
 // From my testing the GEF hit method work fine. Bob Tarling 14 Feb 2004
 //    /**
 //     * Necessary since GEF contains some errors regarding the hit subject.
-//     * TODO make the bigBounds port go off a little less
+//     * TODO: make the bigBounds port go off a little less
 //     * @see org.tigris.gef.presentation.Fig#hit(Rectangle)
 //     */
 //    public boolean hit(Rectangle r) {
@@ -731,11 +753,8 @@ public abstract class FigEdgeModelElement
         // therefore we loop through our diagrams and delete each and every 
         // occurence on our own
         it =
-            ProjectManager
-	    .getManager()
-	    .getCurrentProject()
-	    .getDiagrams()
-	    .iterator();
+	    ProjectManager.getManager().getCurrentProject()
+	        .getDiagrams().iterator();
         while (it.hasNext()) {
             ArgoDiagram diagram = (ArgoDiagram) it.next();
             diagram.damage();
@@ -784,8 +803,6 @@ public abstract class FigEdgeModelElement
             if (newSourceFig == null || newDestFig == null) {
                 delete();
                 return false;
-            }
-            if (true) {
             }
             if (newSourceFig != null && newSourceFig != currentSourceFig) {
                 setSourceFigNode((FigNode) newSourceFig);

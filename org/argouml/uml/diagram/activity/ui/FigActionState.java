@@ -54,7 +54,7 @@ public class FigActionState extends FigStateVertex {
 
     /** UML does not really use ports, so just define one big one so
      *  that users can drag edges to or from any point in the icon. */
-    // TODO _bigPort is already defined in FigNodeModelElement
+    // TODO: _bigPort is already defined in FigNodeModelElement
     // Why do we need it redefined here?
     FigRRect _bigPort;
     FigRRect _cover;
@@ -100,7 +100,7 @@ public class FigActionState extends FigStateVertex {
 	Iterator it = figClone.getFigs(null).iterator();
 	figClone._bigPort = (FigRRect) it.next();
 	figClone._cover = (FigRRect) it.next();
-	figClone._name = (FigText) it.next();
+	figClone.setNameFig((FigText) it.next());
 	return figClone;
     }
 

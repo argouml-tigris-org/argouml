@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,9 +31,9 @@ import ru.novosoft.uml.MElementEvent;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by ?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * TODO: What is this replaced by?,
+ * this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
 public class UMLTextProperty  {
 
@@ -43,13 +43,14 @@ public class UMLTextProperty  {
     private Method _getMethod;
     private Method _setMethod;
     protected String _propertyName;
-    static private Object[] _noArg = {};    
+    private static Object[] _noArg = {};    
 
     public UMLTextProperty(String propertyName) {
         _propertyName = propertyName;
     }
     
-    public UMLTextProperty(Class elementClass, String propertyName, String getMethod, String setMethod) {
+    public UMLTextProperty(Class elementClass, String propertyName,
+			   String getMethod, String setMethod) {
         
         _propertyName = propertyName;
         Class[] noClass = {};
@@ -61,8 +62,11 @@ public class UMLTextProperty  {
             // 2002-07-20
             // Jaap Branderhorst
             // If it is illegal we should throw an exception
-            throw new IllegalArgumentException("The method " + 
-					       getMethod + " is not a legal method to get the property " + propertyName);
+            throw new IllegalArgumentException("The method "
+					       + getMethod
+					       + " is not a legal method to "
+					       + "get the property "
+					       + propertyName);
         }
         Class[] stringClass = {
 	    String.class
@@ -75,23 +79,36 @@ public class UMLTextProperty  {
             // 2002-07-20
             // Jaap Branderhorst
             // If it is illegal we should throw an exception
-            throw new IllegalArgumentException("The method " + 
-					       setMethod + " is not a legal method to set the property " + propertyName);
+            throw new IllegalArgumentException("The method "
+					       + setMethod
+					       + " is not a legal method "
+					       + "to set the property "
+					       + propertyName);
         }
     }
     
-    public void setProperty(UMLUserInterfaceContainer container, String newValue) throws Exception {
+    public void setProperty(UMLUserInterfaceContainer container,
+			    String newValue)
+	throws Exception {
+
     	setProperty(container, newValue, false);
+
     }
 
-    public void setProperty(UMLUserInterfaceContainer container, String newValue, boolean vetoableCheck) throws Exception {
+    public void setProperty(UMLUserInterfaceContainer container,
+			    String newValue, boolean vetoableCheck)
+	throws Exception {
+	
         if (_setMethod != null) {
             Object element = container.getTarget();
             if (element != null) {					
-		String oldValue = getProperty(container);					
+		String oldValue = getProperty(container);
 		//
 		//  if one or the other is null or they are not equal
-		if (newValue == null || oldValue == null || !newValue.equals(oldValue)) {
+		if (newValue == null
+		    || oldValue == null
+		    || !newValue.equals(oldValue)) {
+
 		    //
 		    //  as long as they aren't both null 
 		    //   (or a really rare identical string pointer)
@@ -104,17 +121,19 @@ public class UMLTextProperty  {
                             		
 			    _setMethod.invoke(element, args);
 			    // Mark the project as having been changed 
-			    Project p = ProjectManager.getManager().getCurrentProject(); 
+			    Project p =
+				ProjectManager.getManager().getCurrentProject();
 			    if (p != null) p.setNeedsSave(true); 
 			}
 			catch (InvocationTargetException inv) {
-			    Throwable targetException = inv.getTargetException();
+			    Throwable targetException =
+				inv.getTargetException();
 			    cat.error(inv);
 			    cat.error(targetException);
 			    if (targetException instanceof Exception) {
 				throw (Exception) targetException;
 			    }
-			    System.exit(-1); // we have a real error    	        		
+			    System.exit(-1); // we have a real error
 			}
 		    }
 		}  
@@ -133,12 +152,14 @@ public class UMLTextProperty  {
                     if (obj != null) value = obj.toString();
                 }
                 catch (InvocationTargetException e) {
-                    cat.error(e.getTargetException().toString() + 
-			      " is invocationtargetexception in UMLTextProperty.getMethod()", 
+                    cat.error(e.getTargetException().toString()
+			      + " is invocationtargetexception "
+			      + "in UMLTextProperty.getMethod()", 
 			      e.getTargetException());
                 }
                 catch (Exception e) {
-                    cat.error(e.toString() + " in UMLTextProperty.getMethod()", e);
+                    cat.error(e.toString() + " in UMLTextProperty.getMethod()",
+			      e);
                 }
             }
         }
@@ -147,8 +168,13 @@ public class UMLTextProperty  {
     
     boolean isAffected(MElementEvent event) {
         String sourceName = event.getName();
-        if (_propertyName == null || sourceName == null || sourceName.equals(_propertyName))
+        if (_propertyName == null
+	    || sourceName == null
+	    || sourceName.equals(_propertyName)) {
+
             return true;
+
+	}
         return false;
     }
     

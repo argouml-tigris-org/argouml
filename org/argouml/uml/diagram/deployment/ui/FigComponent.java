@@ -50,8 +50,12 @@ import org.tigris.gef.presentation.FigText;
 /** Class to display graphics for a UML Component in a diagram. */
 
 public class FigComponent extends FigNodeModelElement {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = Logger.getLogger(FigComponent.class);
-    
+
     /** The distance between the left edge of the fig and the left edge of the
 	main rectangle. */
     private static final int BIGPORT_X = 10;
@@ -77,7 +81,7 @@ public class FigComponent extends FigNodeModelElement {
 
 	addFig(_bigPort);
 	addFig(_cover);
-	addFig(_stereo);
+	addFig(getStereotypeFig());
 	addFig(getNameFig());
 	addFig(_upperRect);
 	addFig(_lowerRect);
@@ -103,8 +107,8 @@ public class FigComponent extends FigNodeModelElement {
 	Iterator it = figClone.getFigs(null).iterator();
 	figClone._bigPort = (FigRect) it.next();
 	figClone._cover = (FigRect) it.next();
-	figClone._stereo = (FigText) it.next();
-	figClone._name = (FigText) it.next();
+	figClone.setStereotypeFig((FigText) it.next());
+	figClone.setNameFig((FigText) it.next());
 	figClone._upperRect = (FigRect) it.next();
 	figClone._lowerRect = (FigRect) it.next();
 
@@ -121,8 +125,8 @@ public class FigComponent extends FigNodeModelElement {
     public void setLineColor(Color c) {
 	//super.setLineColor(c);
 	_cover.setLineColor(c);
-	_stereo.setFilled(false);
-	_stereo.setLineWidth(0);
+	getStereotypeFig().setFilled(false);
+	getStereotypeFig().setLineWidth(0);
 	getNameFig().setFilled(false);
 	getNameFig().setLineWidth(0);
 	_upperRect.setLineColor(c);
@@ -135,7 +139,7 @@ public class FigComponent extends FigNodeModelElement {
     }
 
     public Dimension getMinimumSize() {
-	Dimension stereoDim = _stereo.getMinimumSize();
+	Dimension stereoDim = getStereotypeFig().getMinimumSize();
 	Dimension nameDim = getNameFig().getMinimumSize();
 
 	int h = stereoDim.height + nameDim.height - OVERLAP;
@@ -150,7 +154,7 @@ public class FigComponent extends FigNodeModelElement {
 	_bigPort.setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
 	_cover.setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
 
-	Dimension stereoDim = _stereo.getMinimumSize();
+	Dimension stereoDim = getStereotypeFig().getMinimumSize();
 	Dimension nameDim = getNameFig().getMinimumSize();
 	if (h < 50) {
 	    _upperRect.setBounds(x, y + h / 6, 20, 10);
@@ -161,8 +165,10 @@ public class FigComponent extends FigNodeModelElement {
 	    _lowerRect.setBounds(x, y + 39, 20, 10);
 	}
 
-	_stereo.setBounds(x + BIGPORT_X + 1, y + 1, w - BIGPORT_X - 2,
-			  stereoDim.height);
+	getStereotypeFig().setBounds(x + BIGPORT_X + 1,
+				     y + 1,
+				     w - BIGPORT_X - 2,
+				     stereoDim.height);
 	getNameFig().setBounds(x + BIGPORT_X + 1,
 			       y + stereoDim.height - OVERLAP + 1,
 			       w - BIGPORT_X - 2,
@@ -298,10 +304,14 @@ public class FigComponent extends FigNodeModelElement {
         }
 	if (stereo == null
 	    || ModelFacade.getName(stereo) == null
-	    || ModelFacade.getName(stereo).length() == 0)
-	    _stereo.setText("");
-	else {
-	    _stereo.setText(Notation.generateStereotype(this, stereo));
+	    || ModelFacade.getName(stereo).length() == 0) {
+
+	    setStereotype("");
+
+	} else {
+
+	    setStereotype(Notation.generateStereotype(this, stereo));
+
 	}
     }
 

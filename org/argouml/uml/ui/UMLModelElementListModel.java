@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,24 +56,23 @@ import javax.swing.JPopupMenu;
 
 import org.argouml.application.api.NotationContext;
 import org.argouml.application.api.NotationName;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- *  This class is an abstract superclass for classes that provide a list
- *  of UML model elements.
+ * This class is an abstract superclass for classes that provide a list
+ * of UML model elements.
  *
- *  @author Curt Arnold
+ * @author Curt Arnold
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by {@link org.argouml.uml.ui.UMLModelElementListModel2},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * replaced by {@link org.argouml.uml.ui.UMLModelElementListModel2},
+ * this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
-abstract public class UMLModelElementListModel
+public abstract class UMLModelElementListModel
     extends AbstractListModel
     implements UMLUserInterfaceComponent, NotationContext {
 
@@ -91,7 +90,8 @@ abstract public class UMLModelElementListModel
      */
     private int _currentModelElementSize = 0;
     /**
-     * Set to true when an event suggests that the size needs to be recalculated.
+     * Set to true when an event suggests that the size needs to be
+     * recalculated.
      */
     private boolean _recalcSize;
     /**
@@ -112,13 +112,18 @@ abstract public class UMLModelElementListModel
     public final int NO_LIMIT = -1;
 
     /**
-     *   Creates a new list model
-     *   @param container the container (typically a PropPanelClass or PropPanelInterface)
-     *                    that provides access to the target classifier.
-     *   @param property  a string that specifies the name of an event that should force a refresh
-     *                       of the list model.  A null value will cause all events to trigger a refresh.
-     *   @param showNone  if true, an element labelled "none" will be shown where there are
-     *                        no actual entries in the list.
+     * Creates a new list model.<p>
+     *
+     * @param container the container (typically a PropPanelClass or
+     * PropPanelInterface) that provides access to the target
+     * classifier.
+     *
+     * @param property a string that specifies the name of an event
+     * that should force a refresh of the list model.  A null value
+     * will cause all events to trigger a refresh.
+     *
+     * @param showNone if true, an element labelled "none" will be
+     * shown where there are no actual entries in the list.
      */
     public UMLModelElementListModel(
         UMLUserInterfaceContainer container,
@@ -180,7 +185,7 @@ abstract public class UMLModelElementListModel
      *  @return number of "actual" list entries.
      *
      */
-    abstract protected int recalcModelElementSize();
+    protected abstract int recalcModelElementSize();
 
     /**
      *  This method returns the model element that corresponds to
@@ -190,18 +195,18 @@ abstract public class UMLModelElementListModel
      *  @param index index of model element (zero based).
      *  @return corresponding model element
      */
-    abstract protected MModelElement getModelElementAt(int index);
+    protected abstract MModelElement getModelElementAt(int index);
 
     /**
-     *  This method returns the current "target" of the container.
+     * This method returns the current "target" of the container.
      */
     protected final Object getTarget() {
         return _container.getTarget();
     }
 
     /**
-     *  This method returns the container passed as an argument
-     *  to the constructor
+     * This method returns the container passed as an argument
+     * to the constructor
      */
     protected final UMLUserInterfaceContainer getContainer() {
         return _container;
@@ -251,15 +256,16 @@ abstract public class UMLModelElementListModel
     }
 
     /**
-     *   This method returns a rendering (typically a String) of the model element for the list.
-     *   Default implementation defers to the current Profile of the container, but this
-     *   method may be overriden.
+     * This method returns a rendering (typically a String) of the
+     * model element for the list.  Default implementation defers to
+     * the current Profile of the container, but this method may be
+     * overriden.<p>
      *
-     *  @param @element model element
-     *  @return rendering of the ModelElement
+     * @param element model element
+     * @return rendering of the ModelElement
      */
     public Object formatElement(Object/*MModelElement*/ element) {
-        return _container.formatElement((MModelElement)element);
+        return _container.formatElement((MModelElement) element);
     }
 
     /**
@@ -366,10 +372,11 @@ abstract public class UMLModelElementListModel
     }
 
     /**
-     *  This method is called by context menu actions that
-     *  desire to change to currently displayed object.
-     *  @deprecated 
-     *  @param modelElement model element to display
+     * This method is called by context menu actions that
+     * desire to change to currently displayed object.
+     *
+     * @deprecated TODO: by whom? When? Why? What is this replaced by?
+     * @param modelElement model element to display
      */
     public void navigateTo(Object/*MModelElement*/ modelElement) {
         TargetManager.getInstance().setTarget(modelElement);
@@ -449,36 +456,32 @@ abstract public class UMLModelElementListModel
     }
 
     /**
-     * <p>This utility function may be called in the implemention of an Add
-     *   action.  It creates a new collection by adding an element at a
-     *   specific offset in the sequence of an old collection.</p>
+     * This utility function may be called in the implemention of an Add
+     * action.  It creates a new collection by adding an element at a
+     * specific offset in the sequence of an old collection.<p>
      *
-     * <p>Historically this took as argument and returned result of type {@link
-     *   Collection}. However this is not specifically an ordered
-     *   interface. The current version returns a result of type {@link
-     *   java.util.List}, which is the ordered sub-interface of
-     *   Collection. This will keep some NSUML routines (which have ordered
-     *   arguments, and expect a List object) happy.</p>
+     * Historically this took as argument and returned result of type {@link
+     * Collection}. However this is not specifically an ordered
+     * interface. The current version returns a result of type {@link
+     * java.util.List}, which is the ordered sub-interface of
+     * Collection. This will keep some NSUML routines (which have ordered
+     * arguments, and expect a List object) happy.<p>
      *
-     * <p><em>Note</em>. There are two List types in Java (the other is part of
-     *   awt). This is java.util.List.</p>
+     * <em>Note</em>. There are two List types in Java (the other is part of
+     * awt). This is java.util.List.<p>
      *
-     * <p>For compatibility with existing code, the argument is left as type
-     *   {@link Collection}, although it would be wise to always use {@link
-     *   java.util.List} in new code.</p>
+     * For compatibility with existing code, the argument is left as type
+     * {@link Collection}, although it would be wise to always use
+     * {@link java.util.List} in new code.<p>
      *
-     *  @param oldCollection  old collection
-     *
-     *  @param newElement     element to add to collection
-     *
-     *  @param index          position of element in new collection
-     *
-     *  @return               new list */
-
-    public static java.util.List addAtUtil(
-            Collection oldCollection,
-            Object/*MModelElement*/ newItem,
-            int index) {
+     * @param oldCollection  old collection
+     * @param newItem        element to add to collection
+     * @param index          position of element in new collection
+     * @return               new list
+     */
+    public static java.util.List addAtUtil(Collection oldCollection,
+					   Object/*MModelElement*/ newItem,
+					   int index) {
 
         int oldSize = oldCollection.size();
 
@@ -503,13 +506,13 @@ abstract public class UMLModelElementListModel
     }
 
     /**
-     *  This utility function may be called in the implemention of an MoveUp action.
-     *  It creates a new collection by swapping the element at index with the element
-     *  at index-1.
+     * This utility function may be called in the implemention of an
+     * MoveUp action.  It creates a new collection by swapping the
+     * element at index with the element at index-1.
      *
-     *  @param oldCollection old collection
-     *  @param index index of element to move up.
-     *  @return new collection
+     * @param oldCollection old collection
+     * @param index index of element to move up.
+     * @return new collection
      */
     public static Collection moveUpUtil(Collection oldCollection, int index) {
         int size = oldCollection.size();
@@ -533,13 +536,13 @@ abstract public class UMLModelElementListModel
     }
 
     /**
-     *  This utility function may be called in the implemention of an MoveDown action.
-     *  It creates a new collection by swapping the element at index with the element
-     *  at index+1.
+     * This utility function may be called in the implemention of an
+     * MoveDown action.  It creates a new collection by swapping the
+     * element at index with the element at index+1.
      *
-     *  @param oldCollection old collection
-     *  @param index index of element to move down.
-     *  @return new collection
+     * @param oldCollection old collection
+     * @param index index of element to move down.
+     * @return new collection
      */
     public static java.util.List moveDownUtil(
         Collection oldCollection,
@@ -565,18 +568,17 @@ abstract public class UMLModelElementListModel
     }
 
     /**
-     *  This utility function may be called in the implemention of getElementAt.
-     *  It determines the element at a specific index by brute iteration through
-     *  a collection if necessary.
+     * This utility function may be called in the implemention of
+     * getElementAt.  It determines the element at a specific index by
+     * brute iteration through a collection if necessary.
      *
-     *  @param oldCollection old collection
-     *  @param index index of element to move down.
-     *  @return new collection
+     * @param collection old collection
+     * @param index index of element to move down.
+     * @return new collection
      */
-    public static MModelElement elementAtUtil(
-        Collection collection,
-        int index,
-        Class requiredClass) {
+    public static MModelElement elementAtUtil(Collection collection,
+					      int index,
+					      Class requiredClass) {
         Object obj = null;
         if (collection != null && index >= 0 && index < collection.size()) {
             if (collection instanceof java.util.List) {
@@ -611,7 +613,8 @@ abstract public class UMLModelElementListModel
     }
 
     /**
-     * Standard delete method.
+     * Standard delete method.<p>
+     *
      * @param index
      */
     public void delete(int index) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,13 +25,6 @@
 // File: UMLClassifierComboBoxModel.java
 // Classes: UMLClassifierComboBoxModel
 // Original Author: 
-// $Id$
-
-// 23 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Layout tidied up and
-// mods made following bug fixing in UMLComboBoxModel. getModel() and
-// setModel() are no longer available in the parent. _noArgs made a local
-// variable.
-
 
 package org.argouml.uml.ui;
 
@@ -44,40 +37,49 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.Profile;
 
 import ru.novosoft.uml.MElementEvent;
-//import ru.novosoft.uml.behavior.common_behavior.MInstance;
-//import ru.novosoft.uml.foundation.core.MClassifier;
-//import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by ?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * TODO: What is this replaced by?
+ * This class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
 public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
     protected static Logger cat = 
         Logger.getLogger(UMLClassifierComboBoxModel.class);
 
-   
+    private static final Logger LOG = 
+        Logger.getLogger(UMLClassifierComboBoxModel.class);
+
 
     /**
-     *   This method creates a UMLComboBoxModel
+     * This method creates a UMLComboBoxModel
      *
-     *    @param container container that provides access to target, formatting etc
-     *    @param filter name of method on container that takes a MModelElement
-     *         true if element should be in list, may be null
-     *    @param property name of event that would indicate that the value has changed
-     *    @param getMethod name of method on container to get value
-     *    @param putMethod name of method on container to set value
-     *    @param allowVoid allows an entry in the list
-     *    @param elementType base type for all elements
+     * @param container container that provides access to target,
+     * formatting etc
+     * @param filter name of method on container that takes a
+     * MModelElement true if element should be in list, may be null
+     * @param property name of event that would indicate that the
+     * value has changed
+     * @param getMethod name of method on container to get value
+     * @param setMethod name of method on container to set value
+     * @param allowVoid allows an entry in the list
+     * @param elementType base type for all elements
      */
     public UMLClassifierComboBoxModel(UMLUserInterfaceContainer container,
-				      String filter, String property, String getMethod,
-				      String setMethod, boolean allowVoid, Class elementType,
+				      String filter, String property,
+				      String getMethod,
+				      String setMethod, boolean allowVoid,
+				      Class elementType,
 				      boolean addElementsFromProfileModel) {
 	
-	super (container, filter, property, getMethod, setMethod, allowVoid, elementType,
+	super (container, filter, property, getMethod,
+	       setMethod, allowVoid,
+	       elementType,
 	       addElementsFromProfileModel);
 
        
@@ -118,10 +120,14 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	    currentStr = after;
 	    afterEntry = (UMLComboBoxEntry) iter.next();
 	    after = afterEntry.getShortName();
-	    if (currentEntry != null) currentEntry.checkCollision(before, after);
+	    if (currentEntry != null) {
+		currentEntry.checkCollision(before, after);
+	    }
 	}
 	    
-	if (afterEntry != null) afterEntry.checkCollision(currentStr, null);		   
+	if (afterEntry != null) {
+	    afterEntry.checkCollision(currentStr, null);
+	}
 	    
 	// fireContentsChanged(this,0,getSet().size());	  
 
@@ -136,7 +142,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 		Object/*MModelElement*/ elem = entry.getElement(model);
 		String name = null;
 		if (elem !=  null ) name = ModelFacade.getName(elem);
-		cat.debug("setSelectedItem");
+		LOG.debug("setSelectedItem");
 		setSelectedItem( entry);
 			    
 	    }
@@ -154,7 +160,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	    Object model = ModelFacade.getModel(event.getSource());
 	    if (ModelFacade.isAInstance(event.getSource()) ) {
 		
-		Object/*MInstance*/ instance = event.getSource();	    	    
+		Object/*MInstance*/ instance = event.getSource();
 		Collection col = ModelFacade.getClassifiers(instance);
 		if (col != null && col.size() > 0) {
 		    it  = col.iterator();		  
@@ -183,11 +189,14 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 		
 	    }
 	    catch (InvocationTargetException ex) {
-                cat.error(ex.getTargetException() + " is IncovationTargetException in UMLClassifierComboBoxModel", ex);
+                LOG.error(ex.getTargetException()
+			  + " is IncovationTargetException "
+			  + "in UMLClassifierComboBoxModel",
+			  ex);
 		setSelectedItem(null);
 	    }
             catch (Exception e) {
-                cat.error("Exception in targetchanged", e);
+                LOG.error("Exception in targetchanged", e);
                 setSelectedItem(null);
             }
 	}

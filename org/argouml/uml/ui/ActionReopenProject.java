@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,7 +29,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.*;
 import java.awt.event.*;
 import java.io.*;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import java.text.MessageFormat;
 
@@ -51,9 +50,9 @@ public class ActionReopenProject extends UMLAction {
     /**
      * Constructor.
      */
-    public ActionReopenProject( String filename) {
-         super("action.reopen-project");
-         _filename = filename;
+    public ActionReopenProject(String filename) {
+	super("action.reopen-project");
+	_filename = filename;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -84,11 +83,11 @@ public class ActionReopenProject extends UMLAction {
             String t =
                 MessageFormat.format(
                         Translator.localize(
-						   "Actions",
-						   "optionpane.open-project-save-changes-to"),
-				     new Object[] {
-					 p.getName()
-				     });
+				"Actions",
+				"optionpane.open-project-save-changes-to"),
+			new Object[] {
+			    p.getName()
+			});
 
             int response =
                 JOptionPane.showConfirmDialog(
@@ -119,7 +118,8 @@ public class ActionReopenProject extends UMLAction {
         File toOpen = new File(_filename);;
         
         try {
-            ActionOpenProject openProjectHandler = ActionOpenProject.SINGLETON;
+            ActionOpenProject openProjectHandler =
+		new ActionOpenProject();
             openProjectHandler.loadProject(toOpen.toURL());
         }
         catch ( java.net.MalformedURLException ex) {

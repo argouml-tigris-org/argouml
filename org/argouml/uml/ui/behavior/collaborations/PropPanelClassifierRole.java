@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,9 +56,10 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     public PropPanelClassifierRole() {
 	super("ClassifierRole", ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = (Class)ModelFacade.CLASSIFIER_ROLE;
+	Class mclass = (Class) ModelFacade.CLASSIFIER_ROLE;
 
-	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+	addField(Translator.localize("UMLMenu", "label.name"),
+		 getNameTextField());
 	addField(Translator.localize("UMLMenu", "label.stereotype"),
 		 new UMLComboBoxNavigator(this,
 					  Translator.localize("UMLMenu",
@@ -68,8 +69,8 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 		 getNamespaceScroll());
 
 	addField(Translator.localize("UMLMenu", "label.multiplicity"),
-		 new UMLMultiplicityComboBox(this,
-					     mclass));
+
+		 new UMLMultiplicityComboBox(this, mclass));
 
 	JList baseList =
 	    new UMLMutableLinkedList(new UMLClassifierRoleBaseListModel(),
@@ -99,12 +100,14 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	addSeperator();
 
 	JList availableContentsList =
-	    new UMLLinkedList(new UMLClassifierRoleAvailableContentsListModel());
+	    new UMLLinkedList(
+		    new UMLClassifierRoleAvailableContentsListModel());
 	addField(Translator.localize("UMLMenu", "label.available-contents"),
 		 new JScrollPane(availableContentsList));
 
 	JList availableFeaturesList =
-	    new UMLLinkedList(new UMLClassifierRoleAvailableFeaturesListModel());
+	    new UMLLinkedList(
+		    new UMLClassifierRoleAvailableFeaturesListModel());
 	addField(Translator.localize("UMLMenu", "label.available-features"),
 		 new JScrollPane(availableFeaturesList));
 

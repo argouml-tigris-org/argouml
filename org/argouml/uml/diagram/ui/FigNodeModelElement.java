@@ -24,7 +24,6 @@
 
 // File: FigNodeModelElement.java
 // Classes: FigNodeModelElement
-// Original Author: abonner
 
 package org.argouml.uml.diagram.ui;
 
@@ -102,9 +101,12 @@ import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
-/** Abstract class to display diagram icons for UML ModelElements that
- *  look like nodes and that have editiable names and can be
- *  resized.
+/**
+ * Abstract class to display diagram icons for UML ModelElements that
+ * look like nodes and that have editiable names and can be
+ * resized.
+ *
+ * @author abonner
  */
 public abstract class FigNodeModelElement
     extends FigNode
@@ -114,7 +116,8 @@ public abstract class FigNodeModelElement
         MouseListener,
         KeyListener,
         PropertyChangeListener,
-        MElementListener, // TODO NSUML interface, how do we rid ourselves of this?
+        MElementListener, // TODO: NSUML interface, how do we rid
+			  // ourselves of this?
         NotationContext,
         ArgoNotationEventListener {            
 
@@ -184,23 +187,34 @@ public abstract class FigNodeModelElement
     // instance variables
 
     /**
-     * @deprecated 0.15.3 visibility will change use getter/setter
+     * @deprecated 0.15.3 visibility will change use getter/setter.
+     * TODO: What is the name of the getter? What is the name of the setter?
      */
     protected FigRect _bigPort;
+
     /**
      * @deprecated 0.15.3 visibility will change use
      * getNameFig() and setNameFig() to access the Figs.
      * Use getName() and setName() to just change the text.
      */
     public FigText _name; // TODO: - public!! Make private!
+
     /**
      * @deprecated 0.15.3 visibility will change use getter/setter
      * getStereotypeFig() and setStereoTypeFig() to access the Figs.
      * Use getStereotype() and setStereotype() to change stereotype
      * text.
+     * TODO: How shall the calls
+     * _stereo.setJustificationByName("Center");
+     * _stereo.setAllowsTab(false);
+     * _stereo.setEditable(false);
+     * _stereo.setExpandOnly(true);
+     * center(getStereotypeFig()); where private void center(FigText figText);
+     * be converted?
      */
     public FigText _stereo; // TODO: - public!! Make private!
-    // TODO could somebody please javadoc what _enclosedFigs is.
+
+    // TODO: could somebody please javadoc what _enclosedFigs is.
     // Is it just a duplicate of the collection in a FigGroup.
     // Is this anything to do with FigClass inside FigPackage in
     // a class diagram? Bob Tarling 28 Jan 2004
@@ -267,7 +281,7 @@ public abstract class FigNodeModelElement
         ArgoEventPump.removeListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
-// TODO Too close to a release to introduce this now
+// TODO: Too close to a release to introduce this now
 // but I think we need this clone method at this level to save
 // duplicated code in ancestors
 // Bob Tarling 28 Jan 2004
@@ -379,7 +393,7 @@ public abstract class FigNodeModelElement
      * modelelement. If this fig is moved inside another
      * FigNodeModelElement the owner of that fignodemodelelement will
      * be the owning modelelement.
-     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     * @see Fig#setEnclosingFig(Fig)
      */
     public void setEnclosingFig(Fig encloser) {
 	super.setEnclosingFig(encloser);
@@ -404,13 +418,13 @@ public abstract class FigNodeModelElement
                 }
             }
             if (owningModelelement != null
-                    && getOwner() != null
-                    && (!ModelManagementHelper.getHelper()
-                        .isCyclicOwnership(owningModelelement, getOwner()))
-                    && (!ModelFacade.isANamespace(owningModelelement)
-                        || CoreHelper.getHelper()
-                    	.isValidNamespace(getOwner(),
-					  owningModelelement))) {
+		&& getOwner() != null
+		&& (!ModelManagementHelper.getHelper()
+		    .isCyclicOwnership(owningModelelement, getOwner()))
+		&& (!ModelFacade.isANamespace(owningModelelement)
+		    || (CoreHelper.getHelper()
+			.isValidNamespace(getOwner(),
+					  owningModelelement)))) {
                 ModelFacade.setModelElementContainer(getOwner(), 
 						     owningModelelement);
                 // TODO: move the associations to the correct owner (namespace)
@@ -643,7 +657,7 @@ public abstract class FigNodeModelElement
 
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         cat.debug("in delayedVetoableChange");
-        // TODO the src variable is never used. Must check if getSource()
+        // TODO: the src variable is never used. Must check if getSource()
         // has any side effects before removing entire line
         Object src = pce.getSource();
         // update any text, colors, fonts, etc.
@@ -726,7 +740,7 @@ public abstract class FigNodeModelElement
     public void mouseClicked(MouseEvent me) {
         if (!_readyToEdit) {
             if (ModelFacade.isAModelElement(getOwner())) {
-                ModelFacade.setName(getOwner(),"");
+                ModelFacade.setName(getOwner(), "");
                 _readyToEdit = true;
             } else {
                 cat.debug("not ready to edit name");
@@ -763,7 +777,7 @@ public abstract class FigNodeModelElement
     public void keyPressed(KeyEvent ke) {
         if (!_readyToEdit) {
             if (ModelFacade.isAModelElement(getOwner())) {
-                ModelFacade.setName(getOwner(),"");
+                ModelFacade.setName(getOwner(), "");
                 _readyToEdit = true;
             } else {
                 cat.debug("not ready to edit name");
@@ -896,14 +910,14 @@ public abstract class FigNodeModelElement
     }
 
     public void setOwner(Object own) {
-        // TODO the oldOwner variable is never used. Must check if getOwner()
-        // has any side effects before removing entire line
+        // TODO: the oldOwner variable is never used. Must check if
+        // getOwner() has any side effects before removing entire line
         Object oldOwner = getOwner();
         updateListeners(own);
         super.setOwner(own);
         if (ModelFacade.isAModelElement(own)
                 && ModelFacade.getUUID(own) == null) {
-            ModelFacade.setUUID(own, UUIDManager.SINGLETON.getNewUUID());
+            ModelFacade.setUUID(own, UUIDManager.getInstance().getNewUUID());
         }
         _readyToEdit = true;
         if (own != null) {
@@ -1167,9 +1181,10 @@ public abstract class FigNodeModelElement
      * Adds a fig to this FigNodeModelElement and removes it from the
      * group it belonged to if any.  Correction to the GEF
      * implementation that does not handle the double association
-     * correctly.
-     * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
-     * TODO remove this once GEF0.10 is in place and tested
+     * correctly.<p>
+     *
+     * @see FigGroup#addFig(Fig)
+     * TODO: remove this once GEF0.10 is in place and tested
      */
     public void addFig(Fig f) {
         Fig group = f.getGroup();

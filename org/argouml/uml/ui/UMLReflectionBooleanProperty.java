@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,25 +35,34 @@ import org.argouml.kernel.*;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by ?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * TODO: What is this replaced by?,
+ * this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
 public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
-    protected static Logger cat = Logger.getLogger(UMLReflectionBooleanProperty.class);
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
+     */
+    protected static Logger cat =
+	Logger.getLogger(UMLReflectionBooleanProperty.class);
 
     private Method _getMethod;
     private Method _setMethod;
-    static final private Object[] _noArg = {};
-    static final private Object[] _trueArg = {
+    private static final Object[] _noArg = {};
+    private static final Object[] _trueArg = {
 	new Boolean(true) 
     };
-    static final private Object[] _falseArg = {
+    private static final Object[] _falseArg = {
 	new Boolean(false) 
     };
     
-    /** Creates new BooleanChangeListener */
-    public UMLReflectionBooleanProperty(String propertyName, Class elementClass, String getMethod, String setMethod) {
+    /**
+     * Creates new BooleanChangeListener.<p>
+     */
+    public UMLReflectionBooleanProperty(String propertyName,
+					Class elementClass,
+					String getMethod, String setMethod) {
         super(propertyName);
 
         Class[] noClass = {};
@@ -61,7 +70,10 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
             _getMethod = elementClass.getMethod(getMethod, noClass);
         }
         catch (Exception e) {
-            cat.error(e.toString() + " in UMLReflectionBooleanProperty(): " + getMethod, e);
+            cat.error(e.toString()
+		      + " in UMLReflectionBooleanProperty(): "
+		      + getMethod,
+		      e);
             cat.error("Going to rethrow as RuntimeException");
 	    // need to throw exception again for unit testing!
 	    throw new RuntimeException(e.toString());
@@ -73,7 +85,10 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
             _setMethod = elementClass.getMethod(setMethod, boolClass);
         }
         catch (Exception e) {
-            cat.error(e.toString() + " in UMLReflectionBooleanProperty(): "  + setMethod, e);
+            cat.error(e.toString()
+		      + " in UMLReflectionBooleanProperty(): "
+		      + setMethod,
+		      e);
 	    cat.error("Going to rethrow as RuntimeException");
 	    // need to throw exception again for unit testing!
 	    throw new RuntimeException(e.toString());
@@ -104,7 +119,9 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
                 }
             }
             catch (Exception e) {
-                cat.error(e.toString() + " in UMLReflectionBooleanProperty.setMethod()", e);
+                cat.error(e.toString()
+			  + " in UMLReflectionBooleanProperty.setMethod()",
+			  e);
             }
         }
     }
@@ -119,7 +136,9 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
                 }
             }
             catch (Exception e) {
-                cat.error(e.toString() + " in UMLReflectionBooleanProperty.getMethod()", e);
+                cat.error(e.toString()
+			  + " in UMLReflectionBooleanProperty.getMethod()",
+			  e);
             }
         }
         return state;

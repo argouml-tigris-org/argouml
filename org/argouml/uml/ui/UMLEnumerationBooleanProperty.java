@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,31 +30,36 @@ import java.lang.reflect.*;
 import org.apache.log4j.Logger;
 import org.argouml.model.uml.AbstractWellformednessRule;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.ModelFacade;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by ?,
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * TODO: What is this replaced by?,
+ * this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
 public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
     private Method _getMethod;
     private Method _setMethod;
-    static final private Object[] _noArg = {};
+    private static final Object[] _noArg = {};
     private Object[] _trueArg = new Object[1];
     private Object[] _falseArg = new Object[1];
     private Object/*Class*/ _enumClass;
     
-    /** Log4j logging category.
+    /**
+     * Log4j logging category.<p>
+     *
+     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
+     * class. This will be removed.
      */
     public static Logger logger =
 	Logger.getLogger("org.argouml.uml.ui.UMLEnumerationBooleanProperty");
                   
     /**
-     * wellformednessRules are rules that should be hold true if the property is set
-     * they are defined in the model helpers (CoreHelper etc) and conform to the
-     * wellformednessRules defined in the UML 1.3 spec
-     * They are of the form:
+     * wellformednessRules are rules that should be hold true if the
+     * property is set they are defined in the model helpers
+     * (CoreHelper etc) and conform to the wellformednessRules defined
+     * in the UML 1.3 spec They are of the form:
      * wellformednessRule(modelelement, newvalue)
      */
     private AbstractWellformednessRule[] _wellformednessRules = null;
@@ -67,13 +72,17 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
                                          Object/*Class*/ enumClass,
                                          Object trueValue, 
                                          Object falseValue) {
-        this(propertyName, elementClass, getMethod, setMethod, enumClass, trueValue, falseValue, null);
+        this(propertyName, elementClass, getMethod, setMethod, enumClass,
+	     trueValue, falseValue, null);
     }
     
-    public UMLEnumerationBooleanProperty(String propertyName, Class elementClass,
+    public UMLEnumerationBooleanProperty(String propertyName,
+					 Class elementClass,
                                          String getMethod, String setMethod, 
                                          Object/*Class*/ enumClass,
-                                         Object trueValue, Object falseValue, AbstractWellformednessRule[] wellformednessRules) {
+                                         Object trueValue, Object falseValue,
+					 AbstractWellformednessRule[]
+					     wellformednessRules) {
 	super(propertyName);
 	_enumClass = enumClass;
 	_trueArg[0] = trueValue;
@@ -84,23 +93,28 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
 	    _getMethod = elementClass.getMethod(getMethod, noClass);
 	}
 	catch (Exception e) {
-	    logger.fatal(getMethod + " not found in UMLEnumerationBooleanProperty(): " + e.toString());
+	    logger.fatal(getMethod
+			 + " not found in UMLEnumerationBooleanProperty(): ",
+			 e);
 	}
 	Class[] boolClass = {
-	    (Class)enumClass 
+	    (Class) enumClass 
 	};
 	try {
 	    _setMethod = elementClass.getMethod(setMethod, boolClass);
 	}
 	catch (Exception e) {
-	    logger.fatal(setMethod + " not found in UMLEnumerationBooleanProperty(): " + e.toString());
+	    logger.fatal(setMethod
+			 + " not found in UMLEnumerationBooleanProperty(): ",
+			 e);
 	}
     }  
     
     
-    public void setProperty(Object element, boolean newState) throws PropertyVetoException {
+    public void setProperty(Object element, boolean newState)
+	throws PropertyVetoException {
     
-    	if (_wellformednessRules != null && org.argouml.model.ModelFacade.isABase(element)) {
+    	if (_wellformednessRules != null && ModelFacade.isABase(element)) {
 	    Object helper = UmlHelper.getHelper().getHelper(element);  
 	    if (helper != null) {
 		for (int i = 0; i < _wellformednessRules.length; i++) {
@@ -109,9 +123,14 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
 			arg = _trueArg[0];
 		    }
 		    if (arg != null) {
-			if (!_wellformednessRules[i].isWellformed(element, arg)) {
-			    throw new PropertyVetoException( _wellformednessRules[i].getUserMessage(),
-							     new PropertyChangeEvent(element, getPropertyName(), new Boolean(!newState), new Boolean(newState)));
+			if (!_wellformednessRules[i].isWellformed(element,
+								  arg)) {
+			    throw new PropertyVetoException(
+				_wellformednessRules[i].getUserMessage(),
+				new PropertyChangeEvent(element,
+							getPropertyName(),
+							new Boolean(!newState),
+							new Boolean(newState)));
 			}
 		    }
 		}
@@ -136,7 +155,10 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
                 }
             }
             catch (Exception e) {
-                logger.fatal("Error in UMLEnumerationBooleanProperty.setProperty for " + getPropertyName() + ": " + e.toString());
+                logger.fatal("Error in "
+			     + "UMLEnumerationBooleanProperty.setProperty for "
+			     + getPropertyName() + ": " + e.toString(),
+			     e);
             }
         }
     }
@@ -146,13 +168,16 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
         if (_getMethod != null && element != null) {
             try {
                 Object retval = _getMethod.invoke(element, _noArg);
-                if (retval != null && 
-		    (retval == _trueArg[0] || retval.equals(_trueArg[0]))) {
+                if (retval != null
+		    && (retval == _trueArg[0] || retval.equals(_trueArg[0]))) {
                     state = true;
                 }
             }
             catch (Exception e) {
-                logger.fatal("Error in UMLEnumerationBooleanProperty.getProperty for " + getPropertyName() + ": " + e.toString());
+                logger.fatal("Error in "
+			     + "UMLEnumerationBooleanProperty.getProperty for "
+			     + getPropertyName() + ": " + e.toString(),
+			     e);
             }
         }
         return state;

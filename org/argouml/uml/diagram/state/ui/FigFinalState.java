@@ -91,7 +91,7 @@ public class FigFinalState extends FigStateVertex {
 	_outCircle.setLineWidth(1);
 	_inCircle.setLineWidth(0);
 
-	_name = new FigText(x + 10, y + 22, 0, 21, true);
+	setNameFig(new FigText(x + 10, y + 22, 0, 21, true));
 	getNameFig().setFilled(false);
 	getNameFig().setLineWidth(0);
 	getNameFig().setFont(LABEL_FONT);

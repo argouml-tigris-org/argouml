@@ -105,7 +105,7 @@ public class FigMessage extends FigNodeModelElement {
     public Object clone() {
 	FigMessage figClone = (FigMessage) super.clone();
 	Iterator it = figClone.getFigs(null).iterator();
-	figClone._name = (FigText) it.next();
+	figClone.setNameFig((FigText) it.next());
 	figClone._figPoly = (FigPoly) it.next();
 	//figClone._polygon = (Polygon) _polygon.clone();
 	return figClone;
@@ -216,10 +216,8 @@ public class FigMessage extends FigNodeModelElement {
 		ParserDisplay.SINGLETON.parseMessage(message, s);
 		ProjectBrowser.getInstance().getStatusBar().showStatus("");
 	    } catch (ParseException pe) {
-		ProjectBrowser.getInstance().getStatusBar().showStatus("Error: "
-								       + pe
-								       + " at "
-								       + pe.getErrorOffset());
+		ProjectBrowser.getInstance().getStatusBar()
+		    .showStatus("Error: " + pe + " at " + pe.getErrorOffset());
 	    }
 	}
 	else
@@ -254,7 +252,9 @@ public class FigMessage extends FigNodeModelElement {
 		    setArrow(4);
     }
 
-    /** add the FigMessage to the Path Items of its FigAssociationRole */
+    /**
+     * Add the FigMessage to the Path Items of its FigAssociationRole.
+     */
     public void addPathItemToFigAssociationRole(Layer lay) {
 
 	Object associationRole =

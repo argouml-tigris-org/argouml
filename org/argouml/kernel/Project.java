@@ -377,12 +377,14 @@ public class Project implements java.io.Serializable, TargetListener {
         String n = getName();
 
         if (n.endsWith(FileConstants.COMPRESSED_FILE_EXT)) {
-            return n.substring(0, n.length() - 
-                               FileConstants.COMPRESSED_FILE_EXT.length());
+            return n.substring(0,
+			       n.length()
+			       - FileConstants.COMPRESSED_FILE_EXT.length());
         }
         if (n.endsWith(FileConstants.UNCOMPRESSED_FILE_EXT)) {
-            return n.substring(0, n.length() - 
-                               FileConstants.UNCOMPRESSED_FILE_EXT.length());
+            return n.substring(0,
+			       n.length()
+			       - FileConstants.UNCOMPRESSED_FILE_EXT.length());
         }
         return n;
     }
@@ -689,8 +691,8 @@ public class Project implements java.io.Serializable, TargetListener {
         BufferedWriter writer =
             new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
 
-        ZipEntry zipEntry = new ZipEntry(getBaseName() + 
-                                         FileConstants.UNCOMPRESSED_FILE_EXT);
+        ZipEntry zipEntry =
+	    new ZipEntry(getBaseName() + FileConstants.UNCOMPRESSED_FILE_EXT);
         stream.putNextEntry(zipEntry);
         expander.expand(writer, this, "", "");
         writer.flush();
@@ -1154,17 +1156,17 @@ public class Project implements java.io.Serializable, TargetListener {
     // usage statistics (deprecated)
 
     /**
-     * @deprecated since 0.15.1, remove in 0.15.2
+     * @deprecated since 0.15.1.
      */
     public static void resetStats() { }
 
     /**
-     * @deprecated since 0.15.1, remove in 0.15.2
+     * @deprecated since 0.15.1.
      */
     public static void setStat(String n, int v) { }
 
     /**
-     * @deprecated since 0.15.1, remove in 0.15.2
+     * @deprecated since 0.15.1.
      */
     public static Vector getStats() {
         
@@ -1173,7 +1175,7 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * @deprecated since 0.15.1, remove in 0.15.2
+     * @deprecated since 0.15.1.
      */
     public static void addStat(Vector stats, String name, int value) {
     }
@@ -1393,21 +1395,21 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /** 
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetAdded(TargetEvent)
      */
     public void targetAdded(TargetEvent e) {       
 	setTarget(e.getNewTarget());
     }
 
     /** 
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
 	setTarget(e.getNewTarget());
     }
 
     /** 
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
 	setTarget(e.getNewTarget());

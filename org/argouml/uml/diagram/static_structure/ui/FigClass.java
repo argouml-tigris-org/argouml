@@ -214,12 +214,12 @@ public class FigClass extends FigNodeModelElement {
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
         _stereo.setExpandOnly(true);
-        _stereo.setFilled(true);
-        _stereo.setLineWidth(1);
+        getStereotypeFig().setFilled(true);
+        getStereotypeFig().setLineWidth(1);
         _stereo.setEditable(false);
-        _stereo.setHeight(STEREOHEIGHT + 1);
+        getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
-        _stereo.setVisible(false);
+        getStereotypeFig().setVisible(false);
 
         // A thin rectangle to overlap the boundary line between stereotype
         // and name. This is just 2 pixels high, and we rely on the line
@@ -246,7 +246,7 @@ public class FigClass extends FigNodeModelElement {
         suppressCalcBounds = true;
         addFig(_bigPort);
         // addFig(getNameFig()space);
-        addFig(_stereo);
+        addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(_stereoLineBlinder);
         addFig(_attrVec);
@@ -289,8 +289,8 @@ public class FigClass extends FigNodeModelElement {
         FigClass figClone = (FigClass) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
         figClone._bigPort = (FigRect) it.next();
-        figClone._stereo = (FigText) it.next();
-        figClone._name = (FigText) it.next();
+        figClone.setStereotypeFig((FigText) it.next());
+        figClone.setNameFig((FigText) it.next());
         figClone._stereoLineBlinder = (FigRect) it.next();
         figClone._attrVec = (FigGroup) it.next();
         figClone._operVec = (FigGroup) it.next();
@@ -499,8 +499,10 @@ public class FigClass extends FigNodeModelElement {
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
 
-        if (_stereo.isVisible()) {
-            aSize.width = Math.max(aSize.width, _stereo.getMinimumSize().width);
+        if (getStereotypeFig().isVisible()) {
+            aSize.width =
+		Math.max(aSize.width,
+			 getStereotypeFig().getMinimumSize().width);
             aSize.height += STEREOHEIGHT;
         }
 
@@ -760,9 +762,9 @@ public class FigClass extends FigNodeModelElement {
     /**
      * Handles changes of the model. Takes into account the event that
      * occured. If you need to update the whole fig, consider using
-     * renderingChanged.
-     * @see
-     * org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(MElementEvent)
+     * renderingChanged.<p>
+     *
+     * @see FigNodeModelElement#modelChanged(MElementEvent)
      */
     protected void modelChanged(MElementEvent mee) {
 
@@ -819,20 +821,20 @@ public class FigClass extends FigNodeModelElement {
                 || (ModelFacade.getName(stereo) == null)
                 || (ModelFacade.getName(stereo).length() == 0))	{
 
-            if (_stereo.isVisible()) {
+            if (getStereotypeFig().isVisible()) {
                 _stereoLineBlinder.setVisible(false);
-                _stereo.setVisible(false);
+                getStereotypeFig().setVisible(false);
                 rect.y += STEREOHEIGHT;
                 rect.height -= STEREOHEIGHT;
                 setBounds(rect.x, rect.y, rect.width, rect.height);
                 calcBounds();
             }
         } else {
-            _stereo.setText(Notation.generateStereotype(this, stereo));
+            setStereotype(Notation.generateStereotype(this, stereo));
 
-            if (!_stereo.isVisible()) {
+            if (!getStereotypeFig().isVisible()) {
                 _stereoLineBlinder.setVisible(true);
-                _stereo.setVisible(true);
+                getStereotypeFig().setVisible(true);
 
                 // Only adjust the stereotype height if we are not newly
                 // created. This gets round the problem of loading classes with
@@ -944,12 +946,12 @@ public class FigClass extends FigNodeModelElement {
 
         int currentY = y;
 
-        if (_stereo.isVisible()) {
+        if (getStereotypeFig().isVisible()) {
             currentY += STEREOHEIGHT;
         }
 
         getNameFig().setBounds(x, currentY, newW, height);
-        _stereo.setBounds(x, y, newW, STEREOHEIGHT + 1);
+        getStereotypeFig().setBounds(x, y, newW, STEREOHEIGHT + 1);
         _stereoLineBlinder.setBounds(x + 1, y + STEREOHEIGHT, newW - 2, 2);
 
         // Advance currentY to where the start of the attribute box is,
@@ -1070,7 +1072,8 @@ public class FigClass extends FigNodeModelElement {
             while (iter.hasNext()) {
                 Object sf = /*(MStructuralFeature)*/ iter.next();
                 // update the listeners
-//                UmlModelEventPump.getPump().removeModelEventListener(this, sf);
+		// UmlModelEventPump.getPump().removeModelEventListener(this,
+		// sf);
                 UmlModelEventPump.getPump().addModelEventListener(this, sf);
                 if (figs.size() <= acounter) {
                     attr =
@@ -1131,7 +1134,8 @@ public class FigClass extends FigNodeModelElement {
             while (iter.hasNext()) {
                 Object bf = /*(MBehavioralFeature)*/ iter.next();
                 // update the listeners
-//                UmlModelEventPump.getPump().removeModelEventListener(this, bf);
+		// UmlModelEventPump.getPump().removeModelEventListener(this,
+		// bf);
                 UmlModelEventPump.getPump().addModelEventListener(this, bf);
                 if (figs.size() <= ocounter) {
                     oper =
@@ -1224,8 +1228,7 @@ public class FigClass extends FigNodeModelElement {
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     * @see FigNodeModelElement#updateListeners(Object)
      */
     protected void updateListeners(Object newOwner) {
         Object oldOwner = getOwner();
@@ -1256,9 +1259,10 @@ public class FigClass extends FigNodeModelElement {
                     Iterator it2 = ModelFacade.getParameters(oper).iterator();
                     while (it2.hasNext()) {
                         Object param = /*(MParameter)*/ it2.next();
-                        // UmlModelEventPump.getPump().removeModelEventListener(this,
-                        // param);
-                        UmlModelEventPump.getPump().addModelEventListener(this, param);
+                        // UmlModelEventPump.getPump()
+                        // .removeModelEventListener(this, param);
+                        UmlModelEventPump.getPump()
+			    .addModelEventListener(this, param);
                     }
                 }
             }

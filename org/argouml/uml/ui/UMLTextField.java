@@ -21,15 +21,9 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS. 
-// File: UMLTextField.java
-// Classes: UMLTextField
-// Original Author: not known
-// $Id$
-// 25 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
-// the FigUseCase.
-// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
-// project as needing saving if a text field is changed.
+
 package org.argouml.uml.ui;
+
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.beans.PropertyVetoException;
@@ -49,15 +43,17 @@ import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MElementEvent;
+
 /**
- *  This class handles the updating of text as it is typed into the text field on one
- *  of the many property panels. By catching the MElementEvent dispatched from NSUML it
- *  updates the diagram as each character is typed.
+ * This class handles the updating of text as it is typed into the
+ * text field on one of the many property panels. By catching the
+ * MElementEvent dispatched from NSUML it updates the diagram as each
+ * character is typed.
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by {@link org.argouml.uml.ui.UMLTextField2},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * replaced by {@link org.argouml.uml.ui.UMLTextField2},
+ * this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
 public class UMLTextField
     extends JTextField
@@ -68,21 +64,25 @@ public class UMLTextField
 
     private UMLUserInterfaceContainer _container;
     private UMLTextProperty _property;
+
     /**
      * value of property when focus is gained
      */
     protected String _oldPropertyValue;
+
     /**
      * true if text has changed since last focusgained
      */
     protected boolean _textChanged = false;
+
     /**
      * true if changed via userinput
      */
     protected boolean _viaUserInput = false;
+
     /**
-     * true if it's the first exception in the handling of events, prevents exception loops 
-     * and thus hanging argouml
+     * true if it's the first exception in the handling of events,
+     * prevents exception loops and thus hanging argouml
      */
     protected boolean _firstException = true;
 
@@ -104,10 +104,12 @@ public class UMLTextField
 
     Object _target;
     Object/*MClassifier*/ _classifier;
-    /** Creates new BooleanChangeListener */
-    public UMLTextField(
-        UMLUserInterfaceContainer container,
-        UMLTextProperty property) {
+
+    /**
+     * Creates new BooleanChangeListener.<p>
+     */
+    public UMLTextField(UMLUserInterfaceContainer container,
+			UMLTextProperty property) {
         _container = container;
         _property = property;
         getDocument().addDocumentListener(this);
@@ -130,22 +132,27 @@ public class UMLTextField
         SwingUtilities.invokeLater(textSetter);
         
     }
+
     public void targetReasserted() {
     }
+
     public void roleAdded(final MElementEvent p1) {
         //        cat.info("UMLTextField.roleAdded: event p1 happened...");
     }
+
     public void recovered(final MElementEvent p1) {
         //        cat.info("UMLTextField.recovered: event p1 happened...");
     }
+
     public void roleRemoved(final MElementEvent p1) {
-        //        cat.info("UMLTextField.roleRemoved: event p1 happened...");        
     }
+
     public void listRoleItemSet(final MElementEvent p1) {
-        //        cat.info("UMLTextField.listRoleItemSet: event p1 happened...");        
     }
+
     public void removed(final MElementEvent p1) {
     }
+
     public void propertySet(final MElementEvent event) {
         //
         //   check the possibility that this is a promiscuous event
@@ -159,18 +166,16 @@ public class UMLTextField
             //    if event source is unknown or 
             //       the event source is the container's target
             //          then update the field
-            if ((eventSource == null || eventSource == _target) && 
-            	((event.getOldValue() == null && event.getNewValue() != null) ||
-            	(event.getNewValue() == null && event.getOldValue() != null) ||
-            	(event.getOldValue() != null && !event.getOldValue().equals(event.getNewValue())))) {
+            if ((eventSource == null || eventSource == _target)
+		&& ((event.getOldValue() == null
+		     && event.getNewValue() != null)
+		    || (event.getNewValue() == null
+			&& event.getOldValue() != null)
+		    || (event.getOldValue() != null
+			&& !event.getOldValue().equals(event.getNewValue())))) {
                 update();
-                // TextSetter textSetter = new TextSetter((String)event.getNewValue(), this);
-	            // SwingUtilities.invokeLater(textSetter);
-                
             }
         }
-        //        else if(_target instanceof MDataType)
-        //            cat.info("UMLTextField.propertySet: else :Target = " + _target);
     }
     
     /**
@@ -218,7 +223,7 @@ public class UMLTextField
        
     
         Project p = ProjectManager.getManager().getCurrentProject();
-        // start new code
+
         Iterator it = p.findFigsForMember(_target).iterator();
         while (it.hasNext()) {
             Fig o = (Fig) it.next();
@@ -236,87 +241,17 @@ public class UMLTextField
             
             
         }
-        // end new code
-        // commented out rest of update
-        /*    
-        // Commented out for now, because this triggers from all over the
-        // place.
-        //p.setNeedsSave(true);
-        // If we are a use case update all our extension points.
-        if (_target instanceof MUseCase) {
-            MUseCase useCase = (MUseCase) _target;
-            useCase.setExtensionPoints(useCase.getExtensionPoints());
-        }
-        // If we are an extension point update the extension points of our
-        // owning use case. This could be null of course.
-        else
-            if (_target instanceof MExtensionPoint) {
-                MUseCase useCase = ((MExtensionPoint) _target).getUseCase();
-                if (useCase != null) {
-                    useCase.setExtensionPoints(useCase.getExtensionPoints());
-                }
-            }
-        // If we are any other (non-use case) sort of classifier update all our
-        // features.
-        else
-            if (_target instanceof MClassifier) {
-                _classifier = (MClassifier) _target;
-                if (_classifier == null) {
-                    return;
-                }
-                _classifier.setFeatures(_classifier.getFeatures());
-            }
-            else
-                if (_target instanceof MOperation) {
-                    _classifier =
-                        (MClassifier) ((MOperation) _target).getOwner();
-                    if (_classifier == null) {
-                        return;
-                    }
-                    _classifier.setFeatures(_classifier.getFeatures());
-                }
-                else
-                    if (_target instanceof MAttribute) {
-                        _classifier =
-                            (MClassifier) ((MAttribute) _target).getOwner();
-                        //            cat.info("UMLTextField.update()..._classifier = " + _classifier);
-                        if (_classifier == null) {
-                            return;
-                        }
-                        _classifier.setFeatures(_classifier.getFeatures());
-                    }
-                    else
-                        if (_target instanceof MParameter) {
-                            MBehavioralFeature feature =
-                                ((MParameter) _target).getBehavioralFeature();
-                            //
-                            // check if we are dealing with a valid parameter...
-                            // 
-                            if (feature == null) {
-                                return;
-                            }
-                            _classifier = (MClassifier) feature.getOwner();
-                            if (_classifier == null) {
-                                return;
-                            }
-                            _classifier.setFeatures(_classifier.getFeatures());
-                        }
-                        else
-                            if (_target instanceof MCallEvent) {
-                                //            cat.info("UMLTextField.update()...target = " + _target);
-                            }
-          */
-            
     }
     
     public void changedUpdate(final DocumentEvent p1) {
         // never happens since UMLTextFields don't support non-plain documents
         // handleEvent();
-        //        cat.info("UMLTextField.changedUpdate: DocumentEvent p1 " );       
     }
     
     /**
-     * Event handler for the removal of the content of the Document this textfield is managing.
+     * Event handler for the removal of the content of the Document
+     * this textfield is managing.<p>
+     *
      * @see javax.swing.event.DocumentListener#removeUpdate(DocumentEvent)
      */
     public void removeUpdate(final DocumentEvent p1) {
@@ -366,7 +301,8 @@ public class UMLTextField
             if (_firstException) {
                 try {
                     _property.setProperty(_container, _oldPropertyValue);
-                    TextSetter textSetter = new TextSetter(_oldPropertyValue, this);
+                    TextSetter textSetter =
+			new TextSetter(_oldPropertyValue, this);
 		    SwingUtilities.invokeLater(textSetter);
                 }
                 catch (Exception e) {

@@ -91,7 +91,7 @@ public class UUIDManager {
      *
      * @return an UUIDManager
      */
-    public UUIDManager getInstance() {
+    public static UUIDManager getInstance() {
 	return SINGLETON;
     }
 

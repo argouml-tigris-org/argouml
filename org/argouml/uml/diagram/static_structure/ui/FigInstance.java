@@ -92,7 +92,7 @@ public class FigInstance extends FigNodeModelElement {
 	FigInstance figClone = (FigInstance) super.clone();
 	Iterator iter = figClone.getFigs(null).iterator();
 	figClone._bigPort = (FigRect) iter.next();
-	figClone._name = (FigText) iter.next();
+	figClone.setNameFig((FigText) iter.next());
 	figClone._attr = (FigText) iter.next();
 	return figClone;
     }
