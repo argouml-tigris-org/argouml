@@ -25,6 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.StateMachinesFactory;
 
 /**
@@ -47,7 +48,9 @@ public class ActionNewTimeEvent extends ActionNewEvent {
      * @see org.argouml.uml.ui.behavior.state_machines.ActionNewEvent#createEvent()
      */
     protected Object createEvent() {
-        return StateMachinesFactory.getFactory().buildTimeEvent();
+        Object model =
+            ProjectManager.getManager().getCurrentProject().getModel();
+        return StateMachinesFactory.getFactory().buildTimeEvent(model);
     }
 
     /**
