@@ -41,7 +41,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -70,7 +70,7 @@ public class SourcePathDialog extends JDialog implements ActionListener {
     public SourcePathDialog() {
         super(
 	      ProjectBrowser.getInstance(),
-	      Argo.localize("CoreMenu", "action.generate-code-for-project"));
+	      Translator.localize("action.generate-code-for-project"));
 
         GridBagConstraints gridBagConstraints;
 
