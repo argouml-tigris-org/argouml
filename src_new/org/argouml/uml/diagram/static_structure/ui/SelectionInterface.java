@@ -122,7 +122,7 @@ public class SelectionInterface extends SelectionWButtons {
     boolean reverse = false;
     switch (hand.index) {
     case 11: //add realization
-      edgeClass = MAbstractionImpl.class;
+      edgeClass = MAbstraction.class;
       reverse = true;
       by = cy + ch;
       bx = cx + cw/2;
