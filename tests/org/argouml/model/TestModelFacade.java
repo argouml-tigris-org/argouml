@@ -38,9 +38,9 @@ import org.argouml.model.uml.UmlFactory;
 
 /**
  * Tests the accessor methods of the _facade.
- * 
+ *
  * TestUmlObjectCreation tests the object creation SPI.
- * 
+ *
  * @author Thierry Lach
  */
 public class TestModelFacade extends TestCase {
@@ -57,8 +57,8 @@ public class TestModelFacade extends TestCase {
     }
 
     public static Test suite() {
-	TestSuite suite = 
-	    new TestSuite("Tests for " 
+	TestSuite suite =
+	    new TestSuite("Tests for "
 			  + TestModelFacade.class.getPackage().getName());
 
 	Iterator i = Uml.getUmlClassList().iterator();
@@ -76,14 +76,14 @@ public class TestModelFacade extends TestCase {
     protected void runTest() throws Throwable {
 	String objectType = getName();
 	UmlModelEntity umlClass = Uml.getDeclaredType(objectType);
-	// Ensure that the type is part of Uml class.    	
+	// Ensure that the type is part of Uml class.
 	assertNotNull("Uml class does not know about '" + objectType + "'",
 		      umlClass);
 
 	Class[] classes = new Class[1];
         classes[0] = Object.class;
 	Object[] args = new Object[1];
-        
+
 	Method methodIsA = null;
 	Boolean rc = null;
 	try {
@@ -109,12 +109,12 @@ public class TestModelFacade extends TestCase {
 		       !rc.booleanValue());
             assertTrue("Should not be able to call isA" + objectType,
                        umlClass.isAvailableInFacade());
-    
+
             if (umlClass.isCreatable()) {
                 Object testObject = null;
-		// TODO: Make sure ComponentInstance works properly -
+		// TODO: Make sure MultiplicityRange works properly -
 		// currently it does not
-		if (!"ComponentInstance".equals(umlClass.getName())) {
+		if (!"MultiplicityRange".equals(umlClass.getName())) {
 		    // Test after creating the class using create()
 		    // without proxy
 		    UmlFactory.getFactory().setJmiProxyCreated(false);
@@ -124,17 +124,17 @@ public class TestModelFacade extends TestCase {
 		    args[0] = testObject;
 		    rc = null;
 		    rc = (Boolean) methodIsA.invoke(_facade, args);
-		    assertTrue("isA" + objectType 
+		    assertTrue("isA" + objectType
 			       + " did not work with legacy create",
 			       rc.booleanValue());
 		    assertTrue("Should not be able to call isA" + objectType,
 			       umlClass.isAvailableInFacade());
 		}
 
-		// TODO: Make sure ActionExpression and ComponentInstance
+		// TODO: Make sure ActionExpression and MultiplicityRange
 		// work properly - currently it does not
 		if ("ActionExpression".equals(umlClass.getName())
-		    || "ComponentInstance".equals(umlClass.getName())) {
+		    || "MultiplicityRange".equals(umlClass.getName())) {
 		    ;
 		}
 		else {
