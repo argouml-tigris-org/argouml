@@ -139,7 +139,7 @@ public abstract class UMLDiagram
      * (so that it can delete itself when the model element is deleted).
      */
     public void setNamespace(Object ns) {
-        if (!ModelFacade.isANamespace(ns)) {
+        if (!ModelFacade.getInstance().isANamespace(ns)) {
             cat.error("Not a namespace");
             cat.error(ns);
             throw new IllegalArgumentException("Given object not a namespace");

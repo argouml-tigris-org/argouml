@@ -232,7 +232,7 @@ public final class TargetManager {
         }
 
         private void removeHistoryTarget(Object o) {
-            if (ModelFacade.isADiagram(o)) {
+            if (ModelFacade.getInstance().isADiagram(o)) {
                 ListIterator it = ((Diagram)o).getEdges().listIterator();
                 while (it.hasNext()) {
                     removeHistoryTarget(it.next());
@@ -247,7 +247,7 @@ public final class TargetManager {
             while (it.hasNext()) {
                 WeakReference ref = (WeakReference)it.next();
                 Object historyObject = ref.get();
-                if (ModelFacade.isAModelElement(o)) {
+                if (ModelFacade.getInstance().isAModelElement(o)) {
                     historyObject =
                         historyObject instanceof Fig
                             ? ((Fig)historyObject).getOwner()
@@ -607,12 +607,12 @@ public final class TargetManager {
     private Object determineModelTarget(Object target) {
         if (target instanceof Fig) {
             Object owner = ((Fig)target).getOwner();
-            if (ModelFacade.isABase(owner)) {
+            if (ModelFacade.getInstance().isABase(owner)) {
                 target = owner;
             }
         }
         return target instanceof UMLDiagram
-            || ModelFacade.isABase(target) ? target : null;
+            || ModelFacade.getInstance().isABase(target) ? target : null;
 
     }
 

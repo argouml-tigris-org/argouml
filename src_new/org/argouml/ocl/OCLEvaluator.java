@@ -41,26 +41,26 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
 
     public synchronized String evalToString(Object self, String expr) {
         String res = null;
-        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.isAModelElement(self)) 
+        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.getInstance().isAModelElement(self)) 
         {
-            res = ModelFacade.getName(self);
+            res = ModelFacade.getInstance().getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.isAModelElement(self))
+        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.getInstance().isAModelElement(self))
         {
-            res = ModelFacade.getName(self);
+            res = ModelFacade.getInstance().getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_OWNER_EXPR.equals(expr) && ModelFacade.isAFeature(self)) {
-            res = ModelFacade.getName(self);
+        if (GET_OWNER_EXPR.equals(expr) && ModelFacade.getInstance().isAFeature(self)) {
+            res = ModelFacade.getInstance().getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.isADiagram(self)) {
-            res = ModelFacade.getName(self);
+        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.getInstance().isADiagram(self)) {
+            res = ModelFacade.getInstance().getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.isADiagram(self)) {
-            res = ModelFacade.getName(self);
+        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.getInstance().isADiagram(self)) {
+            res = ModelFacade.getInstance().getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
     /*
@@ -81,12 +81,12 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         Iterator iter = values.iterator();
         while(iter.hasNext()) {
             Object v = iter.next();
-            if (ModelFacade.isAModelElement(v)) {
-                v = ModelFacade.getName(v);
+            if (ModelFacade.getInstance().isAModelElement(v)) {
+                v = ModelFacade.getInstance().getName(v);
                 if ("".equals(v)) v = "(anon)";
             }
-            if (ModelFacade.isAExpression(v)) {
-                v = ModelFacade.getBody(v);
+            if (ModelFacade.getInstance().isAExpression(v)) {
+                v = ModelFacade.getInstance().getBody(v);
                 if ("".equals(v)) v = "(unspecified)";
             }
             if (! "".equals(v)) {

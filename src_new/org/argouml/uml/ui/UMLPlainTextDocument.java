@@ -130,7 +130,7 @@ public abstract class UMLPlainTextDocument
      */
     public final void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig)target).getOwner() : target;
-        if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
+        if (ModelFacade.getInstance().isABase(target) || ModelFacade.getInstance().isADiagram(target)) {
 
             if (target instanceof MBase) {
                 if (_target != null)

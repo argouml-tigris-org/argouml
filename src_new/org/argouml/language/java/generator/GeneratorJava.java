@@ -142,7 +142,7 @@ public class GeneratorJava
      * 	       null if no file can be generated.
      */
     public String GenerateFile(Object me, String path) {
-        String name = ModelFacade.getName(me);
+        String name = ModelFacade.getInstance().getName(me);
         if (name == null || name.length() == 0)
             return null;
         MClassifier cls = (MClassifier)me;
@@ -150,7 +150,7 @@ public class GeneratorJava
         if (!path.endsWith(FILE_SEPARATOR))
             path += FILE_SEPARATOR;
 
-        String packagePath = getPackageName(ModelFacade.getNamespace(cls));
+        String packagePath = getPackageName(ModelFacade.getInstance().getNamespace(cls));
 
         int lastIndex = -1;
         do {
@@ -846,7 +846,7 @@ public class GeneratorJava
             String tv = null; // helper for tagged values
 
             // add attributes
-            Collection strs = ModelFacade.getStructuralFeatures(cls);
+            Collection strs = ModelFacade.getInstance().getStructuralFeatures(cls);
 
             //
             // 2002-06-08
@@ -914,7 +914,7 @@ public class GeneratorJava
 
             // add operations
             // TODO: constructors
-            Collection behs = ModelFacade.getOperations(cls);
+            Collection behs = ModelFacade.getInstance().getOperations(cls);
 
             //
             // 2002-06-08
@@ -1477,7 +1477,7 @@ public class GeneratorJava
     //  public String generateSpecification(Collection realizations) {
     public String generateSpecification(MClass cls) {
         Collection realizations =
-            ModelFacade.getSpecifications(cls);
+            ModelFacade.getInstance().getSpecifications(cls);
         if (realizations == null)
             return "";
         StringBuffer sb = new StringBuffer(80);
@@ -1753,13 +1753,13 @@ public class GeneratorJava
        @return the Java package name
     */
     public String getPackageName(Object namespace) {
-        if (namespace == null || !ModelFacade.isANamespace(namespace) || ModelFacade.getNamespace(namespace) == null)
+        if (namespace == null || !ModelFacade.getInstance().isANamespace(namespace) || ModelFacade.getInstance().getNamespace(namespace) == null)
             return "";
-        String packagePath = ModelFacade.getName(namespace);
-        while ((namespace = ModelFacade.getNamespace(namespace)) != null) {
+        String packagePath = ModelFacade.getInstance().getName(namespace);
+        while ((namespace = ModelFacade.getInstance().getNamespace(namespace)) != null) {
             // ommit root package name; it's the model's root
-            if (ModelFacade.getNamespace(namespace) != null)
-                packagePath = ModelFacade.getName(namespace) + '.' + packagePath;
+            if (ModelFacade.getInstance().getNamespace(namespace) != null)
+                packagePath = ModelFacade.getInstance().getName(namespace) + '.' + packagePath;
         }
         return packagePath;
     }

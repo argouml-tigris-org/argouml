@@ -61,17 +61,17 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         // find the right namespace for the diagram
         Object target = TargetManager.getInstance().getModelTarget();
         Object ns = null;
-        if (target == null || !ModelFacade.isABase(target)) {
+        if (target == null || !ModelFacade.getInstance().isABase(target)) {
             target = p.getRoot();        
         }
-        if (ModelFacade.isANamespace(target)) {
+        if (ModelFacade.getInstance().isANamespace(target)) {
             ns = target;
         } else {
 
             Object owner = null;
-            if (ModelFacade.isABase(target)) {
-                owner = ModelFacade.getContainer(target);
-                if (owner != null && ModelFacade.isANamespace(owner)) {
+            if (ModelFacade.getInstance().isABase(target)) {
+                owner = ModelFacade.getInstance().getContainer(target);
+                if (owner != null && ModelFacade.getInstance().isANamespace(owner)) {
                     ns = owner;
                 }
             }
@@ -92,7 +92,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         // Removed following code so we allways get the correct namespace of the 
         // diagram (via the getContainer method). 
         /*    
-        if (ModelFacade.isABase(target)) {
+        if (ModelFacade.getInstance().isABase(target)) {
             MBase base = (MBase)target;
             base.getModelElementContainer();
         }

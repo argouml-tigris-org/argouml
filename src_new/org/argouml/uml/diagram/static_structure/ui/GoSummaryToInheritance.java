@@ -52,29 +52,29 @@ public class GoSummaryToInheritance extends AbstractGoRule {
           
           List list = new ArrayList();
           
-          Iterator it = ModelFacade.getSupplierDependencies(
+          Iterator it = ModelFacade.getInstance().getSupplierDependencies(
                                         ((InheritanceNode)parent).getParent());
           
           while(it.hasNext()){
               
               Object next = it.next();
-              if(ModelFacade.isAAbstraction(next))
+              if(ModelFacade.getInstance().isAAbstraction(next))
                 list.add(next);
           }
           
-          it = ModelFacade.getClientDependencies(
+          it = ModelFacade.getInstance().getClientDependencies(
                             ((InheritanceNode)parent).getParent());
           
           while(it.hasNext()){
               
               Object next = it.next();
-              if(ModelFacade.isAAbstraction(next))
+              if(ModelFacade.getInstance().isAAbstraction(next))
                 list.add(next);
           }
           
-          Iterator generalizationsIt = ModelFacade.getGeneralizations(
+          Iterator generalizationsIt = ModelFacade.getInstance().getGeneralizations(
                                             ((InheritanceNode)parent).getParent());
-          Iterator specializationsIt = ModelFacade.getSpecializations(
+          Iterator specializationsIt = ModelFacade.getInstance().getSpecializations(
                                             ((InheritanceNode)parent).getParent());
           
           while(generalizationsIt.hasNext())

@@ -54,7 +54,7 @@ public class GoSummaryToAssociation extends AbstractGoRule {
           //List list = new ArrayList();
           
           return UmlHelper.getHelper().getCore().getAssociations(((AssociationsNode)parent).getParent());
-          //ModelFacade.getAssociationEnds(((AssociationsNode)parent).getParent());
+          //ModelFacade.getInstance().getAssociationEnds(((AssociationsNode)parent).getParent());
           /*
           Iterator it = col.iterator();
           

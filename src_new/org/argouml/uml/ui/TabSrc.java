@@ -79,7 +79,7 @@ public class TabSrc
 
     protected String genText(Object modelObject) {
         modelObject = (modelObject instanceof Fig) ? ((Fig)modelObject).getOwner() : modelObject;       
-        if (!ModelFacade.isAElement(modelObject))
+        if (!ModelFacade.getInstance().isAElement(modelObject))
             return null;
         
         cat.debug("TabSrc getting src for " + modelObject);
@@ -115,7 +115,7 @@ public class TabSrc
         _target = t;
         _notationName = null;
         _shouldBeEnabled = false;
-        if (ModelFacade.isAModelElement(t))
+        if (ModelFacade.getInstance().isAModelElement(t))
             _shouldBeEnabled = true;
         // If the target is a notation context, use its notation.
         if (t instanceof NotationContext) {
@@ -149,7 +149,7 @@ public class TabSrc
         target = (target instanceof Fig) ? ((Fig)target).getOwner() : target;
 
         _shouldBeEnabled = false;
-        if (ModelFacade.isAModelElement(target)) {
+        if (ModelFacade.getInstance().isAModelElement(target)) {
             _shouldBeEnabled = true;
         }
 

@@ -164,7 +164,7 @@ public class TabStyle
         // detailpane. Reason for this is that the detailspane is configurable and
         // cannot know what's the correct target for some tab.
         if (!(t instanceof Fig)) {
-            if (ModelFacade.isABase(t)) {
+            if (ModelFacade.getInstance().isABase(t)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 Collection col = p.findFigsForMember(t);
                 if (col == null || col.isEmpty()) {
@@ -283,7 +283,7 @@ public class TabStyle
     public boolean shouldBeEnabled(Object target) {
 
         if (!(target instanceof Fig)) {
-            if (ModelFacade.isABase(target)) {
+            if (ModelFacade.getInstance().isABase(target)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 Collection col = p.findFigsForMember(target);
                 if (col == null || col.isEmpty()) {

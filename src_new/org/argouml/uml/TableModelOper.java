@@ -47,7 +47,7 @@ public class TableModelOper extends TableModelComposite {
   public Vector rowObjectsFor(Object t) {
     if (!(t instanceof MClassifier)) return new Vector();
     MClassifier cls = (MClassifier) t;
-    Collection oper = ModelFacade.getOperations(cls);
+    Collection oper = ModelFacade.getInstance().getOperations(cls);
     return new Vector(oper);
   }
 

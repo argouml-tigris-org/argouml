@@ -58,7 +58,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     public UMLDiagram createDiagram(Object handle) {
         // a deployment diagram shows something about the whole model according to the uml spec
           handle = ProjectManager.getManager().getCurrentProject().getRoot();   
-        if (!ModelFacade.isANamespace(handle)) {
+        if (!ModelFacade.getInstance().isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(
@@ -74,7 +74,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     public boolean isValidNamespace(Object handle) {
         // a deployment diagram shows something about the whole model according to the uml spec
         handle = ProjectManager.getManager().getCurrentProject().getRoot();        
-        if (!ModelFacade.isANamespace(handle)) {
+        if (!ModelFacade.getInstance().isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(

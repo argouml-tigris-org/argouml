@@ -97,8 +97,8 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
 	public void newAttribute() {
         Object target = getTarget();
-        if (ModelFacade.isAStructuralFeature(target)) {
-            Object owner = ModelFacade.getOwner(target);
+        if (ModelFacade.getInstance().isAStructuralFeature(target)) {
+            Object owner = ModelFacade.getInstance().getOwner(target);
             TargetManager.getInstance().setTarget(UmlFactory.getFactory().getCore().buildAttribute(owner));
         }
 

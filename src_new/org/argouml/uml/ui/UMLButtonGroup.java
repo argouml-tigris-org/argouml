@@ -194,7 +194,7 @@ public abstract class UMLButtonGroup
      * @param target The target to set
      */
     public void setTarget(Object target) {
-        if (target == null || !ModelFacade.isAModelElement(target) || _target == target) return;
+        if (target == null || !ModelFacade.getInstance().isAModelElement(target) || _target == target) return;
         _target = target;
         buildModel();
     }

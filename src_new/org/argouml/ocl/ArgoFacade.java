@@ -208,7 +208,7 @@ class ArgoAny implements Any, Type2 {
       if (type != null) return type;
 
       MOperation foundOp = null;
-      java.util.Collection operations = ModelFacade.getOperations(classifier);
+      java.util.Collection operations = ModelFacade.getInstance().getOperations(classifier);
       Iterator iter = operations.iterator();
       while (iter.hasNext() && foundOp == null){
           MOperation op = (MOperation)iter.next();

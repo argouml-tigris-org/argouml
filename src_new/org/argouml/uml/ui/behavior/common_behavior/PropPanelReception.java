@@ -87,7 +87,7 @@ public class PropPanelReception extends PropPanelModelElement {
      * @return boolean
      */
     public boolean isAcceptibleClassifier(MModelElement element) {
-        return (ModelFacade.isAClassifier(element) && !(ModelFacade.isADataType(element)));
+        return (ModelFacade.getInstance().isAClassifier(element) && !(ModelFacade.getInstance().isADataType(element)));
     }
 
     /**
@@ -96,7 +96,7 @@ public class PropPanelReception extends PropPanelModelElement {
      */
     public MClassifier getOwner() {
         Object target = getTarget();
-        if (ModelFacade.isAReception(target)) {
+        if (ModelFacade.getInstance().isAReception(target)) {
             return ((MReception)target).getOwner();
         }
         return null;
@@ -108,7 +108,7 @@ public class PropPanelReception extends PropPanelModelElement {
      */
     public void setOwner(MClassifier owner) {
         Object target = getTarget();
-        if (ModelFacade.isAReception(target)) {
+        if (ModelFacade.getInstance().isAReception(target)) {
             MReception rec = (MReception)target;
             if (rec.getOwner() != null) {
                 rec.setOwner(null);

@@ -126,10 +126,10 @@ public class CrCrossNamespaceAssoc extends CrUML {
 
         // Only look at associations
 
-        if (!ModelFacade.isAAssociation(dm))
+        if (!ModelFacade.getInstance().isAAssociation(dm))
             return NO_PROBLEM;
 
-        Object ns = ModelFacade.getNamespace(dm);
+        Object ns = ModelFacade.getInstance().getNamespace(dm);
 
         if (ns == null)
             return PROBLEM_FOUND;
@@ -140,7 +140,7 @@ public class CrCrossNamespaceAssoc extends CrUML {
 
         // classifier is in the same sub-system or model
 
-        Iterator enum = ModelFacade.getConnections(dm);
+        Iterator enum = ModelFacade.getInstance().getConnections(dm);
 
         while (enum.hasNext()) {
 
@@ -150,9 +150,9 @@ public class CrCrossNamespaceAssoc extends CrUML {
 
             // have a problem.
 
-            Object clf = ModelFacade.getType(enum.next());
+            Object clf = ModelFacade.getInstance().getType(enum.next());
 
-            if (ns != ModelFacade.getNamespace(clf))
+            if (ns != ModelFacade.getInstance().getNamespace(clf))
                 return PROBLEM_FOUND;
 
         }

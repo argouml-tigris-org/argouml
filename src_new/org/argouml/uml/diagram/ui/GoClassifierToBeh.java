@@ -38,8 +38,8 @@ public class GoClassifierToBeh extends AbstractGoRule {
   }
 
   public Collection getChildren(Object parent) {
-      if (ModelFacade.isAClassifier(parent)) {
-          return ModelFacade.getOperations(parent);
+      if (ModelFacade.getInstance().isAClassifier(parent)) {
+          return ModelFacade.getInstance().getOperations(parent);
       }
       return null;
   }

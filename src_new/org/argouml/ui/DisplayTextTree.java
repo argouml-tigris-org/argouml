@@ -123,37 +123,37 @@ public class DisplayTextTree extends JTree implements TargetListener {
         //cat.debug("convertValueToText");
 
         // do model elements first
-        if (ModelFacade.isAModelElement(value)) {
+        if (ModelFacade.getInstance().isAModelElement(value)) {
 
             String name = null;
 
             // Jeremy Bennett patch
-            if (ModelFacade.isATransition(value) 
-                || ModelFacade.isAExtensionPoint(value)) {
+            if (ModelFacade.getInstance().isATransition(value) 
+                || ModelFacade.getInstance().isAExtensionPoint(value)) {
                 name = GeneratorDisplay.Generate(value);
             }
             // changing the label in case of comments
             // this is necessary since the name of the comment is the same as
             // the content of the comment causing the total comment to be
             // displayed in the navperspective
-            else if (ModelFacade.isAComment(value)) {
-                name = ModelFacade.getName(value);
+            else if (ModelFacade.getInstance().isAComment(value)) {
+                name = ModelFacade.getInstance().getName(value);
                 if (name != null && name.length() > 10) {
                     name = name.substring(0, 10) + "...";
                 }
             } else {
-                name = ModelFacade.getName(value);
+                name = ModelFacade.getInstance().getName(value);
             }
 
             if (name == null || name.equals("")) {
 
                 name =
-                    "(anon " + ModelFacade.getUMLClassName(value) + ")";
+                    "(anon " + ModelFacade.getInstance().getUMLClassName(value) + ")";
             }
 
             // Look for stereotype
             if (showStereotype) {
-                Object st =  ModelFacade.getStereoType(value);
+                Object st =  ModelFacade.getInstance().getStereoType(value);
                 if (st != null) {
                     name += " " + GeneratorDisplay.Generate(st);
                 }
@@ -168,8 +168,8 @@ public class DisplayTextTree extends JTree implements TargetListener {
         if (value instanceof ToDoList) {
             return "ToDoList";
         }
-        if (ModelFacade.isATaggedValue(value)) {
-            String tagName = ModelFacade.getTagOfTag(value);
+        if (ModelFacade.getInstance().isATaggedValue(value)) {
+            String tagName = ModelFacade.getInstance().getTagOfTag(value);
             if (tagName == null || tagName.equals(""))
                 tagName = "(anon)";
             return ("1-" + tagName);
@@ -294,7 +294,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
             // (it is never displayed in the tree(package parspective)), therefore
             // this method will not work unless we get its statemachine
             // and set that as the 'changed' object.
-            if(ModelFacade.isAStateVertex(changed)){
+            if(ModelFacade.getInstance().isAStateVertex(changed)){
                 changed = UmlHelper.getHelper().getStateMachines().getStateMachine(changed);
             }
             

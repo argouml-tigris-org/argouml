@@ -51,13 +51,13 @@ public class CrOppEndConflict extends CrUML {
     
     public boolean predicate2(Object dm, Designer dsgr) {
         boolean problem = NO_PROBLEM;
-        if (ModelFacade.isAClassifier(dm)) {
+        if (ModelFacade.getInstance().isAClassifier(dm)) {
             Collection col = CoreHelper.getHelper().getAssociations(dm);
             List names = new ArrayList();
             Iterator it = col.iterator();
             String name = null;
             while (it.hasNext()) {
-                name = ModelFacade.getName(it.next());
+                name = ModelFacade.getInstance().getName(it.next());
                 if (name == null || name.equals("")) continue;
                 if (names.contains(name)) {
                     problem = PROBLEM_FOUND;

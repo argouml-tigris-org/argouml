@@ -266,10 +266,10 @@ public class DBWriter
 		store((MGeneralizableElement)cls, stmt);
 
 		// in case the Classifier has attributes or operations, store these.
-		Vector attributes = new Vector(ModelFacade.getStructuralFeatures(cls));
+		Vector attributes = new Vector(ModelFacade.getInstance().getStructuralFeatures(cls));
 		for ( int i = 0; i < attributes.size(); i++) store((MAttribute)attributes.elementAt(i),stmt);
 
-		Vector operations = new Vector(ModelFacade.getOperations(cls));
+		Vector operations = new Vector(ModelFacade.getInstance().getOperations(cls));
 		for ( int i = 0; i < operations.size(); i++) store((MOperation)operations.elementAt(i),stmt);
     }
 

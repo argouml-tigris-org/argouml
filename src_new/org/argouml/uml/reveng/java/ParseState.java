@@ -83,9 +83,9 @@ class ParseState
                       Object currentPackage)
     {
 	classnamePrefix =
-	    previousState.classnamePrefix + ModelFacade.getName(mClassifier) + "$";
-	obsoleteFeatures = new Vector(ModelFacade.getFeatures(mClassifier));
-	obsoleteInnerClasses = new Vector(ModelFacade.getOwnedElements(mClassifier));
+	    previousState.classnamePrefix + ModelFacade.getInstance().getName(mClassifier) + "$";
+	obsoleteFeatures = new Vector(ModelFacade.getInstance().getFeatures(mClassifier));
+	obsoleteInnerClasses = new Vector(ModelFacade.getInstance().getOwnedElements(mClassifier));
 	context = new OuterClassifierContext(previousState.context,
 						     mClassifier,
 						     currentPackage,
@@ -198,7 +198,7 @@ class ParseState
     public void removeObsoleteFeatures()
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
-	    ModelFacade.removeFeature(classifier,i.next());
+	    ModelFacade.getInstance().removeFeature(classifier,i.next());
 	}
     }
 
@@ -210,7 +210,7 @@ class ParseState
     {
 	for(Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
 	    Object element = i.next();
-	    if(ModelFacade.isAClassifier(element)) {
+	    if(ModelFacade.getInstance().isAClassifier(element)) {
                 CoreFactory.getFactory().deleteClassifier(element);
 	    }
 	}
@@ -237,7 +237,7 @@ class ParseState
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if(name.equals(ModelFacade.getName(mFeature))) {
+	    if(name.equals(ModelFacade.getInstance().getName(mFeature))) {
 		return mFeature;
 	    }
 	}
@@ -254,7 +254,7 @@ class ParseState
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if(ModelFacade.isAMethod(mFeature) && name.equals(ModelFacade.getName(mFeature))) {
+	    if(ModelFacade.getInstance().isAMethod(mFeature) && name.equals(ModelFacade.getInstance().getName(mFeature))) {
 		return mFeature;
 	    }
 	}
@@ -271,7 +271,7 @@ class ParseState
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if(ModelFacade.isAOperation(mFeature) && name.equals(ModelFacade.getName(mFeature))) {
+	    if(ModelFacade.getInstance().isAOperation(mFeature) && name.equals(ModelFacade.getInstance().getName(mFeature))) {
 		return mFeature;
 	    }
 	}

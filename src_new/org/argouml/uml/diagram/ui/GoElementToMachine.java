@@ -37,8 +37,8 @@ public class GoElementToMachine extends AbstractGoRule {
   
  
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAModelElement(parent)) {
-          return ModelFacade.getBehaviors(parent);
+      if (ModelFacade.getInstance().isAModelElement(parent)) {
+          return ModelFacade.getInstance().getBehaviors(parent);
       }
       return null;
   }

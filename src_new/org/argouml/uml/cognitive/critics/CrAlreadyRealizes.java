@@ -56,7 +56,7 @@ public class CrAlreadyRealizes extends CrUML {
 
   public boolean predicate2(Object dm, Designer dsgr) {
       boolean problem = NO_PROBLEM;
-      if (ModelFacade.isAClass(dm)) {
+      if (ModelFacade.getInstance().isAClass(dm)) {
           Collection col = CoreHelper.getHelper().getAllRealizedInterfaces(dm);
           int size = col.size();
           Set set = new HashSet();
@@ -67,6 +67,5 @@ public class CrAlreadyRealizes extends CrUML {
       }
       return problem;
   }
-
 } /* end class CrAlreadyRealizes */
 

@@ -444,7 +444,7 @@ public class DetailsPane
         }
         
         if (target != null
-            && ModelFacade.isABase(target)
+            && ModelFacade.getInstance().isABase(target)
             && _tabs.getSelectedIndex() > 0)
             _lastNonNullTab = _tabs.getSelectedIndex();
 

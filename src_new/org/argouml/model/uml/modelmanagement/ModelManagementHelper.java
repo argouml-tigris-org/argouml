@@ -154,10 +154,10 @@ public class ModelManagementHelper {
     public Collection getAllModelElementsOfKind(Object nsa, Class kind) {
         if (nsa == null || kind == null)
             return new ArrayList();
-        if (!ModelFacade.isANamespace(nsa))
+        if (!ModelFacade.getInstance().isANamespace(nsa))
             throw new IllegalArgumentException(
                 "given argument " + nsa + " is not a namespace");
-        Iterator it = ModelFacade.getOwnedElements(nsa).iterator();
+        Iterator it = ModelFacade.getInstance().getOwnedElements(nsa).iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();

@@ -46,9 +46,9 @@ public class CrMultiComposite extends CrUML {
     
     public boolean predicate2(Object dm, Designer dsgr) {
         boolean problem = NO_PROBLEM;
-        if (ModelFacade.isAAssociationEnd(dm)) {
-            if (ModelFacade.isComposite(dm)) {
-                if (ModelFacade.getUpper(dm) > 1) {
+        if (ModelFacade.getInstance().isAAssociationEnd(dm)) {
+            if (ModelFacade.getInstance().isComposite(dm)) {
+                if (ModelFacade.getInstance().getUpper(dm) > 1) {
                     problem = PROBLEM_FOUND;
                 }
             }

@@ -51,17 +51,17 @@ public class CrUselessInterface extends CrUML {
   }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!ModelFacade.isAInterface(dm))
+	if (!ModelFacade.getInstance().isAInterface(dm))
 	    return NO_PROBLEM;
 	
-	if (!ModelFacade.isPrimaryObject(dm))
+	if (!ModelFacade.getInstance().isPrimaryObject(dm))
 	    return NO_PROBLEM;
 
 
-	Iterator iter = ModelFacade.getSupplierDependencies(dm);
+	Iterator iter = ModelFacade.getInstance().getSupplierDependencies(dm);
 
 	while (iter.hasNext())
-	    if (ModelFacade.isRealize(iter.next()))
+	    if (ModelFacade.getInstance().isRealize(iter.next()))
 		return NO_PROBLEM;
 
 	return PROBLEM_FOUND;

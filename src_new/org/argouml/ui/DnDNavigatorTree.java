@@ -207,7 +207,7 @@ DragSourceListener{
                 try {
                     if (moveAction){
                         _cat.debug("move "+modelElement);
-                        ModelFacade.setNamespace(modelElement,
+                        ModelFacade.getInstance().setNamespace(modelElement,
                                                  destinationModelElement);
                     }
                     

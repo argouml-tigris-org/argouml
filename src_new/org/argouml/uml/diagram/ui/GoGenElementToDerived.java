@@ -38,8 +38,8 @@ public class GoGenElementToDerived extends AbstractGoRule {
   }
 
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAGeneralizableElement(parent)) {
-          return ModelFacade.getChildren(parent);
+      if (ModelFacade.getInstance().isAGeneralizableElement(parent)) {
+          return ModelFacade.getInstance().getChildren(parent);
       }
       return null;
   }

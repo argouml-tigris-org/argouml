@@ -36,9 +36,9 @@ public class GoTransitionToSource extends AbstractGoRule {
   public String getRuleName() { return "Transition->Source State"; }
 
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.isATransition(parent)) {
+      if (ModelFacade.getInstance().isATransition(parent)) {
           Collection col = new ArrayList();
-          col.add(ModelFacade.getSource(parent));
+          col.add(ModelFacade.getInstance().getSource(parent));
           return col;          
       }
       return null;

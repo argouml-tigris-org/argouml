@@ -51,8 +51,8 @@ public class CrMissingStateName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!ModelFacade.isAStateVertex(dm) || ModelFacade.isTop(dm)) return NO_PROBLEM;   
-    String myName = ModelFacade.getName(dm);
+    if (!ModelFacade.getInstance().isAStateVertex(dm) || ModelFacade.getInstance().isTop(dm)) return NO_PROBLEM;   
+    String myName = ModelFacade.getInstance().getName(dm);
     if (myName == null || myName.equals(""))
       return PROBLEM_FOUND;
     return NO_PROBLEM;

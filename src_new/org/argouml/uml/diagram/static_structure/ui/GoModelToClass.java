@@ -37,7 +37,7 @@ public class GoModelToClass extends AbstractGoRule {
   public String getRuleName() { return "Package->Class"; }
   
   public Collection getChildren(Object parent) {
-      if (ModelFacade.isAPackage(parent)) {
+      if (ModelFacade.getInstance().isAPackage(parent)) {
           return ModelManagementHelper.getHelper().getAllModelElementsOfKind(parent, MClass.class);
       }
       return null;

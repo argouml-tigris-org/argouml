@@ -55,11 +55,11 @@ public class CrNameConflict extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {      
         boolean problem = NO_PROBLEM;
-        if (ModelFacade.isANamespace(dm)) {
-            Iterator it = ModelFacade.getOwnedElements(dm).iterator();
+        if (ModelFacade.getInstance().isANamespace(dm)) {
+            Iterator it = ModelFacade.getInstance().getOwnedElements(dm).iterator();
             Collection names = new ArrayList(); 
             while (it.hasNext()) {  
-                String name = ModelFacade.getName(it.next());
+                String name = ModelFacade.getInstance().getName(it.next());
                 if (names.contains(name)) {  
                     problem = PROBLEM_FOUND; 
                     break;   
@@ -74,7 +74,7 @@ public class CrNameConflict extends CrUML {
         if (w instanceof WizMEName) {
             ToDoItem item = w.getToDoItem();
             Object me = item.getOffenders().elementAt(0);
-            String sug = ModelFacade.getName(me);
+            String sug = ModelFacade.getInstance().getName(me);
             String ins = "Change the name to something different.";
             ((WizMEName)w).setInstructions(ins);
             ((WizMEName)w).setSuggestion(sug);

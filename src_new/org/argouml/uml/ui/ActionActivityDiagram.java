@@ -72,7 +72,7 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
     public boolean isValidNamespace(Object handle) {
-        return super.isValidNamespace(handle) || ModelFacade.isAPackage(handle);
+        return super.isValidNamespace(handle) || ModelFacade.getInstance().isAPackage(handle);
     }
 
 } /* end class ActionActivityDiagram */

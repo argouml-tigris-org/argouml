@@ -136,12 +136,12 @@ public class PropPanelUseCase extends PropPanelClassifier {
     public void newUseCase() {
         Object target = getTarget();
 
-        if(ModelFacade.isAUseCase(target)) {
-            Object ns = ModelFacade.getNamespace(target);
+        if(ModelFacade.getInstance().isAUseCase(target)) {
+            Object ns = ModelFacade.getInstance().getNamespace(target);
 
             if(ns != null) {
                 Object useCase = UseCasesFactory.getFactory().createUseCase();
-                ModelFacade.addOwnedElement(ns, useCase);
+                ModelFacade.getInstance().addOwnedElement(ns, useCase);
                 TargetManager.getInstance().setTarget(useCase);
             }
         }
@@ -159,7 +159,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
     public void newExtensionPoint() {
         Object target = getTarget();
 
-        if (ModelFacade.isAUseCase(target)) {
+        if (ModelFacade.getInstance().isAUseCase(target)) {
             TargetManager.getInstance().setTarget(UseCasesFactory.getFactory().buildExtensionPoint(target));
         }
     }

@@ -42,7 +42,7 @@ public class TabDocs extends TabText {
   // accessors
   protected String genText(Object modelObject) {
     modelObject = (modelObject instanceof Fig) ? ((Fig)modelObject).getOwner() : modelObject;    
-    return !(ModelFacade.isAElement(modelObject)) ? null : DocumentationManager.getDocs(modelObject,"");
+    return !(ModelFacade.getInstance().isAElement(modelObject)) ? null : DocumentationManager.getDocs(modelObject,"");
   }
 
   protected void parseText(String s) {

@@ -869,7 +869,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	 * @return MAttribute
 	 */
 	public MAttribute buildAttribute(Object handle) {
-		if (!ModelFacade.isAClassifier(handle))
+		if (!ModelFacade.getInstance().isAClassifier(handle))
 			return null;
 		MClassifier cls = (MClassifier)handle;
 		MAttribute attr = buildAttribute();

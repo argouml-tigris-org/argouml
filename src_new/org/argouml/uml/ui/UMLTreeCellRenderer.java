@@ -96,8 +96,8 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
             // setting the tooltip
             String tip = null;
-            if (ModelFacade.isAModelElement(value)) {
-                tip = ModelFacade.getUMLClassName(value);
+            if (ModelFacade.getInstance().isAModelElement(value)) {
+                tip = ModelFacade.getInstance().getUMLClassName(value);
             } else if (value instanceof UMLDiagram) {
 
                 if (value instanceof UMLActivityDiagram)

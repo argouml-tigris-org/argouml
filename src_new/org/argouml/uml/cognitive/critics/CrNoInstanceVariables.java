@@ -54,23 +54,23 @@ public class CrNoInstanceVariables extends CrUML {
   }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.getInstance().isAClass(dm))) return NO_PROBLEM;
 
-	if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.getInstance().isPrimaryObject(dm))) return NO_PROBLEM;
 
         // if the object does not have a name,
         // than no problem
-        if ((ModelFacade.getName(dm) == null) ||
-            ("".equals(ModelFacade.getName(dm))))
+        if ((ModelFacade.getInstance().getName(dm) == null) ||
+            ("".equals(ModelFacade.getInstance().getName(dm))))
             return NO_PROBLEM;
 
 	// types can probably have variables, but we should not nag at them
 	// not having any.
-	if (ModelFacade.isType(dm)) return NO_PROBLEM;
+	if (ModelFacade.getInstance().isType(dm)) return NO_PROBLEM;
 
 	// utility is a namespace collection - also not strictly 
 	// required to have variables.
-	if (ModelFacade.isUtility(dm)) return NO_PROBLEM;
+	if (ModelFacade.getInstance().isUtility(dm)) return NO_PROBLEM;
 
 	if (findChangeableInstanceAttributeInInherited(dm, 0))
 	    return NO_PROBLEM;
@@ -93,15 +93,15 @@ public class CrNoInstanceVariables extends CrUML {
     private boolean findChangeableInstanceAttributeInInherited(Object dm,
 							       int depth) {
 
-	Iterator enum = ModelFacade.getAttributes(dm).iterator();
+	Iterator enum = ModelFacade.getInstance().getAttributes(dm).iterator();
 
 	while (enum.hasNext()) {
 	    Object attr = enum.next();
 
 	    // If we find an instance variable that is not a constant
 	    // we have succeeded
-	    if (ModelFacade.isInstanceScope(attr)
-		&& ModelFacade.isChangeable(attr))
+	    if (ModelFacade.getInstance().isInstanceScope(attr)
+		&& ModelFacade.getInstance().isChangeable(attr))
 		return true;
 	}
 
@@ -109,15 +109,15 @@ public class CrNoInstanceVariables extends CrUML {
 	if (depth > 50)
 	    return false;
 
-	Iterator iter = ModelFacade.getGeneralizations(dm);
+	Iterator iter = ModelFacade.getInstance().getGeneralizations(dm);
 
 	while (iter.hasNext()) {
-	    Object parent = ModelFacade.getParent(iter.next());
+	    Object parent = ModelFacade.getInstance().getParent(iter.next());
 
 	    if (parent == dm)
 		continue;
 
-	    if (ModelFacade.isAClassifier(parent))
+	    if (ModelFacade.getInstance().isAClassifier(parent))
 		if (findChangeableInstanceAttributeInInherited(parent,
 							       depth + 1))
 		    return true;

@@ -54,12 +54,12 @@ public class CrClassMustBeAbstract extends CrUML {
   }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
-	if (ModelFacade.isAbstract(dm)) return NO_PROBLEM;
+	if (!(ModelFacade.getInstance().isAClass(dm))) return NO_PROBLEM;
+	if (ModelFacade.getInstance().isAbstract(dm)) return NO_PROBLEM;
 	
-	Iterator enum = ModelFacade.getOperations(dm).iterator();
+	Iterator enum = ModelFacade.getInstance().getOperations(dm).iterator();
 	while (enum.hasNext()) {
-	    if (ModelFacade.isAbstract(enum.next())) return PROBLEM_FOUND;
+	    if (ModelFacade.getInstance().isAbstract(enum.next())) return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;
     }

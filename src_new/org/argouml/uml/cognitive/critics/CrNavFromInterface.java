@@ -107,11 +107,11 @@ public class CrNavFromInterface extends CrUML {
 
         // Only look at Associations
 
-        if (!(ModelFacade.isAAssociation(dm))) {
+        if (!(ModelFacade.getInstance().isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
-        if (ModelFacade.isAAssociationRole(dm)) {
+        if (ModelFacade.getInstance().isAAssociationRole(dm)) {
             return NO_PROBLEM;
         }
 
@@ -119,7 +119,7 @@ public class CrNavFromInterface extends CrUML {
         // there is an end connected to an Interface and 2) an end other than
         // that end is navigable. 
 
-        Iterator enum = ModelFacade.getConnections(dm);
+        Iterator enum = ModelFacade.getInstance().getConnections(dm);
 
         boolean haveInterfaceEnd  = false ;  // End at an Interface?
         boolean otherEndNavigable = false ;  // Navigable other end?
@@ -136,12 +136,12 @@ public class CrNavFromInterface extends CrUML {
             // ClassifierRole, since we have effectively eliminated that
             // possiblity in rejecting AssociationRoles above.
 
-	    Object type = ModelFacade.getType(ae);
+	    Object type = ModelFacade.getInstance().getType(ae);
 
-            if (ModelFacade.isAInterface(type)) {
+            if (ModelFacade.getInstance().isAInterface(type)) {
                 haveInterfaceEnd = true;
             }
-	    else if (ModelFacade.isNavigable(ae)) {
+	    else if (ModelFacade.getInstance().isNavigable(ae)) {
                 otherEndNavigable = true;
             }
 

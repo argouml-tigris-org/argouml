@@ -968,7 +968,7 @@ public class FigClass extends FigNodeModelElement {
         int xpos = _attrBigPort.getX();
         int ypos = _attrBigPort.getY();
         int acounter = 1;
-        Collection strs = ModelFacade.getStructuralFeatures(cls);
+        Collection strs = ModelFacade.getInstance().getStructuralFeatures(cls);
         if (strs != null) {
             Iterator iter = strs.iterator();
             Vector figs = _attrVec.getFigs();
@@ -1021,7 +1021,7 @@ public class FigClass extends FigNodeModelElement {
         int xpos = _operBigPort.getX();
         int ypos = _operBigPort.getY();
         int ocounter = 1;
-        Collection behs = ModelFacade.getOperations(cls);
+        Collection behs = ModelFacade.getInstance().getOperations(cls);
         if (behs != null) {
             Iterator iter = behs.iterator();
             Vector figs = _operVec.getFigs();
@@ -1154,7 +1154,7 @@ public class FigClass extends FigNodeModelElement {
     public void postLoad() {      
         super.postLoad();
         Object owner = getOwner();
-        if (ModelFacade.isAbstract(owner)) {
+        if (ModelFacade.getInstance().isAbstract(owner)) {
             Font font = _name.getFont();              
             _name.setFont(font.deriveFont(Font.ITALIC));
         }

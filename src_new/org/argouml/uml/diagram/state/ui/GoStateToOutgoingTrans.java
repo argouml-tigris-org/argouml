@@ -35,8 +35,8 @@ public class GoStateToOutgoingTrans extends AbstractGoRule {
   public String getRuleName() { return "State->Outgoing Transitions"; }
 
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAStateVertex(parent)) {
-          return ModelFacade.getOutgoings(parent);
+      if (ModelFacade.getInstance().isAStateVertex(parent)) {
+          return ModelFacade.getInstance().getOutgoings(parent);
       }
       return null;
   }

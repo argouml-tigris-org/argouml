@@ -405,7 +405,7 @@ public class GeneratorDisplay extends Generator {
         //     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
         s += "{\n";
 
-        Collection strs = ModelFacade.getStructuralFeatures(cls);
+        Collection strs = ModelFacade.getInstance().getStructuralFeatures(cls);
         if (strs != null) {
             s += "\n";
             //s += "////////////////////////////////////////////////////////////////\n";
@@ -430,7 +430,7 @@ public class GeneratorDisplay extends Generator {
 
         // TODO: constructors
 
-        Collection behs = ModelFacade.getOperations(cls);
+        Collection behs = ModelFacade.getInstance().getOperations(cls);
         if (behs != null) {
             s += "\n";
             //s += "////////////////////////////////////////////////////////////////\n";

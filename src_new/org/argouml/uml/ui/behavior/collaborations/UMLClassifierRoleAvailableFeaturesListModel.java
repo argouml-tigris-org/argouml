@@ -102,7 +102,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
                 "base");
         }
         target = target instanceof Fig ? ((Fig)target).getOwner() : target;
-        if (!ModelFacade.isABase(target))
+        if (!ModelFacade.getInstance().isABase(target))
             return;
         _target = target;
         if (_target != null) {

@@ -65,7 +65,7 @@ public class Trash {
       cat.warn("tried to add null to trash!");
       return;
     }    
-    if (ModelFacade.isAModelElement(obj)) {
+    if (ModelFacade.getInstance().isAModelElement(obj)) {
         //MModelElement me = (MModelElement) obj;
 	  TrashItem ti = new TrashItem(obj, places);
 	  _contents.addElement(ti);
@@ -89,7 +89,7 @@ public class Trash {
   
   public void recoverItem(Object obj) {
     cat.debug("TODO: recover from trash");
-    if (ModelFacade.isAModelElement(obj)) {
+    if (ModelFacade.getInstance().isAModelElement(obj)) {
       TrashItem ti = null; //TODO: find in trash
 	  //((MModelElement)obj).recoverFromTrash(ti);
     }

@@ -196,10 +196,10 @@ public class CrReservedName extends CrUML {
     // Critic implementation
     
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.getInstance().isPrimaryObject(dm))) return NO_PROBLEM;
 
-        if (!(ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
-        String meName = ModelFacade.getName(dm);
+        if (!(ModelFacade.getInstance().isAModelElement(dm))) return NO_PROBLEM;
+        String meName = ModelFacade.getInstance().getName(dm);
         if (meName == null || meName.equals("")) return NO_PROBLEM;
         String nameStr = meName;
         if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
@@ -234,7 +234,7 @@ public class CrReservedName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
-	    String sug = ModelFacade.getName(item.getOffenders().elementAt(0));
+	    String sug = ModelFacade.getInstance().getName(item.getOffenders().elementAt(0));
 	    String ins = "Change the name to something different.";
 	    ((WizMEName)w).setInstructions(ins);
 	    ((WizMEName)w).setSuggestion(sug);

@@ -89,22 +89,22 @@ public class CrConstructorNeeded extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only look at classes
-        if (!(ModelFacade.isAClass(dm))) {
+        if (!(ModelFacade.getInstance().isAClass(dm))) {
             return NO_PROBLEM;
         }
 
 	// We don't consider secondary stuff.
-	if (!(ModelFacade.isPrimaryObject(dm))) 
+	if (!(ModelFacade.getInstance().isPrimaryObject(dm))) 
 	    return NO_PROBLEM;
 
         // Types don't need a constructor.
-        if (ModelFacade.isType(dm)) {
+        if (ModelFacade.getInstance().isType(dm)) {
             return NO_PROBLEM;
         }
 
         // Check for uninitialised instance variables and
         // constructor.
-        Collection operations = ModelFacade.getOperations(dm);
+        Collection operations = ModelFacade.getInstance().getOperations(dm);
         if (operations.isEmpty()) {
             return PROBLEM_FOUND;
         }
@@ -112,21 +112,21 @@ public class CrConstructorNeeded extends CrUML {
         Iterator opers = operations.iterator();
 
         while (opers.hasNext()) {
-            if (ModelFacade.isConstructor(opers.next())) {
+            if (ModelFacade.getInstance().isConstructor(opers.next())) {
                 // There is a constructor.
                 return NO_PROBLEM;
             }
         }
 
-        Iterator attrs = ModelFacade.getAttributes(dm).iterator();
+        Iterator attrs = ModelFacade.getInstance().getAttributes(dm).iterator();
 
         while (attrs.hasNext()) {
             Object attr = attrs.next();
 
-            if (!ModelFacade.isInstanceScope(attr))
+            if (!ModelFacade.getInstance().isInstanceScope(attr))
                 continue;
 
-            if (ModelFacade.isInitialized(attr))
+            if (ModelFacade.getInstance().isInitialized(attr))
                 continue;
 
             // We have found one with instance scope that is not initialized.

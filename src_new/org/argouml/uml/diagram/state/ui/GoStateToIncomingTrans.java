@@ -35,8 +35,8 @@ public class GoStateToIncomingTrans extends AbstractGoRule {
   public String getRuleName() { return "State->Incoming Transitions"; }
 
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAStateVertex(parent)) {
-           return ModelFacade.getIncomings(parent);    
+      if (ModelFacade.getInstance().isAStateVertex(parent)) {
+           return ModelFacade.getInstance().getIncomings(parent);    
       }
       return null;
   }

@@ -727,7 +727,7 @@ public class FigInterface extends FigNodeModelElement {
             int xpos = _operBigPort.getX();
             int ypos = _operBigPort.getY();
             int ocounter = 1;
-            Collection behs = ModelFacade.getOperations(cls);
+            Collection behs = ModelFacade.getInstance().getOperations(cls);
             if (behs != null) {
                 Iterator iter = behs.iterator();
                 Vector figs = _operVec.getFigs();

@@ -56,7 +56,7 @@ class PackageContext extends Context
 	throws ClassifierNotFoundException
     {
         // Search in model
-        Object mInterface = ModelFacade.lookupIn(mPackage,name);
+        Object mInterface = ModelFacade.getInstance().lookupIn(mPackage,name);
 
         if(mInterface == null) {
 	    // Try to find it via the classpath
@@ -64,7 +64,7 @@ class PackageContext extends Context
 		Class classifier;
 
 		// Special case for model
-		if(ModelFacade.isAModel(mPackage)) {
+		if(ModelFacade.getInstance().isAModel(mPackage)) {
 		    classifier = Class.forName(name);
 		}
 		else {
@@ -73,7 +73,7 @@ class PackageContext extends Context
 		}
 		if(classifier.isInterface()) {
 		    mInterface = UmlFactory.getFactory().getCore().buildInterface(name,mPackage);
-		    ModelFacade.setTaggedValue(mInterface,MMUtil.GENERATED_TAG,"yes");
+		    ModelFacade.getInstance().setTaggedValue(mInterface,MMUtil.GENERATED_TAG,"yes");
 		}
 	    }
 	    catch(ClassNotFoundException e) {
@@ -104,7 +104,7 @@ class PackageContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Search in model
-	Object mClassifier = ModelFacade.lookupIn(mPackage,name);
+	Object mClassifier = ModelFacade.getInstance().lookupIn(mPackage,name);
 
 	if(mClassifier == null) {
 	    // Try to find it via the classpath
@@ -112,7 +112,7 @@ class PackageContext extends Context
 		Class classifier;
 
 		// Special case for model
-		if(ModelFacade.isAModel(mPackage)) {
+		if(ModelFacade.getInstance().isAModel(mPackage)) {
 		    classifier = Class.forName(name);
 		}
 		else {
@@ -125,7 +125,7 @@ class PackageContext extends Context
 		else {
 		    mClassifier = UmlFactory.getFactory().getCore().buildClass(name,mPackage);
 		}
-		ModelFacade.setTaggedValue(mClassifier,MMUtil.GENERATED_TAG,"yes");
+		ModelFacade.getInstance().setTaggedValue(mClassifier,MMUtil.GENERATED_TAG,"yes");
 	    }
 	    catch(ClassNotFoundException e) {
 		// No class or interface found

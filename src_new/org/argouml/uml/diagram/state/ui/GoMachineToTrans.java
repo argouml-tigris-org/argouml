@@ -35,8 +35,8 @@ public class GoMachineToTrans extends AbstractGoRule {
   public String getRuleName() { return "State Machine->Transition"; }
   
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAStateMachine(parent)) {
-          return ModelFacade.getTransitions(parent);
+      if (ModelFacade.getInstance().isAStateMachine(parent)) {
+          return ModelFacade.getInstance().getTransitions(parent);
       }
       return null;
   }

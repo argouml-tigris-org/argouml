@@ -35,8 +35,8 @@ public class GoClassToAssociatedClass extends AbstractGoRule {
   public String getRuleName() { return "Class->Associated Class"; }
 
   public Collection getChildren(Object parent) {
-      if (ModelFacade.isAClass(parent)) {
-          return ModelFacade.getAssociatedClasses(parent);
+      if (ModelFacade.getInstance().isAClass(parent)) {
+          return ModelFacade.getInstance().getAssociatedClasses(parent);
       }
       return null;
   }

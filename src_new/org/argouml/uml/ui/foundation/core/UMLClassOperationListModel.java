@@ -50,7 +50,7 @@ public class UMLClassOperationListModel extends UMLModelElementListModel2 {
     protected void buildModelList() {
         if (getTarget() != null) {
             
-            setAllElements(ModelFacade.getOperations(getTarget()));
+            setAllElements(ModelFacade.getInstance().getOperations(getTarget()));
         }
     }
 
@@ -58,7 +58,7 @@ public class UMLClassOperationListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return (ModelFacade.getOperations(getTarget()).contains(element));
+        return (ModelFacade.getInstance().getOperations(getTarget()).contains(element));
     }
 
 }

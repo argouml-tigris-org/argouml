@@ -54,9 +54,9 @@ public class CrUtilityViolated extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
         // we could check for base class of the stereotype but the 
 	// condition normally covers it all.
-        if (!(ModelFacade.isAClassifier(dm)))
+        if (!(ModelFacade.getInstance().isAClassifier(dm)))
 	    return NO_PROBLEM;
-	if (!(ModelFacade.isUtility(dm)))
+	if (!(ModelFacade.getInstance().isUtility(dm)))
 	    return NO_PROBLEM;
 
 	Collection classesToCheck = new ArrayList();
@@ -67,17 +67,17 @@ public class CrUtilityViolated extends CrUML {
 	Iterator it = classesToCheck.iterator();
 	while (it.hasNext()) {
 	    Object o = it.next();
-	    if (!ModelFacade.isAInterface(o)) {
-		Iterator it2 = ModelFacade.getAttributes(o).iterator();
+	    if (!ModelFacade.getInstance().isAInterface(o)) {
+		Iterator it2 = ModelFacade.getInstance().getAttributes(o).iterator();
 		while (it2.hasNext()) {
-		    if (ModelFacade.isInstanceScope(it2.next())) {
+		    if (ModelFacade.getInstance().isInstanceScope(it2.next())) {
 			return PROBLEM_FOUND;
 		    }
 		}
 	    }
-	    Iterator it2 = ModelFacade.getOperations(o).iterator();
+	    Iterator it2 = ModelFacade.getInstance().getOperations(o).iterator();
 	    while (it2.hasNext()) {
-		if (ModelFacade.isInstanceScope(it2.next())) {
+		if (ModelFacade.getInstance().isInstanceScope(it2.next())) {
 		    return PROBLEM_FOUND;
 		}
 	    }

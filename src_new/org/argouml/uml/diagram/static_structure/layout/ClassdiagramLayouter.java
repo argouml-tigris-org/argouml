@@ -165,7 +165,7 @@ public class ClassdiagramLayouter implements Layouter {
             if(!classdiagramNode.isPackage()) {
                 Object node = classdiagramNode.getFigure().getOwner();
                 
-                if ( ModelFacade.isAModelElement(node)) {
+                if ( ModelFacade.getInstance().isAModelElement(node)) {
                     Vector specs = new Vector(((MModelElement)node).getClientDependencies());
                     specs.addAll(((MModelElement)node).getSupplierDependencies());
                     for( Iterator iter = specs.iterator(); iter.hasNext(); ) {
@@ -174,9 +174,9 @@ public class ClassdiagramLayouter implements Layouter {
                         // MAbstraction is a subclass of MDependency, so get all the dependencies
                         // for this node to get the abstractions, too.
                         Object dep =  iter.next();
-                        if( ModelFacade.isAAbstraction(dep)) {   // Is this a abstraction?
+                        if( ModelFacade.getInstance().isAAbstraction(dep)) {   // Is this a abstraction?
                             MAbstraction abstr = (MAbstraction)dep;
-                            if (ModelFacade.isRealize(abstr)) {                                
+                            if (ModelFacade.getInstance().isRealize(abstr)) {                                
                                 // Is this node the class, that implements the interface?
                                 Collection clients = abstr.getClients();
                                 for( Iterator iter2 = clients.iterator(); iter2.hasNext(); ) {
@@ -185,7 +185,7 @@ public class ClassdiagramLayouter implements Layouter {
                                         Collection suppliers = abstr.getSuppliers();
                                         for( Iterator iter3 = suppliers.iterator(); iter3.hasNext(); ) {
                                             Object me2 = iter3.next();
-                                            if(ModelFacade.isAClassifier(me2)) {
+                                            if(ModelFacade.getInstance().isAClassifier(me2)) {
                                                 ClassdiagramNode superNode = getClassdiagramNode4owner(me2);
                                                 
                                                 if(superNode != null) {
@@ -204,7 +204,7 @@ public class ClassdiagramLayouter implements Layouter {
                                         clients = abstr.getClients();
                                         for( Iterator iter3 = clients.iterator(); iter3.hasNext(); ) {
                                             Object me2 = iter3.next();
-                                            if(ModelFacade.isAClassifier(me2)) {
+                                            if(ModelFacade.getInstance().isAClassifier(me2)) {
                                                 ClassdiagramNode subNode = getClassdiagramNode4owner(me2);
                                                 
                                                 if(subNode != null) {
@@ -219,22 +219,22 @@ public class ClassdiagramLayouter implements Layouter {
                     }
                 }
                 
-                if ( ModelFacade.isAGeneralizableElement(node) ) {
+                if ( ModelFacade.getInstance().isAGeneralizableElement(node) ) {
                                         
-                    for( Iterator iter = ModelFacade.getGeneralizations(node) ; iter.hasNext(); ) {
+                    for( Iterator iter = ModelFacade.getInstance().getGeneralizations(node) ; iter.hasNext(); ) {
                         Object g = iter.next();
                         ClassdiagramNode superNode = 
-                            getClassdiagramNode4owner(ModelFacade.getParent(g));
+                            getClassdiagramNode4owner(ModelFacade.getInstance().getParent(g));
                         
                         if(superNode != null) {
                             classdiagramNode.addUplink(superNode);
                         }
                     }
                     
-                    for( Iterator iter = ModelFacade.getSpecializations(node); iter.hasNext(); ) {
+                    for( Iterator iter = ModelFacade.getInstance().getSpecializations(node); iter.hasNext(); ) {
                         Object s = iter.next();
                         ClassdiagramNode subNode = 
-                            getClassdiagramNode4owner(ModelFacade.getChild(s));
+                            getClassdiagramNode4owner(ModelFacade.getInstance().getChild(s));
                         
                         if(subNode != null) {
                             classdiagramNode.addDownlink(subNode);

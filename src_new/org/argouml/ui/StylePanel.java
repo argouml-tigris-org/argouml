@@ -88,7 +88,7 @@ public class StylePanel
 
     public void setTarget(Object t) {
         if (!(t instanceof Fig)) {
-            if (ModelFacade.isABase(t)) {
+            if (ModelFacade.getInstance().isABase(t)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 Collection col = p.findFigsForMember(t);
                 if (col == null || col.isEmpty()) {

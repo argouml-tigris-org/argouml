@@ -97,48 +97,48 @@ public class CrConsiderSingleton extends CrUML {
 
         // Only look at classes...
 
-        if (!(ModelFacade.isAClass(dm))) {
+        if (!(ModelFacade.getInstance().isAClass(dm))) {
             return NO_PROBLEM;
         }
         
         // with a name...
-        if (ModelFacade.getName(dm) == null ||
-            "".equals(ModelFacade.getName(dm))) {
+        if (ModelFacade.getInstance().getName(dm) == null ||
+            "".equals(ModelFacade.getInstance().getName(dm))) {
                 return NO_PROBLEM;
         }
         
         // ... and not incompletely imported
-        if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
+        if (!(ModelFacade.getInstance().isPrimaryObject(dm))) return NO_PROBLEM;
 
         // Check for Singleton stereotype, uninitialised instance variables and
         // outgoing associations, as per JavaDoc above.
 
-        if (ModelFacade.isSingleton(dm)) {
+        if (ModelFacade.getInstance().isSingleton(dm)) {
             return NO_PROBLEM;
         }
 
-	if (ModelFacade.isUtility(dm)) {
+	if (ModelFacade.getInstance().isUtility(dm)) {
 	    return NO_PROBLEM;
 	}
 
 	// If there is an attribute with instance scope => no problem
-	Iterator iter = ModelFacade.getAttributes(dm).iterator();
+	Iterator iter = ModelFacade.getInstance().getAttributes(dm).iterator();
 
 	while (iter.hasNext()) {
-	    if (ModelFacade.isInstanceScope(iter.next()))
+	    if (ModelFacade.getInstance().isInstanceScope(iter.next()))
 		return NO_PROBLEM;
 	}
 
 
 	// If there is an outgoing association => no problem
-	Iterator ends = ModelFacade.getAssociationEnds(dm).iterator();
+	Iterator ends = ModelFacade.getInstance().getAssociationEnds(dm).iterator();
 
 	while (ends.hasNext()) {
 	    Iterator otherends = 
-		ModelFacade.getOtherAssociationEnds(ends.next()).iterator();
+		ModelFacade.getInstance().getOtherAssociationEnds(ends.next()).iterator();
 
 	    while (otherends.hasNext()) {
-		if (ModelFacade.isNavigable(otherends.next()))
+		if (ModelFacade.getInstance().isNavigable(otherends.next()))
 		    return NO_PROBLEM;
 	    }
 	}

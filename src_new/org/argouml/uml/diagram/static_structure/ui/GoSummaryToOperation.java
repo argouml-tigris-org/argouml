@@ -49,7 +49,7 @@ public class GoSummaryToOperation extends AbstractGoRule {
 
   public Collection getChildren(Object parent) {
       if ( parent instanceof OperationsNode) {
-          return ModelFacade.getOperations(((OperationsNode)parent).getParent());
+          return ModelFacade.getInstance().getOperations(((OperationsNode)parent).getParent());
       }
       return null;
   }

@@ -310,7 +310,7 @@ public abstract class UMLComboBoxModel2
      */
     protected void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig)target).getOwner() : target;
-        if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
+        if (ModelFacade.getInstance().isABase(target) || ModelFacade.getInstance().isADiagram(target)) {
             if (_target instanceof MBase) {
                 UmlModelEventPump.getPump().removeModelEventListener(
                     this,

@@ -107,24 +107,24 @@ public class CrSingletonViolatedMissingStaticAttr extends CrUML {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         // Only look at classes
-        if (!(ModelFacade.isAClass(dm))) {
+        if (!(ModelFacade.getInstance().isAClass(dm))) {
             return NO_PROBLEM;
         }
 
         // We only look at singletons
-        if (!(ModelFacade.isSingleton(dm))) {
+        if (!(ModelFacade.getInstance().isSingleton(dm))) {
             return NO_PROBLEM;
         }
 
-	Iterator attrs = ModelFacade.getAttributes(dm).iterator();
+	Iterator attrs = ModelFacade.getInstance().getAttributes(dm).iterator();
 
 	while (attrs.hasNext()) {
 	    Object attr = attrs.next();
 
-	    if (!(ModelFacade.isClassifierScope(attr)))
+	    if (!(ModelFacade.getInstance().isClassifierScope(attr)))
 		continue;
 
-	    if (ModelFacade.getType(attr) == dm)
+	    if (ModelFacade.getInstance().getType(attr) == dm)
 		return NO_PROBLEM;
 	}
 

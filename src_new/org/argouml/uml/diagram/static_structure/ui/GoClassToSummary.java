@@ -49,17 +49,17 @@ public class GoClassToSummary extends AbstractGoRule {
 
 
   public Collection getChildren(Object parent) {
-      if (ModelFacade.isAClass(parent)) {
+      if (ModelFacade.getInstance().isAClass(parent)) {
           
           ArrayList list = new ArrayList();
           
-          if(ModelFacade.getAttributes(parent).size() > 0)
+          if(ModelFacade.getInstance().getAttributes(parent).size() > 0)
                 list.add(new AttributesNode(parent));
           
-          if(ModelFacade.getAssociationEnds(parent).size() > 0)
+          if(ModelFacade.getInstance().getAssociationEnds(parent).size() > 0)
                 list.add(new AssociationsNode(parent));
           
-          if(ModelFacade.getOperations(parent).size() > 0)
+          if(ModelFacade.getInstance().getOperations(parent).size() > 0)
                 list.add(new OperationsNode(parent));
           
           if(hasIncomingDependencies( parent))
@@ -78,12 +78,12 @@ public class GoClassToSummary extends AbstractGoRule {
 
   private boolean hasIncomingDependencies(Object parent){
       
-            Iterator incomingIt = ModelFacade.getSupplierDependencies(parent);
+            Iterator incomingIt = ModelFacade.getInstance().getSupplierDependencies(parent);
           
           while(incomingIt.hasNext()){
               
               // abstractions are represented in the Inheritance Node.
-              if(!ModelFacade.isAAbstraction(incomingIt.next()))
+              if(!ModelFacade.getInstance().isAAbstraction(incomingIt.next()))
                 return true;
           }
           return false;
@@ -91,12 +91,12 @@ public class GoClassToSummary extends AbstractGoRule {
   
   private boolean hasOutGoingDependencies(Object parent){
       
-          Iterator incomingIt = ModelFacade.getClientDependencies(parent);
+          Iterator incomingIt = ModelFacade.getInstance().getClientDependencies(parent);
           
           while(incomingIt.hasNext()){
               
               // abstractions are represented in the Inheritance Node.
-              if(!ModelFacade.isAAbstraction(incomingIt.next()))
+              if(!ModelFacade.getInstance().isAAbstraction(incomingIt.next()))
                 return true;
           }
           return false;
@@ -104,10 +104,10 @@ public class GoClassToSummary extends AbstractGoRule {
  
   private boolean hasInheritance(Object parent){
       
-          Iterator incomingIt = ModelFacade.getSupplierDependencies(parent);
-          Iterator outgoingIt = ModelFacade.getClientDependencies(parent);
-          Iterator generalizationsIt = ModelFacade.getGeneralizations(parent);
-          Iterator specializationsIt = ModelFacade.getSpecializations(parent);
+          Iterator incomingIt = ModelFacade.getInstance().getSupplierDependencies(parent);
+          Iterator outgoingIt = ModelFacade.getInstance().getClientDependencies(parent);
+          Iterator generalizationsIt = ModelFacade.getInstance().getGeneralizations(parent);
+          Iterator specializationsIt = ModelFacade.getInstance().getSpecializations(parent);
           
           if(generalizationsIt.hasNext())
               return true;
@@ -118,14 +118,14 @@ public class GoClassToSummary extends AbstractGoRule {
           while(incomingIt.hasNext()){
               
               // abstractions are represented in the Inheritance Node.
-              if(ModelFacade.isAAbstraction(incomingIt.next()))
+              if(ModelFacade.getInstance().isAAbstraction(incomingIt.next()))
                 return true;
           }
           
           while(outgoingIt.hasNext()){
               
               // abstractions are represented in the Inheritance Node.
-              if(ModelFacade.isAAbstraction(outgoingIt.next()))
+              if(ModelFacade.getInstance().isAAbstraction(outgoingIt.next()))
                 return true;
           }
           

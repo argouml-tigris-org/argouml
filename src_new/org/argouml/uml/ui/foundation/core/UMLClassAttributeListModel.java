@@ -51,7 +51,7 @@ public class UMLClassAttributeListModel extends UMLModelElementListModel2 {
     protected void buildModelList() {
         if (getTarget() != null) {
             
-            setAllElements(ModelFacade.getAttributes(getTarget()));
+            setAllElements(ModelFacade.getInstance().getAttributes(getTarget()));
         }
     }
 
@@ -59,7 +59,7 @@ public class UMLClassAttributeListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return (ModelFacade.getAttributes(getTarget()).contains(element));
+        return (ModelFacade.getInstance().getAttributes(getTarget()).contains(element));
     }
 
 }

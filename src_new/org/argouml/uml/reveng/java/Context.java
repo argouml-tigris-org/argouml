@@ -76,12 +76,12 @@ abstract class Context
     */
     protected String getJavaName(Object mPackage)
     {
-	Object parent = ModelFacade.getNamespace(mPackage);
-	if(ModelFacade.isAModel(parent)) {
-	    return ModelFacade.getName(mPackage);
+	Object parent = ModelFacade.getInstance().getNamespace(mPackage);
+	if(ModelFacade.getInstance().isAModel(parent)) {
+	    return ModelFacade.getInstance().getName(mPackage);
 	}
 	else if(parent != null) {
-	    return getJavaName(parent) + "." + ModelFacade.getName(mPackage);
+	    return getJavaName(parent) + "." + ModelFacade.getInstance().getName(mPackage);
 	}
 	else {
 	    return "";

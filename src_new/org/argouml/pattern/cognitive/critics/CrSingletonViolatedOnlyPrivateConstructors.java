@@ -107,24 +107,24 @@ public class CrSingletonViolatedOnlyPrivateConstructors extends CrUML {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         // Only look at classes
-        if (!(ModelFacade.isAClass(dm))) {
+        if (!(ModelFacade.getInstance().isAClass(dm))) {
             return NO_PROBLEM;
         }
 
         // We only look at singletons
-        if (!(ModelFacade.isSingleton(dm))) {
+        if (!(ModelFacade.getInstance().isSingleton(dm))) {
             return NO_PROBLEM;
         }
 
-	Iterator operations = ModelFacade.getOperations(dm).iterator();
+	Iterator operations = ModelFacade.getInstance().getOperations(dm).iterator();
 
 	while (operations.hasNext()) {
 	    Object o = operations.next();
 
-	    if (!(ModelFacade.isConstructor(o)))
+	    if (!(ModelFacade.getInstance().isConstructor(o)))
 		continue;
 
-	    if (!(ModelFacade.isPrivate(o)))
+	    if (!(ModelFacade.getInstance().isPrivate(o)))
 		return PROBLEM_FOUND;
         }
 

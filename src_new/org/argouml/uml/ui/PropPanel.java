@@ -389,7 +389,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
 
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        return ModelFacade.isAModelElement(target);
+        return ModelFacade.getInstance().isAModelElement(target);
     }
 
     public void propertySet(MElementEvent mee) {

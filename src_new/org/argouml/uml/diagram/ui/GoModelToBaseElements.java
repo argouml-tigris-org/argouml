@@ -41,7 +41,7 @@ public class GoModelToBaseElements extends AbstractGoRule {
   }
   
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAPackage(parent)) {
+      if (ModelFacade.getInstance().isAPackage(parent)) {
           return CoreHelper.getHelper().getBaseClasses(parent);
       }
       return null;

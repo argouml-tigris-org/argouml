@@ -137,7 +137,7 @@ public class TabDocumentation extends PropPanel {
     public boolean shouldBeEnabled() {
         Object target = getTarget();
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        return ModelFacade.isAModelElement(target);
+        return ModelFacade.getInstance().isAModelElement(target);
     }
 
 } /* end class TabDocumentation */

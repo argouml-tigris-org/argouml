@@ -36,9 +36,9 @@ public class GoTransitionToTarget extends AbstractGoRule {
   public String getRuleName() { return "Transition->Target State"; }
 
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.isATransition(parent)) {
+      if (ModelFacade.getInstance().isATransition(parent)) {
           Collection col = new ArrayList();
-	  col.add(ModelFacade.getTarget(parent));
+	  col.add(ModelFacade.getInstance().getTarget(parent));
           return col;
       }
       return null;

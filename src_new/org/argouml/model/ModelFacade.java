@@ -32,6 +32,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
 
+import org.argouml.model.api.ModelFacadeApi;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.uml.MMUtil;
@@ -108,7 +109,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * @stereotype utility
  * @author Linus Tolke
  */
-public class ModelFacade {
+public class ModelFacade implements ModelFacadeApi {
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -167,6 +168,12 @@ public class ModelFacade {
     public static final Object ATTRIBUTE          = MAttribute.class;
     public static final Object OPERATION          = MOperation.class;
     
+    private static ModelFacade SINGLETON = new ModelFacade();
+    
+    public static ModelFacade getInstance() {
+        return SINGLETON;
+    }
+    
     /** Constructor that forbids instantiation.
      */
     private ModelFacade() {
@@ -180,7 +187,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is an Abstraction
      */
-    public static boolean isAAbstraction(Object handle) {
+    public boolean isAAbstraction(Object handle) {
         return handle instanceof MAbstraction;
     }
 
@@ -189,7 +196,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is an Association
      */
-    public static boolean isAAssociation(Object handle) {
+    public boolean isAAssociation(Object handle) {
         return handle instanceof MAssociation;
     }
 
@@ -198,7 +205,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is an AssociationEnd
      */
-    public static boolean isAAssociationEnd(Object handle) {
+    public boolean isAAssociationEnd(Object handle) {
         return handle instanceof MAssociationEnd;
     }
 
@@ -207,7 +214,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is an AssociationRole
      */
-    public static boolean isAAssociationRole(Object handle) {
+    public boolean isAAssociationRole(Object handle) {
         return handle instanceof MAssociationRole;
     }
 
@@ -216,7 +223,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is abstract.
      */
-    public static boolean isAbstract(Object handle) {
+    public boolean isAbstract(Object handle) {
         if (handle instanceof MOperation)
             return ((MOperation)handle).isAbstract();
         if (handle instanceof MGeneralizableElement)
@@ -231,7 +238,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is abstract.
      */
-    public static boolean isABase(Object handle) {
+    public boolean isABase(Object handle) {
         return handle instanceof MBase;
     }
 
@@ -240,7 +247,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Class
      */
-    public static boolean isAClass(Object handle) {
+    public boolean isAClass(Object handle) {
         return handle instanceof MClass;
     }
 
@@ -249,7 +256,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Classifier
      */
-    public static boolean isAClassifier(Object handle) {
+    public boolean isAClassifier(Object handle) {
         return handle instanceof MClassifier;
     }
 
@@ -258,7 +265,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Comment
      */
-    public static boolean isAComment(Object handle) {
+    public boolean isAComment(Object handle) {
         return handle instanceof MComment;
     }
 
@@ -269,7 +276,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Component
      */
-    public static boolean isAComponent(Object handle) {
+    public boolean isAComponent(Object handle) {
         return handle instanceof MComponent;
     }
 
@@ -278,7 +285,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a ComponentInstance
      */
-    public static boolean isAComponentInstance(Object handle) {
+    public boolean isAComponentInstance(Object handle) {
         return handle instanceof MComponentInstance;
     }
 
@@ -287,7 +294,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a DataType
      */
-    public static boolean isADataType(Object handle) {
+    public boolean isADataType(Object handle) {
         return handle instanceof MDataType;
     }
 
@@ -296,7 +303,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Dependency
      */
-    public static boolean isADependency(Object handle) {
+    public boolean isADependency(Object handle) {
         return handle instanceof MDependency;
     }
 
@@ -305,7 +312,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a CompositeState
      */
-    public static boolean isACompositeState(Object handle) {
+    public boolean isACompositeState(Object handle) {
         return handle instanceof MCompositeState;
     }
     
@@ -314,7 +321,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is an Expression
      */
-    public static boolean isAElement(Object handle) {
+    public boolean isAElement(Object handle) {
         return handle instanceof MElement;
     }
 
@@ -323,7 +330,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is an Expression
      */
-    public static boolean isAExpression(Object handle) {
+    public boolean isAExpression(Object handle) {
         return handle instanceof MExpression;
     }
 
@@ -332,7 +339,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is an ExtensionPoint
      */
-    public static boolean isAExtensionPoint(Object handle) {
+    public boolean isAExtensionPoint(Object handle) {
         return handle instanceof MExtensionPoint;
     }
     
@@ -342,7 +349,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Feature
      */
-    public static boolean isAFeature(Object handle) {
+    public boolean isAFeature(Object handle) {
         return handle instanceof MFeature;
     }
 
@@ -351,7 +358,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a GeneralizableElement
      */
-    public static boolean isAGeneralizableElement(Object handle) {
+    public boolean isAGeneralizableElement(Object handle) {
         return handle instanceof MGeneralizableElement;
     }
 
@@ -360,7 +367,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a GeneralizableElement
      */
-    public static boolean isAGeneralization(Object handle) {
+    public boolean isAGeneralization(Object handle) {
         return handle instanceof MGeneralization;
     }
 
@@ -369,7 +376,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Instance
      */
-    public static boolean isAInstance(Object handle) {
+    public boolean isAInstance(Object handle) {
         return handle instanceof MInstance;
     }
     
@@ -379,7 +386,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Interaction
      */
-    public static boolean isAInteraction(Object handle) {
+    public boolean isAInteraction(Object handle) {
         return handle instanceof MInteraction;
     }
 
@@ -388,7 +395,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Interface
      */
-    public static boolean isAInterface(Object handle) {
+    public boolean isAInterface(Object handle) {
         return handle instanceof MInterface;
     }
 
@@ -397,7 +404,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Link
      */
-    public static boolean isALink(Object handle) {
+    public boolean isALink(Object handle) {
         return handle instanceof MLink;
     }
 
@@ -406,7 +413,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Method
      */
-    public static boolean isAMethod(Object handle) {
+    public boolean isAMethod(Object handle) {
         return handle instanceof MMethod;
     }
 
@@ -415,7 +422,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Model
      */
-    public static boolean isAModel(Object handle) {
+    public boolean isAModel(Object handle) {
         return handle instanceof MModel;
     }
 
@@ -424,7 +431,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a ModelElement
      */
-    public static boolean isAModelElement(Object handle) {
+    public boolean isAModelElement(Object handle) {
         return handle instanceof MModelElement;
     }
 
@@ -433,7 +440,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Namespace
      */
-    public static boolean isANamespace(Object handle) {
+    public boolean isANamespace(Object handle) {
         return handle instanceof MNamespace;
     }
 
@@ -442,7 +449,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Node
      */
-    public static boolean isANode(Object handle) {
+    public boolean isANode(Object handle) {
         return handle instanceof MNode;
     }
 
@@ -451,7 +458,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a NodeInstance
      */
-    public static boolean isANodeInstance(Object handle) {
+    public boolean isANodeInstance(Object handle) {
         return handle instanceof MNodeInstance;
     }
 
@@ -461,7 +468,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is an Operation
      */
-    public static boolean isAOperation(Object handle) {
+    public boolean isAOperation(Object handle) {
         return handle instanceof MOperation;
     }
 
@@ -471,7 +478,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is an Object
      */
-    public static boolean isAObject(Object handle) {
+    public boolean isAObject(Object handle) {
         return handle instanceof MObject;
     }
 
@@ -481,7 +488,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is an Permission
      */
-    public static boolean isAPermission(Object handle) {
+    public boolean isAPermission(Object handle) {
         return handle instanceof MPermission;
     }
     
@@ -490,7 +497,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Package
      */
-    public static boolean isAPackage(Object handle) {
+    public boolean isAPackage(Object handle) {
         return handle instanceof MPackage;
     }
 
@@ -499,7 +506,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Reception
      */
-    public static boolean isAReception(Object handle) {
+    public boolean isAReception(Object handle) {
         return handle instanceof MReception;
     }
     
@@ -508,7 +515,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Relationship
      */
-    public static boolean isARelationship(Object handle) {
+    public boolean isARelationship(Object handle) {
         return handle instanceof MRelationship;
     }
     
@@ -518,7 +525,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a StateMachine
      */
-    public static boolean isAStateMachine(Object handle) {
+    public boolean isAStateMachine(Object handle) {
         return handle instanceof MStateMachine;
     }
 
@@ -527,7 +534,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a StateVertex
      */
-    public static boolean isAStateVertex(Object handle) {
+    public boolean isAStateVertex(Object handle) {
         return handle instanceof MStateVertex;
     }
 
@@ -536,7 +543,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Stereotype
      */
-    public static boolean isAStereotype(Object handle) {
+    public boolean isAStereotype(Object handle) {
         return handle instanceof MStereotype;
     }
 
@@ -545,7 +552,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a StructuralFeature
      */
-    public static boolean isAStructuralFeature(Object handle) {
+    public boolean isAStructuralFeature(Object handle) {
         return handle instanceof MStructuralFeature;
     }
 
@@ -555,7 +562,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a TaggedValue
      */
-    public static boolean isATaggedValue(Object handle) {
+    public boolean isATaggedValue(Object handle) {
         return handle instanceof MTaggedValue;
     }
     
@@ -565,7 +572,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Transition
      */
-    public static boolean isATransition(Object handle) {
+    public boolean isATransition(Object handle) {
         return handle instanceof MTransition;
     }
 
@@ -574,7 +581,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a Transition
      */
-    public static boolean isAUseCase(Object handle) {
+    public boolean isAUseCase(Object handle) {
         return handle instanceof MUseCase;
     }
 
@@ -583,7 +590,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is changeable
      */
-    public static boolean isChangeable(Object handle) {
+    public boolean isChangeable(Object handle) {
         if (handle != null && handle instanceof MAttribute) {
             return MChangeableKind.CHANGEABLE.equals(
                 ((MAttribute)handle).getChangeability());
@@ -600,7 +607,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle has classifier scope.
      */
-    public static boolean isClassifierScope(Object handle) {
+    public boolean isClassifierScope(Object handle) {
         if (handle instanceof MAttribute) {
             MAttribute a = (MAttribute)handle;
             return MScopeKind.CLASSIFIER.equals(a.getOwnerScope());
@@ -614,7 +621,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a constructor.
      */
-    public static boolean isConstructor(Object handle) {
+    public boolean isConstructor(Object handle) {
         return (
             CoreHelper.getHelper().isOperation(handle)
                 && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
@@ -634,7 +641,7 @@ public class ModelFacade {
      * @param handle
      * @return boolean
      */
-    public static boolean isComposite(Object handle) {
+    public boolean isComposite(Object handle) {
         if (isAAssociationEnd(handle)) {
             boolean composite = false;
             MAssociationEnd end = (MAssociationEnd)handle;
@@ -651,7 +658,7 @@ public class ModelFacade {
      * @param handle candidate
      * @param true if the attribute is initialized.
      */
-    public static boolean isInitialized(Object handle) {
+    public boolean isInitialized(Object handle) {
         if (handle instanceof MAttribute) {
             MExpression init = ((MAttribute)handle).getInitialValue();
 
@@ -671,7 +678,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle has instance scope.
      */
-    public static boolean isInstanceScope(Object handle) {
+    public boolean isInstanceScope(Object handle) {
         if (handle instanceof MFeature) {
             MFeature a = (MFeature)handle;
             return MScopeKind.INSTANCE.equals(a.getOwnerScope());
@@ -685,7 +692,7 @@ public class ModelFacade {
      * @param handle candidate GeneralizableElement
      * @returns true if handle is a leaf
      */
-    public static boolean isLeaf(Object handle) {
+    public boolean isLeaf(Object handle) {
 
         if (handle instanceof MGeneralizableElement) {
             return ((MGeneralizableElement)handle).isLeaf();
@@ -702,7 +709,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is navigable
      */
-    public static boolean isNavigable(Object handle) {
+    public boolean isNavigable(Object handle) {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd)handle).isNavigable();
         }
@@ -719,7 +726,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if primary object.
      */
-    public static boolean isPrimaryObject(Object handle) {
+    public boolean isPrimaryObject(Object handle) {
         if (handle instanceof MModelElement) {
             MModelElement element = (MModelElement)handle;
             for (Iterator i = element.getTaggedValues().iterator();
@@ -741,7 +748,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle has private
      */
-    public static boolean isPrivate(Object handle) {
+    public boolean isPrivate(Object handle) {
         if (handle instanceof MBehavioralFeature) {
             MBehavioralFeature bf = (MBehavioralFeature)handle;
             return MVisibilityKind.PRIVATE.equals(bf.getVisibility());
@@ -755,7 +762,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle has a realize stereotype
      */
-    public static boolean isRealize(Object handle) {
+    public boolean isRealize(Object handle) {
         return isStereotype(handle, "realize");
     }
 
@@ -764,7 +771,7 @@ public class ModelFacade {
      * @param handle candidate parameter
      * @returns true if handle is a return parameter.
      */
-    public static boolean isReturn(Object handle) {
+    public boolean isReturn(Object handle) {
         if (handle instanceof MParameter) {
             MParameter p = (MParameter)handle;
             return MParameterDirectionKind.RETURN.equals(p.getKind());
@@ -778,7 +785,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a singleton.
      */
-    public static boolean isSingleton(Object handle) {
+    public boolean isSingleton(Object handle) {
         return isStereotype(handle, "singleton");
     }
 
@@ -792,7 +799,7 @@ public class ModelFacade {
      *	instead. Since this should only ever be used together with predefined
      *	stereotypes the base class can be found in the UML 1.3 specification.
      */
-    public static boolean isStereotype(Object handle, String stereotypename) {
+    public boolean isStereotype(Object handle, String stereotypename) {
         if (handle instanceof MModelElement) {
             MModelElement element = (MModelElement)handle;
             MStereotype meSt = element.getStereotype();
@@ -811,7 +818,7 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
-    public static boolean isTop(Object handle) {
+    public boolean isTop(Object handle) {
         return isACompositeState(handle)
             && ((MCompositeState)handle).getStateMachine() != null;
     }
@@ -821,7 +828,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a type.
      */
-    public static boolean isType(Object handle) {
+    public boolean isType(Object handle) {
         return isStereotype(handle, "type");
     }
 
@@ -830,7 +837,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a utility.
      */
-    public static boolean isUtility(Object handle) {
+    public boolean isUtility(Object handle) {
         return isStereotype(handle, "utility");
     }
 
@@ -842,7 +849,7 @@ public class ModelFacade {
      * @param handle candidate
      * @returns true if handle is a diagram.
      */
-    public static boolean isADiagram(Object handle) {
+    public boolean isADiagram(Object handle) {
         return handle instanceof Diagram;
     }
 
@@ -855,7 +862,7 @@ public class ModelFacade {
      * @param assoc
      * @return association end
      */
-    public static Object getAssociationEnd(Object type, Object assoc) {
+    public Object getAssociationEnd(Object type, Object assoc) {
         if (type == null
             || assoc == null
             || !(type instanceof MClassifier)
@@ -875,7 +882,7 @@ public class ModelFacade {
      * @param handle the object that we get the association ends from.
      * @return Iterator with association ends.
      */
-    public static Collection getAssociationEnds(Object handle) {
+    public Collection getAssociationEnds(Object handle) {
         if (handle instanceof MClassifier) {
             Collection endc = ((MClassifier)handle).getAssociationEnds();
             return endc;
@@ -890,7 +897,7 @@ public class ModelFacade {
      * @param handle classifier to examine.
      * @return iterator with attributes.
      */
-    public static Collection getAttributes(Object handle) {
+    public Collection getAttributes(Object handle) {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
             // TODO: We are converting back and forth between collections and
@@ -910,7 +917,7 @@ public class ModelFacade {
      * @param handle modelelement to examine.
      * @return the behaviors.
      */
-    public static Collection getBehaviors(Object handle) {
+    public Collection getBehaviors(Object handle) {
         if (isAModelElement(handle))
             return ((MModelElement)handle).getBehaviors();
         throw new IllegalArgumentException("Unrecognized object " + handle);
@@ -922,7 +929,7 @@ public class ModelFacade {
      * @param handle expression.
      * @return the body.
      */
-    public static Object getBody(Object handle) {
+    public Object getBody(Object handle) {
         if (handle instanceof MExpression)
             return ((MExpression)handle).getBody();
         throw new IllegalArgumentException("Unrecognized object " + handle);
@@ -935,7 +942,7 @@ public class ModelFacade {
      * @param handle generalization.
      * @return the child.
      */
-    public static Object getChild(Object handle) {
+    public Object getChild(Object handle) {
         if (handle instanceof MGeneralization) {
             return ((MGeneralization)handle).getChild();
         }
@@ -948,7 +955,7 @@ public class ModelFacade {
      * @param handle to the generalizable element.
      * @return a collection with all children.
      */
-    public static Collection getChildren(Object handle) {
+    public Collection getChildren(Object handle) {
         if (isAGeneralizableElement(handle)) {
             return ((MGeneralizableElement)handle).getChildren();
         }
@@ -961,7 +968,7 @@ public class ModelFacade {
      * @param handle to the classifier.
      * @return an iterator with all client dependencies.
      */
-    public static Iterator getClientDependencies(Object handle) {
+    public Iterator getClientDependencies(Object handle) {
         if (isAModelElement(handle)) {
             Collection c = ((MModelElement)handle).getClientDependencies();
             return (c != null) ? c.iterator() : null;
@@ -974,7 +981,7 @@ public class ModelFacade {
      * @param o operation.
      * @return the concurrency.
      */
-    public static short getConcurrency(Object o) {
+    public short getConcurrency(Object o) {
         if (o != null && o instanceof MOperation) {
             return ((MOperation)o).getConcurrency()
                 == MCallConcurrencyKind.GUARDED
@@ -989,7 +996,7 @@ public class ModelFacade {
      * @param handle to the association.
      * @return an Iterator with all connections.
      */
-    public static Iterator getConnections(Object handle) {
+    public Iterator getConnections(Object handle) {
         if (handle instanceof MAssociation) {
             return ((MAssociation)handle).getConnections().iterator();
         }
@@ -1003,7 +1010,7 @@ public class ModelFacade {
      * @param handle Classifier to retrieve from.
      * @return Collection with Features
      */
-    public static Collection getFeatures(Object handle) {
+    public Collection getFeatures(Object handle) {
         if (handle != null && handle instanceof MClassifier)
             return ((MClassifier)handle).getFeatures();
         return new ArrayList();
@@ -1016,7 +1023,7 @@ public class ModelFacade {
      * @param parent
      * @return The generalization
      */
-    public static Object getGeneralization(Object child, Object parent) {
+    public Object getGeneralization(Object child, Object parent) {
         if (child == null
             || parent == null
             || !(child instanceof MGeneralizableElement)
@@ -1037,7 +1044,7 @@ public class ModelFacade {
      * @param handle GeneralizableElement to retrieve from.
      * @return Iterator with Generalizations
      */
-    public static Iterator getGeneralizations(Object handle) {
+    public Iterator getGeneralizations(Object handle) {
         if (handle instanceof MGeneralizableElement) {
             MGeneralizableElement ge = (MGeneralizableElement)handle;
             return ge.getGeneralizations().iterator();
@@ -1052,7 +1059,7 @@ public class ModelFacade {
      * @param handle
      * @return Collection
      */
-    public static Collection getIncomings(Object stateVertex) {
+    public Collection getIncomings(Object stateVertex) {
         if (isAStateVertex(stateVertex)) {
             return ((MStateVertex)stateVertex).getIncomings();
         }
@@ -1065,7 +1072,7 @@ public class ModelFacade {
      * @param handle
      * @return Collection
      */
-    public static Collection getMessages(Object handle) {
+    public Collection getMessages(Object handle) {
         if (isAInteraction(handle)) {
             return ((MInteraction)handle).getMessages();
         }
@@ -1082,7 +1089,7 @@ public class ModelFacade {
      * @param handle
      * @return Object
      */
-    public static Object getContainer(Object handle) {
+    public Object getContainer(Object handle) {
         if (handle instanceof MBase) {
             return ((MBase) handle).getModelElementContainer();
         }
@@ -1095,7 +1102,7 @@ public class ModelFacade {
      * @return the context of the statemachine or null if the statemachine doesn't 
      * have a context.
      */
-    public static Object getContext(Object handle) {
+    public Object getContext(Object handle) {
         if (handle instanceof MStateMachine) {
             return ((MStateMachine)handle).getContext();            
         }
@@ -1107,7 +1114,7 @@ public class ModelFacade {
      * @param handle the model element that we are getting the namespace of
      * @returns the namespace (or null)
      */
-    public static Object getNamespace(Object handle) {
+    public Object getNamespace(Object handle) {
         if (handle instanceof MModelElement)
             return ((MModelElement)handle).getNamespace();
         // ...
@@ -1119,7 +1126,7 @@ public class ModelFacade {
      * @param handle classifier to examine.
      * @return Collection with operations.
      */
-    public static Collection getOperations(Object handle) {
+    public Collection getOperations(Object handle) {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
 
@@ -1135,7 +1142,7 @@ public class ModelFacade {
      * @param handle classifier to examine.
      * @return Iterator with operations.
      */
-    public static Iterator getOperationsInh(Object handle) {
+    public Iterator getOperationsInh(Object handle) {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
 
@@ -1153,7 +1160,7 @@ public class ModelFacade {
      * @param handle
      * @return Object the opposite end.
      */
-    public static Object getOppositeEnd(Object handle) {
+    public Object getOppositeEnd(Object handle) {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd)handle).getOppositeEnd();
         }
@@ -1165,8 +1172,8 @@ public class ModelFacade {
      * @param statevertex
      * @return Collection
      */
-    public static Collection getOutgoings(Object stateVertex) {
-        if (ModelFacade.isAStateVertex(stateVertex)) {
+    public Collection getOutgoings(Object stateVertex) {
+        if (isAStateVertex(stateVertex)) {
             return ((MStateVertex)stateVertex).getOutgoings();
         }
         throw new IllegalArgumentException(
@@ -1178,7 +1185,7 @@ public class ModelFacade {
      * @param handle association end to start from
      * @returns Iterator with all connected association ends.
      */
-    public static Collection getOtherAssociationEnds(Object handle) {
+    public Collection getOtherAssociationEnds(Object handle) {
         if (handle instanceof MAssociationEnd) {
             MAssociation a = ((MAssociationEnd)handle).getAssociation();
 
@@ -1205,7 +1212,7 @@ public class ModelFacade {
      * @param handle package to retrieve from.
      * @return Iterator with operations
      */
-    public static Collection getOwnedElements(Object handle) {
+    public Collection getOwnedElements(Object handle) {
         if (handle instanceof MNamespace) {
             return ((MNamespace)handle).getOwnedElements();
         }
@@ -1220,7 +1227,7 @@ public class ModelFacade {
      * @param n parameter number
      * @return parameter.
      */
-    public static Object getParameter(Object op, int n) {
+    public Object getParameter(Object op, int n) {
         if (op == null || !(op instanceof MOperation))
             return null;
         return ((MOperation)op).getParameter(n);
@@ -1231,7 +1238,7 @@ public class ModelFacade {
      * @param handle operation to retrieve from
      * @return Iterator with operations.
      */
-    public static Iterator getParameters(Object handle) {
+    public Iterator getParameters(Object handle) {
         if (handle instanceof MOperation) {
             return ((MOperation)handle).getParameters().iterator();
         }
@@ -1247,7 +1254,7 @@ public class ModelFacade {
      * @param handle generalization.
      * @return the parent.
      */
-    public static Object getParent(Object handle) {
+    public Object getParent(Object handle) {
         if (handle instanceof MGeneralization) {
             return ((MGeneralization)handle).getParent();
         }
@@ -1262,7 +1269,7 @@ public class ModelFacade {
      * @param handle
      * @return Collection
      */
-    public static Collection getResidents(Object handle) {
+    public Collection getResidents(Object handle) {
         if (isANode(handle)) {
             return ((MNode)handle).getResidents();
         }
@@ -1274,7 +1281,7 @@ public class ModelFacade {
      * @param handle
      * @return Object
      */
-    public static Object getSource(Object handle) {
+    public Object getSource(Object handle) {
         if (isATransition(handle)) {
             return ((MTransition)handle).getSource();
         }
@@ -1286,7 +1293,7 @@ public class ModelFacade {
      * @param handle GeneralizableElement to retrieve from.
      * @return Iterator with Specializations.
      */
-    public static Iterator getSpecializations(Object handle) {
+    public Iterator getSpecializations(Object handle) {
         if (handle instanceof MGeneralizableElement) {
             MGeneralizableElement ge = (MGeneralizableElement)handle;
             return ge.getSpecializations().iterator();
@@ -1301,7 +1308,7 @@ public class ModelFacade {
      * @param handle
      * @return Object
      */
-    public static Object getStereoType(Object handle) {
+    public Object getStereoType(Object handle) {
         if (isAModelElement(handle)) {
             return ((MModelElement)handle).getStereotype();
         }
@@ -1314,7 +1321,7 @@ public class ModelFacade {
      * @param handle
      * @return Collection
      */
-    public static Collection getSubvertices(Object handle) {
+    public Collection getSubvertices(Object handle) {
         if (isACompositeState(handle)) {
             return ((MCompositeState)handle).getSubvertices();
         }
@@ -1326,7 +1333,7 @@ public class ModelFacade {
      * @param handle model element.
      * @returns Iterator with the supplier dependencies.
      */
-    public static Iterator getSupplierDependencies(Object handle) {
+    public Iterator getSupplierDependencies(Object handle) {
         if (handle instanceof MModelElement) {
             MModelElement me = (MModelElement)handle;
             return me.getSupplierDependencies().iterator();
@@ -1341,7 +1348,7 @@ public class ModelFacade {
      * @param handle the attribute
      * @returns the type
      */
-    public static Object getType(Object handle) {
+    public Object getType(Object handle) {
         if (handle instanceof MStructuralFeature) {
             return ((MAttribute)handle).getType();
         }
@@ -1361,7 +1368,7 @@ public class ModelFacade {
      * @param handle
      * @return Object
      */
-    public static Object getTarget(Object handle) {
+    public Object getTarget(Object handle) {
         if (isATransition(handle)) {
             return ((MTransition)handle).getTarget();
         }
@@ -1374,7 +1381,7 @@ public class ModelFacade {
      * @param handle
      * @return int
      */
-    public static int getUpper(Object handle) {
+    public int getUpper(Object handle) {
         if (isAAssociationEnd(handle)) {
             int upper = 0;
             MAssociationEnd end = (MAssociationEnd)handle;
@@ -1394,7 +1401,7 @@ public class ModelFacade {
      * @param handle
      * @return Collection
      */
-    public static Collection getTransitions(Object handle) {
+    public Collection getTransitions(Object handle) {
         if (isAStateMachine(handle)) {
             return ((MStateMachine)handle).getTransitions();
         } else if (isACompositeState(handle)) {
@@ -1408,15 +1415,15 @@ public class ModelFacade {
      * @param classifier the classifier you want to have the attributes for
      * @return a collection of the attributes
      */
-    public static Collection getStructuralFeatures(Object classifier) {
+    public Collection getStructuralFeatures(Object classifier) {
         Collection result = new ArrayList();
-        if (ModelFacade.isAClassifier(classifier)) {
+        if (isAClassifier(classifier)) {
             MClassifier mclassifier = (MClassifier)classifier;
 
             Iterator features = mclassifier.getFeatures().iterator();
             while (features.hasNext()) {
                 MFeature feature = (MFeature)features.next();
-                if (ModelFacade.isAStructuralFeature(feature))
+                if (isAStructuralFeature(feature))
                     result.add(feature);
             }
         }
@@ -1428,12 +1435,12 @@ public class ModelFacade {
      * @param classifier the classifier you want to have the operations for
      * @return a collection of the operations
      */
-    public static Collection getOperations(MClassifier mclassifier) {
+    public Collection getOperations(MClassifier mclassifier) {
         Collection result = new ArrayList();
         Iterator features = mclassifier.getFeatures().iterator();
         while (features.hasNext()) {
             MFeature feature = (MFeature)features.next();
-            if (ModelFacade.isAOperation(feature))
+            if (isAOperation(feature))
                 result.add(feature);
         }
         return result;
@@ -1444,7 +1451,7 @@ public class ModelFacade {
      * @param cls  the class you want to have the interfaces for
      * @return a collection of the Interfaces
      */
-    public static Collection getSpecifications(Object cls) {
+    public Collection getSpecifications(Object cls) {
         Collection result = new Vector();
         if (cls instanceof MClassifier) {
             Collection deps = ((MClassifier)cls).getClientDependencies();
@@ -1468,7 +1475,7 @@ public class ModelFacade {
      * @param abstraction
      * @return a collection of the suppliers
      */
-    public static Collection getSuppliers(Object handle) {
+    public Collection getSuppliers(Object handle) {
         if (handle == null || !(handle instanceof MAbstraction))
             return null;
         return ((MAbstraction)handle).getSuppliers();
@@ -1482,7 +1489,7 @@ public class ModelFacade {
      * @param o
      * @return Collection
      */
-    public static Collection getAssociatedClasses(Object o) {
+    public Collection getAssociatedClasses(Object o) {
         Collection col = new ArrayList();
         if (o instanceof MClassifier) {
             MClassifier classifier = (MClassifier)o;
@@ -1514,7 +1521,7 @@ public class ModelFacade {
      * @param handle that points out the object.
      * @returns the name
      */
-    public static String getName(Object handle) {
+    public String getName(Object handle) {
         if (handle instanceof MModelElement) {
             MModelElement me = (MModelElement)handle;
 
@@ -1536,7 +1543,7 @@ public class ModelFacade {
        @param feature
        @return classifier
      */
-    public static Object getOwner(Object f) {
+    public Object getOwner(Object f) {
         if (f != null && f instanceof MFeature) {
             return ((MFeature)f).getOwner();
         }
@@ -1549,7 +1556,7 @@ public class ModelFacade {
        @param element The tagged values belong to this.
        @return The tagged values iterator
      */
-    public static Iterator getTaggedValues(Object modelElement) {
+    public Iterator getTaggedValues(Object modelElement) {
         if (modelElement != null && modelElement instanceof MModelElement) {
             return ((MModelElement)modelElement).getTaggedValues().iterator();
         }
@@ -1563,7 +1570,7 @@ public class ModelFacade {
        @param name The tag.
        @return The found tag, null if not found
      */
-    public static Object getTaggedValue(Object modelElement, String name) {
+    public Object getTaggedValue(Object modelElement, String name) {
         if (modelElement != null && modelElement instanceof MModelElement) {
             for (Iterator i =
                 ((MModelElement)modelElement).getTaggedValues().iterator();
@@ -1584,7 +1591,7 @@ public class ModelFacade {
        @param tv The tagged value.
        @return The found value, null if not found
      */
-    public static String getTagOfTag(Object tv) {
+    public String getTagOfTag(Object tv) {
         if (tv != null && tv instanceof MTaggedValue) {
             return ((MTaggedValue)tv).getTag();
         }
@@ -1597,7 +1604,7 @@ public class ModelFacade {
        @param tv The tagged value.
        @return The found value, null if not found
      */
-    public static String getValueOfTag(Object tv) {
+    public String getValueOfTag(Object tv) {
         if (tv != null && tv instanceof MTaggedValue) {
             return ((MTaggedValue)tv).getValue();
         }
@@ -1611,7 +1618,7 @@ public class ModelFacade {
        @param base base element (MBase type)
        @return UUID
     */
-    public static String getUUID(Object base) {
+    public String getUUID(Object base) {
         if (isABase(base)) {
             return ((MBase) base).getUUID();
         }
@@ -1628,7 +1635,7 @@ public class ModelFacade {
      * @param name of the model element
      * @return found object, null otherwise
      */
-    public static Object lookupIn(Object o, String name) {
+    public Object lookupIn(Object o, String name) {
         if (o instanceof MModel)
             return ((MModel)o).lookup(name);
         if (o instanceof MNamespace)
@@ -1646,7 +1653,7 @@ public class ModelFacade {
      * @param classifier
      * @param feature
      */
-    public static void addFeature(Object cls, Object f) {
+    public void addFeature(Object cls, Object f) {
         if (cls != null
             && f != null
             && cls instanceof MClassifier
@@ -1660,7 +1667,7 @@ public class ModelFacade {
      * @param operation
      * @param method
      */
-    public static void addMethod(Object o, Object m) {
+    public void addMethod(Object o, Object m) {
         if (o != null
             && m != null
             && o instanceof MOperation
@@ -1676,7 +1683,7 @@ public class ModelFacade {
      * @param ns namespace
      * @param me model element
      */
-    public static void addOwnedElement(Object ns, Object me) {
+    public void addOwnedElement(Object ns, Object me) {
         if (ns != null
             && ns instanceof MNamespace
             && me != null
@@ -1690,7 +1697,7 @@ public class ModelFacade {
      * @param a abstraction
      * @param cls supplier classifier
      */
-    public static void addSupplier(Object a, Object cls) {
+    public void addSupplier(Object a, Object cls) {
         if (a != null
             && cls != null
             && a instanceof MAbstraction
@@ -1704,7 +1711,7 @@ public class ModelFacade {
      * @param a abstraction
      * @param cls client classifier
      */
-    public static void addClient(Object a, Object cls) {
+    public void addClient(Object a, Object cls) {
         if (a != null
             && cls != null
             && a instanceof MAbstraction
@@ -1718,7 +1725,7 @@ public class ModelFacade {
      * @param model element
      * @param dependency
      */
-    public static void removeClientDependency(Object o, Object dep) {
+    public void removeClientDependency(Object o, Object dep) {
         if (o != null
             && dep != null
             && o instanceof MModelElement
@@ -1732,7 +1739,7 @@ public class ModelFacade {
      * @param classifier
      * @param feature
      */
-    public static void removeFeature(Object cls, Object feature) {
+    public void removeFeature(Object cls, Object feature) {
         if (cls != null
             && feature != null
             && cls instanceof MClassifier
@@ -1746,7 +1753,7 @@ public class ModelFacade {
      * @param operation
      * @param parameter
      */
-    public static void removeParameter(Object o, Object p) {
+    public void removeParameter(Object o, Object p) {
         if (o != null
             && p != null
             && o instanceof MOperation
@@ -1760,7 +1767,7 @@ public class ModelFacade {
      * @param method
      * @param expression
      */
-    public static void setBody(Object m, Object expr) {
+    public void setBody(Object m, Object expr) {
         if (m != null
             && expr != null
             && m instanceof MMethod
@@ -1774,7 +1781,7 @@ public class ModelFacade {
      * @param attribute
      * @param expression
      */
-    public static void setInitialValue(Object at, Object expr) {
+    public void setInitialValue(Object at, Object expr) {
         if (at != null
             && expr != null
             && at instanceof MAttribute
@@ -1788,7 +1795,7 @@ public class ModelFacade {
      * @param attribute or association end
      * @param multiplicity as string
      */
-    public static void setMultiplicity(Object o, String mult) {
+    public void setMultiplicity(Object o, String mult) {
         // FIXME: the implementation is ugly, because I have no spec at hand...
         if (o == null)
             return;
@@ -1812,7 +1819,7 @@ public class ModelFacade {
      * @param model element
      * @param name
      */
-    public static void setName(Object o, String name) {
+    public void setName(Object o, String name) {
         if (o != null && o instanceof MModelElement) {
             ((MModelElement)o).setName(name);
         }
@@ -1823,7 +1830,7 @@ public class ModelFacade {
      * @param model element
      * @param namespace
      */
-    public static void setNamespace(Object o, Object ns) {
+    public void setNamespace(Object o, Object ns) {
         if (o != null
             && o instanceof MModelElement
             && ns != null
@@ -1837,7 +1844,7 @@ public class ModelFacade {
      * @param association end
      * @param navigability flag
      */
-    public static void setNavigable(Object o, boolean flag) {
+    public void setNavigable(Object o, boolean flag) {
         if (o != null && o instanceof MAssociationEnd) {
             ((MAssociationEnd)o).setNavigable(flag);
         }
@@ -1848,7 +1855,7 @@ public class ModelFacade {
      * @param model element
      * @param visibility
      */
-    public static void setVisibility(Object o, short v) {
+    public void setVisibility(Object o, short v) {
         if (o != null && o instanceof MModelElement) {
             if (v == ACC_PRIVATE) {
                 ((MModelElement)o).setVisibility(MVisibilityKind.PRIVATE);
@@ -1865,7 +1872,7 @@ public class ModelFacade {
      * @param feature
      * @param owner scope
      */
-    public static void setOwnerScope(Object f, short os) {
+    public void setOwnerScope(Object f, short os) {
         if (f != null && f instanceof MFeature) {
             if (os == CLASSIFIER_SCOPE) {
                 ((MFeature)f).setOwnerScope(MScopeKind.CLASSIFIER);
@@ -1880,7 +1887,7 @@ public class ModelFacade {
      * @param association end
      * @param target scope
      */
-    public static void setTargetScope(Object ae, short ts) {
+    public void setTargetScope(Object ae, short ts) {
         if (ae != null && ae instanceof MAssociationEnd) {
             if (ts == CLASSIFIER_SCOPE) {
                 ((MAssociationEnd)ae).setTargetScope(MScopeKind.CLASSIFIER);
@@ -1895,7 +1902,7 @@ public class ModelFacade {
      * @param operation
      * @param concurrency
      */
-    public static void setConcurrency(Object o, short c) {
+    public void setConcurrency(Object o, short c) {
         if (o != null && o instanceof MOperation) {
             if (c == GUARDED) {
                 ((MOperation)o).setConcurrency(MCallConcurrencyKind.GUARDED);
@@ -1910,7 +1917,7 @@ public class ModelFacade {
      * @param feature
      * @param changeability flag
      */
-    public static void setChangeable(Object o, boolean flag) {
+    public void setChangeable(Object o, boolean flag) {
         // FIXME: the implementation is ugly, because I have no spec at hand...
         if (o == null)
             return;
@@ -1933,7 +1940,7 @@ public class ModelFacade {
      * @param classifier
      * @param flag
      */
-    public static void setAbstract(Object o, boolean flag) {
+    public void setAbstract(Object o, boolean flag) {
         if (o != null) {
             if (o instanceof MClassifier)
                  ((MClassifier)o).setAbstract(flag);
@@ -1947,7 +1954,7 @@ public class ModelFacade {
      * @param classifier
      * @param flag
      */
-    public static void setLeaf(Object o, boolean flag) {
+    public void setLeaf(Object o, boolean flag) {
         if (o != null && o instanceof MClassifier) {
             ((MClassifier)o).setLeaf(flag);
         }
@@ -1958,7 +1965,7 @@ public class ModelFacade {
      * @param classifier
      * @param flag
      */
-    public static void setRoot(Object o, boolean flag) {
+    public void setRoot(Object o, boolean flag) {
         if (o != null && o instanceof MClassifier) {
             ((MClassifier)o).setRoot(flag);
         }
@@ -1968,7 +1975,7 @@ public class ModelFacade {
      * Set some parameters kind to 'in'.
      * @param parameter
      */
-    public static void setKindToIn(Object p) {
+    public void setKindToIn(Object p) {
         if (p != null && p instanceof MParameter) {
             ((MParameter)p).setKind(MParameterDirectionKind.IN);
         }
@@ -1978,7 +1985,7 @@ public class ModelFacade {
      * Set some parameters kind to 'return'.
      * @param parameter
      */
-    public static void setKindToReturn(Object p) {
+    public void setKindToReturn(Object p) {
         if (p != null && p instanceof MParameter) {
             ((MParameter)p).setKind(MParameterDirectionKind.RETURN);
         }
@@ -1989,7 +1996,7 @@ public class ModelFacade {
      * @param parameter
      * @param type
      */
-    public static void setType(Object p, Object cls) {
+    public void setType(Object p, Object cls) {
         if (p != null && cls != null && cls instanceof MClassifier) {
             if (p instanceof MParameter)
                  ((MParameter)p).setType((MClassifier)cls);
@@ -2006,7 +2013,7 @@ public class ModelFacade {
      * @param tag
      * @param value
      */
-    public static void setTaggedValue(Object o, String tag, String value) {
+    public void setTaggedValue(Object o, String tag, String value) {
         if (o != null && o instanceof MModelElement) {
             MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
             tv.setModelElement((MModelElement)o);
@@ -2020,7 +2027,7 @@ public class ModelFacade {
      * @param taggedValue
      * @param value
      */
-    public static void setValueOfTag(Object tv, String value) {
+    public void setValueOfTag(Object tv, String value) {
         if (tv != null && tv instanceof MTaggedValue) {
             ((MTaggedValue)tv).setValue(value);
         }
@@ -2032,7 +2039,7 @@ public class ModelFacade {
      * @param m model element
      * @param stereo stereotype
      */
-    public static void setStereotype(Object m, Object stereo) {
+    public void setStereotype(Object m, Object stereo) {
         if (m != null && m instanceof MModelElement) {
             if (stereo != null
                 && stereo instanceof MStereotype
@@ -2050,7 +2057,7 @@ public class ModelFacade {
      * @param me model element
      * @param mc constraint
      */
-    public static void addConstraint(Object me, Object mc) {
+    public void addConstraint(Object me, Object mc) {
         if (me != null
             && me instanceof MModelElement
             && mc != null
@@ -2064,7 +2071,7 @@ public class ModelFacade {
      * @param handle Modelelement
      * @return classname of modelelement
      */
-    public static String getUMLClassName(Object handle) {
+    public String getUMLClassName(Object handle) {
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getUMLClassName();
         }

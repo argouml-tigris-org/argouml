@@ -114,7 +114,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     }
 
     public void setNamespace(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
+        if (!ModelFacade.getInstance().isANamespace(handle)) {
             cat.error(
                 "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(

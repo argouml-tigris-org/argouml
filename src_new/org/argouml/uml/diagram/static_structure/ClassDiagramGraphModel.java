@@ -123,29 +123,29 @@ implements VetoableChangeListener  {
       Vector edges = new Vector();
       
       // top of the hierarchy is ME:
-      if(ModelFacade.isAModelElement(port)){
+      if(ModelFacade.getInstance().isAModelElement(port)){
           
-          Iterator it = ModelFacade.getSupplierDependencies(port);
+          Iterator it = ModelFacade.getInstance().getSupplierDependencies(port);
           while (it.hasNext()) {
               edges.add(it.next());
           }
       }
       // then Generalizable Element
-      if(ModelFacade.isAGeneralizableElement(port)){
+      if(ModelFacade.getInstance().isAGeneralizableElement(port)){
           
-          Iterator it = ModelFacade.getSpecializations(port);
+          Iterator it = ModelFacade.getInstance().getSpecializations(port);
           while (it.hasNext()) {
               edges.add(it.next());
           }
       }
       // then Classifier
-      if(ModelFacade.isAClassifier(port)){
+      if(ModelFacade.getInstance().isAClassifier(port)){
           
-          Iterator it = ModelFacade.getAssociationEnds(port).iterator();
+          Iterator it = ModelFacade.getInstance().getAssociationEnds(port).iterator();
           while (it.hasNext()) {
               Object nextAssocEnd = it.next();
               // navigable.... only want incoming
-              if(ModelFacade.isNavigable(nextAssocEnd)){
+              if(ModelFacade.getInstance().isNavigable(nextAssocEnd)){
                   edges.add(nextAssocEnd);
               }
           }
@@ -200,29 +200,29 @@ implements VetoableChangeListener  {
       Vector edges = new Vector();
       
       // top of the hierarchy is ME:
-      if(ModelFacade.isAModelElement(port)){
+      if(ModelFacade.getInstance().isAModelElement(port)){
           
-          Iterator it = ModelFacade.getClientDependencies(port);
+          Iterator it = ModelFacade.getInstance().getClientDependencies(port);
           while (it.hasNext()) {
               edges.add(it.next());
           }
       }
       // then Generalizable Element
-      if(ModelFacade.isAGeneralizableElement(port)){
+      if(ModelFacade.getInstance().isAGeneralizableElement(port)){
           
-          Iterator it = ModelFacade.getGeneralizations(port);
+          Iterator it = ModelFacade.getInstance().getGeneralizations(port);
           while (it.hasNext()) {
               edges.add(it.next());
           }
       }
       // then Classifier
-      if(ModelFacade.isAClassifier(port)){
+      if(ModelFacade.getInstance().isAClassifier(port)){
           
-          Iterator it = ModelFacade.getAssociationEnds(port).iterator();
+          Iterator it = ModelFacade.getInstance().getAssociationEnds(port).iterator();
           while (it.hasNext()) {
-              Object nextAssocEnd = ModelFacade.getOppositeEnd(it.next());
+              Object nextAssocEnd = ModelFacade.getInstance().getOppositeEnd(it.next());
               // navigable.... only want outgoing
-              if(ModelFacade.isNavigable(nextAssocEnd)){
+              if(ModelFacade.getInstance().isNavigable(nextAssocEnd)){
                   edges.add(nextAssocEnd);
               }
           }

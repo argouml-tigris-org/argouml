@@ -36,7 +36,7 @@ public class GoStateToDownstream extends AbstractGoRule {
   public String getRuleName() { return "State->Following States"; }
   
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAStateVertex(parent)) {
+      if (ModelFacade.getInstance().isAStateVertex(parent)) {
           return StateMachinesHelper.getHelper().getOutgoingStates(parent);
       }
       return null;

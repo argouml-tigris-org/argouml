@@ -253,7 +253,7 @@ public class StateMachinesHelper {
      * @return Collection
      */
     public Collection getOutgoingStates(Object ostatevertex) {
-        if (ModelFacade.isAStateVertex(ostatevertex)) {
+        if (ModelFacade.getInstance().isAStateVertex(ostatevertex)) {
             MStateVertex statevertex = (MStateVertex)ostatevertex;
             Collection col = new ArrayList();
             Iterator it = statevertex.getOutgoings().iterator();

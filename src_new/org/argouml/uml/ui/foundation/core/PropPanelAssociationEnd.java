@@ -219,7 +219,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      */
     public void gotoOther() {
         Object target = getTarget();
-        if (ModelFacade.isAAssociationEnd(target)) {
+        if (ModelFacade.getInstance().isAAssociationEnd(target)) {
             MAssociationEnd end = (MAssociationEnd) target;
             TargetManager.getInstance().setTarget(end.getOppositeEnd());
         }
@@ -231,8 +231,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * @return boolean
      */
     public boolean isDeleteEnabled() {
-        if (ModelFacade.isAAssociationEnd(getTarget())) {
-          return ModelFacade.getOtherAssociationEnds(getTarget()).size() > 1;
+        if (ModelFacade.getInstance().isAAssociationEnd(getTarget())) {
+          return ModelFacade.getInstance().getOtherAssociationEnds(getTarget()).size() > 1;
         }
         return false;
     }

@@ -70,7 +70,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */
     public UMLDiagram createDiagram(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
+        if (!ModelFacade.getInstance().isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(
@@ -91,7 +91,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
     public boolean isValidNamespace(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
+        if (!ModelFacade.getInstance().isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(

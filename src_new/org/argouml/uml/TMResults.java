@@ -134,15 +134,15 @@ public class TMResults extends AbstractTableModel {
                     return numNodes + " nodes and " + numEdges + " edges";
             }
         }
-        if (ModelFacade.isAModelElement(rowObj)) {
+        if (ModelFacade.getInstance().isAModelElement(rowObj)) {
             Diagram d = null;
             if (_diagrams != null)
                 d = (Diagram)_diagrams.elementAt(row);
             switch (col) {
                 case 0 :
-                    return ModelFacade.getUMLClassName(rowObj);
+                    return ModelFacade.getInstance().getUMLClassName(rowObj);
                 case 1 :
-                    return ModelFacade.getName(rowObj);
+                    return ModelFacade.getInstance().getName(rowObj);
                 case 2 :
                     return (d == null) ? "N/A" : d.getName();
                 case 3 :

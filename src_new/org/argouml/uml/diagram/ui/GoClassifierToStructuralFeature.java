@@ -36,8 +36,8 @@ public class GoClassifierToStructuralFeature extends AbstractGoRule {
   }
 
   public Collection getChildren(Object parent) {
-      if (ModelFacade.isAClassifier(parent)) {
-          return ModelFacade.getStructuralFeatures(parent);
+      if (ModelFacade.getInstance().isAClassifier(parent)) {
+          return ModelFacade.getInstance().getStructuralFeatures(parent);
       }
       return null;
   }

@@ -139,7 +139,7 @@ public class CoreHelper {
      */
     public Collection getSupertypes(Object ogeneralizableelement) {
         Collection result = new HashSet();
-        if (ModelFacade.isAGeneralizableElement(ogeneralizableelement)) {
+        if (ModelFacade.getInstance().isAGeneralizableElement(ogeneralizableelement)) {
             MGeneralizableElement cls =
                 (MGeneralizableElement)ogeneralizableelement;
             Collection gens = cls.getGeneralizations();
@@ -229,12 +229,12 @@ public class CoreHelper {
      */
     public Collection getOperations(Object classifier) {
         Collection result = new ArrayList();
-        if (ModelFacade.isAClassifier(classifier)) {
+        if (ModelFacade.getInstance().isAClassifier(classifier)) {
             MClassifier mclassifier = (MClassifier)classifier;
             Iterator features = mclassifier.getFeatures().iterator();
             while (features.hasNext()) {
                 MFeature feature = (MFeature)features.next();
-                if (ModelFacade.isAOperation(feature))
+                if (ModelFacade.getInstance().isAOperation(feature))
                     result.add(feature);
             }
         }
@@ -264,7 +264,7 @@ public class CoreHelper {
      */
     public Collection getAttributesInh(MClassifier classifier) {
         Collection result = new ArrayList();
-        result.addAll(ModelFacade.getStructuralFeatures(classifier));
+        result.addAll(ModelFacade.getInstance().getStructuralFeatures(classifier));
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
             MClassifier parent = (MClassifier)parents.next();
@@ -280,7 +280,7 @@ public class CoreHelper {
      */
     public Collection getOperationsInh(MClassifier classifier) {
         Collection result = new ArrayList();
-        result.addAll(ModelFacade.getOperations(classifier));
+        result.addAll(ModelFacade.getInstance().getOperations(classifier));
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
             result.addAll(getOperationsInh((MClassifier)parents.next()));
@@ -851,7 +851,7 @@ public class CoreHelper {
      */
     public Collection getAssociations(Object oclassifier) {
         Collection col = new ArrayList();
-        if (ModelFacade.isAClassifier(oclassifier)) {
+        if (ModelFacade.getInstance().isAClassifier(oclassifier)) {
             MClassifier classifier = (MClassifier)oclassifier;
             Iterator it = classifier.getAssociationEnds().iterator();
             while (it.hasNext()) {
@@ -1298,7 +1298,7 @@ public class CoreHelper {
      */
     public Collection getBaseClasses(Object o) {
         Collection col = new ArrayList();
-        if (ModelFacade.isANamespace(o)) {
+        if (ModelFacade.getInstance().isANamespace(o)) {
             Iterator it =
                 ModelManagementHelper
                     .getHelper()
@@ -1329,7 +1329,7 @@ public class CoreHelper {
     //       getChildren won't forget that they need to catch it.
     public Collection getChildren(Object o) {
         Collection col = new ArrayList();
-        if (ModelFacade.isAGeneralizableElement(o)) {
+        if (ModelFacade.getInstance().isAGeneralizableElement(o)) {
             Iterator it =
                 ((MGeneralizableElement)o).getSpecializations().iterator();
             while (it.hasNext()) {
@@ -1369,7 +1369,7 @@ public class CoreHelper {
     public Collection getAllRealizedInterfaces(Object o) {
         Collection col = new ArrayList();
         if (o != null) {
-            if (ModelFacade.isAClass(o)) {
+            if (ModelFacade.getInstance().isAClass(o)) {
                 MClass clazz = (MClass)o;
                 Collection supDependencies = clazz.getClientDependencies();
                 Iterator it = supDependencies.iterator();

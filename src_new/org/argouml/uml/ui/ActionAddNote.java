@@ -64,8 +64,8 @@ public class ActionAddNote extends UMLChangeAction {
         if (target == null || ProjectManager.getManager().getCurrentProject().getActiveDiagram()
             == null)
             enabled = false;
-        if (ModelFacade.isAModelElement(target)
-            && !ModelFacade.isAComment(target)
+        if (ModelFacade.getInstance().isAModelElement(target)
+            && !ModelFacade.getInstance().isAComment(target)
             && (ProjectManager
                 .getManager()
                 .getCurrentProject()

@@ -728,7 +728,7 @@ public abstract class FigNodeModelElement
      */
     protected void updateStereotypeText() {
         _stereo.setText(
-            Notation.generate(this, ModelFacade.getStereoType(getOwner())));
+            Notation.generate(this, ModelFacade.getInstance().getStereoType(getOwner())));
     }
 
     /**

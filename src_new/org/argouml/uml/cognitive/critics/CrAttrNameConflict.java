@@ -75,13 +75,13 @@ public class CrAttrNameConflict extends CrUML {
      * @returns true if there are two with the same name.
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.getInstance().isAClassifier(dm))) return NO_PROBLEM;
 
 	Vector namesSeen = new Vector();
 
-	Iterator enum = ModelFacade.getAttributes(dm).iterator();
+	Iterator enum = ModelFacade.getInstance().getAttributes(dm).iterator();
 	while (enum.hasNext()) {
-	    String name = ModelFacade.getName(enum.next());
+	    String name = ModelFacade.getInstance().getName(enum.next());
 	    if (name == null || name.length() == 0) continue;
 
 	    if (namesSeen.contains(name)) return PROBLEM_FOUND;

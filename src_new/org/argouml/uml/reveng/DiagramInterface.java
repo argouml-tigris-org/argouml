@@ -186,7 +186,7 @@ public class DiagramInterface {
      * @return The name for the diagram.
      */
     private String getDiagramName(Object p) {
-	return getDiagramName(ModelFacade.getName(p));
+	return getDiagramName(ModelFacade.getInstance().getName(p));
     }
 
     /**

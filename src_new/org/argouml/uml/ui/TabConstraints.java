@@ -130,7 +130,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
      */
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        return (ModelFacade.isAClass(target) || ModelFacade.isAFeature(target));
+        return (ModelFacade.getInstance().isAClass(target) || ModelFacade.getInstance().isAFeature(target));
     }
 
     /**
@@ -253,13 +253,13 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                 mmeContext = mmeContext.getModelElementContainer();
             }
             
-            if(ModelFacade.getName(mmeContext) == null ||
-               ModelFacade.getName(m_mmeiTarget) == null ||
-               !Character.isUpperCase(ModelFacade.getName(mmeContext).charAt(0)) ||
-               (ModelFacade.isAClass(m_mmeiTarget) &&
-                !Character.isUpperCase(ModelFacade.getName(m_mmeiTarget).charAt(0))) ||
-               (ModelFacade.isAFeature(m_mmeiTarget) &&
-                !Character.isLowerCase(ModelFacade.getName(m_mmeiTarget).charAt(0)))
+            if(ModelFacade.getInstance().getName(mmeContext) == null ||
+               ModelFacade.getInstance().getName(m_mmeiTarget) == null ||
+               !Character.isUpperCase(ModelFacade.getInstance().getName(mmeContext).charAt(0)) ||
+               (ModelFacade.getInstance().isAClass(m_mmeiTarget) &&
+                !Character.isUpperCase(ModelFacade.getInstance().getName(m_mmeiTarget).charAt(0))) ||
+               (ModelFacade.getInstance().isAFeature(m_mmeiTarget) &&
+                !Character.isLowerCase(ModelFacade.getInstance().getName(m_mmeiTarget).charAt(0)))
                 ){
                     // TODO I18n
                     JOptionPane.showMessageDialog (null,

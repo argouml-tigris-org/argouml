@@ -275,8 +275,8 @@ public abstract class Generator
      */
     public static String getCodePath(Object me) {
         String s =
-            ModelFacade.getValueOfTag(
-                ModelFacade.getTaggedValue(me, "src_path"));
+            ModelFacade.getInstance().getValueOfTag(
+                ModelFacade.getInstance().getTaggedValue(me, "src_path"));
         if (s != null)
             return s.trim();
         return null;

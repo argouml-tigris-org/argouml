@@ -171,13 +171,13 @@ public class FigObject extends FigNodeModelElement {
 
   public void setEnclosingFig(Fig encloser) {
     // super.setEnclosingFig(encloser);
-    if (!(ModelFacade.isAModelElement(getOwner()))) return;
-    if (ModelFacade.isAObject(getOwner())) {
+    if (!(ModelFacade.getInstance().isAModelElement(getOwner()))) return;
+    if (ModelFacade.getInstance().isAObject(getOwner())) {
       MObject me = (MObject) getOwner();
       MComponentInstance mcompInst = null;
       MComponent mcomp = null;
 
-      if (encloser != null && (ModelFacade.isAComponentInstance(encloser.getOwner()))) {
+      if (encloser != null && (ModelFacade.getInstance().isAComponentInstance(encloser.getOwner()))) {
         mcompInst = (MComponentInstance) encloser.getOwner();
         me.setComponentInstance(mcompInst);
       }
@@ -187,7 +187,7 @@ public class FigObject extends FigNodeModelElement {
         }
       }
       if (encloser != null && 
-          (ModelFacade.isAComponent(encloser.getOwner()))) {
+          (ModelFacade.getInstance().isAComponent(encloser.getOwner()))) {
         mcomp = (MComponent) encloser.getOwner();
         MObject obj = (MObject) getOwner();
         resident.setImplementationLocation(mcomp);

@@ -99,15 +99,15 @@ public class PropPanelNode extends PropPanelClassifier {
     public Collection getResidents() {
         Collection components = null;
         Object target = getTarget();
-        if(ModelFacade.isANode(target)) {
-            components = ModelFacade.getResidents(target);
+        if(ModelFacade.getInstance().isANode(target)) {
+            components = ModelFacade.getInstance().getResidents(target);
         }
         return components;
     }
 
     public void setResidents(Collection components) {
         Object target = getTarget();
-        if(ModelFacade.isANode(target)) {
+        if(ModelFacade.getInstance().isANode(target)) {
             ((MNode) target).setResidents(components);
         }
     }

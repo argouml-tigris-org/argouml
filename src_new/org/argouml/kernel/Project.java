@@ -1441,7 +1441,7 @@ public class Project implements java.io.Serializable, TargetListener {
             currentNamespace = target;
         else 
         if (target instanceof MModelElement) 
-            currentNamespace = ModelFacade.getNamespace(target);
+            currentNamespace = ModelFacade.getInstance().getNamespace(target);
         else
             currentNamespace = getRoot();
         setCurrentNamespace((MNamespace)currentNamespace);

@@ -38,8 +38,8 @@ public class GoInteractionMessages extends AbstractGoRule {
     }
 
     public Collection getChildren(Object parent) {
-        if (ModelFacade.isAInteraction(parent)) {
-            return ModelFacade.getMessages(parent);
+        if (ModelFacade.getInstance().isAInteraction(parent)) {
+            return ModelFacade.getInstance().getMessages(parent);
         }
         return null;
     }

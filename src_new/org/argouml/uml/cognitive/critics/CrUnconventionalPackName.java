@@ -50,9 +50,9 @@ public class CrUnconventionalPackName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(ModelFacade.isAPackage(dm))) return NO_PROBLEM;
+    if (!(ModelFacade.getInstance().isAPackage(dm))) return NO_PROBLEM;
 
-    String myName = ModelFacade.getName(dm);
+    String myName = ModelFacade.getInstance().getName(dm);
     if (myName == null || myName.equals("")) return NO_PROBLEM;
     String nameStr = myName;
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;

@@ -58,7 +58,7 @@ public class CrCircularInheritance extends CrUML {
 
   public boolean predicate2(Object dm, Designer dsgr) {
       boolean problem = NO_PROBLEM;
-      if (ModelFacade.isAGeneralizableElement(dm)) {
+      if (ModelFacade.getInstance().isAGeneralizableElement(dm)) {
           try {
               CoreHelper.getHelper().getChildren(dm);
           }

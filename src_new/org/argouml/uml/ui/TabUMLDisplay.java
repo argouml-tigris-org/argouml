@@ -45,7 +45,7 @@ public class TabUMLDisplay extends TabText {
     // accessors
 
     protected String genText(Object o) {
-        if (!(ModelFacade.isAModelElement(o)))
+        if (!(ModelFacade.getInstance().isAModelElement(o)))
             return "Nothing selected";
         return "This feature is not yet implemented";
     }

@@ -148,9 +148,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         //      move the pointer to the target in the NavPane to some other target
         Object newTarget = null;
         target = target instanceof Fig ? ((Fig)target).getOwner() : target;
-        if (ModelFacade.isABase(target)) {
+        if (ModelFacade.getInstance().isABase(target)) {
             newTarget = ((MBase)target).getModelElementContainer();
-        } else if (ModelFacade.isADiagram(target)) {
+        } else if (ModelFacade.getInstance().isADiagram(target)) {
             Diagram firstDiagram = (Diagram)p.getDiagrams().get(0);
             if (target != firstDiagram)
                 newTarget = firstDiagram;

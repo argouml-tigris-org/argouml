@@ -74,9 +74,9 @@ public class ActionGenerateAll extends UMLAction {
       java.util.Enumeration enum = nodes.elements();
       while (enum.hasMoreElements()) {
           Object owner = enum.nextElement();
-          if (!ModelFacade.isAClass(owner) && !ModelFacade.isAInterface(owner))
+          if (!ModelFacade.getInstance().isAClass(owner) && !ModelFacade.getInstance().isAInterface(owner))
             continue;
-          String name = ModelFacade.getName(owner);
+          String name = ModelFacade.getInstance().getName(owner);
           if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) continue;
             classes.addElement(owner);
       }
@@ -84,10 +84,10 @@ public class ActionGenerateAll extends UMLAction {
       if (classes.size() == 0 && paths != null) {
           for (int i = 0; i < paths.length; i++ ) {
               Object selected = paths[i].getLastPathComponent();
-              if (ModelFacade.isAPackage(selected)) {
+              if (ModelFacade.getInstance().isAPackage(selected)) {
                   addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MClass.class), classes);
                   addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MInterface.class), classes);
-              } else if (ModelFacade.isAClass(selected) || ModelFacade.isAInterface(selected)) {
+              } else if (ModelFacade.getInstance().isAClass(selected) || ModelFacade.getInstance().isAInterface(selected)) {
                   if(!classes.contains(selected)) classes.addElement(selected);
               }
           }

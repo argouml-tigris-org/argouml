@@ -168,7 +168,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      *           psager@tigris.org   Jan. 24, 2oo2
      */
     public void setNamespace(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
+        if (!ModelFacade.getInstance().isANamespace(handle)) {
             cat.error(
                 "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
