@@ -85,6 +85,11 @@ public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
         {"button.finish", "Fin"},
         {"button.help", "Aide"},
 
+        {"mnemonic.button.back", "P"},
+        {"mnemonic.button.next", "S"},
+        {"mnemonic.button.finish", "F"},
+        {"mnemonic.button.help", "A"},
+
         {"level.low", "Basse"},
         {"level.medium", "Moyenne"},
         {"level.high", "\u00c9lev\u00e9e"},

@@ -48,6 +48,12 @@ public class SettingsResourceBundle_fr extends ListResourceBundle {
         {"label_profile", "Rendre compte des temps de chargement"},
         {"tab_preferences", "Pr\u00e9f\u00e9rences"},
         {"tab_environment", "I18N: Environment"},
+
+	{"tab_fonts", "Polices" },
+	{"label_fonts_normal", "Taille normale" },
+	{"label_fonts_big", "Grande taille" },
+	{"label_fonts_huge", "Tr\u00E8s grande taille" },
+
         {"caption_settings", "Param\u00e9trages"},
    };
 
@@ -55,5 +61,3 @@ public class SettingsResourceBundle_fr extends ListResourceBundle {
         return _contents;
      }
 }
-
-
