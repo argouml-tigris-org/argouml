@@ -1,9 +1,44 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v3.5 (http://www.xmlspy.com) by  () -->
+<!-- for Denny 
+    <!DOCTYPE book SYSTEM "C:\WINDOWS\Desktop\argo\docbkx412\docbookx.dtd"> -->
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"  "../docbook-setup/docbookx/docbookx.dtd">
 
 <!-- ArgoUM and Poseidon for UML Documentation -->
 <book>
 	<title>ArgoUML and Poseidon for UML</title>
+	<chapter>
+		<title>Introduction</title>
+		<qandaset defaultlabel="none">
+			<qandadiv>
+				<title>Introduction</title>
+				<qandaentry>
+					<question>
+						<para>What is ARGO?</para>
+					</question>
+					<answer>
+						<para>ARGO uml is in full sail! ARGO has not locked up on me once!</para>
+						<para>The waters are choppy in places (nasty currents in the Save waters), unpredictable winds (Will it open old documents? Will I be able to reuse the software maps I've already created?).</para>
+						<para>The navigation charts are skimpy at best (We're on our way with DocBook XML but little more than an agreement on software for the moment!) but the crew is full of professionals! Together we'll get ARGO from the development port to the production port! </para>
+						<para>Understandably when you get into a boat you plan on going somewhere. But don't plan on a cross Atlantic trip with ARGO, it's more appropriate for a lake cruise in calm weather.</para>
+						<para>ARGO is NOT production ready! Meaning you will get distracted by the things you can't do and you'll feel like your drowning sometimes if you've used commercial UML tools. But, hey, ARGO started as an academic project, not a commercial project. And, it's free, the potential is there, that's clear, because you are here...</para>
+						<para>All open source projects are as useful and helpful as the users and developers identify and implement use cases, code, correct misunderstandings, identify bugs, and help with the documentation!</para>
+						<para>We need your help and here's how.</para>
+						<para>Use the Java Web Start (JWS)Version ! This will give you the latest "stable" build. Version .8.1 is officially supported by the developers, but give the JWS version a try! </para>
+						<para>Technically, the latest CVS of ARGO can Reverse Engineer compiling Java code...which means we will soon have all of the classes of ARGO in UML form! That'll help everyone to better understand and advance the code and, most importantly...usability!</para>
+						<para>Try to get into the habit of modeling your questions using UML! It'll help you learn the ins and outs of UML and it'll give the developers and the users a better idea of how to use ARGO, what does and does not work AND for budding developers a chance to model real code! </para>
+						<para>And then what you ask?</para>
+						<para>Save your diagrams as .zargo! And mail them to the user group as attachments! This will help all of us by building a library of UML diagrams for reference and for development purposes!</para>
+						<para/>
+						<para>If you're comfortable coding, jump into the developer's galley and build ARGO from the inside out with the CVS. The CVS has functionalities that have not been deemed ready for JWS release yet. Give it a try! You'll find some tips on using the CVS in this user document.</para>
+						<para/>
+						<para>We'll help you along the way too! Please specify your ARGO version and your OS when making your requests for help. </para>
+						<para/>
+					</answer>
+				</qandaentry>
+			</qandadiv>
+		</qandaset>
+	</chapter>
 	<chapter>
 		<title>Frequently Asked Questions</title>
 		<qandaset defaultlabel="qanda">
@@ -11,32 +46,30 @@
 				<title>General Questions</title>
 				<qandaentry>
 					<question>
-						<para>
-							What is Java Web Start?
-						</para>
+						<para> What is Java Web Start?
+                                                </para>
 					</question>
 					<answer>
 						<para>
-							JWS = Java Webstart, some Sun technology which allows you start Java
-							Applications via the web. You can start ArgoUML as well as Poseidon for
-							UML Community Edition from www.argouml.org
-							and www.gentleware, respecitvely. Just click on the provided link (after
-							installing JWS).
-						</para>
+                                                        JWS = Java Webstart, some Sun technology which allows you start Java
+                                                        Applications via the web. You can start ArgoUML as well as Poseidon for
+                                                        UML Community Edition from www.argouml.org
+                                                        and www.gentleware, respecitvely. Just click on the provided link (after
+                                                        installing JWS).
+                                                </para>
 					</answer>
 				</qandaentry>
 				<qandaentry>
 					<question>
-						<para>
-							What are the names of the various work screens?
-						</para>
+						<para> What are the names of the various work screens?
+                                                </para>
 					</question>
 					<answer>
 						<para>
-							The different screens are called panes. They all have an individual
-							name, Navigation Pane, Diagram Pane, ToDo Pane and Details Pane, as
-							shown in the following table.
-							<table frame="all">
+                                                        The different screens are called panes. They all have an individual
+                                                        name, Navigation Pane, Diagram Pane, ToDo Pane and Details Pane, as
+                                                        shown in the following table.
+                                                        <table frame="all">
 								<title>Table title</title>
 								<tgroup cols="2" align="left" colsep="1" rowsep="1">
 									<tbody>
@@ -57,33 +90,28 @@
 				<qandaentry>
 					<question>
 						<para>
-							Where do I get the code for ArgoUML?
-						</para>
+                                                        Where do I get the code for ArgoUML?
+                                                </para>
 					</question>
 					<answer>
-						<para>
-							You can download the latest release of Argo in source from
-							www.argouml.org. Or you can get the must current code from CVS. You can
-							reach it via normal cvs command (either in a tool or on the
-							command line). The server is the same as for ARGOUML (try
-							:pserver:guest@cvs.tigris.org:/cvs) and the name of the repository is
-							gef/src. This is the GEF repository. The Argo rep (for 0.9.x versions)
-							is argouml/src_new.
-						</para>
+						<para> You can download the latest release of Argo in source from www.argouml.org. Or you can get the must current code from CVS. You can reach it via normal cvs command (either in a tool or on the command line). The server is the same as for ARGOUML</para><para>(try:pserver:guest@cvs.tigris.org:/cvs)</para>  <para>And the name of the GEF repository is gef/src.</para>
+<para> The Argo rep (for 0.9.x versions)is argouml/src_new.
+                                                </para>
+						<para>Be aware that if you have something to contribute in terms of code but you can't be bothered to figure out the CVS send your contribution directly to one of the lead developers and they can load it into the CVS for you!</para>
 					</answer>
 				</qandaentry>
 				<qandaentry>
 					<question>
 						<para>
-							Is there commercial support for ARGO?
-						</para>
+                                                        Is there commercial support for ARGO?
+                                                </para>
 					</question>
 					<answer>
 						<para>
-							Yes there is, Gentleware provides enhanced versions of Argo as well as
-							support. It was founded by some to the core developers of ArgoUML.
-							See http://www.gentleware.com.
-					</para>
+                                                        Yes there is, Gentleware provides enhanced versions of Argo as well as
+                                                        support. It was founded by some to the core developers of ArgoUML.
+                                                        See http://www.gentleware.com.
+                                        </para>
 					</answer>
 				</qandaentry>
 			</qandadiv>
@@ -91,56 +119,49 @@
 				<title>Diagrams</title>
 				<qandaentry>
 					<question>
-						<para>
-							How do I arrange my diagram elements?
-						</para>
+						<para> How do I arrange my diagram elements?
+                                                </para>
 					</question>
 					<answer>
+						<para> There are several ways to easily and elegantly move diagram elements.                    </para>
+						<para>Select the elements you want to move. By holding down the controll key you can select several.</para>
+						<para>Now hit your arrow keys. Your elements move a little with every key stroke. 
+                            </para>
+						<para> If you also hold down the shift key, they move a bit faster.                   </para>
 						<para>
-							There are several ways to easily and elegantly move diagram elements.
-						</para>
+                                                        Or click on the broom button, move your mouse to the diagram
+                                                        pane, right click and hold. Now moving your mouse side ways (or up and
+                                                        down)
+                                                        will allign elements.
+                                                </para>
 						<para>
-							Select the elements you want to move. By holding down the
-							controll key you can select several.
-							Now hit your arrow keys. Your elements move a little with every key
-							stroke. If you also hold down the shift key, they move a bit faster.
-						</para>
-						<para>
-							Or click on the broom button, move your mouse to the diagram
-							pane, right click and hold. Now moving your mouse side ways (or up and
-							down)
-							will allign elements.
-						</para>
-						<para>
-							There also is the menu item arrage where you can allign, group or nodge
-							(move a little bit) elements.
-						</para>
+                                                        There also is the menu item arrage where you can allign, group or nodge
+                                                        (move a little bit) elements.
+                                                </para>
 					</answer>
 				</qandaentry>
 				<qandaentry>
 					<question>
 						<para>
-How can I look at different diagrams at the same time?
-</para>
+						How can I look at different diagrams at the same time?	
+						</para>
 					</question>
 					<answer>
 						<para>
 You can 'spawn' a panel by
 double-clicking on the tab. It will then show as individual window and
-you can put it next to another.
+you can put it next to another. But beware, this function does not work in the diagram window for the moment. This is believed to be an issue with GEF. 
 </para>
 					</answer>
 				</qandaentry>
 			</qandadiv>
 			<qandadiv>
-					<title>Class Diagrams</title>
+				<title>Class Diagrams</title>
 				<qandaentry>
 					<question>
-						<para>
-						</para>
+						<para/>
 					</question>
-					<answer>
-					</answer>
+					<answer/>
 				</qandaentry>
 			</qandadiv>
 			<qandadiv>
@@ -148,37 +169,52 @@ you can put it next to another.
 				<qandaentry>
 					<question>
 						<para>
-How do I create an activity diagram?
-						</para>
-						</question>
-						<answer>
-							<para>
+							How do I create an activity diagram?
+                                                </para>
+					</question>
+					<answer>
+						<para>
 Select a use case or class, then you can create an activity
 diagram.
 </para>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-				<qandadiv>
-					<title>State Diagrams</title>
-					<qandaentry>
-						<question>
-							<para>
+						<para>Enabling an activity diagram that is connected to an actor has been requested as a feature.
+</para>
+					</answer>
+				</qandaentry>
+			</qandadiv>
+			<qandadiv>
+				<title>State Diagrams</title>
+				<qandaentry>
+					<question>
+						<para>
 How do I create a state diagram?
 </para>
-						</question>
-						<answer>
-							<para>
+					</question>
+					<answer>
+						<para>
 Select a class, then you can create a state
 diagram.
 </para>
-						</answer>
-					</qandaentry>
-				</qandadiv>
-				<qandadiv>
-					<title>Loading and Saving</title>
-					<qandaentry>
-						<question>
+					</answer>
+				</qandaentry>
+				<qandaentry>
+					<question>
+						<para>
+I am trying to use Argo to edit a state machine diagram for a model. But when I edit a composite state, I dont know how to provide do and event for a composite state. Can you help me?
+</para>
+					</question>
+					<answer>
+						<para>
+Select a class, then you can create a state
+diagram.
+</para>
+					</answer>
+				</qandaentry>
+			</qandadiv>
+			<qandadiv>
+				<title>Loading and Saving</title>
+				<qandaentry>
+					<question>
 						<para>
 Do Argo and Poseidon save .xmi files?
 </para>
@@ -190,7 +226,7 @@ information in a .pgml-file and information about the project in a .argo
 file. All of these are
 then
 zipped  to a .zargo-file. You can easily extract the .xmi from the
-.zargo file
+..zargo file
 using any old generic ZIP application. Give it a try and look into the
 magic of ARGO!
 Be aware that double clicking will launch a ZIP utility, if one is
@@ -247,55 +283,59 @@ still need to implement method bodies, though, to get usable results.
 					</answer>
 				</qandaentry>
 			</qandadiv>
+		</qandaset>
+	</chapter>
+	<chapter>
+		<title>Reverse Engineering</title>
+		<qandaset>
 			<qandadiv>
 				<title>Reverse Engineering</title>
-				<qandaentry>
-					<question>
-						<para>
+				<qandadiv>
+					<title>Reverse Engineering</title>
+					<qandaentry>
+						<question>
+							<para>
 What reverse engineering functionality is available?
 </para>
-					</question>
-					<answer>
-						<para>
+						</question>
+						<answer>
+							<para>
 Since version 0.9.3 Argo supports reverse engineering. The menu item to
 import sources is in Files->Import.  There are various
 weaknesses in the layout and parsing algorithms so if you track down a
 bug please submit a bug report.  Also, you should not expect ARGO to
 reverse engineer non-compiling code.
 </para>
-					</answer>
-				</qandaentry>
+						</answer>
+					</qandaentry>
+					<qandaentry>
+						<question>
+							<para>
+Can I reverse engineer a .jar file with ARGO .9.4?
+</para>
+						</question>
+						<answer>
+							<para>
+Currently, ArgoUML as well as Poseidon cannot RE .jar Files. When we talk about traditional jar files, which are but a collection of class files (*.class). Reverse engineering relies on Source Files (*.java), which should be syntactically correct, i.e. they can be compiled.
+</para>
+							<para>See to do list.</para>
+						</answer>
+					</qandaentry>
+				</qandadiv>
 				<qandaentry>
 					<question>
-						<para>
-Can I reverse engineer a .jar file with ARGO .9.3?
-</para>
+						<para/>
 					</question>
-					<answer>
-						<para>
-Currently, ArgoUML as well as Poseidon cannot RE .jar Files. When we
-talk about traditional jar files,
-which are but a collection of class files (*.class). Reverse engineering
-relies on Source
-Files (*.java), which should be syntactically correct, i.e. they can be
-compiled.
-</para>
-					</answer>
+					<answer/>
 				</qandaentry>
 			</qandadiv>
+		</qandaset>
+	</chapter>
+	<chapter>
+		<title>Output</title>
+		<qandaset>
 			<qandadiv>
-				<title>Roundtrip Engineering</title>
-				<qandaentry>
-					<question>
-						<para>
-						</para>
-					</question>
-					<answer>
-					</answer>
-				</qandaentry>
-			</qandadiv>
-			<qandadiv>
-				<title>Grafics and Printing</title>
+				<title>Graphics and Printing</title>
 				<qandaentry>
 					<question>
 						<para>
@@ -320,17 +360,7 @@ What is PGML?
 					</question>
 					<answer>
 						<para>
-PGML is the saving format for diagram information used in Argo and
-Poseidon. Although this is outdated a little,
-it shows why we chose PGML in the first place. In the future, PGML
-will be replaced by an extended XMI format which will include graphical
-representation.
-PGML is shortcut for Precision Graphics Markup Language. In April 1998
-Adobe
-Systems proposed a new Standard for Vector Graphics to the World Wide
-Web Consortium (W3C), which should faciliate the creation and usage of
-image material in the World Wide Web. It will be replaced by SVG. We
-will support SVG by generating it from the XMI in the future.
+PGML is the saving format for diagram information used in Argo and Poseidon. Although this is outdated a little, it shows why we chose PGML in the first place. In the future, PGML will be replaced by an extended XMI format which will include graphical representation. PGML is shortcut for Precision Graphics Markup Language. In April 1998 Adobe Systems proposed a new Standard for Vector Graphics to the World Wide Web Consortium (W3C), which should faciliate the creation and usage of image material in the World Wide Web. It will be replaced by SVG. We will support SVG by generating it from the XMI in the future.
 </para>
 					</answer>
 				</qandaentry>
@@ -341,26 +371,8 @@ What applications open PGML?
 </para>
 					</question>
 					<answer>
-						<para>
-PGML is a predecessor of SVG. It was droped by the W3C Consortium.
-Currently
-there are no other tools that we know of working on PGML. We will move
-to SVG
-soon. And THAT will be read by many tools.
-</para>
-					</answer>
-				</qandaentry>
-				<qandaentry>
-					<question>
-						<para>
-What does SVG stand for?
-</para>
-					</question>
-					<answer>
-						<para>
-A super cool vector graphics format (like MM Flash) that is totally open
-and is gaining enormous ground in the graphics world. Find out more at
-the www.W3C.org
+						<para>PGML is a predecessor of SVG. It was droped by the W3C Consortium.</para>
+						<para>Currently there are no other tools that we know of working on PGML. We will move to SVG soon. And THAT will be read by many tools.
 </para>
 					</answer>
 				</qandaentry>
@@ -375,6 +387,200 @@ How can I print my diagrams?
 Select a diagram, then go to File->Export Diagrams. You can generate
 gif, postscript, eps or svg format.
 </para>
+					</answer>
+				</qandaentry>
+				<qandaentry>
+					<question>
+						<para>
+What does SVG stand for?
+</para>
+					</question>
+					<answer>
+						<para>
+A super cool vector graphics format (like MM Flash) that is totally open
+and is gaining enormous ground in the graphics world. Find out more at
+the www.W3C.org. </para>
+						<para>As well visit Adobe.com for the plugin for NN and IE</para>
+					</answer>
+				</qandaentry>
+				<qandaentry>
+					<question>
+						<para> How do I save my diagrams as .SVG?
+</para>
+					</question>
+					<answer>
+						<para>First: select .svg as the file type. Second: type the name of the file as you like with the .svg tag at the end. Example myumldiagram.svg</para>
+						<para>ARGO does not do it automatically. See the to-do list.</para>
+						<para> Et voila! SVG! Give it a try and zoom around a little...They are not pretty though, so if you know anything about rendering beautiful SVG let us know!</para>
+						<para>Oh, and by the way, you'll need a browser that can read SVG, the plugin for NN and IE are available at Adobe.com</para>
+						<para>There are a few browsers that read SVG natively: Amaya, X-Smiles, and a rudimentary version of Mozilla.</para>
+						<para>The first look at ARGO SVG might be a little disappointing...it doesn't bound the text very well and it's preset to 600X 600. 
+You can change the size of the SVG by going into the source and changing it manually. </para>
+						<para>
+If you know how we can set the SVG output to automatically correspond to the diagram itself please let us know!</para>
+						<para>See to do list</para>
+						<para>Be aware: You will not have scroll bars for your SVG unless it is embedded into an HTML! Good luck and let us know what you find!
+</para>
+					</answer>
+				</qandaentry>
+				<qandaentry>
+					<question>
+						<para>
+							Can I output my entire ZARGO as an .html?
+						</para>
+					</question>
+					<answer>
+						<para>No not yet. This feature is much desired. Please see the to-do list.</para>
+						<para>Use case: File>Save As>project.html>select diagram output i.e. .svg, .gif, .jpg, etc.</para>
+						<para>Output would include: java docs.</para>
+						<para>Diagrams with rollover functionality i.e. when users rollover diagram elements their is an embedded link to the javadocs.</para>
+					</answer>
+				</qandaentry>
+			</qandadiv>
+			<qandadiv>
+				<title>.XMI</title>
+				<qandaentry>
+					<question>
+						<para>I have a model generated by Rational Rose in xmi format and I want input it into ARGO UML case tool. Could anyone tell me how I can do that? </para>
+					</question>
+					<answer>
+						<para>Probably not possible but if you want to take on the task of writing an XSLT that transposes the ROSE .xmi to ARGO .xmi you'd make a lot of friends in a hurry!</para>
+					</answer>
+				</qandaentry>
+				<qandaentry>
+					<question>
+						<para>When I save in 0.8.1a .xmi files show up in my save directory, are these just as interchangeable as the 0.9.x .xmi files?</para>
+					</question>
+					<answer>
+						<para>This depends on the nsuml version you are using (you can find out about this i your startup messages on console). Version 0.4.19 is okay, should be interchangable.</para>
+					</answer>
+				</qandaentry>
+				<qandaentry>
+					<question>
+						<para>How do I import an .xmi into ARGO and what formats are known to be supported?</para>
+					</question>
+					<answer>
+						<para>Because of the variety of .xmi formats being generated you will encounter problems using other .xmis generated from other applications. </para>
+						<para>ARGOUML's native storage format is another implementation of XMI (Curt Arnold believes that it has been hacked so it can also read the Unisys variant).  He recommends that if you are comfortable with XSLT, you can typically transform one variant of UML + XMI to another, plus MetaIntegrations (http://www.metaintegrations.net) makes a version of their Bridge product available to transform between XMI flavors.</para>
+					</answer>
+				</qandaentry>
+				<qandaentry>
+					<question>
+						<para>Does ARGO UML generate an XMI document?</para>
+					</question>
+					<answer>
+						<para>Yes! Check out the .zARGO file. Open it and Voila! It's tucked inside...</para>
+						<para> ARGO saves all .xmi and .pgml and .ARGO files in one zipped .ZARGO file. You can easily extract the .xmi from the .zARGO file using any old generic ZIP application. (PowerArchiver is a cool freeware app for the Win folks). Give it a try and look into the magic of ARGO!</para>
+						<para>
+Be aware that double clicking will launch a ZIP utility,if one is installed, and NOT ARGO.
+</para>
+					</answer>
+				</qandaentry>
+			</qandadiv>
+		</qandaset>
+	</chapter>
+	<chapter>
+		<title>Developers</title>
+		<qandaset>
+			<qandadiv>
+				<title>Developer Faq</title>
+				<qandaentry>
+					<question>
+						<para>I want to help the Developer's. How can I Help!</para>
+					</question>
+					<answer>
+						<para>A good place to start is to take a look at the To Do list and then browse through the Developer FAQ.</para>
+						<para>Download the CVS take a look at the code. </para>
+						<para>The Developer Faq is available in the CVS. You can see it in it's current online form here. Check it out! Add to it! Submit your addtions! Get your name in lights!</para>
+						<para>
+(http://argouml.tigris.org/newsite/faq/faq.html)
+</para>
+					</answer>
+				</qandaentry>
+			</qandadiv>
+		</qandaset>
+	</chapter>
+	<chapter>
+		<title>Screen Grabs</title>
+		<qandaset defaultlabel="none">
+			<qandadiv>
+				<title>Screen Grabs</title>
+				<qandaentry>
+					<question>
+						<para>There's nothing like show and tell when using software! Everyone likes screen grabs...here's how you can help out!
+						</para>
+					</question>
+					<answer>
+						<para/>
+						<para/>
+						<para>Make screen grabs as you go! And here's how...</para>
+						<para>MS Windows</para>
+						<para> You can use the PrintScreen key to copy the screen to the clipboard (as a bitmap), and then you can paste it into another application (such as MS Word, PowerPoint, etc. (maybe Paint, too)) using the Paste function (ctrl-v).  MS Word may (depending on your version) allow you to save the document as an HTML page, which creates an html source file and gif files for all the embedded images (i.e. your pasted screen shot).</para>
+						<para>To capture a single window instead of the entire screen, use Alt-PrintScreen.</para>
+						<para>Image resolution is determined by screen size, for best results: 256 colors by 800X600 is good for a full screen capture.</para>
+						<para>Thanks to Derek for that little tip!</para>
+						<para>Do a search on any of your favorite freeware sites for more elaborate applications. Snagit from techsmith has been  recommended</para>
+						<para> Linux</para>
+						<para>There's a number of screen shots apps under Linux though they escape me now!</para>
+					</answer>
+				</qandaentry>
+			</qandadiv>
+		</qandaset>
+	</chapter>
+	<chapter>
+		<title>To Do List</title>
+		<qandaset defaultlabel="none">
+			<qandadiv>
+				<title>User Faq</title>
+				<qandaentry>
+					<question>
+						<para>User's Need Help!</para>
+					</question>
+					<answer>
+						<para>The user Faq is available in the CVS. You can see it in it's current online form here. Check it out! Add to it! Submit your addtions! Get your name in lights!</para>
+						<para>link goes here</para>
+					</answer>
+				</qandaentry>
+			</qandadiv>
+			<qandadiv>
+				<title>To Do</title>
+				<qandaentry>
+					<question>
+						<para>How can I begin to help?</para>
+						<para> Here's a short list of To Dos! Feel free to add (and contribute) to this list!			</para>
+					</question>
+					<answer>
+						<para>Enable output of finished project.zargo into one graphically enhanced HTML file for publshing. This should include a choice of graphical output i.e. SVG, PNG, etc.</para>
+						<para>Enable zooming on the diagram window</para>
+						<para>Note: This is available in the CVS.</para>
+						<para>Enable collabsing of panes.</para>
+						<para>Enable connection to class names to object names. Use case: When the user clicks on the properties pane for an object, the user has the option of choosing from a list of UML artifacts: classes, actors, etc.</para>
+						<para>Enable import interface for XML documents.</para>
+						<para>Enable data base modelling.</para>
+						<para>Enable C++ modelling.</para>
+						<para>Enable .jar reverse engineering.</para>
+						<para>Include edit commands under right click ...*</para>
+						<para>Swim lanes for activity diagrams.</para>
+						<para>Set the save as field when user selects file> "save graphics"  the "file name" of the project" file of type" automatically i.e. "myproject.svg" for example.</para>
+						<para>Test scripts for end user to replicate errors.</para>
+					</answer>
+				</qandaentry>
+			</qandadiv>
+		</qandaset>
+	</chapter>
+	<chapter>
+		<title>Bugs</title>
+		<qandaset defaultlabel="none">
+			<qandadiv>
+				<title>Report</title>
+				<qandaentry>
+					<question>
+						<para>Where do I report bugs?</para>
+					</question>
+					<answer>
+						<para>Like our heroes on the original Argo the Argonauts kept an eye on what the boat is doing and when it's behaving strangely...Please Please Please!  </para>
+						<para>If you find a bug you should register it at: </para>
+						<para>http://ARGOuml.tigris.org/project_bugs.html</para>
 					</answer>
 				</qandaentry>
 			</qandadiv>
