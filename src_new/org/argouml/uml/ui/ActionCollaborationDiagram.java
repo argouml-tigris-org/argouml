@@ -48,7 +48,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
      * Constructor.
      */
     private ActionCollaborationDiagram() {
-        super("action.collaboration-diagram", true, HAS_ICON);
+        super("action.collaboration-diagram");
     }
 
     /**
