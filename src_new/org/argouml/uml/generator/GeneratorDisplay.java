@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,7 @@
 
 
 package org.argouml.uml.generator;
+import org.argouml.application.api.*;
 
 //import java.util.*;
 import java.io.*;
@@ -40,7 +41,6 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 
-import org.argouml.application.api.*;
 import org.argouml.uml.MMUtil;
 
 /** Generator subclass to generate text for display in diagrams in in
@@ -243,10 +243,6 @@ public class GeneratorDisplay extends Generator {
     s += "\n";
     s += "} /* end " + classifierKeyword + " " + generatedName + " */\n";
     return s;
-  }
-
-  public String generateStereotype(MStereotype s) {
-    return "<<" + generateName(s.getName()) + ">>";
   }
 
   public String generateTaggedValue(MTaggedValue tv) {
@@ -494,16 +490,12 @@ public class GeneratorDisplay extends Generator {
       return "";
   }
 
-    public NotationName getNotation() {
-        return Notation.makeNotation("Java");
-    }
+  public NotationName getNotation() {
+      return Notation.NOTATION_DEFAULT;
+  }
 
-    public boolean canParse() {
-        return true;
-    }
+  public boolean canParse() { return true; }
 
-    public boolean canParse(Object o) {
-        return true;
-    }
+  public boolean canParse(Object o) { return true; }
 
 } /* end class GeneratorDisplay */
