@@ -28,11 +28,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
-
 public abstract class ProjectMember {
-    private static Logger _cat = 
-        Logger.getLogger(ProjectMember.class);
 
     ////////////////////////////////////////////////////////////////
     // instance varables

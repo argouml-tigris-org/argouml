@@ -526,7 +526,7 @@ public class TodoParser extends SAXParserBase {
 	    {
 		if (i2 > i1)
 		    sb.append(str.substring(i1, i2));
-		sb.append("%" + Integer.toString((int) c) + ";");
+		sb.append("%" + Integer.toString(c) + ";");
 		i1 = i2 + 1;
 	    }
 	}

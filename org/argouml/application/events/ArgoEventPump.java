@@ -32,7 +32,7 @@ import org.apache.log4j.*;
  */
 public class ArgoEventPump {
 
-    Logger cat = Logger.getLogger(ArgoEventPump.class.getName());
+    Logger cat = Logger.getLogger(ArgoEventPump.class);
 
     private ArrayList _listeners = null;
 
@@ -122,7 +122,7 @@ public class ArgoEventPump {
 	    break;
 
 	default :
-	    Argo.log.error("Invalid event:" + event.getEventType());
+	    cat.error("Invalid event:" + event.getEventType());
 	    break;
         }
     }
@@ -152,7 +152,7 @@ public class ArgoEventPump {
 	    break;
 
 	default :
-	    Argo.log.error("Invalid event:" + event.getEventType());
+	    cat.error("Invalid event:" + event.getEventType());
 	    break;
         }
     }

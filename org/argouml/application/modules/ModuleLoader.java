@@ -30,17 +30,33 @@
  */
 
 package org.argouml.application.modules;
-import org.argouml.application.api.*;
-import org.argouml.application.events.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.LineNumberReader;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.ListIterator;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.Vector;
+import java.util.jar.Attributes;
+import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
-import java.io.*;
-import java.lang.reflect.*;
-import java.util.*;
-import java.util.jar.*;
-
-// Import the following classes fully qualified to ensure that
-// no one can short-circuit our intended inheritance.
-
+import org.apache.log4j.Logger;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.ArgoModule;
+import org.argouml.application.api.ArgoSingletonModule;
+import org.argouml.application.api.Pluggable;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.security.ArgoJarClassLoader;
 
 /**  Handles loading of modules and plugins for ArgoUML.
@@ -50,6 +66,8 @@ import org.argouml.application.security.ArgoJarClassLoader;
  * @since   0.9.4
  */
 public class ModuleLoader {
+	/** logger */
+	private static Logger cat = Logger.getLogger(ModuleLoader.class);
 
     /** Class file suffix */
     public static final String CLASS_SUFFIX = ".class";
@@ -157,7 +175,7 @@ public class ModuleLoader {
 	    try {
 	        File file = new File(path[i]).getCanonicalFile();
 	        if (file.exists() && file.isFile() && file.canRead()) {
-	            Argo.log.info ("Loading modules from " + file);
+	            cat.info ("Loading modules from " + file);
 		    loadModules(new FileInputStream(file), file.getPath());
 		}
 	    }
@@ -338,7 +356,7 @@ public class ModuleLoader {
      * @return false if the load succeeded
      */
     public boolean loadModulesFromFile(String moduleFile) {
-	Argo.log.info("Loading modules from " + moduleFile);
+	cat.info("Loading modules from " + moduleFile);
         try {
 	    return loadModules(new FileInputStream(moduleFile), moduleFile);
 	}
@@ -382,14 +400,14 @@ public class ModuleLoader {
 	}
 	catch (Exception e) {
 	    obj = null;
-            Argo.log.warn("Could not instantiate module " + classname);
+            cat.warn("Could not instantiate module " + classname);
             ArgoModule.cat.debug("Could not instantiate " + classname, e);
 	}
         if (obj != null && obj instanceof ArgoModule) {
             ArgoModule aModule = (ArgoModule) obj;
 	    if (aModule.getModuleKey().equals(key) || (!secure)) {
                 if (aModule.initializeModule()) {
-                    Argo.log.info("Loaded Module: " +
+                    cat.info("Loaded Module: " +
 				  aModule.getModuleName());
                     _moduleClasses.add(aModule);
 		    fireEvent(ArgoModuleEvent.MODULE_LOADED, aModule);
@@ -409,7 +427,7 @@ public class ModuleLoader {
                 }
 	    }
 	    else {
-	        Argo.log.warn ("Key '" + key
+	        cat.warn ("Key '" + key
 			       + "' does not match module key '" 
 			       + aModule.getModuleKey() + "'");
 	    }
@@ -458,7 +476,7 @@ public class ModuleLoader {
 					    true);
 		    }
 		} catch (Exception e) {
-		    Argo.log.warn("Could not load Module: " + sKey);
+		    cat.warn("Could not load Module: " + sKey);
 		    ArgoModule.cat.debug("Could not load Module: " + sKey, e);
 		}
 		sKey = "";
@@ -483,7 +501,7 @@ public class ModuleLoader {
                 }
             }
         } catch (Exception e) {
-            Argo.log.warn("ModuleLoader.shutdown "
+            cat.warn("ModuleLoader.shutdown "
 			  + "Error processing Module shutdown:",
 			  e);
             e.printStackTrace();
@@ -508,7 +526,7 @@ public class ModuleLoader {
                 }
             }
         } catch (Exception e) {
-            Argo.log.warn("ModuleLoader.addModuleAction "
+            cat.warn("ModuleLoader.addModuleAction "
 			  + "Error processing Module popup actions:",
 			  e);
             e.printStackTrace();
@@ -617,14 +635,14 @@ public class ModuleLoader {
 				Object[] context) {
 	//  Make sure that we are only looking at real extensions
 	if (!(pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
-	    Argo.log.warn ("Class " + pluginType.getName() +
+	    cat.warn ("Class " + pluginType.getName() +
 			   " is not a core Argo pluggable type.");
 	    return null;
 	}
 
 	// Check to see that the class is not Pluggable itself
 	if (pluginType.equals(Pluggable.class)) {
-	    Argo.log.warn ("This is " + pluginType.getName() +
+	    cat.warn ("This is " + pluginType.getName() +
 			   ", it cannot be used here.");
 	    return null;
 	}
@@ -671,21 +689,21 @@ public class ModuleLoader {
 			      Object[] context) {
 	//  Make sure that we are only looking at real extensions
 	if (!(pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
-	    Argo.log.warn ("Class " + pluginType.getName() +
+	    cat.warn ("Class " + pluginType.getName() +
 			   " is not a core Argo pluggable type.");
 	    return false;
 	}
 
 	// Check to see that the class implements Pluggable
 	if (!(pluginType.isAssignableFrom(Pluggable.class))) {
-	    Argo.log.warn ("Class " + pluginType.getName() +
+	    cat.warn ("Class " + pluginType.getName() +
 			   " does not extend Pluggable.");
 	    return false;
 	}
 
 	// Check to see that the class is not Pluggable itself
 	if (pluginType.equals(Pluggable.class)) {
-	    Argo.log.warn ("Class " + pluginType.getName() +
+	    cat.warn ("Class " + pluginType.getName() +
 			   " does not extend Pluggable.");
 	    return false;
 	}
@@ -730,14 +748,14 @@ public class ModuleLoader {
     public ArrayList getPlugins (Class pluginType, Object[] context) {
 
 	if (!(pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
-	    Argo.log.warn ("Class " + pluginType.getName() +
+	    cat.warn ("Class " + pluginType.getName() +
 			   " is not a core Argo pluggable type.");
 	    return null;
 	}
 
 	// Check to see that the class is not Pluggable itself
 	if (pluginType.equals(Pluggable.class)) {
-	    Argo.log.warn ("This is " + pluginType.getName() +
+	    cat.warn ("This is " + pluginType.getName() +
 			   ", it cannot be used here.");
 	    return null;
 	}
@@ -801,8 +819,7 @@ public class ModuleLoader {
     }
 
     private void fireEvent(int eventType,  ArgoModule module) {
-	ArgoEventPump.getInstance().fireEvent(new ArgoModuleEvent(eventType,
-								  module));
+	ArgoEventPump.fireEvent(new ArgoModuleEvent(eventType, module));
     }
 
 } /* end class ModuleLoader */

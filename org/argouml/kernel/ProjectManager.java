@@ -36,7 +36,6 @@ import javax.swing.event.EventListenerList;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ArgoDiagram;
@@ -64,7 +63,8 @@ public final class ProjectManager {
 	"currentProject";
     public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
 
-    private Logger _cat = Logger.getLogger(this.getClass());
+	/** logger */
+	private static Logger cat = Logger.getLogger(ProjectManager.class);
 
     /**
      * The singleton instance of this class
@@ -192,7 +192,7 @@ public final class ProjectManager {
      */
     public Project makeEmptyProject() {
         _creatingCurrentProject = true;
-        Argo.log.info("making empty project");
+        cat.info("making empty project");
         Project p = new Project();
         // the following line should not normally be here,
         // but is necessary for argouml start up.
@@ -281,7 +281,6 @@ public final class ProjectManager {
 
             // first read the .argo file from Zip
             ZipEntry entry = zis.getNextEntry();
-            String name = null;
             while (entry != null
 		   && !entry.getName().endsWith(FileConstants.PROJECT_FILE_EXT))
 	    {
@@ -299,7 +298,7 @@ public final class ProjectManager {
         } catch (IOException e) {
             // exception can occur both due to argouml code as to J2SE
             // code, so lets log it
-            _cat.error(e);
+            cat.error(e);
             throw e;
         }
         // read the xmi
@@ -320,18 +319,18 @@ public final class ProjectManager {
             try {
                 xmiReader = new org.argouml.xml.xmi.XMIReader();
             } catch (SAXException se) { // duh, this must be catched and handled
-                _cat.error(se);
+                cat.error(se);
                 throw se;
             } catch (ParserConfigurationException pc) {
 		// duh, this must be catched and handled
-                _cat.error(pc);
+                cat.error(pc);
                 throw pc;
             }
-            Object mmodel = null;
+//            Object mmodel = null;
 
             InputSource source = new InputSource(zis);
             source.setEncoding("UTF-8");
-            mmodel = xmiReader.parseToModel(new InputSource(zis));
+//            mmodel = xmiReader.parseToModel(new InputSource(zis));
             // the following strange construction is needed because
             // Novosoft does not really know how to handle
             // exceptions...
@@ -343,7 +342,7 @@ public final class ProjectManager {
                             + url.toString()
                             + " could not be "
                             + "parsed.");
-                    _cat.error(
+                    cat.error(
                         "XMI file "
                             + url.toString()
                             + " could not be "
@@ -360,7 +359,7 @@ public final class ProjectManager {
         } catch (IOException e) {
             // exception can occur both due to argouml code as to J2SE
             // code, so lets log it
-            _cat.error(e);
+            cat.error(e);
             throw e;
         }
         p.loadZippedProjectMembers(url);

@@ -48,14 +48,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -92,6 +90,9 @@ import org.xml.sax.SAXException;
  *  Project consists of diagrams and UML models.
  */
 public class Project implements java.io.Serializable, TargetListener {
+
+	/** logger */
+	private static Logger cat = Logger.getLogger(Project.class);
     
     ////////////////////////////////////////////////////////////////
     // constants
@@ -142,11 +143,6 @@ public class Project implements java.io.Serializable, TargetListener {
     private transient VetoableChangeSupport _vetoSupport;
 
     /**
-     * True if we are in the proces of making a project, otherwise false
-     */
-    private static boolean _creatingProject;
-
-    /**
      * The root of the modeltree the user is working on. (The untitled_model in
      * the navpane).
      */
@@ -161,8 +157,8 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     private HashMap _defaultModelCache;
 
-    protected static Logger cat =
-        Logger.getLogger(org.argouml.kernel.Project.class);
+//    protected static Logger cat =
+//        Logger.getLogger(org.argouml.kernel.Project.class);
     
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -194,7 +190,7 @@ public class Project implements java.io.Serializable, TargetListener {
         _defaultModelCache = new HashMap();
         
         _saveRegistry = new UMLChangeRegistry();
-        Argo.log.info("making empty project with empty model");
+        cat.info("making empty project with empty model");
         // Jaap Branderhorst 2002-12-09
         // load the default model
         // this is NOT the way how it should be since this makes argo
@@ -232,7 +228,7 @@ public class Project implements java.io.Serializable, TargetListener {
         if(!ModelFacade.isAModel(model))
             throw new IllegalArgumentException();
         
-        Argo.log.info("making empty project with model: " + ModelFacade.getName(model));
+        cat.info("making empty project with model: " + ModelFacade.getName(model));
         setRoot(model);
         setCurrentNamespace(model);
         setNeedsSave(false);
@@ -261,7 +257,7 @@ public class Project implements java.io.Serializable, TargetListener {
         while (!name.endsWith(".xmi")) {
             name = zis.getNextEntry().getName();
         }
-        Argo.log.info("Loading Model from " + url);
+        cat.info("Loading Model from " + url);
         // 2002-07-18
         // Jaap Branderhorst
         // changed the loading of the projectfiles to solve hanging 
@@ -330,7 +326,7 @@ public class Project implements java.io.Serializable, TargetListener {
             ZipEntry currentEntry = null;
             while ((currentEntry = sub.getNextEntry()) != null) {
                 if (currentEntry.getName().endsWith(".pgml")) {
-                    Argo.log.info(
+                    cat.info(
 				  "Now going to load "
 				  + currentEntry.getName()
 				  + " from ZipInputStream");
@@ -345,11 +341,11 @@ public class Project implements java.io.Serializable, TargetListener {
                         addMember(d);
                     }
                     else {
-                        Argo.log.error("An error occurred while loading " 
+                        cat.error("An error occurred while loading " 
                             + currentEntry.getName());
                     }
                     // sub.closeEntry();
-                    Argo.log.info("Finished loading " + currentEntry.getName());
+                    cat.info("Finished loading " + currentEntry.getName());
                 }
                 if (currentEntry.getName().endsWith(".todo")) {
                     ProjectMemberTodoList pm =
@@ -659,7 +655,7 @@ public class Project implements java.io.Serializable, TargetListener {
         stream.closeEntry();
 
         String path = file.getParent();
-        Argo.log.info("Dir ==" + path);
+        cat.info("Dir ==" + path);
         int size = _members.size();
 
         try {
@@ -672,7 +668,7 @@ public class Project implements java.io.Serializable, TargetListener {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (!(p.getType().equalsIgnoreCase("xmi"))) {
-                    Argo.log.info("Saving member of type: "
+                    cat.info("Saving member of type: "
 				  + ((ProjectMember) _members.elementAt(i))
 				        .getType());
                     String name = p.getName();
@@ -691,7 +687,7 @@ public class Project implements java.io.Serializable, TargetListener {
             for (int i = 0; i < size; i++) {
                 ProjectMember p = (ProjectMember) _members.elementAt(i);
                 if (p.getType().equalsIgnoreCase("xmi")) {
-                    Argo.log.info("Saving member of type: "
+                    cat.info("Saving member of type: "
 				  + ((ProjectMember) _members.elementAt(i))
 				        .getType());
                     stream.putNextEntry(new ZipEntry(p.getName()));

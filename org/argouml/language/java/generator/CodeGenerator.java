@@ -37,9 +37,6 @@ import java.util.Iterator;
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
 
-
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MInterface;
 /**
  * This helper class generates CodePiece based code.
  * It needs some work. See issue
@@ -80,10 +77,10 @@ class CodeGenerator {
 	for (Iterator i = elements.iterator(); i.hasNext(); ) {
 	    Object element = /*(MModelElement)*/ i.next();
 	    if (ModelFacade.isAClass(element)) {
-		generateClass((MClass) element, reader, writer);
+            generateClass(element, reader, writer);
 	    }
 	    else if (ModelFacade.isAInterface(element)) {
-		generateInterface((MInterface) element, reader, writer);
+            generateInterface(element, reader, writer);
 	    }
 	}
 
@@ -128,10 +125,10 @@ class CodeGenerator {
 	for (Iterator i = elements.iterator(); i.hasNext(); ) {
 	    Object element = /*(MModelElement)*/ i.next();
 	    if (ModelFacade.isAClass(element)) {
-		generateClass((MClass) element, reader, writer);
+            generateClass(element, reader, writer);
 	    }
 	    else if (ModelFacade.isAInterface(element)) {
-		generateInterface((MInterface) element, reader, writer);
+            generateInterface(element, reader, writer);
 	    }
 	}
 

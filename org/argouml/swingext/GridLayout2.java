@@ -570,7 +570,7 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
     {
         int w = 0;
         int h = 0;
-        if (cellSizing == this.ROWCOLPREFERRED) {
+        if (cellSizing == GridLayout2.ROWCOLPREFERRED) {
             for (int c = 0; c < actualCols; ++c) w += colWidth[c];
             for (int r = 0; r < actualRows; ++r) h += rowHeight[r];
         }
