@@ -312,9 +312,11 @@ implements ItemListener, FocusListener, KeyListener {
             return;
         }
 
-        _target.startTrans();
-        _target.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
-        _target.endTrans();
+        if (!_target.getBounds().equals(bounds)) {
+            _target.startTrans();
+            _target.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+            _target.endTrans();
+        }
     }
 
 

@@ -184,10 +184,6 @@ public class FigMNode extends FigNodeModelElement {
     }
   }
 
-  protected void modelChanged() {
-    super.modelChanged();
-  }
-
   public boolean getUseTrapRect() { return true; }
 	
   static final long serialVersionUID = 8822005566372687713L;

@@ -37,6 +37,7 @@ import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
@@ -163,10 +164,10 @@ public class FigSeqStimulus extends FigNodeModelElement {
     else return "null";
   }
 
-  protected void modelChanged() {
+  protected void modelChanged(MElementEvent mee) {
    
 
-    super.modelChanged();
+    super.modelChanged(mee);
 
     MStimulus sti = (MStimulus) getOwner();
     if (sti == null) return;

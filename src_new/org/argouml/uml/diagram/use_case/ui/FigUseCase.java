@@ -39,6 +39,7 @@ import java.beans.*;
 import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.tigris.gef.base.*;
@@ -1289,22 +1290,6 @@ public class FigUseCase extends FigNodeModelElement {
         return null;
     }
 
-
-    /**
-     * <p>Called when there has been a change to the notation type (e.g. from
-     *   UML to Java).</p>
-     *
-     * <p>The notation change handlers are actually defined in the
-     *   superclass. We recompute all the figs needed for the model, which will
-     *   regenerate all the notation.</p>
-     */
-
-    public void renderingChanged() {
-        super.renderingChanged();
-        modelChanged();
-    }
-
-
     /**
      * <p>Adjust the fig in the light of some change to the model.</p>
      *
@@ -1312,11 +1297,11 @@ public class FigUseCase extends FigNodeModelElement {
      *   has been an NSUML event.</p>
      */
 
-    protected void modelChanged() {
+    protected void modelChanged(MElementEvent mee) {
 
         // Let our superclass sort itself out first
 
-        super.modelChanged();
+        super.modelChanged(mee);
 
         // Give up if we have no owner
 

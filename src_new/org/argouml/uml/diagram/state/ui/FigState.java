@@ -34,6 +34,7 @@ import java.beans.*;
 import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.tigris.gef.base.*;
@@ -194,8 +195,8 @@ public class FigState extends FigStateVertex {
   // event processing
 
   /** Update the text labels */
-  protected void modelChanged() {
-    super.modelChanged();
+  protected void modelChanged(MElementEvent mee) {
+    super.modelChanged(mee);
     cat.debug("FigState modelChanged");
     MState s = (MState) getOwner();
     if (s == null) return;

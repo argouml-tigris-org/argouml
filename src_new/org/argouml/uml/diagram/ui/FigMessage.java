@@ -35,6 +35,7 @@ import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
@@ -223,8 +224,8 @@ public class FigMessage extends FigNodeModelElement {
 	super.textEdited(ft);
   }
 
-  protected void modelChanged() {
-    super.modelChanged();
+  protected void modelChanged(MElementEvent mee) {
+    super.modelChanged(mee);
     MMessage mes = (MMessage) getOwner();
     if (mes == null) return;
     _name.setText(Notation.generate(this, mes));

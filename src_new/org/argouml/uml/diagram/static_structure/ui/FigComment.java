@@ -161,7 +161,6 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
     public FigComment(GraphModel gm, Object node) {
 	this();
 	setOwner(node);
-	modelChanged(); 
     }
 
     /**
@@ -264,9 +263,8 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
 	Object src = pce.getSource();
 	startTrans();
 	// update any text, colors, fonts, etc.
-	modelChanged();
+	renderingChanged();
 	// update the relative sizes and positions of internel Figs
-	updateBounds();
 	endTrans();
     }
 
@@ -445,8 +443,8 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      * This is called aftern any part of the UML MModelElement has
      * changed. This method automatically updates the note FigText. 
      */
-    protected final void modelChanged() {
-        super.modelChanged();
+    protected final void modelChanged(MElementEvent mee) {
+        super.modelChanged(mee);
 	
 	    String noteStr = retrieveNote();
 	    if(noteStr != null)

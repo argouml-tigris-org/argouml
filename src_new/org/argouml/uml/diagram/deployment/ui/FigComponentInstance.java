@@ -37,6 +37,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -303,8 +304,8 @@ public class FigComponentInstance extends FigNodeModelElement {
      }
   }
 
-  protected void modelChanged() {
-    super.modelChanged();
+  protected void modelChanged(MElementEvent mee) {
+    super.modelChanged(mee);
     MComponentInstance coi = (MComponentInstance) getOwner();
     if (coi == null) return;
     String nameStr = "";

@@ -511,8 +511,8 @@ public class FigSeqObject extends FigNodeModelElement
   }
 
 
-  protected void modelChanged() {
-    super.modelChanged();
+  protected void modelChanged(MElementEvent mee) {
+    super.modelChanged(mee);
     MObject obj = (MObject) getOwner();
     if (obj == null) return;
     String nameStr = Notation.generate(this, obj.getName()).trim();

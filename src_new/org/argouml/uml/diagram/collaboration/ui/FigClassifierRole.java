@@ -43,6 +43,7 @@ import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.tigris.gef.presentation.*;
@@ -479,11 +480,11 @@ public class FigClassifierRole extends FigNodeModelElement {
      *   Notation.generate to generate the full name for a classifier role.</p>
      */
 
-    protected void modelChanged() {
+    protected void modelChanged(MElementEvent mee) {
 
         // Let the superclass sort out any of its changes
 
-        super.modelChanged();
+        super.modelChanged(mee);
 
         // Give up if we don't have an owner
 

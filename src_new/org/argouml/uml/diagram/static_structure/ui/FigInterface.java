@@ -61,6 +61,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MComponent;
@@ -628,8 +630,8 @@ public class FigInterface extends FigNodeModelElement {
         return null;
     }
 
-    protected void modelChanged() {
-        super.modelChanged();
+    protected void modelChanged(MElementEvent mee) {
+        super.modelChanged(mee);
         Rectangle rect = getBounds();
         int xpos = _operBigPort.getX();
         int ypos = _operBigPort.getY();
@@ -698,7 +700,6 @@ public class FigInterface extends FigNodeModelElement {
             NotationHelper.getLeftGuillemot()
                 + "Interface"
                 + NotationHelper.getRightGuillemot());
-        modelChanged();
     }
 
     /**
