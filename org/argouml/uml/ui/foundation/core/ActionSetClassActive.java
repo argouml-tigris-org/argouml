@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
@@ -33,18 +32,17 @@ import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
- * 
- * @author jaap.branderhorst@xs4all.nl	
- * @since Jan 27, 2003
+ * @stereotype singleton
+ * @author mkl	
  */
-public class ActionSetGeneralizableElementLeaf extends UMLChangeAction {
+public class ActionSetClassActive extends UMLChangeAction {
 
-    public static final ActionSetGeneralizableElementLeaf SINGLETON = new ActionSetGeneralizableElementLeaf();
+    public static final ActionSetClassActive SINGLETON = new ActionSetClassActive();
 
     /**
-     * Constructor for ActionSetElementOwnershipSpecification.
+     * Constructor.
      */
-    protected ActionSetGeneralizableElementLeaf() {
+    protected ActionSetClassActive() {
         super(Translator.localize("Set"), true, NO_ICON);
     }
     
@@ -56,11 +54,10 @@ public class ActionSetGeneralizableElementLeaf extends UMLChangeAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (org.argouml.model.ModelFacade.isAGeneralizableElement(target) ||
-                    ModelFacade.isAOperation(target)) {
-                ModelFacade.setLeaf(target, source.isSelected());                
+            if (org.argouml.model.ModelFacade.isAClass(target)) {
+                Object m = /*(MGeneralizableElement)*/ target;
+                ModelFacade.setActive(m, source.isSelected());                
             }
         }
     }
-
 }
