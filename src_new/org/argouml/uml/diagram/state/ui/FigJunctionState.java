@@ -110,17 +110,36 @@ public class FigJunctionState extends FigStateVertex {
 	return new SelectionMoveClarifiers(this);
     }
 
-    public void setLineColor(Color col) { _head.setLineColor(col); }
-    public Color getLineColor() { return _head.getLineColor(); }
+    public void setLineColor(Color col) {
+        _head.setLineColor(col);
+    }
 
-    public void setFillColor(Color col) { _head.setFillColor(col); }
-    public Color getFillColor() { return _head.getFillColor(); }
+    public Color getLineColor() {
+        return _head.getLineColor();
+    }
 
-    public void setFilled(boolean f) { }
-    public boolean getFilled() { return true; }
+    public void setFillColor(Color col) {
+        _head.setFillColor(col);
+    }
 
-    public void setLineWidth(int w) { _head.setLineWidth(w); }
-    public int getLineWidth() { return _head.getLineWidth(); }
+    public Color getFillColor() {
+        return _head.getFillColor();
+    }
+
+    public void setFilled(boolean f) {
+    }
+
+    public boolean getFilled() {
+        return true;
+    }
+
+    public void setLineWidth(int w) {
+        _head.setLineWidth(w);
+    }
+
+    public int getLineWidth() {
+        return _head.getLineWidth();
+    }
 
     ////////////////////////////////////////////////////////////////
     // Event handlers
