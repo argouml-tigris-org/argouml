@@ -23,8 +23,6 @@
 
 package org.argouml.model;
 
-import org.argouml.model.uml.*;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
