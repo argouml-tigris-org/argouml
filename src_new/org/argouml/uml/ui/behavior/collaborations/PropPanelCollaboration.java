@@ -26,7 +26,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -53,23 +53,23 @@ public class PropPanelCollaboration extends PropPanelNamespace {
     public PropPanelCollaboration() {
         super("Collaboration", ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"),
-            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu",
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+            new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
 							 "tooltip.nav-stereo"),
 				     getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
         UMLLinkedList classifierList =
 	    new UMLLinkedList(new UMLCollaborationRepresentedClassifierListModel());
         classifierList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.represented-classifier"),
+        addField(Translator.localize("UMLMenu", "label.represented-classifier"),
             new JScrollPane(classifierList));
 
         UMLLinkedList operationList =
 	    new UMLLinkedList(new UMLCollaborationRepresentedOperationListModel());
         operationList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.represented-operation"),
+        addField(Translator.localize("UMLMenu", "label.represented-operation"),
             new JScrollPane(operationList));
 
         addSeperator();
@@ -77,12 +77,12 @@ public class PropPanelCollaboration extends PropPanelNamespace {
         UMLLinkedList interactionList =
 	    new UMLLinkedList(new UMLCollaborationInteractionListModel());
         interactionList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.interaction"),
+        addField(Translator.localize("UMLMenu", "label.interaction"),
             new JScrollPane(interactionList));
 
         UMLLinkedList constrainingList =
 	    new UMLLinkedList(new UMLCollaborationConstrainingElementListModel());
-        addField(Argo.localize("UMLMenu", "label.constraining-elements"),
+        addField(Translator.localize("UMLMenu", "label.constraining-elements"),
             new JScrollPane(constrainingList));
 
         // we do not add the ownedelements since they are not of real interest

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.ui.PropPanelDiagram;
 
 public class PropPanelUMLStateDiagram extends PropPanelDiagram {
@@ -34,7 +34,7 @@ public class PropPanelUMLStateDiagram extends PropPanelDiagram {
     // constructors
 
     public PropPanelUMLStateDiagram() {
-	super(Argo.localize("UMLMenu", "label.state-chart-diagram"));
+	super(Translator.localize("UMLMenu", "label.state-chart-diagram"));
 
     }
 

@@ -31,7 +31,7 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.util.ConfigLoader;
@@ -41,18 +41,18 @@ public class PropPanelSimpleState extends PropPanelState {
     public PropPanelSimpleState() {
         super("Simple State", _stateIcon, ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
-        addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
-        addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);
-        addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.container"), containerScroll);
+        addField(Translator.localize("UMLMenu", "label.entry"), entryScroll);
+        addField(Translator.localize("UMLMenu", "label.exit"), exitScroll);
+        addField(Translator.localize("UMLMenu", "label.do-activity"), doScroll);
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
-        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
+        addField(Translator.localize("UMLMenu", "label.incoming"), incomingScroll);
+        addField(Translator.localize("UMLMenu", "label.outgoing"), outgoingScroll);
+        addField(Translator.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
 
     }
 

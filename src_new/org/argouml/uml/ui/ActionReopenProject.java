@@ -25,8 +25,8 @@
 package org.argouml.uml.ui;
 
 import org.argouml.ui.*;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.*;
-import org.argouml.application.api.Argo;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.JMenuItem;
@@ -76,7 +76,7 @@ public class ActionReopenProject extends UMLAction {
         if (p != null && p.needsSave()) {
             String t =
                 MessageFormat.format(
-				     Argo.localize(
+                        Translator.localize(
 						   "Actions",
 						   "optionpane.open-project-save-changes-to"),
 				     new Object[] {

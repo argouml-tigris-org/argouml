@@ -50,7 +50,6 @@ import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
 
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
@@ -58,6 +57,7 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.Actions;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.ProjectBrowser;
@@ -210,7 +210,7 @@ public class ToDoPane extends JPanel
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
 	    splash.getStatusBar().showStatus(
-		    Argo.localize(BUNDLE, 
+	            Translator.localize(BUNDLE, 
 				  "statusmsg.bar.making-todopane"));
             splash.getStatusBar().showProgress(25);
         }
@@ -394,16 +394,16 @@ public class ToDoPane extends JPanel
     private static String formatCountLabel(int size) {
         switch (size) {
 	case 0:
-	    return Argo.localize("Cognitive", "todopane.label.no-items");
+	    return Translator.localize("Cognitive", "todopane.label.no-items");
 	case 1:
 	    return MessageFormat.
-		format(Argo.localize("Cognitive", "todopane.label.item"),
+		format(Translator.localize("Cognitive", "todopane.label.item"),
 		       new Object[] {
 			   new Integer(size) 
 		       });
 	default:
 	    return MessageFormat.
-		format(Argo.localize("Cognitive", "todopane.label.items"),
+		format(Translator.localize("Cognitive", "todopane.label.items"),
 		       new Object[] {
 			   new Integer(size) 
 		       });

@@ -27,7 +27,7 @@ package org.argouml.ui;
 import javax.swing.tree.TreeModel;
 import java.util.Vector;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 
 /**
@@ -57,7 +57,7 @@ public class PerspectiveSupport {
     /** Creates a new instance of PerspectiveSupport */
     public PerspectiveSupport(String name) {
         
-        setName(Argo.localize("Tree", name));
+        setName(Translator.localize("Tree", name));
         _goRules = new Vector();
     }
     

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -38,20 +38,20 @@ public class PropPanelAbstraction extends PropPanelDependency {
     public PropPanelAbstraction() {
         super("Abstraction", ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.suppliers"), _supplierScroll);
-        addField(Argo.localize("UMLMenu", "label.clients"), _clientScroll);
+        addField(Translator.localize("UMLMenu", "label.suppliers"), _supplierScroll);
+        addField(Translator.localize("UMLMenu", "label.clients"), _clientScroll);
 
         // TODO: add Mapping
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-        // new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
-        // new PropPanelButton(this, buttonPanel, _navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-association"), "removeElement", null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+        // new PropPanelButton(this, buttonPanel, _navBackIcon, Translator.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
+        // new PropPanelButton(this, buttonPanel, _navForwardIcon, Translator.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-association"), "removeElement", null);
 
     }
 

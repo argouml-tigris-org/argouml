@@ -26,14 +26,14 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 	
 
 public class GoGenElementToDerived implements PerspectiveRule {
 
     public String getRuleName() {
-	return Argo.localize ("Tree", "misc.class.subclass");
+	return Translator.localize ("Tree", "misc.class.subclass");
     }
 
     public Collection getChildren(Object parent) { 

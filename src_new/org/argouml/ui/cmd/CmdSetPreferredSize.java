@@ -25,7 +25,7 @@
 package org.argouml.ui.cmd;
 
 import java.util.Vector;
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
 import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 
@@ -56,7 +56,7 @@ public class CmdSetPreferredSize extends Cmd {
      * @param mode one of the defined constants
      */
     public CmdSetPreferredSize(int mode) {
-	super(Argo.localize("action", 
+	super(Translator.localize("action", 
 			    "action.set-" + wordFor(mode) + "-size"));
         _mode = mode;
     }

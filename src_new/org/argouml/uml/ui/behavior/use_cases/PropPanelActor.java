@@ -38,7 +38,7 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -73,30 +73,30 @@ public class PropPanelActor extends PropPanelClassifier {
     	super("Actor", ConfigLoader.getTabPropsOrientation());
 
 
-    	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-    	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+    	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+    	addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
 
-        addField(Argo.localize("UMLMenu", "label.modifiers"),
+        addField(Translator.localize("UMLMenu", "label.modifiers"),
                  _modifiersPanel);
 
-    	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+    	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
     	addSeperator();
 
-    	addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-    	addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+    	addField(Translator.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+    	addField(Translator.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
 
     	addSeperator();
 
-    	addField(Argo.localize("UMLMenu", "label.association-ends"),
+    	addField(Translator.localize("UMLMenu", "label.association-ends"),
             getAssociationEndScroll());
         // The toolbar buttons that go at the top.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            Argo.localize("UMLMenu", "button.go-up"), "navigateUp",
+                Translator.localize("UMLMenu", "button.go-up"), "navigateUp",
                             null);
         new PropPanelButton(this, buttonPanel, _actorIcon,
-                            Argo.localize("UMLMenu", "button.add-actor"), "newActor",
+                Translator.localize("UMLMenu", "button.add-actor"), "newActor",
                             null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
                             localize("Delete"), "removeElement",

@@ -45,10 +45,10 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.TabToDoTarget;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.Orientable;
 import org.argouml.swingext.Orientation;
@@ -172,7 +172,7 @@ public class DetailsPane
             JPanel t = (JPanel) _tabPanels.elementAt(i);
             if (t instanceof TabSpawnable)
                 title = ((TabSpawnable) t).getTitle();
-            title = Argo.localize("UMLMenu", title);
+            title = Translator.localize("UMLMenu", title);
             if (t instanceof TabToDoTarget) {
                 _tabs.addTab(title, _leftArrowIcon, t);
             } else if (t instanceof TabModelTarget) {

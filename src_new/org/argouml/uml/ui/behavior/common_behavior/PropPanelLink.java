@@ -32,7 +32,7 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
@@ -50,11 +50,11 @@ public class PropPanelLink extends PropPanelModelElement {
         super("Link Properties", _linkIcon, ConfigLoader.getTabPropsOrientation());
 
         Class mclass = (Class)ModelFacade.LINK;
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addLinkField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addLinkField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete object"), "removeElement", null);
     }
 

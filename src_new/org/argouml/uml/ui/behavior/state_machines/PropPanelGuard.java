@@ -34,7 +34,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
@@ -62,21 +62,21 @@ public class PropPanelGuard extends PropPanelModelElement {
     public PropPanelGuard() {
         super("Guard", ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
         JList transitionList = new UMLLinkedList(new UMLGuardTransitionListModel());
-        addField(Argo.localize("UMLMenu", "label.transition"), new JScrollPane(transitionList));
+        addField(Translator.localize("UMLMenu", "label.transition"), new JScrollPane(transitionList));
 
         addSeperator();
 
         UMLExpressionModel expressionModel = new UMLExpressionModel(this, (Class)ModelFacade.GUARD, "expression",
 								    (Class)ModelFacade.BOOLEAN_EXPRESSION, "getExpression", "setExpression");
-        addField(Argo.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true), JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        addField(Argo.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel, true));
+        addField(Translator.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true), JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        addField(Translator.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel, true));
 
-	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
 	new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
 
     }

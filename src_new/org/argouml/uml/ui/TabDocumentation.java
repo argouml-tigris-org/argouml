@@ -26,8 +26,8 @@ package org.argouml.uml.ui;
 
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.LabelledLayout;
@@ -77,7 +77,7 @@ public class TabDocumentation extends PropPanel {
         //TODO: the title of the prop panel is localized using the localisation of documentation
         //- should this change? (Raphael)
         super(
-	      Argo.localize(BUNDLE, "label.documentation"),
+	      Translator.localize(BUNDLE, "label.documentation"),
 	      (Configuration.getString(
                     Configuration.makeKey("layout", "tabdocumentation"))
                     .equals("West") ||
@@ -90,21 +90,21 @@ public class TabDocumentation extends PropPanel {
         //        super("tab.documentation", null, 2); 
 
         addField(
-		 Argo.localize(BUNDLE, "label.author"),
+		 Translator.localize(BUNDLE, "label.author"),
 		 new UMLTextField2(new UMLModelElementTaggedValueDocument("author")));
 
         //unknown where this information is stored; it does not go to myproject.argo (xml file)
         addField(
-		 Argo.localize(BUNDLE, "label.version"),
+		 Translator.localize(BUNDLE, "label.version"),
 		 new UMLTextField2(new UMLModelElementTaggedValueDocument("version")));
 
         addField(
-		 Argo.localize(BUNDLE, "label.since"),
+		 Translator.localize(BUNDLE, "label.since"),
 		 new UMLTextField2(new UMLModelElementTaggedValueDocument("since")));
 
         //TODO: change UMLCheckBox to UMLCheckBox2 (Raphael)
         addField(
-		 Argo.localize(BUNDLE, "label.deprecated"),
+		 Translator.localize(BUNDLE, "label.deprecated"),
 		 new UMLCheckBox(
 				 "",
 				 this,
@@ -117,7 +117,7 @@ public class TabDocumentation extends PropPanel {
         _see.setWrapStyleWord(true);
         JScrollPane spSee = new JScrollPane();
         spSee.getViewport().add(_see);
-        addField(Argo.localize(BUNDLE, "label.see"), spSee);
+        addField(Translator.localize(BUNDLE, "label.see"), spSee);
 
         //make new column with LabelledLayout
         add(LabelledLayout.getSeperator());
@@ -131,7 +131,7 @@ public class TabDocumentation extends PropPanel {
         JScrollPane spDocs = new JScrollPane();
         spDocs.getViewport().add(_doc);
         addField(
-		 Argo.localize(BUNDLE, "label.documentation"),
+		 Translator.localize(BUNDLE, "label.documentation"),
 		 spDocs);
     }
 

@@ -19,7 +19,6 @@ import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.swingext.PopupButton;
@@ -88,7 +87,7 @@ public class ZoomSliderButton extends PopupButton {
             Translator.localize(RESOURCE_NAME));
                 
         setIcon(icon);
-        setToolTipText(Argo.localize(BUNDLE, "button.zoom"));
+        setToolTipText(Translator.localize(BUNDLE, "button.zoom"));
     }
 
     /**
@@ -113,7 +112,7 @@ public class ZoomSliderButton extends PopupButton {
             ((Component) enum.nextElement()).setFont(LABEL_FONT);
         }
         
-        _slider.setToolTipText(Argo.localize(BUNDLE, 
+        _slider.setToolTipText(Translator.localize(BUNDLE, 
             "button.zoom.slider-tooltip"));   
         
         _slider.addChangeListener(new ChangeListener() {
@@ -131,7 +130,7 @@ public class ZoomSliderButton extends PopupButton {
         _currentValue = new JTextField(5);
         _currentValue.setHorizontalAlignment(JLabel.CENTER);
         _currentValue.setFont(LABEL_FONT);
-        _currentValue.setToolTipText(Argo.localize(
+        _currentValue.setToolTipText(Translator.localize(
             BUNDLE, "button.zoom.current-zoom-magnification"));
         updateCurrentValueLabel();
         _currentValue.addActionListener(new ActionListener() {

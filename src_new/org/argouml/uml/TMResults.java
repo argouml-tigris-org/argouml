@@ -28,7 +28,7 @@ import java.util.Vector;
 
 import javax.swing.table.AbstractTableModel;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
@@ -123,7 +123,7 @@ public class TMResults extends AbstractTableModel {
 		} else if (d instanceof UMLSequenceDiagram) {
 		    name = "label.sequence-diagram";
 		}
-		return Argo.localize(BUNDLE, name);
+		return Translator.localize(BUNDLE, name);
 	    case 1 :
 		return d.getName();
 	    case 2 :

@@ -26,13 +26,13 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.tigris.gef.base.Diagram;
 
 public class GoDiagramToEdge implements PerspectiveRule {
 
     public String getRuleName() {
-	return Argo.localize ("Tree", "misc.diagram.edge");
+	return Translator.localize ("Tree", "misc.diagram.edge");
     }
 
     public Collection getChildren(Object parent) { 

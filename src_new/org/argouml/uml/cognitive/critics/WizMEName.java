@@ -34,8 +34,8 @@ package org.argouml.uml.cognitive.critics;
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ui.WizStepTextField;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
@@ -48,7 +48,7 @@ public class WizMEName extends Wizard {
 					   
     protected String _instructions =
 	"Please change the name of the offending model element.";
-    protected String _label = Argo.localize("UMLMenu", "label.name");
+    protected String _label = Translator.localize("UMLMenu", "label.name");
     protected String _suggestion = "suggestion";
     protected String _origSuggest = "suggestion";
     protected boolean _mustEdit = false;

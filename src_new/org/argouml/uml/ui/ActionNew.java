@@ -30,8 +30,8 @@ import java.text.MessageFormat;
 
 import javax.swing.JOptionPane;
 
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.FindDialog;
@@ -62,7 +62,7 @@ public class ActionNew extends UMLAction {
 
 	if (p != null && p.needsSave()) {
 	    String t =
-		MessageFormat.format(Argo.localize("Actions",
+		MessageFormat.format(Translator.localize("Actions",
 						   "optionpane.new-project-save-changes-to"),
 				     new Object[] {p.getName()} );
 	    int response =

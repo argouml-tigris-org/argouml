@@ -81,9 +81,6 @@ public class Main {
 	"org/argouml/i18n/statusmsg.properties";	
 
     // Resourcebundle-keys
-    private static final String LBLBUNDLE =
-	"org/argouml/i18n/label.properties";
-		
     private static final String LBLBUNDLE_PROJECTBROWSER_TITLE = 
 	"label.projectbrowser-title";
 	
@@ -306,7 +303,8 @@ public class Main {
             SplashScreen splash = SplashScreen.getInstance();
             if (urlToOpen == null)
             {
-		splash.getStatusBar().showStatus(Argo.localize(STATBUNDLE, STATBUNDLE_BAR_DEFAULTPROJECT));	
+		splash.getStatusBar().showStatus(
+                Translator.localize(STATBUNDLE_BAR_DEFAULTPROJECT));
             }
             else
             {
@@ -346,8 +344,7 @@ public class Main {
         st.mark("perspectives");
 
         if (urlToOpen == null)
-	    pb.setTitle(Argo.localize(LBLBUNDLE, 
-				      LBLBUNDLE_PROJECTBROWSER_TITLE));	
+            pb.setTitle(Translator.localize(LBLBUNDLE_PROJECTBROWSER_TITLE));
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
@@ -362,8 +359,8 @@ public class Main {
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
-	    splash.getStatusBar().showStatus(Argo.localize(STATBUNDLE,
-							   STATBUNDLE_BAR_OPEN_PROJECT_BROWSER));	
+	    splash.getStatusBar().showStatus(
+                Translator.localize(STATBUNDLE_BAR_OPEN_PROJECT_BROWSER));
             splash.getStatusBar().showProgress(95);
         }
 

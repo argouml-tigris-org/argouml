@@ -25,7 +25,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 
 /**
@@ -41,7 +41,7 @@ public class ActionNewCallEvent extends ActionNewEvent {
      */
     protected ActionNewCallEvent() {
         super();
-        putValue(NAME, Argo.localize("UMLMenu", "button.new-callevent"));
+        putValue(NAME, Translator.localize("UMLMenu", "button.new-callevent"));
     }
 
     /**

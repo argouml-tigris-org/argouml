@@ -30,7 +30,7 @@ import java.net.URL;
 
 import javax.swing.JFileChooser;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
@@ -95,7 +95,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         }
 
         String sChooserTitle =
-            Argo.localize("Actions", "filechooser.save-as-project");
+        Translator.localize("Actions", "filechooser.save-as-project");
         chooser.setDialogTitle(sChooserTitle + p.getName());
         chooser.setFileFilter(FileFilters.CompressedFileFilter);
 

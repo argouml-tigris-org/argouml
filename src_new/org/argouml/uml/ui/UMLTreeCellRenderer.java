@@ -32,8 +32,8 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
@@ -106,30 +106,30 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 type = ModelFacade.getUMLClassName(value);
             } else if (value instanceof UMLDiagram) {
                 if (value instanceof UMLActivityDiagram)
-                    type = Argo.localize(BUNDLE, "label.activity-diagram");
+                    type = Translator.localize(BUNDLE, "label.activity-diagram");
                 else if (value instanceof UMLSequenceDiagram)
-                    type = Argo.localize(BUNDLE, "label.sequence-diagram");
+                    type = Translator.localize(BUNDLE, "label.sequence-diagram");
                 else if (value instanceof UMLCollaborationDiagram)
                     type =
-                        Argo.localize(BUNDLE, "label.collaboration-diagram");
+                    Translator.localize(BUNDLE, "label.collaboration-diagram");
                 else if (value instanceof UMLDeploymentDiagram)
-                    type = Argo.localize(BUNDLE, "label.deployment-diagram");
+                    type = Translator.localize(BUNDLE, "label.deployment-diagram");
                 else if (value instanceof UMLStateDiagram)
-                    type = Argo.localize(BUNDLE, "label.state-chart-diagram");
+                    type = Translator.localize(BUNDLE, "label.state-chart-diagram");
                 else if (value instanceof UMLUseCaseDiagram)
-                    type = Argo.localize(BUNDLE, "label.usecase-diagram");
+                    type = Translator.localize(BUNDLE, "label.usecase-diagram");
                 else if (value instanceof UMLClassDiagram)
-                    type = Argo.localize(BUNDLE, "label.class-diagram");
+                    type = Translator.localize(BUNDLE, "label.class-diagram");
             }
             
             if (type != null) {
                 StringBuffer buf = new StringBuffer();
                 buf.append("<html>");
-                buf.append(Argo.localize(BUNDLE, "label.name"));
+                buf.append(Translator.localize(BUNDLE, "label.name"));
                 buf.append(' ');
                 buf.append(lab.getText());
                 buf.append("<br>");
-                buf.append(Argo.localize(BUNDLE, "label.type"));
+                buf.append(Translator.localize(BUNDLE, "label.type"));
                 buf.append(' ');
                 buf.append(type);
                 lab.setToolTipText(buf.toString());

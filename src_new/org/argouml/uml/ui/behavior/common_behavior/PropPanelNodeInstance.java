@@ -32,7 +32,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
@@ -52,16 +52,16 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
 
 	Class mclass = (Class) ModelFacade.NODE_INSTANCE;
 
-	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
 
         UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this, "isAcceptibleClassifier", "classifier", "getClassifier", "setClassifier", false, (Class)ModelFacade.CLASSIFIER, true);
 	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
-        addField("Classifier:", new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"), clsComboBox));
+        addField("Classifier:", new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-class"), clsComboBox));
 
-	addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
 	new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
     }
 

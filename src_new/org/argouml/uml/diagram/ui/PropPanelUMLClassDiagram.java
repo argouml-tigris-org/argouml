@@ -25,7 +25,7 @@
 // $Id$
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /**
  * 
@@ -39,7 +39,7 @@ public class PropPanelUMLClassDiagram extends PropPanelDiagram {
      * @param diagramName
      */
     public PropPanelUMLClassDiagram() {
-        super(Argo.localize("UMLMenu", "label.class-diagram"));
+        super(Translator.localize("UMLMenu", "label.class-diagram"));
     }
 
 }

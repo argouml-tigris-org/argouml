@@ -36,7 +36,7 @@ import java.util.Iterator;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 
@@ -66,9 +66,9 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
 
         Class mclass = (Class)ModelFacade.PSEUDOSTATE;
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.container"), containerScroll);
 
         JPanel kindPanel = new JPanel(new GridLayout(0, 2));
         UMLRadioButton junctionButton =
@@ -183,12 +183,12 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
         kindPanel.add(initialButton);
         kindGroup.add(initialButton);
 
-        addField(Argo.localize("UMLMenu", "label.pseudostate-kind"), kindPanel);
+        addField(Translator.localize("UMLMenu", "label.pseudostate-kind"), kindPanel);
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
+        addField(Translator.localize("UMLMenu", "label.incoming"), incomingScroll);
+        addField(Translator.localize("UMLMenu", "label.outgoing"), outgoingScroll);
 
     }
 

@@ -26,7 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import javax.swing.JTextField;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
@@ -51,7 +51,7 @@ public class PropPanelDiagram extends PropPanel {
 						       "getName",
 						       "setName"));
         
-        addField(Argo.localize("UMLMenu", "label.name"), field);
+        addField(Translator.localize("UMLMenu", "label.name"), field);
     }
     
     /**

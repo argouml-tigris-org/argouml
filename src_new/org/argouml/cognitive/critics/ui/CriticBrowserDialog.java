@@ -61,10 +61,10 @@ import javax.swing.text.Document;
 import org.apache.log4j.Logger;
 
 
-import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.ui.ArgoDialog;
@@ -94,9 +94,9 @@ public class CriticBrowserDialog extends ArgoDialog
   
     private static final int NUM_COLUMNS = 25;
 
-    static final String high = Argo.localize(BUNDLE, "level.high");
-    static final String medium = Argo.localize(BUNDLE, "level.medium");
-    static final String low = Argo.localize(BUNDLE, "level.low");
+    static final String high = Translator.localize(BUNDLE, "level.high");
+    static final String medium = Translator.localize(BUNDLE, "level.medium");
+    static final String low = Translator.localize(BUNDLE, "level.low");
 
     public static final String PRIORITIES[] = {
 	high, medium, low 

@@ -26,13 +26,13 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 public class GoClassifierToStructuralFeature implements PerspectiveRule {
 
     public String getRuleName() {
-	return Argo.localize ("Tree", "misc.class.attribute");
+	return Translator.localize ("Tree", "misc.class.attribute");
     }
 
     public Collection getChildren(Object parent) {

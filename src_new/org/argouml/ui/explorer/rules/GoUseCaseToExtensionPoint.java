@@ -36,7 +36,7 @@ package org.argouml.ui.explorer.rules;
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -58,7 +58,7 @@ public class GoUseCaseToExtensionPoint implements PerspectiveRule {
      */
 
     public String getRuleName() {
-        return Argo.localize ("Tree", "Use Case->Extension Point");
+        return Translator.localize ("Tree", "Use Case->Extension Point");
     }
 
     public Collection getChildren(Object parent) { 

@@ -29,7 +29,7 @@ import java.text.MessageFormat;
 
 import javax.swing.JOptionPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
@@ -72,7 +72,7 @@ public class ActionRevertToSaved extends UMLAction {
         
         String message =
             MessageFormat.format(
-                 Argo.localize(
+                    Translator.localize(
                        "Actions",
                        "optionpane.revert-to-saved-confirm"),
                  new Object[] { p.getName() });
@@ -81,7 +81,7 @@ public class ActionRevertToSaved extends UMLAction {
             JOptionPane.showConfirmDialog(
                   pb,
                   message,
-                  Argo.localize(
+				  Translator.localize(
                       "Actions", 
                       "optionpane.revert-to-saved-confirm-title"),
                   JOptionPane.YES_NO_OPTION);

@@ -24,10 +24,10 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import java.awt.event.ActionEvent;
 
-import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
 
 /**
@@ -45,7 +45,7 @@ public class ActionRemoveClassifierRoleBase
      * Constructor for ActionRemoveClassifierRoleBase.
      */
     protected ActionRemoveClassifierRoleBase() {
-        super(Argo.localize("UMLMenu", "menu.popup.remove"));
+        super(Translator.localize("UMLMenu", "menu.popup.remove"));
     }
 
     

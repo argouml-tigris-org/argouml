@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.swingext.GridLayout2;
@@ -53,26 +53,26 @@ public class PropPanelReception extends PropPanelModelElement {
 
         Class mclass = (Class) ModelFacade.RECEPTION;
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
         JPanel modPanel = new JPanel(new GridLayout2(0, 3, GridLayout2.ROWCOLPREFERRED));
         // next line does not contain typing errors, NSUML is not correct (isabstarct instead of isabstract)
-        modPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"), this, new UMLReflectionBooleanProperty("isAbstarct", mclass, "isAbstarct", "setAbstarct")));
-        modPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"), this, new UMLReflectionBooleanProperty("isLeaf", mclass, "isLeaf", "setLeaf")));
+        modPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.abstract-lc"), this, new UMLReflectionBooleanProperty("isAbstarct", mclass, "isAbstarct", "setAbstarct")));
+        modPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.final-lc"), this, new UMLReflectionBooleanProperty("isLeaf", mclass, "isLeaf", "setLeaf")));
         modPanel.add(new UMLCheckBox(localize("root"), this, new UMLReflectionBooleanProperty("isRoot", mclass, "isRoot", "setRoot")));
-        addField(Argo.localize("UMLMenu", "label.modifiers"), modPanel);
+        addField(Translator.localize("UMLMenu", "label.modifiers"), modPanel);
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.signal"), new UMLReceptionSignalComboBox(this, new UMLReceptionSignalComboBoxModel()));
+        addField(Translator.localize("UMLMenu", "label.signal"), new UMLReceptionSignalComboBox(this, new UMLReceptionSignalComboBoxModel()));
 
         JScrollPane specificationScroll = new JScrollPane(new UMLTextArea(this, new UMLTextProperty(mclass, "specification", "getSpecification" , "setSpecification")), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        addField(Argo.localize("UMLMenu", "label.specification"), specificationScroll);
+        addField(Translator.localize("UMLMenu", "label.specification"), specificationScroll);
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-	new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-operation"), "removeElement", null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-operation"), "removeElement", null);
     }
 
 

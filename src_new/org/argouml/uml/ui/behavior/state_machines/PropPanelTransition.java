@@ -33,7 +33,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -50,34 +50,34 @@ public class PropPanelTransition extends PropPanelModelElement {
     public PropPanelTransition() {
         super("Transition", ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         JList statemachineList = new UMLLinkedList(new UMLTransitionStatemachineListModel());
         statemachineList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.statemachine"), new JScrollPane(statemachineList));
+        addField(Translator.localize("UMLMenu", "label.statemachine"), new JScrollPane(statemachineList));
         JList stateList = new UMLLinkedList(new UMLTransitionStateListModel());
         stateList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.state"), new JScrollPane(stateList));
+        addField(Translator.localize("UMLMenu", "label.state"), new JScrollPane(stateList));
 
         addSeperator();
 
         JList sourceList = new UMLLinkedList(new UMLTransitionSourceListModel());
         sourceList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.source"), new JScrollPane(sourceList));
+        addField(Translator.localize("UMLMenu", "label.source"), new JScrollPane(sourceList));
         JList targetList = new UMLLinkedList(new UMLTransitionTargetListModel());
         targetList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.target"), new JScrollPane(targetList));
+        addField(Translator.localize("UMLMenu", "label.target"), new JScrollPane(targetList));
         JList triggerList = new UMLTransitionTriggerList(new UMLTransitionTriggerListModel());
         triggerList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.trigger"), new JScrollPane(triggerList));
+        addField(Translator.localize("UMLMenu", "label.trigger"), new JScrollPane(triggerList));
         JList guardList = new UMLMutableLinkedList(new UMLTransitionGuardListModel(), null, ActionNewGuard.SINGLETON);
         guardList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.guard"), new JScrollPane(guardList));
+        addField(Translator.localize("UMLMenu", "label.guard"), new JScrollPane(guardList));
         JList effectList = new UMLTransitionEffectList(new UMLTransitionEffectListModel());
         effectList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.effect"), new JScrollPane(effectList));
+        addField(Translator.localize("UMLMenu", "label.effect"), new JScrollPane(effectList));
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
     }
 

@@ -26,7 +26,7 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 public class GoLinkStimuli implements PerspectiveRule {
@@ -40,7 +40,7 @@ public class GoLinkStimuli implements PerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return Argo.localize ("Tree", "misc.link.stimuli");
+        return Translator.localize ("Tree", "misc.link.stimuli");
     }
 
 }

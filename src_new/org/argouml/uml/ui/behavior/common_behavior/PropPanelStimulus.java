@@ -34,8 +34,8 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -67,9 +67,9 @@ public class PropPanelStimulus extends PropPanelModelElement {
 
         Class mclass = (Class)ModelFacade.STIMULUS;
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
         addField("Action:", new UMLStimulusActionTextField(this, new UMLStimulusActionTextProperty("name")));
-        addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 
         UMLList senderList = new UMLList(new UMLReflectionListModel(this, "sender", true, "getSender", null, null, null), true);
         senderList.setForeground(Color.blue);
@@ -83,11 +83,11 @@ public class PropPanelStimulus extends PropPanelModelElement {
         receiverList.setVisibleRowCount(1);
         receiverList.setFont(smallFont);
         JScrollPane receiverScroll = new JScrollPane(receiverList);
-        addField(Argo.localize("UMLMenu", "label.receiver"), receiverScroll);
+        addField(Translator.localize("UMLMenu", "label.receiver"), receiverScroll);
 
-        addLinkField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addLinkField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete object"), "removeElement", null);
     }
 

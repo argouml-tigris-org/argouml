@@ -34,7 +34,7 @@ import java.awt.Frame;
 
 import javax.swing.JButton;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /**
  * A dialog with localized buttons.
@@ -73,8 +73,8 @@ public class ArgoDialog extends org.argouml.swingext.Dialog {
     
     protected void nameButton(JButton button, String key) {
         if (button != null) {
-            button.setText(Argo.localize(BUNDLE, key));
-            String mnemonic = Argo.localize(BUNDLE, key + MNEMONIC_KEY_SUFFIX);
+            button.setText(Translator.localize(BUNDLE, key));
+            String mnemonic = Translator.localize(BUNDLE, key + MNEMONIC_KEY_SUFFIX);
             if (mnemonic != null && mnemonic.length() > 0) {
                 button.setMnemonic(mnemonic.charAt(0));
             }

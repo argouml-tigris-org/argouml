@@ -25,10 +25,10 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import java.util.Vector;
 
-import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
@@ -75,7 +75,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
-        return Argo.localize("UMLMenu", "dialog.add-predecessors");
+        return Translator.localize("UMLMenu", "dialog.add-predecessors");
     }
 
     /**

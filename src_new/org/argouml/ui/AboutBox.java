@@ -40,6 +40,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.AboutTabPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableAboutTab;
+import org.argouml.i18n.Translator;
 import org.argouml.util.Tools;
 
 /** This is what you see after you click the About
@@ -211,7 +212,7 @@ public class AboutBox extends JDialog {
 	    Object o = iterator.next();
 	    AboutTabPanel atp = ((PluggableAboutTab) o).getAboutTabPanel();
 	
-	    _tabs.addTab(Argo.localize(atp.getTabResourceBundleKey(),
+	    _tabs.addTab(Translator.localize(atp.getTabResourceBundleKey(),
 				       atp.getTabKey()),
 			 atp.getTabPanel());
 	}

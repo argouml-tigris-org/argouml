@@ -27,7 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.PropPanelButton;
@@ -55,17 +55,17 @@ public class PropPanelDependency extends PropPanelRelationship {
     public PropPanelDependency() {
         this("Dependency", ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.suppliers"), _supplierScroll);
-        addField(Argo.localize("UMLMenu", "label.clients"), _clientScroll);
+        addField(Translator.localize("UMLMenu", "label.suppliers"), _supplierScroll);
+        addField(Translator.localize("UMLMenu", "label.clients"), _clientScroll);
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-association"), "removeElement", null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-association"), "removeElement", null);
 
     }
 

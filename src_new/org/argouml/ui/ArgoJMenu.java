@@ -31,7 +31,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /**
  * An extension of the standard swing JMenu class which provides
@@ -74,9 +74,9 @@ public class ArgoJMenu extends JMenu {
      * @param   key         the resource string to find
      */
     public static final void localize(JMenuItem menuItem, String bundle, String key) {
-        menuItem.setText(Argo.localize(bundle, key));
+        menuItem.setText(Translator.localize(bundle, key));
 
-        String localMnemonic = Argo.localize(bundle, key + ".mnemonic");
+        String localMnemonic = Translator.localize(bundle, key + ".mnemonic");
         if (localMnemonic != null && localMnemonic.length() == 1) {
             menuItem.setMnemonic(localMnemonic.charAt(0));
         }

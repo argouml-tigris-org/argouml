@@ -38,7 +38,6 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableMenu;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
@@ -220,7 +219,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
                         member.save(new FileWriter(selectedFile));
                     } catch (Exception ex) {
                         String sMessage =
-                            MessageFormat.format(Argo.localize(
+                            MessageFormat.format(Translator.localize(
 				  "Actions",
 				  "optionpane.save-project-general-exception"),
 						 new Object[] {
@@ -231,7 +230,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
 			    .showMessageDialog(ProjectBrowser
 					       .getInstance(),
 					       sMessage,
-					       Argo.localize(
+						   Translator.localize(
 						       "Actions",
 						       "optionpane.save-project-general-exception-title"),
 					       JOptionPane.ERROR_MESSAGE);

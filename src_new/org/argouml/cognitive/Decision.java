@@ -24,7 +24,7 @@
 
 package org.argouml.cognitive;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 
 /** This is where the class makes the decision
  * to to fire critic.
@@ -45,7 +45,7 @@ public class Decision {
     ////////////////////////////////////////////////////////////////
     // constructor
     public Decision(String n, int p) {
-	setName(Argo.localize("Cognitive", n));
+	setName(Translator.localize("Cognitive", n));
 	setPriority(p);
     }
 

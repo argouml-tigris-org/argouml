@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 import javax.swing.Action;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 
 /**
@@ -43,7 +43,7 @@ public class ActionNewDestroyAction extends ActionNewAction {
      */
     protected ActionNewDestroyAction() {
         super();
-        putValue(Action.NAME, Argo.localize("UMLMenu", "button.new-destroyaction"));
+        putValue(Action.NAME, Translator.localize("UMLMenu", "button.new-destroyaction"));
     }
     
     
