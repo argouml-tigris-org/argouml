@@ -469,9 +469,13 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="run" depends="compile">
     <echo message="--- Executing ${Name} ---"/>
+    <!-- Uncomment the sysproperty and change the value if you want -->
     <java classname="org.argouml.application.Main"
           fork="yes"
-          classpath="${build.dest};${classpath};${ant.xml-libs}"/>
+          classpath="${build.dest};${classpath};${ant.xml-libs}">
+      <!-- sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/configuration.lcf"/-->
+    </java>
   </target>
 
 </project>
