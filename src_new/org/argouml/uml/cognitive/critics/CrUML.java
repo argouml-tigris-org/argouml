@@ -51,7 +51,7 @@ import org.tigris.gef.util.VectorSet;
  */
 
 public class CrUML extends Critic {
-    protected static Logger cat = Logger.getLogger(CrUML.class);
+    private static final Logger LOG = Logger.getLogger(CrUML.class);
     
     public static final Decision decINHERITANCE = new
 	Decision("misc.decision.inheritance", 1);
