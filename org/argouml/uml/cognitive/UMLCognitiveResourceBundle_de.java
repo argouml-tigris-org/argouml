@@ -28,7 +28,10 @@ import org.argouml.util.*;
 
 /**
  *   This class is the default member of a resource bundle that
- *   provides strings for UML related critiques and check lists
+ *   provides strings for UML related critiques and check lists.
+ *   UMLCognitiveResourceBundle_de provides the german translations.
+ *
+ *   <b>Note:</b> do not use german umlaut characters directly.
  *
  *   @author Curt Arnold
  *   @since 0.9
@@ -353,11 +356,11 @@ public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
         { "CrIllegalName_desc" ,
 	        "Die Namen von Modellelementen m\u00fcssen aus Folgen von Buchstaben, Ziffern und Unterstrichen bestehen. Sie d\u00fcrfen keine Satzzeichen enthalten.\n\nZur Generierung von compilierbarem Code sind g\u00fcltige Namen erforderlich. \n\nUm dieses Problem zu beheben benutzen Sie den \"Next\" Button um das hervorgehobene Element zu selektieren und benutzen Sie die 'Eigenschaften' Registerkarte um einen anderen Namen zu vergeben." },
         { "CrConsiderSingleton_head" ,
-	        "Sie sollten erw\u00e4gen das 'Singleton' Entwurfsmuster zu benutzen" },
+	        "Sie sollten erw\u00e4gen das 'Singleton' Entwurfsmuster zu benutzen [<ocl>self</ocl>]" },
         { "CrConsiderSingleton_desc" ,
                 "This class has no attributes or associations that are navigable away from instances of this class.  This means that every instance of this class will be equal() to every other instance, since there will be no instance variables to differentiate them. If this not your intent, you should define some attributes or associations that will represent differences bewteen instances. If there are no attributes or associations that differentiate instances, the you shoudld consider having exatly one instance of this class, as in the Singleton Pattern.\n\nDefining the multiplicity of instances is needed to complete the information representation part of your design.  Using the Singleton Pattern can save time and memory space.\n\nTo automatically apply the Singleton Pattern, press the \"Next>\" button; or manually (1) mark the class with the Singleton stereotype, (2) add a static variable that holds one instance of this class, (3) and make all constructors private.\n\nTo learn more about the Singleton Pattern, press the MoreInfo icon." },
         { "CrSingletonViolated_head" ,
-                "Singleton MStereotype Violated" },
+                "Konflikt mit Singleton Stereotyp in <ocl>self</ocl>" },
         { "CrSingletonViolated_desc" ,
                 "This class is marked with the Singleton stereotype, but it does not satisfy the constraints imposed on singletons.  A singleton class can have at most one instance.  This means that the class must have (1) a static variable holding the instance, (2) only private constructors so that new instances cannot be made by other code, and (3) there must be at least one constructor to override the default constructor.\n\nWhenever you mark a class with a stereotype, the class should satisfy all constraints of the stereotype.  This is an important part of making a self-consistent and understangle design. Using the Singleton Pattern can save time and memory space.\n\nIf you no longer want this class to be a Singleton, remove the Singleton stereotype by clicking on the class and deleting Singleton from the Props tab. \nTo automatically apply the Singleton Pattern, press the \"Next>\" button; or manually (1) mark the class with the Singleton stereotype, (2) add a static variable that holds one instance of this class, (3) and make all constructors private.\n\nTo learn more about the Singleton Pattern, press the MoreInfo icon." },
         { "CrNodesOverlap_head" ,
