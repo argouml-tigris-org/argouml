@@ -46,7 +46,7 @@
 
       <tbody valign="top">
         <row>
-          <entry>2005-02-01</entry>
+          <entry>2005-03-01</entry>
           <entry>
 Change to XXX.
 (See <xref linkend="xxx"/>).
@@ -55,6 +55,17 @@ Change to XXX.
         </row>
       </tbody>
       -->
+
+      <tbody valign="top">
+        <row>
+          <entry>2005-03-01</entry>
+          <entry>
+Removed the modules component.
+(See <xref linkend="issuezilla_release_maintenance"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
 
       <tbody valign="top">
         <row>
