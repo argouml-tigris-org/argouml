@@ -256,7 +256,7 @@ public class FigInterface extends FigNodeModelElement
         // Add ...
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
         addMenu.add(new ActionAddOperation());
-        addMenu.add(ActionAddNote.getSingleton());
+        addMenu.add(new ActionAddNote());
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
@@ -546,7 +546,8 @@ public class FigInterface extends FigNodeModelElement
 	        && (ModelFacade.isAComponent(encloser.getOwner()))) {
             Object component = /*(MComponent)*/ encloser.getOwner();
             Object in = /*(MInterface)*/ getOwner();
-            Model.getCoreHelper().setImplementationLocation(resident, component);
+            Model.getCoreHelper().setImplementationLocation(resident, 
+                    component);
             Model.getCoreHelper().setResident(resident, in);
         } else {
             Model.getCoreHelper().setImplementationLocation(resident, null);

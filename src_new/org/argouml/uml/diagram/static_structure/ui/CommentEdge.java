@@ -108,8 +108,9 @@ public class CommentEdge {
         if (ModelFacade.isAComment(source)) {
             Model.getCoreHelper().removeAnnotatedElement(source, dest);
         } else {
-            // save to presume the destination is the comment
-            Model.getCoreHelper().removeAnnotatedElement(dest, source);
+            // not save to presume the destination is the comment
+            if (ModelFacade.isAComment(dest))
+                Model.getCoreHelper().removeAnnotatedElement(dest, source);
         }
     }
 }

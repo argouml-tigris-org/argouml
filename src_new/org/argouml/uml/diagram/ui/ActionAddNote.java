@@ -26,138 +26,152 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
 
+import javax.swing.Action;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 /**
- * Action to add a note.
- *
- * @stereotype singleton
+ * Action to add a note aka comment. This action adds a Comment to 0..* 
+ * modelelements.
  */
 public class ActionAddNote extends UMLAction {
 
     private static final int DISTANCE = 80;
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    private static ActionAddNote singleton = new ActionAddNote();
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
     /**
-     * The constructor.
+     * The constructor. This action is not global, since it is never disabled.
      */
     public ActionAddNote() {
-        super("New Note", true, HAS_ICON);
+        super("action.new-comment", false, HAS_ICON);
+        putValue(Action.SMALL_ICON, ResourceLoaderWrapper
+                .lookupIconResource("New Note"));
     }
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    private boolean containsAModelElement(Collection c) {
+        Iterator i = c.iterator();
+        while (i.hasNext()) {
+            if (ModelFacade.isAModelElement(i.next()))
+                return true;
+        }
+        return false;
+    }
+    
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        Object target = TargetManager.getInstance().getModelTarget();
+        Collection targets = TargetManager.getInstance().getModelTargets();
+        
+        //Let's build the comment first, unlinked.
+        Diagram d = ProjectManager.getManager().getCurrentProject()
+            .getActiveDiagram();
+        Object comment = Model.getCoreFactory().buildComment(null, 
+                ((UMLDiagram) d).getNamespace());
 
-        if (target == null || !(ModelFacade.isAModelElement(target))) {
-            return;
+        //Now, we link it to the modelelements which are represented by FigNode
+        Object firstTarget = null;
+        Iterator i = targets.iterator();
+        while (i.hasNext()) {
+            Object obj = i.next();
+            if (ModelFacade.isAModelElement(obj)
+                    && (d.presentationFor(obj) instanceof FigNode)
+                    && (!(ModelFacade.isAComment(obj)))) {
+                if (firstTarget == null) firstTarget = obj;
+                Model.getCoreHelper().addAnnotatedElement(comment, obj);
+            }
         }
-        Object model = ProjectManager.getManager().getCurrentProject()
-            .getModel();
-        Object comment =
-            Model.getCoreFactory().buildComment(target, model);
 
-        // calculate the position of the comment
-        ArgoDiagram diagram =
-            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-        Fig elemFig = diagram.presentationFor(target);
-        if (elemFig == null)
-            return;
-        int x = 0;
-        int y = 0;
-        Rectangle drawingArea =
-            ProjectBrowser.getInstance().getEditorPane().getBounds();
-        FigComment fig = new FigComment(diagram.getGraphModel(), comment);
-        if (elemFig instanceof FigNode) {
-            x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
-            y = elemFig.getY();
-            if (x + fig.getWidth() > drawingArea.getX()) {
-                x = elemFig.getX() - fig.getWidth() - DISTANCE;
-                if (x < 0) {
-                    x = elemFig.getX();
-                    y = elemFig.getY() - fig.getHeight() - DISTANCE;
-                    if (y < 0) {
-                        y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
-                        if (y + fig.getHeight() > drawingArea.getHeight()) {
-                            Model.getUmlFactory().delete(comment);
-                            return;
+        //Create the Fig for the comment itself
+        FigComment fig = new FigComment(d.getGraphModel(), comment);
+        
+        /* The line below is necessary to prevent an exception in the 
+         * following testcase:
+         * 1. Create a class.
+         * 2. Click the comment tool.
+         * 3. Create a second class.
+         * 4. Attempt to link the 2nd class to the comment. */
+        d.getGraphModel().getNodes().add(comment); 
+
+        //Calculate the position of the comment, based on the 1st target only
+        int x = 20;
+        int y = 20;
+        if (firstTarget != null) {
+            Fig elemFig = d.presentationFor(firstTarget);
+            if (elemFig == null)
+                return;
+            if (elemFig instanceof FigNode) {
+                // TODO: We need a better algorithm.
+                x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
+                y = elemFig.getY();
+                Rectangle drawingArea =
+                    ProjectBrowser.getInstance().getEditorPane().getBounds();
+                if (x + fig.getWidth() > drawingArea.getX()) {
+                    x = elemFig.getX() - fig.getWidth() - DISTANCE;
+                    if (x < 0) {
+                        x = elemFig.getX();
+                        y = elemFig.getY() - fig.getHeight() - DISTANCE;
+                        if (y < 0) {
+                            y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
+                            if (y + fig.getHeight() > drawingArea.getHeight()) {
+                                x = 0;
+                                y = 0;
+                            }
                         }
                     }
                 }
+//          } else if (elemFig instanceof FigEdge) {
+                /* We cannot attach a Comment to an Edge yet since we have to
+                 * modify all our edges probably */
+                /*
+                 Point startPoint = new Point(elemFig.getX(), elemFig.getY());
+                 Point endPoint = new Point(elemFig.getX() + elemFig.getWidth(),
+                 elemFig.getY() + elemFig.getHeight());
+                 */
             }
-        } else if (elemFig instanceof FigEdge) {
-            /* We cannot attach a Comment to an Edge yet since we have to
-             * modify all our edges probably */
-            /*
-	      Point startPoint = new Point(elemFig.getX(), elemFig.getY());
-	      Point endPoint = new Point(elemFig.getX() + elemFig.getWidth(),
-	          elemFig.getY() + elemFig.getHeight());
-            */
-            Model.getUmlFactory().delete(comment);
-            return;
         }
+        
+        //Place the comment Fig on the diagram
         fig.setLocation(x, y);
-        Layer lay = diagram.getLayer();
+        Layer lay = d.getLayer();
         lay.add(fig);
-        FigEdgeNote edge = new FigEdgeNote(target, comment);
-        lay.add(edge);
-        lay.sendToBack(edge);
-        edge.damage();
+        
+        //Now create the edges to the comment
+        i = ModelFacade.getAnnotatedElements(comment).iterator();
+        while (i.hasNext()) {
+            Object obj = i.next();
+            FigEdgeNote edge = new FigEdgeNote(obj, comment);
+            // TODO: MVW: do we need this next line ???
+            //edge.setOwner(new CommentEdge(comment, obj)); 
+            lay.add(edge);
+            lay.sendToBack(edge);
+            edge.damage();
+        }
+        i = ModelFacade.getAnnotatedElements(comment).iterator();
+        while (i.hasNext()) {
+            d.presentationFor(i.next()).damage();
+        }
         fig.damage();
-        elemFig.damage();
 
-        super.actionPerformed(ae);
         TargetManager.getInstance().setTarget(fig.getOwner());
+        super.actionPerformed(ae);
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-        Object target = TargetManager.getInstance().getModelTarget();
-
-        if (ProjectManager.getManager().getCurrentProject().getActiveDiagram()
-            == null)
-            return false;
-
-        return super.shouldBeEnabled()
-            && (ModelFacade.isAModelElement(target))
-            && (!(ModelFacade.isAComment(target)))
-            && (ProjectManager.getManager().getCurrentProject()
-                .getActiveDiagram().presentationFor(target)
-                instanceof FigNode);
-    }
-
-    /**
-     * @return Returns the singleton.
-     */
-    public static ActionAddNote getSingleton() {
-        return singleton;
-    }
 } /* end class ActionAddNote */

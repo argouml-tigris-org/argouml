@@ -283,7 +283,7 @@ public class FigClass extends FigNodeModelElement
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
         addMenu.add(new ActionAddAttribute());
         addMenu.add(new ActionAddOperation());
-        addMenu.add(ActionAddNote.getSingleton());
+        addMenu.add(new ActionAddNote());
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
@@ -1024,7 +1024,8 @@ public class FigClass extends FigNodeModelElement
         if (isCheckSize()) {
             height = ROWHEIGHT * attributeCount + 2 + extraEach;
         } else if (newH > currentY - y && attributeCount + operationCount > 0) {
-            height = (newH + y - currentY) * attributeCount / (attributeCount + operationCount) + 1;
+            height = (newH + y - currentY) * attributeCount 
+                        / (attributeCount + operationCount) + 1;
         } else {
             height = 1;
         }

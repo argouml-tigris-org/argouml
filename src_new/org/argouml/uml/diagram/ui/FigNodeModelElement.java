@@ -235,7 +235,7 @@ public abstract class FigNodeModelElement
     private ItemUID itemUid;
 
     /**
-     * Set the removeFromDiagram to false if this edge may not 
+     * Set the removeFromDiagram to false if this node may not 
      * be removed from the diagram.
      */
     private boolean removeFromDiagram = true;
