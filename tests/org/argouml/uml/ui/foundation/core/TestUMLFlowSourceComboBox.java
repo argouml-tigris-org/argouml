@@ -26,7 +26,9 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JComboBox;
 
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 import org.argouml.uml.ui.UMLComboBox2;
 
@@ -63,11 +65,11 @@ public class TestUMLFlowSourceComboBox extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        elem = new MFlowImpl();
+        elem = CoreFactory.getFactory().createFlow();
         MockUMLUserInterfaceContainer mockcomp = new MockUMLUserInterfaceContainer();
         mockcomp.setTarget(elem);
         box = new UMLComboBox2(mockcomp, new UMLFlowSourceComboBoxModel(mockcomp), ActionSetFlowSource.SINGLETON);
-        elem.addMElementListener(box);
+        UmlModelEventPump.getPump().addModelEventListener(box, elem, "source");
     }
 
     /**
@@ -89,9 +91,8 @@ public class TestUMLFlowSourceComboBox extends TestCase {
     // this test does not work yet since the event mechanisme in argo needs to 
     // be refactored.
     public void testSetSelected() {
-        MModel m = new MModelImpl();
+        MModel m = ModelManagementFactory.getFactory().createModel();
         MClass clazz = CoreFactory.getFactory().buildClass(m);
-        elem.setNamespace(m);
         box.setSelectedItem(clazz);
         assert(elem.getSources().contains(clazz));
     }
