@@ -34,6 +34,12 @@ import java.text.MessageFormat;
 import java.net.URL;
 import javax.swing.JOptionPane;
 
+/**
+ * Action that saves the project.
+ *
+ * @see ActionOpenProject
+ * @stereotype singleton
+ */
 public class ActionSaveProject extends UMLAction {
   
   ////////////////////////////////////////////////////////////////
