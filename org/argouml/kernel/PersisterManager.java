@@ -24,11 +24,15 @@
 
 package org.argouml.kernel;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.JFileChooser;
+
+import org.argouml.util.FileConstants;
+import org.tigris.gef.util.UnexpectedException;
 
 
 /**
@@ -72,7 +76,7 @@ public class PersisterManager {
      * @param name the filename
      * @return the persister
      */
-    public ProjectFilePersister getPersisterFromFileName(String name) {
+    public AbstractFilePersister getPersisterFromFileName(String name) {
         if (name.toLowerCase().endsWith("." + defaultPersister.getExtension())) 
             return defaultPersister;
         Iterator iter = otherPersisters.iterator();
@@ -97,4 +101,56 @@ public class PersisterManager {
         }
         chooser.setFileFilter(defaultPersister);
     }
+    
+    /**
+     * @return the extension of the default persister 
+     *         (just the text, not the ".")
+     */
+    public String getDefaultExtension() {
+        return defaultPersister.getExtension();
+    }
+    
+    /**
+     * @param in the input file ot path name
+     * @return the file or pathname with a default extension added
+     */
+    public String fixExtension(String in) {
+        if (getPersisterFromFileName(in) == null) {
+            in += "." + getDefaultExtension();
+        }
+        return in;
+    }
+    
+    /**
+     * @param in the input url
+     * @return the url with default extension added, 
+     *         if it did not have a valid extension yet
+     */
+    public URL fixUrlExtension(URL in) {
+        URL newUrl;
+        String n = in.toString();
+        n = fixExtension(n);
+        try {
+            newUrl = new URL(n);
+        } catch (java.net.MalformedURLException e) {
+            throw new UnexpectedException(e);
+        }
+        return newUrl;
+    }
+    
+    /**
+     * Find the base name of the given filename.<p>
+     * 
+     * This is the name minus any valid file extension.
+     *
+     * @param n the given file name
+     * @return the name (a String) without extension
+     */
+    public String getBaseName(String n) {
+        AbstractFilePersister p = getPersisterFromFileName(n);
+        if (p == null) return n;
+        int extLength = p.getExtension().length() + 1;
+        return n.substring(0, n.length() - extLength);
+    }
+
 }
