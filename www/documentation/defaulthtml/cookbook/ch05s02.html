@@ -1,12 +1,12 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.2.&nbsp;Critics and other cognitive tools</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="previous" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="next" href="ch05s03.html" title="5.3.&nbsp;Diagrams"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.2.&nbsp;Critics and other cognitive tools</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="critics"></a>5.2.&nbsp;Critics and other cognitive tools</h2></div></div><div></div></div><a class="indexterm" name="d0e3210"></a><a class="indexterm" name="d0e3213"></a><a class="indexterm" name="d0e3216"></a><p><a name="comp-critics-purpose"></a>
+   <title>5.2.&nbsp;Critics and other cognitive tools</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.66.1"><link rel="start" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="prev" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the subsystems"><link rel="next" href="ch05s03.html" title="5.3.&nbsp;Diagrams"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.2.&nbsp;Critics and other cognitive tools</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the subsystems</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="critics"></a>5.2.&nbsp;Critics and other cognitive tools</h2></div></div></div><a class="indexterm" name="d0e3453"></a><a class="indexterm" name="d0e3456"></a><a class="indexterm" name="d0e3459"></a><p><a name="comp-critics-purpose"></a>
 Purpose - to provide cognitive help for the User.
 This help is based on the current model that the User works with.
 </p><p>
 The Critics are located in <tt class="classname">org.argouml.cognitive</tt>.
 </p><p>
-The Critics is a Layer 3 subsystem. See <a href="ch04s07.html" title="4.7.&nbsp;Layer 3 - Description of subsystems">Section&nbsp;4.7, &#8220;Layer 3 - Description of subsystems&#8221;</a>.
+The Critics is a Loadable subsystem. See <a href="ch04s06.html" title="4.6.&nbsp;Loadable subsystems">Section&nbsp;4.6, &#8220;Loadable subsystems&#8221;</a>.
 </p><p>
 The Critics subsystem depends on the Model that it works against to take
 all decisions
@@ -28,7 +28,7 @@ their knowledge to the User and let the User start Wizards.
 </p></li><li><p>
 Wizards are step by step instructions that fix problems
 found by the Critics.
-</p></li></ul></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3247"></a>5.2.1.&nbsp;Main classes</h3></div></div><div></div></div><p>Here is an illustration of the main classes implementing critics</p><div class="mediaobject"><img src="images/cookbook/critics.gif"></div><p>Critics are currently located in:
+</p></li></ul></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3490"></a>5.2.1.&nbsp;Main classes</h3></div></div></div><p>Here is an illustration of the main classes implementing critics</p><div class="mediaobject"><img src="images/cookbook/critics.gif"></div><p>Critics are currently located in:
 </p><div class="itemizedlist"><ul type="disc"><li><p>org.argouml.cognitive.critics</p><p>
 These are basic critics, which are very general in nature. For example
 ArgoUML keeps nagging when Model elements overlap, which makes the
@@ -56,7 +56,7 @@ Checklists are located in the package org.argouml.cognitive.checklist.
 </p><p>
 Helper classes for To Do Items, To Do Pane, Wizards and the Knowledge Types
 are located in the package org.argouml.cognitive.ui.
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="howdoi_critics"></a>5.2.2.&nbsp;How do I ...?</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="howdoi_critics"></a>5.2.2.&nbsp;How do I ...?</h3></div></div></div><p>
 </p><div class="itemizedlist"><ul type="disc"><li><p>...create a new critique?</p><p>
 Currently the only way to add a new critique is to write a class that
 implements it so that is described here.
@@ -74,25 +74,26 @@ but it could go in one of the other
 Write a constructor, which takes no arguments and calls the following
 methods of <tt class="classname">CrUML</tt>:
 </p><div class="itemizedlist"><ul type="circle"><li><p>
-<b class="command">setResource("Cr<i class="replaceable"><tt>XxxxYyyyZzzz</tt></i>");</b>
+<span><b class="command">setHeadline("");</b></span>
 to set up the locale specific text for 
 the critic headline (the one liner that appears in the to-do pane)
 and
 the critic description (the detailed explanation that appears in 
 the to-do tab of the details pane).
+The String parameter is ignored.
 </p></li><li><p>
-<b class="command">addSupportedDecision(CrUML.dec<i class="replaceable"><tt>AAAA</tt></i>);</b>
+<span><b class="command">addSupportedDecision(CrUML.dec<i class="replaceable"><tt>AAAA</tt></i>);</b></span>
 where <i class="replaceable"><tt>AAAA</tt></i> is the design issue category
 this critic falls into
 (examples include STORAGE, PATTERN METHODS).
 </p></li><li><p>
-<b class="command">setPriority(ToDoItem.<i class="replaceable"><tt>BBB</tt></i>_PRIORITY);</b>
+<span><b class="command">setPriority(ToDoItem.<i class="replaceable"><tt>BBB</tt></i>_PRIORITY);</b></span>
 where <i class="replaceable"><tt>BBB</tt></i> is one of
 <tt class="constant">LOW</tt>, <tt class="constant">MEDIUM</tt> or 
 <tt class="constant">HIGH</tt>, to set the priority for the critic 
 in the to-do pane.
 </p></li><li><p>
-<b class="command">addTrigger("<i class="replaceable"><tt>UML Meta-Class</tt></i>");</b>
+<span><b class="command">addTrigger("<i class="replaceable"><tt>UML Meta-Class</tt></i>");</b></span>
 where <i class="replaceable"><tt>UML Meta-Class</tt></i> is a UML Meta-Class,
 with initial lower capital, e.g. "associationEnd".
 The intention is that critics should only trigger for elements (or
@@ -102,7 +103,7 @@ so you can probably leave it out.
 You can have multiple calls to this method for different meta-classes.
 </p></li></ul></div><p>
 After this add a method 
-<b class="command">public boolean predicate2(Object dm, Designer dsgr);</b>.
+<span><b class="command">public boolean predicate2(Object dm, Designer dsgr);</b></span>.
 This is the decision routine for the critic.
 <i class="parameter"><tt>dm</tt></i> is the UML entity (an NSUML object)
 that is being checked.
@@ -128,16 +129,14 @@ description to the cognitive resource bundles.
 These are in the package 
 <tt class="classname">org.argouml.i18n</tt>, 
 in the file
-<tt class="filename">UMLCognitiveResourceBundle.java</tt>.
+<tt class="filename">critics.properties</tt>.
 You need to add two keys for the head and description,
 which will be named respectively
-<tt class="constant">Cr<i class="replaceable"><tt>XxxxYyyyZzzz</tt></i>_head</tt>
+<tt class="constant">critics.<i class="replaceable"><tt>CrXxxxxYyyyZzzz</tt></i>-head</tt>
 and
-<tt class="constant">Cr<i class="replaceable"><tt>XxxxYyyyZzzz</tt></i>_desc</tt>.
+<tt class="constant">critics<i class="replaceable"><tt>CrXxxxxYyyyZzzz</tt></i>-desc</tt>.
 There are plenty of examples to look at there.
 The other files 
-(<tt class="filename">UMLCognitiveResourceBundle_en_GB.java</tt>,
-<tt class="filename">UMLCognitiveResourceBundle_es.java</tt>, ...
 for
 British English,
 Spanish, ...
@@ -149,7 +148,7 @@ In method <tt class="methodname">Init</tt>
 of the class <tt class="classname">org.argouml.uml.cognitive.critics.Init</tt>, 
 add two statements:
 </p><pre class="programlisting">
-  public static Critic <i class="replaceable"><tt>crXxxxxYyyyZzzz</tt></i> = new <i class="replaceable"><tt>CrXxxxxYyyyZzzz</tt></i>();
+  private static Critic <i class="replaceable"><tt>crXxxxxYyyyZzzz</tt></i> = new <i class="replaceable"><tt>CrXxxxxYyyyZzzz</tt></i>();
 ...
   Agency.register(<i class="replaceable"><tt>crXxxxxYyyyZzzz</tt></i>, <i class="replaceable"><tt>DesignMaterialCls</tt></i>);
 </pre><p>
@@ -210,4 +209,4 @@ Check that your particular critic is enabled in Browse Critics
 This method is incomplete and might not find all model elements!
 </p></li></ol></div><p>
 </p></li></ul></div><p>
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3552"></a>5.2.3.&nbsp;org.argouml.cognitive.critics.* class diagram</h3></div></div><div></div></div><div class="mediaobject"><img src="images/screenshots/argocogcriticsreduced.png"></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;5.&nbsp;Inside the subsystems&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.3.&nbsp;Diagrams</td></tr></table></div></body></html>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e3786"></a>5.2.3.&nbsp;org.argouml.cognitive.critics.* class diagram</h3></div></div></div><div class="mediaobject"><img src="images/screenshots/argocogcriticsreduced.png"></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;5.&nbsp;Inside the subsystems&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.3.&nbsp;Diagrams</td></tr></table></div></body></html>
