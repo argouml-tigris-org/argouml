@@ -32,7 +32,8 @@ import ru.novosoft.uml.MFactoryImpl;
 import junit.framework.TestCase;
 
 /**
- * An abstract class that serves as a basis for testing listmodels
+ * An abstract class that serves as a basis for testing listmodels. Only works
+ * for listmodels that can contain multiple elements.
  * @since Oct 27, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
