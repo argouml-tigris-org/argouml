@@ -37,28 +37,46 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.*;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.ui.*;
-import org.argouml.uml.*;
-import org.argouml.swingext.*;
-import java.util.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import java.lang.reflect.*;
-
-import org.tigris.gef.util.*;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.swingext.GridLayout2;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.swingext.Orientation;
+import org.argouml.swingext.Vertical;
+import org.argouml.ui.NavigationListener;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.TabSpawnable;
+import org.argouml.uml.Profile;
+import org.argouml.uml.ProfileJava;
+import org.tigris.gef.util.ResourceLoader;
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
  *   This abstract class provides the basic layout and event dispatching
@@ -643,11 +661,15 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
     public void removeElement() {
         Object target = getTarget();
-        if(target instanceof MBase) { 
+        if(target instanceof MBase) {             
+            MModelElement newTarget = ((MModelElement)target).getModelElementContainer();
             MBase base = (MBase) target;
             ProjectBrowser.TheInstance.setTarget(base);
             ActionEvent event = new ActionEvent(this, 1, "delete");
-	    ActionRemoveFromModel.SINGLETON.actionPerformed(event);	   
+	    ActionRemoveFromModel.SINGLETON.actionPerformed(event);	
+            if (newTarget != null) {
+                 ProjectBrowser.TheInstance.setTarget(newTarget);
+            }  
         }
     }
 
