@@ -1820,7 +1820,7 @@ public class ModelFacade {
             || !(child instanceof MGeneralizableElement)
             || !(parent instanceof MGeneralizableElement))
             return null;
-        Iterator it = getGeneralizations(child);
+        Iterator it = getGeneralizations(child).iterator();
         while (it.hasNext()) {
             MGeneralization gen = (MGeneralization) it.next();
             if (gen.getParent() == parent) {
@@ -1833,15 +1833,13 @@ public class ModelFacade {
     /** The list of Generalizations from a GeneralizableElement.
      *
      * @param handle GeneralizableElement to retrieve from.
-     * @return Iterator with Generalizations
+     * @return Generalizations
      */
-    public static Iterator getGeneralizations(Object handle) {
+    public static Collection getGeneralizations(Object handle) {
         if (handle instanceof MGeneralizableElement) {
             MGeneralizableElement ge = (MGeneralizableElement) handle;
-            return ge.getGeneralizations().iterator();
+            return ge.getGeneralizations();
         }
-
-        // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
@@ -2398,12 +2396,12 @@ public class ModelFacade {
     /** The list of Specializations from a GeneralizableElement.
      *
      * @param handle GeneralizableElement to retrieve from.
-     * @return Iterator with Specializations.
+     * @return Collection of Specializations.
      */
-    public static Iterator getSpecializations(Object handle) {
+    public static Collection getSpecializations(Object handle) {
         if (handle instanceof MGeneralizableElement) {
             MGeneralizableElement ge = (MGeneralizableElement) handle;
-            return ge.getSpecializations().iterator();
+            return ge.getSpecializations();
         }
 
         // ...

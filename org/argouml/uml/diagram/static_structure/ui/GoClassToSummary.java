@@ -105,12 +105,12 @@ public class GoClassToSummary extends AbstractGoRule {
  
     private boolean hasInheritance(Object parent) {
       
-	Iterator incomingIt =
-	    ModelFacade.getSupplierDependencies(parent).iterator();
-	Iterator outgoingIt =
-	    ModelFacade.getClientDependencies(parent).iterator();
-	Iterator generalizationsIt = ModelFacade.getGeneralizations(parent);
-	Iterator specializationsIt = ModelFacade.getSpecializations(parent);
+        Iterator incomingIt =
+            ModelFacade.getSupplierDependencies(parent).iterator();
+        Iterator outgoingIt =
+            ModelFacade.getClientDependencies(parent).iterator();
+        Iterator generalizationsIt = ModelFacade.getGeneralizations(parent).iterator();
+        Iterator specializationsIt = ModelFacade.getSpecializations(parent).iterator();
           
 	if (generalizationsIt.hasNext())
 	    return true;
@@ -121,15 +121,16 @@ public class GoClassToSummary extends AbstractGoRule {
 	while (incomingIt.hasNext()) {
               
 	    // abstractions are represented in the Inheritance Node.
-	    if (ModelFacade.isAAbstraction(incomingIt.next()))
+	    if (ModelFacade.isAAbstraction(incomingIt.next())) {
                 return true;
+            }
 	}
           
 	while (outgoingIt.hasNext()) {
-              
 	    // abstractions are represented in the Inheritance Node.
-	    if (ModelFacade.isAAbstraction(outgoingIt.next()))
+	    if (ModelFacade.isAAbstraction(outgoingIt.next())) {
                 return true;
+            }
 	}
           
 	return false;

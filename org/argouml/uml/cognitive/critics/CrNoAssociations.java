@@ -90,7 +90,7 @@ public class CrNoAssociations extends CrUML {
         if (depth > 50)
             return false;
 
-        Iterator iter = ModelFacade.getGeneralizations(dm);
+        Iterator iter = ModelFacade.getGeneralizations(dm).iterator();
 
         while (iter.hasNext()) {
             Object parent = ModelFacade.getParent(iter.next());

@@ -220,7 +220,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    }
 	}
 	if ( ModelFacade.isAGeneralizableElement(node) ) {
-	    Collection gn = ((MGeneralizableElement) node).getGeneralizations();
+	    Collection gn = ModelFacade.getGeneralizations(node);
 	    Iterator iter = gn.iterator();
 	    while (iter.hasNext()) {
 		MGeneralization g = (MGeneralization) iter.next();

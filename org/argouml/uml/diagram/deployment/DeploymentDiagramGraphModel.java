@@ -270,7 +270,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    }
 	}
 	if ( ModelFacade.isAGeneralizableElement(node) ) {
-	    Iterator iter = ModelFacade.getGeneralizations(node);
+	    Iterator iter = ModelFacade.getGeneralizations(node).iterator();
 	    while (iter.hasNext()) {
 		// g contains a Generalization
 		Object g = iter.next();
@@ -278,7 +278,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 		    addEdge(g);
 		return;
 	    }
-	    iter = ModelFacade.getSpecializations(node);
+	    iter = ModelFacade.getSpecializations(node).iterator();
 	    while (iter.hasNext()) {
 		// s contains a specialization
 		Object s = iter.next();

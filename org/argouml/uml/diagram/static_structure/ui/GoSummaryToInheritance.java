@@ -76,9 +76,9 @@ public class GoSummaryToInheritance extends AbstractGoRule {
 	    }
           
 	    Iterator generalizationsIt =
-		ModelFacade.getGeneralizations(((InheritanceNode) parent).getParent());
+		ModelFacade.getGeneralizations(((InheritanceNode) parent).getParent()).iterator();
 	    Iterator specializationsIt =
-		ModelFacade.getSpecializations(((InheritanceNode) parent).getParent());
+		ModelFacade.getSpecializations(((InheritanceNode) parent).getParent()).iterator();
           
 	    while (generalizationsIt.hasNext())
 		list.add(generalizationsIt.next());
