@@ -25,9 +25,6 @@ package org.argouml.cognitive.ui;
 
 import java.util.*;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-
 import org.tigris.gef.util.*;
 
 import org.apache.log4j.Category;
@@ -38,7 +35,7 @@ public class ToDoByOffender extends ToDoPerspective {
         Category.getInstance(ToDoByOffender.class);
 
   public ToDoByOffender() {
-    super("todo.perspective.offender");
+    super("combobox.todo-perspective-offender");
     addSubTreeModel(new GoListToOffenderToItem());
   }
 

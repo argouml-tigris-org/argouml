@@ -60,9 +60,10 @@ public class Translator {
         Locale.setDefault(new Locale(System.getProperty("user.language", "en"),
             System.getProperty("user.country", "")));
 
+        /** bundle default Locale, different from user default Locale */
         org.workingfrog.i18n.util.Translator.setDefaultLocale(
             new Locale("en", ""));
-        org.workingfrog.i18n.util.Translator.loadBundles("org.argouml.i18n");
+        org.workingfrog.i18n.util.Translator.setBundlesPath("org.argouml.i18n");
   
         Localizer.addResource("GefBase",
         "org.tigris.gef.base.BaseResourceBundle");
@@ -70,18 +71,12 @@ public class Translator {
         "org.tigris.gef.presentation.PresentationResourceBundle");
         Localizer.addResource("CoreMenu",
         "org.argouml.i18n.MenuResourceBundle");
-        Localizer.addResource("CoreSettings",
-        "org.argouml.i18n.SettingsResourceBundle");
         Localizer.addResource("UMLMenu",
         "org.argouml.i18n.UMLResourceBundle");
         Localizer.addResource("Cognitive",
         "org.argouml.i18n.UMLCognitiveResourceBundle");
-        Localizer.addResource("Tree", "org.argouml.i18n.TreeResourceBundle");
         Localizer.addResource("Actions",
         "org.argouml.i18n.ActionResourceBundle");
-
-        org.workingfrog.i18n.util.Translator.check(
-            org.workingfrog.i18n.util.Translator.ALL);
     }
 
     /**

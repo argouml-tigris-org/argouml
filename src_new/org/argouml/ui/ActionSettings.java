@@ -117,7 +117,7 @@ implements ArgoModuleEventListener {
             ProjectBrowser pb = ProjectBrowser.getInstance();
 	    if (dlg == null) {
                 try {
-	            dlg = new JDialog(pb, localize("caption.settings"), true);
+	            dlg = new JDialog(pb, localize("dialog.settings"), true);
 
 	            dlg.getContentPane().setLayout(new BorderLayout());
                     tabs = new JTabbedPane();
