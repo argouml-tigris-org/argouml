@@ -35,6 +35,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.Hashtable;
 
 import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlFactory;
@@ -42,6 +43,7 @@ import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.MMUtil;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.uml.ui.ActionAggregation;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
@@ -59,10 +61,16 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MPermission;
 import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MUsage;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MElementImport;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
+
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeManager;
 
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by
@@ -326,7 +334,7 @@ implements VetoableChangeListener  {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
                         java.lang.Class edgeClass) {
-	  cat.debug("connecting: "+fromPort+toPort+edgeClass);
+      cat.debug("connecting: " + " " + fromPort + " " + toPort + " " + edgeClass);
 
       if ((fromPort instanceof MModelElement) && 
                (toPort instanceof MModelElement)) {
@@ -361,11 +369,20 @@ implements VetoableChangeListener  {
               return gen;
           }
           else if (edgeClass == MAssociation.class) {
-              MAssociation asc = 
-                  UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
+              Editor curEditor = Globals.curEditor();
+              ModeManager modeManager = curEditor.getModeManager();
+              Mode mode = (Mode)modeManager.top();
+              Hashtable args = mode.getArgs();
+              MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
+              MAssociation asc;
+              if (aggregation != null) {
+                  boolean unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
+                  asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, false, aggregation, toCls, unidirectional, MAggregationKind.NONE);
+              } else {
+                  asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
+              }
               addEdge(asc);
               return asc;
-              //return asc;
           }
           else if (edgeClass == MDependency.class) {
               // nsuml: using Binding as default
