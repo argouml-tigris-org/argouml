@@ -33,12 +33,16 @@ import javax.xml.parsers.SAXParserFactory;
 import org.argouml.i18n.Translator;
 import org.apache.log4j.Logger;
 
+/**
+ * Some tools thrown together...
+ *
+ */
 public class Tools {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(Tools.class);
 
-    static String packageList[] =
+    private static final String PACKAGELIST[] =
 	new String[]{
 	    "org.argouml.application", "ru.novosoft.uml", 
             "org.tigris.gef.base", "org.xml.sax", 
@@ -79,6 +83,9 @@ public class Tools {
         sb.append('\n');
     }
 
+    /**
+     * @return a String containing the version information
+     */
     public static String getVersionInfo()
     {
         try {
@@ -117,8 +124,8 @@ public class Tools {
                         "label.error-sax-factory"));
             }
 
-            for (int i = 0; i < packageList.length; i++) {
-                getComponentVersionInfo(sb, packageList[i]);
+            for (int i = 0; i < PACKAGELIST.length; i++) {
+                getComponentVersionInfo(sb, PACKAGELIST[i]);
             }
 
             if (saxObject != null) {
@@ -154,6 +161,9 @@ public class Tools {
 
     }
 
+    /**
+     * Print out some version info for debugging.
+     */
     public static void logVersionInfo()
     {
         BufferedReader r = 
