@@ -31,8 +31,11 @@ import java.awt.Insets;
 import java.io.File;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JFileChooser;
+import javax.swing.JButton;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
 
@@ -47,13 +50,17 @@ public class SettingsTabEnvironment extends SettingsTabHelper
     implements SettingsTabPanel 
 {
 
-    JTextField _argoRoot = null;
-    JTextField _argoHome = null;
-    JTextField _argoExtDir = null;
-    JTextField _javaHome = null;
-    JTextField _userHome = null;
-    JTextField _userDir = null;
-    JTextField _startupDir = null;
+    public String USER_DIR;
+    
+    JTextField _argoRoot;
+    JTextField _argoHome;
+    JTextField _argoExtDir;
+    JTextField _javaHome;
+    JTextField _userHome;
+    JTextField _userDir;
+    JTextField _startupDir;
+    
+    JButton _userDirButton;
 
     public SettingsTabEnvironment() {
         super();
@@ -118,6 +125,7 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 
 	labelConstraints.gridy = 5;
 	fieldConstraints.gridy = 5;
+        buttonConstraints.gridy = 5;
   	top.add(createLabel("${user.dir}"), labelConstraints);
         _userDir = createTextField();
 	_userDir.setEnabled(false);
@@ -139,11 +147,12 @@ public class SettingsTabEnvironment extends SettingsTabHelper
         _argoExtDir.setText(Argo.getArgoHome() + File.separator + "ext");
         _javaHome.setText(System.getProperty("java.home"));
         _userHome.setText(System.getProperty("user.home"));
-        _userDir.setText(System.getProperty("user.dir"));
+        _userDir.setText(Configuration.getString(Argo.KEY_STARTUP_DIR, System.getProperty("user.dir")));
         _startupDir.setText(Argo.getDirectory());
     }
 
     public void handleSettingsTabSave() {
+        Configuration.setString(Argo.KEY_STARTUP_DIR, _userDir.getText());
     }
 
     public void handleSettingsTabCancel() {
