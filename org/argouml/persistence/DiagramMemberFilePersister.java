@@ -66,12 +66,11 @@ public class DiagramMemberFilePersister extends MemberFilePersister {
         throws OpenException {
 
         try {
-            PGMLParser parser = new PGMLParser();
             // Give the parser a map of model elements
             // keyed by their UUID. This is used to allocate
             // figs to their owner using the "href" attribute
             // in PGML.
-            parser.setOwnerRegistry(project.getUUIDRefs());
+            PGMLParser parser = new PGMLParser(project.getUUIDRefs());
             ArgoDiagram d =
                     (ArgoDiagram) parser.readDiagram(
                                   inputStream,

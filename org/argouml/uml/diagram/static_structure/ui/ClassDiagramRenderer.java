@@ -25,10 +25,12 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigAssociationEnd;
@@ -39,9 +41,7 @@ import org.argouml.uml.diagram.ui.FigPermission;
 import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
@@ -74,8 +74,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @author jrobbins
  */
-public class ClassDiagramRenderer
-    implements GraphNodeRenderer, GraphEdgeRenderer {
+public class ClassDiagramRenderer extends UmlDiagramRenderer {
 
     private static final Logger LOG =
         Logger.getLogger(ClassDiagramRenderer.class);
@@ -87,7 +86,7 @@ public class ClassDiagramRenderer
      *
      * Return a Fig that can be used to represent the given node.
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
         if (ModelFacade.isAClass(node)) {
             return new FigClass(gm, node);
         } else if (ModelFacade.isAInterface(node)) {
@@ -119,7 +118,7 @@ public class ClassDiagramRenderer
      * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
      * java.lang.Object)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map styleAttribute) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("making figedge for " + edge);
         }

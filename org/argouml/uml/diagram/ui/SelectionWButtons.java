@@ -339,7 +339,7 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
         GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
         LayerPerspective lay =
             (LayerPerspective) ce.getLayerManager().getActiveLayer();
-        Fig newFC = renderer.getFigNodeFor(gm, lay, newNode);
+        Fig newFC = renderer.getFigNodeFor(gm, lay, newNode, null);
 
         // calculate the position of the newly created fig.
         Rectangle outputRect =

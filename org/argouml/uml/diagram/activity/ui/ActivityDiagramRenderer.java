@@ -25,6 +25,8 @@
 
 package org.argouml.uml.diagram.activity.ui;
 
+import java.util.Map;
+
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
 import org.tigris.gef.base.Layer;
@@ -66,7 +68,7 @@ public class ActivityDiagramRenderer extends StateDiagramRenderer {
      * org.tigris.gef.graph.GraphModel,
      * org.tigris.gef.base.Layer, java.lang.Object)
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
         if (ModelFacade.isAPartition(node)) {
             return new FigPartition(gm, node);
         }
@@ -79,6 +81,6 @@ public class ActivityDiagramRenderer extends StateDiagramRenderer {
         if (ModelFacade.isASubactivityState(node)) {
             return new FigSubactivityState(gm, node);
         }
-        return super.getFigNodeFor(gm, lay, node);
+        return super.getFigNodeFor(gm, lay, node, styleAttributes);
     }
 }
