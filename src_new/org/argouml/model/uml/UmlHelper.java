@@ -56,11 +56,11 @@ import ru.novosoft.uml.MBase;
 public class UmlHelper {
 	
     
-    protected static Logger cat = Logger.getLogger(UmlHelper.class);
+    private static final Logger LOG = Logger.getLogger(UmlHelper.class);
     
     /** Singleton instance.
      */
-    private static UmlHelper SINGLETON =
+    private static UmlHelper singleton =
 	new UmlHelper();
 
 
@@ -73,6 +73,8 @@ public class UmlHelper {
      *  Ensures that all of the elements in a model are registered
      *  to the UmlModelListener.  This is useful when the MModel is
      *  not created by the UmlFactory.
+     *
+     * @param model the UML model
      */
     public void addListenersToModel(Object model) {
         
@@ -84,6 +86,8 @@ public class UmlHelper {
 
     /** 
      *  Internal recursive worker to add UmlModelListener.
+     *
+     * @param mbase the element to add listeners to
      */
     protected void addListenersToMBase(Object mbase) {     
         
@@ -104,9 +108,11 @@ public class UmlHelper {
     }
     
     /** Singleton instance access method.
+     *
+     * @return the singleton
      */
     public static UmlHelper getHelper() {
-        return SINGLETON;
+        return singleton;
     }
     
     /** Returns the package helper for the UML
@@ -192,7 +198,7 @@ public class UmlHelper {
     
     /**
      * Returns the correct helper on basis of the package of base
-     * @param base
+     * @param base the modelelement
      * @return Object the helper
      */
     public Object getHelper(Object base) {
@@ -207,9 +213,9 @@ public class UmlHelper {
 		    try {
 			return methods[i].invoke(this, new Object[] {});
 		    } catch (IllegalAccessException e) {
-                        cat.warn(e);
+                        LOG.warn(e);
 		    } catch (InvocationTargetException e) {
-                        cat.warn(e);
+                        LOG.warn(e);
 		    }
 		}
 	    }
@@ -221,8 +227,8 @@ public class UmlHelper {
      * Returns the owner of some modelelement object. In most cases this will be
      * the owning namespace but in some cases it will be null (the root model)
      * or for instance the owning class with an attribute.
-     * @param handle
-     * @return Object
+     * @param handle the modelelement
+     * @return Object the owner
      */
     public Object getOwner(Object handle) {
         if (handle instanceof MBase) {
@@ -236,7 +242,7 @@ public class UmlHelper {
      * method should only be called from within the model component. The only
      * reason it is public is that the other helpers/factories are in other
      * packages and therefore cannot see this method if it is not public.
-     * @param col
+     * @param col a collection of modelelements
      */
     public void deleteCollection(Collection col) {
         Iterator it = col.iterator();
@@ -246,22 +252,27 @@ public class UmlHelper {
     }
     
     /**
-     * Returns the source of some relationship. This is the element in binary relations from which a relation 'departs'.
-     * @param relationShip 
+     * Returns the source of some relationship. 
+     * This is the element in binary relations from which a relation 'departs'.
+     * @param relationShip the relationship to be tested
      * @return the source of the relationship
      */
     public Object getSource(Object relationShip) {
         if (relationShip == null) {
             throw new IllegalArgumentException("Argument relationship is null");
         }
-        if (!(ModelFacade.isAModelElement(relationShip) || relationShip instanceof CommentEdge)) {
-           throw new IllegalArgumentException("Argument relationship of class " + relationShip.getClass().toString() + " is not a valid relationship"); 
+        if (!(ModelFacade.isAModelElement(relationShip) 
+                || relationShip instanceof CommentEdge)) {
+           throw new IllegalArgumentException("Argument relationship of class " 
+                   + relationShip.getClass().toString() 
+                   + " is not a valid relationship"); 
         }     
         if (relationShip instanceof CommentEdge) {
-            return ((CommentEdge)relationShip).getSource();
+            return ((CommentEdge) relationShip).getSource();
         }
         if (ModelFacade.isARelationship(relationShip)) { 
-            // handles all children of relationship including extend and include which are not members of core 
+            // handles all children of relationship including extend and 
+            // include which are not members of core 
             return CoreHelper.getHelper().getSource(relationShip);
         }
         if (ModelFacade.isATransition(relationShip)) {
@@ -271,22 +282,27 @@ public class UmlHelper {
     }
     
     /**
-     * Returns the destination of some relationship. This is the element in binary relations at which a relation 'arrives'.
-     * @param relationShip 
+     * Returns the destination of some relationship. 
+     * This is the element in binary relations at which a relation 'arrives'.
+     * @param relationShip  the relationship to be tested
      * @return the destination of the relationship
      */
     public Object getDestination(Object relationShip) {
         if (relationShip == null) {
             throw new IllegalArgumentException("Argument relationship is null");
         }
-        if (!(ModelFacade.isAModelElement(relationShip) || relationShip instanceof CommentEdge)) {
-           throw new IllegalArgumentException("Argument relationship of class " + relationShip.getClass().toString() + " is not a valid relationship"); 
+        if (!(ModelFacade.isAModelElement(relationShip) 
+                || relationShip instanceof CommentEdge)) {
+           throw new IllegalArgumentException("Argument relationship of class " 
+                   + relationShip.getClass().toString() 
+                   + " is not a valid relationship"); 
         }     
         if (relationShip instanceof CommentEdge) {
-            return ((CommentEdge)relationShip).getDestination();
+            return ((CommentEdge) relationShip).getDestination();
         }
         if (ModelFacade.isARelationship(relationShip)) { 
-            // handles all children of relationship including extend and include which are not members of core 
+            // handles all children of relationship including extend and 
+            // include which are not members of core 
             return CoreHelper.getHelper().getDestination(relationShip);
         }
         if (ModelFacade.isATransition(relationShip)) {

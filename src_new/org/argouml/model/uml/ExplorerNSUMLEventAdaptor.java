@@ -44,6 +44,9 @@ public class ExplorerNSUMLEventAdaptor
     
     private static ExplorerNSUMLEventAdaptor instance;
     
+    /**
+     * @return the ExplorerNSUMLEventAdaptor
+     */
     public static ExplorerNSUMLEventAdaptor getInstance() {
         if (instance == null) {
             instance = new ExplorerNSUMLEventAdaptor();
@@ -126,6 +129,7 @@ public class ExplorerNSUMLEventAdaptor
             || (e.getNewValue() != null
                 && !e.getNewValue().equals(e.getOldValue()))) {
             //firePropertyChanged("modelElementRemoved", e.getRemovedValue());
+            ;
         }
 
     }

@@ -44,10 +44,10 @@ import ru.novosoft.uml.model_management.MPackage;
  */
 public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
 
-    private static final Logger _cat = 
+    private static final Logger LOG = 
         Logger.getLogger(RefBaseObjectProxy.class);
             
-    private Object _realObject;
+    private Object realObject;
 
     /**
      * Returns the actual object which was proxied.
@@ -57,7 +57,7 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
      */
     public static Object getProxiedObject(RefBaseObjectProxy o)
     {
-        return o._realObject;
+        return o.realObject;
     }
 
     /** Creates a new instance of the proxied object.
@@ -95,17 +95,18 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
      */
     public RefBaseObjectProxy(Object obj)
     {
-        _realObject = obj;
+        realObject = obj;
     }
 
     /**
-      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, 
+      * java.lang.reflect.Method, java.lang.Object[])
       */
     public Object invoke(Object proxy, Method method, Object[] args)
         throws Throwable {
         Object result = null;
 
-        _cat.debug("method: " + method.getName());
+        LOG.debug("method: " + method.getName());
 
         if (method.getName().equals("refMetaObject")) {
             result = refMetaObject();
@@ -121,8 +122,8 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
         }
         else {
             try {
-                _cat.debug("Executing " + method.getName());
-                result = method.invoke(_realObject, args);
+                LOG.debug("Executing " + method.getName());
+                result = method.invoke(realObject, args);
             }
             catch (InvocationTargetException e) {
                 throw e.getTargetException();
@@ -144,8 +145,8 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
      */
     public RefPackage refImmediatePackage()
     {
-        if (_realObject instanceof MBase) {
-            MBase base = (MBase) _realObject;
+        if (realObject instanceof MBase) {
+            MBase base = (MBase) realObject;
             Object container = base.getModelElementContainer();
             while (container != null) {
                 if (container instanceof MPackage) {
@@ -162,8 +163,8 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
     public RefPackage refOutermostPackage()
     {
         Object outermost = null;
-        if (_realObject instanceof MBase) {
-            MBase base = (MBase) _realObject;
+        if (realObject instanceof MBase) {
+            MBase base = (MBase) realObject;
             Object container = base.getModelElementContainer();
             while (container != null) {
                 if (container instanceof MPackage) {
@@ -179,8 +180,8 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
      */
     public String refMofId()
     {
-        if (_realObject instanceof MBase) {
-            MBase base = (MBase) _realObject;
+        if (realObject instanceof MBase) {
+            MBase base = (MBase) realObject;
             return base.getUUID();
         }
         return null;
@@ -198,7 +199,7 @@ public class RefBaseObjectProxy implements InvocationHandler, RefBaseObject {
      * @return the proxied object
      */
     protected Object getRealObject() {
-        return _realObject;
+        return realObject;
     }
 
 }

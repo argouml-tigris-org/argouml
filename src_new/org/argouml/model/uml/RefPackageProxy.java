@@ -46,7 +46,7 @@ import org.apache.log4j.Logger;
 public class RefPackageProxy extends RefBaseObjectProxy
     implements InvocationHandler, RefPackage {
 
-    private static final Logger _cat = 
+    private static final Logger LOG = 
         Logger.getLogger(RefBaseObjectProxy.class);
 
     /**
@@ -88,13 +88,14 @@ public class RefPackageProxy extends RefBaseObjectProxy
     }
 
     /**
-      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, java.lang.reflect.Method, java.lang.Object[])
+      * @see java.lang.reflect.InvocationHandler#invoke(java.lang.Object, 
+      * java.lang.reflect.Method, java.lang.Object[])
       */
     public Object invoke(Object proxy, Method method, Object[] args)
         throws Throwable {
         Object result = null;
 
-        _cat.debug("method: " + method.getName());
+        LOG.debug("method: " + method.getName());
 
         if (method.getName().equals("refMetaObject")) {
             result = refMetaObject();
@@ -180,28 +181,32 @@ public class RefPackageProxy extends RefBaseObjectProxy
     }
 
     /**
-     * @see javax.jmi.reflect.RefPackage#refCreateStruct(javax.jmi.reflect.RefObject, java.util.List)
+     * @see javax.jmi.reflect.RefPackage#refCreateStruct(
+     * javax.jmi.reflect.RefObject, java.util.List)
      */
     public RefStruct refCreateStruct(RefObject arg0, List arg1) {
         throw new RuntimeException("Not yet implemented");
     }
 
     /**
-     * @see javax.jmi.reflect.RefPackage#refCreateStruct(java.lang.String, java.util.List)
+     * @see javax.jmi.reflect.RefPackage#refCreateStruct(java.lang.String, 
+     * java.util.List)
      */
     public RefStruct refCreateStruct(String arg0, List arg1) {
         throw new RuntimeException("Not yet implemented");
     }
 
     /**
-     * @see javax.jmi.reflect.RefPackage#refGetEnum(javax.jmi.reflect.RefObject, java.lang.String)
+     *@see javax.jmi.reflect.RefPackage#refGetEnum(javax.jmi.reflect.RefObject, 
+     * java.lang.String)
      */
     public RefEnum refGetEnum(RefObject arg0, String arg1) {
         throw new RuntimeException("Not yet implemented");
     }
 
     /**
-     * @see javax.jmi.reflect.RefPackage#refGetEnum(java.lang.String, java.lang.String)
+     * @see javax.jmi.reflect.RefPackage#refGetEnum(java.lang.String, 
+     * java.lang.String)
      */
     public RefEnum refGetEnum(String arg0, String arg1) {
         throw new RuntimeException("Not yet implemented");
