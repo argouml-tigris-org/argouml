@@ -290,7 +290,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <!-- Creates the source distribution                                            -->
   <!-- =================================================================== -->
-  <target name="dist-src" depends="package">
+  <target name="dist-src" depends="init">
     <echo message="Building the source distribution files (zip,tar)"/>
     <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
     <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
@@ -318,7 +318,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Run ArgoUML from compiled sources                                   -->
   <!-- =================================================================== -->
   <target name="run" depends="compile">
-    <echo message="--- Executing ArgoUML ---"/>
+    <echo message="--- Executing ${Name} ---"/>
     <java classname="org.argouml.application.Main"
           fork="yes"
           classpath="${build.dest};${classpath};${ant.xml-libs}"/>
