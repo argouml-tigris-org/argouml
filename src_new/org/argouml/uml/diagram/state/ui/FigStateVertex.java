@@ -48,81 +48,43 @@ import org.argouml.uml.diagram.state.*;
 
 public abstract class FigStateVertex extends FigNodeModelElement {
 
-    //////////////////////////////////////////////////////////////
-    // Instance variables
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
-    // A buffer for the enclosing fig (added for delayed setting by A. Rueckert). 
-    Fig _encloserBuffer = null;
+  public FigStateVertex() {  }
 
+  public FigStateVertex(GraphModel gm, Object node) {
+    this();
+    setOwner(node);
+  }
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
+  ////////////////////////////////////////////////////////////////
+  // nestable nodes
 
-    public FigStateVertex() {  }
+  public void setEnclosingFig(Fig encloser) {
+    super.setEnclosingFig(encloser);
+    if (!(getOwner() instanceof MStateVertex)) return;
+    MStateVertex sv = (MStateVertex) getOwner();
+    MCompositeState m = null;
+    if (encloser != null && (encloser.getOwner() instanceof MCompositeState)) {
+      m = (MCompositeState) encloser.getOwner();
+     }
+    else {
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      if (pb.getTarget() instanceof UMLDiagram) {
+        try {
+	  GraphModel gm = ((UMLDiagram)pb.getTarget()).getGraphModel();
+	  StateDiagramGraphModel sdgm =  (StateDiagramGraphModel) gm;
+	  m = (MCompositeState) sdgm.getMachine().getTop();
+        }
+        catch(Exception ex) {
+          ex.printStackTrace();
+        }
+      }
+    }	
+    if (m!=null) 
+	sv.setContainer(m);
+  }
 
-    public FigStateVertex(GraphModel gm, Object node) {
-	this();
-	setOwner(node);
-    }
-
-
-    ////////////////////////////////////////////////////////////////
-    // nestable nodes
-
-    /**
-     * Nested nodes store their enclosing fig. This method is called by the PGML parser.
-     * But there's a problem at this point, because the container might be the statemachine,
-     * which is accessed via the graphmodel. But this is only available via the diagram,
-     * which is added to the project _after_ the diagram is parsed entirely!
-     *
-     * @param encloser The enclosing figure of this figure.
-     *
-     * @author Andreas Rueckert <a_rueckert@gmx.net>
-     */
-    public void setEnclosingFig(Fig encloser) {
-	super.setEnclosingFig(encloser);
-	if (!(getOwner() instanceof MStateVertex)) return;
-	MStateVertex sv = (MStateVertex) getOwner();
-	MCompositeState m = null;
-	if (encloser != null && (encloser.getOwner() instanceof MCompositeState)) {
-	    m = (MCompositeState) encloser.getOwner();
-	} else {
-	    ProjectBrowser pb = ProjectBrowser.TheInstance;  // If the current target is a state diagram, it seems, we are 
-	    if (pb.getTarget() instanceof UMLStateDiagram) { // editing the diagram, but not loading a model.
-		try {
-		    GraphModel gm = ((UMLStateDiagram)pb.getTarget()).getGraphModel();
-		    StateDiagramGraphModel sdgm =  (StateDiagramGraphModel) gm;
-		    m = (MCompositeState) sdgm.getMachine().getTop();
-		}
-		catch(Exception ex) {
-		    ex.printStackTrace();
-		}
-	    } else {
-		_encloserBuffer = encloser;
-	    }
-	}
-	if (m!=null)
-	    sv.setContainer(m);
-    }
-
-    /**
-     * This is method, that actually sets the enclosing fig, when the diagram
-     * is loaded completely. It is called as a postload operation of the UMLStateDiagram.
-     *
-     * @param machine The state machine for this diagram.
-     *
-     * @author Andreas Rueckert <a_rueckert@gmx.net>  (original author Olliver Heyden or Jason Robbins ?)
-     */
-    public void setActualEncloser(MStateMachine machine) {       
-	MStateVertex sv = (MStateVertex) getOwner();
-	MCompositeState m = null;
-	if (_encloserBuffer != null && (_encloserBuffer.getOwner() instanceof MCompositeState))
-	    m = (MCompositeState) _encloserBuffer.getOwner();
-	else
-	    m = (MCompositeState) machine.getTop();
-
-	if (m!=null) 
-	    sv.setContainer(m);
-    }
 
 } /* end class FigStateVertex */
