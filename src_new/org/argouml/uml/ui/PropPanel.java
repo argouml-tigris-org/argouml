@@ -147,7 +147,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         super(title);
         setOrientation(orientation);
 
-        setLayout(new LabelledLayout(orientation));
+        setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
 
         if (icon != null) {
             _titleLabel = new JLabel(localize(title), icon, SwingConstants.LEFT);

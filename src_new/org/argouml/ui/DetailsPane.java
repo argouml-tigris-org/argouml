@@ -173,11 +173,7 @@ public class DetailsPane
                 _tabs.addTab(title, _upArrowIcon, t);
             } else {
                 _tabs.addTab(title, t);
-            } /*
-                        if (t instanceof TargetListener) {
-                            TargetManager.getInstance().addTargetListener((TargetListener)t);
-                        }
-                        */
+            }
         }
 
         // set the tab that should be shown on first entrance

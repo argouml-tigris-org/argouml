@@ -451,7 +451,6 @@ class ActionNewToDoItem extends UMLAction {
 
         int labelGap = 10;
         int componentGap = 10;
-        
         JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
 
         priority.setSelectedItem(PRIORITIES[0]);

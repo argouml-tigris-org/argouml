@@ -31,31 +31,41 @@ import java.io.LineNumberReader;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.ConfigurationKey;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.ProjectBrowser;
 
 public class ConfigLoader {
     private static Logger _Log = Logger.getLogger("org.argouml.util.ConfigLoader"); 
 
-	////////////////////////////////////////////////////////////////
-	// static utility functions
+    ////////////////////////////////////////////////////////////////
+    // static utility functions
 
-	public static String TabPath = "org.argouml";
-        private static Orientation tabPropsOrientation;
-        
-        public static Orientation getTabPropsOrientation() {
-            return tabPropsOrientation;
+    public static String TabPath = "org.argouml";
+    private static Orientation tabPropsOrientation;
+
+    public static Orientation getTabPropsOrientation() {
+        return tabPropsOrientation;
+    }
+
+    public static void loadTabs(Vector tabs, String panelName, Orientation orientation) {
+        String position = null;
+        if (
+                panelName.equals("north") || panelName.equals("south") || 
+                panelName.equals("west") || panelName.equals("east") ||
+                panelName.equals("northwest") || panelName.equals("northeast") || 
+                panelName.equals("southwest") || panelName.equals("southeast")) {
+            position = panelName;
+            panelName = "detail";
         }
-        
-	public static void loadTabs(Vector tabs, String panelName,
-			      Orientation orientation) {
-          InputStream is = null;
-	  LineNumberReader lnr = null;
-	  String configFile = System.getProperty("argo.config");
-          //
-          //    if property specified
-          //
-          if(configFile != null) {
+        InputStream is = null;
+	LineNumberReader lnr = null;
+	String configFile = System.getProperty("argo.config");
+        //
+        //    if property specified
+        //
+        if(configFile != null) {
             //    try to load a file
             try {
                 is = new FileInputStream(configFile);
@@ -75,20 +85,23 @@ public class ConfigLoader {
             lnr = new LineNumberReader(new InputStreamReader(is));
 
             if (lnr != null) {
-                  try {
-                      String line = lnr.readLine();
-                      while (line != null) {
-                        //long start = System.currentTimeMillis();
-                        Class tabClass = parseConfigLine(line, panelName, lnr.getLineNumber(),
-                                                         configFile);
+                try {
+                    String line = lnr.readLine();
+                    while (line != null) {
+                        Class tabClass =
+                            parseConfigLine(line, panelName, lnr.getLineNumber(), configFile);
                         if (tabClass != null) {
                             try {
                                 String className = tabClass.getName();
-                                if (className.equals("org.argouml.uml.ui.TabProps")) {
-                                    tabPropsOrientation = orientation;
+                                String shortClassName = className.substring(className.lastIndexOf('.')+1).toLowerCase();
+                                ConfigurationKey key = Configuration.makeKey("layout", shortClassName);
+                                if (position == null || position.equals(Configuration.getString(key, "south"))) {
+                                    if (className.equals("org.argouml.uml.ui.TabProps")) {
+                                        tabPropsOrientation = orientation;
+                                    }
+                                    Object newTab = tabClass.newInstance();
+                                    tabs.addElement(newTab);
                                 }
-                                Object newTab = tabClass.newInstance();
-                                tabs.addElement(newTab);
                             }
                             catch (InstantiationException ex) {
                                 _Log.error("Could not make instance of " +
@@ -100,7 +113,7 @@ public class ConfigLoader {
                             }
                         }
                         line = lnr.readLine();                     
-                      }
+                    }
                 }
                 catch (java.io.IOException io) {
                     _Log.error(io);
