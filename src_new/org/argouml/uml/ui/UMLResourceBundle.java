@@ -135,6 +135,8 @@ public class UMLResourceBundle extends ListResourceBundle {
         {"Implementations:", "Implementations:" },  
         {"New stereotype", "New stereotype" },  
         {"Add enumeration literal", "Add enumeration literal" },  
+        {"NavStereo", "Go to selected stereotype" },
+        {"NavClass", "Go to selected classifier" }
     };
 
     public Object[][] getContents() {

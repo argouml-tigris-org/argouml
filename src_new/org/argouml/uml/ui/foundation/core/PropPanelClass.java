@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,7 +60,7 @@ public class PropPanelClass extends PropPanelClassifier {
 
     addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
 
     addCaption("Extends:",2,0,0);
 
