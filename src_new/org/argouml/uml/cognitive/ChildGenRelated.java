@@ -36,6 +36,7 @@ import org.tigris.gef.util.ChildGenerator;
 /**
  * @stereotype singleton
  * @author jrobbins
+ * @deprecated move this class to org.argouml.uml
  */
 public class ChildGenRelated implements ChildGenerator {
     private static final ChildGenRelated SINGLETON = new ChildGenRelated();
