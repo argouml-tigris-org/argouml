@@ -75,8 +75,8 @@ public class PropPanelInterface extends PropPanelClassifier {
     addCaption("Operations:",0,2,0.5);
     addField(opsScroll,0,2,0.5);
 
-    addCaption("Attributes:",1,2,0.5);
-    addField(attrScroll,1,2,0.5);
+    // addCaption("Attributes:",1,2,0.5);
+    // addField(attrScroll,1,2,0.5);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
