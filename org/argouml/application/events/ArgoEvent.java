@@ -34,14 +34,14 @@ import java.util.*;
 public abstract class ArgoEvent extends EventObject
     implements ArgoEventTypes {
 
-    protected int _eventType = 0;
+    protected int eventType = 0;
 
-    public ArgoEvent(int eventType, Object src) {
+    public ArgoEvent(int eT, Object src) {
         super(src);
-	_eventType = eventType;
+	eventType = eT;
     }
 
-    public int getEventType() { return _eventType; }
+    public int getEventType() { return eventType; }
 
     /** Indicates the start of the range for any events.
      * @return the first id reserved for events. 
@@ -61,7 +61,7 @@ public abstract class ArgoEvent extends EventObject
      * @return the formatted information.
      */
     public String toString() {
-        return "{" + getClass().getName() + ":" + _eventType +
+        return "{" + getClass().getName() + ":" + eventType +
 	       "(" + getEventStartRange() + "-" + getEventEndRange() + ")" +
 	       "/" + super.toString() + "}";
     }

@@ -31,19 +31,19 @@ package org.argouml.application.security;
  */
 public class ArgoSecurityException extends SecurityException
 {
-    private boolean _hidden = false;
+    private boolean hidden = false;
 
     public ArgoSecurityException() {
         this(false);
     } 
 
-    public ArgoSecurityException(boolean hidden) {
+    public ArgoSecurityException(boolean h) {
         super();
-	_hidden = hidden;
+	hidden = h;
     }
 
     public boolean isHidden() {
-        return _hidden;
+        return hidden;
     }
 
 }

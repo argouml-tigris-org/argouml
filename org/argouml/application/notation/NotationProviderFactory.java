@@ -45,26 +45,26 @@ public class NotationProviderFactory
     implements ArgoModuleEventListener 
 {
 	/** logger */
-	private static Logger cat = 
+    private static final Logger LOG = 
 		Logger.getLogger(NotationProviderFactory.class);
 
     static NotationProviderFactory SINGLETON = new NotationProviderFactory();
 
     public static NotationProviderFactory getInstance() { return SINGLETON; }
 
-    private ArrayList _providers = new ArrayList();
-    private NotationProvider _defaultProvider = null;
+    private ArrayList providers = new ArrayList();
+    private NotationProvider defaultProvider = null;
 
     private NotationProviderFactory() {
-	_providers = new ArrayList();
+	providers = new ArrayList();
 	ListIterator iterator =
 	    Argo.getPlugins(PluggableNotation.class).listIterator();
 	while (iterator.hasNext()) {
             Object o = iterator.next();
             if (o instanceof NotationProvider) {
 	        NotationProvider np = (NotationProvider) o;
-                cat.debug ("added provider:" + np);
-                _providers.add(np);
+                LOG.debug ("added provider:" + np);
+                providers.add(np);
                 fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
 	    }
 	}
@@ -83,24 +83,24 @@ public class NotationProviderFactory
     public NotationProvider getProvider(NotationName nn) {
         NotationName n = (nn == null) ? Notation.getDefaultNotation() : nn;
 
-	cat.debug ("looking for " + n);
-        ListIterator iterator = _providers.listIterator();
+	LOG.debug ("looking for " + n);
+        ListIterator iterator = providers.listIterator();
         while (iterator.hasNext()) {
             NotationProvider np = (NotationProvider) iterator.next();
-	    cat.debug ("Checking " + np + ", " + np.getNotation());
+	    LOG.debug ("Checking " + np + ", " + np.getNotation());
 	    if (np.getNotation().equals(n)) {
-	        cat.debug ("found provider " + np);
+	        LOG.debug ("found provider " + np);
 	        return np;
 	    }
 	}
         return getDefaultProvider();
     }
 
-    public ArrayList getProviders() { return _providers; }
+    public ArrayList getProviders() { return providers; }
 
     public ArrayList getNotations() {
         ArrayList _notations = new ArrayList();
-        ListIterator iterator = _providers.listIterator();
+        ListIterator iterator = providers.listIterator();
         while (iterator.hasNext()) {
             NotationProvider np = (NotationProvider) iterator.next();
 	    _notations.add(np.getNotation());
@@ -109,22 +109,22 @@ public class NotationProviderFactory
     }
 
     public NotationProvider getDefaultProvider() {
-	if (_defaultProvider == null) {
-	    _defaultProvider =
+	if (defaultProvider == null) {
+	    defaultProvider =
 		(NotationProvider) GeneratorDisplay.getInstance();
 	    // TODO:  This must be the provider pointed to by the configuration,
 	    // or UML 13 if none.
 	    // 
 	}
-	return _defaultProvider;
+	return defaultProvider;
     }
  
     public void moduleLoaded(ArgoModuleEvent event) {
-	cat.debug (event);
+	LOG.debug (event);
 	if (event.getSource() instanceof NotationProvider) {
 	    NotationProvider np = (NotationProvider) event.getSource();
-	    cat.debug ("added:" + np);
-	    _providers.add(np);
+	    LOG.debug ("added:" + np);
+	    providers.add(np);
 	    fireEvent(ArgoEventTypes.NOTATION_PROVIDER_ADDED, np);
 	}
     }

@@ -42,14 +42,14 @@ import javax.swing.*;
 public class NotationNameImpl
     implements NotationName, ArgoModuleEventListener
 {
-	/** logger */
-	private static Logger cat = Logger.getLogger(NotationNameImpl.class);
+    /** logger */
+    private static final Logger LOG = Logger.getLogger(NotationNameImpl.class);
 
-    String _name = null;
-    String _version = null;
-    Icon _icon = null;
+    String name = null;
+    String version = null;
+    Icon icon = null;
 
-    private static ArrayList _notations = new ArrayList();
+    private static ArrayList notations = new ArrayList();
 
     /** A notation without a version or icon.
      */
@@ -71,49 +71,49 @@ public class NotationNameImpl
 
     /** A notation with a version and an icon.
      */
-    protected NotationNameImpl(String name, String version, Icon icon) {
-        _name = name;
-        _version = version;
-        _icon = icon;
+    protected NotationNameImpl(String myName, String myVersion, Icon myIcon) {
+        name = myName;
+        version = myVersion;
+        icon = myIcon;
     }
 
     /** Accessor for the language name
      */
     public String getName() {
-        return _name;
+        return name;
     }
 
     /** Accessor for the language version
      */
     public String getVersion() {
-        return _version;
+        return version;
     }
 
     /** Gets a textual title for the notation suitable for use
      *  in a combo box or other such visual location.
      */
     public String getTitle() {
-        String name = _name;
-        if (name.equalsIgnoreCase("uml")) {
-            name = name.toUpperCase();
+        String myName = name;
+        if (myName.equalsIgnoreCase("uml")) {
+            myName = myName.toUpperCase();
         }
 
-        if (_version == null || _version.equals("")) {
-            return name;
+        if (version == null || version.equals("")) {
+            return myName;
         }
         else {
-            return name + " " + _version;
+            return myName + " " + version;
         }
     }
 
     /** Returns an icon for the notation, or null if no icon is available.
      */
     public Icon getIcon() {
-        return _icon;
+        return icon;
     }
 
     public String getConfigurationValue() {
-        return getNotationNameString(_name, _version);
+        return getNotationNameString(name, version);
     }
 
     public String toString() {
@@ -144,7 +144,7 @@ public class NotationNameImpl
 	nn = findNotation(getNotationNameString(k1, k2));
 	if (nn == null) {
 	    nn = (NotationName) new NotationNameImpl(k1, k2, icon);
-	    _notations.add(nn);
+	    notations.add(nn);
 	    fireEvent(ArgoEventTypes.NOTATION_ADDED, nn);
 	}
         return nn;
@@ -153,14 +153,14 @@ public class NotationNameImpl
     /** Get all of the registered notations.
      */
     public static ArrayList getAvailableNotations() {
-        return _notations;
+        return notations;
     }
 
     /** Finds a NotationName matching the configuration string.
      *  Returns null if no match.
      */
     public static NotationName findNotation(String s) {
-        ListIterator iterator = _notations.listIterator();
+        ListIterator iterator = notations.listIterator();
         while (iterator.hasNext()) {
 	    try {
                 NotationName nn = (NotationName) iterator.next();
@@ -169,7 +169,7 @@ public class NotationNameImpl
 		}
 	    }
 	    catch (Exception e) {
-	        cat.error ("Unexpected exception", e);
+	        LOG.error ("Unexpected exception", e);
 	    }
 	}
 	return null;
@@ -194,7 +194,7 @@ public class NotationNameImpl
     }
 
     public void moduleLoaded(ArgoModuleEvent event) {
-        cat.info ("notation.moduleLoaded(" + event + ")");
+        LOG.info ("notation.moduleLoaded(" + event + ")");
     }
 
     public void moduleUnloaded(ArgoModuleEvent event) {

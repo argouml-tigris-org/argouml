@@ -32,9 +32,10 @@ import org.apache.log4j.*;
  */
 public class ArgoEventPump {
 
-    Logger cat = Logger.getLogger(ArgoEventPump.class);
+    //Logger LOG = Logger.getLogger(ArgoEventPump.class);
+    private static final Logger LOG = Logger.getLogger(ArgoEventPump.class);
 
-    private ArrayList _listeners = null;
+    private ArrayList listeners = null;
 
     static final ArgoEventPump SINGLETON = new ArgoEventPump();
 
@@ -62,9 +63,9 @@ public class ArgoEventPump {
     }
 
     protected void doAddListener(int event, ArgoEventListener listener) {
-        if (_listeners == null)
-            _listeners = new ArrayList();
-        _listeners.add(new Pair(event, listener));
+        if (listeners == null)
+            listeners = new ArrayList();
+        listeners.add(new Pair(event, listener));
     }
 
     /**
@@ -77,15 +78,15 @@ public class ArgoEventPump {
      * @param listener
      */
     protected void doRemoveListener(int event, ArgoEventListener listener) {
-        if (_listeners == null)
+        if (listeners == null)
             return;
-        Iterator it = _listeners.iterator();
+        Iterator it = listeners.iterator();
         List removeList = new ArrayList();
         if (event == ArgoEvent.ANY_EVENT) {
 
             while (it.hasNext()) {
                 Pair p = (Pair) it.next();
-                if (p._listener == listener) {
+                if (p.listener == listener) {
                     removeList.add(p);
                 }
             }
@@ -98,7 +99,7 @@ public class ArgoEventPump {
                     removeList.add(p);
             }
         }
-        _listeners.removeAll(removeList);
+        listeners.removeAll(removeList);
     }
 
     private void handleFireModuleEvent(
@@ -122,7 +123,7 @@ public class ArgoEventPump {
 	    break;
 
 	default :
-	    cat.error("Invalid event:" + event.getEventType());
+	    LOG.error("Invalid event:" + event.getEventType());
 	    break;
         }
     }
@@ -152,7 +153,7 @@ public class ArgoEventPump {
 	    break;
 
 	default :
-	    cat.error("Invalid event:" + event.getEventType());
+	    LOG.error("Invalid event:" + event.getEventType());
 	    break;
         }
     }
@@ -191,11 +192,11 @@ public class ArgoEventPump {
 
     protected void doFireEvent(ArgoEvent event) {
 
-        if (_listeners == null) {
+        if (listeners == null) {
             return;
         }
 
-        ListIterator iterator = _listeners.listIterator();
+        ListIterator iterator = listeners.listIterator();
         while (iterator.hasNext()) {
             Pair pair = (Pair) iterator.next();
             if (pair.getEventType() == ArgoEvent.ANY_EVENT) {
@@ -210,28 +211,28 @@ public class ArgoEventPump {
     }
 
     class Pair {
-        int _eventType;
-        ArgoEventListener _listener;
-        Pair(int eventType, ArgoEventListener listener) {
-            _eventType = eventType;
-            _listener = listener;
+        int eventType;
+        ArgoEventListener listener;
+        Pair(int myEventType, ArgoEventListener myListener) {
+            eventType = myEventType;
+            listener = myListener;
         }
 
         int getEventType() {
-            return _eventType;
+            return eventType;
         }
         ArgoEventListener getListener() {
-            return _listener;
+            return listener;
         }
 
         public String toString() {
-            return "{Pair(" + _eventType + "," + _listener + ")}";
+            return "{Pair(" + eventType + "," + listener + ")}";
         }
 
         public boolean equals(Object o) {
             if (o instanceof Pair) {
                 Pair p = (Pair) o;
-                if (p._eventType == _eventType && p._listener == _listener)
+                if (p.eventType == eventType && p.listener == listener)
                     return true;
             }
             return false;
