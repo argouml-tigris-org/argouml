@@ -29,10 +29,18 @@ import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
+import java.util.*;
 
+
+import org.tigris.gef.util.Util;
 
 
 public class PropPanelAssociationEnd extends PropPanel {
+    
+    protected static ImageIcon _classIcon = Util.loadIconResource("Class");
+    protected static ImageIcon _interfaceIcon = Util.loadIconResource("Interface");
+    protected static ImageIcon _assocEndIcon = Util.loadIconResource("AssociationEnd");
+    
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -127,9 +135,68 @@ public class PropPanelAssociationEnd extends PropPanel {
     addCaption(new JLabel("Visibility:"),2,2,1);
     addField(new UMLVisibilityPanel(this,mclass,1,false),2,2,0);
 
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+    
+    
+    new PropPanelButton(this,buttonPanel,_classIcon,"New class","newClass",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateUp",null);
+    new PropPanelButton(this,buttonPanel,_interfaceIcon,"New interface","newInterface",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_interfaceIcon,"Delete association end","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_assocEndIcon,"New association end","newAssociationEnd",null);
+    
+    
   }
 
-
+    public void newClass() {
+        Object target = getTarget();
+        if(target instanceof MAssociationEnd) {
+            MAssociationEnd assocEnd = (MAssociationEnd) target;
+            MAssociation assoc = assocEnd.getAssociation();
+            if(assoc != null) {
+                MNamespace ns = assoc.getNamespace();
+                if(ns != null) {
+                    MClass newClass = ns.getFactory().createClass();
+                    ns.addOwnedElement(newClass);
+                    assocEnd.setType(newClass);
+                    navigateTo(newClass);
+                }
+            }
+        }
+    }
+    
+    public void newInterface() {
+        Object target = getTarget();
+        if(target instanceof MAssociationEnd) {
+            MAssociationEnd assocEnd = (MAssociationEnd) target;
+            MAssociation assoc = assocEnd.getAssociation();
+            if(assoc != null) {
+                MNamespace ns = assoc.getNamespace();
+                if(ns != null) {
+                    MInterface newClass = ns.getFactory().createInterface();
+                    ns.addOwnedElement(newClass);
+                    //
+                    //   while we are at it, we should set all the other ends
+                    //      to not navigable
+                    assocEnd.setType(newClass);
+                    java.util.List ends = assoc.getConnections();
+                    MAssociationEnd otherEnd;
+                    if(ends != null) {
+                        Iterator iter = ends.iterator();
+                        while(iter.hasNext()) {
+                            otherEnd = (MAssociationEnd) iter.next();
+                            otherEnd.setNavigable(otherEnd == assocEnd);
+                        }
+                    }
+                    navigateTo(newClass);
+                }
+            }
+        }
+    }
 
     public Object getAssociation() {
         Object assoc = null;
@@ -172,7 +239,27 @@ public class PropPanelAssociationEnd extends PropPanel {
 
     }
 
-
+    public void navigateUp() {
+        Object target = getTarget();
+        if(target instanceof MAssociationEnd) {
+            MAssociation assoc = ((MAssociationEnd) target).getAssociation();
+            if(assoc != null) {
+                navigateTo(assoc);
+            }
+        }
+    }
+    
+    public void newAssociationEnd() {
+        Object target = getTarget();
+        if(target instanceof MAssociationEnd) {
+            MAssociation assoc = ((MAssociationEnd) target).getAssociation();
+            if(assoc != null) {
+                MAssociationEnd newEnd = assoc.getFactory().createAssociationEnd();
+                assoc.addConnection(newEnd);
+                navigateTo(newEnd);
+            }
+        }
+    }
 
 } /* end class PropPanelAssociation */
 

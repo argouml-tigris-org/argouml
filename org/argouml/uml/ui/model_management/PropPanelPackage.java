@@ -104,31 +104,31 @@ public class PropPanelPackage extends PropPanelNamespace {
     
     double ygrowth = 0.2;
     addCaption(new JLabel("Packages:"),0,1,ygrowth);
-    JList packList = new UMLList(new UMLPackagesListModel(this,"ownedelement",true),true);
+    JList packList = new UMLList(new UMLPackagesListModel(this,"ownedElement",true),true);
     packList.setForeground(Color.blue);
     packList.setVisibleRowCount(1);
     addField(new JScrollPane(packList),0,1,ygrowth);
 
     addCaption(new JLabel("Classifiers:"),1,1,ygrowth);
-    JList classList = new UMLList(new UMLClassifiersListModel(this,"ownedelement",true),true);
+    JList classList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
     classList.setForeground(Color.blue);
     classList.setVisibleRowCount(1);
     addField(new JScrollPane(classList),1,1,ygrowth);
 
     addCaption(new JLabel("Associations:"),2,1,ygrowth);
-    JList assocList = new UMLList(new UMLAssociationsListModel(this,"ownedelement",true),true);
+    JList assocList = new UMLList(new UMLAssociationsListModel(this,"ownedElement",true),true);
     assocList.setForeground(Color.blue);
     assocList.setVisibleRowCount(1);
     addField(new JScrollPane(assocList),2,1,ygrowth);
 
     addCaption(new JLabel("Generalizations:"),3,1,ygrowth);
-    JList genList = new UMLList(new UMLGeneralizationsListModel(this,"ownedelement",true),true);
+    JList genList = new UMLList(new UMLGeneralizationsListModel(this,"ownedElement",true),true);
     genList.setForeground(Color.blue);
     genList.setVisibleRowCount(1);
     addField(new JScrollPane(genList),3,1,ygrowth);
     
     addCaption(new JLabel("Stereotypes:"),4,1,ygrowth);
-    JList stereoList = new UMLList(new UMLStereotypesListModel(this,"ownedelement",true),true);
+    JList stereoList = new UMLList(new UMLStereotypesListModel(this,"ownedElement",true),true);
     stereoList.setForeground(Color.blue);
     stereoList.setVisibleRowCount(1);
     addField(new JScrollPane(stereoList),4,1,ygrowth);

@@ -28,7 +28,7 @@ import ru.novosoft.uml.*;
 public class UMLTextProperty  {
     private Method _getMethod;
     private Method _setMethod;
-    private String _propertyName;
+    protected String _propertyName;
     static private Object[] _noArg = {};
     
     public UMLTextProperty(String propertyName) {

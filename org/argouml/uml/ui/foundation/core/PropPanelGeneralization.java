@@ -30,10 +30,18 @@ import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
 import java.awt.*;
 
+import org.tigris.gef.util.Util;
+
 public class PropPanelGeneralization extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constructors
+  private static ImageIcon _classIcon = Util.loadIconResource("Class");
+  private static ImageIcon _interfaceIcon = Util.loadIconResource("Interface");
+  private static ImageIcon _associationIcon = Util.loadIconResource("Association");  
+  private static ImageIcon _packageIcon = Util.loadIconResource("Package");
+
+  private PropPanelButton _newButton;
 
   public PropPanelGeneralization() {
     super("Generalization",2);
@@ -71,9 +79,58 @@ public class PropPanelGeneralization extends PropPanel {
     addCaption(new JLabel("Powertype:"),2,1,1);
     addField(new UMLClassifierComboBox(this,MClassifier.class,null,"powertype","getPowertype","setPowertype",true),2,1,0);
 
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+    
+    
+    new PropPanelButton(this,buttonPanel,_interfaceIcon,"Delete generalization","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateUp",null);
+    _newButton = new PropPanelButton(this,buttonPanel,_classIcon,"New class","newModelElement",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    buttonPanel.add(new JPanel());
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    }
 
-}
-
+    
+    private void updateButton() {
+        Object target = getTarget();
+        if(target instanceof MGeneralization) {
+            MGeneralization gen = (MGeneralization) target;
+            MGeneralizableElement parent = gen.getParent();
+            MGeneralizableElement child = gen.getChild();
+            //
+            //   if one and only one of child and parent are set
+            //
+            if(parent != null ^ child != null) {
+                if(parent == null) parent = child;
+                
+                if(parent instanceof MClass) {
+                    _newButton.setIcon(_classIcon);
+                    _newButton.setToolTipText("Add new class");
+                }
+                else {
+                    if(parent instanceof MInterface) {
+                        _newButton.setIcon(_interfaceIcon);
+                        _newButton.setToolTipText("Add new interface");
+                    }
+                    else {
+                        if(parent instanceof MPackage) {
+                            _newButton.setIcon(_packageIcon);
+                            _newButton.setToolTipText("Add new package");
+                        }
+                    }
+                }
+                _newButton.setEnabled(true);
+            }
+            else {
+                _newButton.setEnabled(false);
+            }
+        }
+    }
+    
+    
     public MGeneralizableElement getParentElement() {
         MGeneralizableElement parent = null;
         Object target = getTarget();
@@ -148,6 +205,45 @@ public class PropPanelGeneralization extends PropPanel {
     }
     
     
-    
+    public void newModelElement() {
+        Object target = getTarget();
+        if(target instanceof MGeneralization) {
+            MGeneralization gen = (MGeneralization) target;
+            MGeneralizableElement parent = gen.getParent();
+            MGeneralizableElement child = gen.getChild();
+            if(parent != null ^ child != null) {
+                MGeneralizableElement known = parent;
+                if(known == null) known = child;
+                MNamespace ns = known.getNamespace();
+                if(ns != null) {
+                    try {
+                        MGeneralizableElement newElement = (MGeneralizableElement) 
+                        known.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
+                        ns.addOwnedElement(newElement);
+                        if(parent == null) {
+                            gen.setParent(newElement);
+                        }
+                        else {
+                            gen.setChild(newElement);
+                        }
+                        _newButton.setEnabled(false);
+                        navigateTo(newElement);
+                    }
+                    catch(Exception e) {
+                        System.out.println(e.toString() + " in PropPanelGeneralization.newElement");
+                    }
+                }
+            }
+        }
+    }
   
+    public void navigateUp() {
+        Object target = getTarget();
+        if(target instanceof MModelElement) {
+            MNamespace ns = ((MModelElement) target).getNamespace();
+            if(ns != null) {
+                navigateTo(ns);
+            }
+        }
+    }
 } /* end class PropPanelGeneralization */

@@ -22,45 +22,46 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-
-import org.argouml.ui.*;
+import java.lang.reflect.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
-import javax.swing.*;
 
-public class TabDocumentation extends PropPanel {
-
-    ////////////////////////////////////////////////////////////////
-  // constructor
-  public TabDocumentation() {
-    super("Documentation",2);
-        addCaption(new JLabel("Author:"),0,0,0);
-        addField(new UMLTextField(this,new UMLTaggedTextProperty("author")),0,0,0);
-        
-        addCaption(new JLabel("Version:"),1,0,0);
-        addField(new UMLTextField(this,new UMLTaggedTextProperty("version")),1,0,0);
-        
-        addCaption(new JLabel("Since:"),2,0,0);
-        addField(new UMLTextField(this,new UMLTaggedTextProperty("since")),2,0,0);
-        
-        addCaption(new JLabel("Deprecated:"),3,0,0);
-        addField(new UMLCheckBox("",this,new UMLTaggedBooleanProperty("deprecated")),3,0,0);
-        
-        addCaption(new JLabel("See:"),4,0,1);
-        addField(new UMLTextArea(this,new UMLTaggedTextProperty("see")),4,0,1);
-        
-        addCaption(new JLabel("Documentation:"),0,1,1);
-        UMLTextArea _doc = new UMLTextArea(this,new UMLTaggedTextProperty("documentation"));
-        _doc.setLineWrap(true);
-        _doc.setWrapStyleWord(true);
-        addField(_doc,0,1,1);
-        
-        
-  }
-
-    public boolean shouldBeEnabled() { 
-        Object target = getTarget();
-        return target instanceof MModelElement; 
-    }
-
+public class UMLTaggedTextProperty extends UMLTextProperty  {
     
-} /* end class TabDocumentation */
+    public UMLTaggedTextProperty(String propertyName) {
+        super(propertyName);
+        _propertyName = propertyName;
+    }
+    
+
+    public void setProperty(UMLUserInterfaceContainer container,String newValue) {
+        Object element = container.getTarget();
+        if(element instanceof MModelElement) {
+            ((MModelElement) element).setTaggedValue(_propertyName,newValue);
+        }
+    }
+    
+    public String getProperty(UMLUserInterfaceContainer container) {
+        String value = null;
+        Object element = container.getTarget();
+        if(element instanceof MModelElement) {
+            value = ((MModelElement) element).getTaggedValue(_propertyName);
+        }
+        else {
+            value = "";
+        }
+        return value;
+    }
+    
+    boolean isAffected(MElementEvent event) {
+        String sourceName = event.getName();
+        if(_propertyName == null || sourceName == null || sourceName.equals(_propertyName))
+            return true;
+        return false;
+    }
+    
+    void targetChanged() {
+    }
+}
+
+

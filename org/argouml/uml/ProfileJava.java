@@ -51,7 +51,7 @@ public class ProfileJava extends Profile {
     //java.util.List _tags;
     
     public ProfileJava() {
-        _metaClasses = new ArrayList(25);
+        _metaClasses = new ArrayList(30);
         
         _metaClasses.add(
             new ProfileMetaclass(MPermission.class,
@@ -143,12 +143,17 @@ public class ProfileJava extends Profile {
         _metaClasses.add(
             new ProfileMetaclass(MCollaboration.class,
                 new String[] {"use-case realization"}));
+
+        _metaClasses.add(
+            new ProfileMetaclass(MDataType.class,
+                new String[] {"enumeration"}));
         
         String[] javaLang = {"java","lang" };
         String[] javaUtil = {"java","util" };
         String[] javaMath = {"java","math" };
+        String[] javaNet = {"java", "net" };
         _defaultClassifier = new ProfileClassifier(MClass.class,MClassImpl.class,"Object",javaLang);
-        _classifiers = new ArrayList(29);
+        _classifiers = new ArrayList(40);
         _classifiers.add(_defaultClassifier);
 
         _classifiers.add(new ProfileClassifier(MDataType.class,MDataTypeImpl.class,"char",javaLang));
@@ -182,6 +187,8 @@ public class ProfileJava extends Profile {
         _classifiers.add(new ProfileClassifier(MInterface.class,MInterfaceImpl.class,"List",javaUtil));
         _classifiers.add(new ProfileClassifier(MInterface.class,MInterfaceImpl.class,"Set",javaUtil));
         _classifiers.add(new ProfileClassifier(MInterface.class,MInterfaceImpl.class,"SortedSet",javaUtil));
+        _classifiers.add(new ProfileClassifier(MClass.class,MClassImpl.class,"URL",javaNet));
+
         
         _voidClassifier = new ProfileClassifier(MClassifier.class,null,"void",null);
     }

@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 import javax.swing.*;
 import java.awt.*;
 import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 /**
  *  This class is used to dispatch a NSUML change event (which may occur on a non-UI)
@@ -56,8 +57,10 @@ public class UMLNameEventListener implements MElementListener {
      *   @param mee NSUML event
      */
     public void propertySet(MElementEvent mee) {
+        boolean dispatchEvent = false;
         String eventName = mee.getName();
-        if(eventName != null && eventName.equals("name")) {
+        
+        if(eventName != null && (eventName.equals("name") || eventName.equals("baseClass"))) {
             Object target = mee.getSource();
             if(target != null) {
                 //
@@ -68,13 +71,16 @@ public class UMLNameEventListener implements MElementListener {
                 for(int i = 0; !isMatch && i < _metaClasses.length; i++) {
                     isMatch = _metaClasses[i].isAssignableFrom(target.getClass());
                 }
-                if(isMatch) {
-                    UMLChangeDispatch dispatch = new UMLChangeDispatch(_container,1);
-                    dispatch.propertySet(mee);
-                    SwingUtilities.invokeLater(dispatch);
-                }
+                dispatchEvent = isMatch;
             }
         }
+        
+        if(dispatchEvent) {
+            UMLChangeDispatch dispatch = new UMLChangeDispatch(_container,1);
+            dispatch.propertySet(mee);
+            SwingUtilities.invokeLater(dispatch);
+        }
+        
     }
            
     /**
@@ -119,6 +125,25 @@ public class UMLNameEventListener implements MElementListener {
      *    @param mee NSUML event.
      */
     public void roleAdded(MElementEvent mee) {
+        String eventName = mee.getName();
+        if(eventName != null && eventName.equals("ownedElement")) {
+            Object target = mee.getAddedValue();
+            if(target != null) {
+                //
+                //   if the metaClasses weren't provided or
+                //      the source can be assigned to one of the meta classes
+                //         then proceed
+                boolean isMatch = (_metaClasses == null);
+                for(int i = 0; !isMatch && i < _metaClasses.length; i++) {
+                    isMatch = _metaClasses[i].isAssignableFrom(target.getClass());
+                }
+                if(isMatch) {
+                    UMLChangeDispatch dispatch = new UMLChangeDispatch(_container,0);
+                    dispatch.removed(mee);
+                    SwingUtilities.invokeLater(dispatch);
+                }        
+            }
+        }                
     }
 	
     /**

@@ -89,8 +89,6 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     _modifiersPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
     _modifiersPanel.add(new UMLCheckBox("final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     _modifiersPanel.add(new UMLCheckBox("root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    _modifiersPanel.add(new UMLCheckBox("active",this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
-//    addField(modifiersPanel,4,0,0);
 
 //    addCaption(new JLabel("Namespace:"),5,0,0);
 //    addLinkField(new UMLList(new UMLNamespaceListModel(this),true),5,0,0);

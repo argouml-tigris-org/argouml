@@ -18,7 +18,7 @@
 // WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 // MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,g
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
@@ -30,10 +30,12 @@ import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
-
+import org.tigris.gef.util.Util;
 
 public class PropPanelParameter extends PropPanel {
 
+    private static ImageIcon _parameterIcon = Util.loadIconResource("Parameter");
+    
     public PropPanelParameter() {
         super("Parameter Properties",2);
 
@@ -46,15 +48,15 @@ public class PropPanelParameter extends PropPanel {
         JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
         addField(stereotypeBox,1,0,0);
 
-        addCaption(new JLabel("Type:"),2,0,0);
+        addCaption(new JLabel("Owner:"),2,0,1);
+        JList namespaceList = new UMLList(new UMLReflectionListModel(this,"behaviorialfeature",false,"getBehavioralFeature",null,null,null),true);
+        addLinkField(namespaceList,2,0,0);
+        
+        addCaption(new JLabel("Type:"),0,1,0);
         addField(new UMLClassifierComboBox(this,MClassifier.class,null,"type","getType","setType",true),0,1,0);
         
-        addCaption(new JLabel("Owner:"),3,0,1);
-        JList namespaceList = new UMLList(new UMLReflectionListModel(this,"behaviorialfeature",false,"getBehavioralFeature",null,null,null),true);
-        addLinkField(namespaceList,3,0,0);
-        
 
-        addCaption(new JLabel("Kind:"),0,1,0);
+        addCaption(new JLabel("Kind:"),1,1,0);
         JPanel kindPanel = new JPanel(new GridLayout(0,2));
         ButtonGroup kindGroup = new ButtonGroup();
 
@@ -74,12 +76,23 @@ public class PropPanelParameter extends PropPanel {
         kindGroup.add(ret);
         kindPanel.add(ret);
         
-        addField(kindPanel,0,1,0);
+        addField(kindPanel,1,1,0);
         
         
-        addCaption(new JLabel("Initial Value:"),1,1,1);
-        addField(new UMLInitialValueComboBox(this),1,1,0);
+        addCaption(new JLabel("Initial Value:"),2,1,1);
+        addField(new UMLInitialValueComboBox(this),2,1,0);
         
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+    
+    new PropPanelButton(this,buttonPanel,_parameterIcon,"Add parameter","addParameter",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateUp",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete parameter","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    buttonPanel.add(new JPanel());
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
     }
 
     public MClassifier getType() {
@@ -107,7 +120,27 @@ public class PropPanelParameter extends PropPanel {
         }
         return feature;
     }
+
+
+    public void navigateUp() {
+        Object feature = getBehavioralFeature();
+        if(feature != null) {
+            navigateTo(feature);
+        }
+    }
     
+    public void addParameter() {
+        MBehavioralFeature feature = null;
+        Object target = getTarget();
+        if(target instanceof MParameter) {
+            feature = ((MParameter) target).getBehavioralFeature();
+            if(feature != null) {
+                MParameter newParam = feature.getFactory().createParameter();
+                feature.addParameter(newParam);
+                navigateTo(newParam);
+            }
+        }
+    }
     
 } /* end class PropPanelParameter */
 

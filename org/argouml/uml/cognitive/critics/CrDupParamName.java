@@ -66,9 +66,9 @@ public class CrDupParamName extends CrUML {
     while (enum.hasNext()) {
       MParameter p = (MParameter) enum.next();
       String pName = p.getName();
-      if ("".equals(pName)) continue;
+      if (pName == null || "".equals(pName)) continue;
       String nameStr = pName;
-      if (nameStr.length() == 0) continue;
+      if (nameStr == null || nameStr.length() == 0) continue;
       if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;
       namesSeen.addElement(nameStr);
     }

@@ -32,6 +32,7 @@ import org.argouml.uml.ui.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import java.awt.event.*;
 import java.util.*;
+import org.argouml.uml.ui.foundation.core.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -39,12 +40,16 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
 
-public class PropPanelSignal extends PropPanel {
+public class PropPanelSignal extends PropPanelClassifier {
 
     public PropPanelSignal() {
         super("Signal Properties",2);
 
         Class mclass = MSignal.class;
+
+        addCaption(new JLabel("Name:"),0,0,0);
+        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+
 
         addCaption(new JLabel("Stereotype:"),1,0,0);
         JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
@@ -65,12 +70,7 @@ public class PropPanelSignal extends PropPanel {
 
         addCaption(new JLabel("Modifiers:"),4,0,0);
 
-        JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-        modifiersPanel.add(new UMLCheckBox("public",this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-        modifiersPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-        modifiersPanel.add(new UMLCheckBox("final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-        modifiersPanel.add(new UMLCheckBox("root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-        addField(modifiersPanel,4,0,0);
+        addField(_modifiersPanel,4,0,0);
 
         addCaption(new JLabel("Namespace:"),5,0,0);
         JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
