@@ -245,6 +245,23 @@ public class CoreHelper {
         }
         return result;
     }
+
+    /** This method returns all attributes of a given Classifier.
+	 *
+	 * @param classifier the classifier you want to have the attributes for
+	 * @return a collection of the attributes
+	 */
+	public Collection getAttributes(MClassifier classifier) {
+	    Collection result = new ArrayList();
+		Iterator features = classifier.getFeatures().iterator();
+		while (features.hasNext()) {
+			MFeature feature = (MFeature)features.next();
+			if (feature instanceof MAttribute)
+				result.add(feature);
+		}
+		return result;
+	}  
+
     /** This method returns all attributes of a given Classifier, including inherited
      *
      * @param classifier the classifier you want to have the attributes for
