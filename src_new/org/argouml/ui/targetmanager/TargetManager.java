@@ -104,15 +104,10 @@ public final class TargetManager {
 	 * @throws TargetException if there are more then 1 target.
 	 */
 	public synchronized Object getTarget() throws TargetException {
-		if (_targets.length > 1) {
-			_log.error(
-				"Tried to get only one target while there are more targets selected.");
-			throw new TargetException("There are more targets then just one. Impossible to return the correct selected target");
-		}
 		if (_targets.length == 0) {
 			_log.warn("Returning null as target. No target was selected.");
 		}
-		return _targets.length == 1 ? _targets[0] : null;
+		return _targets.length >= 1 ? _targets[0] : null;
 	}
 
 	/**

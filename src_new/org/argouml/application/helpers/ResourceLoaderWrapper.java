@@ -216,7 +216,11 @@ public final class ResourceLoaderWrapper {
     }
 
     public Icon lookupIcon(Object value) {
-        Icon icon = (Icon) _iconCache.get(value.getClass());
+        Icon icon = null;
+        if (value != null) {
+        
+         icon = (Icon) _iconCache.get(value.getClass());
+
 
         if (value instanceof MPseudostate) {
             MPseudostate ps = (MPseudostate) value;
@@ -263,6 +267,8 @@ public final class ResourceLoaderWrapper {
                     _iconCache.put(value.getClass(), icon);
             }
         }
+        }
         return icon;
+        
     }
 }

@@ -91,7 +91,15 @@ public class TargetEvent extends EventObject {
 	 * @return an object array with the old targets
 	 */
 	public Object[] getOldTargets() {
-		return _oldTargets;
+		return _oldTargets == null ? new Object[] {null} : _oldTargets;
 	}
+
+    /**
+     * Getter for the new targets
+     * @return an object array with the new targets
+     */
+    public Object[] getNewTargets() {
+        return _newTargets == null ? new Object[] {null} : _newTargets;
+    }
 
 }
