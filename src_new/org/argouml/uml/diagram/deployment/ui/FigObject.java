@@ -167,7 +167,7 @@ public class FigObject extends FigNodeModelElement {
 
     public void setEnclosingFig(Fig encloser) {
 	// super.setEnclosingFig(encloser);
-	if (!(ModelFacade.isAModelElement(getOwner()))) return;
+
 	if (ModelFacade.isAObject(getOwner())) {
 	    Object me = /*(MObject)*/ getOwner();
 	    Object mcompInst = null;
@@ -199,6 +199,16 @@ public class FigObject extends FigNodeModelElement {
 		}
 	    }
 	}
+
+	if (encloser != _encloser) {
+	    if (_encloser instanceof FigNodeModelElement) {
+		((FigNodeModelElement) _encloser).removeEnclosedFig(this);
+            }
+	    if (encloser instanceof FigNodeModelElement) {
+		((FigNodeModelElement) encloser).addEnclosedFig(this);
+            }
+	}
+        _encloser = encloser;
     }
 
     static final long serialVersionUID = -185736690375678962L;
