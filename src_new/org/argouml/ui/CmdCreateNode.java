@@ -150,21 +150,6 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
     }
 
     /**
-     * Returns the name of the uml modelelement without impl, M
-     * or the fullname.
-     *
-     * @return String
-     */
-    private String getCreateClassName() {
-        String name = ((Class) _args.get("className")).getName();
-        name = name.substring(name.lastIndexOf('.') + 2, name.length());
-        if (name.endsWith("Impl")) {
-            name = name.substring(0, name.lastIndexOf("Impl"));
-        }
-        return name;
-    }
-
-    /**
      * Adds tooltip text to the Action.
      *
      * @param name The key to localize as the name.
