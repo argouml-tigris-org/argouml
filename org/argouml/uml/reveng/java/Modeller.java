@@ -983,6 +983,57 @@ public class Modeller
     }
 
 
+  /**
+   * Add the contents of a single standard javadoc tag to the model element.
+   * Usually this will be added as a tagged value.
+   *
+   * This is called from {@link #addDocumentationTag} only.
+   *
+   * @param me the model element to add to
+   * @sTagName the name of the javadoc tag
+   * @sTagData the contents of the javadoc tag
+   */
+  private void addJavadocTagContents (MModelElement me,
+                                      String sTagName,
+                                      String sTagData) {
+    if (sTagName.equals ("invariant")) {
+      // add as invariant constraint, code below copied and adapted from TabConstraints
+      // Note that no checking of constraint syntax is performed... BAD!
+      MModelElement mmeContext = me;
+      while (! (mmeContext instanceof MClassifier)) {
+        mmeContext = mmeContext.getModelElementContainer();
+      }
+
+      MConstraint mc = new MConstraintImpl();
+      
+      mc.setName (sTagData.substring (0, sTagData.indexOf (':')));
+      
+      mc.setBody (
+          new MBooleanExpression (
+            "OCL",
+            "context " + mmeContext.getName() +
+            " inv " + sTagData
+          )
+        );
+
+      me.addConstraint (mc);
+
+      if (me.getNamespace() != null) {
+        // Apparently namespace management is not supported for all model
+        // elements. As this does not seem to cause problems, I'll just
+        // leave it at that for the moment...
+        me.getNamespace().addOwnedElement (mc);
+      }
+    }
+    // TODO: handle pre- and post-conditions --> this is trickier, as it requires
+    // better derival of the correct context
+    else {
+      getTaggedValue (
+          me,
+          sTagName
+        ).setValue (sTagData);
+    }
+  }  
     
   /**
    * Add the javadocs as a tagged value 'documentation' to the model element. All
@@ -1001,6 +1052,9 @@ public class Modeller
       //System.out.println ("Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\"");  
         
       StringBuffer sbPureDocs = new StringBuffer(80);
+
+      String sCurrentTagName = null;
+      String sCurrentTagData = null;
       
       int nStartPos = 3; // skip the leading /**
       boolean fHadAsterisk = true;
@@ -1021,40 +1075,132 @@ public class Modeller
             }
             
           default:
-            int nTemp = sJavaDocs.indexOf ('\n', nStartPos);
-            if (nTemp == -1) {
-              nTemp = sJavaDocs.length();
+            // normal comment text or standard tag
+            
+            // check ahead for tag
+            int j = nStartPos;
+            while ((j < sJavaDocs.length()) &&
+                   ((sJavaDocs.charAt (j) == ' ') ||
+                    (sJavaDocs.charAt (j) == '\t'))) {
+              j++;
             }
-            else {
-              nTemp++;
+
+            if (j < sJavaDocs.length()) {
+              if (sJavaDocs.charAt (j) == '@') {
+                // start standard tag
+                
+                // potentially add current tag to set of tagged values...
+                if (sCurrentTagName != null) {
+                  addJavadocTagContents (me, sCurrentTagName, sCurrentTagData);
+                }
+                
+                // open new tag
+                int nTemp = sJavaDocs.indexOf (' ', j + 1);
+                if (nTemp == -1) {
+                  nTemp = sJavaDocs.length() - 1;
+                }
+                
+                sCurrentTagName = sJavaDocs.substring (
+                    j + 1,
+                    nTemp
+                  );
+                
+                //System.out.println (
+                //    "Modeller.addDocumentationTag (starting tag): " +
+                //    "current tag name: " + sCurrentTagName
+                //  );
+                
+                int nTemp1 = sJavaDocs.indexOf ('\n', ++nTemp);
+                if (nTemp1 == -1) {
+                  nTemp1 = sJavaDocs.length();
+                }
+                else {
+                  nTemp1++;
+                }
+
+                sCurrentTagData = sJavaDocs.substring (nTemp, nTemp1);
+                //System.out.println (
+                //    "Modeller.addDocumentationTag (starting tag): "+
+                //    "current tag data: " + sCurrentTagData
+                //  );
+                
+                nStartPos = nTemp1;
+              }
+              else {
+                // continue standard tag or comment text
+                int nTemp = sJavaDocs.indexOf ('\n', nStartPos);
+                if (nTemp == -1) {
+                  nTemp = sJavaDocs.length();
+                }
+                else {
+                  nTemp++;
+                }
+
+                if (sCurrentTagName != null) {
+                  //System.out.println (
+                  //    "Modeller.addDocumentationTag (continuing tag): nTemp = " +
+                  //    nTemp + ", nStartPos = " + nStartPos
+                  //  );
+                  sCurrentTagData += 
+                      " " +
+                      sJavaDocs.substring (nStartPos, nTemp);
+                  //System.out.println (
+                  //    "Modeller.addDocumentationTag (continuing tag): tag data = " +
+                  //    sCurrentTagData
+                  //  );
+                }
+                else {
+                  //System.out.println ("Modeller.addDocumentationTag: nTemp = " + nTemp + ", nStartPos = " + nStartPos);
+                  sbPureDocs.append (sJavaDocs.substring (nStartPos, nTemp));
+                }
+
+                nStartPos = nTemp;
+              }
             }
             
-            //System.out.println ("Modeller.addDocumentationTag: nTemp = " + nTemp + ", nStartPos = " + nStartPos);
-            sbPureDocs.append (sJavaDocs.substring (nStartPos, nTemp));
-              
-            nStartPos = nTemp;
             fHadAsterisk = false;
         }
       }
       
+      sJavaDocs = sbPureDocs.toString();
+
       /*
        * After this, we have the documentation text, but unfortunately, there's
        * still a trailing '/' left. If this is even the only thing on it's line,
        * we want to remove the complete line, otherwise we remove just the '/'.
+       * 
+       * This will be either at the end of the actual comment text or at the end
+       * of the last tag.
        */
-      sJavaDocs = sbPureDocs.toString();
-      //System.out.println (
-      //    "Modeller.addDocumentationTag: sJavaDocs = \"" + sJavaDocs + "\", " + 
-      //    "'/' idx = " + sJavaDocs.lastIndexOf ('/')
-      //  );
-      sJavaDocs = sJavaDocs.substring (0, sJavaDocs.lastIndexOf ('/') - 1);
-      
-      if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
-        sJavaDocs = sJavaDocs.substring (0, sJavaDocs.length() - 2);
+
+      if (sCurrentTagName != null) {
+        // handle last tag...
+        sCurrentTagData = sCurrentTagData.substring (
+            0,
+            sCurrentTagData.lastIndexOf ('/') - 1
+          );
+
+        if (sCurrentTagData.charAt (sCurrentTagData.length() - 1) == '\n') {
+          sCurrentTagData = sCurrentTagData.substring (
+              0,
+              sCurrentTagData.length() - 1
+            );
+        }
+
+        // store tag
+        addJavadocTagContents (me, sCurrentTagName, sCurrentTagData);
+      }
+      else {
+        sJavaDocs = sJavaDocs.substring (0, sJavaDocs.lastIndexOf ('/') - 1);
+
+        if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
+          sJavaDocs = sJavaDocs.substring (0, sJavaDocs.length() - 1);
+        }
       }
       
-      // Now set the tagged value
+      // Now store documentation text
       getTaggedValue (me, "documentation").setValue (sJavaDocs);
     }
   }
 }
+
