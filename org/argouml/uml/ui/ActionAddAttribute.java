@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -44,23 +45,25 @@ public class ActionAddAttribute extends UMLChangeAction {
 
     public static ActionAddAttribute SINGLETON = new ActionAddAttribute();
 
-   
-
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
     public ActionAddAttribute() { super("button.new-attribute"); }
 
-
     ////////////////////////////////////////////////////////////////
     // main methods
 
     public void actionPerformed(ActionEvent ae) {	
-	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target = TargetManager.getInstance().getModelTarget();
-	if (!(org.argouml.model.ModelFacade.isAClassifier(target))) return;
-	Object/*MClassifier*/ cls = target;
+	Object/*MClassifier*/ cls = null;
+
+	if (ModelFacade.isAClassifier(target))
+	    cls = target;
+	else if (ModelFacade.isAFeature(target))
+	    cls = ModelFacade.getOwner(target);
+	else
+	    return;
+
 	Object/*MAttribute*/ attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	TargetManager.getInstance().setTarget(attr);
 	super.actionPerformed(ae);
@@ -74,6 +77,8 @@ public class ActionAddAttribute extends UMLChangeAction {
 		return Notation.getDefaultNotation().getName().equals("Java");
 	}
 	*/
-	return org.argouml.model.ModelFacade.isAClass(target);		
+	return super.shouldBeEnabled()
+	       && (ModelFacade.isAClass(target)
+		   || ModelFacade.isAFeature(target));
     }
 } /* end class ActionAddAttribute */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,27 +47,30 @@ public class ActionAddOperation extends UMLChangeAction {
 
     public static ActionAddOperation SINGLETON = new ActionAddOperation();
 
-    
-
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
     public ActionAddOperation() { super("button.new-operation"); }
 
-
     ////////////////////////////////////////////////////////////////
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-   
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target =  TargetManager.getInstance().getModelTarget();
-	if (!(ModelFacade.isAClassifier(target))) return;
-	Object/*MClassifier*/ cls = target;
+	Object/*MClassifier*/ cls = null;
+
+	if (ModelFacade.isAClassifier(target))
+	    cls = target;
+	else if (ModelFacade.isAFeature(target))
+	    cls = ModelFacade.getOwner(target);
+	else
+	    return;
+
 	Object/*MOperation*/ oper = UmlFactory.getFactory().getCore().buildOperation(cls);
         TargetManager.getInstance().setTarget(oper);
+
         Iterator it =
 	    pb.getEditorPane().findPresentationsFor(cls,
 						    p.getDiagrams()).iterator();
@@ -77,15 +80,16 @@ public class ActionAddOperation extends UMLChangeAction {
 								 oper);
             UmlModelEventPump.getPump().addModelEventListener(listener, oper);
         }
+
 	super.actionPerformed(ae);
-	
     }
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target =  TargetManager.getInstance().getModelTarget();
-	return super.shouldBeEnabled() && 
-	    ModelFacade.isAClassifier(target) && 
-	    !(ModelFacade.isASignal(target));
+	return super.shouldBeEnabled()
+	    && (ModelFacade.isAClassifier(target)
+		|| ModelFacade.isAFeature(target))
+	    && !ModelFacade.isASignal(target);
     }
 } /* end class ActionAddOperation */
