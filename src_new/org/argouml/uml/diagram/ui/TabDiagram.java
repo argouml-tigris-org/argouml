@@ -291,12 +291,12 @@ public class TabDiagram
      * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTargets()[0]);
+        if (e.getNewTargets()[0] instanceof UMLDiagram)
+            setTarget(e.getNewTargets()[0]);
         select(e.getNewTargets());
     }
 
-    private void select(Object[] targets) {
-        _jgraph.deselectAll();
+    private void select(Object[] targets) {       
         LayerManager manager = _jgraph.getEditor().getLayerManager();
         Vector figList = new Vector();
         for (int i = 0; i < targets.length; i++) {
