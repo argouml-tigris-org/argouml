@@ -40,12 +40,12 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 
 public abstract class PropPanelNamespace extends PropPanelModelElement {
 
-	private JScrollPane _ownedElementsScroll;
+    private JScrollPane _ownedElementsScroll;
     
     private static UMLNamespaceOwnedElementListModel ownedElementListModel = new UMLNamespaceOwnedElementListModel();
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
+    ////////////////////////////////////////////////////////////////
+    // contructors
     /**
      *    @deprecated As of ArgoUml version 0.13.5 (10-May-2003),
      *                {@link #PropPanelNamespace(String title, ImageIcon icon, Orientation orientation)}
@@ -68,13 +68,13 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      *                {@link #PropPanelNamespace(String title, ImageIcon icon, Orientation orientation)}
      *                I propose to remove this by version 0.15 (Bob Tarling)
      */
-    public PropPanelNamespace(String panelName,int columns) {
+    public PropPanelNamespace(String panelName, int columns) {
         this(panelName, null, columns);
     }
     
     public void addClass() {
         Object target = getTarget();
-        if(target instanceof MNamespace) {
+        if (target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
             MModelElement ownedElem = CoreFactory.getFactory().buildClass();
             ns.addOwnedElement(ownedElem);
@@ -84,7 +84,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
 
     public void addInterface() {
         Object target = getTarget();
-        if(target instanceof MNamespace) {
+        if (target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
             MModelElement ownedElem = CoreFactory.getFactory().createInterface();
             ns.addOwnedElement(ownedElem);
@@ -94,7 +94,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
 
     public void addPackage() {
         Object target = getTarget();
-        if(target instanceof MNamespace) {
+        if (target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
             MModelElement ownedElem = ModelManagementFactory.getFactory().createPackage();
             ns.addOwnedElement(ownedElem);
@@ -110,7 +110,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      */
     public JScrollPane getOwnedElementsScroll() {
         if (_ownedElementsScroll == null) {
-           JList ownedElementsList  = new UMLLinkedList(ownedElementListModel);
+	    JList ownedElementsList  = new UMLLinkedList(ownedElementListModel);
             _ownedElementsScroll = new JScrollPane(ownedElementsList); 
         }
         return _ownedElementsScroll;

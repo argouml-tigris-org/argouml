@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,16 +34,16 @@ import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 
 public class GoGenElementToDerived extends AbstractGoRule {
 
-  public String getRuleName() {
-    return Argo.localize ("Tree", "misc.class.subclass");
-  }
+    public String getRuleName() {
+	return Argo.localize ("Tree", "misc.class.subclass");
+    }
 
-  public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAGeneralizableElement(parent)) {
-          return ModelFacade.getChildren(parent);
-      }
-      return null;
-  }
+    public Collection getChildren(Object parent) { 
+	if (ModelFacade.isAGeneralizableElement(parent)) {
+	    return ModelFacade.getChildren(parent);
+	}
+	return null;
+    }
 
 } /* end class GoGenElementToDerived */
 

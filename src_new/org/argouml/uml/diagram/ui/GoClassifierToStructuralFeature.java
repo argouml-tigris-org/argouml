@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -31,15 +32,15 @@ import org.argouml.ui.AbstractGoRule;
 
 public class GoClassifierToStructuralFeature extends AbstractGoRule {
 
-  public String getRuleName() {
-    return Argo.localize ("Tree", "misc.class.attribute");
-  }
+    public String getRuleName() {
+	return Argo.localize ("Tree", "misc.class.attribute");
+    }
 
-  public Collection getChildren(Object parent) {
-      if (ModelFacade.isAClassifier(parent)) {
-          return ModelFacade.getStructuralFeatures(parent);
-      }
-      return null;
-  }
+    public Collection getChildren(Object parent) {
+	if (ModelFacade.isAClassifier(parent)) {
+	    return ModelFacade.getStructuralFeatures(parent);
+	}
+	return null;
+    }
 
 }

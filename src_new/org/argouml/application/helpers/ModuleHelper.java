@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -28,7 +29,8 @@ import org.argouml.application.api.ArgoModule;
 
 
 public abstract class ModuleHelper 
-implements ArgoModule {
+    implements ArgoModule
+{
 
     protected boolean _enabled = false;
 

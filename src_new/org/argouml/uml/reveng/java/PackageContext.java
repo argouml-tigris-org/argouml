@@ -40,10 +40,10 @@ class PackageContext extends Context
     private String javaName;
 
     /**
-	Create a new context from a package.
+       Create a new context from a package.
 
-	@param base Based on this context.
-	@param mPackage Represents this package.
+       @param base Based on this context.
+       @param mPackage Represents this package.
     */
     public PackageContext(Context base, Object mPackage)
     {
@@ -56,35 +56,35 @@ class PackageContext extends Context
 	throws ClassifierNotFoundException
     {
         // Search in model
-        Object mInterface = ModelFacade.lookupIn(mPackage,name);
+        Object mInterface = ModelFacade.lookupIn(mPackage, name);
 
-        if(mInterface == null) {
+        if (mInterface == null) {
 	    // Try to find it via the classpath
 	    try {
 		Class classifier;
 
 		// Special case for model
-		if(ModelFacade.isAModel(mPackage)) {
+		if (ModelFacade.isAModel(mPackage)) {
 		    classifier = Class.forName(name);
 		}
 		else {
 		    classifier =
 			Class.forName(javaName + "." + name);
 		}
-		if(classifier.isInterface()) {
-		    mInterface = UmlFactory.getFactory().getCore().buildInterface(name,mPackage);
-		    ModelFacade.setTaggedValue(mInterface,MMUtil.GENERATED_TAG,"yes");
+		if (classifier.isInterface()) {
+		    mInterface = UmlFactory.getFactory().getCore().buildInterface(name, mPackage);
+		    ModelFacade.setTaggedValue(mInterface, MMUtil.GENERATED_TAG, "yes");
 		}
 	    }
-	    catch(ClassNotFoundException e) {
+	    catch (ClassNotFoundException e) {
 		// We didn't find any interface
 	    }
 	}
-	if(mInterface == null && context != null) {
+	if (mInterface == null && context != null) {
 	    // Continue the search through the rest of the model
 	    mInterface = context.getInterface(name);
         }
-	if(mInterface == null) {
+	if (mInterface == null) {
 	    throw new ClassifierNotFoundException(name);
 	}
 
@@ -104,56 +104,57 @@ class PackageContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Search in model
-	Object mClassifier = ModelFacade.lookupIn(mPackage,name);
+	Object mClassifier = ModelFacade.lookupIn(mPackage, name);
 
-	if(mClassifier == null) {
+	if (mClassifier == null) {
 	    // Try to find it via the classpath
 	    try {
 		Class classifier;
 
 		// Special case for model
-		if(ModelFacade.isAModel(mPackage)) {
+		if (ModelFacade.isAModel(mPackage)) {
 		    classifier = Class.forName(name);
 		}
 		else {
 		    classifier =
 			Class.forName(javaName + "." + name);
 		}
-		if(classifier.isInterface()) {
-		    mClassifier = UmlFactory.getFactory().getCore().buildInterface(name,mPackage);
+		if (classifier.isInterface()) {
+		    mClassifier = UmlFactory.getFactory().getCore().buildInterface(name, mPackage);
 		}
 		else {
-		    mClassifier = UmlFactory.getFactory().getCore().buildClass(name,mPackage);
+		    mClassifier = UmlFactory.getFactory().getCore().buildClass(name, mPackage);
 		}
-		ModelFacade.setTaggedValue(mClassifier,MMUtil.GENERATED_TAG,"yes");
+		ModelFacade.setTaggedValue(mClassifier, MMUtil.GENERATED_TAG, "yes");
 	    }
-	    catch(ClassNotFoundException e) {
+	    catch (ClassNotFoundException e) {
 		// No class or interface found
 	    }
 	}
-	if(mClassifier == null) {
+	if (mClassifier == null) {
 	    // Continue the search through the rest of the model
-	    if(context != null) {
+	    if (context != null) {
 		mClassifier = context.get(name);
 	    }
 	    else {
 		// Check for java data types
-		if(name.equals("int") ||
-		   name.equals("long") ||
-		   name.equals("short") ||
-		   name.equals("byte") ||
-		   name.equals("char") ||
-		   name.equals("float") ||
-		   name.equals("double") ||
-		   name.equals("boolean") ||
-		   name.equals("void") ||
-		   // How do I represent arrays in UML?
-		   name.indexOf("[]") != -1) {
-		    mClassifier = UmlFactory.getFactory().getCore().buildDataType(name,mPackage);
+		if (name.equals("int") ||
+		    name.equals("long") ||
+		    name.equals("short") ||
+		    name.equals("byte") ||
+		    name.equals("char") ||
+		    name.equals("float") ||
+		    name.equals("double") ||
+		    name.equals("boolean") ||
+		    name.equals("void") ||
+		    // How do I represent arrays in UML?
+		    name.indexOf("[]") != -1)
+		{
+		    mClassifier = UmlFactory.getFactory().getCore().buildDataType(name, mPackage);
 		}
 	    }
 	}
-	if(mClassifier == null) {
+	if (mClassifier == null) {
 	    throw new ClassifierNotFoundException(name);
 	}
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -65,19 +66,19 @@ public class ActionSetElementOwnershipVisibility extends AbstractAction {
         if (e.getSource() instanceof JRadioButton) {
             Object target = _group.getTarget();
             if (target instanceof MModelElement) {
-                MModelElement m = (MModelElement)target;
+                MModelElement m = (MModelElement) target;
                 String command = e.getActionCommand();
                 if (command.equals(PUBLIC_ACTION_COMMAND)) {
                     m.setVisibility(MVisibilityKind.PUBLIC);
                     
                 } else
-                if (command.equals(PRIVATE_ACTION_COMMAND)) {
-                    m.setVisibility(MVisibilityKind.PRIVATE);
-                } else
-                if (command.equals(PROTECTED_ACTION_COMMAND)) {
-                    m.setVisibility(MVisibilityKind.PROTECTED);
-                } else
-                    throw new IllegalArgumentException("Illegal action. Actioncommand was not correct. It was " + command);
+		    if (command.equals(PRIVATE_ACTION_COMMAND)) {
+			m.setVisibility(MVisibilityKind.PRIVATE);
+		    } else
+			if (command.equals(PROTECTED_ACTION_COMMAND)) {
+			    m.setVisibility(MVisibilityKind.PROTECTED);
+			} else
+			    throw new IllegalArgumentException("Illegal action. Actioncommand was not correct. It was " + command);
             }
         }
     }

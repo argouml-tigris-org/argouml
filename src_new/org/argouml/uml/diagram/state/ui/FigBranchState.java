@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,91 +44,91 @@ import org.tigris.gef.presentation.FigPoly;
 
 public class FigBranchState extends FigStateVertex {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  public static final int MARGIN = 2;
-  public static final int X = 0;
-  public static final int Y = 0;
-  public static final int WIDTH = 32;
-  public static final int HEIGHT = 32;
+    public static final int MARGIN = 2;
+    public static final int X = 0;
+    public static final int Y = 0;
+    public static final int WIDTH = 32;
+    public static final int HEIGHT = 32;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  FigPoly _bigPort;
-  FigPoly _head;
+    FigPoly _bigPort;
+    FigPoly _head;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
-  public FigBranchState() {
-    _bigPort = new FigPoly( Color.cyan, Color.cyan);
-    _head = new FigPoly(Color.black, Color.white);
-    _bigPort.addPoint(X, Y);
-    _bigPort.addPoint(X+WIDTH/2, Y+HEIGHT/2);
-    _bigPort.addPoint(X, Y+HEIGHT);
-    _bigPort.addPoint(X-WIDTH/2, Y+HEIGHT/2);
+    ////////////////////////////////////////////////////////////////
+    // constructors
+    public FigBranchState() {
+	_bigPort = new FigPoly( Color.cyan, Color.cyan);
+	_head = new FigPoly(Color.black, Color.white);
+	_bigPort.addPoint(X, Y);
+	_bigPort.addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
+	_bigPort.addPoint(X, Y + HEIGHT);
+	_bigPort.addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
 
-    _head.addPoint(X, Y);
-    _head.addPoint(X+WIDTH/2, Y+HEIGHT/2);
-    _head.addPoint(X, Y+HEIGHT);
-    _head.addPoint(X-WIDTH/2, Y+HEIGHT/2);
-    _head.addPoint(X, Y);
+	_head.addPoint(X, Y);
+	_head.addPoint(X + WIDTH / 2, Y + HEIGHT / 2);
+	_head.addPoint(X, Y + HEIGHT);
+	_head.addPoint(X - WIDTH / 2, Y + HEIGHT / 2);
+	_head.addPoint(X, Y);
 
-    // add Figs to the FigNode in back-to-front order
-    addFig(_bigPort);
-    addFig(_head);
+	// add Figs to the FigNode in back-to-front order
+	addFig(_bigPort);
+	addFig(_head);
 
-    setBlinkPorts(false); //make port invisble unless mouse enters
-    Rectangle r = getBounds();
-  }
+	setBlinkPorts(false); //make port invisble unless mouse enters
+	Rectangle r = getBounds();
+    }
 
-  public FigBranchState(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-  }
+    public FigBranchState(GraphModel gm, Object node) {
+	this();
+	setOwner(node);
+    }
 
-  public Object clone() {
-    FigBranchState figClone = (FigBranchState) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._bigPort = (FigPoly) v.elementAt(0);
-    figClone._head = (FigPoly) v.elementAt(1);
-    return figClone;
-  }
+    public Object clone() {
+	FigBranchState figClone = (FigBranchState) super.clone();
+	Vector v = figClone.getFigs();
+	figClone._bigPort = (FigPoly) v.elementAt(0);
+	figClone._head = (FigPoly) v.elementAt(1);
+	return figClone;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // Fig accesors
+    ////////////////////////////////////////////////////////////////
+    // Fig accesors
 
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
-  }
+    public void setOwner(Object node) {
+	super.setOwner(node);
+	bindPort(node, _bigPort);
+    }
 
-  /** Initial states are fixed size. */
-  public boolean isResizable() { return false; }
+    /** Initial states are fixed size. */
+    public boolean isResizable() { return false; }
 
-  public Selection makeSelection() {
-    return new SelectionMoveClarifiers(this);
-  }
+    public Selection makeSelection() {
+	return new SelectionMoveClarifiers(this);
+    }
 
-  public void setLineColor(Color col) { _head.setLineColor(col); }
-  public Color getLineColor() { return _head.getLineColor(); }
+    public void setLineColor(Color col) { _head.setLineColor(col); }
+    public Color getLineColor() { return _head.getLineColor(); }
 
-  public void setFillColor(Color col) { _head.setFillColor(col); }
-  public Color getFillColor() { return _head.getFillColor(); }
+    public void setFillColor(Color col) { _head.setFillColor(col); }
+    public Color getFillColor() { return _head.getFillColor(); }
 
-  public void setFilled(boolean f) { }
-  public boolean getFilled() { return true; }
+    public void setFilled(boolean f) { }
+    public boolean getFilled() { return true; }
 
-  public void setLineWidth(int w) { _head.setLineWidth(w); }
-  public int getLineWidth() { return _head.getLineWidth(); }
+    public void setLineWidth(int w) { _head.setLineWidth(w); }
+    public int getLineWidth() { return _head.getLineWidth(); }
 
-  ////////////////////////////////////////////////////////////////
-  // Event handlers
+    ////////////////////////////////////////////////////////////////
+    // Event handlers
 
-  public void mouseClicked(MouseEvent me) { }
-  public void keyPressed(KeyEvent ke) { }
+    public void mouseClicked(MouseEvent me) { }
+    public void keyPressed(KeyEvent ke) { }
 
-  static final long serialVersionUID = 7975577199958200215L;
+    static final long serialVersionUID = 7975577199958200215L;
 
 } /* end class FigBranchState */

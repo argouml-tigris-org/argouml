@@ -58,8 +58,8 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      */
     protected void buildModelList() {
         setAllElements(
-            CollaborationsHelper.getHelper().allAvailableFeatures(
-                (MClassifierRole)getTarget()));
+		       CollaborationsHelper.getHelper().allAvailableFeatures(
+									     (MClassifierRole) getTarget()));
     }
 
     /**
@@ -67,17 +67,17 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      */
     public void roleAdded(MElementEvent e) {
         if (e.getName().equals("base") && e.getSource() == getTarget()) {
-            MClassifier clazz = (MClassifier)getChangedElement(e);
+            MClassifier clazz = (MClassifier) getChangedElement(e);
             addAll(clazz.getFeatures());
             // UmlModelEventPump.getPump().removeModelEventListener(this, clazz, "feature");
             UmlModelEventPump.getPump().addModelEventListener(
-                this,
-                clazz,
-                "feature");
+							      this,
+							      clazz,
+							      "feature");
         } else if (
-            e.getName().equals("feature")
-                && ((MClassifierRole)getTarget()).getBases().contains(
-                    e.getSource())) {
+		   e.getName().equals("feature")
+		   && ((MClassifierRole) getTarget()).getBases().contains(
+									 e.getSource())) {
             addElement(getChangedElement(e));
         }
     }
@@ -87,39 +87,39 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      */
     public void setTarget(Object target) {
         if (_target != null) {
-            Collection bases = ((MClassifierRole)getTarget()).getBases();
+            Collection bases = ((MClassifierRole) getTarget()).getBases();
             Iterator it = bases.iterator();
             while (it.hasNext()) {
-                MBase base = (MBase)it.next();
+                MBase base = (MBase) it.next();
                 UmlModelEventPump.getPump().removeModelEventListener(
-                    this,
-                    base,
-                    "feature");
+								     this,
+								     base,
+								     "feature");
             }
             UmlModelEventPump.getPump().removeModelEventListener(
-                this,
-                (MBase)getTarget(),
-                "base");
+								 this,
+								 (MBase) getTarget(),
+								 "base");
         }
-        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
+        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (!ModelFacade.isABase(target))
             return;
         _target = target;
         if (_target != null) {
-            Collection bases = ((MClassifierRole)_target).getBases();
+            Collection bases = ((MClassifierRole) _target).getBases();
             Iterator it = bases.iterator();
             while (it.hasNext()) {
-                MBase base = (MBase)it.next();
+                MBase base = (MBase) it.next();
                 UmlModelEventPump.getPump().addModelEventListener(
-                    this,
-                    base,
-                    "feature");
+								  this,
+								  base,
+								  "feature");
             }
             // make sure we know it when a classifier is added as a base
             UmlModelEventPump.getPump().addModelEventListener(
-                this,
-                (MBase)_target,
-                "base");
+							      this,
+							      (MBase) _target,
+							      "base");
             removeAllElements();
             _buildingModel = true;
             buildModelList();
@@ -142,15 +142,15 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      */
     public void roleRemoved(MElementEvent e) {
         if (e.getName().equals("base") && e.getSource() == getTarget()) {
-            MClassifier clazz = (MClassifier)getChangedElement(e);
+            MClassifier clazz = (MClassifier) getChangedElement(e);
             UmlModelEventPump.getPump().removeModelEventListener(
-                this,
-                clazz,
-                "feature");
+								 this,
+								 clazz,
+								 "feature");
         } else if (
-            e.getName().equals("feature")
-                && ((MClassifierRole)getTarget()).getBases().contains(
-                    e.getSource())) {
+		   e.getName().equals("feature")
+		   && ((MClassifierRole) getTarget()).getBases().contains(
+									 e.getSource())) {
             removeElement(getChangedElement(e));
         }
     }

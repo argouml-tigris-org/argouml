@@ -67,15 +67,15 @@ class OuterClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
         // Search in classifier
-        Object mInterface = ModelFacade.lookupIn(mClassifier,name);
+        Object mInterface = ModelFacade.lookupIn(mClassifier, name);
 
-	if(mInterface == null) {
+	if (mInterface == null) {
 	    // Try to find it via the classpath
 	    try {
 		Class classifier;
 
 		// Special case for model
-		if(ModelFacade.isAModel(mPackage)) {
+		if (ModelFacade.isAModel(mPackage)) {
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {
@@ -83,17 +83,17 @@ class OuterClassifierContext extends Context
 			Class.forName(packageJavaName + "." +
 				      namePrefix + name);
 		}
-		if(classifier.isInterface()) {
-		    mInterface = UmlFactory.getFactory().getCore().buildInterface(name,mClassifier);
+		if (classifier.isInterface()) {
+		    mInterface = UmlFactory.getFactory().getCore().buildInterface(name, mClassifier);
 		}
 		else {
 		    // Only interfaces will do
 		    throw new ClassNotFoundException();
 		}
 	    }
-	    catch(ClassNotFoundException e) {
+	    catch (ClassNotFoundException e) {
 		// Continue the search through the rest of the model
-		if(context != null) {
+		if (context != null) {
 		    mInterface = context.getInterface(name);
 		}
 	    }
@@ -114,15 +114,15 @@ class OuterClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Search in classifier
-	Object iClassifier = ModelFacade.lookupIn(mClassifier,name);
+	Object iClassifier = ModelFacade.lookupIn(mClassifier, name);
 
-	if(iClassifier == null) {
+	if (iClassifier == null) {
 	    // Try to find it via the classpath
 	    try {
 		Class classifier;
 
 		// Special case for model
-		if(ModelFacade.isAModel(mPackage)) {
+		if (ModelFacade.isAModel(mPackage)) {
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {
@@ -130,16 +130,16 @@ class OuterClassifierContext extends Context
 			Class.forName(packageJavaName + "." +
 				      namePrefix + name);
 		}
-		if(classifier.isInterface()) {
-		    iClassifier = UmlFactory.getFactory().getCore().buildInterface(name,mClassifier);
+		if (classifier.isInterface()) {
+		    iClassifier = UmlFactory.getFactory().getCore().buildInterface(name, mClassifier);
 		}
 		else {
-		    iClassifier = UmlFactory.getFactory().getCore().buildClass(name,mClassifier);
+		    iClassifier = UmlFactory.getFactory().getCore().buildClass(name, mClassifier);
 		}
 	    }
-	    catch(ClassNotFoundException e) {
+	    catch (ClassNotFoundException e) {
 		// Continue the search through the rest of the model
-		if(context != null) {
+		if (context != null) {
 		    iClassifier = context.get(name);
 		}
 	    }

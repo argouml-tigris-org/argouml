@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -59,10 +60,10 @@ public class UseCasesHelper {
     private UseCasesHelper() {
     }
     
-     /** Singleton instance.
+    /** Singleton instance.
      */
     private static UseCasesHelper SINGLETON =
-                   new UseCasesHelper();
+	new UseCasesHelper();
 
     
     /** Singleton instance access method.
@@ -87,167 +88,167 @@ public class UseCasesHelper {
         return useCase.getExtensionPoints();
     }
     
-	/**
-	 * Returns all usecases in the current project model.
-	 * @return Collection
-	 */
+    /**
+     * Returns all usecases in the current project model.
+     * @return Collection
+     */
     public Collection getAllUseCases() {
     	MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
-		return getAllUseCases(model);
-	}
+	return getAllUseCases(model);
+    }
 	
-	/**
-	 * Returns all usecases in some namespace ns.
-	 * @return Collection
-	 */
-	public Collection getAllUseCases(MNamespace ns) {
-		Iterator it = ns.getOwnedElements().iterator();
-		List list = new ArrayList();
-		while (it.hasNext()) {
-			Object o = it.next();
-			if (o instanceof MNamespace) {
-				list.addAll(getAllUseCases((MNamespace)o));
-			} 
-			if (o instanceof MUseCase) {
-				list.add(o);
-			}
+    /**
+     * Returns all usecases in some namespace ns.
+     * @return Collection
+     */
+    public Collection getAllUseCases(MNamespace ns) {
+	Iterator it = ns.getOwnedElements().iterator();
+	List list = new ArrayList();
+	while (it.hasNext()) {
+	    Object o = it.next();
+	    if (o instanceof MNamespace) {
+		list.addAll(getAllUseCases((MNamespace) o));
+	    } 
+	    if (o instanceof MUseCase) {
+		list.add(o);
+	    }
 			
-		}
-		return list;
 	}
+	return list;
+    }
 	
-	/**
-	 * Returns all actors in the current project model.
-	 * @return Collection
-	 */
-	public Collection getAllActors() {
+    /**
+     * Returns all actors in the current project model.
+     * @return Collection
+     */
+    public Collection getAllActors() {
     	MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
-		return getAllActors(model);
-	}
+	return getAllActors(model);
+    }
 	
-	/**
-	 * Returns all actors in some namespace ns.
-	 * @return Collection
-	 */
-	public Collection getAllActors(MNamespace ns) {
-		Iterator it = ns.getOwnedElements().iterator();
-		List list = new ArrayList();
-		while (it.hasNext()) {
-			Object o = it.next();
-			if (o instanceof MNamespace) {
-				list.addAll(getAllActors((MNamespace)o));
-			} 
-			if (o instanceof MActor) {
-				list.add(o);
-			}
+    /**
+     * Returns all actors in some namespace ns.
+     * @return Collection
+     */
+    public Collection getAllActors(MNamespace ns) {
+	Iterator it = ns.getOwnedElements().iterator();
+	List list = new ArrayList();
+	while (it.hasNext()) {
+	    Object o = it.next();
+	    if (o instanceof MNamespace) {
+		list.addAll(getAllActors((MNamespace) o));
+	    } 
+	    if (o instanceof MActor) {
+		list.add(o);
+	    }
 			
-		}
-		return list;
 	}
+	return list;
+    }
 	
-	/**
-	 * Returns all usecases this usecase extends
-	 * @param clazz
-	 * @return Collection
-	 */
-	public Collection getExtendedUseCases(MUseCase usecase) {
-		if (usecase == null) return new ArrayList();
-		Iterator it = usecase.getExtends().iterator();
-		List list = new ArrayList();
-		while (it.hasNext()) {
-			MExtend extend = (MExtend)it.next();
-			MUseCase base = extend.getBase();
-			list.add(base);
-		}
-		return list;
+    /**
+     * Returns all usecases this usecase extends
+     * @param clazz
+     * @return Collection
+     */
+    public Collection getExtendedUseCases(MUseCase usecase) {
+	if (usecase == null) return new ArrayList();
+	Iterator it = usecase.getExtends().iterator();
+	List list = new ArrayList();
+	while (it.hasNext()) {
+	    MExtend extend = (MExtend) it.next();
+	    MUseCase base = extend.getBase();
+	    list.add(base);
 	}
+	return list;
+    }
     
     public Collection getExtendingUseCases(MUseCase usecase) {
         if (usecase == null) return new ArrayList();
         Iterator it = usecase.getExtends2().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
-            MExtend ext = (MExtend)it.next();
+            MExtend ext = (MExtend) it.next();
             MUseCase extension = ext.getExtension();
             list.add(extension);
         }
         return list;
     }
 	
-	/**
-	 * Returns the extend relation between two usecases base and extension. If there is none
-	 * null is returned.
-	 * @param base
-	 * @param extension
-	 * @return MExtend
-	 */
-	public MExtend getExtends(MUseCase base, MUseCase extension) {
-		if (base == null || extension == null) return null;
-		Iterator it = extension.getExtends().iterator();
-		while (it.hasNext()) {
-			MExtend extend = (MExtend)it.next();
-			if (extend.getBase() == base) {
-				return extend;
-			}
-		}
-		return null;
+    /**
+     * Returns the extend relation between two usecases base and extension. If there is none
+     * null is returned.
+     * @param base
+     * @param extension
+     * @return MExtend
+     */
+    public MExtend getExtends(MUseCase base, MUseCase extension) {
+	if (base == null || extension == null) return null;
+	Iterator it = extension.getExtends().iterator();
+	while (it.hasNext()) {
+	    MExtend extend = (MExtend) it.next();
+	    if (extend.getBase() == base) {
+		return extend;
+	    }
 	}
+	return null;
+    }
 	
-	/**
-	 * Returns all usecases this usecase includes
-	 * @param clazz
-	 * @return Collection
-	 */
-	public Collection getIncludedUseCases(MUseCase usecase) {
-		if (usecase == null) return new ArrayList();
-		Iterator it = usecase.getIncludes().iterator();
-		List list = new ArrayList();
-		while (it.hasNext()) {
-			MInclude include = (MInclude)it.next();
-			MUseCase addition = include.getBase();
-			list.add(addition);
-		}
-		return list;
+    /**
+     * Returns all usecases this usecase includes
+     * @param clazz
+     * @return Collection
+     */
+    public Collection getIncludedUseCases(MUseCase usecase) {
+	if (usecase == null) return new ArrayList();
+	Iterator it = usecase.getIncludes().iterator();
+	List list = new ArrayList();
+	while (it.hasNext()) {
+	    MInclude include = (MInclude) it.next();
+	    MUseCase addition = include.getBase();
+	    list.add(addition);
 	}
+	return list;
+    }
 	
-	/**
-	 * Returns the include relation between two usecases base and inclusion. If there is none
-	 * null is returned.
-	 * @param base
-	 * @param extension
-	 * @return MExtend
-	 */
-	public MInclude getIncludes(MUseCase base, MUseCase inclusion) {
-		if (base == null || inclusion == null) return null;
-		Iterator it = inclusion.getIncludes().iterator();
-		while (it.hasNext()) {
-			MInclude include = (MInclude)it.next();
-			if (include.getBase() == base) {
-				return include;
-			}
-		}
-		return null;
+    /**
+     * Returns the include relation between two usecases base and inclusion. If there is none
+     * null is returned.
+     * @param base
+     * @param extension
+     * @return MExtend
+     */
+    public MInclude getIncludes(MUseCase base, MUseCase inclusion) {
+	if (base == null || inclusion == null) return null;
+	Iterator it = inclusion.getIncludes().iterator();
+	while (it.hasNext()) {
+	    MInclude include = (MInclude) it.next();
+	    if (include.getBase() == base) {
+		return include;
+	    }
 	}
+	return null;
+    }
 	
-	/**
-	 * Returns the specificationpath operation of some usecase. See 
-	 * section 2.11.3.5 of the UML 1.3 spec for a definition
-	 * @param uc
-	 * @return Collection
-	 */
-	public Collection getSpecificationPath(MUseCase uc) {
-		Set set = new HashSet();
-		set.addAll(ModelManagementHelper.getHelper().getAllSurroundingNamespaces(uc));
-		Set set2 = new HashSet();
-		Iterator it = set.iterator();
-		while (it.hasNext()) {
-			Object o = it.next();
-			if (o instanceof MSubsystem || o instanceof MClass) {
-				set2.add(o);
-			}
-		}
-		return set2;
+    /**
+     * Returns the specificationpath operation of some usecase. See 
+     * section 2.11.3.5 of the UML 1.3 spec for a definition
+     * @param uc
+     * @return Collection
+     */
+    public Collection getSpecificationPath(MUseCase uc) {
+	Set set = new HashSet();
+	set.addAll(ModelManagementHelper.getHelper().getAllSurroundingNamespaces(uc));
+	Set set2 = new HashSet();
+	Iterator it = set.iterator();
+	while (it.hasNext()) {
+	    Object o = it.next();
+	    if (o instanceof MSubsystem || o instanceof MClass) {
+		set2.add(o);
+	    }
 	}
+	return set2;
+    }
     
     /**
      * Sets the base usecase of a given extend. Updates the extensionpoints of the
@@ -260,7 +261,7 @@ public class UseCasesHelper {
         if (base == extend.getBase()) return;
         Iterator it = extend.getExtensionPoints().iterator();
         while (it.hasNext()) {
-            MExtensionPoint point = (MExtensionPoint)it.next();
+            MExtensionPoint point = (MExtensionPoint) it.next();
             point.removeExtend(extend);
         }
         MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(base);

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,30 +40,30 @@ import ru.novosoft.uml.foundation.data_types.MScopeKind;
  */
 public class ActionSetStructuralFeatureTargetScope extends UMLChangeAction {
 
-	public static final ActionSetStructuralFeatureTargetScope SINGLETON =
-		new ActionSetStructuralFeatureTargetScope();
+    public static final ActionSetStructuralFeatureTargetScope SINGLETON =
+	new ActionSetStructuralFeatureTargetScope();
 
-	/**
-	 * Constructor for ActionSetCompositeStateConcurrent.
-	 * @param s
-	 */
-	protected ActionSetStructuralFeatureTargetScope() {
-		super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
-	}
+    /**
+     * Constructor for ActionSetCompositeStateConcurrent.
+     * @param s
+     */
+    protected ActionSetStructuralFeatureTargetScope() {
+	super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
+    }
 
-	/**
-	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-	 */
-	public void actionPerformed(ActionEvent e) {
-		super.actionPerformed(e);
-		if (e.getSource() instanceof UMLCheckBox2) {
-			UMLCheckBox2 source = (UMLCheckBox2)e.getSource();
-			Object target = source.getTarget();
-			if (target instanceof MStructuralFeature) {
-                MStructuralFeature m = (MStructuralFeature)target;
-				m.setTargetScope(source.isSelected() ? MScopeKind.CLASSIFIER : MScopeKind.INSTANCE);
-			}
-		}
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+	super.actionPerformed(e);
+	if (e.getSource() instanceof UMLCheckBox2) {
+	    UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
+	    Object target = source.getTarget();
+	    if (target instanceof MStructuralFeature) {
+                MStructuralFeature m = (MStructuralFeature) target;
+		m.setTargetScope(source.isSelected() ? MScopeKind.CLASSIFIER : MScopeKind.INSTANCE);
+	    }
 	}
+    }
 
 }

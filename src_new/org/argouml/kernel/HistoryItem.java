@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,61 +34,61 @@ import org.argouml.cognitive.*;
 
 public class HistoryItem {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  public Date _when;
-  public Poster _who;
-  public String _headline;
-  public String _desc;
-  public Object _target;
-  public Object _oldValue;
-  public Object _newValue;
-  public Vector _relatedItems;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    public Date _when;
+    public Poster _who;
+    public String _headline;
+    public String _desc;
+    public Object _target;
+    public Object _oldValue;
+    public Object _newValue;
+    public Vector _relatedItems;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public HistoryItem(String headline, String desc) {
-    _when = new Date(); // right now
-    _who = Designer.TheDesigner;
-    _headline = headline;
-    _desc = desc;
-  }
+    public HistoryItem(String headline, String desc) {
+	_when = new Date(); // right now
+	_who = Designer.TheDesigner;
+	_headline = headline;
+	_desc = desc;
+    }
 
-  public HistoryItem(ToDoItem item, String desc) {
-    _when = new Date(); // right now
-    _who = item.getPoster();
-    //_desc = desc + item.getDescription();
-    _headline = item.getHeadline();
-    _desc = item.getDescription();
-  }
+    public HistoryItem(ToDoItem item, String desc) {
+	_when = new Date(); // right now
+	_who = item.getPoster();
+	//_desc = desc + item.getDescription();
+	_headline = item.getHeadline();
+	_desc = item.getDescription();
+    }
 
-  public HistoryItem(String headline, String desc, Object target,
-		     Object oldValue, Object newValue) {
-    _when = new Date(); // right now
-    _who = Designer.TheDesigner;
-    _headline = headline;
-    _desc = desc;
-    _target = target;
-    _oldValue = oldValue;
-    _newValue = newValue;
-  }
+    public HistoryItem(String headline, String desc, Object target,
+		       Object oldValue, Object newValue) {
+	_when = new Date(); // right now
+	_who = Designer.TheDesigner;
+	_headline = headline;
+	_desc = desc;
+	_target = target;
+	_oldValue = oldValue;
+	_newValue = newValue;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public String getDescription() { return _desc; }
-  public String getHeadline() { return _headline; }
+    public String getDescription() { return _desc; }
+    public String getHeadline() { return _headline; }
 
-  public Vector getRelatedItems() { return _relatedItems; }
-  public void setRelatedItems(Vector v) { _relatedItems = v; }
+    public Vector getRelatedItems() { return _relatedItems; }
+    public void setRelatedItems(Vector v) { _relatedItems = v; }
 
-  ////////////////////////////////////////////////////////////////
-  // debugging
+    ////////////////////////////////////////////////////////////////
+    // debugging
 
-  public String toString() {
-    if (_desc == null) return "HI: (null)";
-    return "HI: " + _desc;
-  }
+    public String toString() {
+	if (_desc == null) return "HI: (null)";
+	return "HI: " + _desc;
+    }
 
 } /* end class HistoryItem */

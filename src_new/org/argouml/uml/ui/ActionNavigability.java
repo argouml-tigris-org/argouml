@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,21 +44,21 @@ public class ActionNavigability extends UMLAction {
     final public static int ENDTOSTART = 2;
 
     int nav = BIDIRECTIONAL;
-	MAssociationEnd start = null;
-	MAssociationEnd end = null;
+    MAssociationEnd start = null;
+    MAssociationEnd end = null;
 
     /**
-	  * The <code>ActionNavigability</code> constructor.
-	  *
-	  * @param     start  a <code>MAssociationEnd</code> object at the start of an association.
-	  * @param     end    a <code>MAssociationEnd</code> object at the end of an association.
-	  * @param     nav    the type of navigation required in the association being either
-	  * <ul>
-      * <li>BIDIRECTIONAL
-      * <li>STARTTOEND
-      * <li>ENDTOSTART
-      * </ul>
-	  */
+     * The <code>ActionNavigability</code> constructor.
+     *
+     * @param     start  a <code>MAssociationEnd</code> object at the start of an association.
+     * @param     end    a <code>MAssociationEnd</code> object at the end of an association.
+     * @param     nav    the type of navigation required in the association being either
+     * <ul>
+     * <li>BIDIRECTIONAL
+     * <li>STARTTOEND
+     * <li>ENDTOSTART
+     * </ul>
+     */
 
     static public ActionNavigability newActionNavigability(MAssociationEnd start, MAssociationEnd end, int nav) {
         return new ActionNavigability(getDescription(start, end, nav), start, end, nav);
@@ -90,17 +91,17 @@ public class ActionNavigability extends UMLAction {
     }
 
     /**
-	  * To perform the action of changing navigability
-	  */
+     * To perform the action of changing navigability
+     */
     public void actionPerformed(ActionEvent ae) {
-		start.setNavigable(nav == BIDIRECTIONAL || nav == ENDTOSTART);
+	start.setNavigable(nav == BIDIRECTIONAL || nav == ENDTOSTART);
         end.setNavigable(nav == BIDIRECTIONAL || nav == STARTTOEND);
     }
 
     /**
-	  * The is action is always enabled
-	  */
+     * The is action is always enabled
+     */
     public boolean shouldBeEnabled() {
-		return true;
+	return true;
     }
 } /* end class ActionNavigability */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,28 +41,28 @@ import java.util.*;
 public class Init {
 
 
-  /** static initializer, register all appropriate critics */
-  public static void init(Locale locale) {
-    ResourceBundle bundle = ResourceBundle.getBundle("org.argouml.i18n.UMLCognitiveResourceBundle",locale);
-    addChecklist(bundle,  MClass.class, "ChClass");
-    addChecklist(bundle,  MInterface.class, "ChInterface");
-    addChecklist(bundle,  MAttribute.class, "ChAttribute");
-    addChecklist(bundle,  MOperation.class, "ChOperation");
-    addChecklist(bundle,  MAssociation.class, "ChAssociation");
-    addChecklist(bundle,  MAssociationClass.class, "ChAssociation");
-    addChecklist(bundle,  MState.class, "ChState");
-    addChecklist(bundle,  MTransition.class, "ChTransition");
-    addChecklist(bundle,  MUseCase.class, "ChUseCase");
-    addChecklist(bundle,  MActor.class, "ChActor");
-  }
+    /** static initializer, register all appropriate critics */
+    public static void init(Locale locale) {
+	ResourceBundle bundle = ResourceBundle.getBundle("org.argouml.i18n.UMLCognitiveResourceBundle", locale);
+	addChecklist(bundle,  MClass.class, "ChClass");
+	addChecklist(bundle,  MInterface.class, "ChInterface");
+	addChecklist(bundle,  MAttribute.class, "ChAttribute");
+	addChecklist(bundle,  MOperation.class, "ChOperation");
+	addChecklist(bundle,  MAssociation.class, "ChAssociation");
+	addChecklist(bundle,  MAssociationClass.class, "ChAssociation");
+	addChecklist(bundle,  MState.class, "ChState");
+	addChecklist(bundle,  MTransition.class, "ChTransition");
+	addChecklist(bundle,  MUseCase.class, "ChUseCase");
+	addChecklist(bundle,  MActor.class, "ChActor");
+    }
 
-  private static void addChecklist(ResourceBundle bundle,
-        Class cls, String key) {
+    private static void addChecklist(ResourceBundle bundle,
+				     Class cls, String key) {
         try {
             UMLChecklist checklist = new UMLChecklist((String[][]) bundle.getObject(key));
             CheckManager.register(cls, checklist);
         }
-        catch(MissingResourceException e) {
+        catch (MissingResourceException e) {
             e.printStackTrace();
         }
     }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -61,9 +62,9 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
     /**
      * singleton getter method
      */
-    public static UMLModelElementNamespaceComboBoxModel getInstance(){
+    public static UMLModelElementNamespaceComboBoxModel getInstance() {
         
-        if(theInstance == null){
+        if (theInstance == null) {
             
             theInstance = new UMLModelElementNamespaceComboBoxModel();
             return theInstance;
@@ -80,7 +81,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
         
         theBuilderThread =
-        new NamespaceListBuilderThread("namespace combobox worker");
+	    new NamespaceListBuilderThread("namespace combobox worker");
         theBuilderThread.start();
     }
     
@@ -88,7 +89,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(Object o) {
-        return o instanceof MNamespace && CoreHelper.getHelper().isValidNamespace((MModelElement)getTarget(), (MNamespace)o);
+        return o instanceof MNamespace && CoreHelper.getHelper().isValidNamespace((MModelElement) getTarget(), (MNamespace) o);
     }
     
     /**
@@ -111,7 +112,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MModelElement)getTarget()).getNamespace();
+            return ((MModelElement) getTarget()).getNamespace();
         }
         return null;
     }
@@ -126,23 +127,23 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void setTarget(Object target) {
         
-        if(theBuilderThread != null && theBuilderThread.isAlive()){
-            try{
+        if (theBuilderThread != null && theBuilderThread.isAlive()) {
+            try {
                 theBuilderThread.interrupt();
-            }catch(SecurityException seIgnore){}
+            } catch (SecurityException seIgnore) { }
         }
         
         if (_target instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(this,
-            (MBase)_target,
-            _propertySetName);
+								 (MBase) _target,
+								 _propertySetName);
         }
         
         if (target instanceof MBase) {
             _target = target;
             UmlModelEventPump.getPump().addModelEventListener(this,
-            (MBase)_target,
-            _propertySetName);
+							      (MBase) _target,
+							      _propertySetName);
         } else {
             target = null;
         }
@@ -162,26 +163,26 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * worker thread to free the swing gui whilst namespaces are calculated.
      * we only ever want one of this thread
      */
-    class NamespaceListBuilderThread extends Thread{
+    class NamespaceListBuilderThread extends Thread {
         
-        public NamespaceListBuilderThread(String name){
+        public NamespaceListBuilderThread(String name) {
             super(name);
             // let argo exit even if this is still running.
             setDaemon(true);
         }
         
-        public void run(){
+        public void run() {
             
-            synchronized(this){
-                while(true){
+            synchronized (this) {
+                while (true) {
                     
-                    try{
+                    try {
                         // wait for the next change of target
                         wait();
                         // build the namespace list.
                         buildList();
                     }
-                    catch(InterruptedException ie){/** no action needed */ }
+                    catch (InterruptedException ie) { /** no action needed */ }
                 }
             }
         }
@@ -189,7 +190,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
         /**
          * notifies this thread that it can build a new list.
          */
-        public synchronized void build(){
+        public synchronized void build() {
             
             notify();
         }
@@ -200,29 +201,27 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
          *
          * <p> does not update the gui if the target was changed again..
          */
-        private void buildList(){
+        private void buildList() {
             
             Object originalTarget = getTarget();
             
             final Collection namespaces =
-                    CoreHelper.
-                        getHelper().
-                        getAllPossibleNamespaces((MModelElement)originalTarget);
+		CoreHelper.getHelper().
+		    getAllPossibleNamespaces((MModelElement) originalTarget);
             
             // don't update the gui if the target has changed!
-            if(originalTarget != getTarget()){
+            if (originalTarget != getTarget()) {
                 return;
             }
             
-            SwingUtilities.invokeLater(
-            new Runnable(){
-                public void run(){
+            SwingUtilities.invokeLater(new Runnable()
+				       {
+					   public void run() {
                     
-                    setElements(namespaces);
-                    setSelectedItem(getSelectedModelElement());
-                }
-            }
-            );
+					       setElements(namespaces);
+					       setSelectedItem(getSelectedModelElement());
+					   }
+				       } );
         }
     }
 }

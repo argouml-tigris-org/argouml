@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -128,8 +129,8 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
      */
 
     public UMLIncludeListModel(UMLUserInterfaceContainer container,
-                               String property,boolean showNone) {
-        super(container,property,showNone);
+                               String property, boolean showNone) {
+        super(container, property, showNone);
     }
     
     /**
@@ -143,7 +144,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         int        size     = 0;
         Collection includes = getIncludes();
 
-        if(includes != null) {
+        if (includes != null) {
             size = includes.size();
         }
 
@@ -188,7 +189,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         Collection includes = null;
         Object     target   = getTarget();
 
-        if(target instanceof MUseCase) {
+        if (target instanceof MUseCase) {
             MUseCase useCase = (MUseCase) target;
 
             includes = useCase.getIncludes();
@@ -232,15 +233,15 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
             MInclude include = (MInclude) element;
             MUseCase target  = include.getBase();
 
-            if(target != null) {
+            if (target != null) {
                 value = super.formatElement(target);
             }
         }
         else {
             if (element != null) {
                 cat.warn("UMLIncludeListModel." +
-                                   "formatElement(): Can't format " +
-                                   element.getClass().toString());
+			 "formatElement(): Can't format " +
+			 element.getClass().toString());
             }
         }
 
@@ -268,46 +269,46 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     public void add(int index) {
     	Object target = getTarget();
     	if (target instanceof MUseCase) {
-    		MUseCase usecase = (MUseCase)target;	
-	    	Vector choices = new Vector();
-	    	Vector selected = new Vector();
-	    	choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
-	    	choices.remove(usecase);
-	    	selected.addAll(UseCasesHelper.getHelper().getIncludedUseCases(usecase));
-	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-included-usecases"), true, true);
-	    	int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
-	    	if (returnValue == JOptionPane.OK_OPTION) {
-	    		Iterator it = dialog.getSelected().iterator();
-	    		while (it.hasNext()) {
-	    			MUseCase includedusecase = (MUseCase)it.next();
-	    			if (!selected.contains(includedusecase)) {
-	    				ProjectBrowser pb = ProjectBrowser.getInstance();
-	    				ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-	    				Fig figclass = diagram.getLayer().presentationFor(usecase);
-	    				Fig figeusecase = diagram.getLayer().presentationFor(includedusecase);
-	    				if (figclass != null && figeusecase != null) {
-	    					GraphModel gm = diagram.getGraphModel();
-	    					if (gm instanceof MutableGraphModel) {
-	    						((MutableGraphModel)gm).connect(usecase, includedusecase, MInclude.class);
-	    					}
-	    				} else {
-	    					UseCasesFactory.getFactory().buildInclude(usecase, includedusecase);
-	    				}
-	    			}
-	    		}
-	    		it = selected.iterator();
-	    		while (it.hasNext()) {
-	    			MUseCase includedusecase = (MUseCase)it.next();
-	    			if (!dialog.getSelected().contains(includedusecase)) {
-	    				MInclude include = UseCasesHelper.getHelper().getIncludes(usecase, includedusecase);
-			    		Object pt = TargetManager.getInstance().getTarget();
-			    		TargetManager.getInstance().setTarget(include);
-			    		ActionEvent event = new ActionEvent(this, 1, "delete");
-			    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-			    		TargetManager.getInstance().setTarget(pt);
-	    			}
-	    		}
-	    	}
+	    MUseCase usecase = (MUseCase) target;	
+	    Vector choices = new Vector();
+	    Vector selected = new Vector();
+	    choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
+	    choices.remove(usecase);
+	    selected.addAll(UseCasesHelper.getHelper().getIncludedUseCases(usecase));
+	    UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-included-usecases"), true, true);
+	    int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
+	    if (returnValue == JOptionPane.OK_OPTION) {
+		Iterator it = dialog.getSelected().iterator();
+		while (it.hasNext()) {
+		    MUseCase includedusecase = (MUseCase) it.next();
+		    if (!selected.contains(includedusecase)) {
+			ProjectBrowser pb = ProjectBrowser.getInstance();
+			ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+			Fig figclass = diagram.getLayer().presentationFor(usecase);
+			Fig figeusecase = diagram.getLayer().presentationFor(includedusecase);
+			if (figclass != null && figeusecase != null) {
+			    GraphModel gm = diagram.getGraphModel();
+			    if (gm instanceof MutableGraphModel) {
+				((MutableGraphModel) gm).connect(usecase, includedusecase, MInclude.class);
+			    }
+			} else {
+			    UseCasesFactory.getFactory().buildInclude(usecase, includedusecase);
+			}
+		    }
+		}
+		it = selected.iterator();
+		while (it.hasNext()) {
+		    MUseCase includedusecase = (MUseCase) it.next();
+		    if (!dialog.getSelected().contains(includedusecase)) {
+			MInclude include = UseCasesHelper.getHelper().getIncludes(usecase, includedusecase);
+			Object pt = TargetManager.getInstance().getTarget();
+			TargetManager.getInstance().setTarget(include);
+			ActionEvent event = new ActionEvent(this, 1, "delete");
+			ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+			TargetManager.getInstance().setTarget(pt);
+		    }
+		}
+	    }
     	}
 
     }
@@ -339,15 +340,15 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     public void delete(int index) {
     	Object target = getTarget();
     	if (target instanceof MUseCase) {
-    		MUseCase usecase = (MUseCase)target;
-    		MUseCase includedusecase = (MUseCase)UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getIncludedUseCases(usecase), index, null);
-    		MInclude include = UseCasesHelper.getHelper().getIncludes(includedusecase, usecase);
-    		Object pt = TargetManager.getInstance().getTarget();
-    		TargetManager.getInstance().setTarget(include);
-    		ActionEvent event = new ActionEvent(this, 1, "delete");
-    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-    		TargetManager.getInstance().setTarget(pt);
-    		fireIntervalRemoved(this,index,index);
+	    MUseCase usecase = (MUseCase) target;
+	    MUseCase includedusecase = (MUseCase) UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getIncludedUseCases(usecase), index, null);
+	    MInclude include = UseCasesHelper.getHelper().getIncludes(includedusecase, usecase);
+	    Object pt = TargetManager.getInstance().getTarget();
+	    TargetManager.getInstance().setTarget(include);
+	    ActionEvent event = new ActionEvent(this, 1, "delete");
+	    ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+	    TargetManager.getInstance().setTarget(pt);
+	    fireIntervalRemoved(this, index, index);
     	}
     	/*
 
@@ -356,7 +357,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         MModelElement modElem = getModelElementAt(index);
 
         if (!(modElem instanceof MInclude)) {
-            return ;
+	return ;
         }
 
         MInclude  include   = (MInclude) modElem;
@@ -377,7 +378,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         // fucntions for "base" and "addition".
 
         if (addition != null) {
-            addition.removeInclude2(include);
+	addition.removeInclude2(include);
         }
 
         // Remove the base end of the relationship (if there was one). Note we
@@ -390,13 +391,13 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         // "addition"
 
         if(base != null) {
-            base.removeInclude(include);
+	base.removeInclude(include);
         }
 
         // Finally remove from the namespace
 
         if (ns != null) {
-            ns.removeOwnedElement(include);
+	ns.removeOwnedElement(include);
         }
 
         // Having removed an include relationship, mark as needing saving
@@ -491,31 +492,31 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         // Tell Swing
 
-        fireContentsChanged(this,index,index+1);
+        fireContentsChanged(this, index, index + 1);
     }
     
     /**
-	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
-	 */
-	public boolean buildPopup(JPopupMenu popup, int index) {
-		UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(getModelElementSize() <= 0) {
+     * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+     */
+    public boolean buildPopup(JPopupMenu popup, int index) {
+	UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"), this, "open", index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"), this, "delete", index);
+        if (getModelElementSize() <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
-        if(_upper >= 0 && getModelElementSize() >= _upper) {
+        UMLListMenuItem add = new UMLListMenuItem(container.localize("Add"), this, "add", index);
+        if (_upper >= 0 && getModelElementSize() >= _upper) {
             add.setEnabled(false);
         }
         popup.add(add);
         popup.add(delete);
 
         return true;
-	}
+    }
 
 
 } /* End of class UMLIncludeListModel */

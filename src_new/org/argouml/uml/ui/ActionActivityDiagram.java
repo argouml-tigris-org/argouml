@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -54,11 +55,11 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      */
     public UMLDiagram createDiagram(Object ns) {
         Object target = TargetManager.getInstance().getModelTarget();
-        MActivityGraph graph = ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement)target);
+        MActivityGraph graph = ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement) target);
         if (target instanceof MBehavioralFeature) {
-            ns = ((MBehavioralFeature)target).getNamespace();
+            ns = ((MBehavioralFeature) target).getNamespace();
         }
-        UMLActivityDiagram d = new UMLActivityDiagram((MNamespace)ns, graph);
+        UMLActivityDiagram d = new UMLActivityDiagram((MNamespace) ns, graph);
         return d;
     }
 

@@ -56,15 +56,15 @@ import org.argouml.model.ModelFacade;
  */
 public class CrAttrNameConflict extends CrUML {
 
-  public CrAttrNameConflict() {
-    setHeadline("Revise MAttribute Names to Avoid Conflict");
-    addSupportedDecision(CrUML.decINHERITANCE);
-    addSupportedDecision(CrUML.decSTORAGE);
-    addSupportedDecision(CrUML.decNAMING);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-    addTrigger("structuralFeature");
-    addTrigger("feature_name");
-  }
+    public CrAttrNameConflict() {
+	setHeadline("Revise MAttribute Names to Avoid Conflict");
+	addSupportedDecision(CrUML.decINHERITANCE);
+	addSupportedDecision(CrUML.decSTORAGE);
+	addSupportedDecision(CrUML.decNAMING);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
+	addTrigger("structuralFeature");
+	addTrigger("feature_name");
+    }
 
     /**
      * Examines the classifier and tells if we have two attributes
@@ -90,9 +90,9 @@ public class CrAttrNameConflict extends CrUML {
 	return NO_PROBLEM;
     }
 
-  public Icon getClarifier() {
-    return ClAttributeCompartment.TheInstance;
-  }
+    public Icon getClarifier() {
+	return ClAttributeCompartment.TheInstance;
+    }
 
 } /* end class CrAttrNameConflict.java */
 

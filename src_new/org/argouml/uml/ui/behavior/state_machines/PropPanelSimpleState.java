@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,10 +39,10 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelSimpleState extends PropPanelState {
 
     public PropPanelSimpleState() {
-        super("Simple State",_stateIcon, ConfigLoader.getTabPropsOrientation());
+        super("Simple State", _stateIcon, ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
         addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
         addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);;

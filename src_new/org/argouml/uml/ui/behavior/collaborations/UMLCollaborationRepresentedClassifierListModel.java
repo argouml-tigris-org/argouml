@@ -53,7 +53,7 @@ public class UMLCollaborationRepresentedClassifierListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MCollaboration)getTarget()).getRepresentedClassifier());
+        addElement(((MCollaboration) getTarget()).getRepresentedClassifier());
     }
 
     /**
@@ -61,7 +61,7 @@ public class UMLCollaborationRepresentedClassifierListModel
      */
     protected boolean isValidElement(MBase elem) {         
         return elem instanceof MClassifier && 
-            ((MCollaboration)getTarget()).getRepresentedClassifier() == elem;
+            ((MCollaboration) getTarget()).getRepresentedClassifier() == elem;
     }
 
 }

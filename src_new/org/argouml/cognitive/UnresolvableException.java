@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -28,14 +29,14 @@ package org.argouml.cognitive;
  */
 public class UnresolvableException extends Exception
 {
-	/**
-	 * Creates a new UnresolvableException with message msg.
-	 *
-	 * @param	msg	A message describing what caused the exception.
-	 */
-	public UnresolvableException(String msg)
-	{
-		super(msg);
-	}
+    /**
+     * Creates a new UnresolvableException with message msg.
+     *
+     * @param	msg	A message describing what caused the exception.
+     */
+    public UnresolvableException(String msg)
+    {
+	super(msg);
+    }
 }
 

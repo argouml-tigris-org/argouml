@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,30 +42,30 @@ import org.argouml.uml.diagram.sequence.ui.*;
 
 
 public class TableModelSeqLinkByProps extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelSeqLinkByProps() { }
+    ////////////////
+    // constructor
+    public TableModelSeqLinkByProps() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.SrcLinkType);
-    addColumn(ColumnDescriptor.DstLinkType);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLSequenceDiagram)) return new Vector();
-    UMLSequenceDiagram d = (UMLSequenceDiagram) t;
-    Vector edges = d.getEdges();
-    Vector res = new Vector();
-    int size = edges.size();
-    for (int i = 0; i < size; i++) {
-      Object edge = edges.elementAt(i);
-      if (edge instanceof MLink) res.addElement(edge);
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.SrcLinkType);
+	addColumn(ColumnDescriptor.DstLinkType);
+	addColumn(ColumnDescriptor.MStereotype);
     }
-    return res;
-  }
 
-  public String toString() { return "SeqLinks vs. Properties"; }
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof UMLSequenceDiagram)) return new Vector();
+	UMLSequenceDiagram d = (UMLSequenceDiagram) t;
+	Vector edges = d.getEdges();
+	Vector res = new Vector();
+	int size = edges.size();
+	for (int i = 0; i < size; i++) {
+	    Object edge = edges.elementAt(i);
+	    if (edge instanceof MLink) res.addElement(edge);
+	}
+	return res;
+    }
+
+    public String toString() { return "SeqLinks vs. Properties"; }
 } /* end class TableModelSeqLinkByProps */
 

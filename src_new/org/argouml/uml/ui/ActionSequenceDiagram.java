@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,33 +67,33 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace)handle;
+        MNamespace ns = (MNamespace) handle;
         MCollaboration c = null;
         Object target = TargetManager.getInstance().getModelTarget();
         if (target instanceof MOperation) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     ns);
-            c.setRepresentedOperation((MOperation)target);
+            c.setRepresentedOperation((MOperation) target);
         } else if (target instanceof MClassifier) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     ns);
-            c.setRepresentedClassifier((MClassifier)target);
+            c.setRepresentedClassifier((MClassifier) target);
         } else if (target instanceof MModel) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    (MModel)target);
+                    (MModel) target);
         } else if (target instanceof MInteraction) {
-            c = ((MInteraction)target).getContext();
+            c = ((MInteraction) target).getContext();
         } else if (target instanceof UMLSequenceDiagram) {
-            Object o = ((UMLSequenceDiagram)target).getOwner();
+            Object o = ((UMLSequenceDiagram) target).getOwner();
             if (o instanceof MCollaboration) {
                 //preventing backward compat problems
-                c = (MCollaboration)o;
+                c = (MCollaboration) o;
             }
         } else if (target instanceof MCollaboration) {
-            c = (MCollaboration)target;
+            c = (MCollaboration) target;
         } else {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
@@ -112,7 +113,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace)handle;
+        MNamespace ns = (MNamespace) handle;
         return (
             ns instanceof MCollaboration
                 || ns instanceof MClassifier

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -64,8 +65,8 @@ public class AddToDoItemDialog extends ArgoDialog {
      */
     public AddToDoItemDialog() {
         super(ProjectBrowser.getInstance(), 
-            Argo.localize(BUNDLE, "dialog.title.add-todo-item"), 
-            ArgoDialog.OK_CANCEL_OPTION, true);
+	      Argo.localize(BUNDLE, "dialog.title.add-todo-item"), 
+	      ArgoDialog.OK_CANCEL_OPTION, true);
         
         _headline = new JTextField(TEXT_COLUMNS);
         _priority = new JComboBox(PRIORITIES);
@@ -114,9 +115,15 @@ public class AddToDoItemDialog extends ArgoDialog {
         String headline = _headline.getText();
         int priority = ToDoItem.HIGH_PRIORITY;
         switch (_priority.getSelectedIndex()) {
-            case 0: priority = ToDoItem.HIGH_PRIORITY; break;
-            case 1: priority = ToDoItem.MED_PRIORITY; break;
-            case 2: priority = ToDoItem.LOW_PRIORITY; break;
+	case 0: 
+	    priority = ToDoItem.HIGH_PRIORITY; 
+	    break;
+	case 1: 
+	    priority = ToDoItem.MED_PRIORITY; 
+	    break;
+	case 2:
+	    priority = ToDoItem.LOW_PRIORITY; 
+	    break;
         }
         String desc = _description.getText();
         String moreInfoURL = _moreinfo.getText();

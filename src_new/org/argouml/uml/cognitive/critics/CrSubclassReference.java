@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,73 +44,73 @@ import org.argouml.uml.GenDescendantClasses;
 
 public class CrSubclassReference extends CrUML {
 
-  public CrSubclassReference() {
-    setHeadline("Remove Reference to Specific Subclass");
-    addSupportedDecision(CrUML.decRELATIONSHIPS);
-    addSupportedDecision(CrUML.decPLANNED_EXTENSIONS);
-    setKnowledgeTypes(Critic.KT_SEMANTICS);
-    addTrigger("specialization");
-    addTrigger("associationEnd");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClass)) return NO_PROBLEM;
-    MClass cls = (MClass) dm;
-    VectorSet offs = computeOffenders(cls);
-    if (offs != null) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
-
-  public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    MClassifier cls = (MClassifier) dm;
-    VectorSet offs = computeOffenders(cls);
-    return new ToDoItem(this, offs, dsgr);
-  }
-
-  public boolean stillValid(ToDoItem i, Designer dsgr) {
-    if (!isActive()) return false;
-    VectorSet offs = i.getOffenders();
-    MClassifier dm = (MClassifier) offs.firstElement();
-    //if (!predicate(dm, dsgr)) return false;
-    VectorSet newOffs = computeOffenders(dm);
-    boolean res = offs.equals(newOffs);
-    return res;
-  }
-
-  public VectorSet computeOffenders(MClassifier cls) {
-    Collection asc = cls.getAssociationEnds();
-    if (asc == null || asc.size() == 0) return null;
-
-    java.util.Enumeration descendEnum = GenDescendantClasses.SINGLETON.gen(cls);
-    if (!descendEnum.hasMoreElements()) return null;
-    VectorSet descendants = new VectorSet();
-    while (descendEnum.hasMoreElements())
-      descendants.addElement(descendEnum.nextElement());
-
-    //TODO: GenNavigableClasses?
-    int nAsc = asc.size();
-    VectorSet offs = null;
-    for (Iterator iter = asc.iterator(); iter.hasNext();) {
-      MAssociationEnd ae = (MAssociationEnd) iter.next();
-      MAssociation a = ae.getAssociation();
-      List conn = a.getConnections();
-      if (conn.size() != 2) continue;
-      MAssociationEnd otherEnd = (MAssociationEnd) conn.get(0);
-      if (ae == conn.get(0))
-	otherEnd = (MAssociationEnd) conn.get(1);
-      if (!otherEnd.isNavigable()) continue;
-      MClassifier otherCls = otherEnd.getType();
-      if (descendants.contains(otherCls)) {
-	if (offs == null) {
-	  offs = new VectorSet();
-	  offs.addElement(cls);
-	}
-	offs.addElement(a);
-	offs.addElement(otherCls);
-      }
+    public CrSubclassReference() {
+	setHeadline("Remove Reference to Specific Subclass");
+	addSupportedDecision(CrUML.decRELATIONSHIPS);
+	addSupportedDecision(CrUML.decPLANNED_EXTENSIONS);
+	setKnowledgeTypes(Critic.KT_SEMANTICS);
+	addTrigger("specialization");
+	addTrigger("associationEnd");
     }
-    return offs;
-  }
+
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MClass)) return NO_PROBLEM;
+	MClass cls = (MClass) dm;
+	VectorSet offs = computeOffenders(cls);
+	if (offs != null) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
+
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+	MClassifier cls = (MClassifier) dm;
+	VectorSet offs = computeOffenders(cls);
+	return new ToDoItem(this, offs, dsgr);
+    }
+
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+	if (!isActive()) return false;
+	VectorSet offs = i.getOffenders();
+	MClassifier dm = (MClassifier) offs.firstElement();
+	//if (!predicate(dm, dsgr)) return false;
+	VectorSet newOffs = computeOffenders(dm);
+	boolean res = offs.equals(newOffs);
+	return res;
+    }
+
+    public VectorSet computeOffenders(MClassifier cls) {
+	Collection asc = cls.getAssociationEnds();
+	if (asc == null || asc.size() == 0) return null;
+
+	java.util.Enumeration descendEnum = GenDescendantClasses.SINGLETON.gen(cls);
+	if (!descendEnum.hasMoreElements()) return null;
+	VectorSet descendants = new VectorSet();
+	while (descendEnum.hasMoreElements())
+	    descendants.addElement(descendEnum.nextElement());
+
+	//TODO: GenNavigableClasses?
+	int nAsc = asc.size();
+	VectorSet offs = null;
+	for (Iterator iter = asc.iterator(); iter.hasNext();) {
+	    MAssociationEnd ae = (MAssociationEnd) iter.next();
+	    MAssociation a = ae.getAssociation();
+	    List conn = a.getConnections();
+	    if (conn.size() != 2) continue;
+	    MAssociationEnd otherEnd = (MAssociationEnd) conn.get(0);
+	    if (ae == conn.get(0))
+		otherEnd = (MAssociationEnd) conn.get(1);
+	    if (!otherEnd.isNavigable()) continue;
+	    MClassifier otherCls = otherEnd.getType();
+	    if (descendants.contains(otherCls)) {
+		if (offs == null) {
+		    offs = new VectorSet();
+		    offs.addElement(cls);
+		}
+		offs.addElement(a);
+		offs.addElement(otherCls);
+	    }
+	}
+	return offs;
+    }
 
 } /* end class CrSubclassReference */
 

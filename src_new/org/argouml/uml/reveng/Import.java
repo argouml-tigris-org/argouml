@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -137,12 +138,12 @@ public class Import {
         ArrayList arraylist = Argo.getPlugins(PluggableImport.class);
         ListIterator iterator = arraylist.listIterator();
         while (iterator.hasNext()) {
-            PluggableImport module = (PluggableImport)iterator.next();
+            PluggableImport module = (PluggableImport) iterator.next();
             modules.put(module.getModuleName(), module);
         }
         if (modules.size() == 0)
             throw new RuntimeException("Internal error. No import modules defined");
-        module = (PluggableImport)modules.get("Java"); // "Java" is a default module
+        module = (PluggableImport) modules.get("Java"); // "Java" is a default module
         if (module == null) throw new RuntimeException("Internal error. Default import module not found");
         JComponent chooser = module.getChooser(this);
         dialog = new JDialog(pb, "Import sources");
@@ -150,9 +151,9 @@ public class Import {
         dialog.getContentPane().add(chooser, BorderLayout.WEST);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
         dialog.pack();
-        int x = (pb.getSize().width-dialog.getSize().width)/2;
-        int y = (pb.getSize().height-dialog.getSize().height)/2;
-        dialog.setLocation(x > 0?x:0, y>0?y:0);
+        int x = (pb.getSize().width - dialog.getSize().width) / 2;
+        int y = (pb.getSize().height - dialog.getSize().height) / 2;
+        dialog.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
         dialog.setVisible(true);
     }
     
@@ -188,35 +189,36 @@ public class Import {
         final JTabbedPane tab = new JTabbedPane();
         
         // build the configPanel:
-        if(configPanel == null) {
+        if (configPanel == null) {
             JPanel general = new JPanel();
-            general.setLayout(new GridLayout(10,1));
+            general.setLayout(new GridLayout(10, 1));
             
             general.add(new JLabel("Select language for import:"));
             
             Vector languages = new Vector();
             
             for (Enumeration keys = modules.keys(); keys.hasMoreElements();) {
-                languages.add((String)keys.nextElement());
+                languages.add((String) keys.nextElement());
             }
             JComboBox selectedLanguage = new JComboBox(languages);
-            selectedLanguage.addActionListener(new ActionListener(){
-                public void actionPerformed(ActionEvent e) {
-                    JComboBox cb = (JComboBox)e.getSource();
-                    String selected = (String)cb.getSelectedItem();
-                    module = (PluggableImport)modules.get(selected);
-                    dialog.getContentPane().remove(0);
-                    JComponent chooser =  module.getChooser(importInstance);
-                    if (chooser == null) chooser = new JPanel();
-                    dialog.getContentPane().add(chooser, 0);
-                    JComponent config = module.getConfigPanel();
-                    if (config == null) config = new JPanel();
-                    tab.remove(1);
-                    tab.add(config, selected, 1);
-                    tab.validate();
-                    dialog.validate();
-                }
-            });
+            selectedLanguage.addActionListener(new ActionListener() 
+		{
+		    public void actionPerformed(ActionEvent e) {
+			JComboBox cb = (JComboBox) e.getSource();
+			String selected = (String) cb.getSelectedItem();
+			module = (PluggableImport) modules.get(selected);
+			dialog.getContentPane().remove(0);
+			JComponent chooser =  module.getChooser(importInstance);
+			if (chooser == null) chooser = new JPanel();
+			dialog.getContentPane().add(chooser, 0);
+			JComponent config = module.getConfigPanel();
+			if (config == null) config = new JPanel();
+			tab.remove(1);
+			tab.add(config, selected, 1);
+			tab.validate();
+			dialog.validate();
+		    }
+		});
             general.add(selectedLanguage);
             
             descend = new JCheckBox("Descend directories recursively.");
@@ -235,17 +237,18 @@ public class Import {
             
             // de-selects the fig minimising & layout
             // if we are not creating diagrams
-            create_diagrams.addActionListener(new ActionListener(){
-                public void actionPerformed(java.awt.event.ActionEvent actionEvent){
-                    if(!create_diagrams.isSelected()){
-                        minimise_figs.setSelected(false);
-                        layout_diagrams.setSelected(false);
-                    }
-                }});
+            create_diagrams.addActionListener(new ActionListener()
+		{
+		    public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
+			if (!create_diagrams.isSelected()) {
+			    minimise_figs.setSelected(false);
+			    layout_diagrams.setSelected(false);
+			}
+		    } });
                 
-                tab.add(general, "General");
-                tab.add(module.getConfigPanel(), module.getModuleName());
-                configPanel = tab;
+	    tab.add(general, "General");
+	    tab.add(module.getConfigPanel(), module.getModuleName());
+	    configPanel = tab;
         }
         return configPanel;
     }
@@ -273,7 +276,7 @@ public class Import {
         if (b)  Designer.TheDesigner.setAutoCritique(false);
         iss = new ImportStatusScreen("Importing", "Splash");
         SwingUtilities.invokeLater(
-            new ImportRun(files, b, layout_diagrams.isSelected()));
+				   new ImportRun(files, b, layout_diagrams.isSelected()));
         iss.show();
     }
     
@@ -311,7 +314,7 @@ public class Import {
      * @return true, if "Create diagrams from imported code" is selected
      */
     public boolean isCreateDiagramsChecked() {
-        if(create_diagrams != null)
+        if (create_diagrams != null)
             return create_diagrams.isSelected();
         else
             return true;
@@ -322,7 +325,7 @@ public class Import {
      * @return true, if "Discend directories recursively" is selected
      */
     public boolean isDiscendDirectoriesRecursively() {
-        if(descend != null)
+        if (descend != null)
             return descend.isSelected();
         else
             return true;
@@ -333,7 +336,7 @@ public class Import {
      * @return true, if "Minimise Class icons in diagrams" is selected
      */
     public boolean isMinimiseFigsChecked() {
-        if(minimise_figs != null)
+        if (minimise_figs != null)
             return minimise_figs.isSelected();
         else
             return false;
@@ -393,10 +396,12 @@ public class Import {
         
         public ImportRun(Vector f, boolean critic, boolean doLayout) {
             
-            iss.addCancelButtonListener(new ActionListener(){
-                public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
-                    cancel();
-                }});
+            iss.addCancelButtonListener(new ActionListener() 
+		{
+		    public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
+			cancel();
+		    }
+		});
                 
             _filesLeft = f;
             _countFiles = _filesLeft.size();
@@ -404,7 +409,7 @@ public class Import {
             _nextPassFiles = new Vector();
             _st = new SimpleTimer("ImportRun");
             _st.mark("start");
-            cancelled=false;
+            cancelled = false;
             criticThreadWasOn = critic;
             this.doLayout = doLayout;
         }
@@ -429,34 +434,35 @@ public class Import {
                     
                     int tot;
                     iss.setMaximum(tot = _countFiles
-                        + (_diagram == null ? 0 : _diagram.getModifiedDiagrams().size()/10));
+				   + (_diagram == null ? 0 : _diagram.getModifiedDiagrams().size() / 10));
                     int act;
                     iss.setValue(act = _countFiles
                                  - _filesLeft.size()
                                  - _nextPassFiles.size());
-                    pb.getStatusBar().showProgress(100 * act/tot);
+                    pb.getStatusBar().showProgress(100 * act / tot);
                 }
-                catch(Exception e1) {
+                catch (Exception e1) {
                     
                     _nextPassFiles.addElement(curFile);
                     
                     // RuntimeExceptions should be reported here!
-                    if(e1 instanceof RuntimeException)
+                    if (e1 instanceof RuntimeException)
                         cat.error("program bug encountered in reverese engineering, the project file will be corrupted\n"
-                        +e1);
+				  + e1);
                     else
                         cat.warn("exception encountered in reverese engineering, the project file will be corrupted\n"
-                        +e1);
+				 + e1);
                     e1.printStackTrace();
                 }
                 
-                if(!isCancelled()){
+                if (!isCancelled()) {
                     SwingUtilities.invokeLater(this);
-                    return;}
+                    return;
+		}
             }
             
             if (_nextPassFiles.size() > 0
-            && _nextPassFiles.size() < _countFilesThisPass) {
+		&& _nextPassFiles.size() < _countFilesThisPass) {
                 _filesLeft = _nextPassFiles;
                 _nextPassFiles = new Vector();
                 _countFilesThisPass = _filesLeft.size();
@@ -470,23 +476,23 @@ public class Import {
             
             // Check if any diagrams where modified and the project
             // should be saved before exiting.
-            if(_diagram != null && needsSave()) {
+            if (_diagram != null && needsSave()) {
                 p.setNeedsSave(true);
             }
             
             pb.showStatus("Import done");
             
             // Layout the modified diagrams.
-            if(doLayout){
+            if (doLayout) {
                 _st.mark("layout");
                 if (_diagram != null) {
-                    for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {
-                        UMLDiagram diagram = (UMLDiagram)_diagram.getModifiedDiagrams().elementAt(i);
+                    for (int i = 0; i < _diagram.getModifiedDiagrams().size(); i++) {
+                        UMLDiagram diagram = (UMLDiagram) _diagram.getModifiedDiagrams().elementAt(i);
                         ClassdiagramLayouter layouter = module.getLayout(diagram);
                         layouter.layout();
                         
                         // Resize the diagram???
-                        iss.setValue(_countFiles +(i + 1)/10);
+                        iss.setValue(_countFiles + (i + 1) / 10);
                     }
                 }
             }
@@ -495,16 +501,16 @@ public class Import {
             pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             
             // turn criticing on again
-            if(criticThreadWasOn)  Designer.TheDesigner.setAutoCritique(true);
+            if (criticThreadWasOn)  Designer.TheDesigner.setAutoCritique(true);
             
             Argo.log.info(_st);
             pb.getStatusBar().showProgress(0);
             
         }
         
-        private void cancel(){cancelled=true;}
+        private void cancel() { cancelled = true; }
         
-        private boolean isCancelled(){return cancelled;}
+        private boolean isCancelled() { return cancelled; }
         
     }
     
@@ -561,25 +567,25 @@ public class Import {
             getContentPane().add(bottomPanel, BorderLayout.SOUTH);
             
             Dimension contentPaneSize = getContentPane().getPreferredSize();
-            setLocation(scrSize.width/2 - contentPaneSize.width/2,
-                scrSize.height/2 - contentPaneSize.height/2);
+            setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
+			scrSize.height / 2 - contentPaneSize.height / 2);
             pack();
             this.setResizable(false);
         }
         
-        public void setMaximum(int i) { _statusBar.setMaximum(i);numberOfFiles = i; }
+        public void setMaximum(int i) { _statusBar.setMaximum(i); numberOfFiles = i; }
         
         public void setValue(int i) {
             
             _statusBar.setValue(i);
-            progressLabel.setText("Parsing file "+i+" of "+numberOfFiles+".");
+            progressLabel.setText("Parsing file " + i + " of " + numberOfFiles + ".");
             repaint();
         }
         
-        public void addCancelButtonListener(ActionListener al){
+        public void addCancelButtonListener(ActionListener al) {
             cancelButton.addActionListener(al);
         }
         
-        public void done() { hide(); dispose();}
+        public void done() { hide(); dispose(); }
     }
 }

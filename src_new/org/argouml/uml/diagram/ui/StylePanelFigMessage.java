@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,67 +37,67 @@ import org.tigris.gef.util.Converter;
 
 public class StylePanelFigMessage extends StylePanelFig {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _arrowLabel = new JLabel("Arrow: ");
-  JComboBox _arrowField = new JComboBox(Converter.convert(((FigMessage) _target).ARROW_DIRECTIONS));
+    ////////////////////////////////////////////////////////////////
+    // constants
+    ////////////////////////////////////////////////////////////////
+    // instance vars
+    JLabel _arrowLabel = new JLabel("Arrow: ");
+    JComboBox _arrowField = new JComboBox(Converter.convert(((FigMessage) _target).ARROW_DIRECTIONS));
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
+    ////////////////////////////////////////////////////////////////
+    // contructors
 
-  public StylePanelFigMessage() {
-    super();
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.ipadx = 0; c.ipady = 0;
+    public StylePanelFigMessage() {
+	super();
+	GridBagLayout gb = (GridBagLayout) getLayout();
+	GridBagConstraints c = new GridBagConstraints();
+	c.fill = GridBagConstraints.BOTH;
+	c.ipadx = 0; c.ipady = 0;
 
-    _arrowField.addItemListener(this);
-    c.gridy = 4;
-    gb.setConstraints(_arrowLabel, c);
-    add(_arrowLabel);
+	_arrowField.addItemListener(this);
+	c.gridy = 4;
+	gb.setConstraints(_arrowLabel, c);
+	add(_arrowLabel);
     
-    gb.setConstraints(_arrowField, c);
-    add(_arrowField);
-    _arrowField.setSelectedIndex(0);
+	gb.setConstraints(_arrowField, c);
+	add(_arrowField);
+	_arrowField.setSelectedIndex(0);
     
-    remove(_fillField);
-    remove(_fillLabel);
-  }
+	remove(_fillField);
+	remove(_fillLabel);
+    }
 
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
- public void refresh() {
-   super.refresh();
-   int direction = ((FigMessage)_target).getArrow();
-   _arrowField.setSelectedItem(((FigMessage)_target).ARROW_DIRECTIONS.elementAt(direction));
- }
+    public void refresh() {
+	super.refresh();
+	int direction = ((FigMessage) _target).getArrow();
+	_arrowField.setSelectedItem(((FigMessage) _target).ARROW_DIRECTIONS.elementAt(direction));
+    }
 
-  public void setTargetArrow() {
-    String ad = (String) _arrowField.getSelectedItem();
-    int arrowDirection = ((FigMessage)_target).ARROW_DIRECTIONS.indexOf(ad);
-    if (_target == null || arrowDirection == -1) return;
-    _target.startTrans();
-    ((FigMessage) _target).setArrow(arrowDirection);
-    _target.endTrans();
-  }
+    public void setTargetArrow() {
+	String ad = (String) _arrowField.getSelectedItem();
+	int arrowDirection = ((FigMessage) _target).ARROW_DIRECTIONS.indexOf(ad);
+	if (_target == null || arrowDirection == -1) return;
+	_target.startTrans();
+	((FigMessage) _target).setArrow(arrowDirection);
+	_target.endTrans();
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // event handling
+    ////////////////////////////////////////////////////////////////
+    // event handling
 
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
+    public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
 
 
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    if (src == _arrowField) setTargetArrow();
-    else super.itemStateChanged(e);
-  }
+    public void itemStateChanged(ItemEvent e) {
+	Object src = e.getSource();
+	if (src == _arrowField) setTargetArrow();
+	else super.itemStateChanged(e);
+    }
 
 
 } /* end class StylePanelFigMessage */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,86 +53,86 @@ import org.tigris.gef.util.VectorSet;
 
 public class CrCallWithoutReturn extends CrUML {
 
-  public CrCallWithoutReturn() {
-    setHeadline("Missing return-actions");
-    addSupportedDecision(CrUML.decPATTERNS);
-  }
+    public CrCallWithoutReturn() {
+	setHeadline("Missing return-actions");
+	addSupportedDecision(CrUML.decPATTERNS);
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof UMLSequenceDiagram)) return NO_PROBLEM;
-    UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
-    VectorSet offs = computeOffenders(sd); 
-    if (offs == null) return NO_PROBLEM; 
-    return PROBLEM_FOUND; 
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof UMLSequenceDiagram)) return NO_PROBLEM;
+	UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
+	VectorSet offs = computeOffenders(sd); 
+	if (offs == null) return NO_PROBLEM; 
+	return PROBLEM_FOUND; 
+    }
 
-  public ToDoItem toDoItem(Object dm, Designer dsgr) { 
-    UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
-    VectorSet offs = computeOffenders(sd); 
-    return new ToDoItem(this, offs, dsgr); 
-  } 
+    public ToDoItem toDoItem(Object dm, Designer dsgr) { 
+	UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
+	VectorSet offs = computeOffenders(sd); 
+	return new ToDoItem(this, offs, dsgr); 
+    } 
  
-  public boolean stillValid(ToDoItem i, Designer dsgr) { 
-    if (!isActive()) return false; 
-    VectorSet offs = i.getOffenders(); 
-    UMLSequenceDiagram sd = (UMLSequenceDiagram) offs.firstElement();
-       //if (!predicate(dm, dsgr)) return false; 
-    VectorSet newOffs = computeOffenders(sd); 
-    boolean res = offs.equals(newOffs); 
-    return res; 
-  } 
+    public boolean stillValid(ToDoItem i, Designer dsgr) { 
+	if (!isActive()) return false; 
+	VectorSet offs = i.getOffenders(); 
+	UMLSequenceDiagram sd = (UMLSequenceDiagram) offs.firstElement();
+	//if (!predicate(dm, dsgr)) return false; 
+	VectorSet newOffs = computeOffenders(sd); 
+	boolean res = offs.equals(newOffs); 
+	return res; 
+    } 
 
-  public VectorSet computeOffenders(UMLSequenceDiagram sd) { 
+    public VectorSet computeOffenders(UMLSequenceDiagram sd) { 
 
-    Vector figs = sd.getLayer().getContents();
-    VectorSet offs = null;
-    int size = figs.size();
+	Vector figs = sd.getLayer().getContents();
+	VectorSet offs = null;
+	int size = figs.size();
      
-    for (int i=0; i<size; i++) {
-      if (figs.elementAt(i) instanceof FigSeqLink) {
-        FigSeqLink fsl = (FigSeqLink) figs.elementAt(i);
-        MLink ml = (MLink) fsl.getOwner();
-        boolean found = false;
-        if (ml.getStimuli() != null) {
-          Collection col = ml.getStimuli();
-          Iterator it = col.iterator();
-          while (it.hasNext()) {
-            MStimulus ms = (MStimulus) it.next();
-            if (ms.getDispatchAction() instanceof MCallAction || ms.getDispatchAction() instanceof MSendAction) {
-              found = true;
-              Vector edges = ((FigSeqObject)fsl.getDestFigNode()).getFigEdges();
-              for (int j=0; j<edges.size(); j++) {
-                FigSeqLink second = (FigSeqLink) edges.elementAt(j);
-	MLink ml2 = (MLink) second.getOwner();
-                if (ml2.getStimuli() != null) {
-                  Collection col2 = ml2.getStimuli();
-                  Iterator it2 = col2.iterator();
-	  while (it2.hasNext()) {
- 	    MStimulus ms2 = (MStimulus) it2.next();
-	    if (ms2.getDispatchAction() instanceof MReturnAction
-		&& second.getPortNumber(figs) > fsl.getPortNumber(figs)
-		&& ms.getSender() == ms2.getReceiver()) {
- 	      found = false;
-                    }
- 	  }
-	}
-              }
-            }
-          }
-        }
+	for (int i = 0; i < size; i++) {
+	    if (figs.elementAt(i) instanceof FigSeqLink) {
+		FigSeqLink fsl = (FigSeqLink) figs.elementAt(i);
+		MLink ml = (MLink) fsl.getOwner();
+		boolean found = false;
+		if (ml.getStimuli() != null) {
+		    Collection col = ml.getStimuli();
+		    Iterator it = col.iterator();
+		    while (it.hasNext()) {
+			MStimulus ms = (MStimulus) it.next();
+			if (ms.getDispatchAction() instanceof MCallAction || ms.getDispatchAction() instanceof MSendAction) {
+			    found = true;
+			    Vector edges = ((FigSeqObject) fsl.getDestFigNode()).getFigEdges();
+			    for (int j = 0; j < edges.size(); j++) {
+				FigSeqLink second = (FigSeqLink) edges.elementAt(j);
+				MLink ml2 = (MLink) second.getOwner();
+				if (ml2.getStimuli() != null) {
+				    Collection col2 = ml2.getStimuli();
+				    Iterator it2 = col2.iterator();
+				    while (it2.hasNext()) {
+					MStimulus ms2 = (MStimulus) it2.next();
+					if (ms2.getDispatchAction() instanceof MReturnAction
+					    && second.getPortNumber(figs) > fsl.getPortNumber(figs)
+					    && ms.getSender() == ms2.getReceiver()) {
+					    found = false;
+					}
+				    }
+				}
+			    }
+			}
+		    }
+		}
 
-        if (found) {
-          if (offs == null) {
-            offs = new VectorSet();
-            offs.addElement(sd);
-          }
-          offs.addElement(fsl);
-        }    
-      }
-    }  
+		if (found) {
+		    if (offs == null) {
+			offs = new VectorSet();
+			offs.addElement(sd);
+		    }
+		    offs.addElement(fsl);
+		}    
+	    }
+	}  
 
-    return offs; 
-  } 
+	return offs; 
+    } 
 
 } /* end class CrCallWithoutReturn.java */
 

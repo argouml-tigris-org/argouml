@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -147,15 +148,15 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
      *  @param eventType -1 will add event listener to new target, 0 for default.
      *      
      */
-    public UMLChangeDispatch(Container container,int eventType) {
+    public UMLChangeDispatch(Container container, int eventType) {
         synchronized (container) {
-        _container = container;
-        _eventType = eventType;
-        if (container instanceof PropPanel) {
-            _target = ((PropPanel)container).getTarget();              
-        }
+	    _container = container;
+	    _eventType = eventType;
+	    if (container instanceof PropPanel) {
+		_target = ((PropPanel) container).getTarget();              
+	    }
         
-    }
+	}
     }
     
     /**
@@ -235,26 +236,26 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         if (_target != null) {
             synchronizedDispatch(_container);
         } else
-        dispatch(_container); 
+	    dispatch(_container); 
         //
         //   now that we have finished all the UI updating
         //
         //   if we were doing an object change then
         //      add a listener to our new target
         //
-        if(_eventType == -1 && _container instanceof PropPanel &&
-           !((_container instanceof PropPanelObject) ||
-            (_container instanceof PropPanelNodeInstance) ||
-            (_container instanceof PropPanelComponentInstance))) {
-           PropPanel propPanel = (PropPanel) _container;
+        if (_eventType == -1 && _container instanceof PropPanel 
+	    && !((_container instanceof PropPanelObject) 
+		 || (_container instanceof PropPanelNodeInstance) 
+		 || (_container instanceof PropPanelComponentInstance))) {
+	    PropPanel propPanel = (PropPanel) _container;
             Object target = propPanel.getTarget();
 
-            if(target instanceof MBase) {
+            if (target instanceof MBase) {
             	
             	// 2002-07-15
             	// Jaap Branderhorst
             	// added next statement to prevent PropPanel getting added again and again to the target's listeners
-                UmlModelEventPump.getPump().addModelEventListener(propPanel, target);      	
+		UmlModelEventPump.getPump().addModelEventListener(propPanel, target);
             }
             
         }
@@ -272,14 +273,14 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         int count = container.getComponentCount();
         Component component;
         UMLUserInterfaceComponent uiComp;
-        for(int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             component = container.getComponent(i);
-            if(component instanceof Container)
+            if (component instanceof Container)
                 dispatch((Container) component);
-            if(component instanceof UMLUserInterfaceComponent) {
+            if (component instanceof UMLUserInterfaceComponent) {
                 uiComp = (UMLUserInterfaceComponent) component;
-                if (uiComp instanceof Component && ((Component)uiComp).isVisible())
-                switch(_eventType) {
+                if (uiComp instanceof Component && ((Component) uiComp).isVisible())
+		    switch(_eventType) {
                     case -1:
                     case 0:
                         uiComp.targetChanged();
@@ -312,7 +313,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
                     case 7:
                         uiComp.targetReasserted();
                         break;
-                }
+		    }
             } 
         }
        
@@ -320,7 +321,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     
     private void synchronizedDispatch(Container cont) {
         if (_target == null)  throw new IllegalStateException("Target may not be null in synchronized dispatch");
-        synchronized(_target) {
+        synchronized (_target) {
             dispatch(cont);
         }
     }

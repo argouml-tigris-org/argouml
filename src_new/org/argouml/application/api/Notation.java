@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -81,7 +82,8 @@ public final class Notation implements PropertyChangeListener {
     // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-    // public final static Category cat = Category.getInstance(NotationNameImpl.class.getPackage().getName());
+    // public final static Category cat =
+    // Category.getInstance(NotationNameImpl.class.getPackage().getName());
 
     /** The name of the default Argo notation.  This notation is
      *  part of Argo core distribution.
@@ -93,7 +95,8 @@ public final class Notation implements PropertyChangeListener {
      *  part of Argo core distribution.
      */
     // public static final NotationName NOTATION_JAVA =
-    // org.argouml.language.java.generator.GeneratorJava.getInstance().getNotation();
+    // org.argouml.language.java.generator.GeneratorJava
+    // .getInstance().getNotation();
 
     /** The configuration key for the preferred notation
      */
@@ -337,36 +340,32 @@ public final class Notation implements PropertyChangeListener {
     public static String generateOperation(
         NotationContext ctx,
         MOperation op) {
-        return SINGLETON.generateOperation(
-            Notation.getNotation(ctx),
-            op,
-            false);
+        return SINGLETON.generateOperation(Notation.getNotation(ctx),
+					   op,
+					   false);
     }
     public static String generateOperation(
         NotationContext ctx,
         MOperation op,
         boolean documented) {
-        return SINGLETON.generateOperation(
-            Notation.getNotation(ctx),
-            op,
-            documented);
+        return SINGLETON.generateOperation(Notation.getNotation(ctx),
+					   op,
+					   documented);
     }
     public static String generateAttribute(
         NotationContext ctx,
         MAttribute attr) {
-        return SINGLETON.generateAttribute(
-            Notation.getNotation(ctx),
-            attr,
-            false);
+        return SINGLETON.generateAttribute(Notation.getNotation(ctx),
+					   attr,
+					   false);
     }
     public static String generateAttribute(
         NotationContext ctx,
         MAttribute attr,
         boolean documented) {
-        return SINGLETON.generateAttribute(
-            Notation.getNotation(ctx),
-            attr,
-            documented);
+        return SINGLETON.generateAttribute(Notation.getNotation(ctx),
+					   attr,
+					   documented);
     }
     public static String generateParameter(
         NotationContext ctx,
@@ -489,9 +488,9 @@ public final class Notation implements PropertyChangeListener {
         if (o == null)
             return "";
         if (o instanceof MOperation)
-            return SINGLETON.generateOperation(nn, (MOperation)o, documented);
+            return SINGLETON.generateOperation(nn, (MOperation) o, documented);
         if (o instanceof MAttribute)
-            return SINGLETON.generateAttribute(nn, (MAttribute)o, documented);
+            return SINGLETON.generateAttribute(nn, (MAttribute) o, documented);
         return generate(nn, o);
     }
 
@@ -507,55 +506,55 @@ public final class Notation implements PropertyChangeListener {
 
         //added to support association roles
         if (o instanceof MAssociationRole) {
-            return SINGLETON.generateAssociationRole(nn, (MAssociationRole)o);
+            return SINGLETON.generateAssociationRole(nn, (MAssociationRole) o);
         }
 
         // Added to support extension points
         if (o instanceof MExtensionPoint) {
-            return SINGLETON.generateExtensionPoint(nn, (MExtensionPoint)o);
+            return SINGLETON.generateExtensionPoint(nn, (MExtensionPoint) o);
         }
 
         if (o instanceof MOperation)
-            return SINGLETON.generateOperation(nn, (MOperation)o, false);
+            return SINGLETON.generateOperation(nn, (MOperation) o, false);
         if (o instanceof MAttribute)
-            return SINGLETON.generateAttribute(nn, (MAttribute)o, false);
+            return SINGLETON.generateAttribute(nn, (MAttribute) o, false);
         if (o instanceof MParameter)
-            return SINGLETON.generateParameter(nn, (MParameter)o);
+            return SINGLETON.generateParameter(nn, (MParameter) o);
         if (o instanceof MPackage)
-            return SINGLETON.generatePackage(nn, (MPackage)o);
+            return SINGLETON.generatePackage(nn, (MPackage) o);
         if (o instanceof MClassifier)
-            return SINGLETON.generateClassifier(nn, (MClassifier)o);
+            return SINGLETON.generateClassifier(nn, (MClassifier) o);
         if (o instanceof MExpression)
-            return SINGLETON.generateExpression(nn, (MExpression)o);
+            return SINGLETON.generateExpression(nn, (MExpression) o);
         if (o instanceof String)
-            return SINGLETON.generateName(nn, (String)o);
+            return SINGLETON.generateName(nn, (String) o);
         // if (o instanceof String)
         //   return SINGLETON.generateUninterpreted(nn,(String) o);
         if (o instanceof MStereotype)
-            return SINGLETON.generateStereotype(nn, (MStereotype)o);
+            return SINGLETON.generateStereotype(nn, (MStereotype) o);
         if (o instanceof MTaggedValue)
-            return SINGLETON.generateTaggedValue(nn, (MTaggedValue)o);
+            return SINGLETON.generateTaggedValue(nn, (MTaggedValue) o);
         if (o instanceof MAssociation)
-            return SINGLETON.generateAssociation(nn, (MAssociation)o);
+            return SINGLETON.generateAssociation(nn, (MAssociation) o);
         if (o instanceof MAssociationEnd)
-            return SINGLETON.generateAssociationEnd(nn, (MAssociationEnd)o);
+            return SINGLETON.generateAssociationEnd(nn, (MAssociationEnd) o);
         if (o instanceof MMultiplicity)
-            return SINGLETON.generateMultiplicity(nn, (MMultiplicity)o);
+            return SINGLETON.generateMultiplicity(nn, (MMultiplicity) o);
         if (o instanceof MState)
-            return SINGLETON.generateState(nn, (MState)o);
+            return SINGLETON.generateState(nn, (MState) o);
         if (o instanceof MTransition)
-            return SINGLETON.generateTransition(nn, (MTransition)o);
+            return SINGLETON.generateTransition(nn, (MTransition) o);
         if (ModelFacade.isAAction(o))
             return SINGLETON.generateAction(nn, o);
         if (o instanceof MCallAction)
             return SINGLETON.generateAction(nn, o);
         if (o instanceof MGuard)
-            return SINGLETON.generateGuard(nn, (MGuard)o);
+            return SINGLETON.generateGuard(nn, (MGuard) o);
         if (o instanceof MMessage)
-            return SINGLETON.generateMessage(nn, (MMessage)o);
+            return SINGLETON.generateMessage(nn, (MMessage) o);
 
         if (o instanceof MModelElement)
-            return SINGLETON.generateName(nn, ((MModelElement)o).getName());
+            return SINGLETON.generateName(nn, ((MModelElement) o).getName());
 
         return o.toString();
     }
@@ -595,20 +594,28 @@ public final class Notation implements PropertyChangeListener {
     //                   only using those methods that are necessary.
     ////////////////////////////////////////////////////////////////
 
-    // public static void parseExtensionPointCompartment(NotationContext ctx, MUseCase uc, String s) {
-    // SINGLETON.getParser(Notation.getNotation(ctx)).parseExtensionPointCompartment(uc, s);
+    // public static void parseExtensionPointCompartment(NotationContext ctx,
+    // MUseCase uc, String s) {
+    // SINGLETON.getParser(Notation.getNotation(ctx))
+    // .parseExtensionPointCompartment(uc, s);
     // }
 
-    // public static void parseOperationCompartment(NotationContext ctx, MClassifier cls, String s) {
-    // SINGLETON.getParser(Notation.getNotation(ctx)).parseOperationCompartment(cls, s);
+    // public static void parseOperationCompartment(NotationContext ctx, 
+    // MClassifier cls, String s) {
+    // SINGLETON.getParser(Notation.getNotation(ctx))
+    // .parseOperationCompartment(cls, s);
     // }
 
-    // public static void parseAttributeCompartment(NotationContext ctx, MClassifier cls, String s) {
-    // SINGLETON.getParser(Notation.getNotation(ctx)).parseAttributeCompartment(cls, s);
+    // public static void parseAttributeCompartment(NotationContext ctx, 
+    // MClassifier cls, String s) {
+    // SINGLETON.getParser(Notation.getNotation(ctx))
+    // .parseAttributeCompartment(cls, s);
     // }
 
-    // public static MExtensionPoint parseExtensionPoint(NotationContext ctx, String s) {
-    // return SINGLETON.getParser(Notation.getNotation(ctx)).parseExtensionPoint(s);
+    // public static MExtensionPoint parseExtensionPoint(NotationContext ctx, 
+    // String s) {
+    // return SINGLETON.getParser(Notation.getNotation(ctx))
+    // .parseExtensionPoint(s);
     // }
 
     // public static MOperation parseOperation(NotationContext ctx, String s) {
@@ -619,53 +626,74 @@ public final class Notation implements PropertyChangeListener {
     // return SINGLETON.getParser(Notation.getNotation(ctx)).parseAttribute(s);
     // }
 
-    // public static String parseOutVisibility(NotationContext ctx, MFeature f, String s) { }
+    // public static String parseOutVisibility(NotationContext ctx, 
+    // MFeature f, String s) { }
 
-    // public static String parseOutKeywords(NotationContext ctx, MFeature f, String s) { }
+    // public static String parseOutKeywords(NotationContext ctx,
+    // MFeature f, String s) { }
 
-    // public static String parseOutReturnType(NotationContext ctx, MOperation op, String s) { }
+    // public static String parseOutReturnType(NotationContext ctx, 
+    // MOperation op, String s) { }
 
-    // public static String parseOutParams(NotationContext ctx, MOperation op, String s) { }
+    // public static String parseOutParams(NotationContext ctx, 
+    // MOperation op, String s) { }
 
-    // public static String parseOutName(NotationContext ctx, MModelElement me, String s) { }
+    // public static String parseOutName(NotationContext ctx, 
+    // MModelElement me, String s) { }
 
-    // public static String parseOutType(NotationContext ctx, MAttribute attr, String s) { }
+    // public static String parseOutType(NotationContext ctx, 
+    // MAttribute attr, String s) { }
 
-    // public static String parseOutInitValue(NotationContext ctx, MAttribute attr, String s) { }
+    // public static String parseOutInitValue(NotationContext ctx,
+    // MAttribute attr, String s) { }
 
     // public static String parseOutColon(NotationContext ctx, String s) { }
 
-    // public static MParameter parseParameter(NotationContext ctx, String s) { }
+    // public static MParameter parseParameter(NotationContext ctx,
+    // String s) { }
 
     // public static Package parsePackage(NotationContext ctx, String s) { }
 
-    // public static MClassImpl parseClassifier(NotationContext ctx, String s) { }
+    // public static MClassImpl parseClassifier(NotationContext ctx, 
+    // String s) { }
 
-    // public static MStereotype parseStereotype(NotationContext ctx, String s) { }
+    // public static MStereotype parseStereotype(NotationContext ctx,
+    // String s) { }
 
-    // public static MTaggedValue parseTaggedValue(NotationContext ctx, String s) { }
+    // public static MTaggedValue parseTaggedValue(NotationContext ctx, 
+    // String s) { }
 
-    // public static MAssociation parseAssociation(NotationContext ctx, String s) { }
+    // public static MAssociation parseAssociation(NotationContext ctx,
+    // String s) { }
 
-    // public static MAssociationEnd parseAssociationEnd(NotationContext ctx, String s) { }
+    // public static MAssociationEnd parseAssociationEnd(NotationContext ctx,
+    // String s) { }
 
-    // public static MMultiplicity parseMultiplicity(NotationContext ctx, String s) { }
+    // public static MMultiplicity parseMultiplicity(NotationContext ctx,
+    // String s) { }
 
     // public static MState parseState(NotationContext ctx, String s) { }
 
-    // public static void parseStateBody(NotationContext ctx, MState st, String s) { }
+    // public static void parseStateBody(NotationContext ctx, MState
+    // st, String s) { }
 
-    // public static void parseStateEntyAction(NotationContext ctx, MState st, String s) { }
+    // public static void parseStateEntyAction(NotationContext ctx,
+    // MState st, String s) { }
 
-    // public static void parseStateExitAction(NotationContext ctx, MState st, String s) { }
+    // public static void parseStateExitAction(NotationContext ctx,
+    // MState st, String s) { }
 
-    // public static MTransition parseTransition(NotationContext ctx, MTransition trans, String s) { }
+    // public static MTransition parseTransition(NotationContext ctx,
+    // MTransition trans, String s) { }
 
-    // public static void parseClassifierRole(NotationContext ctx, MClassifierRole cls, String s) { }
+    // public static void parseClassifierRole(NotationContext ctx,
+    // MClassifierRole cls, String s) { }
 
-    // public static void parseMessage(NotationContext ctx, MMessage mes, String s) { }
+    // public static void parseMessage(NotationContext ctx, MMessage
+    // mes, String s) { }
 
-    // public static void parseStimulus(NotationContext ctx, MStimulus sti, String s) { }
+    // public static void parseStimulus(NotationContext ctx, MStimulus
+    // sti, String s) { }
 
     // public static MAction parseAction(NotationContext ctx, String s) { }
 
@@ -673,11 +701,14 @@ public final class Notation implements PropertyChangeListener {
 
     // public static MEvent parseEvent(NotationContext ctx, String s) { }
 
-    // public static void parseObject(NotationContext ctx, MObject obj, String s) { }
+    // public static void parseObject(NotationContext ctx, MObject
+    // obj, String s) { }
 
-    // public static void parseNodeInstance(NotationContext ctx, MNodeInstance noi, String s) { }
+    // public static void parseNodeInstance(NotationContext ctx,
+    // MNodeInstance noi, String s) { }
 
-    // public static void parseComponentInstance(NotationContext ctx, MComponentInstance coi, String s) { }
+    // public static void parseComponentInstance(NotationContext ctx,
+    // MComponentInstance coi, String s) { }
 
     ////////////////////////////////////////////////////////////////
     // Static workers for dealing with notation names.

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,56 +46,56 @@ import org.argouml.uml.*;
 
 public class CrCircularComposition extends CrUML {
     protected static Category cat = Category.getInstance(CrCircularComposition.class);
-
-  public CrCircularComposition() {
-    setHeadline("Remove Circular Composition");
-    addSupportedDecision(CrUML.decCONTAINMENT);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-    // no good trigger
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
-    MClassifier cls = (MClassifier) dm;
-    VectorSet reach = (new VectorSet(cls)).reachable(GenCompositeClasses.SINGLETON);
-    if (reach.contains(cls)) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
-
-  public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    MClassifier cls = (MClassifier) dm;
-    VectorSet offs = computeOffenders(cls);
-    return new ToDoItem(this, offs, dsgr);
-  }
-
-  protected VectorSet computeOffenders(MClassifier dm) {
-    VectorSet offs = new VectorSet(dm);
-    VectorSet above = offs.reachable(GenCompositeClasses.SINGLETON);
-    java.util.Enumeration enum = above.elements();
-    while (enum.hasMoreElements()) {
-      MClassifier cls2 = (MClassifier) enum.nextElement();
-      VectorSet trans = (new VectorSet(cls2)).reachable(GenCompositeClasses.SINGLETON);
-      if (trans.contains(dm)) offs.addElement(cls2);
+						      
+    public CrCircularComposition() {
+	setHeadline("Remove Circular Composition");
+	addSupportedDecision(CrUML.decCONTAINMENT);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
+	// no good trigger
     }
-    return offs;
-  }
-
-  public boolean stillValid(ToDoItem i, Designer dsgr) {
-    if (!isActive()) return false;
-    VectorSet offs = i.getOffenders();
-    MClassifier dm = (MClassifier) offs.firstElement();
-    if (!predicate(dm, dsgr)) return false;
-    VectorSet newOffs = computeOffenders(dm);
-    boolean res = offs.equals(newOffs);
-      cat.debug("offs="+ offs.toString() +
-  		       " newOffs="+ newOffs.toString() +
-  		       " res = " + res);
-    return res;
-  }
-
-  public Class getWizardClass(ToDoItem item) {
-    return WizBreakCircularComp.class;
-  }
-
+							  
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+	MClassifier cls = (MClassifier) dm;
+	VectorSet reach = (new VectorSet(cls)).reachable(GenCompositeClasses.SINGLETON);
+	if (reach.contains(cls)) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
+							      
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+	MClassifier cls = (MClassifier) dm;
+	VectorSet offs = computeOffenders(cls);
+	return new ToDoItem(this, offs, dsgr);
+    }
+								  
+    protected VectorSet computeOffenders(MClassifier dm) {
+	VectorSet offs = new VectorSet(dm);
+	VectorSet above = offs.reachable(GenCompositeClasses.SINGLETON);
+	java.util.Enumeration enum = above.elements();
+	while (enum.hasMoreElements()) {
+	    MClassifier cls2 = (MClassifier) enum.nextElement();
+	    VectorSet trans = (new VectorSet(cls2)).reachable(GenCompositeClasses.SINGLETON);
+	    if (trans.contains(dm)) offs.addElement(cls2);
+	}
+	return offs;
+    }
+								      
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+	if (!isActive()) return false;
+	VectorSet offs = i.getOffenders();
+	MClassifier dm = (MClassifier) offs.firstElement();
+	if (!predicate(dm, dsgr)) return false;
+	VectorSet newOffs = computeOffenders(dm);
+	boolean res = offs.equals(newOffs);
+	cat.debug("offs=" + offs.toString() +
+		  " newOffs=" + newOffs.toString() +
+		  " res = " + res);
+	return res;
+    }
+									  
+    public Class getWizardClass(ToDoItem item) {
+	return WizBreakCircularComp.class;
+    }
+									      
 } /* end class CrCircularComposition.java */
 

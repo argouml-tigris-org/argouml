@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,67 +36,67 @@ import org.tigris.gef.presentation.FigRRect;
 
 public class StylePanelFigRRect extends StylePanelFig {
 
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  JLabel _roundingLabel = new JLabel("Rounding: ");
-  JTextField _roundingField = new JTextField();
+    ////////////////////////////////////////////////////////////////
+    // instance vars
+    JLabel _roundingLabel = new JLabel("Rounding: ");
+    JTextField _roundingField = new JTextField();
 
   
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public StylePanelFigRRect() {
-    super();
-    GridBagLayout gb = (GridBagLayout) getLayout();    
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.ipadx = 0; c.ipady = 0;
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public StylePanelFigRRect() {
+	super();
+	GridBagLayout gb = (GridBagLayout) getLayout();    
+	GridBagConstraints c = new GridBagConstraints();
+	c.fill = GridBagConstraints.BOTH;
+	c.ipadx = 0; c.ipady = 0;
 
-    Document roundingDoc = _roundingField.getDocument();
-    roundingDoc.addDocumentListener(this);
+	Document roundingDoc = _roundingField.getDocument();
+	roundingDoc.addDocumentListener(this);
     
-    c.weightx = 0.0;
-    c.gridx = 3;
-    c.gridy = 1;
-    gb.setConstraints(_roundingLabel, c);
-    add(_roundingLabel);
+	c.weightx = 0.0;
+	c.gridx = 3;
+	c.gridy = 1;
+	gb.setConstraints(_roundingLabel, c);
+	add(_roundingLabel);
 
-    c.weightx = 1.0;
-    c.gridx = 4;
-    c.gridy = 1;
-    gb.setConstraints(_roundingField, c);
-    add(_roundingField);
-  }
-
-  
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public void refresh() {
-    super.refresh();
-    String roundingStr = ((FigRRect)_target).getCornerRadius() + "";
-    _roundingField.setText(roundingStr);
-  }
-
-
-  public void setTargetRounding() {
-    if (_target == null) return;
-    String roundingStr = _roundingField.getText();
-    if (roundingStr.length() == 0) return;
-    int r = Integer.parseInt(roundingStr);
-    _target.startTrans();
-    ((FigRRect)_target).setCornerRadius(r);
-    _target.endTrans();
-  }
+	c.weightx = 1.0;
+	c.gridx = 4;
+	c.gridy = 1;
+	gb.setConstraints(_roundingField, c);
+	add(_roundingField);
+    }
 
   
-  ////////////////////////////////////////////////////////////////
-  // event handling
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void insertUpdate(DocumentEvent e) {
-    Document roundingDoc = _roundingField.getDocument();
-    if (e.getDocument() == roundingDoc) setTargetRounding();
-    super.insertUpdate(e);
-  }
+    public void refresh() {
+	super.refresh();
+	String roundingStr = ((FigRRect) _target).getCornerRadius() + "";
+	_roundingField.setText(roundingStr);
+    }
+
+
+    public void setTargetRounding() {
+	if (_target == null) return;
+	String roundingStr = _roundingField.getText();
+	if (roundingStr.length() == 0) return;
+	int r = Integer.parseInt(roundingStr);
+	_target.startTrans();
+	((FigRRect) _target).setCornerRadius(r);
+	_target.endTrans();
+    }
+
+  
+    ////////////////////////////////////////////////////////////////
+    // event handling
+
+    public void insertUpdate(DocumentEvent e) {
+	Document roundingDoc = _roundingField.getDocument();
+	if (e.getDocument() == roundingDoc) setTargetRounding();
+	super.insertUpdate(e);
+    }
 
 
   

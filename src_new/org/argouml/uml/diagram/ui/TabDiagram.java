@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -157,13 +158,13 @@ public class TabDiagram
             // This is perfectly normal and happens among other things
             // within the call to setDiagram (below).
             cat.debug(
-                "target is null in set target or not an instance of UMLDiagram");
+		      "target is null in set target or not an instance of UMLDiagram");
             return;
         }
         if (_target != null) {
             _target.removeAsTarget();
         }
-        UMLDiagram target = (UMLDiagram)t;
+        UMLDiagram target = (UMLDiagram) t;
 
         target.setAsTarget();
 
@@ -222,9 +223,9 @@ public class TabDiagram
         ActionCut.getInstance().setEnabled(sels != null && !sels.isEmpty());
         ActionCopy.getInstance().setEnabled(sels != null && !sels.isEmpty());
         /*
-        ActionPaste.getInstance().setEnabled(
-            Globals.clipBoard != null && !Globals.clipBoard.isEmpty());
-            */
+	  ActionPaste.getInstance().setEnabled(
+	  Globals.clipBoard != null && !Globals.clipBoard.isEmpty());
+	*/
         TargetManager.getInstance().setTargets(sels);
 
     }
@@ -253,7 +254,7 @@ public class TabDiagram
     public void setToolBar(ToolBar toolbar) {
         if (!Arrays.asList(getComponents()).contains(toolbar)) {
             if (_target != null) {
-                remove(((UMLDiagram)getTarget()).getToolBar());
+                remove(((UMLDiagram) getTarget()).getToolBar());
             }
             add(toolbar, BorderLayout.NORTH);
 
@@ -299,9 +300,9 @@ public class TabDiagram
             if (targets[i] != null) {
                 Object target =
                     (targets[i] instanceof Fig
-                        && manager.getContents().contains(targets[i]))
-                        ? targets[i]
-                        : manager.presentationFor(targets[i]);
+		     && manager.getContents().contains(targets[i]))
+		    ? targets[i]
+		    : manager.presentationFor(targets[i]);
                 if (target != null) {
                     figList.add(target);
                 }
@@ -325,7 +326,7 @@ class ArgoJGraph extends JGraph {
 
     public boolean equals(Object o) {
         if (o instanceof ArgoJGraph) {
-            ArgoJGraph a = (ArgoJGraph)o;            
+            ArgoJGraph a = (ArgoJGraph) o;            
             if (((this._currentDiagramId != null && this._currentDiagramId.equals(a._currentDiagramId)) || (this._currentDiagramId == null && a._currentDiagramId == null))
                 && this.getEditor().equals(a.getEditor()))
                 return true;
@@ -361,50 +362,50 @@ class ArgoJGraph extends JGraph {
 
 class ArgoEditor extends Editor {
         
-        public ArgoEditor(Diagram d) {
-            super(d);
-        }
+    public ArgoEditor(Diagram d) {
+	super(d);
+    }
         
-        public ArgoEditor(GraphModel gm, Component c) {
-            super(gm, c);
-        }
+    public ArgoEditor(GraphModel gm, Component c) {
+	super(gm, c);
+    }
 
-        /**
-         * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-         */
-        public void mouseEntered(MouseEvent me) {
-            if (_activeTextEditor != null)
-                _activeTextEditor.requestFocus();         
-            translateMouseEvent(me);
-            Globals.curEditor(this);
-            mode((FigModifyingMode)Globals.mode());
-            setUnderMouse(me);
-            _modeManager.mouseEntered(me);
-        }
+    /**
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
+    public void mouseEntered(MouseEvent me) {
+	if (_activeTextEditor != null)
+	    _activeTextEditor.requestFocus();         
+	translateMouseEvent(me);
+	Globals.curEditor(this);
+	mode((FigModifyingMode) Globals.mode());
+	setUnderMouse(me);
+	_modeManager.mouseEntered(me);
+    }
         
     /** Invoked when the mouse button has been moved (with no buttons no down). */
-        public void mouseMoved(MouseEvent me) {
-            //- RedrawManager.lock();
-            translateMouseEvent(me);
-            Globals.curEditor(this);
-            setUnderMouse(me);
-            if (_curFig != null && Globals.getShowFigTips()) {
-                String tip = _curFig.getTipString(me);
-                if (tip != null && tip.length() > 0 && !tip.endsWith(" "))
-                    tip += " ";
-                if (tip != null && (getAwtComponent() instanceof JComponent)) {
-                    if (((JComponent)getAwtComponent()).getToolTipText() != null && !((JComponent)getAwtComponent()).getToolTipText().equals(tip))
-                    ((JComponent)getAwtComponent()).setToolTipText(tip);
-                }
-            } else if (getAwtComponent() instanceof JComponent) {
-                if (((JComponent)getAwtComponent()).getToolTipText() != null)            
-                    ((JComponent)getAwtComponent()).setToolTipText(null); //was ""
-            }
+    public void mouseMoved(MouseEvent me) {
+	//- RedrawManager.lock();
+	translateMouseEvent(me);
+	Globals.curEditor(this);
+	setUnderMouse(me);
+	if (_curFig != null && Globals.getShowFigTips()) {
+	    String tip = _curFig.getTipString(me);
+	    if (tip != null && tip.length() > 0 && !tip.endsWith(" "))
+		tip += " ";
+	    if (tip != null && (getAwtComponent() instanceof JComponent)) {
+		if (((JComponent) getAwtComponent()).getToolTipText() != null && !((JComponent) getAwtComponent()).getToolTipText().equals(tip))
+                    ((JComponent) getAwtComponent()).setToolTipText(tip);
+	    }
+	} else if (getAwtComponent() instanceof JComponent) {
+	    if (((JComponent) getAwtComponent()).getToolTipText() != null)            
+		((JComponent) getAwtComponent()).setToolTipText(null); //was ""
+	}
 
-            _selectionManager.mouseMoved(me);
-            _modeManager.mouseMoved(me);
-            //- RedrawManager.unlock();
-            //- _redrawer.repairDamage();
-        }
-
+	_selectionManager.mouseMoved(me);
+	_modeManager.mouseMoved(me);
+	//- RedrawManager.unlock();
+	//- _redrawer.repairDamage();
     }
+
+}

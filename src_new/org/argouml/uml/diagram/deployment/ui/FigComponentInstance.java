@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -164,10 +165,10 @@ public class FigComponentInstance extends FigNodeModelElement {
 
         _stereo.setBounds(x + 1, y + 1, w - 2, stereoDim.height);
         _name.setBounds(
-            x + 1,
-            y + stereoDim.height - OVERLAP + 1,
-            w - 2,
-            nameDim.height);
+			x + 1,
+			y + stereoDim.height - OVERLAP + 1,
+			w - 2,
+			nameDim.height);
         _x = x;
         _y = y;
         _w = w;
@@ -189,7 +190,7 @@ public class FigComponentInstance extends FigNodeModelElement {
         Editor ce = Globals.curEditor();
         Selection sel = ce.getSelectionManager().findSelectionFor(this);
         if (sel instanceof SelectionComponentInstance)
-             ((SelectionComponentInstance) sel).hideButtons();
+	    ((SelectionComponentInstance) sel).hideButtons();
     }
 
     public void setEnclosingFig(Fig encloser) {
@@ -223,55 +224,55 @@ public class FigComponentInstance extends FigNodeModelElement {
                 ((FigNodeModelElement) getEnclosingFig())
                     .getEnclosedFigs()
                     .removeElement(
-                    this);
+				   this);
             _encloser = null;
         }
         /*
-        super.setEnclosingFig(encloser);
+	  super.setEnclosingFig(encloser);
         
-        Vector figures = getEnclosedFigs();
+	  Vector figures = getEnclosedFigs();
         
-        if (getLayer() != null) {
+	  if (getLayer() != null) {
           // elementOrdering(figures);
           Vector contents = getLayer().getContents();
           int contentsSize = contents.size();
           for (int j=0; j<contentsSize; j++) {
-            Object o = contents.elementAt(j);
-            if (o instanceof FigEdgeModelElement) {
-              FigEdgeModelElement figedge = (FigEdgeModelElement) o;
-              figedge.getLayer().bringToFront(figedge);
-            }
+	  Object o = contents.elementAt(j);
+	  if (o instanceof FigEdgeModelElement) {
+	  FigEdgeModelElement figedge = (FigEdgeModelElement) o;
+	  figedge.getLayer().bringToFront(figedge);
+	  }
           }
-        }
+	  }
         
-        if (!(getOwner() instanceof MModelElement)) return;
-        if (getOwner() instanceof MComponentInstance) {
+	  if (!(getOwner() instanceof MModelElement)) return;
+	  if (getOwner() instanceof MComponentInstance) {
           MComponentInstance me = (MComponentInstance) getOwner();
           MNodeInstance mnode = null;
         
           if (encloser != null && (encloser.getOwner() instanceof MNodeInstance)) {
-            mnode = (MNodeInstance) encloser.getOwner();
+	  mnode = (MNodeInstance) encloser.getOwner();
           }
           if (encloser != null && (encloser.getOwner() instanceof MComponentInstance)) {
-            MComponentInstance comp = (MComponentInstance) encloser.getOwner();
-            mnode = (MNodeInstance) comp.getNodeInstance();
+	  MComponentInstance comp = (MComponentInstance) encloser.getOwner();
+	  mnode = (MNodeInstance) comp.getNodeInstance();
           }
           try {
-            if(mnode != null) {
-              me.setNodeInstance(mnode);
-            }
-            else {
-              if (me.getNodeInstance() != null) {
-                me.setNodeInstance(null);
-              }
-            }
-            setNode(figures);
+	  if(mnode != null) {
+	  me.setNodeInstance(mnode);
+	  }
+	  else {
+	  if (me.getNodeInstance() != null) {
+	  me.setNodeInstance(null);
+	  }
+	  }
+	  setNode(figures);
           }
           catch (Exception e) {
-            cat.error("could not set package", e);
+	  cat.error("could not set package", e);
            
           }
-        }
+	  }
         */
     }
 

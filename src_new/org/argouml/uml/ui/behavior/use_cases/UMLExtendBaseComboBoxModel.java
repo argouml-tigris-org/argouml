@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -55,7 +56,7 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        MExtend extend = (MExtend)getTarget();
+        MExtend extend = (MExtend) getTarget();
         if (extend == null) return;
         setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MUseCase.class));
         if (extend.getExtension() != null) {
@@ -68,7 +69,7 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MExtend)getTarget()).getBase();
+            return ((MExtend) getTarget()).getBase();
         }
         return null;
     }

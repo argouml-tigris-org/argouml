@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -265,15 +266,15 @@ public class FindDialog extends ArgoDialog
         JTextArea helpText = new JTextArea();
         String s;
         s =
-            "Please follow these steps to find model elements:\n\n"+
-            "1. Enter search information in the tabs at the top of this window.\n\n"+
-            "2. Press the \"Search\" button.  This will produce a new tab.\n\n"+
-            "3. The top half of each result tab lists each results.\n"+
-            "   + Single clicking on a result shows more information about it,\n"+
-            "     including a list of related objects.\n"+
-            "   + Double clicking on a result jumps to the selected diagram.\n\n"+
-            "You can \"tear-off\" a results tab by double clicking on the tab name.\n"+
-            "If you accumulate too many tabs, press \"Clear Tabs\" to remove "+
+            "Please follow these steps to find model elements:\n\n" +
+            "1. Enter search information in the tabs at the top of this window.\n\n" +
+            "2. Press the \"Search\" button.  This will produce a new tab.\n\n" +
+            "3. The top half of each result tab lists each results.\n" +
+            "   + Single clicking on a result shows more information about it,\n" +
+            "     including a list of related objects.\n" +
+            "   + Double clicking on a result jumps to the selected diagram.\n\n" +
+            "You can \"tear-off\" a results tab by double clicking on the tab name.\n" +
+            "If you accumulate too many tabs, press \"Clear Tabs\" to remove " +
             "them all.";
     
         helpText.setText(s);
@@ -351,7 +352,7 @@ public class FindDialog extends ArgoDialog
         String typeName = _type.getSelectedItem().toString();
         if (!typeName.equals("Any Type")) name += " " + typeName;
         if (name.length() == 0)
-            name = "Search"+(nextResultNum++);
+            name = "Search" + (nextResultNum++);
         if (name.length() > 15)
             name = name.substring(0, 12) + "...";
 
@@ -388,7 +389,7 @@ public class FindDialog extends ArgoDialog
     public void doClearTabs() {
         int numTabs = _resultTabs.size();
         for (int i = 0; i < numTabs; i++)
-            _results.remove((Component)_resultTabs.elementAt(i));
+            _results.remove((Component) _resultTabs.elementAt(i));
         _resultTabs.removeAllElements();
         _clearTabs.setEnabled(false);
         doResetFields(false);
@@ -430,16 +431,16 @@ public class FindDialog extends ArgoDialog
             Rectangle tabBounds = _results.getBoundsAt(tab);
             if (!tabBounds.contains(me.getX(), me.getY())) return;
             if (tab >= 1 && me.getClickCount() >= 2)
-                myDoubleClick(tab-1); //help tab is 0
+                myDoubleClick(tab - 1); //help tab is 0
         }
     }
 
     public void myDoubleClick(int tab) {
         JPanel t = (JPanel) _resultTabs.elementAt(tab);
         if (t instanceof TabSpawnable) {
-            ((TabSpawnable)t).spawn();
+            ((TabSpawnable) t).spawn();
             _resultTabs.removeElementAt(tab);
-            _location.removeItem("In Tab:" + ((TabSpawnable)t).getTitle());
+            _location.removeItem("In Tab:" + ((TabSpawnable) t).getTitle());
 	
         }
     }
@@ -468,22 +469,22 @@ class PredicateMType extends PredicateType
 
     public static PredicateType create(Object c0) {
         Class classes[] = new Class[1];
-        classes[0] = (Class)c0;
+        classes[0] = (Class) c0;
         return new PredicateMType(classes);
     }
 
     public static PredicateType create(Object c0, Object c1) {
         Class classes[] = new Class[2];
-        classes[0] = (Class)c0;
-        classes[1] = (Class)c1;
+        classes[0] = (Class) c0;
+        classes[1] = (Class) c1;
         return new PredicateMType(classes);
     }
 
     public static PredicateType create(Object c0, Object c1, Object c2) {
         Class classes[] = new Class[3];
-        classes[0] = (Class)c0;
-        classes[1] = (Class)c1;
-        classes[2] = (Class)c2;
+        classes[0] = (Class) c0;
+        classes[1] = (Class) c1;
+        classes[2] = (Class) c2;
         return new PredicateMType(classes);
     }
 

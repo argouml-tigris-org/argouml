@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -60,14 +61,14 @@ public class CodePieceCollector
     */
     public void add(NamedCodePiece codePiece)
     {
-	int index=0;
+	int index = 0;
 
 	// Insert in sorted order
-	for(Iterator i = codePieces.iterator(); i.hasNext(); index++) {
-	    CodePiece cp = (CodePiece)i.next();
-	    if(cp.getStartLine() > codePiece.getStartLine() ||
-	       (cp.getStartLine() == codePiece.getStartLine() &&
-		cp.getStartPosition() > codePiece.getStartPosition())) {
+	for (Iterator i = codePieces.iterator(); i.hasNext(); index++) {
+	    CodePiece cp = (CodePiece) i.next();
+	    if (cp.getStartLine() > codePiece.getStartLine() ||
+		(cp.getStartLine() == codePiece.getStartLine() &&
+		 cp.getStartPosition() > codePiece.getStartPosition())) {
 		break;
 	    }
 	}
@@ -94,16 +95,16 @@ public class CodePieceCollector
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mNamespace));
 
-	for(Iterator i = codePieces.iterator(); i.hasNext(); ) {
-	    NamedCodePiece cp = (NamedCodePiece)i.next();
+	for (Iterator i = codePieces.iterator(); i.hasNext(); ) {
+	    NamedCodePiece cp = (NamedCodePiece) i.next();
 	    // copy until code piece
-	    while(line < cp.getStartLine()) {
+	    while (line < cp.getStartLine()) {
 		line++;
 		column = 0;
 		writer.write(reader.readLine());
 		writer.newLine();
 	    }
-	    while(column < cp.getStartPosition()) {
+	    while (column < cp.getStartPosition()) {
 		writer.write(reader.read());
 		column++;
 	    }
@@ -115,7 +116,7 @@ public class CodePieceCollector
 
 	// Copy the rest of the file
 	String data;
-	while((data = reader.readLine()) != null) {
+	while ((data = reader.readLine()) != null) {
 	    writer.write(data);
 	    writer.newLine();
 	}

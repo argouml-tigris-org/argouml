@@ -51,7 +51,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelStereotype extends PropPanelModelElement {
@@ -66,65 +66,65 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 
-        JComboBox baseClass = new UMLMetaclassComboBox(this,"baseClass","getBaseClass","setBaseClass");
+        JComboBox baseClass = new UMLMetaclassComboBox(this, "baseClass", "getBaseClass", "setBaseClass");
         addField(Argo.localize("UMLMenu", "label.base-class"), baseClass);
 
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-        modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-        modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-        modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+        JPanel modifiersPanel = new JPanel(new GridLayout(0, 3));
+        modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"), this, new UMLReflectionBooleanProperty("isAbstract", mclass, "isAbstract", "setAbstract")));
+        modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"), this, new UMLReflectionBooleanProperty("isLeaf", mclass, "isLeaf", "setLeaf")));
+        modifiersPanel.add(new UMLCheckBox(localize("root"), this, new UMLReflectionBooleanProperty("isRoot", mclass, "isRoot", "setRoot")));
         addField(Argo.localize("UMLMenu", "label.modifiers"), modifiersPanel);
 
         addSeperator();
 
-        JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+        JList extendsList = new UMLList(new UMLGeneralizationListModel(this, "generalization", true), true);
         extendsList.setBackground(getBackground());
         extendsList.setForeground(Color.blue);
         addField("Generalizations:", new JScrollPane(extendsList));
 
-        JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
+        JList derivedList = new UMLList(new UMLSpecializationListModel(this, null, true), true);
         derivedList.setForeground(Color.blue);
         derivedList.setVisibleRowCount(1);
         addField("Specializations:", new JScrollPane(derivedList));
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
-        new PropPanelButton(this,buttonPanel,_stereotypeIcon, Argo.localize("UMLMenu", "button.add-new-stereotype"),"newStereotype",null);
-        new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-package"),"removeElement",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _stereotypeIcon, Argo.localize("UMLMenu", "button.add-new-stereotype"), "newStereotype", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-package"), "removeElement", null);
     }
 
 
     public void newStereotype() {
         Object target = getTarget();
-        MStereotype newStereo = ExtensionMechanismsFactory.getFactory().buildStereotype((MModelElement)null, (String)null);
+        MStereotype newStereo = ExtensionMechanismsFactory.getFactory().buildStereotype((MModelElement) null, (String) null);
         TargetManager.getInstance().setTarget(newStereo);
         /*
-        if(target instanceof MStereotype) {
-            MNamespace ns = ((MStereotype) target).getNamespace();
-            if(ns != null) {
-                MStereotype newStereo = ExtensionMechanismsFactory.getFactory().createStereotype();
-                ns.addOwnedElement(newStereo);
-                navigateTo(newStereo);
-            }
-        }
+	  if(target instanceof MStereotype) {
+	  MNamespace ns = ((MStereotype) target).getNamespace();
+	  if(ns != null) {
+	  MStereotype newStereo = ExtensionMechanismsFactory.getFactory().createStereotype();
+	  ns.addOwnedElement(newStereo);
+	  navigateTo(newStereo);
+	  }
+	  }
         */
     }
 
     public String getBaseClass() {
-      String baseClass = "ModelElement";
-      Object target = getTarget();
-      if(target instanceof MStereotype) {
-        baseClass = ((MStereotype) target).getBaseClass();
-      }
-      return baseClass;
+	String baseClass = "ModelElement";
+	Object target = getTarget();
+	if (target instanceof MStereotype) {
+	    baseClass = ((MStereotype) target).getBaseClass();
+	}
+	return baseClass;
     }
 
     public void setBaseClass(String baseClass) {
-      Object target = getTarget();
-      if(target instanceof MStereotype) {
-        ((MStereotype) target).setBaseClass(baseClass);
-      }
+	Object target = getTarget();
+	if (target instanceof MStereotype) {
+	    ((MStereotype) target).setBaseClass(baseClass);
+	}
     }
 
 } /* end class PropPanelStereotype */

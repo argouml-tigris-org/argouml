@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -63,23 +64,23 @@ import org.argouml.model.uml.UmlFactory;
  */
 public class MMUtil {
 
-	Category cat = Category.getInstance(org.argouml.uml.MMUtil.class);
+    Category cat = Category.getInstance(org.argouml.uml.MMUtil.class);
 
-	public static MMUtil SINGLETON = new MMUtil();
+    public static MMUtil SINGLETON = new MMUtil();
 
-	public static MModel STANDARDS;
+    public static MModel STANDARDS;
 
-	static {
-		STANDARDS = UmlFactory.getFactory().getModelManagement().createModel();
-		STANDARDS.setName("standard Elements");
-		MStereotype realizationStereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
-		realizationStereo.setName("realize");
-		STANDARDS.addOwnedElement(realizationStereo);
+    static {
+	STANDARDS = UmlFactory.getFactory().getModelManagement().createModel();
+	STANDARDS.setName("standard Elements");
+	MStereotype realizationStereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
+	realizationStereo.setName("realize");
+	STANDARDS.addOwnedElement(realizationStereo);
 
-		MStereotype interfaceStereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
-		interfaceStereo.setName("interface");
-		STANDARDS.addOwnedElement(interfaceStereo);
-	}
+	MStereotype interfaceStereo = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
+	interfaceStereo.setName("interface");
+	STANDARDS.addOwnedElement(interfaceStereo);
+    }
 
 
     /**

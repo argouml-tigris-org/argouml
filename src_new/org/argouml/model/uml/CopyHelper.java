@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -48,20 +49,20 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsF
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 
 class CopyFunction {
-	public final Object object;
-	public final Method method;
+    public final Object object;
+    public final Method method;
 
-	public CopyFunction(Object obj, Method m) {
-		if (m == null)
-			throw new NullPointerException();
+    public CopyFunction(Object obj, Method m) {
+	if (m == null)
+	    throw new NullPointerException();
 
-		// If obj is null then it must be a static function
-		if (obj == null && !Modifier.isStatic(m.getModifiers()))
-			throw new NullPointerException();
+	// If obj is null then it must be a static function
+	if (obj == null && !Modifier.isStatic(m.getModifiers()))
+	    throw new NullPointerException();
 
-		object = obj;
-		method = m;
-	}
+	object = obj;
+	method = m;
+    }
 }
 
 /**
@@ -71,107 +72,107 @@ class CopyFunction {
  * @since 0.13.2
  */
 public final class CopyHelper {
-	protected static Category cat = Category.getInstance(CopyHelper.class);
+    protected static Category cat = Category.getInstance(CopyHelper.class);
 
-	private static CopyHelper theInstance;
+    private static CopyHelper theInstance;
 
-	private HashMap copyfunctions;
+    private HashMap copyfunctions;
 
-	private CopyHelper() {
-		copyfunctions = new HashMap();
+    private CopyHelper() {
+	copyfunctions = new HashMap();
 
-		add(MPackageImpl.class,
-			MPackage.class,
-			ModelManagementFactory.getFactory(),
-			"copyPackage");
-		add(MClassImpl.class,
-			MClass.class,
-			CoreFactory.getFactory(),
-			"copyClass");
-		add(MDataTypeImpl.class,
-			MDataType.class,
-			CoreFactory.getFactory(),
-			"copyDataType");
-		add(MInterfaceImpl.class,
-			MInterface.class,
-			CoreFactory.getFactory(),
-			"copyInterface");
-		add(MStereotypeImpl.class,
-			MStereotype.class,
-			ExtensionMechanismsFactory.getFactory(),
-			"copyStereotype");
+	add(MPackageImpl.class,
+	    MPackage.class,
+	    ModelManagementFactory.getFactory(),
+	    "copyPackage");
+	add(MClassImpl.class,
+	    MClass.class,
+	    CoreFactory.getFactory(),
+	    "copyClass");
+	add(MDataTypeImpl.class,
+	    MDataType.class,
+	    CoreFactory.getFactory(),
+	    "copyDataType");
+	add(MInterfaceImpl.class,
+	    MInterface.class,
+	    CoreFactory.getFactory(),
+	    "copyInterface");
+	add(MStereotypeImpl.class,
+	    MStereotype.class,
+	    ExtensionMechanismsFactory.getFactory(),
+	    "copyStereotype");
+    }
+
+    public static CopyHelper getHelper() {
+	if (theInstance == null)
+	    theInstance = new CopyHelper();
+	return theInstance;
+    }
+
+    /**
+     * Adds a copy handler for objects of type <i>type</i>.
+     * Since copy functions could be either instance or static
+     * functions, if obj is an instance of Class then the function
+     * is assumed to be static and will be looked up in obj. Otherwise
+     * the function will be looked up in the Class of obj and invoked on
+     * obj.
+     *
+     * @param type is the type to catch.
+     * @param param is the parameter type of the copy function.
+     * @param obj is described above.
+     * @param name is the name of the copy function.
+     */
+    private void add(Class type, Class param, Object obj, String name) {
+	Method m;
+	Class params[] = {param, MNamespace.class};
+
+	try {
+	    if (obj instanceof Class) {
+		m = ((Class) obj).getDeclaredMethod(
+						    name,
+						    params);
+		obj = null;
+	    } else {
+		m = obj.getClass().getDeclaredMethod(
+						     name,
+						     params);
+	    }
+
+	    copyfunctions.put(type, new CopyFunction(obj, m));
+	} catch (Exception e) {
+	    cat.error("Exception resolving copy method", e);
+	}
+    }
+
+    /**
+     * Make a copy of element.
+     *
+     * This function may fail and return null for any of the following
+     * reasons:
+     * 1. No copy function is known for element's type.
+     * 2. The copy function fails or throws.
+     *
+     * @param element is the element to copy.
+     * @return a copy of element, or null.
+     * @throw NullPointerException if element is null.
+     */
+    public MModelElement copy(MModelElement element, MNamespace ns) {
+	// Don't explicitly check if element is null
+	CopyFunction f =
+	    (CopyFunction) copyfunctions.get(element.getClass());
+	if (f == null) {
+	    cat.warn("CopyHelper is unable to copy element of " +
+		     "type: " + element.getClass());
+	    return null;
 	}
 
-	public static CopyHelper getHelper() {
-		if (theInstance == null)
-			theInstance = new CopyHelper();
-		return theInstance;
+	try {
+	    Object args[] = {element, ns};
+	    return (MModelElement) f.method.invoke(f.object, args);
+	} catch (Exception e) {
+	    cat.error("CopyHelper copy method exception", e);
+	    return null;
 	}
-
-	/**
-	 * Adds a copy handler for objects of type <i>type</i>.
-	 * Since copy functions could be either instance or static
-	 * functions, if obj is an instance of Class then the function
-	 * is assumed to be static and will be looked up in obj. Otherwise
-	 * the function will be looked up in the Class of obj and invoked on
-	 * obj.
-	 *
-	 * @param type is the type to catch.
-	 * @param param is the parameter type of the copy function.
-	 * @param obj is described above.
-	 * @param name is the name of the copy function.
-	 */
-	private void add(Class type, Class param, Object obj, String name) {
-		Method m;
-		Class params[] = {param, MNamespace.class};
-
-		try {
-			if (obj instanceof Class) {
-				m = ((Class) obj).getDeclaredMethod(
-					name,
-					params);
-				obj = null;
-			} else {
-				m = obj.getClass().getDeclaredMethod(
-					name,
-					params);
-			}
-
-			copyfunctions.put(type, new CopyFunction(obj, m));
-		} catch (Exception e) {
-			cat.error("Exception resolving copy method", e);
-		}
-	}
-
-	/**
-	 * Make a copy of element.
-	 *
-	 * This function may fail and return null for any of the following
-	 * reasons:
-	 * 1. No copy function is known for element's type.
-	 * 2. The copy function fails or throws.
-	 *
-	 * @param element is the element to copy.
-	 * @return a copy of element, or null.
-	 * @throw NullPointerException if element is null.
-	 */
-	public MModelElement copy(MModelElement element, MNamespace ns) {
-		// Don't explicitly check if element is null
-		CopyFunction f =
-			(CopyFunction) copyfunctions.get(element.getClass());
-		if (f == null) {
-			cat.warn("CopyHelper is unable to copy element of " +
-				 "type: " + element.getClass());
-			return null;
-		}
-
-		try {
-			Object args[] = {element, ns};
-			return (MModelElement) f.method.invoke(f.object, args);
-		} catch (Exception e) {
-			cat.error("CopyHelper copy method exception", e);
-			return null;
-		}
-	}
+    }
 }
 

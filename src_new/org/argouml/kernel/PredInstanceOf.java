@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -29,15 +30,15 @@ import org.tigris.gef.util.*;
  * Predicate to test if an Object is and instance of a class.
  */
 public class PredInstanceOf implements Predicate {
-  protected Class _class;
+    protected Class _class;
 
-  public PredInstanceOf(Class cls) { 
-    _class = cls; 
-  }
+    public PredInstanceOf(Class cls) { 
+	_class = cls; 
+    }
 
-  public boolean predicate(Object obj) {
-    return _class.isInstance(obj);
-  }
+    public boolean predicate(Object obj) {
+	return _class.isInstance(obj);
+    }
 
 } /* end class PredInstanceOf */
 

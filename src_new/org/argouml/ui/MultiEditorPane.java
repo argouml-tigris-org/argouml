@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -99,7 +100,7 @@ public class MultiEditorPane
             _tabs.addTab("As " + title, t);
             _tabs.setEnabledAt(i, false);
             if (t instanceof TargetListener) {
-                TargetManager.getInstance().addTargetListener((TargetListener)t);
+                TargetManager.getInstance().addTargetListener((TargetListener) t);
             }
         } /* end for */
 
@@ -146,7 +147,7 @@ public class MultiEditorPane
         for (int i = 0; i < _tabs.getTabCount(); i++) {
             Component tab = _tabs.getComponentAt(i);
             if (tab instanceof TabTarget) {
-                TabTarget targetTab = (TabTarget)tab;
+                TabTarget targetTab = (TabTarget) tab;
                 boolean shouldBeEnabled = targetTab.shouldBeEnabled(target);
                 _tabs.setEnabledAt(i, shouldBeEnabled);                
             }

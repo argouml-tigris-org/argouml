@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -204,38 +205,38 @@ public class ActionCompartmentDisplay extends UMLAction {
 
 	Vector sels = Globals.curEditor().getSelectionManager().selections();
 
-	if( sels.size() == 1 ) {
+	if ( sels.size() == 1 ) {
 	    Selection sel = (Selection) sels.firstElement();
 	    Fig       f   = sel.getContent();
 
             // Perform the action
 
 	    if (_compartment.equals("Show Attribute Compartment")) {
-		((FigClass)f).setAttributeVisible(_display);
+		((FigClass) f).setAttributeVisible(_display);
             }
 	    else if (_compartment.equals("Hide Attribute Compartment")) {
-		((FigClass)f).setAttributeVisible(_display);
+		((FigClass) f).setAttributeVisible(_display);
             }
 	    else if (_compartment.equals("Show Operation Compartment") ||
 	             _compartment.equals("Hide Operation Compartment")) {
 		if (f instanceof FigClass)
-			((FigClass)f).setOperationVisible(_display);
+			((FigClass) f).setOperationVisible(_display);
 		if (f instanceof FigInterface)
-			((FigInterface)f).setOperationVisible(_display);
+			((FigInterface) f).setOperationVisible(_display);
             }
 	    else if (_compartment.equals("Show Extension Point Compartment")) {
-		((FigUseCase)f).setExtensionPointVisible(_display);
+		((FigUseCase) f).setExtensionPointVisible(_display);
             }
 	    else if (_compartment.equals("Hide Extension Point Compartment")) {
-		((FigUseCase)f).setExtensionPointVisible(_display);
+		((FigUseCase) f).setExtensionPointVisible(_display);
             }
 	    else if (_compartment.equals("Show All Compartments")) {
-		((FigClass)f).setAttributeVisible(_display);
-		((FigClass)f).setOperationVisible(_display);
+		((FigClass) f).setAttributeVisible(_display);
+		((FigClass) f).setOperationVisible(_display);
 	    }
 	    else {
-		((FigClass)f).setAttributeVisible(_display);
-		((FigClass)f).setOperationVisible(_display);
+		((FigClass) f).setAttributeVisible(_display);
+		((FigClass) f).setOperationVisible(_display);
 	    }
 	}
     }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,15 +37,15 @@ import ru.novosoft.uml.model_management.MPackage;
 public class GoModelToBaseElements extends AbstractGoRule {
     protected static Category cat = Category.getInstance(GoModelToBaseElements.class);
 
-  public String getRuleName() {
-    return Argo.localize ("Tree", "misc.package.base-class");
-  }
+    public String getRuleName() {
+	return Argo.localize ("Tree", "misc.package.base-class");
+    }
   
-  public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAPackage(parent)) {
-          return CoreHelper.getHelper().getBaseClasses(parent);
-      }
-      return null;
-  }
+    public Collection getChildren(Object parent) { 
+	if (ModelFacade.isAPackage(parent)) {
+	    return CoreHelper.getHelper().getBaseClasses(parent);
+	}
+	return null;
+    }
 
 }

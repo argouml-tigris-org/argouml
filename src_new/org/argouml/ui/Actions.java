@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,7 +65,7 @@ import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.CmdPrint;
 import org.tigris.gef.base.Diagram;
 
-public class Actions implements TargetListener{
+public class Actions implements TargetListener {
     
     private static Actions _instance = new Actions();
     
@@ -76,72 +77,72 @@ public class Actions implements TargetListener{
         TargetManager.getInstance().addTargetListener(this);
     }
 
-  static Vector _allActions = new Vector(100);
+    static Vector _allActions = new Vector(100);
 
 
-  public static UMLAction Print = new ActionPrint();
-  public static UMLAction PageSetup = new ActionPageSetup();
+    public static UMLAction Print = new ActionPrint();
+    public static UMLAction PageSetup = new ActionPageSetup();
 
-  public static UMLAction Undo = new ActionUndo();
-  public static UMLAction Redo = new ActionRedo();
+    public static UMLAction Undo = new ActionUndo();
+    public static UMLAction Redo = new ActionRedo();
 
-  //public static UMLAction NavBack = new ActionNavBack();
-  //public static UMLAction NavForw = new ActionNavForw();
-  //public static UMLAction NavFavs = new ActionNavFavs();
-  public static UMLAction NavConfig = new ActionNavConfig();
+    //public static UMLAction NavBack = new ActionNavBack();
+    //public static UMLAction NavForw = new ActionNavForw();
+    //public static UMLAction NavFavs = new ActionNavFavs();
+    public static UMLAction NavConfig = new ActionNavConfig();
 
-  public static UMLAction Find = new ActionFind();
-  public static UMLAction GotoDiagram = new ActionGotoDiagram();
+    public static UMLAction Find = new ActionFind();
+    public static UMLAction GotoDiagram = new ActionGotoDiagram();
 
-  public static UMLAction NextEditTab = new ActionNextEditTab();
-//  public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
-  public static UMLAction ShowRapidButtons = new ActionShowRapidButtons();
+    public static UMLAction NextEditTab = new ActionNextEditTab();
+    //  public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
+    public static UMLAction ShowRapidButtons = new ActionShowRapidButtons();
 
-  public static UMLAction CreateMultiple = new ActionCreateMultiple();
+    public static UMLAction CreateMultiple = new ActionCreateMultiple();
 
-  public static UMLAction AutoCritique = new ActionAutoCritique();
-  public static UMLAction OpenDecisions = new ActionOpenDecisions();
-  public static UMLAction OpenGoals = new ActionOpenGoals();
-  public static UMLAction OpenCritics = new ActionOpenCritics();
+    public static UMLAction AutoCritique = new ActionAutoCritique();
+    public static UMLAction OpenDecisions = new ActionOpenDecisions();
+    public static UMLAction OpenGoals = new ActionOpenGoals();
+    public static UMLAction OpenCritics = new ActionOpenCritics();
 
-  public static UMLAction FlatToDo = new ActionFlatToDo();
+    public static UMLAction FlatToDo = new ActionFlatToDo();
 
-  public static UMLAction NewToDoItem = new ActionNewToDoItem();
-  public static UMLAction Resolve = new ActionResolve();
-  public static UMLAction EmailExpert = new ActionEmailExpert();
-  public static UMLAction MoreInfo = new ActionMoreInfo();
-  public static UMLAction Snooze = new ActionSnooze();
+    public static UMLAction NewToDoItem = new ActionNewToDoItem();
+    public static UMLAction Resolve = new ActionResolve();
+    public static UMLAction EmailExpert = new ActionEmailExpert();
+    public static UMLAction MoreInfo = new ActionMoreInfo();
+    public static UMLAction Snooze = new ActionSnooze();
 
-  public static UMLAction SystemInfo = new ActionSystemInfo();
-  public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
+    public static UMLAction SystemInfo = new ActionSystemInfo();
+    public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
 
-  /**
-   * @deprecated use updateAllEnabled(TargetEvent e) instead.
-   *
-   */
-  public static void updateAllEnabled() {
-    java.util.Enumeration actions = _allActions.elements();
-    while (actions.hasMoreElements()) {
-      UMLAction a = (UMLAction) actions.nextElement();
-      a.updateEnabled();
-    }
-  }
-  
-  /**
-   * Updates all global actions as a consequence of the send TargetEvent.
-   * @param e
-   */
-  private static void updateAllEnabled(TargetEvent e) {
-      Iterator actions = _allActions.iterator();
-      while (actions.hasNext()) {
-          UMLAction a = (UMLAction) actions.next();
-          a.updateEnabled(e.getNewTargets()[0]);
-      }
-  }
-
-	public static void addAction(AbstractAction newAction) {
-		_allActions.addElement(newAction);
+    /**
+     * @deprecated use updateAllEnabled(TargetEvent e) instead.
+     *
+     */
+    public static void updateAllEnabled() {
+	java.util.Enumeration actions = _allActions.elements();
+	while (actions.hasMoreElements()) {
+	    UMLAction a = (UMLAction) actions.nextElement();
+	    a.updateEnabled();
 	}
+    }
+  
+    /**
+     * Updates all global actions as a consequence of the send TargetEvent.
+     * @param e
+     */
+    private static void updateAllEnabled(TargetEvent e) {
+	Iterator actions = _allActions.iterator();
+	while (actions.hasNext()) {
+	    UMLAction a = (UMLAction) actions.next();
+	    a.updateEnabled(e.getNewTargets()[0]);
+	}
+    }
+
+    public static void addAction(AbstractAction newAction) {
+	_allActions.addElement(newAction);
+    }
     
     public static boolean isGlobalAction(AbstractAction action) {
         return _allActions.contains(action);
@@ -179,30 +180,30 @@ public class Actions implements TargetListener{
 /** print the current active diagram.
  */
 class ActionPrint extends UMLAction {
-  CmdPrint cmd = new CmdPrint();
-  public ActionPrint() { super("action.print"); }
+    CmdPrint cmd = new CmdPrint();
+    public ActionPrint() { super("action.print"); }
 
-  public void actionPerformed(ActionEvent ae) {
-    Object target = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-    if (target instanceof Diagram) {
-      String n = ((Diagram)target).getName();
-      cmd.setDiagramName(n);
-      cmd.doIt();
+    public void actionPerformed(ActionEvent ae) {
+	Object target = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	if (target instanceof Diagram) {
+	    String n = ((Diagram) target).getName();
+	    cmd.setDiagramName(n);
+	    cmd.doIt();
+	}
     }
-  }
-  public CmdPrint getCmdPrint() {
-    return cmd;
-  }
+    public CmdPrint getCmdPrint() {
+	return cmd;
+    }
 } /* end class ActionPrint */
 
 /** Page setup for printing.
  */
 class ActionPageSetup extends UMLAction {
-  public ActionPageSetup() { super("Page Setup...", NO_ICON); }
+    public ActionPageSetup() { super("Page Setup...", NO_ICON); }
 
-  public void actionPerformed(ActionEvent ae) {
-    ((ActionPrint)Actions.Print).getCmdPrint().doPageSetup();
-  }
+    public void actionPerformed(ActionEvent ae) {
+	((ActionPrint) Actions.Print).getCmdPrint().doPageSetup();
+    }
 } /* end class ActionPageSetup */
 
 
@@ -210,13 +211,13 @@ class ActionPageSetup extends UMLAction {
 // generic editing actions
 
 class ActionUndo extends UMLAction {
-  public ActionUndo() { super("action.undo"); }
-  public boolean shouldBeEnabled() { return false; }
+    public ActionUndo() { super("action.undo"); }
+    public boolean shouldBeEnabled() { return false; }
 } /* end class ActionUndo */
 
 class ActionRedo extends UMLAction {
-  public ActionRedo() { super("action.redo"); }
-  public boolean shouldBeEnabled() { return false; }
+    public ActionRedo() { super("action.redo"); }
+    public boolean shouldBeEnabled() { return false; }
 } /* end class ActionRedo */
 
 
@@ -224,34 +225,34 @@ class ActionRedo extends UMLAction {
 // items on view menu
 
 class ActionFind extends UMLAction {
-  public ActionFind() { super("action.find"); }
-  public void actionPerformed(ActionEvent ae) {
-    FindDialog.getInstance().setVisible(true);
-  }
+    public ActionFind() { super("action.find"); }
+    public void actionPerformed(ActionEvent ae) {
+	FindDialog.getInstance().setVisible(true);
+    }
 } /* end class ActionFind */
 
 class ActionGotoDiagram extends UMLAction {
-  public ActionGotoDiagram() { super("action.goto-diagram", NO_ICON); }
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    Project p = ProjectManager.getManager().getCurrentProject();
-    //TODO: class TearOffHostFrame and TearOffManager.
-    //idea: pop-up on tab that lists docking locations, new window.
-    ArgoDialog f = new ArgoDialog(pb, "Goto Diagram...", false);
-    JPanel mainPanel = new JPanel(new BorderLayout());
-    JTabbedPane tabs = new JTabbedPane();
-    mainPanel.add(tabs, BorderLayout.CENTER);
-    TabResults allDiagrams = new TabResults(false); // no related
-    allDiagrams.setResults(p.getDiagrams(), p.getDiagrams());
-    // TabResults has really large preferred height, so divide in half to reduce
-    // size of dialog which will be sized based on this preferred size.
-    allDiagrams.setPreferredSize(new Dimension(
-        allDiagrams.getPreferredSize().width, allDiagrams.getPreferredSize().height / 2));
-    tabs.addTab("All Diagrams", allDiagrams);
-    f.setContent(mainPanel);
-    //TODO: tabs for class, state, usecase, help
-    f.setVisible(true);
-  }
+    public ActionGotoDiagram() { super("action.goto-diagram", NO_ICON); }
+    public void actionPerformed(ActionEvent ae) {
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	Project p = ProjectManager.getManager().getCurrentProject();
+	//TODO: class TearOffHostFrame and TearOffManager.
+	//idea: pop-up on tab that lists docking locations, new window.
+	ArgoDialog f = new ArgoDialog(pb, "Goto Diagram...", false);
+	JPanel mainPanel = new JPanel(new BorderLayout());
+	JTabbedPane tabs = new JTabbedPane();
+	mainPanel.add(tabs, BorderLayout.CENTER);
+	TabResults allDiagrams = new TabResults(false); // no related
+	allDiagrams.setResults(p.getDiagrams(), p.getDiagrams());
+	// TabResults has really large preferred height, so divide in half to reduce
+	// size of dialog which will be sized based on this preferred size.
+	allDiagrams.setPreferredSize(new Dimension(
+						   allDiagrams.getPreferredSize().width, allDiagrams.getPreferredSize().height / 2));
+	tabs.addTab("All Diagrams", allDiagrams);
+	f.setContent(mainPanel);
+	//TODO: tabs for class, state, usecase, help
+	f.setVisible(true);
+    }
 } /* end class ActionGotoDiagram */
 
 /*
@@ -302,22 +303,22 @@ class ActionNavForw extends UMLAction {
 // } /* end class ActionNavFavs */
 
 class ActionNavConfig extends UMLAction {
-  public ActionNavConfig() { super("action.nav-config"); }
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    NavigatorPane nav = pb.getNavigatorPane();
-    NavigatorConfigDialog ncd = new NavigatorConfigDialog(pb,nav);
-    ncd.setVisible(true);
-  }
+    public ActionNavConfig() { super("action.nav-config"); }
+    public void actionPerformed(ActionEvent ae) {
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	NavigatorPane nav = pb.getNavigatorPane();
+	NavigatorConfigDialog ncd = new NavigatorConfigDialog(pb, nav);
+	ncd.setVisible(true);
+    }
 } /* end class ActionNavConfig */
 
 class ActionNextEditTab extends UMLAction {
-  public ActionNextEditTab() { super("action.next-editing-tab", NO_ICON); }
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    MultiEditorPane mep = pb.getEditorPane();
-    mep.selectNextTab();
-  }
+    public ActionNextEditTab() { super("action.next-editing-tab", NO_ICON); }
+    public void actionPerformed(ActionEvent ae) {
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	MultiEditorPane mep = pb.getEditorPane();
+	mep.selectNextTab();
+    }
 } /* end class ActionNextEditTab */
 
 // class ActionAddToFavs extends UMLAction {
@@ -341,12 +342,12 @@ class ActionNextEditTab extends UMLAction {
 
 
 class ActionShowRapidButtons extends UMLAction {
-  public ActionShowRapidButtons() {
-    super("action.buttons-on-selection", NO_ICON);
-  }
-  public void actionPerformed(ActionEvent ae) {
-    SelectionWButtons.toggleShowRapidButtons();
-  }
+    public ActionShowRapidButtons() {
+	super("action.buttons-on-selection", NO_ICON);
+    }
+    public void actionPerformed(ActionEvent ae) {
+	SelectionWButtons.toggleShowRapidButtons();
+    }
 } /* end class ActionShowRapidButtons */
 
 
@@ -354,12 +355,12 @@ class ActionShowRapidButtons extends UMLAction {
 // items on create menu
 
 class ActionCreateMultiple extends UMLAction {
-  public ActionCreateMultiple() { super("action.create-multiple", NO_ICON); }
-  public boolean shouldBeEnabled() {
-    //Project p = ProjectBrowser.TheInstance.getProject();
-    //return super.shouldBeEnabled() && p != null;
-    return false;
-  }
+    public ActionCreateMultiple() { super("action.create-multiple", NO_ICON); }
+    public boolean shouldBeEnabled() {
+	//Project p = ProjectBrowser.TheInstance.getProject();
+	//return super.shouldBeEnabled() && p != null;
+	return false;
+    }
 } /* end class ActionCreateMultiple */
 
 
@@ -382,47 +383,47 @@ class ActionCreateMultiple extends UMLAction {
 // critiquing related actions
 
 class ActionAutoCritique extends UMLAction {
-  public ActionAutoCritique() {
-    super("action.toggle-auto-critique", NO_ICON);
-  }
-  public void actionPerformed(ActionEvent ae) {
-    Designer d = Designer.TheDesigner;
-    boolean b = d.getAutoCritique();
-    d.setAutoCritique(!b);
-  }
+    public ActionAutoCritique() {
+	super("action.toggle-auto-critique", NO_ICON);
+    }
+    public void actionPerformed(ActionEvent ae) {
+	Designer d = Designer.TheDesigner;
+	boolean b = d.getAutoCritique();
+	d.setAutoCritique(!b);
+    }
 } /* end class ActionAutoCritique */
 
 class ActionOpenDecisions extends UMLAction {
-  public ActionOpenDecisions() { super("action.design-issues", NO_ICON); }
-  public void actionPerformed(ActionEvent ae) {
-    DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.getInstance());
-    d.show();
-  }
+    public ActionOpenDecisions() { super("action.design-issues", NO_ICON); }
+    public void actionPerformed(ActionEvent ae) {
+	DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.getInstance());
+	d.show();
+    }
 } /* end class ActionOpenDecisions */
 
 class ActionOpenGoals extends UMLAction {
-  public ActionOpenGoals() { super("action.design-goals", NO_ICON); }
-  public void actionPerformed(ActionEvent ae) {
-    GoalsDialog d = new GoalsDialog(ProjectBrowser.getInstance());
-    d.show();
-  }
+    public ActionOpenGoals() { super("action.design-goals", NO_ICON); }
+    public void actionPerformed(ActionEvent ae) {
+	GoalsDialog d = new GoalsDialog(ProjectBrowser.getInstance());
+	d.show();
+    }
 } /* end class ActionOpenGoals */
 
 class ActionOpenCritics extends UMLAction {
-  public ActionOpenCritics() { super("action.browse-critics", NO_ICON); }
-  public void actionPerformed(ActionEvent ae) {
-    CriticBrowserDialog dialog = new CriticBrowserDialog();
-    dialog.show();
-  }
+    public ActionOpenCritics() { super("action.browse-critics", NO_ICON); }
+    public void actionPerformed(ActionEvent ae) {
+	CriticBrowserDialog dialog = new CriticBrowserDialog();
+	dialog.show();
+    }
 
 } /* end class ActionOpenCritics */
 
 
 class ActionFlatToDo extends UMLAction {
-  public ActionFlatToDo() { super("action.toggle-flat-view", NO_ICON); }
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser.getInstance().getTodoPane().toggleFlat();
-  }
+    public ActionFlatToDo() { super("action.toggle-flat-view", NO_ICON); }
+    public void actionPerformed(ActionEvent ae) {
+	ProjectBrowser.getInstance().getTodoPane().toggleFlat();
+    }
 } /* end class ActionFlatToDo */
 
 class ActionNewToDoItem extends UMLAction {
@@ -438,42 +439,42 @@ class ActionNewToDoItem extends UMLAction {
 } /* end class ActionNewToDoItem */
 
 class ToDoItemAction extends UMLAction {
-  Object _target = null;
-  public ToDoItemAction(String name) { super(name, false, HAS_ICON); }
-  public ToDoItemAction(String name, boolean hasIcon) {
-    super(name, false, hasIcon);
-  }
-
-  public void updateEnabled(Object target) {
-    if (target == null) {
-        setEnabled(false);
-        return;
+    Object _target = null;
+    public ToDoItemAction(String name) { super(name, false, HAS_ICON); }
+    public ToDoItemAction(String name, boolean hasIcon) {
+	super(name, false, hasIcon);
     }
-    _target = target;
-    setEnabled(shouldBeEnabled(target));
-  }
 
-  public boolean shouldBeEnabled(Object target) {
-    return target instanceof ToDoItem;
-  }
+    public void updateEnabled(Object target) {
+	if (target == null) {
+	    setEnabled(false);
+	    return;
+	}
+	_target = target;
+	setEnabled(shouldBeEnabled(target));
+    }
+
+    public boolean shouldBeEnabled(Object target) {
+	return target instanceof ToDoItem;
+    }
 }
 
 class ActionResolve extends ToDoItemAction {
-  public ActionResolve() { super("action.resolve-item"); }
-  public void actionPerformed(ActionEvent ae) {
-    DismissToDoItemDialog dialog = new DismissToDoItemDialog();
-    dialog.setTarget(_target);
-    dialog.setVisible(true);
-  }
+    public ActionResolve() { super("action.resolve-item"); }
+    public void actionPerformed(ActionEvent ae) {
+	DismissToDoItemDialog dialog = new DismissToDoItemDialog();
+	dialog.setTarget(_target);
+	dialog.setVisible(true);
+    }
 } /* end class ActionResolve */
 
 class ActionEmailExpert extends ToDoItemAction {
-  public ActionEmailExpert() { super("action.send-email-to-expert"); }
-  public void actionPerformed(ActionEvent ae) {
-    EmailExpertDialog dialog = new EmailExpertDialog();
-    dialog.setTarget(_target);
-    dialog.show();
-  }
+    public ActionEmailExpert() { super("action.send-email-to-expert"); }
+    public void actionPerformed(ActionEvent ae) {
+	EmailExpertDialog dialog = new EmailExpertDialog();
+	dialog.setTarget(_target);
+	dialog.show();
+    }
     /**
      * @see org.argouml.ui.ToDoItemAction#shouldBeEnabled(java.lang.Object)
      */
@@ -484,18 +485,18 @@ class ActionEmailExpert extends ToDoItemAction {
 } /* end class ActionEmailExpert */
 
 class ActionMoreInfo extends ToDoItemAction {
-  public ActionMoreInfo() { super("action.more-info", NO_ICON); }
+    public ActionMoreInfo() { super("action.more-info", NO_ICON); }
 } /* end class ActionMoreInfo */
 
 class ActionSnooze extends ToDoItemAction {
-  public ActionSnooze() { super("action.snooze-critic"); }
-  public void actionPerformed(ActionEvent ae) {
-    if (!(_target instanceof ToDoItem)) return;
-    ToDoItem item = (ToDoItem) _target;
-    Poster p = item.getPoster();
-    p.snooze();
-    TabToDo._numHushes++;
-  }
+    public ActionSnooze() { super("action.snooze-critic"); }
+    public void actionPerformed(ActionEvent ae) {
+	if (!(_target instanceof ToDoItem)) return;
+	ToDoItem item = (ToDoItem) _target;
+	Poster p = item.getPoster();
+	p.snooze();
+	TabToDo._numHushes++;
+    }
 } /* end class ActionSnooze */
 
 
@@ -505,35 +506,35 @@ class ActionSnooze extends ToDoItemAction {
  * System information dialog. 
  */
 class ActionSystemInfo extends UMLAction {
-  public ActionSystemInfo() { super("System Information", NO_ICON); }
+    public ActionSystemInfo() { super("System Information", NO_ICON); }
 
-  public void actionPerformed(ActionEvent ae) {
-    JFrame jFrame = (JFrame)ActionUtilities.getActionRoot(ae);
-    SystemInfoDialog sysInfoDialog = new SystemInfoDialog(jFrame,true);
-    Dimension siDim = sysInfoDialog.getSize();
-    Dimension pbDim = jFrame.getSize();
-    if ( siDim.width > pbDim.width/2 ) {
-      sysInfoDialog.setSize(pbDim.width/2,siDim.height+45);
-    } else {
-      sysInfoDialog.setSize(siDim.width,siDim.height+45);
+    public void actionPerformed(ActionEvent ae) {
+	JFrame jFrame = (JFrame) ActionUtilities.getActionRoot(ae);
+	SystemInfoDialog sysInfoDialog = new SystemInfoDialog(jFrame, true);
+	Dimension siDim = sysInfoDialog.getSize();
+	Dimension pbDim = jFrame.getSize();
+	if ( siDim.width > pbDim.width / 2 ) {
+	    sysInfoDialog.setSize(pbDim.width / 2, siDim.height + 45);
+	} else {
+	    sysInfoDialog.setSize(siDim.width, siDim.height + 45);
+	}
+	sysInfoDialog.setLocationRelativeTo(jFrame);
+	sysInfoDialog.show();
     }
-    sysInfoDialog.setLocationRelativeTo(jFrame);
-    sysInfoDialog.show();
-  }
-  public boolean shouldBeEnabled() { return true; }
+    public boolean shouldBeEnabled() { return true; }
 } /* end class ActionSystemInfo */
 
 /**
  * About ArgoUML dialog.
  */
 class ActionAboutArgoUML extends UMLAction {
-  public ActionAboutArgoUML() { super("action.about-argouml", NO_ICON); }
+    public ActionAboutArgoUML() { super("action.about-argouml", NO_ICON); }
 
-  public void actionPerformed(ActionEvent ae) {
-    JFrame jFrame = (JFrame)ActionUtilities.getActionRoot(ae);
-    AboutBox box = new AboutBox(jFrame,true);
-    box.setLocationRelativeTo(jFrame);
-    box.show();
-  }
-  public boolean shouldBeEnabled() { return true; }
+    public void actionPerformed(ActionEvent ae) {
+	JFrame jFrame = (JFrame) ActionUtilities.getActionRoot(ae);
+	AboutBox box = new AboutBox(jFrame, true);
+	box.setLocationRelativeTo(jFrame);
+	box.show();
+    }
+    public boolean shouldBeEnabled() { return true; }
 } /* end class ActionAboutArgoUML */

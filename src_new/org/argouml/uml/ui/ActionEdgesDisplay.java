@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -69,25 +70,25 @@ public class ActionEdgesDisplay extends UMLAction {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         ArgoDiagram d = pb.getActiveDiagram();
         Editor ce = Globals.curEditor();
-        MutableGraphModel mgm = (MutableGraphModel)ce.getGraphModel();
+        MutableGraphModel mgm = (MutableGraphModel) ce.getGraphModel();
 
         Enumeration e = ce.getSelectionManager().selections().elements();
         // note: multiple selection not currently supported (2002-04-05)
-        while(e.hasMoreElements()) {
+        while (e.hasMoreElements()) {
             Selection sel = (Selection) e.nextElement();
             Object owner = sel.getContent().getOwner();
 
-            if(_show) { // add
+            if (_show) { // add
                 mgm.addNodeRelatedEdges(owner);
             }
             else { // remove
                 Vector edges = mgm.getInEdges(owner);
                 edges.addAll(mgm.getOutEdges(owner));
                 Enumeration e2 = edges.elements();
-                while(e2.hasMoreElements()) {
+                while (e2.hasMoreElements()) {
                     Object edge = e2.nextElement();
                     Fig fig = d.presentationFor(edge);
-                    if(fig != null)
+                    if (fig != null)
                         fig.delete();
                 }
             }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,61 +36,61 @@ import org.apache.log4j.Category;
 public abstract class XMLTokenTableBase {
     protected static Category cat = Category.getInstance(XMLTokenTableBase.class);
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected  Hashtable _tokens       = null;
-  protected  boolean   _dbg          = false;
-  protected  String    _openTags[]   = new String[100];
-  protected  int       _openTokens[] = new int[100];
-  protected  int       _numOpen      = 0;
+    protected  Hashtable _tokens       = null;
+    protected  boolean   _dbg          = false;
+    protected  String    _openTags[]   = new String[100];
+    protected  int       _openTokens[] = new int[100];
+    protected  int       _numOpen      = 0;
 
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public XMLTokenTableBase(int tableSize) {
-    _tokens = new Hashtable(tableSize);
-    setupTokens();
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public final int toToken(String s, boolean push) {
-    if (push) _openTags[++_numOpen] = s;
-    else if (s.equals(_openTags[_numOpen])) {
-      cat.debug("matched: " + s);
-      return _openTokens[_numOpen--];
+    public XMLTokenTableBase(int tableSize) {
+	_tokens = new Hashtable(tableSize);
+	setupTokens();
     }
-    Integer i = (Integer) _tokens.get(s);
-    if (i != null) {
-      _openTokens[_numOpen] = i.intValue();
-      return _openTokens[_numOpen];
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    public final int toToken(String s, boolean push) {
+	if (push) _openTags[++_numOpen] = s;
+	else if (s.equals(_openTags[_numOpen])) {
+	    cat.debug("matched: " + s);
+	    return _openTokens[_numOpen--];
+	}
+	Integer i = (Integer) _tokens.get(s);
+	if (i != null) {
+	    _openTokens[_numOpen] = i.intValue();
+	    return _openTokens[_numOpen];
+	}
+	else return -1;
     }
-    else return -1;
-  }
 
-  public void    setDbg(boolean dbg)     { _dbg = dbg; }
-  public boolean getDbg()                { return _dbg; }
+    public void    setDbg(boolean dbg)     { _dbg = dbg; }
+    public boolean getDbg()                { return _dbg; }
 
-  ////////////////////////////////////////////////////////////////
-  // class methods
+    ////////////////////////////////////////////////////////////////
+    // class methods
 
-  protected void addToken(String s, Integer i) {
-    boolean error = false;
-    if (_dbg) {
-      if (_tokens.contains(i) || _tokens.containsKey(s)) {
-	cat.error("ERROR: token table already contains " + s);
-	error = true;
-      }
+    protected void addToken(String s, Integer i) {
+	boolean error = false;
+	if (_dbg) {
+	    if (_tokens.contains(i) || _tokens.containsKey(s)) {
+		cat.error("ERROR: token table already contains " + s);
+		error = true;
+	    }
+	}
+	_tokens.put(s, i);
+	if (_dbg && !error) {
+	    cat.debug("NOTE: added '" + s + "' to token table");
+	}
     }
-    _tokens.put(s,i);
-    if (_dbg && !error) {
-      cat.debug("NOTE: added '" + s + "' to token table");
-    }
-  }
 
-  protected abstract void setupTokens();
+    protected abstract void setupTokens();
 
 } /* end class XMLTokenTableBase */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,7 +53,7 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
     /** Singleton instance.
      */
     private static ActivityGraphsFactory SINGLETON =
-                   new ActivityGraphsFactory();
+	new ActivityGraphsFactory();
 
     /** Singleton instance access method.
      */
@@ -135,40 +136,40 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
     
-	/**
-	 * Builds an activity graph owned by the given context
-	 * @param context
-	 * @return MActivityGraph
-	 */
+    /**
+     * Builds an activity graph owned by the given context
+     * @param context
+     * @return MActivityGraph
+     */
     public MActivityGraph buildActivityGraph(MModelElement context) {
     	if (context != null && (context instanceof MBehavioralFeature || context instanceof MClassifier || context instanceof MPackage)) {
-    		MActivityGraph graph = createActivityGraph();
-    		graph.setContext(context);
-    		if (context instanceof MNamespace) {
-    			graph.setNamespace((MNamespace)context);
-    		} else
+	    MActivityGraph graph = createActivityGraph();
+	    graph.setContext(context);
+	    if (context instanceof MNamespace) {
+		graph.setNamespace((MNamespace) context);
+	    } else
     		if (context instanceof MBehavioralFeature) {
-    			graph.setNamespace(context.getNamespace());
+		    graph.setNamespace(context.getNamespace());
     		}
-    		StateMachinesFactory.getFactory().buildCompositeState(graph);
-    		return graph;
+	    StateMachinesFactory.getFactory().buildCompositeState(graph);
+	    return graph;
     	} else 
-    		throw new IllegalArgumentException("In buildActivityGraph: context null or not legal");
+	    throw new IllegalArgumentException("In buildActivityGraph: context null or not legal");
     }
     
-    public void deleteActionState(Object elem) {}
+    public void deleteActionState(Object elem) { }
     
-    public void deleteActivityGraph(MActivityGraph elem) {}
+    public void deleteActivityGraph(MActivityGraph elem) { }
     
-    public void deleteCallState(MCallState elem) {}
+    public void deleteCallState(MCallState elem) { }
     
-    public void deleteClassifierInState(MClassifierInState elem) {}
+    public void deleteClassifierInState(MClassifierInState elem) { }
     
-    public void deleteObjectFlowState(MObjectFlowState elem) {}
+    public void deleteObjectFlowState(MObjectFlowState elem) { }
     
-    public void deletePartition(MPartition elem) {}
+    public void deletePartition(MPartition elem) { }
     
-    public void deleteSubactivityState(MSubactivityState elem) {}
+    public void deleteSubactivityState(MSubactivityState elem) { }
 
 }
 

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,7 +43,7 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
 	// calculate the higher and lower Figs
         ClassdiagramLayouter.cat.debug("sourceFigNode: " + sourceFigNode.classNameAndBounds());
         ClassdiagramLayouter.cat.debug("destFigNode: " + destFigNode.classNameAndBounds());
-        if (sourceFigNode.getLocation().getY()<=destFigNode.getLocation().getY()) {
+        if (sourceFigNode.getLocation().getY() <= destFigNode.getLocation().getY()) {
             high = destFigNode;
             low = sourceFigNode;
             ClassdiagramLayouter.cat.debug("high is sourcenode, is low destnode");
@@ -59,15 +60,15 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
     public abstract int getVerticalOffset();
         
     public int getCenterHigh() {
-        return (int)(high.getLocation().getX()+high.getSize().getWidth()/2);
+        return (int) (high.getLocation().getX() + high.getSize().getWidth() / 2);
     }
     
     public int getCenterLow() {
-        return (int)(low.getLocation().getX()+low.getSize().getWidth()/2);
+        return (int) (low.getLocation().getX() + low.getSize().getWidth() / 2);
     }
     
     public int getDownGap() {
-        return (int)(low.getLocation().getY() - getVerticalOffset());
+        return (int) (low.getLocation().getY() - getVerticalOffset());
     }
     
     /** layout the edges in a way that they form a nice inheritance tree.
@@ -90,25 +91,25 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
         int difference = centerHigh - centerLow;
         
         underlyingFig.addPoint(centerLow, (int)
-            (low.getLocation().getY()));
-        ClassdiagramLayouter.cat.debug("Point: x: " + centerLow + " y: " + (int)(low.getLocation().getY()));
+			       (low.getLocation().getY()));
+        ClassdiagramLayouter.cat.debug("Point: x: " + centerLow + " y: " + (int) (low.getLocation().getY()));
         
         // if the Figs are directly under each other we
         // do not need to add these points
-        if (difference!=0) { 
+        if (difference != 0) { 
             underlyingFig.addPoint(centerHigh - difference,
-                getDownGap());
-            ClassdiagramLayouter.cat.debug("Point: x: " + (centerHigh - difference) +" y: " + getDownGap());
+				   getDownGap());
+            ClassdiagramLayouter.cat.debug("Point: x: " + (centerHigh - difference) + " y: " + getDownGap());
             underlyingFig.addPoint(centerHigh,
-                getDownGap());
-            ClassdiagramLayouter.cat.debug("Point: x: " +centerHigh+" y: "+getDownGap());
+				   getDownGap());
+            ClassdiagramLayouter.cat.debug("Point: x: " + centerHigh + " y: " + getDownGap());
             
         }
         
         underlyingFig.addPoint( centerHigh,
-        (int)(high.getLocation().getY()+
-        high.getSize().getHeight()));
-        ClassdiagramLayouter.cat.debug("Point x: " + centerHigh +" y: "+(int)(high.getLocation().getY()+high.getSize().getHeight()));
+				(int) (high.getLocation().getY() +
+				      high.getSize().getHeight()));
+        ClassdiagramLayouter.cat.debug("Point x: " + centerHigh + " y: " + (int) (high.getLocation().getY() + high.getSize().getHeight()));
         
         underlyingFig.setFilled(false);
         currentEdge.setFig(underlyingFig);

@@ -56,121 +56,121 @@ import ru.novosoft.uml.behavior.common_behavior.MObjectImpl;
 public class SelectionObject extends SelectionWButtons {
     protected static Category cat = 
         Category.getInstance(SelectionObject.class);
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static Icon dep = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Link");
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static Icon dep = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Link");
 
 
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new SelectionObject for the given Fig */
-  public SelectionObject(Fig f) { super(f); }
+    /** Construct a new SelectionObject for the given Fig */
+    public SelectionObject(Fig f) { super(f); }
 
-  public void hitHandle(Rectangle r, Handle h) {
-    super.hitHandle(r, h);
-    if (h.index != -1) return;
-    if (!_paintButtons) return;
-    Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    if (sm.size() != 1) return;
-    ModeManager mm = ce.getModeManager();
-    if (mm.includes(ModeModify.class) && _pressedButton == -1) return;
-    int cx = _content.getX();
-    int cy = _content.getY();
-    int cw = _content.getWidth();
-    int ch = _content.getHeight();
-    int aw = dep.getIconWidth();
-    int ah = dep.getIconHeight();
-    if (hitAbove(cx + cw/2, cy, aw, ah, r)) {
-      h.index = 10;
-      h.instructions = "Add an object";
-    }
-    else if (hitBelow(cx + cw/2, cy + ch, aw, ah, r)) {
-      h.index = 11;
-      h.instructions = "Add an object";
-    }
-    else if (hitLeft(cx + cw, cy + ch/2, aw, ah, r)) {
-      h.index = 12;
-      h.instructions = "Add an object";
-    }
-    else if (hitRight(cx, cy + ch/2, aw, ah, r)) {
-      h.index = 13;
-      h.instructions = "Add an object";
-    }
-    else {
-      h.index = -1;
-      h.instructions = "Move object(s)";
-    }
-  }
-
-
-  /** Paint the handles at the four corners and midway along each edge
-   * of the bounding box.  */
-  public void paintButtons(Graphics g) {
-    int cx = _content.getX();
-    int cy = _content.getY();
-    int cw = _content.getWidth();
-    int ch = _content.getHeight();
-    paintButtonAbove(dep, g, cx + cw/2, cy, 10);
-    paintButtonBelow(dep, g, cx + cw/2, cy + ch, 11);
-    paintButtonLeft(dep, g, cx + cw, cy + ch/2, 12);
-    paintButtonRight(dep, g, cx, cy + ch/2, 13);
-  }
-
-
-  public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-    if (hand.index < 10) {
-      _paintButtons = false;
-      super.dragHandle(mX, mY, anX, anY, hand);
-      return;
-    }
-    int cx = _content.getX(), cy = _content.getY();
-    int cw = _content.getWidth(), ch = _content.getHeight();
-    int newX = cx, newY = cy, newW = cw, newH = ch;
-    Dimension minSize = _content.getMinimumSize();
-    int minWidth = minSize.width, minHeight = minSize.height;
-    Class edgeClass = null;
-    Class nodeClass = MObjectImpl.class;
-    int bx = mX, by = mY;
-    boolean reverse = false;
-    switch (hand.index) {
-    case 10: //add link
-      edgeClass = MLink.class;
-      by = cy;
-      bx = cx + cw/2;
-      break;
-    case 11: //add link
-      edgeClass = MLink.class;
-      reverse = true;
-      by = cy + ch;
-      bx = cx + cw/2;
-      break;
-    case 12: //add link
-      edgeClass = MLink.class;
-      by = cy + ch/2;
-      bx = cx + cw;
-      break;
-    case 13: // add link
-      edgeClass = MLink.class;
-      reverse = true;
-      by = cy + ch/2;
-      bx = cx;
-      break;
-    default:
-      cat.warn("invalid handle number");
-      break;
-    }
-    if (edgeClass != null && nodeClass != null) {
-      Editor ce = Globals.curEditor();
-      ModeCreateEdgeAndNode m = new
-	ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
-      m.setup((FigNode)_content, _content.getOwner(), bx, by, reverse);
-      ce.mode(m);
+    public void hitHandle(Rectangle r, Handle h) {
+	super.hitHandle(r, h);
+	if (h.index != -1) return;
+	if (!_paintButtons) return;
+	Editor ce = Globals.curEditor();
+	SelectionManager sm = ce.getSelectionManager();
+	if (sm.size() != 1) return;
+	ModeManager mm = ce.getModeManager();
+	if (mm.includes(ModeModify.class) && _pressedButton == -1) return;
+	int cx = _content.getX();
+	int cy = _content.getY();
+	int cw = _content.getWidth();
+	int ch = _content.getHeight();
+	int aw = dep.getIconWidth();
+	int ah = dep.getIconHeight();
+	if (hitAbove(cx + cw / 2, cy, aw, ah, r)) {
+	    h.index = 10;
+	    h.instructions = "Add an object";
+	}
+	else if (hitBelow(cx + cw / 2, cy + ch, aw, ah, r)) {
+	    h.index = 11;
+	    h.instructions = "Add an object";
+	}
+	else if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
+	    h.index = 12;
+	    h.instructions = "Add an object";
+	}
+	else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
+	    h.index = 13;
+	    h.instructions = "Add an object";
+	}
+	else {
+	    h.index = -1;
+	    h.instructions = "Move object(s)";
+	}
     }
 
-  }
+
+    /** Paint the handles at the four corners and midway along each edge
+     * of the bounding box.  */
+    public void paintButtons(Graphics g) {
+	int cx = _content.getX();
+	int cy = _content.getY();
+	int cw = _content.getWidth();
+	int ch = _content.getHeight();
+	paintButtonAbove(dep, g, cx + cw / 2, cy, 10);
+	paintButtonBelow(dep, g, cx + cw / 2, cy + ch, 11);
+	paintButtonLeft(dep, g, cx + cw, cy + ch / 2, 12);
+	paintButtonRight(dep, g, cx, cy + ch / 2, 13);
+    }
+
+
+    public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
+	if (hand.index < 10) {
+	    _paintButtons = false;
+	    super.dragHandle(mX, mY, anX, anY, hand);
+	    return;
+	}
+	int cx = _content.getX(), cy = _content.getY();
+	int cw = _content.getWidth(), ch = _content.getHeight();
+	int newX = cx, newY = cy, newW = cw, newH = ch;
+	Dimension minSize = _content.getMinimumSize();
+	int minWidth = minSize.width, minHeight = minSize.height;
+	Class edgeClass = null;
+	Class nodeClass = MObjectImpl.class;
+	int bx = mX, by = mY;
+	boolean reverse = false;
+	switch (hand.index) {
+	case 10: //add link
+	    edgeClass = MLink.class;
+	    by = cy;
+	    bx = cx + cw / 2;
+	    break;
+	case 11: //add link
+	    edgeClass = MLink.class;
+	    reverse = true;
+	    by = cy + ch;
+	    bx = cx + cw / 2;
+	    break;
+	case 12: //add link
+	    edgeClass = MLink.class;
+	    by = cy + ch / 2;
+	    bx = cx + cw;
+	    break;
+	case 13: // add link
+	    edgeClass = MLink.class;
+	    reverse = true;
+	    by = cy + ch / 2;
+	    bx = cx;
+	    break;
+	default:
+	    cat.warn("invalid handle number");
+	    break;
+	}
+	if (edgeClass != null && nodeClass != null) {
+	    Editor ce = Globals.curEditor();
+	    ModeCreateEdgeAndNode m = new
+		ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
+	    ce.mode(m);
+	}
+
+    }
 
 
   

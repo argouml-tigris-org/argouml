@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,7 +40,7 @@ import ru.novosoft.uml.foundation.core.MClassifier;
  */
 public class ActionSetAssociationEndType extends UMLChangeAction {
 
-     public static final ActionSetAssociationEndType SINGLETON = new ActionSetAssociationEndType();
+    public static final ActionSetAssociationEndType SINGLETON = new ActionSetAssociationEndType();
     
     /**
      * Constructor for ActionSetStructuralFeatureType.
@@ -61,15 +62,15 @@ public class ActionSetAssociationEndType extends UMLChangeAction {
         MClassifier newClassifier = null;
         MAssociationEnd end = null;
         if (source instanceof UMLComboBox2) {
-            UMLComboBox2 box = (UMLComboBox2)source;
+            UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
             if (o instanceof MAssociationEnd) {
-                end = (MAssociationEnd)o;
+                end = (MAssociationEnd) o;
                 oldClassifier = end.getType();
             }
             o = box.getSelectedItem();
             if (o instanceof MClassifier) {
-                newClassifier = (MClassifier)o;
+                newClassifier = (MClassifier) o;
             }
         }
         if (newClassifier != oldClassifier && end != null && newClassifier != null) {

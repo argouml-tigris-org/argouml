@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,29 +33,29 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  */
 public class ActionGenerationSettings extends UMLAction {
 
-  ////////////////////////////////////////////////////////////////
-  // static variables
+    ////////////////////////////////////////////////////////////////
+    // static variables
 
-  public static ActionGenerationSettings SINGLETON = new ActionGenerationSettings();
+    public static ActionGenerationSettings SINGLETON = new ActionGenerationSettings();
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  protected ActionGenerationSettings() {
-    super("action.settings-for-project-code-generation", NO_ICON);
-  }
+    protected ActionGenerationSettings() {
+	super("action.settings-for-project-code-generation", NO_ICON);
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // main methods
+    ////////////////////////////////////////////////////////////////
+    // main methods
 
-  public void actionPerformed(ActionEvent ae) {
-    SourcePathDialog cgd = new SourcePathDialog();
-    cgd.show();
-  }
+    public void actionPerformed(ActionEvent ae) {
+	SourcePathDialog cgd = new SourcePathDialog();
+	cgd.show();
+    }
 
-  public boolean shouldBeEnabled() {
-    org.argouml.ui.ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-    return super.shouldBeEnabled() &&
-      (activeDiagram instanceof UMLDiagram);
-  }
+    public boolean shouldBeEnabled() {
+	org.argouml.ui.ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	return super.shouldBeEnabled() &&
+	    (activeDiagram instanceof UMLDiagram);
+    }
 } /* end class ActionGenerationSettings */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -28,28 +29,28 @@ import java.util.*;
 import org.argouml.cognitive.*;
 
 public class StandardCM extends AndCM {
-  public StandardCM() {
-    addMech(new EnabledCM());
-    addMech(new NotSnoozedCM());
-    addMech(new DesignGoalsCM());
-    addMech(new CurDecisionCM());
-  }
+    public StandardCM() {
+	addMech(new EnabledCM());
+	addMech(new NotSnoozedCM());
+	addMech(new DesignGoalsCM());
+	addMech(new CurDecisionCM());
+    }
 } /* end class StandardCM */
 
 
 
 class NotSnoozedCM extends ControlMech {
-  public boolean isRelevant(Critic c, Designer d) {
-    return !c.snoozeOrder().getSnoozed();
-  }
+    public boolean isRelevant(Critic c, Designer d) {
+	return !c.snoozeOrder().getSnoozed();
+    }
 } // end class NotSnoozedCM
 
 
 
 class DesignGoalsCM extends ControlMech {
-  public boolean isRelevant(Critic c, Designer d) {
-    return c.isRelevantToGoals(d);
-  }
+    public boolean isRelevant(Critic c, Designer d) {
+	return c.isRelevantToGoals(d);
+    }
 } // end class DesignGoalsCM
 
 // How much control should critics have over when they are relavant?
@@ -58,42 +59,42 @@ class DesignGoalsCM extends ControlMech {
 // componentization?
 
 class CurDecisionCM extends ControlMech {
-  public boolean isRelevant(Critic c, Designer d) {
-    return c.isRelevantToDecisions(d);
-  }
+    public boolean isRelevant(Critic c, Designer d) {
+	return c.isRelevantToDecisions(d);
+    }
 } // end class CurDecisionCM
 
 
 
 class CompositeCM extends ControlMech {
-  protected Vector _mechs = new Vector();
-  public void addMech(ControlMech cm) {
-    _mechs.addElement(cm);
-  }
+    protected Vector _mechs = new Vector();
+    public void addMech(ControlMech cm) {
+	_mechs.addElement(cm);
+    }
 } // end class CompositeCM
 
 
 
 class AndCM extends CompositeCM {
-  public boolean isRelevant(Critic c, Designer d) {
-    Enumeration cur = _mechs.elements();
-    while (cur.hasMoreElements()) {
-      ControlMech cm = (ControlMech)cur.nextElement();
-      if (!cm.isRelevant(c, d)) return false;
+    public boolean isRelevant(Critic c, Designer d) {
+	Enumeration cur = _mechs.elements();
+	while (cur.hasMoreElements()) {
+	    ControlMech cm = (ControlMech) cur.nextElement();
+	    if (!cm.isRelevant(c, d)) return false;
+	}
+	return true;
     }
-    return true;
-  }
 } // end class AndCM
 
 
 
 class OrCM extends CompositeCM {
-  public boolean isRelevant(Critic c, Designer d) {
-    Enumeration cur = _mechs.elements();
-    while (cur.hasMoreElements()) {
-      ControlMech cm = (ControlMech)cur.nextElement();
-      if (cm.isRelevant(c, d)) return true;
+    public boolean isRelevant(Critic c, Designer d) {
+	Enumeration cur = _mechs.elements();
+	while (cur.hasMoreElements()) {
+	    ControlMech cm = (ControlMech) cur.nextElement();
+	    if (cm.isRelevant(c, d)) return true;
+	}
+	return false;
     }
-    return false;
-  }
 } // end class OrCM

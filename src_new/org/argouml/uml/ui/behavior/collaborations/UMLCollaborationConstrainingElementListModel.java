@@ -50,14 +50,14 @@ public class UMLCollaborationConstrainingElementListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MCollaboration)getTarget()).getConstrainingElements());
+        setAllElements(((MCollaboration) getTarget()).getConstrainingElements());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase elem) {
-        return (((MCollaboration)getTarget()).getConstrainingElements().contains(elem));
+        return (((MCollaboration) getTarget()).getConstrainingElements().contains(elem));
     }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -164,7 +165,7 @@ public class DesignIssuesDialog extends JDialog
             decSlide.addChangeListener(this);
             Dimension origSize = decSlide.getPreferredSize();
             Dimension smallSize = 
-                new Dimension(origSize.width/2, origSize.height);
+                new Dimension(origSize.width / 2, origSize.height);
             decSlide.setSize(smallSize);
             decSlide.setPreferredSize(smallSize);
 
@@ -218,11 +219,21 @@ public class DesignIssuesDialog extends JDialog
     protected String getValueText(int priority) {
         String label = "";
         switch(priority) {
-        case 0: label = " off"; break;
-        case 1: label = "   1"; break;
-        case 2: label = "   2"; break;
-        case 3: label = "   3"; break;
-        case 4: label = " off"; break;
+        case 0:
+	    label = " off"; 
+	    break;
+        case 1:
+	    label = "   1"; 
+	    break;
+        case 2:
+	    label = "   2"; 
+	    break;
+        case 3:
+	    label = "   3";
+	    break;
+        case 4: 
+	    label = " off"; 
+	    break;
         }
         return label;
     }

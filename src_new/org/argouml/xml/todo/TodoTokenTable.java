@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,59 +34,59 @@ import org.argouml.xml.XMLTokenTableBase;
  */
 public class TodoTokenTable extends XMLTokenTableBase {
 
-	public static final String STRING_todo                   = "todo";
-	public static final String STRING_todolist               = "todolist";
-	public static final String STRING_todoitem               = "todoitem";
-	public static final String STRING_headline               = "headline";
-	public static final String STRING_description            = "description";
-	public static final String STRING_priority               = "priority";
-	public static final String STRING_moreinfourl            = "moreinfourl";
+    public static final String STRING_todo                   = "todo";
+    public static final String STRING_todolist               = "todolist";
+    public static final String STRING_todoitem               = "todoitem";
+    public static final String STRING_headline               = "headline";
+    public static final String STRING_description            = "description";
+    public static final String STRING_priority               = "priority";
+    public static final String STRING_moreinfourl            = "moreinfourl";
 
-	public static final String STRING_resolvedcritics        = "resolvedcritics";
-	public static final String STRING_issue                  = "issue";
-	public static final String STRING_poster                 = "poster";
-	public static final String STRING_offender               = "offender";
+    public static final String STRING_resolvedcritics        = "resolvedcritics";
+    public static final String STRING_issue                  = "issue";
+    public static final String STRING_poster                 = "poster";
+    public static final String STRING_offender               = "offender";
 
-	/** The String to use for High Priority. */
-	public static final String STRING_prio_high              = "high";
-	/** The String to use for Medium Priority. */
-	public static final String STRING_prio_med               = "medium";
-	/** The String to use for Low Priority. */
-	public static final String STRING_prio_low               = "low";
+    /** The String to use for High Priority. */
+    public static final String STRING_prio_high              = "high";
+    /** The String to use for Medium Priority. */
+    public static final String STRING_prio_med               = "medium";
+    /** The String to use for Low Priority. */
+    public static final String STRING_prio_low               = "low";
 
-	public static final int    TOKEN_todo                    = 1;
-	public static final int    TOKEN_todolist                = 2;
-	public static final int    TOKEN_todoitem                = 3;
-	public static final int    TOKEN_headline                = 4;
-	public static final int    TOKEN_description             = 5;
-	public static final int    TOKEN_priority                = 6;
-	public static final int    TOKEN_moreinfourl             = 7;
+    public static final int    TOKEN_todo                    = 1;
+    public static final int    TOKEN_todolist                = 2;
+    public static final int    TOKEN_todoitem                = 3;
+    public static final int    TOKEN_headline                = 4;
+    public static final int    TOKEN_description             = 5;
+    public static final int    TOKEN_priority                = 6;
+    public static final int    TOKEN_moreinfourl             = 7;
 
-	public static final int    TOKEN_resolvedcritics         = 8;
-	public static final int    TOKEN_issue                   = 9;
-	public static final int    TOKEN_poster                  = 10;
-	public static final int    TOKEN_offender                = 11;
+    public static final int    TOKEN_resolvedcritics         = 8;
+    public static final int    TOKEN_issue                   = 9;
+    public static final int    TOKEN_poster                  = 10;
+    public static final int    TOKEN_offender                = 11;
 
-	public static final int    TOKEN_undefined               = 12;
+    public static final int    TOKEN_undefined               = 12;
 
-	public TodoTokenTable() {
-		super(32);
-	}
+    public TodoTokenTable() {
+	super(32);
+    }
 
-	protected void setupTokens()
-	{
-		addToken(STRING_todo, new Integer(TOKEN_todo));
-		addToken(STRING_todolist, new Integer(TOKEN_todolist));
-		addToken(STRING_todoitem, new Integer(TOKEN_todoitem));
-		addToken(STRING_headline, new Integer(TOKEN_headline));
-		addToken(STRING_description, new Integer(TOKEN_description));
-		addToken(STRING_priority, new Integer(TOKEN_priority));
-		addToken(STRING_moreinfourl, new Integer(TOKEN_moreinfourl));
+    protected void setupTokens()
+    {
+	addToken(STRING_todo, new Integer(TOKEN_todo));
+	addToken(STRING_todolist, new Integer(TOKEN_todolist));
+	addToken(STRING_todoitem, new Integer(TOKEN_todoitem));
+	addToken(STRING_headline, new Integer(TOKEN_headline));
+	addToken(STRING_description, new Integer(TOKEN_description));
+	addToken(STRING_priority, new Integer(TOKEN_priority));
+	addToken(STRING_moreinfourl, new Integer(TOKEN_moreinfourl));
 
-		addToken(STRING_resolvedcritics, new Integer(TOKEN_resolvedcritics));
-		addToken(STRING_issue, new Integer(TOKEN_issue));
-		addToken(STRING_poster, new Integer(TOKEN_poster));
-		addToken(STRING_offender, new Integer(TOKEN_offender));
-	}
+	addToken(STRING_resolvedcritics, new Integer(TOKEN_resolvedcritics));
+	addToken(STRING_issue, new Integer(TOKEN_issue));
+	addToken(STRING_poster, new Integer(TOKEN_poster));
+	addToken(STRING_offender, new Integer(TOKEN_offender));
+    }
 }
 

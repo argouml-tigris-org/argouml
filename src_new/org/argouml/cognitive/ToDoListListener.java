@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -26,8 +27,8 @@ package org.argouml.cognitive;
 
 
 public interface ToDoListListener extends java.util.EventListener {
-  void toDoListChanged(ToDoListEvent tde);
-  void toDoItemsChanged(ToDoListEvent tde);
-  void toDoItemsAdded(ToDoListEvent tde);
-  void toDoItemsRemoved(ToDoListEvent tde);
+    void toDoListChanged(ToDoListEvent tde);
+    void toDoItemsChanged(ToDoListEvent tde);
+    void toDoItemsAdded(ToDoListEvent tde);
+    void toDoItemsRemoved(ToDoListEvent tde);
 } /* end interface ToDoListListener */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -34,63 +35,66 @@ import java.beans.*;
  *   @since ARGO0.9.4
  */
 public class ConfigurationKeyImpl 
-implements ConfigurationKey {
+    implements ConfigurationKey
+{
 
-  /** The string value for the key.
-   */
-  private String _key = null;
+    /** The string value for the key.
+     */
+    private String _key = null;
 
-  /** Create a single component configuration key.
-   */
-  public ConfigurationKeyImpl(String k1) {
-      _key = "argo." + k1;
-  }
+    /** Create a single component configuration key.
+     */
+    public ConfigurationKeyImpl(String k1) {
+	_key = "argo." + k1;
+    }
 
-  /** Create a sub-component of an existing configuration key.
-   */
-  public ConfigurationKeyImpl(ConfigurationKey ck, String k1) {
-      _key = ck.getKey() + "." + k1;
-  }
+    /** Create a sub-component of an existing configuration key.
+     */
+    public ConfigurationKeyImpl(ConfigurationKey ck, String k1) {
+	_key = ck.getKey() + "." + k1;
+    }
 
-  /** Create a two-component configuration key.
-   */
-  public ConfigurationKeyImpl(String k1, String k2) {
-      _key = "argo." + k1 + "." + k2;
-  }
+    /** Create a two-component configuration key.
+     */
+    public ConfigurationKeyImpl(String k1, String k2) {
+	_key = "argo." + k1 + "." + k2;
+    }
 
-  /** Create a three-component configuration key.
-   */
-  public ConfigurationKeyImpl(String k1, String k2, String k3) {
-      _key = "argo." + k1 + "." + k2 + "." + k3;
-  }
+    /** Create a three-component configuration key.
+     */
+    public ConfigurationKeyImpl(String k1, String k2, String k3) {
+	_key = "argo." + k1 + "." + k2 + "." + k3;
+    }
 
-  /** Create a four-component configuration key.
-   */
-  public ConfigurationKeyImpl(String k1, String k2, String k3, String k4) {
-      _key = "argo." + k1 + "." + k2 + "." + k3 + "." + k4;
-  }
+    /** Create a four-component configuration key.
+     */
+    public ConfigurationKeyImpl(String k1, String k2, String k3, String k4) {
+	_key = "argo." + k1 + "." + k2 + "." + k3 + "." + k4;
+    }
 
-  /** Create a five-component configuration key.
-   */
-  public ConfigurationKeyImpl(String k1, String k2, String k3, String k4, String k5) {
-      _key = "argo." + k1 + "." + k2 + "." + k3 + "." + k4 + "." + k5;
-  }
+    /** Create a five-component configuration key.
+     */
+    public ConfigurationKeyImpl(String k1, String k2, 
+				String k3, String k4, String k5) 
+    {
+	_key = "argo." + k1 + "." + k2 + "." + k3 + "." + k4 + "." + k5;
+    }
 
-  /** Return the actual key used to access the configuration.
-   */ 
-  public final String getKey() {
-      return _key;
-  }
+    /** Return the actual key used to access the configuration.
+     */ 
+    public final String getKey() {
+	return _key;
+    }
 
-  /** Compare the configuration key to a string.
-   */
-  public boolean isChangedProperty(PropertyChangeEvent pce) {
-      if (pce == null) return false;
-      return pce.getPropertyName().equals(_key);
-  }
+    /** Compare the configuration key to a string.
+     */
+    public boolean isChangedProperty(PropertyChangeEvent pce) {
+	if (pce == null) return false;
+	return pce.getPropertyName().equals(_key);
+    }
 
-  public String toString() {
-      return "{ConfigurationKeyImpl:" + _key + "}";
-  }
+    public String toString() {
+	return "{ConfigurationKeyImpl:" + _key + "}";
+    }
 }
 

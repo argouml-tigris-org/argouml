@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,90 +47,90 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.*;
 
 public class PropPanelString extends TabSpawnable implements TabModelTarget, PropertyChangeListener, DocumentListener {
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  FigText _target;
-  JLabel _nameLabel = new JLabel("Text: ");
-  JTextField _nameField = new JTextField();
+    ////////////////////////////////////////////////////////////////
+    // instance vars
+    FigText _target;
+    JLabel _nameLabel = new JLabel("Text: ");
+    JTextField _nameField = new JTextField();
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public PropPanelString() {
-    super("String");
-    GridBagLayout gb = new GridBagLayout();
-    setLayout(gb);
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 3; c.ipady = 3;
+    public PropPanelString() {
+	super("String");
+	GridBagLayout gb = new GridBagLayout();
+	setLayout(gb);
+	GridBagConstraints c = new GridBagConstraints();
+	c.fill = GridBagConstraints.BOTH;
+	c.weightx = 0.0;
+	c.ipadx = 3; c.ipady = 3;
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    gb.setConstraints(_nameLabel, c);
-    add(_nameLabel);
+	c.gridx = 0;
+	c.gridwidth = 1;
+	c.gridy = 0;
+	gb.setConstraints(_nameLabel, c);
+	add(_nameLabel);
 
-    c.weightx = 1.0;
-    c.gridx = 1;
-    c.gridwidth = GridBagConstraints.REMAINDER;
-    c.gridheight = GridBagConstraints.REMAINDER;
-    c.gridy = 0;
-    gb.setConstraints(_nameField, c);
-    add(_nameField);
+	c.weightx = 1.0;
+	c.gridx = 1;
+	c.gridwidth = GridBagConstraints.REMAINDER;
+	c.gridheight = GridBagConstraints.REMAINDER;
+	c.gridy = 0;
+	gb.setConstraints(_nameField, c);
+	add(_nameField);
 
-    _nameField.getDocument().addDocumentListener(this);
-    _nameField.setEditable(true);
-    // TODO: set font?
+	_nameField.getDocument().addDocumentListener(this);
+	_nameField.setEditable(true);
+	// TODO: set font?
 
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public void setTarget(Object t) {
-    if (t instanceof FigText) {
-    	_target = (FigText)t;
-    	_target.removePropertyChangeListener(this); // to circumvent to much registred listeners
-    	_target.addPropertyChangeListener(this);
     }
-   
-  }
 
-  public Object getTarget() { return _target; }
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void refresh() { setTarget(_target); }
-
-  public boolean shouldBeEnabled(Object target) { return false; }
-
-
-  protected void setTargetName() {
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handling
-
-  public void insertUpdate(DocumentEvent e) {
-    if (e.getDocument() == _nameField.getDocument() && _target != null) {
-    	_target.setText(_nameField.getText());
-    	_target.damage();
-    }
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-  }
-
-	/**
-	 * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
-	 */
-	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals("editing") && evt.getNewValue().equals(Boolean.FALSE)) { // ending editing
-			_nameField.setText(_target.getText());
-		}
-			
+    public void setTarget(Object t) {
+	if (t instanceof FigText) {
+	    _target = (FigText) t;
+	    _target.removePropertyChangeListener(this); // to circumvent to much registred listeners
+	    _target.addPropertyChangeListener(this);
 	}
+   
+    }
+
+    public Object getTarget() { return _target; }
+
+    public void refresh() { setTarget(_target); }
+
+    public boolean shouldBeEnabled(Object target) { return false; }
+
+
+    protected void setTargetName() {
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // event handling
+
+    public void insertUpdate(DocumentEvent e) {
+	if (e.getDocument() == _nameField.getDocument() && _target != null) {
+	    _target.setText(_nameField.getText());
+	    _target.damage();
+	}
+    }
+
+    public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
+
+    public void changedUpdate(DocumentEvent e) {
+    }
+
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+	if (evt.getPropertyName().equals("editing") && evt.getNewValue().equals(Boolean.FALSE)) { // ending editing
+	    _nameField.setText(_target.getText());
+	}
+			
+    }
 
     /* (non-Javadoc)
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)

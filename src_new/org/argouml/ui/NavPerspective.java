@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -85,7 +86,7 @@ public class NavPerspective
         for (int i = 0; i < _goRules.size(); i++) {
             
             AbstractGoRule rule =
-            (AbstractGoRule) _goRules.get(i);
+		(AbstractGoRule) _goRules.get(i);
             // the given parent turns up to have children
             helperindex = rule.getIndexOfChild(parent, child);
             if (helperindex > -1) { // we found the correct element
@@ -103,9 +104,9 @@ public class NavPerspective
 
     /** I think this only gets called during argo initialisation */
     private int getHelperIndex(
-                    AbstractGoRule rule,
-                    Object parent,
-                    Object child) {
+			       AbstractGoRule rule,
+			       Object parent,
+			       Object child) {
 
         if (parent == child)
             throw new IllegalStateException("Parent cannot equal child");
@@ -116,22 +117,22 @@ public class NavPerspective
             if (index == -1) {
                 // the level directly under the parent does not contain the child
 
-                    int counter = 0;
-                    Iterator it = rule.getChildren(parent).iterator();
-                    while (it.hasNext()) {
-                        index = getHelperIndex(rule, it.next(), child);
-                        if (index > -1) {                       
-                            return counter + index;
-                        }
-                        counter++;
-                    }
+		int counter = 0;
+		Iterator it = rule.getChildren(parent).iterator();
+		while (it.hasNext()) {
+		    index = getHelperIndex(rule, it.next(), child);
+		    if (index > -1) {                       
+			return counter + index;
+		    }
+		    counter++;
+		}
             }
         }
         return -1;
     }
 
     /** required for the nav config dialog */
-    public Object clone() throws CloneNotSupportedException{
+    public Object clone() throws CloneNotSupportedException {
         throw new CloneNotSupportedException();
     }
     

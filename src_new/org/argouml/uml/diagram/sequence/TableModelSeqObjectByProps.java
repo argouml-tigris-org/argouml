@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,29 +42,29 @@ import org.argouml.uml.diagram.sequence.ui.*;
 
 
 public class TableModelSeqObjectByProps extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelSeqObjectByProps() { }
+    ////////////////
+    // constructor
+    public TableModelSeqObjectByProps() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.BaseForObject);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLSequenceDiagram)) return new Vector();
-    UMLSequenceDiagram d = (UMLSequenceDiagram) t;
-    Vector nodes = d.getNodes();
-    Vector res = new Vector();
-    int size = nodes.size();
-    for (int i = 0; i < size; i++) {
-      Object node = nodes.elementAt(i);
-      if (node instanceof MObject) res.addElement(node);
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.BaseForObject);
+	addColumn(ColumnDescriptor.MStereotype);
     }
-    return res;
-  }
 
-  public String toString() { return "SeqObjects vs. Properties"; }
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof UMLSequenceDiagram)) return new Vector();
+	UMLSequenceDiagram d = (UMLSequenceDiagram) t;
+	Vector nodes = d.getNodes();
+	Vector res = new Vector();
+	int size = nodes.size();
+	for (int i = 0; i < size; i++) {
+	    Object node = nodes.elementAt(i);
+	    if (node instanceof MObject) res.addElement(node);
+	}
+	return res;
+    }
+
+    public String toString() { return "SeqObjects vs. Properties"; }
 } /* end class TableModelSeqObjectByProps */
 

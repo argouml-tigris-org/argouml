@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -63,33 +64,33 @@ public class UMLOwnedElementRootNode extends UMLTreeRootNode  {
      *                        no actual entries in the list.
      */    
     public UMLOwnedElementRootNode(UMLUserInterfaceContainer container,
-        String property,boolean forClass) {
-        super(container,property);
+        String property, boolean forClass) {
+        super(container, property);
         JMenu add = new JMenu("Add");
         _popupMenu.add(add);
-        if(!forClass) {
-            _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this, 
-                "Packages",MPackage.class,null));
-            add.add(new UMLTreeMenuItem("Package",container,"addPackage",false));
+        if (!forClass) {
+            _nodeList.add(new UMLMetaclassInstanceTreeNode(container, this, 
+                "Packages", MPackage.class, null));
+            add.add(new UMLTreeMenuItem("Package", container, "addPackage", false));
         }
-        _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this,
-            "Classes",MClass.class,null));
-        add.add(new UMLTreeMenuItem(Argo.localize("UMLMenu", "misc.class"),container,"addClass",false));
-        if(!forClass) {
-            _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this,
-                "Interfaces",MInterface.class,null));
-            add.add(new UMLTreeMenuItem("Interface",container,"addInterface",false));
+        _nodeList.add(new UMLMetaclassInstanceTreeNode(container, this,
+            "Classes", MClass.class, null));
+        add.add(new UMLTreeMenuItem(Argo.localize("UMLMenu", "misc.class"), container, "addClass", false));
+        if (!forClass) {
+            _nodeList.add(new UMLMetaclassInstanceTreeNode(container, this,
+                "Interfaces", MInterface.class, null));
+            add.add(new UMLTreeMenuItem("Interface", container, "addInterface", false));
         }
-        _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this,
-            "Datatypes",MDataType.class,null));
-        add.add(new UMLTreeMenuItem("DataType",container,"addDataType",false));
-        if(!forClass) {
-            _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this,
-                "Actors",MActor.class,null));
-            add.add(new UMLTreeMenuItem("Actor",container,"addActor",false));
-            _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this,
-                "Use Cases",MUseCase.class,null));
-            add.add(new UMLTreeMenuItem("Use Case",container,"addUseCase",false));
+        _nodeList.add(new UMLMetaclassInstanceTreeNode(container, this,
+            "Datatypes", MDataType.class, null));
+        add.add(new UMLTreeMenuItem("DataType", container, "addDataType", false));
+        if (!forClass) {
+            _nodeList.add(new UMLMetaclassInstanceTreeNode(container, this,
+                "Actors", MActor.class, null));
+            add.add(new UMLTreeMenuItem("Actor", container, "addActor", false));
+            _nodeList.add(new UMLMetaclassInstanceTreeNode(container, this,
+                "Use Cases", MUseCase.class, null));
+            add.add(new UMLTreeMenuItem("Use Case", container, "addUseCase", false));
             /*
             _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this,
                 "Associations",MAssociation.class,null));
@@ -101,13 +102,13 @@ public class UMLOwnedElementRootNode extends UMLTreeRootNode  {
 //            _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this,
 //                "Abstractions",MAbstraction.class,null));
 //            add.add(new UMLTreeMenuItem("Abstraction",container,"addAbstraction",false));
-            _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this,
-                "Stereotypes",MStereotype.class,null));
-            add.add(new UMLTreeMenuItem("Stereotype",container,"addStereotype",false));
+            _nodeList.add(new UMLMetaclassInstanceTreeNode(container, this,
+                "Stereotypes", MStereotype.class, null));
+            add.add(new UMLTreeMenuItem("Stereotype", container, "addStereotype", false));
         }
-        _popupMenu.add(new UMLTreeMenuItem("Delete",container,"deleteElement",true));
-        _popupMenu.add(new UMLTreeMenuItem("Go",container,"navigateElement",true));
-        _popupMenu.add(new UMLTreeMenuItem("Open",container,"openElement",true));
+        _popupMenu.add(new UMLTreeMenuItem("Delete", container, "deleteElement", true));
+        _popupMenu.add(new UMLTreeMenuItem("Go", container, "navigateElement", true));
+        _popupMenu.add(new UMLTreeMenuItem("Open", container, "openElement", true));
     }
     
     
@@ -129,37 +130,37 @@ public class UMLOwnedElementRootNode extends UMLTreeRootNode  {
     }
     
     public void propertySet(MElementEvent mee) {
-        if(checkEvent(mee)) {
+        if (checkEvent(mee)) {
             update();
         }
     }
 
     public void listRoleItemSet(MElementEvent mee) {
-        if(checkEvent(mee)) {
+        if (checkEvent(mee)) {
             update();
         }
     }
     
     public void recovered(MElementEvent mee) {
-        if(checkEvent(mee)) {
+        if (checkEvent(mee)) {
             update();
         }
     }
     
     public void removed(MElementEvent mee) {
-        if(checkEvent(mee)) {
+        if (checkEvent(mee)) {
             update();
         }
     }
     
     public void roleAdded(MElementEvent mee) {
-        if(checkEvent(mee)) {
+        if (checkEvent(mee)) {
             update();
         }
     }
     
     public void roleRemoved(MElementEvent mee) {
-        if(checkEvent(mee)) {
+        if (checkEvent(mee)) {
             update();
         }
     }
@@ -167,10 +168,10 @@ public class UMLOwnedElementRootNode extends UMLTreeRootNode  {
     private boolean checkEvent(MElementEvent mee) {
         boolean isAffected = false;
         String eventName = mee.getName();
-        if(eventName != null && eventName.equals("ownedElement")) {
+        if (eventName != null && eventName.equals("ownedElement")) {
             Object source = mee.getSource();
             Object target = getContainer().getTarget();
-            if(source == target) {
+            if (source == target) {
                 isAffected = true;
             }
         }
@@ -184,17 +185,17 @@ public class UMLOwnedElementRootNode extends UMLTreeRootNode  {
     private void update() {
         _nonEmptyNodes.clear();
         Object target = getContainer().getTarget();
-        if(target instanceof MNamespace) {
+        if (target instanceof MNamespace) {
             Collection ownedElements = ((MNamespace) target).getOwnedElements();            
             Iterator iter = _nodeList.iterator();
-            while(iter.hasNext()) {
+            while (iter.hasNext()) {
                 UMLMetaclassInstanceTreeNode metaNode = 
                     (UMLMetaclassInstanceTreeNode) iter.next();
                 metaNode.setCollection(ownedElements);
                 //
                 //   only put nodes that have some entries 
                 //      in display
-                if(metaNode.getChildCount() > 0) {
+                if (metaNode.getChildCount() > 0) {
                     _nonEmptyNodes.add(metaNode);
                 }
             }
@@ -207,11 +208,11 @@ public class UMLOwnedElementRootNode extends UMLTreeRootNode  {
     }
     
     
-    public boolean buildPopup(TreeModel model,JPopupMenu menu,TreePath path) {
+    public boolean buildPopup(TreeModel model, JPopupMenu menu, TreePath path) {
         MModelElement element = null;
         
         Object last = path.getLastPathComponent();
-        if(last instanceof UMLModelElementTreeNode) {
+        if (last instanceof UMLModelElementTreeNode) {
             element = ((UMLModelElementTreeNode) last).getModelElement();
         }
         
@@ -219,18 +220,18 @@ public class UMLOwnedElementRootNode extends UMLTreeRootNode  {
         Object item = null;
         Object child = null;
         Iterator iter = _popupMenu.iterator();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             item = iter.next();
-            if(item instanceof UMLTreeMenuItem) {
+            if (item instanceof UMLTreeMenuItem) {
                 ((UMLTreeMenuItem) item).setModelElement(element);
             } 
             else {
-                if(item instanceof Container) {
+                if (item instanceof Container) {
                     Container cont = (Container) item;
                     int count = cont.getComponentCount();
-                    for(int i = 0; i < count; i++) {
+                    for (int i = 0; i < count; i++) {
                         child = cont.getComponent(i);
-                        if(child instanceof UMLTreeMenuItem) {
+                        if (child instanceof UMLTreeMenuItem) {
                             ((UMLTreeMenuItem) child).setModelElement(element);
                         }
                     }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -77,10 +78,10 @@ abstract class Context
     protected String getJavaName(Object mPackage)
     {
 	Object parent = ModelFacade.getNamespace(mPackage);
-	if(ModelFacade.isAModel(parent)) {
+	if (ModelFacade.isAModel(parent)) {
 	    return ModelFacade.getName(mPackage);
 	}
-	else if(parent != null) {
+	else if (parent != null) {
 	    return getJavaName(parent) + "." + ModelFacade.getName(mPackage);
 	}
 	else {

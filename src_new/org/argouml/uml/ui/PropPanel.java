@@ -1,6 +1,7 @@
-// Copyright (c) 1996-02 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without ga written
+// software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
 // and this paragraph appear in all copies.  This software program and
 // documentation are copyrighted by The Regents of the University of
@@ -101,7 +102,10 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  *   <p>The Properties panels for UML Model Elements are structured in an
  *   inheritance hierarchy that matches the UML 1.3 metamodel.
  */
-abstract public class PropPanel extends TabSpawnable implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
+abstract public class PropPanel
+    extends TabSpawnable
+    implements TabModelTarget, MElementListener, UMLUserInterfaceContainer 
+{
     ////////////////////////////////////////////////////////////////
     // instance vars
     private Object _target;
@@ -277,10 +281,10 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     }
 
     /**
-        This method (and addMElementListener) can be overriden if the
-        prop panel wants to monitor additional objects.
+       This method (and addMElementListener) can be overriden if the
+       prop panel wants to monitor additional objects.
     
-        @param target target of prop panel
+       @param target target of prop panel
     
     */
     protected void removeMElementListener(MBase target) {
@@ -288,11 +292,11 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     }
 
     /**
-        This method (and removeMElementListener) can be overriden if the
-        prop panel wants to monitor additional objects.  This method
-        is public only since it is called from a Runnable object.
+       This method (and removeMElementListener) can be overriden if the
+       prop panel wants to monitor additional objects.  This method
+       is public only since it is called from a Runnable object.
     
-        @param target target of prop panel
+       @param target target of prop panel
     */
     public void addMElementListener(MBase target) {
         UmlModelEventPump.getPump().addModelEventListener(this, target);
@@ -308,7 +312,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      */
 
     public void setTarget(Object t) {
-        t = (t instanceof Fig) ? ((Fig)t).getOwner() : t;
+        t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
 
         // If the target has changed notify the third party listener if it
         // exists and dispatch a new NSUML element listener to
@@ -359,16 +363,16 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         EventListenerList list = new EventListenerList();
         for (int i = 0; i < components.length; i++) {
             if (components[i] instanceof TargetListener) {
-                list.add(TargetListener.class, (TargetListener)components[i]);
+                list.add(TargetListener.class, (TargetListener) components[i]);
             } 
             if (components[i] instanceof TargettableModelView) {
-                list.add(TargetListener.class, ((TargettableModelView)components[i]).getTargettableModel());
+                list.add(TargetListener.class, ((TargettableModelView) components[i]).getTargettableModel());
             }
             if (components[i] instanceof Container) {
-                EventListenerList list2 = registrateTargetListeners((Container)components[i]);
+                EventListenerList list2 = registrateTargetListeners((Container) components[i]);
                 Object[] objects = list2.getListenerList();
-                for (int j = 1; j < objects.length; j+=2) {
-                    list.add(TargetListener.class, (EventListener)objects[j]);
+                for (int j = 1; j < objects.length; j += 2) {
+                    list.add(TargetListener.class, (EventListener) objects[j]);
                 }
             }
         }
@@ -470,8 +474,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *             {@link org.argouml.ui.targetmanager.TargetManager#navigateBackward() TargetManager.getInstance().navigateBackward()}
      */
     public boolean navigateBack(boolean attempt) {
-       TargetManager.getInstance().navigateBackward();
-       return true;
+	TargetManager.getInstance().navigateBackward();
+	return true;
     }
     
     /**
@@ -545,26 +549,26 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     public void setNameEventListening(Class[] metaclasses) {
 
         /* 
-          old implementation
+	   old implementation
          
-        // Convert to the third party listening pair list
+	   // Convert to the third party listening pair list
         
-        Vector targetList = new Vector (metaclasses.length * 6);
+	   Vector targetList = new Vector (metaclasses.length * 6);
         
-        for (int i = 0 ; i < metaclasses.length ; i++) {
-            Class mc = metaclasses[i];
+	   for (int i = 0 ; i < metaclasses.length ; i++) {
+	   Class mc = metaclasses[i];
         
-            targetList.add(mc);
-            targetList.add("name");
+	   targetList.add(mc);
+	   targetList.add("name");
         
-            targetList.add(mc);
-            targetList.add("baseClass");
+	   targetList.add(mc);
+	   targetList.add("baseClass");
         
-            targetList.add(mc);
-            targetList.add("ownedElement");
-        }
+	   targetList.add(mc);
+	   targetList.add("ownedElement");
+	   }
         
-        addThirdPartyEventListening(targetList.toArray());
+	   addThirdPartyEventListening(targetList.toArray());
         */
         for (int i = 0; i < metaclasses.length; i++) {
             Class clazz = metaclasses[i];
@@ -608,8 +612,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      */
     public void targetAdded(TargetEvent e) {
         // we can neglect this, the TabProps allways selects the first target
-         // in a set of targets. The first target can only be 
-         // changed in a targetRemoved or a TargetSet event
+	// in a set of targets. The first target can only be 
+	// changed in a targetRemoved or a TargetSet event
         fireTargetAdded(e);
     }
     
@@ -634,38 +638,38 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     }
     
     private void fireTargetSet(TargetEvent targetEvent) {
-           //          Guaranteed to return a non-null array
-           Object[] listeners = _listenerList.getListenerList();
-           for (int i = listeners.length - 2; i >= 0; i -= 2) {
-               if (listeners[i] == TargetListener.class) {
-                   // Lazily create the event:                     
-                    ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
-               }
-           }
-       }
+	//          Guaranteed to return a non-null array
+	Object[] listeners = _listenerList.getListenerList();
+	for (int i = listeners.length - 2; i >= 0; i -= 2) {
+	    if (listeners[i] == TargetListener.class) {
+		// Lazily create the event:                     
+		((TargetListener) listeners[i + 1]).targetSet(targetEvent);
+	    }
+	}
+    }
 
-       private void fireTargetAdded(TargetEvent targetEvent) {
-           // Guaranteed to return a non-null array
-           Object[] listeners = _listenerList.getListenerList();
+    private void fireTargetAdded(TargetEvent targetEvent) {
+	// Guaranteed to return a non-null array
+	Object[] listeners = _listenerList.getListenerList();
 
-           for (int i = listeners.length - 2; i >= 0; i -= 2) {
-               if (listeners[i] == TargetListener.class) {
-                   // Lazily create the event:                     
-                    ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
-               }
-           }
-       }
+	for (int i = listeners.length - 2; i >= 0; i -= 2) {
+	    if (listeners[i] == TargetListener.class) {
+		// Lazily create the event:                     
+		((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
+	    }
+	}
+    }
 
-       private void fireTargetRemoved(TargetEvent targetEvent) {
-           // Guaranteed to return a non-null array
-           Object[] listeners = _listenerList.getListenerList();
-           for (int i = listeners.length - 2; i >= 0; i -= 2) {
-               if (listeners[i] == TargetListener.class) {
-                   // Lazily create the event:                     
-                   ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
-               }
-           }
-       }
+    private void fireTargetRemoved(TargetEvent targetEvent) {
+	// Guaranteed to return a non-null array
+	Object[] listeners = _listenerList.getListenerList();
+	for (int i = listeners.length - 2; i >= 0; i -= 2) {
+	    if (listeners[i] == TargetListener.class) {
+		// Lazily create the event:                     
+		((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
+	    }
+	}
+    }
 
     /**
      *    Constructs the PropPanel.

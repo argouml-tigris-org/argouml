@@ -54,49 +54,49 @@ public class PropPanelAssociation extends PropPanelRelationship {
      */
     protected JScrollPane _linksScroll;
 
-  public PropPanelAssociation() {
-    this("Association", ConfigLoader.getTabPropsOrientation());
+    public PropPanelAssociation() {
+	this("Association", ConfigLoader.getTabPropsOrientation());
 
 
-    addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
-    addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceComboBox());
+	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-    addSeperator();
+	addSeperator();
 
-    addField(Argo.localize("UMLMenu", "label.association-ends"), _assocEndScroll);
+	addField(Argo.localize("UMLMenu", "label.association-ends"), _assocEndScroll);
 
-    addSeperator();
+	addSeperator();
 
-    addField(Argo.localize("UMLMenu", "label.association-roles"), _associationRoleScroll);
-    addField(Argo.localize("UMLMenu", "label.association-links"), _linksScroll);
+	addField(Argo.localize("UMLMenu", "label.association-roles"), _associationRoleScroll);
+	addField(Argo.localize("UMLMenu", "label.association-links"), _linksScroll);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-    // new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.add-association-end"),"addAssociationEnd",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association"),"removeElement",null);
+	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	// new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.add-association-end"),"addAssociationEnd",null);
+	new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-association"), "removeElement", null);
 
 
-  }
+    }
 
-  protected PropPanelAssociation(String title, Orientation orientation) {
-      super(title, orientation);
-      JList assocEndList = new UMLLinkedList(new UMLAssociationConnectionListModel());
-      _assocEndScroll = new JScrollPane(assocEndList);
-      JList baseList = new UMLLinkedList(new UMLAssociationAssociationRoleListModel());
-      _associationRoleScroll = new JScrollPane(baseList);
-      JList linkList = new UMLLinkedList(new UMLAssociationLinkListModel());
-      _linksScroll = new JScrollPane(linkList);
+    protected PropPanelAssociation(String title, Orientation orientation) {
+	super(title, orientation);
+	JList assocEndList = new UMLLinkedList(new UMLAssociationConnectionListModel());
+	_assocEndScroll = new JScrollPane(assocEndList);
+	JList baseList = new UMLLinkedList(new UMLAssociationAssociationRoleListModel());
+	_associationRoleScroll = new JScrollPane(baseList);
+	JList linkList = new UMLLinkedList(new UMLAssociationLinkListModel());
+	_linksScroll = new JScrollPane(linkList);
 
-      // TODO: implement the multiple inheritance of an Association (Generalizable element)
+	// TODO: implement the multiple inheritance of an Association (Generalizable element)
 
-  }
+    }
 
-  /**
-   * Adds an associationend to the association.
-   */
-  protected void addAssociationEnd() {
-      // TODO implement this method as soon as issue 1703 is answered.
-      throw new UnsupportedOperationException("addAssociationEnd is not yet implemented");
-  }
+    /**
+     * Adds an associationend to the association.
+     */
+    protected void addAssociationEnd() {
+	// TODO implement this method as soon as issue 1703 is answered.
+	throw new UnsupportedOperationException("addAssociationEnd is not yet implemented");
+    }
 
 } /* end class PropPanelAssociation */

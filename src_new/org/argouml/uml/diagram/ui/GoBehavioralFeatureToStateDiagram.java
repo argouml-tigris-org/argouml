@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,16 +51,16 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractGoRule {
     public Collection getChildren(Object parent) {
         
         if (parent instanceof MBehavioralFeature) {
-            MBehavioralFeature operation = (MBehavioralFeature)parent;
+            MBehavioralFeature operation = (MBehavioralFeature) parent;
             Collection col = operation.getBehaviors();
             Vector ret = new Vector();
             Project p = ProjectManager.getManager().getCurrentProject();
             Vector diagrams = p.getDiagrams();
             Iterator it = diagrams.iterator();
             while (it.hasNext()) {
-                ArgoDiagram diagram = (ArgoDiagram)it.next();
+                ArgoDiagram diagram = (ArgoDiagram) it.next();
                 if (diagram instanceof UMLStateDiagram &&
-                    col.contains(((UMLStateDiagram)diagram).getStateMachine())) {
+                    col.contains(((UMLStateDiagram) diagram).getStateMachine())) {
                     ret.add(diagram);
                 }
                 

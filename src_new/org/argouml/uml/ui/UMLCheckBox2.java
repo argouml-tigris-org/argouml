@@ -67,7 +67,7 @@ public abstract class UMLCheckBox2
 	// TODO: When no longer requiring support for JDK1.2 this constant
 	// can be changed to Action.ACTION_COMMAND_KEY.
 	final String ACTION_COMMAND_KEY = "ActionCommandKey";
-        setActionCommand((String)a.getValue(ACTION_COMMAND_KEY));
+        setActionCommand((String) a.getValue(ACTION_COMMAND_KEY));
     }
 
     /**
@@ -124,15 +124,15 @@ public abstract class UMLCheckBox2
      * @param target The target to set
      */
     public void setTarget(Object target) {
-        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
+        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (_target instanceof MBase) {
-            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
+            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase) _target, _propertySetName);
         }
        
         if (target instanceof MBase) {
             _target = target;
-             // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
-             UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _propertySetName);
+	    // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
+	    UmlModelEventPump.getPump().addModelEventListener(this, (MBase) _target, _propertySetName);
             buildModel();
         }
             

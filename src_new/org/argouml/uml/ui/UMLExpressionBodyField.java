@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,7 +46,7 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
     private UMLExpressionModel _model;
     private boolean _notifyModel;
     
-    public UMLExpressionBodyField(UMLExpressionModel model,boolean notifyModel) {
+    public UMLExpressionBodyField(UMLExpressionModel model, boolean notifyModel) {
         _model = model;
         _notifyModel = notifyModel;
         getDocument().addDocumentListener(this);       
@@ -53,7 +54,7 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
 
     public void targetChanged() {
 	cat.debug("UMLExpressionBodyField: targetChanged");
-	if(_notifyModel) _model.targetChanged();
+	if (_notifyModel) _model.targetChanged();
         update();
     }
 
@@ -71,16 +72,16 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
     public void removed(final MElementEvent p1) {
     }
     public void propertySet(final MElementEvent event) {
-       	cat.debug("UMLExpressionBodyField: propertySet"+event);
+       	cat.debug("UMLExpressionBodyField: propertySet" + event);
     }
     
     private void update() {
         String oldText = getText();
         String newText = _model.getBody();
-	cat.debug("UMLExpressionBodyField: update: "+oldText+" "+newText);
+	cat.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
 
-	if(oldText == null || newText == null || !oldText.equals(newText)) {
-            if(oldText != newText) {
+	if (oldText == null || newText == null || !oldText.equals(newText)) {
+            if (oldText != newText) {
 		cat.debug("setNewText!!");
                 setText(newText);
             }

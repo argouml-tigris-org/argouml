@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -60,11 +61,13 @@ import org.apache.log4j.Category;
  */
 public final class ArgoSecurityManager extends SecurityManager
 {
-    protected static Category cat = Category.getInstance(ArgoSecurityManager.class);
+    protected static Category cat =
+	Category.getInstance(ArgoSecurityManager.class);
     private boolean _allowExit = false;
 
     /** The only allowed instance. */
-    private final static ArgoSecurityManager SINGLETON = new ArgoSecurityManager();
+    private final static ArgoSecurityManager SINGLETON =
+	new ArgoSecurityManager();
 
     /** Accessor for the instance. */
     public final static ArgoSecurityManager getInstance() {
@@ -80,21 +83,22 @@ public final class ArgoSecurityManager extends SecurityManager
 	// Don't allow write access to <code>sun.awt.exception.handler</code>
 	if (perm.getClass().equals(java.util.PropertyPermission.class)) {
 	    if ("sun.awt.exception.handler".equals(perm.getName())) {
-	        PropertyPermission pp = (PropertyPermission)perm;
-		if("write".equals(pp.getActions()) &&
-		   (!org.argouml.util.osdep.OsUtil.isMac())) {
+	        PropertyPermission pp = (PropertyPermission) perm;
+		if ("write".equals(pp.getActions()) &&
+		    (!org.argouml.util.osdep.OsUtil.isMac())) {
 		    // Don't allow this one to be trapped
 		    // by using ArgoSecurityException.
-		    cat.debug("Violating Permission Name: "+pp.getName());
+		    cat.debug("Violating Permission Name: " + pp.getName());
 		    throw new SecurityException();
 		}
 	    }
 	}
 	// Don't allow anything to exit that we don't know about.
 	else if (perm.getClass().equals(java.lang.RuntimePermission.class)) {
-	    RuntimePermission rp = (RuntimePermission)perm;
+	    RuntimePermission rp = (RuntimePermission) perm;
             // Uncomment for more information about what happens...
-	    cat.debug("RuntimePermission: " + rp.getName() + " - '" + rp.getActions()+ "'");
+	    cat.debug("RuntimePermission: " + rp.getName() 
+		      + " - '" + rp.getActions() + "'");
 	    if ("exitVM".equals(rp.getName())) {
 		if (!getInstance().getAllowExit()) {
 		    throw new ArgoSecurityException(true);

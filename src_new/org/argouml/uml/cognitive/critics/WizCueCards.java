@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,47 +48,47 @@ import org.tigris.gef.util.*;
 
 public class WizCueCards extends Wizard {
 
-  protected Vector _cues = new Vector();
-  protected WizStepCue _steps[] = null;
+    protected Vector _cues = new Vector();
+    protected WizStepCue _steps[] = null;
 
-  public WizCueCards() { }
+    public WizCueCards() { }
 
-  public int getNumSteps() { return _cues.size(); }
+    public int getNumSteps() { return _cues.size(); }
 
-  public MModelElement getModelElement() {
-    if (_item != null) {
-      VectorSet offs = _item.getOffenders();
-      if (offs.size() >= 1) {
-	MModelElement me = (MModelElement) offs.elementAt(0);
-	return me;
-      }
+    public MModelElement getModelElement() {
+	if (_item != null) {
+	    VectorSet offs = _item.getOffenders();
+	    if (offs.size() >= 1) {
+		MModelElement me = (MModelElement) offs.elementAt(0);
+		return me;
+	    }
+	}
+	return null;
     }
-    return null;
-  }
 
-  public void addCue(String s) { _cues.addElement(s); }
+    public void addCue(String s) { _cues.addElement(s); }
 
-  /** Create a new panel for the given step.
-   *
-   * @return a newly created panel or null if there isn't that many steps.
-   */
-  public JPanel makePanel(int newStep) {
-    if (newStep <= getNumSteps()) {
-      String c = (String) _cues.elementAt(newStep - 1);
-      return new WizStepCue(this, c);
+    /** Create a new panel for the given step.
+     *
+     * @return a newly created panel or null if there isn't that many steps.
+     */
+    public JPanel makePanel(int newStep) {
+	if (newStep <= getNumSteps()) {
+	    String c = (String) _cues.elementAt(newStep - 1);
+	    return new WizStepCue(this, c);
+	}
+	return null;
     }
-    return null;
-  }
 
-  /** This wizard never takes action, it just displays step by step
-   *  instructions. */
-  public void doAction(int oldStep) {  }
+    /** This wizard never takes action, it just displays step by step
+     *  instructions. */
+    public void doAction(int oldStep) {  }
 
-  /** This wizard cannot automatically finish the task. It can only be
-   *  finished when the user is on the last step. */
-  public boolean canFinish() {
-    return _step == getNumSteps();
-  }
+    /** This wizard cannot automatically finish the task. It can only be
+     *  finished when the user is on the last step. */
+    public boolean canFinish() {
+	return _step == getNumSteps();
+    }
 
 
 } /* end class WizCueCards */

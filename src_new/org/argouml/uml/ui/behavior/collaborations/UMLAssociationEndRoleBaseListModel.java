@@ -50,8 +50,8 @@ public class UMLAssociationEndRoleBaseListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (_target != null && ((MAssociationEndRole)getTarget()).getBase() != null) {
-            addElement(((MAssociationEndRole)getTarget()).getBase());
+        if (_target != null && ((MAssociationEndRole) getTarget()).getBase() != null) {
+            addElement(((MAssociationEndRole) getTarget()).getBase());
         }
     }
 
@@ -60,7 +60,7 @@ public class UMLAssociationEndRoleBaseListModel
      */
     protected boolean isValidElement(MBase m) {
         return m instanceof MAssociationEnd && 
-            ((MAssociationRole)((MAssociationEndRole)getTarget()).getAssociation()).getBase().getConnections().contains(m);
+            ((MAssociationRole) ((MAssociationEndRole) getTarget()).getAssociation()).getBase().getConnections().contains(m);
     }
 
 }

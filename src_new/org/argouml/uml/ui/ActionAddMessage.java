@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,7 +65,7 @@ public class ActionAddMessage extends UMLChangeAction {
     	Object target =  TargetManager.getInstance().getModelTarget();
     
     	
-    	if (!(target instanceof MAssociationRole) && ((MAssociationRole)target).getNamespace() instanceof MCollaboration) return;
+    	if (!(target instanceof MAssociationRole) && ((MAssociationRole) target).getNamespace() instanceof MCollaboration) return;
     	MAssociationRole ar = (MAssociationRole) target;
         this.addMessage(ar);
         super.actionPerformed(ae);
@@ -75,16 +76,16 @@ public class ActionAddMessage extends UMLChangeAction {
      * and then it creates the Fig and adds it to the diagram </p>
      * @param ar the associationRole to which the new message must be added
      **/
-    public MMessage addMessage(MAssociationRole ar){
-        MCollaboration collab = (MCollaboration)ar.getNamespace();
+    public MMessage addMessage(MAssociationRole ar) {
+        MCollaboration collab = (MCollaboration) ar.getNamespace();
         MMessage msg = UmlFactory.getFactory().getCollaborations().buildMessage(collab, ar);
-        String nextStr = "" + ((MInteraction)(collab.getInteractions().toArray())[0]).getMessages().size();	
+        String nextStr = "" + ((MInteraction) (collab.getInteractions().toArray())[0]).getMessages().size();	
         Editor e = Globals.curEditor();
         GraphModel gm = e.getGraphModel();
         Layer lay = e.getLayerManager().getActiveLayer();
         GraphNodeRenderer gr = e.getGraphNodeRenderer();
         FigNode figMsg = gr.getFigNodeFor(gm, lay, msg);
-        ((FigMessage)figMsg).addPathItemToFigAssociationRole(lay);
+        ((FigMessage) figMsg).addPathItemToFigAssociationRole(lay);
         e.damageAll();                
         return msg;
     }

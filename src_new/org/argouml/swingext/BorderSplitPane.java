@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 /*
  * BorderSplitPane.java
  */
@@ -97,55 +121,55 @@ public class BorderSplitPane extends JComponent {
         }
         else if (constraints.toString().equals(NORTH)) {
             if (comp instanceof Orientable) {
-                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+                ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             topSplitPane.add(comp, "100", 1);
             if (topSplitPane.getParent() != outerSplitPane) outerSplitPane.add(topSplitPane, 0);
         }
         else if (constraints.toString().equals(NORTHWEST)) {
             if (comp instanceof Orientable) {
-                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+                ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             topSplitPane.add(comp, 0);
             if (topSplitPane.getParent() != outerSplitPane) outerSplitPane.add(topSplitPane, 0);
         }
         else if (constraints.toString().equals(NORTHEAST)) {
             if (comp instanceof Orientable) {
-                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+                ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             topSplitPane.add(comp, 2);
             if (topSplitPane.getParent() != outerSplitPane) outerSplitPane.add(topSplitPane, 0);
         }
         else if (constraints.toString().equals(SOUTH)) {
             if (comp instanceof Orientable) {
-                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+                ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             bottomSplitPane.add(comp, "100", 1);
             if (bottomSplitPane.getParent() != outerSplitPane) outerSplitPane.add(bottomSplitPane, 2);
         }
         else if (constraints.toString().equals(SOUTHWEST)) {
             if (comp instanceof Orientable) {
-                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+                ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             bottomSplitPane.add(comp, 0);
             if (bottomSplitPane.getParent() != outerSplitPane) outerSplitPane.add(bottomSplitPane, 2);
         }
         else if (constraints.toString().equals(SOUTHEAST)) {
             if (comp instanceof Orientable) {
-                ((Orientable)comp).setOrientation(Horizontal.getInstance());
+                ((Orientable) comp).setOrientation(Horizontal.getInstance());
             }
             bottomSplitPane.add(comp, 2);
             if (bottomSplitPane.getParent() != outerSplitPane) outerSplitPane.add(bottomSplitPane, 2);
         }
         else if (constraints.toString().equals(WEST)) {
             if (comp instanceof Orientable) {
-                ((Orientable)comp).setOrientation(Vertical.getInstance());
+                ((Orientable) comp).setOrientation(Vertical.getInstance());
             }
             middleSplitPane.add(comp, 0);
         }
-        else if(constraints.toString().equals(EAST)) {
+        else if (constraints.toString().equals(EAST)) {
             if (comp instanceof Orientable) {
-                ((Orientable)comp).setOrientation(Vertical.getInstance());
+                ((Orientable) comp).setOrientation(Vertical.getInstance());
             }
             middleSplitPane.add(comp, 2);
         }

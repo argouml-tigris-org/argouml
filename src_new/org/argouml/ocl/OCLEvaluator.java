@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -79,7 +80,7 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         java.util.List values = eval(_scratchBindings, expr);
         _strBuf.setLength(0);
         Iterator iter = values.iterator();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             Object v = iter.next();
             if (ModelFacade.isAModelElement(v)) {
                 v = ModelFacade.getName(v);
@@ -89,7 +90,7 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
                 v = ModelFacade.getBody(v);
                 if ("".equals(v)) v = "(unspecified)";
             }
-            if (! "".equals(v)) {
+            if (!"".equals(v)) {
                 _strBuf.append(v);
                 if (iter.hasNext()) _strBuf.append(sep);
             }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -64,17 +65,17 @@ public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swing
     boolean _tear = false;
     protected Orientation orientation;
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  public TabSpawnable() { this("untitled", false); }
+    public TabSpawnable() { this("untitled", false); }
 
-  public TabSpawnable(String tag) { this(tag, false); }
+    public TabSpawnable(String tag) { this(tag, false); }
 
-  public TabSpawnable(String tag, boolean tear) {
-    setTitle(tag);
-    _tear = tear;
-  }
+    public TabSpawnable(String tag, boolean tear) {
+	setTitle(tag);
+	_tear = tear;
+    }
 
     /** This is not a real clone since it doesn't copy anything from the
      * object it is cloning.
@@ -88,13 +89,13 @@ public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swing
      *
      * @return the new object or null if not possible.
      */
-  public Object clone() {
-    try { return this.getClass().newInstance(); }
-    catch (Exception ex) {
-        cat.error("exception in clone()", ex);
+    public Object clone() {
+	try { return this.getClass().newInstance(); }
+	catch (Exception ex) {
+	    cat.error("exception in clone()", ex);
+	}
+	return null;
     }
-    return null;
-  }
   
     /*
      * Set the orientation of the property panel
@@ -105,15 +106,15 @@ public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swing
     }
 
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public String getTitle() { return _title; }
-  public void setTitle(String t) { _title = t; }
+    public String getTitle() { return _title; }
+    public void setTitle(String t) { _title = t; }
 
 
-  ////////////////////////////////////////////////////////////////
-  // actions
+    ////////////////////////////////////////////////////////////////
+    // actions
   
     /**
      * this should take its inspiration from org.tigris.gef.base.CmdSpawn
@@ -122,49 +123,49 @@ public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swing
      *
      * @return a copy of the frame or null if not clone-able.
      */
-  public TabSpawnable spawn() {
+    public TabSpawnable spawn() {
 
-    JDialog  f = new JDialog(ProjectBrowser.getInstance());    
-    f.getContentPane().setLayout(new BorderLayout());
-    f.setTitle(Argo.localize(BUNDLE, _title));
-    TabSpawnable newPanel = (TabSpawnable) clone();
-    if (newPanel == null)
-        return null; //failed to clone
+	JDialog  f = new JDialog(ProjectBrowser.getInstance());    
+	f.getContentPane().setLayout(new BorderLayout());
+	f.setTitle(Argo.localize(BUNDLE, _title));
+	TabSpawnable newPanel = (TabSpawnable) clone();
+	if (newPanel == null)
+	    return null; //failed to clone
 
-    if (newPanel instanceof TabToDoTarget) {
-      TabToDoTarget me = (TabToDoTarget) this;
-      TabToDoTarget it = (TabToDoTarget) newPanel;
-      it.setTarget(me.getTarget());
-    }
-    else if (newPanel instanceof TabModelTarget) {
-      TabModelTarget me = (TabModelTarget) this;
-      TabModelTarget it = (TabModelTarget) newPanel;
-      it.setTarget(me.getTarget());
-    }
-    else if (newPanel instanceof TabDiagram) {
-      TabDiagram me = (TabDiagram) this;
-      TabDiagram it = (TabDiagram) newPanel;
-      it.setTarget(me.getTarget());
-    }
+	if (newPanel instanceof TabToDoTarget) {
+	    TabToDoTarget me = (TabToDoTarget) this;
+	    TabToDoTarget it = (TabToDoTarget) newPanel;
+	    it.setTarget(me.getTarget());
+	}
+	else if (newPanel instanceof TabModelTarget) {
+	    TabModelTarget me = (TabModelTarget) this;
+	    TabModelTarget it = (TabModelTarget) newPanel;
+	    it.setTarget(me.getTarget());
+	}
+	else if (newPanel instanceof TabDiagram) {
+	    TabDiagram me = (TabDiagram) this;
+	    TabDiagram it = (TabDiagram) newPanel;
+	    it.setTarget(me.getTarget());
+	}
     
-    newPanel.setTitle(Argo.localize(BUNDLE, _title));
+	newPanel.setTitle(Argo.localize(BUNDLE, _title));
     
-    f.getContentPane().add(newPanel, BorderLayout.CENTER);
-    Rectangle bounds = getBounds();
-    bounds.height += OVERLAPP*2;
-    f.setBounds(bounds);
+	f.getContentPane().add(newPanel, BorderLayout.CENTER);
+	Rectangle bounds = getBounds();
+	bounds.height += OVERLAPP * 2;
+	f.setBounds(bounds);
 
-    Point loc = new Point(0,0);
-    SwingUtilities.convertPointToScreen(loc, this);
-    loc.y -= OVERLAPP;
-    f.setLocation(loc);
-    f.setVisible(true);
+	Point loc = new Point(0, 0);
+	SwingUtilities.convertPointToScreen(loc, this);
+	loc.y -= OVERLAPP;
+	f.setLocation(loc);
+	f.setVisible(true);
 
-    if (_tear && (getParent() instanceof JTabbedPane))
-      ((JTabbedPane)getParent()).remove(this);
+	if (_tear && (getParent() instanceof JTabbedPane))
+	    ((JTabbedPane) getParent()).remove(this);
 
-    return newPanel;
-  }
+	return newPanel;
+    }
   
 } /* end class TabSpawnable */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -81,7 +82,7 @@ public class LookAndFeelMgr {
     /**
      * The class name of Swing's default look and feel (will be used if
      * the LookAndFeel property is null).
-    **/
+     **/
     private String						_defaultLafClass;
 
     /** Creates a new instance of LookAndFeelMgr. */
@@ -98,7 +99,7 @@ public class LookAndFeelMgr {
     /**
      * Sets the appearance of the UI using the current values of
      * the LookAndFeel and Theme properties.
-    **/
+     **/
     public void initializeLookAndFeel() {
         setLookAndFeel(getCurrentLookAndFeel());
         setTheme(getMetalTheme(getCurrentTheme()));
@@ -119,7 +120,7 @@ public class LookAndFeelMgr {
 
     /**
      * Outputs command-line arguments supported by this class.
-    **/
+     **/
     public void printThemeArgs() {
         System.err.println("  -big            use big fonts");
         System.err.println("  -huge           use huge fonts");
@@ -129,7 +130,7 @@ public class LookAndFeelMgr {
      * Returns the display names of the available look and feel choices.
      * 
      * @return	look and feel display names
-    **/
+     **/
     public String[] getAvailableLookAndFeelNames() {
         UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
 
@@ -146,7 +147,7 @@ public class LookAndFeelMgr {
      * Returns the display names of the available theme choices.
      * 
      * @return	theme display names
-    **/
+     **/
     public String[] getAvailableThemeNames()
     {
         String[] names = new String[LookAndFeelMgr.THEMES.length];
@@ -163,7 +164,7 @@ public class LookAndFeelMgr {
      * 
      * @param	name	display name of desired look and feel
      * @return			class name for desired look and feel
-    **/
+     **/
     public String getLookAndFeelFromName(String name) {
         if (name == null || DEFAULT_KEY.equals(name)) {
             return null;
@@ -187,7 +188,7 @@ public class LookAndFeelMgr {
      * 
      * @param	name	display name of desired theme
      * @return			class name for desired theme
-    **/
+     **/
     public String getThemeFromName(String name) {
         if (name == null) {
             return null;
@@ -210,7 +211,7 @@ public class LookAndFeelMgr {
      * 
      * @param	lafClass	look and feel class name
      * @return				true if supports themes
-    **/
+     **/
     public boolean isThemeCompatibleLookAndFeel(String lafClass)
     {
         return (lafClass == null || lafClass.equals(METAL_LAF));
@@ -223,7 +224,7 @@ public class LookAndFeelMgr {
      * Swing's default look and feel should be used.
      * 
      * @return	current look and feel class name
-    **/
+     **/
     public String getCurrentLookAndFeel()
     {
         String value = Configuration.getString(Argo.KEY_LOOK_AND_FEEL_CLASS, null);
@@ -237,7 +238,7 @@ public class LookAndFeelMgr {
      * Returns the display name of the current look and feel.
      * 
      * @return	look and feel display name
-    **/
+     **/
     public String getCurrentLookAndFeelName() {
         String currentLookAndFeel = getCurrentLookAndFeel();
 
@@ -249,7 +250,7 @@ public class LookAndFeelMgr {
             UIManager.LookAndFeelInfo[] lafs = UIManager.getInstalledLookAndFeels();
             for (int i = 0; i < lafs.length; ++i) {
                 if (lafs[i].getClassName().equals(currentLookAndFeel)) {
-                        name = lafs[i].getName();
+		    name = lafs[i].getName();
                 }
             }
 
@@ -263,7 +264,7 @@ public class LookAndFeelMgr {
      * look and feel should be used.
      * 
      * @param	lafClass	class name of desired look and feel
-    **/
+     **/
     public void setCurrentLookAndFeel(String lafClass) {
         String currentLookAndFeel = getCurrentLookAndFeel();
 
@@ -287,20 +288,20 @@ public class LookAndFeelMgr {
      * This method should never return null.
      * 
      * @return	current theme class name
-    **/
+     **/
     public String getCurrentTheme() {
-            String value = Configuration.getString(Argo.KEY_THEME_CLASS, null);
-            if (DEFAULT_KEY.equals(value)) {
-                    value = null;
-            }
-            return value;
+	String value = Configuration.getString(Argo.KEY_THEME_CLASS, null);
+	if (DEFAULT_KEY.equals(value)) {
+	    value = null;
+	}
+	return value;
     }
 
     /**
      * Returns the display name of the current theme.
      * 
      * @return	theme display name
-    **/
+     **/
     public String getCurrentThemeName() {
         String currentTheme = getCurrentTheme();
 
@@ -324,7 +325,7 @@ public class LookAndFeelMgr {
      * should be an instance of MetalTheme.
      * 
      * @param	themeClass	class name of desired theme
-    **/
+     **/
     public void setCurrentTheme(String themeClass) {
         MetalTheme theme = getMetalTheme(themeClass);
 
@@ -345,7 +346,7 @@ public class LookAndFeelMgr {
      * Sets the look and feel in the GUI by calling UIManager.setLookAndFeel().
      * 
      * @param	lafClass	class name of look and feel
-    **/
+     **/
     private void setLookAndFeel(String lafClass) {
         try {
             if (lafClass == null && _defaultLafClass != null) {
@@ -370,13 +371,13 @@ public class LookAndFeelMgr {
      * Sets the metal theme in the GUI by calling MetalLookAndFeel.setCurrentTheme().
      * 
      * @param	theme	new MetalTheme to set
-    **/
+     **/
     private void setTheme(MetalTheme theme) {
         String currentLookAndFeel = getCurrentLookAndFeel();
 
         // If LAF is Metal (either set explicitly, or as the default)
         if ((currentLookAndFeel != null && currentLookAndFeel.equals(METAL_LAF))
-                || (currentLookAndFeel == null && _defaultLafClass.equals(METAL_LAF))){
+	    || (currentLookAndFeel == null && _defaultLafClass.equals(METAL_LAF))) {
             try {
                 MetalLookAndFeel.setCurrentTheme(theme);
                 UIManager.setLookAndFeel(METAL_LAF);
@@ -399,7 +400,7 @@ public class LookAndFeelMgr {
      * 
      * @param	themeClass	MetalTheme class name
      * @return				MetalTheme object for class name
-    **/
+     **/
     private MetalTheme getMetalTheme(String themeClass) {
         MetalTheme theme = null;
 

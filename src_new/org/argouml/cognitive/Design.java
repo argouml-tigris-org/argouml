@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,91 +36,91 @@ import java.util.*;
 
 public class Design extends DesignMaterial {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** The contained DesignMaterial's (including other Design's). */
-  private Vector _subdesigns = new Vector();
+    /** The contained DesignMaterial's (including other Design's). */
+    private Vector _subdesigns = new Vector();
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  /** Construct a new Design. This method is currently empty. The
-   * _subdesigns instance variable is set through an initializer. */
-  public Design() { }
+    /** Construct a new Design. This method is currently empty. The
+     * _subdesigns instance variable is set through an initializer. */
+    public Design() { }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Reply a vector of contained DesignMaterial's. */
-  public Vector getSubdesigns() { return _subdesigns; }
+    /** Reply a vector of contained DesignMaterial's. */
+    public Vector getSubdesigns() { return _subdesigns; }
 
-  /** Set the vector of contained DesignMaterial's. */
-  public void setSubdesigns(Vector subs) { _subdesigns = subs; }
+    /** Set the vector of contained DesignMaterial's. */
+    public void setSubdesigns(Vector subs) { _subdesigns = subs; }
 
-  /** Enumerate all contained DesignMaterial's. */
-  public Enumeration elements() { return _subdesigns.elements(); }
-  /** Enumerate all contained DesignMaterial's. */
-  public Iterator iterator() { return _subdesigns.iterator(); }
+    /** Enumerate all contained DesignMaterial's. */
+    public Enumeration elements() { return _subdesigns.elements(); }
+    /** Enumerate all contained DesignMaterial's. */
+    public Iterator iterator() { return _subdesigns.iterator(); }
 
-  /** Reply true if the given DesignMaterial is part of this design. */
-  public boolean transativelyIncludes(DesignMaterial dm) {
-    Enumeration cur = elements();
-    while (cur.hasMoreElements()) {
-      DesignMaterial dm2 = (DesignMaterial) cur.nextElement();
-      if (dm == dm2) return true;
-      if ((dm2 instanceof Design) &&
-	  (((Design)dm2).transativelyIncludes(dm))) {
-	return true;
-      }
+    /** Reply true if the given DesignMaterial is part of this design. */
+    public boolean transativelyIncludes(DesignMaterial dm) {
+	Enumeration cur = elements();
+	while (cur.hasMoreElements()) {
+	    DesignMaterial dm2 = (DesignMaterial) cur.nextElement();
+	    if (dm == dm2) return true;
+	    if ((dm2 instanceof Design) &&
+		(((Design) dm2).transativelyIncludes(dm))) {
+		return true;
+	    }
+	}
+	return false;
     }
-    return false;
-  }
 
-  /** Add the given DesignMaterial to this Design, if it is not
-   * already. */
-  public synchronized void addElement(DesignMaterial dm) {
-    if (!transativelyIncludes(dm)) {
-      _subdesigns.addElement(dm);
-      dm.addParent(this);
+    /** Add the given DesignMaterial to this Design, if it is not
+     * already. */
+    public synchronized void addElement(DesignMaterial dm) {
+	if (!transativelyIncludes(dm)) {
+	    _subdesigns.addElement(dm);
+	    dm.addParent(this);
+	}
     }
-  }
 
-  /** Remove the given DesignMaterial from this Design. */
-  public synchronized void removeElement(DesignMaterial dm) {
-    _subdesigns.removeElement(dm);
-    dm.removeParent(this);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // critiquing
-
-  /** Critique a Design by critiquing each contained
-   * DesignMaterial. <p>
-   *
-   * TODO: in the future Argo will use less tree walking
-   * and more trigger-driven critiquing. I.e., critiquing will be done
-   * in response to specific manipulations in the editor.  */
-  public void critique(Designer d) {
-    super.critique(d);
-    Enumeration cur = elements();
-    // alternative execution policies here?
-    while (cur.hasMoreElements()) {
-      DesignMaterial dm = (DesignMaterial) cur.nextElement();
-      dm.critique(d);
+    /** Remove the given DesignMaterial from this Design. */
+    public synchronized void removeElement(DesignMaterial dm) {
+	_subdesigns.removeElement(dm);
+	dm.removeParent(this);
     }
-  }
 
-  /** Reply a string that describes this Design. Inteneded for
-   * debugging. */
-  public String toString() {
-    String printString = super.toString() + " [\n";
-    Enumeration cur = elements();
-    while (cur.hasMoreElements()) {
-      DesignMaterial dm = (DesignMaterial) cur.nextElement();
-      printString = printString + "  " + dm.toString() + "\n";
+    ////////////////////////////////////////////////////////////////
+    // critiquing
+
+    /** Critique a Design by critiquing each contained
+     * DesignMaterial. <p>
+     *
+     * TODO: in the future Argo will use less tree walking
+     * and more trigger-driven critiquing. I.e., critiquing will be done
+     * in response to specific manipulations in the editor.  */
+    public void critique(Designer d) {
+	super.critique(d);
+	Enumeration cur = elements();
+	// alternative execution policies here?
+	while (cur.hasMoreElements()) {
+	    DesignMaterial dm = (DesignMaterial) cur.nextElement();
+	    dm.critique(d);
+	}
     }
-    return printString + "]\n";
-  }
+
+    /** Reply a string that describes this Design. Inteneded for
+     * debugging. */
+    public String toString() {
+	String printString = super.toString() + " [\n";
+	Enumeration cur = elements();
+	while (cur.hasMoreElements()) {
+	    DesignMaterial dm = (DesignMaterial) cur.nextElement();
+	    printString = printString + "  " + dm.toString() + "\n";
+	}
+	return printString + "]\n";
+    }
 
 } /* end class Design */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -62,163 +63,164 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
  *  GEF.  This class handles only UML Sequence Digrams.  */
 
 public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
-implements VetoableChangeListener {
+    implements VetoableChangeListener 
+{
     protected static Category cat = 
         Category.getInstance(SequenceDiagramGraphModel.class);
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
   
-  /** The "home" UML model of this diagram, not all ModelElements in this
-   *  graph are in the home model, but if they are added and don't
-   *  already have a model, they are placed in the "home model".
-   *  Also, elements from other models will have their FigNodes add a
-   *  line to say what their model is. */
+    /** The "home" UML model of this diagram, not all ModelElements in this
+     *  graph are in the home model, but if they are added and don't
+     *  already have a model, they are placed in the "home model".
+     *  Also, elements from other models will have their FigNodes add a
+     *  line to say what their model is. */
 
-  /** The Sequence / interaction we are diagramming */
-  protected MNamespace _Sequence;
-  //protected MInteraction _interaction;
+    /** The Sequence / interaction we are diagramming */
+    protected MNamespace _Sequence;
+    //protected MInteraction _interaction;
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public MNamespace getNamespace() { return _Sequence; }
-  public void setNamespace(MNamespace m) {
-    _Sequence = m;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // GraphModel implementation
-
-  /** Return all nodes in the graph */
-  public Vector getNodes() { return _nodes; }
-
-  /** Return all nodes in the graph */
-  public Vector getEdges() { return _edges; }
-
-  /** Return all ports on node or edge */
-  public Vector getPorts(Object nodeOrEdge) {
-    Vector res = new Vector();  //wasteful!
-    if (nodeOrEdge instanceof MObject) res.addElement(nodeOrEdge);
-    return res;
-  }
-
-  /** Return the node or edge that owns the given port */
-  public Object getOwner(Object port) {
-    return port;
-  }
-
-  /** Return all edges going to given port */
-  public Vector getInEdges(Object port) {
-    Vector res = new Vector(); //wasteful!
-    if (port instanceof MObject) {
-      MObject mo = (MObject) port;
-      Collection ends = mo.getLinkEnds();
-      if (ends == null) return res; // empty Vector
-	  Iterator iter = ends.iterator();
-      while (iter.hasNext()) {
-	    MLinkEnd aer = (MLinkEnd) iter.next();
-	    res.addElement(aer.getLink());
-      }
+    public MNamespace getNamespace() { return _Sequence; }
+    public void setNamespace(MNamespace m) {
+	_Sequence = m;
     }
-    return res;
-  }
 
-  /** Return all edges going from given port */
-  public Vector getOutEdges(Object port) {
-    return new Vector(); // TODO?
-  }
+    ////////////////////////////////////////////////////////////////
+    // GraphModel implementation
 
-  /** Return one end of an edge */
-  public Object getSourcePort(Object edge) {
-    if (edge instanceof MLink) {
-      return CommonBehaviorHelper.getHelper().getSource((MLink)edge);
+    /** Return all nodes in the graph */
+    public Vector getNodes() { return _nodes; }
+
+    /** Return all nodes in the graph */
+    public Vector getEdges() { return _edges; }
+
+    /** Return all ports on node or edge */
+    public Vector getPorts(Object nodeOrEdge) {
+	Vector res = new Vector();  //wasteful!
+	if (nodeOrEdge instanceof MObject) res.addElement(nodeOrEdge);
+	return res;
     }
-    cat.debug("TODO getSourcePort");
-    return null;
-  }
 
-  /** Return  the other end of an edge */
-  public Object getDestPort(Object edge) {
-    if (edge instanceof MLink) {
-      return CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
+    /** Return the node or edge that owns the given port */
+    public Object getOwner(Object port) {
+	return port;
     }
-    cat.debug("TODO getDestPort");
-    return null;
-  }
 
-
-  ////////////////////////////////////////////////////////////////
-  // MutableGraphModel implementation
-
-  /** Return true if the given object is a valid node in this graph */
-  public boolean canAddNode(Object node) {
-    if (node == null) return false;
-    if (_nodes.contains(node)) return false;
-    return (node instanceof MObject || node instanceof MStimulus);
-  }
-
-  /** Return true if the given object is a valid edge in this graph */
-  public boolean canAddEdge(Object edge)  {
-    if (edge == null) return false;
-    Object end0 = null;
-    Object end1 = null;
-    if (edge instanceof MLink) {
-        end0 = CommonBehaviorHelper.getHelper().getSource((MLink)edge);
-        end1 = CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
+    /** Return all edges going to given port */
+    public Vector getInEdges(Object port) {
+	Vector res = new Vector(); //wasteful!
+	if (port instanceof MObject) {
+	    MObject mo = (MObject) port;
+	    Collection ends = mo.getLinkEnds();
+	    if (ends == null) return res; // empty Vector
+	    Iterator iter = ends.iterator();
+	    while (iter.hasNext()) {
+		MLinkEnd aer = (MLinkEnd) iter.next();
+		res.addElement(aer.getLink());
+	    }
+	}
+	return res;
     }
-    if (end0 == null || end1 == null) return false;
-    if (!_nodes.contains(end0)) return false;
-    if (!_nodes.contains(end1)) return false;
-    return true;
+
+    /** Return all edges going from given port */
+    public Vector getOutEdges(Object port) {
+	return new Vector(); // TODO?
+    }
+
+    /** Return one end of an edge */
+    public Object getSourcePort(Object edge) {
+	if (edge instanceof MLink) {
+	    return CommonBehaviorHelper.getHelper().getSource((MLink) edge);
+	}
+	cat.debug("TODO getSourcePort");
+	return null;
+    }
+
+    /** Return  the other end of an edge */
+    public Object getDestPort(Object edge) {
+	if (edge instanceof MLink) {
+	    return CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
+	}
+	cat.debug("TODO getDestPort");
+	return null;
+    }
+
+
+    ////////////////////////////////////////////////////////////////
+    // MutableGraphModel implementation
+
+    /** Return true if the given object is a valid node in this graph */
+    public boolean canAddNode(Object node) {
+	if (node == null) return false;
+	if (_nodes.contains(node)) return false;
+	return (node instanceof MObject || node instanceof MStimulus);
+    }
+
+    /** Return true if the given object is a valid edge in this graph */
+    public boolean canAddEdge(Object edge)  {
+	if (edge == null) return false;
+	Object end0 = null;
+	Object end1 = null;
+	if (edge instanceof MLink) {
+	    end0 = CommonBehaviorHelper.getHelper().getSource((MLink) edge);
+	    end1 = CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
+	}
+	if (end0 == null || end1 == null) return false;
+	if (!_nodes.contains(end0)) return false;
+	if (!_nodes.contains(end1)) return false;
+	return true;
         
-  }
-
-
-  /** Add the given node to the graph, if valid. */
-  public void addNode(Object node) {
-    if (!canAddNode(node)) return;
-    _nodes.addElement(node);
-    // TODO: assumes public, user pref for default visibility?
-      if (node instanceof MModelElement) {
-		  _Sequence.addOwnedElement((MModelElement) node);
-		  // ((MClassifier)node).setNamespace(_Sequence.getNamespace());
-      }
-
-    fireNodeAdded(node);
-  }
-
-  /** Add the given edge to the graph, if valid. */
-  public void addEdge(Object edge) {
-    if (!canAddEdge(edge)) return;
-    _edges.addElement(edge);
-    // TODO: assumes public
-     if (edge instanceof MModelElement) {
-        _Sequence.addOwnedElement((MModelElement) edge);
-      }
-    fireEdgeAdded(edge);
-
-  }
-
-  public void addNodeRelatedEdges(Object node) {
-    if ( node instanceof MInstance ) {
-      Collection ends = ((MInstance)node).getLinkEnds();
-      Iterator iter = ends.iterator();
-      while (iter.hasNext()) {
-         MLinkEnd ae = (MLinkEnd) iter.next();
-         if(canAddEdge(ae.getLink()))
-           addEdge(ae.getLink());
-           return;
-      }
     }
-  }
 
 
-  /** Return true if the two given ports can be connected by a
-   * kind of edge to be determined by the ports. */
-  public boolean canConnect(Object fromP, Object toP) {
-    if ((fromP instanceof MObject) && (toP instanceof MObject)) return true;
-    return false;
-  }
+    /** Add the given node to the graph, if valid. */
+    public void addNode(Object node) {
+	if (!canAddNode(node)) return;
+	_nodes.addElement(node);
+	// TODO: assumes public, user pref for default visibility?
+	if (node instanceof MModelElement) {
+	    _Sequence.addOwnedElement((MModelElement) node);
+	    // ((MClassifier)node).setNamespace(_Sequence.getNamespace());
+	}
+
+	fireNodeAdded(node);
+    }
+
+    /** Add the given edge to the graph, if valid. */
+    public void addEdge(Object edge) {
+	if (!canAddEdge(edge)) return;
+	_edges.addElement(edge);
+	// TODO: assumes public
+	if (edge instanceof MModelElement) {
+	    _Sequence.addOwnedElement((MModelElement) edge);
+	}
+	fireEdgeAdded(edge);
+
+    }
+
+    public void addNodeRelatedEdges(Object node) {
+	if ( node instanceof MInstance ) {
+	    Collection ends = ((MInstance) node).getLinkEnds();
+	    Iterator iter = ends.iterator();
+	    while (iter.hasNext()) {
+		MLinkEnd ae = (MLinkEnd) iter.next();
+		if (canAddEdge(ae.getLink()))
+		    addEdge(ae.getLink());
+		return;
+	    }
+	}
+    }
+
+
+    /** Return true if the two given ports can be connected by a
+     * kind of edge to be determined by the ports. */
+    public boolean canConnect(Object fromP, Object toP) {
+	if ((fromP instanceof MObject) && (toP instanceof MObject)) return true;
+	return false;
+    }
 
   
     /** Contruct and add a new edge of the given kind */
@@ -236,24 +238,24 @@ implements VetoableChangeListener {
             Editor curEditor = Globals.curEditor();
             if (ml.getStimuli() == null || ml.getStimuli().size() == 0) {
                 ModeManager modeManager = curEditor.getModeManager();
-                Mode mode = (Mode)modeManager.top();
+                Mode mode = (Mode) modeManager.top();
                 Hashtable args = mode.getArgs();
                 if ( args != null ) {
-                    Object action=null;
+                    Object action = null;
                     // get "action"-Class taken from global mode
                     Class actionClass = (Class) args.get("action");
                     if (actionClass != null) {
                         //create the action
-                        if(actionClass==MCallAction.class)
-                            action=UmlFactory.getFactory().getCommonBehavior().createCallAction();
-                        else if(actionClass==MCreateAction.class)
-                            action=UmlFactory.getFactory().getCommonBehavior().createCreateAction();
-                        else if(actionClass==MDestroyAction.class)
-                            action=UmlFactory.getFactory().getCommonBehavior().createDestroyAction();
-                        else if(actionClass==MSendAction.class)
-                            action=UmlFactory.getFactory().getCommonBehavior().createSendAction();
-                        else if(actionClass==MReturnAction.class)
-                            action=UmlFactory.getFactory().getCommonBehavior().createReturnAction();
+                        if (actionClass == MCallAction.class)
+                            action = UmlFactory.getFactory().getCommonBehavior().createCallAction();
+                        else if (actionClass == MCreateAction.class)
+                            action = UmlFactory.getFactory().getCommonBehavior().createCreateAction();
+                        else if (actionClass == MDestroyAction.class)
+                            action = UmlFactory.getFactory().getCommonBehavior().createDestroyAction();
+                        else if (actionClass == MSendAction.class)
+                            action = UmlFactory.getFactory().getCommonBehavior().createSendAction();
+                        else if (actionClass == MReturnAction.class)
+                            action = UmlFactory.getFactory().getCommonBehavior().createReturnAction();
 
                         if (action != null)  {
                             // determine action type of arguments in mode
@@ -268,14 +270,14 @@ implements VetoableChangeListener {
                             MStimulus stimulus = UmlFactory.getFactory().getCommonBehavior().createStimulus();
                             //if we want to allow the sequence number to appear
                             /*UMLSequenceDiagram sd=(UMLSequenceDiagram) ProjectBrowser.TheInstance.getActiveDiagram();
-                            int num=sd.getNumStimuluss()+1;
-                            stimulus.setName(""+num);*/
+			      int num=sd.getNumStimuluss()+1;
+			      stimulus.setName(""+num);*/
                             //otherwise: no sequence number
                             stimulus.setName("");
 
                             //set sender and receiver
-                            stimulus.setSender((MObject)fromPort);
-                            stimulus.setReceiver((MObject)toPort);
+                            stimulus.setSender((MObject) fromPort);
+                            stimulus.setReceiver((MObject) toPort);
                             // set action type
                             ModelFacade.setDispatchAction(stimulus, action);
                             // add stimulus to link
@@ -298,27 +300,27 @@ implements VetoableChangeListener {
 
 
 
-  ////////////////////////////////////////////////////////////////
-  // VetoableChangeListener implementation
+    ////////////////////////////////////////////////////////////////
+    // VetoableChangeListener implementation
 
-  public void vetoableChange(PropertyChangeEvent pce) {
-    //throws PropertyVetoException
+    public void vetoableChange(PropertyChangeEvent pce) {
+	//throws PropertyVetoException
 
-    if ("ownedElement".equals(pce.getPropertyName())) {
-      Vector oldOwned = (Vector) pce.getOldValue();
-      MElementImport eo = (MElementImport) pce.getNewValue();
-      MModelElement me = eo.getModelElement();
-      if (oldOwned.contains(eo)) {
-	    cat.debug("model removed " + me);
-	    if (me instanceof MObject) removeNode(me);
-	    if (me instanceof MStimulus) removeNode(me);
-	    if (me instanceof MAssociation) removeEdge(me);
-      }
-      else {
-	    cat.debug("model added " + me);
-      }
+	if ("ownedElement".equals(pce.getPropertyName())) {
+	    Vector oldOwned = (Vector) pce.getOldValue();
+	    MElementImport eo = (MElementImport) pce.getNewValue();
+	    MModelElement me = eo.getModelElement();
+	    if (oldOwned.contains(eo)) {
+		cat.debug("model removed " + me);
+		if (me instanceof MObject) removeNode(me);
+		if (me instanceof MStimulus) removeNode(me);
+		if (me instanceof MAssociation) removeEdge(me);
+	    }
+	    else {
+		cat.debug("model added " + me);
+	    }
+	}
     }
-  }
 
 } /* end class SequenceDiagramGraphModel */
 

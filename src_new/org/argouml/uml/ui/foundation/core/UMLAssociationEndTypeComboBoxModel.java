@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,8 +46,8 @@ public class UMLAssociationEndTypeComboBoxModel
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-         if (getTarget() != null) {
-            return ((MAssociationEnd)getTarget()).getType();
+	if (getTarget() != null) {
+            return ((MAssociationEnd) getTarget()).getType();
         }
         return null;
     }

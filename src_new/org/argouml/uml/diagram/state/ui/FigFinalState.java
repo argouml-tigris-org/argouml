@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,188 +51,188 @@ import ru.novosoft.uml.behavior.state_machines.MFinalState;
 
 public class FigFinalState extends FigStateVertex {
 
-	////////////////////////////////////////////////////////////////
-	// constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-	public final int MARGIN = 2;
-	public int x = 0;
-	public int y = 0;
-	public int width = 20;
-	public int height = 20;
+    public final int MARGIN = 2;
+    public int x = 0;
+    public int y = 0;
+    public int width = 20;
+    public int height = 20;
 
-	////////////////////////////////////////////////////////////////
-	// instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
 	
-	private FigCircle _inCircle;
-	private FigCircle _outCircle;
+    private FigCircle _inCircle;
+    private FigCircle _outCircle;
 
-	////////////////////////////////////////////////////////////////
-	// constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-	public FigFinalState() {
-		super();
-		Color handleColor = Globals.getPrefs().getHandleColor();
-		x = 45;
-		y = 0;
-		_bigPort = new FigRect(x, y, width, height);
-		_bigPort.setLineWidth(0);
-		_bigPort.setFilled(false);
-		_outCircle =
-			new FigCircle(x, y, width, height, Color.black, Color.white);
-		_inCircle =
-			new FigCircle(
-				x + 5,
-				y + 5,
-				width - 10,
-				height - 10,
-				handleColor,
-				Color.black);
+    public FigFinalState() {
+	super();
+	Color handleColor = Globals.getPrefs().getHandleColor();
+	x = 45;
+	y = 0;
+	_bigPort = new FigRect(x, y, width, height);
+	_bigPort.setLineWidth(0);
+	_bigPort.setFilled(false);
+	_outCircle =
+	    new FigCircle(x, y, width, height, Color.black, Color.white);
+	_inCircle =
+	    new FigCircle(
+			  x + 5,
+			  y + 5,
+			  width - 10,
+			  height - 10,
+			  handleColor,
+			  Color.black);
 
-		_outCircle.setLineWidth(1);
-		_inCircle.setLineWidth(0);
+	_outCircle.setLineWidth(1);
+	_inCircle.setLineWidth(0);
 
-		_name = new FigText(x+10, y+22, 0, 21, true);
-		_name.setFilled(false);
-		_name.setLineWidth(0);
-		_name.setFont(LABEL_FONT);
-		_name.setTextColor(Color.black);
-		_name.setMultiLine(false);
-		_name.setAllowsTab(false);
-		_name.setJustifciaionByName("center");
+	_name = new FigText(x + 10, y + 22, 0, 21, true);
+	_name.setFilled(false);
+	_name.setLineWidth(0);
+	_name.setFont(LABEL_FONT);
+	_name.setTextColor(Color.black);
+	_name.setMultiLine(false);
+	_name.setAllowsTab(false);
+	_name.setJustifciaionByName("center");
 		
-		addFig(_bigPort);
-		addFig(_outCircle);
-		addFig(_inCircle);
-		addFig(_name);
+	addFig(_bigPort);
+	addFig(_outCircle);
+	addFig(_inCircle);
+	addFig(_name);
 
-		setBlinkPorts(false); //make port invisble unless mouse enters
-		Rectangle r = getBounds();
+	setBlinkPorts(false); //make port invisble unless mouse enters
+	Rectangle r = getBounds();
+    }
+
+    public FigFinalState(GraphModel gm, Object node) {
+	this();
+	setOwner(node);
+    }
+
+    public Object clone() {
+	FigFinalState figClone = (FigFinalState) super.clone();
+	Vector v = figClone.getFigs();
+	figClone._bigPort = (FigRect) v.elementAt(0);
+	figClone._outCircle = (FigCircle) v.elementAt(1);
+	figClone._inCircle = (FigCircle) v.elementAt(2);
+	return figClone;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // Fig accessors
+
+    public Selection makeSelection() {
+	MFinalState pstate = null;
+	Selection sel = null;
+	if (getOwner() != null) {
+	    pstate = (MFinalState) getOwner();
+	    if (pstate.getContainer().getStateMachine()
+		instanceof MActivityGraph) {
+		sel = new SelectionActionState(this);
+		((SelectionActionState) sel).setOutgoingButtonEnabled(false);
+	    } else {
+		sel = new SelectionState(this);
+		((SelectionState) sel).setOutgoingButtonEnabled(false);
+	    }
 	}
+	return sel;
+    }
 
-	public FigFinalState(GraphModel gm, Object node) {
-		this();
-		setOwner(node);
+    /** Final states are fixed size. */
+    public boolean isResizable() {
+	return false;
+    }
+
+    //   public Selection makeSelection() {
+    //     return new SelectionMoveClarifiers(this);
+    //   }
+
+    public void setLineColor(Color col) {
+	_outCircle.setLineColor(col);
+    }
+    public Color getLineColor() {
+	return _outCircle.getLineColor();
+    }
+
+    public void setFillColor(Color col) {
+	_inCircle.setFillColor(col);
+    }
+    public Color getFillColor() {
+	return _inCircle.getFillColor();
+    }
+
+    public void setFilled(boolean f) {
+    }
+    public boolean getFilled() {
+	return true;
+    }
+
+    public void setLineWidth(int w) {
+	_outCircle.setLineWidth(w);
+    }
+    public int getLineWidth() {
+	return _outCircle.getLineWidth();
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // Event handlers
+
+    public void mouseClicked(MouseEvent me) {
+    }
+    public void keyPressed(KeyEvent ke) {
+    }
+
+    static final long serialVersionUID = -3506578343969467480L;
+
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
+    public void setBounds(int x, int y, int w, int h) {
+	_x = x;
+	_y = y;
+	_bigPort.setX(x);
+	_bigPort.setY(y);
+	_outCircle.setX(x);
+	_outCircle.setY(y);
+	_inCircle.setX(x + 5);
+	_inCircle.setY(y + 5);
+	// _bigPort.setBounds(x, y, w, h);
+	// _outCircle.setBounds(x, y, w, h);
+    }
+
+    /**
+     * Returns the outCircle.
+     * @return FigCircle
+     */
+    public FigCircle getOutCircle() {
+	return _outCircle;
+    }
+
+    /**
+     * Makes sure that edges stick to the outer circle and not to the name or
+     * stereobox.
+     * @see org.tigris.gef.presentation.Fig#getGravityPoints()
+     */
+    public Vector getGravityPoints() {
+	Vector ret = new Vector();
+	int cx = _outCircle.center().x;
+	int cy = _outCircle.center().y;
+	int radius = Math.round(_outCircle.getWidth() / 2) + 1;
+	int MAXPOINTS = 20;
+	Point point = null;
+	for (int i = 0; i < MAXPOINTS; i++) {
+	    point = new Point((int) (cx + Math.cos(2 * Math.PI / MAXPOINTS * i) * radius), (int) (cy + Math.sin(2 * Math.PI / MAXPOINTS * i) * radius));
+	    ret.add(point);
 	}
-
-	public Object clone() {
-		FigFinalState figClone = (FigFinalState) super.clone();
-		Vector v = figClone.getFigs();
-		figClone._bigPort = (FigRect) v.elementAt(0);
-		figClone._outCircle = (FigCircle) v.elementAt(1);
-		figClone._inCircle = (FigCircle) v.elementAt(2);
-		return figClone;
-	}
-
-	////////////////////////////////////////////////////////////////
-	// Fig accessors
-
-	public Selection makeSelection() {
-		MFinalState pstate = null;
-		Selection sel = null;
-		if (getOwner() != null) {
-			pstate = (MFinalState) getOwner();
-			if (pstate.getContainer().getStateMachine()
-				instanceof MActivityGraph) {
-				sel = new SelectionActionState(this);
-				((SelectionActionState) sel).setOutgoingButtonEnabled(false);
-			} else {
-				sel = new SelectionState(this);
-				((SelectionState) sel).setOutgoingButtonEnabled(false);
-			}
-		}
-		return sel;
-	}
-
-	/** Final states are fixed size. */
-	public boolean isResizable() {
-		return false;
-	}
-
-	//   public Selection makeSelection() {
-	//     return new SelectionMoveClarifiers(this);
-	//   }
-
-	public void setLineColor(Color col) {
-		_outCircle.setLineColor(col);
-	}
-	public Color getLineColor() {
-		return _outCircle.getLineColor();
-	}
-
-	public void setFillColor(Color col) {
-		_inCircle.setFillColor(col);
-	}
-	public Color getFillColor() {
-		return _inCircle.getFillColor();
-	}
-
-	public void setFilled(boolean f) {
-	}
-	public boolean getFilled() {
-		return true;
-	}
-
-	public void setLineWidth(int w) {
-		_outCircle.setLineWidth(w);
-	}
-	public int getLineWidth() {
-		return _outCircle.getLineWidth();
-	}
-
-	////////////////////////////////////////////////////////////////
-	// Event handlers
-
-	public void mouseClicked(MouseEvent me) {
-	}
-	public void keyPressed(KeyEvent ke) {
-	}
-
-	static final long serialVersionUID = -3506578343969467480L;
-
-
-	/**
-	 * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
-	 */
-	public void setBounds(int x, int y, int w, int h) {
-		_x = x;
-		_y = y;
-		_bigPort.setX(x);
-		_bigPort.setY(y);
-		_outCircle.setX(x);
-		_outCircle.setY(y);
-		_inCircle.setX(x+5);
-		_inCircle.setY(y+5);
-		// _bigPort.setBounds(x, y, w, h);
-		// _outCircle.setBounds(x, y, w, h);
-	}
-
-	/**
-	 * Returns the outCircle.
-	 * @return FigCircle
-	 */
-	public FigCircle getOutCircle() {
-		return _outCircle;
-	}
-
-	/**
-	 * Makes sure that edges stick to the outer circle and not to the name or
-	 * stereobox.
-	 * @see org.tigris.gef.presentation.Fig#getGravityPoints()
-	 */
-	public Vector getGravityPoints() {
-		Vector ret = new Vector();
-		int cx = _outCircle.center().x;
-		int cy = _outCircle.center().y;
-		int radius = Math.round(_outCircle.getWidth()/2)+1;
-		int MAXPOINTS = 20;
-		Point point = null;
-		for (int i = 0; i < MAXPOINTS; i++) {
-			point = new Point((int)(cx + Math.cos(2*Math.PI/MAXPOINTS*i)*radius), (int)(cy + Math.sin(2*Math.PI/MAXPOINTS*i)*radius));
-			ret.add(point);
-		}
-		return ret;
+	return ret;
 		
-	}
+    }
 
 } /* end class FigFinalState */

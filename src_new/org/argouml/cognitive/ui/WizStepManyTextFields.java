@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,93 +42,93 @@ import org.argouml.ui.*;
  */
 
 public class WizStepManyTextFields extends WizStep {
-  JTextArea _instructions = new JTextArea();
-  Vector _fields = new Vector();
+    JTextArea _instructions = new JTextArea();
+    Vector _fields = new Vector();
 
-  public WizStepManyTextFields(Wizard w, String instr, Vector strings) {
-    // store wizard?
-    _instructions.setText(instr);
-    _instructions.setWrapStyleWord(true);
-    _instructions.setEditable(false);
-    _instructions.setBorder(null);
-    _instructions.setBackground(_mainPanel.getBackground());
+    public WizStepManyTextFields(Wizard w, String instr, Vector strings) {
+	// store wizard?
+	_instructions.setText(instr);
+	_instructions.setWrapStyleWord(true);
+	_instructions.setEditable(false);
+	_instructions.setBorder(null);
+	_instructions.setBackground(_mainPanel.getBackground());
 
 
-    _mainPanel.setBorder(new EtchedBorder());
+	_mainPanel.setBorder(new EtchedBorder());
 
-    GridBagLayout gb = new GridBagLayout();
-    _mainPanel.setLayout(gb);
+	GridBagLayout gb = new GridBagLayout();
+	_mainPanel.setLayout(gb);
 
-    GridBagConstraints c = new GridBagConstraints();
-    c.ipadx = 3; c.ipady = 3;
-    c.weightx = 0.0; c.weighty = 0.0;
-    c.anchor = GridBagConstraints.EAST;
+	GridBagConstraints c = new GridBagConstraints();
+	c.ipadx = 3; c.ipady = 3;
+	c.weightx = 0.0; c.weighty = 0.0;
+	c.anchor = GridBagConstraints.EAST;
 
-    JLabel image = new JLabel("");
-    //image.setMargin(new Insets(0, 0, 0, 0));
-    image.setIcon(WIZ_ICON);
-    image.setBorder(null);
-    c.gridx = 0;
-    c.gridheight = GridBagConstraints.REMAINDER;
-    c.gridy = 0;
-    c.anchor = GridBagConstraints.NORTH;
-    gb.setConstraints(image, c);
-    _mainPanel.add(image);
+	JLabel image = new JLabel("");
+	//image.setMargin(new Insets(0, 0, 0, 0));
+	image.setIcon(WIZ_ICON);
+	image.setBorder(null);
+	c.gridx = 0;
+	c.gridheight = GridBagConstraints.REMAINDER;
+	c.gridy = 0;
+	c.anchor = GridBagConstraints.NORTH;
+	gb.setConstraints(image, c);
+	_mainPanel.add(image);
 
-    c.weightx = 0.0;
-    c.gridx = 2;
-    c.gridheight = 1;
-    c.gridwidth = 3;
-    c.gridy = 0;
-    c.fill = GridBagConstraints.NONE;
-    gb.setConstraints(_instructions, c);
-    _mainPanel.add(_instructions);
+	c.weightx = 0.0;
+	c.gridx = 2;
+	c.gridheight = 1;
+	c.gridwidth = 3;
+	c.gridy = 0;
+	c.fill = GridBagConstraints.NONE;
+	gb.setConstraints(_instructions, c);
+	_mainPanel.add(_instructions);
 
-    c.gridx = 1;
-    c.gridy = 1;
-    c.weightx = 0.0;
-    c.gridwidth = 1;
-    c.fill = GridBagConstraints.NONE;
-    SpacerPanel spacer = new SpacerPanel();
-    gb.setConstraints(spacer, c);
-    _mainPanel.add(spacer);
+	c.gridx = 1;
+	c.gridy = 1;
+	c.weightx = 0.0;
+	c.gridwidth = 1;
+	c.fill = GridBagConstraints.NONE;
+	SpacerPanel spacer = new SpacerPanel();
+	gb.setConstraints(spacer, c);
+	_mainPanel.add(spacer);
 
-    c.gridx = 2;
-    c.weightx = 1.0;
-    c.anchor = GridBagConstraints.WEST;
-    c.gridwidth = 1;
-    int size = strings.size();
-    for (int i = 0; i < size; i++) {
-      c.gridy = 2 + i;
-      String s = (String) strings.elementAt(i);
-      JTextField tf = new JTextField(s, 50);
-      tf.setMinimumSize(new Dimension(200, 20));
-      tf.getDocument().addDocumentListener(this);
-      _fields.addElement(tf);
-      gb.setConstraints(tf, c);
-      _mainPanel.add(tf);
+	c.gridx = 2;
+	c.weightx = 1.0;
+	c.anchor = GridBagConstraints.WEST;
+	c.gridwidth = 1;
+	int size = strings.size();
+	for (int i = 0; i < size; i++) {
+	    c.gridy = 2 + i;
+	    String s = (String) strings.elementAt(i);
+	    JTextField tf = new JTextField(s, 50);
+	    tf.setMinimumSize(new Dimension(200, 20));
+	    tf.getDocument().addDocumentListener(this);
+	    _fields.addElement(tf);
+	    gb.setConstraints(tf, c);
+	    _mainPanel.add(tf);
+	}
+
+	c.gridx = 1;
+	c.gridy = 3 + strings.size();
+	c.weightx = 0.0;
+	c.gridwidth = 1;
+	c.fill = GridBagConstraints.NONE;
+	SpacerPanel spacer2 = new SpacerPanel();
+	gb.setConstraints(spacer2, c);
+	_mainPanel.add(spacer2);
+
     }
 
-    c.gridx = 1;
-    c.gridy = 3+strings.size();
-    c.weightx = 0.0;
-    c.gridwidth = 1;
-    c.fill = GridBagConstraints.NONE;
-    SpacerPanel spacer2 = new SpacerPanel();
-    gb.setConstraints(spacer2, c);
-    _mainPanel.add(spacer2);
-
-  }
-
-  public Vector getStrings() {
-    int size = _fields.size();
-    Vector res = new Vector(size);
-    for (int i = 0; i < size; i++) {
-      JTextField tf = (JTextField) _fields.elementAt(i);
-      res.addElement(tf.getText());
+    public Vector getStrings() {
+	int size = _fields.size();
+	Vector res = new Vector(size);
+	for (int i = 0; i < size; i++) {
+	    JTextField tf = (JTextField) _fields.elementAt(i);
+	    res.addElement(tf.getText());
+	}
+	return res;
     }
-    return res;
-  }
 
 } /* end class WizStepManyTextFields */
 

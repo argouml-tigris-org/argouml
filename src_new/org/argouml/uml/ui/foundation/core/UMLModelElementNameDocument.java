@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,14 +48,14 @@ public class UMLModelElementNameDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
      */
     protected void setProperty(String text) {
-        ((MModelElement)getTarget()).setName(text);
+        ((MModelElement) getTarget()).setName(text);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {
-        return ((MModelElement)getTarget()).getName();
+        return ((MModelElement) getTarget()).getName();
     }
 
 }

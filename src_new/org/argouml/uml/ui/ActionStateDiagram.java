@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -76,12 +77,12 @@ public class ActionStateDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace)handle;
+        MNamespace ns = (MNamespace) handle;
         Object target = TargetManager.getInstance().getModelTarget();
         // TODO: get rid of the parameter ns
         MStateMachine machine =
             StateMachinesFactory.getFactory().buildStateMachine(
-                (MModelElement)target);
+                (MModelElement) target);
         UMLStateDiagram d =
             new UMLStateDiagram(machine.getNamespace(), machine);
         return d;
@@ -97,7 +98,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace)handle;
+        MNamespace ns = (MNamespace) handle;
         if (ns instanceof MClassifier)
             return true;
         return false;

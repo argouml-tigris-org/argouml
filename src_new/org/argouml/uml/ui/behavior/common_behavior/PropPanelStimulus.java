@@ -58,33 +58,35 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelStimulus extends PropPanelModelElement {
 
-   protected static ImageIcon _stimulusIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Stimulus");
+    protected static ImageIcon _stimulusIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Stimulus");
 
     public PropPanelStimulus() {
-        super("Stimulus Properties",_stimulusIcon, ConfigLoader.getTabPropsOrientation());
+        super("Stimulus Properties", _stimulusIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class[] namesToWatch = { (Class)ModelFacade.ACTION};
+        Class[] namesToWatch = {
+	    (Class) ModelFacade.ACTION
+	};
         setNameEventListening(namesToWatch);
 
         Class mclass = MStimulus.class;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField("Action:", new UMLStimulusActionTextField(this,new UMLStimulusActionTextProperty("name")));
+        addField("Action:", new UMLStimulusActionTextField(this, new UMLStimulusActionTextProperty("name")));
         addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 
-        UMLList senderList = new UMLList(new UMLReflectionListModel(this,"sender",true,"getSender",null,null,null),true);
+        UMLList senderList = new UMLList(new UMLReflectionListModel(this, "sender", true, "getSender", null, null, null), true);
         senderList.setForeground(Color.blue);
         senderList.setVisibleRowCount(1);
         senderList.setFont(smallFont);
         JScrollPane senderScroll = new JScrollPane(senderList);
         addField("Sender:", senderScroll);
 
-        UMLList receiverList = new UMLList(new UMLReflectionListModel(this,"receiver",true,"getReceiver",null,null,null),true);
+        UMLList receiverList = new UMLList(new UMLReflectionListModel(this, "receiver", true, "getReceiver", null, null, null), true);
         receiverList.setForeground(Color.blue);
         receiverList.setVisibleRowCount(1);
         receiverList.setFont(smallFont);
@@ -93,16 +95,16 @@ public class PropPanelStimulus extends PropPanelModelElement {
 
         addLinkField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
-        new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete object"), "removeElement", null);
     }
 
     public void navigateNamespace() {
         Object target = getTarget();
-        if(target instanceof MModelElement) {
+        if (target instanceof MModelElement) {
             MModelElement elem = (MModelElement) target;
             MNamespace ns = elem.getNamespace();
-            if(ns != null) {
+            if (ns != null) {
                 TargetManager.getInstance().setTarget(ns);
             }
         }
@@ -114,7 +116,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public MInstance getSender() {
         MInstance sender = null;
         Object target = getTarget();
-        if(target instanceof MStimulus) {
+        if (target instanceof MStimulus) {
             sender =  ((MStimulus) target).getSender();
         }
         return sender;
@@ -122,7 +124,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
 
     public void setSender(MInstance element) {
         Object target = getTarget();
-        if(target instanceof MStimulus) {
+        if (target instanceof MStimulus) {
             ((MStimulus) target).setSender(element);
         }
     }
@@ -131,7 +133,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public MInstance getReceiver() {
         MInstance receiver = null;
         Object target = getTarget();
-        if(target instanceof MStimulus) {
+        if (target instanceof MStimulus) {
             receiver =  ((MStimulus) target).getReceiver();
         }
         return receiver;
@@ -139,7 +141,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
 
     public void setReceiver(MInstance element) {
         Object target = getTarget();
-        if(target instanceof MStimulus) {
+        if (target instanceof MStimulus) {
             ((MStimulus) target).setReceiver(element);
         }
     }
@@ -151,9 +153,9 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public MAssociation getAssociation() {
         MAssociation association = null;
         Object target = getTarget();
-        if(target instanceof MStimulus) {
+        if (target instanceof MStimulus) {
             MLink link = ((MStimulus) target).getCommunicationLink();
-            if(link != null) {
+            if (link != null) {
                 association = link.getAssociation();
             }
         }
@@ -162,18 +164,18 @@ public class PropPanelStimulus extends PropPanelModelElement {
 
     public void setAssociation(MAssociation element) {
         Object target = getTarget();
-        if(target instanceof MStimulus) {
+        if (target instanceof MStimulus) {
             MStimulus stimulus = (MStimulus) target;
             MLink link = stimulus.getCommunicationLink();
-            if(link == null) {
+            if (link == null) {
                 link = stimulus.getFactory().createLink();
-                if(link != null) {
+                if (link != null) {
                     link.addStimulus(stimulus);
                     stimulus.setCommunicationLink(link);
                 }
             }
             MAssociation oldAssoc = link.getAssociation();
-            if(oldAssoc != element) {
+            if (oldAssoc != element) {
                 link.setAssociation(element);
                 //
                 //  TODO: more needs to go here
@@ -186,10 +188,10 @@ public class PropPanelStimulus extends PropPanelModelElement {
         MStimulus target = (MStimulus) getTarget();
 	MModelElement newTarget = (MModelElement) target.getNamespace();
 
-       UmlFactory.getFactory().delete(target);
-		if(newTarget != null) {
+	UmlFactory.getFactory().delete(target);
+	if (newTarget != null) {
             TargetManager.getInstance().setTarget(newTarget);
-		}
+	}
 
     }
 

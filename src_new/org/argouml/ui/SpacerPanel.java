@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -31,10 +32,10 @@ import javax.swing.*;
  *  better. */
 
 public class SpacerPanel extends JPanel {
-  public int _w = 10, _h = 10;
-  public SpacerPanel() { }
-  public SpacerPanel(int w, int h) { _w = w; _h = h; }
-  public Dimension getMinimumSize() { return new Dimension(_w, _h); }
-  public Dimension getPreferredSize() { return new Dimension(_w, _h); }
-  public Dimension getSize() { return new Dimension(_w, _h); }
+    public int _w = 10, _h = 10;
+    public SpacerPanel() { }
+    public SpacerPanel(int w, int h) { _w = w; _h = h; }
+    public Dimension getMinimumSize() { return new Dimension(_w, _h); }
+    public Dimension getPreferredSize() { return new Dimension(_w, _h); }
+    public Dimension getSize() { return new Dimension(_w, _h); }
 } /* end class SpacerPanel */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -31,29 +32,29 @@ import org.argouml.uml.ui.UMLAction;
 
 public class ActionGoToEdit extends UMLAction {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected String _tabName;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    protected String _tabName;
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public ActionGoToEdit(String tabName) {
-    super(tabName, NO_ICON);
-    _tabName = tabName;
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public ActionGoToEdit(String tabName) {
+	super(tabName, NO_ICON);
+	_tabName = tabName;
+    }
 
-  public boolean shouldBeEnabled() {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    Project p = ProjectManager.getManager().getCurrentProject();
-    if (!super.shouldBeEnabled() || p == null) return false;
-    MultiEditorPane mep = pb.getEditorPane();
-    return mep.getIndexOfNamedTab(_tabName) != -1;
-  }
+    public boolean shouldBeEnabled() {
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	Project p = ProjectManager.getManager().getCurrentProject();
+	if (!super.shouldBeEnabled() || p == null) return false;
+	MultiEditorPane mep = pb.getEditorPane();
+	return mep.getIndexOfNamedTab(_tabName) != -1;
+    }
 
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    MultiEditorPane mep = pb.getEditorPane();
-    mep.selectTabNamed(_tabName);
-  }
+    public void actionPerformed(ActionEvent ae) {
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	MultiEditorPane mep = pb.getEditorPane();
+	mep.selectTabNamed(_tabName);
+    }
 
 } /* end class ActionGoToEdit */

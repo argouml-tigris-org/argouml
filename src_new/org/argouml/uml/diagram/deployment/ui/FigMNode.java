@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -51,136 +52,136 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 public class FigMNode extends FigNodeModelElement {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected FigCube _cover;
-  protected FigRect _test;
+    protected FigCube _cover;
+    protected FigRect _test;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public FigMNode() {
-    _bigPort = new FigRect(10, 10, 200, 180);
-    _cover = new FigCube(10, 10, 200, 180, Color.black, Color.white);
-    _test = new FigRect(10,10,1,1, Color.black, Color.white);
+    public FigMNode() {
+	_bigPort = new FigRect(10, 10, 200, 180);
+	_cover = new FigCube(10, 10, 200, 180, Color.black, Color.white);
+	_test = new FigRect(10, 10, 1, 1, Color.black, Color.white);
 
-    _name.setLineWidth(0);
-    _name.setFilled(false);
-    _name.setJustification(0);
+	_name.setLineWidth(0);
+	_name.setFilled(false);
+	_name.setJustification(0);
 
-    addFig(_bigPort);
-    addFig(_cover);
-    addFig(_stereo);
-    addFig(_name);
-    addFig(_test);
-  }
-
-  public FigMNode(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-    if (node instanceof MClassifier && (((MClassifier)node).getName() != null))
-	_name.setText(((MModelElement)node).getName());
-  }
-
-  public String placeString() { return "new Node"; }
-
-  public Object clone() {
-    FigMNode figClone = (FigMNode) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._bigPort = (FigRect) v.elementAt(0);
-    figClone._cover = (FigCube) v.elementAt(1);
-    figClone._stereo = (FigText) v.elementAt(2);
-    figClone._name = (FigText) v.elementAt(3);
-    figClone._test = (FigRect) v.elementAt(4);
-    return figClone;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // acessors
-
-  public void setLineColor(Color c) {
-//     super.setLineColor(c);
-     _cover.setLineColor(c);
-     _stereo.setFilled(false);
-     _stereo.setLineWidth(0);
-     _name.setFilled(false);
-     _name.setLineWidth(0);
-     _test.setLineColor(c);
-  }
-
-  public Selection makeSelection() {
-      return new SelectionNode(this);
-  }
-
-  public Dimension getMinimumSize() {
-    Dimension stereoDim = _stereo.getMinimumSize();
-    Dimension nameDim = _name.getMinimumSize();
-
-    int w = Math.max(stereoDim.width, nameDim.width + 1);
-    int h = stereoDim.height + nameDim.height - 4;
-    return new Dimension(w, h);
-  }
-
-  public void setBounds(int x, int y, int w, int h) {
-    if (_name == null) return;
-
-    Rectangle oldBounds = getBounds();
-    _bigPort.setBounds(x , y, w , h);
-    _cover.setBounds(x , y, w, h);
-
-    Dimension stereoDim = _stereo.getMinimumSize();
-    Dimension nameDim = _name.getMinimumSize();
-    _name.setBounds(x + 1, y + stereoDim.height + 1, w - 1, nameDim.height);
-    _stereo.setBounds(x+1,y+1,w-2,stereoDim.height);
-    _x = x; _y = y; _w = w; _h = h;
-    firePropChange("bounds", oldBounds, getBounds());
-    updateEdges();
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // user interaction methods
-
-  public void mouseClicked(MouseEvent me) {
-    super.mouseClicked(me);
-    setLineColor(Color.black);
-  }
-
-
-  public void setEnclosingFig(Fig encloser) {
-    super.setEnclosingFig(encloser);
-
-    Vector figures = getEnclosedFigs();
-
-    if (getLayer() != null) {
-      // elementOrdering(figures);
-      Vector contents = getLayer().getContents();
-      int contentsSize = contents.size();
-      for (int j=0; j<contentsSize; j++) {
-        Object o = contents.elementAt(j);
-        if (o instanceof FigEdgeModelElement) {
-          FigEdgeModelElement figedge = (FigEdgeModelElement) o;
-          figedge.getLayer().bringToFront(figedge);
-        }
-      }
+	addFig(_bigPort);
+	addFig(_cover);
+	addFig(_stereo);
+	addFig(_name);
+	addFig(_test);
     }
 
-  }
-
-  protected void updateStereotypeText() {
-    MModelElement me = (MModelElement) getOwner();
-    if (me == null) return;
-    MStereotype stereo = me.getStereotype();
-    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0)
-        _stereo.setText("");
-    else {
-        _stereo.setText(Notation.generateStereotype(this, stereo));
+    public FigMNode(GraphModel gm, Object node) {
+	this();
+	setOwner(node);
+	if (node instanceof MClassifier && (((MClassifier) node).getName() != null))
+	    _name.setText(((MModelElement) node).getName());
     }
-  }
 
-  public boolean getUseTrapRect() { return true; }
+    public String placeString() { return "new Node"; }
 
-  static final long serialVersionUID = 8822005566372687713L;
+    public Object clone() {
+	FigMNode figClone = (FigMNode) super.clone();
+	Vector v = figClone.getFigs();
+	figClone._bigPort = (FigRect) v.elementAt(0);
+	figClone._cover = (FigCube) v.elementAt(1);
+	figClone._stereo = (FigText) v.elementAt(2);
+	figClone._name = (FigText) v.elementAt(3);
+	figClone._test = (FigRect) v.elementAt(4);
+	return figClone;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // acessors
+
+    public void setLineColor(Color c) {
+	//     super.setLineColor(c);
+	_cover.setLineColor(c);
+	_stereo.setFilled(false);
+	_stereo.setLineWidth(0);
+	_name.setFilled(false);
+	_name.setLineWidth(0);
+	_test.setLineColor(c);
+    }
+
+    public Selection makeSelection() {
+	return new SelectionNode(this);
+    }
+
+    public Dimension getMinimumSize() {
+	Dimension stereoDim = _stereo.getMinimumSize();
+	Dimension nameDim = _name.getMinimumSize();
+
+	int w = Math.max(stereoDim.width, nameDim.width + 1);
+	int h = stereoDim.height + nameDim.height - 4;
+	return new Dimension(w, h);
+    }
+
+    public void setBounds(int x, int y, int w, int h) {
+	if (_name == null) return;
+
+	Rectangle oldBounds = getBounds();
+	_bigPort.setBounds(x , y, w , h);
+	_cover.setBounds(x , y, w, h);
+
+	Dimension stereoDim = _stereo.getMinimumSize();
+	Dimension nameDim = _name.getMinimumSize();
+	_name.setBounds(x + 1, y + stereoDim.height + 1, w - 1, nameDim.height);
+	_stereo.setBounds(x + 1, y + 1, w - 2, stereoDim.height);
+	_x = x; _y = y; _w = w; _h = h;
+	firePropChange("bounds", oldBounds, getBounds());
+	updateEdges();
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // user interaction methods
+
+    public void mouseClicked(MouseEvent me) {
+	super.mouseClicked(me);
+	setLineColor(Color.black);
+    }
+
+
+    public void setEnclosingFig(Fig encloser) {
+	super.setEnclosingFig(encloser);
+
+	Vector figures = getEnclosedFigs();
+
+	if (getLayer() != null) {
+	    // elementOrdering(figures);
+	    Vector contents = getLayer().getContents();
+	    int contentsSize = contents.size();
+	    for (int j = 0; j < contentsSize; j++) {
+		Object o = contents.elementAt(j);
+		if (o instanceof FigEdgeModelElement) {
+		    FigEdgeModelElement figedge = (FigEdgeModelElement) o;
+		    figedge.getLayer().bringToFront(figedge);
+		}
+	    }
+	}
+
+    }
+
+    protected void updateStereotypeText() {
+	MModelElement me = (MModelElement) getOwner();
+	if (me == null) return;
+	MStereotype stereo = me.getStereotype();
+	if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0)
+	    _stereo.setText("");
+	else {
+	    _stereo.setText(Notation.generateStereotype(this, stereo));
+	}
+    }
+
+    public boolean getUseTrapRect() { return true; }
+
+    static final long serialVersionUID = 8822005566372687713L;
 
 } /* end class FigMNode */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -65,7 +66,7 @@ public class CommonBehaviorHelper {
     public MInstance getSource(MLink link) {
         Collection con = link.getConnections();
         if (con.isEmpty()) return null;
-        MLinkEnd le0 = (MLinkEnd)((Object[]) con.toArray())[0];
+        MLinkEnd le0 = (MLinkEnd) ((Object[]) con.toArray())[0];
         return le0.getInstance();
     }
 
@@ -79,7 +80,7 @@ public class CommonBehaviorHelper {
     public MInstance getDestination(MLink link) {
         Collection con = link.getConnections();
         if (con.size() <= 1) return null;
-        MLinkEnd le0 = (MLinkEnd)((Object[]) con.toArray())[1];
+        MLinkEnd le0 = (MLinkEnd) ((Object[]) con.toArray())[1];
         return le0.getInstance();
     }
 

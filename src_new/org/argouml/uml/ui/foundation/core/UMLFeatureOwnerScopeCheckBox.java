@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,7 +51,7 @@ public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        MScopeKind scope = ((MFeature)getTarget()).getOwnerScope();
+        MScopeKind scope = ((MFeature) getTarget()).getOwnerScope();
         if (scope != null && scope.equals(MScopeKind.CLASSIFIER)) {
             setSelected(true);
         } else

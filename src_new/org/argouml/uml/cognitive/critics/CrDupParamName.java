@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,31 +46,31 @@ import org.argouml.uml.*;
 
 public class CrDupParamName extends CrUML {
 
-  public CrDupParamName() {
-    setHeadline("Duplicate Parameter Name");
+    public CrDupParamName() {
+	setHeadline("Duplicate Parameter Name");
 
-    addSupportedDecision(CrUML.decCONTAINMENT);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MBehavioralFeature)) return NO_PROBLEM;
-    MBehavioralFeature bf = (MBehavioralFeature) dm;
-    Vector params = new Vector(bf.getParameters());
-	params.remove(UmlHelper.getHelper().getCore().getReturnParameter((MOperation)bf));
-    Vector namesSeen = new Vector();
-    Iterator enum = params.iterator();
-    while (enum.hasNext()) {
-      MParameter p = (MParameter) enum.next();
-      String pName = p.getName();
-      if (pName == null || "".equals(pName)) continue;
-      String nameStr = pName;
-      if (nameStr == null || nameStr.length() == 0) continue;
-      if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;
-      namesSeen.addElement(nameStr);
+	addSupportedDecision(CrUML.decCONTAINMENT);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
     }
-    return NO_PROBLEM;
-  }
+
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MBehavioralFeature)) return NO_PROBLEM;
+	MBehavioralFeature bf = (MBehavioralFeature) dm;
+	Vector params = new Vector(bf.getParameters());
+	params.remove(UmlHelper.getHelper().getCore().getReturnParameter((MOperation) bf));
+	Vector namesSeen = new Vector();
+	Iterator enum = params.iterator();
+	while (enum.hasNext()) {
+	    MParameter p = (MParameter) enum.next();
+	    String pName = p.getName();
+	    if (pName == null || "".equals(pName)) continue;
+	    String nameStr = pName;
+	    if (nameStr == null || nameStr.length() == 0) continue;
+	    if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;
+	    namesSeen.addElement(nameStr);
+	}
+	return NO_PROBLEM;
+    }
 
 } /* end class CrDupParamName.java */
 

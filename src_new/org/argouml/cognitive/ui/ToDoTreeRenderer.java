@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -41,77 +42,77 @@ import org.argouml.uml.ui.UMLTreeCellRenderer;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
-  ////////////////////////////////////////////////////////////////
-  // class variables
-  public ImageIcon _PostIt0     = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt0");
-  public ImageIcon _PostIt25    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt25");
-  public ImageIcon _PostIt50    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt50");
-  public ImageIcon _PostIt75    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt75");
-  public ImageIcon _PostIt99    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt99");
-  public ImageIcon _PostIt100   = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
-  //public ImageIcon _MultiPostIt = ResourceLoaderWrapper.getResourceLoaderWrapper()Wrapper.lookupIconResource("MultiPostIt");
+    ////////////////////////////////////////////////////////////////
+    // class variables
+    public ImageIcon _PostIt0     = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt0");
+    public ImageIcon _PostIt25    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt25");
+    public ImageIcon _PostIt50    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt50");
+    public ImageIcon _PostIt75    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt75");
+    public ImageIcon _PostIt99    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt99");
+    public ImageIcon _PostIt100   = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
+    //public ImageIcon _MultiPostIt = ResourceLoaderWrapper.getResourceLoaderWrapper()Wrapper.lookupIconResource("MultiPostIt");
 
-  protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
+    protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
 
-  ////////////////////////////////////////////////////////////////
-  // TreeCellRenderer implementation
+    ////////////////////////////////////////////////////////////////
+    // TreeCellRenderer implementation
 
-  public Component getTreeCellRendererComponent(JTree tree, Object value,
-						boolean sel,
-						boolean expanded,
-						boolean leaf, int row,
-						boolean hasFocus) {
+    public Component getTreeCellRendererComponent(JTree tree, Object value,
+						  boolean sel,
+						  boolean expanded,
+						  boolean leaf, int row,
+						  boolean hasFocus) {
 
-    Component r = super.getTreeCellRendererComponent(tree, value, sel,
-						     expanded, leaf,
-						     row, hasFocus);
+	Component r = super.getTreeCellRendererComponent(tree, value, sel,
+							 expanded, leaf,
+							 row, hasFocus);
 
-    if (r instanceof JLabel) {
-      JLabel lab = (JLabel) r;
-      if (value instanceof ToDoItem) {
-	ToDoItem item = (ToDoItem) value;
-	if (item.getProgress() == 0) lab.setIcon(_PostIt0);
-	else if (item.getProgress() <= 25) lab.setIcon(_PostIt25);
-	else if (item.getProgress() <= 50) lab.setIcon(_PostIt50);
-	else if (item.getProgress() <= 75) lab.setIcon(_PostIt75);
-	else if (item.getProgress() <= 100) lab.setIcon(_PostIt99);
-	else lab.setIcon(_PostIt100);
-      }
-      else if (value instanceof Decision) {
-	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
-      }
-      else if (value instanceof Goal) {
-	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
-      }
-      else if (value instanceof Poster) {
-	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
-      }
-      else if (value instanceof PriorityNode) {
-	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
-      }
-      else if (value instanceof KnowledgeTypeNode) {
-	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
-      }
-      else if (value instanceof MModelElement) {
-	return _navRenderer.getTreeCellRendererComponent(tree, value, sel,
-					      expanded, leaf, row, hasFocus);
-      }
+	if (r instanceof JLabel) {
+	    JLabel lab = (JLabel) r;
+	    if (value instanceof ToDoItem) {
+		ToDoItem item = (ToDoItem) value;
+		if (item.getProgress() == 0) lab.setIcon(_PostIt0);
+		else if (item.getProgress() <= 25) lab.setIcon(_PostIt25);
+		else if (item.getProgress() <= 50) lab.setIcon(_PostIt50);
+		else if (item.getProgress() <= 75) lab.setIcon(_PostIt75);
+		else if (item.getProgress() <= 100) lab.setIcon(_PostIt99);
+		else lab.setIcon(_PostIt100);
+	    }
+	    else if (value instanceof Decision) {
+		lab.setIcon(MetalIconFactory.getTreeFolderIcon());
+	    }
+	    else if (value instanceof Goal) {
+		lab.setIcon(MetalIconFactory.getTreeFolderIcon());
+	    }
+	    else if (value instanceof Poster) {
+		lab.setIcon(MetalIconFactory.getTreeFolderIcon());
+	    }
+	    else if (value instanceof PriorityNode) {
+		lab.setIcon(MetalIconFactory.getTreeFolderIcon());
+	    }
+	    else if (value instanceof KnowledgeTypeNode) {
+		lab.setIcon(MetalIconFactory.getTreeFolderIcon());
+	    }
+	    else if (value instanceof MModelElement) {
+		return _navRenderer.getTreeCellRendererComponent(tree, value, sel,
+								 expanded, leaf, row, hasFocus);
+	    }
 
-      String tip = lab.getText() + " ";
-      lab.setToolTipText(tip);
-      tree.setToolTipText(tip);
+	    String tip = lab.getText() + " ";
+	    lab.setToolTipText(tip);
+	    tree.setToolTipText(tip);
 
-      if (!sel)
-	lab.setBackground(getBackgroundNonSelectionColor());
-      else {
-	Color high = org.tigris.gef.base.Globals.getPrefs().getHighlightColor();
-	high = high.brighter().brighter();
-	lab.setBackground(high);
-      }
-      lab.setOpaque(sel);
+	    if (!sel)
+		lab.setBackground(getBackgroundNonSelectionColor());
+	    else {
+		Color high = org.tigris.gef.base.Globals.getPrefs().getHighlightColor();
+		high = high.brighter().brighter();
+		lab.setBackground(high);
+	    }
+	    lab.setOpaque(sel);
+	}
+	return r;
     }
-    return r;
-  }
 
 
 } /* end class ToDoTreeRenderer */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -56,61 +57,61 @@ import org.tigris.gef.util.*;
  */
 
 public class CheckItem implements java.io.Serializable {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected String _category;
+    protected String _category;
 
-  /** One sentence description of the issue. usually in the form of a
-   *  question. */
-  protected String _description;
+    /** One sentence description of the issue. usually in the form of a
+     *  question. */
+    protected String _description;
 
-  /** URL for background (textbook?) knowledge about the domain. */
-  protected String _moreInfoURL = "http://www.ics.uci.edu/pub/arch/argo/";
+    /** URL for background (textbook?) knowledge about the domain. */
+    protected String _moreInfoURL = "http://www.ics.uci.edu/pub/arch/argo/";
 
-  protected Predicate _pred = PredicateTrue.theInstance();
+    protected Predicate _pred = PredicateTrue.theInstance();
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public CheckItem(String c, String d) {
-    setCategory(c);
-    setDescription(d);
-  }
+    public CheckItem(String c, String d) {
+	setCategory(c);
+	setDescription(d);
+    }
 
-  public CheckItem(String c, String d, String m, Predicate p) {
-    this(c, d);
-    setMoreInfoURL(m);
-    _pred = p;
-  }
+    public CheckItem(String c, String d, String m, Predicate p) {
+	this(c, d);
+	setMoreInfoURL(m);
+	_pred = p;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public String getCategory() { return _category; }
-  public void setCategory(String c) { _category = c; }
+    public String getCategory() { return _category; }
+    public void setCategory(String c) { _category = c; }
 
-  public String getDescription() { return _description; }
-  public String getDescription(Object dm) {
-    return expand(_description, dm);
-  }
-  public void setDescription(String d) { _description = d; }
+    public String getDescription() { return _description; }
+    public String getDescription(Object dm) {
+	return expand(_description, dm);
+    }
+    public void setDescription(String d) { _description = d; }
 
-  public String getMoreInfoURL() { return _moreInfoURL; }
-  public void setMoreInfoURL(String m) { _moreInfoURL = m; }
+    public String getMoreInfoURL() { return _moreInfoURL; }
+    public void setMoreInfoURL(String m) { _moreInfoURL = m; }
 
-  public Predicate getPredicate() { return _pred; }
-  public void setPredicate(Predicate p) { _pred = p; }
+    public Predicate getPredicate() { return _pred; }
+    public void setPredicate(Predicate p) { _pred = p; }
 
-  /** Is this item already on the list? */
-  public boolean equals(Object o) {
-    if (!(o instanceof CheckItem)) return false;
-    CheckItem i = (CheckItem) o;
-    return getDescription().equals(i.getDescription());
-  }
+    /** Is this item already on the list? */
+    public boolean equals(Object o) {
+	if (!(o instanceof CheckItem)) return false;
+	CheckItem i = (CheckItem) o;
+	return getDescription().equals(i.getDescription());
+    }
 
-  public String toString() { return getDescription(); }
+    public String toString() { return getDescription(); }
 
-  public String expand(String desc, Object dm) { return desc; }
+    public String expand(String desc, Object dm) { return desc; }
   
 } /* end class CheckItem */

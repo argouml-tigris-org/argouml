@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,14 +54,14 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     protected boolean isValidElement(Object o) {
         return o instanceof MStereotype 
-            && ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)getTarget(), (MStereotype)o);
+            && ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement) getTarget(), (MStereotype) o);
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        MModelElement elem = (MModelElement)getTarget();
+        MModelElement elem = (MModelElement) getTarget();
         setElements(ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(elem));
     }   
 
@@ -69,7 +70,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MModelElement)getTarget()).getStereotype();
+            return ((MModelElement) getTarget()).getStereotype();
         }
         return null;
     }

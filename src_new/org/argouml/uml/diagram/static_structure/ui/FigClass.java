@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -385,19 +386,19 @@ public class FigClass extends FigNodeModelElement {
                 damage();
                 Enumeration enum = _attrVec.getFigs().elements();
                 while (enum.hasMoreElements())
-                     ((Fig) (enum.nextElement())).setDisplayed(false);
+		    ((Fig) (enum.nextElement())).setDisplayed(false);
                 _attrVec.setDisplayed(false);
                 Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y, (int)aSize.getWidth(), (int)aSize.getHeight());
+                setBounds(rect.x, rect.y, (int) aSize.getWidth(), (int) aSize.getHeight());
             }
         } else {
             if (isVisible) { // show compartement
                 Enumeration enum = _attrVec.getFigs().elements();
                 while (enum.hasMoreElements())
-                     ((Fig) (enum.nextElement())).setDisplayed(true);
+		    ((Fig) (enum.nextElement())).setDisplayed(true);
                 _attrVec.setDisplayed(true);
                 Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y, (int)aSize.getWidth(), (int)aSize.getHeight());
+                setBounds(rect.x, rect.y, (int) aSize.getWidth(), (int) aSize.getHeight());
                 damage();
             }
         }
@@ -411,19 +412,19 @@ public class FigClass extends FigNodeModelElement {
                 damage();
                 Enumeration enum = _operVec.getFigs().elements();
                 while (enum.hasMoreElements())
-                     ((Fig) (enum.nextElement())).setDisplayed(false);
+		    ((Fig) (enum.nextElement())).setDisplayed(false);
                 _operVec.setDisplayed(false);
                 Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y, (int)aSize.getWidth(), (int)aSize.getHeight());
+                setBounds(rect.x, rect.y, (int) aSize.getWidth(), (int) aSize.getHeight());
             }
         } else {
             if (isVisible) {
                 Enumeration enum = _operVec.getFigs().elements();
                 while (enum.hasMoreElements())
-                     ((Fig) (enum.nextElement())).setDisplayed(true);
+		    ((Fig) (enum.nextElement())).setDisplayed(true);
                 _operVec.setDisplayed(true);
                 Dimension aSize = this.getMinimumSize();
-                setBounds(rect.x, rect.y, (int)aSize.getWidth(), (int)aSize.getHeight());
+                setBounds(rect.x, rect.y, (int) aSize.getWidth(), (int) aSize.getHeight());
                 damage();
             }
         }
@@ -523,7 +524,7 @@ public class FigClass extends FigNodeModelElement {
         Editor ce = Globals.curEditor();
         Selection sel = ce.getSelectionManager().findSelectionFor(this);
         if (sel instanceof SelectionClass)
-             ((SelectionClass) sel).hideButtons();
+	    ((SelectionClass) sel).hideButtons();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -923,7 +924,7 @@ public class FigClass extends FigNodeModelElement {
         Editor ce = Globals.curEditor();
         Selection sel = ce.getSelectionManager().findSelectionFor(this);
         if (sel instanceof SelectionClass)
-             ((SelectionClass) sel).hideButtons();
+	    ((SelectionClass) sel).hideButtons();
         unhighlight();
         //display attr/op properties if necessary:
         Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
@@ -953,7 +954,7 @@ public class FigClass extends FigNodeModelElement {
         }
         
         if (targetIsSet == false)
-        TargetManager.getInstance().setTarget(getOwner());
+	    TargetManager.getInstance().setTarget(getOwner());
             
 
     }

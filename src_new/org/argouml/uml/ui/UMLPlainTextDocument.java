@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -94,27 +95,27 @@ public abstract class UMLPlainTextDocument
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
-    public void roleAdded(MElementEvent e) {}
+    public void roleAdded(MElementEvent e) { }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
-    public void roleRemoved(MElementEvent e) {}
+    public void roleRemoved(MElementEvent e) { }
 
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
-    public void listRoleItemSet(MElementEvent e) {}
+    public void listRoleItemSet(MElementEvent e) { }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
-    public void removed(MElementEvent e) {}
+    public void removed(MElementEvent e) { }
 
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
-    public void recovered(MElementEvent e) {}
+    public void recovered(MElementEvent e) { }
 
     /**
      * Returns the target.
@@ -129,21 +130,21 @@ public abstract class UMLPlainTextDocument
      * @param target The target to set
      */
     public final void setTarget(Object target) {
-        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
+        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
 
             if (target instanceof MBase) {
                 if (_target != null)
                     UmlModelEventPump.getPump().removeModelEventListener(
-                        this,
-                        (MBase)_target,
-                        getEventName());
+									 this,
+									 (MBase) _target,
+									 getEventName());
                 _target = target;
                 // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, getEventName());
                 UmlModelEventPump.getPump().addModelEventListener(
-                    this,
-                    (MBase)_target,
-                    getEventName());
+								  this,
+								  (MBase) _target,
+								  getEventName());
                 handleEvent();
             }
         }
@@ -182,14 +183,14 @@ public abstract class UMLPlainTextDocument
     private final void setFiring(boolean firing) {
         if (firing && _target != null)
             UmlModelEventPump.getPump().addModelEventListener(
-                this,
-                (MBase)_target,
-                _eventName);
+							      this,
+							      (MBase) _target,
+							      _eventName);
         else
             UmlModelEventPump.getPump().removeModelEventListener(
-                this,
-                (MBase)_target,
-                _eventName);
+								 this,
+								 (MBase) _target,
+								 _eventName);
         _firing = firing;
     }
 
@@ -204,10 +205,10 @@ public abstract class UMLPlainTextDocument
             super.insertString(0, getProperty(), null);
         } catch (BadLocationException b) {
             cat.error(
-                "A BadLocationException happened\n"
-                    + "The string to set was: "
-                    + getProperty(),
-                b);
+		      "A BadLocationException happened\n"
+		      + "The string to set was: "
+		      + getProperty(),
+		      b);
         } finally {
             setFiring(true);
         }
@@ -246,9 +247,9 @@ public abstract class UMLPlainTextDocument
     }
 
     /**
-    * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-    */
-    public void targetAdded(TargetEvent e) {}
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) { }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)

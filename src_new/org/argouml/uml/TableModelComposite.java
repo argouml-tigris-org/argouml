@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,130 +37,131 @@ import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 
 public class TableModelComposite extends AbstractTableModel
-implements TableModelTarget {
+    implements TableModelTarget 
+{
     protected static Category cat = 
         Category.getInstance(TableModelComposite.class);
 
-  ////////////////
-  // instance varables
-  Vector _rowObjects = new Vector();
-  Vector _colDescs = new Vector();
-  boolean _allowAddition = false;
-  boolean _allowRemoval = false;
-  Predicate _pred = PredicateTrue.theInstance();
+    ////////////////
+    // instance varables
+    Vector _rowObjects = new Vector();
+    Vector _colDescs = new Vector();
+    boolean _allowAddition = false;
+    boolean _allowRemoval = false;
+    Predicate _pred = PredicateTrue.theInstance();
 
-  ////////////////
-  // constructor
-  public TableModelComposite() {
-    initColumns();
-  }
-
-  public void initColumns() { }
-
-  ////////////////
-  // accessors
-
-  public void addColumn(ColumnDescriptor cd) { _colDescs.addElement(cd); }
-  public void setAllowAddition(boolean b) { _allowAddition = b; }
-  public void setAllowRemoval(boolean b) { _allowRemoval = b; }
-
-  public void setTarget(Object target) {
-    Vector rowObjects = rowObjectsFor(target);
-    _rowObjects = rowObjects;
-    fireTableStructureChanged();
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    cat.warn("default rowObjectsFor called. bad!");
-    return new Vector();
-  }
-
-  public Vector getRowObjects() { return _rowObjects; }
-
-  /** this is  at
-   * @param p
-   */  
-  public void setFilter(Predicate p) { _pred = p; }
-
-  ////////////////
-  // TableModel implemetation
-  public int getColumnCount() {
-    return _colDescs.size();
-  }
-
-  public String  getColumnName(int c) {
-    if (c < _colDescs.size()) {
-      ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(c);
-      return cd.getName();
+    ////////////////
+    // constructor
+    public TableModelComposite() {
+	initColumns();
     }
-    return "XXX";
-  }
 
-  public Class getColumnClass(int c) {
-    if (c < _colDescs.size()) {
-      ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(c);
-      return cd.getColumnClass();
+    public void initColumns() { }
+
+    ////////////////
+    // accessors
+
+    public void addColumn(ColumnDescriptor cd) { _colDescs.addElement(cd); }
+    public void setAllowAddition(boolean b) { _allowAddition = b; }
+    public void setAllowRemoval(boolean b) { _allowRemoval = b; }
+
+    public void setTarget(Object target) {
+	Vector rowObjects = rowObjectsFor(target);
+	_rowObjects = rowObjects;
+	fireTableStructureChanged();
     }
-    return String.class;
-  }
 
-  public boolean isCellEditable(int row, int col) {
-    if (row < 0 || row >= _rowObjects.size()) return false;
-    if (col < 0 || col >= _colDescs.size()) return false;
-    Object rowObj = _rowObjects.elementAt(row);
-    ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(col);
-    return cd.isEditable(rowObj);
-  }
+    public Vector rowObjectsFor(Object t) {
+	cat.warn("default rowObjectsFor called. bad!");
+	return new Vector();
+    }
 
-  public int getRowCount() {
-    int numRows = _rowObjects.size();
-    if (_allowAddition) numRows++;
-    return numRows;
-  }
+    public Vector getRowObjects() { return _rowObjects; }
 
-  public Object getValueAt(int row, int col) {
-    if (row >= 0 && row < _rowObjects.size()) {
-      if (col >= 0 && col < _colDescs.size()) {
+    /** this is  at
+     * @param p
+     */  
+    public void setFilter(Predicate p) { _pred = p; }
+
+    ////////////////
+    // TableModel implemetation
+    public int getColumnCount() {
+	return _colDescs.size();
+    }
+
+    public String  getColumnName(int c) {
+	if (c < _colDescs.size()) {
+	    ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(c);
+	    return cd.getName();
+	}
+	return "XXX";
+    }
+
+    public Class getColumnClass(int c) {
+	if (c < _colDescs.size()) {
+	    ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(c);
+	    return cd.getColumnClass();
+	}
+	return String.class;
+    }
+
+    public boolean isCellEditable(int row, int col) {
+	if (row < 0 || row >= _rowObjects.size()) return false;
+	if (col < 0 || col >= _colDescs.size()) return false;
 	Object rowObj = _rowObjects.elementAt(row);
 	ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(col);
-	return cd.getValueFor(rowObj);
-      }
-    }
-    return "TC-" + row +","+col; // for debugging
-  }
-
-  public void setValueAt(Object val, int row, int col)  {
-    if (row >= 0 && row < _rowObjects.size()) {
-      if (col >= 0 && col < _colDescs.size()) {
-	Object rowObj = _rowObjects.elementAt(row);
-	ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(col);
-	cd.setValueFor(rowObj, val);
-	return;
-      }
+	return cd.isEditable(rowObj);
     }
 
-    if (_allowAddition && row >= _rowObjects.size()) {
-      //@ TODO
-      //_rowObjects.addElement(val);
-      fireTableStructureChanged();
+    public int getRowCount() {
+	int numRows = _rowObjects.size();
+	if (_allowAddition) numRows++;
+	return numRows;
     }
-    else if (_allowRemoval && val.equals("")) {
-      _rowObjects.removeElementAt(row);
-      fireTableStructureChanged();
+
+    public Object getValueAt(int row, int col) {
+	if (row >= 0 && row < _rowObjects.size()) {
+	    if (col >= 0 && col < _colDescs.size()) {
+		Object rowObj = _rowObjects.elementAt(row);
+		ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(col);
+		return cd.getValueFor(rowObj);
+	    }
+	}
+	return "TC-" + row + "," + col; // for debugging
     }
-  }
 
-  ////////////////
-  // event handlers
+    public void setValueAt(Object val, int row, int col)  {
+	if (row >= 0 && row < _rowObjects.size()) {
+	    if (col >= 0 && col < _colDescs.size()) {
+		Object rowObj = _rowObjects.elementAt(row);
+		ColumnDescriptor cd = (ColumnDescriptor) _colDescs.elementAt(col);
+		cd.setValueFor(rowObj, val);
+		return;
+	    }
+	}
 
-  public void vetoableChange(PropertyChangeEvent pce) {
-    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-    SwingUtilities.invokeLater(delayedNotify);
-  }
+	if (_allowAddition && row >= _rowObjects.size()) {
+	    //@ TODO
+	    //_rowObjects.addElement(val);
+	    fireTableStructureChanged();
+	}
+	else if (_allowRemoval && val.equals("")) {
+	    _rowObjects.removeElementAt(row);
+	    fireTableStructureChanged();
+	}
+    }
 
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    fireTableStructureChanged(); //?
-  }
+    ////////////////
+    // event handlers
+
+    public void vetoableChange(PropertyChangeEvent pce) {
+	DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
+	SwingUtilities.invokeLater(delayedNotify);
+    }
+
+    public void delayedVetoableChange(PropertyChangeEvent pce) {
+	fireTableStructureChanged(); //?
+    }
 
 } /* end class TableModelComposite */
 

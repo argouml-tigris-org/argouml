@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -58,23 +59,23 @@ public class Translator {
     public static void init () {
 
         Locale.setDefault(new Locale(System.getProperty("user.language", "en"),
-            System.getProperty("user.country", "")));
+				     System.getProperty("user.country", "")));
 
         /** bundle default Locale, different from user default Locale */
         org.workingfrog.i18n.util.Translator.setDefaultLocale(
-            new Locale("en", ""));
+							      new Locale("en", ""));
         org.workingfrog.i18n.util.Translator.setBundlesPath("org.argouml.i18n");
   
         Localizer.addResource("GefBase",
-        "org.tigris.gef.base.BaseResourceBundle");
+			      "org.tigris.gef.base.BaseResourceBundle");
         Localizer.addResource("GefPres",
-        "org.tigris.gef.presentation.PresentationResourceBundle");
+			      "org.tigris.gef.presentation.PresentationResourceBundle");
         Localizer.addResource("CoreMenu",
-        "org.argouml.i18n.MenuResourceBundle");
+			      "org.argouml.i18n.MenuResourceBundle");
         Localizer.addResource("UMLMenu",
-        "org.argouml.i18n.UMLResourceBundle");
+			      "org.argouml.i18n.UMLResourceBundle");
         Localizer.addResource("Cognitive",
-        "org.argouml.i18n.UMLCognitiveResourceBundle");
+			      "org.argouml.i18n.UMLCognitiveResourceBundle");
     }
 
     /**
@@ -83,7 +84,7 @@ public class Translator {
      */
     public static Locale[] getLocales () {
         return org.workingfrog.i18n.util.Translator.getLocales(
-            new Translator());
+							       new Translator());
     }
 
     /**

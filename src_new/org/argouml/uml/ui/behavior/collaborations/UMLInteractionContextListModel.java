@@ -50,7 +50,7 @@ public class UMLInteractionContextListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MInteraction)getTarget()).getContext());
+        addElement(((MInteraction) getTarget()).getContext());
     }
 
     /**
@@ -58,7 +58,7 @@ public class UMLInteractionContextListModel
      */
     protected boolean isValidElement(MBase elem) {
         return elem instanceof MCollaboration && 
-            ((MCollaboration)elem).getInteractions().contains(getTarget());
+            ((MCollaboration) elem).getInteractions().contains(getTarget());
     }
 
 }

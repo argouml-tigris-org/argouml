@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -59,10 +60,10 @@ public class UMLAction extends AbstractAction {
         if (hasIcon) {
             Icon icon =
                 ResourceLoaderWrapper
-                    .getResourceLoaderWrapper()
-                    .lookupIconResource(
-                    Translator.getImageBinding(name),
-                    Translator.localize("CoreMenu", name));
+		.getResourceLoaderWrapper()
+		.lookupIconResource(
+				    Translator.getImageBinding(name),
+				    Translator.localize("CoreMenu", name));
             if (icon != null)
                 putValue(Action.SMALL_ICON, icon);
             else {
@@ -70,8 +71,8 @@ public class UMLAction extends AbstractAction {
             }
         }
         putValue(
-            Action.SHORT_DESCRIPTION,
-            Translator.localize("CoreMenu", name) + " ");
+		 Action.SHORT_DESCRIPTION,
+		 Translator.localize("CoreMenu", name) + " ");
         if (global)
             Actions.addAction(this);
         // Jaap B. 17-6-2003 added next line to make sure every action is in the right enable condition on creation.
@@ -84,11 +85,11 @@ public class UMLAction extends AbstractAction {
         StatusBar sb = ProjectBrowser.getInstance().getStatusBar();
         sb.doFakeProgress(stripJunk(getValue(Action.NAME).toString()), 100);
         History.TheHistory.addItemManipulation(
-            "pushed " + getValue(Action.NAME),
-            "",
-            null,
-            null,
-            null);
+					       "pushed " + getValue(Action.NAME),
+					       "",
+					       null,
+					       null,
+					       null);
         Actions.updateAllEnabled();
     }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,7 +39,7 @@ import org.argouml.application.api.Argo;
  * @author  alexb
  * @since 0.13.5, Created on 15 April 2003
  */
-public class PerspectiveSupport{
+public class PerspectiveSupport {
     
     /**
      * The go rules that this Tree model uses to build child nodes.
@@ -51,7 +52,7 @@ public class PerspectiveSupport{
     /** list of all possible rules in the collection Todolist specific */
     protected static Vector _rules = new Vector();
         
-    protected PerspectiveSupport() {}
+    protected PerspectiveSupport() { }
     
     /** Creates a new instance of PerspectiveSupport */
     public PerspectiveSupport(String name) {

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -62,10 +63,10 @@ public class GoClassToNavigableClass extends AbstractGoRule {
             
             MAssociationEnd otherEnd = null;
             Iterator endIt = allEnds.iterator();
-            if(endIt.hasNext()){
-                otherEnd = (MAssociationEnd)endIt.next();
-                if (ae != otherEnd && endIt.hasNext()){
-                    otherEnd = (MAssociationEnd)endIt.next();
+            if (endIt.hasNext()) {
+                otherEnd = (MAssociationEnd) endIt.next();
+                if (ae != otherEnd && endIt.hasNext()) {
+                    otherEnd = (MAssociationEnd) endIt.next();
                     if (ae != otherEnd)
                         otherEnd = null;
                 }

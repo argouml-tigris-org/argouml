@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -63,19 +64,19 @@ public class ActionSetModelElementStereotype extends UMLChangeAction {
         MStereotype newStereo = null;
         MModelElement target = null;
         if (source instanceof UMLComboBox2) {
-            UMLComboBox2 combo = (UMLComboBox2)source;
+            UMLComboBox2 combo = (UMLComboBox2) source;
             if (combo.getSelectedItem() instanceof MStereotype) 
-                newStereo = (MStereotype)combo.getSelectedItem();                                
+                newStereo = (MStereotype) combo.getSelectedItem();                                
             if (combo.getTarget() instanceof MModelElement) {
-                target = (MModelElement)combo.getTarget();
+                target = (MModelElement) combo.getTarget();
                 oldStereo = target.getStereotype();
             }
             if (newStereo != oldStereo && target != null && newStereo != null) {
                 ExtensionMechanismsHelper.getHelper().setStereoType(target, newStereo);
             } else
-            if (combo.getSelectedItem() != null && combo.getSelectedItem().equals("") && oldStereo != null && target != null) {
-                target.setStereotype(null);
-            }
+		if (combo.getSelectedItem() != null && combo.getSelectedItem().equals("") && oldStereo != null && target != null) {
+		    target.setStereotype(null);
+		}
         }
         
     }

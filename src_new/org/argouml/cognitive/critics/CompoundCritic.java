@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -54,141 +55,141 @@ import org.argouml.cognitive.*;
 public class CompoundCritic extends Critic {
 
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /**  The sub-critics that make up this CompoundCritic. */
-  protected Vector _critics = new Vector();
+    /**  The sub-critics that make up this CompoundCritic. */
+    protected Vector _critics = new Vector();
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  public CompoundCritic() {
-  }
+    public CompoundCritic() {
+    }
 
-  public CompoundCritic(Critic c1, Critic c2) {
-    this();
-    _critics.addElement(c1);
-    _critics.addElement(c2);
-  }
+    public CompoundCritic(Critic c1, Critic c2) {
+	this();
+	_critics.addElement(c1);
+	_critics.addElement(c2);
+    }
 
-  public CompoundCritic(Critic c1, Critic c2, Critic c3) {
-    this(c1, c2);
-    _critics.addElement(c3);
-  }
+    public CompoundCritic(Critic c1, Critic c2, Critic c3) {
+	this(c1, c2);
+	_critics.addElement(c3);
+    }
 
-  public CompoundCritic(Critic c1, Critic c2, Critic c3, Critic c4) {
-    this(c1, c2, c3);
-    _critics.addElement(c4);
-  }
+    public CompoundCritic(Critic c1, Critic c2, Critic c3, Critic c4) {
+	this(c1, c2, c3);
+	_critics.addElement(c4);
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void setCritics(Vector critics) { _critics = critics; }
-  public Vector getCritics() { return _critics; }
-  public void addCritic(Critic c) { _critics.addElement(c); }
-  public void removeCritic(Critic c) { _critics.removeElement(c); }
+    public void setCritics(Vector critics) { _critics = critics; }
+    public Vector getCritics() { return _critics; }
+    public void addCritic(Critic c) { _critics.addElement(c); }
+    public void removeCritic(Critic c) { _critics.removeElement(c); }
   
-  ////////////////////////////////////////////////////////////////
-  // critiquing
+    ////////////////////////////////////////////////////////////////
+    // critiquing
 
-  public void critique(Object dm, Designer dsgr) {
-    int size = _critics.size();
-    for (int i = 0; i < size; ++i) {
-      Critic c = (Critic) _critics.elementAt(i);
-      if (c.isActive() && c.predicate(dm, dsgr)) {
-	ToDoItem item = c.toDoItem(dm, dsgr);
-	postItem(item, dm, dsgr);
-	return; // once one criticism is found, exit
-      }
+    public void critique(Object dm, Designer dsgr) {
+	int size = _critics.size();
+	for (int i = 0; i < size; ++i) {
+	    Critic c = (Critic) _critics.elementAt(i);
+	    if (c.isActive() && c.predicate(dm, dsgr)) {
+		ToDoItem item = c.toDoItem(dm, dsgr);
+		postItem(item, dm, dsgr);
+		return; // once one criticism is found, exit
+	    }
+	}
     }
-  }
 
-  public boolean supports(Decision d) {
-    int size = _critics.size();
-    for (int i = 0; i < size; ++i) {
-      Critic c = (Critic) _critics.elementAt(i);
-      if (c.supports(d)) return true;
+    public boolean supports(Decision d) {
+	int size = _critics.size();
+	for (int i = 0; i < size; ++i) {
+	    Critic c = (Critic) _critics.elementAt(i);
+	    if (c.supports(d)) return true;
+	}
+	return false;
     }
-    return false;
-  }
 
-  public Vector getSupportedDecisions() {
-      throw new UnsupportedOperationException("this method should never be called: "+
-		      "CompoundCritic getSupportedDecisions");
-  }
-
-  public void addSupportedDecision(Decision d) {
-      throw new UnsupportedOperationException("this method should never be called: "+
-		      "CompoundCritic addSupportedDecision");
-  }
-
-  public boolean supports(Goal g) {
-    int size = _critics.size();
-    for (int i = 0; i < size; ++i) {
-      Critic c = (Critic) _critics.elementAt(i);
-      if (c.supports(g)) return true;
+    public Vector getSupportedDecisions() {
+	throw new UnsupportedOperationException("this method should never be called: " +
+						"CompoundCritic getSupportedDecisions");
     }
-    return false;
-  }
 
-  public Vector getSupportedGoals() {
-    throw new UnsupportedOperationException("this method should never be called: "+
-		    "CompoundCritic getSupportedGoals");
-  }
-
-  public void addSupportedGoal(Goal g) {
-    throw new UnsupportedOperationException("this method should never be called: "+
-		    "CompoundCritic addSupportedGoal");
-  }
-
-  public boolean containsKnowledgeType(String type) {
-    int size = _critics.size();
-    for (int i = 0; i < size; ++i) {
-      Critic c = (Critic) _critics.elementAt(i);
-      if (c.containsKnowledgeType(type)) return true;
+    public void addSupportedDecision(Decision d) {
+	throw new UnsupportedOperationException("this method should never be called: " +
+						"CompoundCritic addSupportedDecision");
     }
-    return false;
-  }
-  public void addKnowledgeType(String type) {
-    throw new UnsupportedOperationException("this method should never be called: "+
-		    "CompoundCritic addKnowledgeType");
-  }
+
+    public boolean supports(Goal g) {
+	int size = _critics.size();
+	for (int i = 0; i < size; ++i) {
+	    Critic c = (Critic) _critics.elementAt(i);
+	    if (c.supports(g)) return true;
+	}
+	return false;
+    }
+
+    public Vector getSupportedGoals() {
+	throw new UnsupportedOperationException("this method should never be called: " +
+						"CompoundCritic getSupportedGoals");
+    }
+
+    public void addSupportedGoal(Goal g) {
+	throw new UnsupportedOperationException("this method should never be called: " +
+						"CompoundCritic addSupportedGoal");
+    }
+
+    public boolean containsKnowledgeType(String type) {
+	int size = _critics.size();
+	for (int i = 0; i < size; ++i) {
+	    Critic c = (Critic) _critics.elementAt(i);
+	    if (c.containsKnowledgeType(type)) return true;
+	}
+	return false;
+    }
+    public void addKnowledgeType(String type) {
+	throw new UnsupportedOperationException("this method should never be called: " +
+						"CompoundCritic addKnowledgeType");
+    }
   
-  public String expand(String desc, VectorSet offs) {
-      throw new UnsupportedOperationException("this method should never be called: "+
-		      "CompoundCritic expand");
-  }
-
-  public Icon getClarifier() {
-      throw new UnsupportedOperationException("this method should never be called: "+
-		      "CompoundCritic getClarifier");
-  }
-  
-
-  public boolean isActive() {
-    int size = _critics.size();
-    for (int i = 0; i < size; ++i) {
-      Critic c = (Critic) _critics.elementAt(i);
-      if (c.isActive()) return true;
+    public String expand(String desc, VectorSet offs) {
+	throw new UnsupportedOperationException("this method should never be called: " +
+						"CompoundCritic expand");
     }
-    return false;
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // criticism control
+    public Icon getClarifier() {
+	throw new UnsupportedOperationException("this method should never be called: " +
+						"CompoundCritic getClarifier");
+    }
   
-  public boolean isEnabled() {
-    return true;
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // design feedback
+    public boolean isActive() {
+	int size = _critics.size();
+	for (int i = 0; i < size; ++i) {
+	    Critic c = (Critic) _critics.elementAt(i);
+	    if (c.isActive()) return true;
+	}
+	return false;
+    }
 
-  public ToDoItem toDoItem(Object dm, Designer dsgr) {
-      throw new UnsupportedOperationException("this method should never be called: "+
-		      "CompoundCritic toDoItem()");
-  }
+    ////////////////////////////////////////////////////////////////
+    // criticism control
+  
+    public boolean isEnabled() {
+	return true;
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // design feedback
+
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+	throw new UnsupportedOperationException("this method should never be called: " +
+						"CompoundCritic toDoItem()");
+    }
 
 } /* end class CompoundCritic */

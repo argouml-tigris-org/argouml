@@ -51,14 +51,14 @@ public class UMLModelElementClientDependencyListModel
      */
     protected void buildModelList() {
         if (_target != null) 
-            setAllElements(((MModelElement)getTarget()).getClientDependencies());
+            setAllElements(((MModelElement) getTarget()).getClientDependencies());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {  
-        return o instanceof MDependency && ((MModelElement)getTarget()).getClientDependencies().contains(o);
+        return o instanceof MDependency && ((MModelElement) getTarget()).getClientDependencies().contains(o);
     }
 
 }

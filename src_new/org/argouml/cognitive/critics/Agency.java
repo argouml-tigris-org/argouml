@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -121,10 +122,10 @@ public class Agency extends Observable { //implements java.io.Serialization
         if (!(cr instanceof CompoundCritic))
             _critics.addElement(cr);
         else {
-            Vector subs = ((CompoundCritic)cr).getCritics();
+            Vector subs = ((CompoundCritic) cr).getCritics();
             Enumeration enum = subs.elements();
             while (enum.hasMoreElements())
-                addCritic((Critic)enum.nextElement());
+                addCritic((Critic) enum.nextElement());
             return;
         }
     }
@@ -137,7 +138,7 @@ public class Agency extends Observable { //implements java.io.Serialization
             cat.error("Error loading dm " + dmClassName, e);
             return;
         }
-        Critic cr = (Critic)_singletonCritics.get(crClassName);
+        Critic cr = (Critic) _singletonCritics.get(crClassName);
         if (cr == null) {
             Class crClass;
             try {
@@ -147,7 +148,7 @@ public class Agency extends Observable { //implements java.io.Serialization
                 return;
             }
             try {
-                cr = (Critic)crClass.newInstance();
+                cr = (Critic) crClass.newInstance();
             } catch (java.lang.IllegalAccessException e) {
                 cat.error("Error instancating cr " + crClassName, e);
                 return;
@@ -167,7 +168,7 @@ public class Agency extends Observable { //implements java.io.Serialization
      * the design material class. But additional (after-market) critics
      * could added thorugh a menu command in some control panel...*/
     public static void register(Critic cr, Class clazz) {
-        Vector critics = (Vector)getCriticRegistry().get(clazz);
+        Vector critics = (Vector) getCriticRegistry().get(clazz);
         if (critics == null) {
             critics = new Vector();
             _criticRegistry.put(clazz, critics);
@@ -184,22 +185,22 @@ public class Agency extends Observable { //implements java.io.Serialization
     /** Return a Vector of all critics that can be applied to the
      * design material subclass, including inherited critics. */
     public static Collection criticsForClass(Class clazz) {
-        Collection col = (Collection)_cachedCritics.get(clazz);
+        Collection col = (Collection) _cachedCritics.get(clazz);
         if (col == null) {
             col = new ArrayList();
-                col.addAll(criticsForSpecificClass(clazz));
-                Collection classes = new ArrayList();
-                if (clazz.getSuperclass() != null) {
-                    classes.add(clazz.getSuperclass()); 
-                }
-                if (clazz.getInterfaces() != null) {
-                    classes.addAll(Arrays.asList(clazz.getInterfaces()));
-                }
-                Iterator it = classes.iterator();
-                while (it.hasNext()) {
-                    col.addAll(criticsForClass((Class)it.next()));
-                }
-                _cachedCritics.put(clazz, col);
+	    col.addAll(criticsForSpecificClass(clazz));
+	    Collection classes = new ArrayList();
+	    if (clazz.getSuperclass() != null) {
+		classes.add(clazz.getSuperclass()); 
+	    }
+	    if (clazz.getInterfaces() != null) {
+		classes.addAll(Arrays.asList(clazz.getInterfaces()));
+	    }
+	    Iterator it = classes.iterator();
+	    while (it.hasNext()) {
+		col.addAll(criticsForClass((Class) it.next()));
+	    }
+	    _cachedCritics.put(clazz, col);
         }
                 return col;
         
@@ -217,7 +218,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         }
         Iterator it = classes.iterator();
         while (it.hasNext()) {
-            col.addAll(getCritics((Class)it.next()));
+            col.addAll(getCritics((Class) it.next()));
         }
         _cachedCritics.put(clazz, col);
         return col;
@@ -226,7 +227,7 @@ public class Agency extends Observable { //implements java.io.Serialization
     /** Return a Vector of all critics that are directly associated with
      * the given design material subclass. */
     protected static Vector criticsForSpecificClass(Class clazz) {
-        Vector critics = (Vector)getCriticRegistry().get(clazz);
+        Vector critics = (Vector) getCriticRegistry().get(clazz);
         if (critics == null) {
             critics = new Vector();
             _criticRegistry.put(clazz, critics);
@@ -271,14 +272,14 @@ public class Agency extends Observable { //implements java.io.Serialization
         int size = critics.size();
         Iterator it = critics.iterator();
         while (it.hasNext()) {                  
-            Critic c = (Critic)it.next();
+            Critic c = (Critic) it.next();
             if (c.isActive() && c.matchReason(reasonCode)) {
                 try {
                     c.critique(dm, d);
                 } catch (Exception ex) {
-                    cat.error(
-                        "Disabling critique due to exception\n" + c + "\n" + dm,
-                        ex);
+                    cat.error("Disabling critique due to exception\n"
+			      + c + "\n" + dm,
+			      ex);
                     c.setEnabled(false);
                 }
             }

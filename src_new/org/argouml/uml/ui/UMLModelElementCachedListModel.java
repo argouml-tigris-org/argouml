@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,8 +39,8 @@ import java.lang.reflect.*;
  */
 abstract public class UMLModelElementCachedListModel extends UMLModelElementListModel {
 
-    public UMLModelElementCachedListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
-        super(container,property,showNone);
+    public UMLModelElementCachedListModel(UMLUserInterfaceContainer container, String property, boolean showNone) {
+        super(container, property, showNone);
     }
 
     abstract protected void resetCache();
@@ -55,7 +56,7 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     protected int recalcModelElementSize() {
         int size = 0;
         java.util.List cache = getCache();
-        if(cache != null) {
+        if (cache != null) {
             size = cache.size();
         }
         return size;
@@ -64,7 +65,7 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     protected MModelElement getModelElementAt(int index) {
         MModelElement element = null;
         java.util.List cache = getCache();
-        if(cache != null) {
+        if (cache != null) {
             element = (MModelElement) cache.get(index);
         }
         return element;
@@ -78,17 +79,17 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     public void roleRemoved(final MElementEvent event) {
 	Object eventProperty = event.getName();
         Object listProperty = getProperty();
-        if(listProperty == null || eventProperty == null ||
+        if (listProperty == null || eventProperty == null ||
             listProperty.equals(eventProperty)) {
             Object source = event.getSource();
             //
             //   if the thing removed was in our list
             //
             int index = getCache().indexOf(source);
-            if(index >= 0) {
+            if (index >= 0) {
                 resetSize();
                 resetCache();
-                fireIntervalRemoved(this,index,index);
+                fireIntervalRemoved(this, index, index);
             }
         }
     }
@@ -97,16 +98,16 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
 	Object eventProperty = event.getName();
         Object listProperty = getProperty();
 
-        if(listProperty == null || eventProperty == null ||
+        if (listProperty == null || eventProperty == null ||
             listProperty.equals(eventProperty)) {
             Object added = event.getAddedValue();
 
-            if(isProperClass(added)) {
+            if (isProperClass(added)) {
                 int upper = getUpperBound();
                 resetSize();
                 resetCache();
-                if(upper < 0) upper = 0;
-                fireIntervalAdded(this,upper,upper);
+                if (upper < 0) upper = 0;
+                fireIntervalAdded(this, upper, upper);
             }
         }
     }
@@ -136,8 +137,8 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         //      so checking that the property is named 'name'
         //      is unnecessary
 
-        if(index >= 0)
-            fireContentsChanged(this,index,index);
+        if (index >= 0)
+            fireContentsChanged(this, index, index);
     }
 
 /**
@@ -148,11 +149,11 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
  * left it in for compatability. The same operation is performed twice,
  * once for the source Collection, and again for the cache list.
  */
-    protected java.util.List swap(Collection source,int lowIndex,Object first,Object second) {
+    protected java.util.List swap(Collection source, int lowIndex, Object first, Object second) {
         java.util.List dest = new ArrayList(source);
 
-        for(ListIterator i = dest.listIterator(); i.hasNext();) {
-            if(first == i.next()) {
+        for (ListIterator i = dest.listIterator(); i.hasNext();) {
+            if (first == i.next()) {
                 dest.set(i.previousIndex(), second);
                 dest.set(i.nextIndex(), first);
                 break;
@@ -161,11 +162,11 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
 
         java.util.List cache = getCache();
 
-        if(cache != null) {
-            for(ListIterator i = cache.listIterator(); i.hasNext();){
-                if(first == i.next()){
+        if (cache != null) {
+            for (ListIterator i = cache.listIterator(); i.hasNext();) {
+                if (first == i.next()) {
                     cache.set(i.previousIndex(), second);
-                    cache.set(i.nextIndex(),first);
+                    cache.set(i.nextIndex(), first);
                     break;
                 }
             }
@@ -191,40 +192,40 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
  *  @param  element element at position before the add point (or null to add as first).
  *  @return dest    new collection as a ArrayList().
 */
-        protected java.util.List addElement(Collection source, int index,
-                                            MModelElement newElement,
-                                            Object element) {
-            java.util.List cache = getCache();
-            java.util.List dest  = new ArrayList(source);
+    protected java.util.List addElement(Collection source, int index,
+					MModelElement newElement,
+					Object element) {
+	java.util.List cache = getCache();
+	java.util.List dest  = new ArrayList(source);
 
-            if (element == null) {
-              dest.add(0, newElement);
-              cache.add(0,newElement);
-            } else {
-			  for(ListIterator i = dest.listIterator(); i.hasNext();){
-                if(i.next() == element){
-                  dest.add(i.nextIndex(), newElement);
-                  break;
+	if (element == null) {
+	    dest.add(0, newElement);
+	    cache.add(0, newElement);
+	} else {
+	    for (ListIterator i = dest.listIterator(); i.hasNext();) {
+                if (i.next() == element) {
+		    dest.add(i.nextIndex(), newElement);
+		    break;
                 }
-              }
-              cache.add(index+1,newElement);
-            }
-            return dest;
-        }
+	    }
+	    cache.add(index + 1, newElement);
+	}
+	return dest;
+    }
 
 
     protected java.util.List buildCache() {
         java.util.List cache = null;
         Collection collection = null;
         Collection items = getRawCollection();
-        if(items != null) {
+        if (items != null) {
             collection = createCollection(items.size());
             Iterator iter = items.iterator();
             Object item;
             int i = 0;
-            while(iter.hasNext()) {
+            while (iter.hasNext()) {
                 item = iter.next();
-                if(isProperClass(item)) {
+                if (isProperClass(item)) {
                     collection.add(item);
                 }
             }
@@ -232,14 +233,14 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         //
         //   should be able to find something a little cheaper
         //      for an empty list
-        if(collection == null) {
+        if (collection == null) {
             cache = new ArrayList();
         }
         else {
             //
             //   if the collection was a List to begin with (non-alphabetized)
             //      then just return it
-            if(collection instanceof java.util.List) {
+            if (collection instanceof java.util.List) {
                 cache = (java.util.List) collection;
             }
             //

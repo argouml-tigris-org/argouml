@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -70,23 +71,23 @@ abstract public class NamedCodePiece extends CodePiece
         int line = getStartLine();
         int column = getStartPosition();
         if (writer != null) {
-            while(line < getEndLine()) {
+            while (line < getEndLine()) {
                 line++;
                 column = 0;
                 writer.write(reader.readLine());
                 writer.newLine();
             }
-            while(column < getEndPosition()) {
+            while (column < getEndPosition()) {
                 column++;
                 writer.write(reader.read());
             }
         } else {
-            while(line < getEndLine()) {
+            while (line < getEndLine()) {
                 line++;
                 column = 0;
                 reader.readLine();
             }
-            while(column < getEndPosition()) {
+            while (column < getEndPosition()) {
                 column++;
                 reader.read();
             }

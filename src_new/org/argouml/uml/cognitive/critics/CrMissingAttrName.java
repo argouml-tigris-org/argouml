@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,40 +43,40 @@ import org.argouml.cognitive.critics.*;
 
 public class CrMissingAttrName extends CrUML {
 
-  public CrMissingAttrName() {
-    setHeadline("Choose a name");
-    addSupportedDecision(CrUML.decNAMING);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-    addTrigger("name");
-  }
+    public CrMissingAttrName() {
+	setHeadline("Choose a name");
+	addSupportedDecision(CrUML.decNAMING);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
+	addTrigger("name");
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MAttribute)) return NO_PROBLEM;
-    MAttribute attr = (MAttribute) dm;
-    String myName = attr.getName();
-    if (myName == null || myName.equals("")) return PROBLEM_FOUND;
-    if (myName.length() == 0) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MAttribute)) return NO_PROBLEM;
+	MAttribute attr = (MAttribute) dm;
+	String myName = attr.getName();
+	if (myName == null || myName.equals("")) return PROBLEM_FOUND;
+	if (myName.length() == 0) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
 
     public void initWizard(Wizard w) {
-    if (w instanceof WizMEName) {
-      ToDoItem item = w.getToDoItem();
-      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-      String ins = "Set the name of this attribute.";
-      String sug = "AttributeName";
-      if (me instanceof MAttribute) {
-	MAttribute a = (MAttribute) me;
-	int count = 1;
-	if (a.getOwner() != null)
-	  count = a.getOwner().getFeatures().size();
-	sug = "attr" + (count + 1);
-      }
-      ((WizMEName)w).setInstructions(ins);
-      ((WizMEName)w).setSuggestion(sug);
+	if (w instanceof WizMEName) {
+	    ToDoItem item = w.getToDoItem();
+	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+	    String ins = "Set the name of this attribute.";
+	    String sug = "AttributeName";
+	    if (me instanceof MAttribute) {
+		MAttribute a = (MAttribute) me;
+		int count = 1;
+		if (a.getOwner() != null)
+		    count = a.getOwner().getFeatures().size();
+		sug = "attr" + (count + 1);
+	    }
+	    ((WizMEName) w).setInstructions(ins);
+	    ((WizMEName) w).setSuggestion(sug);
+	}
     }
-  }
-  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+    public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrMissingAttrName */
 

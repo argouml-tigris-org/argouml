@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -67,24 +68,28 @@ public class ModuleLoader {
      */
     private ModuleLoader() {
         _singletons = new Hashtable();
-        mModuleClasses= new ArrayList();
-        mMenuActionList=new Vector();
+        mModuleClasses = new ArrayList();
+        mMenuActionList = new Vector();
 
 	// Use a little trick to find out where Argo is being loaded from.
-        String extForm = org.argouml.application.Main.class.getResource(Argo.ARGOINI).toExternalForm();
-	argoRoot = extForm.substring(0, extForm.length()-Argo.ARGOINI.length());
+        String extForm = 
+	    org.argouml.application.Main.class.getResource(Argo.ARGOINI)
+	    .toExternalForm();
+	argoRoot = extForm.substring(0, 
+				     extForm.length() - Argo.ARGOINI.length());
 
 	// If it's a jar, clean it up and make it look like a file url
 	if (argoRoot.startsWith("jar:")) {
 	    argoRoot = argoRoot.substring(4);
 	    if (argoRoot.endsWith("!")) {
-	        argoRoot = argoRoot.substring(0, argoRoot.length()-1);
+	        argoRoot = argoRoot.substring(0, argoRoot.length() - 1);
 	    }
 	}
 	if (argoRoot != null) {
 	    ArgoModule.cat.info("argoRoot is " + argoRoot);
 	    if (argoRoot.startsWith("file:")) {
-	        argoHome = new File(argoRoot.substring(5)).getAbsoluteFile().getParent();
+	        argoHome = new File(argoRoot.substring(5)).getAbsoluteFile()
+		    .getParent();
 	    }
 	    else {
 	        argoHome = new File(argoRoot).getAbsoluteFile().getParent();
@@ -102,11 +107,11 @@ public class ModuleLoader {
 	}
     }
 
-    public static ModuleLoader getInstance(){
-        if (SINGLETON == null){
+    public static ModuleLoader getInstance() {
+        if (SINGLETON == null) {
             SINGLETON = new ModuleLoader();
         }
-        return SINGLETON ;
+        return SINGLETON;
     }
 
     /** Load the internal modules.
@@ -136,9 +141,9 @@ public class ModuleLoader {
 	    System.getProperty("user.home") + fs + ArgoModule.MODULEFILENAME,
 	    System.getProperty("user.home") + fs + ArgoModule.MODULEFILENAME_ALTERNATE,
 	    System.getProperty("java.home") + fs + "lib" +
-	                                        fs + ArgoModule.MODULEFILENAME,
+	        fs + ArgoModule.MODULEFILENAME,
 	    System.getProperty("java.home") + fs + "lib" +
-	                                        fs + ArgoModule.MODULEFILENAME_ALTERNATE
+	        fs + ArgoModule.MODULEFILENAME_ALTERNATE
 	};
 
 	// Get all of the file paths.  Check if the file exists,
@@ -169,7 +174,7 @@ public class ModuleLoader {
         Manifest manifest = null;
 	ArgoModule.cat.info("Opening jar file " + file);
         // try {
-	    // File file = new File(jarName);
+	// File file = new File(jarName);
 	try {
 	    jarfile = new JarFile(file);
 	}
@@ -192,37 +197,37 @@ public class ModuleLoader {
 
 	if (manifest != null) {
 	    // else {
-	        Map entries = manifest.getEntries();
-	        Iterator iMap = entries.keySet().iterator();
-	        while (iMap.hasNext()) {
-	            // Look for our specification
-		    String cname = (String)iMap.next();
-		    Attributes atrs = manifest.getAttributes(cname);
-		    String s1 = atrs.getValue(Attributes.Name.SPECIFICATION_TITLE);
-		    String s2 = atrs.getValue(Attributes.Name.SPECIFICATION_VENDOR);
+	    Map entries = manifest.getEntries();
+	    Iterator iMap = entries.keySet().iterator();
+	    while (iMap.hasNext()) {
+		// Look for our specification
+		String cname = (String) iMap.next();
+		Attributes atrs = manifest.getAttributes(cname);
+		String s1 = atrs.getValue(Attributes.Name.SPECIFICATION_TITLE);
+		String s2 = atrs.getValue(Attributes.Name.SPECIFICATION_VENDOR);
 
-		    // TODO:  If we are in jdk1.3 or above, check
-		    // EXTENSION_NAME.  Otherwise pass the class name.  It's not
-		    // as good of a check (we might get duplicate modules with
-		    // the same key), but it's better than nothing.
+		// TODO:  If we are in jdk1.3 or above, check
+		// EXTENSION_NAME.  Otherwise pass the class name.  It's not
+		// as good of a check (we might get duplicate modules with
+		// the same key), but it's better than nothing.
 
-		    // String key = atrs.getValue(Attributes.Name.EXTENSION_NAME);
-		    String key = cname;
-	            if (Pluggable.PLUGIN_TITLE.equals(s1) &&
-		        Pluggable.PLUGIN_VENDOR.equals(s2) &&
-		        key != null &&
-		        cname.endsWith(CLASS_SUFFIX)) {
-		        // This load is not secure.
-                        loadClassFromLoader(classloader, key,
-	        cname.substring(0, cname.length()-CLASS_SUFFIX.length()), false);
-	            }
-	        }
+		// String key = atrs.getValue(Attributes.Name.EXTENSION_NAME);
+		String key = cname;
+		if (Pluggable.PLUGIN_TITLE.equals(s1) &&
+		    Pluggable.PLUGIN_VENDOR.equals(s2) &&
+		    key != null &&
+		    cname.endsWith(CLASS_SUFFIX)) {
+		    // This load is not secure.
+		    loadClassFromLoader(classloader, key,
+					cname.substring(0, cname.length() - CLASS_SUFFIX.length()), false);
+		}
+	    }
 	    // }
 	}
 	// }
 	// catch (Exception e) {
-	    // // Ignore problem.
-	    // ArgoModule.cat.debug("Exception", e);
+	// // Ignore problem.
+	// ArgoModule.cat.debug("Exception", e);
 	// }
     }
 
@@ -232,10 +237,12 @@ public class ModuleLoader {
     public void loadModulesFromExtensionDir() {
 	if (argoHome != null) {
 	    if (argoHome.startsWith("file:")) {
-	        loadModulesFromNamedDirectory(argoHome.substring(5) + File.separator + "ext");
+	        loadModulesFromNamedDirectory(argoHome.substring(5) 
+					      + File.separator + "ext");
 	    }
 	    else {
-	        loadModulesFromNamedDirectory(argoHome + File.separator + "ext");
+	        loadModulesFromNamedDirectory(argoHome 
+					      + File.separator + "ext");
 	    }
 
 	}
@@ -257,8 +264,10 @@ public class ModuleLoader {
 		try {
 		    jarfile = new JarFile(file[i]);
 		    if (jarfile != null) {
-	                ClassLoader classloader = new ArgoJarClassLoader(file[i].toURL());
-	                // ClassLoader classloader = getClass().getClassLoader();
+	                ClassLoader classloader =
+			    new ArgoJarClassLoader(file[i].toURL());
+	                // ClassLoader classloader = 
+			// getClass().getClassLoader();
 	                processJarFile(classloader, file[i]);
 	                // processJarFile(getClass().getClassLoader(), file[i]);
 		    }
@@ -269,9 +278,9 @@ public class ModuleLoader {
     }
 
     public void loadModulesFromJar(String filename) {
-       if (filename.toLowerCase().endsWith(".jar")) {
-           processJarFile(getClass().getClassLoader(), new File(filename));
-       }
+	if (filename.toLowerCase().endsWith(".jar")) {
+	    processJarFile(getClass().getClassLoader(), new File(filename));
+	}
     }
 
     public void loadModulesFromClassPathJars() {
@@ -279,11 +288,12 @@ public class ModuleLoader {
 	st = new StringTokenizer(System.getProperty("java.class.path"),
 	                         System.getProperty("path.separator"));
 
-	while(st.hasMoreTokens()) {
+	while (st.hasMoreTokens()) {
 	    String component = st.nextToken();
 
 	    if (component.toLowerCase().endsWith(".jar")) {
-	        processJarFile(getClass().getClassLoader(), new File(component));
+	        processJarFile(getClass().getClassLoader(), 
+			       new File(component));
 	    }
 
 	}
@@ -295,7 +305,8 @@ public class ModuleLoader {
     public boolean loadInternalModules(Class fromClass, String rsrcName) {
 	ArgoModule.cat.info("Loading modules from " + rsrcName);
 	// Load the internal modules
-	InputStream is = fromClass.getResourceAsStream(Argo.RESOURCEDIR + rsrcName);
+	InputStream is =
+	    fromClass.getResourceAsStream(Argo.RESOURCEDIR + rsrcName);
 	return (is == null) ? false : loadModules(is, rsrcName);
     }
 
@@ -304,7 +315,7 @@ public class ModuleLoader {
         try {
 	    return loadModules(new FileInputStream(moduleFile), moduleFile);
 	}
-	catch (Exception e){
+	catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -312,10 +323,10 @@ public class ModuleLoader {
 
     private boolean keyAlreadyLoaded(String key) {
         ListIterator iterator = mModuleClasses.listIterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Object obj = iterator.next();
             if (obj instanceof ArgoModule)
-                if (key.equals(((ArgoModule)obj).getModuleKey()))
+                if (key.equals(((ArgoModule) obj).getModuleKey()))
 		    return true;
 	}
 	return false;
@@ -347,19 +358,20 @@ public class ModuleLoader {
             Argo.log.warn("Could not instantiate module " + classname);
             ArgoModule.cat.debug("Could not instantiate " + classname, e);
 	}
-        if (obj!= null && obj instanceof ArgoModule) {
+        if (obj != null && obj instanceof ArgoModule) {
             ArgoModule aModule = (ArgoModule) obj;
-	    if (aModule.getModuleKey().equals(key) || (! secure)) {
-                if (aModule.initializeModule()){
+	    if (aModule.getModuleKey().equals(key) || (!secure)) {
+                if (aModule.initializeModule()) {
                     Argo.log.info("Loaded Module: " +
-			                   aModule.getModuleName());
+				  aModule.getModuleName());
                     mModuleClasses.add(aModule);
 		    fireEvent(ArgoModuleEvent.MODULE_LOADED, aModule);
 		    if (aModule instanceof ArgoSingletonModule) {
-			ArgoSingletonModule sModule = (ArgoSingletonModule)aModule;
+			ArgoSingletonModule sModule =
+			    (ArgoSingletonModule) aModule;
 		        try {
 			    Class moduleType = sModule.getSingletonType();
-		            if (! (_singletons.containsKey(moduleType))) {
+		            if (!(_singletons.containsKey(moduleType))) {
 			        requestNewSingleton(moduleType, sModule);
 		            }
 		        }
@@ -370,7 +382,9 @@ public class ModuleLoader {
                 }
 	    }
 	    else {
-	        Argo.log.warn ("Key '" + key + "' does not match module key '" + aModule.getModuleKey() + "'");
+	        Argo.log.warn ("Key '" + key
+			       + "' does not match module key '" 
+			       + aModule.getModuleKey() + "'");
 	    }
         }
     }
@@ -406,63 +420,63 @@ public class ModuleLoader {
 					    sClassName,
 					    true);
 		    }
-                 } catch (Exception e){
-                     Argo.log.warn("Could not load Module: " + sKey);
-                     ArgoModule.cat.debug("Could not load Module: " + sKey, e);
-                 }
-                 sKey ="";
-               }
+		} catch (Exception e) {
+		    Argo.log.warn("Could not load Module: " + sKey);
+		    ArgoModule.cat.debug("Could not load Module: " + sKey, e);
+		}
+		sKey = "";
+	    }
 	}
-	catch (Exception e){
+	catch (Exception e) {
             e.printStackTrace();
 	    System.exit(1);
         }
         return false;
     }
 
-    public void shutdown(){
-        try{
+    public void shutdown() {
+        try {
             ListIterator iterator = mModuleClasses.listIterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 Object obj = iterator.next();
-                if (obj instanceof ArgoModule){
+                if (obj instanceof ArgoModule) {
                     ArgoModule m = (ArgoModule) obj;
                     m.shutdownModule();
                 }
             }
-        } catch (Exception e){
-            Argo.log.warn("ModuleLoader.shutdown Error processing Module shutdown:"+e);
+        } catch (Exception e) {
+            Argo.log.warn("ModuleLoader.shutdown Error processing Module shutdown:" + e);
             e.printStackTrace();
         }
 
     }
 
-    public void addModuleAction(Vector popUpActions, Object context){
-        try{
+    public void addModuleAction(Vector popUpActions, Object context) {
+        try {
             ListIterator iterator = mModuleClasses.listIterator();
-            while (iterator.hasNext()){
+            while (iterator.hasNext()) {
                 Object obj = iterator.next();
-                if (obj instanceof ArgoModule){
+                if (obj instanceof ArgoModule) {
                     ArgoModule m = (ArgoModule) obj;
-                    m.getModulePopUpActions(popUpActions,context);
+                    m.getModulePopUpActions(popUpActions, context);
                 }
             }
-        } catch (Exception e){
-            Argo.log.warn("ModuleLoader.addModuleAction Error processing Module popup actions:"+e);
+        } catch (Exception e) {
+            Argo.log.warn("ModuleLoader.addModuleAction Error processing Module popup actions:" + e);
             e.printStackTrace();
         }
     }
 
     public ArrayList getModules() {
-       return mModuleClasses;
+	return mModuleClasses;
     }
 
     public Object getModule(String key) {
         ListIterator iterator = mModuleClasses.listIterator();
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             Object obj = iterator.next();
             if (obj instanceof ArgoModule)
-                if (key.equals(((ArgoModule)obj).getModuleKey()))
+                if (key.equals(((ArgoModule) obj).getModuleKey()))
 		    return obj;
 	}
 	return null;
@@ -476,245 +490,245 @@ public class ModuleLoader {
         return false;
     }
 
-  /** Gets the current singleton of the module type requested.
-   *
-   * @return null if there is some problem.
-   */
-  public static ArgoModule getCurrentSingleton(Class moduleClass) {
-      try {
-	  return (ArgoModule)_singletons.get(moduleClass);
-      }
-      catch (Exception e) {
-          return null;
-      }
-  }
+    /** Gets the current singleton of the module type requested.
+     *
+     * @return null if there is some problem.
+     */
+    public static ArgoModule getCurrentSingleton(Class moduleClass) {
+	try {
+	    return (ArgoModule) _singletons.get(moduleClass);
+	}
+	catch (Exception e) {
+	    return null;
+	}
+    }
 
-  /** Requests the passed singleton to become the current singleton
-   *  of the module type requested.
-   *
-   *  Singletons may refuse to be activated.  In this case,
-   *  requestNewSingleton returns false and does not deactivate the
-   *  current singleton.
-   */
-  public static boolean requestNewSingleton(Class modClass,
-				    ArgoSingletonModule moduleInstance) {
-      boolean rc = moduleInstance.canActivateSingleton();
-      ArgoSingletonModule currentSingleton;
-      if (! moduleInstance.canActivateSingleton()) return false;
-      try {
-	  currentSingleton = (ArgoSingletonModule)getCurrentSingleton(modClass);
-          if (currentSingleton.canDeactivateSingleton()) {
-	      currentSingleton.deactivateSingleton();
-	      _singletons.remove(modClass);
-          }
-	  else {
-	      // The current singleton refused to relinquish control.
-	      return false;
-	  }
-      }
-      catch (Exception e) {
-          currentSingleton = moduleInstance;
-      }
-      _singletons.put(modClass, currentSingleton);
-      currentSingleton.activateSingleton();
-      return true;
-  }
+    /** Requests the passed singleton to become the current singleton
+     *  of the module type requested.
+     *
+     *  Singletons may refuse to be activated.  In this case,
+     *  requestNewSingleton returns false and does not deactivate the
+     *  current singleton.
+     */
+    public static boolean requestNewSingleton(Class modClass,
+					      ArgoSingletonModule moduleInstance) {
+	boolean rc = moduleInstance.canActivateSingleton();
+	ArgoSingletonModule currentSingleton;
+	if (!moduleInstance.canActivateSingleton()) return false;
+	try {
+	    currentSingleton = (ArgoSingletonModule) getCurrentSingleton(modClass);
+	    if (currentSingleton.canDeactivateSingleton()) {
+		currentSingleton.deactivateSingleton();
+		_singletons.remove(modClass);
+	    }
+	    else {
+		// The current singleton refused to relinquish control.
+		return false;
+	    }
+	}
+	catch (Exception e) {
+	    currentSingleton = moduleInstance;
+	}
+	_singletons.put(modClass, currentSingleton);
+	currentSingleton.activateSingleton();
+	return true;
+    }
 
-  /** Returns a plug-in of a given type.
-   *
-   *  The type of plug-in returned is determined by the class passed.
-   *
-   *  @param pluginType a Class which extends Pluggable and indicates
-   *                    the type of plug-in to return.
-   *  @param context   Additional information used to choose between
-   *                    plugins.
-   *
-   *  @return A plug-in class which extends the type of class passed
-   *          as the argument or null if there is some problem.
-   */
-  public Pluggable getPlugin (Class pluginType,
-                                    Object[] context) {
-      //  Make sure that we are only looking at real extensions
-      if (! (pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
-          Argo.log.warn ("Class " + pluginType.getName() +
-	                      " is not a core Argo pluggable type.");
-          return null;
-      }
+    /** Returns a plug-in of a given type.
+     *
+     *  The type of plug-in returned is determined by the class passed.
+     *
+     *  @param pluginType a Class which extends Pluggable and indicates
+     *                    the type of plug-in to return.
+     *  @param context   Additional information used to choose between
+     *                    plugins.
+     *
+     *  @return A plug-in class which extends the type of class passed
+     *          as the argument or null if there is some problem.
+     */
+    public Pluggable getPlugin (Class pluginType,
+				Object[] context) {
+	//  Make sure that we are only looking at real extensions
+	if (!(pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
+	    Argo.log.warn ("Class " + pluginType.getName() +
+			   " is not a core Argo pluggable type.");
+	    return null;
+	}
 
-      // Check to see that the class is not Pluggable itself
-      if (pluginType.equals(Pluggable.class)) {
-          Argo.log.warn ("This is " + pluginType.getName() +
-	                      ", it cannot be used here.");
-          return null;
-      }
+	// Check to see that the class is not Pluggable itself
+	if (pluginType.equals(Pluggable.class)) {
+	    Argo.log.warn ("This is " + pluginType.getName() +
+			   ", it cannot be used here.");
+	    return null;
+	}
 
-      // TODO:  The vector should be populated from
-      //                   the enumeration in FIFO sequence.
+	// TODO:  The vector should be populated from
+	//                   the enumeration in FIFO sequence.
 
-      ListIterator iterator = getModules().listIterator();
-      while (iterator.hasNext()) {
-          Object module = iterator.next();
-	  // if (module.getClass().isAssignableFrom(pluginType))
-	  if (classImplements(module, pluginType)) {
-	      Pluggable pluggable = (Pluggable)module;
-	  // if (pluggable.isModuleType(pluginType))
-	      if (context == null) {
-	          return pluggable;
-	      }
-	      else {
-	          if (pluggable.inContext(context)) {
-		      return pluggable;
-		  }
-	      }
-	  }
-      }
-      return null;
+	ListIterator iterator = getModules().listIterator();
+	while (iterator.hasNext()) {
+	    Object module = iterator.next();
+	    // if (module.getClass().isAssignableFrom(pluginType))
+	    if (classImplements(module, pluginType)) {
+		Pluggable pluggable = (Pluggable) module;
+		// if (pluggable.isModuleType(pluginType))
+		if (context == null) {
+		    return pluggable;
+		}
+		else {
+		    if (pluggable.inContext(context)) {
+			return pluggable;
+		    }
+		}
+	    }
+	}
+	return null;
 
-  }
+    }
 
-  /** Indicates whether a requested plug-in is available.  This guarantees
-   *  not to instantiate the plug-in.
-   *
-   *  @param pluginType a Class which extends Pluggable and indicates
-   *                    the type of plug-in to return.
-   *
-   *  @param context   Additional information used to choose between
-   *                    plugins.
-   *
-   *  @return A plug-in class which extends the type of class passed
-   *          as the argument.
-   *
-   *
-   */
-  public boolean hasPlugin (Class pluginType,
-                                  Object[] context) {
-      //  Make sure that we are only looking at real extensions
-      if (! (pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
-          Argo.log.warn ("Class " + pluginType.getName() +
-	                      " is not a core Argo pluggable type.");
-          return false;
-      }
+    /** Indicates whether a requested plug-in is available.  This guarantees
+     *  not to instantiate the plug-in.
+     *
+     *  @param pluginType a Class which extends Pluggable and indicates
+     *                    the type of plug-in to return.
+     *
+     *  @param context   Additional information used to choose between
+     *                    plugins.
+     *
+     *  @return A plug-in class which extends the type of class passed
+     *          as the argument.
+     *
+     *
+     */
+    public boolean hasPlugin (Class pluginType,
+			      Object[] context) {
+	//  Make sure that we are only looking at real extensions
+	if (!(pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
+	    Argo.log.warn ("Class " + pluginType.getName() +
+			   " is not a core Argo pluggable type.");
+	    return false;
+	}
 
-      // Check to see that the class implements Pluggable
-      if (! (pluginType.isAssignableFrom(Pluggable.class))) {
-          Argo.log.warn ("Class " + pluginType.getName() +
-	                      " does not extend Pluggable.");
-          return false;
-      }
+	// Check to see that the class implements Pluggable
+	if (!(pluginType.isAssignableFrom(Pluggable.class))) {
+	    Argo.log.warn ("Class " + pluginType.getName() +
+			   " does not extend Pluggable.");
+	    return false;
+	}
 
-      // Check to see that the class is not Pluggable itself
-      if (pluginType.equals(Pluggable.class)) {
-          Argo.log.warn ("Class " + pluginType.getName() +
-	                      " does not extend Pluggable.");
-          return false;
-      }
+	// Check to see that the class is not Pluggable itself
+	if (pluginType.equals(Pluggable.class)) {
+	    Argo.log.warn ("Class " + pluginType.getName() +
+			   " does not extend Pluggable.");
+	    return false;
+	}
 
-      // TODO:  The vector should be populated from
-      //                   the enumeration in FIFO sequence.
+	// TODO:  The vector should be populated from
+	//                   the enumeration in FIFO sequence.
 
-      ListIterator iterator = getModules().listIterator();
-      while (iterator.hasNext()) {
-          Object element = iterator.next();
-	  // if (element.getClass().isAssignableFrom(pluginType))
-	  if (classImplements(element, pluginType)) {
-              Pluggable module = (Pluggable)element;
-	      if (context == null) {
-	          return true;
-	      }
-	      else {
-		  if (module.inContext(context)) {
-		      return true;
-		  }
-	      }
-	  }
-      }
-      return false;
-  }
+	ListIterator iterator = getModules().listIterator();
+	while (iterator.hasNext()) {
+	    Object element = iterator.next();
+	    // if (element.getClass().isAssignableFrom(pluginType))
+	    if (classImplements(element, pluginType)) {
+		Pluggable module = (Pluggable) element;
+		if (context == null) {
+		    return true;
+		}
+		else {
+		    if (module.inContext(context)) {
+			return true;
+		    }
+		}
+	    }
+	}
+	return false;
+    }
 
 
-  /** Returns all plug-in of a given type.
-   *
-   *  The type of plug-in returned is determined by the class passed.
-   *
-   *  @param pluginType a Class which extends Pluggable and indicates
-   *                    the type of plug-in to return.
-   *
-   *  @param context An object (or null) which allows the plugin to
-   *                 determine if it should be included in a list.
-   *
-   *  @return A Vector containing all the plugins of the type
-   *          passed for the passed context, or null if none
-   *          are available.
-   */
-  public ArrayList getPlugins (Class pluginType, Object[] context) {
+    /** Returns all plug-in of a given type.
+     *
+     *  The type of plug-in returned is determined by the class passed.
+     *
+     *  @param pluginType a Class which extends Pluggable and indicates
+     *                    the type of plug-in to return.
+     *
+     *  @param context An object (or null) which allows the plugin to
+     *                 determine if it should be included in a list.
+     *
+     *  @return A Vector containing all the plugins of the type
+     *          passed for the passed context, or null if none
+     *          are available.
+     */
+    public ArrayList getPlugins (Class pluginType, Object[] context) {
 
-      if (! (pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
-          Argo.log.warn ("Class " + pluginType.getName() +
-	                      " is not a core Argo pluggable type.");
-          return null;
-      }
+	if (!(pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
+	    Argo.log.warn ("Class " + pluginType.getName() +
+			   " is not a core Argo pluggable type.");
+	    return null;
+	}
 
-      // Check to see that the class is not Pluggable itself
-      if (pluginType.equals(Pluggable.class)) {
-          Argo.log.warn ("This is " + pluginType.getName() +
-	                      ", it cannot be used here.");
-          return null;
-      }
+	// Check to see that the class is not Pluggable itself
+	if (pluginType.equals(Pluggable.class)) {
+	    Argo.log.warn ("This is " + pluginType.getName() +
+			   ", it cannot be used here.");
+	    return null;
+	}
 
-      // TODO:  The vector should be populated from
-      //                   the enumeration in FIFO sequence.
+	// TODO:  The vector should be populated from
+	//                   the enumeration in FIFO sequence.
 
-      ArrayList results = new ArrayList();
-      ListIterator iterator = getModules().listIterator();
-      while (iterator.hasNext()) {
-          Object module = iterator.next();
-	  try {
-	      Pluggable pluggable = (Pluggable)module;
-	      // if (pluggable.isModuleType(pluginType))
-	      // if (pluggable.getClass().isAssignableFrom(pluginType))
-	      if (classImplements(module, pluginType)) {
-	           if (context == null) {
-		       results.add(module);
-		   }
-		   else {
-	               if (pluggable.inContext(context)) {
-		           results.add(module);
-		       }
-		   }
-	      }
-	  }
-	  catch (Exception ex) {
-                  ArgoModule.cat.warn("Exception for " + module, ex);
-	  }
-      }
-      return results;
-  }
+	ArrayList results = new ArrayList();
+	ListIterator iterator = getModules().listIterator();
+	while (iterator.hasNext()) {
+	    Object module = iterator.next();
+	    try {
+		Pluggable pluggable = (Pluggable) module;
+		// if (pluggable.isModuleType(pluginType))
+		// if (pluggable.getClass().isAssignableFrom(pluginType))
+		if (classImplements(module, pluginType)) {
+		    if (context == null) {
+			results.add(module);
+		    }
+		    else {
+			if (pluggable.inContext(context)) {
+			    results.add(module);
+			}
+		    }
+		}
+	    }
+	    catch (Exception ex) {
+		ArgoModule.cat.warn("Exception for " + module, ex);
+	    }
+	}
+	return results;
+    }
 
-  public String getArgoHome() { return argoHome; }
+    public String getArgoHome() { return argoHome; }
 
-  public String getArgoRoot() { return argoRoot; }
+    public String getArgoRoot() { return argoRoot; }
 
-  private boolean classImplements(Object implementor, Class implemented) {
+    private boolean classImplements(Object implementor, Class implemented) {
 
-      if (implemented.isInstance(implementor)) {
-         return true;
-      }
+	if (implemented.isInstance(implementor)) {
+	    return true;
+	}
 
-      return false;
-  }
+	return false;
+    }
 
-  class JarFileFilter implements FileFilter {
-      public boolean accept(File pathname) {
-          return (pathname.canRead() &&
-	          pathname.isFile() &&
-		  pathname.getPath().toLowerCase().endsWith(".jar"));
-      }
-  }
+    class JarFileFilter implements FileFilter {
+	public boolean accept(File pathname) {
+	    return (pathname.canRead() &&
+		    pathname.isFile() &&
+		    pathname.getPath().toLowerCase().endsWith(".jar"));
+	}
+    }
 
-  private void fireEvent(int eventType,  ArgoModule module) {
-      ArgoEventPump.getInstance().fireEvent(new ArgoModuleEvent(eventType,
-                                                                module));
-  }
+    private void fireEvent(int eventType,  ArgoModule module) {
+	ArgoEventPump.getInstance().fireEvent(new ArgoModuleEvent(eventType,
+								  module));
+    }
 
 } /* end class ModuleLoader */
 

@@ -63,7 +63,7 @@ import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /** A property panel for operations.
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelOperation extends PropPanelModelElement {
@@ -72,103 +72,106 @@ public class PropPanelOperation extends PropPanelModelElement {
     // contructors
     public PropPanelOperation() {
         super(
-            "Operation",
-            _operationIcon,
-            ConfigLoader.getTabPropsOrientation());
+	      "Operation",
+	      _operationIcon,
+	      ConfigLoader.getTabPropsOrientation());
 
         Class mclass = MOperation.class;
         //
         //   this will cause the components on this page to be notified
         //      anytime a stereotype, namespace, operation, etc
         //      has its name changed or is removed anywhere in the model
-        Class[] namesToWatch =
-            { MStereotype.class, MNamespace.class, MClassifier.class };
+        Class[] namesToWatch = {
+	    MStereotype.class, 
+	    MNamespace.class, 
+	    MClassifier.class 
+	};
         setNameEventListening(namesToWatch);
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(
-            Argo.localize("UMLMenu", "label.stereotype"),
-            new UMLComboBoxNavigator(
-                this,
-                Argo.localize("UMLMenu", "tooltip.nav-stereo"),
-                getStereotypeBox()));
+		 Argo.localize("UMLMenu", "label.stereotype"),
+		 new UMLComboBoxNavigator(
+					  this,
+					  Argo.localize("UMLMenu", "tooltip.nav-stereo"),
+					  getStereotypeBox()));
 
         JList ownerList = new UMLList(
-                new UMLReflectionListModel(
-                    this,
-                    "owner",
-                    false,
-                    "getOwner",
-                    null,
-                    null,
-                    null),
-                true);
+				      new UMLReflectionListModel(
+								 this,
+								 "owner",
+								 false,
+								 "getOwner",
+								 null,
+								 null,
+								 null),
+				      true);
         ownerList.setBackground(getBackground());
         ownerList.setForeground(Color.blue);
         ownerList.setVisibleRowCount(1);
         JScrollPane ownerScroll =
             new JScrollPane(
-                ownerList,
-                JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			    ownerList,
+			    JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         addField(Argo.localize("UMLMenu", "label.owner"), ownerScroll);
 
         addField(
-            Argo.localize("UMLMenu", "label.visibility"),
-            new UMLVisibilityPanel(this, mclass, 2, false));
+		 Argo.localize("UMLMenu", "label.visibility"),
+		 new UMLVisibilityPanel(this, mclass, 2, false));
 
         addSeperator();
 
         JPanel modPanel =
             new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));
         modPanel.add(
-            new UMLCheckBox(
-                Argo.localize("UMLMenu", "checkbox.abstract-lc"),
-                this,
-                new UMLReflectionBooleanProperty(
-                    "isAbstract",
-                    mclass,
-                    "isAbstract",
-                    "setAbstract")));
+		     new UMLCheckBox(
+				     Argo.localize("UMLMenu", "checkbox.abstract-lc"),
+				     this,
+				     new UMLReflectionBooleanProperty(
+								      "isAbstract",
+								      mclass,
+								      "isAbstract",
+								      "setAbstract")));
         modPanel.add(
-            new UMLCheckBox(
-                Argo.localize("UMLMenu", "checkbox.final-lc"),
-                this,
-                new UMLReflectionBooleanProperty(
-                    "isLeaf",
-                    mclass,
-                    "isLeaf",
-                    "setLeaf")));
+		     new UMLCheckBox(
+				     Argo.localize("UMLMenu", "checkbox.final-lc"),
+				     this,
+				     new UMLReflectionBooleanProperty(
+								      "isLeaf",
+								      mclass,
+								      "isLeaf",
+								      "setLeaf")));
         modPanel.add(
-            new UMLCheckBox(
-                localize("root"),
-                this,
-                new UMLReflectionBooleanProperty(
-                    "isRoot",
-                    mclass,
-                    "isRoot",
-                    "setRoot")));
+		     new UMLCheckBox(
+				     localize("root"),
+				     this,
+				     new UMLReflectionBooleanProperty(
+								      "isRoot",
+								      mclass,
+								      "isRoot",
+								      "setRoot")));
         modPanel.add(
-            new UMLCheckBox(
-                localize("query"),
-                this,
-                new UMLReflectionBooleanProperty(
-                    "isQuery",
-                    mclass,
-                    "isQuery",
-                    "setQuery")));
+		     new UMLCheckBox(
+				     localize("query"),
+				     this,
+				     new UMLReflectionBooleanProperty(
+								      "isQuery",
+								      mclass,
+								      "isQuery",
+								      "setQuery")));
         modPanel.add(
-            new UMLCheckBox(
-                localize("static"),
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "ownerscope",
-                    mclass,
-                    "getOwnerScope",
-                    "setOwnerScope",
-                    MScopeKind.class,
-                    MScopeKind.CLASSIFIER,
-                    MScopeKind.INSTANCE)));
+		     new UMLCheckBox(
+				     localize("static"),
+				     this,
+				     new UMLEnumerationBooleanProperty(
+								       "ownerscope",
+								       mclass,
+								       "getOwnerScope",
+								       "setOwnerScope",
+								       MScopeKind.class,
+								       MScopeKind.CLASSIFIER,
+								       MScopeKind.INSTANCE)));
         addField(Argo.localize("UMLMenu", "label.modifiers"), modPanel);
 
         JPanel concurPanel =
@@ -176,44 +179,44 @@ public class PropPanelOperation extends PropPanelModelElement {
         ButtonGroup group = new ButtonGroup();
         UMLRadioButton sequential =
             new UMLRadioButton(
-                "sequential",
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "concurrency",
-                    mclass,
-                    "getConcurrency",
-                    "setConcurrency",
-                    MCallConcurrencyKind.class,
-                    MCallConcurrencyKind.SEQUENTIAL,
-                    null));
+			       "sequential",
+			       this,
+			       new UMLEnumerationBooleanProperty(
+								 "concurrency",
+								 mclass,
+								 "getConcurrency",
+								 "setConcurrency",
+								 MCallConcurrencyKind.class,
+								 MCallConcurrencyKind.SEQUENTIAL,
+								 null));
         group.add(sequential);
         concurPanel.add(sequential);
         UMLRadioButton synchd =
             new UMLRadioButton(
-                "guarded",
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "concurrency",
-                    mclass,
-                    "getConcurrency",
-                    "setConcurrency",
-                    MCallConcurrencyKind.class,
-                    MCallConcurrencyKind.GUARDED,
-                    null));
+			       "guarded",
+			       this,
+			       new UMLEnumerationBooleanProperty(
+								 "concurrency",
+								 mclass,
+								 "getConcurrency",
+								 "setConcurrency",
+								 MCallConcurrencyKind.class,
+								 MCallConcurrencyKind.GUARDED,
+								 null));
         group.add(synchd);
         concurPanel.add(synchd);
         UMLRadioButton concur =
             new UMLRadioButton(
-                "concurrent",
-                this,
-                new UMLEnumerationBooleanProperty(
-                    "concurrency",
-                    mclass,
-                    "getConcurrency",
-                    "setConcurrency",
-                    MCallConcurrencyKind.class,
-                    MCallConcurrencyKind.CONCURRENT,
-                    null));
+			       "concurrent",
+			       this,
+			       new UMLEnumerationBooleanProperty(
+								 "concurrency",
+								 mclass,
+								 "getConcurrency",
+								 "setConcurrency",
+								 MCallConcurrencyKind.class,
+								 MCallConcurrencyKind.CONCURRENT,
+								 null));
         group.add(concur);
         concurPanel.add(concur);
         addField("Concurrency:", concurPanel);
@@ -222,74 +225,74 @@ public class PropPanelOperation extends PropPanelModelElement {
 
         JList paramList =
             new UMLList(
-                new UMLReflectionListModel(
-                    this,
-                    "parameter",
-                    true,
-                    "getParameters",
-                    "setParameters",
-                    "addParameter",
-                    null),
-                true);
+			new UMLReflectionListModel(
+						   this,
+						   "parameter",
+						   true,
+						   "getParameters",
+						   "setParameters",
+						   "addParameter",
+						   null),
+			true);
         paramList.setForeground(Color.blue);
         paramList.setFont(smallFont);
         addField(
-            Argo.localize("UMLMenu", "label.parameters"),
-            new JScrollPane(paramList));
+		 Argo.localize("UMLMenu", "label.parameters"),
+		 new JScrollPane(paramList));
 
         JList exceptList =
             new UMLList(
-                new UMLReflectionListModel(
-                    this,
-                    "signal",
-                    true,
-                    "getRaisedSignals",
-                    "setRaisedSignals",
-                    "addRaisedSignal",
-                    null),
-                true);
+			new UMLReflectionListModel(
+						   this,
+						   "signal",
+						   true,
+						   "getRaisedSignals",
+						   "setRaisedSignals",
+						   "addRaisedSignal",
+						   null),
+			true);
         exceptList.setForeground(Color.blue);
         exceptList.setFont(smallFont);
         addField(
-            Argo.localize("UMLMenu", "label.raisedsignals"),
-            new JScrollPane(exceptList));
+		 Argo.localize("UMLMenu", "label.raisedsignals"),
+		 new JScrollPane(exceptList));
 
         new PropPanelButton(
-            this,
-            buttonPanel,
-            _navUpIcon,
-            Argo.localize("UMLMenu", "button.go-up"),
-            "navigateUp",
-            null);
+			    this,
+			    buttonPanel,
+			    _navUpIcon,
+			    Argo.localize("UMLMenu", "button.go-up"),
+			    "navigateUp",
+			    null);
         new PropPanelButton(
-            this,
-            buttonPanel,
-            _addOpIcon,
-            Argo.localize("UMLMenu", "button.add-new-operation"),
-            "buttonAddOperation",
-            null);
+			    this,
+			    buttonPanel,
+			    _addOpIcon,
+			    Argo.localize("UMLMenu", "button.add-new-operation"),
+			    "buttonAddOperation",
+			    null);
         // I uncommented this next line. I don't know why it was commented out, it seems to work just fine...--pjs--
         new PropPanelButton(
-            this,
-            buttonPanel,
-            _parameterIcon,
-            Argo.localize("UMLMenu", "button.add-parameter"),
-            "buttonAddParameter",
-            null);
+			    this,
+			    buttonPanel,
+			    _parameterIcon,
+			    Argo.localize("UMLMenu", "button.add-parameter"),
+			    "buttonAddParameter",
+			    null);
         new PropPanelButton(
-            this,
-            buttonPanel,
-            _signalIcon,
-            localize("Add raised signal"),
-            "buttonAddRaisedSignal",
-            null);
+			    this,
+			    buttonPanel,
+			    _signalIcon,
+			    localize("Add raised signal"),
+			    "buttonAddRaisedSignal",
+			    null);
         new PropPanelButton(
-            this,
-            buttonPanel,
-            _deleteIcon,
-            Argo.localize("UMLMenu", "button.delete-operation"),
-            "removeElement",
-            null);
+			    this,
+			    buttonPanel,
+			    _deleteIcon,
+			    Argo.localize("UMLMenu", "button.delete-operation"),
+			    "removeElement",
+			    null);
     }
 
     public MClassifier getReturnType() {
@@ -349,8 +352,8 @@ public class PropPanelOperation extends PropPanelModelElement {
                 if (retParam == null) {
                     retParam =
                         UmlFactory.getFactory().getCore().buildParameter(
-                            oper,
-                            MParameterDirectionKind.RETURN);
+									 oper,
+									 MParameterDirectionKind.RETURN);
                 }
                 retParam.setType(type);
             }
@@ -424,11 +427,11 @@ public class PropPanelOperation extends PropPanelModelElement {
                 CoreFactory.getFactory().buildParameter((MOperation) target);
             TargetManager.getInstance().setTarget(param);
             /*
-            MOperation oper = (MOperation) target;
-            MParameter newParam = oper.getFactory().createParameter();
-            newParam.setKind(MParameterDirectionKind.INOUT);
-            oper.addParameter(newParam);
-            navigateTo(newParam);
+	      MOperation oper = (MOperation) target;
+	      MParameter newParam = oper.getFactory().createParameter();
+	      newParam.setKind(MParameterDirectionKind.INOUT);
+	      oper.addParameter(newParam);
+	      navigateTo(newParam);
             */
         }
     }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -48,14 +49,14 @@ public class UMLCompositeStateSubvertexListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MCompositeState)getTarget()).getSubvertices());
+        setAllElements(((MCompositeState) getTarget()).getSubvertices());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return ((MCompositeState)getTarget()).getSubvertices().contains(element);
+        return ((MCompositeState) getTarget()).getSubvertices().contains(element);
     }
 
 }

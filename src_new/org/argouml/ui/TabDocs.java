@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -32,24 +33,24 @@ import org.tigris.gef.presentation.Fig;
 public class TabDocs extends TabText {
     protected static Category cat = 
         Category.getInstance(TabDocs.class);
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public TabDocs() {
-    super("Javadocs");
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public TabDocs() {
+	super("Javadocs");
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-  protected String genText(Object modelObject) {
-    modelObject = (modelObject instanceof Fig) ? ((Fig)modelObject).getOwner() : modelObject;    
-    return !(ModelFacade.isAElement(modelObject)) ? null : DocumentationManager.getDocs(modelObject,"");
-  }
+    ////////////////////////////////////////////////////////////////
+    // accessors
+    protected String genText(Object modelObject) {
+	modelObject = (modelObject instanceof Fig) ? ((Fig) modelObject).getOwner() : modelObject;    
+	return !(ModelFacade.isAElement(modelObject)) ? null : DocumentationManager.getDocs(modelObject, "");
+    }
 
-  protected void parseText(String s) {
-    Object modelObject = TargetManager.getInstance().getTarget();
-   modelObject = (modelObject instanceof Fig) ? ((Fig)modelObject).getOwner() : modelObject;    
-    if (modelObject == null) return;
-    DocumentationManager.setDocs(modelObject, s);
-  }
+    protected void parseText(String s) {
+	Object modelObject = TargetManager.getInstance().getTarget();
+	modelObject = (modelObject instanceof Fig) ? ((Fig) modelObject).getOwner() : modelObject;    
+	if (modelObject == null) return;
+	DocumentationManager.setDocs(modelObject, s);
+    }
 
 } /* end class TabDocs */

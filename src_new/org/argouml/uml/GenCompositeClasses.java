@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,28 +40,28 @@ import org.tigris.gef.util.*;
  */
 
 public class GenCompositeClasses implements ChildGenerator {
-  public static GenCompositeClasses SINGLETON = new GenCompositeClasses();
+    public static GenCompositeClasses SINGLETON = new GenCompositeClasses();
 
-  public Enumeration gen(Object o) {
-      Vector res = new Vector();
-    if (!(o instanceof MClassifier)) return res.elements();
-    MClassifier cls = (MClassifier) o;
-    Vector ends = new Vector(cls.getAssociationEnds());
-    if (ends == null) return res.elements();
-    Iterator enum = ends.iterator();
-    while (enum.hasNext()) {
-      MAssociationEnd ae = (MAssociationEnd) enum.next();
-      if (MAggregationKind.COMPOSITE.equals(ae.getAggregation())) {
-	MAssociation asc = ae.getAssociation();
-	List conn = asc.getConnections();
-	if (conn == null || conn.size() != 2) continue;
-	Object otherEnd = (ae == conn.get(0)) ?
-	  conn.get(1) : conn.get(0);
-	MClassifier componentClass = ((MAssociationEnd)otherEnd).getType();
-	res.add(componentClass);
-      }
+    public Enumeration gen(Object o) {
+	Vector res = new Vector();
+	if (!(o instanceof MClassifier)) return res.elements();
+	MClassifier cls = (MClassifier) o;
+	Vector ends = new Vector(cls.getAssociationEnds());
+	if (ends == null) return res.elements();
+	Iterator enum = ends.iterator();
+	while (enum.hasNext()) {
+	    MAssociationEnd ae = (MAssociationEnd) enum.next();
+	    if (MAggregationKind.COMPOSITE.equals(ae.getAggregation())) {
+		MAssociation asc = ae.getAssociation();
+		List conn = asc.getConnections();
+		if (conn == null || conn.size() != 2) continue;
+		Object otherEnd = (ae == conn.get(0)) ?
+		    conn.get(1) : conn.get(0);
+		MClassifier componentClass = ((MAssociationEnd) otherEnd).getType();
+		res.add(componentClass);
+	    }
+	}
+	return res.elements();
     }
-    return res.elements();
-  }
 } /* end class GenCompositeClasses */
   

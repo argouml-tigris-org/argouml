@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -191,10 +192,10 @@ public class WizOperName extends WizMEName {
                 MStereotype theStereotype = null;
                 for (Iterator iter = m.getOwnedElements().iterator();
                      iter.hasNext();) {
-                    MModelElement candidate = (MModelElement)iter.next();
+                    MModelElement candidate = (MModelElement) iter.next();
 		    if (!(candidate instanceof MStereotype))
                         continue;
-                    MStereotype ster = (MStereotype)candidate;
+                    MStereotype ster = (MStereotype) candidate;
                     MNamespace ns = ster.getNamespace();
                     if (!("create".equals(ster.getName())))
                         continue;
@@ -246,32 +247,32 @@ public class WizOperName extends WizMEName {
             return targetModel;
         }
         MNamespace parentNS = phantomNS.getNamespace();
-        if(parentNS == null) {
+        if (parentNS == null) {
             return targetModel;
         }
         else {
-            targetParentNS = findNamespace(parentNS,targetModel);
+            targetParentNS = findNamespace(parentNS, targetModel);
             //
             //   see if there is already an element with the same name
             //
             Collection ownedElements = targetParentNS.getOwnedElements();
             String phantomName = phantomNS.getName();
             String targetName;
-            if(ownedElements != null) {
+            if (ownedElements != null) {
                 MModelElement ownedElement;
                 Iterator iter = ownedElements.iterator();
-                while(iter.hasNext()) {
+                while (iter.hasNext()) {
                     ownedElement = (MModelElement) iter.next();
                     targetName = ownedElement.getName();
-                    if(targetName != null && phantomName.equals(targetName)) {
-                        if(ownedElement instanceof MPackage) {
+                    if (targetName != null && phantomName.equals(targetName)) {
+                        if (ownedElement instanceof MPackage) {
                             ns = (MPackage) ownedElement;
                             break;
                         }
                     }
                 }
             }
-            if(ns == null) {
+            if (ns == null) {
                 ns = targetParentNS.getFactory().createPackage();
                 ns.setName(phantomName);
                 targetParentNS.addOwnedElement(ns);

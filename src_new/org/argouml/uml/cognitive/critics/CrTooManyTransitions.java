@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,35 +43,35 @@ import org.argouml.cognitive.*;
 
 public class CrTooManyTransitions extends CrUML {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static String THRESHOLD = "Threshold";
+    ////////////////////////////////////////////////////////////////
+    // constants
+    public static String THRESHOLD = "Threshold";
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public CrTooManyTransitions() {
-    setHeadline("Reduce Transitions on <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decSTATE_MACHINES);
-    setArg(THRESHOLD, new Integer(10));
-    addTrigger("incoming");
-    addTrigger("outgoing");
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public CrTooManyTransitions() {
+	setHeadline("Reduce Transitions on <ocl>self</ocl>");
+	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	setArg(THRESHOLD, new Integer(10));
+	addTrigger("incoming");
+	addTrigger("outgoing");
 
-  }
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // critiquing API
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MStateVertex)) return NO_PROBLEM;
-    MStateVertex sv = (MStateVertex) dm;
+    ////////////////////////////////////////////////////////////////
+    // critiquing API
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MStateVertex)) return NO_PROBLEM;
+	MStateVertex sv = (MStateVertex) dm;
 
-    int threshold = ((Integer)getArg(THRESHOLD)).intValue();
-    Collection in = sv.getIncomings();
-    Collection out = sv.getOutgoings();
-    int inSize = (in == null) ? 0 : in.size();
-    int outSize = (out == null) ? 0 : out.size();
-    if (inSize + outSize <= threshold) return NO_PROBLEM;
-    return PROBLEM_FOUND;
-  }
+	int threshold = ((Integer) getArg(THRESHOLD)).intValue();
+	Collection in = sv.getIncomings();
+	Collection out = sv.getOutgoings();
+	int inSize = (in == null) ? 0 : in.size();
+	int outSize = (out == null) ? 0 : out.size();
+	if (inSize + outSize <= threshold) return NO_PROBLEM;
+	return PROBLEM_FOUND;
+    }
 
 } /* end class CrTooManyTransitions */
 

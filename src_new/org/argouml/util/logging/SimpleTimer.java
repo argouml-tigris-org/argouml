@@ -56,7 +56,8 @@ public class SimpleTimer {
      */
     public Enumeration result() {
 	mark();
-	return new Enumeration() {
+	return new Enumeration() 
+	    {
 		int count = 1;
 
 		public boolean hasMoreElements() {
@@ -73,18 +74,18 @@ public class SimpleTimer {
 				res.append(_labels.get(count - 1));
 			    res.append("                            ");
 			    res.setLength(18);
-			    res.append((((Long)_points.elementAt(count)).
+			    res.append((((Long) _points.elementAt(count)).
 					longValue()
-					- ((Long)_points.elementAt(count - 1))
+					- ((Long) _points.elementAt(count - 1))
 					.longValue()));
 			}
 			else if (count == _points.size()) {
 			    res.append("Total                      ");
 			    res.setLength(18);
-			    res.append((((Long)_points.
+			    res.append((((Long) _points.
 					 elementAt(_points.size() - 1))
 					.longValue()
-					- ((Long)_points.
+					- ((Long) _points.
 					   elementAt(0)).longValue()));
 			}
 		    }
@@ -98,7 +99,7 @@ public class SimpleTimer {
 	StringBuffer sb = new StringBuffer("");
 
 	for (Enumeration e = result(); e.hasMoreElements();) {
-	    sb.append((String)e.nextElement());
+	    sb.append((String) e.nextElement());
 	    sb.append("\n");
 	}
 	return sb.toString();

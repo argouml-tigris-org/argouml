@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -30,13 +31,13 @@ import org.tigris.gef.util.*;
 
 public class PredIsStartState implements Predicate {
 
-  public static PredIsStartState TheInstance = new PredIsStartState();
+    public static PredIsStartState TheInstance = new PredIsStartState();
 
-  private PredIsStartState() { }
+    private PredIsStartState() { }
 
-  public boolean predicate(Object obj) {
-    return (obj instanceof MPseudostate) &&
-      (MPseudostateKind.INITIAL.equals(((MPseudostate)obj).getKind()));
-  }
+    public boolean predicate(Object obj) {
+	return (obj instanceof MPseudostate) &&
+	    (MPseudostateKind.INITIAL.equals(((MPseudostate) obj).getKind()));
+    }
   
 } /* end class PredIsStartpackage */

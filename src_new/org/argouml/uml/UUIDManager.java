@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,7 +53,8 @@ public class UUIDManager {
     static {
         try {
             _address = InetAddress.getLocalHost(); 
-        } catch (java.net.UnknownHostException e) {
+        }
+	catch (java.net.UnknownHostException e) {
             cat.fatal("ERROR: unable to get localhost information.", e);
             cat.fatal("On Unix systems this usually indicates that your /etc/hosts file is incorrectly setup.");
             cat.fatal("Stopping execution of ArgoUML.");
@@ -70,16 +72,16 @@ public class UUIDManager {
     // public methods
     
     public synchronized String getNewUUID() {
-		UID uid = new UID();
-		String s = "";
-		if (_address != null) {
-			byte[] b = _address.getAddress();
-			for (int i = 0; i < b.length; i++)
-				s += (new Byte(b[i])).longValue() + "-";
-		}
-		s += uid.toString();
-		cat.debug("new UUID: "+s);
-		return s;
+	UID uid = new UID();
+	String s = "";
+	if (_address != null) {
+	    byte[] b = _address.getAddress();
+	    for (int i = 0; i < b.length; i++)
+		s += (new Byte(b[i])).longValue() + "-";
+	}
+	s += uid.toString();
+	cat.debug("new UUID: " + s);
+	return s;
     }
 
     public synchronized void createModelUUIDS(MNamespace model) {
@@ -87,12 +89,12 @@ public class UUIDManager {
         cat.info("NOTE: The temporary method 'createModelUUIDs' has been called.");
         
         Collection ownedElements = model.getOwnedElements();
-		Iterator oeIterator = ownedElements.iterator();
+	Iterator oeIterator = ownedElements.iterator();
         
         String uuid = model.getUUID();
         if (uuid == null) model.setUUID(getNewUUID());
 
-		while (oeIterator.hasNext()) {
+	while (oeIterator.hasNext()) {
             MModelElement me = (MModelElement) oeIterator.next();
             if (me instanceof MModel ||
                 // me instanceof MNamespace ||
@@ -114,11 +116,11 @@ public class UUIDManager {
                     me.setUUID(getNewUUID());
                 }
             }
-			//recursive handling of namespaces, needed for Collaborations
-			if (me instanceof MNamespace) {
-				cat.debug("Found another namespace: "+me);
-				createModelUUIDS((MNamespace)me);
-			}
+	    //recursive handling of namespaces, needed for Collaborations
+	    if (me instanceof MNamespace) {
+		cat.debug("Found another namespace: " + me);
+		createModelUUIDS((MNamespace) me);
+	    }
         }
     }
   

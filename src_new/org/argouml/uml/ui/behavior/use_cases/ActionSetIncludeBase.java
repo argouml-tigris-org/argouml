@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -60,10 +61,10 @@ public class ActionSetIncludeBase extends UMLChangeAction {
         MUseCase newBase = null;
         MInclude inc = null;
         if (source instanceof UMLComboBox2) {
-            UMLComboBox2 combo = (UMLComboBox2)source;
-            newBase = (MUseCase)combo.getSelectedItem();
+            UMLComboBox2 combo = (UMLComboBox2) source;
+            newBase = (MUseCase) combo.getSelectedItem();
             if (combo.getTarget() instanceof MInclude) {
-                inc = (MInclude)combo.getTarget();
+                inc = (MInclude) combo.getTarget();
             }
         }
         MUseCase oldBase = inc.getBase();

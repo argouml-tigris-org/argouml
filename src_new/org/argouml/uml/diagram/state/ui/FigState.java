@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -57,7 +58,7 @@ public abstract class FigState extends FigStateVertex {
     public FigState() {
         super();
         _internal = new FigText(getInitialX() + 2, getInitialY() + 2 + 21 + 4,
-        getInitialWidth()-4, getInitialHeight() - (getInitialY() + 2 + 21 + 4));
+				getInitialWidth() - 4, getInitialHeight() - (getInitialY() + 2 + 21 + 4));
         _internal.setFont(LABEL_FONT);
         _internal.setTextColor(Color.black);
         _internal.setLineWidth(0);
@@ -102,15 +103,15 @@ public abstract class FigState extends FigStateVertex {
             // we don't have to act on incoming and outgoing transitions since that doesn't 
             // change the fig.
         } else if (
-            ((MState) getOwner()).getInternalTransitions().contains(mee.getSource())
-            || // the internal transitions
-         (mee.getSource() == ((MState) getOwner()).getEntry())
-            || // the entry
-         (mee.getSource() == ((MState) getOwner()).getExit())
-            || // the exit
-         (mee.getSource() == ((MState) getOwner()).getDoActivity())
-            || // the doacitivity
-         ((MState) getOwner()).getDeferrableEvents().contains(mee.getSource())) { // the defered events
+		   ((MState) getOwner()).getInternalTransitions().contains(mee.getSource())
+		   || // the internal transitions
+		   (mee.getSource() == ((MState) getOwner()).getEntry())
+		   || // the entry
+		   (mee.getSource() == ((MState) getOwner()).getExit())
+		   || // the exit
+		   (mee.getSource() == ((MState) getOwner()).getDoActivity())
+		   || // the doacitivity
+		   ((MState) getOwner()).getDeferrableEvents().contains(mee.getSource())) { // the defered events
             updateInternal();
             updateListeners(getOwner());
             damage();
@@ -184,7 +185,7 @@ public abstract class FigState extends FigStateVertex {
     protected abstract int getInitialHeight();
     
     public Selection makeSelection() {
-       return new SelectionState(this);
+	return new SelectionState(this);
     }
 
 }

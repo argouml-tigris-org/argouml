@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -44,25 +45,25 @@ import org.argouml.cognitive.*;
 
 public class CrIllegalGeneralization extends CrUML {
 
-  public CrIllegalGeneralization() {
-    setHeadline("Illegal MGeneralization ");
+    public CrIllegalGeneralization() {
+	setHeadline("Illegal MGeneralization ");
 
-    addSupportedDecision(CrUML.decINHERITANCE);
-    addTrigger("supertype");
-    addTrigger("subtype");
-  }
+	addSupportedDecision(CrUML.decINHERITANCE);
+	addTrigger("supertype");
+	addTrigger("subtype");
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MGeneralization)) return NO_PROBLEM;
-    MGeneralization gen = (MGeneralization) dm;
-    Object cls1 = gen.getParent();
-    Object cls2 = gen.getChild();
-    if (cls1 == null || cls2 == null) return NO_PROBLEM;
-    java.lang.Class javaClass1 = cls1.getClass();
-    java.lang.Class javaClass2 = cls2.getClass();
-    if (javaClass1 != javaClass2) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MGeneralization)) return NO_PROBLEM;
+	MGeneralization gen = (MGeneralization) dm;
+	Object cls1 = gen.getParent();
+	Object cls2 = gen.getChild();
+	if (cls1 == null || cls2 == null) return NO_PROBLEM;
+	java.lang.Class javaClass1 = cls1.getClass();
+	java.lang.Class javaClass2 = cls2.getClass();
+	if (javaClass1 != javaClass2) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
 
 } /* end class CrIllegalGeneralization.java */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,13 +43,13 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
     private UMLModelElementListModel _umlListModel;
     private boolean _navigate;
 
-    public UMLList(UMLModelElementListModel listModel,boolean navigate) {
+    public UMLList(UMLModelElementListModel listModel, boolean navigate) {
         super(listModel);
         _umlListModel = listModel;
         _navigate = navigate;
         setFont(MetalLookAndFeel.getSubTextFont());
 
-        if(navigate) {
+        if (navigate) {
             addMouseListener(this);
         }
     }
@@ -88,29 +89,29 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
         updateUI();
     }
     public void propertySet(final MElementEvent event) {
-          _umlListModel.propertySet(event);
-          updateUI();
+	_umlListModel.propertySet(event);
+	updateUI();
     }
 
     public void mouseReleased(final MouseEvent event) {
-        if(event.isPopupTrigger()) {
+        if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
 
     public void mouseEntered(final MouseEvent event) {
-        if(event.isPopupTrigger()) {
+        if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
 
     public void mouseClicked(final MouseEvent event) {
-        if(event.isPopupTrigger()) {
+        if (event.isPopupTrigger()) {
             showPopup(event);
         }
         else {
             int mods = event.getModifiers();
-            if(mods == InputEvent.BUTTON1_MASK) {
+            if (mods == InputEvent.BUTTON1_MASK) {
                 int index = locationToIndex(event.getPoint());
                 _umlListModel.open(index);
             }
@@ -118,13 +119,13 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
     }
 
     public void mousePressed(final MouseEvent event) {
-        if(event.isPopupTrigger()) {
+        if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
 
     public void mouseExited(final MouseEvent event) {
-        if(event.isPopupTrigger()) {
+        if (event.isPopupTrigger()) {
             showPopup(event);
         }
     }
@@ -139,13 +140,13 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
        // JList returns -1 if list is empty or user right clicks on an area 
        // that has no list item, such as when the JList is not full. This code 
        // compensates for the user not clicking over a list item. pjs.
-        if (index == -1){
+        if (index == -1) {
             index = _umlListModel.getModelElementSize();
         }
 
         JPopupMenu popup = new JPopupMenu();
-        if(_umlListModel.buildPopup(popup,index)) {
-            popup.show(this,point.x,point.y);
+        if (_umlListModel.buildPopup(popup, index)) {
+            popup.show(this, point.x, point.y);
         }
     }
 }

@@ -58,7 +58,7 @@ import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
  *   meaning of its own, we derive directly from PropPanelModelElement (as
  *   other children of Relationship do).</p>
  *
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 
@@ -76,7 +76,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"),
-            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+		 new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
         addSeperator();
@@ -86,23 +86,23 @@ public class PropPanelExtend extends PropPanelModelElement {
         // base use case.
 
         addField(Argo.localize("UMLMenu", "label.usecase-base"),
-            new UMLComboBox2(new UMLExtendBaseComboBoxModel(), ActionSetExtendBase.SINGLETON));
+		 new UMLComboBox2(new UMLExtendBaseComboBoxModel(), ActionSetExtendBase.SINGLETON));
 
         addField(Argo.localize("UMLMenu", "label.extension"),
-            new UMLComboBox2(new UMLExtendExtensionComboBoxModel(), ActionSetExtendExtension.SINGLETON));
+		 new UMLComboBox2(new UMLExtendExtensionComboBoxModel(), ActionSetExtendExtension.SINGLETON));
 
         JList extensionPointList = new UMLMutableLinkedList(new UMLExtendExtensionPointListModel(), ActionAddExtendExtensionPoint.SINGLETON, ActionNewExtendExtensionPoint.SINGLETON);
         addField(Argo.localize("UMLMenu", "label.extension-points"),
-            new JScrollPane(extensionPointList));
+		 new JScrollPane(extensionPointList));
 
         addSeperator();
 
         UMLExpressionModel conditionModel =
-            new UMLExpressionModel(this,MExtend.class,"condition",
-            MBooleanExpression.class,"getCondition","setCondition");
+            new UMLExpressionModel(this, MExtend.class, "condition",
+				   MBooleanExpression.class, "getCondition", "setCondition");
 
         JTextArea conditionArea = new UMLExpressionBodyField(conditionModel,
-                                                            true);
+							     true);
         conditionArea.setRows(5);
         JScrollPane conditionScroll =
             new JScrollPane(conditionArea);
@@ -173,7 +173,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         // Set the condition body.
 
-        ((MExtend) target).setCondition(UmlFactory.getFactory().getDataTypes().createBooleanExpression(null,condBody));
+        ((MExtend) target).setCondition(UmlFactory.getFactory().getDataTypes().createBooleanExpression(null, condBody));
     }
 
 
@@ -188,17 +188,17 @@ public class PropPanelExtend extends PropPanelModelElement {
     public void newExtensionPoint() {
         Object target = getTarget();
 
-        if(target instanceof MExtend) {
+        if (target instanceof MExtend) {
             MExtend    extend    = (MExtend) target;
             MNamespace ns        = extend.getNamespace();
 
-            if(ns != null) {
+            if (ns != null) {
                 if (extend.getBase() != null) {
 
-                MExtensionPoint extensionPoint =
-                    UseCasesFactory.getFactory().buildExtensionPoint(extend.getBase());
+		    MExtensionPoint extensionPoint =
+			UseCasesFactory.getFactory().buildExtensionPoint(extend.getBase());
 
-                extend.addExtensionPoint(extensionPoint);
+		    extend.addExtensionPoint(extensionPoint);
                 }
 
             }

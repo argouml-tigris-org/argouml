@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -68,7 +69,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
         if (encloser != null && (encloser.getOwner() instanceof MCompositeState)) {
             m = (MCompositeState) encloser.getOwner();
         } else {
-            m = (MCompositeState)StateMachinesHelper.getHelper().getTop(StateMachinesHelper.getHelper().getStateMachine(sv));
+            m = (MCompositeState) StateMachinesHelper.getHelper().getTop(StateMachinesHelper.getHelper().getStateMachine(sv));
         }
         if (m != null)
             sv.setContainer(m);

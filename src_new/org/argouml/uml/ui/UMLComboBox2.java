@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -84,14 +85,14 @@ public class UMLComboBox2
      * actually a selection made.
      * @param event
      */
-    protected void doIt(ActionEvent event) {}
+    protected void doIt(ActionEvent event) { }
     
     /**
      * Utility method to get the current target
      * @return Object
      */
     public Object getTarget() {
-        return ((UMLComboBoxModel2)getModel()).getTarget();
+        return ((UMLComboBoxModel2) getModel()).getTarget();
     }
     
     
@@ -99,7 +100,7 @@ public class UMLComboBox2
      * @see org.argouml.ui.targetmanager.TargettableModelView#getTargettableModel()
      */
     public TargetListener getTargettableModel() {
-        return (TargetListener)getModel();
+        return (TargetListener) getModel();
     }
 
 }

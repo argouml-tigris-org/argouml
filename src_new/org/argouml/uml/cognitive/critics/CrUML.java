@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -56,158 +57,158 @@ import java.util.*;
 public class CrUML extends Critic {
     protected static Category cat = Category.getInstance(CrUML.class);
     
-  public static final Decision decINHERITANCE = new
-  Decision("decision.inheritance", 1);
+    public static final Decision decINHERITANCE = new
+	Decision("decision.inheritance", 1);
 
-  public static final Decision decCONTAINMENT = new
-  Decision("decision.containment", 1);
+    public static final Decision decCONTAINMENT = new
+	Decision("decision.containment", 1);
 
-  public static final Decision decPATTERNS = new
-  Decision("decision.design-patterns", 1); //??
+    public static final Decision decPATTERNS = new
+	Decision("decision.design-patterns", 1); //??
 
-  public static final Decision decRELATIONSHIPS = new
-  Decision("decision.relationships", 1);
+    public static final Decision decRELATIONSHIPS = new
+	Decision("decision.relationships", 1);
 
-  public static final Decision decSTORAGE = new
-  Decision("decision.storage", 1);
+    public static final Decision decSTORAGE = new
+	Decision("decision.storage", 1);
 
-  public static final Decision decBEHAVIOR = new
-  Decision("decision.behavior", 1);
+    public static final Decision decBEHAVIOR = new
+	Decision("decision.behavior", 1);
 
-  public static final Decision decINSTANCIATION = new
-  Decision("decision.instantiation", 1);
+    public static final Decision decINSTANCIATION = new
+	Decision("decision.instantiation", 1);
 
-  public static final Decision decNAMING = new
-  Decision("decision.naming", 1);
+    public static final Decision decNAMING = new
+	Decision("decision.naming", 1);
 
-  public static final Decision decMODULARITY = new
-  Decision("decision.modularity", 1);
+    public static final Decision decMODULARITY = new
+	Decision("decision.modularity", 1);
 
-  public static final Decision decCLASS_SELECTION = new
-  Decision("decision.class-selection", 1);
+    public static final Decision decCLASS_SELECTION = new
+	Decision("decision.class-selection", 1);
 
-  public static final Decision decEXPECTED_USAGE = new
-  Decision("decision.expected-usage", 1);
+    public static final Decision decEXPECTED_USAGE = new
+	Decision("decision.expected-usage", 1);
 
-  public static final Decision decMETHODS = new
-  Decision("decision.methods", 1); //??
+    public static final Decision decMETHODS = new
+	Decision("decision.methods", 1); //??
 
-  public static final Decision decCODE_GEN = new
-  Decision("decision.code-generation", 1); //??
+    public static final Decision decCODE_GEN = new
+	Decision("decision.code-generation", 1); //??
 
-  public static final Decision decPLANNED_EXTENSIONS = new
-  Decision("decision.planned-extensions", 1);
+    public static final Decision decPLANNED_EXTENSIONS = new
+	Decision("decision.planned-extensions", 1);
 
-  public static final Decision decSTEREOTYPES = new
-  Decision("decision.stereotypes", 1);
+    public static final Decision decSTEREOTYPES = new
+	Decision("decision.stereotypes", 1);
 
-  public static final Decision decSTATE_MACHINES = new
-  Decision("decision.mstate-machines", 1);
+    public static final Decision decSTATE_MACHINES = new
+	Decision("decision.mstate-machines", 1);
 
-  /** Static initializer for this class. Called when the class is
-   *  loaded (which is before any subclass instances are instanciated). */
-  static {
-    Designer d = Designer.theDesigner();
-    d.startConsidering(decCLASS_SELECTION);
-    d.startConsidering(decNAMING);
-    d.startConsidering(decSTORAGE);
-    d.startConsidering(decINHERITANCE);
-    d.startConsidering(decCONTAINMENT);
-    d.startConsidering(decPLANNED_EXTENSIONS);
-    d.startConsidering(decSTATE_MACHINES);
-    d.startConsidering(decPATTERNS);
-    d.startConsidering(decRELATIONSHIPS);
-    d.startConsidering(decINSTANCIATION);
-    d.startConsidering(decMODULARITY);
-    d.startConsidering(decEXPECTED_USAGE);
-    d.startConsidering(decMETHODS);
-    d.startConsidering(decCODE_GEN);
-    d.startConsidering(decSTEREOTYPES);
-  }
+    /** Static initializer for this class. Called when the class is
+     *  loaded (which is before any subclass instances are instanciated). */
+    static {
+	Designer d = Designer.theDesigner();
+	d.startConsidering(decCLASS_SELECTION);
+	d.startConsidering(decNAMING);
+	d.startConsidering(decSTORAGE);
+	d.startConsidering(decINHERITANCE);
+	d.startConsidering(decCONTAINMENT);
+	d.startConsidering(decPLANNED_EXTENSIONS);
+	d.startConsidering(decSTATE_MACHINES);
+	d.startConsidering(decPATTERNS);
+	d.startConsidering(decRELATIONSHIPS);
+	d.startConsidering(decINSTANCIATION);
+	d.startConsidering(decMODULARITY);
+	d.startConsidering(decEXPECTED_USAGE);
+	d.startConsidering(decMETHODS);
+	d.startConsidering(decCODE_GEN);
+	d.startConsidering(decSTEREOTYPES);
+    }
 
 
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  public CrUML() {
-  }
+    public CrUML() {
+    }
 
-  public void setResource(String key) {
-        String head = Argo.localize("Cognitive",key + "_head");
+    public void setResource(String key) {
+        String head = Argo.localize("Cognitive", key + "_head");
         super.setHeadline(head);
-        String desc = Argo.localize("Cognitive",key + "_desc");
+        String desc = Argo.localize("Cognitive", key + "_desc");
         super.setDescription(desc);
-  }
-
-
-
-  /**
-   *   Will be deprecated in good time
-   */
-  public final void setHeadline(String s) {
-      //
-      //   current implementation ignores the argument
-      //     and triggers setResource()
-      String className = getClass().getName();
-      setResource(className.substring(className.lastIndexOf('.')+1));
-  }
-
-
-
-  public boolean predicate(Object dm, Designer dsgr) {
-    Project p = ProjectManager.getManager().getCurrentProject();
-    if (p.isInTrash(dm)) {
-      return NO_PROBLEM;
     }
-    else {
-        return predicate2(dm, dsgr);
+
+
+
+    /**
+     *   Will be deprecated in good time
+     */
+    public final void setHeadline(String s) {
+	//
+	//   current implementation ignores the argument
+	//     and triggers setResource()
+	String className = getClass().getName();
+	setResource(className.substring(className.lastIndexOf('.') + 1));
     }
-  }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    return super.predicate(dm, dsgr);
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // display related methods
-  private static final String OCL_START = "<ocl>";
-  private static final String OCL_END = "</ocl>";
+
+    public boolean predicate(Object dm, Designer dsgr) {
+	Project p = ProjectManager.getManager().getCurrentProject();
+	if (p.isInTrash(dm)) {
+	    return NO_PROBLEM;
+	}
+	else {
+	    return predicate2(dm, dsgr);
+	}
+    }
+
+    public boolean predicate2(Object dm, Designer dsgr) {
+	return super.predicate(dm, dsgr);
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // display related methods
+    private static final String OCL_START = "<ocl>";
+    private static final String OCL_END = "</ocl>";
 
     /**
      * Expand text with ocl brackets in it.
      * No recursive expansion.
      */
-  public String expand(String res, VectorSet offs) {
-    cat.debug("expanding: " + res);
+    public String expand(String res, VectorSet offs) {
+	cat.debug("expanding: " + res);
 
-    if (offs.size() == 0) return res;
+	if (offs.size() == 0) return res;
 
-    Object off1 = offs.firstElement();
+	Object off1 = offs.firstElement();
 
-    StringBuffer beginning = new StringBuffer("");
-    int matchPos = res.indexOf(OCL_START);
+	StringBuffer beginning = new StringBuffer("");
+	int matchPos = res.indexOf(OCL_START);
 
-    // replace all occurances of OFFENDER with the name of the first offender
-    while (matchPos != -1) {
-      int endExpr = res.indexOf(OCL_END, matchPos + 1);
-      // check if there is no OCL_END; if so, the critic expression 
-      // is not correct and can not be expanded
-      if (endExpr == -1) break; 
-      if (matchPos > 0) beginning.append(res.substring(0, matchPos));
-      String expr = res.substring(matchPos + OCL_START.length(), endExpr);
-      String evalStr = OCLEvaluator.SINGLETON.evalToString(off1, expr);
-      cat.debug("expr='" + expr + "' = '" + evalStr + "'");
-      if (expr.endsWith("") && evalStr.equals(""))
-	evalStr = "(anon)";
-      beginning.append(evalStr);
-      res = res.substring(endExpr + OCL_END.length());
-      matchPos = res.indexOf(OCL_START);
+	// replace all occurances of OFFENDER with the name of the first offender
+	while (matchPos != -1) {
+	    int endExpr = res.indexOf(OCL_END, matchPos + 1);
+	    // check if there is no OCL_END; if so, the critic expression 
+	    // is not correct and can not be expanded
+	    if (endExpr == -1) break; 
+	    if (matchPos > 0) beginning.append(res.substring(0, matchPos));
+	    String expr = res.substring(matchPos + OCL_START.length(), endExpr);
+	    String evalStr = OCLEvaluator.SINGLETON.evalToString(off1, expr);
+	    cat.debug("expr='" + expr + "' = '" + evalStr + "'");
+	    if (expr.endsWith("") && evalStr.equals(""))
+		evalStr = "(anon)";
+	    beginning.append(evalStr);
+	    res = res.substring(endExpr + OCL_END.length());
+	    matchPos = res.indexOf(OCL_START);
+	}
+	if (beginning.length() == 0) // This is just to avoid creation of a new
+	    return res;		// string when not needed.
+	else
+	    return beginning.append(res).toString();
     }
-    if (beginning.length() == 0) // This is just to avoid creation of a new
-	return res;		// string when not needed.
-    else
-	return beginning.append(res).toString();
-  }
 
 } /* end class CrUML */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,24 +37,27 @@ import ru.novosoft.uml.foundation.core.*;
  *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
  *             that used reflection a lot.
  */
-public class UMLComboBox extends JComboBox implements UMLUserInterfaceComponent {
+public class UMLComboBox
+    extends JComboBox
+    implements UMLUserInterfaceComponent 
+{
 
     private UMLComboBoxModel _model;
 
     public UMLComboBox(UMLComboBoxModel model) {
         super(model);
         _model = model;
-         addActionListener(_model);
+	addActionListener(_model);
     }
 
     public void setModel(ComboBoxModel newModel) {
         ComboBoxModel oldModel = getModel();
-        if(oldModel != null) {
-            if(oldModel instanceof ActionListener) {
+        if (oldModel != null) {
+            if (oldModel instanceof ActionListener) {
                 removeActionListener((ActionListener) oldModel);
             }
         }
-        if(newModel instanceof ActionListener) {
+        if (newModel instanceof ActionListener) {
             addActionListener((ActionListener) newModel);
         }
         super.setModel(newModel);

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,15 +34,15 @@ import org.argouml.ui.AbstractGoRule;
 
 public class GoProjectToModel extends AbstractGoRule {
 
-  public String getRuleName() {
-    return Argo.localize ("Tree", "misc.project.package");
-  }
+    public String getRuleName() {
+	return Argo.localize ("Tree", "misc.project.package");
+    }
  
-  public Collection getChildren(Object parent) { 
-      if (parent instanceof Project) {
-          return ((Project)parent).getUserDefinedModels();
-      }
-      return null;
-  }
+    public Collection getChildren(Object parent) { 
+	if (parent instanceof Project) {
+	    return ((Project) parent).getUserDefinedModels();
+	}
+	return null;
+    }
 
 }

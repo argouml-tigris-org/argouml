@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,7 +54,7 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     /** Singleton instance.
      */
     private static CollaborationsFactory SINGLETON =
-                   new CollaborationsFactory();
+	new CollaborationsFactory();
 
     /** Singleton instance access method.
      */
@@ -135,7 +136,7 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     	modelelement.setName("newCollaboration");
     	modelelement.setAbstract(false);
         if (namespace instanceof MClassifier) {
-            modelelement.setRepresentedClassifier((MClassifier)namespace);
+            modelelement.setRepresentedClassifier((MClassifier) namespace);
         }
     	return modelelement;
     }
@@ -163,15 +164,15 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      * Builds a binary associationrole on basis of two classifierroles
      */
     public MAssociationRole buildAssociationRole(MClassifierRole from, MClassifierRole to) {
-    	MCollaboration colFrom = (MCollaboration)from.getNamespace();
-    	MCollaboration colTo = (MCollaboration)to.getNamespace();
+    	MCollaboration colFrom = (MCollaboration) from.getNamespace();
+    	MCollaboration colTo = (MCollaboration) to.getNamespace();
     	if (colFrom != null && colFrom.equals(colTo)) {
-    		MAssociationRole role = createAssociationRole();
-    		// we do not create on basis of associations between the bases of the classifierroles
-    		role.addConnection(buildAssociationEndRole(from));
-    		role.addConnection(buildAssociationEndRole(to));
-                colFrom.addOwnedElement(role);
-    		return role;
+	    MAssociationRole role = createAssociationRole();
+	    // we do not create on basis of associations between the bases of the classifierroles
+	    role.addConnection(buildAssociationEndRole(from));
+	    role.addConnection(buildAssociationEndRole(to));
+	    colFrom.addOwnedElement(role);
+	    return role;
     	}
     	return null;
     }
@@ -181,13 +182,13 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      * navigation and aggregation
      */
     public MAssociationRole buildAssociationRole(
-            MClassifierRole from,
-            MAggregationKind agg1,
-            MClassifierRole to, 
-            MAggregationKind agg2,
-            Boolean unidirectional) {
-    	MCollaboration colFrom = (MCollaboration)from.getNamespace();
-    	MCollaboration colTo = (MCollaboration)to.getNamespace();
+						 MClassifierRole from,
+						 MAggregationKind agg1,
+						 MClassifierRole to, 
+						 MAggregationKind agg2,
+						 Boolean unidirectional) {
+    	MCollaboration colFrom = (MCollaboration) from.getNamespace();
+    	MCollaboration colTo = (MCollaboration) to.getNamespace();
         if (agg1 == null) agg1 = MAggregationKind.NONE;
         if (agg2 == null) agg2 = MAggregationKind.NONE;
     	if (colFrom != null && colFrom.equals(colTo)) {
@@ -219,7 +220,7 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      */
     public MMessage buildMessage(MInteraction inter, MAssociationRole role) {
 	if (inter == null || role == null)
-	   return null;
+	    return null;
 
 	MMessage message = createMessage();
 
@@ -228,8 +229,8 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
 	message.setCommunicationConnection(role);
 
 	if (role.getConnections().size() == 2) {
-	    message.setSender((MClassifierRole)role.getConnection(0).getType());
-	    message.setReceiver((MClassifierRole)role.getConnection(1).getType());
+	    message.setSender((MClassifierRole) role.getConnection(0).getType());
+	    message.setReceiver((MClassifierRole) role.getConnection(1).getType());
 
 	    Collection messages = message.getSender().getMessages1();
 	    MMessage lastMsg = lastMessage(messages, message);
@@ -293,9 +294,9 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     public MMessage buildMessage(MCollaboration collab, MAssociationRole role) {
     	MInteraction inter = null;
     	if (collab.getInteractions().size() == 0) {
-    		inter = buildInteraction(collab);
+	    inter = buildInteraction(collab);
     	} else {
-    		inter = (MInteraction)(collab.getInteractions().toArray())[0];
+	    inter = (MInteraction) (collab.getInteractions().toArray())[0];
     	}
     	return buildMessage(inter, role);
     }
@@ -314,22 +315,22 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     	return activator;
     }
     
-    public void deleteAssociationEndRole(MAssociationEndRole elem) {}
+    public void deleteAssociationEndRole(MAssociationEndRole elem) { }
     
     public void deleteAssociationRole(MAssociationRole elem) {
         Iterator it = elem.getMessages().iterator();
         while (it.hasNext()) {
-            UmlFactory.getFactory().delete((MMessage)it.next());
+            UmlFactory.getFactory().delete((MMessage) it.next());
         }
     }
     
-    public void deleteClassifierRole(MClassifierRole elem) {}
+    public void deleteClassifierRole(MClassifierRole elem) { }
     
-    public void deleteCollaboration(MCollaboration elem) {}
+    public void deleteCollaboration(MCollaboration elem) { }
     
-    public void deleteInteraction(MInteraction elem) {}
+    public void deleteInteraction(MInteraction elem) { }
     
-    public void deleteMessage(MMessage elem) {}
+    public void deleteMessage(MMessage elem) { }
     
 
 }

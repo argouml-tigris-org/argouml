@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -58,7 +59,7 @@ abstract public class UMLBooleanProperty  {
      *   @param element Element whose property will be changed.
      *   @param newState new state of property.
      */
-    abstract public void setProperty(Object element,boolean newState) throws PropertyVetoException;
+    abstract public void setProperty(Object element, boolean newState) throws PropertyVetoException;
     
     /**
      *   Retreives current state of property.
@@ -76,8 +77,8 @@ abstract public class UMLBooleanProperty  {
      */
     public boolean isAffected(MElementEvent event) {
         String propName = event.getName();
-	cat.debug("eventName: "+propName);
-        if(_propertyName == null || propName == null || propName.equals(_propertyName)) 
+	cat.debug("eventName: " + propName);
+        if (_propertyName == null || propName == null || propName.equals(_propertyName)) 
             return true;
         return false;
     }

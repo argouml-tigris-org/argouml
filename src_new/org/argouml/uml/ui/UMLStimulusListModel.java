@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,15 +43,15 @@ public class UMLStimulusListModel extends UMLModelElementListModel  {
     // list of sent or received stimuli
     private String stimulusType;
 
-    public UMLStimulusListModel(UMLUserInterfaceContainer container,String property,boolean showNone, String stimulusType) {
-	super(container,property,showNone);
+    public UMLStimulusListModel(UMLUserInterfaceContainer container, String property, boolean showNone, String stimulusType) {
+	super(container, property, showNone);
 	this.stimulusType = stimulusType;
        
     }
     
     public void open(int index) {
         MModelElement stimulus = getModelElementAt(index);
-        if(stimulus != null) {
+        if (stimulus != null) {
             navigateTo(stimulus);
         }
     }
@@ -59,7 +60,7 @@ public class UMLStimulusListModel extends UMLModelElementListModel  {
     protected int recalcModelElementSize() {
         int size = 0;
         Collection stimuli = getStimuli();
-        if(stimuli != null) {
+        if (stimuli != null) {
             size = stimuli.size();
         }
         return size;
@@ -68,8 +69,8 @@ public class UMLStimulusListModel extends UMLModelElementListModel  {
     protected MModelElement getModelElementAt(int index) {
         MModelElement elem = null;
         Collection stimuli = getStimuli();
-        if(stimuli != null) {
-            elem = elementAtUtil(stimuli,index,MStimulus.class);
+        if (stimuli != null) {
+            elem = elementAtUtil(stimuli, index, MStimulus.class);
         }
         return elem;
     }
@@ -89,12 +90,12 @@ public class UMLStimulusListModel extends UMLModelElementListModel  {
     
 
     
-	/**
-	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
-	 */
-	public boolean buildPopup(JPopupMenu popup, int index) {
-		return false;
-	}
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+     */
+    public boolean buildPopup(JPopupMenu popup, int index) {
+	return false;
+    }
 
 }
 

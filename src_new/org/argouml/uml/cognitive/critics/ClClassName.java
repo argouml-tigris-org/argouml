@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,67 +34,67 @@ import org.argouml.uml.diagram.ui.*;
 import org.argouml.cognitive.*;
 
 public class ClClassName implements Clarifier {
-  public static ClClassName TheInstance = new ClClassName();
-  public static int WAVE_LENGTH = 4;
-  public static int WAVE_HEIGHT = 2;
+    public static ClClassName TheInstance = new ClClassName();
+    public static int WAVE_LENGTH = 4;
+    public static int WAVE_HEIGHT = 2;
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  Fig _fig;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    Fig _fig;
 
-  public void setFig(Fig f) { _fig = f; }
-  public void setToDoItem(ToDoItem i) { }
+    public void setFig(Fig f) { _fig = f; }
+    public void setToDoItem(ToDoItem i) { }
 
-  public void paintIcon(Component c, Graphics g, int x, int y) {
-    FigText ft = null;
-    if (_fig instanceof FigNodeModelElement) {
-      FigNodeModelElement fnme = (FigNodeModelElement) _fig;
-      ft = fnme.getNameFig();
+    public void paintIcon(Component c, Graphics g, int x, int y) {
+	FigText ft = null;
+	if (_fig instanceof FigNodeModelElement) {
+	    FigNodeModelElement fnme = (FigNodeModelElement) _fig;
+	    ft = fnme.getNameFig();
+	}
+	if (_fig instanceof FigEdgeModelElement) {
+	    FigEdgeModelElement feme = (FigEdgeModelElement) _fig;
+	    ft = feme.getNameFig();
+	}
+	if (ft != null) {
+	    int left  = ft.getX() + 6;
+	    int height = ft.getY() + ft.getHeight() - 4;
+	    int right = ft.getX() + ft.getWidth() - 6;
+	    g.setColor(Color.red);
+	    int i = left;
+	    while (true) {
+		g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT);
+		i += WAVE_LENGTH;
+		if (i >= right) break;
+		g.drawLine(i, height + WAVE_HEIGHT, i + WAVE_LENGTH, height);
+		i += WAVE_LENGTH;
+		if (i >= right) break;
+		g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT / 2);
+		i += WAVE_LENGTH;
+		if (i >= right) break;
+		g.drawLine(i, height + WAVE_HEIGHT / 2, i + WAVE_LENGTH, height);
+		i += WAVE_LENGTH;
+		if (i >= right) break;
+	    }
+	    _fig = null;
+	}
     }
-    if (_fig instanceof FigEdgeModelElement) {
-      FigEdgeModelElement feme = (FigEdgeModelElement) _fig;
-      ft = feme.getNameFig();
-    }
-    if (ft != null) {
-      int left  = ft.getX() + 6;
-      int height = ft.getY() + ft.getHeight() - 4;
-      int right = ft.getX() + ft.getWidth() - 6;
-      g.setColor(Color.red);
-      int i = left;
-      while (true) {
-	g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT);
-	i += WAVE_LENGTH;
-	if (i >= right) break;
-	g.drawLine(i, height + WAVE_HEIGHT, i + WAVE_LENGTH, height);
-	i += WAVE_LENGTH;
-	if (i >= right) break;
-	g.drawLine(i, height, i + WAVE_LENGTH, height + WAVE_HEIGHT/2);
-	i += WAVE_LENGTH;
-	if (i >= right) break;
-	g.drawLine(i, height + WAVE_HEIGHT/2, i + WAVE_LENGTH, height);
-	i += WAVE_LENGTH;
-	if (i >= right) break;
-      }
-      _fig = null;
-    }
-  }
 
-  public int getIconWidth() { return 0; }
-  public int getIconHeight() { return 0; }
+    public int getIconWidth() { return 0; }
+    public int getIconHeight() { return 0; }
 
-  public boolean hit(int x, int y) {
-    FigText ft = null;
-    if (_fig instanceof FigNodeModelElement) {
-      FigNodeModelElement fnme = (FigNodeModelElement) _fig;
-      ft = fnme.getNameFig();
+    public boolean hit(int x, int y) {
+	FigText ft = null;
+	if (_fig instanceof FigNodeModelElement) {
+	    FigNodeModelElement fnme = (FigNodeModelElement) _fig;
+	    ft = fnme.getNameFig();
+	}
+	if (_fig instanceof FigEdgeModelElement) {
+	    FigEdgeModelElement feme = (FigEdgeModelElement) _fig;
+	    ft = feme.getNameFig();
+	}
+	_fig = null;
+	return (ft != null) && ft.contains(x, y);
     }
-    if (_fig instanceof FigEdgeModelElement) {
-      FigEdgeModelElement feme = (FigEdgeModelElement) _fig;
-      ft = feme.getNameFig();
-    }
-    _fig = null;
-    return (ft != null) && ft.contains(x, y);
-  }
 
 } /* end class ClClassName */
 

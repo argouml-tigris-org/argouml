@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,14 +51,20 @@ public class StartBrowser
 		try {
 		    ClassLoader cl = ClassLoader.getSystemClassLoader();
 		    Class c = cl.loadClass("com.apple.mrj.MRJFileUtils");
-		    Class[] argtypes = { String.class };
+		    Class[] argtypes = {
+			String.class 
+		    };
 		    Method m = c.getMethod("openURL", argtypes);
-		    Object[] args = { url };
+		    Object[] args = {
+			url 
+		    };
 		    m.invoke(c.newInstance(), args);
 		} catch (Exception cnfe) {
 		    Argo.log.error(cnfe);
 		    Argo.log.info("Trying a default browser (netscape)");
-		    String[] commline = { "netscape", url };
+		    String[] commline = {
+			"netscape", url 
+		    };
 		    Runtime.getRuntime().exec(commline);
 		}
 		return;

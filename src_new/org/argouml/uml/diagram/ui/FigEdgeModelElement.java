@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -163,7 +164,7 @@ public abstract class FigEdgeModelElement
         _stereo.setAllowsTab(false);
 
         setBetweenNearestPoints(true);
-        ((FigPoly)_fig).setRectilinear(false);
+        ((FigPoly) _fig).setRectilinear(false);
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
@@ -207,7 +208,7 @@ public abstract class FigEdgeModelElement
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
         ToDoList list = Designer.TheDesigner.getToDoList();
-        Vector items = (Vector)list.elementsForOffender(getOwner()).clone();
+        Vector items = (Vector) list.elementsForOffender(getOwner()).clone();
         if (items != null && items.size() > 0) {
             JMenu critiques = new JMenu("Critiques");
             ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
@@ -216,7 +217,7 @@ public abstract class FigEdgeModelElement
             critiques.addSeparator();
             int size = items.size();
             for (int i = 0; i < size; i++) {
-                ToDoItem item = (ToDoItem)items.elementAt(i);
+                ToDoItem item = (ToDoItem) items.elementAt(i);
                 if (item == itemUnderMouse)
                     continue;
                 critiques.add(new ActionGoToCritique(item));
@@ -244,11 +245,11 @@ public abstract class FigEdgeModelElement
         Vector items = list.elementsForOffender(getOwner());
         int size = items.size();
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem)items.elementAt(i);
+            ToDoItem item = (ToDoItem) items.elementAt(i);
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
-                ((Clarifier)icon).setFig(this);
-                ((Clarifier)icon).setToDoItem(item);
+                ((Clarifier) icon).setFig(this);
+                ((Clarifier) icon).setToDoItem(item);
             }
             stuffPointAlongPerimeter(iconPos, p);
             icon.paintIcon(null, g, p.x + xOff, p.y + yOff);
@@ -257,11 +258,11 @@ public abstract class FigEdgeModelElement
         items = list.elementsForOffender(this);
         size = items.size();
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem)items.elementAt(i);
+            ToDoItem item = (ToDoItem) items.elementAt(i);
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
-                ((Clarifier)icon).setFig(this);
-                ((Clarifier)icon).setToDoItem(item);
+                ((Clarifier) icon).setFig(this);
+                ((Clarifier) icon).setToDoItem(item);
             }
             stuffPointAlongPerimeter(iconPos, p);
             icon.paintIcon(null, g, p.x + xOff, p.y + yOff);
@@ -276,7 +277,7 @@ public abstract class FigEdgeModelElement
         Vector items = list.elementsForOffender(getOwner());
         int size = items.size();
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem)items.elementAt(i);
+            ToDoItem item = (ToDoItem) items.elementAt(i);
             Icon icon = item.getClarifier();
             stuffPointAlongPerimeter(iconPos, p);
             int width = icon.getIconWidth();
@@ -289,19 +290,19 @@ public abstract class FigEdgeModelElement
             iconPos += width;
         }
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem)items.elementAt(i);
+            ToDoItem item = (ToDoItem) items.elementAt(i);
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
-                ((Clarifier)icon).setFig(this);
-                ((Clarifier)icon).setToDoItem(item);
-                if (((Clarifier)icon).hit(x, y))
+                ((Clarifier) icon).setFig(this);
+                ((Clarifier) icon).setToDoItem(item);
+                if (((Clarifier) icon).hit(x, y))
                     return item;
             }
         }
         items = list.elementsForOffender(this);
         size = items.size();
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem)items.elementAt(i);
+            ToDoItem item = (ToDoItem) items.elementAt(i);
             Icon icon = item.getClarifier();
             stuffPointAlongPerimeter(iconPos, p);
             int width = icon.getIconWidth();
@@ -314,12 +315,12 @@ public abstract class FigEdgeModelElement
             iconPos += width;
         }
         for (int i = 0; i < size; i++) {
-            ToDoItem item = (ToDoItem)items.elementAt(i);
+            ToDoItem item = (ToDoItem) items.elementAt(i);
             Icon icon = item.getClarifier();
             if (icon instanceof Clarifier) {
-                ((Clarifier)icon).setFig(this);
-                ((Clarifier)icon).setToDoItem(item);
-                if (((Clarifier)icon).hit(x, y))
+                ((Clarifier) icon).setFig(this);
+                ((Clarifier) icon).setToDoItem(item);
+                if (((Clarifier) icon).hit(x, y))
                     return item;
             }
         }
@@ -369,13 +370,13 @@ public abstract class FigEdgeModelElement
             cat.debug("finished editing");
             try {
                 startTrans();
-                textEdited((FigText)src);
+                textEdited((FigText) src);
                 calcBounds();
                 endTrans();
             } catch (PropertyVetoException ex) {
                 cat.error(
-                    "could not parse the text entered. Propertyvetoexception",
-                    ex);
+			  "could not parse the text entered. Propertyvetoexception",
+			  ex);
             }
         } else
             super.propertyChange(pve);
@@ -387,7 +388,7 @@ public abstract class FigEdgeModelElement
      *  should override to handle other text elements. */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == _name) {
-            MModelElement me = (MModelElement)getOwner();
+            MModelElement me = (MModelElement) getOwner();
             if (me == null)
                 return;
             me.setName(ft.getText());
@@ -419,7 +420,7 @@ public abstract class FigEdgeModelElement
         if (me.getClickCount() >= 2) {
             Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
             if (f instanceof MouseListener && canEdit(f))
-                 ((MouseListener)f).mouseClicked(me);
+		((MouseListener) f).mouseClicked(me);
         }
         me.consume();
     }
@@ -466,7 +467,7 @@ public abstract class FigEdgeModelElement
     }
 
     private void updateNameText() {
-        MModelElement me = (MModelElement)getOwner();
+        MModelElement me = (MModelElement) getOwner();
         if (me == null)
             return;
         String nameStr = Notation.generate(this, me.getName());
@@ -474,7 +475,7 @@ public abstract class FigEdgeModelElement
     }
 
     protected void updateStereotypeText() {
-        MModelElement me = (MModelElement)getOwner();
+        MModelElement me = (MModelElement) getOwner();
         if (me == null)
             return;
         MStereotype stereos = me.getStereotype();
@@ -496,9 +497,9 @@ public abstract class FigEdgeModelElement
             Object oldOwner = getOwner();
 
             if (oldOwner instanceof MModelElement)
-                 ((MModelElement)oldOwner).removeMElementListener(this);
+		((MModelElement) oldOwner).removeMElementListener(this);
             if (own instanceof MModelElement) {
-                MModelElement me = (MModelElement)own;
+                MModelElement me = (MModelElement) own;
                 // UmlModelEventPump.getPump().removeModelEventListener(this, me);
                 UmlModelEventPump.getPump().addModelEventListener(this, me);
                 if (me.getUUID() == null)
@@ -513,11 +514,11 @@ public abstract class FigEdgeModelElement
         /*
         //if (_group != null) _group.propertySet(mee);
         if (mee.getOldValue() != mee.getNewValue()) {
-                if ("name".equals(mee.getName())) {
-                    updateNameText();
-                } else
-        	    	modelChanged(null);
-        	damage();
+	if ("name".equals(mee.getName())) {
+	updateNameText();
+	} else
+	modelChanged(null);
+	damage();
         }
         */
         modelChanged(mee);
@@ -534,7 +535,7 @@ public abstract class FigEdgeModelElement
         damage();
     }
     public void removed(MElementEvent mee) {
-        cat.debug("deleting: " + this +mee);
+        cat.debug("deleting: " + this + mee);
         //if (_group != null) _group.removed(mee);
         if (mee.getSource() == getOwner())
             this.delete();
@@ -563,25 +564,25 @@ public abstract class FigEdgeModelElement
         if (own != null) {
             Trash.SINGLETON.addItemFrom(getOwner(), null);
             if (own instanceof MModelElement) {
-                UmlFactory.getFactory().delete((MModelElement)own);
+                UmlFactory.getFactory().delete((MModelElement) own);
             }
         }
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {
-            ((Fig)it.next()).dispose();
+            ((Fig) it.next()).dispose();
         }
         super.dispose();
     }
 
     /** This default implementation simply requests the default notation.
-    */
+     */
     public NotationName getContextNotation() {
         return _currentNotationName;
     }
 
     public void notationChanged(ArgoNotationEvent event) {
-        PropertyChangeEvent changeEvent = (PropertyChangeEvent)event.getSource();
-       _currentNotationName = Notation.findNotation((String)changeEvent.getNewValue());
+        PropertyChangeEvent changeEvent = (PropertyChangeEvent) event.getSource();
+	_currentNotationName = Notation.findNotation((String) changeEvent.getNewValue());
         renderingChanged();
         damage();
     }
@@ -615,9 +616,9 @@ public abstract class FigEdgeModelElement
     public boolean hit(Rectangle r) {
         if (_fig.hit(r))
             return true;
-        Polygon polOuter = ((FigPoly)_fig).getPolygon();
+        Polygon polOuter = ((FigPoly) _fig).getPolygon();
         polOuter.translate(-8, -8);
-        Polygon polInner = ((FigPoly)_fig).getPolygon();
+        Polygon polInner = ((FigPoly) _fig).getPolygon();
         polInner.translate(8, 8);
         Polygon containing = new Polygon();
         for (int i = 0; i < polOuter.xpoints.length; i++) {
@@ -632,14 +633,14 @@ public abstract class FigEdgeModelElement
 
         int size = _pathItems.size();
         for (int i = 0; i < size; i++) {
-            Fig f = getPathItemFig((FigEdge.PathItem)_pathItems.elementAt(i));
+            Fig f = getPathItemFig((FigEdge.PathItem) _pathItems.elementAt(i));
             if (f.hit(r))
                 return true;
         }
         Rectangle bigBounds = getBounds();
         /*
-        FigRect rect = new FigRect(bigBounds.x, bigBounds.y, bigBounds.width, bigBounds.height);
-        if (rect.hit(r)) return true;
+	  FigRect rect = new FigRect(bigBounds.x, bigBounds.y, bigBounds.width, bigBounds.height);
+	  if (rect.hit(r)) return true;
         */
         return false;
     }
@@ -651,8 +652,8 @@ public abstract class FigEdgeModelElement
         Object o = getOwner();
         if (o instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(
-                this,
-                (MBase)o);
+								 this,
+								 (MBase) o);
         }
         if (this instanceof ArgoEventListener) {
             ArgoEventPump.removeListener(this);
@@ -660,7 +661,7 @@ public abstract class FigEdgeModelElement
 
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {
-            Fig fig = (Fig)it.next();
+            Fig fig = (Fig) it.next();
             fig.delete();
         }
 
@@ -669,12 +670,12 @@ public abstract class FigEdgeModelElement
         // occurence on our own
         it =
             ProjectManager
-                .getManager()
-                .getCurrentProject()
-                .getDiagrams()
-                .iterator();
+	    .getManager()
+	    .getCurrentProject()
+	    .getDiagrams()
+	    .iterator();
         while (it.hasNext()) {
-            ArgoDiagram diagram = (ArgoDiagram)it.next();
+            ArgoDiagram diagram = (ArgoDiagram) it.next();
             diagram.damage();
         }
         super.delete();
@@ -700,16 +701,16 @@ public abstract class FigEdgeModelElement
         if (owner == null || getLayer() == null)
             return false;
 
-        MModelElement newSource = (MModelElement)getSource();
-        MModelElement newDest = (MModelElement)getDestination();
+        MModelElement newSource = (MModelElement) getSource();
+        MModelElement newDest = (MModelElement) getDestination();
 
         Fig currentSourceFig = getSourceFigNode();
         Fig currentDestFig = getDestFigNode();
         MModelElement currentSource = null;
         MModelElement currentDestination = null;
         if (currentSourceFig != null && currentDestFig != null) {
-            currentSource = (MModelElement)currentSourceFig.getOwner();
-            currentDestination = (MModelElement)currentDestFig.getOwner();
+            currentSource = (MModelElement) currentSourceFig.getOwner();
+            currentDestination = (MModelElement) currentDestFig.getOwner();
         }
         if (newSource != currentSource || newDest != currentDestination) {
             Fig newSourceFig = null;
@@ -725,19 +726,19 @@ public abstract class FigEdgeModelElement
             if (true) {
             };
             if (newSourceFig != null && newSourceFig != currentSourceFig) {
-                setSourceFigNode((FigNode)newSourceFig);
+                setSourceFigNode((FigNode) newSourceFig);
                 setSourcePortFig(newSourceFig);
 
             }
             if (newDestFig != null && newDestFig != currentDestFig) {
-                setDestFigNode((FigNode)newDestFig);
+                setDestFigNode((FigNode) newDestFig);
                 setDestPortFig(newDestFig);
             }
             if (newDestFig != null && newSourceFig != null) {
-                ((FigNode)newSourceFig).updateEdges();
+                ((FigNode) newSourceFig).updateEdges();
             }
             if (newSourceFig != null && newDestFig != null) {
-                ((FigNode)newDestFig).updateEdges();
+                ((FigNode) newDestFig).updateEdges();
             }
             calcBounds();
 
@@ -766,9 +767,9 @@ public abstract class FigEdgeModelElement
         Point fcCenter = getSourceFigNode().center();
         Point centerRight =
             new Point(
-                (int) (fcCenter.x
-                    + getSourceFigNode().getSize().getWidth() / 2),
-                fcCenter.y);
+		      (int) (fcCenter.x
+			     + getSourceFigNode().getSize().getWidth() / 2),
+		      fcCenter.y);
 
         int yoffset = (int) ((getSourceFigNode().getSize().getHeight() / 2));
         edgeShape.addPoint(fcCenter.x, fcCenter.y);
@@ -793,28 +794,28 @@ public abstract class FigEdgeModelElement
      */
     protected Object getSource() {
         if (getOwner() != null) {
-            return CoreHelper.getHelper().getSource((MRelationship)getOwner());
+            return CoreHelper.getHelper().getSource((MRelationship) getOwner());
         }
         return null;
     }
     /**
-      * Returns the destination of the edge. The destination is the owner of the node the edge
-      * travels to in a binary relationship. For instance: for a classifierrole, 
-      * this is the receiver. Since we don't support n-array associations but only
-      * binary relations, source/destination works for all edges.
-      * @return Object
-      */
+     * Returns the destination of the edge. The destination is the owner of the node the edge
+     * travels to in a binary relationship. For instance: for a classifierrole, 
+     * this is the receiver. Since we don't support n-array associations but only
+     * binary relations, source/destination works for all edges.
+     * @return Object
+     */
     protected Object getDestination() {
         if (getOwner() != null) {
             return CoreHelper.getHelper().getDestination(
-                (MRelationship)getOwner());
+							 (MRelationship) getOwner());
         }
         return null;
     }
 
     /**
-         * @see org.tigris.gef.presentation.Fig#postLoad()
-         */
+     * @see org.tigris.gef.presentation.Fig#postLoad()
+     */
     public void postLoad() {
         super.postLoad();        
         if (this instanceof ArgoEventListener) {

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,64 +53,64 @@ import org.tigris.gef.util.VectorSet;
 
 public class CrSeqInstanceWithoutClassifier extends CrUML {
 
-  public CrSeqInstanceWithoutClassifier() {
-    setHeadline("Set classifier");
-    addSupportedDecision(CrUML.decPATTERNS);
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof UMLSequenceDiagram)) return NO_PROBLEM;
-    UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
-    VectorSet offs = computeOffenders(sd);
-    if (offs == null) return NO_PROBLEM;
-    return PROBLEM_FOUND;
-  }
-
-  public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
-    VectorSet offs = computeOffenders(sd);
-    return new ToDoItem(this, offs, dsgr);
-  }
-
-  public boolean stillValid(ToDoItem i, Designer dsgr) {
-    if (!isActive()) return false;
-    VectorSet offs = i.getOffenders();
-    UMLSequenceDiagram sd = (UMLSequenceDiagram) offs.firstElement();
-    //if (!predicate(dm, dsgr)) return false;
-    VectorSet newOffs = computeOffenders(sd);
-    boolean res = offs.equals(newOffs);
-    return res;
-  }
-
-  /**
-   * If there are instances that have no classifiers they belong to
-   * the returned vector-set is not null. Then in the vector-set
-   * are the UMLSequenceDiagram and all FigObjects, FigComponentInstances
-   * and FigMNodeInstances with no classifier.
-   **/
-  public VectorSet computeOffenders(UMLSequenceDiagram sd) { 
-    Vector figs = sd.getLayer().getContents();
-    VectorSet offs = null;
-    int size = figs.size();
-    for (int i=0; i<size; i++) {
-      Object obj = figs.elementAt(i);
-      if (!(obj instanceof FigNodeModelElement)) continue;
-      FigNodeModelElement fn = (FigNodeModelElement) obj;
-      if (fn != null && (fn.getOwner() instanceof MInstance)) {
-        MInstance minst = (MInstance) fn.getOwner();
-        if (minst != null) {
-          Collection col = minst.getClassifiers();
-          if (col.size()>0) continue;     
-        }       
-        if (offs == null) {
-          offs = new VectorSet();
-          offs.addElement(sd);
-        }
-        offs.addElement(fn);
-      }
+    public CrSeqInstanceWithoutClassifier() {
+	setHeadline("Set classifier");
+	addSupportedDecision(CrUML.decPATTERNS);
     }
-    return offs;
-  } 
+
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof UMLSequenceDiagram)) return NO_PROBLEM;
+	UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
+	VectorSet offs = computeOffenders(sd);
+	if (offs == null) return NO_PROBLEM;
+	return PROBLEM_FOUND;
+    }
+
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+	UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
+	VectorSet offs = computeOffenders(sd);
+	return new ToDoItem(this, offs, dsgr);
+    }
+
+    public boolean stillValid(ToDoItem i, Designer dsgr) {
+	if (!isActive()) return false;
+	VectorSet offs = i.getOffenders();
+	UMLSequenceDiagram sd = (UMLSequenceDiagram) offs.firstElement();
+	//if (!predicate(dm, dsgr)) return false;
+	VectorSet newOffs = computeOffenders(sd);
+	boolean res = offs.equals(newOffs);
+	return res;
+    }
+
+    /**
+     * If there are instances that have no classifiers they belong to
+     * the returned vector-set is not null. Then in the vector-set
+     * are the UMLSequenceDiagram and all FigObjects, FigComponentInstances
+     * and FigMNodeInstances with no classifier.
+     **/
+    public VectorSet computeOffenders(UMLSequenceDiagram sd) { 
+	Vector figs = sd.getLayer().getContents();
+	VectorSet offs = null;
+	int size = figs.size();
+	for (int i = 0; i < size; i++) {
+	    Object obj = figs.elementAt(i);
+	    if (!(obj instanceof FigNodeModelElement)) continue;
+	    FigNodeModelElement fn = (FigNodeModelElement) obj;
+	    if (fn != null && (fn.getOwner() instanceof MInstance)) {
+		MInstance minst = (MInstance) fn.getOwner();
+		if (minst != null) {
+		    Collection col = minst.getClassifiers();
+		    if (col.size() > 0) continue;     
+		}       
+		if (offs == null) {
+		    offs = new VectorSet();
+		    offs.addElement(sd);
+		}
+		offs.addElement(fn);
+	    }
+	}
+	return offs;
+    } 
  
 } /* end class CrSeqInstanceWithoutClassifier.java */
 

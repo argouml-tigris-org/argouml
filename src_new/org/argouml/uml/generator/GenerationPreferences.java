@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -29,25 +30,25 @@ import java.io.*;
 /** Stores preference information entered by the user. */
 
 public class GenerationPreferences implements java.io.Serializable {
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected String _headerComment = "Your copyright and other header comments";
-  protected String _outputDir = "/home/jrobbins/vtmp/";
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    protected String _headerComment = "Your copyright and other header comments";
+    protected String _outputDir = "/home/jrobbins/vtmp/";
 
-  public GenerationPreferences() {
-      if (System.getProperty("file.separator").equals("/") )
-	  _outputDir = "/tmp";
-      else
-	  _outputDir = "c:\\temp";
-  }
+    public GenerationPreferences() {
+	if (System.getProperty("file.separator").equals("/") )
+	    _outputDir = "/tmp";
+	else
+	    _outputDir = "c:\\temp";
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
-  public String getOutputDir() { return _outputDir; }
-  public void setOutputDir(String od) { _outputDir = od; }
+    ////////////////////////////////////////////////////////////////
+    // accessors
+    public String getOutputDir() { return _outputDir; }
+    public void setOutputDir(String od) { _outputDir = od; }
 
-  public String getHeaderComment() { return _headerComment; }
-  public void setHeaderComment(String c) { _headerComment = c; }
+    public String getHeaderComment() { return _headerComment; }
+    public void setHeaderComment(String c) { _headerComment = c; }
 
 } /* end class GenerationPreferences */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,7 +51,7 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
     protected static ImageIcon _compositeStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("CompositeState");
     protected static ImageIcon _simpleStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("SimpleState");
     protected static ImageIcon _shallowHistoryIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ShallowHistory");
-    protected static ImageIcon _deepHistoryIcon =ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DeepHistory");
+    protected static ImageIcon _deepHistoryIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DeepHistory");
     protected static ImageIcon _finalStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("FinalState");
     protected static ImageIcon _initialIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Initial");
     protected static ImageIcon _forkIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Fork");
@@ -83,8 +84,8 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
         compositeList.setVisibleRowCount(1);
         containerScroll = new JScrollPane(compositeList);
         
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);      
-        new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);      
+        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
         
     }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -32,20 +33,20 @@ import org.argouml.cognitive.*;
 
 public class HistoryItemCritique extends HistoryItem {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  public HistoryItemCritique(ToDoItem item) {
-    super(item, "Criticism raised: ");
-  }
+    public HistoryItemCritique(ToDoItem item) {
+	super(item, "Criticism raised: ");
+    }
 
 
-  ////////////////////////////////////////////////////////////////
-  // debugging
+    ////////////////////////////////////////////////////////////////
+    // debugging
 
-  public String toString() {
-    if (_desc == null) return "HIC: (null)";
-    return "HIC: " + _desc;
-  }
+    public String toString() {
+	if (_desc == null) return "HIC: (null)";
+	return "HIC: " + _desc;
+    }
 
 } /* end class HistoryItemCritique */

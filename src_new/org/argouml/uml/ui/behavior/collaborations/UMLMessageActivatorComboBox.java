@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -55,8 +56,8 @@ public class UMLMessageActivatorComboBox extends UMLComboBox2 {
      */
     protected void doIt(ActionEvent event) {
         Object o = getModel().getElementAt(getSelectedIndex());
-        MMessage activator = (MMessage)o;
-        MMessage mes = (MMessage)getTarget();
+        MMessage activator = (MMessage) o;
+        MMessage mes = (MMessage) getTarget();
         if (activator != mes.getActivator()) {
             CollaborationsHelper.getHelper().setActivator(mes, activator);
         }

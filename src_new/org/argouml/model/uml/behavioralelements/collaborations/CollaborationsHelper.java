@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -65,10 +66,10 @@ public class CollaborationsHelper {
     private CollaborationsHelper() {
     }
     
-     /** Singleton instance.
+    /** Singleton instance.
      */
     private static CollaborationsHelper SINGLETON =
-                   new CollaborationsHelper();
+	new CollaborationsHelper();
 
     
     /** Singleton instance access method.
@@ -78,128 +79,128 @@ public class CollaborationsHelper {
     }
     
     /**
-	 * Returns all classifierroles found in the projectbrowser model
-	 * @return Collection
-	 */
-	public Collection getAllClassifierRoles() {
-		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
-		return getAllClassifierRoles(model);
-	}
+     * Returns all classifierroles found in the projectbrowser model
+     * @return Collection
+     */
+    public Collection getAllClassifierRoles() {
+	MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
+	return getAllClassifierRoles(model);
+    }
 	
-	/**
-	 * Returns all classifierroles found in this namespace and in its children
-	 * @return Collection
-	 */
-	public Collection getAllClassifierRoles(MNamespace ns) {
-		Iterator it = ns.getOwnedElements().iterator();
-		List list = new ArrayList();
-		while (it.hasNext()) {
-			Object o = it.next();
-			if (o instanceof MNamespace) {
-				list.addAll(getAllClassifierRoles((MNamespace)o));
-			} 
-			if (o instanceof MClassifierRole) {
-				list.add(o);
-			}
+    /**
+     * Returns all classifierroles found in this namespace and in its children
+     * @return Collection
+     */
+    public Collection getAllClassifierRoles(MNamespace ns) {
+	Iterator it = ns.getOwnedElements().iterator();
+	List list = new ArrayList();
+	while (it.hasNext()) {
+	    Object o = it.next();
+	    if (o instanceof MNamespace) {
+		list.addAll(getAllClassifierRoles((MNamespace) o));
+	    } 
+	    if (o instanceof MClassifierRole) {
+		list.add(o);
+	    }
 			
-		}
-		return list;
 	}
+	return list;
+    }
 	
-	/**
-	 * Returns all associations the bases of the classifierrole has, thereby forming
-	 * the set of associationroles the classifierrole can use. UML Spec 1.3
-	 * section 2.10.3.3
-	 * @param role
-	 * @return Collection
-	 */
-	public Collection getAllPossibleAssociationRoles(MClassifierRole role) {
-		if (role == null || role.getBases().isEmpty()) return new ArrayList();
-		Iterator it = role.getBases().iterator();
-		Set associations = new HashSet();
-		while (it.hasNext()) {
-			MClassifier base = (MClassifier)it.next();
-			associations.addAll(CoreHelper.getHelper().getAssociations(base));
-		}
-		return associations;
+    /**
+     * Returns all associations the bases of the classifierrole has, thereby forming
+     * the set of associationroles the classifierrole can use. UML Spec 1.3
+     * section 2.10.3.3
+     * @param role
+     * @return Collection
+     */
+    public Collection getAllPossibleAssociationRoles(MClassifierRole role) {
+	if (role == null || role.getBases().isEmpty()) return new ArrayList();
+	Iterator it = role.getBases().iterator();
+	Set associations = new HashSet();
+	while (it.hasNext()) {
+	    MClassifier base = (MClassifier) it.next();
+	    associations.addAll(CoreHelper.getHelper().getAssociations(base));
 	}
+	return associations;
+    }
 	
-	/**
-	 * Returns all classifierroles associated via associationroles to some 
-	 * classifierrole role
-	 * @param role
-	 * @return Collection
-	 */
-	public Collection getClassifierRoles(MClassifierRole role) {
-		if (role == null) return new ArrayList();
-		List roles = new ArrayList();
-		Iterator it = role.getAssociationEnds().iterator();
-		while (it.hasNext()) {
-			MAssociationEnd end = (MAssociationEnd)it.next();
-			if (end instanceof MAssociationEndRole) {
-				MAssociation assoc = end.getAssociation();
-				Iterator it2 = assoc.getConnections().iterator();
-				while (it2.hasNext()) {
-					MAssociationEnd end2 = (MAssociationEnd)it2.next();
-					MClassifier classifier = end2.getType();
-					if (classifier != role && classifier instanceof MClassifierRole) {
-						roles.add(classifier);
-					}
-				}
-			}
+    /**
+     * Returns all classifierroles associated via associationroles to some 
+     * classifierrole role
+     * @param role
+     * @return Collection
+     */
+    public Collection getClassifierRoles(MClassifierRole role) {
+	if (role == null) return new ArrayList();
+	List roles = new ArrayList();
+	Iterator it = role.getAssociationEnds().iterator();
+	while (it.hasNext()) {
+	    MAssociationEnd end = (MAssociationEnd) it.next();
+	    if (end instanceof MAssociationEndRole) {
+		MAssociation assoc = end.getAssociation();
+		Iterator it2 = assoc.getConnections().iterator();
+		while (it2.hasNext()) {
+		    MAssociationEnd end2 = (MAssociationEnd) it2.next();
+		    MClassifier classifier = end2.getType();
+		    if (classifier != role && classifier instanceof MClassifierRole) {
+			roles.add(classifier);
+		    }
 		}
-		return roles;
+	    }
 	}
+	return roles;
+    }
 	
-	/**
-	 * Returns the first found associationrole between two classifierroles.
-	 * @param from
-	 * @param to
-	 * @return MAssociationRole
-	 */
-	public MAssociationRole getAssocationRole(MClassifierRole from, MClassifierRole to) {
-		if (from == null || to == null) return null;
-		Iterator it = from.getAssociationEnds().iterator();
-		while (it.hasNext()) {
-			MAssociationEnd end = (MAssociationEnd)it.next();
-			if (end instanceof MAssociationEndRole) {
-				MAssociation assoc = end.getAssociation();
-				Iterator it2 = assoc.getConnections().iterator();
-				while (it2.hasNext()) {
-					MAssociationEnd end2 = (MAssociationEnd)it2.next();
-					MClassifier classifier = end2.getType();
-					if (classifier == to) {
-						return (MAssociationRole)assoc;
-					}
-				}
-			}
+    /**
+     * Returns the first found associationrole between two classifierroles.
+     * @param from
+     * @param to
+     * @return MAssociationRole
+     */
+    public MAssociationRole getAssocationRole(MClassifierRole from, MClassifierRole to) {
+	if (from == null || to == null) return null;
+	Iterator it = from.getAssociationEnds().iterator();
+	while (it.hasNext()) {
+	    MAssociationEnd end = (MAssociationEnd) it.next();
+	    if (end instanceof MAssociationEndRole) {
+		MAssociation assoc = end.getAssociation();
+		Iterator it2 = assoc.getConnections().iterator();
+		while (it2.hasNext()) {
+		    MAssociationEnd end2 = (MAssociationEnd) it2.next();
+		    MClassifier classifier = end2.getType();
+		    if (classifier == to) {
+			return (MAssociationRole) assoc;
+		    }
 		}
-		return null;
+	    }
 	}
+	return null;
+    }
 	
-	/**
-	 * Returns all possible activators for some message mes. The possible
-	 * activators are all messages in the same interaction as the given message
-	 * that are not part of the predecessors of the message and that are
-	 * not equal to the given message.
-	 * @param mes
-	 * @return Collection
-	 */
-	public Collection getAllPossibleActivators(MMessage mes) {
-		if (mes == null || mes.getInteraction() == null) return new ArrayList();
-		MInteraction inter = mes.getInteraction();                              
-		Collection predecessors = mes.getPredecessors();
-		Collection allMessages = inter.getMessages();                
-		Iterator it = allMessages.iterator();
-		List list = new ArrayList();
-		while (it.hasNext()) {
-			Object o = it.next();
-			if (!predecessors.contains(o) && mes!=o && !hasAsActivator((MMessage)o, mes) && !((MMessage)o).getPredecessors().contains(mes)) {
-				list.add(o);
-			}
-		}
-		return list;
+    /**
+     * Returns all possible activators for some message mes. The possible
+     * activators are all messages in the same interaction as the given message
+     * that are not part of the predecessors of the message and that are
+     * not equal to the given message.
+     * @param mes
+     * @return Collection
+     */
+    public Collection getAllPossibleActivators(MMessage mes) {
+	if (mes == null || mes.getInteraction() == null) return new ArrayList();
+	MInteraction inter = mes.getInteraction();                              
+	Collection predecessors = mes.getPredecessors();
+	Collection allMessages = inter.getMessages();                
+	Iterator it = allMessages.iterator();
+	List list = new ArrayList();
+	while (it.hasNext()) {
+	    Object o = it.next();
+	    if (!predecessors.contains(o) && mes != o && !hasAsActivator((MMessage) o, mes) && !((MMessage) o).getPredecessors().contains(mes)) {
+		list.add(o);
+	    }
 	}
+	return list;
+    }
 	
     /**
      * Returns true if the given message has the message activator somewhere as it's activator. This is defined
@@ -210,12 +211,12 @@ public class CollaborationsHelper {
      * @param activator
      * @return boolean
      */
-	public boolean hasAsActivator(MMessage message, MMessage activator) {
-		if (message.getActivator() == null) return false;
-		if (message.getActivator() == activator || message.getActivator().getPredecessors().contains(activator)) return true;
-		else 
-			return hasAsActivator(message.getActivator(), activator);
-	}
+    public boolean hasAsActivator(MMessage message, MMessage activator) {
+	if (message.getActivator() == null) return false;
+	if (message.getActivator() == activator || message.getActivator().getPredecessors().contains(activator)) return true;
+	else 
+	    return hasAsActivator(message.getActivator(), activator);
+    }
 	
     /**
      * Sets the activator of some given message mes. Checks the wellformednessrules as defined in the UML 1.3 spec
@@ -225,32 +226,32 @@ public class CollaborationsHelper {
      * @param mes
      * @param activator
      */
-	public void setActivator(MMessage mes, MMessage activator) {
-		if (mes == null || activator == null) throw new IllegalArgumentException("In setActivator: either message or activator is null");
-		if (mes == activator) throw new IllegalArgumentException("In setActivator: message may not be equal to activator");
-		if (mes.getInteraction() != activator.getInteraction()) throw new IllegalArgumentException("In setActivator: interaction of message should equal interaction of activator");
-		if (mes.getPredecessors().contains(activator)) throw new IllegalArgumentException("In setActivator: the predecessors of the message may not contain the activator"); 
-		// we must find out if the activator itself does not have message as it's activator
-		if (hasAsActivator(activator, mes)) throw new IllegalArgumentException("In setActivator: message may not be the activator for the original activator");
-		List listToChange = new ArrayList();
-		Collection predecessors = mes.getPredecessors();
-		listToChange.addAll(predecessors);
-		listToChange.add(mes);
-		MInteraction inter = mes.getInteraction();
-		Collection allMessages = inter.getMessages();
-		Iterator it = allMessages.iterator();
-		while (it.hasNext()) {
-			MMessage mes2 = (MMessage)it.next();
-			if (mes2.getPredecessors().contains(mes)) {
-				listToChange.add(mes2);
-			}
-		}
-		it = listToChange.iterator();
-		while (it.hasNext()) {
-			MMessage mes2 = (MMessage)it.next();
-			mes2.setActivator(activator);
-		}
+    public void setActivator(MMessage mes, MMessage activator) {
+	if (mes == null || activator == null) throw new IllegalArgumentException("In setActivator: either message or activator is null");
+	if (mes == activator) throw new IllegalArgumentException("In setActivator: message may not be equal to activator");
+	if (mes.getInteraction() != activator.getInteraction()) throw new IllegalArgumentException("In setActivator: interaction of message should equal interaction of activator");
+	if (mes.getPredecessors().contains(activator)) throw new IllegalArgumentException("In setActivator: the predecessors of the message may not contain the activator"); 
+	// we must find out if the activator itself does not have message as it's activator
+	if (hasAsActivator(activator, mes)) throw new IllegalArgumentException("In setActivator: message may not be the activator for the original activator");
+	List listToChange = new ArrayList();
+	Collection predecessors = mes.getPredecessors();
+	listToChange.addAll(predecessors);
+	listToChange.add(mes);
+	MInteraction inter = mes.getInteraction();
+	Collection allMessages = inter.getMessages();
+	Iterator it = allMessages.iterator();
+	while (it.hasNext()) {
+	    MMessage mes2 = (MMessage) it.next();
+	    if (mes2.getPredecessors().contains(mes)) {
+		listToChange.add(mes2);
+	    }
 	}
+	it = listToChange.iterator();
+	while (it.hasNext()) {
+	    MMessage mes2 = (MMessage) it.next();
+	    mes2.setActivator(activator);
+	}
+    }
     
     /**
      * Returns all possible predecessors for some message, taking into account
@@ -264,11 +265,11 @@ public class CollaborationsHelper {
         Iterator it = inter.getMessages().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
-            MMessage mes = (MMessage)it.next();
+            MMessage mes = (MMessage) it.next();
             if (mes.getActivator() == message.getActivator() 
                 && message != mes && !mes.getPredecessors().contains(message) 
                 && !message.getPredecessors().contains(message)) {
-                    list.add(mes);
+		list.add(mes);
             }
         }
         return list;
@@ -282,7 +283,7 @@ public class CollaborationsHelper {
      */
     public Collection getAllPossibleBases(MClassifierRole role) {
         if (role == null || role.getNamespace() == null) return new ArrayList();
-        MCollaboration coll = (MCollaboration)role.getNamespace();
+        MCollaboration coll = (MCollaboration) role.getNamespace();
         MNamespace ns = coll.getNamespace();
         Collection returnList = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
         returnList.removeAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifierRole.class));
@@ -290,11 +291,11 @@ public class CollaborationsHelper {
             List listToRemove = new ArrayList();
             Iterator it = returnList.iterator();
             while (it.hasNext()) {
-                MClassifier clazz = (MClassifier)it.next();
+                MClassifier clazz = (MClassifier) it.next();
                 if (!clazz.getClassifierRoles().isEmpty()) {
                     Iterator it2 = clazz.getClassifierRoles().iterator();
                     while (it2.hasNext()) {
-                        MClassifierRole role2 = (MClassifierRole)it2.next();
+                        MClassifierRole role2 = (MClassifierRole) it2.next();
                         if (role2.getNamespace() == coll) {
                             listToRemove.add(clazz);
                         }
@@ -320,11 +321,11 @@ public class CollaborationsHelper {
         // wellformednessrule: if the role does not have a name, the role shall
         // be the only one with the particular base
         if (role.getName() == null || role.getName().equals("")) {
-            MCollaboration collab = (MCollaboration)role.getNamespace();
+            MCollaboration collab = (MCollaboration) role.getNamespace();
             Collection roles = ModelManagementHelper.getHelper().getAllModelElementsOfKind(collab, MClassifierRole.class);
             Iterator it = roles.iterator();
             while (it.hasNext()) {
-                if (((MClassifierRole)it.next()).getBases().contains(base)) 
+                if (((MClassifierRole) it.next()).getBases().contains(base)) 
                     throw new IllegalArgumentException("In addBase: base is allready part of another role and role does not have a name");
             }
         }
@@ -335,16 +336,16 @@ public class CollaborationsHelper {
         } else {
             Iterator it = base.getOwnedElements().iterator();
             while (it.hasNext()) {
-                MModelElement elem = (MModelElement)it.next();
+                MModelElement elem = (MModelElement) it.next();
                 if (!role.getAvailableContentses().contains(elem)) {
-                    role.addAvailableContents((MModelElement)it.next());
+                    role.addAvailableContents((MModelElement) it.next());
                 }
             }
             it = base.getFeatures().iterator();
             while (it.hasNext()) {
-                MFeature feature = (MFeature)it.next();
+                MFeature feature = (MFeature) it.next();
                 if (!role.getAvailableFeatures().contains(feature)) {
-                    role.addAvailableFeature((MFeature)it.next());
+                    role.addAvailableFeature((MFeature) it.next());
                 }
             }
         }
@@ -359,12 +360,12 @@ public class CollaborationsHelper {
     public void setBases(MClassifierRole role, Collection bases) {
         if (role == null || bases == null) throw new IllegalArgumentException("In setBases: either the role or the collection bases is null");
         Iterator it = role.getBases().iterator();
-        while(it.hasNext()) {
-            role.removeBase((MClassifier)it.next());
+        while (it.hasNext()) {
+            role.removeBase((MClassifier) it.next());
         }
         it = bases.iterator();
         while (it.hasNext()) {
-            addBase(role, (MClassifier)it.next());
+            addBase(role, (MClassifier) it.next());
         }
     }
     
@@ -380,14 +381,14 @@ public class CollaborationsHelper {
         List returnList = new ArrayList();
         Iterator it = role.getParents().iterator();
         while (it.hasNext()) {
-            MGeneralizableElement genElem = (MGeneralizableElement)it.next();
+            MGeneralizableElement genElem = (MGeneralizableElement) it.next();
             if (genElem instanceof MClassifierRole) {
-                returnList.addAll(allAvailableFeatures((MClassifierRole)genElem));
+                returnList.addAll(allAvailableFeatures((MClassifierRole) genElem));
             }
         }
         it = role.getBases().iterator();
-        while(it.hasNext()) {
-            returnList.addAll(((MClassifier)it.next()).getFeatures());
+        while (it.hasNext()) {
+            returnList.addAll(((MClassifier) it.next()).getFeatures());
         }
         return returnList;
     }
@@ -404,14 +405,14 @@ public class CollaborationsHelper {
         List returnList = new ArrayList();
         Iterator it = role.getParents().iterator();
         while (it.hasNext()) {
-            MGeneralizableElement genElem = (MGeneralizableElement)it.next();
+            MGeneralizableElement genElem = (MGeneralizableElement) it.next();
             if (genElem instanceof MClassifierRole) {
-                returnList.addAll(allAvailableContents((MClassifierRole)genElem));
+                returnList.addAll(allAvailableContents((MClassifierRole) genElem));
             }
         }
         it = role.getBases().iterator();
-        while(it.hasNext()) {
-            returnList.addAll(((MClassifier)it.next()).getOwnedElements());
+        while (it.hasNext()) {
+            returnList.addAll(((MClassifier) it.next()).getOwnedElements());
         }
         return returnList;
     }
@@ -425,7 +426,7 @@ public class CollaborationsHelper {
     public Collection getAllPossibleBases(MAssociationRole role) {
         Set ret = new HashSet();
         if (role == null || role.getNamespace() == null) return ret;
-         MCollaboration coll = (MCollaboration)role.getNamespace();
+	MCollaboration coll = (MCollaboration) role.getNamespace();
         
         // find the bases of the connected classifierroles so that we can see
         // what associations are between them. If there are bases then the
@@ -435,8 +436,8 @@ public class CollaborationsHelper {
         Iterator it = role.getConnections().iterator();
         Set bases = new HashSet();
         while (it.hasNext()) {
-            MAssociationEndRole end = (MAssociationEndRole)it.next();
-            MClassifierRole type = (MClassifierRole)end.getType();
+            MAssociationEndRole end = (MAssociationEndRole) it.next();
+            MClassifierRole type = (MClassifierRole) end.getType();
             if (type != null) {
                 bases.addAll(type.getBases());
             }
@@ -448,9 +449,9 @@ public class CollaborationsHelper {
         } else {  
             it = bases.iterator();
             while (it.hasNext()) {
-                MClassifier base1 = (MClassifier)it.next();
+                MClassifier base1 = (MClassifier) it.next();
                 if (it.hasNext()) {
-                    MClassifier base2 = (MClassifier)it.next();
+                    MClassifier base2 = (MClassifier) it.next();
                     ret.addAll(CoreHelper.getHelper().getAssociations(base1, base2));
                 }
             }
@@ -460,11 +461,11 @@ public class CollaborationsHelper {
             List listToRemove = new ArrayList();
             it = ret.iterator();
             while (it.hasNext()) {
-                MAssociation assoc = (MAssociation)it.next();
+                MAssociation assoc = (MAssociation) it.next();
                 if (!assoc.getAssociationRoles().isEmpty()) {
                     Iterator it2 = assoc.getAssociationRoles().iterator();
                     while (it2.hasNext()) {
-                        MAssociationRole role2 = (MAssociationRole)it2.next();
+                        MAssociationRole role2 = (MAssociationRole) it2.next();
                         if (role2.getNamespace() == coll) {
                             listToRemove.add(assoc);
                         }
@@ -488,20 +489,20 @@ public class CollaborationsHelper {
             throw new IllegalArgumentException("base is not allowed for this role");
         }
         role.setBase(base);
-        MClassifierRole sender = (MClassifierRole)CoreHelper.getHelper().getSource(role);
-        MClassifierRole receiver = (MClassifierRole)CoreHelper.getHelper().getDestination(role);
+        MClassifierRole sender = (MClassifierRole) CoreHelper.getHelper().getSource(role);
+        MClassifierRole receiver = (MClassifierRole) CoreHelper.getHelper().getDestination(role);
         Collection senderBases = sender.getBases();
         Collection receiverBases = receiver.getBases();
         Collection baseConnections = base.getConnections();
         Iterator it = baseConnections.iterator();
         while (it.hasNext()) {
-            MAssociationEnd end = (MAssociationEnd)it.next();
+            MAssociationEnd end = (MAssociationEnd) it.next();
             if (senderBases.contains(end.getType())) {
-                ((MAssociationEndRole)CoreHelper.getHelper().getAssociationEnd(sender, role)).setBase(end);
+                ((MAssociationEndRole) CoreHelper.getHelper().getAssociationEnd(sender, role)).setBase(end);
             } else
-            if (receiverBases.contains(end.getType())) {
-                ((MAssociationEndRole)CoreHelper.getHelper().getAssociationEnd(receiver, role)).setBase(end);
-            }
+		if (receiverBases.contains(end.getType())) {
+		    ((MAssociationEndRole) CoreHelper.getHelper().getAssociationEnd(receiver, role)).setBase(end);
+		}
         }
     }
             

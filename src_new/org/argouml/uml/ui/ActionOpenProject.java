@@ -86,17 +86,19 @@ public class ActionOpenProject extends UMLAction {
         if (p != null && p.needsSave()) {
             String t =
                 MessageFormat.format(
-                    Argo.localize(
-                        "Actions",
-                        "optionpane.open-project-save-changes-to"),
-                    new Object[] { p.getName()});
+				     Argo.localize(
+						   "Actions",
+						   "optionpane.open-project-save-changes-to"),
+				     new Object[] {
+					 p.getName()
+				     });
 
             int response =
                 JOptionPane.showConfirmDialog(
-                    pb,
-                    t,
-                    t,
-                    JOptionPane.YES_NO_CANCEL_OPTION);
+					      pb,
+					      t,
+					      t,
+					      JOptionPane.YES_NO_CANCEL_OPTION);
 
             if (response == JOptionPane.CANCEL_OPTION)
                 return;
@@ -133,7 +135,7 @@ public class ActionOpenProject extends UMLAction {
                 chooser = OsUtil.getFileChooser();
 
             chooser.setDialogTitle(
-                Argo.localize("Actions", "filechooser.open-project"));
+				   Argo.localize("Actions", "filechooser.open-project"));
             SuffixFilter filter = FileFilters.CompressedFileFilter;
             chooser.addChoosableFileFilter(filter);
             chooser.addChoosableFileFilter(FileFilters.UncompressedFileFilter);
@@ -188,72 +190,74 @@ public class ActionOpenProject extends UMLAction {
             p = ProjectManager.getManager().loadProject(url);
 
             ProjectBrowser.getInstance().showStatus(
-                MessageFormat.format(
-                    Argo.localize(
-                        "Actions",
-                        "label.open-project-status-read"),
-                    new Object[] { url.toString()}));
+						    MessageFormat.format(
+									 Argo.localize(
+										       "Actions",
+										       "label.open-project-status-read"),
+									 new Object[] {
+									     url.toString()
+									 }));
         } catch (ParserConfigurationException ex) {
             showErrorPane(
-                "Could not load the project "
-                    + url.toString()
-                    + " due to configuration errors.\n"
-                    + "Please read the instructions at www.argouml.org on the"
-                    + " requirements of argouml and how to install it.");
+			  "Could not load the project "
+			  + url.toString()
+			  + " due to configuration errors.\n"
+			  + "Please read the instructions at www.argouml.org on the"
+			  + " requirements of argouml and how to install it.");
             p = oldProject;
         } catch (IllegalFormatException ex) {
             showErrorPane(
-                "Could not load the project "
-                    + url.toString()
-                    + "\n"
-                    + "The format of the file is not supported.");
+			  "Could not load the project "
+			  + url.toString()
+			  + "\n"
+			  + "The format of the file is not supported.");
             p = oldProject;
         } catch (java.io.FileNotFoundException ex) {
             showErrorPane(
-                "Could not load the project "
-                    + url.toString()
-                    + "\n"
-                    + "The file was not found.");
+			  "Could not load the project "
+			  + url.toString()
+			  + "\n"
+			  + "The file was not found.");
             p = oldProject;
         } catch (IOException io) {
             // now we have to handle the case of a corrupted XMI file
             showErrorPane(
-                "Could not load the project "
-                    + url.toString()
-                    + "\n"
-                    + "Project file probably corrupted.\n"
-                    + "\n"
-                    + io.getMessage()+"\n"
-                    + "\n"
-                    + "Please file a bug report at argouml.tigris.org including"
-                    + " the corrupted project file.");
+			  "Could not load the project "
+			  + url.toString()
+			  + "\n"
+			  + "Project file probably corrupted.\n"
+			  + "\n"
+			  + io.getMessage() + "\n"
+			  + "\n"
+			  + "Please file a bug report at argouml.tigris.org including"
+			  + " the corrupted project file.");
             p = oldProject;
         } catch (SAXException ex) {
             showErrorPane(
-                "Could not load the project "
-                    + url.toString()
-                    + "\n"
-                    + "Project file probably corrupted.\n"
-                    + "If the problem keeps persisting, please file a bug report at www.argouml.org.\n");
+			  "Could not load the project "
+			  + url.toString()
+			  + "\n"
+			  + "Project file probably corrupted.\n"
+			  + "If the problem keeps persisting, please file a bug report at www.argouml.org.\n");
             p = oldProject;
         } finally {
             if (!ArgoParser.SINGLETON.getLastLoadStatus()) {
                 p = oldProject;
                 showErrorPane(
-                    "Problem in loading the project "
-                        + url.toString()
-                        + "\n"
-                        + "Project file probably corrupt from "
-                        + "an earlier version or ArgoUML.\n"
-                        + "Error message:\n"
-                        + ArgoParser.SINGLETON.getLastLoadMessage()
-                        + "\n"
-                        + "Since the project was incorrectly "
-                        + "saved some things might be missing "
-                        + "from before you saved it.\n"
-                        + "These things cannot be restored. "
-                        + "You can continue working with what "
-                        + "was actually loaded.\n");
+			      "Problem in loading the project "
+			      + url.toString()
+			      + "\n"
+			      + "Project file probably corrupt from "
+			      + "an earlier version or ArgoUML.\n"
+			      + "Error message:\n"
+			      + ArgoParser.SINGLETON.getLastLoadMessage()
+			      + "\n"
+			      + "Since the project was incorrectly "
+			      + "saved some things might be missing "
+			      + "from before you saved it.\n"
+			      + "These things cannot be restored. "
+			      + "You can continue working with what "
+			      + "was actually loaded.\n");
             }
             ProjectManager.getManager().setCurrentProject(p);
             Designer.enableCritiquing();
@@ -268,10 +272,10 @@ public class ActionOpenProject extends UMLAction {
      */
     private void showErrorPane(String message) {
         JOptionPane.showMessageDialog(
-            ProjectBrowser.getInstance(),
-            message,
-            "Error",
-            JOptionPane.ERROR_MESSAGE);
+				      ProjectBrowser.getInstance(),
+				      message,
+				      "Error",
+				      JOptionPane.ERROR_MESSAGE);
     }
 
 } /* end class ActionOpenProject */

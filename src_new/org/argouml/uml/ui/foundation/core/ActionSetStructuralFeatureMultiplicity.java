@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,10 +54,10 @@ public class ActionSetStructuralFeatureMultiplicity
     public void setSelectedItem(Object item, Object target) {
         if (target != null && target instanceof MStructuralFeature) {
             if (item instanceof MMultiplicity) {
-                ((MStructuralFeature)target).setMultiplicity(
-                    (MMultiplicity)item);
+                ((MStructuralFeature) target).setMultiplicity(
+                    (MMultiplicity) item);
             } else
-                 ((MStructuralFeature)target).setMultiplicity(null);
+                 ((MStructuralFeature) target).setMultiplicity(null);
 
         }
     }

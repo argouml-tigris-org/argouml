@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -68,7 +69,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /** Singleton instance.
      */
     private static StateMachinesFactory SINGLETON =
-                   new StateMachinesFactory();
+	new StateMachinesFactory();
 
     /** Singleton instance access method.
      */
@@ -238,11 +239,11 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MCompositeState buildCompositeState(MStateMachine statemachine) {
     	if (statemachine != null ) {
-    		MCompositeState state = createCompositeState();
-    		state.setStateMachine(statemachine);
-    		return state;
+	    MCompositeState state = createCompositeState();
+	    state.setStateMachine(statemachine);
+	    return state;
     	} else
-    		throw new IllegalArgumentException("In buildCompositeState: statemachine is null");
+	    throw new IllegalArgumentException("In buildCompositeState: statemachine is null");
     }
     
     /**
@@ -252,19 +253,19 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MStateMachine buildStateMachine(Object oContext) {
     	if (oContext != null && StateMachinesHelper.getHelper().isAddingStatemachineAllowed(oContext)) {
-    		MStateMachine graph = createStateMachine();
-            MModelElement context = (MModelElement)oContext;
-    		graph.setContext(context);
-    		if (context instanceof MNamespace) {
-    			graph.setNamespace((MNamespace)context);
-    		} else
+	    MStateMachine graph = createStateMachine();
+            MModelElement context = (MModelElement) oContext;
+	    graph.setContext(context);
+	    if (context instanceof MNamespace) {
+		graph.setNamespace((MNamespace) context);
+	    } else
     		if (context instanceof MBehavioralFeature) {
-    			graph.setNamespace(context.getNamespace());
+		    graph.setNamespace(context.getNamespace());
     		}
-    		StateMachinesFactory.getFactory().buildCompositeState(graph);
-    		return graph;
+	    StateMachinesFactory.getFactory().buildCompositeState(graph);
+	    return graph;
     	} else 
-    		throw new IllegalArgumentException("In buildStateMachine: context null or not legal");
+	    throw new IllegalArgumentException("In buildStateMachine: context null or not legal");
     }
     
     /**
@@ -277,17 +278,17 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * @return MTransition
      */
     public MTransition buildTransition(MCompositeState owningState, 
-        MStateVertex source, MStateVertex dest) {
+				       MStateVertex source, MStateVertex dest) {
       	if (owningState != null && source != null && dest != null && 
-      		owningState.getSubvertices().contains(source) &&
-      		owningState.getSubvertices().contains(dest)) { 
-      		MTransition trans = createTransition();
-     		owningState.addInternalTransition(trans);
-      		trans.setSource(source);
-      		trans.setTarget(dest);
-      		return trans;
+	    owningState.getSubvertices().contains(source) &&
+	    owningState.getSubvertices().contains(dest)) { 
+	    MTransition trans = createTransition();
+	    owningState.addInternalTransition(trans);
+	    trans.setSource(source);
+	    trans.setTarget(dest);
+	    return trans;
       	} else 
-      		throw new IllegalArgumentException("In buildTransition: arguments not legal");
+	    throw new IllegalArgumentException("In buildTransition: arguments not legal");
     }
     
     /**
@@ -302,8 +303,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         if (compositeState instanceof MCompositeState) {
             MPseudostate state = createPseudostate();
             state.setKind(MPseudostateKind.BRANCH);
-            state.setContainer((MCompositeState)compositeState);
-            ((MCompositeState)compositeState).addSubvertex(state);
+            state.setContainer((MCompositeState) compositeState);
+            ((MCompositeState) compositeState).addSubvertex(state);
             return state;
         }
         return null;
@@ -321,7 +322,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         if (compositeState instanceof MCompositeState) {
             MSynchState state = createSynchState();
             state.setBound(0);
-            state.setContainer((MCompositeState)compositeState);
+            state.setContainer((MCompositeState) compositeState);
             return state;
         }
         return null;
@@ -339,7 +340,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         if (compositeState instanceof MCompositeState) {
             MStubState state = createStubState();
             state.setReferenceState("");
-            state.setContainer((MCompositeState)compositeState);
+            state.setContainer((MCompositeState) compositeState);
             return state;
         }
         return null;
@@ -357,7 +358,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         if (compositeState instanceof MCompositeState) {
             MCompositeState state = createCompositeState();
             state.setConcurent(false);
-            state.setContainer((MCompositeState)compositeState);
+            state.setContainer((MCompositeState) compositeState);
             return state;
         }
         return null;
@@ -374,7 +375,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MSimpleState buildSimpleState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
             MSimpleState state = createSimpleState();           
-            state.setContainer((MCompositeState)compositeState);
+            state.setContainer((MCompositeState) compositeState);
             return state;
         }
         return null;
@@ -391,7 +392,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MFinalState buildFinalState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
             MFinalState state = createFinalState();           
-            state.setContainer((MCompositeState)compositeState);
+            state.setContainer((MCompositeState) compositeState);
             return state;
         }
         return null;
@@ -409,7 +410,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         if (compositeState instanceof MCompositeState) {
             MSubmachineState state = createSubmachineState();    
             state.setStateMachine(null);       
-            state.setContainer((MCompositeState)compositeState);
+            state.setContainer((MCompositeState) compositeState);
             return state;
         }
         return null;
@@ -424,9 +425,9 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MTransition buildInternalTransition(Object state) {
         if (state instanceof MState) {
             MTransition trans = createTransition();
-            trans.setState((MState)state);
-            trans.setSource((MState)state);
-            trans.setTarget((MState)state);
+            trans.setState((MState) state);
+            trans.setSource((MState) state);
+            trans.setTarget((MState) state);
             return trans;
         }
         return null;
@@ -443,8 +444,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MTransition buildTransition(Object source, Object target) {
         if (source instanceof MStateVertex && target instanceof MStateVertex) {
             MTransition trans = createTransition();
-            trans.setSource((MStateVertex)source);
-            trans.setTarget((MStateVertex)target);
+            trans.setSource((MStateVertex) source);
+            trans.setTarget((MStateVertex) target);
             trans.setStateMachine(StateMachinesHelper.getHelper().getStateMachine(source));
             return trans;
         }
@@ -509,15 +510,15 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MGuard buildGuard(Object transition) {
         if (transition instanceof MTransition) {
             MGuard guard = createGuard();
-            guard.setTransition((MTransition)transition);
+            guard.setTransition((MTransition) transition);
             return guard;
         }
         return null;
     }
      
-    public void deleteCallEvent(MCallEvent elem) {}
+    public void deleteCallEvent(MCallEvent elem) { }
     
-    public void deleteChangeEvent(MChangeEvent elem) {}
+    public void deleteChangeEvent(MChangeEvent elem) { }
     
     /**
      * deletes any associated subVertices.
@@ -527,24 +528,24 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         Collection vertices = elem.getSubvertices();
         Iterator it = vertices.iterator();
         while (it.hasNext()) {
-            MStateVertex vertex = (MStateVertex)it.next();
+            MStateVertex vertex = (MStateVertex) it.next();
             UmlFactory.getFactory().delete(vertex);
         }
     }
     
-    public void deleteEvent(MEvent elem) {}
+    public void deleteEvent(MEvent elem) { }
     
-    public void deleteFinalState(MFinalState elem) {}
+    public void deleteFinalState(MFinalState elem) { }
     
-    public void deleteGuard(MGuard elem) {}
+    public void deleteGuard(MGuard elem) { }
     
-    public void deletePseudostate(MPseudostate elem) {}
+    public void deletePseudostate(MPseudostate elem) { }
     
-    public void deleteSignalEvent(MSignalEvent elem) {}
+    public void deleteSignalEvent(MSignalEvent elem) { }
     
-    public void deleteSimpleState(MSimpleState elem) {}
+    public void deleteSimpleState(MSimpleState elem) { }
     
-    public void deleteState(MState elem) {}
+    public void deleteState(MState elem) { }
     
     /**
      * deletes its top state, which is a composite state (state vertex).
@@ -563,24 +564,24 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         Collection col = elem.getIncomings();
         Iterator it = col.iterator();
         while (it.hasNext()) {
-            UmlFactory.getFactory().delete((MTransition)it.next());
+            UmlFactory.getFactory().delete((MTransition) it.next());
         }
         col = elem.getOutgoings();
         it = col.iterator();
         while (it.hasNext()) {
-            UmlFactory.getFactory().delete((MTransition)it.next());
+            UmlFactory.getFactory().delete((MTransition) it.next());
         }
     }
     
-    public void deleteStubState(MStubState elem) {}
+    public void deleteStubState(MStubState elem) { }
     
-    public void deleteSubmachineState(MSubmachineState elem) {}
+    public void deleteSubmachineState(MSubmachineState elem) { }
     
-    public void deleteSynchState(MSynchState elem) {}
+    public void deleteSynchState(MSynchState elem) { }
     
-    public void deleteTimeEvent(MTimeEvent elem) {}
+    public void deleteTimeEvent(MTimeEvent elem) { }
     
-    public void deleteTransition(MTransition elem) {}
+    public void deleteTransition(MTransition elem) { }
     
     
     

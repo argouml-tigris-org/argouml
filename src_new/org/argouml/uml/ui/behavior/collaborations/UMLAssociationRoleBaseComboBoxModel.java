@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -52,7 +53,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(CollaborationsHelper.getHelper().getAllPossibleBases((MAssociationRole)getTarget())); 
+        setElements(CollaborationsHelper.getHelper().getAllPossibleBases((MAssociationRole) getTarget())); 
     }
 
     /**
@@ -60,7 +61,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MAssociationRole)getTarget()).getBase();
+            return ((MAssociationRole) getTarget()).getBase();
         }
         return null;
     }
@@ -69,7 +70,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(Object element) {
-        return CollaborationsHelper.getHelper().getAllPossibleBases((MAssociationRole)getTarget()).contains(element);
+        return CollaborationsHelper.getHelper().getAllPossibleBases((MAssociationRole) getTarget()).contains(element);
     }
 
 }

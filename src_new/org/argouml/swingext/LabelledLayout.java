@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -246,7 +247,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
      * equally by the section count.
      */
     private int getSectionWidth(Container parent, int sectionCount) {
-        return (getUsableWidth(parent)-(sectionCount-1)*_hgap) / sectionCount;
+        return (getUsableWidth(parent) - (sectionCount - 1) * _hgap) / sectionCount;
     }
 
     /**
@@ -341,7 +342,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                 // If the component is a JLabel which has another component assigned
                 // then position/size the label and calculate the size of the registered
                 // component
-                if (childComp instanceof JLabel && ((JLabel)childComp).getLabelFor() != null) {
+                if (childComp instanceof JLabel && ((JLabel) childComp).getLabelFor() != null) {
                     i++; // Assumes the next child is the labelled component (could be improved)
                     JLabel jlabel = (JLabel) childComp;
                     childComp = jlabel.getLabelFor();
@@ -356,7 +357,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                 }
                 // Make sure the component width isn't any greater than its maximum allowed width
                 if (childComp.getMaximumSize() != null && childComp.getMaximumSize().getWidth() < componentWidth) {
-                     componentWidth = (int)childComp.getMaximumSize().getWidth();
+		    componentWidth = (int) childComp.getMaximumSize().getWidth();
                 }
                 childComp.setBounds(componentX, y, componentWidth, rowHeight);
                 y += rowHeight + _vgap;

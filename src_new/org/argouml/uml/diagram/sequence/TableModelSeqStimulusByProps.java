@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,47 +47,47 @@ import org.tigris.gef.base.Globals;
 
 
 public class TableModelSeqStimulusByProps extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelSeqStimulusByProps() { }
+    ////////////////
+    // constructor
+    public TableModelSeqStimulusByProps() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.Action);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLSequenceDiagram || t instanceof MLink)) return new Vector();
-    if (t instanceof UMLSequenceDiagram) {
-      Editor _editor = Globals.curEditor();
-      Layer lay = _editor.getLayerManager().getActiveLayer();
-      Vector contents = lay.getContents();
-      int size = contents.size();
-      Vector res = new Vector();
-      for (int i = 0; i < size; i++) {
-        Object figure = contents.elementAt(i);
-        if (figure instanceof FigSeqStimulus) {
-          FigSeqStimulus figSti = (FigSeqStimulus) figure;
-          MStimulus sti = (MStimulus) figSti.getOwner();
-          res.addElement(sti);
-        }
-      }
-      return res;
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.Action);
+	addColumn(ColumnDescriptor.MStereotype);
     }
-    else {
-      MLink ml = (MLink) t;
-      Vector res = new Vector();
-      Collection stimuli = ml.getStimuli();
-      Iterator it = stimuli.iterator();
-      while (it.hasNext()) {
-        MStimulus sti = (MStimulus) it.next();
-        res.addElement(sti);
-      }
-      return res;
-    }
-  }
 
-  public String toString() { return "SeqStimuli vs. Properties"; }
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof UMLSequenceDiagram || t instanceof MLink)) return new Vector();
+	if (t instanceof UMLSequenceDiagram) {
+	    Editor _editor = Globals.curEditor();
+	    Layer lay = _editor.getLayerManager().getActiveLayer();
+	    Vector contents = lay.getContents();
+	    int size = contents.size();
+	    Vector res = new Vector();
+	    for (int i = 0; i < size; i++) {
+		Object figure = contents.elementAt(i);
+		if (figure instanceof FigSeqStimulus) {
+		    FigSeqStimulus figSti = (FigSeqStimulus) figure;
+		    MStimulus sti = (MStimulus) figSti.getOwner();
+		    res.addElement(sti);
+		}
+	    }
+	    return res;
+	}
+	else {
+	    MLink ml = (MLink) t;
+	    Vector res = new Vector();
+	    Collection stimuli = ml.getStimuli();
+	    Iterator it = stimuli.iterator();
+	    while (it.hasNext()) {
+		MStimulus sti = (MStimulus) it.next();
+		res.addElement(sti);
+	    }
+	    return res;
+	}
+    }
+
+    public String toString() { return "SeqStimuli vs. Properties"; }
 } /* end class TableModelSeqStimulusByProps */
 

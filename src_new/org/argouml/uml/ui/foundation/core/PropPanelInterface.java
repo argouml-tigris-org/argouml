@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,54 +43,54 @@ import ru.novosoft.uml.foundation.core.MInterface;
 
 public class PropPanelInterface extends PropPanelClassifier {
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelInterface() {
-    super("Interface", ConfigLoader.getTabPropsOrientation());
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public PropPanelInterface() {
+	super("Interface", ConfigLoader.getTabPropsOrientation());
 
-    Class mclass = MInterface.class;
+	Class mclass = MInterface.class;
 
-    addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
-    addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceComboBox());
-    /*
-    JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.visibility.public-uc"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.root-uc"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    */
-    addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
-    addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
+	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+	/*
+	  JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
+	  modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.visibility.public-uc"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
+	  modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+	  modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+	  modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.root-uc"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+	*/
+	addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+	addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
 
-    addSeperator();
+	addSeperator();
 
-    addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-    addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+	addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+	addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
 
-    addSeperator();
+	addSeperator();
 
-    addField(Argo.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
-    addField(Argo.localize("UMLMenu", "label.operations"), getFeatureScroll());
+	addField(Argo.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
+	addField(Argo.localize("UMLMenu", "label.operations"), getFeatureScroll());
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"),"addOperation",null);
-    //new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
-    //new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-interface"),"removeElement",null);
-    //does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon, Argo.localize("UMLMenu", "button.add-new-interface"),"newInterface",null);
+	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+	new PropPanelButton(this, buttonPanel, _addOpIcon, Argo.localize("UMLMenu", "button.add-operation"), "addOperation", null);
+	//new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
+	//new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
+	new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-interface"), "removeElement", null);
+	//does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon, Argo.localize("UMLMenu", "button.add-new-interface"),"newInterface",null);
 
-  }
-
-  public void newInterface() {
-    Object target = getTarget();
-    if(target instanceof MInterface) {
-        MInterface iface = (MInterface) target;
-        MInterface newInterface = CoreFactory.getFactory().createInterface();
-        iface.getNamespace().addOwnedElement(newInterface);
-        TargetManager.getInstance().setTarget(newInterface);
     }
-  }
+
+    public void newInterface() {
+	Object target = getTarget();
+	if (target instanceof MInterface) {
+	    MInterface iface = (MInterface) target;
+	    MInterface newInterface = CoreFactory.getFactory().createInterface();
+	    iface.getNamespace().addOwnedElement(newInterface);
+	    TargetManager.getInstance().setTarget(newInterface);
+	}
+    }
 
 } /* end class PropPanelInterface */
 

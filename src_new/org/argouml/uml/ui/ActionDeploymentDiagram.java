@@ -57,14 +57,14 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
      */
     public UMLDiagram createDiagram(Object handle) {
         // a deployment diagram shows something about the whole model according to the uml spec
-          handle = ProjectManager.getManager().getCurrentProject().getRoot();   
+	handle = ProjectManager.getManager().getCurrentProject().getRoot();   
         if (!ModelFacade.isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(
-                "The argument " + handle + "is not a namespace.");
+					       "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace)handle;
+        MNamespace ns = (MNamespace) handle;
         return new UMLDeploymentDiagram(ns);
     }
 
@@ -78,12 +78,12 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(
-                "The argument " + handle + "is not a namespace.");
+					       "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace)handle;
+        MNamespace ns = (MNamespace) handle;
         // may only occur as child of the model or in a package
         return (
-            ns == ProjectManager.getManager().getCurrentProject().getModel()
+		ns == ProjectManager.getManager().getCurrentProject().getModel()
                 || ns instanceof MPackage);
     }
 

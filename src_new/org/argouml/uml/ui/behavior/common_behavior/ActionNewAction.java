@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -90,18 +91,18 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
         if (getValue(ROLE).equals(Roles.EXIT)) {
             ModelFacade.setExit(getTarget(), action);
         } else
-        if (getValue(ROLE).equals(Roles.ENTRY)) {
-            ModelFacade.setEntry(getTarget(), action);          
-        } else
-        if (getValue(ROLE).equals(Roles.DO)) {
-            ModelFacade.setDoActivity(getTarget(), action);
-        } else
-        if (getValue(ROLE).equals(Roles.ACTION)) {
-            ModelFacade.setAction(getTarget(), action);
-        } else
-        if (getValue(ROLE).equals(Roles.EFFECT)) {
-            ModelFacade.setEffect(getTarget(), action);
-        }
+	    if (getValue(ROLE).equals(Roles.ENTRY)) {
+		ModelFacade.setEntry(getTarget(), action);          
+	    } else
+		if (getValue(ROLE).equals(Roles.DO)) {
+		    ModelFacade.setDoActivity(getTarget(), action);
+		} else
+		    if (getValue(ROLE).equals(Roles.ACTION)) {
+			ModelFacade.setAction(getTarget(), action);
+		    } else
+			if (getValue(ROLE).equals(Roles.EFFECT)) {
+			    ModelFacade.setEffect(getTarget(), action);
+			}
         
     }
 

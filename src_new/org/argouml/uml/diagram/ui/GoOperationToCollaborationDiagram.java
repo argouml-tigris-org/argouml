@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,16 +48,16 @@ public class GoOperationToCollaborationDiagram extends AbstractGoRule {
      */
     public Collection getChildren(Object parent) {
         if (parent instanceof MOperation) {
-            MOperation operation = (MOperation)parent;
+            MOperation operation = (MOperation) parent;
             Collection col = operation.getCollaborations();
             Vector ret = new Vector();
             Project p = ProjectManager.getManager().getCurrentProject();
             Vector diagrams = p.getDiagrams();
             Iterator it = diagrams.iterator();
             while (it.hasNext()) {
-                ArgoDiagram diagram = (ArgoDiagram)it.next();
+                ArgoDiagram diagram = (ArgoDiagram) it.next();
                 if (diagram instanceof UMLCollaborationDiagram &&
-                    col.contains(((UMLCollaborationDiagram)diagram).getNamespace())) {
+                    col.contains(((UMLCollaborationDiagram) diagram).getNamespace())) {
                     ret.add(diagram);
                 }
                 

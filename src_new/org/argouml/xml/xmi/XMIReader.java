@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -111,10 +112,10 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
             cat.error("IOException while trying to read inputsource " + p_is.getSystemId(), e);
             throw e;
         } catch (SAXException e) {
-            cat.error("Parsing error while trying to parse inputsource "+ p_is.getSystemId(), e);
+            cat.error("Parsing error while trying to parse inputsource " + p_is.getSystemId(), e);
             throw e;
         } catch (ClassCastException e) {
-            cat.error("Parsing error while trying to parse inputsource "+ p_is.getSystemId(), e);
+            cat.error("Parsing error while trying to parse inputsource " + p_is.getSystemId(), e);
             throw new SAXException(e);
         }
 
@@ -130,8 +131,8 @@ public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
      */
     public MModel parseToModel(InputSource p_is) throws SAXException, IOException
     {        
-            parseSourceStream(p_is);
-            return getParsedModel();
+	parseSourceStream(p_is);
+	return getParsedModel();
         
     }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -110,7 +111,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
     public UMLExtendListModel(UMLUserInterfaceContainer container,
                               String property, boolean showNone) {
 
-        super(container,property,showNone);
+        super(container, property, showNone);
     }
 
 
@@ -120,18 +121,18 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      *
      * @return the number of elements the list model (0 if there are none).
      */
-/*
-    protected int recalcModelElementSize() {
-        int        size   = 0;
-        Collection xtends = getExtends();
+    /*
+      protected int recalcModelElementSize() {
+      int        size   = 0;
+      Collection xtends = getExtends();
 
-        if(xtends != null) {
-            size = xtends.size();
-        }
+      if(xtends != null) {
+      size = xtends.size();
+      }
 
-        return size;
-    }
-*/
+      return size;
+      }
+    */
     
     /**
      * <p>Get the element at a given offset in the model This method must be
@@ -145,12 +146,12 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @return  the element at that index if there is one, otherwise
      *          <code>null</code>.
      */
-/*
-    protected MModelElement getModelElementAt(int index) {
+    /*
+      protected MModelElement getModelElementAt(int index) {
 
-        return elementAtUtil(getExtends(), index, MExtend.class);
-    }
-*/            
+      return elementAtUtil(getExtends(), index, MExtend.class);
+      }
+    */            
         
     /**
      * <p>A private utility to get the list of extends relationships for this
@@ -158,26 +159,26 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      *
      * @return the list of extends relationships for this use case.
      */
-/*
-    private Collection getExtends() {
+    /*
+      private Collection getExtends() {
 
-        Collection xtends = null;
-        Object     target = getTarget();
+      Collection xtends = null;
+      Object     target = getTarget();
 
-        if(target instanceof MUseCase) {
-            MUseCase useCase = (MUseCase) target;
+      if(target instanceof MUseCase) {
+      MUseCase useCase = (MUseCase) target;
 
-            xtends = useCase.getExtends();
-        }
-        else if (target instanceof MExtensionPoint) {
-            MExtensionPoint extensionPoint = (MExtensionPoint) target;
+      xtends = useCase.getExtends();
+      }
+      else if (target instanceof MExtensionPoint) {
+      MExtensionPoint extensionPoint = (MExtensionPoint) target;
 
-            xtends = extensionPoint.getExtends();
-        }
+      xtends = extensionPoint.getExtends();
+      }
 
-        return xtends;
-    }
-*/    
+      return xtends;
+      }
+    */    
 
     /**
      * <p>Format a given model element.</p>
@@ -201,40 +202,40 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      *
      * @return an object (typically a string) representing the element.
      */
-/*
-    public Object formatElement(MModelElement element) {
+    /*
+      public Object formatElement(MModelElement element) {
 
-        Object value = _nullLabel;
+      Object value = _nullLabel;
 
-        if (element instanceof MExtend) {
-            MExtend  extend = (MExtend) element;
-            MUseCase target;
+      if (element instanceof MExtend) {
+      MExtend  extend = (MExtend) element;
+      MUseCase target;
 
-            // Which end to use depends on the nature of the container. For a
-            // use case we
+      // Which end to use depends on the nature of the container. For a
+      // use case we
 
-            if (getTarget() instanceof MUseCase) {
-                target = extend.getBase();
-            }
-            else {
-                target = extend.getExtension();
-            }
+      if (getTarget() instanceof MUseCase) {
+      target = extend.getBase();
+      }
+      else {
+      target = extend.getExtension();
+      }
 
-            if(target != null) {
-                value = super.formatElement(target);
-            }
-        }
-        else {
-            if (element != null) {
-                cat.warn("UMLExtendListModel." +
-                                   "formatElement(): Can't format " +
-                                   element.getClass().toString());
-            }
-        }
+      if(target != null) {
+      value = super.formatElement(target);
+      }
+      }
+      else {
+      if (element != null) {
+      cat.warn("UMLExtendListModel." +
+      "formatElement(): Can't format " +
+      element.getClass().toString());
+      }
+      }
 
-        return value;
-    }
-*/
+      return value;
+      }
+    */
 
     /**
      * <p>Implement the "add" function of the pop up menu.</p>
@@ -244,80 +245,80 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @param index  Offset in the list of the element at which the pop-up was
      *               invoked.
      */
-/*
-    public void add(int index) {
-    	Object target = getTarget();
-        boolean extensionPoint = false;
-        MExtensionPoint point = null;
-        if (target instanceof MExtensionPoint) {
-            point = (MExtensionPoint)target;
-            target = point.getUseCase();
-            extensionPoint = true;
-        }
-    	if (target instanceof MUseCase) {
-    		MUseCase usecase = (MUseCase)target;	
-	    	Vector choices = new Vector();
-	    	Vector selected = new Vector();
-	    	choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
-	    	choices.remove(usecase);
-	    	selected.addAll(UseCasesHelper.getHelper().getExtendedUseCases(usecase));
-	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-extended-usecases"), true, true);
-	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
-	    	if (returnValue == JOptionPane.OK_OPTION) {
-	    		Iterator it = dialog.getSelected().iterator();
-	    		while (it.hasNext()) {
-	    			MUseCase eusecase = (MUseCase)it.next();
-	    			if (!selected.contains(eusecase)) {
-	    				ProjectBrowser pb = ProjectBrowser.TheInstance;
-	    				ArgoDiagram diagram = pb.getActiveDiagram();
-	    				Fig figclass = diagram.getLayer().presentationFor(usecase);
-	    				Fig figeusecase = diagram.getLayer().presentationFor(eusecase);
-	    				if (figclass != null && figeusecase != null) {
-	    					GraphModel gm = diagram.getGraphModel();
-	    					if (gm instanceof MutableGraphModel) {
-                                if (!extensionPoint)
-	    						((MutableGraphModel)gm).connect(usecase, eusecase, MExtend.class);
-                                else {
-                                    ((MutableGraphModel)gm).connect(eusecase, usecase, MExtend.class);
-                                    List list = new ArrayList();
-                                    list.add(point);
-                                    MExtend e = UseCasesHelper.getHelper().getExtends(usecase, eusecase);
-                                    UmlFactory.getFactory().delete(e.getExtensionPoint(0));
-                                    e.setExtensionPoints(list);
-                                }
-	    					}
-	    				} else {
-                            if (!extensionPoint)
-	    					UseCasesFactory.getFactory().buildExtend(eusecase, usecase);
-                            else {
-                                 UseCasesFactory.getFactory().buildExtend(usecase, eusecase);
-                                 List list = new ArrayList();
-                                 list.add(point);
-                                 MExtend e = UseCasesHelper.getHelper().getExtends(usecase, eusecase);
-                                 UmlFactory.getFactory().delete(e.getExtensionPoint(0));
-                                 e.setExtensionPoints(list);
-                            }
+    /*
+      public void add(int index) {
+      Object target = getTarget();
+      boolean extensionPoint = false;
+      MExtensionPoint point = null;
+      if (target instanceof MExtensionPoint) {
+      point = (MExtensionPoint)target;
+      target = point.getUseCase();
+      extensionPoint = true;
+      }
+      if (target instanceof MUseCase) {
+      MUseCase usecase = (MUseCase)target;	
+      Vector choices = new Vector();
+      Vector selected = new Vector();
+      choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
+      choices.remove(usecase);
+      selected.addAll(UseCasesHelper.getHelper().getExtendedUseCases(usecase));
+      UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-extended-usecases"), true, true);
+      int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+      if (returnValue == JOptionPane.OK_OPTION) {
+      Iterator it = dialog.getSelected().iterator();
+      while (it.hasNext()) {
+      MUseCase eusecase = (MUseCase)it.next();
+      if (!selected.contains(eusecase)) {
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      ArgoDiagram diagram = pb.getActiveDiagram();
+      Fig figclass = diagram.getLayer().presentationFor(usecase);
+      Fig figeusecase = diagram.getLayer().presentationFor(eusecase);
+      if (figclass != null && figeusecase != null) {
+      GraphModel gm = diagram.getGraphModel();
+      if (gm instanceof MutableGraphModel) {
+      if (!extensionPoint)
+      ((MutableGraphModel)gm).connect(usecase, eusecase, MExtend.class);
+      else {
+      ((MutableGraphModel)gm).connect(eusecase, usecase, MExtend.class);
+      List list = new ArrayList();
+      list.add(point);
+      MExtend e = UseCasesHelper.getHelper().getExtends(usecase, eusecase);
+      UmlFactory.getFactory().delete(e.getExtensionPoint(0));
+      e.setExtensionPoints(list);
+      }
+      }
+      } else {
+      if (!extensionPoint)
+      UseCasesFactory.getFactory().buildExtend(eusecase, usecase);
+      else {
+      UseCasesFactory.getFactory().buildExtend(usecase, eusecase);
+      List list = new ArrayList();
+      list.add(point);
+      MExtend e = UseCasesHelper.getHelper().getExtends(usecase, eusecase);
+      UmlFactory.getFactory().delete(e.getExtensionPoint(0));
+      e.setExtensionPoints(list);
+      }
                             
-	    				}
-	    			}
-	    		}
-	    		it = selected.iterator();
-	    		while (it.hasNext()) {
-	    			MUseCase eusecase = (MUseCase)it.next();
-	    			if (!dialog.getSelected().contains(eusecase)) {
-	    				MExtend extend = UseCasesHelper.getHelper().getExtends(eusecase, usecase);
-			    		Object pt = ProjectBrowser.TheInstance.getTarget();
-			    		ProjectBrowser.TheInstance.setTarget(extend);
-			    		ActionEvent event = new ActionEvent(this, 1, "delete");
-			    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-			    		ProjectBrowser.TheInstance.setTarget(pt);
-	    			}
-	    		}
-	    	}
-    	}
-    }
+      }
+      }
+      }
+      it = selected.iterator();
+      while (it.hasNext()) {
+      MUseCase eusecase = (MUseCase)it.next();
+      if (!dialog.getSelected().contains(eusecase)) {
+      MExtend extend = UseCasesHelper.getHelper().getExtends(eusecase, usecase);
+      Object pt = ProjectBrowser.TheInstance.getTarget();
+      ProjectBrowser.TheInstance.setTarget(extend);
+      ActionEvent event = new ActionEvent(this, 1, "delete");
+      ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+      ProjectBrowser.TheInstance.setTarget(pt);
+      }
+      }
+      }
+      }
+      }
 
-*/
+    */
     /**
      * <p>Implement the "delete" function of the pop up menu. Delete the
      *   element at the given index.</p>
@@ -333,25 +334,25 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @param index  Offset in the list of the element at which the pop-up was
      *               invoked and which is to be deleted.
      */
-/*
-    public void delete(int index) {
-		Object target = getTarget();
-        if (target instanceof MExtensionPoint) {
-            target = ((MExtensionPoint)target).getUseCase();
-        }
-    	if (target instanceof MUseCase) {
-    		MUseCase usecase = (MUseCase)target;
-    		MUseCase eusecase = (MUseCase)UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getExtendedUseCases(usecase), index, null);
-    		MExtend gen = UseCasesHelper.getHelper().getExtends(eusecase, usecase);
-    		Object pt = ProjectBrowser.TheInstance.getTarget();
-    		ProjectBrowser.TheInstance.setTarget(gen);
-    		ActionEvent event = new ActionEvent(this, 1, "delete");
-    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-    		ProjectBrowser.TheInstance.setTarget(pt);
-    		fireIntervalRemoved(this,index,index);
-    	}
-    }
-*/
+    /*
+      public void delete(int index) {
+      Object target = getTarget();
+      if (target instanceof MExtensionPoint) {
+      target = ((MExtensionPoint)target).getUseCase();
+      }
+      if (target instanceof MUseCase) {
+      MUseCase usecase = (MUseCase)target;
+      MUseCase eusecase = (MUseCase)UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getExtendedUseCases(usecase), index, null);
+      MExtend gen = UseCasesHelper.getHelper().getExtends(eusecase, usecase);
+      Object pt = ProjectBrowser.TheInstance.getTarget();
+      ProjectBrowser.TheInstance.setTarget(gen);
+      ActionEvent event = new ActionEvent(this, 1, "delete");
+      ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+      ProjectBrowser.TheInstance.setTarget(pt);
+      fireIntervalRemoved(this,index,index);
+      }
+      }
+    */
 
     /**
      * <p>Implement the action that occurs with the "MoveUp" pop up.</p>
@@ -363,41 +364,41 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @param index  the index in the list of the extend relationship to move
      *               up.
      */
-/*
-    public void moveUp(int index) {
+    /*
+      public void moveUp(int index) {
 
-        // Only do this if we are an extension point or use case
+      // Only do this if we are an extension point or use case
 
-        Object target = getTarget();
+      Object target = getTarget();
 
-        if ((!(target instanceof MExtensionPoint)) &&
-           (!(target instanceof MUseCase))) {
-            return;
-        }
+      if ((!(target instanceof MExtensionPoint)) &&
+      (!(target instanceof MUseCase))) {
+      return;
+      }
 
-        // Handle according to the type of target
+      // Handle according to the type of target
 
-        if (target instanceof MExtensionPoint) {
-            MExtensionPoint extensionPoint = (MExtensionPoint) target;
-            extensionPoint.setExtends(moveUpUtil(extensionPoint.getExtends(),
-                                                 index));
-        }
-        else {
-            MUseCase useCase = (MUseCase) target;
-            useCase.setExtends(moveUpUtil(useCase.getExtends(), index));
-        }
+      if (target instanceof MExtensionPoint) {
+      MExtensionPoint extensionPoint = (MExtensionPoint) target;
+      extensionPoint.setExtends(moveUpUtil(extensionPoint.getExtends(),
+      index));
+      }
+      else {
+      MUseCase useCase = (MUseCase) target;
+      useCase.setExtends(moveUpUtil(useCase.getExtends(), index));
+      }
 
-        // Having moved an extend relationship, mark as needing saving
+      // Having moved an extend relationship, mark as needing saving
 
-        Project p = ProjectBrowser.TheInstance.getProject();
-        p.setNeedsSave(true);
+      Project p = ProjectBrowser.TheInstance.getProject();
+      p.setNeedsSave(true);
 
-        // Tell Swing
+      // Tell Swing
 
-        fireContentsChanged(this, index - 1, index);
-    }
+      fireContentsChanged(this, index - 1, index);
+      }
     
-*/
+    */
     /**
      * <p>The action that occurs with the "MoveDown" pop up.</p>
      *
@@ -408,71 +409,71 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @param index  the index in the list of the extend relationship to move
      *               down.
      */
-/*
-    public void moveDown(int index) {
+    /*
+      public void moveDown(int index) {
 
-        // Only do this if we are an extension point or use case
+      // Only do this if we are an extension point or use case
 
-        Object target = getTarget();
+      Object target = getTarget();
 
-        if ((!(target instanceof MExtensionPoint)) &&
-           (!(target instanceof MUseCase))) {
-            return;
-        }
+      if ((!(target instanceof MExtensionPoint)) &&
+      (!(target instanceof MUseCase))) {
+      return;
+      }
 
-        // Handle according to the type of target
+      // Handle according to the type of target
 
-        if (target instanceof MExtensionPoint) {
-            MExtensionPoint extensionPoint = (MExtensionPoint) target;
-            extensionPoint.setExtends(moveDownUtil(extensionPoint.getExtends(),
-                                                 index));
-        }
-        else {
-            MUseCase useCase = (MUseCase) target;
-            useCase.setExtends(moveDownUtil(useCase.getExtends(), index));
-        }
+      if (target instanceof MExtensionPoint) {
+      MExtensionPoint extensionPoint = (MExtensionPoint) target;
+      extensionPoint.setExtends(moveDownUtil(extensionPoint.getExtends(),
+      index));
+      }
+      else {
+      MUseCase useCase = (MUseCase) target;
+      useCase.setExtends(moveDownUtil(useCase.getExtends(), index));
+      }
 
-        // Having moved an extend relationship, mark as needing saving
+      // Having moved an extend relationship, mark as needing saving
 
-        Project p = ProjectBrowser.TheInstance.getProject();
-        p.setNeedsSave(true);
+      Project p = ProjectBrowser.TheInstance.getProject();
+      p.setNeedsSave(true);
 
-        // Tell Swing
+      // Tell Swing
 
-        fireContentsChanged(this,index,index+1);
-    }
-*/
+      fireContentsChanged(this,index,index+1);
+      }
+    */
 
-	/**
-	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
-	 */
-/*
-	public boolean buildPopup(JPopupMenu popup, int index) {
-		UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(getModelElementSize() <= 0) {
-            open.setEnabled(false);
-            delete.setEnabled(false);
-        }
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+     */
+    /*
+      public boolean buildPopup(JPopupMenu popup, int index) {
+      UMLUserInterfaceContainer container = getContainer();
+      UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+      UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
+      if(getModelElementSize() <= 0) {
+      open.setEnabled(false);
+      delete.setEnabled(false);
+      }
 
-        popup.add(open);
-        UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
-        if(_upper >= 0 && getModelElementSize() >= _upper) {
-            add.setEnabled(false);
-        }
-        popup.add(add);
-        popup.add(delete);
+      popup.add(open);
+      UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
+      if(_upper >= 0 && getModelElementSize() >= _upper) {
+      add.setEnabled(false);
+      }
+      popup.add(add);
+      popup.add(delete);
 
-        return true;
-	}
-*/
+      return true;
+      }
+    */
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
      */
     protected void build(MModelElement from, MModelElement to) {
         if (from instanceof MUseCase && to instanceof MUseCase) {
-            UseCasesFactory.getFactory().buildExtend((MUseCase)to, (MUseCase)from);
+            UseCasesFactory.getFactory().buildExtend((MUseCase) to, (MUseCase) from);
         } else
             throw new IllegalArgumentException("In build of UMLExtendListModel: either the arguments are null or not instanceof MUseCase");
     }
@@ -481,10 +482,10 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
      */
     protected void connect(
-        MutableGraphModel gm,
-        MModelElement from,
-        MModelElement to) {
-            gm.connect(from, to, MExtend.class);
+			   MutableGraphModel gm,
+			   MModelElement from,
+			   MModelElement to) {
+	gm.connect(from, to, MExtend.class);
     }
 
     /**
@@ -505,7 +506,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
      */
     protected MModelElement getRelation(MModelElement from, MModelElement to) {
-        return UseCasesHelper.getHelper().getExtends((MUseCase)to, (MUseCase)from);
+        return UseCasesHelper.getHelper().getExtends((MUseCase) to, (MUseCase) from);
     }
 
     /**
@@ -513,7 +514,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      */
     protected Collection getSelected() {
         if (getTarget() instanceof MUseCase) {
-            return UseCasesHelper.getHelper().getExtendedUseCases((MUseCase)getTarget());
+            return UseCasesHelper.getHelper().getExtendedUseCases((MUseCase) getTarget());
         } else
             throw new IllegalStateException("In getSelected of UMLExtendListModel: target is not an instanceof MUseCase");
     }

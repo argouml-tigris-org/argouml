@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -28,7 +29,7 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 
 /**
- * @TODO this class should be moved to package
+ * TODO: this class should be moved to package
  * org.argouml.uml.ui.behavior.common_behavior
  */
 public class UMLStimulusActionTextProperty  {
@@ -41,21 +42,21 @@ public class UMLStimulusActionTextProperty  {
     }
     
     
-    public void setProperty(UMLUserInterfaceContainer container,String newValue) {
+    public void setProperty(UMLUserInterfaceContainer container, String newValue) {
 	MStimulus  stimulus = (MStimulus) container.getTarget();
-	if(stimulus != null) {
+	if (stimulus != null) {
 
 	    String oldValue = getProperty(container);
 	    //
 	    //  if one or the other is null or they are not equal
-	    if(newValue == null || oldValue == null || !newValue.equals(oldValue)) {
+	    if (newValue == null || oldValue == null || !newValue.equals(oldValue)) {
 		//
 		//  as long as they aren't both null 
 		//   (or a really rare identical string pointer)
-		if(newValue != oldValue) {
+		if (newValue != oldValue) {
 		    // Object[] args = { newValue };
-		  		    Object action = ModelFacade.getDispatchAction(stimulus);
-            ModelFacade.setName(action, newValue);
+		    Object action = ModelFacade.getDispatchAction(stimulus);
+		    ModelFacade.setName(action, newValue);
 		    // to rupdate the diagram set the stimulus name again
 		    String dummyStr =  new String(stimulus.getName());
 		    stimulus.setName( dummyStr);
@@ -70,7 +71,7 @@ public class UMLStimulusActionTextProperty  {
     public String getProperty(UMLUserInterfaceContainer container) {
         String value = null;       
 	MStimulus stimulus = (MStimulus) container.getTarget();
-	if(stimulus != null) {
+	if (stimulus != null) {
 	    Object action = ModelFacade.getDispatchAction(stimulus);
 	    if (action != null) value = ModelFacade.getName(action);
 	}
@@ -79,7 +80,7 @@ public class UMLStimulusActionTextProperty  {
     
     boolean isAffected(MElementEvent event) {
 	String sourceName = event.getName();	
-        if(_propertyName == null || sourceName == null || sourceName.equals(_propertyName))
+        if (_propertyName == null || sourceName == null || sourceName.equals(_propertyName))
             return true;
         return false;
     }

@@ -52,7 +52,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        Iterator it = ((MInteraction)getTarget()).getMessages().iterator();
+        Iterator it = ((MInteraction) getTarget()).getMessages().iterator();
         while (it.hasNext()) {
             addElement(it.next());
         }
@@ -63,7 +63,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      */
     protected boolean isValidElement(MBase elem) {
         return elem instanceof MMessage && 
-            ((MMessage)elem).getInteraction() == getTarget();
+            ((MMessage) elem).getInteraction() == getTarget();
     }
 
 }

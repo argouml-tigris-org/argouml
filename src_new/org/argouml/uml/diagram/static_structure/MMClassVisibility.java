@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -31,39 +32,39 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 
 public class MMClassVisibility implements java.io.Serializable {
-  public static final MMClassVisibility PUBLIC =
-  new MMClassVisibility("public"); 
-  public static final MMClassVisibility PACKAGE =
-  new MMClassVisibility("package"); 
+    public static final MMClassVisibility PUBLIC =
+	new MMClassVisibility("public"); 
+    public static final MMClassVisibility PACKAGE =
+	new MMClassVisibility("package"); 
 
-  public static final MMClassVisibility[] POSSIBLES = {
-    PUBLIC, PACKAGE };
+    public static final MMClassVisibility[] POSSIBLES = {
+	PUBLIC, PACKAGE };
 
-  protected String _label = null;
+    protected String _label = null;
   
-  private MMClassVisibility(String label) { _label = label; }
+    private MMClassVisibility(String label) { _label = label; }
 
-  public static MMClassVisibility VisibilityFor(MClassifier cls) {
-	  // doesn't really do anything without vis: PACKAGE in nsuml
-	  //MVisibilityKind vk = cls.getVisibility();
-    //if (vk == null) return PUBLIC;
-    //if (vk.equals(MVisibilityKind.PACKAGE)) return PACKAGE;
-    return PUBLIC;
-  }
+    public static MMClassVisibility VisibilityFor(MClassifier cls) {
+	// doesn't really do anything without vis: PACKAGE in nsuml
+	//MVisibilityKind vk = cls.getVisibility();
+	//if (vk == null) return PUBLIC;
+	//if (vk.equals(MVisibilityKind.PACKAGE)) return PACKAGE;
+	return PUBLIC;
+    }
   
-  public boolean equals(Object o) {
-    if (!(o instanceof MMClassVisibility)) return false;
-    String oLabel = ((MMClassVisibility)o)._label;
-    return _label.equals(oLabel);
-  }
+    public boolean equals(Object o) {
+	if (!(o instanceof MMClassVisibility)) return false;
+	String oLabel = ((MMClassVisibility) o)._label;
+	return _label.equals(oLabel);
+    }
 
-  public int hashCode() { return _label.hashCode(); }
+    public int hashCode() { return _label.hashCode(); }
   
-  public String toString() { return _label.toString(); }
+    public String toString() { return _label.toString(); }
 
-  public void set(MClassifier target) {
-    if (target == null) return;
-    if (this == PUBLIC)
-      target.setVisibility(MVisibilityKind.PUBLIC);
-  }
+    public void set(MClassifier target) {
+	if (target == null) return;
+	if (this == PUBLIC)
+	    target.setVisibility(MVisibilityKind.PUBLIC);
+    }
 } /* end class MMClassVisibility */

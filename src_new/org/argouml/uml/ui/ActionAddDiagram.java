@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -76,7 +77,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
                 }
             }
         }
-        if (ns!= null && isValidNamespace(ns)) {
+        if (ns != null && isValidNamespace(ns)) {
             UMLDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
             TargetManager.getInstance().setTarget(diagram);

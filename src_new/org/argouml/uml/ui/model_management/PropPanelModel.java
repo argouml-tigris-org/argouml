@@ -31,15 +31,16 @@ import org.argouml.application.ArgoVersion;
 import ru.novosoft.uml.model_management.*;
 
 public class PropPanelModel extends PropPanelPackage
-implements PluggablePropertyPanel {
-  ////////////////////////////////////////////////////////////////
-  // instance vars
+    implements PluggablePropertyPanel 
+{
+    ////////////////////////////////////////////////////////////////
+    // instance vars
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelModel() {
-      super("Model", ConfigLoader.getTabPropsOrientation());
-  }
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public PropPanelModel() {
+	super("Model", ConfigLoader.getTabPropsOrientation());
+    }
 
     public Class getClassForPanel() {
         return MModelImpl.class;

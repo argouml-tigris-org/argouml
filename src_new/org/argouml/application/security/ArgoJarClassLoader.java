@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.application.security;
 
 import java.net.URL;
@@ -26,7 +50,9 @@ public class ArgoJarClassLoader extends URLClassLoader {
      * @param url the url of the jar file
      */
     public ArgoJarClassLoader(URL url) {
-	super(new URL[] { url });
+	super(new URL[] {
+	    url 
+	});
 	this.url = url;
     }
 
@@ -36,7 +62,7 @@ public class ArgoJarClassLoader extends URLClassLoader {
      */
     public String getMainClassName() throws IOException {
 	URL u = new URL("jar", "", url + "!/");
-	JarURLConnection uc = (JarURLConnection)u.openConnection();
+	JarURLConnection uc = (JarURLConnection) u.openConnection();
 	Attributes attr = uc.getMainAttributes();
 	return attr != null ? attr.getValue(Attributes.Name.MAIN_CLASS) : null;
     }
@@ -62,7 +88,9 @@ public class ArgoJarClassLoader extends URLClassLoader {
 	       InvocationTargetException
     {
 	Class c = loadClass(name);
-	Method m = c.getMethod("main", new Class[] { args.getClass() });
+	Method m = c.getMethod("main", new Class[] {
+		args.getClass() 
+	});
 	m.setAccessible(true);
 	int mods = m.getModifiers();
 	if (m.getReturnType() != void.class || !Modifier.isStatic(mods) ||
@@ -70,7 +98,9 @@ public class ArgoJarClassLoader extends URLClassLoader {
 	    throw new NoSuchMethodException("main");
 	}
 	try {
-	    m.invoke(null, new Object[] { args });
+	    m.invoke(null, new Object[] {
+		args 
+	    });
 	} catch (IllegalAccessException e) {
 	    // This should not happen, as we have disabled access checks
 	}

@@ -50,7 +50,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MModel;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelDataType extends PropPanelClassifier {
@@ -64,7 +64,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         Class mclass = MDataType.class;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
         addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
 
@@ -78,46 +78,46 @@ public class PropPanelDataType extends PropPanelClassifier {
 
         addField(Argo.localize("UMLMenu", "label.operations"), getFeatureScroll());
 
-        JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
+        JList attrList = new UMLList(new UMLAttributesListModel(this, "feature", true), true);
         attrList.setForeground(Color.blue);
         attrList.setVisibleRowCount(1);
-        JScrollPane attrScroll= new JScrollPane(attrList);
+        JScrollPane attrScroll = new JScrollPane(attrList);
         addField(Argo.localize("UMLMenu", "label.literals"), attrScroll);
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-        new PropPanelButton(this,buttonPanel,_dataTypeIcon, Argo.localize("UMLMenu", "button.add-datatype"),"newDataType",null);
-        new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-enumeration-literal"),"addAttribute",null);
-        new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete datatype"),"removeElement",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+        new PropPanelButton(this, buttonPanel, _dataTypeIcon, Argo.localize("UMLMenu", "button.add-datatype"), "newDataType", null);
+        new PropPanelButton(this, buttonPanel, _addAttrIcon, Argo.localize("UMLMenu", "button.add-enumeration-literal"), "addAttribute", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete datatype"), "removeElement", null);
     }
 
     public void addAttribute() {
         Object target = getTarget();
-        if(target instanceof MClassifier) {
+        if (target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             MStereotype stereo = classifier.getStereotype();
-            if(stereo == null) {
+            if (stereo == null) {
                 //
                 //  if there is not an enumeration stereotype as
                 //     an immediate child of the model, add one
                 MModel model = classifier.getModel();
                 Object ownedElement;
                 boolean match = false;
-                if(model != null) {
+                if (model != null) {
                     Collection ownedElements = model.getOwnedElements();
-                    if(ownedElements != null) {
+                    if (ownedElements != null) {
                         Iterator iter = ownedElements.iterator();
-                        while(iter.hasNext()) {
+                        while (iter.hasNext()) {
                             ownedElement = iter.next();
-                            if(ownedElement instanceof MStereotype) {
+                            if (ownedElement instanceof MStereotype) {
                                 stereo = (MStereotype) ownedElement;
                                 String stereoName = stereo.getName();
-                                if(stereoName != null && stereoName.equals("enumeration")) {
+                                if (stereoName != null && stereoName.equals("enumeration")) {
                                     match = true;
                                     break;
                                 }
                             }
                         }
-                        if(!match) {
+                        if (!match) {
                             stereo = classifier.getFactory().createStereotype();
                             stereo.setName("enumeration");
                             model.addOwnedElement(stereo);
@@ -135,7 +135,7 @@ public class PropPanelDataType extends PropPanelClassifier {
 
     public void newDataType() {
         Object target = getTarget();
-        if(target instanceof MDataType) {
+        if (target instanceof MDataType) {
             MDataType dt = (MDataType) target;
             MNamespace ns = dt.getNamespace();
             MDataType newDt = CoreFactory.getFactory().createDataType();

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,7 +41,7 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
 public class ActionNewUseCaseExtensionPoint
     extends AbstractActionNewModelElement {
 
-     public final static ActionNewUseCaseExtensionPoint SINGLETON = 
+    public final static ActionNewUseCaseExtensionPoint SINGLETON = 
         new ActionNewUseCaseExtensionPoint();
     
     /**
@@ -56,7 +57,7 @@ public class ActionNewUseCaseExtensionPoint
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (getTarget() instanceof MUseCase) {
-            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint((MUseCase)getTarget());
+            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint((MUseCase) getTarget());
         }
     }
 

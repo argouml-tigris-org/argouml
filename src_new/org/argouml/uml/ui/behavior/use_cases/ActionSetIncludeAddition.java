@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,7 +41,7 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
  */
 public class ActionSetIncludeAddition extends UMLChangeAction {
 
-     public static final ActionSetIncludeAddition SINGLETON = new ActionSetIncludeAddition();
+    public static final ActionSetIncludeAddition SINGLETON = new ActionSetIncludeAddition();
 
     /**
      * Constructor for ActionSetincBase.
@@ -50,7 +51,7 @@ public class ActionSetIncludeAddition extends UMLChangeAction {
         super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
 
-     /**
+    /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -59,10 +60,10 @@ public class ActionSetIncludeAddition extends UMLChangeAction {
         MUseCase newAddition = null;
         MInclude inc = null;
         if (source instanceof UMLComboBox2) {
-            UMLComboBox2 combo = (UMLComboBox2)source;
-            newAddition = (MUseCase)combo.getSelectedItem();
+            UMLComboBox2 combo = (UMLComboBox2) source;
+            newAddition = (MUseCase) combo.getSelectedItem();
             if (combo.getTarget() instanceof MInclude) {
-                inc = (MInclude)combo.getTarget();
+                inc = (MInclude) combo.getTarget();
             }
         }
         MUseCase oldAddition = inc.getAddition();

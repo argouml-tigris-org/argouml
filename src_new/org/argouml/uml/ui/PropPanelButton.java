@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -80,12 +81,12 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
         Class propPanelClass = propPanel.getClass();
         Class[] noClass = {};
         try {
-            _actionMethod = propPanelClass.getMethod(actionMethod,noClass);
-            if(enabledMethod != null) {
-                _enabledMethod = propPanelClass.getMethod(enabledMethod,noClass);
+            _actionMethod = propPanelClass.getMethod(actionMethod, noClass);
+            if (enabledMethod != null) {
+                _enabledMethod = propPanelClass.getMethod(enabledMethod, noClass);
             }
-        } catch(Exception e) {
-            cat.error(e.toString() + " in PropPanelButton("+  toolTipText + ")", e);
+        } catch (Exception e) {
+            cat.error(e.toString() + " in PropPanelButton(" +  toolTipText + ")", e);
         }
 
         setEnabled(false);
@@ -97,16 +98,16 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
     public void targetReasserted() {
         boolean enabled = false;
         Object target = _propPanel.getTarget();
-        if(target != null && _actionMethod != null && _propPanel != null) {
+        if (target != null && _actionMethod != null && _propPanel != null) {
             enabled = true;
-            if(_enabledMethod != null) {
+            if (_enabledMethod != null) {
                 try {
-                    enabled = ((Boolean) _enabledMethod.invoke(_propPanel,_noArgs)).booleanValue();
-                } catch(InvocationTargetException ex) {
+                    enabled = ((Boolean) _enabledMethod.invoke(_propPanel, _noArgs)).booleanValue();
+                } catch (InvocationTargetException ex) {
                     cat.error(ex.getTargetException().toString() + " is InvocationTargetException in PropPanelButton", ex.getTargetException());
                     cat.error("Container: " + _propPanel.getClass().getName());
                     cat.error("ActionMethod: " + _actionMethod.toString());
-                } catch(Exception e) {
+                } catch (Exception e) {
                     cat.error(e.toString() + " in PropPanelButton", e);
                 }
             }
@@ -143,14 +144,14 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
      */
     public void actionPerformed(final java.awt.event.ActionEvent event) {
 
-        if(_actionMethod != null && _propPanel != null) {
+        if (_actionMethod != null && _propPanel != null) {
             try {
-                _actionMethod.invoke(_propPanel,_noArgs);
-            } catch(InvocationTargetException ex) {
+                _actionMethod.invoke(_propPanel, _noArgs);
+            } catch (InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in PropPanelButton", ex.getTargetException());
                 cat.error("Container: " + _propPanel.getClass().getName());
                 cat.error("ActionMethod: " + _actionMethod.toString());
-	    } catch(Exception e) {
+	    } catch (Exception e) {
                 cat.error(e.toString() + " in PropPanelButton.actionPerformed", e);
                 cat.error("Container: " + _propPanel.getClass().getName());
                 cat.error("ActionMethod: " + _actionMethod.toString());

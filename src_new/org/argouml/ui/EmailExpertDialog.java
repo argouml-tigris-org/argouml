@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -53,35 +54,35 @@ import org.argouml.swingext.LabelledLayout;
 public class EmailExpertDialog extends ArgoDialog {
     protected static Category cat = Category.getInstance(EmailExpertDialog.class);
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
     /** This field sets the email of the recipient.
      * As yet this doesn not work, nor can the
      * user access a list of contributors to a
      * particular argo project.
      */    
-  protected JTextField _to;
-  protected JTextField _cc;
-  /** The subject line should be automatically
-   * generated based on the class or the
-   * diagram.
-   */  
-  protected JTextField _subject;
-  protected JTextArea  _body;
-  /** Does not work.
-   */  
-  /**
-   */  
-  protected ToDoItem _target;
+    protected JTextField _to;
+    protected JTextField _cc;
+    /** The subject line should be automatically
+     * generated based on the class or the
+     * diagram.
+     */  
+    protected JTextField _subject;
+    protected JTextArea  _body;
+    /** Does not work.
+     */  
+    /**
+     */  
+    protected ToDoItem _target;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
     public EmailExpertDialog() {
         super(ProjectBrowser.getInstance(), 
-            "Send Email to an Expert", 
-            ArgoDialog.OK_CANCEL_OPTION,
-            true);
+	      "Send Email to an Expert", 
+	      ArgoDialog.OK_CANCEL_OPTION,
+	      true);
         
         getOkButton().setText("Send");
         getOkButton().setMnemonic('S');
@@ -89,7 +90,7 @@ public class EmailExpertDialog extends ArgoDialog {
         _to = new JTextField(30);
         _cc = new JTextField(30);
         _subject = new JTextField(30);
-        _body = new JTextArea(10,30);
+        _body = new JTextArea(10, 30);
     
         JLabel toLabel = new JLabel("To:");
         JLabel ccLabel = new JLabel("Cc:");
@@ -110,32 +111,32 @@ public class EmailExpertDialog extends ArgoDialog {
         panel.add(_subject);
 
         JScrollPane bodyScroller = new JScrollPane(_body);
-        bodyScroller.setPreferredSize(new Dimension(100,50));
+        bodyScroller.setPreferredSize(new Dimension(100, 50));
         panel.add(bodyScroller);
         
         setContent(panel);
     }
     
-  public void setTarget(Object t) {
-    _target = (ToDoItem) t;
-    Poster p = _target.getPoster();
-    _to.setText(p.getExpertEmail());
-    _subject.setText(_target.getHeadline());
-  }
+    public void setTarget(Object t) {
+	_target = (ToDoItem) t;
+	Poster p = _target.getPoster();
+	_to.setText(p.getExpertEmail());
+	_subject.setText(_target.getHeadline());
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-  public void actionPerformed(ActionEvent e) {
-      super.actionPerformed(e);   
-      if (e.getSource() == getOkButton()) {
-          Designer dsgr = Designer.TheDesigner;
-          String to = _to.getText();
-          String cc = _cc.getText();
-          String subject = _subject.getText();
-          cat.debug("sending email!");
-      }
-      else if (e.getSource() == getCancelButton()) {
-        cat.debug("cancel");
-      }
-  }  
+    ////////////////////////////////////////////////////////////////
+    // event handlers
+    public void actionPerformed(ActionEvent e) {
+	super.actionPerformed(e);   
+	if (e.getSource() == getOkButton()) {
+	    Designer dsgr = Designer.TheDesigner;
+	    String to = _to.getText();
+	    String cc = _cc.getText();
+	    String subject = _subject.getText();
+	    cat.debug("sending email!");
+	}
+	else if (e.getSource() == getCancelButton()) {
+	    cat.debug("cancel");
+	}
+    }  
 } /* end class EmailExpertDialog */

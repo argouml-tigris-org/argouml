@@ -47,14 +47,14 @@ import org.argouml.cognitive.critics.*;
 
 public class CrFinalSubclassed extends CrUML {
 
-  public CrFinalSubclassed() {
-    setHeadline("Remove final keyword or remove subclasses");
+    public CrFinalSubclassed() {
+	setHeadline("Remove final keyword or remove subclasses");
 
-    addSupportedDecision(CrUML.decINHERITANCE);
-    setKnowledgeTypes(Critic.KT_SEMANTICS);
-    addTrigger("specialization");
-    addTrigger("isLeaf");
-  }
+	addSupportedDecision(CrUML.decINHERITANCE);
+	setKnowledgeTypes(Critic.KT_SEMANTICS);
+	addTrigger("specialization");
+	addTrigger("isLeaf");
+    }
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAGeneralizableElement(dm))) return NO_PROBLEM;

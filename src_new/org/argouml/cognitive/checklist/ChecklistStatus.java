@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,61 +41,61 @@ import java.util.*;
  */
 
 public class ChecklistStatus implements java.io.Serializable {
-  public static int _numChecks = 0;
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    public static int _numChecks = 0;
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** CheckItems that the designer has marked off as already considered. */
-  protected Vector _items = new Vector();
+    /** CheckItems that the designer has marked off as already considered. */
+    protected Vector _items = new Vector();
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  public ChecklistStatus() { }
+    public ChecklistStatus() { }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public Vector getCheckItems() { return _items; }
+    public Vector getCheckItems() { return _items; }
 
-  public void addItem(CheckItem item) {
-    _items.addElement(item);
-    _numChecks++;
-  }
-
-  public synchronized void addAll(ChecklistStatus list) {
-    Enumeration cur = list.elements();
-    while (cur.hasMoreElements()) {
-      CheckItem item = (CheckItem) cur.nextElement();
-      addItem(item);
+    public void addItem(CheckItem item) {
+	_items.addElement(item);
+	_numChecks++;
     }
-  }
 
-  public void removeItem(CheckItem item) {
-    _items.removeElement(item);
-  }
-
-  public Enumeration elements() { return _items.elements(); }
-
-  public CheckItem elementAt(int index) {
-    return (CheckItem)_items.elementAt(index);
-  }
-
-  public boolean contains(CheckItem item) {
-    return _items.contains(item);
-  }
-
-  public String toString() {
-    String res;
-    res = getClass().getName() + " {\n";
-    Enumeration cur = elements();
-    while (cur.hasMoreElements()) {
-      CheckItem item = (CheckItem) cur.nextElement();
-      res += "    " + item.toString() + "\n";
+    public synchronized void addAll(ChecklistStatus list) {
+	Enumeration cur = list.elements();
+	while (cur.hasMoreElements()) {
+	    CheckItem item = (CheckItem) cur.nextElement();
+	    addItem(item);
+	}
     }
-    res += "  }";
-    return res;
-  }
+
+    public void removeItem(CheckItem item) {
+	_items.removeElement(item);
+    }
+
+    public Enumeration elements() { return _items.elements(); }
+
+    public CheckItem elementAt(int index) {
+	return (CheckItem) _items.elementAt(index);
+    }
+
+    public boolean contains(CheckItem item) {
+	return _items.contains(item);
+    }
+
+    public String toString() {
+	String res;
+	res = getClass().getName() + " {\n";
+	Enumeration cur = elements();
+	while (cur.hasMoreElements()) {
+	    CheckItem item = (CheckItem) cur.nextElement();
+	    res += "    " + item.toString() + "\n";
+	}
+	res += "  }";
+	return res;
+    }
 
 } /* end class ChecklistStatus */
 

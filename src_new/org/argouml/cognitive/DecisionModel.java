@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,85 +48,88 @@ import java.util.*;
  *  Strings, maybe they should have some non-atomic structure? */
 
 public class DecisionModel extends Observable
-implements java.io.Serializable {
+    implements java.io.Serializable 
+{
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  private Vector _decisions = new Vector();
+    private Vector _decisions = new Vector();
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  public DecisionModel() {
-    _decisions.addElement(Decision.UNSPEC);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public Vector getDecisions() { return _decisions; }
-
-  /** Reply true iff the Designer is considering the given decision. */
-  public boolean isConsidering(String decision) {
-    Decision d = findDecision(decision);
-    if 	(null == d) return false;
-    return d.getPriority() > 0;
-  }
-
-
-  public synchronized void setDecisionPriority(String decision, int priority) {
-    Decision d = findDecision(decision);
-    if 	(null == d) {
-      d = new Decision(decision, priority);
-      _decisions.addElement(d);
-      return;
+    public DecisionModel() {
+	_decisions.addElement(Decision.UNSPEC);
     }
-    d.setPriority(priority);
-    setChanged();
-    notifyObservers(decision);
-    //decision model listener
-  }
 
-  /** If the given decision is already defined, do nothing. If it is
-   * not already defined, set it to the given initial priority. */
-  public void defineDecision(String decision, int priority) {
-    Decision d = findDecision(decision);
-    if (d == null) setDecisionPriority(decision, priority);
-  }
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  /** The Designer has indicated that he is now interested in the
-   * given decision. */
-  public void startConsidering(String decision) {
-    setDecisionPriority(decision, 1);
-  }
+    public Vector getDecisions() { return _decisions; }
 
-  public void startConsidering(Decision d) {
-    _decisions.removeElement(d);
-    _decisions.addElement(d);
-  }
+    /** Reply true iff the Designer is considering the given decision. */
+    public boolean isConsidering(String decision) {
+	Decision d = findDecision(decision);
+	if 	(null == d) return false;
+	return d.getPriority() > 0;
+    }
 
-  /** The Designer has indicated that he is not interested in the
-   * given decision right now. */
-  public void stopConsidering(String decision) {
-    setDecisionPriority(decision, 0);
-  }
 
-  public void stopConsidering(Decision d) {
-    _decisions.removeElement(d);
-  }
+    public synchronized void setDecisionPriority(String decision,
+						 int priority)
+    {
+	Decision d = findDecision(decision);
+	if 	(null == d) {
+	    d = new Decision(decision, priority);
+	    _decisions.addElement(d);
+	    return;
+	}
+	d.setPriority(priority);
+	setChanged();
+	notifyObservers(decision);
+	//decision model listener
+    }
+
+    /** If the given decision is already defined, do nothing. If it is
+     * not already defined, set it to the given initial priority. */
+    public void defineDecision(String decision, int priority) {
+	Decision d = findDecision(decision);
+	if (d == null) setDecisionPriority(decision, priority);
+    }
+
+    /** The Designer has indicated that he is now interested in the
+     * given decision. */
+    public void startConsidering(String decision) {
+	setDecisionPriority(decision, 1);
+    }
+
+    public void startConsidering(Decision d) {
+	_decisions.removeElement(d);
+	_decisions.addElement(d);
+    }
+
+    /** The Designer has indicated that he is not interested in the
+     * given decision right now. */
+    public void stopConsidering(String decision) {
+	setDecisionPriority(decision, 0);
+    }
+
+    public void stopConsidering(Decision d) {
+	_decisions.removeElement(d);
+    }
 
     /** Finds a decision with a specific name.
      *
      * @return a decision or null if not found.
      */
-  protected Decision findDecision(String decName) {
-    Enumeration enum = _decisions.elements();
-    while (enum.hasMoreElements()) {
-      Decision d = (Decision) enum.nextElement();
-      if (decName.equals(d.getName())) return d;
+    protected Decision findDecision(String decName) {
+	Enumeration enum = _decisions.elements();
+	while (enum.hasMoreElements()) {
+	    Decision d = (Decision) enum.nextElement();
+	    if (decName.equals(d.getName())) return d;
+	}
+	return null;
     }
-    return null;
-  }
 
 } /* end class DecisionModel */

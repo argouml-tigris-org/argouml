@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +40,8 @@ import javax.swing.event.*;
  *  @since  ARGO0.9.4
  */
 public class ActionNotation extends UMLAction
-implements MenuListener {
+    implements MenuListener
+{
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -64,7 +66,7 @@ implements MenuListener {
         while (iterator.hasNext()) {
             Object o = iterator.next();
 	    if (o instanceof NotationName) {
-		NotationName nn = (NotationName)o;
+		NotationName nn = (NotationName) o;
 	        if (key.equals(nn.getTitle())) {
 		    Notation.setDefaultNotation(nn);
 		    break;
@@ -84,7 +86,7 @@ implements MenuListener {
         while (iterator.hasNext()) {
             Object o = iterator.next();
 	    if (o instanceof NotationName) {
-		NotationName nn = (NotationName)o;
+		NotationName nn = (NotationName) o;
 	        JRadioButtonMenuItem mi = new JRadioButtonMenuItem(nn.getTitle());
                 if (nn.getIcon() != null) {
                     mi.setIcon(nn.getIcon());

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -113,10 +114,10 @@ public class LinkedHashMap extends java.util.HashMap {
     }
     
     public Object clone() {
-        LinkedHashMap linkedHashMap = (LinkedHashMap)super.clone();
-        linkedHashMap.entrySet = (EntrySet)entrySet.clone();
-        linkedHashMap.keySet = (KeySet)keySet.clone();
-        linkedHashMap.values = (ValuesList)values.clone();
+        LinkedHashMap linkedHashMap = (LinkedHashMap) super.clone();
+        linkedHashMap.entrySet = (EntrySet) entrySet.clone();
+        linkedHashMap.keySet = (KeySet) keySet.clone();
+        linkedHashMap.values = (ValuesList) values.clone();
         return linkedHashMap;
     }
     
@@ -161,18 +162,18 @@ public class LinkedHashMap extends java.util.HashMap {
 
 	public boolean equals(Object o) {
 	    if (!(o instanceof Map.Entry)) return false;
-	    Map.Entry other = (Map.Entry)o;
+	    Map.Entry other = (Map.Entry) o;
 
-	    return (key==null ? other.getKey()==null : key.equals(other.getKey())) &&
-	       (value==null ? other.getValue()==null : value.equals(other.getValue()));
+	    return (key == null ? other.getKey() == null : key.equals(other.getKey())) &&
+	       (value == null ? other.getValue() == null : value.equals(other.getValue()));
 	}
 
 	public int hashCode() {
-	    return (key==null ? 0 : key.hashCode()) ^ (value==null ? 0 : value.hashCode());
+	    return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
 	}
 
 	public String toString() {
-	    return key+"="+value;
+	    return key + "=" + value;
 	}
     }
     

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,8 +51,8 @@ public class UMLOperationsListModel extends UMLModelElementCachedListModel  {
     private java.util.List _operations;
 
 
-    public UMLOperationsListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
-        super(container,property,showNone);
+    public UMLOperationsListModel(UMLUserInterfaceContainer container, String property, boolean showNone) {
+        super(container, property, showNone);
     }
 
     protected void resetCache() {
@@ -65,14 +66,14 @@ public class UMLOperationsListModel extends UMLModelElementCachedListModel  {
     public Collection getRawCollection() {
         Collection raw = null;
         Object target = getTarget();
-        if(target instanceof MClassifier) {
+        if (target instanceof MClassifier) {
             raw = ((MClassifier) target).getFeatures();
         }
         return raw;
     }
 
     protected java.util.List getCache() {
-        if(_operations == null) {
+        if (_operations == null) {
             _operations = buildCache();
         }
         return _operations;
@@ -92,16 +93,16 @@ public class UMLOperationsListModel extends UMLModelElementCachedListModel  {
  *           to the index position in the particular list box, not the collection.
  */
 
-    public void add(int index){
+    public void add(int index) {
         Object target = getTarget();
 
-        if(target instanceof MClassifier) {
+        if (target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             Collection oldFeatures = classifier.getFeatures();
             MOperation newOp = UmlFactory.getFactory().getCore().buildOperation(classifier);
             classifier.setFeatures(addElement(oldFeatures, index, newOp,
-                                   _operations.isEmpty()?null:_operations.get(index)));
-            fireContentsChanged(this,index-1,index);
+                                   _operations.isEmpty() ? null : _operations.get(index)));
+            fireContentsChanged(this, index - 1, index);
             navigateTo(newOp);
         }
     }  // ...end of add()...
@@ -109,34 +110,34 @@ public class UMLOperationsListModel extends UMLModelElementCachedListModel  {
 
     public void delete(int index) {
         Object target = getTarget();
-        if(target instanceof MClassifier && _operations != null) {
+        if (target instanceof MClassifier && _operations != null) {
             Object operation = _operations.get(index);
-            if(operation != null) {
+            if (operation != null) {
                 _operations.remove(index);
                 ((MClassifier) target).removeFeature((MOperation) operation);
                 resetSize();
-                fireIntervalRemoved(this,index,index);
+                fireIntervalRemoved(this, index, index);
             }
         }
     }
 
     public void moveUp(int index) {
         Object target = getTarget();
-        if(target instanceof MClassifier && _operations != null) {
+        if (target instanceof MClassifier && _operations != null) {
             MClassifier classifier = (MClassifier) target;
             Collection oldFeatures = classifier.getFeatures();
-            classifier.setFeatures(swap(oldFeatures,index-1,_operations.get(index-1),_operations.get(index)));
-            fireContentsChanged(this,index-1,index);
+            classifier.setFeatures(swap(oldFeatures, index - 1, _operations.get(index - 1), _operations.get(index)));
+            fireContentsChanged(this, index - 1, index);
         }
     }
 
     public void moveDown(int index) {
         Object target = getTarget();
-        if(target instanceof MClassifier && _operations != null) {
+        if (target instanceof MClassifier && _operations != null) {
             MClassifier classifier = (MClassifier) target;
             Collection oldFeatures = classifier.getFeatures();
-            classifier.setFeatures(swap(oldFeatures,index,_operations.get(index),_operations.get(index+1)));
-            fireContentsChanged(this,index,index+1);
+            classifier.setFeatures(swap(oldFeatures, index, _operations.get(index), _operations.get(index + 1)));
+            fireContentsChanged(this, index, index + 1);
         }
     }
     
@@ -147,18 +148,18 @@ public class UMLOperationsListModel extends UMLModelElementCachedListModel  {
      *  @param index index of selected list item
      *  @return "true" if popup menu should be displayed
      */
-    public boolean buildPopup(JPopupMenu popup,int index) {
+    public boolean buildPopup(JPopupMenu popup, int index) {
         UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(getModelElementSize() <= 0) {
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"), this, "open", index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"), this, "delete", index);
+        if (getModelElementSize() <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        UMLListMenuItem add =new UMLListMenuItem(container.localize("New"),this,"add",index);
-        if(_upper >= 0 && getModelElementSize() >= _upper) {
+        UMLListMenuItem add = new UMLListMenuItem(container.localize("New"), this, "add", index);
+        if (_upper >= 0 && getModelElementSize() >= _upper) {
             add.setEnabled(false);
         }
         popup.add(add);

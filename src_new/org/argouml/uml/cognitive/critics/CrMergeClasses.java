@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,36 +37,36 @@ import org.argouml.cognitive.*;
  */
 public class CrMergeClasses extends CrUML {
 
-  public CrMergeClasses() {
-    setHeadline("Consider Combining Classes");
-    setPriority(ToDoItem.LOW_PRIORITY);
-    addSupportedDecision(CrUML.decCLASS_SELECTION); 
-    addTrigger("associationEnd");
-  }
+    public CrMergeClasses() {
+	setHeadline("Consider Combining Classes");
+	setPriority(ToDoItem.LOW_PRIORITY);
+	addSupportedDecision(CrUML.decCLASS_SELECTION); 
+	addTrigger("associationEnd");
+    }
 
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
-    MClass cls = (MClass) dm;
-    Collection ends = cls.getAssociationEnds();
-    if (ends == null || ends.size() != 1) return NO_PROBLEM;
-    MAssociationEnd myEnd = (MAssociationEnd) ends.iterator().next();
-    MAssociation asc = myEnd.getAssociation();
-    List conns = asc.getConnections();
-    MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
-    MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
-    // both ends must be classes, otherwise there is nothing to merge
-    if (!(ModelFacade.isAClass(ae0.getType()) && 
-          ModelFacade.isAClass(ae1.getType()))) 
-        return NO_PROBLEM;
-    // both ends must be navigable, otherwise there is nothing to merge
-    if (!(ModelFacade.isNavigable(ae0) && 
-          ModelFacade.isNavigable(ae1)))
-        return NO_PROBLEM;
-    if (ae0.getMultiplicity().equals(MMultiplicity.M1_1) &&
-        ae1.getMultiplicity().equals(MMultiplicity.M1_1))
-        return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
+	MClass cls = (MClass) dm;
+	Collection ends = cls.getAssociationEnds();
+	if (ends == null || ends.size() != 1) return NO_PROBLEM;
+	MAssociationEnd myEnd = (MAssociationEnd) ends.iterator().next();
+	MAssociation asc = myEnd.getAssociation();
+	List conns = asc.getConnections();
+	MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
+	MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
+	// both ends must be classes, otherwise there is nothing to merge
+	if (!(ModelFacade.isAClass(ae0.getType()) && 
+	      ModelFacade.isAClass(ae1.getType()))) 
+	    return NO_PROBLEM;
+	// both ends must be navigable, otherwise there is nothing to merge
+	if (!(ModelFacade.isNavigable(ae0) && 
+	      ModelFacade.isNavigable(ae1)))
+	    return NO_PROBLEM;
+	if (ae0.getMultiplicity().equals(MMultiplicity.M1_1) &&
+	    ae1.getMultiplicity().equals(MMultiplicity.M1_1))
+	    return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
 
 } /* end class CrMergeClasses */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,65 +44,65 @@ import org.argouml.util.ConfigLoader;
 
 public class PropPanelAttribute extends PropPanelStructuralFeature {
 
-	public PropPanelAttribute() {
-		super("Attribute", ConfigLoader.getTabPropsOrientation());
+    public PropPanelAttribute() {
+	super("Attribute", ConfigLoader.getTabPropsOrientation());
 
-		addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-		addField(
-			Argo.localize("UMLMenu", "label.stereotype"),
-			new UMLComboBoxNavigator(
-				this,
-				Argo.localize("UMLMenu", "tooltip.nav-stereo"),
-				getStereotypeBox()));
-		addField(Argo.localize("UMLMenu", "label.owner"), getOwnerScroll());
-		addField(
-			Argo.localize("UMLMenu", "label.multiplicity"),
-			getMultiplicityComboBox());
+	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+	addField(
+		 Argo.localize("UMLMenu", "label.stereotype"),
+		 new UMLComboBoxNavigator(
+					  this,
+					  Argo.localize("UMLMenu", "tooltip.nav-stereo"),
+					  getStereotypeBox()));
+	addField(Argo.localize("UMLMenu", "label.owner"), getOwnerScroll());
+	addField(
+		 Argo.localize("UMLMenu", "label.multiplicity"),
+		 getMultiplicityComboBox());
 
-		addSeperator();
+	addSeperator();
 
-		addField(
-			Argo.localize("UMLMenu", "label.type"),
-			new UMLComboBoxNavigator(
-				this,
-				Argo.localize("UMLMenu", "tooltip.nav-class"),
-				getTypeComboBox()));
+	addField(
+		 Argo.localize("UMLMenu", "label.type"),
+		 new UMLComboBoxNavigator(
+					  this,
+					  Argo.localize("UMLMenu", "tooltip.nav-class"),
+					  getTypeComboBox()));
 
-		addField(Argo.localize("UMLMenu", "label.initial-value"), new JScrollPane(new UMLLinkedList(new UMLAttributeInitialValueListModel())));
+	addField(Argo.localize("UMLMenu", "label.initial-value"), new JScrollPane(new UMLLinkedList(new UMLAttributeInitialValueListModel())));
         add(new UMLModelElementVisibilityRadioButtonPanel(Argo.localize("UMLMenu", "label.visibility"), true));
         add(getChangeabilityRadioButtonPanel());
         add(getOwnerScopeCheckbox());
 
-		new PropPanelButton(
-			this,
-			buttonPanel,
-			_navUpIcon,
-			Argo.localize("UMLMenu", "button.go-up"),
-			"navigateUp",
-			null);
-		new PropPanelButton(
-			this,
-			buttonPanel,
-			_addAttrIcon,
-			Argo.localize("UMLMenu", "button.add-attribute"),
-			"newAttribute",
-			null);
-		new PropPanelButton(
-			this,
-			buttonPanel,
-			_deleteIcon,
-			Argo.localize("UMLMenu", "button.delete-attribute"),
-			"removeElement",
-			null);
-	}
+	new PropPanelButton(
+			    this,
+			    buttonPanel,
+			    _navUpIcon,
+			    Argo.localize("UMLMenu", "button.go-up"),
+			    "navigateUp",
+			    null);
+	new PropPanelButton(
+			    this,
+			    buttonPanel,
+			    _addAttrIcon,
+			    Argo.localize("UMLMenu", "button.add-attribute"),
+			    "newAttribute",
+			    null);
+	new PropPanelButton(
+			    this,
+			    buttonPanel,
+			    _deleteIcon,
+			    Argo.localize("UMLMenu", "button.delete-attribute"),
+			    "removeElement",
+			    null);
+    }
 
-	public void newAttribute() {
+    public void newAttribute() {
         Object target = getTarget();
         if (ModelFacade.isAStructuralFeature(target)) {
             Object owner = ModelFacade.getOwner(target);
             TargetManager.getInstance().setTarget(UmlFactory.getFactory().getCore().buildAttribute(owner));
         }
 
-	}
+    }
 
 } /* end class PropPanelAttribute */

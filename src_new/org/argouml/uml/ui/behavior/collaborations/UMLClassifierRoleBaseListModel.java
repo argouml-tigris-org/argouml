@@ -49,7 +49,7 @@ public class UMLClassifierRoleBaseListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MClassifierRole)getTarget()).getBases());
+        setAllElements(((MClassifierRole) getTarget()).getBases());
     }
 
     /**
@@ -57,7 +57,7 @@ public class UMLClassifierRoleBaseListModel extends UMLModelElementListModel2 {
      */
     protected boolean isValidElement(MBase elem) {
         return elem instanceof MClassifier &&
-             ((MClassifierRole)getTarget()).getBases().contains(elem);
+             ((MClassifierRole) getTarget()).getBases().contains(elem);
     }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -34,17 +35,17 @@ import org.tigris.gef.util.*;
 
 
 public class SuperclassGen implements ChildGenerator {
-  public Enumeration gen(Object o) {
+    public Enumeration gen(Object o) {
 	Vector res = new Vector();
 
-    MGeneralizableElement ge = (MGeneralizableElement) o;
-    Collection gens = ge.getGeneralizations();
-    if (gens == null) return res.elements();
-    Iterator enum = gens.iterator();
-    while (enum.hasNext()) {
-      MGeneralization g = (MGeneralization) enum.next();
-      res.add(g.getParent());
+	MGeneralizableElement ge = (MGeneralizableElement) o;
+	Collection gens = ge.getGeneralizations();
+	if (gens == null) return res.elements();
+	Iterator enum = gens.iterator();
+	while (enum.hasNext()) {
+	    MGeneralization g = (MGeneralization) enum.next();
+	    res.add(g.getParent());
+	}
+	return res.elements();
     }
-    return res.elements();
-  }
 } /* end class SuperclassGen  */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -44,87 +45,87 @@ import ru.novosoft.uml.model_management.MPackage;
  */
 public class ActionSetSourcePath extends UMLAction {
 
-  ////////////////////////////////////////////////////////////////
-  // static variables
+    ////////////////////////////////////////////////////////////////
+    // static variables
 
-  public static ActionSetSourcePath SINGLETON = new ActionSetSourcePath();
+    public static ActionSetSourcePath SINGLETON = new ActionSetSourcePath();
 
-  public static final String separator = "/"; //System.getProperty("file.separator");
+    public static final String separator = "/"; //System.getProperty("file.separator");
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  protected ActionSetSourcePath() {
-    super("action.set-source-path", NO_ICON);
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // main methods
-
-  public void actionPerformed(ActionEvent e) {
-    File f = getNewDirectory();
-    if (f != null) {
-      ProjectBrowser pb = ProjectBrowser.getInstance();
-      Object obj = pb.getNavigatorPane().getSelectedObject();
-      if (obj instanceof MModelElement) {
-        ((MModelElement)obj).setTaggedValue("src_path",f.getPath());
-      }
-    }
-  }
-
-  protected File getNewDirectory() {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    Project p = ProjectManager.getManager().getCurrentProject();
-    Object obj = pb.getNavigatorPane().getSelectedObject();
-    String name = null;
-    String type = null;
-    String path = null;
-    if (obj instanceof MModelElement) {
-      name = ((MModelElement)obj).getName();
-      path = ((MModelElement)obj).getTaggedValue("src_path");
-      if (obj instanceof MPackage)
-        type = "Package";
-      else if (obj instanceof MClass)
-        type = "Class";
-      if (obj instanceof MInterface)
-        type = "Interface";
-    } else {
-      return null;
+    protected ActionSetSourcePath() {
+	super("action.set-source-path", NO_ICON);
     }
 
-    JFileChooser chooser = null;
-    File f = null;
-    if (path != null) {
-      f = new File(path);
-    }
-    if ((f != null) && (f.getPath().length()>0)) {
-      chooser  = OsUtil.getFileChooser(f.getPath());
-    }
-    if (chooser == null) {
-      chooser  = OsUtil.getFileChooser();
-    }
-    if (f != null) {
-      chooser.setSelectedFile(f);
+
+    ////////////////////////////////////////////////////////////////
+    // main methods
+
+    public void actionPerformed(ActionEvent e) {
+	File f = getNewDirectory();
+	if (f != null) {
+	    ProjectBrowser pb = ProjectBrowser.getInstance();
+	    Object obj = pb.getNavigatorPane().getSelectedObject();
+	    if (obj instanceof MModelElement) {
+		((MModelElement) obj).setTaggedValue("src_path", f.getPath());
+	    }
+	}
     }
 
-    String sChooserTitle = Translator.localize("CoreMenu","action.set-source-path");
-    if (type != null)
-      sChooserTitle += ' '+type;
-    if (name != null)
-      sChooserTitle += ' '+name;
-    chooser.setDialogTitle(sChooserTitle);
-    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+    protected File getNewDirectory() {
+	ProjectBrowser pb = ProjectBrowser.getInstance();
+	Project p = ProjectManager.getManager().getCurrentProject();
+	Object obj = pb.getNavigatorPane().getSelectedObject();
+	String name = null;
+	String type = null;
+	String path = null;
+	if (obj instanceof MModelElement) {
+	    name = ((MModelElement) obj).getName();
+	    path = ((MModelElement) obj).getTaggedValue("src_path");
+	    if (obj instanceof MPackage)
+		type = "Package";
+	    else if (obj instanceof MClass)
+		type = "Class";
+	    if (obj instanceof MInterface)
+		type = "Interface";
+	} else {
+	    return null;
+	}
 
-    int retval = chooser.showDialog(pb,"OK");
-    if (retval == JFileChooser.APPROVE_OPTION) {
-      return chooser.getSelectedFile();
-    } else {
-      return null;
+	JFileChooser chooser = null;
+	File f = null;
+	if (path != null) {
+	    f = new File(path);
+	}
+	if ((f != null) && (f.getPath().length() > 0)) {
+	    chooser  = OsUtil.getFileChooser(f.getPath());
+	}
+	if (chooser == null) {
+	    chooser  = OsUtil.getFileChooser();
+	}
+	if (f != null) {
+	    chooser.setSelectedFile(f);
+	}
+
+	String sChooserTitle = Translator.localize("CoreMenu", "action.set-source-path");
+	if (type != null)
+	    sChooserTitle += ' ' + type;
+	if (name != null)
+	    sChooserTitle += ' ' + name;
+	chooser.setDialogTitle(sChooserTitle);
+	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+	int retval = chooser.showDialog(pb, "OK");
+	if (retval == JFileChooser.APPROVE_OPTION) {
+	    return chooser.getSelectedFile();
+	} else {
+	    return null;
+	}
     }
-  }
 
-  public boolean shouldBeEnabled() {
-    return true;
-  }
+    public boolean shouldBeEnabled() {
+	return true;
+    }
 } /* end class ActionSetSourcePath */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -66,306 +67,310 @@ import org.argouml.cognitive.critics.*;
 
 
 public abstract class DesignMaterial extends Observable
-implements Highlightable, java.io.Serializable {
-/*
- * @see jargo.softarch.C2BrickDM
- * @see jargo.softarch.C2CompDM
- * @see jargo.softarch.C2ConnDM
- * @see jargo.ui.UiPropertyBrowser */
+    implements Highlightable, java.io.Serializable 
+{
+    /*
+     * @see jargo.softarch.C2BrickDM
+     * @see jargo.softarch.C2CompDM
+     * @see jargo.softarch.C2ConnDM
+     * @see jargo.ui.UiPropertyBrowser
+     */
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** Observers of this object that should be saved and loaded with
-   *  this object. */
-  protected Vector _persistObservers = null;
+    /** Observers of this object that should be saved and loaded with
+     *  this object. */
+    protected Vector _persistObservers = null;
 
-  protected transient Vector _propertyListeners = null;
+    protected transient Vector _propertyListeners = null;
   
-  /** ToDoList items that are on the designers ToDoList because
-   *  of this material. */
-  protected ToDoList _pendingItems = new ToDoList();
+    /** ToDoList items that are on the designers ToDoList because
+     *  of this material. */
+    protected ToDoList _pendingItems = new ToDoList();
 
-  /** Other DesignMaterial's that contain this one. */
-  protected Vector _parents = new Vector();
+    /** Other DesignMaterial's that contain this one. */
+    protected Vector _parents = new Vector();
 
-  /** "Soft" Properties that this DesignMaterial may have, but we do
-   *  not want to allocate an instance variable to them. */
-  protected Hashtable _props = new Hashtable();
+    /** "Soft" Properties that this DesignMaterial may have, but we do
+     *  not want to allocate an instance variable to them. */
+    protected Hashtable _props = new Hashtable();
 
 
-  protected boolean _highlight;
+    protected boolean _highlight;
 
   
   
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new DesignMaterial with empty Properties. */
-  public DesignMaterial() {  }
+    /** Construct a new DesignMaterial with empty Properties. */
+    public DesignMaterial() {  }
 
-  /** Construct a new DesignMaterial with the given Properties. */
-  public DesignMaterial(Hashtable ht) {
-    // TODO: construct a new Hashtable that "inherits"
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Make the given Design be the parent of this DesignMaterial. */
-  void addParent(Design d) {
-    _parents.removeElement(d); /* behave like a set */
-    _parents.addElement(d);
-  }
-
-  /** Remove the given parent. For example, this could be called when
-   * a DesignMaterial is removed from a Design. */
-  void removeParent(Design d) { _parents.removeElement(d); }
-
-  /** Enumerate over all my parents. For now most DesignMaterial's
-   * have just one parent, but I think this might be useful in the
-   * future. */
-  public Enumeration parents() { return _parents.elements(); }
-
-  /** Reply the value of one property, if not found reply
-  * defaultValue. Even if subclasses store some properties in instance
-  * variables, they should implement this method to give acces to
-  * those instance variables by name. */
-  public Object getProperty(String key, Object defaultValue) {
-    return get(key, defaultValue);
-  }
-
-  /** Reply the value of one property, if not found reply null. */
-  public Object getProperty(String k) { return get(k); }
-
-  public Object get(String k) { return _props.get(k); }
-
-  public Object get(String key, Object defaultValue) {
-    Object res = get(key);
-    if (res == null) res = defaultValue;
-    return res;
-  }
-
-  /** Reply the value an int property, if not found reply 0. */
-  public int getIntProperty(String k) {
-    return getIntProperty(k, 0);
-  }
-
-  /** Reply the value an int property, if not found reply defaultValue. */
-  public int getIntProperty(String k, int defaultValue) {
-    Object o = getProperty(k);
-    if (o instanceof Integer) return ((Integer)o).intValue();
-    return defaultValue;
-  }
-
-
-  /** Reply the value an boolean property, if not found reply false. */
-  public boolean getBoolProperty(String k) {
-    return getBoolProperty(k, false);
-  }
-
-  /** Reply the value an int property, if not found reply defaultValue. */
-  public boolean getBoolProperty(String k, boolean defaultValue) {
-    Object o = getProperty(k);
-    if (o instanceof Boolean) return ((Boolean)o).booleanValue();
-    return defaultValue;
-  }
-
-  /** Set the value of a property. */
-  public boolean put(String k, Object v) {
-    if (v == null || k == null) return false;
-    _props.put(k, v);
-    changedProperty(k);
-    return true;
-  }
-
-  public void put(Hashtable ht) {
-    Enumeration keys = ht.keys();
-    while (keys.hasMoreElements()) {
-      String k = (String) keys.nextElement();
-      Object v = ht.get(k);
-      put(k, v);
+    /** Construct a new DesignMaterial with the given Properties. */
+    public DesignMaterial(Hashtable ht) {
+	// TODO: construct a new Hashtable that "inherits"
     }
-  }
 
-  /** Convenient function for setting the value of boolean
-   * properties. */
-  public boolean put(String k, boolean v) {
-    return put(k, v ? Boolean.TRUE : Boolean.FALSE);
-  }
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Convenient function for setting the value of boolean
-   * properties. */
-  public boolean put(String k, int v) { return put(k, new Integer(v)); }
-
-  public void setProperty(String k, Object v) {
-    if (getProperty(k) != null) put(k, v);
-  }
-
-  public void setProperty(String k, int v) {
-    if (getProperty(k) != null) put(k, new Integer(v));
-  }
-
-  public void setProperty(String k, boolean v) {
-    if (getProperty(k) != null) put(k, new Boolean(v));
-  }
-
-  public boolean define(String k, Object v) {
-    if (getProperty(k) == null) return put(k, v);
-    return false;
-  }
-
-  public boolean canPut(String key) { return true; }
-  public Enumeration keysIn(String cat) {
-    if (cat.equals("Model")) return _props.keys();
-    else return EnumerationEmpty.theInstance();
-  }
-
-  /** Set the value of a property iff it is not already set. */
-  public void define(String k, boolean v) {
-    if (getProperty(k) == null) put(k, v);
-  }
-
-  /** Set the value of a property iff it is not already set. */
-  public void define(String k, int v) {
-    if (getProperty(k) == null) put(k, v);
-  }
-
-  /** Make the given property undefined. */
-  public Object removeProperty(String k) { return _props.remove(k); }
-
-  /** Convenient function for getting the value of boolean
-   * properties. */
-  public boolean getBoolean(String k) {
-    return getProperty(k, "false").equals("true");
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // critiquing
-
-  /** Critique this DesignMaterial and post ToDoItem's to the
-   * Designer's list. By default this is done by asking Agency. */
-  public void critique(Designer dsgr) { Agency.applyAllCritics(this, dsgr); }
-
-  /** Remove all the ToDoItem's generated by this DesignMaterial from
-   * the ToDoList of the given Designer. For example, this could be
-   * called when the DesignMaterial is deleted from the design
-   * document. */
-  public void removePendingItems(Designer dsgr) {
-    dsgr.removeToDoItems(_pendingItems);
-    _pendingItems.removeAllElements();
-  }
-
-  /** Remove this DesignMaterial from the design document and free up
-   * memory and other resources as much as possible. */
-  public void dispose() {
-    Enumeration pars = parents();
-    while (pars.hasMoreElements()) {
-      Design d = (Design)pars.nextElement();
-      d.removeElement(this);
+    /** Make the given Design be the parent of this DesignMaterial. */
+    void addParent(Design d) {
+	_parents.removeElement(d); /* behave like a set */
+	_parents.addElement(d);
     }
-    removePendingItems(Designer.theDesigner());
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // user interface
+    /** Remove the given parent. For example, this could be called when
+     * a DesignMaterial is removed from a Design. */
+    void removeParent(Design d) { _parents.removeElement(d); }
 
-  /** When a critic produces a ToDoItem, both the Designer and the
-   * "offending" DesignMaterial's are notified. By default the
-   * ToDoItem is added to the list of generated ToDoItem's. Subclasses
-   * may, for example, visually change their appearance to indicate
-   * the presence of an error. One paper called this 'clarifiers'. <p>
-   *
-   * TODO: do I need a Clarifier object in the framework? */
-  public void inform(ToDoItem item) { _pendingItems.addElement(item); }
+    /** Enumerate over all my parents. For now most DesignMaterial's
+     * have just one parent, but I think this might be useful in the
+     * future. */
+    public Enumeration parents() { return _parents.elements(); }
 
-  /** Draw the Designer's attention to this DesignMaterial in all
-   * views. */
-  public void setHighlight(boolean h) {
-    _highlight = h;
-    setChanged();
-    notifyObservers("HIGHLIGHT");    
-  }
-  public boolean getHighlight() { return _highlight; }
-
-
-  ////////////////////////////////////////////////////////////////
-  // notifications and updates
-
-  public void changedProperty(String key) {
-    setChanged();
-    notifyObservers(key);
-  }
-
-  public void addPersistantObserver(Observer o) {
-    if (_persistObservers == null) _persistObservers = new Vector();
-    _persistObservers.removeElement(o);
-    _persistObservers.addElement(o);
-  }
-
-  public void removePersistObserver(Observer o) {
-    _persistObservers.removeElement(o);
-  }
-
-  public void notifyPersistantObservers(Object arg) {
-    if (_persistObservers == null) return;
-    Enumeration eachObs = _persistObservers.elements();
-    while (eachObs.hasMoreElements()) {
-      Observer obs = (Observer) eachObs.nextElement();
-      obs.update(this, arg);
+    /** Reply the value of one property, if not found reply
+     * defaultValue. Even if subclasses store some properties in instance
+     * variables, they should implement this method to give acces to
+     * those instance variables by name. */
+    public Object getProperty(String key, Object defaultValue) {
+	return get(key, defaultValue);
     }
-  }
 
-  public void notifyObservers(Object arg) {
-    super.notifyObservers(arg);
-    notifyPersistantObservers(arg);
-  }
+    /** Reply the value of one property, if not found reply null. */
+    public Object getProperty(String k) { return get(k); }
+
+    public Object get(String k) { return _props.get(k); }
+
+    public Object get(String key, Object defaultValue) {
+	Object res = get(key);
+	if (res == null) res = defaultValue;
+	return res;
+    }
+
+    /** Reply the value an int property, if not found reply 0. */
+    public int getIntProperty(String k) {
+	return getIntProperty(k, 0);
+    }
+
+    /** Reply the value an int property, if not found reply defaultValue. */
+    public int getIntProperty(String k, int defaultValue) {
+	Object o = getProperty(k);
+	if (o instanceof Integer) return ((Integer) o).intValue();
+	return defaultValue;
+    }
 
 
-  ////////////////////////////////////////////////////////////////
-  // property change events
+    /** Reply the value an boolean property, if not found reply false. */
+    public boolean getBoolProperty(String k) {
+	return getBoolProperty(k, false);
+    }
+
+    /** Reply the value an int property, if not found reply defaultValue. */
+    public boolean getBoolProperty(String k, boolean defaultValue) {
+	Object o = getProperty(k);
+	if (o instanceof Boolean) return ((Boolean) o).booleanValue();
+	return defaultValue;
+    }
+
+    /** Set the value of a property. */
+    public boolean put(String k, Object v) {
+	if (v == null || k == null) return false;
+	_props.put(k, v);
+	changedProperty(k);
+	return true;
+    }
+
+    public void put(Hashtable ht) {
+	Enumeration keys = ht.keys();
+	while (keys.hasMoreElements()) {
+	    String k = (String) keys.nextElement();
+	    Object v = ht.get(k);
+	    put(k, v);
+	}
+    }
+
+    /** Convenient function for setting the value of boolean
+     * properties. */
+    public boolean put(String k, boolean v) {
+	return put(k, v ? Boolean.TRUE : Boolean.FALSE);
+    }
+
+    /** Convenient function for setting the value of boolean
+     * properties. */
+    public boolean put(String k, int v) { return put(k, new Integer(v)); }
+
+    public void setProperty(String k, Object v) {
+	if (getProperty(k) != null) put(k, v);
+    }
+
+    public void setProperty(String k, int v) {
+	if (getProperty(k) != null) put(k, new Integer(v));
+    }
+
+    public void setProperty(String k, boolean v) {
+	if (getProperty(k) != null) put(k, new Boolean(v));
+    }
+
+    public boolean define(String k, Object v) {
+	if (getProperty(k) == null) return put(k, v);
+	return false;
+    }
+
+    public boolean canPut(String key) { return true; }
+    public Enumeration keysIn(String cat) {
+	if (cat.equals("Model")) return _props.keys();
+	else return EnumerationEmpty.theInstance();
+    }
+
+    /** Set the value of a property iff it is not already set. */
+    public void define(String k, boolean v) {
+	if (getProperty(k) == null) put(k, v);
+    }
+
+    /** Set the value of a property iff it is not already set. */
+    public void define(String k, int v) {
+	if (getProperty(k) == null) put(k, v);
+    }
+
+    /** Make the given property undefined. */
+    public Object removeProperty(String k) { return _props.remove(k); }
+
+    /** Convenient function for getting the value of boolean
+     * properties. */
+    public boolean getBoolean(String k) {
+	return getProperty(k, "false").equals("true");
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // critiquing
+
+    /** Critique this DesignMaterial and post ToDoItem's to the
+     * Designer's list. By default this is done by asking Agency. */
+    public void critique(Designer dsgr) { Agency.applyAllCritics(this, dsgr); }
+
+    /** Remove all the ToDoItem's generated by this DesignMaterial from
+     * the ToDoList of the given Designer. For example, this could be
+     * called when the DesignMaterial is deleted from the design
+     * document. */
+    public void removePendingItems(Designer dsgr) {
+	dsgr.removeToDoItems(_pendingItems);
+	_pendingItems.removeAllElements();
+    }
+
+    /** Remove this DesignMaterial from the design document and free up
+     * memory and other resources as much as possible. */
+    public void dispose() {
+	Enumeration pars = parents();
+	while (pars.hasMoreElements()) {
+	    Design d = (Design) pars.nextElement();
+	    d.removeElement(this);
+	}
+	removePendingItems(Designer.theDesigner());
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // user interface
+
+    /** When a critic produces a ToDoItem, both the Designer and the
+     * "offending" DesignMaterial's are notified. By default the
+     * ToDoItem is added to the list of generated ToDoItem's. Subclasses
+     * may, for example, visually change their appearance to indicate
+     * the presence of an error. One paper called this 'clarifiers'. <p>
+     *
+     * TODO: do I need a Clarifier object in the framework? */
+    public void inform(ToDoItem item) { _pendingItems.addElement(item); }
+
+    /** Draw the Designer's attention to this DesignMaterial in all
+     * views. */
+    public void setHighlight(boolean h) {
+	_highlight = h;
+	setChanged();
+	notifyObservers("HIGHLIGHT");    
+    }
+    public boolean getHighlight() { return _highlight; }
+
+
+    ////////////////////////////////////////////////////////////////
+    // notifications and updates
+
+    public void changedProperty(String key) {
+	setChanged();
+	notifyObservers(key);
+    }
+
+    public void addPersistantObserver(Observer o) {
+	if (_persistObservers == null) _persistObservers = new Vector();
+	_persistObservers.removeElement(o);
+	_persistObservers.addElement(o);
+    }
+
+    public void removePersistObserver(Observer o) {
+	_persistObservers.removeElement(o);
+    }
+
+    public void notifyPersistantObservers(Object arg) {
+	if (_persistObservers == null) return;
+	Enumeration eachObs = _persistObservers.elements();
+	while (eachObs.hasMoreElements()) {
+	    Observer obs = (Observer) eachObs.nextElement();
+	    obs.update(this, arg);
+	}
+    }
+
+    public void notifyObservers(Object arg) {
+	super.notifyObservers(arg);
+	notifyPersistantObservers(arg);
+    }
+
+
+    ////////////////////////////////////////////////////////////////
+    // property change events
   
-  public synchronized void
-  addPropertyChangeListener(PropertyChangeListener listener) {
-    if (_propertyListeners == null) _propertyListeners = new Vector();
-    _propertyListeners.removeElement(listener);
-    _propertyListeners.addElement(listener);
-  }
+    public synchronized 
+    void addPropertyChangeListener(PropertyChangeListener listener)
+    {
+	if (_propertyListeners == null) _propertyListeners = new Vector();
+	_propertyListeners.removeElement(listener);
+	_propertyListeners.addElement(listener);
+    }
 
-  public synchronized void
-  removePropertyChangeListener(PropertyChangeListener listener) {
-    if (_propertyListeners == null) return;
-    _propertyListeners.removeElement(listener);
-  }
+    public synchronized 
+    void removePropertyChangeListener(PropertyChangeListener listener)
+    {
+	if (_propertyListeners == null) return;
+	_propertyListeners.removeElement(listener);
+    }
 
-  public void firePropertyChange(String propertyName, 
-				 boolean oldValue, boolean newValue) {
-	 firePropertyChange(propertyName,
-			    new Boolean(oldValue),
-			    new Boolean(newValue));
-  }
+    public void firePropertyChange(String propertyName, 
+				   boolean oldValue, boolean newValue) {
+	firePropertyChange(propertyName,
+			   new Boolean(oldValue),
+			   new Boolean(newValue));
+    }
 
-  public void firePropertyChange(String propertyName, 
-				 int oldValue, int newValue) {
-	 firePropertyChange(propertyName,
-			    new Integer(oldValue),
-			    new Integer(newValue));
-  }
+    public void firePropertyChange(String propertyName, 
+				   int oldValue, int newValue) {
+	firePropertyChange(propertyName,
+			   new Integer(oldValue),
+			   new Integer(newValue));
+    }
 
 
 
-  public void firePropertyChange(String propertyName, 
-				 Object oldValue, Object newValue) {
-    if (_propertyListeners == null) return;
-    if (oldValue != null && oldValue.equals(newValue)) return;
-    PropertyChangeEvent evt =
-      new PropertyChangeEvent(this, propertyName, oldValue, newValue);
-    for (int i = 0; i < _propertyListeners.size(); i++) {
-      PropertyChangeListener target = 
-	(PropertyChangeListener) _propertyListeners.elementAt(i);
-      target.propertyChange(evt);
-    }    
-  }
+    public void firePropertyChange(String propertyName, 
+				   Object oldValue, Object newValue) {
+	if (_propertyListeners == null) return;
+	if (oldValue != null && oldValue.equals(newValue)) return;
+	PropertyChangeEvent evt =
+	    new PropertyChangeEvent(this, propertyName, oldValue, newValue);
+	for (int i = 0; i < _propertyListeners.size(); i++) {
+	    PropertyChangeListener target = 
+		(PropertyChangeListener) _propertyListeners.elementAt(i);
+	    target.propertyChange(evt);
+	}    
+    }
 
   
 } /* end class DesignMaterial */

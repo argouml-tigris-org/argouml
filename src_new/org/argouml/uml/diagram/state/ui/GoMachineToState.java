@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -48,8 +49,8 @@ public class GoMachineToState extends AbstractGoRule {
     public Collection getChildren(Object parent) {
         
         if (parent instanceof MStateMachine) {
-            if ( ((MStateMachine)parent).getTop()!=null) { 
-                return ((MCompositeState)((MStateMachine)parent).getTop())
+            if ( ((MStateMachine) parent).getTop() != null) { 
+                return ((MCompositeState) ((MStateMachine) parent).getTop())
                                 .getSubvertices();
             }
         }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,47 +44,47 @@ import org.argouml.cognitive.critics.*;
 
 public class CrDisambigStateName extends CrUML {
 
-  public CrDisambigStateName() {
-    setHeadline("Choose a Unique Name for <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decNAMING);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-    addTrigger("name");
-    addTrigger("parent");
-  }
+    public CrDisambigStateName() {
+	setHeadline("Choose a Unique Name for <ocl>self</ocl>");
+	addSupportedDecision(CrUML.decNAMING);
+	setKnowledgeTypes(Critic.KT_SYNTAX);
+	addTrigger("name");
+	addTrigger("parent");
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MState)) return NO_PROBLEM;
-    MState s = (MState) dm;
-    String myName = s.getName();
-    // TODO: should define a CompoundCritic
-    if (myName == null || myName.equals("")) return NO_PROBLEM;
-    String myNameString = myName;
-    if (myNameString.length() == 0) return NO_PROBLEM;
-    Collection pkgs = s.getElementImports2();
-    if (pkgs == null) return NO_PROBLEM;
-    for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
-      MElementImport imp = (MElementImport)iter.next();
-      MNamespace ns = imp.getPackage();
-      if (ns == null) return NO_PROBLEM;
-      Collection oes = ns.getOwnedElements();
-      if (oes == null) return NO_PROBLEM;
-      Iterator enum = oes.iterator();
-      while (enum.hasNext()) {
-        MElementImport eo = (MElementImport) enum.next();
-        MModelElement me = (MModelElement) eo.getModelElement();
-        if (!(me instanceof MClassifier)) continue;
-        if (me == s) continue;
-        String meName = me.getName();
-        if (meName == null || meName.equals("")) continue;
-        if (meName.equals(myNameString)) return PROBLEM_FOUND;
-      }
-    };
-    return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MState)) return NO_PROBLEM;
+	MState s = (MState) dm;
+	String myName = s.getName();
+	// TODO: should define a CompoundCritic
+	if (myName == null || myName.equals("")) return NO_PROBLEM;
+	String myNameString = myName;
+	if (myNameString.length() == 0) return NO_PROBLEM;
+	Collection pkgs = s.getElementImports2();
+	if (pkgs == null) return NO_PROBLEM;
+	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
+	    MElementImport imp = (MElementImport) iter.next();
+	    MNamespace ns = imp.getPackage();
+	    if (ns == null) return NO_PROBLEM;
+	    Collection oes = ns.getOwnedElements();
+	    if (oes == null) return NO_PROBLEM;
+	    Iterator enum = oes.iterator();
+	    while (enum.hasNext()) {
+		MElementImport eo = (MElementImport) enum.next();
+		MModelElement me = (MModelElement) eo.getModelElement();
+		if (!(me instanceof MClassifier)) continue;
+		if (me == s) continue;
+		String meName = me.getName();
+		if (meName == null || meName.equals("")) continue;
+		if (meName.equals(myNameString)) return PROBLEM_FOUND;
+	    }
+	};
+	return NO_PROBLEM;
+    }
 
-  public Icon getClarifier() {
-    return ClClassName.TheInstance;
-  }
+    public Icon getClarifier() {
+	return ClClassName.TheInstance;
+    }
 
 } /* end class CrDisambigStateName */
 

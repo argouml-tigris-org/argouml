@@ -42,13 +42,13 @@ import org.argouml.model.ModelFacade;
 
 public class CrUselessInterface extends CrUML {
 
-  public CrUselessInterface() {
-    setHeadline("Define Class to Implement <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decINHERITANCE);
-    addSupportedGoal(Goal.UNSPEC);
-    setKnowledgeTypes(Critic.KT_COMPLETENESS);
-    addTrigger("realization");
-  }
+    public CrUselessInterface() {
+	setHeadline("Define Class to Implement <ocl>self</ocl>");
+	addSupportedDecision(CrUML.decINHERITANCE);
+	addSupportedGoal(Goal.UNSPEC);
+	setKnowledgeTypes(Critic.KT_COMPLETENESS);
+	addTrigger("realization");
+    }
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!ModelFacade.isAInterface(dm))

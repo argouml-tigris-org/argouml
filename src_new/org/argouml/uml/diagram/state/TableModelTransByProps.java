@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,33 +36,33 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 public class TableModelTransByProps extends TableModelComposite {
     protected static Category cat = 
         Category.getInstance(TableModelTransByProps.class);
-  ////////////////
-  // constructor
-  public TableModelTransByProps() { }
+    ////////////////
+    // constructor
+    public TableModelTransByProps() { }
 
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.Source);
-    addColumn(ColumnDescriptor.Target);
-    addColumn(ColumnDescriptor.Trigger);
-    addColumn(ColumnDescriptor.MGuard);
-    addColumn(ColumnDescriptor.Effect);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLStateDiagram)) return new Vector();
-    UMLStateDiagram d = (UMLStateDiagram) t;
-    Vector edges = d.getEdges();
-    Vector res = new Vector();
-    int size = edges.size();
-    for (int i = 0; i < size; i++) {
-      Object edge = edges.elementAt(i);
-      if (edge instanceof MTransition) res.addElement(edge);
+    public void initColumns() {
+	addColumn(ColumnDescriptor.Name);
+	addColumn(ColumnDescriptor.Source);
+	addColumn(ColumnDescriptor.Target);
+	addColumn(ColumnDescriptor.Trigger);
+	addColumn(ColumnDescriptor.MGuard);
+	addColumn(ColumnDescriptor.Effect);
+	addColumn(ColumnDescriptor.MStereotype);
     }
-    return res;
-  }
 
-  public String toString() { return "Transitions vs. Properties"; }
+    public Vector rowObjectsFor(Object t) {
+	if (!(t instanceof UMLStateDiagram)) return new Vector();
+	UMLStateDiagram d = (UMLStateDiagram) t;
+	Vector edges = d.getEdges();
+	Vector res = new Vector();
+	int size = edges.size();
+	for (int i = 0; i < size; i++) {
+	    Object edge = edges.elementAt(i);
+	    if (edge instanceof MTransition) res.addElement(edge);
+	}
+	return res;
+    }
+
+    public String toString() { return "Transitions vs. Properties"; }
 } /* end class TableModelTransByProps */
 

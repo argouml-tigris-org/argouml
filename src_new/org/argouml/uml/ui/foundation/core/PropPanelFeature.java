@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -51,31 +52,31 @@ public class PropPanelFeature extends PropPanelModelElement {
      * @param orientation
      */
     protected PropPanelFeature(
-        String name,
-        Orientation orientation) {
+			       String name,
+			       Orientation orientation) {
         super(name, orientation);       
     }
 
 
-	/**
-	 * Returns the ownerComboBox.
-	 * @return UMLComboBox2
-	 */
-	public UMLComboBox2 getOwnerComboBox() {
-		if (_ownerComboBox == null) {
-			if (ownerComboBoxModel == null) {
-				ownerComboBoxModel = new UMLFeatureOwnerComboBoxModel();
-			}
-			_ownerComboBox = new UMLComboBox2(ownerComboBoxModel, ActionSetFeatureOwner.SINGLETON);
-		}
-		return _ownerComboBox;
+    /**
+     * Returns the ownerComboBox.
+     * @return UMLComboBox2
+     */
+    public UMLComboBox2 getOwnerComboBox() {
+	if (_ownerComboBox == null) {
+	    if (ownerComboBoxModel == null) {
+		ownerComboBoxModel = new UMLFeatureOwnerComboBoxModel();
+	    }
+	    _ownerComboBox = new UMLComboBox2(ownerComboBoxModel, ActionSetFeatureOwner.SINGLETON);
 	}
+	return _ownerComboBox;
+    }
 
-	/**
-	 * Returns the ownerScroll.
-	 * @return JScrollPane
-	 */
-	public JScrollPane getOwnerScroll() {
+    /**
+     * Returns the ownerScroll.
+     * @return JScrollPane
+     */
+    public JScrollPane getOwnerScroll() {
         if (_ownerScroll == null) {
             if (ownerListModel == null) {
                 ownerListModel = new UMLFeatureOwnerListModel();    	
@@ -83,19 +84,19 @@ public class PropPanelFeature extends PropPanelModelElement {
             JList list = new UMLLinkedList(ownerListModel);
             list.setVisibleRowCount(1);
             _ownerScroll = new JScrollPane(list);
-		}
-        return _ownerScroll;
 	}
+        return _ownerScroll;
+    }
 
-	/**
-	 * Returns the ownerScopeCheckbox.
-	 * @return UMLFeatureOwnerScopeCheckBox
-	 */
-	public UMLFeatureOwnerScopeCheckBox getOwnerScopeCheckbox() {
+    /**
+     * Returns the ownerScopeCheckbox.
+     * @return UMLFeatureOwnerScopeCheckBox
+     */
+    public UMLFeatureOwnerScopeCheckBox getOwnerScopeCheckbox() {
         if (_ownerScopeCheckbox == null) {
             _ownerScopeCheckbox = new UMLFeatureOwnerScopeCheckBox();
         }    
-		return _ownerScopeCheckbox;       
-	}
+	return _ownerScopeCheckbox;       
+    }
 
 }

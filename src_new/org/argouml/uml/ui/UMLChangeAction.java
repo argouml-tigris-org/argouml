@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,22 +32,22 @@ import java.awt.event.*;
 
 public class UMLChangeAction extends UMLAction {
 
-  public UMLChangeAction(String s) { super(s, HAS_ICON); }
-  public UMLChangeAction(String s, boolean hasIcon) { super(s, hasIcon); }
-  protected UMLChangeAction(String s, boolean global, boolean hasIcon) { 
+    public UMLChangeAction(String s) { super(s, HAS_ICON); }
+    public UMLChangeAction(String s, boolean hasIcon) { super(s, hasIcon); }
+    protected UMLChangeAction(String s, boolean global, boolean hasIcon) { 
         super(s, global, hasIcon);
-  }
+    }
 
-  public void actionPerformed(ActionEvent e) {
-      Project p = ProjectManager.getManager().getCurrentProject();
-      if (p != null) {      
-        markNeedsSave();
-        // next line commented out to prevent unnecessary updates of actions
-        // 10-6-2003 Jaap Branderhorst
-        // Actions.updateAllEnabled();
-      }
+    public void actionPerformed(ActionEvent e) {
+	Project p = ProjectManager.getManager().getCurrentProject();
+	if (p != null) {      
+	    markNeedsSave();
+	    // next line commented out to prevent unnecessary updates of actions
+	    // 10-6-2003 Jaap Branderhorst
+	    // Actions.updateAllEnabled();
+	}
     
-  }
+    }
 
 } /* end class UMLChangeAction */
 

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,7 +48,7 @@ public class ActionZoom extends UMLAction {
 
     public ActionZoom(int scale_percent) {
 	super("" + scale_percent + " %", NO_ICON);
-	_scale = (double)scale_percent / 100.0;
+	_scale = (double) scale_percent / 100.0;
     }
 
 
@@ -72,8 +73,8 @@ public class ActionZoom extends UMLAction {
 
         // Get all the figures from the diagram.
         Vector nodes = ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer().getContents();
-        for(int i=0; i < nodes.size(); i++) {
-	    sm.select((Fig)(nodes.elementAt(i)));  // Select all the figures in the diagram.
+        for (int i = 0; i < nodes.size(); i++) {
+	    sm.select((Fig) (nodes.elementAt(i)));  // Select all the figures in the diagram.
         }      
 
 	sm.startTrans();    // Notify the selection manager that selected figures will be moved now.

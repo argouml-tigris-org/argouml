@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -48,7 +49,7 @@ public class CompositeCodePiece extends CodePiece
     public CompositeCodePiece(CodePiece codePiece)
     {
 	codePieces = new Vector();
-	if(codePiece != null) {
+	if (codePiece != null) {
 	    codePieces.addElement(codePiece);
 	}
     }
@@ -58,7 +59,7 @@ public class CompositeCodePiece extends CodePiece
     */
     public void add(CodePiece codePiece)
     {
-	if(codePiece != null) {
+	if (codePiece != null) {
 	    codePieces.addElement(codePiece);
 	}
     }
@@ -69,19 +70,19 @@ public class CompositeCodePiece extends CodePiece
     public StringBuffer getText()
     {
 	Iterator i = codePieces.iterator();
-	CodePiece cp = (CodePiece)i.next();
+	CodePiece cp = (CodePiece) i.next();
 	StringBuffer text = cp.getText();
 	int prevEnd = cp.getEndPosition();
 	int prevLine = cp.getEndLine();
 
-	for(; i.hasNext(); ) {
-	    cp = (CodePiece)i.next();
+	for (; i.hasNext(); ) {
+	    cp = (CodePiece) i.next();
 	    int spaces = cp.getStartPosition() - prevEnd;
-	    if(prevLine != cp.getStartLine()) {
+	    if (prevLine != cp.getStartLine()) {
 		text.append('\n');
 		spaces--;
 	    }
-	    for(int j=0; j < spaces; j++) {
+	    for (int j = 0; j < spaces; j++) {
 		text.append(' ');
 	    }
 	    text.append(cp.getText().toString());
@@ -97,7 +98,7 @@ public class CompositeCodePiece extends CodePiece
     public int getStartPosition()
     {
 	if (codePieces.size() > 0)
-	    return ((CodePiece)codePieces.firstElement()).getStartPosition();
+	    return ((CodePiece) codePieces.firstElement()).getStartPosition();
 	else
 	    return 0;
     }
@@ -108,7 +109,7 @@ public class CompositeCodePiece extends CodePiece
     public int getEndPosition()
     {
 	if (codePieces.size() > 0)
-	    return ((CodePiece)codePieces.lastElement()).getEndPosition();
+	    return ((CodePiece) codePieces.lastElement()).getEndPosition();
 	else
 	    return 0;
     }
@@ -119,7 +120,7 @@ public class CompositeCodePiece extends CodePiece
     public int getStartLine()
     {
 	if (codePieces.size() > 0)
-	    return ((CodePiece)codePieces.firstElement()).getStartLine();
+	    return ((CodePiece) codePieces.firstElement()).getStartLine();
 	else
 	    return 0;
     }
@@ -130,7 +131,7 @@ public class CompositeCodePiece extends CodePiece
     public int getEndLine()
     {
 	if (codePieces.size() > 0)
-	    return ((CodePiece)codePieces.lastElement()).getEndLine();
+	    return ((CodePiece) codePieces.lastElement()).getEndLine();
 	else
 	    return 0;
     }

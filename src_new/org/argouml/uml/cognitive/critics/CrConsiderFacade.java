@@ -34,17 +34,17 @@ import org.argouml.cognitive.*;
 public class CrConsiderFacade extends CrUML {
     protected static Category cat = Category.getInstance(CrConsiderFacade.class);
 
-  public CrConsiderFacade() {
-    setHeadline("Consider using facade stereotype for <ocl>self</ocl>");
+    public CrConsiderFacade() {
+	setHeadline("Consider using facade stereotype for <ocl>self</ocl>");
        
-    addSupportedDecision(CrUML.decMODULARITY);
-    addTrigger("ownedElement");
-  }
+	addSupportedDecision(CrUML.decMODULARITY);
+	addTrigger("ownedElement");
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-      /* TODO: Add implementation. */
-      return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	/* TODO: Add implementation. */
+	return NO_PROBLEM;
+    }
 
 } /* end class CrEmptyPackage */
 

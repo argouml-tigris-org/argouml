@@ -78,34 +78,34 @@ public class TabDocumentation extends PropPanel {
         //TODO: the title of the prop panel is localized using the localisation of documentation
         //- should this change? (Raphael)
         super(
-            Argo.localize(BUNDLE, "docpane.label.documentation"),
-            (Configuration.getString(Configuration.makeKey("layout", "tabdocumentation")).equals("West") ||
-             Configuration.getString(Configuration.makeKey("layout", "tabdocumentation")).equals("East"))
-             ? Vertical.getInstance() : Horizontal.getInstance());
+	      Argo.localize(BUNDLE, "docpane.label.documentation"),
+	      (Configuration.getString(Configuration.makeKey("layout", "tabdocumentation")).equals("West") ||
+	       Configuration.getString(Configuration.makeKey("layout", "tabdocumentation")).equals("East"))
+	      ? Vertical.getInstance() : Horizontal.getInstance());
         //        super("tab.documentation", null, 2); // Change this to call labelled layout constructor
 
         addField(
-            Argo.localize(BUNDLE, "docpane.label.author") + ":",
-            new UMLTextField2(
-                new UMLModelElementTaggedValueDocument("author")));
+		 Argo.localize(BUNDLE, "docpane.label.author") + ":",
+		 new UMLTextField2(
+				   new UMLModelElementTaggedValueDocument("author")));
 
         //unknown where this information is stored; it does not go to myproject.argo (xml file)
         addField(
-            Argo.localize(BUNDLE, "docpane.label.version") + ":",
-            new UMLTextField2(
-                new UMLModelElementTaggedValueDocument("version")));
+		 Argo.localize(BUNDLE, "docpane.label.version") + ":",
+		 new UMLTextField2(
+				   new UMLModelElementTaggedValueDocument("version")));
 
         addField(
-            Argo.localize(BUNDLE, "docpane.label.since") + ":",
-            new UMLTextField2(new UMLModelElementTaggedValueDocument("since")));
+		 Argo.localize(BUNDLE, "docpane.label.since") + ":",
+		 new UMLTextField2(new UMLModelElementTaggedValueDocument("since")));
 
         //TODO: change UMLCheckBox to UMLCheckBox2 (Raphael)
         addField(
-            Argo.localize(BUNDLE, "docpane.label.deprecated") + ":",
-            new UMLCheckBox(
-                "",
-                this,
-                new UMLTaggedBooleanProperty("deprecated")));
+		 Argo.localize(BUNDLE, "docpane.label.deprecated") + ":",
+		 new UMLCheckBox(
+				 "",
+				 this,
+				 new UMLTaggedBooleanProperty("deprecated")));
 
         UMLTextArea2 _see =
             new UMLTextArea2(new UMLModelElementTaggedValueDocument("see"));
@@ -121,7 +121,7 @@ public class TabDocumentation extends PropPanel {
 
         UMLTextArea2 _doc =
             new UMLTextArea2(
-                new UMLModelElementTaggedValueDocument("documentation"));
+			     new UMLModelElementTaggedValueDocument("documentation"));
 
         _doc.setRows(2);
         _doc.setLineWrap(true);
@@ -129,8 +129,8 @@ public class TabDocumentation extends PropPanel {
         JScrollPane spDocs = new JScrollPane();
         spDocs.getViewport().add(_doc);
         addField(
-            Argo.localize(BUNDLE, "docpane.label.documentation") + ":",
-            spDocs);
+		 Argo.localize(BUNDLE, "docpane.label.documentation") + ":",
+		 spDocs);
     }
 
     /**

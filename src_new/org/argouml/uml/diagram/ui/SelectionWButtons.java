@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -115,10 +116,10 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
 
     public boolean intersectsRect(Rectangle r, int x, int y, int w, int h) {
         return !(
-            (r.x + r.width <= x)
-                || (r.y + r.height <= y)
-                || (r.x >= x + w)
-                || (r.y >= y + h));
+		 (r.x + r.width <= x)
+		 || (r.y + r.height <= y)
+		 || (r.x >= x + w)
+		 || (r.y >= y + h));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -144,11 +145,11 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
 
     public void paintButtonAbove(Icon i, Graphics g, int x, int y, int hi) {
         paintButton(
-            i,
-            g,
-            x - i.getIconWidth() / 2,
-            y - i.getIconHeight() - MARGIN,
-            hi);
+		    i,
+		    g,
+		    x - i.getIconWidth() / 2,
+		    y - i.getIconHeight() - MARGIN,
+		    hi);
     }
 
     public void paintButtonBelow(Icon i, Graphics g, int x, int y, int hi) {
@@ -161,11 +162,11 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
 
     public void paintButtonRight(Icon i, Graphics g, int x, int y, int hi) {
         paintButton(
-            i,
-            g,
-            x - i.getIconWidth() - MARGIN,
-            y - i.getIconHeight() / 2,
-            hi);
+		    i,
+		    g,
+		    x - i.getIconWidth() - MARGIN,
+		    y - i.getIconHeight() / 2,
+		    hi);
     }
 
     public void paintButton(Icon i, Graphics g, int x, int y, int hi) {
@@ -198,10 +199,10 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
 
     public Rectangle getBounds() {
         return new Rectangle(
-            _content.getX() - IMAGE_SIZE * 2,
-            _content.getY() - IMAGE_SIZE * 2,
-            _content.getWidth() + IMAGE_SIZE * 4,
-            _content.getHeight() + IMAGE_SIZE * 4);
+			     _content.getX() - IMAGE_SIZE * 2,
+			     _content.getY() - IMAGE_SIZE * 2,
+			     _content.getWidth() + IMAGE_SIZE * 4,
+			     _content.getHeight() + IMAGE_SIZE * 4);
     }
 
     /** Dont show buttons while the user is moving the Class.  Called
@@ -235,10 +236,10 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
         // calculate the position of the newly created fig.
         Rectangle outputRect =
             new Rectangle(
-                Math.max(0, _content.getX() - 200),
-                Math.max(0, _content.getY() - 200),
-                _content.getWidth() + 400,
-                _content.getHeight() + 400);
+			  Math.max(0, _content.getX() - 200),
+			  Math.max(0, _content.getY() - 200),
+			  _content.getWidth() + 400,
+			  _content.getHeight() + 400);
 
         // handle the case that it is not a self association
         if (buttonCode >= 10 && buttonCode <= 13) {
@@ -281,8 +282,8 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
             Point fcCenter = _content.center();
             Point centerRight =
                 new Point(
-                    (int) (fcCenter.x + _content.getSize().getWidth() / 2),
-                    fcCenter.y);
+			  (int) (fcCenter.x + _content.getSize().getWidth() / 2),
+			  fcCenter.y);
 
             int yoffset = (int) ((_content.getSize().getHeight() / 2));
             edgeShape.addPoint(fcCenter.x, fcCenter.y);
@@ -354,26 +355,26 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
     }
 
     /**
-       * Places a fig on the canvas in the correct position. Takes a coordinate pair 
-       * x,y and a rectangle that should be avoided because there can be other 
-       * figures. If the place action results in x.y coordinates for the fig to place
-       * that are not allowed (beyond the borders of the diagram), the operation is
-       * repeated with corrected parameters. If it is not possible to add the fig
-       * because there are allready to many figs, false is returned and the fig is 
-       * not added.
-       * @param figToPlace The figure one wishes to place on a diagram
-       * @param layerToPlaceOn The layer that contains the figs
-       * @param x The x coordinate where one wishes to place the fig
-       * @param y The y coordinate where one wishes to place the fig
-       * @param bumpRect The rectangle that should be avoided since there can be other figs.
-       * @return boolean false if the fig is not placed.
-       */
+     * Places a fig on the canvas in the correct position. Takes a coordinate pair 
+     * x,y and a rectangle that should be avoided because there can be other 
+     * figures. If the place action results in x.y coordinates for the fig to place
+     * that are not allowed (beyond the borders of the diagram), the operation is
+     * repeated with corrected parameters. If it is not possible to add the fig
+     * because there are allready to many figs, false is returned and the fig is 
+     * not added.
+     * @param figToPlace The figure one wishes to place on a diagram
+     * @param layerToPlaceOn The layer that contains the figs
+     * @param x The x coordinate where one wishes to place the fig
+     * @param y The y coordinate where one wishes to place the fig
+     * @param bumpRect The rectangle that should be avoided since there can be other figs.
+     * @return boolean false if the fig is not placed.
+     */
     protected boolean placeFig(
-        Fig figToPlace,
-        LayerPerspective layerToPlaceOn,
-        int x,
-        int y,
-        Rectangle bumpRect) {
+			       Fig figToPlace,
+			       LayerPerspective layerToPlaceOn,
+			       int x,
+			       int y,
+			       Rectangle bumpRect) {
         if (_placeCounter > MAX_PLACINGS)
             return false;
         // to prevent outofmemory errors and stackoverflow errors
@@ -382,38 +383,38 @@ public abstract class SelectionWButtons extends SelectionNodeClarifiers {
         layerToPlaceOn.bumpOffOtherNodesIn(figToPlace, bumpRect, false, false);
         if (figToPlace.getX() < 0) {
             return placeFig(
-                figToPlace,
-                layerToPlaceOn,
-                ((Fig) _content).getX()
-                    + ((Fig) _content).getWidth()
-                    + figToPlace.getWidth()
-                    + 100,
-                figToPlace.getY(),
-                bumpRect);
+			    figToPlace,
+			    layerToPlaceOn,
+			    ((Fig) _content).getX()
+			    + ((Fig) _content).getWidth()
+			    + figToPlace.getWidth()
+			    + 100,
+			    figToPlace.getY(),
+			    bumpRect);
         } else if (figToPlace.getX() + figToPlace.getWidth() >= 6000) {
             return placeFig(
-                figToPlace,
-                layerToPlaceOn,
-                ((Fig) _content).getX() - figToPlace.getWidth() - 100,
-                figToPlace.getY(),
-                bumpRect);
+			    figToPlace,
+			    layerToPlaceOn,
+			    ((Fig) _content).getX() - figToPlace.getWidth() - 100,
+			    figToPlace.getY(),
+			    bumpRect);
         } else if (figToPlace.getY() + figToPlace.getHeight() >= 6000) {
             return placeFig(
-                figToPlace,
-                layerToPlaceOn,
-                figToPlace.getX(),
-                ((Fig) _content).getY() - figToPlace.getHeight() - 100,
-                bumpRect);
+			    figToPlace,
+			    layerToPlaceOn,
+			    figToPlace.getX(),
+			    ((Fig) _content).getY() - figToPlace.getHeight() - 100,
+			    bumpRect);
         } else if (figToPlace.getY() < 0) {
             return placeFig(
-                figToPlace,
-                layerToPlaceOn,
-                figToPlace.getX(),
-                ((Fig) _content).getY()
-                    + ((Fig) _content).getHeight()
-                    + figToPlace.getHeight()
-                    + 100,
-                bumpRect);
+			    figToPlace,
+			    layerToPlaceOn,
+			    figToPlace.getX(),
+			    ((Fig) _content).getY()
+			    + ((Fig) _content).getHeight()
+			    + figToPlace.getHeight()
+			    + 100,
+			    bumpRect);
         }
         return true;
     }

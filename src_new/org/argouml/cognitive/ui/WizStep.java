@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -57,28 +58,29 @@ import org.argouml.util.osdep.StartBrowser;
  */
 
 public class WizStep extends JPanel
-implements TabToDoTarget, ActionListener, DocumentListener {
+    implements TabToDoTarget, ActionListener, DocumentListener 
+{
     protected static Category cat = Category.getInstance(WizStep.class);
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  private static final String BUNDLE = "Cognitive";
-  public static final ImageIcon WIZ_ICON = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Wiz", "Wiz");
+    ////////////////////////////////////////////////////////////////
+    // constants
+    private static final String BUNDLE = "Cognitive";
+    public static final ImageIcon WIZ_ICON = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Wiz", "Wiz");
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  JPanel  _mainPanel = new JPanel();
-  JButton _backButton = new JButton(Argo.localize(BUNDLE, "button.back"));
-  JButton _nextButton = new JButton(Argo.localize(BUNDLE, "button.next"));
-  JButton _finishButton = new JButton(Argo.localize(BUNDLE, "button.finish"));
-  JButton _helpButton = new JButton(Argo.localize(BUNDLE, "button.help"));
-  JPanel  _buttonPanel = new JPanel();
+    JPanel  _mainPanel = new JPanel();
+    JButton _backButton = new JButton(Argo.localize(BUNDLE, "button.back"));
+    JButton _nextButton = new JButton(Argo.localize(BUNDLE, "button.next"));
+    JButton _finishButton = new JButton(Argo.localize(BUNDLE, "button.finish"));
+    JButton _helpButton = new JButton(Argo.localize(BUNDLE, "button.help"));
+    JPanel  _buttonPanel = new JPanel();
   
-  /**
-   * The current target
-   */
-  private Object _target;
+    /**
+     * The current target
+     */
+    private Object _target;
 
     static final protected void setMnemonic(JButton b, String key) {
 	String m = Argo.localize(BUNDLE, key);
@@ -89,174 +91,174 @@ implements TabToDoTarget, ActionListener, DocumentListener {
 	}
     }   
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public WizStep() {
-    setMnemonic(_backButton, "mnemonic.button.back");
-    setMnemonic(_nextButton, "mnemonic.button.next");
-    setMnemonic(_finishButton, "mnemonic.bundle.finish");
-    setMnemonic(_helpButton, "mnemonic.bundle.help");
-    _buttonPanel.setLayout(new GridLayout(1, 5));
-    _buttonPanel.add(_backButton);
-    _buttonPanel.add(_nextButton);
-    _buttonPanel.add(new SpacerPanel());
-    _buttonPanel.add(_finishButton);
-    _buttonPanel.add(new SpacerPanel());
-    _buttonPanel.add(_helpButton);
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public WizStep() {
+	setMnemonic(_backButton, "mnemonic.button.back");
+	setMnemonic(_nextButton, "mnemonic.button.next");
+	setMnemonic(_finishButton, "mnemonic.bundle.finish");
+	setMnemonic(_helpButton, "mnemonic.bundle.help");
+	_buttonPanel.setLayout(new GridLayout(1, 5));
+	_buttonPanel.add(_backButton);
+	_buttonPanel.add(_nextButton);
+	_buttonPanel.add(new SpacerPanel());
+	_buttonPanel.add(_finishButton);
+	_buttonPanel.add(new SpacerPanel());
+	_buttonPanel.add(_helpButton);
 
-    _backButton.setMargin(new Insets(0, 0, 0, 0));
-    _nextButton.setMargin(new Insets(0, 0, 0, 0));
-    _finishButton.setMargin(new Insets(0, 0, 0, 0));
-    _helpButton.setMargin(new Insets(0, 0, 0, 0));
+	_backButton.setMargin(new Insets(0, 0, 0, 0));
+	_nextButton.setMargin(new Insets(0, 0, 0, 0));
+	_finishButton.setMargin(new Insets(0, 0, 0, 0));
+	_helpButton.setMargin(new Insets(0, 0, 0, 0));
 
-    JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    southPanel.add(_buttonPanel);
+	JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+	southPanel.add(_buttonPanel);
 
-    setLayout(new BorderLayout());
-    add(_mainPanel, BorderLayout.CENTER);
-    add(southPanel, BorderLayout.SOUTH);
+	setLayout(new BorderLayout());
+	add(_mainPanel, BorderLayout.CENTER);
+	add(southPanel, BorderLayout.SOUTH);
 
-    _backButton.addActionListener(this);
-    _nextButton.addActionListener(this);
-    _finishButton.addActionListener(this);
-    _helpButton.addActionListener(this);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public void setTarget(Object item) {
-      _target = item;
-    enableButtons();
-  }
-
-  public void enableButtons() {
-    if (_target == null) {
-      _backButton.setEnabled(false);
-      _nextButton.setEnabled(false);
-      _finishButton.setEnabled(false);
-      _helpButton.setEnabled(false);
+	_backButton.addActionListener(this);
+	_nextButton.addActionListener(this);
+	_finishButton.addActionListener(this);
+	_helpButton.addActionListener(this);
     }
-    else if (_target instanceof ToDoItem) {
-      ToDoItem tdi = (ToDoItem) _target;
-      Wizard w = getWizard();
-      _backButton.setEnabled(w != null ? w.canGoBack() : false);
-      _nextButton.setEnabled(w != null ? w.canGoNext() : false);
-      _finishButton.setEnabled(w != null ? w.canFinish() : false);
-      _helpButton.setEnabled(true);
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    public void setTarget(Object item) {
+	_target = item;
+	enableButtons();
     }
-    else {  
-      return;
+
+    public void enableButtons() {
+	if (_target == null) {
+	    _backButton.setEnabled(false);
+	    _nextButton.setEnabled(false);
+	    _finishButton.setEnabled(false);
+	    _helpButton.setEnabled(false);
+	}
+	else if (_target instanceof ToDoItem) {
+	    ToDoItem tdi = (ToDoItem) _target;
+	    Wizard w = getWizard();
+	    _backButton.setEnabled(w != null ? w.canGoBack() : false);
+	    _nextButton.setEnabled(w != null ? w.canGoNext() : false);
+	    _finishButton.setEnabled(w != null ? w.canFinish() : false);
+	    _helpButton.setEnabled(true);
+	}
+	else {  
+	    return;
+	}
     }
-  }
 
-  /**
-      * Returns the target of the TabToDo
-      *
-      * @deprecated As of ArgoUml version 0.13.5,
-      *             the visibility of this method will change in the future,
-      *             replaced by {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}.
-      *             this method will be removed in a couple of releases
-      * @return The current target of the TabToDo
-      */
-  public Object getTarget() { return TargetManager.getInstance().getTarget(); }
+    /**
+     * Returns the target of the TabToDo
+     *
+     * @deprecated As of ArgoUml version 0.13.5,
+     *             the visibility of this method will change in the future,
+     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}.
+     *             this method will be removed in a couple of releases
+     * @return The current target of the TabToDo
+     */
+    public Object getTarget() { return TargetManager.getInstance().getTarget(); }
 
-  public void refresh() { setTarget(_target); }
+    public void refresh() { setTarget(_target); }
 
-  public Wizard getWizard() {
-    if (_target instanceof ToDoItem) {
-      return ((ToDoItem)_target).getWizard();
+    public Wizard getWizard() {
+	if (_target instanceof ToDoItem) {
+	    return ((ToDoItem) _target).getWizard();
+	}
+	return null;
     }
-    return null;
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // actions
+    ////////////////////////////////////////////////////////////////
+    // actions
 
-  public void doBack() {
-    Wizard w = getWizard();
-    if (w != null) {
-      w.back();
-      updateTabToDo();
+    public void doBack() {
+	Wizard w = getWizard();
+	if (w != null) {
+	    w.back();
+	    updateTabToDo();
+	}
     }
-  }
-  public void doNext() {
-    Wizard w = getWizard();
-    if (w != null) {
-      w.next();
-      updateTabToDo();
+    public void doNext() {
+	Wizard w = getWizard();
+	if (w != null) {
+	    w.next();
+	    updateTabToDo();
+	}
     }
-  }
-  public void doFinsh() {
-    Wizard w = getWizard();
-    if (w != null) {
-      w.finish();
-      updateTabToDo();
+    public void doFinsh() {
+	Wizard w = getWizard();
+	if (w != null) {
+	    w.finish();
+	    updateTabToDo();
+	}
     }
-  }
-  public void doHelp() {
-    if (!(TargetManager.getInstance().getTarget() instanceof ToDoItem)) return;
-    ToDoItem item = (ToDoItem) TargetManager.getInstance().getTarget();
-    String urlString = item.getMoreInfoURL();
-    StartBrowser.openUrl(urlString);
-  }
+    public void doHelp() {
+	if (!(TargetManager.getInstance().getTarget() instanceof ToDoItem)) return;
+	ToDoItem item = (ToDoItem) TargetManager.getInstance().getTarget();
+	String urlString = item.getMoreInfoURL();
+	StartBrowser.openUrl(urlString);
+    }
 
-  protected void updateTabToDo() {
-    TabToDo ttd = (TabToDo)ProjectBrowser.getInstance().getTab(TabToDo.class);
-    JPanel ws = getWizard().getCurrentPanel();
-    if (ws instanceof WizStep) ((WizStep)ws).setTarget(_target);
-    ttd.showStep(ws);
-  }
+    protected void updateTabToDo() {
+	TabToDo ttd = (TabToDo) ProjectBrowser.getInstance().getTab(TabToDo.class);
+	JPanel ws = getWizard().getCurrentPanel();
+	if (ws instanceof WizStep) ((WizStep) ws).setTarget(_target);
+	ttd.showStep(ws);
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // ActionListener implementation
+    ////////////////////////////////////////////////////////////////
+    // ActionListener implementation
 
-  public void actionPerformed(ActionEvent ae) {
-    Object src = ae.getSource();
-    if (src == _backButton) doBack();
-    else if (src == _nextButton) doNext();
-    else if (src == _finishButton) doFinsh();
-    else if (src == _helpButton) doHelp();
-  }
+    public void actionPerformed(ActionEvent ae) {
+	Object src = ae.getSource();
+	if (src == _backButton) doBack();
+	else if (src == _nextButton) doNext();
+	else if (src == _finishButton) doFinsh();
+	else if (src == _helpButton) doHelp();
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // DocumentListener implementation
+    ////////////////////////////////////////////////////////////////
+    // DocumentListener implementation
 
-  public void insertUpdate(DocumentEvent e) {
-    enableButtons();
-  }
+    public void insertUpdate(DocumentEvent e) {
+	enableButtons();
+    }
 
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
+    public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
-  public void changedUpdate(DocumentEvent e) {
-    // Apparently, this method is never called.
-  }
+    public void changedUpdate(DocumentEvent e) {
+	// Apparently, this method is never called.
+    }
 
-  /**
-    * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-    */
-   public void targetAdded(TargetEvent e) {
-       // we can neglect this, the wizstep allways selects the first target
-       // in a set of targets. The first target can only be 
-       // changed in a targetRemoved or a TargetSet event
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+	// we can neglect this, the wizstep allways selects the first target
+	// in a set of targets. The first target can only be 
+	// changed in a targetRemoved or a TargetSet event
 
-   }
+    }
 
-   /**
-    * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
-    */
-   public void targetRemoved(TargetEvent e) {
-       // how to handle empty target lists?
-       // probably the wizstep should only show an empty pane in that case
-       setTarget(e.getNewTargets()[0]);
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+	// how to handle empty target lists?
+	// probably the wizstep should only show an empty pane in that case
+	setTarget(e.getNewTargets()[0]);
 
-   }
+    }
 
-   /**
-    * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-    */
-   public void targetSet(TargetEvent e) {
-       setTarget(e.getNewTargets()[0]);
-   }
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+	setTarget(e.getNewTargets()[0]);
+    }
 
 } /* end class WizStep */

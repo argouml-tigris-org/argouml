@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -138,7 +139,7 @@ public class GenericArgoMenuBar extends JMenuBar
     }
 
     static final protected KeyStroke getShortcut(String key) {
-        return Localizer.getShortcut("CoreMenu",key);
+        return Localizer.getShortcut("CoreMenu", key);
     }
 
     /** This should be a user specified option. New laws
@@ -147,10 +148,10 @@ public class GenericArgoMenuBar extends JMenuBar
      * make all components of User interface accessible
      * through keyboard
      */
-    static final protected void setMnemonic(JMenuItem item,String key,char defMnemonic) {
-        String localMnemonic = Argo.localize("CoreMenu","Mnemonic_" + key);
+    static final protected void setMnemonic(JMenuItem item, String key, char defMnemonic) {
+        String localMnemonic = Argo.localize("CoreMenu", "Mnemonic_" + key);
         char mnemonic = defMnemonic;
-        if(localMnemonic != null && localMnemonic.length() == 1) {
+        if (localMnemonic != null && localMnemonic.length() == 1) {
             mnemonic = localMnemonic.charAt(0);
         }
         item.setMnemonic(mnemonic);
@@ -160,8 +161,8 @@ public class GenericArgoMenuBar extends JMenuBar
         return Argo.localize("CoreMenu", key);
     }
 
-    static final void setAccelerator(JMenuItem item,KeyStroke keystroke) {
-        if(keystroke != null) {
+    static final void setAccelerator(JMenuItem item, KeyStroke keystroke) {
+        if (keystroke != null) {
             item.setAccelerator(keystroke);
         }
     }
@@ -174,11 +175,13 @@ public class GenericArgoMenuBar extends JMenuBar
      * @param key Non-localized string that tells the module where we are.
      */
     private void appendPluggableMenus(JMenuItem menuitem, String key) {
-        Object[] context = { menuitem, key };
+        Object[] context = {
+	    menuitem, key 
+	};
         ArrayList arraylist = Argo.getPlugins(PluggableMenu.class, context);
         ListIterator iterator = arraylist.listIterator();
         while (iterator.hasNext()) {
-            PluggableMenu module = (PluggableMenu)iterator.next();
+            PluggableMenu module = (PluggableMenu) iterator.next();
             menuitem.add(module.getMenuItem(context));
             menuitem.setEnabled(true);
         }
@@ -186,37 +189,51 @@ public class GenericArgoMenuBar extends JMenuBar
 
     public void moduleLoaded(ArgoModuleEvent event) {
         if (event.getSource() instanceof PluggableMenu) {
-            PluggableMenu module = (PluggableMenu)event.getSource();
-            Object[] context = new Object[] { _tools, "Tools" };
+            PluggableMenu module = (PluggableMenu) event.getSource();
+            Object[] context = new Object[] {
+		_tools, "Tools" 
+	    };
             if (module.inContext(context)) {
                 _tools.add(module.getMenuItem(context));
                 _tools.setEnabled(true);
             }
             //context = new Object[] { _import, "File:Import" };
             //if (module.inContext(context)) {
-              //  _import.add(module.getMenuItem(context));
+	    //  _import.add(module.getMenuItem(context));
             //}
-            context = new Object[] { _generate, "Generate" };
+            context = new Object[] {
+		_generate, "Generate" 
+	    };
             if (module.inContext(context)) {
                 _generate.add(module.getMenuItem(context));
             }
-            context = new Object[] { _edit, "Edit" };
+            context = new Object[] {
+		_edit, "Edit" 
+	    };
             if (module.inContext(context)) {
                 _edit.add(module.getMenuItem(context));
             }
-            context = new Object[] { _view, "View" };
+            context = new Object[] {
+		_view, "View" 
+	    };
             if (module.inContext(context)) {
       	        _view.add(module.getMenuItem(context));
             }
-            context = new Object[] { _createDiagrams, "Create Diagrams" };
+            context = new Object[] {
+		_createDiagrams, "Create Diagrams" 
+	    };
             if (module.inContext(context)) {
        	        _createDiagrams.add(module.getMenuItem(context));
             }
-            context = new Object[] { _arrange, "Arrange" };
+            context = new Object[] {
+		_arrange, "Arrange" 
+	    };
             if (module.inContext(context)) {
        	        _arrange.add(module.getMenuItem(context));
             }
-            context = new Object[] { _help, "Help" };
+            context = new Object[] {
+		_help, "Help" 
+	    };
             if (module.inContext(context)) {
                 if (_help.getItemCount() == 1) {
                     _help.insertSeparator(0);
@@ -224,7 +241,7 @@ public class GenericArgoMenuBar extends JMenuBar
                 _help.insert(module.getMenuItem(context), 0);
             }
         }
-	}
+    }
 
     public void moduleUnloaded(ArgoModuleEvent event) {
         // TODO:  Disable menu
@@ -270,23 +287,23 @@ public class GenericArgoMenuBar extends JMenuBar
         // File Menu
         JMenu _file = new JMenu(menuLocalize("File"));
         add(_file);
-        setMnemonic(_file,"File",'F');
+        setMnemonic(_file, "File", 'F');
         _fileToolbar = new Toolbar("File Toolbar");
         JMenuItem newItem = _file.add(ActionNew.SINGLETON);
-        setMnemonic(newItem,"New",'N');
-        setAccelerator(newItem,ctrlN);
+        setMnemonic(newItem, "New", 'N');
+        setAccelerator(newItem, ctrlN);
         _fileToolbar.add((ActionNew.SINGLETON));
         JMenuItem openProjectItem = _file.add(ActionOpenProject.SINGLETON);
-        setMnemonic(openProjectItem,"Open",'O');
-        setAccelerator(openProjectItem,ctrlO);
+        setMnemonic(openProjectItem, "Open", 'O');
+        setAccelerator(openProjectItem, ctrlO);
         _fileToolbar.add((ActionOpenProject.SINGLETON));
 
         JMenuItem saveProjectItem = _file.add(ActionSaveProject.SINGLETON);
-        setMnemonic(saveProjectItem,"Save",'S');
-        setAccelerator(saveProjectItem,ctrlS);
+        setMnemonic(saveProjectItem, "Save", 'S');
+        setAccelerator(saveProjectItem, ctrlS);
         _fileToolbar.add((ActionSaveProject.SINGLETON));
         JMenuItem saveProjectAsItem = _file.add(ActionSaveProjectAs.SINGLETON);
-        setMnemonic(saveProjectAsItem,"SaveAs",'A');
+        setMnemonic(saveProjectAsItem, "SaveAs", 'A');
         _file.addSeparator();
 
         //_import = new JMenu(menuLocalize("action.import"));
@@ -296,26 +313,26 @@ public class GenericArgoMenuBar extends JMenuBar
         _file.addSeparator();
     
         JMenuItem printItem = _file.add(Actions.Print);
-        setMnemonic(printItem,"Print",'P');
-        setAccelerator(printItem,ctrlP);
+        setMnemonic(printItem, "Print", 'P');
+        setAccelerator(printItem, ctrlP);
         _fileToolbar.add((Actions.Print));
         JMenuItem pageSetupItem = _file.add(Actions.PageSetup);
         JMenuItem saveGraphicsItem = _file.add(ActionSaveGraphics.SINGLETON);
-        setMnemonic(saveGraphicsItem,"SaveGraphics",'G');
+        setMnemonic(saveGraphicsItem, "SaveGraphics", 'G');
         _file.addSeparator();
         _file.add(ActionSaveConfiguration.SINGLETON);
         _file.addSeparator();
         JMenuItem exitItem = _file.add(ActionExit.SINGLETON);
-        setMnemonic(exitItem,"Exit",'x');
-        setAccelerator(exitItem,altF4);
+        setMnemonic(exitItem, "Exit", 'x');
+        setAccelerator(exitItem, altF4);
 
         _edit = (JMenu) add(new JMenu(menuLocalize("Edit")));
-        setMnemonic(_edit,"Edit",'E');
+        setMnemonic(_edit, "Edit", 'E');
 
         _select = new JMenu(menuLocalize("Select"));
         _edit.add(_select);
         JMenuItem selectAllItem = _select.add(new CmdSelectAll());
-        setAccelerator(selectAllItem,ctrlA);
+        setAccelerator(selectAllItem, ctrlA);
         _select.addSeparator();
         JMenuItem backItem = _select.add(NavigateTargetBackAction.getInstance());
         //setAccelerator(backItem,altLeft);
@@ -337,26 +354,26 @@ public class GenericArgoMenuBar extends JMenuBar
         _edit.addSeparator();
 
         JMenuItem cutItem = _edit.add(ActionCut.getInstance());
-        setMnemonic(cutItem,"Cut",'X');
-        setAccelerator(cutItem,ctrlX);
+        setMnemonic(cutItem, "Cut", 'X');
+        setAccelerator(cutItem, ctrlX);
 
         JMenuItem copyItem = _edit.add(ActionCopy.getInstance());
-        setMnemonic(copyItem,"Copy",'C');
-        setAccelerator(copyItem,ctrlC);
+        setMnemonic(copyItem, "Copy", 'C');
+        setAccelerator(copyItem, ctrlC);
 
         JMenuItem pasteItem = _edit.add(ActionPaste.getInstance());
-        setMnemonic(pasteItem,"Paste",'V');
-        setAccelerator(pasteItem,ctrlV);
+        setMnemonic(pasteItem, "Paste", 'V');
+        setAccelerator(pasteItem, ctrlV);
 
         _edit.addSeparator();
 
         JMenuItem removeItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
-        setMnemonic(removeItem,"Remove",'R');
-        setAccelerator(removeItem,delKey);
+        setMnemonic(removeItem, "Remove", 'R');
+        setAccelerator(removeItem, delKey);
 
         JMenuItem deleteItem = _edit.add(ActionRemoveFromModel.SINGLETON);
-        setMnemonic(deleteItem,"Delete",'D');
-        setAccelerator(deleteItem,ctrlDel);
+        setMnemonic(deleteItem, "Delete", 'D');
+        setAccelerator(deleteItem, ctrlDel);
         // TODO Bob Tarling: no toolbarbutton till a new one is designed for Erase
         //_editToolbar.add(ActionRemoveFromModel.SINGLETON);
 
@@ -367,11 +384,11 @@ public class GenericArgoMenuBar extends JMenuBar
         _edit.add(ActionSettings.getInstance());
 
         _view = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("View")));
-        setMnemonic(_view,"View",'V');
+        setMnemonic(_view, "View", 'V');
 
         _view.add(Actions.GotoDiagram);
         JMenuItem findItem =  _view.add(Actions.Find);
-        setAccelerator(findItem,F3);
+        setAccelerator(findItem, F3);
 
         _view.addSeparator();
 
@@ -382,7 +399,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
         zoom.add(new CmdZoom(0.0));
 
-        JMenuItem zoomIn = zoom.add(new CmdZoom((1.0)/(0.9)));
+        JMenuItem zoomIn = zoom.add(new CmdZoom((1.0) / (0.9)));
         zoomIn.setAccelerator(ctrlEquals);
 
         _view.addSeparator();
@@ -411,7 +428,7 @@ public class GenericArgoMenuBar extends JMenuBar
         //create.addSeparator();
 
         _createDiagrams = (JMenu) add(new JMenu(menuLocalize("Create Diagram")));
-        setMnemonic(_createDiagrams, "Create Diagram",'C');
+        setMnemonic(_createDiagrams, "Create Diagram", 'C');
         _createDiagramToolbar = new Toolbar("Create Diagram Toolbar");
         _createDiagrams.add(ActionClassDiagram.SINGLETON);
         _createDiagramToolbar.add((ActionClassDiagram.SINGLETON));
@@ -430,7 +447,7 @@ public class GenericArgoMenuBar extends JMenuBar
         appendPluggableMenus(_createDiagrams, PluggableMenu.KEY_CREATE_DIAGRAMS);
 
         _arrange = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("Arrange")));
-        setMnemonic(_arrange,"Arrange",'A');
+        setMnemonic(_arrange, "Arrange", 'A');
 
         JMenu align = (JMenu) _arrange.add(new JMenu(menuLocalize("Align")));
         JMenu distribute = (JMenu) _arrange.add(new JMenu(menuLocalize("Distribute")));
@@ -453,10 +470,10 @@ public class GenericArgoMenuBar extends JMenuBar
         org.argouml.application.Main.addPostLoadAction(initLater);
 
         _generate = (JMenu) add(new JMenu(menuLocalize("Generation")));
-        setMnemonic(_generate,"Generate",'G');
+        setMnemonic(_generate, "Generate", 'G');
         _generate.add(ActionGenerateOne.SINGLETON);
         JMenuItem genAllItem = _generate.add(ActionGenerateAll.SINGLETON);
-        setAccelerator(genAllItem,F7);
+        setAccelerator(genAllItem, F7);
         _generate.addSeparator();
         _generate.add(ActionGenerateProjectCode.SINGLETON);
         _generate.add(ActionGenerationSettings.SINGLETON);
@@ -464,7 +481,7 @@ public class GenericArgoMenuBar extends JMenuBar
         appendPluggableMenus(_generate, PluggableMenu.KEY_GENERATE);
 
         _critique = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("Critique")));
-        setMnemonic(_critique,"Critique",'R');
+        setMnemonic(_critique, "Critique", 'R');
         _critique.addCheckItem(Actions.AutoCritique);
         _critique.addSeparator();
         _critique.add(Actions.OpenDecisions);
@@ -481,7 +498,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
         // Help Menu
         _help = new JMenu(menuLocalize("Help"));
-        setMnemonic(_help,"Help",'H');
+        setMnemonic(_help, "Help", 'H');
         appendPluggableMenus(_help, PluggableMenu.KEY_HELP);
         if (_help.getItemCount() > 0) {
             _help.insertSeparator(0);

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -71,7 +72,7 @@ public class ActionAddExistingNode extends UMLAction
         ArgoDiagram dia = ProjectManager.getManager().
             getCurrentProject().getActiveDiagram();
         if (dia == null) return false;
-        MutableGraphModel gm = (MutableGraphModel)dia.getGraphModel();
+        MutableGraphModel gm = (MutableGraphModel) dia.getGraphModel();
         return gm.canAddNode(target);
     }
 
@@ -81,11 +82,11 @@ public class ActionAddExistingNode extends UMLAction
         if (!(gm instanceof MutableGraphModel)) return;
 
         String instructions = null;
-        if(_object != null) {
+        if (_object != null) {
             instructions =  Argo.localize ("Tree", "misc.message.click-on-diagram-to-add") + _object.toString();
             Globals.showStatus(instructions);
         }
-        ModePlace placeMode = new ModePlace(this,instructions);
+        ModePlace placeMode = new ModePlace(this, instructions);
         placeMode.setAddRelatedEdges(true);
 	
         //

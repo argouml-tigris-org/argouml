@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,52 +41,52 @@ import org.tigris.gef.util.*;
  */
 public class AboutBox extends JDialog {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  JTabbedPane _tabs = new JTabbedPane();
+    JTabbedPane _tabs = new JTabbedPane();
 
-  /** Shared splash panel */
-  SplashPanel _splashPanel = null;
+    /** Shared splash panel */
+    SplashPanel _splashPanel = null;
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public AboutBox() {
-    this((Frame)null,false);
-  }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public AboutBox() {
+	this((Frame) null, false);
+    }
 
-  public AboutBox(Frame owner) {
-    this(owner,false);
-  }
+    public AboutBox(Frame owner) {
+	this(owner, false);
+    }
 
-  public AboutBox(Frame owner, boolean modal) {
-    super(owner,modal);
-    this.setTitle("About Argo/UML");
-    _splashPanel = new SplashPanel("Splash");
-    int imgWidth = _splashPanel.getImage().getIconWidth();
-    int imgHeight = _splashPanel.getImage().getIconHeight();
-    Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-    setLocation(scrSize.width/2 - imgWidth/2,
-		       scrSize.height/2 - imgHeight/2);
-    getContentPane().setLayout(new BorderLayout(0, 0));
+    public AboutBox(Frame owner, boolean modal) {
+	super(owner, modal);
+	this.setTitle("About Argo/UML");
+	_splashPanel = new SplashPanel("Splash");
+	int imgWidth = _splashPanel.getImage().getIconWidth();
+	int imgHeight = _splashPanel.getImage().getIconHeight();
+	Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+	setLocation(scrSize.width / 2 - imgWidth / 2,
+		    scrSize.height / 2 - imgHeight / 2);
+	getContentPane().setLayout(new BorderLayout(0, 0));
 
-    Font ctrlFont = MetalLookAndFeel.getControlTextFont();
+	Font ctrlFont = MetalLookAndFeel.getControlTextFont();
 
-    StringBuffer versionBuf = new StringBuffer();
-    versionBuf.append("\n--- Generated version information: ---\n");
-    versionBuf.append(org.argouml.util.Tools.getVersionInfo());
-    versionBuf.append(
-		     "\n"+
-		     "Intended for use with:\n"+
-		     "  JDK 1.2 or higher plus\n"+
-		     "    GEF Graph Editing Framework (gef.tigris.org)\n"+
-		     "      including GIF generation code from www.acme.com\n"+
-		     "    A JAXP 1.0.1 compatible parser\n" +
-                     "       [Xerces-J 1.2.2 or later recommended, (xml.apache.org), it's just great!]\n"+
-		     "    Novosoft's NSUML 0.4.19 or higher (nsuml.sourceforge.net)\n"+
-		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"+
-		     "    ANTLR (www.antlr.org) version 2.7\n"+
-		     "\n");
+	StringBuffer versionBuf = new StringBuffer();
+	versionBuf.append("\n--- Generated version information: ---\n");
+	versionBuf.append(org.argouml.util.Tools.getVersionInfo());
+	versionBuf.append(
+			  "\n" +
+			  "Intended for use with:\n" +
+			  "  JDK 1.2 or higher plus\n" +
+			  "    GEF Graph Editing Framework (gef.tigris.org)\n" +
+			  "      including GIF generation code from www.acme.com\n" +
+			  "    A JAXP 1.0.1 compatible parser\n" +
+			  "       [Xerces-J 1.2.2 or later recommended, (xml.apache.org), it's just great!]\n" +
+			  "    Novosoft's NSUML 0.4.19 or higher (nsuml.sourceforge.net)\n" +
+			  "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n" +
+			  "    ANTLR (www.antlr.org) version 2.7\n" +
+			  "\n");
 
 	versionBuf.append("\n");
 	versionBuf.append("The ArgoUML developers would like to thank all those broad-minded people\n");
@@ -93,90 +94,90 @@ public class AboutBox extends JDialog {
 	versionBuf.append("depends on! We wouldn't be here without your work!\n");
 	versionBuf.append("\n");
 
-    InputStreamReader isr = null;
+	InputStreamReader isr = null;
 
-    _tabs.addTab("Splash", _splashPanel);
+	_tabs.addTab("Splash", _splashPanel);
 
-    try {
-        JTextArea a = new JTextArea();
-        a.setEditable(false);
-        a.read(new StringReader(versionBuf.toString()), null);
-        _tabs.addTab("Version", new JScrollPane(a));
-    }
-    catch (Exception e) {
-        Argo.log.error("Unable to read version information", e);
-    }
+	try {
+	    JTextArea a = new JTextArea();
+	    a.setEditable(false);
+	    a.read(new StringReader(versionBuf.toString()), null);
+	    _tabs.addTab("Version", new JScrollPane(a));
+	}
+	catch (Exception e) {
+	    Argo.log.error("Unable to read version information", e);
+	}
 
-    try {
-        JTextArea a = new JTextArea();
-        a.read(new InputStreamReader(getClass().
-                                     getResourceAsStream(Argo.RESOURCEDIR 
-                                                         + "credits.about")),
-               null);
-        a.setEditable(false);
-        _tabs.addTab("Credits", new JScrollPane(a));
-    }
-    catch (Exception e) {
-        Argo.log.error("Unable to read 'credits.about'", e);
-    }
+	try {
+	    JTextArea a = new JTextArea();
+	    a.read(new InputStreamReader(getClass().
+					 getResourceAsStream(Argo.RESOURCEDIR 
+							     + "credits.about")),
+		   null);
+	    a.setEditable(false);
+	    _tabs.addTab("Credits", new JScrollPane(a));
+	}
+	catch (Exception e) {
+	    Argo.log.error("Unable to read 'credits.about'", e);
+	}
 
-    try {
-        JTextArea a = new JTextArea();
-        a.setEditable(false);
-        a.read(new InputStreamReader(getClass().
-                                     getResourceAsStream(Argo.RESOURCEDIR
-                                                         + "contacts.about")),
-               null);
-        _tabs.addTab("Contact Info", new JScrollPane(a));
-    }
-    catch (Exception e) {
-        Argo.log.error("Unable to read 'contacts.about'", e);
-    }
-
-
-    try {
-        JTextArea a = new JTextArea();
-        a.setEditable(false);
-        a.read(new InputStreamReader(getClass().
-                                     getResourceAsStream(Argo.RESOURCEDIR
-                                                         + "bugreport.about")),
-               null);
-        _tabs.addTab("Report bugs", new JScrollPane(a));
-    }
-    catch (Exception e) {
-        Argo.log.error("Unable to read 'bugreport.about'", e);
-    }
+	try {
+	    JTextArea a = new JTextArea();
+	    a.setEditable(false);
+	    a.read(new InputStreamReader(getClass().
+					 getResourceAsStream(Argo.RESOURCEDIR
+							     + "contacts.about")),
+		   null);
+	    _tabs.addTab("Contact Info", new JScrollPane(a));
+	}
+	catch (Exception e) {
+	    Argo.log.error("Unable to read 'contacts.about'", e);
+	}
 
 
-    try {
-        JTextArea a = new JTextArea();
-        a.setEditable(false);
-        a.read(new InputStreamReader(getClass().
-                                     getResourceAsStream(Argo.RESOURCEDIR
-                                                         + "legal.about")),
-               null);
-        _tabs.addTab("Legal", new JScrollPane(a));
-    }
-    catch (Exception e) {
-        Argo.log.error("Unable to read 'legal.about'", e);
-    }
+	try {
+	    JTextArea a = new JTextArea();
+	    a.setEditable(false);
+	    a.read(new InputStreamReader(getClass().
+					 getResourceAsStream(Argo.RESOURCEDIR
+							     + "bugreport.about")),
+		   null);
+	    _tabs.addTab("Report bugs", new JScrollPane(a));
+	}
+	catch (Exception e) {
+	    Argo.log.error("Unable to read 'bugreport.about'", e);
+	}
 
-    // Add the about tabs from the modules.
-    ArrayList list = Argo.getPlugins( PluggableAboutTab.class);
-    ListIterator iterator = list.listIterator();
-    while (iterator.hasNext()) {
-	Object o = iterator.next();
-	AboutTabPanel atp = ((PluggableAboutTab)o).getAboutTabPanel();
+
+	try {
+	    JTextArea a = new JTextArea();
+	    a.setEditable(false);
+	    a.read(new InputStreamReader(getClass().
+					 getResourceAsStream(Argo.RESOURCEDIR
+							     + "legal.about")),
+		   null);
+	    _tabs.addTab("Legal", new JScrollPane(a));
+	}
+	catch (Exception e) {
+	    Argo.log.error("Unable to read 'legal.about'", e);
+	}
+
+	// Add the about tabs from the modules.
+	ArrayList list = Argo.getPlugins( PluggableAboutTab.class);
+	ListIterator iterator = list.listIterator();
+	while (iterator.hasNext()) {
+	    Object o = iterator.next();
+	    AboutTabPanel atp = ((PluggableAboutTab) o).getAboutTabPanel();
 	
-	_tabs.addTab(Argo.localize( atp.getTabResourceBundleKey(), atp.getTabKey()), atp.getTabPanel());
+	    _tabs.addTab(Argo.localize( atp.getTabResourceBundleKey(), atp.getTabKey()), atp.getTabPanel());
+	}
+
+	getContentPane().setLayout(new BorderLayout(0, 0));
+	getContentPane().add(_tabs, BorderLayout.CENTER);
+
+	// TODO: 10 and 120 were found by trial and error.  Calculate them.
+	setSize(imgWidth + 10, imgHeight + 120);
+	//pack();
     }
-
-    getContentPane().setLayout(new BorderLayout(0, 0));
-    getContentPane().add(_tabs, BorderLayout.CENTER);
-
-    // TODO: 10 and 120 were found by trial and error.  Calculate them.
-    setSize(imgWidth + 10, imgHeight + 120);
-    //pack();
-  }
 
 } /* end class AboutBox */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,14 +34,14 @@ public class GoStateToInternalTrans extends AbstractGoRule {
 
     public String getRuleName() { return "State->Internal Transitions"; }
 	
-	/**
-	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
-	 */
-	public Collection getChildren(Object parent) {
-		if (parent instanceof MState) {
-			return ((MState)parent).getInternalTransitions();
-		}
-		return null;
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
+     */
+    public Collection getChildren(Object parent) {
+	if (parent instanceof MState) {
+	    return ((MState) parent).getInternalTransitions();
 	}
+	return null;
+    }
 
 } /* end class GoStateToInternalTrans */

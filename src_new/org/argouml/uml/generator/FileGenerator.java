@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -28,10 +29,10 @@ package org.argouml.uml.generator;
  */
 public interface FileGenerator {
 
-   /**
-   * The fileseperation for this operating system.
-   */
-	public final static String FILE_SEPARATOR = System.getProperty("file.separator");
+    /**
+     * The fileseperation for this operating system.
+     */
+    public final static String FILE_SEPARATOR = System.getProperty("file.separator");
     /** Generates a file for this classifier.
      * TODO:
      * This will only work for languages that have each node

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -42,58 +43,58 @@ import ru.novosoft.uml.foundation.data_types.*;
 public class AttrKeyword implements java.io.Serializable {
     protected static Category cat = Category.getInstance(AttrKeyword.class);
     
-  public static final AttrKeyword NONE = new AttrKeyword("none");
-  public static final AttrKeyword STATIC = new AttrKeyword("static");
-  public static final AttrKeyword FINAL = new AttrKeyword("final");
-  public static final AttrKeyword STATFIN = new AttrKeyword("static final");
-  public static final AttrKeyword TRANS = new AttrKeyword("transient");
+    public static final AttrKeyword NONE = new AttrKeyword("none");
+    public static final AttrKeyword STATIC = new AttrKeyword("static");
+    public static final AttrKeyword FINAL = new AttrKeyword("final");
+    public static final AttrKeyword STATFIN = new AttrKeyword("static final");
+    public static final AttrKeyword TRANS = new AttrKeyword("transient");
 
 
-  public static final AttrKeyword[] POSSIBLES = {
-    NONE, STATIC, FINAL, STATFIN, TRANS };
+    public static final AttrKeyword[] POSSIBLES = {
+	NONE, STATIC, FINAL, STATFIN, TRANS };
 
-  protected String _label = null;
+    protected String _label = null;
   
-  private AttrKeyword(String label) { _label = label; }
+    private AttrKeyword(String label) { _label = label; }
   
-  public static AttrKeyword KeywordFor(MAttribute attr) {
-    MScopeKind sk = attr.getOwnerScope();
-    MChangeableKind ck = attr.getChangeability();
-    // TODO final?
-    if (MScopeKind.CLASSIFIER.equals(sk) && MChangeableKind.FROZEN.equals(ck))
-      return STATFIN;
-    else if (MScopeKind.CLASSIFIER.equals(sk))
-      return STATIC;
-    else if (MChangeableKind.FROZEN.equals(ck))
-      return FINAL;
-    else
-      return NONE;
-  }
+    public static AttrKeyword KeywordFor(MAttribute attr) {
+	MScopeKind sk = attr.getOwnerScope();
+	MChangeableKind ck = attr.getChangeability();
+	// TODO final?
+	if (MScopeKind.CLASSIFIER.equals(sk) && MChangeableKind.FROZEN.equals(ck))
+	    return STATFIN;
+	else if (MScopeKind.CLASSIFIER.equals(sk))
+	    return STATIC;
+	else if (MChangeableKind.FROZEN.equals(ck))
+	    return FINAL;
+	else
+	    return NONE;
+    }
   
-  public boolean equals(Object o) {
-    if (!(o instanceof AttrKeyword)) return false;
-    String oLabel = ((AttrKeyword)o)._label;
-    return _label.equals(oLabel);
-  }
+    public boolean equals(Object o) {
+	if (!(o instanceof AttrKeyword)) return false;
+	String oLabel = ((AttrKeyword) o)._label;
+	return _label.equals(oLabel);
+    }
 
-  public int hashCode() { return _label.hashCode(); }
+    public int hashCode() { return _label.hashCode(); }
   
-  public String toString() { return _label.toString(); }
+    public String toString() { return _label.toString(); }
 
-  public void set(MAttribute target) {
-	  //    MChangeableKind ck = MChangeableKind.NONE;
-    MChangeableKind ck = null;
-    MScopeKind sk = MScopeKind.INSTANCE;
+    public void set(MAttribute target) {
+	//    MChangeableKind ck = MChangeableKind.NONE;
+	MChangeableKind ck = null;
+	MScopeKind sk = MScopeKind.INSTANCE;
 
-    if (this == TRANS)
-        cat.info("TODO: transient not supported");
+	if (this == TRANS)
+	    cat.info("TODO: transient not supported");
      
     
-    if (this == FINAL || this == STATFIN) ck = MChangeableKind.FROZEN;
-    if (this == STATIC || this == STATFIN) sk = MScopeKind.CLASSIFIER;
+	if (this == FINAL || this == STATFIN) ck = MChangeableKind.FROZEN;
+	if (this == STATIC || this == STATFIN) sk = MScopeKind.CLASSIFIER;
       
-      target.setChangeability(ck);
-      target.setOwnerScope(sk);
-      // TODO: final
-  }
+	target.setChangeability(ck);
+	target.setOwnerScope(sk);
+	// TODO: final
+    }
 } /* end class AttrKeyword */

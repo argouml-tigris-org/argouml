@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -68,19 +69,19 @@ public class UMLMutableLinkedList extends UMLLinkedList {
         public PopupMenu() {
             super();
             if (isAdd()) {
-                    _addAction.setTarget((MModelElement) getTarget());
-                    add(_addAction);
+		_addAction.setTarget((MModelElement) getTarget());
+		add(_addAction);
             }
             if (isNew()) {
-                    _newAction.setTarget((MModelElement) getTarget());
-                    add(_newAction);
+		_newAction.setTarget((MModelElement) getTarget());
+		add(_newAction);
             }
             if (isNew() || isAdd())
                 addSeparator();
             if (isDelete()) {
-                    _deleteAction.setObjectToRemove(getSelectedValue());
-                    _deleteAction.setTarget(getTarget());
-                    add(_deleteAction);
+		_deleteAction.setObjectToRemove(getSelectedValue());
+		_deleteAction.setTarget(getTarget());
+		add(_deleteAction);
             }
 
         }
@@ -202,7 +203,7 @@ public class UMLMutableLinkedList extends UMLLinkedList {
 
     /**
      * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-    */
+     */
     public void mousePressed(MouseEvent e) {
         if (e.isPopupTrigger()) {
             getPopupMenu().show(this, e.getX(), e.getY());    

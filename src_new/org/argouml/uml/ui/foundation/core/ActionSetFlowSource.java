@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -57,19 +58,19 @@ public class ActionSetFlowSource extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (e.getSource() instanceof UMLComboBox2) {
-            UMLComboBox2 source = (UMLComboBox2)e.getSource();
+            UMLComboBox2 source = (UMLComboBox2) e.getSource();
             Object target = source.getTarget();
             if (target instanceof MFlow) {
-                MFlow flow = (MFlow)target;
+                MFlow flow = (MFlow) target;
                 MModelElement old = null;
                 if (!flow.getSources().isEmpty()) {
-                    old = (MModelElement)flow.getSources().toArray()[0];
+                    old = (MModelElement) flow.getSources().toArray()[0];
                 }
                 if (old != source.getSelectedItem()) {
                     if (source.getSelectedItem() != null) {
                         Vector sources = new Vector();
                         sources.add(source.getSelectedItem());
-                        flow.setSources((Collection)sources);
+                        flow.setSources((Collection) sources);
                     }
                 }
             }

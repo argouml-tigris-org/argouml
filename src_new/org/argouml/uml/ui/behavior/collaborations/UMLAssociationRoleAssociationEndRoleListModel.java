@@ -51,14 +51,14 @@ public class UMLAssociationRoleAssociationEndRoleListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MAssociationRole)getTarget()).getConnections());
+        setAllElements(((MAssociationRole) getTarget()).getConnections());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return o instanceof MAssociationEndRole && ((MAssociationRole)getTarget()).getConnections().contains(o);
+        return o instanceof MAssociationEndRole && ((MAssociationRole) getTarget()).getConnections().contains(o);
     }
 
 }

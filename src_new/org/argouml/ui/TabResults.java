@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -48,134 +49,135 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 
 public class TabResults extends TabSpawnable
-implements Runnable, MouseListener, ActionListener, ListSelectionListener {
+    implements Runnable, MouseListener, ActionListener, ListSelectionListener 
+{
     protected static Category cat = 
         Category.getInstance(TabResults.class);
     
 
-  public static int _numJumpToRelated = 0;
+    public static int _numJumpToRelated = 0;
   
-  ////////////////////////////////////////////////////////////////
-  // insatnce variables
-  PredicateFind _pred;
-  ChildGenerator _cg = null;
-  Object _root = null;
-  JSplitPane _mainPane;
-  Vector _results = new Vector();
-  Vector _related = new Vector();
-  Vector _diagrams = new Vector();
-  boolean _showRelated = false;
+    ////////////////////////////////////////////////////////////////
+    // insatnce variables
+    PredicateFind _pred;
+    ChildGenerator _cg = null;
+    Object _root = null;
+    JSplitPane _mainPane;
+    Vector _results = new Vector();
+    Vector _related = new Vector();
+    Vector _diagrams = new Vector();
+    boolean _showRelated = false;
 
-  JLabel    _resultsLabel = new JLabel("Search Results:");
-  JTable    _resultsTable = new JTable(10, 4);
-  TMResults _resultsModel = new TMResults();
+    JLabel    _resultsLabel = new JLabel("Search Results:");
+    JTable    _resultsTable = new JTable(10, 4);
+    TMResults _resultsModel = new TMResults();
 
-  JLabel    _relatedLabel = new JLabel("Related Elements:");
-  JTable    _relatedTable = new JTable(4, 4);
-  TMResults _relatedModel = new TMResults();
+    JLabel    _relatedLabel = new JLabel("Related Elements:");
+    JTable    _relatedTable = new JTable(4, 4);
+    TMResults _relatedModel = new TMResults();
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public TabResults() {
-    this(true);
-  }
-
-  public TabResults(boolean showRelated) {
-    super("Results", true);
-    _showRelated = showRelated;
-    setLayout(new BorderLayout());
-
-    JPanel resultsW = new JPanel();
-    JScrollPane resultsSP = new JScrollPane(_resultsTable);
-    resultsW.setLayout(new BorderLayout());
-    resultsW.add(_resultsLabel, BorderLayout.NORTH);
-    resultsW.add(resultsSP, BorderLayout.CENTER);
-    _resultsTable.setModel(_resultsModel);
-    _resultsTable.addMouseListener(this);
-    _resultsTable.getSelectionModel().addListSelectionListener(this);
-    resultsW.setMinimumSize(new Dimension(100, 100));
-
-    JPanel relatedW = new JPanel();
-    if (_showRelated) {
-      JScrollPane relatedSP = new JScrollPane(_relatedTable);
-      relatedW.setLayout(new BorderLayout());
-      relatedW.add(_relatedLabel, BorderLayout.NORTH);
-      relatedW.add(relatedSP, BorderLayout.CENTER);
-      _relatedTable.setModel(_relatedModel);
-      _relatedTable.addMouseListener(this);
-      relatedW.setMinimumSize(new Dimension(100, 100));
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public TabResults() {
+	this(true);
     }
 
-    if (_showRelated) {
-      _mainPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
-				 resultsW, relatedW);
-      _mainPane.setDividerSize(2);
-      add(_mainPane, BorderLayout.CENTER);
-    } else {
-      add(resultsW, BorderLayout.CENTER);
+    public TabResults(boolean showRelated) {
+	super("Results", true);
+	_showRelated = showRelated;
+	setLayout(new BorderLayout());
+
+	JPanel resultsW = new JPanel();
+	JScrollPane resultsSP = new JScrollPane(_resultsTable);
+	resultsW.setLayout(new BorderLayout());
+	resultsW.add(_resultsLabel, BorderLayout.NORTH);
+	resultsW.add(resultsSP, BorderLayout.CENTER);
+	_resultsTable.setModel(_resultsModel);
+	_resultsTable.addMouseListener(this);
+	_resultsTable.getSelectionModel().addListSelectionListener(this);
+	resultsW.setMinimumSize(new Dimension(100, 100));
+
+	JPanel relatedW = new JPanel();
+	if (_showRelated) {
+	    JScrollPane relatedSP = new JScrollPane(_relatedTable);
+	    relatedW.setLayout(new BorderLayout());
+	    relatedW.add(_relatedLabel, BorderLayout.NORTH);
+	    relatedW.add(relatedSP, BorderLayout.CENTER);
+	    _relatedTable.setModel(_relatedModel);
+	    _relatedTable.addMouseListener(this);
+	    relatedW.setMinimumSize(new Dimension(100, 100));
+	}
+
+	if (_showRelated) {
+	    _mainPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				       resultsW, relatedW);
+	    _mainPane.setDividerSize(2);
+	    add(_mainPane, BorderLayout.CENTER);
+	} else {
+	    add(resultsW, BorderLayout.CENTER);
+	}
+
     }
 
-  }
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    public void setPredicate(PredicateFind p) { _pred = p; }
+    public void setRoot(Object root) { _root = root; }
+    public void setGenerator(ChildGenerator gen) { _cg = gen; }
 
-  public void setPredicate(PredicateFind p) { _pred = p; }
-  public void setRoot(Object root) { _root = root; }
-  public void setGenerator(ChildGenerator gen) { _cg = gen; }
-
-  public void setResults(Vector res, Vector dia) {
-    _results = res;
-    _diagrams = dia;
-    _resultsLabel.setText("Search Results: " + _results.size() + " items");
-    _resultsModel.setTarget(_results, _diagrams);
-    _relatedModel.setTarget(null, null);
-    _relatedLabel.setText("Related Elements: ");
-  }
-
-  public TabSpawnable spawn() {
-    TabResults newPanel = (TabResults) super.spawn();
-    newPanel.setResults(_results, _diagrams);
-    return newPanel;
-  }
-  ////////////////////////////////////////////////////////////////
-  // ActionListener implementation
-
-  public void actionPerformed(ActionEvent ae) {
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // MouseListener implementation
-
-  public void mousePressed(MouseEvent me) { }
-  public void mouseReleased(MouseEvent me) { }
-  public void mouseClicked(MouseEvent me) {
-    if (me.getClickCount() >= 2) myDoubleClick(me.getSource());
-  }
-  public void mouseEntered(MouseEvent me) { }
-  public void mouseExited(MouseEvent me) { }
-
-  public void myDoubleClick(Object src) {
-    int row = _resultsTable.getSelectionModel().getMinSelectionIndex();
-
-    Object sel = null;
-    Diagram d = null;
-    if (src == _resultsTable) {
-      sel = _results.elementAt(row);
-      d = (Diagram) _diagrams.elementAt(row);
-    }
-    else {
-      _numJumpToRelated++;
-      sel = _related.elementAt(row);
+    public void setResults(Vector res, Vector dia) {
+	_results = res;
+	_diagrams = dia;
+	_resultsLabel.setText("Search Results: " + _results.size() + " items");
+	_resultsModel.setTarget(_results, _diagrams);
+	_relatedModel.setTarget(null, null);
+	_relatedLabel.setText("Related Elements: ");
     }
 
-    if (d != null) cat.debug("go " + sel + " in " + d.getName());    
-    if (d != null) TargetManager.getInstance().setTarget(d);
-    TargetManager.getInstance().setTarget(sel);
-  }
+    public TabSpawnable spawn() {
+	TabResults newPanel = (TabResults) super.spawn();
+	newPanel.setResults(_results, _diagrams);
+	return newPanel;
+    }
+    ////////////////////////////////////////////////////////////////
+    // ActionListener implementation
 
-  ////////////////////////////////////////////////////////////////
-  // ListSelectionListener implementation
+    public void actionPerformed(ActionEvent ae) {
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // MouseListener implementation
+
+    public void mousePressed(MouseEvent me) { }
+    public void mouseReleased(MouseEvent me) { }
+    public void mouseClicked(MouseEvent me) {
+	if (me.getClickCount() >= 2) myDoubleClick(me.getSource());
+    }
+    public void mouseEntered(MouseEvent me) { }
+    public void mouseExited(MouseEvent me) { }
+
+    public void myDoubleClick(Object src) {
+	int row = _resultsTable.getSelectionModel().getMinSelectionIndex();
+
+	Object sel = null;
+	Diagram d = null;
+	if (src == _resultsTable) {
+	    sel = _results.elementAt(row);
+	    d = (Diagram) _diagrams.elementAt(row);
+	}
+	else {
+	    _numJumpToRelated++;
+	    sel = _related.elementAt(row);
+	}
+
+	if (d != null) cat.debug("go " + sel + " in " + d.getName());    
+	if (d != null) TargetManager.getInstance().setTarget(d);
+	TargetManager.getInstance().setTarget(sel);
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // ListSelectionListener implementation
 
     public void valueChanged(ListSelectionEvent lse) {
         if (lse.getValueIsAdjusting())
@@ -194,38 +196,38 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
             }
             _relatedModel.setTarget(_related, null);
             _relatedLabel.setText(
-                "Related Elements: " + _related.size() + " items");
+				  "Related Elements: " + _related.size() + " items");
         }
     }
 
-  ////////////////////////////////////////////////////////////////
-  // actions
+    ////////////////////////////////////////////////////////////////
+    // actions
 
-  public void run() {
-    _resultsLabel.setText("Searching...");
-    _results.removeAllElements();
-    depthFirst(_root, null);
-    setResults(_results, _diagrams);
-    _resultsLabel.setText("Search Results: " + _results.size() + " items");
-    _resultsModel.setTarget(_results, _diagrams);
-  }
-
-  public void depthFirst(Object node, Diagram lastDiagram) {
-    if (node instanceof Diagram) {
-      lastDiagram = (Diagram) node;
-      if (!_pred.matchDiagram(lastDiagram)) return;
-      // diagrams are not placed in search results
+    public void run() {
+	_resultsLabel.setText("Searching...");
+	_results.removeAllElements();
+	depthFirst(_root, null);
+	setResults(_results, _diagrams);
+	_resultsLabel.setText("Search Results: " + _results.size() + " items");
+	_resultsModel.setTarget(_results, _diagrams);
     }
+
+    public void depthFirst(Object node, Diagram lastDiagram) {
+	if (node instanceof Diagram) {
+	    lastDiagram = (Diagram) node;
+	    if (!_pred.matchDiagram(lastDiagram)) return;
+	    // diagrams are not placed in search results
+	}
 	java.util.Enumeration enum =  _cg.gen(node);
-    while (enum.hasMoreElements()) {
-      Object c = enum.nextElement();
-      if (_pred.predicate(c)) {
-	_results.addElement(c);
-	_diagrams.addElement(lastDiagram);
-      }
-      depthFirst(c, lastDiagram);
+	while (enum.hasMoreElements()) {
+	    Object c = enum.nextElement();
+	    if (_pred.predicate(c)) {
+		_results.addElement(c);
+		_diagrams.addElement(lastDiagram);
+	    }
+	    depthFirst(c, lastDiagram);
+	}
     }
-  }
 
 } /* end class TabResults */
 

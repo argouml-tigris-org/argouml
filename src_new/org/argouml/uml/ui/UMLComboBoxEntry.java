@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,11 +51,11 @@ public class UMLComboBoxEntry implements Comparable {
      *  entry that is not in the model list...pjs */
     private boolean _isPhantom;
 
-    public UMLComboBoxEntry(MModelElement element,Profile profile,boolean isPhantom) {
+    public UMLComboBoxEntry(MModelElement element, Profile profile, boolean isPhantom) {
         _element = element;
-        if(element != null) {
+        if (element != null) {
             MNamespace ns = element.getNamespace();
-            _shortName = profile.formatElement(element,ns);
+            _shortName = profile.formatElement(element, ns);
         }
         else {
             _shortName = "";
@@ -75,17 +76,17 @@ public class UMLComboBoxEntry implements Comparable {
     }
 
     public void updateName() {
-        if(_element != null) {
+        if (_element != null) {
             MNamespace ns = _element.getNamespace();
-            _shortName = _profile.formatElement(_element,ns);
+            _shortName = _profile.formatElement(_element, ns);
         }
     }
 
-    public void checkCollision(String before,String after) {
+    public void checkCollision(String before, String after) {
         boolean collision = (before != null && before.equals(_shortName)) ||
                 (after != null && after.equals(_shortName));
-        if(collision) {
-            if(_longName == null) {
+        if (collision) {
+            if (_longName == null) {
                 _longName = getLongName();
             }
             _displayName = _longName;
@@ -97,9 +98,9 @@ public class UMLComboBoxEntry implements Comparable {
     }
 
     public String getLongName() {
-        if(_longName == null) {
-            if(_element != null) {
-                _longName = _profile.formatElement(_element,null);
+        if (_longName == null) {
+            if (_element != null) {
+                _longName = _profile.formatElement(_element, null);
             }
             else {
                 _longName = "void";
@@ -117,32 +118,32 @@ public class UMLComboBoxEntry implements Comparable {
         MNamespace ns = null;
         MNamespace targetParentNS = null;
         MNamespace parentNS = phantomNS.getNamespace();
-        if(parentNS == null) {
+        if (parentNS == null) {
             ns = targetModel;
         }
         else {
-            targetParentNS = findNamespace(parentNS,targetModel);
+            targetParentNS = findNamespace(parentNS, targetModel);
             //
             //   see if there is already an element with the same name
             //
             Collection ownedElements = targetParentNS.getOwnedElements();
             String phantomName = phantomNS.getName();
             String targetName;
-            if(ownedElements != null) {
+            if (ownedElements != null) {
                 MModelElement ownedElement;
                 Iterator iter = ownedElements.iterator();
-                while(iter.hasNext()) {
+                while (iter.hasNext()) {
                     ownedElement = (MModelElement) iter.next();
                     targetName = ownedElement.getName();
-                    if(targetName != null && phantomName.equals(targetName)) {
-                        if(ownedElement instanceof MPackage) {
+                    if (targetName != null && phantomName.equals(targetName)) {
+                        if (ownedElement instanceof MPackage) {
                             ns = (MPackage) ownedElement;
                             break;
                         }
                     }
                 }
             }
-            if(ns == null) {
+            if (ns == null) {
                 ns = targetParentNS.getFactory().createPackage();
                 ns.setName(phantomName);
                 targetParentNS.addOwnedElement(ns);
@@ -156,20 +157,20 @@ public class UMLComboBoxEntry implements Comparable {
         //  if phantom then
         //    we need to possibly recreate the package structure
         //       in the target model
-        if(_isPhantom && targetModel != null) {
-            MNamespace targetNS = findNamespace(_element.getNamespace(),targetModel);
+        if (_isPhantom && targetModel != null) {
+            MNamespace targetNS = findNamespace(_element.getNamespace(), targetModel);
             MModelElement clone = null;
             try {
                 clone = (MModelElement) _element.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
                 clone.setName(_element.getName());
                 clone.setStereotype(_element.getStereotype());
-                if(clone instanceof MStereotype) {
+                if (clone instanceof MStereotype) {
                     ((MStereotype) clone).setBaseClass(((MStereotype) _element).getBaseClass());
                 }
                 targetNS.addOwnedElement(clone);
                 _element = clone;
             }
-            catch(Exception ex) {
+            catch (Exception ex) {
                 ex.printStackTrace();
             }
             _isPhantom = false;
@@ -185,21 +186,21 @@ public class UMLComboBoxEntry implements Comparable {
 
     public int compareTo(final java.lang.Object other) {
         int compare = -1;
-        if(other instanceof UMLComboBoxEntry) {
+        if (other instanceof UMLComboBoxEntry) {
             UMLComboBoxEntry otherEntry = (UMLComboBoxEntry) other;
             compare = 0;
-            if(otherEntry != this) {
+            if (otherEntry != this) {
                 //
                 //  if this is a "void" entry it goes first
                 //
-                if(_element == null) {
+                if (_element == null) {
                     compare = -1;
                 }
                 else {
                     //
                     //  if the other one is "void" it goes first
                     //
-                    if(otherEntry.getElement(null) == null) {
+                    if (otherEntry.getElement(null) == null) {
                         compare = 1;
                     }
                     else {
@@ -210,7 +211,7 @@ public class UMLComboBoxEntry implements Comparable {
                         //
                         //   compare long names
                         //
-                        if(compare == 0) {
+                        if (compare == 0) {
                             compare = getLongName().compareTo(otherEntry.getLongName());
                         }
                     }
@@ -221,9 +222,9 @@ public class UMLComboBoxEntry implements Comparable {
     }
 
     public void nameChanged(MModelElement element) {
-        if(element == _element && _element != null) {
+        if (element == _element && _element != null) {
             MNamespace ns = _element.getNamespace();
-            _shortName = _profile.formatElement(_element,ns);
+            _shortName = _profile.formatElement(_element, ns);
             _displayName = _shortName;
             _longName = null;
         }

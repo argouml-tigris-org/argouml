@@ -48,26 +48,26 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelNodeInstance extends PropPanelModelElement {
     public PropPanelNodeInstance() {
         super("Node Instance", _nodeInstanceIcon, ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = (Class)ModelFacade.NODE_INSTANCE;
+	Class mclass = (Class) ModelFacade.NODE_INSTANCE;
 
 	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 
-        UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
+        UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this, "isAcceptibleClassifier", "classifier", "getClassifier", "setClassifier", false, MClassifier.class, true);
 	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
-        addField("Classifier:", new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),clsComboBox));
+        addField("Classifier:", new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"), clsComboBox));
 
 	addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 	addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
+	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
     }
 
     public boolean isAcceptibleClassifier(MModelElement classifier) {
@@ -78,15 +78,15 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
     public void setClassifier(MClassifier element) {
         Object target = getTarget();
 
-        if(target instanceof MInstance) {
-	    MInstance inst = (MInstance)target;
+        if (target instanceof MInstance) {
+	    MInstance inst = (MInstance) target;
 
 	    // delete all classifiers
 	    Collection col = inst.getClassifiers();
 	    if (col != null) {
 		Iterator iter = col.iterator();
 		if (iter != null && iter.hasNext()) {
-		    MClassifier classifier = (MClassifier)iter.next();
+		    MClassifier classifier = (MClassifier) iter.next();
 		    inst.removeClassifier(classifier);
 		}
 	    }
@@ -98,13 +98,13 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
     public MClassifier getClassifier() {
         MClassifier classifier = null;
         Object target = getTarget();
-        if(target instanceof MInstance) {
+        if (target instanceof MInstance) {
             // at the moment , we only deal with one classifier
-            Collection col = ((MInstance)target).getClassifiers();
+            Collection col = ((MInstance) target).getClassifiers();
             if (col != null) {
                 Iterator iter = col.iterator();
                 if (iter != null && iter.hasNext()) {
-                    classifier = (MClassifier)iter.next();
+                    classifier = (MClassifier) iter.next();
                 }
             }
         }

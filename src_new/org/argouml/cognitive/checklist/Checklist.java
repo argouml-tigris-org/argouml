@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -27,7 +28,6 @@
 // Class: Checklist
 // Original Author: jrobbins@ics.uci.edu
 
-// $Id$
 
 package org.argouml.cognitive.checklist;
 
@@ -44,82 +44,82 @@ import java.util.*;
 
 public class Checklist implements java.io.Serializable {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  /** Pending CheckItems for the designer to consider. */
-  protected Vector _items = new Vector(100);
+    /** Pending CheckItems for the designer to consider. */
+    protected Vector _items = new Vector(100);
 
-  protected String _nextCategory = "General";
+    protected String _nextCategory = "General";
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
+    ////////////////////////////////////////////////////////////////
+    // constructor
 
-  public Checklist() { }
+    public Checklist() { }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public Vector getCheckItems() { return _items; }
+    public Vector getCheckItems() { return _items; }
 
-  public void addItem(CheckItem item) {
-    _items.addElement(item);
-  }
-
-  public void removeItem(CheckItem item) {
-    _items.removeElement(item);
-  }
-
-  public void addItem(String description) {
-    CheckItem item = new CheckItem(_nextCategory, description);
-    _items.addElement(item);
-  }
-
-  public synchronized void addAll(Checklist list) {
-    Enumeration cur = list.elements();
-    while (cur.hasMoreElements()) {
-      CheckItem item = (CheckItem) cur.nextElement();
-      addItem(item);
+    public void addItem(CheckItem item) {
+	_items.addElement(item);
     }
-  }
 
-  public Enumeration elements() { return _items.elements(); }
+    public void removeItem(CheckItem item) {
+	_items.removeElement(item);
+    }
 
-  public int size() { return _items.size(); }
+    public void addItem(String description) {
+	CheckItem item = new CheckItem(_nextCategory, description);
+	_items.addElement(item);
+    }
 
-  public CheckItem elementAt(int index) {
-    return (CheckItem)_items.elementAt(index);
-  }
+    public synchronized void addAll(Checklist list) {
+	Enumeration cur = list.elements();
+	while (cur.hasMoreElements()) {
+	    CheckItem item = (CheckItem) cur.nextElement();
+	    addItem(item);
+	}
+    }
 
-  public void setNextCategory(String cat) { _nextCategory = cat; }
+    public Enumeration elements() { return _items.elements(); }
+
+    public int size() { return _items.size(); }
+
+    public CheckItem elementAt(int index) {
+	return (CheckItem) _items.elementAt(index);
+    }
+
+    public void setNextCategory(String cat) { _nextCategory = cat; }
 
   
-  ////////////////////////////////////////////////////////////////
-  // internal methods
+    ////////////////////////////////////////////////////////////////
+    // internal methods
   
-  /** Sort the items by priority.
-   *
-   *  TODO: not done yet.  It has been pointed out that
-   *  sorting and priorities will probably be pretty arbitrary and hard
-   *  to match with the Designer's (tacit) feelings about the
-   *  importance of various items.  We are thinking about a
-   *  sort-by-category user interface that would be part of a complete
-   *  java PIM (personal information manager, AKA, a daily planner).  */
-  private synchronized void sort() {
-    // do some sorting?
-  }
-
-  public String toString() {
-    String res;
-    res = getClass().getName() + " {\n";
-    Enumeration cur = elements();
-    while (cur.hasMoreElements()) {
-      CheckItem item = (CheckItem) cur.nextElement();
-      res += "    " + item.toString() + "\n";
+    /** Sort the items by priority.
+     *
+     *  TODO: not done yet.  It has been pointed out that
+     *  sorting and priorities will probably be pretty arbitrary and hard
+     *  to match with the Designer's (tacit) feelings about the
+     *  importance of various items.  We are thinking about a
+     *  sort-by-category user interface that would be part of a complete
+     *  java PIM (personal information manager, AKA, a daily planner).  */
+    private synchronized void sort() {
+	// do some sorting?
     }
-    res += "  }";
-    return res;
-  }
+
+    public String toString() {
+	String res;
+	res = getClass().getName() + " {\n";
+	Enumeration cur = elements();
+	while (cur.hasMoreElements()) {
+	    CheckItem item = (CheckItem) cur.nextElement();
+	    res += "    " + item.toString() + "\n";
+	}
+	res += "  }";
+	return res;
+    }
 
 } /* end class Checklist */
 

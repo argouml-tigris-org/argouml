@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -121,7 +122,7 @@ public class SettingsTabLayout extends SettingsTabHelper implements SettingsTabP
 
     private ConfigurationKey makeKey(Class tab) {
         String className = tab.getName();
-        String shortClassName = className.substring(className.lastIndexOf('.')+1).toLowerCase();
+        String shortClassName = className.substring(className.lastIndexOf('.') + 1).toLowerCase();
         ConfigurationKey key = Configuration.makeKey("layout", shortClassName);
         return key;
     }
@@ -152,7 +153,7 @@ public class SettingsTabLayout extends SettingsTabHelper implements SettingsTabP
         savePosition(_taggedValues, TabTaggedValues.class);
     }
 
-    public void handleSettingsTabCancel() {}
+    public void handleSettingsTabCancel() { }
     public String getModuleName() { return "SettingsTabLayout"; }
     public String getModuleDescription() { return "Positioning of components"; }
     public String getModuleAuthor() { return "ArgoUML Core"; }

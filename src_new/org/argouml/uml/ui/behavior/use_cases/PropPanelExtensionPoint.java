@@ -74,7 +74,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"),
-            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
 
         // Our location (a String). We can pass in the get and set methods from
         // NSUML associated with the NSUML type. Allow the location label to
@@ -127,7 +127,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         MUseCase owner = ((MExtensionPoint) target).getUseCase();
 
-        if(owner != null) {
+        if (owner != null) {
             TargetManager.getInstance().setTarget(owner);
         }
     }

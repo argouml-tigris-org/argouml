@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -120,8 +121,8 @@ public class XMIParser {
         Argo.log.info("=======================================");
 
         
-            _proj.addModel(
-                (ru.novosoft.uml.foundation.core.MNamespace) _curModel);
+	_proj.addModel(
+		       (ru.novosoft.uml.foundation.core.MNamespace) _curModel);
         
 
         Collection ownedElements = _curModel.getOwnedElements();
@@ -131,15 +132,15 @@ public class XMIParser {
             MModelElement me = (MModelElement) oeIterator.next();
             if (me.getName() == null)
                 me.setName("");
-                /*
-            if (me instanceof MClass) {
-                // _proj.defineType((MClass) me);
-            }
-            else
-                if (me instanceof MDataType) {
-                    _proj.defineType((MDataType) me);
-                }
-                */
+	    /*
+	      if (me instanceof MClass) {
+	      // _proj.defineType((MClass) me);
+	      }
+	      else
+	      if (me instanceof MDataType) {
+	      _proj.defineType((MDataType) me);
+	      }
+	    */
         }
     }
 

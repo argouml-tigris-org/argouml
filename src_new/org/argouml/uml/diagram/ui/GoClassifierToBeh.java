@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,15 +34,15 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 
 public class GoClassifierToBeh extends AbstractGoRule {
 
-  public String getRuleName() {
-    return Argo.localize ("Tree", "misc.class.operation");
-  }
+    public String getRuleName() {
+	return Argo.localize ("Tree", "misc.class.operation");
+    }
 
-  public Collection getChildren(Object parent) {
-      if (ModelFacade.isAClassifier(parent)) {
-          return ModelFacade.getOperations(parent);
-      }
-      return null;
-  }
+    public Collection getChildren(Object parent) {
+	if (ModelFacade.isAClassifier(parent)) {
+	    return ModelFacade.getOperations(parent);
+	}
+	return null;
+    }
 
 }

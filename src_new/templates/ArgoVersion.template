@@ -33,18 +33,18 @@ package org.argouml.application;
  *   @since  Argo0.11.1
  */
 public class ArgoVersion {
-  /** Version number
-   */
-  public static String VERSION = "@ARGO_RELEASE_VERSION@";
+    /** Version number
+     */
+    public static String VERSION = "@ARGO_RELEASE_VERSION@";
 
-  /** Retrieve the version number.
-   */
-  public static String getVersion() {
-    return VERSION;
-  }
+    /** Retrieve the version number.
+     */
+    public static String getVersion() {
+	return VERSION;
+    }
 
-  /** Don't allow instantiation
-   */
-  private ArgoVersion() { }
+    /** Don't allow instantiation
+     */
+    private ArgoVersion() { }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -92,7 +93,7 @@ public class ModelManagementHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllSubSystems((MNamespace)o));
+                list.addAll(getAllSubSystems((MNamespace) o));
             }
             if (o instanceof MSubsystem) {
                 list.add(o);
@@ -125,7 +126,7 @@ public class ModelManagementHelper {
             Object o = it.next();
             if (o instanceof MNamespace) {
                 list.add(o);
-                list.addAll(getAllNamespaces((MNamespace)o));
+                list.addAll(getAllNamespaces((MNamespace) o));
             }
         }
         return list;
@@ -163,7 +164,7 @@ public class ModelManagementHelper {
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllModelElementsOfKind((MNamespace)o, kind));
+                list.addAll(getAllModelElementsOfKind((MNamespace) o, kind));
             }
             if (kind.isAssignableFrom(o.getClass())) {
                 list.add(o);
@@ -197,7 +198,7 @@ public class ModelManagementHelper {
 		return null;
 
 	    name = path.get(i);
-	    Iterator it = ((MNamespace)root).getOwnedElements().iterator();
+	    Iterator it = ((MNamespace) root).getOwnedElements().iterator();
 	    root = null;
 	    while (it.hasNext()) {
 		MModelElement me = (MModelElement) it.next();

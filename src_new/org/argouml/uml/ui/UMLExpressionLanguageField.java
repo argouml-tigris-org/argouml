@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -47,14 +48,14 @@ public class UMLExpressionLanguageField extends JTextField implements DocumentLi
      *   @param model Expression model, should be shared between Language and Body fields
      *   @param notifyModel Only one of Language and Body fields should forward events to model
      **/
-    public UMLExpressionLanguageField(UMLExpressionModel model,boolean notifyModel) {
+    public UMLExpressionLanguageField(UMLExpressionModel model, boolean notifyModel) {
         _model = model;
         _notifyModel = notifyModel;
         getDocument().addDocumentListener(this);
     }
 
     public void targetChanged() {
-        if(_notifyModel) _model.targetChanged();
+        if (_notifyModel) _model.targetChanged();
         update();
     }
 
@@ -72,7 +73,7 @@ public class UMLExpressionLanguageField extends JTextField implements DocumentLi
     public void removed(final MElementEvent p1) {
     }
     public void propertySet(final MElementEvent event) {
-        if(_notifyModel && _model.propertySet(event)) {
+        if (_notifyModel && _model.propertySet(event)) {
             update();
         }
     }
@@ -80,8 +81,8 @@ public class UMLExpressionLanguageField extends JTextField implements DocumentLi
     private void update() {
         String oldText = getText();
         String newText = _model.getLanguage();
-        if(oldText == null || newText == null || !oldText.equals(newText)) {
-            if(oldText != newText) {
+        if (oldText == null || newText == null || !oldText.equals(newText)) {
+            if (oldText != newText) {
                 setText(newText);
             }
         }

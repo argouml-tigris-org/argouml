@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -169,7 +170,7 @@ public class GeneratorDisplay extends Generator {
         Iterator it = parameters.iterator();
         int counter = 0;
         while (it.hasNext()) {
-            MParameter parameter = (MParameter)it.next();
+            MParameter parameter = (MParameter) it.next();
             if (!parameter.getKind().equals(MParameterDirectionKind.RETURN)) {
                 counter++;
                 parameterListBuffer.append(
@@ -192,7 +193,7 @@ public class GeneratorDisplay extends Generator {
             returnParasSb.append(": ");
             Iterator it2 = returnParas.iterator();
             while (it2.hasNext()) {
-                MParameter param = (MParameter)it2.next();
+                MParameter param = (MParameter) it2.next();
                 if (param.getType() != null) {
                     returnParasSb.append(param.getType().getName());
                 }
@@ -226,7 +227,7 @@ public class GeneratorDisplay extends Generator {
             Iterator it3 = taggedValues.iterator();
             while (it3.hasNext()) {
                 taggedValuesSb.append(
-                    generateTaggedValue((MTaggedValue)it3.next()));
+                    generateTaggedValue((MTaggedValue) it3.next()));
                 taggedValuesSb.append(",");
             }
             taggedValuesSb.delete(
@@ -355,7 +356,7 @@ public class GeneratorDisplay extends Generator {
             ns = ns.getNamespace();
         }
         while (!stack.isEmpty())
-            s += (String)stack.pop() + ".";
+            s += (String) stack.pop() + ".";
 
         if (s.endsWith(".")) {
             int lastIndex = s.lastIndexOf(".");
@@ -367,7 +368,7 @@ public class GeneratorDisplay extends Generator {
         if (ownedElements != null) {
             Iterator ownedEnum = ownedElements.iterator();
             while (ownedEnum.hasNext()) {
-                s += generate((MModelElement)ownedEnum.next());
+                s += generate((MModelElement) ownedEnum.next());
                 s += "\n\n";
             }
         } else {
@@ -420,7 +421,7 @@ public class GeneratorDisplay extends Generator {
             s += INDENT + "// Associations\n";
             Iterator endEnum = ends.iterator();
             while (endEnum.hasNext()) {
-                MAssociationEnd ae = (MAssociationEnd)endEnum.next();
+                MAssociationEnd ae = (MAssociationEnd) endEnum.next();
                 MAssociation a = ae.getAssociation();
                 s += INDENT + generateAssociationFrom(a, ae);
             }
@@ -527,7 +528,7 @@ public class GeneratorDisplay extends Generator {
         c = m.getPredecessors();
         it = c.iterator();
         while (it.hasNext()) {
-            MMessage msg = (MMessage)it.next();
+            MMessage msg = (MMessage) it.next();
             if (msg.getActivator() != act)
                 continue;
             int p = recCountPredecessors(msg, null) + 1;
@@ -549,7 +550,7 @@ public class GeneratorDisplay extends Generator {
         Iterator it = m.getMessages3().iterator();
         int count = 0;
         while (it.hasNext()) {
-            MMessage msg = (MMessage)it.next();
+            MMessage msg = (MMessage) it.next();
             if (msg.getActivator() != act)
                 continue;
             count++;
@@ -599,7 +600,7 @@ public class GeneratorDisplay extends Generator {
             int precnt = 0;
 
             while (it.hasNext()) {
-                MMessage msg = (MMessage)it.next();
+                MMessage msg = (MMessage) it.next();
                 int mpn = recCountPredecessors(msg, ptr2) + 1;
 
                 if (mpn == lpn - 1
@@ -639,7 +640,7 @@ public class GeneratorDisplay extends Generator {
         Collection connections = a.getConnections();
         Iterator connEnum = connections.iterator();
         while (connEnum.hasNext()) {
-            MAssociationEnd ae2 = (MAssociationEnd)connEnum.next();
+            MAssociationEnd ae2 = (MAssociationEnd) connEnum.next();
             if (ae2 != ae)
                 s += generateAssociationEnd(ae2);
         }
@@ -701,7 +702,7 @@ public class GeneratorDisplay extends Generator {
         String s = "{";
         Iterator conEnum = constr.iterator();
         while (conEnum.hasNext()) {
-            s += generateConstraint((MConstraint)conEnum.next());
+            s += generateConstraint((MConstraint) conEnum.next());
             if (conEnum.hasNext())
                 s += "; ";
         }
@@ -740,7 +741,7 @@ public class GeneratorDisplay extends Generator {
             return "";
         Iterator enum = generalizations.iterator();
         while (enum.hasNext()) {
-            MGeneralization g = (MGeneralization)enum.next();
+            MGeneralization g = (MGeneralization) enum.next();
             MGeneralizableElement ge = g.getPowertype();
             // assert ge != null
             if (ge != null) {
@@ -762,7 +763,7 @@ public class GeneratorDisplay extends Generator {
             return "";
         Iterator clsEnum = classifiers.iterator();
         while (clsEnum.hasNext()) {
-            s += generateClassifierRef((MClass)clsEnum.next());
+            s += generateClassifierRef((MClass) clsEnum.next());
             if (clsEnum.hasNext())
                 s += ", ";
         }
@@ -818,7 +819,7 @@ public class GeneratorDisplay extends Generator {
             return s;
         Iterator rangeIter = v.iterator();
         while (rangeIter.hasNext()) {
-            MMultiplicityRange mr = (MMultiplicityRange)rangeIter.next();
+            MMultiplicityRange mr = (MMultiplicityRange) rangeIter.next();
             if (!(mr.getLower() == 1 && mr.getUpper() == 1 && v.size() == 1)) {
                 s += generateMultiplicityRange(mr);
                 s += ",";
@@ -907,7 +908,7 @@ public class GeneratorDisplay extends Generator {
             while (iter.hasNext()) {
                 if (s.length() > 0)
                     s.append("\n");
-                MTransition trans = (MTransition)iter.next();
+                MTransition trans = (MTransition) iter.next();
                 s.append(trans.getName()).append(" /").append(
                     generateTransition(trans));
             }
@@ -949,7 +950,7 @@ public class GeneratorDisplay extends Generator {
         it = c.iterator();
         first = true;
         while (it.hasNext()) {
-            MArgument arg = (MArgument)it.next();
+            MArgument arg = (MArgument) it.next();
             if (!first)
                 p += ", ";
 

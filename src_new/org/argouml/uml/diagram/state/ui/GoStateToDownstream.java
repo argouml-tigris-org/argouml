@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,13 +34,13 @@ import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
 public class GoStateToDownstream extends AbstractGoRule {
 
-  public String getRuleName() { return "State->Following States"; }
+    public String getRuleName() { return "State->Following States"; }
   
-  public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAStateVertex(parent)) {
-          return StateMachinesHelper.getHelper().getOutgoingStates(parent);
-      }
-      return null;
-  }
+    public Collection getChildren(Object parent) { 
+	if (ModelFacade.isAStateVertex(parent)) {
+	    return StateMachinesHelper.getHelper().getOutgoingStates(parent);
+	}
+	return null;
+    }
 
 } /* end class GoStateToDownstream */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -45,21 +46,21 @@ public class UMLTaggedTextProperty extends UMLTextProperty  {
 	 * @see org.argouml.uml.ui.UMLTextProperty#setProperty(UMLUserInterfaceContainer, String, boolean)
      * @author jaap.branderhorst@xs4all.nl
 	 */
-    public void setProperty(UMLUserInterfaceContainer container,String newValue, boolean validating) {
+    public void setProperty(UMLUserInterfaceContainer container, String newValue, boolean validating) {
         setProperty(container, newValue);
     }
         
-    public void setProperty(UMLUserInterfaceContainer container,String newValue) {
+    public void setProperty(UMLUserInterfaceContainer container, String newValue) {
         Object element = container.getTarget();
-        if(element instanceof MModelElement) {
-            ((MModelElement) element).setTaggedValue(_propertyName,newValue);
+        if (element instanceof MModelElement) {
+            ((MModelElement) element).setTaggedValue(_propertyName, newValue);
         }
     }
     
     public String getProperty(UMLUserInterfaceContainer container) {
         String value = null;
         Object element = container.getTarget();
-        if(element instanceof MModelElement) {
+        if (element instanceof MModelElement) {
             value = ((MModelElement) element).getTaggedValue(_propertyName);
         }
         else {
@@ -70,7 +71,7 @@ public class UMLTaggedTextProperty extends UMLTextProperty  {
     
     boolean isAffected(MElementEvent event) {
         String sourceName = event.getName();
-        if(_propertyName == null || sourceName == null || sourceName.equals(_propertyName))
+        if (_propertyName == null || sourceName == null || sourceName.equals(_propertyName))
             return true;
         return false;
     }

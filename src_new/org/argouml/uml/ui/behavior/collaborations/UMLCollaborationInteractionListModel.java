@@ -49,14 +49,14 @@ public class UMLCollaborationInteractionListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MCollaboration)getTarget()).getInteractions());
+        setAllElements(((MCollaboration) getTarget()).getInteractions());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase elem) {
-        return elem instanceof MInteraction && ((MInteraction)elem).getContext() == getTarget();
+        return elem instanceof MInteraction && ((MInteraction) elem).getContext() == getTarget();
     }
 
 }

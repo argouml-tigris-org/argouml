@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -78,7 +79,7 @@ public class TabSrc
     // accessors
 
     protected String genText(Object modelObject) {
-        modelObject = (modelObject instanceof Fig) ? ((Fig)modelObject).getOwner() : modelObject;       
+        modelObject = (modelObject instanceof Fig) ? ((Fig) modelObject).getOwner() : modelObject;       
         if (!ModelFacade.isAElement(modelObject))
             return null;
         
@@ -111,7 +112,7 @@ public class TabSrc
      */
     public void setTarget(Object t) {
 
-        t = (t instanceof Fig) ? ((Fig)t).getOwner() : t;
+        t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
         _target = t;
         _notationName = null;
         _shouldBeEnabled = false;
@@ -146,7 +147,7 @@ public class TabSrc
      * as owner a modelelement.
      */
     public boolean shouldBeEnabled(Object target) {
-        target = (target instanceof Fig) ? ((Fig)target).getOwner() : target;
+        target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
 
         _shouldBeEnabled = false;
         if (ModelFacade.isAModelElement(target)) {

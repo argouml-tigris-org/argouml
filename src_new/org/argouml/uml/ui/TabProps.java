@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -111,9 +112,9 @@ public class TabProps
     private Object _target;
 
     /**
-    * The list with targetlisteners, this are the property panels managed by TabProps
-    * It should only contain one listener at a time.
-    */
+     * The list with targetlisteners, this are the property panels managed by TabProps
+     * It should only contain one listener at a time.
+     */
     private EventListenerList _listenerList = new EventListenerList();
 
     ////////////////////////////////////////////////////////////////
@@ -324,8 +325,8 @@ public class TabProps
             return Class.forName(panelClassName);
         } catch (ClassNotFoundException ignore) {
             cat.error(
-                "Class " + panelClassName + " for Panel not found!",
-                ignore);
+		      "Class " + panelClassName + " for Panel not found!",
+		      ignore);
         }
         return null;
     }
@@ -435,7 +436,7 @@ public class TabProps
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
-                 ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
+		((TargetListener) listeners[i + 1]).targetSet(targetEvent);
             }
         }
     }
@@ -447,7 +448,7 @@ public class TabProps
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
-                 ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
+		((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
             }
         }
     }

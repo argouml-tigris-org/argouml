@@ -44,7 +44,7 @@ public class UMLAssociationRoleMessageListModel extends UMLModelElementListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MAssociationRole)getTarget()).getMessages());
+        setAllElements(((MAssociationRole) getTarget()).getMessages());
     }
 
     /**
@@ -52,7 +52,7 @@ public class UMLAssociationRoleMessageListModel extends UMLModelElementListModel
      */
     protected boolean isValidElement(MBase o) {
         return o instanceof MMessage &&
-            ((MAssociationRole)getTarget()).getMessages().contains(o);
+            ((MAssociationRole) getTarget()).getMessages().contains(o);
     }
 
 }

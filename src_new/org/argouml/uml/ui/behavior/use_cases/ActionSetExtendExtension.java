@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -62,14 +63,14 @@ public class ActionSetExtendExtension extends UMLChangeAction {
         MUseCase oldExtension = null;
         MExtend extend = null;
         if (source instanceof UMLComboBox2) {
-            UMLComboBox2 combo = (UMLComboBox2)source;
-            newExtension = (MUseCase)combo.getSelectedItem();
+            UMLComboBox2 combo = (UMLComboBox2) source;
+            newExtension = (MUseCase) combo.getSelectedItem();
             Object o = combo.getTarget();
             if (o instanceof MExtend) {
-                extend = (MExtend)o;
+                extend = (MExtend) o;
                 o = combo.getSelectedItem();
                 if (o instanceof MUseCase) {
-                    newExtension = (MUseCase)o;
+                    newExtension = (MUseCase) o;
                     oldExtension = extend.getExtension();
                     if (newExtension != oldExtension) {
                         extend.setExtension(newExtension);

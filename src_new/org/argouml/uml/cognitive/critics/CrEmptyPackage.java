@@ -48,12 +48,12 @@ import org.argouml.model.ModelFacade;
 public class CrEmptyPackage extends CrUML {
     protected static Category cat = Category.getInstance(CrEmptyPackage.class);
 
-  public CrEmptyPackage() {
-    setHeadline("Add Elements to Package <ocl>self</ocl>");
+    public CrEmptyPackage() {
+	setHeadline("Add Elements to Package <ocl>self</ocl>");
        
-    addSupportedDecision(CrUML.decMODULARITY);
-    addTrigger("ownedElement");
-  }
+	addSupportedDecision(CrUML.decMODULARITY);
+	addTrigger("ownedElement");
+    }
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	cat.debug("predicate2 on " + dm);

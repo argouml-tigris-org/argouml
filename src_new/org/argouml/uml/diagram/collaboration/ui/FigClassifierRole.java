@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -462,7 +463,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     protected void updateNameText() {
         Object own = getOwner();
         if (own == null) return;
-        MClassifierRole cr = (MClassifierRole)own;
+        MClassifierRole cr = (MClassifierRole) own;
         // We only use the notation generator for the name itself. We ought to
         // do the whole thing.
 
@@ -471,19 +472,19 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         // Loop through all base classes, building a comma separated list
 
-        if (cr.getBases() != null && cr.getBases().size()>0) {
+        if (cr.getBases() != null && cr.getBases().size() > 0) {
             Vector bases = new Vector(cr.getBases());
-            baseString += ((MClassifier)bases.elementAt(0)).getName();
+            baseString += ((MClassifier) bases.elementAt(0)).getName();
 
-            for(int i=1; i<bases.size(); i++)
+            for (int i = 1; i < bases.size(); i++)
                 baseString += ", "  +
-                              ((MClassifier)bases.elementAt(i)).getName();
+                              ((MClassifier) bases.elementAt(i)).getName();
         }
 
         // Build the final string and set it as the name text.
 
         if (_readyToEdit) {
-            if( nameStr.length() == 0 && baseString.length() == 0)
+            if ( nameStr.length() == 0 && baseString.length() == 0)
                 _name.setText("");
             else
                 _name.setText("/" + nameStr.trim() + " : " + baseString);

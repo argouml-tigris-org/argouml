@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -49,45 +50,45 @@ import org.tigris.gef.util.VectorSet;
 
 public interface Poster {
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  /** Get some contact information on the Poster. */
-  String getExpertEmail();
+    /** Get some contact information on the Poster. */
+    String getExpertEmail();
 
-  /** Update the Poster's contact info. Is this needed? */
-  void setExpertEmail(String addr);
+    /** Update the Poster's contact info. Is this needed? */
+    void setExpertEmail(String addr);
 
-  /** Reply true if the given item should be kept on the Designer's
-   * ToDoList, false if it is no longer valid. */
-  boolean stillValid(ToDoItem i, Designer d);
+    /** Reply true if the given item should be kept on the Designer's
+     * ToDoList, false if it is no longer valid. */
+    boolean stillValid(ToDoItem i, Designer d);
 
-  boolean supports(Decision d);
-  Vector getSupportedDecisions();
-  boolean supports(Goal g);
-  Vector getSupportedGoals();
-  boolean containsKnowledgeType(String knowledgeType);
+    boolean supports(Decision d);
+    Vector getSupportedDecisions();
+    boolean supports(Goal g);
+    Vector getSupportedGoals();
+    boolean containsKnowledgeType(String knowledgeType);
 
-  /** Customize the description string just before it is displayed. */
-  String expand(String desc, VectorSet offs);
+    /** Customize the description string just before it is displayed. */
+    String expand(String desc, VectorSet offs);
 
-  public Icon getClarifier();
+    public Icon getClarifier();
 
-  ////////////////////////////////////////////////////////////////
-  // criticism control
+    ////////////////////////////////////////////////////////////////
+    // criticism control
 
-  /** temporarily disable this Poster. */
-  void snooze();
+    /** temporarily disable this Poster. */
+    void snooze();
 
-  /** Unsnooze this Poster, it may resume posting without further
-   * delay. */
-  void unsnooze();
+    /** Unsnooze this Poster, it may resume posting without further
+     * delay. */
+    void unsnooze();
 
-  ////////////////////////////////////////////////////////////////
-  // issue resolution
+    ////////////////////////////////////////////////////////////////
+    // issue resolution
 
-  void fixIt(ToDoItem item, Object arg);
+    void fixIt(ToDoItem item, Object arg);
 
-  boolean canFixIt(ToDoItem item);
+    boolean canFixIt(ToDoItem item);
 
 } /* end interface Poster */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -76,7 +77,7 @@ public class ClassifierEndCodePiece extends NamedCodePiece
     }
 
     /**
-	Return the start line
+       Return the start line
     */
     public int getStartLine()
     {
@@ -84,7 +85,7 @@ public class ClassifierEndCodePiece extends NamedCodePiece
     }
 
     /**
-	Return the end line
+       Return the end line
     */
     public int getEndLine()
     {
@@ -100,37 +101,37 @@ public class ClassifierEndCodePiece extends NamedCodePiece
                        BufferedWriter writer,
                        Stack parseStateStack) throws Exception
     {
-        ParseState parseState = (ParseState)parseStateStack.pop();
+        ParseState parseState = (ParseState) parseStateStack.pop();
         MClassifier mClassifier = parseState.getClassifier();
         Vector newFeatures = parseState.getNewFeatures();
         Vector newInnerClasses = parseState.getNewInnerClasses();
 
         // Insert new features
-        for(Iterator i=newFeatures.iterator(); i.hasNext(); ) {
-            MFeature mFeature = (MFeature)i.next();
+        for (Iterator i = newFeatures.iterator(); i.hasNext(); ) {
+            MFeature mFeature = (MFeature) i.next();
             if (mFeature instanceof MOperation) {
-                CodeGenerator.generateOperation((MOperation)mFeature,mClassifier,reader,writer);
+                CodeGenerator.generateOperation((MOperation) mFeature, mClassifier, reader, writer);
             }
             else if (mFeature instanceof MAttribute) {
-                CodeGenerator.generateAttribute((MAttribute)mFeature,mClassifier,reader,writer);
+                CodeGenerator.generateAttribute((MAttribute) mFeature, mClassifier, reader, writer);
             }
         }
 
         // Insert new inner classes
-        for(Iterator i = newInnerClasses.iterator(); i.hasNext(); ) {
-            MModelElement element = (MModelElement)i.next();
+        for (Iterator i = newInnerClasses.iterator(); i.hasNext(); ) {
+            MModelElement element = (MModelElement) i.next();
             if (element instanceof MClass) {
-                CodeGenerator.generateClass((MClass)element,reader,writer);
+                CodeGenerator.generateClass((MClass) element, reader, writer);
             }
             else if (element instanceof MInterface) {
-          CodeGenerator.generateInterface((MInterface)element,reader,writer);
+		CodeGenerator.generateInterface((MInterface) element, reader, writer);
             }
         }
 
-      StringBuffer sb = GeneratorJava.getInstance()
-          .appendClassifierEnd (new StringBuffer (2), mClassifier, true);
-      writer.write (sb.toString());
-      // fast forward original code (overwriting)
-      ffCodePiece(reader,null);
+	StringBuffer sb = GeneratorJava.getInstance()
+	    .appendClassifierEnd (new StringBuffer (2), mClassifier, true);
+	writer.write (sb.toString());
+	// fast forward original code (overwriting)
+	ffCodePiece(reader, null);
     }
 }

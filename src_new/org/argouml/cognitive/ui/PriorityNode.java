@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,41 +39,41 @@ public class PriorityNode {
     static final String medium = Argo.localize(BUNDLE, "level.medium");
     static final String low = Argo.localize(BUNDLE, "level.low");
 
-  ////////////////////////////////////////////////////////////////
-  // static variables and methods
-  protected static Vector _PRIORITIES = null;
+    ////////////////////////////////////////////////////////////////
+    // static variables and methods
+    protected static Vector _PRIORITIES = null;
 
-  public static Vector getPriorities() {
-    if (_PRIORITIES == null) {
-      _PRIORITIES = new Vector();
-      _PRIORITIES.addElement(new PriorityNode(high, ToDoItem.HIGH_PRIORITY));
-      _PRIORITIES.addElement(new PriorityNode(medium, ToDoItem.MED_PRIORITY));
-      _PRIORITIES.addElement(new PriorityNode(low, ToDoItem.LOW_PRIORITY));
+    public static Vector getPriorities() {
+	if (_PRIORITIES == null) {
+	    _PRIORITIES = new Vector();
+	    _PRIORITIES.addElement(new PriorityNode(high, ToDoItem.HIGH_PRIORITY));
+	    _PRIORITIES.addElement(new PriorityNode(medium, ToDoItem.MED_PRIORITY));
+	    _PRIORITIES.addElement(new PriorityNode(low, ToDoItem.LOW_PRIORITY));
+	}
+	return _PRIORITIES;
     }
-    return _PRIORITIES;
-  }
 
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected String _name;
-  protected int _priority;
+    protected String _name;
+    protected int _priority;
   
-  ////////////////////////////////////////////////////////////////
-  // contrsuctors
+    ////////////////////////////////////////////////////////////////
+    // contrsuctors
 
-  public PriorityNode(String name, int pri) {
-    _name = name;
-    _priority = pri;
-  }
+    public PriorityNode(String name, int pri) {
+	_name = name;
+	_priority = pri;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public String getName() { return _name; }
-  public int getPriority() { return _priority; }
+    public String getName() { return _name; }
+    public int getPriority() { return _priority; }
 
-  public String toString() { return getName(); }
+    public String toString() { return getName(); }
   
 } /* end class PriorityNode */

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -55,8 +56,8 @@ public class ActionNewExtendExtensionPoint
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (getTarget() instanceof MExtend) {
-            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(((MExtend)getTarget()).getBase());
-            ((MExtend)getTarget()).addExtensionPoint(point);
+            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(((MExtend) getTarget()).getBase());
+            ((MExtend) getTarget()).addExtensionPoint(point);
         }
     }
 

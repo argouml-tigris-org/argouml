@@ -59,7 +59,7 @@ public class PropPanelSubsystem extends PropPanelPackage
 
         addField(Argo.localize("UMLMenu", "label.available-features"), getFeatureScroll());
 
-        new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"), "addOperation", null);
+        new PropPanelButton(this, buttonPanel, _addOpIcon, Argo.localize("UMLMenu", "button.add-operation"), "addOperation", null);
     
     }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,15 +37,15 @@ import ru.novosoft.uml.foundation.core.MBehavioralFeature;
  */
 public class GoBehavioralFeatureToStateMachine extends AbstractGoRule {
 
-    public String getRuleName() { return "BehavioralFeature->State Machine";}
+    public String getRuleName() { return "BehavioralFeature->State Machine"; }
 
-	/**
-	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
-	 */
-	public Collection getChildren(Object parent) {
-		if (parent instanceof MBehavioralFeature) 
-			return ((MBehavioralFeature)parent).getBehaviors();
-		return null;
-	}
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
+     */
+    public Collection getChildren(Object parent) {
+	if (parent instanceof MBehavioralFeature) 
+	    return ((MBehavioralFeature) parent).getBehaviors();
+	return null;
+    }
 
 }

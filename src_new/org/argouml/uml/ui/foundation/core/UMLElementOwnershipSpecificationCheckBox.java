@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -51,7 +52,7 @@ public class UMLElementOwnershipSpecificationCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        setSelected(((MModelElement)getTarget()).isSpecification());
+        setSelected(((MModelElement) getTarget()).isSpecification());
     }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -54,7 +55,7 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
     /** Singleton instance.
      */
     private static UseCasesFactory SINGLETON =
-                   new UseCasesFactory();
+	new UseCasesFactory();
 
     /** Singleton instance access method.
      */
@@ -127,7 +128,7 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
     
-     /**
+    /**
      * <p>Build an extend relationship.</p>
      *
      * <p>Set the namespace to the base (preferred) or else extension's
@@ -141,32 +142,32 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      * @return           The new extend relationship or <code>null</code> if it
      *                   can't be created.
      */
-     public MExtend buildExtend(MUseCase base, MUseCase extension) {
+    public MExtend buildExtend(MUseCase base, MUseCase extension) {
 
-         MExtend extend = UmlFactory.getFactory().getUseCases().createExtend();
-         // Set the ends
+	MExtend extend = UmlFactory.getFactory().getUseCases().createExtend();
+	// Set the ends
 
-         extend.setBase(base);
-         extend.setExtension(extension);
+	extend.setBase(base);
+	extend.setExtension(extension);
 
-         // Set the namespace to that of the base as first choice, or that of
-         // the extension as second choice.
+	// Set the namespace to that of the base as first choice, or that of
+	// the extension as second choice.
 
-         if (base.getNamespace() != null) {
-             extend.setNamespace(base.getNamespace());
-         }
-         else if (extension.getNamespace() != null) {
-             extend.setNamespace(extension.getNamespace());
-         }
+	if (base.getNamespace() != null) {
+	    extend.setNamespace(base.getNamespace());
+	}
+	else if (extension.getNamespace() != null) {
+	    extend.setNamespace(extension.getNamespace());
+	}
          
-         // build an extensionpoint in the base
-         MExtensionPoint point = buildExtensionPoint(base);
-         extend.addExtensionPoint(point);
+	// build an extensionpoint in the base
+	MExtensionPoint point = buildExtensionPoint(base);
+	extend.addExtensionPoint(point);
 
-         return extend;
-     }
+	return extend;
+    }
      
-     public MExtend buildExtend(MUseCase base, MUseCase extension, MExtensionPoint point) {
+    public MExtend buildExtend(MUseCase base, MUseCase extension, MExtensionPoint point) {
         if (base == null || extension == null) 
             throw new IllegalArgumentException("Either the base usecase or the extension usecase is null");
         if (point != null) {
@@ -180,11 +181,11 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
         extend.setExtension(extension);
         extend.addExtensionPoint(point);
         return extend;
-     }
+    }
      
      
      
-     /**
+    /**
      * <p>Build an extension point for a use case.</p>
      *
      * <p>Set the namespace to that of the use case if possible.</p>
@@ -199,7 +200,7 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
         if (!(modelElement instanceof MUseCase)) 
             throw new IllegalArgumentException("An extension point can only be built on a use case");
 
-        MUseCase useCase = (MUseCase)modelElement;
+        MUseCase useCase = (MUseCase) modelElement;
         MExtensionPoint extensionPoint = UmlFactory.getFactory().getUseCases().createExtensionPoint();
 
         // Set the owning use case if there is one given.
@@ -212,11 +213,11 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
              
             // the usecase itself is a namespace...
             extensionPoint.setNamespace(useCase);
-/*
-             if (useCase.getNamespace() != null) {
-                 extensionPoint.setNamespace(useCase.getNamespace());
-             }
-             */
+	    /*
+	      if (useCase.getNamespace() != null) {
+	      extensionPoint.setNamespace(useCase.getNamespace());
+	      }
+	    */
         }
 
         // For consistency with attribute and operation, give it a default
@@ -228,7 +229,7 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
         return extensionPoint;
     }
      
-      /**
+    /**
      * <p>Build an include relationship.</p>
      *
      * <p>Set the namespace to the base (preferred) or else extension's
@@ -246,44 +247,44 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      * @return           The new include relationship or <code>null</code> if
      *                   it can't be created.
      */
-     public MInclude buildInclude(MUseCase base, MUseCase addition) {
+    public MInclude buildInclude(MUseCase base, MUseCase addition) {
 
-         MInclude include = UmlFactory.getFactory().getUseCases().createInclude();
+	MInclude include = UmlFactory.getFactory().getUseCases().createInclude();
   
-         // Set the ends. Because of the NSUML bug we reverse the accessors
-         // here.
+	// Set the ends. Because of the NSUML bug we reverse the accessors
+	// here.
 
-         include.setAddition(base);
-         include.setBase(addition);
+	include.setAddition(base);
+	include.setBase(addition);
 
-         // Set the namespace to that of the base as first choice, or that of
-         // the addition as second choice.
+	// Set the namespace to that of the base as first choice, or that of
+	// the addition as second choice.
 
-         if (base.getNamespace() != null) {
-             include.setNamespace(base.getNamespace());
-         }
-         else if (addition.getNamespace() != null) {
-             include.setNamespace(addition.getNamespace());
-         }
+	if (base.getNamespace() != null) {
+	    include.setNamespace(base.getNamespace());
+	}
+	else if (addition.getNamespace() != null) {
+	    include.setNamespace(addition.getNamespace());
+	}
 
-         return include;
-     }
+	return include;
+    }
      
-	/**
-	 * Builds an actor in the project's model namespace.
-	 * @return MActor
-	 */
-     public MActor buildActor() {
-	     MNamespace ns = ProjectManager.getManager().getCurrentProject().getModel();
-	     return buildActor(ns);
-     }
+    /**
+     * Builds an actor in the project's model namespace.
+     * @return MActor
+     */
+    public MActor buildActor() {
+	MNamespace ns = ProjectManager.getManager().getCurrentProject().getModel();
+	return buildActor(ns);
+    }
      
-	/**
-	 * Builds an actor in the given namespace.
-	 * @param ns
-	 * @return MActor
-	 */
-     public MActor buildActor(MNamespace ns) {
+    /**
+     * Builds an actor in the given namespace.
+     * @param ns
+     * @return MActor
+     */
+    public MActor buildActor(MNamespace ns) {
      	if (ns == null) return buildActor();
      	MActor actor = createActor();
      	actor.setNamespace(ns);
@@ -291,38 +292,38 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      	actor.setRoot(false);
      	actor.setName("newActor");
      	return actor;
-     }
+    }
      
-     /**
-      * Builds an actor in the same namespace of the given actor. If object is no
-      * actor nothing is build. Did not give MActor as an argument but object to 
-      * seperate argouml better from NSUML.
-      * @param actor
-      * @return MActor
-      */
-     public MActor buildActor(Object actor) {
+    /**
+     * Builds an actor in the same namespace of the given actor. If object is no
+     * actor nothing is build. Did not give MActor as an argument but object to 
+     * seperate argouml better from NSUML.
+     * @param actor
+     * @return MActor
+     */
+    public MActor buildActor(Object actor) {
         if (actor instanceof MActor) {
-            return buildActor(((MActor)actor).getNamespace());
+            return buildActor(((MActor) actor).getNamespace());
         }
         return null;
-     }
+    }
      
-     public void deleteActor(MActor elem) {}
+    public void deleteActor(MActor elem) { }
      
-     public void deleteExtend(MExtend elem) {
-         UmlHelper.getHelper().deleteCollection(elem.getExtensionPoints());
-     }
+    public void deleteExtend(MExtend elem) {
+	UmlHelper.getHelper().deleteCollection(elem.getExtensionPoints());
+    }
      
-     public void deleteExtensionPoint(MExtensionPoint elem) {}
+    public void deleteExtensionPoint(MExtensionPoint elem) { }
      
-     public void deleteInclude(MInclude elem) {}
+    public void deleteInclude(MInclude elem) { }
      
-     public void deleteUseCase(MUseCase elem) {
-         UmlHelper.getHelper().deleteCollection(elem.getExtends());
-         UmlHelper.getHelper().deleteCollection(elem.getIncludes());       
-     }
+    public void deleteUseCase(MUseCase elem) {
+	UmlHelper.getHelper().deleteCollection(elem.getExtends());
+	UmlHelper.getHelper().deleteCollection(elem.getIncludes());       
+    }
      
-     public void deleteUseCaseInstance(MUseCaseInstance elem) {}
+    public void deleteUseCaseInstance(MUseCaseInstance elem) { }
 
 
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -95,7 +96,7 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
 
         // set it to an invalid number by default
         // to make sure it is set correctly.
-        pointIndex=-1;
+        pointIndex = -1;
     }
     
     /**
@@ -104,16 +105,16 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
     public void mousePressed(MouseEvent me) {
         
         // calculate the source and dest figs for to self assoc
-        sourceFig = (FigNodeModelElement)((FigEdge)_content).getSourceFigNode();
-        destFig = (FigNodeModelElement)((FigEdge)_content).getDestFigNode();
+        sourceFig = (FigNodeModelElement) ((FigEdge) _content).getSourceFigNode();
+        destFig = (FigNodeModelElement) ((FigEdge) _content).getDestFigNode();
         
-        Rectangle mousePosition = new Rectangle(me.getX()-5,me.getY()-5,10,10);
+        Rectangle mousePosition = new Rectangle(me.getX() - 5, me.getY() - 5, 10, 10);
         //reset the pointIndex
-        pointIndex=-1;
+        pointIndex = -1;
         int npoints = _content.getNumPoints();
         int[] xs = _content.getXs();
         int[] ys = _content.getYs();
-        for (int i = 0; i < npoints; ++i){
+        for (int i = 0; i < npoints; ++i) {
             if (mousePosition.contains(xs[i], ys[i])) {
                 pointIndex = i;
                 super.mousePressed(me);
@@ -136,7 +137,7 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         ModeManager modeMgr = editor.getModeManager();
         FigModifyingMode fMode = modeMgr.top();
         
-        if( !(fMode instanceof ModeCreatePolyEdge)){
+        if ( !(fMode instanceof ModeCreatePolyEdge)) {
             armed = true;
         }
         super.mouseDragged(me);
@@ -154,7 +155,7 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
      */
     public void mouseReleased(MouseEvent me) {
         // check pre-conds
-        if (me.isConsumed() || armed == false || pointIndex==-1){
+        if (me.isConsumed() || armed == false || pointIndex == -1) {
             armed = false;
             super.mouseReleased(me);
             return;
@@ -165,52 +166,51 @@ public class SelectionRerouteEdge extends SelectionEdgeClarifiers {
         // the fig that was under the mouse when it was released
         FigNodeModelElement newFig = null;
         //make a nice little target area:
-        Rectangle mousePoint = new Rectangle(x-5,y-5,5,5);
+        Rectangle mousePoint = new Rectangle(x - 5, y - 5, 5, 5);
         // and find the Fig:
         Editor editor = Globals.curEditor();
         LayerManager lm = editor.getLayerManager();
         Layer active = lm.getActiveLayer();
         Enumeration figs = active.elementsIn(mousePoint);
         // last is the top fig.
-        while(figs.hasMoreElements()){
-            Fig candidateFig = (Fig)figs.nextElement();
-            if(candidateFig instanceof FigNodeModelElement){
-                newFig = (FigNodeModelElement)candidateFig;
+        while (figs.hasMoreElements()) {
+            Fig candidateFig = (Fig) figs.nextElement();
+            if (candidateFig instanceof FigNodeModelElement) {
+                newFig = (FigNodeModelElement) candidateFig;
             }
         }
         // check intermediate post-condition.
-        if(newFig == null){
+        if (newFig == null) {
             armed = false;
             super.mouseReleased(me);
             return;
         }
         
-        UMLMutableGraphSupport mgm = (UMLMutableGraphSupport)editor.getGraphModel();
-        FigNodeModelElement oldFig=null;
-        boolean isSource=false;
-        if (pointIndex==0){
+        UMLMutableGraphSupport mgm = (UMLMutableGraphSupport) editor.getGraphModel();
+        FigNodeModelElement oldFig = null;
+        boolean isSource = false;
+        if (pointIndex == 0) {
             oldFig = sourceFig;
-            isSource=true;
+            isSource = true;
         }
         else {
             oldFig = destFig;
         }
         
         // delegate the re-routing to graphmodels.
-        if(
-           mgm.canChangeConnectedNode(newFig.getOwner(),
-                                      oldFig.getOwner(),
-                                      this._content.getOwner())
-           ){
-             mgm.changeConnectedNode(newFig.getOwner(),
-                                      oldFig.getOwner(),
-                                      this._content.getOwner(),
-                                      isSource);
-            }
+        if (mgm.canChangeConnectedNode(newFig.getOwner(),
+				       oldFig.getOwner(),
+				       this._content.getOwner()))
+	{
+	    mgm.changeConnectedNode(newFig.getOwner(),
+				    oldFig.getOwner(),
+				    this._content.getOwner(),
+				    isSource);
+	}
 
         editor.getSelectionManager().deselect(_content);
         armed = false;
-        ((FigEdgeModelElement)_content).computeRoute();
+        ((FigEdgeModelElement) _content).computeRoute();
         super.mouseReleased(me);
         return;
     }

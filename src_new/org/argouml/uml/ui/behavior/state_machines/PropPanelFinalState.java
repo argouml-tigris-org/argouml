@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -38,10 +39,10 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelFinalState extends PropPanelState {
 
     public PropPanelFinalState() {
-        super("Final State",_finalStateIcon, ConfigLoader.getTabPropsOrientation());
+        super("Final State", _finalStateIcon, ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
         addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
         // TODO: maybe we should add a doactivity

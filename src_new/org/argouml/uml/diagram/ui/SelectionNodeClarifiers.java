@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,18 +37,18 @@ import org.tigris.gef.presentation.*;
 
 public class SelectionNodeClarifiers extends SelectionResize {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  /** Construct a new SelectionNodeClarifiers for the given Fig */
-  public SelectionNodeClarifiers(Fig f) { super(f); }
+    /** Construct a new SelectionNodeClarifiers for the given Fig */
+    public SelectionNodeClarifiers(Fig f) { super(f); }
 
-  /** Paint the handles at the four corners and midway along each edge
-   * of the bounding box.  */
-  public void paint(Graphics g) {
-    ((FigNodeModelElement)_content).paintClarifiers(g);
-    super.paint(g);
-  }
+    /** Paint the handles at the four corners and midway along each edge
+     * of the bounding box.  */
+    public void paint(Graphics g) {
+	((FigNodeModelElement) _content).paintClarifiers(g);
+	super.paint(g);
+    }
 
   
   

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -65,18 +66,18 @@ public class UMLAssociationEndAggregationRadioButtonPanel extends UMLRadioButton
      */
     public void buildModel() {
         if (getTarget() != null) {
-            MAssociationEnd target = (MAssociationEnd)getTarget();
+            MAssociationEnd target = (MAssociationEnd) getTarget();
             MAggregationKind kind = target.getAggregation();
             if (kind == null || kind.equals(MAggregationKind.NONE)) {
                 setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
             } else
-            if (kind.equals(MAggregationKind.AGGREGATE)) {
-                setSelected(ActionSetAssociationEndAggregation.AGGREGATE_COMMAND); 
-            } else
-            if (kind.equals(MAggregationKind.COMPOSITE)) {
-                setSelected(ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
-            } else
-                setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
+		if (kind.equals(MAggregationKind.AGGREGATE)) {
+		    setSelected(ActionSetAssociationEndAggregation.AGGREGATE_COMMAND); 
+		} else
+		    if (kind.equals(MAggregationKind.COMPOSITE)) {
+			setSelected(ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
+		    } else
+			setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
         }
     }
 

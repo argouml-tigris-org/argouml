@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -55,7 +56,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
     protected Vector getChoices() {
         if (getTarget() == null) return new Vector();
         Vector vec = new Vector();
-        vec.addAll(CollaborationsHelper.getHelper().getAllPossiblePredecessors((MMessage)getTarget()));
+        vec.addAll(CollaborationsHelper.getHelper().getAllPossiblePredecessors((MMessage) getTarget()));
         return vec;
     }
 
@@ -65,7 +66,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
     protected Vector getSelected() {
         if (getTarget() == null) throw new IllegalStateException("getSelected may not be called with null target");
         Vector vec = new Vector();
-        vec.addAll(((MMessage)getTarget()).getPredecessors());
+        vec.addAll(((MMessage) getTarget()).getPredecessors());
         return vec;
     }
 
@@ -80,9 +81,9 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-         if (getTarget() == null) throw new IllegalStateException("doIt may not be called with null target");
-         MMessage message = (MMessage)getTarget();
-         message.setPredecessors(selected);
+	if (getTarget() == null) throw new IllegalStateException("doIt may not be called with null target");
+	MMessage message = (MMessage) getTarget();
+	message.setPredecessors(selected);
     }
 
 }

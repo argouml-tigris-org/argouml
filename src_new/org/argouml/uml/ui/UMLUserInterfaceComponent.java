@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,16 +40,16 @@ import ru.novosoft.uml.MElementListener;
  *  @see UMLMultiplicityComboBox
  */
 public interface UMLUserInterfaceComponent extends MElementListener {
-        /**
-         *  This method is called when the target of a UMLUserInterfaceContainer
-         *  has been changed.
-         */
-	public void targetChanged();
+    /**
+     *  This method is called when the target of a UMLUserInterfaceContainer
+     *  has been changed.
+     */
+    public void targetChanged();
         
-        /**  This method is called when the navigation history has been changed
-         *     (and navigation buttons may need to be updated).  targetChanged
-         *     implies navigationHistoryChanged, so this method will not
-         *     be called after a targetChange.
-         */
-        public void targetReasserted();
+    /**  This method is called when the navigation history has been changed
+     *     (and navigation buttons may need to be updated).  targetChanged
+     *     implies navigationHistoryChanged, so this method will not
+     *     be called after a targetChange.
+     */
+    public void targetReasserted();
 }

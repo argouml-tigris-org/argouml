@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,83 +37,83 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  */
 public class PropPanelStructuralFeature extends PropPanelFeature {
 
-	private UMLComboBox2 _multiplicityComboBox;
+    private UMLComboBox2 _multiplicityComboBox;
     private UMLComboBox2 _typeComboBox;
     private UMLRadioButtonPanel _changeabilityRadioButtonPanel;
     private UMLCheckBox2 _targetScopeCheckBox;
 
-	private static UMLStructuralFeatureMultiplicityComboBoxModel multiplicityComboBoxModel;
+    private static UMLStructuralFeatureMultiplicityComboBoxModel multiplicityComboBoxModel;
     private static UMLStructuralFeatureTypeComboBoxModel typeComboBoxModel;
 
-	/**
-	 * Constructor for PropPanelStructuralFeature.
-	 * @param name
-	 * @param icon
-	 * @param orientation
-	 */
-	protected PropPanelStructuralFeature(
-		String name,
-		Orientation orientation) {
-		super(name, orientation);
+    /**
+     * Constructor for PropPanelStructuralFeature.
+     * @param name
+     * @param icon
+     * @param orientation
+     */
+    protected PropPanelStructuralFeature(
+					 String name,
+					 Orientation orientation) {
+	super(name, orientation);
 
+    }
+
+    /**
+     * Returns the multiplicityComboBox.
+     * @return UMLComboBox2
+     */
+    public UMLComboBox2 getMultiplicityComboBox() {
+	if (_multiplicityComboBox == null) {
+	    if (multiplicityComboBoxModel == null) {
+		multiplicityComboBoxModel =
+		    new UMLStructuralFeatureMultiplicityComboBoxModel();
+	    }
+	    _multiplicityComboBox =
+		new UMLComboBox2(
+				 multiplicityComboBoxModel,
+				 ActionSetStructuralFeatureMultiplicity.SINGLETON);
 	}
+	return _multiplicityComboBox;
+    }
 
-	/**
-	 * Returns the multiplicityComboBox.
-	 * @return UMLComboBox2
-	 */
-	public UMLComboBox2 getMultiplicityComboBox() {
-		if (_multiplicityComboBox == null) {
-			if (multiplicityComboBoxModel == null) {
-				multiplicityComboBoxModel =
-					new UMLStructuralFeatureMultiplicityComboBoxModel();
-			}
-			_multiplicityComboBox =
-				new UMLComboBox2(
-					multiplicityComboBoxModel,
-					ActionSetStructuralFeatureMultiplicity.SINGLETON);
-		}
-		return _multiplicityComboBox;
-	}
-
-	/**
-	 * Returns the typeComboBox.
-	 * @return UMLComboBox2
-	 */
-	public UMLComboBox2 getTypeComboBox() {
+    /**
+     * Returns the typeComboBox.
+     * @return UMLComboBox2
+     */
+    public UMLComboBox2 getTypeComboBox() {
         if (_typeComboBox == null) {
-                    if (typeComboBoxModel == null) {
-                        typeComboBoxModel =
-                            new UMLStructuralFeatureTypeComboBoxModel();
-                    }
+	    if (typeComboBoxModel == null) {
+		typeComboBoxModel =
+		    new UMLStructuralFeatureTypeComboBoxModel();
+	    }
             _typeComboBox =
-                        new UMLComboBox2(
-                            typeComboBoxModel,
-                            ActionSetStructuralFeatureType.SINGLETON);
-                }
-		return _typeComboBox;
+		new UMLComboBox2(
+				 typeComboBoxModel,
+				 ActionSetStructuralFeatureType.SINGLETON);
 	}
+	return _typeComboBox;
+    }
 
-	/**
-	 * Returns the changeabilityRadioButtonPanel.
-	 * @return UMLRadioButtonPanel
-	 */
-	public UMLRadioButtonPanel getChangeabilityRadioButtonPanel() {
+    /**
+     * Returns the changeabilityRadioButtonPanel.
+     * @return UMLRadioButtonPanel
+     */
+    public UMLRadioButtonPanel getChangeabilityRadioButtonPanel() {
         if (_changeabilityRadioButtonPanel == null) {
             _changeabilityRadioButtonPanel = new UMLStructuralFeatureChangeabilityRadioButtonPanel(Argo.localize("UMLMenu", "label.changeability"), true);
         }
-		return _changeabilityRadioButtonPanel;        
-	}
+	return _changeabilityRadioButtonPanel;        
+    }
 
-	/**
-	 * Returns the targetScopeCheckBox.
-	 * @return UMLCheckBox2
-	 */
-	public UMLCheckBox2 getTargetScopeCheckBox() {
+    /**
+     * Returns the targetScopeCheckBox.
+     * @return UMLCheckBox2
+     */
+    public UMLCheckBox2 getTargetScopeCheckBox() {
         if (_targetScopeCheckBox == null) {
-		  _targetScopeCheckBox = new UMLStructuralFeatureTargetScopeCheckBox();
+	    _targetScopeCheckBox = new UMLStructuralFeatureTargetScopeCheckBox();
         }
         return _targetScopeCheckBox;
-	}
+    }
 
 }

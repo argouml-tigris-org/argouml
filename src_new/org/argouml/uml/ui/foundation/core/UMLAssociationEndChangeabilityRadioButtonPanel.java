@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -65,18 +66,18 @@ public class UMLAssociationEndChangeabilityRadioButtonPanel extends UMLRadioButt
      */
     public void buildModel() {
         if (getTarget() != null) {
-            MAssociationEnd target = (MAssociationEnd)getTarget();
+            MAssociationEnd target = (MAssociationEnd) getTarget();
             MChangeableKind kind = target.getChangeability();
             if (kind == null || kind.equals(MChangeableKind.CHANGEABLE)) {
                 setSelected(ActionSetAssociationEndChangeability.CHANGEABLE_COMMAND);
             } else
-            if (kind.equals(MChangeableKind.ADD_ONLY)) {
-                setSelected(ActionSetAssociationEndChangeability.ADDONLY_COMMAND); 
-            } else
-            if (kind.equals(MChangeableKind.FROZEN)) {
-                setSelected(ActionSetAssociationEndChangeability.FROZEN_COMMAND);
-            } else
-                setSelected(ActionSetAssociationEndChangeability.CHANGEABLE_COMMAND);
+		if (kind.equals(MChangeableKind.ADD_ONLY)) {
+		    setSelected(ActionSetAssociationEndChangeability.ADDONLY_COMMAND); 
+		} else
+		    if (kind.equals(MChangeableKind.FROZEN)) {
+			setSelected(ActionSetAssociationEndChangeability.FROZEN_COMMAND);
+		    } else
+			setSelected(ActionSetAssociationEndChangeability.CHANGEABLE_COMMAND);
         }
     }
 }

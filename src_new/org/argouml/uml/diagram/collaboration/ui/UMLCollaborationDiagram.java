@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -68,7 +69,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     /** for logging */
     private final static Category cat =
         Category.getInstance(
-            "org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
+			     "org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram");
 
     ////////////////
     // actions for toolbar
@@ -78,48 +79,48 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
     protected static Action _actionAssoc =
         new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            MAssociationRole.class,
-            "AssociationRole");
+		       ModeCreatePolyEdge.class,
+		       "edgeClass",
+		       MAssociationRole.class,
+		       "AssociationRole");
 
     protected static Action _actionGeneralize =
         new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            MGeneralization.class,
-            "Generalization");
+		       ModeCreatePolyEdge.class,
+		       "edgeClass",
+		       MGeneralization.class,
+		       "Generalization");
 
     protected static Action _actionAssociation =
         new ActionAddAssociationRole(
-            MAggregationKind.NONE,
-            false,
-            "Association");
+				     MAggregationKind.NONE,
+				     false,
+				     "Association");
     protected static Action _actionAggregation =
         new ActionAddAssociationRole(
-            MAggregationKind.AGGREGATE,
-            false,
-            "Aggregation");
+				     MAggregationKind.AGGREGATE,
+				     false,
+				     "Aggregation");
     protected static Action _actionComposition =
         new ActionAddAssociationRole(
-            MAggregationKind.COMPOSITE,
-            false,
-            "Composition");
+				     MAggregationKind.COMPOSITE,
+				     false,
+				     "Composition");
     protected static Action _actionUniAssociation =
         new ActionAddAssociationRole(
-            MAggregationKind.NONE,
-            true,
-            "UniAssociation");
+				     MAggregationKind.NONE,
+				     true,
+				     "UniAssociation");
     protected static Action _actionUniAggregation =
         new ActionAddAssociationRole(
-            MAggregationKind.AGGREGATE,
-            true,
-            "UniAggregation");
+				     MAggregationKind.AGGREGATE,
+				     true,
+				     "UniAggregation");
     protected static Action _actionUniComposition =
         new ActionAddAssociationRole(
-            MAggregationKind.COMPOSITE,
-            true,
-            "UniComposition");
+				     MAggregationKind.COMPOSITE,
+				     true,
+				     "UniComposition");
 
     protected static Action _actionDepend = 
         new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", 
@@ -148,7 +149,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         int res = 0;
         int size = figs.size();
         for (int i = 0; i < size; i++) {
-            Fig f = (Fig)figs.elementAt(i);
+            Fig f = (Fig) figs.elementAt(i);
             if (f.getOwner() instanceof MMessage)
                 res++;
         }
@@ -170,11 +171,11 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
             cat.error(
-                "Illegal argument. Object " + handle + " is not a namespace");
+		      "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
-                "Illegal argument. Object " + handle + " is not a namespace");
+					       "Illegal argument. Object " + handle + " is not a namespace");
         }
-        MNamespace m = (MNamespace)handle;
+        MNamespace m = (MNamespace) handle;
         super.setNamespace(m);
         CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
         gm.setNamespace(m);
@@ -205,9 +206,9 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
     private Object[] getAssociationActions() {
         Object actions[][] = {
-            {_actionAssociation,_actionUniAssociation},
-            {_actionAggregation,_actionUniAggregation},
-            {_actionComposition,_actionUniComposition}
+	{_actionAssociation, _actionUniAssociation},
+	{_actionAggregation, _actionUniAggregation},
+	{_actionComposition, _actionUniComposition}
         };
 
         return actions;
@@ -215,9 +216,9 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     
 
     /**  After loading the diagram it?s necessary to connect
-      *  every FigMessage to its FigAssociationRole. 
-      *  This is done by adding the FigMessage 
-      *  to the PathItems of its FigAssociationRole */
+     *  every FigMessage to its FigAssociationRole. 
+     *  This is done by adding the FigMessage 
+     *  to the PathItems of its FigAssociationRole */
     public void postLoad() {
 
         super.postLoad();
@@ -232,14 +233,14 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         Iterator oeIterator = ownedElements.iterator();
         Layer lay = getLayer();
         while (oeIterator.hasNext()) {
-            MModelElement me = (MModelElement)oeIterator.next();
+            MModelElement me = (MModelElement) oeIterator.next();
             if (me instanceof MAssociationRole) {
-                messages = ((MAssociationRole)me).getMessages();
+                messages = ((MAssociationRole) me).getMessages();
                 msgIterator = messages.iterator();
                 while (msgIterator.hasNext()) {
-                    MMessage message = (MMessage)msgIterator.next();
+                    MMessage message = (MMessage) msgIterator.next();
                     FigMessage figMessage =
-                        (FigMessage)lay.presentationFor(message);
+                        (FigMessage) lay.presentationFor(message);
                     if (figMessage != null) {
                         figMessage.addPathItemToFigAssociationRole(lay);
                     }
@@ -249,17 +250,15 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     }
 
     /**
-       * Creates a new diagramname.
-       * @return String
-       */
+     * Creates a new diagramname.
+     * @return String
+     */
     protected static String getNewDiagramName() {
         String name = null;
         name = "Collaboration Diagram " + _CollaborationDiagramSerial;
         _CollaborationDiagramSerial++;
-        if (!ProjectManager
-            .getManager()
-            .getCurrentProject()
-            .isValidDiagramName(name)) {
+        if (!ProjectManager.getManager().getCurrentProject()
+	        .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;

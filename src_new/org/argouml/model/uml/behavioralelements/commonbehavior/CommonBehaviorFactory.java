@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -339,7 +340,7 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     public MCallAction buildCallAction(MOperation oper, String name) {
         if (oper == null) {
             throw new IllegalArgumentException(
-                "There should be an operation" + " with a callaction.");
+					       "There should be an operation" + " with a callaction.");
         }
         MCallAction action = createCallAction();
         action.setName(name);
@@ -373,7 +374,7 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         Object interaction = ModelFacade.getInteraction(message);  
         if (interaction != null
             && ModelFacade.getContext(interaction) != null) {
-                ModelFacade.setNamespace(action, ModelFacade.getContext(interaction));
+	    ModelFacade.setNamespace(action, ModelFacade.getContext(interaction));
         } else
             throw new IllegalStateException("In buildaction: message does not have an interaction or the interaction does not have a context");
         return action;
@@ -442,12 +443,12 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     public void deleteInstance(MInstance elem) {
         
         if (elem != null) {
-			Collection col = ((MInstance)elem).getLinkEnds();
-			Iterator it = col.iterator();
-			while (it.hasNext()) {
-				UmlFactory.getFactory().delete((MLinkEnd)it.next());
-			}
-		}
+	    Collection col = ((MInstance) elem).getLinkEnds();
+	    Iterator it = col.iterator();
+	    while (it.hasNext()) {
+		UmlFactory.getFactory().delete((MLinkEnd) it.next());
+	    }
+	}
     }
 
     public void deleteLink(MLink elem) {
@@ -460,11 +461,11 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     public void deleteLinkEnd(MLinkEnd elem) {
         
         MLink link = elem.getLink();
-		if (link != null
-			&& link.getConnections() != null
-			&& link.getConnections().size() == 2) { // binary link
-			UmlFactory.getFactory().delete(link);
-		}
+	if (link != null
+	    && link.getConnections() != null
+	    && link.getConnections().size() == 2) { // binary link
+	    UmlFactory.getFactory().delete(link);
+	}
     }
 
     public void deleteLinkObject(MLinkObject elem) {

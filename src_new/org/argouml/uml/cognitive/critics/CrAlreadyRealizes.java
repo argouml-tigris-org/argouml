@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,30 +44,30 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
  *  inheritance.
  */
 public class CrAlreadyRealizes extends CrUML {
-
-  /** Constructor
-   */
-  public CrAlreadyRealizes() {
-    setHeadline("Remove Unneeded Realizes from <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decINHERITANCE);
-    setKnowledgeTypes(Critic.KT_SEMANTICS, Critic.KT_PRESENTATION);
-    addTrigger("genealization");
-    addTrigger("realization");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-      boolean problem = NO_PROBLEM;
-      if (ModelFacade.isAClass(dm)) {
-          Collection col = CoreHelper.getHelper().getAllRealizedInterfaces(dm);
-          int size = col.size();
-          Set set = new HashSet();
-          set.addAll(col);
-          if (set.size() < col.size()) {
-              problem = PROBLEM_FOUND; 
-          }
-      }
-      return problem;
-  }
+    
+    /** Constructor
+     */
+    public CrAlreadyRealizes() {
+	setHeadline("Remove Unneeded Realizes from <ocl>self</ocl>");
+	addSupportedDecision(CrUML.decINHERITANCE);
+	setKnowledgeTypes(Critic.KT_SEMANTICS, Critic.KT_PRESENTATION);
+	addTrigger("genealization");
+	addTrigger("realization");
+    }
+						  
+    public boolean predicate2(Object dm, Designer dsgr) {
+	boolean problem = NO_PROBLEM;
+	if (ModelFacade.isAClass(dm)) {
+	    Collection col = CoreHelper.getHelper().getAllRealizedInterfaces(dm);
+	    int size = col.size();
+	    Set set = new HashSet();
+	    set.addAll(col);
+	    if (set.size() < col.size()) {
+		problem = PROBLEM_FOUND; 
+	    }
+	}
+	return problem;
+    }
 
 } /* end class CrAlreadyRealizes */
 

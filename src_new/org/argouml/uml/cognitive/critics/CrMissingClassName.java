@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,42 +47,42 @@ import org.argouml.cognitive.critics.*;
 
 public class CrMissingClassName extends CrUML {
 
-  public CrMissingClassName() {
-    setHeadline("Choose a Name");
-    addSupportedDecision(CrUML.decNAMING);
-    setKnowledgeTypes(Critic.KT_COMPLETENESS, Critic.KT_SYNTAX);
-    addTrigger("name");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MModelElement)) return NO_PROBLEM;
-    MModelElement e = (MModelElement) dm;
-    String myName = e.getName();
-    if (myName == null || myName.equals("") ||
-	 myName == null || myName.length() == 0)
-      return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
-
-  public Icon getClarifier() {
-    return ClClassName.TheInstance;
-  }
-
-  public void initWizard(Wizard w) {
-    if (w instanceof WizMEName) {
-      ToDoItem item = w.getToDoItem();
-      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
-      String ins = "Set the name of this class.";
-      String sug = "ClassName";
-      int count = 1;
-      if (me.getNamespace() != null)
-	count = me.getNamespace().getOwnedElements().size();
-      sug = me.getUMLClassName() + (count + 1);
-      ((WizMEName)w).setInstructions(ins);
-      ((WizMEName)w).setSuggestion(sug);
+    public CrMissingClassName() {
+	setHeadline("Choose a Name");
+	addSupportedDecision(CrUML.decNAMING);
+	setKnowledgeTypes(Critic.KT_COMPLETENESS, Critic.KT_SYNTAX);
+	addTrigger("name");
     }
-  }
-  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MModelElement)) return NO_PROBLEM;
+	MModelElement e = (MModelElement) dm;
+	String myName = e.getName();
+	if (myName == null || myName.equals("") ||
+	    myName == null || myName.length() == 0)
+	    return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
+
+    public Icon getClarifier() {
+	return ClClassName.TheInstance;
+    }
+
+    public void initWizard(Wizard w) {
+	if (w instanceof WizMEName) {
+	    ToDoItem item = w.getToDoItem();
+	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+	    String ins = "Set the name of this class.";
+	    String sug = "ClassName";
+	    int count = 1;
+	    if (me.getNamespace() != null)
+		count = me.getNamespace().getOwnedElements().size();
+	    sug = me.getUMLClassName() + (count + 1);
+	    ((WizMEName) w).setInstructions(ins);
+	    ((WizMEName) w).setSuggestion(sug);
+	}
+    }
+    public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrMissingClassName.java */
 

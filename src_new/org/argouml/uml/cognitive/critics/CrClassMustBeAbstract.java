@@ -45,13 +45,13 @@ import org.argouml.model.ModelFacade;
 
 public class CrClassMustBeAbstract extends CrUML {
 
-  public CrClassMustBeAbstract() {
-    setHeadline("Class Must be Abstract");
+    public CrClassMustBeAbstract() {
+	setHeadline("Class Must be Abstract");
 
-    addSupportedDecision(CrUML.decINHERITANCE);
-    addSupportedDecision(CrUML.decMETHODS);
-    setKnowledgeTypes(Critic.KT_SEMANTICS);
-  }
+	addSupportedDecision(CrUML.decINHERITANCE);
+	addSupportedDecision(CrUML.decMETHODS);
+	setKnowledgeTypes(Critic.KT_SEMANTICS);
+    }
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -54,73 +55,73 @@ import ru.novosoft.uml.model_management.MPackage;
 
 public interface NotationProvider {
 
-  public NotationName getNotation();
+    public NotationName getNotation();
 
-  public String generateExtensionPoint(MExtensionPoint op);
-  public String generateOperation(MOperation op, boolean documented);
-  public String generateAttribute(MAttribute attr, boolean documented);
-  public String generateParameter(MParameter param);
-  public String generateName(String name);
-  public String generatePackage(MPackage pkg);
-  public String generateExpression(MExpression expr);
-  public String generateClassifier(MClassifier cls);
-  public String generateStereotype(MStereotype s);
-  public String generateTaggedValue(MTaggedValue s);
-  public String generateAssociation(MAssociation a);
-  public String generateAssociationEnd(MAssociationEnd ae);
-  public String generateMultiplicity(MMultiplicity m);
-  public String generateState(MState m);
-  public String generateStateBody(MState stt);
-  public String generateTransition(MTransition m);
-  public String generateAction(Object m);
-  public String generateGuard(MGuard m);
-  public String generateMessage(MMessage m);
-  public String generateClassifierRef(MClassifier m);
-  public String generateAssociationRole(MAssociationRole m);
+    public String generateExtensionPoint(MExtensionPoint op);
+    public String generateOperation(MOperation op, boolean documented);
+    public String generateAttribute(MAttribute attr, boolean documented);
+    public String generateParameter(MParameter param);
+    public String generateName(String name);
+    public String generatePackage(MPackage pkg);
+    public String generateExpression(MExpression expr);
+    public String generateClassifier(MClassifier cls);
+    public String generateStereotype(MStereotype s);
+    public String generateTaggedValue(MTaggedValue s);
+    public String generateAssociation(MAssociation a);
+    public String generateAssociationEnd(MAssociationEnd ae);
+    public String generateMultiplicity(MMultiplicity m);
+    public String generateState(MState m);
+    public String generateStateBody(MState stt);
+    public String generateTransition(MTransition m);
+    public String generateAction(Object m);
+    public String generateGuard(MGuard m);
+    public String generateMessage(MMessage m);
+    public String generateClassifierRef(MClassifier m);
+    public String generateAssociationRole(MAssociationRole m);
 
-  /** Can the notation be parsed for this object?
-   */
-  public boolean canParse(Object o);
+    /** Can the notation be parsed for this object?
+     */
+    public boolean canParse(Object o);
 
-  /** Can the notation be parsed at all?
-   */
-  public boolean canParse();
+    /** Can the notation be parsed at all?
+     */
+    public boolean canParse();
 
-  // public void parseExtensionPointCompartment(MUseCase uc, String s);
-  // public void parseOperationCompartment(MClassifier cls, String s);
-  // public void parseAttributeCompartment(MClassifier cls, String s);
-  // public MExtensionPoint parseExtensionPoint(String s);
-  // public MOperation parseOperation(String s);
-  // public MAttribute parseAttribute(String s);
-  // public String parseOutVisibility(MFeature f, String s);
-  // public String parseOutKeywords(MFeature f, String s);
-  // public String parseOutReturnType(MOperation op, String s);
-  // public String parseOutParams(MOperation op, String s);
-  // public String parseOutName(MModelElement me, String s);
-  // public String parseOutType(MAttribute attr, String s);
-  // public String parseOutInitValue(MAttribute attr, String s);
-  // public String parseOutColon(String s);
-  // public MParameter parseParameter(String s);
-  // public Package parsePackage(String s);
-  // public MClassImpl parseClassifier(String s);
-  // public MStereotype parseStereotype(String s);
-  // public MTaggedValue parseTaggedValue(String s);
-  // public MAssociation parseAssociation(String s);
-  // public MAssociationEnd parseAssociationEnd(String s);
-  // public MMultiplicity parseMultiplicity(String s);
-  // public MState parseState(String s);
-  // public void parseStateBody(MState st, String s);
-  // public void parseStateEntyAction(MState st, String s);
-  // public void parseStateExitAction(MState st, String s);
-  // public MTransition parseTransition(MTransition trans, String s);
-  // public void parseClassifierRole(MClassifierRole cls, String s);
-  // public void parseMessage(MMessage mes, String s);
-  // public void parseStimulus(MStimulus sti, String s);
-  // public MAction parseAction(String s);
-  // public MGuard parseGuard(String s);
-  // public MEvent parseEvent(String s);
-  // public void parseObject(MObject obj, String s);
-  // public void parseNodeInstance(MNodeInstance noi, String s);
-  // public void parseComponentInstance(MComponentInstance coi, String s);
+    // public void parseExtensionPointCompartment(MUseCase uc, String s);
+    // public void parseOperationCompartment(MClassifier cls, String s);
+    // public void parseAttributeCompartment(MClassifier cls, String s);
+    // public MExtensionPoint parseExtensionPoint(String s);
+    // public MOperation parseOperation(String s);
+    // public MAttribute parseAttribute(String s);
+    // public String parseOutVisibility(MFeature f, String s);
+    // public String parseOutKeywords(MFeature f, String s);
+    // public String parseOutReturnType(MOperation op, String s);
+    // public String parseOutParams(MOperation op, String s);
+    // public String parseOutName(MModelElement me, String s);
+    // public String parseOutType(MAttribute attr, String s);
+    // public String parseOutInitValue(MAttribute attr, String s);
+    // public String parseOutColon(String s);
+    // public MParameter parseParameter(String s);
+    // public Package parsePackage(String s);
+    // public MClassImpl parseClassifier(String s);
+    // public MStereotype parseStereotype(String s);
+    // public MTaggedValue parseTaggedValue(String s);
+    // public MAssociation parseAssociation(String s);
+    // public MAssociationEnd parseAssociationEnd(String s);
+    // public MMultiplicity parseMultiplicity(String s);
+    // public MState parseState(String s);
+    // public void parseStateBody(MState st, String s);
+    // public void parseStateEntyAction(MState st, String s);
+    // public void parseStateExitAction(MState st, String s);
+    // public MTransition parseTransition(MTransition trans, String s);
+    // public void parseClassifierRole(MClassifierRole cls, String s);
+    // public void parseMessage(MMessage mes, String s);
+    // public void parseStimulus(MStimulus sti, String s);
+    // public MAction parseAction(String s);
+    // public MGuard parseGuard(String s);
+    // public MEvent parseEvent(String s);
+    // public void parseObject(MObject obj, String s);
+    // public void parseNodeInstance(MNodeInstance noi, String s);
+    // public void parseComponentInstance(MComponentInstance coi, String s);
 }
 

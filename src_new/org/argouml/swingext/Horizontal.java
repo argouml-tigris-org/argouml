@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 /*
  * Horizontal.java
  */
@@ -67,7 +91,7 @@ public class Horizontal extends Orientation {
      * @return The length of the <code>Dimension</code>.
      */
     public int getLength(Dimension dim) {
-        return (int)dim.getWidth();
+        return (int) dim.getWidth();
     }
 
     /**
@@ -98,7 +122,7 @@ public class Horizontal extends Orientation {
      * @return The breadth of the <code>Dimension</code>.
      */
     public int getBreadth(Dimension dim) {
-        return (int)dim.getHeight();
+        return (int) dim.getHeight();
     }
 
     /**
@@ -118,7 +142,7 @@ public class Horizontal extends Orientation {
      * @return The position of the <code>Point</code>.
      */
     public int getPosition(Point point) {
-        return (int)point.getX();
+        return (int) point.getX();
     }
 
     /**
@@ -138,7 +162,7 @@ public class Horizontal extends Orientation {
      * @return The position of the <code>Component</code>.
      */
     public int getOffset(Point point) {
-        return (int)point.getY();
+        return (int) point.getY();
     }
 
     /**
@@ -197,7 +221,7 @@ public class Horizontal extends Orientation {
     public Dimension addLength(Dimension original, int add) {
         double width = original.getWidth() + add;
         double height = original.getHeight();
-        return new Dimension((int)width, (int)height);
+        return new Dimension((int) width, (int) height);
     }
 
     /**
@@ -271,7 +295,7 @@ public class Horizontal extends Orientation {
     public Point addToPosition(Point original, int add) {
         double x = original.getX() + add;
         double y = original.getY();
-        return new Point((int)x, (int)y);
+        return new Point((int) x, (int) y);
     }
 
     /**
@@ -343,7 +367,7 @@ public class Horizontal extends Orientation {
      * @return             The resulting <code>Dimension</code>.
      */
     public Dimension setLength(Dimension original, int length) {
-        return new Dimension(length, (int)original.getHeight());
+        return new Dimension(length, (int) original.getHeight());
     }
 
     /**
@@ -356,7 +380,7 @@ public class Horizontal extends Orientation {
      * @return             The resulting <code>Dimension</code>.
      */
     public Dimension setLength(Dimension original, Dimension length) {
-        return new Dimension((int)length.getWidth(), (int)original.getHeight());
+        return new Dimension((int) length.getWidth(), (int) original.getHeight());
     }
 
     /**
@@ -368,7 +392,7 @@ public class Horizontal extends Orientation {
      * @return             The resulting <code>Dimension</code>.
      */
     public Dimension setBreadth(Dimension original, int breadth) {
-        return new Dimension((int)original.getWidth(), breadth);
+        return new Dimension((int) original.getWidth(), breadth);
     }
 
     /**
@@ -381,7 +405,7 @@ public class Horizontal extends Orientation {
      * @return             The resulting <code>Dimension</code>.
      */
     public Dimension setBreadth(Dimension original, Dimension breadth) {
-        return new Dimension((int)original.getWidth(), (int)breadth.getHeight());
+        return new Dimension((int) original.getWidth(), (int) breadth.getHeight());
     }
     
     /**
@@ -393,7 +417,7 @@ public class Horizontal extends Orientation {
      * @return             The resulting <code>Point</code>.
      */
     public Point setPosition(Point original, int position) {
-        return new Point(position, (int)original.getY());
+        return new Point(position, (int) original.getY());
     }
     
     /**
@@ -411,7 +435,7 @@ public class Horizontal extends Orientation {
      * @return The resulting <code>ArrowButton</code>.
      */
     public ArrowButton getStartArrowButton() {
-        return new ArrowButton(ArrowButton.WEST, (Border)null);
+        return new ArrowButton(ArrowButton.WEST, (Border) null);
     }
     
     /**
@@ -420,6 +444,6 @@ public class Horizontal extends Orientation {
      * @return The resulting <code>ArrowButton</code>.
      */
     public ArrowButton getEndArrowButton() {
-        return new ArrowButton(ArrowButton.EAST, (Border)null);
+        return new ArrowButton(ArrowButton.EAST, (Border) null);
     }
 }

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -91,7 +92,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             Editor ce = Globals.curEditor();
             Vector figs = ce.getSelectionManager().getFigs();
             size = figs.size();
-        } catch (Exception e) {}
+        } catch (Exception e) { }
         if (size > 0)
             return true;
         Object target = TargetManager.getInstance().getTarget();
@@ -105,8 +106,8 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         }
         if (target instanceof MModel
             && // we cannot delete the model itself
-        target.equals(
-                ProjectManager.getManager().getCurrentProject().getModel())) {
+	    target.equals(
+			  ProjectManager.getManager().getCurrentProject().getModel())) {
             return false;
         }
         return target != null;
@@ -124,7 +125,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         Object[] targets = null;
         if (ae.getSource() instanceof PropPanel) {
             targets =
-                new Object[] { TargetManager.getInstance().getModelTarget()};
+                new Object[] {
+		    TargetManager.getInstance().getModelTarget()
+		};
         } else
             targets = getTargets();
         Object target = null;
@@ -134,11 +137,11 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 // Argo.log.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
                 // remove from the model
                 if (target instanceof Fig) {
-                    target = ((Fig)target).getOwner();
+                    target = ((Fig) target).getOwner();
                 }
                 p.moveToTrash(target);
                 if (target instanceof Diagram) {
-                    Diagram firstDiagram = (Diagram)p.getDiagrams().get(0);
+                    Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);
                     if (target != firstDiagram)
                         TargetManager.getInstance().setTarget(firstDiagram);
                 }
@@ -147,11 +150,11 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         }
         //      move the pointer to the target in the NavPane to some other target
         Object newTarget = null;
-        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
+        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target)) {
-            newTarget = ((MBase)target).getModelElementContainer();
+            newTarget = ((MBase) target).getModelElementContainer();
         } else if (ModelFacade.isADiagram(target)) {
-            Diagram firstDiagram = (Diagram)p.getDiagrams().get(0);
+            Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);
             if (target != firstDiagram)
                 newTarget = firstDiagram;
             else {
@@ -178,36 +181,38 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         // usage of other sureRemove method is legacy. They should be integrated.
         boolean sure = false;
         if (target instanceof MModelElement) {
-            sure = sureRemove((MModelElement)target);
+            sure = sureRemove((MModelElement) target);
         } else if (target instanceof UMLDiagram) {
             // lets see if this diagram has some figs on it
-            UMLDiagram diagram = (UMLDiagram)target;
+            UMLDiagram diagram = (UMLDiagram) target;
             Vector nodes = diagram.getNodes();
             Vector edges = diagram.getNodes();
             if ((nodes.size() + edges.size()) > 0) {
                 // the diagram contains figs so lets ask the user if he/she is sure
                 String confirmStr =
                     MessageFormat.format(
-                        Argo.localize(
-                            "Actions",
-                            "optionpane.remove-from-model-confirm-delete"),
-                        new Object[] { diagram.getName(), "" });
+					 Argo.localize(
+						       "Actions",
+						       "optionpane.remove-from-model-confirm-delete"),
+					 new Object[] {
+					     diagram.getName(), "" 
+					 });
                 int response =
                     JOptionPane.showConfirmDialog(
-                        ProjectBrowser.getInstance(),
-                        confirmStr,
-                        Argo.localize(
-                            "Actions",
-                            "optionpane.remove-from-model-confirm-delete-title"),
-                        JOptionPane.YES_NO_OPTION);
+						  ProjectBrowser.getInstance(),
+						  confirmStr,
+						  Argo.localize(
+								"Actions",
+								"optionpane.remove-from-model-confirm-delete-title"),
+						  JOptionPane.YES_NO_OPTION);
                 sure = (response == JOptionPane.YES_OPTION);
             } else { // no content of diagram
                 sure = true;
             }
         } else if (target instanceof Fig) {
             // we can delete figs like figrects now too
-            if (((Fig)target).getOwner() instanceof MModelElement) {
-                sure = sureRemove((MModelElement) ((Fig)target).getOwner());
+            if (((Fig) target).getOwner() instanceof MModelElement) {
+                sure = sureRemove((MModelElement) ((Fig) target).getOwner());
             } else
                 sure = true;
         }
@@ -232,8 +237,8 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         if (count > 1) {
             confirmStr
                 += Argo.localize(
-                    "Actions",
-                    "optionpane.remove-from-model-will-remove-from-diagrams");
+				 "Actions",
+				 "optionpane.remove-from-model-will-remove-from-diagrams");
             doAsk = true;
         }
 
@@ -241,8 +246,8 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         if (beh != null && beh.size() > 0) {
             confirmStr
                 += Argo.localize(
-                    "Actions",
-                    "optionpane.remove-from-model-will-remove-subdiagram");
+				 "Actions",
+				 "optionpane.remove-from-model-will-remove-subdiagram");
             doAsk = true;
         }
 
@@ -254,37 +259,39 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         if (name == null || name.equals("")) {
             name =
                 Argo.localize(
-                    "Actions",
-                    "optionpane.remove-from-model-anon-element-name");
+			      "Actions",
+			      "optionpane.remove-from-model-anon-element-name");
         }
 
         confirmStr =
             MessageFormat.format(
-                Argo.localize(
-                    "Actions",
-                    "optionpane.remove-from-model-confirm-delete"),
-                new Object[] { name, confirmStr });
+				 Argo.localize(
+					       "Actions",
+					       "optionpane.remove-from-model-confirm-delete"),
+				 new Object[] {
+				     name, confirmStr 
+				 });
         int response =
             JOptionPane.showConfirmDialog(
-                pb,
-                confirmStr,
-                Argo.localize(
-                    "Actions",
-                    "optionpane.remove-from-model-confirm-delete-title"),
-                JOptionPane.YES_NO_OPTION);
+					  pb,
+					  confirmStr,
+					  Argo.localize(
+							"Actions",
+							"optionpane.remove-from-model-confirm-delete-title"),
+					  JOptionPane.YES_NO_OPTION);
 
         return (response == JOptionPane.YES_OPTION);
     }
 
     protected Object[] getTargets() {
         /*
-        Vector figs = null;
-        try {
-            Editor ce = Globals.curEditor();
-            figs = ce.getSelectionManager().getFigs();
-        } catch (Exception e) {
-        }
-        return figs.size() > 0 ? figs.toArray() : new Object[] {TargetManager.getInstance().getTarget()};
+	  Vector figs = null;
+	  try {
+	  Editor ce = Globals.curEditor();
+	  figs = ce.getSelectionManager().getFigs();
+	  } catch (Exception e) {
+	  }
+	  return figs.size() > 0 ? figs.toArray() : new Object[] {TargetManager.getInstance().getTarget()};
         */
         return TargetManager.getInstance().getTargets().toArray();
     }

@@ -61,10 +61,10 @@ public class SelectionUseCase extends SelectionWButtons {
     // constants
     public static Icon inherit =
         ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
-            "Generalization");
+									    "Generalization");
     public static Icon assoc =
         ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
-            "Association");
+									    "Association");
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -158,31 +158,31 @@ public class SelectionUseCase extends SelectionWButtons {
         int bx = mX, by = mY;
         boolean reverse = false;
         switch (hand.index) {
-            case 10 : //add superclass
-                edgeClass = MGeneralization.class;
-                by = cy;
-                bx = cx + cw / 2;
-                break;
-            case 11 : //add subclass
-                edgeClass = MGeneralization.class;
-                reverse = true;
-                by = cy + ch;
-                bx = cx + cw / 2;
-                break;
-            case 12 : //add assoc
-                edgeClass = MAssociation.class;
-                by = cy + ch / 2;
-                bx = cx + cw;
-                break;
-            case 13 : // add assoc
-                edgeClass = MAssociation.class;
-                reverse = true;
-                by = cy + ch / 2;
-                bx = cx;
-                break;
-            default :
-                cat.warn("invalid handle number");
-                break;
+	case 10 : //add superclass
+	    edgeClass = MGeneralization.class;
+	    by = cy;
+	    bx = cx + cw / 2;
+	    break;
+	case 11 : //add subclass
+	    edgeClass = MGeneralization.class;
+	    reverse = true;
+	    by = cy + ch;
+	    bx = cx + cw / 2;
+	    break;
+	case 12 : //add assoc
+	    edgeClass = MAssociation.class;
+	    by = cy + ch / 2;
+	    bx = cx + cw;
+	    break;
+	case 13 : // add assoc
+	    edgeClass = MAssociation.class;
+	    reverse = true;
+	    by = cy + ch / 2;
+	    bx = cx;
+	    break;
+	default :
+	    cat.warn("invalid handle number");
+	    break;
         }
         if (edgeClass != null && nodeClass != null) {
             Editor ce = Globals.curEditor();
@@ -198,8 +198,8 @@ public class SelectionUseCase extends SelectionWButtons {
     
 
     /**
-       * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
-       */
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
         return gm.connect(_content.getOwner(), newNode, MGeneralization.class);
     }

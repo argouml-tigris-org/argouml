@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -69,22 +70,22 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
         if (value instanceof MBase) {
-            String text = makeText((MBase)value);            
+            String text = makeText((MBase) value);            
             label.setText(text);
             if (_showIcon) {
                 Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
                 // if (icon != null)
-                    label.setIcon(icon);
+		label.setIcon(icon);
             } else {
                 // hack to make sure that the right hight is applied when no icon is used.
                 label = (JLabel) super.getListCellRendererComponent(list, text, index, isSelected, cellHasFocus);
             }
 
         } else
-        if (value == null || value.equals("")) {      
-            label = new JLabel(" ");      
-            label.setIcon(null);
-        }
+	    if (value == null || value.equals("")) {      
+		label = new JLabel(" ");      
+		label.setIcon(null);
+	    }
         
 
         return label;
@@ -104,11 +105,11 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                 name = "(anon " + makeTypeName(elem) + ")";
             }
         } else 
-        if (value instanceof MMultiplicity) {
-            name = value.toString();
-        } else {                    
-            name = makeTypeName(value);
-        }
+	    if (value instanceof MMultiplicity) {
+		name = value.toString();
+	    } else {                    
+		name = makeTypeName(value);
+	    }
         return name;
 
     }

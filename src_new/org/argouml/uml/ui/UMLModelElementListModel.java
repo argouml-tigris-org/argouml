@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -375,7 +376,7 @@ abstract public class UMLModelElementListModel
     }
     
     public void navigateTo(Object modelElement) {
-        navigateTo((MModelElement)modelElement);
+        navigateTo((MModelElement) modelElement);
     }
 
     /**
@@ -455,7 +456,7 @@ abstract public class UMLModelElementListModel
         Collection oldCollection,
         Object newItem,
         int index) {
-        return addAtUtil(oldCollection, (MModelElement)newItem, index);
+        return addAtUtil(oldCollection, (MModelElement) newItem, index);
     }
 
     /**
@@ -592,7 +593,7 @@ abstract public class UMLModelElementListModel
         Object obj = null;
         if (collection != null && index >= 0 && index < collection.size()) {
             if (collection instanceof java.util.List) {
-                obj = ((java.util.List)collection).get(index);
+                obj = ((java.util.List) collection).get(index);
             } else {
                 Iterator iter = collection.iterator();
                 Object temp;
@@ -605,7 +606,7 @@ abstract public class UMLModelElementListModel
                 }
             }
         }
-        return (MModelElement)obj;
+        return (MModelElement) obj;
     }
 
     /**

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -39,27 +40,27 @@ import org.argouml.model.ModelFacade;
 
 public class CrInvalidBranch extends CrUML {
 
-  public CrInvalidBranch() {
-    setHeadline("Change Branch Transitions");
-    addSupportedDecision(CrUML.decSTATE_MACHINES);
-    addTrigger("incoming");
-  }
+    public CrInvalidBranch() {
+	setHeadline("Change Branch Transitions");
+	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	addTrigger("incoming");
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(ModelFacade.isAPseudostate(dm))) return NO_PROBLEM;
-    Object k = ModelFacade.getPseudostateKind(dm);
-    if (!ModelFacade.
-        equalsPseudostateKind(k,
-                              ModelFacade.BRANCH_PSEUDOSTATEKIND))
-        return NO_PROBLEM;
-    Collection outgoing = ModelFacade.getOutgoings(dm);
-    Collection incoming = ModelFacade.getIncomings(dm);
-    int nOutgoing = outgoing == null ? 0 : outgoing.size();
-    int nIncoming = incoming == null ? 0 : incoming.size();
-    if (nIncoming > 1) return PROBLEM_FOUND;
-    if (nOutgoing == 1) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(ModelFacade.isAPseudostate(dm))) return NO_PROBLEM;
+	Object k = ModelFacade.getPseudostateKind(dm);
+	if (!ModelFacade.
+	    equalsPseudostateKind(k,
+				  ModelFacade.BRANCH_PSEUDOSTATEKIND))
+	    return NO_PROBLEM;
+	Collection outgoing = ModelFacade.getOutgoings(dm);
+	Collection incoming = ModelFacade.getIncomings(dm);
+	int nOutgoing = outgoing == null ? 0 : outgoing.size();
+	int nIncoming = incoming == null ? 0 : incoming.size();
+	if (nIncoming > 1) return PROBLEM_FOUND;
+	if (nOutgoing == 1) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
 
 } /* end class CrInvalidBranch */
 

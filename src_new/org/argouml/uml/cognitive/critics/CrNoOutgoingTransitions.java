@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -40,27 +41,27 @@ import org.argouml.cognitive.*;
 
 public class CrNoOutgoingTransitions extends CrUML {
 
-  public CrNoOutgoingTransitions() {
-    setHeadline("Add Outgoing Transitions from <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decSTATE_MACHINES);
-    addTrigger("outgoing");
-  }
+    public CrNoOutgoingTransitions() {
+	setHeadline("Add Outgoing Transitions from <ocl>self</ocl>");
+	addSupportedDecision(CrUML.decSTATE_MACHINES);
+	addTrigger("outgoing");
+    }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MStateVertex)) return NO_PROBLEM;
-    MStateVertex sv = (MStateVertex) dm;
-    if (sv instanceof MState) {
-      MStateMachine sm = ((MState)sv).getStateMachine();
-      if (sm != null && sm.getTop() == sv) return NO_PROBLEM;
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof MStateVertex)) return NO_PROBLEM;
+	MStateVertex sv = (MStateVertex) dm;
+	if (sv instanceof MState) {
+	    MStateMachine sm = ((MState) sv).getStateMachine();
+	    if (sm != null && sm.getTop() == sv) return NO_PROBLEM;
+	}
+	Collection outgoing = sv.getOutgoings();
+	boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
+	if (sv instanceof MFinalState) {
+	    needsOutgoing = false;
+	}
+	if (needsOutgoing) return PROBLEM_FOUND;
+	return NO_PROBLEM;
     }
-    Collection outgoing = sv.getOutgoings();
-    boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
-    if (sv instanceof MFinalState) {
-		needsOutgoing = false;
-    }
-    if (needsOutgoing) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-  }
 
 } /* end class CrNoOutgoingTransitions */
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -37,75 +38,75 @@ import org.argouml.ui.StylePanelFig;
 
 public class StylePanelFigInterface extends StylePanelFig {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  ////////////////////////////////////////////////////////////////
-  // instance vars
+    ////////////////////////////////////////////////////////////////
+    // instance vars
 
-  protected JCheckBox _operCheckBox = new JCheckBox("Operations");
-  protected JLabel _displayLabel = new JLabel("Display: ");
+    protected JCheckBox _operCheckBox = new JCheckBox("Operations");
+    protected JLabel _displayLabel = new JLabel("Display: ");
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
+    ////////////////////////////////////////////////////////////////
+    // contructors
 
-  public StylePanelFigInterface() {
-    super();
-    GridBagLayout gb = (GridBagLayout) getLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.ipadx = 0; c.ipady = 0;
+    public StylePanelFigInterface() {
+	super();
+	GridBagLayout gb = (GridBagLayout) getLayout();
+	GridBagConstraints c = new GridBagConstraints();
+	c.fill = GridBagConstraints.BOTH;
+	c.ipadx = 0; c.ipady = 0;
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    c.weightx = 0.0;
-    gb.setConstraints(_displayLabel, c);
-    add(_displayLabel);
+	c.gridx = 0;
+	c.gridwidth = 1;
+	c.gridy = 0;
+	c.weightx = 0.0;
+	gb.setConstraints(_displayLabel, c);
+	add(_displayLabel);
 
-    c.gridx = 1;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    c.weightx = 0.0;
-    JPanel pane = new JPanel();
-    pane.setLayout(new FlowLayout(FlowLayout.LEFT));
-    pane.add(_operCheckBox);
-    gb.setConstraints(pane, c);
-    add(pane);
+	c.gridx = 1;
+	c.gridwidth = 1;
+	c.gridy = 0;
+	c.weightx = 0.0;
+	JPanel pane = new JPanel();
+	pane.setLayout(new FlowLayout(FlowLayout.LEFT));
+	pane.add(_operCheckBox);
+	gb.setConstraints(pane, c);
+	add(pane);
 
-    _operCheckBox.setSelected(false);
-    _operCheckBox.addItemListener(this);
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public void refresh() {
-    super.refresh();
-    org.argouml.uml.diagram.static_structure.ui.FigInterface ti = (org.argouml.uml.diagram.static_structure.ui.FigInterface)_target;
-    _operCheckBox.setSelected(ti.isOperationVisible());
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handling
-
-  public void insertUpdate(DocumentEvent e) {
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-
-
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-
-    if (src == _operCheckBox) {
-      ((org.argouml.uml.diagram.static_structure.ui.FigInterface)_target).setOperationVisible(_operCheckBox.isSelected());
+	_operCheckBox.setSelected(false);
+	_operCheckBox.addItemListener(this);
     }
-    else super.itemStateChanged(e);
-  }
+
+
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    public void refresh() {
+	super.refresh();
+	org.argouml.uml.diagram.static_structure.ui.FigInterface ti = (org.argouml.uml.diagram.static_structure.ui.FigInterface) _target;
+	_operCheckBox.setSelected(ti.isOperationVisible());
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // event handling
+
+    public void insertUpdate(DocumentEvent e) {
+	super.insertUpdate(e);
+    }
+
+    public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
+
+
+
+    public void itemStateChanged(ItemEvent e) {
+	Object src = e.getSource();
+
+	if (src == _operCheckBox) {
+	    ((org.argouml.uml.diagram.static_structure.ui.FigInterface) _target).setOperationVisible(_operCheckBox.isSelected());
+	}
+	else super.itemStateChanged(e);
+    }
 
 
 } /* end class StylePanelFigInterface */

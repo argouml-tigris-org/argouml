@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -119,7 +120,7 @@ public abstract class UMLComboBoxModel2
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(MElementEvent)
      */
-    public void listRoleItemSet(MElementEvent e) {}
+    public void listRoleItemSet(MElementEvent e) { }
 
     /**
      * If the property that this comboboxmodel depicts is changed by the NSUML
@@ -130,7 +131,9 @@ public abstract class UMLComboBoxModel2
     public void propertySet(MElementEvent e) {
         if (e.getName().equals(_propertySetName)
             && e.getSource() == getTarget()
-            && (contains(getChangedElement(e)) || getChangedElement(e) == null)) {
+            && (contains(getChangedElement(e)) 
+		|| getChangedElement(e) == null))
+	{
             setSelectedItem(getChangedElement(e));
         }
     }
@@ -138,7 +141,7 @@ public abstract class UMLComboBoxModel2
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(MElementEvent)
      */
-    public void recovered(MElementEvent e) {}
+    public void recovered(MElementEvent e) { }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(MElementEvent)
@@ -147,7 +150,7 @@ public abstract class UMLComboBoxModel2
         if (contains(getChangedElement(e))) {
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
-                removeAll((Collection)o);
+                removeAll((Collection) o);
             } else {
                 removeElement(o);
             }
@@ -163,9 +166,9 @@ public abstract class UMLComboBoxModel2
             if (o instanceof Collection) { // this should not happen but
                 // you never know with NSUML
                 log.warn(
-                    "Collection added via roleAdded! The correct element"
-                        + "is probably not selected...");
-                Iterator it = ((Collection)o).iterator();
+			 "Collection added via roleAdded! The correct element"
+			 + "is probably not selected...");
+                Iterator it = ((Collection) o).iterator();
                 while (it.hasNext()) {
                     Object o2 = it.next();
                     addElement(it.next());
@@ -183,7 +186,7 @@ public abstract class UMLComboBoxModel2
         if (contains(getChangedElement(e))) {
             Object o = getChangedElement(e);
             if (o instanceof Collection) {
-                removeAll((Collection)o);
+                removeAll((Collection) o);
             } else {
                 removeElement(o);
             }
@@ -226,7 +229,7 @@ public abstract class UMLComboBoxModel2
             }
         } else
             throw new IllegalArgumentException(
-                "In setElements: may not set " + "elements to null collection");
+					       "In setElements: may not set " + "elements to null collection");
     }
 
     /**
@@ -309,22 +312,22 @@ public abstract class UMLComboBoxModel2
      * @param target
      */
     protected void setTarget(Object target) {
-        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
+        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
             if (_target instanceof MBase) {
                 UmlModelEventPump.getPump().removeModelEventListener(
-                    this,
-                    (MBase)_target,
-                    _propertySetName);
+								     this,
+								     (MBase) _target,
+								     _propertySetName);
             }
 
             if (target instanceof MBase) {
                 _target = target;
                 // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
                 UmlModelEventPump.getPump().addModelEventListener(
-                    this,
-                    (MBase)_target,
-                    _propertySetName);
+								  this,
+								  (MBase) _target,
+								  _propertySetName);
             } else {
                 _target = null;
             }
@@ -394,7 +397,7 @@ public abstract class UMLComboBoxModel2
         if (getElementAt(index) == _selectedObject) {
             if (index == 0) {
                 setSelectedItem(
-                    getSize() == 1 ? null : getElementAt(index + 1));
+				getSize() == 1 ? null : getElementAt(index + 1));
             } else {
                 setSelectedItem(getElementAt(index - 1));
             }
@@ -428,7 +431,7 @@ public abstract class UMLComboBoxModel2
         if (_objects.contains(elem))
             return true;
         if (elem instanceof Collection) {
-            Iterator it = ((Collection)elem).iterator();
+            Iterator it = ((Collection) elem).iterator();
             while (it.hasNext()) {
                 if (!_objects.contains(it.next()))
                     return false;
@@ -449,25 +452,25 @@ public abstract class UMLComboBoxModel2
     protected boolean isValidEvent(MElementEvent e) {
         boolean valid = false;
         if (!(getChangedElement(e) instanceof Collection)) {
-            valid = isValidElement((MBase)getChangedElement(e));
+            valid = isValidElement((MBase) getChangedElement(e));
             if (!valid && e.getNewValue() == null && e.getOldValue() != null) {
                 valid = true; // we tried to remove a value
             }
         } else {
-            Collection col = (Collection)getChangedElement(e);
+            Collection col = (Collection) getChangedElement(e);
             Iterator it = col.iterator();
             if (!col.isEmpty()) {
                 valid = true;
                 while (it.hasNext()) {
                     Object o = it.next();
-                    if (!isValidElement((MBase)o)) {
+                    if (!isValidElement((MBase) o)) {
                         valid = false;
                         break;
                     }
                 }
             } else {
                 if (e.getOldValue() instanceof Collection
-                    && !((Collection)e.getOldValue()).isEmpty()) {
+                    && !((Collection) e.getOldValue()).isEmpty()) {
                     valid = true;
                 }
             }
@@ -502,7 +505,7 @@ public abstract class UMLComboBoxModel2
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
-    public void targetAdded(TargetEvent e) {}
+    public void targetAdded(TargetEvent e) { }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)

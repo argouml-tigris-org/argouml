@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 /*
  * PopupToolBoxButton.java
  *
@@ -82,7 +106,7 @@ public class PopupToolBoxButton extends JButton {
         }
         _button.setText(null);
         
-        _standardIcon = new DropDownIcon((ImageIcon)_button.getIcon());
+        _standardIcon = new DropDownIcon((ImageIcon) _button.getIcon());
         
         // Remove any knowledge of the action to perform from the ancestor
         // we take control of performing the action and displaying the icon.
@@ -94,16 +118,17 @@ public class PopupToolBoxButton extends JButton {
     private void popup() {
         final JPopupMenu popup = new JPopupMenu();
         
-        MouseAdapter m = (new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                popup.setVisible(false);
-                Component c = e.getComponent();
-                if (c instanceof JButton) {
-                    Action a = ((JButton)c).getAction();
-                    setAction(a);
-                }
-            }
-        });
+        MouseAdapter m = (new MouseAdapter() 
+	    {
+		public void mouseClicked(MouseEvent e) {
+		    popup.setVisible(false);
+		    Component c = e.getComponent();
+		    if (c instanceof JButton) {
+			Action a = ((JButton) c).getAction();
+			setAction(a);
+		    }
+		}
+	    });
         _popupToolBox.setButtonMouseListener(m);
         
         _popupToolBox.rebuild();
@@ -138,14 +163,14 @@ public class PopupToolBoxButton extends JButton {
     public void paint(Graphics g) {
         super.paint(g);
         Color[] colors = {
-        getBackground(),
-        MetalLookAndFeel.getPrimaryControlDarkShadow(),
-        MetalLookAndFeel.getPrimaryControlInfo(),
-        MetalLookAndFeel.getPrimaryControlHighlight()};
+	    getBackground(),
+	    MetalLookAndFeel.getPrimaryControlDarkShadow(),
+	    MetalLookAndFeel.getPrimaryControlInfo(),
+	    MetalLookAndFeel.getPrimaryControlHighlight()};
 
         if (_showSplitter) {
-            showSplitter(colors[1], g, getSplitterPosn(),     1, getHeight()-4);
-            showSplitter(colors[3], g, getSplitterPosn() + 1, 1, getHeight()-4);
+            showSplitter(colors[1], g, getSplitterPosn(),     1, getHeight() - 4);
+            showSplitter(colors[3], g, getSplitterPosn() + 1, 1, getHeight() - 4);
         }
     }
     
@@ -219,13 +244,13 @@ public class PopupToolBoxButton extends JButton {
          * action to take place when the mouse is pressed on the
          * PopupToolBoxButton area
          */
-        public void mousePressed(MouseEvent me) {}
+        public void mousePressed(MouseEvent me) { }
         
         /**
          * Empty method to satisy interface only, there is no special
          * action to take place when the mouse is released on the
          * PopupToolBoxButton area
          */
-        public void mouseReleased(MouseEvent me) {}
+        public void mouseReleased(MouseEvent me) { }
     }
 }

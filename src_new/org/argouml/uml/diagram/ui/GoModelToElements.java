@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -32,15 +33,15 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class GoModelToElements extends AbstractGoRule {
 
-  public String getRuleName() {
-    return Argo.localize ("Tree", "misc.namespace.owned-element");
-  }
+    public String getRuleName() {
+	return Argo.localize ("Tree", "misc.namespace.owned-element");
+    }
 
-  public Collection getChildren(Object parent) { 
-      if (parent instanceof MNamespace) {
-          return ((MNamespace)parent).getOwnedElements();
-      }
-      return null;
-  }
+    public Collection getChildren(Object parent) { 
+	if (parent instanceof MNamespace) {
+	    return ((MNamespace) parent).getOwnedElements();
+	}
+	return null;
+    }
 
 }

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,19 +51,19 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     }
     
     
-    public void setProperty(Object obj,boolean newState) {
-        if(obj instanceof MModelElement) {
+    public void setProperty(Object obj, boolean newState) {
+        if (obj instanceof MModelElement) {
             MModelElement element = (MModelElement) obj;
             Collection taggedValues = element.getTaggedValues();
             boolean found = false;
-            if(taggedValues != null) {
+            if (taggedValues != null) {
                 MTaggedValue taggedValue;
                 Iterator iter = taggedValues.iterator();
                 
-                while(iter.hasNext()) {
+                while (iter.hasNext()) {
                     taggedValue = (MTaggedValue) iter.next();
-                    if(_tagName.equals(taggedValue.getTag())) {
-                        if(newState) {
+                    if (_tagName.equals(taggedValue.getTag())) {
+                        if (newState) {
                             taggedValue.setValue("true");
                         }
                         else {
@@ -74,16 +75,16 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
                 }
             }
                 
-            if(!found) {
-                 MTaggedValue taggedValue = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
-                 taggedValue.setTag(_tagName);
-                 if(newState) {
-                      taggedValue.setValue("true");
-                 }
-                 else {
-                      taggedValue.setValue("false");
-                 }
-                 element.addTaggedValue(taggedValue);
+            if (!found) {
+		MTaggedValue taggedValue = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+		taggedValue.setTag(_tagName);
+		if (newState) {
+		    taggedValue.setValue("true");
+		}
+		else {
+		    taggedValue.setValue("false");
+		}
+		element.addTaggedValue(taggedValue);
             }
         }
     }
@@ -91,17 +92,17 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     
     public boolean getProperty(Object obj) {
         boolean state = false;
-        if(obj instanceof MModelElement) {
+        if (obj instanceof MModelElement) {
             MModelElement element = (MModelElement) obj;
             Collection taggedValues = element.getTaggedValues();
-            if(taggedValues != null) {
+            if (taggedValues != null) {
                 MTaggedValue taggedValue;
                 Iterator iter = taggedValues.iterator();
-                while(iter.hasNext()) {
+                while (iter.hasNext()) {
                     taggedValue = (MTaggedValue) iter.next();
-                    if(_tagName.equals(taggedValue.getTag())) {
+                    if (_tagName.equals(taggedValue.getTag())) {
                         String value = taggedValue.getValue();
-                        if("true".equals(value)) {
+                        if ("true".equals(value)) {
                             state = true;
                         }
                         break;

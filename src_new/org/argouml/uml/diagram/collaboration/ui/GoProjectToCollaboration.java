@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,18 +36,18 @@ import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 
 public class GoProjectToCollaboration extends AbstractGoRule {
 
-  public String getRuleName() { return "Project->MCollaboration"; }
+    public String getRuleName() { return "Project->MCollaboration"; }
 
-  public Collection getChildren(Object parent) {
-      Collection col = new ArrayList();
-      if (parent instanceof Project) {
-          Iterator it = ((Project)parent).getUserDefinedModels().iterator();
-          while (it.hasNext()) {
-              col.addAll(ModelManagementHelper.getHelper()
-                    .getAllModelElementsOfKind(it.next(), MCollaboration.class));
-          }
-      }
-      return col;
-  }
+    public Collection getChildren(Object parent) {
+	Collection col = new ArrayList();
+	if (parent instanceof Project) {
+	    Iterator it = ((Project) parent).getUserDefinedModels().iterator();
+	    while (it.hasNext()) {
+		col.addAll(ModelManagementHelper.getHelper()
+			   .getAllModelElementsOfKind(it.next(), MCollaboration.class));
+	    }
+	}
+	return col;
+    }
 
 }

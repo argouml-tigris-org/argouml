@@ -48,14 +48,14 @@ public class UMLExtensionPointUseCaseListModel extends UMLModelElementListModel2
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        addElement(((MExtensionPoint)getTarget()).getUseCase());
+        addElement(((MExtensionPoint) getTarget()).getUseCase());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return o instanceof MUseCase && ((MExtensionPoint)getTarget()).getUseCase() == o;
+        return o instanceof MUseCase && ((MExtensionPoint) getTarget()).getUseCase() == o;
     }
 
 }

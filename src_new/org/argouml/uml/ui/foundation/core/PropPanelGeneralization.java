@@ -54,11 +54,11 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.MPackage;
 
 /**
- * @todo this property panel needs refactoring to remove dependency on
+ * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
 public class PropPanelGeneralization extends PropPanelModelElement {
-     protected static Category cat =
+    protected static Category cat =
         Category.getInstance(PropPanelGeneralization.class);
 
     private PropPanelButton _newButton;
@@ -67,58 +67,58 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         super("Generalization", ConfigLoader.getTabPropsOrientation());
         Class mclass = MGeneralization.class;
 
-        Class[] namesToWatch = {MStereotype.class,MNamespace.class,MClassifier.class };
+        Class[] namesToWatch = {MStereotype.class, MNamespace.class, MClassifier.class };
         setNameEventListening(namesToWatch);
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
-        addField("Discriminator:", new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField("Discriminator:", new UMLTextField(this, new UMLTextProperty(mclass, "discriminator", "getDiscriminator", "setDiscriminator")));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
         addSeperator();
 
-        UMLModelElementListModel parentModel = new UMLReflectionListModel(this,"parent",true,"getParentElement",null,null,null);
+        UMLModelElementListModel parentModel = new UMLReflectionListModel(this, "parent", true, "getParentElement", null, null, null);
         parentModel.setUpperBound(1);
-        UMLList umlParentList = new UMLList(parentModel,true);
+        UMLList umlParentList = new UMLList(parentModel, true);
         umlParentList.setVisibleRowCount(1);
-        addLinkField("Parent:", new JScrollPane(umlParentList, JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        addLinkField("Parent:", new JScrollPane(umlParentList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
-        UMLModelElementListModel childModel = new UMLReflectionListModel(this,"child",true,"getChild",null,null,null);
+        UMLModelElementListModel childModel = new UMLReflectionListModel(this, "child", true, "getChild", null, null, null);
         childModel.setUpperBound(1);
-        UMLList umlChildList = new UMLList(childModel,true);
+        UMLList umlChildList = new UMLList(childModel, true);
         umlChildList.setVisibleRowCount(1);
-        addLinkField("Child:", new JScrollPane(umlChildList, JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        addLinkField("Child:", new JScrollPane(umlChildList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
         addField("Powertype:", new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(), ActionSetGeneralizationPowertype.SINGLETON));
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-        new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete generalization"),"removeElement",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete generalization"), "removeElement", null);
     }
 
 
     private void updateButton() {
         Object target = getTarget();
-        if(target instanceof MGeneralization) {
+        if (target instanceof MGeneralization) {
             MGeneralization gen = (MGeneralization) target;
             MGeneralizableElement parent = gen.getParent();
             MGeneralizableElement child = gen.getChild();
             //
             //   if one and only one of child and parent are set
             //
-            if(parent != null ^ child != null) {
-                if(parent == null) parent = child;
+            if (parent != null ^ child != null) {
+                if (parent == null) parent = child;
 
-                if(parent instanceof MClass) {
+                if (parent instanceof MClass) {
                     _newButton.setIcon(_classIcon);
                     _newButton.setToolTipText("Add new class");
                 }
                 else {
-                    if(parent instanceof MInterface) {
+                    if (parent instanceof MInterface) {
                         _newButton.setIcon(_interfaceIcon);
                         _newButton.setToolTipText("Add new interface");
                     }
                     else {
-                        if(parent instanceof MPackage) {
+                        if (parent instanceof MPackage) {
                             _newButton.setIcon(_packageIcon);
                             _newButton.setToolTipText("Add new package");
                         }
@@ -136,7 +136,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public MGeneralizableElement getParentElement() {
         MGeneralizableElement parent = null;
         Object target = getTarget();
-        if(target instanceof MGeneralization) {
+        if (target instanceof MGeneralization) {
             parent = ((MGeneralization) target).getParent();
         }
         return parent;
@@ -144,20 +144,20 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public void setParentElement(MGeneralizableElement parent) {
         Object target = getTarget();
-        if(target instanceof MGeneralization) {
+        if (target instanceof MGeneralization) {
             MGeneralization gen = (MGeneralization) target;
             MGeneralizableElement child = gen.getChild();
             MGeneralizableElement oldParent = gen.getParent();
             //
             //   can't do immediate circular generalization
             //
-            if(parent != child && parent != oldParent) {
+            if (parent != child && parent != oldParent) {
                 gen.setParent(parent);
             }
             else {
                 //
                 //   force a refresh of the panel
-//                refresh();
+		//                refresh();
             }
         }
     }
@@ -165,7 +165,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public MGeneralizableElement getChild() {
         MGeneralizableElement child = null;
         Object target = getTarget();
-        if(target instanceof MGeneralization) {
+        if (target instanceof MGeneralization) {
             child = ((MGeneralization) target).getChild();
         }
         return child;
@@ -173,15 +173,15 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public void setChild(MGeneralizableElement child) {
         Object target = getTarget();
-        if(target instanceof MGeneralization) {
+        if (target instanceof MGeneralization) {
             MGeneralization gen = (MGeneralization) target;
             MGeneralizableElement parent = gen.getParent();
             MGeneralizableElement oldChild = gen.getChild();
-            if(child != parent && child != oldChild) {
+            if (child != parent && child != oldChild) {
                 gen.setChild(child);
             }
             else {
-//                refresh();
+		//                refresh();
             }
         }
     }
@@ -191,7 +191,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public MClassifier getPowertype() {
         MClassifier ptype = null;
         Object target = getTarget();
-        if(target instanceof MGeneralization) {
+        if (target instanceof MGeneralization) {
             ptype = ((MGeneralization) target).getPowertype();
         }
         return ptype;
@@ -199,10 +199,10 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public void setPowertype(MClassifier ptype) {
         Object target = getTarget();
-        if(target instanceof MGeneralization) {
+        if (target instanceof MGeneralization) {
             MGeneralization gen = (MGeneralization) target;
             MClassifier oldPtype = gen.getPowertype();
-            if(ptype != oldPtype) {
+            if (ptype != oldPtype) {
                 gen.setPowertype(ptype);
             }
         }
@@ -211,20 +211,20 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public void newModelElement() {
         Object target = getTarget();
-        if(target instanceof MGeneralization) {
+        if (target instanceof MGeneralization) {
             MGeneralization gen = (MGeneralization) target;
             MGeneralizableElement parent = gen.getParent();
             MGeneralizableElement child = gen.getChild();
-            if(parent != null ^ child != null) {
+            if (parent != null ^ child != null) {
                 MGeneralizableElement known = parent;
-                if(known == null) known = child;
+                if (known == null) known = child;
                 MNamespace ns = known.getNamespace();
-                if(ns != null) {
+                if (ns != null) {
                     try {
                         MGeneralizableElement newElement = (MGeneralizableElement)
-                        known.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
+			    known.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
                         ns.addOwnedElement(newElement);
-                        if(parent == null) {
+                        if (parent == null) {
                             gen.setParent(newElement);
                         }
                         else {
@@ -233,7 +233,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                         _newButton.setEnabled(false);
                         TargetManager.getInstance().setTarget(newElement);
                     }
-                    catch(Exception e) {
+                    catch (Exception e) {
                         cat.error(e.toString() + " in PropPanelGeneralization.newElement", e);
                     }
                 }
@@ -243,22 +243,27 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public void navigateUp() {
         Object target = getTarget();
-        if(target instanceof MModelElement) {
+        if (target instanceof MModelElement) {
             MNamespace ns = ((MModelElement) target).getNamespace();
-            if(ns != null) {
+            if (ns != null) {
                 TargetManager.getInstance().setTarget(ns);
             }
         }
     }
 
     private boolean isAcceptible(MGeneralizableElement fixed,
-        MModelElement candidate) {
+				 MModelElement candidate) {
         boolean isCompatible = true;
-        Class[] keys = { MClass.class, MDataType.class,
-            MInterface.class, MActor.class, MSignal.class };
+        Class[] keys = {
+	    MClass.class, 
+	    MDataType.class,
+	    MInterface.class, 
+	    MActor.class, 
+	    MSignal.class 
+	};
         int i;
-        for(i = 0; i < keys.length; i++) {
-            if(keys[i].isInstance(fixed)) {
+        for (i = 0; i < keys.length; i++) {
+            if (keys[i].isInstance(fixed)) {
                 isCompatible = keys[i].isInstance(candidate);
                 break;
             }

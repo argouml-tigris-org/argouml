@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -50,7 +51,7 @@ public class UMLModelElementTargetFlowListModel
      */
     protected void buildModelList() {
         if (_target != null) {
-            setAllElements(((MModelElement)getTarget()).getTargetFlows());
+            setAllElements(((MModelElement) getTarget()).getTargetFlows());
         }
     }
 
@@ -58,8 +59,8 @@ public class UMLModelElementTargetFlowListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-     protected boolean isValidElement(MBase o) {
-        return o instanceof MFlow && ((MModelElement)getTarget()).getTargetFlows().contains(o);
+    protected boolean isValidElement(MBase o) {
+        return o instanceof MFlow && ((MModelElement) getTarget()).getTargetFlows().contains(o);
     }
 
 }
