@@ -46,6 +46,8 @@ import javax.swing.text.Document;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.ui.ColorRenderer;
 
@@ -321,9 +323,9 @@ public class StylePanelFig extends StylePanel
             _target.startTrans();
             _target.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
             _target.endTrans();
+            markNeedsSave();
         }
     }
-
 
     /**
      * <p>Parse the boundary box string and return the rectangle it
@@ -424,30 +426,43 @@ public class StylePanelFig extends StylePanel
     }
 
     public void setTargetFill() {
-	Object c =  _fillField.getSelectedItem();
-	if (_target == null || c == null) return;
-	_target.startTrans();
-	if (c instanceof Color) _target.setFillColor((Color) c);
-	_target.setFilled(c instanceof Color);
-	_target.endTrans();
+        Object c =  _fillField.getSelectedItem();
+        if (_target == null || c == null) return;
+        Color oldColor = _target.getFillColor();
+        _target.startTrans();
+        if (c instanceof Color) _target.setFillColor((Color) c);
+        _target.setFilled(c instanceof Color);
+        _target.endTrans();
+        if (!c.equals(oldColor)) {
+            markNeedsSave();
+        }
     }
 
     public void setTargetLine() {
-	Object c =  _lineField.getSelectedItem();
-	if (_target == null || c == null) return;
-	_target.startTrans();
-	if (c instanceof Color) _target.setLineColor((Color) c);
-	_target.setLineWidth((c instanceof Color) ? 1 : 0);
-	_target.endTrans();
+        Object c =  _lineField.getSelectedItem();
+        if (_target == null || c == null) return;
+        Color oldColor = _target.getLineColor();
+        _target.startTrans();
+        if (c instanceof Color) _target.setLineColor((Color) c);
+        _target.setLineWidth((c instanceof Color) ? 1 : 0);
+        _target.endTrans();
+        if (!c.equals(oldColor)) {
+            markNeedsSave();
+        }
     }
 
     public void setTargetShadow() {
 	int i =  _shadowField.getSelectedIndex();
 	if (_target == null || !(_target instanceof FigNodeModelElement))
 	    return;
-	_target.startTrans();
-	((FigNodeModelElement) _target).setShadowSize(i);
-	_target.endTrans();
+        FigNodeModelElement nodeTarget = (FigNodeModelElement) _target;
+        int oldShadowSize = nodeTarget.getShadowSize();
+        _target.startTrans();
+        nodeTarget.setShadowSize(i);
+        _target.endTrans();
+        if (i != oldShadowSize) {
+            markNeedsSave();
+        }
     }
 
     // public void setTargetDashed() {
@@ -458,6 +473,16 @@ public class StylePanelFig extends StylePanel
     //     _target.endTrans();
     //  }
 
+    /**
+     * Called when some property of the target has changed through
+     * the style panel. Sets the save flag in the current project.
+    **/
+    protected void markNeedsSave() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p != null) {      
+            p.setNeedsSave(true);
+        }
+    }
 
     ////////////////////////////////////////////////////////////////
     // event handling

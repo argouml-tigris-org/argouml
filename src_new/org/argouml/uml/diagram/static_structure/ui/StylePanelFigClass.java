@@ -130,9 +130,11 @@ public class StylePanelFigClass extends StylePanelFig {
 
 	    if (src == _attrCheckBox) {
 		((org.argouml.uml.diagram.static_structure.ui.FigClass) _target).setAttributeVisible(_attrCheckBox.isSelected());
-	    }
+	        markNeedsSave();
+        }
 	    else if (src == _operCheckBox) {
 		((org.argouml.uml.diagram.static_structure.ui.FigClass) _target).setOperationVisible(_operCheckBox.isSelected());
+            markNeedsSave();
 	    }
 	    else super.itemStateChanged(e);
 	}
