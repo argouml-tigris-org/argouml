@@ -32,9 +32,7 @@ import java.util.Set;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ProjectBrowser;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MModel;
