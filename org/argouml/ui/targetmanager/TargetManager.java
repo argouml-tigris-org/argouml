@@ -354,6 +354,7 @@ public final class TargetManager {
 
 	Object oldTargets[] = _targets.toArray();
 	_targets.clear();
+	internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
 	if (o != null)
 	    _targets.add(o);
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
@@ -448,6 +449,7 @@ public final class TargetManager {
 	startTargetTransaction();
 
 	_targets.clear();
+	internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
 	ntarg = targetsList.iterator();
 	while (ntarg.hasNext()) {
 	    Object targ = ntarg.next();

@@ -890,6 +890,7 @@ class EventListenerList {
 		    key.getType(), key.getName(), listener
 		};
         } else {
+            if (!contains(key, listener)) {
             // Otherwise copy the array and add the new listener
             int i = _listenerList.length;
             Object[] tmp = new Object[i + 3];
@@ -897,11 +898,25 @@ class EventListenerList {
 
             tmp[i] = key.getType();
             tmp[i + 1] = key.getName();
-            tmp[i + 2] = listener;
+            tmp[i + 2] = listener;            
 
             _listenerList = tmp;
+            }
         }
         // }
+    }
+    
+    public boolean contains(EventKey key, MElementListener listener) {       
+        if (key == null) System.out.println(" KEy null");
+        for (int i = _listenerList.length-1; i > 0 ; i-=3) {
+            if (_listenerList[i] == listener 
+                    && ((_listenerList[i-1] == null && key.getName() == null) 
+                            || (_listenerList[i-1] != null && _listenerList[i-1].equals(key.getName())) 
+                    && ((_listenerList[i-2] == null && key.getType() == null) 
+                            || (_listenerList[i-2] != null  && _listenerList[i-2].equals(key.getType()))))) 
+                return true;             
+        }
+        return false;
     }
 
     /**
@@ -1131,10 +1146,10 @@ class ClassListenerHashMap {
         MElementListener listener) {
         if (element == null || listener == null)
             throw new IllegalArgumentException("Modelelement or listener null");
-        EventListenerList list = (EventListenerList) _listenerMap.get(element);
+        EventListenerList list = (EventListenerList) _listenerMap.get(element.getName());
         if (list == null) {
             list = new EventListenerList();
-            _listenerMap.put(element, list);
+            _listenerMap.put(element.getName(), list);
         }
         list.add(key, listener);
     }
@@ -1151,7 +1166,7 @@ class ClassListenerHashMap {
         MElementListener listener) {
         if (element == null || listener == null)
             throw new IllegalArgumentException("Modelelement or listener null");
-        EventListenerList list = (EventListenerList) _listenerMap.get(element);
+        EventListenerList list = (EventListenerList) _listenerMap.get(element.getName());
         if (list != null) {
             list.remove(key, listener);
         }

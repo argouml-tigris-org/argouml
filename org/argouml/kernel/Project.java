@@ -1270,9 +1270,9 @@ public class Project implements java.io.Serializable, TargetListener {
         if (ModelFacade.isABase(obj)) { // an object that can be represented
             ProjectBrowser.getInstance().getEditorPane()
 		.removePresentationFor(obj, getDiagrams());
-            UmlModelEventPump.getPump().stopPumpingEvents();
+            // UmlModelEventPump.getPump().stopPumpingEvents();
             UmlFactory.getFactory().delete(obj);
-            UmlModelEventPump.getPump().startPumpingEvents();
+            // UmlModelEventPump.getPump().startPumpingEvents();
             if (_members.contains(obj)) {
                 _members.remove(obj);
             }

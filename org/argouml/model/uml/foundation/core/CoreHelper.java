@@ -1081,7 +1081,7 @@ public class CoreHelper {
         if (!(relationship instanceof MRelationship)
 	    && !(ModelFacade.isALink(relationship)) && !(relationship instanceof CommentEdge)) {
 
-            throw new IllegalArgumentException("Argument is not "
+            throw new IllegalArgumentException("Argument " + relationship.toString() + " is not "
 					       + "a relationship");
 
 	}

@@ -642,8 +642,9 @@ public abstract class PropPanel
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
         // probably the TabProps should only show an empty pane in that case
-        setTarget(e.getNewTarget());
         fireTargetRemoved(e);
+        // setTarget(e.getNewTarget());
+        
 
     }
 

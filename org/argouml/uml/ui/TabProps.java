@@ -401,10 +401,10 @@ public class TabProps
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
+        //setTarget(e.getNewTarget());
         fireTargetRemoved(e);
-        validate();
-        repaint(); 
+        //validate();
+        //repaint(); 
     }
 
     /**
