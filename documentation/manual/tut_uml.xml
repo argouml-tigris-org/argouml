@@ -64,8 +64,9 @@ ArgoUML up and running.
       improved version 1.1 approved that autumn.</para>
 
     <para>&argouml; is based on UML v1.3, which was adopted by OMG in November
-      1999. UML v1.4 has recently been approved (2001). A major revision, UML
-      v2.0 is planned to be completed in 2002.</para>
+      1999. The current official version is UML v1.5 dated March 2003. A 
+      major revision, UML v2.0, was adopted and posted in late 2003 and planned
+      to be voted through in late 2004.</para>
   </sect1>
 
   <!-- Put a process with the notation -->
