@@ -220,14 +220,8 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
 
             try {
                 Writer writer = new FileWriter(selectedFile);
-                MemberFilePersister persister = null;
-                if (member instanceof ProjectMemberDiagram) {
-                    persister = new DiagramMemberFilePersister();
-                } else if (member instanceof ProjectMemberTodoList) {
-                    persister = new TodoListMemberFilePersister();
-                } else if (member instanceof ProjectMemberModel) {
-                    persister = new ModelMemberFilePersister();
-                }
+                MemberFilePersister persister
+                    = new ModelMemberFilePersister();
                 persister.save(member, writer, null);
             } catch (Exception ex) {
                 String sMessage =
