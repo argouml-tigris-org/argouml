@@ -2285,6 +2285,7 @@ public class ModelFacade {
     public static void setAction(Object message, Object action) {
         if (message instanceof MMessage && action instanceof MAction) {
             ((MMessage)message).setAction((MAction)action);
+            return;
         }
         throw new IllegalArgumentException("Unrecognized object " + message  + " or " + action);        
     }
@@ -2297,6 +2298,7 @@ public class ModelFacade {
     public static void setAsynchronous(Object handle, boolean value) {
         if (handle instanceof MAction) {
             ((MAction)handle).setAsynchronous(value);
+            return;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
