@@ -323,6 +323,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
             new ObjectCreateInfo(MInclude.class, factory, "createInclude"));
         elements.put(Uml.LINK,
             new ObjectCreateInfo(MLink.class, factory, "createLink"));
+        elements.put(Uml.LINK_END,
+            new ObjectCreateInfo(MLinkEnd.class, factory, "createLinkEnd"));
         elements.put(Uml.PERMISSION,
             new ObjectCreateInfo(
                 MPermission.class,
