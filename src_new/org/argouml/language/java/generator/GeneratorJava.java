@@ -34,9 +34,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
+import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -81,6 +84,23 @@ public class GeneratorJava
     private static final boolean VERBOSE_DOCS = false;
     private static final String LINE_SEPARATOR =
 	System.getProperty("line.separator");
+    private static final String LANG_PACKAGE = "java.lang";
+
+    private static final Set JAVA_TYPES;
+    static {
+	HashSet types = new HashSet();
+	types.add("void");
+	types.add("boolean");
+	types.add("byte");
+	types.add("char");
+	types.add("int");
+	types.add("short");
+	types.add("long");
+	types.add("float");
+	types.add("double");
+	JAVA_TYPES = Collections.unmodifiableSet(types);
+    }
+
     // TODO: make it configurable
     // next two flags shows in what mode we are working
     /** true when GenerateFile
@@ -386,9 +406,15 @@ public class GeneratorJava
 
     private String generateImportType(Object type, String exclude) {
         String ret = null;
+
+	if (ModelFacade.isADataType(type)
+	    && JAVA_TYPES.contains(ModelFacade.getName(type))) {
+		return null;
+	}
+
         if (type != null && ModelFacade.getNamespace(type) != null) {
             String p = getPackageName(ModelFacade.getNamespace(type));
-            if (!p.equals(exclude)) {
+            if (!p.equals(exclude) && !p.equals(LANG_PACKAGE)) {
 		if (p.length() > 0) {
 		    ret = p + '.' + ModelFacade.getName(type);
 		} else {
