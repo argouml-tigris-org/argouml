@@ -357,7 +357,6 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
   public boolean containsKnowledgeType(String type) {
     return type.equals("Designer's");
   }
-  public VectorSet getKnowledgeTypes() { return new VectorSet("Designer's"); }
 
   public String expand(String desc, VectorSet offs) { return desc; }
 
