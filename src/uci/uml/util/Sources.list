@@ -1,9 +1,0 @@
-SOURCES= \
-	GenAncestorClasses.java \
-	GenCompositeClasses.java \
-	GenDescendantClasses.java \
-	SuperclassGen.java \
-	MMUtil.java \
-	UUIDManager.java
-
-

@@ -1,4 +1,0 @@
-SOURCES= \
-	ArgoTokenTable.java \
-	ArgoParser.java
-

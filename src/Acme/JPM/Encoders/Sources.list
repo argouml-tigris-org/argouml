@@ -1,3 +1,0 @@
-SOURCES= \
-	ImageEncoder.java \
-	GifEncoder.java
