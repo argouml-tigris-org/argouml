@@ -117,8 +117,12 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
+  /** Constructor
+   */  
 	public ProjectBrowser() {new ProjectBrowser("Test",null);}
 
+        /** Constructor
+         */        
   public ProjectBrowser(String appName, StatusBar sb) {
     super(appName);
     sb.showStatus("Making Project Browser: Navigator Pane");
@@ -163,6 +167,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 //     redDot = loadImageIcon("images/redDot.gif", s);
 //   }
 
+  /** return the default locale
+   * @return the default locale
+   */  
   public Locale getLocale() {
     return Locale.getDefault();
   }
@@ -201,6 +208,8 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     }
   }
 
+  /** set up all ARgoUML menus and submenus
+   */  
   protected void initMenus() {
     KeyStroke ctrlN = Localizer.getShortcut("CoreMenu","Shortcut_New");
     KeyStroke ctrlO = Localizer.getShortcut("CoreMenu","Shortcut_Open");
@@ -423,6 +432,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     }
     _help.add(Actions.Manual);
     _help.add(Actions.Quickguide);
+    _help.add(Actions.CookBook);
     _help.add(Actions.FAQ);
     _help.add(Actions.AboutArgoUML);
     //_menuBar.setHelpMenu(help);
@@ -432,6 +442,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   }
 
 
+  /** set up the Navigation Pane, ToDoPane, DetailsPane, MultiPane
+   * @return the container component for all Panels
+   */  
   protected Component createPanels() {
     _topSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _navPane, _multiPane);
     _botSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
@@ -484,6 +497,8 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	  return _project;
   }
 
+  /** update the title for the current project depending on the current project
+   */  
   public void updateTitle() {
     if (_project == null) setTitle(null);
     else setTitle(_project.getName());
@@ -561,6 +576,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     return _detailsPane.getTarget();
   }
 
+  /** get the instance of the StatusBar
+   * @return current StatusBar
+   */  
   public StatusBar getStatusBar() { return _statusBar; }
 
   public JMenuBar getJMenuBar() { return _menuBar; }

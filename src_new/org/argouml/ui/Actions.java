@@ -125,6 +125,8 @@ public class Actions {
       new ActionHelp("Manual","manual.hs");
   public static UMLAction FAQ = 
       new ActionHelp("FAQ","faq.hs");
+  public static UMLAction CookBook =
+      new ActionHelp("Cookbook", "cookbook.hs");
 
   public static void updateAllEnabled() {
     java.util.Enumeration actions = _allActions.elements();
