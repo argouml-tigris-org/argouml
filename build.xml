@@ -954,7 +954,6 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
       <classpath>
 	<pathelement location="${checkstyle.jar.path}"/>
-	<pathelement location="${checkstyleindent.jar.path}"/>
         <pathelement location="${xerces.jar.path}"/>
       </classpath>
       <arg value="-c"/>
@@ -973,7 +972,6 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
       <classpath>
 	<pathelement location="${checkstyle.jar.path}"/>
-	<pathelement location="${checkstyleindent.jar.path}"/>
         <pathelement location="${xerces.jar.path}"/>
       </classpath>
       <arg value="-c"/>
