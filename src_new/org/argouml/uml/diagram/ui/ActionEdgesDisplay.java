@@ -29,6 +29,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.ui.UMLAction;
@@ -38,25 +39,24 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
-/** An action that makes all edges on the selected node visible/not visible
- *  on the diagram.
- *
- * <p>$Id$
+/** 
+ * An action that makes all edges on the selected node visible/not visible
+ * on the diagram.
  *
  * @author David Manura
  * @since 0.13.5
  */
-
 public class ActionEdgesDisplay extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
     // compartments
-    private static UMLAction showEdges
-        = new ActionEdgesDisplay(true, "Show All Edges");
+    private static UMLAction showEdges = new ActionEdgesDisplay(true, 
+                Translator.localize("menu.popup.show.all-edges"));
     private static UMLAction hideEdges
-        = new ActionEdgesDisplay(false, "Hide All Edges");
+        = new ActionEdgesDisplay(false,
+                Translator.localize("menu.popup.hide.all-edges"));
 
     private boolean show;
 
@@ -95,8 +95,14 @@ public class ActionEdgesDisplay extends UMLAction {
 
             if (show) { // add
                 mgm.addNodeRelatedEdges(owner);
-            }
-            else { // remove
+//                Collection c = ModelFacade.getComments(owner);
+//                Iterator i = c.iterator();
+//                while (i.hasNext()) {
+//                    Object annotatedElement = i.next();
+//                    Fig f = d.presentationFor(annotatedElement);
+//                    // and now what? How do I add it to the diagram?
+//                }
+            } else { // remove
                 List edges = mgm.getInEdges(owner);
                 edges.addAll(mgm.getOutEdges(owner));
                 Iterator e2 = edges.iterator();
@@ -106,6 +112,14 @@ public class ActionEdgesDisplay extends UMLAction {
                     if (fig != null)
                         fig.removeFromDiagram();
                 }
+                //The next does not yet work for comment edges:
+//                Collection c = ModelFacade.getComments(owner);
+//                Iterator i = c.iterator();
+//                while (i.hasNext()) {
+//                    Object annotatedElement = i.next();
+//                    Fig f = d.presentationFor(annotatedElement);
+//                    if (f != null) f.removeFromDiagram();
+//                }
             }
         }
     }
