@@ -42,7 +42,7 @@
 
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="org.argouml.kernel.ProjectMember">
+<template class="org.argouml.kernel.AbstractProjectMember">
 <![CDATA[
 <member type="<ocl>self.type</ocl>" 
         name="<ocl>self.name</ocl>">
