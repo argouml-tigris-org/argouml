@@ -1,0 +1,9 @@
+This contains a subset of the FOP distribution.
+
+Also, the build directory contains a jar fop-0.20.3-custom.jar which was
+compiled from the standard 0.20.3 distribution, but with jimi-1.0.jar
+in the classpath.  Because of licensing issues,
+jimi-1.0.jar is not included, and must be placed in the tools/lib
+directory before building any documentation which uses png images,
+since fop requires the jimi library to handle them.
+
