@@ -19,14 +19,7 @@ on other areas of the application.
 <hr align="center"/>
 <p/>
 The component directories shown below are for discussion only,
-and do not attempt to show a final split to different components.
-The comments also do not attempt to document a split proposal.
-They simply provide suggestions of how to logically decide how to split.
-Some other obvious components such as critics, reverse engineering,
-and code generation are intentionally not included
-to ensure that the split provided below
-is not considered to be a solution but an example.
-<p/>
+the names are decided in other suggestions.
 <p/>
 <pre>
      /argouml
@@ -36,73 +29,21 @@ is not considered to be a solution but an example.
              /modules (Basically unchanged as part of this.  Some of the
 	               test sources will be moved to the component test
 		       directories.)
-	     /src_new (all files removed after moving to src and src/appl.)
+	     /src_new (all files removed after moving to src.)
              /src
-	             /core (component containing basic API definitions,
-		            which would primarily be interfaces,
-			    abstract classes, and factory classes.  
-		            This would be the only set of classes required
-			    to compile a pluggable module against.)
+	             /component1
+	                     /src/org/argouml/where/ever
+	                     /tests/org/argouml/where/ever
 
-	                     /src
-	                             /org
-		                             /argouml
-				                     /application
-				                             /api
-	                     /tests/org/argouml/????
+	             /component2
+	                     /src/org/argouml/where/ever2
+	                     /tests/org/argouml/where/ever2
 
-	             /foundation (component containing the basic implementation
-		                of the user interface, including menu handling,
-				module and plugin loading, and look-and-feel.
-				It would <b>not</b> include any UML specific
-				code.)
+	             /component3
+	                     /src/org/argouml/where/ever3
+	                     /tests/org/argouml/where/ever3
 
-	                     /src
-	                             /org
-		                             /argouml
-		                                     /????? (whatever necessary)
-	                     /tests/org/argouml/????
-
-	             /uml_model (component containing the implementation
-		                of the UML model.)
-
-	                     /src
-	                             /org
-		                             /argouml
-		                                     /model
-						             /uml
-	                     /tests/org/argouml/model/uml
-
-	             /notation (component containing the basic implementation
-		                of notation.  This component would include
-				the implementation of UML notation.)
-
-	                     /src
-	                             /org
-		                             /argouml
-		                                     /????? (whatever necessary)
-	                     /tests/org/argouml/????
-
-	             /java (component which implements Java notation.
-		            Notations must be completely pluggable
-			    for this approach to work.)
-
-	                     /src
-	                             /org
-		                             /argouml
-		                                     /language
-		                                             /java
-	                     /tests/org/argouml/language/java
-
-	             /appl (component which provides run-time necessities
-		            such as a class which implements main()
-			    or an ant task definition.)
-	                     /src
-	                             /org
-		                             /argouml
-		                                     /application
-
-	                     /tests/org/argouml/application
+	             ...
 
              /tests (all files removed after moving to src/?????/tests)
              /tools (unchanged as part of this)
@@ -168,11 +109,6 @@ is not considered to be a solution but an example.
     not in the component directories.
     The component build.xml files would refer to the those property files
     found in src.
-  </li>
-  <li>
-    Initially, source would be migrated from src_new into src/appl.
-    As ArgoUML sources become more modularized,
-    they would be migrated into a component directory.
   </li>
 </ul>
 
