@@ -58,13 +58,14 @@ implements PropertyChangeListener {
   /** The name of the default Argo notation.  This notation is
    *  part of Argo core distribution.
    */
-  public static final NotationName NOTATION_ARGO = makeNotation("UML", "1.3");
+  public static final NotationName NOTATION_ARGO =
+         org.argouml.uml.generator.GeneratorDisplay.getInstance().getNotation();
 
   /** The name of the Argo java-like notation.  This notation is
    *  part of Argo core distribution.
    */
   public static final NotationName NOTATION_JAVA =
-         org.argouml.language.java.generator.GeneratorJava.NOTATION;
+         org.argouml.language.java.generator.GeneratorJava.getInstance().getNotation();
 
   /** The name of the default notation.  The actual notation to use is
    *  taken from the configuration using {@link #KEY_DEFAULT_NOTATION}.
@@ -88,11 +89,11 @@ implements PropertyChangeListener {
 
   private static Notation SINGLETON = new Notation();
 
-  private Hashtable _providers = null;
-  private NotationProvider _defaultProvider = null;
+  // private ArrayList _providers = null;
+  // private NotationProvider _defaultProvider = null;
 
   private Notation() {
-      _providers = new Hashtable();
+      // _providers = new ArrayList();
       // _defaultNotation = org.argouml.language.uml.NotationUml;
       Configuration.addListener(KEY_USE_GUILLEMOTS, this);
       Configuration.addListener(KEY_DEFAULT_NOTATION, this);
@@ -315,14 +316,7 @@ implements PropertyChangeListener {
     }
 
     public NotationProvider getDefaultProvider() {
-      if (_defaultProvider == null) {
-          _defaultProvider = org.argouml.uml.generator.GeneratorDisplay.SINGLETON;
-          // needs-more-work:  This must be the provider pointed to by the configuration,
-	  // or UML 13 if none.
-	  // 
-          // _defaultProvider = (NotationProvider)org.argouml.language.uml.NotationUml.getInstance();
-      }
-      return _defaultProvider;
+       return NotationProviderFactory.getInstance().getDefaultProvider();
     }
  
   ////////////////////////////////////////////////////////////////
@@ -448,4 +442,5 @@ implements PropertyChangeListener {
   public static void setUseGuillemots(boolean useGuillemots) {
      Configuration.setBoolean(KEY_USE_GUILLEMOTS, useGuillemots);
   }
+
 }
