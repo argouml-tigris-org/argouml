@@ -1525,36 +1525,37 @@ should not link to chapter 16.4, but 14.4:-->
         <varlistentry>
           <term><literal>Parameters</literal></term>
 
-          <listitem><para>Text area, with entries for all the actual parameter
+          <listitem>
+            <para>Text area, with entries for all the actual parameter
             values of
             the event (see <xref linkend="s1.ref.parameter"/>).</para>
 
-          <para>
+            <para>
 &Button1; double-click on any of the parameters
 navigates to that parameter, 
 &button2; click brings up a pop up
 menu with four entries.
-          </para>
+            </para>
 
-          <itemizedlist>
-            <listitem><para><literal>New</literal>. 
-              Create a new parameter
-              and navigate to it.</para></listitem>
+            <itemizedlist>
+              <listitem><para><literal>New</literal>. 
+                Create a new parameter
+                and navigate to it.</para></listitem>
+  
+              <listitem><para><literal>Move Up</literal>. Only available where
+                there are two or more parameters, and the parameter selected is
+                not at the top. It is moved up one.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more parameters, and the parameter selected is
-              not at the top. It is moved up one.</para></listitem>
+              <listitem><para><literal>Move Down</literal>. Only available where
+                there are two or more parameters listed, and the parameter
+                selected is not at the bottom. It is moved down
+                one.</para></listitem> 
 
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more parameters listed, and the parameter
-              selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
-              
-            <listitem>
-              <para><literal>Delete From Model</literal>. 
+              <listitem><para><literal>Delete From Model</literal>. 
 Deletes the selected parameter from the model.
               </para></listitem>
-
+            </itemizedlist>
+          </listitem>
         </varlistentry>
         
         <!-- Entry for Operations -->

@@ -594,6 +594,8 @@ class diagrams. This is not permitted in &argouml;.
         <varlistentry>
           <term><literal>Properties</literal></term>
 
+          <listitem>
+
             <indexterm>
               <primary>Datatype Properties</primary>
             </indexterm>
@@ -602,7 +604,7 @@ class diagrams. This is not permitted in &argouml;.
               <secondary>for Datatype</secondary>
             </indexterm>
 
-          <listitem><para>See <xref
+          <para>See <xref
               linkend="s2.ref.datatype_property_toolbar"/> and <xref
               linkend="s2.ref.datatype_property_fields"/>
             below.</para></listitem>
