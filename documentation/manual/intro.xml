@@ -40,7 +40,7 @@ Modifications
       <para>Over the past decade, Object Oriented Analysis and Design (&ooad;)
         has become <emphasis>the</emphasis> dominant software development
         paradigm. With it has come a major shift in the thought processes of
-        all involved in the software development lifecycle.</para>
+        all involved in the software development life cycle.</para>
 
       <para>Programming language support for objects began with Simula&nbsp;67,
         but it was the emergence in the 1980's of hybrid languages, such as
@@ -64,7 +64,7 @@ Modifications
         possible.</para>
 
      <para>The final driver that has propelled &ooad; has been its suitability
-        for modelling graphical user interfaces. The popularity of object based
+        for modeling graphical user interfaces. The popularity of object based
         and object oriented graphical languages such as Visual Basic and Java
         reflect the effectiveness of this approach.</para>
     </sect2>
@@ -79,14 +79,14 @@ Modifications
         that were many common themes, and during the 1990's a unified approach
         for &ooad; notation was developed under the auspices of the
         <ulink url="http://www.omg.org">Object Management Group</ulink>. This
-        standard became known as the Unified Modelling Language (UML), and is
+        standard became known as the Unified Modeling Language (UML), and is
         now the standard language for communicating OO concepts.</para>
 
       <para>&argouml; was conceived as a tool and environment for use in the
         analysis and design of object-oriented software systems. In this sense
         it is similar to many of the commercial CASE tools that are sold as
-        tools for modelling software systems. &argouml; has a number of very
-        important distictions from many of these tools.</para>
+        tools for modeling software systems. &argouml; has a number of very
+        important distinctions from many of these tools.</para>
 
       <orderedlist>
         <listitem><para>&argouml; draws on research in cognitive psychology to
@@ -112,9 +112,9 @@ Modifications
       <para>In creating the &argouml; development tool and environment, Jason
         Robbins and the rest of his research team at the University of
         California, Irvine leveraged the benefits of UML as the most prevalent
-        OO modelling language and Java as one of the most productive OO
+        OO modeling language and Java as one of the most productive OO
         development platforms to produce a solid tool for OO systems design
-        and, further a testbed for the evolution of object oriented CASE tools
+        and, further a test bed for the evolution of object oriented CASE tools
         development and research.</para>
 
       <para>A first release of &argouml; was available in 1998 and more than
@@ -145,7 +145,7 @@ Modifications
 
         <para>This is the place where all the discussion on the latest tasks
           takes place, and developers discuss the directions the project should
-          take. Although controversal at times, these discussions are always
+          take. Although controversial at times, these discussions are always
           kept nice and friendly (no flame-wars and such), so newbies should
           not hesitate and participate in them. They'll always get a warm
           welcome there.</para>
@@ -165,8 +165,8 @@ Modifications
           qualified help.</para>
 
         <para>Before posting to this list, you should take a look at the
-          <ulink url="http://argouml.tigris.org">user faq</ulink> maintained by
-          Dennis Daniels.</para>
+          <ulink url="http://argouml.tigris.org/documentation/defaulthtml/faq">
+            user FAQ</ulink> maintained by Dennis Daniels.</para>
 
         <para>More information on ArgoUML and other UML related topics is also
           available on the <ulink url="http://www.argouml.org">ArgoUML
@@ -192,10 +192,10 @@ Modifications
           <ulink url="http://www.antlr.org">Antlr</ulink> from a customized
           Java grammar.</para>
 
-        <para>Instead of using a self-implemented UML metamodell, &argouml; for
+        <para>Instead of using a self-implemented UML meta-model, &argouml; for
           all versions after 0.8 uses a <ulink
-            url="http://nsuml.sourceforge.net">metamodel implementation</ulink>
-          provided by Novosoft.</para>
+            url="http://nsuml.sourceforge.net">meta-model implementation</ulink>
+          provided by NovoSoft.</para>
 
         <para>OCL is handled by Frank Finger's <ulink
             url="http://dresden-ocl.sourceforge.net">OCL compiler</ulink>,
@@ -223,7 +223,7 @@ Modifications
 
       <para>A long term goal is to support those who are learning design and
         wish to start with a UML based &ooad; process and people interested in
-        modularised code design with a GUI.</para>
+        modularized code design with a GUI.</para>
     </sect2>
 
     <sect2>
@@ -254,22 +254,21 @@ Modifications
         <listitem><para>How to improve &argouml; with new features and
           functions.</para></listitem>
 
-        <listitem><para>A troubleshooting guide.</para></listitem>
+        <listitem><para>A trouble shooting guide.</para></listitem>
 
         <listitem><para>A summary quick reference to using
           &argouml;.</para></listitem>
       </itemizedlist>
 
-      <!-- Note these are full URL's. We allow for the manual being other than
+      <!-- Note these are full URLs. We allow for the manual being other than
            on the argouml part of the tigris server -->
 
       <para>These are covered elsewhere, particularly in the
-        <ulink
-url="http://argouml.tigris.org/documentation/defaulthtml/faq/index.html">
+        <ulink url="http://argouml.tigris.org/documentation/defaulthtml/faq/">
           FAQ</ulink>, 
-        <ulink url="http://argouml.tigris.org/documentation/defaulthtml/quickguide/index.html">
+        <ulink url="http://argouml.tigris.org/documentation/defaulthtml/quickguide/">
           Quick Guide</ulink> and
-        <ulink url="http://argouml.tigris.org/documentation/defaulthtml/cookbook/index.html">
+        <ulink url="http://argouml.tigris.org/documentation/defaulthtml/cookbook/">
           Developers Cookbook</ulink>.</para>
     </sect2>
   </sect1>
@@ -298,7 +297,7 @@ url="http://argouml.tigris.org/documentation/defaulthtml/faq/index.html">
     </sect2>         
 
 
-    <!-- Reference material, which includes glossary, appendices, index
+    <!-- Reference material, which includes glossary, appendixes, index
          etc. -->
 
     <sect2>
@@ -325,7 +324,7 @@ url="http://argouml.tigris.org/documentation/defaulthtml/faq/index.html">
         for creation of this manual. <xref linkend="app.docstand"/> gives
         some guidelines for those writing this manual. <xref
           linkend="app.legal"/> is a copy of the GNU Free Documentation
-        Licence.</para>
+        License.</para>
 
       <para>A future ambition is to provide a comprehensive index</para>
     </sect2>
@@ -356,7 +355,7 @@ url="http://argouml.tigris.org/documentation/defaulthtml/faq/index.html">
       with UML already. This is reflected in the sparseness of the description
       of UML concepts in the tutorial.</para>
 
-    <para>The case study is described, but not yet fully realised throughout
+    <para>The case study is described, but not yet fully realized throughout
       the tutorial. This will be achieved in future versions of the
       manual.</para>
   </sect1>

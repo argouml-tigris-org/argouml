@@ -61,7 +61,7 @@ Modifications
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Example of a Dynamic Diagram. System behaviour in the langauge of
+      <!-- Example of a Dynamic Diagram. System behavior in the langauge of
            the problem space, but also starts to show elements of the
            solution. Needs also to use stereotyping. -->
 
@@ -140,7 +140,7 @@ Modifications
       <!-- From Alejandro, Philippe and Andreas -->
 
       <sect3>
-        <title>Using the Note Icon in the Toolbar</title>
+        <title>Using the Note Icon in the Tool Bar</title>
 
         <para>Click on your target class. Then click on the note icon. ArgoUML
           will generate the link automatically.</para> 

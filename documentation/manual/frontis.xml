@@ -50,21 +50,34 @@ Modifications
 
   <copyright>
     <year>2001</year>
+    <year>2002</year>
     <holder>Jeremy Bennett</holder>
+  </copyright>
+
+  <copyright>
+    <year>2001</year>
     <holder>Kunle Odutola</holder>
   </copyright>
 
   <copyright>
     <year>2000</year>
-    <holder>Alejandro Ramirez</holder>
     <holder>Philippe Vanpeperstraete</holder>
+  </copyright>
+
+  <copyright>
+    <year>2000</year>
+    <holder>Alejandro Ramirez</holder>
+  </copyright>
+
+  <copyright>
+    <year>2000</year>
     <holder>Andreas Rueckert</holder>
   </copyright>
 
   <legalnotice>
     <para>This material may be distributed only subject to the terms and
       conditions set forth in the Open Publication License, v1.0 or later. A
-      copy of this licence is included in the section <link
+      copy of this license is included in the section <link
         linkend="app.legal">Open Publication License</link>. The latest version
       is presently available at <ulink
         url="http://www.opencontent.org/openpub/">
@@ -72,6 +85,21 @@ Modifications
   </legalnotice>
 
   <revhistory>
+    <revision>
+      <revnumber>0.9.5, draft E</revnumber> <date>22 Jan 2002</date>
+      <revdescription><para>Update by Jeremy Bennett. Chapter 1
+        (introduction), tutorial chapter 2 (UML based &ooad;) and reference
+        chapters 12 (menu bar), 13 (top level artifacts), 14 (use case
+        diagrams) and 15 (class diagrams) are now largely complete.</para>
+
+      <para>Documented remaining artifacts for class diagram. New chapter added
+        for menu reference. Book now divided into two parts, tutorial and
+        reference. Contents depth restricted to levels 1 and 2 within
+        chapters. Incorporated comments from Linus Tolke (some deferred to
+        later revisions). Spelling checked (with ispell) for completed chapters
+        and converted to <quote>American</quote>.</para></revdescription>
+    </revision>
+
     <revision>
       <revnumber>0.9.5, draft D</revnumber> <date>21 Dec 2001</date>
       <revdescription><para>Update by Jeremy Bennett. Documented most artifacts
@@ -87,16 +115,16 @@ Modifications
         <quote>artifact</quote> for <quote>entity</quote> in references to UML
         artifacts; added stereotypes to top level artifact reference; completed
         reference sections for top level and use case artifacts; changed to
-        Open Publication Licence</para></revdescription>
+        Open Publication License</para></revdescription>
     </revision>
 
     <revision>
       <revnumber>0.9.5, draft B</revnumber> <date>11 Dec 2001</date>
       <revdescription><para>Update by Jeremy Bennett. Tidied up Introduction
         chapter; completed UML tutorial chapter apart from the case study
-        description; added GNU Free Documentation Licence as an appendix; added
-        reference chapter on predefined datatypes; classes, interfaces and
-        stereotypes; reorganised diagrams into images/tutorial and
+        description; added GNU Free Documentation License as an appendix; added
+        reference chapter on predefined data types; classes, interfaces and
+        stereotypes; reorganized diagrams into images/tutorial and
         images/reference sections and substituted "To Be Provided" diagram
         where no suitable one is available.</para></revdescription>
     </revision>

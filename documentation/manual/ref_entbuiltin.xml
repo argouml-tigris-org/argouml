@@ -590,7 +590,7 @@ Modifications
       </sect3>
     </sect2>
 
-    <!-- Stereotypes derived from base class BehaviouralFeature -->
+    <!-- Stereotypes derived from base class BehavioralFeature -->
 
     <sect2>
       <title>Stereotypes Derived from the <literal>BehavioralFeature</literal>

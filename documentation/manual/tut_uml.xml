@@ -99,7 +99,7 @@ Modifications
         <emphasis>solution domain</emphasis>. At this stage, although thinking
         in terms of a solution, we ensure we keep things at a high level, away
         from concrete details of a specific solution&mdash;what is known as
-        <emphasis>abstration</emphasis>.</para></listitem>
+        <emphasis>abstraction</emphasis>.</para></listitem>
 
       <listitem><para>Design. We take the specification from the Analysis phase
         and construct the solution in full detail. We are moving from
@@ -109,7 +109,7 @@ Modifications
       <listitem><para>Build Phase. We take the actual design and write it in a
         real programming language. This includes not just the programming, but
         the testing that the program meets the requirements
-        (<emphasis>verfication</emphasis>), testing that the program actually
+        (<emphasis>verification</emphasis>), testing that the program actually
         solves the customer's problem (<emphasis>validation</emphasis>) and
         writing all user documentation.</para></listitem>
     </orderedlist>
@@ -253,14 +253,14 @@ Modifications
             Unified Process (RUP) from Rational Software (<ulink
               url="http://www.rational.com">www.rational.com</ulink>.</para>
 
-          <para>This process recognises that our pyramid view of even slices of
+          <para>This process recognizes that our pyramid view of even slices of
             the waterfall is not realistic. In practice the early iterations
             tend to be heavy on the requirements end of things (you need to
             define a reasonable amount even to get started), whilst the later
             iterations have more of their effort in the design and build
             areas.</para>
 
-          <para>RUP recognises that iterations can be grouped into a number of
+          <para>RUP recognizes that iterations can be grouped into a number of
             <emphasis>phases</emphasis> according to their stage in the overall
             project. Each phase may have one or more iterations.</para>
 
@@ -286,6 +286,11 @@ Modifications
               phase</emphasis> iterations are largely about build activity, and
               in particular the testing of the software.</para></listitem>
           </itemizedlist>
+
+          <note><para>It should be clear that testing is an integral part of
+            all phases. Even in the early phases the requirements and design
+            should be tested, and this is facilitated by a good CASE
+            tool.</para></note>
 
           <para>We shall use an iterative process in this manual, that is
             loosely based on the RUP.</para>
@@ -337,7 +342,7 @@ Modifications
           defining a top level structure, and the process reapplying to parts
           of the structure in turn to define ever greater details.</para>
 
-        <para>For example the intial design of a telephone system might
+        <para>For example the initial design of a telephone system might
           identify objects to i) handle the phone lines, ii) process the calls,
           iii) manage the system and iv) bill the customer. The software
           process can then be reapplied to each of these four components to
@@ -347,7 +352,7 @@ Modifications
           this approach. Such &ooad; with recursive development is sometimes
           abbreviated as &ooad;/RD.</para>
 
-        <para>Recursive development can be applied equally well to waterall or
+        <para>Recursive development can be applied equally well to waterfall or
           iterative processes. It is not an alternative to them.</para>
       </sect3>
     </sect2>
@@ -374,7 +379,7 @@ Modifications
         <para>Our requirements capture will use the UML concept of
           <emphasis>Use Cases</emphasis>. Starting with a <emphasis>Vision
           Document</emphasis> we will see how Use Cases can be developed to
-          describe all aspects of the system's behaviour in the problem
+          describe all aspects of the system's behavior in the problem
           domain.</para>
       </sect3>
 
@@ -390,12 +395,12 @@ Modifications
 
         <para>We will introduce the UML <emphasis>sequence diagram</emphasis>
           and <emphasis>state diagram</emphasis> to capture requirements for
-          the overall behaviour of the system.</para>
+          the overall behavior of the system.</para>
 
         <para>Finally we will take the Use Cases from the requirements capture
           stage, and recast them in the language of the solution domain. This
           will illustrate the UML ideas of <emphasis>stereotyping</emphasis>
-          and <emphasis>realisation</emphasis>.</para>
+          and <emphasis>realization</emphasis>.</para>
       </sect3>
 
       <!-- Design -->
@@ -403,7 +408,7 @@ Modifications
       <sect3>
         <title>Design</title>
 
-        <para>We use the UML <emphasis>package diagram</emphasis> to organise
+        <para>We use the UML <emphasis>package diagram</emphasis> to organize
           the components of the project. We then revisit the class diagram,
           sequence diagram and state diagram, to show how they can be used
           recursively to design the complete solution.</para>
@@ -421,7 +426,7 @@ Modifications
 
         <para>Finally we shall use the UML <emphasis>deployment
           diagram</emphasis> to specify how the system will actually be
-          realised.</para>
+          realized.</para>
       </sect3>
 
       <!-- Build -->
@@ -557,7 +562,7 @@ Modifications
         use open standards for all its interfaces.</para>
 
       <para>The key advantage of open standards is that it permits easy
-        interworking between applications, and the ability to move from one
+        inter-working between applications, and the ability to move from one
         application to another as necessary.</para>
 
       <para>It is this very flexibility that means some commercial software is
@@ -578,7 +583,7 @@ Modifications
         <title>XML Metadata Interchange (XMI)</title>
 
         <para><emphasis>XML Metadata Interchange (XMI)</emphasis> is the
-          standard for saving the metadata that make up a particular UML
+          standard for saving the meta-data that make up a particular UML
           model. In principle this will allow you to take the model you have
           created in &argouml; and import it into another tool.</para>
 
@@ -599,7 +604,7 @@ Modifications
         <title>Standard Vector Graphics (SVG)</title>
 
         <para><emphasis>Standard Vector Graphics (SVG)</emphasis> is a recent
-          standard proposed to the W3C Standardisation body (<ulink
+          standard proposed to the W3C Standardization body (<ulink
             url="http://www.w3c.org">www.w3c.org</ulink>) by Adobe (<ulink
             url="http://www.adobe.com">www.adobe.com</ulink>). As yet it is not
           widely adopted, but is likely to become the standard for graphical
@@ -616,11 +621,11 @@ Modifications
       <!-- OCL -->
 
       <sect3>
-        <title>Object Constraint Languge (OCL)</title>
+        <title>Object Constraint Language (OCL)</title>
 
         <para><emphasis>Object Constraint Language (OCL)</emphasis> is the
           UML standard for expressing constraints within diagrams that express
-          the dynamic behaviour of a design.</para>
+          the dynamic behavior of a design.</para>
 
         <para>As yet OCL is not widely used anywhere. However as part of the
           future development of OCL, &argouml; will implement this
@@ -633,7 +638,7 @@ Modifications
     <sect2>
       <title>100% Pure Java</title>
 
-      <para>Java was conceived as an interpreted language. It doen't have a
+      <para>Java was conceived as an interpreted language. It doesn't have a
         compiler to produce code for any particular target machine. It compiles
         code for its own target, the <emphasis>Java Virtual Machine
         (JVM)</emphasis>.</para>
@@ -677,7 +682,7 @@ Modifications
       <para>Its not just a spirit of pure altruism. Contributing is a way of
         learning <quote>hands-on</quote> about leading edge software. Its a way
         of getting a lot of visibility (over 100,000 people had downloaded
-        &argouml; by the spring of 2001). Thats a lot of good experience on a
+        &argouml; by the spring of 2001). That's a lot of good experience on a
         resum&eacute; and a lot of potential employers seeing you!</para>
 
       <para>And its great for the ego!</para>
@@ -688,7 +693,7 @@ Modifications
         not a piece of private code. Its the commercial polish and support that
         take risk out of using &argouml; in a commercial development, allowing
         customers to take advantage of &argouml;'s leading edge
-        techology.</para>
+        technology.</para>
     </sect2>
   </sect1>
 
@@ -769,6 +774,14 @@ Modifications
             &argouml; <ulink url="http://argouml.tigris.org">home
             page</ulink>.</para></listitem>
         </orderedlist>
+
+        <para>JWS will download ArgoUML, cache it and start it the first time,
+          then on subsequent starts, check if ArgoUML is updated and only
+          download any updated parts and then start it. The &argouml;
+          <ulink url="http://argouml.tigris.org">home page</ulink> also
+          provides details on starting &argouml; from the JWS console.
+        </para>
+
       </sect3>
 
       <!-- How to download the files -->
@@ -793,9 +806,9 @@ Modifications
           above.</para>
 
         <para>&argouml; comes in <literal>.zip</literal> or
-          <literal>tar.gz</literal> flavours. Choose the former if you are a
+          <literal>tar.gz</literal> flavors. Choose the former if you are a
           Microsoft Windows user, and the latter if you are running some
-          flavour of Unix. Unpacking is as follows.</para>
+          flavor of Unix. Unpacking is as follows.</para>
 
         <itemizedlist>
           <listitem><para>On Windows. Unzip the <literal>.zip</literal> file
@@ -805,41 +818,12 @@ Modifications
 
           <listitem><para>Use GNU tar to unzip and break out the files to a
             directory of your choice
-            <literal>tar&nbsp;zxvpf&nbsp;&lt;file&gt;.tar.gz</literal>.</para>
-          </listitem>
+            <literal>tar&nbsp;zxvf&nbsp;&lt;file&gt;.tar.gz</literal>. If you
+            have an older version of tar, the <literal>z</literal> option may
+            not be available, so use
+            <literal>gunzip&nbsp;&lt;&nbsp;file.tar.gz&nbsp;|&nbsp;tar&nbsp;xvf&nbsp;-</literal>.
+          </para></listitem>
         </itemizedlist>
-
-        <!-- Possible Problems -->
-
-        <sect4 id="s4.probsolving">
-          <title>Problems Downloading</title>
-
-          <para>If you get completely stuck, the web site doesn't help you, and
-            local assistance isn't able to resolve things, try the &argouml;
-            users' mailing list.</para>
-
-          <para>You can subscribe through the mailing lists section of the
-            project web site
-            <ulink url="http://argouml.tigris.org">argouml.tigris.org</ulink>,
-            or send an empty message to
-            <ulink url="mailto:users@argouml.org">users@argouml.org</ulink>
-            with the subject line <literal>subscribe</literal>.</para>
-
-          <para>You can then send your problem to 
-            <ulink url="mailto:users@argouml.org">users@argouml.org</ulink> and
-            see how other users are able to help.</para>
-
-          <para>The users' mailing list is an excellent introduction to the
-            live activity of the project. If you want to get further invovled
-            there are additional mailing lists that cover the development of
-            the product and issues in the current and future releases.</para>
-        </sect4>
-      </sect3>
-
-      <!-- How to get the code running -->
-
-      <sect3>
-        <title>Running Your Downloaded &argouml;</title>
 
         <para>You should have a directory containing the following files:
           <literal>antlrall.jar</literal>, <literal>gef.jar</literal>,
@@ -861,7 +845,36 @@ Modifications
           </para></listitem>
         </itemizedlist>
 
-        <!-- Possible Problems -->
+        <!-- Possible Problems downloading -->
+
+        <sect4 id="s4.probsolving">
+          <title>Problems Downloading</title>
+
+          <para>If you get completely stuck and you have no local assistance,
+          try the web site, particularly the
+          <ulink
+            url="http://argouml.tigris.org/documentation/defaulthtml/faq/">
+            FAQ</ulink>. If this still doesn't solve the problem, try the
+          &argouml; users' mailing list.</para>
+
+          <para>You can subscribe through the mailing lists section of the
+            project web site
+            <ulink url="http://argouml.tigris.org">argouml.tigris.org</ulink>,
+            or send an empty message to
+            <ulink url="mailto:users@argouml.org">users@argouml.org</ulink>
+            with the subject line <literal>subscribe</literal>.</para>
+
+          <para>You can then send your problem to 
+            <ulink url="mailto:users@argouml.org">users@argouml.org</ulink> and
+            see how other users are able to help.</para>
+
+          <para>The users' mailing list is an excellent introduction to the
+            live activity of the project. If you want to get further involved
+            there are additional mailing lists that cover the development of
+            the product and issues in the current and future releases.</para>
+        </sect4>
+
+        <!-- Possible Problems running -->
 
         <sect4>
           <title>Problems Running &argouml;</title>
@@ -903,7 +916,7 @@ Modifications
               status bar. The four sub-windows are arranged two by two, and
               named, clockwise from top left as: Navigator Pane, Editing
               Pane, Details Pane and To-Do Pane. At the top of the diagram
-              Pane is a horizontal toolbar.</para>
+              Pane is a horizontal tool bar.</para>
           </textobject>
         </mediaobject></screenshot>
       </figure>
@@ -914,7 +927,7 @@ Modifications
         <emphasis>Navigator Pane</emphasis>, <emphasis>Editing
         Pane</emphasis>, <emphasis>Details Pane</emphasis> and
         <emphasis>To-Do Pane</emphasis>. At the top of the details Pane is a
-        <emphasis>toolbar</emphasis>. Finally at the bottom of the window is
+        <emphasis>tool bar</emphasis>. Finally at the bottom of the window is
         a <emphasis>status bar</emphasis>.</para>
 
       <!-- Subsection describing the Navigator Pane -->
@@ -942,15 +955,15 @@ Modifications
                 <literal>untitledModel</literal>, and beneath it are two
                 children, <literal>class&nbsp;diagram&nbsp;1</literal> and
                 <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>. A
-                scrollbar appears on the right should the view be to large
+                scroll bar appears on the right should the view be to large
                 for the Pane (not shown in this example).</para>
             </textobject>
           </mediaobject></screenshot>
         </figure>
 
         <para>This is the navigator pane, where you can navigate through your
-          model. This pane list all the classes, interfaces and datatypes of
-          your model as a treeview.</para>
+          model. This pane list all the classes, interfaces and data types of
+          your model as a tree view.</para>
       </sect3>
 
       <!-- Subsection describing the Editing Pane -->
@@ -972,9 +985,9 @@ Modifications
 
             <textobject>
               <para>The ArgoUML Editing Pane. A rectangular pane, with a
-                toolbar at the top, and a single tab labelled
+                tool bar at the top, and a single tab labeled
                 <literal>As&nbsp;Diagram</literal> at the bottom. At the right
-                end of the toolbar is the type and name of the diagram being
+                end of the tool bar is the type and name of the diagram being
                 edited. The main part of the Pane shows the UML graphical items
                 being edited.</para>
             </textobject>
@@ -1005,7 +1018,7 @@ Modifications
 
             <textobject>
               <para>The ArgoUML Details Pane. A rectangular pane, with a series
-                of eight tabs along the top, labelled from left to right
+                of eight tabs along the top, labeled from left to right
                 <literal>To&nbsp;Do&nbsp;Item</literal>,
                 <literal>Properties</literal>,
                 <literal>Documentation</literal>, <literal>Style</literal>,
@@ -1043,15 +1056,15 @@ Modifications
             <textobject>
               <para>The ArgoUML To-Do Pane. A rectangular pane, with a bar at
                 the top containing from left-to-right, a drop-down selection
-                box labelled <literal>By&nbsp;Priority</literal>, a button and
+                box labeled <literal>By&nbsp;Priority</literal>, a button and
                 a yellow highlighted count of items. The body of the Pane shows
                 a hierarchy of To-Do items.</para>
             </textobject>
           </mediaobject></screenshot>
         </figure>
 
-        <para>This is the todo pane, that shows all the items on your todo
-          list. The todo pane list the items on the users todo list.</para>
+        <para>This is the to-do pane, that shows all the items on your to-do
+          list. The to-do pane list the items on the users to-do list.</para>
       </sect3>
 
       <!-- More about the Menu Bar -->
@@ -1061,7 +1074,7 @@ Modifications
 
         <para>The menu bar gives access to all the main features of
           &argouml;. As is conventional, menu options that are not available
-          are greyed out and menu items that invoke a dialogue box are followed
+          are grayed out and menu items that invoke a dialog box are followed
           by an ellipsis (&hellip;).</para>
 
         <itemizedlist>
@@ -1090,7 +1103,7 @@ Modifications
 
           <warning><para>State and activity diagrams can only be created when
             a class or actor is selected, even though the relevant menu entries
-            are <emphasis>not</emphasis> greyed out if this has not been done
+            are <emphasis>not</emphasis> grayed out if this has not been done
             (nothing will happen under this
             circumstance).</para></warning></listitem>
 
@@ -1108,7 +1121,7 @@ Modifications
             available.</para></listitem>
 
           <listitem><para><emphasis>Tools</emphasis> menu. This menu appears to
-            be permanently greyed out.</para></listitem>
+            be permanently grayed out.</para></listitem>
 
           <listitem><para><emphasis>Help</emphasis> menu. This menu gives
             access to details of those who authored the system, and where
@@ -1117,7 +1130,7 @@ Modifications
       </sect3>
 
       <!-- More about mice. Note this is linked to the section "General Mouse
-           Behaviour in the reference chapter "Top Level Artifact Reference" -->
+           Behavior in the reference chapter "Top Level Artifact Reference" -->
 
       <sect3 id="s3.tut.mouse">
         <title>The Mouse</title>
@@ -1139,7 +1152,7 @@ Modifications
             the item is an artifact in the navigation pane or the editing pane it
             will be highlighted.</para>
 
-          <para>In the case of the toolbar of the editing pane, that artifact is
+          <para>In the case of the tool bar of the editing pane, that artifact is
             selected as the next to be added to the diagram (but only
             once&mdash;see double clicking for adding multiple artifacts). The
             adding to the diagram is achieved by moving the mouse to the
@@ -1147,14 +1160,14 @@ Modifications
 
           <listitem><para><emphasis>&Button1; double click</emphasis>. This
             action is identical to a single click <emphasis>except</emphasis>,
-            when it is used with the editing pane toolbar. Under these
+            when it is used with the editing pane tool bar. Under these
             circumstances the selected artifact will be added multiple times to
             the drawing area, once for each further button click, until the
             tool is again selected or another tool chosen.</para></listitem>
 
           <listitem><para><emphasis>&Button2; click</emphasis>. When used
             over text items in the the navigation or details panes, or
-            graphical artifacts in the editing pane, this will deplay a context
+            graphical artifacts in the editing pane, this will display a context
             dependent drop-down menu.</para>
 
           <para>If the item has not yet been selected it will also be
@@ -1168,7 +1181,7 @@ Modifications
           <para>&Button1; motion also has an effect in the editing
             pane. Over graphical artifacts it will move the artifact to a new
             position. Graphical artifacts that are selected show handles, and
-            these can be used for resizing.</para>
+            these can be used for re-sizing.</para>
 
           <para>Where the artifact is some form of connector between other items,
             &button1; motion other than at a handle will cause a new handle
@@ -1181,7 +1194,7 @@ Modifications
             of &button2; click.</para></listitem>
         </orderedlist>
 
-        <para>There are other more specific behaviours that will be encountered
+        <para>There are other more specific behaviors that will be encountered
           under the specific cases where they are used.</para>
       </sect3>
 
@@ -1190,10 +1203,10 @@ Modifications
       <sect3>
         <title>Drawing Diagrams</title>
 
-        <para>In general diagrams are drawn by using the editing pane toolbar
+        <para>In general diagrams are drawn by using the editing pane tool bar
           to select the artifact desired and clicking in the diagram at the
           position required as described in <xref linkend="s3.tut.mouse"/>. That
-          section also explains the use of the mouse for resizing
+          section also explains the use of the mouse for re-sizing
           artifacts.</para>
 
         <para>Artifacts that are already in the model, but not on a diagram, may
@@ -1202,7 +1215,7 @@ Modifications
           menu (&button2;) over that artifact, and then clicking
           &button1; at the desired location on the diagram.</para>
 
-        <para>As well as UML artifacts, the toolbar provides for general drawing
+        <para>As well as UML artifacts, the tool bar provides for general drawing
           artifacts (rectangles, circles, lines, polygons, curves, text) to
           provide supplementary information on diagrams.</para>
 
@@ -1228,12 +1241,12 @@ Modifications
               faster.</para>
           </sect5>
 
-          <!-- Using the toolbar -->
+          <!-- Using the tool bar -->
 
           <sect5>
-            <title>Using the Toolbar</title>
+            <title>Using the Tool bar</title>
 
-            <para>Click on the broom button on the toolbar. Move your mouse to
+            <para>Click on the broom button on the tool bar. Move your mouse to
              the diagram pane, right click and hold. Now moving your mouse will
              align elements.</para>
           </sect5>
@@ -1255,15 +1268,15 @@ Modifications
         <!-- Thanks to Alejandro, Philippe and Andreas for this text -->
 
         <sect4>
-          <title>The Startup Window</title>
+          <title>The Start-up Window</title>
 
           <para><xref linkend="fig.tut.startup"/> shows the &argouml; main window
-            as it appears as right after startup</para>
+            as it appears as right after start-up</para>
 
-          <!-- A figure of the Argo/UML startup window -->
+          <!-- A figure of the Argo/UML start-up window -->
 
           <figure id="fig.tut.startup" float="1">
-            <title>&argouml; window at startup</title>
+            <title>&argouml; window at start-up</title>
 
             <screenshot><mediaobject>
               <imageobject>
@@ -1276,9 +1289,9 @@ Modifications
                   subdivided into four panes. Starting at the leftmost top
                   pane, and working around the clock, you can see the
                   Navigation Pane, showing an explorer-like tree view of your
-                  UML model, the Editing Pane with its toolbar, two scroll bars
-                  and grey drawing area, the Details Pane with the ToDoItem tab
-                  selected, and the Todo pane with a tree view of the to do
+                  UML model, the Editing Pane with its tool bar, two scroll bars
+                  and gray drawing area, the Details Pane with the ToDoItem tab
+                  selected, and the To-do pane with a tree view of the to do
                   items, ranked into three priority levels (High, Medium and
                   Low).</para>
               </textobject>
@@ -1289,7 +1302,7 @@ Modifications
             subdivided into four panes. Starting at the leftmost top pane, and
             working around the clock, you can see the Navigation Pane, showing
             an explorer-like tree view of your UML model, the Editing Pane with
-            its toolbar, two scroll bars and grey drawing area, the Details
+            its tool bar, two scroll bars and gray drawing area, the Details
             Pane with the ToDoItem tab selected, and the To-Do Pane with a tree
             view of the to do items, ranked into three priority levels (High,
             Medium and Low).</para>
@@ -1364,10 +1377,10 @@ Modifications
             project at a time. In addition, a project can only contain one UML
             model. Since an UML model can contain an unlimited number of
             elements and diagrams, this should not present any serious
-            limitations, even for modelling quite large and complex
+            limitations, even for modeling quite large and complex
             systems.</para>
 
-          <para>Also take notice of a number of disabled commands, greyed out
+          <para>Also take notice of a number of disabled commands, grayed out
             on the drop-down menu. First, the
             <literal>Save&nbsp;Project</literal> command (Ctrl-S), which
             obviously cannot be executed since we haven't entered a file name
@@ -1390,7 +1403,7 @@ Modifications
             we get the file chooser dialog to enter the file name we wish to
             use as shown in <xref linkend="fig.tut.filechoose"/>.</para>
 
-          <!-- A figure of the Argo/UML file choice dialogue -->
+          <!-- A figure of the Argo/UML file choice dialog -->
 
           <figure id="fig.tut.filechoose" float="1">
             <title>File chooser dialog</title>
@@ -1407,7 +1420,7 @@ Modifications
                   alongside buttons to go up a directory, to the home directory
                   to create a new directory and to change between styles for
                   viewing directories. The main window shows the files
-                  available in the chosen directory with a scrollbar to te
+                  available in the chosen directory with a scroll bar to the
                   right. At the bottom we have a text box to enter the file
                   name, and below that a drop down selector of file types. To
                   the right of these last two are two buttons, Save (above) and
@@ -1420,7 +1433,7 @@ Modifications
             detail.</para>
 
           <para>The main, outstanding feature, is the scrollable folders list
-            in the center of the dialog. By using the scrollbar on the right,
+            in the center of the dialog. By using the scroll bar on the right,
             you can move up and down in the list of folders contained inside
             the currently selected folder.</para>
 
@@ -1537,7 +1550,7 @@ Modifications
       </sect3>
     </sect2>
 
-    <!-- Output from Argo/UML. Taken from Alejandro, Phillippe and Andreas -->
+    <!-- Output from Argo/UML. Taken from Alejandro, Philippe and Andreas -->
 
     <sect2>
       <title>Output</title>
@@ -1623,7 +1636,7 @@ Modifications
         <!-- Printing Diagrams -->
         
         <sect4>
-          <title>xPrinting Diagrams</title>
+          <title>Printing Diagrams</title>
 
           <para>Select a diagram, then go to
           <literal>File</literal>&rarr;<literal>Export&nbsp;Diagrams</literal>.
@@ -1710,7 +1723,7 @@ Modifications
 
           <para>This depends on the version of NSUML (the UML engine underling
             &argouml;) you are using. You can find out about this i your
-            startup messages on console). Using version 0.4.19 is okay, should
+            start-up messages on console). Using version 0.4.19 is OK, should
             be interchangeable.</para>
         </sect4>
 
@@ -1721,7 +1734,7 @@ Modifications
 
           <para>Because of the variety of XMI formats being generated you will
             encounter problems using XMI files generated from other
-            applications.  ArgoUML's native storage format is another
+            applications.  &argouml;'s native storage format is another
             implementation of XMI (Curt Arnold believes that it has been hacked
             so it can also read the Unisys variant).  He recommends that if you
             are comfortable with XSLT, you can typically transform one variant
@@ -1774,7 +1787,7 @@ Modifications
       </sect3>
     </sect2>
 
-    <!-- Working with design critics. Taken from Alejandro, Phillippe and
+    <!-- Working with design critics. Taken from Alejandro, Philippe and
          Andreas -->
 
     <sect2>
@@ -1802,12 +1815,12 @@ Modifications
 
             <textobject>
               <para>The &argouml; screen after saving as project
-                <literal>FirstProject.arg</literal>. The name of the project is
+                <literal>FirstProject.argo</literal>. The name of the project is
                 shown in the title bar, and the Panes have nothing other than
                 the default diagrams
                 (<literal>class&nbsp;diagram&nbsp;1</literal> and
                 <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>)
-                displayed. The Details Pane shows the ToDo Tab.</para>
+                displayed. The Details Pane shows the ToDoItem Tab.</para>
             </textobject>
           </mediaobject></screenshot>
         </figure>
@@ -1841,7 +1854,7 @@ Modifications
           mentor that watches over your shoulder and notifies you each time he
           sees something questionable in your design.</para>
 
-        <para>Critics are quite unobstrusive. They give you a friendly warning,
+        <para>Critics are quite unobtrusive. They give you a friendly warning,
           but they do not force you into design principles that you don't want
           or like to follow.  Let us take a look at what the critics are
           telling us. Click on the
@@ -1871,7 +1884,7 @@ Modifications
               <para>The &argouml; screen showing the To-Do Pane expanded with
                 <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel
                 </literal> highlighted as a medium priority To-Do item. The
-                Details Pane shows the ToDo Tab containing the text from the
+                Details Pane shows the ToDoItem Tab containing the text from the
                 Critic.</para>
             </textobject>
           </mediaobject></screenshot>
@@ -1879,8 +1892,8 @@ Modifications
 
         <para>Notice that your selection is highlighted in red in the To-Do
           Pane, and that a full explanation appears now in the Details Pane
-          (the lower right pane). You may have to resize your Details Pane or
-          to scroll down in order to see the full message as diplayed in our
+          (the lower right pane). You may have to re-size your Details Pane or
+          to scroll down in order to see the full message as displayed in our
           example.</para>
 
         <para>What &argouml; is trying to tell you is that usually, package
@@ -1901,7 +1914,7 @@ Modifications
 
         <para>In order to do that, just click on the <literal>Next</literal>
           button on the Details Pane. This will cause a renaming wizard to be
-          diplayed inside the properties panel, proposing to use the name
+          displayed inside the properties panel, proposing to use the name
           <literal>untitledmodel</literal> (all in lower case).</para>
       </sect3>
 
@@ -1931,7 +1944,7 @@ Modifications
               <para>The &argouml; screen showing the To-Do Pane expanded with
                 <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel
                 </literal> highlighted as a medium priority To-Do item. The
-                Details Pane shows the ToDo Tab containing  Rename Package
+                Details Pane shows the ToDoItem Tab containing  Rename Package
                 wizard.</para>
             </textobject>
           </mediaobject></screenshot>
@@ -1942,7 +1955,7 @@ Modifications
           <literal>Add&nbsp;Elements&nbsp;to&nbsp;Package&nbsp;purchasingmodel
           </literal> note in the To-Do list.</para>
 
-        <para>If this doen't happen at once, wait for a few seconds. &argouml;
+        <para>If this doesn't happen at once, wait for a few seconds. &argouml;
           makes heavy use of several threads of execution that execute in
           parallel. This can cause delays of a few seconds before the
           information gets updated on the screen.</para>

@@ -83,32 +83,42 @@ Modifications
 
   <!-- The tutorial chapters -->
 
-  &tutuml;
-  &tutreqs;
-  &tutanalysis;
-  &tutdesign;
-  &tutbuild;
+  <part>
+    <title>&argouml; Tutorial Manual</title>
 
-  <!-- The reference chapters on the user interface -->
+    &tutuml;
+    &tutreqs;
+    &tutanalysis;
+    &tutdesign;
+    &tutbuild;
+  </part>
 
-  &refui;
-  &refnavpane;
-  &refeditpane;
-  &refdetpane;
-  &reftodopane;
-  &refmenu;
+  <!-- The reference chapters -->
 
-  <!-- The reference chapters on the diagrams and artifacts -->
+  <part>
+    <title>&argouml; Reference Manual</title>
 
-  &refentities;
-  &refentusecase;
-  &refentclass;
-  &refentseq;
-  &refentstate;
-  &refentcollab;
-  &refentactiv;
-  &refentdeploy;
-  &refentbuiltin;
+    <!-- The reference chapters on the user interface -->
+
+    &refui;
+    &refnavpane;
+    &refeditpane;
+    &refdetpane;
+    &reftodopane;
+    &refmenu;
+
+    <!-- The reference chapters on the diagrams and artifacts -->
+
+    &refentities;
+    &refentusecase;
+    &refentclass;
+    &refentseq;
+    &refentstate;
+    &refentcollab;
+    &refentactiv;
+    &refentdeploy;
+    &refentbuiltin;
+  </part>
 
   <!-- The glossary -->
 

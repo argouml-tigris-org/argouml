@@ -27,7 +27,7 @@ Modifications
       <glossterm>Activity Diagram</glossterm>
 
       <glossdef>
-        <para>A UML diagram capturing the dynamic behaviour of a system or
+        <para>A UML diagram capturing the dynamic behavior of a system or
           sub-system. See 
 
           <!-- Fix when ready <xref linkend="s1.umlactivitydiags"/> -->
@@ -42,7 +42,7 @@ Modifications
       <glossterm>Action</glossterm>
 
       <glossdef>
-        <para>Behaviour associated with <emphasis>States</emphasis> or
+        <para>Behavior associated with <emphasis>States</emphasis> or
           <emphasis>Transitions</emphasis> in <emphasis>State
           Diagram</emphasis>. These actions are invocations of
           <emphasis>Methods</emphasis> and appear on
@@ -197,7 +197,7 @@ Modifications
       <glossterm>Collaboration Diagram</glossterm>
 
       <glossdef>
-        <para>A UML Diagram showing the dyanamic behaviour as messages are
+        <para>A UML Diagram showing the dyanamic behavior as messages are
           passed between objects. Equivalent to a <emphasis>Sequence
           Diagram</emphasis>. Which representation is appropriate depends on
           the problem under consideration. See
@@ -482,7 +482,7 @@ Modifications
       <glossterm>Method (of a Class or Object)</glossterm>
 
       <glossdef>
-        <para>A method of a class or object is a specification of behaviour
+        <para>A method of a class or object is a specification of behavior
           encapsulated by that object.</para>
 
         <glossseealso otherterm="gl.attribute"/>
@@ -683,7 +683,7 @@ Modifications
       <glossterm>Sequence Diagram</glossterm>
 
       <glossdef>
-        <para>A UML Diagram showing the dyanamic behaviour as messages are
+        <para>A UML Diagram showing the dyanamic behavior as messages are
           passed between objects. Equivalent to a <emphasis>Collaboration
           Diagram</emphasis>. Which representation is appropriate depends on
           the problem under consideration. See 
@@ -737,7 +737,7 @@ Modifications
       <glossterm>State Diagram</glossterm>
 
       <glossdef>
-        <para>A UML Diagram showing the dyanamic behaviour of an active
+        <para>A UML Diagram showing the dyanamic behavior of an active
           <emphasis>Object</emphasis>. See <xref linkend="s1.umlstatediags"/>
           for more information.</para>
 
@@ -800,7 +800,7 @@ Modifications
 
       <glossdef>
         <para>A <emphasis>Sequence Diagram</emphasis> used in the
-          <emphasis>Analysis</emphasis> Phase showing the dyanamic behaviour of
+          <emphasis>Analysis</emphasis> Phase showing the dyanamic behavior of
           the overall system. See
           <xref linkend="ch.tut.analysis"/> for more information.</para>
 
@@ -815,7 +815,7 @@ Modifications
 
       <glossdef>
         <para>A <emphasis>State Diagram</emphasis> used in the
-          <emphasis>Analysis</emphasis> Phase showing the dyanamic behaviour of
+          <emphasis>Analysis</emphasis> Phase showing the dyanamic behavior of
           an active top level system objects. See
           <xref linkend="ch.tut.analysis"/> for more information.</para>
 

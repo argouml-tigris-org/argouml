@@ -2,7 +2,7 @@
 
 <!--
 
-Desription of all the artifacts associated with use case diagrams within
+Description of all the artifacts associated with use case diagrams within
 Argo/UML.
 
 
@@ -28,9 +28,9 @@ Modifications
       <xref linkend="s1.ref.proptab"/>). That section covers properties in
       general, in this chapter they are linked to specific artifacts.</para>
 
-    <para>Of particular importance are the sections on property toolbars (see
+    <para>Of particular importance are the sections on property tool bars (see
       <xref linkend="s2.ref.proptoolbar"/>) and common property sheet features
-      (see <xref linkend="s2.ref.propcommonfeat"/>). These document the toolbar
+      (see <xref linkend="s2.ref.propcommonfeat"/>). These document the tool bar
       buttons and key features that are common to most property sheets.</para>
 
     <!-- A diagram to show all things visible on the diagram -->
@@ -129,10 +129,10 @@ Modifications
 
           <tbody valign="top">
 
-            <!-- Entry for ToDo Item tab -->
+            <!-- Entry for ToDoItem tab -->
 
             <row>
-              <entry>ToDo Item</entry>
+              <entry>ToDoItem</entry>
 
               <entry><para>Standard tab.</para></entry>
             </row>
@@ -160,7 +160,7 @@ Modifications
             <row>
               <entry>Style</entry>
 
-              <entry><para>Standard tab. Fill colour is used for the stick
+              <entry><para>Standard tab. Fill color is used for the stick
                 man's head.</para></entry>
             </row>
 
@@ -201,11 +201,11 @@ Modifications
                     superclass, <literal>Classifier</literal>). Values
                     <literal>transitory</literal>, indicating state is
                     destroyed when an instance is destroyed or
-                    <literal>persistant</literal>, marking state is
+                    <literal>persistent</literal>, marking state is
                     preserved when an instance is destroyed.</para>
 
                   <tip><para>Actors sit outside the system, and so their
-                    internal behaviour is of little concern, and this tagged
+                    internal behavior is of little concern, and this tagged
                     value is best ignored.</para></tip></listitem>
 
                   <listitem><para><literal>semantics</literal> (from the
@@ -243,14 +243,14 @@ Modifications
     <sect2>
       <title>Actor Properties</title>
 
-      <!-- The properties toolbar -->
+      <!-- The properties tool bar -->
 
-      <para>The property tab toolbar for actors is described in <xref
+      <para>The property tab tool bar for actors is described in <xref
         linkend="tab.ref.actor_property_toolbar"/>.</para>
 
       <table id="tab.ref.actor_property_toolbar" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property toolbar for diagram</title>
+        <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
           <colspec align="left"   colwidth="*2"/>
@@ -385,7 +385,7 @@ Modifications
               <entry>Name</entry>
 
               <entry><para>Text box. The name of the actor. Since an actor is a
-                classifier, it would be conventional to Capitalise the first
+                classifier, it would be conventional to Capitalize the first
                 letter (and initial letters of any component words),
                 e.g. <literal>RemoteSensor</literal>.</para>
 
@@ -421,7 +421,7 @@ Modifications
                 </imageobject></inlinemediaobject></guiicon> icon. If a
                   stereotype has been selected, this will navigate you to the
                   stereotype property panel (see <xref
-                    linkend="s1.ref.stereotype"/>.</para></entry>
+                    linkend="s1.ref.stereotype"/>).</para></entry>
             </row>
 
             <!-- Entry for Namespace -->
@@ -648,10 +648,10 @@ Modifications
 
           <tbody valign="top">
 
-            <!-- Entry for ToDo Item tab -->
+            <!-- Entry for ToDoItem tab -->
 
             <row>
-              <entry>ToDo Item</entry>
+              <entry>ToDoItem</entry>
 
               <entry><para>Standard tab.</para></entry>
             </row>
@@ -680,7 +680,7 @@ Modifications
             <row>
               <entry>Style</entry>
 
-              <entry><para>Standard tab. Fill colour is used for the use case
+              <entry><para>Standard tab. Fill color is used for the use case
                 oval.</para></entry> 
             </row>
 
@@ -719,13 +719,13 @@ Modifications
                     superclass, <literal>Classifier</literal>). Values
                     <literal>transitory</literal>, indicating state is
                     destroyed when an instance is destroyed or
-                    <literal>persistant</literal>, marking state is
+                    <literal>persistent</literal>, marking state is
                     preserved when an instance is destroyed.</para>
 
                   <tip><para>In general the instantiation of use cases is not a
                     major aspect of any design method (they are mostly
                     concerned with requirements capture. For most &ooad;
-                    methodoologies, this tag can safely be
+                    methodologies, this tag can safely be
                     ignored.</para></tip></listitem>
 
                   <listitem><para><literal>semantics</literal> (from the
@@ -761,14 +761,14 @@ Modifications
     <sect2>
       <title>Use Case Properties</title>
 
-      <!-- The properties toolbar -->
+      <!-- The properties tool bar -->
 
-      <para>The property tab toolbar for use cases is described in <xref
+      <para>The property tab tool bar for use cases is described in <xref
         linkend="tab.ref.use_case_property_toolbar"/>.</para>
 
       <table id="tab.ref.use_case_property_toolbar" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property toolbar for diagram</title>
+        <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
           <colspec align="left"   colwidth="*2"/>
@@ -903,7 +903,7 @@ Modifications
               <entry>Name</entry>
 
               <entry><para>Text box. The name of the use case. Since a use case
-                is a classifier, it would be conventional to Capitalise the
+                is a classifier, it would be conventional to Capitalize the
                 first letter (and initial letters of any component words),
                 e.g. <literal>RemoteSensor</literal>.</para>
 
@@ -943,7 +943,7 @@ Modifications
                 </imageobject></inlinemediaobject></guiicon> icon. If a
                   stereotype has been selected, this will navigate you to the
                   stereotype property panel (see <xref
-                    linkend="s1.ref.stereotype"/>.</para></entry>
+                    linkend="s1.ref.stereotype"/>).</para></entry>
             </row>
 
             <!-- Entry for Namespace -->
@@ -1027,13 +1027,13 @@ Modifications
 
                 <listitem><para><literal>Move Up</literal>. Only available
                   where there are two or more generalizations listed (see
-                  <emphasis>caution</emphasis> above, and the generalization
+                  <emphasis>caution</emphasis> above), and the generalization
                   selected is not at the top. It is moved one up the
                   list.</para></listitem>
 
                 <listitem><para><literal>Move Down</literal>. Only available
                   where there are two or more generalizations listed (see
-                  <emphasis>caution</emphasis> above, and the generalization
+                  <emphasis>caution</emphasis> above), and the generalization
                   selected is not at the bottom. It is moved one down the
                   list.</para></listitem>
                 </itemizedlist></entry>
@@ -1046,7 +1046,7 @@ Modifications
 
               <entry><para>Text box. Lists any class that is extended by this
                 use case. In &argouml; at present extension on a use case
-                digram is through stereotyping a dependency relationship, which
+                diagram is through stereotyping a dependency relationship, which
                 will not show in this box.</para>
 
               <para>Where an extends relationship has been created (see below),
@@ -1057,7 +1057,7 @@ Modifications
 
               <itemizedlist>
                 <listitem><para><literal>Open</literal>. Where an extends
-                  releationship has been created, navigate to
+                  relationship has been created, navigate to
                   it.</para></listitem>
 
                 <listitem><para><literal>Add</literal>. Add a new anonymous
@@ -1074,7 +1074,7 @@ Modifications
 
                 <listitem><para><literal>Delete</literal>. Where an extends
                   relationship has been created through use of
-                  <literal>Add</literal> pop up memnu, this removes
+                  <literal>Add</literal> pop up menu, this removes
                   it.</para></listitem>
               </itemizedlist></entry>
             </row>
@@ -1086,7 +1086,7 @@ Modifications
 
               <entry><para>Text box. Lists any class that this use case
                 includes. In &argouml; at present inclusion on a use case
-                digram is through stereotyping a dependency relationship, which
+                diagram is through stereotyping a dependency relationship, which
                 will not show in this box.</para>
 
               <para>Where an includes relationship has been created (see
@@ -1097,7 +1097,7 @@ Modifications
 
               <itemizedlist>
                 <listitem><para><literal>Open</literal>. Where an includes
-                  releationship has been created, navigate to
+                  relationship has been created, navigate to
                   it.</para></listitem>
 
                 <listitem><para><literal>Add</literal>. Add a new anonymous
@@ -1114,7 +1114,7 @@ Modifications
 
                 <listitem><para><literal>Delete</literal>. Where an includes
                   relationship has been created through use of
-                  <literal>Add</literal> pop up memnu, this removes
+                  <literal>Add</literal> pop up menu, this removes
                   it.</para></listitem>
               </itemizedlist></entry>
             </row>
@@ -1122,7 +1122,7 @@ Modifications
             <!-- Entry for Extension Points -->
 
             <row>
-              <entry>Includes</entry>
+              <entry>Extension Points</entry>
 
               <entry><para>Text box. If this use case is, or can be extended,
                 this field is used to document the points at which such
@@ -1147,7 +1147,7 @@ Modifications
 
                 <listitem><para><literal>Delete</literal>. Where an extension
                   point has been created through use of <literal>Add</literal>
-                  pop up memnu, this removes it.</para></listitem>
+                  pop up menu, this removes it.</para></listitem>
               </itemizedlist></entry>
             </row>
 
@@ -1204,7 +1204,7 @@ Modifications
               <entry><para>Text area. Listing the operations that are available
                 on this use case. As a sub-class of the UML classifier
                 metaclass, a use case has many of the properties of a
-                class (see <xref linkend="s1.ref.class"/>.</para>
+                class (see <xref linkend="s1.ref.class"/>).</para>
 
               <para>In some &ooad; processes it might be useful to treat use
                 cases as classes as well, and give them operations and
@@ -1231,7 +1231,7 @@ Modifications
               <entry><para>Text area. Listing the attributes that are available
                 on this use case. As a sub-class of the UML classifier
                 metaclass, a use case has many of the properties of a
-                class (see <xref linkend="s1.ref.class"/>.</para>
+                class (see <xref linkend="s1.ref.class"/>).</para>
 
               <para>In some &ooad; processes it might be useful to treat use
                 cases as classes as well, and give them operations and
@@ -1266,7 +1266,8 @@ Modifications
       change perceived by the actor.</para>
 
     <para>Within the UML metamodel, <literal>Association</literal> is a
-      sub-class of <literal>Relationship</literal>.</para>
+      sub-class of both <literal>Relationship</literal> and
+      <literal>GeneralizableElement</literal>.</para> 
 
     <para>The association is represented as a line connecting actor and use
       case (see <xref linkend="fig.ref.use_case_diagram"/>). The name of the
@@ -1277,8 +1278,9 @@ Modifications
       attempt to make this clear.</para></note>
 
     <para>The association contains two ends, which may be navigated to via the
-      association property sheet. See <xref linkend="s1.ref.association_end"/>
-      for more information.</para>
+      association property sheet. See <xref
+        linkend="s1.ref.association_end_use_case"/> for more
+      information.</para>
 
     <!-- The details tabs -->
 
@@ -1304,10 +1306,10 @@ Modifications
 
           <tbody valign="top">
 
-            <!-- Entry for ToDo Item tab -->
+            <!-- Entry for ToDoItem tab -->
 
             <row>
-              <entry>ToDo Item</entry>
+              <entry>ToDoItem</entry>
 
               <entry><para>Standard tab.</para></entry>
             </row>
@@ -1336,12 +1338,12 @@ Modifications
             <row>
               <entry>Style</entry>
 
-              <entry><para>Standard tab. Fill colour is used for the use case
+              <entry><para>Standard tab. Fill color is used for the use case
                 oval.</para>
 
               <note><para>The values for the bounds of the Association appear
                 to have no meaning. Changing them has no effect on the
-                diagram. This is sensible behaviour, given the association is
+                diagram. This is sensible behavior, given the association is
                 tied to a particular actor and use case.</para></note></entry>
             </row>
 
@@ -1386,7 +1388,7 @@ Modifications
                   <listitem><para><literal>persistence</literal>. Values
                     <literal>transitory</literal>, indicating state is
                     destroyed when an instance is destroyed or
-                    <literal>persistant</literal>, marking state is
+                    <literal>persistent</literal>, marking state is
                     preserved when an instance is destroyed.</para></listitem>
 
                   <listitem><para><literal>derived</literal> (from the
@@ -1398,7 +1400,7 @@ Modifications
 
                   <note><para>Derived associations still have their value in
                     analysis to introduce useful names or concepts, and in
-                    design to avoid recomputation.</para></note></listitem>
+                    design to avoid re-computation.</para></note></listitem>
                 </itemizedlist>
 
                 <note><para>The UML <literal>Element</literal> metaclass from
@@ -1417,14 +1419,14 @@ Modifications
     <sect2>
       <title>Association Properties</title>
 
-      <!-- The properties toolbar -->
+      <!-- The properties tool bar -->
 
-      <para>The property tab toolbar for associations is described in <xref
+      <para>The property tab tool bar for associations is described in <xref
         linkend="tab.ref.association_property_toolbar"/>.</para>
 
       <table id="tab.ref.association_property_toolbar" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property toolbar for diagram</title>
+        <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
           <colspec align="left"   colwidth="*2"/>
@@ -1561,9 +1563,9 @@ Modifications
 
               <entry><para>Drop down selector. Association is provided by
                 default with the UML standard stereotype for Association
-                ((<literal>implicit)</literal>) and the additonal Association
+                ((<literal>implicit)</literal>) and the additional Association
                 stereotypes for the Software Engineering Process and Business
-                Modelling in the UML standard (<literal>communicate</literal>
+                Modeling in the UML standard (<literal>communicate</literal>
                 and <literal>subscribe</literal>). &argouml; also provides the
                 additional stereotypes, <literal>machine</literal>,
                 <literal>organization</literal> and <literal>person</literal>
@@ -1583,7 +1585,7 @@ Modifications
                 actor</literal>, <literal>primary actor</literal>,
                 <literal>stakeholder</literal> and <literal>supporting
                 actor</literal> by &argouml; as stereotypes of
-                <literal>Association</literal> appears to be errroneous. They
+                <literal>Association</literal> appears to be erroneous. They
                 should be stereotypes of <literal>Actor</literal> (or arguably
                 <literal>Classifier</literal>).</para></warning></entry>
             </row>
@@ -1599,7 +1601,7 @@ Modifications
                 </imageobject></inlinemediaobject></guiicon> icon. If a
                   stereotype has been selected, this will navigate you to the
                   stereotype property panel (see <xref
-                    linkend="s1.ref.stereotype"/>.</para></entry>
+                    linkend="s1.ref.stereotype"/>).</para></entry>
             </row>
 
             <!-- Entry for Namespace -->
@@ -1624,12 +1626,10 @@ Modifications
                 <literal>Final</literal> and <literal>Root</literal>. No known
                 use.</para>
 
-              <warning><para>The presence of these modifiers, which reflect the
-                attributes of a <literal>GeneralizableElement</literal> within
-                the UML metamodel, appears to be a mistake in &argouml;
-                <literal>Association</literal> is not derived from
-                <literal>GeneralizableElement</literal>, and so does not
-                inherit these attributes.</para></warning></entry>
+              <tip><para>Whilst attributes are generalizable elements, marking
+                them as with these modifiers is of limited
+                value with binary associations (the only support that &argouml;
+                supports properly.</para></tip></entry>
             </row>
 
             <!-- Entry for Association Ends -->
@@ -1640,8 +1640,9 @@ Modifications
               <entry><para>Text area. Lists the ends of this association. An
                 association can have any number of ends, but for use cases, two
                 is the only useful number (associative classes can led to a
-                third end on class diagrams). For more on association ends see
-                <xref linkend="s1.ref.association_end"/>.</para>
+                third end on class diagrams, but this is not supported by
+                &argouml;). For more on association ends see <xref
+                linkend="s1.ref.association_end_use_case"/>.</para>
 
               <para>The names are listed, unless the association end has no
                 name (the case when it is first created), in which case the
@@ -1687,9 +1688,14 @@ Modifications
             <row>
               <entry>Extends</entry>
 
-              <entry><para>Text box. This has no function for an association on
-                a use case diagram, and the drop down menu is always greyed
-                out.</para></entry>
+              <entry><para>Text box. These are the associations for which this
+                association is a specialization. It is possible to create
+                generalizations using the pop-up menu from here, but there is
+                no way within &argouml; to give them a parent, so the entry has
+                no use</para>
+
+              <caution><para>This entry should properly be called
+                <literal>Generalizations</literal>.</para></caution></entry>
             </row>
 
             <!-- Entry for Derived -->
@@ -1697,9 +1703,12 @@ Modifications
             <row>
               <entry>Derived</entry>
 
-              <entry><para>Text box. This has no function for an association on
-                a use case diagram, and the drop down menu is always greyed
-                out.</para></entry>
+              <entry><para>Text box. These are the associations for which this
+                association is a generalization. The drop down menu is always
+                grayed out.</para>
+
+              <caution><para>This entry should properly be called
+                <literal>Specializations</literal>.</para></caution></entry>
             </row>
           </tbody>
         </tgroup>
@@ -1709,7 +1718,7 @@ Modifications
 
   <!-- Association End artifacts (sub-artifact of Association) -->
 
-  <sect1 id="s1.ref.association_end">
+  <sect1 id="s1.ref.association_end_use_case">
     <title>Association End</title>
 
     <para>Two or more association ends are associated with each association
@@ -1724,7 +1733,7 @@ Modifications
       although its name is shown at the relevant end of the parent
       association (see <xref linkend="fig.ref.use_case_diagram"/>).</para>
 
-    <tip><para>Although you can change attributes of assocition ends when
+    <tip><para>Although you can change attributes of association ends when
       creating a use case model, this is often not necessary. Many of the
       properties of an association end relate to its use in class diagrams, and
       are of limited relevance to use cases. The most useful attributes to
@@ -1758,10 +1767,10 @@ Modifications
 
           <tbody valign="top">
 
-            <!-- Entry for ToDo Item tab -->
+            <!-- Entry for ToDoItem tab -->
 
             <row>
-              <entry>ToDo Item</entry>
+              <entry>ToDoItem</entry>
 
               <entry><para>Standard tab.</para></entry>
             </row>
@@ -1838,7 +1847,7 @@ Modifications
 
                   <tip><para>Derived association ends still have their value in
                     analysis to introduce useful names or concepts, and in
-                    design to avoid recomputation. However they their
+                    design to avoid re-computation. However they their
                     composition with association, means they can only sensibly
                     have a true <literal>derived</literal> tag if the
                     association also does.</para></tip></listitem>
@@ -1860,14 +1869,14 @@ Modifications
     <sect2>
       <title>Association End Properties</title>
 
-      <!-- The properties toolbar -->
+      <!-- The properties tool bar -->
 
-      <para>The property tab toolbar for associations is described in <xref
+      <para>The property tab tool bar for associations is described in <xref
         linkend="tab.ref.association_end_property_toolbar"/>.</para>
 
       <table id="tab.ref.association_end_property_toolbar" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property toolbar for diagram</title>
+        <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
           <colspec align="left"   colwidth="*2"/>
@@ -2022,7 +2031,7 @@ Modifications
                 </imageobject></inlinemediaobject></guiicon> icon. If a
                   stereotype has been selected, this will navigate you to the
                   stereotype property panel (see <xref
-                    linkend="s1.ref.stereotype"/>.</para></entry>
+                    linkend="s1.ref.stereotype"/>).</para></entry>
             </row>
 
             <!-- Entry for Type -->
@@ -2101,7 +2110,16 @@ Modifications
                 navigated to from the other end.</para>
 
               <tip><para>This means little to a use case diagram. It is useful
-                for associations on class diagrams.</para></tip></entry>
+                for associations on class diagrams.</para></tip>
+
+              <note><para>The UML 1.3 standard provides a number of options for
+                how navigation is displayed on an association end. ArgoUML uses
+                option 3, which means that arrow heads are shown at the end of
+                an association, when navigation is enabled at only one end, to
+                indicate the direction in which navigation is possible. This
+                means that the default, with both ends navigable has non
+                arrows. This is an appropriate representation for use
+                cases.</para></note></entry>
             </row>
 
             <!-- Entry for Ordering -->
@@ -2203,8 +2221,8 @@ Modifications
 
     <para>Generalization is a relationship between two use cases or two
      actors. Where A is a generalization of B, it means A describes more
-     general behaviour and B a more specific version of that
-     behaviour.</para>
+     general behavior and B a more specific version of that
+     behavior.</para>
 
    <para>Examples for a travel agent sales system might be the use case
      for making a booking as a generalization of the use case for making a
@@ -2212,13 +2230,13 @@ Modifications
      actor (since supervisors can also act as salesmen, but not vice
      versa).</para>
 
-    <para>Generalization is analagous to class inheritance within OO
+    <para>Generalization is analogous to class inheritance within OO
       programming.</para>
 
     <note><para>It is easy to confuse <emphasis>extends</emphasis>
       relationships between use cases with generalization. However extends is
-      about augmenting a use case's behaviour at a specific
-      point. Generalization is about specializing the behaviour throughout the
+      about augmenting a use case's behavior at a specific
+      point. Generalization is about specializing the behavior throughout the
       use case.</para></note>
 
     <para>Within the UML metamodel, <literal>Generalization</literal> is a
@@ -2252,10 +2270,10 @@ Modifications
 
           <tbody valign="top">
 
-            <!-- Entry for ToDo Item tab -->
+            <!-- Entry for ToDoItem tab -->
 
             <row>
-              <entry>ToDo Item</entry>
+              <entry>ToDoItem</entry>
 
               <entry><para>Standard tab.</para></entry>
             </row>
@@ -2288,7 +2306,7 @@ Modifications
 
               <note><para>The values for the bounds of the generalization
                 appear to have no meaning. Changing them has no effect on the
-                diagram. This is sensible behaviour, given the generalization
+                diagram. This is sensible behavior, given the generalization
                 is tied to a particular actor and use
                 case.</para></note></entry>
             </row>
@@ -2319,7 +2337,7 @@ Modifications
                 <itemizedlist>
                   <listitem><para><literal>complete</literal>. Applied to a set
                     of generalizations with the same discriminator (see <xref
-                    linkend="s1.ref.generalization_class"/> and same parent,
+                    linkend="s1.ref.generalization_class"/>) and same parent,
                     indicating that an instance of the parent must be an
                     instance of one of those children.</para>
 
@@ -2384,7 +2402,7 @@ Modifications
 
                   <note><para>Derived generalizations still have their value in
                     analysis to introduce useful names or concepts, and in
-                    design to avoid recomputation.</para></note></listitem>
+                    design to avoid re-computation.</para></note></listitem>
                 </itemizedlist>
 
                 <note><para>The UML <literal>Element</literal> metaclass from
@@ -2403,14 +2421,14 @@ Modifications
     <sect2>
       <title>Generalization Properties</title>
 
-      <!-- The properties toolbar -->
+      <!-- The properties tool bar -->
 
-      <para>The property tab toolbar for associations is described in <xref
+      <para>The property tab tool bar for associations is described in <xref
         linkend="tab.ref.generalization_property_toolbar"/>.</para>
 
       <table id="tab.ref.generalization_property_toolbar" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property toolbar for diagram</title>
+        <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
           <colspec align="left"   colwidth="*2"/>
@@ -2568,7 +2586,7 @@ Modifications
                 </imageobject></inlinemediaobject></guiicon> icon. If a
                   stereotype has been selected, this will navigate you to the
                   stereotype property panel (see <xref
-                    linkend="s1.ref.stereotype"/>.</para></entry>
+                    linkend="s1.ref.stereotype"/>).</para></entry>
             </row>
 
             <!-- Entry for Discriminator -->
@@ -2622,7 +2640,7 @@ Modifications
               <entry>Child</entry>
 
               <entry><para>Text box. Records the use case or actor that is the
-                <emphasis>chld</emphasis> in this relationship, i.e. the more
+                <emphasis>child</emphasis> in this relationship, i.e. the more
                 specific end of the relationship. &Button1; click
                 on this entry will take you to that use case or
                 actor. &Button2; click will give a pop up menu, with a single
@@ -2672,7 +2690,7 @@ Modifications
 
   <!-- Dependency (includes extends and includes) -->
 
-  <sect1>
+  <sect1 id="s1.ref.dependency_use_case">
     <title>Dependency</title>
 
     <para>Dependency is a relationship between two artifacts showing that one
@@ -2686,8 +2704,8 @@ Modifications
 
     <para>Under &argouml; <literal>extends</literal> is represented as a
       dependency with an <literal>extends</literal>stereotype. An extend
-      relationship from A to B indicates the behaviour of B may be augmented by
-      the the behaviour of A at a particular <emphasis>extension
+      relationship from A to B indicates the behavior of B may be augmented by
+      the the behavior of A at a particular <emphasis>extension
       point</emphasis> or points.</para>
 
     <note><para>&argouml; has no formal representation of extension
@@ -2696,17 +2714,17 @@ Modifications
 
     <note><para>It is easy to confuse <emphasis>extends</emphasis>
       relationships between use cases with generalization. However extends is
-      about augmenting a use case's behaviour at a specific
-      point. Generalization is about specializing the behaviour throughout the
+      about augmenting a use case's behavior at a specific
+      point. Generalization is about specializing the behavior throughout the
       use case.</para></note>
 
     <para>Under &argouml; <literal>includes</literal> is represented as a
       dependency with an <literal>includes</literal>stereotype. An include
-      relationship from A to B indicates the behaviour of A will include the
-      behaviour of B at a location defined by A.</para>
+      relationship from A to B indicates the behavior of A will include the
+      behavior of B at a location defined by A.</para>
 
     <para>Within the UML metamodel, <literal>Dependency</literal>,
-      <literal>Extend</literal> and <literal>Incldue</literal> are all
+      <literal>Extend</literal> and <literal>Include</literal> are all
       sub-classes of <literal>Relationship</literal>.</para>
 
     <para>Dependency is represented as a dotted arrow from the dependent to the
@@ -2740,10 +2758,10 @@ Modifications
 
           <tbody valign="top">
 
-            <!-- Entry for ToDo Item tab -->
+            <!-- Entry for ToDoItem tab -->
 
             <row>
-              <entry>ToDo Item</entry>
+              <entry>ToDoItem</entry>
 
               <entry><para>Standard tab.</para></entry>
             </row>
@@ -2776,7 +2794,7 @@ Modifications
 
               <note><para>The values for the bounds of the dependency appear to
                 have no meaning. Changing them has no effect on the
-                diagram. This is sensible behaviour, given the dependency is
+                diagram. This is sensible behavior, given the dependency is
                 tied to a particular use case.</para></note></entry>
             </row>
 
@@ -2832,14 +2850,14 @@ Modifications
     <sect2>
       <title>Dependency Properties</title>
 
-      <!-- The properties toolbar -->
+      <!-- The properties tool bar -->
 
-      <para>The property tab toolbar for associations is described in <xref
+      <para>The property tab tool bar for associations is described in <xref
         linkend="tab.ref.dependency_property_toolbar"/>.</para>
 
       <table id="tab.ref.dependency_property_toolbar" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property toolbar for diagram</title>
+        <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
           <colspec align="left"   colwidth="*2"/>
@@ -2931,7 +2949,7 @@ Modifications
   
       <!-- Fields in the properties tab -->
 
-      <para>The fields on the property tab for dependencys are described in
+      <para>The fields on the property tab for dependencies are described in
         <xref linkend="tab.ref.dependency_property_fields"/>.</para>
 
       <table id="tab.ref.dependency_property_fields" frame="all" colsep="1"
@@ -2957,7 +2975,7 @@ Modifications
 
               <entry><para>Text box. The name of the dependency.</para>
 
-              <tip><para>It is quite common to leave dependencys unnamed in use
+              <tip><para>It is quite common to leave dependencies unnamed in use
                 case analysis, since they are only being used to carry the
                 extends, and are not represented on the diagram.</para></tip>
 
@@ -2976,7 +2994,7 @@ Modifications
               <entry><para>Drop down selector. Dependency has no standard
                 stereotypes of its own under UML&nbsp;1.3. &argouml; provides
                 two stereotypes <literal>extend</literal> and
-                <literal>exclude</literal> to allow dependecy to be used to
+                <literal>exclude</literal> to allow depend to be used to
                 draw these relationships. &argouml; also provides the
                 additional stereotypes, <literal>machine</literal>,
                 <literal>organization</literal> and
@@ -3000,7 +3018,7 @@ Modifications
                 </imageobject></inlinemediaobject></guiicon> icon. If a
                   stereotype has been selected, this will navigate you to the
                   stereotype property panel (see <xref
-                    linkend="s1.ref.stereotype"/>.</para></entry>
+                    linkend="s1.ref.stereotype"/>).</para></entry>
             </row>
 
             <!-- Entry for Namespace -->
@@ -3059,7 +3077,7 @@ Modifications
                 the other end.</para>
 
               <para>In the case of <literal>extends</literal> this is the use
-                case providing the augmenting behaviour. In the case of
+                case providing the augmenting behavior. In the case of
                 <literal>includes</literal> it is the use case being
                 included.</para>
 

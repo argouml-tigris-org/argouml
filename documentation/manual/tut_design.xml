@@ -300,11 +300,11 @@ Modifications
           <title>Interfaces that extend interfaces</title>
 
           <para>Add a unnamed interface to the current classdiagram by
-            single-clicking on the interface icon in the toolbar and then
+            single-clicking on the interface icon in the tool bar and then
             clicking at the diagram pane (see <xref
             linkend="fig.tut.iftool"/>).</para>
 
-          <!-- A shot of the Editing toolbar -->
+          <!-- A shot of the Editing tool bar -->
 
           <figure id="fig.tut.iftool" float="1">
             <title>Selecting the Interface tool</title>
@@ -316,7 +316,7 @@ Modifications
               </imageobject>
 
               <textobject>
-                <para>A picture of the Editing Pane, showing the toolbar, with
+                <para>A picture of the Editing Pane, showing the tool bar, with
                   the Inteface tool highlighted.</para>
               </textobject>
             </mediaobject></screenshot>
@@ -350,12 +350,12 @@ Modifications
 
           <para>Add another interface with a different by repeating the last
             2 steps.  Then single-click on the Generalization icon in the
-            toolbar as shown in <xref linkend="fig.tut.generalize"/>.</para>
+            tool bar as shown in <xref linkend="fig.tut.generalize"/>.</para>
 
           <!-- A shot of a Generalization icon -->
 
           <figure id="fig.tut.generalize" float="1">
-            <title>Generalization on the Class Diagram toolbar</title>
+            <title>Generalization on the Class Diagram tool bar</title>
 
             <screenshot><mediaobject>
               <imageobject>

@@ -85,16 +85,16 @@ Modifications
 
     <remark>To be written&hellip;</remark>
 
-    <!-- The property toolbars gathered together to avoid repetition -->
+    <!-- The property tool bars gathered together to avoid repetition -->
 
     <sect2 id="s2.ref.proptoolbar">
-      <title>Property Toolbars</title>
+      <title>Property Tool Bars</title>
 
-      <para>Whilst all property sheets differ, many have toolbars. To avoid
+      <para>Whilst all property sheets differ, many have tool bars. To avoid
         repetition, the toobar buttons are all gathered in this
         section.</para>
 
-      <para>The property toolbar buttons can be grouped into three
+      <para>The property tool bar buttons can be grouped into three
         sets.</para>
 
       <!-- Note that there are three groupings of buttons -->
@@ -321,9 +321,9 @@ Modifications
     <sect2>
       <title>Mouse Actions in the Properties Tab</title>
 
-      <!-- Toolbar Navigation -->
+      <!-- Tool Bar Navigation -->
 
-      <!-- Toolbar Function Selection -->
+      <!-- Tool Bar Function Selection -->
 
       <!-- Data Entry -->
 

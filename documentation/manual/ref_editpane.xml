@@ -35,10 +35,10 @@ Modifications
         </imageobject>
 
         <textobject>
-          <para>The ArgoUML Editing Pane. A rectangular pane, with a toolbar
+          <para>The ArgoUML Editing Pane. A rectangular pane, with a tool bar
             at the top, and a single tab labelled
             <literal>As&nbsp;Diagram</literal> at the bottom. At the right
-            end of the toolbar is the type and name of the diagram being
+            end of the tool bar is the type and name of the diagram being
             edited. The main part of the Pane shows the UML graphical items
             being edited.</para>
         </textobject>
@@ -54,16 +54,16 @@ Modifications
       <quote>Multi-Editor Pane</quote> in other documentation that is still
       being updated.</para>
 
-    <para>The Pane has a toolbar at the top, and a single tab labelled
+    <para>The Pane has a tool bar at the top, and a single tab labelled
       <literal>As&nbsp;Diagram</literal> at the bottom. So long as your
       window is big enough, you will see the name of the diagram in the top
-      right corner at the end of the toolbar.</para>
+      right corner at the end of the tool bar.</para>
   </sect1>
 
-  <!-- The Toolbar -->
+  <!-- The Tool Bar -->
 
   <sect1>
-    <title>The toolbar</title>
+    <title>The tool bar</title>
 
     <remark>To be written&hellip;</remark>
 
@@ -562,10 +562,10 @@ Modifications
   <sect1>
     <title>Mouse Actions</title>
 
-    <!-- Toolbar selection -->
+    <!-- Tool Bar selection -->
 
     <sect2>
-      <title>Toolbar Selection</title>
+      <title>Tool Bar Selection</title>
 
       <remark>To be written&hellip;</remark>
 
@@ -626,10 +626,10 @@ Modifications
 
       <remark>To be written&hellip;</remark>
 
-      <!-- Using the Toolbar and button 1 -->
+      <!-- Using the Tool Bar and button 1 -->
 
       <sect3>
-        <title>Using the Toolbar</title>
+        <title>Using the Tool Bar</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -650,10 +650,10 @@ Modifications
 
       <remark>To be written&hellip;</remark>
 
-      <!-- Using the Toolbar and button 1 -->
+      <!-- Using the Tool Bar and button 1 -->
 
       <sect3>
-        <title>Using the Toolbar</title>
+        <title>Using the Tool Bar</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -667,7 +667,7 @@ Modifications
       </sect3>
     </sect2>
 
-    <!-- Adding annotation using the toolbar and button 1 -->
+    <!-- Adding annotation using the tool bar and button 1 -->
 
     <sect2>
       <title>Annotation</title>

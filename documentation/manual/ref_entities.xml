@@ -2,7 +2,7 @@
 
 <!--
 
-Top level desription of all the artifacts within Argo/UML.
+Top level description of all the artifacts within Argo/UML.
 
 
 Modifications
@@ -29,21 +29,22 @@ Modifications
       diagrams.</para> 
 
     <para>There is a close relationship between this material and the
-      Properties Tab of the Details Pane (see 
-      <xref linkend="s1.ref.proptab"/>). That section covers Properties in
+      properties tab of the details pane (see 
+      <xref linkend="s1.ref.proptab"/>). That section covers properties in
       general, in this chapter they are linked to specific artifacts.</para>
 
-    <para>Of particular importance are the sections on Property Toolbars (see
-      <xref linkend="s2.ref.proptoolbar"/>) and Common Property Sheet Features
-      (see <xref linkend="s2.ref.propcommonfeat"/>). These document the toolbar
-      buttons and key features that are common to most Property Sheets.</para>
+    <para>Of particular importance are the sections on property tool bars (see
+      <xref linkend="s2.ref.proptoolbar"/>) and common property sheet features
+      (see <xref linkend="s2.ref.propcommonfeat"/>). These document the tool
+      bar buttons and key features that are common to most property
+      sheets.</para>
   </sect1>
 
-  <!-- General mouse behaviour. Note ths is linked to the section "The Mouse"
+  <!-- General mouse behavior. Note this is linked to the section "The Mouse"
        in the tutorial chapter "UML Based OOA&D" -->
 
   <sect1>
-    <title>General Mouse Behaviour</title>
+    <title>General Mouse Behavior</title>
 
     <para>&argouml; assumes a two button mouse. We will refer to the buttons as
       <quote>&button1;</quote> and
@@ -61,21 +62,21 @@ Modifications
         operations. If the item is an artifact in the navigation pane or the
         editing pane it will be highlighted.</para>
 
-      <para>In the case of the toolbar of the editing pane, that artifact is
+      <para>In the case of the tool bar of the editing pane, that artifact is
         selected as the next to be added to the diagram (but only
         once&mdash;see double clicking for adding multiple artifacts). The
         adding to the diagram is achieved by moving the mouse to the editing
         area and clicking again.</para>
     </sect2>
 
-    <!-- Button1 doubleclick -->
+    <!-- Button1 double click -->
 
     <sect2>
       <title>&Button1; Double Click</title>
 
       <para>This action is identical to a single click
         <emphasis>except</emphasis>, when it is used with the editing pane
-        toolbar. Under these circumstances the selected artifact will be added
+        tool bar. Under these circumstances the selected artifact will be added
         multiple times to the drawing area, once for each further button click,
         until the tool is again selected or another tool chosen.</para>
     </sect2>
@@ -92,7 +93,7 @@ Modifications
       <para>&Button1; motion also has an effect in the editing pane. Over
         graphical artifacts it will move the artifact to a new
         position. Graphical artifacts that are selected show handles, and these
-        can be used for resizing.</para>
+        can be used for re-sizing.</para>
 
       <para>Where the artifact is some form of connector between other items,
         &button1; motion other than at a handle will cause a new handle to
@@ -107,14 +108,14 @@ Modifications
       <title>&Button2; Click</title>
 
       <para>When used over text items in the the navigation or details panes,
-        or graphical artifacts in the editing pane, this will deplay a context
+        or graphical artifacts in the editing pane, this will display a context
         dependent drop-down menu.</para>
 
       <para>If the item has not yet been selected it will also be
         selected.</para>
     </sect2>
 
-    <!-- Button2 doubleclick -->
+    <!-- Button2 double click -->
 
     <sect2>
       <title>&Button2; Double Click</title>
@@ -131,6 +132,22 @@ Modifications
       <para>This is used to select items in a context sensitive menu popped up
         by use of &button2; click.</para>
     </sect2>
+    <!-- Shift and control keys -->
+
+    <sect2>
+      <title>Shift and Control with &Button1;</title>
+
+      <para>Where selections are to be made, the SHIFT key is used to
+        with &button1; to <emphasis>extend</emphasis> from the original
+        &button1; selection to the current position.</para>
+
+      <para>Similarly the CONTROL key with &button1; is used to add individual
+        items to the current selection. Where Ctrl-&button1; is used on an item
+        already selected, that item is removed from the selection.</para>
+
+      <para>This has its main use on the editing pane, as well as with various
+        menu dialog boxes (see <xref linkend="ch.ref.menu"/>).</para>
+    </sect2>
   </sect1>
 
   <!-- Top level artifacts. Model -->
@@ -139,7 +156,7 @@ Modifications
     <title>The Model</title>
 
     <para>The model is the top level artifact within &argouml;. In the UML
-      metamodel it is a sub-class of package. In many respects within &argouml;
+      meta-model it is a sub-class of package. In many respects within &argouml;
       it behaves similarly to a package (see <xref
         linkend="s1.ref.package"/>).</para>
 
@@ -152,15 +169,15 @@ Modifications
       of memory and may cause a problem with &argouml; running out of
       memory.</para></caution>
 
-    <para>Where standard datatypes, classes and packages are loaded (the
+    <para>Where standard data types, classes and packages are loaded (the
       default, see <xref linkend="ch.ref.entbuiltin"/>), these are sub-packages
       of the model.</para>
 
     <note><para>In version 0.9.6 of &argouml; these sub-packages are not
       initially visible from the model property pane as owned
-      packages. However if you use the datatype navigator from a suitable
-      pane, you can navigate up to the model, and thereafter that datatype's
-      subpackages will appear.</para></note>
+      packages. However if you use the data type navigator from a suitable
+      pane, you can navigate up to the model, and thereafter that data type's
+      sub-packages will appear.</para></note>
 
     <!-- Model details tabs -->
 
@@ -170,7 +187,7 @@ Modifications
       <para>The details tabs that are active for the model are described in
         <xref linkend="tab.ref.model_details_tabs"/>.</para>
 
-      <note><para>The <literal>Style</literal> tab is greyed out, since the
+      <note><para>The <literal>Style</literal> tab is grayed out, since the
         model typically has no representation on a diagram (see the caution
         above).</para></note>
 
@@ -190,10 +207,10 @@ Modifications
 
           <tbody valign="top">
 
-            <!-- Entry for ToDo Item tab -->
+            <!-- Entry for ToDoItem tab -->
 
             <row>
-              <entry>ToDo Item</entry>
+              <entry>ToDoItem</entry>
 
               <entry><para>Standard tab.</para></entry>
             </row>
@@ -234,7 +251,7 @@ Modifications
 
               <entry><para>Standard tab. There are no standard constraints
                 defined for <literal>Model</literal> within the UML
-                metamodel.</para></entry>
+                meta-model.</para></entry>
             </row>
 
             <!-- Entry for Tagged Values tab -->
@@ -242,7 +259,7 @@ Modifications
             <row>
               <entry>Tagged Values</entry>
 
-              <entry><para>Standard tab. In the UML metamodel,
+              <entry><para>Standard tab. In the UML meta-model,
                 <literal>Model</literal> has the following standard tagged
                 values defined.</para>
 
@@ -256,7 +273,7 @@ Modifications
 
                   <note><para>Derived models still have their value in
                     analysis to introduce useful names or concepts, and in
-                    design to avoid recomputation.</para></note></listitem>
+                    design to avoid re-computation.</para></note></listitem>
                 </itemizedlist>
 
                 <note><para>The UML <literal>Element</literal> metaclass from
@@ -275,14 +292,14 @@ Modifications
     <sect2>
       <title>Model Properties</title>
 
-      <!-- The properties toolbar -->
+      <!-- The properties tool bar -->
 
-      <para>The property tab toolbar for the model is described in <xref
+      <para>The property tab tool bar for the model is described in <xref
         linkend="tab.ref.model_property_toolbar"/>.</para>
 
       <table id="tab.ref.model_property_toolbar" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property toolbar for the model</title>
+        <title>Property tool bar for the model</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
           <colspec align="left"   colwidth="*2"/>
@@ -364,7 +381,7 @@ Modifications
                 that class.</para>
 
               <tip><para>Whilst it can make sense to create classes this way,
-                it is usally a lot clearer to  create them within diagrams
+                it is usually a lot clearer to  create them within diagrams
                 where you want them.</para></tip></entry>
             </row>
 
@@ -384,11 +401,11 @@ Modifications
                 for that interface.</para>
 
               <tip><para>Whilst it can make sense to create interfaces this
-                way, it is usally a lot clearer to create them within diagrams
+                way, it is usually a lot clearer to create them within diagrams
                 where you want them.</para></tip></entry>
             </row>
 
-            <!-- Entry for Add datatype button -->
+            <!-- Entry for Add data type button -->
 
             <row>
               <entry>Add datatype</entry>
@@ -398,7 +415,7 @@ Modifications
                 fileref="images/icons/datatype.gif"/>
               </imageobject></inlinemediaobject></guiicon></entry>
 
-              <entry><para>This creates a new datatype (see <xref
+              <entry><para>This creates a new data type (see <xref
                   linkend="s1.ref.datatype"/>) within the model (which appears
                 on no diagram), navigating immediately to the properties tab
                 for that datatype.</para></entry>
@@ -436,7 +453,7 @@ Modifications
                 for that actor.</para>
 
               <tip><para>Whilst it can make sense to create actors this
-                way, it is usally a lot clearer to create them within diagrams
+                way, it is usually a lot clearer to create them within diagrams
                 where you want them.</para></tip></entry>
             </row>
 
@@ -456,7 +473,7 @@ Modifications
                 for that use case.</para>
 
               <tip><para>Whilst it can make sense to create use cases this
-                way, it is usally a lot clearer to create them within diagrams
+                way, it is usually a lot clearer to create them within diagrams
                 where you want them.</para></tip></entry>
             </row>
 
@@ -476,7 +493,7 @@ Modifications
                 for that package.</para>
 
               <tip><para>Whilst it can make sense to create sub-packages of the
-                model this way, it is usally a lot clearer to create them
+                model this way, it is usually a lot clearer to create them
                 within diagrams where you want them.</para></tip></entry>
             </row>
 
@@ -497,7 +514,7 @@ Modifications
                   properties tab for that generalization.</para>
 
               <tip><para>Whilst it can make sense to create generalizations
-                this way, it is usally a lot clearer to create them within
+                this way, it is usually a lot clearer to create them within
                 diagrams where you want them.</para></tip></entry>
             </row>
 
@@ -511,14 +528,17 @@ Modifications
                 fileref="images/icons/realization.gif"/>
               </imageobject></inlinemediaobject></guiicon></entry>
 
-              <entry><para>This creates a new realization (see <xref
-                  linkend="s1.ref.realization"/>) within the model (which
-                appears on no diagram), navigating immediately to the
-                properties tab for that realization.</para>
+              <entry><para>This should create a new realization (i.e. an
+                abstraction with stereotype
+                <literal>realize</literal>&mdash;see <xref
+                  linkend="s1.ref.abstraction"/>) within the model (which
+                appears on no diagram).</para>
 
-              <tip><para>Whilst it can make sense to create realizations this
-                way, it is usally a lot clearer to create them within diagrams
-                where you want them.</para></tip></entry>
+              <warning><para>This appears to be broken in the current release
+                of &argouml;. Even if it did work, it would be of limited
+                value, since the abstraction property sheet has no mechanism
+                for adding supplier and client
+                artifacts.</para></warning></entry>
             </row>
 
             <!-- Entry for Delete button -->
@@ -628,7 +648,7 @@ Modifications
                 </imageobject></inlinemediaobject></guiicon> icon. If a
                   stereotype has been selected, this will navigate you to the
                   stereotype property panel (see <xref
-                    linkend="s1.ref.stereotype"/>.</para></entry>
+                    linkend="s1.ref.stereotype"/>).</para></entry>
             </row>
 
             <!-- Entry for Namespace -->
@@ -670,7 +690,7 @@ Modifications
                   meaningfully applies to the Model, since all packages sit
                   within the model. In the absence of the
                   <literal>topLevel</literal> stereotype, this could be used to
-                  emphasise that the Model is at the top
+                  emphasize that the Model is at the top
                   level.</para></tip></listitem> </itemizedlist></entry>
             </row>
 
@@ -764,13 +784,13 @@ Modifications
                   pane.</para></tip></listitem>
 
                 <listitem><para><literal>Delete</literal>. This is always
-                  greyed out for a model.</para></listitem>
+                  grayed out for a model.</para></listitem>
 
                 <listitem><para><literal>Go</literal>. This is always
-                  greyed out for a model.</para></listitem>
+                  grayed out for a model.</para></listitem>
 
                 <listitem><para><literal>Open</literal>. This is always
-                  greyed out for a model.</para></listitem>
+                  grayed out for a model.</para></listitem>
               </itemizedlist></entry>
             </row>
           </tbody>
@@ -811,7 +831,7 @@ Modifications
 
     <para>You can navigate to existing property types via the
       <literal>NavClass</literal> button on any property sheet that has a Type
-      dropdown (for example attribute or parameter).</para>
+      drop-down (for example attribute or parameter).</para>
 
     <caution><para>UML&nbsp;1.3 allows user defined datatypes to be placed on
       class diagrams. This is not permitted in &argouml;.</para></caution>
@@ -840,10 +860,10 @@ Modifications
 
           <tbody valign="top">
 
-            <!-- Entry for ToDo Item tab -->
+            <!-- Entry for ToDoItem tab -->
 
             <row>
-              <entry>ToDo Item</entry>
+              <entry>ToDoItem</entry>
 
               <entry><para>Standard tab.</para></entry>
             </row>
@@ -914,7 +934,7 @@ Modifications
                     superclass, <literal>Classifier</literal>). Values
                     <literal>transitory</literal>, indicating state is
                     destroyed when an instance is destroyed or
-                    <literal>persistant</literal>, marking state is
+                    <literal>persistent</literal>, marking state is
                     preserved when an instance is destroyed.</para>
 
                   <tip><para>Since user defined datatypes are enumerations,
@@ -955,14 +975,14 @@ Modifications
     <sect2>
       <title>Datatype Properties</title>
 
-      <!-- The properties toolbar -->
+      <!-- The properties tool bar -->
 
-      <para>The property tab toolbar for datatypes is described in <xref
+      <para>The property tab tool bar for datatypes is described in <xref
         linkend="tab.ref.datatype_property_toolbar"/>.</para>
 
       <table id="tab.ref.datatype_property_toolbar" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property toolbar for package</title>
+        <title>Property tool bar for package</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
           <colspec align="left"   colwidth="*2"/>
@@ -1061,7 +1081,7 @@ Modifications
                 datatype, navigating immediately to the properties tab for that
                 literal.</para>
 
-              <caution><para>&argouml; does not actually have a seperate
+              <caution><para>&argouml; does not actually have a separate
                 concept of a literal. The navigation will take you to the
                 property sheet for an attribute of a class (see <xref
                 linkend="s1.ref.attribute"/>). When defining a literal, all
@@ -1134,7 +1154,7 @@ Modifications
                 <literal>utility</literal>). &argouml; also provides the
                 additional stereotypes, <literal>machine</literal>,
                 <literal>organization</literal> and <literal>person</literal>
-                as well as the abstration stereotype
+                as well as the abstraction stereotype
                 <literal>realize</literal>.</para>
 
               <para>Most important of all, &argouml; provides the stereotype
@@ -1162,7 +1182,7 @@ Modifications
                 </imageobject></inlinemediaobject></guiicon> icon. If a
                   stereotype has been selected, this will navigate you to the
                   stereotype property panel (see <xref
-                    linkend="s1.ref.stereotype"/>.</para></entry>
+                    linkend="s1.ref.stereotype"/>).</para></entry>
             </row>
 
             <!-- Entry for Extends -->
@@ -1172,7 +1192,7 @@ Modifications
 
               <entry><para>Text box. Lists any use case extended by this
                 datatype. Meaningless for a datatype. The entry is always none
-                and the pop up menu greyed out.</para></entry>
+                and the pop up menu grayed out.</para></entry>
             </row>
 
             <!-- Entry for Implements -->
@@ -1253,7 +1273,7 @@ Modifications
                 </para></caution></listitem>
 
                 <listitem><para><literal>final</literal> indicates that this
-                  datatype can have no further subtypes, while
+                  datatype can have no further sub-types, while
                   <literal>root</literal> indicates it is a top level
                   datatype.</para>
 
@@ -1285,7 +1305,7 @@ Modifications
               <entry><para>Text box. Meaningless for a datatype (which can
                 never be a generalization), which always
                 shows the entry <literal>none</literal> here. The pop-up menu
-                is always greyed out.</para></entry>
+                is always grayed out.</para></entry>
             </row>
 
             <!-- Entry for Operations -->
@@ -1294,7 +1314,7 @@ Modifications
               <entry>Operations</entry>
 
               <entry><para>Text area. Lists all the operations defined on this
-                dataType. &Button1; click takes you to the selected operation,
+                datatype. &Button1; click takes you to the selected operation,
                 &button2; click brings up a pop up menu with five
                 entries.</para>
 
@@ -1336,7 +1356,7 @@ Modifications
               <entry>Literals</entry>
 
               <entry><para>Text area. Lists all the literals defined for this
-                dataType. &Button1; click takes you to the selected literal,
+                datatype. &Button1; click takes you to the selected literal,
                 &button2; click brings up a pop up menu with five
                 entries.</para>
 
@@ -1361,7 +1381,7 @@ Modifications
                   one down the list.</para></listitem>
               </itemizedlist>
 
-              <caution><para>&argouml; does not actually have a seperate
+              <caution><para>&argouml; does not actually have a separate
                 concept of a literal. The navigations listed above will all
                 take you to the property sheet for an attribute of a class (see
                 <xref linkend="s1.ref.attribute"/>). When defining a literal,
@@ -1409,7 +1429,7 @@ Modifications
       <para>The details tabs that are active for stereotypes are described in
         <xref linkend="tab.ref.stereotype_details_tabs"/>.</para>
 
-      <note><para>The <literal>Style</literal> tab is greyed out, since a
+      <note><para>The <literal>Style</literal> tab is grayed out, since a
         stereotype has no representation on a diagram.</para></note>
 
       <table id="tab.ref.stereotype_details_tabs" frame="all" colsep="1"
@@ -1428,10 +1448,10 @@ Modifications
 
           <tbody valign="top">
 
-            <!-- Entry for ToDo Item tab -->
+            <!-- Entry for ToDoItem tab -->
 
             <row>
-              <entry>ToDo Item</entry>
+              <entry>ToDoItem</entry>
 
               <entry><para>Standard tab.</para></entry>
             </row>
@@ -1529,14 +1549,14 @@ Modifications
     <sect2>
       <title>Stereotype Properties</title>
 
-      <!-- The properties toolbar -->
+      <!-- The properties tool bar -->
 
-      <para>The property tab toolbar for stereotypes is described in <xref
+      <para>The property tab tool bar for stereotypes is described in <xref
         linkend="tab.ref.stereotype_property_toolbar"/>.</para>
 
       <table id="tab.ref.stereotype_property_toolbar" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property toolbar for the model</title>
+        <title>Property tool bar for stereotype</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
           <colspec align="left"   colwidth="*2"/>
@@ -1700,7 +1720,7 @@ Modifications
             <!-- Entry for Namespace -->
 
             <row>
-              <entry>Namesparce</entry>
+              <entry>Namespace</entry>
 
               <entry><para>Text box. Records the namespace for the
                 stereotype. This is the package hierarchy.</para>
@@ -1735,7 +1755,7 @@ Modifications
 
                 <listitem><para><literal>final</literal> indicates that
                   artifacts that use this stereotype can have no further
-                  subtypes, while <literal>root</literal> indicates it is a top
+                  sub-types, while <literal>root</literal> indicates it is a top
                   level artifact.</para></listitem>
               </itemizedlist>
 
@@ -1755,7 +1775,7 @@ Modifications
 
               <entry><para>Text box. Lists any derived
                 stereotype. The drop down menu <literal>Open</literal> is
-                permanently greyed out, suggesting it may not be possible to
+                permanently grayed out, suggesting it may not be possible to
                 create derived stereotypes within &argouml;.</para></entry>
             </row>
           </tbody>
@@ -1777,7 +1797,7 @@ Modifications
 
     <note><para>State and activity diagrams are associated with a particular
       class, and can only be created when a class has been selected. In the
-      current version of &argouml; they are not greyed out even when a class
+      current version of &argouml; they are not grayed out even when a class
       is not selected. However under these circumstances they will have no
       effect.</para></note>
 
@@ -1805,10 +1825,10 @@ Modifications
 
           <tbody valign="top">
 
-          <!-- Entry for ToDo Item tab -->
+          <!-- Entry for ToDoItem tab -->
 
           <row>
-            <entry>ToDo Item</entry>
+            <entry>ToDoItem</entry>
 
             <entry><para>Standard tab.</para></entry>
           </row>
@@ -1845,14 +1865,14 @@ Modifications
     <sect2>
       <title>Diagram Properties</title>
 
-      <!-- The properties toolbar -->
+      <!-- The properties tool bar -->
 
-      <para>The property tab toolbar for diagrams is described in <xref
+      <para>The property tab tool bar for diagrams is described in <xref
         linkend="tab.ref.diagram_property_toolbar"/>.</para>
 
       <table id="tab.ref.diagram_property_toolbar" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property toolbar for diagram</title>
+        <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
           <colspec align="left"   colwidth="*2"/>
@@ -1879,7 +1899,7 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate back to the previous diagram. Always
-                greyed out, since there is no way to navigate to a diagram
+                grayed out, since there is no way to navigate to a diagram
                 (and hence no way to navigate back).</para></entry>
             </row>
 
@@ -1894,7 +1914,7 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate forward to the next diagram. Always
-                greyed out, since there is no way to navigate to a diagram
+                grayed out, since there is no way to navigate to a diagram
                 (and hence no way to navigate forward).</para></entry>
             </row>
           </tbody>

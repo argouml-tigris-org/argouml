@@ -160,7 +160,8 @@ Modifications
 
         <warning><para>This deletes the artifact from the model completely, not
           just from the diagram. To remove just from the diagram use the Edit
-          Menu (see <xref linkend="s2.menueditremdiag"/>).</para></warning>
+          Menu (see
+          <xref linkend="s2.menu_edit_remove_from_diagram"/>).</para></warning>
       </sect3>
     </sect2>
   </sect1>

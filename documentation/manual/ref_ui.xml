@@ -50,7 +50,7 @@ Modifications
             bar. The four sub-windows are arranged two by two, and named,
             clockwise from top left as: Navigator Pane, Editing Pane, Details
             Pane and To-Do Pane. At the top of the diagram Pane is a horizontal
-            toolbar.</para>
+            tool bar.</para>
         </textobject>
       </mediaobject></screenshot>
     </figure>
@@ -63,7 +63,7 @@ Modifications
       Pane</emphasis> (see <xref linkend="ch.ref.editpane"/>), <emphasis>Details
       Pane</emphasis> (see <xref linkend="ch.ref.navpane"/>) and <emphasis>To-Do
       Pane</emphasis> (see <xref linkend="ch.ref.navpane"/>). At the top of the
-      details Pane is a <emphasis>toolbar</emphasis>. An overview of the Panes
+      details Pane is a <emphasis>tool bar</emphasis>. An overview of the Panes
       is given in <xref linkend="s1.ref.panes"/>. Finally at the bottom of the
       window is a <emphasis>status bar</emphasis> described in 
       <xref linkend="s1.ref.status"/>.</para>
@@ -82,7 +82,7 @@ Modifications
       Pane</emphasis> (see <xref linkend="ch.ref.editpane"/>), <emphasis>Details
       Pane</emphasis> (see <xref linkend="ch.ref.navpane"/>) and <emphasis>To-Do
       Pane</emphasis> (see <xref linkend="ch.ref.navpane"/>). At the top the
-      details Pane is a <emphasis>toolbar</emphasis>.</para>
+      details Pane is a <emphasis>tool bar</emphasis>.</para>
 
     <sect2>
       <title>Resizing Panes</title>
