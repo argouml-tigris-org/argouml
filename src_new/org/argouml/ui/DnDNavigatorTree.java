@@ -49,6 +49,8 @@ import org.argouml.ui.explorer.ExplorerTree;
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.
  *
+ * @deprecated replaced with DnDExplorerTree in explorer package.
+ *
  * <p>$Id$
  *
  * @author  alexb
