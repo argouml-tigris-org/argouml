@@ -1,0 +1,12 @@
+#
+# add -Dlog4j.configuration=org/argouml/resource/critics.lcf
+# to the command line to use this log4j configuration
+#
+log4j.rootCategory=WARN, CRITICS
+#
+log4j.category.org.argouml.uml.cognitive.critics=DEBUG
+# 
+log4j.appender.CRITICS=org.apache.log4j.ConsoleAppender
+log4j.appender.CRITICS.layout=org.apache.log4j.PatternLayout
+log4j.appender.CRITICS.layout.ConversionPattern=%5p: %m (%F:%L)%n
+log4j.appender.CRITICS.Threshold=DEBUG
