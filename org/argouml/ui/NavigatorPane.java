@@ -27,8 +27,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
@@ -46,31 +44,17 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
-
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.QuadrantPanel;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
-import org.argouml.swingext.Toolbar;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
-import org.argouml.uml.diagram.ui.ActionAddExistingNode;
-import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.ActionSetSourcePath;
-import org.argouml.uml.ui.ActionAddPackage;
-import org.argouml.uml.ui.UMLAction;
-
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.ui.PopupGenerator;
-
-
 import org.argouml.kernel.PredAND;
 import org.argouml.kernel.PredInstanceOf;
 import org.argouml.kernel.PredNotInstanceOf;
 import org.argouml.kernel.PredOR;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.swingext.Toolbar;
 import org.argouml.uml.diagram.collaboration.ui.GoAssocRoleMessages;
 import org.argouml.uml.diagram.collaboration.ui.GoClassifierToCollaboration;
 import org.argouml.uml.diagram.collaboration.ui.GoCollaborationDiagram;
@@ -83,78 +67,47 @@ import org.argouml.uml.diagram.collaboration.ui.GoProjectToCollaboration;
 import org.argouml.uml.diagram.deployment.ui.GoDiagramToNode;
 import org.argouml.uml.diagram.sequence.ui.GoLinkStimuli;
 import org.argouml.uml.diagram.sequence.ui.GoStimulusToAction;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.PredIsFinalState;
 import org.argouml.uml.diagram.state.PredIsStartState;
-import org.argouml.uml.diagram.state.ui.GoMachineDiagram;
-import org.argouml.uml.diagram.state.ui.GoMachineToState;
-import org.argouml.uml.diagram.state.ui.GoMachineToTrans;
-import org.argouml.uml.diagram.state.ui.GoProjectToStateMachine;
-import org.argouml.uml.diagram.state.ui.GoStateMachineToTransition;
-import org.argouml.uml.diagram.state.ui.GoStateToDoActivity;
-import org.argouml.uml.diagram.state.ui.GoStateToDownstream;
-import org.argouml.uml.diagram.state.ui.GoStateToEntry;
-import org.argouml.uml.diagram.state.ui.GoStateToExit;
-import org.argouml.uml.diagram.state.ui.GoStateToIncomingTrans;
-import org.argouml.uml.diagram.state.ui.GoStateToInternalTrans;
-import org.argouml.uml.diagram.state.ui.GoStateToOutgoingTrans;
-import org.argouml.uml.diagram.state.ui.GoCompositeStateToSubvertex;
-import org.argouml.uml.diagram.state.ui.GoTransitionToSource;
-import org.argouml.uml.diagram.state.ui.GoTransitionToTarget;
-import org.argouml.uml.diagram.static_structure.ui.GoClassToAssociatedClass;
-import org.argouml.uml.diagram.static_structure.ui.GoClassToNavigableClass;
-import org.argouml.uml.diagram.static_structure.ui.GoModelToClass;
-import org.argouml.uml.diagram.static_structure.ui.GoClassToSummary;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAssociation;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAttribute;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToInheritance;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToIncomingDependency;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOutgoingDependency;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOperation;
-import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateDiagram;
-import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateMachine;
-import org.argouml.uml.diagram.ui.GoClassifierToBeh;
-import org.argouml.uml.diagram.ui.GoClassifierToStateMachine;
-import org.argouml.uml.diagram.ui.GoClassifierToStructuralFeature;
-import org.argouml.uml.diagram.ui.GoDiagramToEdge;
-import org.argouml.uml.diagram.ui.GoFilteredChildren;
-import org.argouml.uml.diagram.ui.GoGenElementToDerived;
-import org.argouml.uml.diagram.ui.GoInteractionMessages;
-import org.argouml.uml.diagram.ui.GoModelToBaseElements;
-import org.argouml.uml.diagram.ui.GoModelToDiagram;
-import org.argouml.uml.diagram.ui.GoModelToElements;
-import org.argouml.uml.diagram.ui.GoOperationToCollaborationDiagram;
-import org.argouml.uml.diagram.ui.GoProjectToDiagram;
-import org.argouml.uml.diagram.ui.GoProjectToModel;
+import org.argouml.uml.diagram.state.ui.*;
+import org.argouml.uml.diagram.static_structure.ui.*;
+import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.use_case.ui.GoUseCaseToExtensionPoint;
+import org.argouml.uml.ui.ActionAddPackage;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.ActionSetSourcePath;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.behavior.common_behavior.GoSignalToReception;
 import org.argouml.uml.ui.foundation.core.GoModelElementToComment;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.ui.PopupGenerator;
 
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MDataValue;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationClass;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.model_management.MSubsystem;
-
-
-import ru.novosoft.uml.behavior.common_behavior.MDataValue;
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MDataType;
+import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MFlow;
+import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MRelationship;
-import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.model_management.MPackage;
+import ru.novosoft.uml.model_management.MSubsystem;
 
 /**
  * The upper-left pane of the main Argo/UML window, shows a tree view
@@ -180,7 +133,8 @@ public class NavigatorPane
     implements
         ItemListener,
         PropertyChangeListener,
-        QuadrantPanel {
+        QuadrantPanel,
+        MElementListener {
     
     protected static Category cat = Category.getInstance(NavigatorPane.class);
     
@@ -265,7 +219,7 @@ public class NavigatorPane
         ProjectManager.getManager().addPropertyChangeListener(this);
         
         if (doSplash) {
-            SplashScreen splash = ProjectBrowser.TheInstance.getSplashScreen();
+            SplashScreen splash = ProjectBrowser.getInstance().getSplashScreen();
             splash.getStatusBar().showStatus(
                 "Making NavigatorPane: Setting Perspectives");
             splash.getStatusBar().showProgress(25);
@@ -416,7 +370,7 @@ public class NavigatorPane
         else
             row = row + 1;
         _tree.setSelectionRow(row);
-        ProjectBrowser.TheInstance.setTarget(getSelectedObject());
+        ProjectBrowser.getInstance().setTarget(getSelectedObject());
     }
     
     /** history method - to be moved into some HistoryManager
@@ -429,7 +383,7 @@ public class NavigatorPane
         else
             row = row - 1;
         _tree.setSelectionRow(row);
-        ProjectBrowser.TheInstance.setTarget(getSelectedObject());
+        ProjectBrowser.getInstance().setTarget(getSelectedObject());
     }
     
     /** history method - to be moved into some HistoryManager
@@ -445,7 +399,7 @@ public class NavigatorPane
      */
     public void addToHistory(Object sel) {
         if (_navHistory.size() == 0)
-            _navHistory.addElement(ProjectBrowser.TheInstance.getTarget());
+            _navHistory.addElement(ProjectBrowser.getInstance().getTarget());
         while (_navHistory.size() - 1 > _historyIndex) {
             _navHistory.removeElementAt(_navHistory.size() - 1);
         }
@@ -469,7 +423,7 @@ public class NavigatorPane
         if (_navHistory.size() <= _historyIndex)
             return;
         Object oldTarget = _navHistory.elementAt(_historyIndex);
-        ProjectBrowser.TheInstance.setTarget(oldTarget);
+        ProjectBrowser.getInstance().setTarget(oldTarget);
     }
     
     /** history method - to be moved into some HistoryManager
@@ -484,7 +438,7 @@ public class NavigatorPane
     public void navForw() {
         _historyIndex = Math.min(_navHistory.size() - 1, _historyIndex + 1);
         Object oldTarget = _navHistory.elementAt(_historyIndex);
-        ProjectBrowser.TheInstance.setTarget(oldTarget);
+        ProjectBrowser.getInstance().setTarget(oldTarget);
     }
     
     ////////////////////////////////////////////////////////////////
@@ -920,12 +874,12 @@ public class NavigatorPane
                 .getCurrentProject()
                 .getModel()))
                 || ((obj instanceof MStateVertex) &&
-                ((ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLStateDiagram) &&
-                (((UMLStateDiagram)ProjectBrowser.TheInstance.getActiveDiagram()).getStateMachine() ==
+                ((ProjectManager.getManager().getCurrentProject().getActiveDiagram() instanceof UMLStateDiagram) &&
+                (((UMLStateDiagram)ProjectManager.getManager().getCurrentProject().getActiveDiagram()).getStateMachine() ==
                 StateMachinesHelper.getHelper().getStateMachine(obj))))
                 || (obj instanceof MInstance
                 && !(obj instanceof MDataValue)
-                && !(ProjectBrowser.TheInstance.getActiveDiagram()
+                && !(ProjectManager.getManager().getCurrentProject().getActiveDiagram()
                 instanceof UMLSequenceDiagram))) {
                     UMLAction action =
                     new ActionAddExistingNode(
@@ -936,7 +890,7 @@ public class NavigatorPane
                 }
                 if ((obj instanceof MRelationship && !(obj instanceof MFlow))
                 || ((obj instanceof MLink)
-                && !(ProjectBrowser.TheInstance.getActiveDiagram()
+                && !(ProjectManager.getManager().getCurrentProject().getActiveDiagram()
                 instanceof UMLSequenceDiagram))
                 || (obj instanceof MTransition)) {
                     UMLAction action =
@@ -992,9 +946,93 @@ public class NavigatorPane
             
             Object sel = getSelectedObject();
             if (sel != null) {
-                ProjectBrowser.TheInstance.setTarget(sel);
+                ProjectBrowser.getInstance().setTarget(sel);
             }
         }
     }
     
+    /**
+     * If a element changes, this will be catched by this method and reflected
+     * in the tree.
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
+    public void listRoleItemSet(MElementEvent e) {
+        if (e.getAddedValue() != null || e.getRemovedValue() != null || 
+            (e.getNewValue() != null && 
+                !e.getNewValue().equals(e.getOldValue()))) {
+            forceUpdate();
+        }
+
+    }
+
+    /**
+     * If a element changes, this will be catched by this method and reflected
+     * in the tree.
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
+    public void propertySet(MElementEvent e) {
+        if (e.getAddedValue() != null || e.getRemovedValue() != null || 
+             (e.getNewValue() != null && 
+                 !e.getNewValue().equals(e.getOldValue()))) {
+             forceUpdate(e.getSource());
+         }
+
+    }
+
+    /**
+     * If a element changes, this will be catched by this method and reflected
+     * in the tree.
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
+    public void recovered(MElementEvent e) {
+        if (e.getAddedValue() != null || e.getRemovedValue() != null || 
+            (e.getNewValue() != null && 
+                !e.getNewValue().equals(e.getOldValue()))) {
+            forceUpdate(e.getSource());
+        }
+
+    }
+
+    /**
+     * If a element changes, this will be catched by this method and reflected
+     * in the tree.
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
+    public void removed(MElementEvent e) {
+        if (e.getAddedValue() != null || e.getRemovedValue() != null || 
+            (e.getNewValue() != null && 
+                !e.getNewValue().equals(e.getOldValue()))) {
+            forceUpdate(e.getSource());
+        }
+
+    }
+
+    /**
+     * If a element changes, this will be catched by this method and reflected
+     * in the tree.
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    public void roleAdded(MElementEvent e) {
+        if (e.getAddedValue() != null || e.getRemovedValue() != null || 
+            (e.getNewValue() != null && 
+                !e.getNewValue().equals(e.getOldValue()))) {
+            forceUpdate(e.getSource());
+        }
+
+    }
+
+    /**
+     * If a element changes, this will be catched by this method and reflected
+     * in the tree.
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
+    public void roleRemoved(MElementEvent e) {
+        if (e.getAddedValue() != null || e.getRemovedValue() != null || 
+            (e.getNewValue() != null && 
+                !e.getNewValue().equals(e.getOldValue()))) {
+            forceUpdate(e.getSource());
+        }
+
+    }
+
 } /* end class NavigatorPane */
