@@ -30,6 +30,7 @@ import org.argouml.util.osdep.OsUtil;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.SuffixFilter;
+import org.argouml.ui.ProjectBrowser;
 
 import org.tigris.gef.base.Globals;
 
@@ -195,6 +196,7 @@ public abstract class FileImportSupport implements PluggableImport {
 			}
 		    } else if (e.getActionCommand().equals(JFileChooser.CANCEL_SELECTION)) {
 			_import.disposeDialog();
+                        ProjectBrowser.getInstance().setEnabled(true);
 		    }
 		}
 	    });
