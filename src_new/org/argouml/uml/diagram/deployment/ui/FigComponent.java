@@ -28,25 +28,28 @@
 
 package org.argouml.uml.diagram.deployment.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.util.Vector;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.application.api.Notation;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MComponent;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNode;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /** Class to display graphics for a UML Component in a diagram. */
 
@@ -279,10 +282,6 @@ public class FigComponent extends FigNodeModelElement {
 
   ////////////////////////////////////////////////////////////////
   // internal methods
-
-  protected void modelChanged() {
-    super.modelChanged();
-  }
 
   protected void updateStereotypeText() {
     MModelElement me = (MModelElement) getOwner();

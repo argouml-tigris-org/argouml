@@ -22,7 +22,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.events;
-import org.argouml.application.api.*;
 
 /** ArgoNotationEvent is used to notify interested parties
  *  that the module which is the event source

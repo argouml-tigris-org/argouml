@@ -70,6 +70,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -752,122 +754,39 @@ public class FigClass extends FigNodeModelElement {
         return null;
     }
 
-    protected void modelChanged() {
-        super.modelChanged();
-        Rectangle rect = getBounds();
-        int xpos = _attrBigPort.getX();
-        int ypos = _attrBigPort.getY();
-        MClassifier cls = (MClassifier) getOwner();
-        if (cls == null)
+    /**
+     * Handles changes of the model. Takes into account the event that occured. If
+     * you need to update the whole fig, consider using renderingChanged.
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(MElementEvent)
+     */
+    protected void modelChanged(MElementEvent mee) {
+        if (getOwner() == null)
             return;
-        int acounter = 1;
-        Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
-        if (strs != null) {
-            Iterator iter = strs.iterator();
-            Vector figs = _attrVec.getFigs();
-            CompartmentFigText attr;
-            while (iter.hasNext()) {
-                MStructuralFeature sf = (MStructuralFeature) iter.next();
-                // update the listeners
-                UmlModelEventPump.getPump().removeModelEventListener(this, sf);
-                UmlModelEventPump.getPump().addModelEventListener(this, sf);
-                if (figs.size() <= acounter) {
-                    attr =
-                        new FigFeature(
-                            xpos + 1,
-                            ypos + 1 + (acounter - 1) * ROWHEIGHT,
-                            0,
-                            ROWHEIGHT - 2,
-                            _attrBigPort);
-                    // bounds not relevant here
-                    attr.setFilled(false);
-                    attr.setLineWidth(0);
-                    attr.setFont(LABEL_FONT);
-                    attr.setTextColor(Color.black);
-                    attr.setJustification(FigText.JUSTIFY_LEFT);
-                    attr.setMultiLine(false);
-                    _attrVec.addFig(attr);
-                } else {
-                    attr = (CompartmentFigText) figs.elementAt(acounter);
-                }
-                attr.setText(Notation.generate(this, sf));
-                attr.setOwner(sf);
-                // underline, if static
-                attr.setUnderline(
-                    MScopeKind.CLASSIFIER.equals(sf.getOwnerScope()));
-                acounter++;
-            }
-            if (figs.size() > acounter) {
-                //cleanup of unused attribute FigText's
-                for (int i = figs.size() - 1; i >= acounter; i--)
-                    _attrVec.removeFig((Fig) figs.elementAt(i));
-            }
-            getUpdatedSize(_attrVec, xpos, ypos, 0, 0);
+        MClass cls = (MClass) getOwner();
+        // attributes
+        if (mee == null
+            || mee.getSource() instanceof MAttribute
+            || (mee.getSource() == getOwner()
+                && mee.getName().equals("feature"))) {
+            updateAttributes();
+            damage();
         }
-        int ocounter = 1;
-        Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
-        if (behs != null) {
-            behs.removeAll(strs);
-            Iterator iter = behs.iterator();
-            Vector figs = _operVec.getFigs();
-            CompartmentFigText oper;
-            while (iter.hasNext()) {
-                MBehavioralFeature bf = (MBehavioralFeature) iter.next();
-                // update the listeners
-                UmlModelEventPump.getPump().removeModelEventListener(this, bf);
-                UmlModelEventPump.getPump().addModelEventListener(this, bf);
-                if (figs.size() <= ocounter) {
-                    oper =
-                        new FigFeature(
-                            xpos + 1,
-                            ypos + 1 + (ocounter - 1) * ROWHEIGHT,
-                            0,
-                            ROWHEIGHT - 2,
-                            _operBigPort);
-                    // bounds not relevant here
-                    oper.setFilled(false);
-                    oper.setLineWidth(0);
-                    oper.setFont(LABEL_FONT);
-                    oper.setTextColor(Color.black);
-                    oper.setJustification(FigText.JUSTIFY_LEFT);
-                    oper.setMultiLine(false);
-                    _operVec.addFig(oper);
-                } else {
-                    oper = (CompartmentFigText) figs.elementAt(ocounter);
-                }
-                oper.setText(Notation.generate(this, bf));
-                oper.setOwner(bf);
-                // underline, if static
-                oper.setUnderline(
-                    MScopeKind.CLASSIFIER.equals(bf.getOwnerScope()));
-                // italics, if abstract
-                //oper.setItalic(((MOperation)bf).isAbstract()); // does not properly work (GEF bug?)
-                if (((MOperation) bf).isAbstract())
-                    oper.setFont(ITALIC_LABEL_FONT);
-                else
-                    oper.setFont(LABEL_FONT);
-                ocounter++;
-            }
-            if (figs.size() > ocounter) {
-                //cleanup of unused operation FigText's
-                for (int i = figs.size() - 1; i >= ocounter; i--)
-                    _operVec.removeFig((Fig) figs.elementAt(i));
-            }
+        // operations
+        if (mee == null
+            || mee.getSource() instanceof MOperation
+            || mee.getSource() instanceof MParameter
+            || (mee.getSource() == getOwner()
+                && mee.getName().equals("feature"))) {
+            updateOperations();
+            damage();
         }
+        if (mee == null || mee.getName().equals("isAbstract")) {
+            updateAbstract();
+            damage();
+        }
+        // name updating
+        super.modelChanged(mee);
 
-        if (cls.isAbstract())
-            _name.setFont(ITALIC_LABEL_FONT);
-        else
-            _name.setFont(LABEL_FONT);
-
-        setBounds(rect.x, rect.y, rect.width, rect.height);
-        // recalculates all bounds
-    }
-
-    public void renderingChanged() {
-        super.renderingChanged();
-        updateStereotypeText();
-        modelChanged();
     }
 
     protected void updateStereotypeText() {
@@ -891,6 +810,7 @@ public class FigClass extends FigNodeModelElement {
                 rect.y += STEREOHEIGHT;
                 rect.height -= STEREOHEIGHT;
                 setBounds(rect.x, rect.y, rect.width, rect.height);
+                calcBounds();
             }
         } else {
             _stereo.setText(Notation.generateStereotype(this, stereo));
@@ -908,6 +828,7 @@ public class FigClass extends FigNodeModelElement {
                     rect.y -= STEREOHEIGHT;
                     rect.height += STEREOHEIGHT;
                     setBounds(rect.x, rect.y, rect.width, rect.height);
+                    calcBounds();
                 }
 
             }
@@ -1069,6 +990,8 @@ public class FigClass extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setOwner(Object)
      */
     public void setOwner(Object own) {
+        // set the listeners for the operations, features and parameters
+        // TODO figure out if this is needed (when is setOwner called?)
         if (own != null) {
             MClass cl = (MClass) own;
             Iterator it = cl.getFeatures().iterator();
@@ -1143,6 +1066,167 @@ public class FigClass extends FigNodeModelElement {
         if (targetIsSet == false)
             ProjectBrowser.TheInstance.setTarget(getOwner());
 
+    }
+
+    /**
+     * Updates the attributes in the fig. Called from modelchanged if there is 
+     * a modelevent effecting the attributes and from renderingChanged in all 
+     * cases.
+     */
+    protected void updateAttributes() {
+        MClassifier cls = (MClassifier) getOwner();
+        int xpos = _attrBigPort.getX();
+        int ypos = _attrBigPort.getY();
+        int acounter = 1;
+        Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
+        if (strs != null) {
+            Iterator iter = strs.iterator();
+            Vector figs = _attrVec.getFigs();
+            CompartmentFigText attr;
+            while (iter.hasNext()) {
+                MStructuralFeature sf = (MStructuralFeature) iter.next();
+                // update the listeners
+                UmlModelEventPump.getPump().removeModelEventListener(this, sf);
+                UmlModelEventPump.getPump().addModelEventListener(this, sf);
+                if (figs.size() <= acounter) {
+                    attr =
+                        new FigFeature(
+                            xpos + 1,
+                            ypos + 1 + (acounter - 1) * ROWHEIGHT,
+                            0,
+                            ROWHEIGHT - 2,
+                            _attrBigPort);
+                    // bounds not relevant here
+                    attr.setFilled(false);
+                    attr.setLineWidth(0);
+                    attr.setFont(LABEL_FONT);
+                    attr.setTextColor(Color.black);
+                    attr.setJustification(FigText.JUSTIFY_LEFT);
+                    attr.setMultiLine(false);
+                    _attrVec.addFig(attr);
+                } else {
+                    attr = (CompartmentFigText) figs.elementAt(acounter);
+                }
+                attr.setText(Notation.generate(this, sf));
+                attr.setOwner(sf);
+                // underline, if static
+                attr.setUnderline(
+                    MScopeKind.CLASSIFIER.equals(sf.getOwnerScope()));
+                acounter++;
+            }
+            if (figs.size() > acounter) {
+                //cleanup of unused attribute FigText's
+                for (int i = figs.size() - 1; i >= acounter; i--)
+                    _attrVec.removeFig((Fig) figs.elementAt(i));
+            }
+        }
+        Rectangle rect = getBounds();
+        getUpdatedSize(_attrVec, xpos, ypos, 0, 0);
+        // ouch ugly but that's for a next refactoring
+        // TODO make setBounds, calcBounds and updateBounds consistent
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+        damage();
+    }
+
+    /**
+     * Updates the operations box. Called from modelchanged if there is 
+     * a modelevent effecting the attributes and from renderingChanged in all 
+     * cases.
+     */
+    protected void updateOperations() {
+        MClassifier cls = (MClassifier) getOwner();
+        int xpos = _operBigPort.getX();
+        int ypos = _operBigPort.getY();
+        int ocounter = 1;
+        Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
+        if (behs != null) {
+            Iterator iter = behs.iterator();
+            Vector figs = _operVec.getFigs();
+            CompartmentFigText oper;
+            while (iter.hasNext()) {
+                MBehavioralFeature bf = (MBehavioralFeature) iter.next();
+                // update the listeners
+                UmlModelEventPump.getPump().removeModelEventListener(this, bf);
+                UmlModelEventPump.getPump().addModelEventListener(this, bf);
+                if (figs.size() <= ocounter) {
+                    oper =
+                        new FigFeature(
+                            xpos + 1,
+                            ypos + 1 + (ocounter - 1) * ROWHEIGHT,
+                            0,
+                            ROWHEIGHT - 2,
+                            _operBigPort);
+                    // bounds not relevant here
+                    oper.setFilled(false);
+                    oper.setLineWidth(0);
+                    oper.setFont(LABEL_FONT);
+                    oper.setTextColor(Color.black);
+                    oper.setJustification(FigText.JUSTIFY_LEFT);
+                    oper.setMultiLine(false);
+                    _operVec.addFig(oper);
+                } else {
+                    oper = (CompartmentFigText) figs.elementAt(ocounter);
+                }
+                oper.setText(Notation.generate(this, bf));
+                oper.setOwner(bf);
+                // underline, if static
+                oper.setUnderline(
+                    MScopeKind.CLASSIFIER.equals(bf.getOwnerScope()));
+                // italics, if abstract
+                //oper.setItalic(((MOperation)bf).isAbstract()); // does not properly work (GEF bug?)
+                if (((MOperation) bf).isAbstract())
+                    oper.setFont(ITALIC_LABEL_FONT);
+                else
+                    oper.setFont(LABEL_FONT);
+                ocounter++;
+            }
+            if (figs.size() > ocounter) {
+                //cleanup of unused operation FigText's
+                for (int i = figs.size() - 1; i >= ocounter; i--)
+                    _operVec.removeFig((Fig) figs.elementAt(i));
+            }
+        }
+        Rectangle rect = getBounds();
+        getUpdatedSize(_operVec, xpos, ypos, 0, 0);
+        // ouch ugly but that's for a next refactoring
+        // TODO make setBounds, calcBounds and updateBounds consistent
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+        damage();
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        updateAttributes();
+        updateOperations();
+        super.renderingChanged();
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
+     */
+    protected void updateNameText() {
+        Rectangle rect = getBounds();
+        super.updateNameText();
+
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+    }
+
+    /**
+     * Updates the name if modelchanged receives an "isAbstract" event
+     */
+    protected void updateAbstract() {
+        Rectangle rect = getBounds();
+        if (getOwner() == null)
+            return;
+        MClass cls = (MClass) getOwner();
+        if (cls.isAbstract())
+            _name.setFont(ITALIC_LABEL_FONT);
+        else
+            _name.setFont(LABEL_FONT);
+        super.updateNameText();
+        setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
 } /* end class FigClass */
