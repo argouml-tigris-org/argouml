@@ -73,7 +73,7 @@ public class XMIParser {
         try {
             XMIReader reader = new XMIReader();
             _curModel = reader.parse(new InputSource(url.openStream()));
-            _UUIDRefs = new HashMap(reader.getXMIUUIDMap());
+            _UUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
             
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -60,7 +60,12 @@ public class ParserDisplay extends Parser {
     }
     // System.out.println("parsed " + newOps.size() + " operations");
 	Vector features = new Vector(cls.getFeatures());
-	features.removeAll(MMUtil.SINGLETON.getOperations(cls));
+	Vector oldOps = new Vector(MMUtil.SINGLETON.getOperations(cls));
+	features.removeAll(oldOps);
+
+	// don't forget to remove old Operations!
+	for (int i = 0; i < oldOps.size(); i++)
+		((MOperation)oldOps.elementAt(i)).remove();
 	features.addAll(newOps);
 	cls.setFeatures(features);
   }
@@ -76,6 +81,12 @@ public class ParserDisplay extends Parser {
     }
     // System.out.println("parsed " + newAttrs.size() + " attributes");
 	Vector features = new Vector(cls.getFeatures());
+	Vector oldAttrs = new Vector(MMUtil.SINGLETON.getAttributes(cls));
+	features.removeAll(oldAttrs);
+
+	// don't forget to remove old Attrbutes!
+	for (int i = 0; i < oldAttrs.size(); i++)
+		((MAttribute)oldAttrs.elementAt(i)).remove();
 	features.removeAll(MMUtil.SINGLETON.getAttributes(cls));
 	features.addAll(newAttrs);
 	cls.setFeatures(features);
