@@ -30,6 +30,8 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
+import org.argouml.ui.targetmanager.TargetManager;
+
 
 /**
  * @since Nov 17, 2002
@@ -71,6 +73,8 @@ public class TestProject extends TestCase {
         Object cls3 = Model.getCoreFactory().buildClass(package1);
         Object cls4 = Model.getCoreFactory().buildClass(p.getRoot());
         Collection c1 = Model.getFacade().getOwnedElements(p.getRoot());
+        // Let's make it a bit more difficult by setting the target:
+        TargetManager.getInstance().setTarget(cls2);
         p.moveToTrash(package1);
         Collection c = Model.getFacade().getOwnedElements(p.getRoot());
         assertTrue("Package not in trash", p.isInTrash(package1));
