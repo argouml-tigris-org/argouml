@@ -6,6 +6,7 @@ src_new
 README.txt
 documentation
 doc
+api
 javadocs
 argouml.sh
 tests
