@@ -151,24 +151,31 @@ CVS for obtaining the latest files via internet
 	  </listitem>
 	  <listitem>
 	    <para>
-ANT, the Java make tool to manage compiling and packaging
+JDK, at least version 1.2.2 (includes the java compiler)
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>
-JDK, at least version 1.2.2 (includes the java compiler)
+ANT, the Java make tool to manage compiling and packaging.
+</para>
+	    <para>
+This tool is provided when you check out
+<filename class="directory">argouml/lib</filename>.
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>
 libs: nsuml.jar, ocl-argo.jar, gef.jar, antlrall.jar
 </para>
+	    <para>
+These tools are also provided when you check out
+<filename class="directory">argouml/lib</filename>.
+</para>
 	  </listitem>
 	</itemizedlist>
 	<para>
-The four libs can be found in cvs.
-For compiling/building, a simple 'build package'
-should be sufficient.
+Since the ant tool and the four libs are provided by in the cvs repository,
+a simple 'build package' should be sufficient to compile and build.
 </para>
       </sect2>
       <sect2>
@@ -460,20 +467,21 @@ Commit the changes thus publishing it on the web site.
 </para>
 	    </listitem>
 	  </orderedlist>
-	  <sect4>
-	    <title>Tools that does the generation</title>
-	    <para>
+	</sect3>
+	<sect3>
+	  <title>Tools that does the generation</title>
+	  <para>
 The tools and templates to do the conversion from docbook xml to html,
 pdf, and javahelp are developed by other open source projects and
-entered in the ArgoUML cvs as a convenience to the developer and
+entered in the ArgoUML cvs repository as a convenience to the developer and
 quality responsible of the ArgoUML project.
 </para>
-	    <para>
+	  <para>
 The quality responsible is mentioned because 
 this makes it possible to afterwards have access to exactly the tool 
 that was used to generate a certain version of the documentation.
 </para>
-	    <para>
+	  <para>
 When a new release of that tool is provided
 and we have decided that we want to move to that version of the tool,
 possibly at the same time as doing the necessary tweaks
@@ -484,7 +492,46 @@ If we find an unacceptable bug in any of these tools
 we either refrain from moving to that version or 
 revert to the previous version of the tool.
 </para>
-	  </sect4>
+	</sect3>
+	<sect3>
+	  <title>How developers work with documentation</title>
+	  <para>
+Developers that work with the documentation or with the tools 
+to generate the documentation (or anyone else interested in this)
+can generate the documentation like described above and examine
+the result in
+<filename class="directory">argouml/build</filename>.
+It is only the last part about checking in the result under
+<filename class="directory">argouml/www/documentation</filename>
+that requires write access in the cvs and synchronisation with the
+rest of the project.
+</para>
+	  <para>
+In order to do this you need to check out the whole of the
+<filename class="directory">argouml/documentation</filename> directory.
+You also need the directory
+<filename class="directory">argouml/lib</filename>
+that contains the tools used: ant, Fop, xalan, and more needed to
+build the documentation.
+</para>
+	  <para>
+The subdirectories of
+<filename class="directory">argouml/documentation</filename>
+contain.
+<filename class="directory">cookbook</filename>,
+<filename class="directory">faq</filename>,
+<filename class="directory">manual</filename>, and
+<filename class="directory">quick-guide</filename>
+each contain one of the four books.
+The subdirectory
+<filename class="directory">docbook-setup</filename>
+contains two things. 
+It contains the configuration files that control how the generation is done.
+It contains the xsl rules for all the generation.
+The subdirectory
+<filename class="directory">images</filename>
+contains all the required pictures for all the books.
+</para>
 	</sect3>
       </sect2>
  </sect1>
