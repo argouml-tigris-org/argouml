@@ -887,35 +887,34 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * Builds a default attribute.
      * @return MAttribute
      */
-    public MAttribute buildAttribute() {
-	//build the default attribute
-	// this should not be here via the ProjectBrowser but the CoreHelper
-	// should provide this functionality
-	Project p = ProjectManager.getManager().getCurrentProject();
-	MClassifier intType = (MClassifier) p.findType("int");
-	if (p.getModel() != intType.getNamespace()
-	    && !(ModelManagementHelper.getHelper()
-		 .getAllNamespaces(p.getModel())
-		     .contains(intType.getNamespace())))
-	{
-	    intType.setNamespace((MModel) p.getModel());
-	}
-	MAttribute attr = createAttribute();
-	attr.setName("newAttr");
-	attr.setMultiplicity(UmlFactory.getFactory()
-			     .getDataTypes().createMultiplicity(1, 1));
-	attr.setStereotype(null);
-	attr.setOwner(null);
-	attr.setType(intType);
-	attr.setInitialValue(null);
-	attr.setVisibility(MVisibilityKind.PUBLIC);
-	attr.setOwnerScope(MScopeKind.INSTANCE);
-	attr.setChangeability(MChangeableKind.CHANGEABLE);
-	attr.setTaggedValue("transient", "false");
-	attr.setTaggedValue("volatile", "false");
-	attr.setTargetScope(MScopeKind.INSTANCE);
-
-	return attr;
+    public Object buildAttribute() {
+        //build the default attribute
+        // this should not be here via the ProjectBrowser but the CoreHelper
+        // should provide this functionality
+        Project p = ProjectManager.getManager().getCurrentProject();
+        MClassifier intType = (MClassifier) p.findType("int");
+        if (p.getModel() != intType.getNamespace()
+                && !(ModelManagementHelper.getHelper()
+                 .getAllNamespaces(p.getModel())
+        	     .contains(intType.getNamespace()))) {
+            intType.setNamespace((MModel) p.getModel());
+        }
+        MAttribute attr = createAttribute();
+        attr.setName("newAttr");
+        attr.setMultiplicity(
+            UmlFactory.getFactory().getDataTypes().createMultiplicity(1, 1));
+        attr.setStereotype(null);
+        attr.setOwner(null);
+        attr.setType(intType);
+        attr.setInitialValue(null);
+        attr.setVisibility(MVisibilityKind.PUBLIC);
+        attr.setOwnerScope(MScopeKind.INSTANCE);
+        attr.setChangeability(MChangeableKind.CHANGEABLE);
+        attr.setTaggedValue("transient", "false");
+        attr.setTaggedValue("volatile", "false");
+        attr.setTargetScope(MScopeKind.INSTANCE);
+        
+        return attr;
     }
 
     /**
@@ -924,8 +923,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param name the given name
      * @return attribute the newly build attribute
      */
-    public Object buildAttribute(String name) {
-        MAttribute attr = buildAttribute();
+    private MAttribute buildAttribute(String name) {
+        MAttribute attr = (MAttribute)buildAttribute();
         if (attr != null)
             attr.setName(name);
         return attr;
@@ -937,25 +936,26 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * this method it is.<p>
      *
      * @param handle the given classifier
-     * @return MAttribute the newly build attribute
+     * @return the newly build attribute
      */
-    public MAttribute buildAttribute(Object handle) {
-	if (!ModelFacade.isAClassifier(handle))
-	    return null;
-	MClassifier cls = (MClassifier) handle;
-	MAttribute attr = buildAttribute();
-	cls.addFeature(attr);
-	// we set the listeners to the figs here too
-	// it would be better to do that in the figs themselves
-	Project p = ProjectManager.getManager().getCurrentProject();
-	Iterator it = p.findFigsForMember(cls).iterator();
-	while (it.hasNext()) {
-	    MElementListener listener = (MElementListener) it.next();
-	    // UmlModelEventPump.getPump().removeModelEventListener(listener,
-	    // attr);
-	    UmlModelEventPump.getPump().addModelEventListener(listener, attr);
-	}
-	return attr;
+    public Object buildAttribute(Object handle) {
+        if (!ModelFacade.isAClassifier(handle)) {
+            return null;
+        }
+        MClassifier cls = (MClassifier) handle;
+        MAttribute attr = (MAttribute)buildAttribute();
+        cls.addFeature(attr);
+        // we set the listeners to the figs here too
+        // it would be better to do that in the figs themselves
+        Project p = ProjectManager.getManager().getCurrentProject();
+        Iterator it = p.findFigsForMember(cls).iterator();
+        while (it.hasNext()) {
+            MElementListener listener = (MElementListener) it.next();
+            // UmlModelEventPump.getPump().removeModelEventListener(listener,
+            // attr);
+            UmlModelEventPump.getPump().addModelEventListener(listener, attr);
+        }
+        return attr;
     }
 
     /**
