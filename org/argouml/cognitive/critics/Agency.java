@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,11 +21,9 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-// File: Agency.java
-// Classes: Agency, Trigger
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
+
 package org.argouml.cognitive.critics;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -38,73 +36,95 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
-/** Agency manages Critics.  Since classes are not really first class
- *  objects in java, a singleton instance of Agency is made and passed
- *  around as needed.  The Agency keeps a registry of all Critics that
- *  should be applied to each type of design material. When a
- *  design material instance is critiqued it asks Agency to apply all
- *  registered Critic's.  In the current scheme there is a thread that
- *  proactively, continuously critiques the Design at hand, even if
- *  the user is idle! This is simple and it works.  The disadvantage
- *  is that _all_ active critics related to a given design material are
- *  applied, regardless of the reason for the critiquing and a lot of
- *  CPU time is basically wasted.  <p>
+
+/**
+ * Agency manages Critics.  Since classes are not really first class
+ * objects in java, a singleton instance of Agency is made and passed
+ * around as needed.  The Agency keeps a registry of all Critics that
+ * should be applied to each type of design material. When a
+ * design material instance is critiqued it asks Agency to apply all
+ * registered Critic's.  In the current scheme there is a thread that
+ * proactively, continuously critiques the Design at hand, even if
+ * the user is idle! This is simple and it works.  The disadvantage
+ * is that _all_ active critics related to a given design material are
+ * applied, regardless of the reason for the critiquing and a lot of
+ * CPU time is basically wasted.  <p>
  *
- *  TODO: I am moving toward a more reactionary scheme in
- *  which specific design manipulations in the editor cause critics
- *  relevant to those manipulations to be applied.  This transition is
- *  still half done.  Trigger's are the critiquing requests.  The code
- *  for triggers is currently dormant (latent?). */
+ * TODO: I am moving toward a more reactionary scheme in
+ * which specific design manipulations in the editor cause critics
+ * relevant to those manipulations to be applied.  This transition is
+ * still half done.  Trigger's are the critiquing requests.  The code
+ * for triggers is currently dormant (latent?).
+ *
+ * @author Jason Robbins
+ */
 public class Agency extends Observable { //implements java.io.Serialization
+    /**
+     * @deprecated by Linus Tolke as of 0.15.5. Use your own instance of
+     * Logger. This will become private.
+     */
     protected static Logger cat = Logger.getLogger(Agency.class);
     ////////////////////////////////////////////////////////////////
     // instance variables
     
-    /** A registery of all critics that are currently loaded into the
-     * design environment. */
+    /**
+     * A registery of all critics that are currently loaded into the
+     * design environment.
+     */
     private static Hashtable _criticRegistry = new Hashtable(100);
     private static Vector _critics = new Vector();
     
     //   private static boolean _hot = false;
-    /** The main control mechanism for determining which critics should
-     * be active. */
+    /**
+     * The main control mechanism for determining which critics should
+     * be active.
+     */
     private ControlMech _controlMech;
     public static int _numCriticsApplied = 0;
     private static Hashtable _singletonCritics = new Hashtable(40);
     ////////////////////////////////////////////////////////////////
     // constructor and singleton methdos
     
-    /** Contruct a new Agency instance with the given ControlMech as the
+    /**
+     * Contruct a new Agency instance with the given ControlMech as the
      * main control mechanism for determining which critics should be
-     * active. */
+     * active.
+     */
     public Agency(ControlMech cm) {
         _controlMech = cm;
     }
     
-    /** Contruct a new Agency instance and use a StandardCM as the main
+    /**
+     * Contruct a new Agency instance and use a StandardCM as the main
      * control mechanism for determining which critics should be
-     * active. */
+     * active.
+     */
     public Agency() {
         _controlMech = new StandardCM();
     }
     
-    /** Since Java does not really suport classes as first class
+    /**
+     * Since Java does not really suport classes as first class
      *  objects, there is one instance of Agency that is passed around as
      *  needed. theAgency is actually stored in
      *  <TT>Designer.theDesigner().</TT>
      *
-     * @see Designer#theDesigner */
+     * @see Designer#theDesigner
+     */
     public static Agency theAgency() {
         Designer dsgr = Designer.theDesigner();
-        if (dsgr == null)
+        if (dsgr == null) {
             return null;
-        else
+	} else {
             return dsgr.getAgency();
+	}
     }
     ////////////////////////////////////////////////////////////////
     // accessors
     
-    /** Reply the registery. */
+    /**
+     * Reply the registery.
+     */
     private static Hashtable getCriticRegistry() {
         return _criticRegistry;
     }
@@ -117,15 +137,17 @@ public class Agency extends Observable { //implements java.io.Serialization
     ////////////////////////////////////////////////////////////////
     // critic registration
     protected static void addCritic(Critic cr) {
-        if (_critics.contains(cr))
+        if (_critics.contains(cr)) {
             return;
-        if (!(cr instanceof CompoundCritic))
+	}
+        if (!(cr instanceof CompoundCritic)) {
             _critics.addElement(cr);
-        else {
+	} else {
             Vector subs = ((CompoundCritic) cr).getCritics();
             Enumeration enum = subs.elements();
-            while (enum.hasMoreElements())
+            while (enum.hasMoreElements()) {
                 addCritic((Critic) enum.nextElement());
+	    }
             return;
         }
     }
@@ -162,11 +184,13 @@ public class Agency extends Observable { //implements java.io.Serialization
         register(cr, dmClass);
     }
     
-    /** Register a critic in the global table of critics that have been
+    /**
+     * Register a critic in the global table of critics that have been
      * loaded. Critics are associated with one or more design material
      * classes. One way to do registration is in a static initializer of
      * the design material class. But additional (after-market) critics
-     * could added thorugh a menu command in some control panel...*/
+     * could added thorugh a menu command in some control panel...
+     */
     public static void register(Critic cr, Class clazz) {
         Vector critics = (Vector) getCriticRegistry().get(clazz);
         if (critics == null) {
@@ -182,8 +206,10 @@ public class Agency extends Observable { //implements java.io.Serialization
     
     protected static Hashtable _cachedCritics = new Hashtable();
     
-    /** Return a Vector of all critics that can be applied to the
-     * design material subclass, including inherited critics. */
+    /**
+     * Return a Vector of all critics that can be applied to the
+     * design material subclass, including inherited critics.
+     */
     public static Collection criticsForClass(Class clazz) {
         Collection col = (Collection) _cachedCritics.get(clazz);
         if (col == null) {
@@ -205,27 +231,15 @@ public class Agency extends Observable { //implements java.io.Serialization
                 return col;
         
     }
-    
-    private static Collection getCritics(Class clazz) {
-        Collection col = new ArrayList();
-        col.addAll(criticsForSpecificClass(clazz));
-        Collection classes = new ArrayList();
-        if (clazz.getSuperclass() != null) {
-            classes.add(clazz.getSuperclass()); 
-        }
-        if (clazz.getInterfaces() != null) {
-            classes.addAll(Arrays.asList(clazz.getInterfaces()));
-        }
-        Iterator it = classes.iterator();
-        while (it.hasNext()) {
-            col.addAll(getCritics((Class) it.next()));
-        }
-        _cachedCritics.put(clazz, col);
-        return col;
-    }
-    
-    /** Return a Vector of all critics that are directly associated with
-     * the given design material subclass. */
+
+    /**
+     * Return the {@link Vector} of all critics that are directly
+     * associated with the given design material subclass.<p>
+     *
+     * If there aren't any an empty Vector is returned.
+     *
+     * @return Vector
+     */
     protected static Vector criticsForSpecificClass(Class clazz) {
         Vector critics = (Vector) getCriticRegistry().get(clazz);
         if (critics == null) {
@@ -235,20 +249,17 @@ public class Agency extends Observable { //implements java.io.Serialization
         return critics;
     }
     
-    /** Reply a Vector of all critics that are registered for any
-     * design material class. */
-    //   public static Vector allCritics() {
-    //     return _critics;
-    //   }
     ////////////////////////////////////////////////////////////////
     // criticism control
     
-    /** Apply all critics that can be applied to the given
+    /**
+     * Apply all critics that can be applied to the given
      * design material instance as appropriate for the given
      * Designer. <p>
      *
      * I would call this critique, but it causes a compilation error
-     * because it conflicts with the instance method critique! */
+     * because it conflicts with the instance method critique!
+     */
     public static void applyAllCritics(
         Object dm,
         Designer d,
@@ -269,7 +280,7 @@ public class Agency extends Observable { //implements java.io.Serialization
         Designer d,
         Collection critics,
         long reasonCode) {
-        int size = critics.size();
+
         Iterator it = critics.iterator();
         while (it.hasNext()) {                  
             Critic c = (Critic) it.next();
@@ -286,13 +297,15 @@ public class Agency extends Observable { //implements java.io.Serialization
         }        
     }
     
-    /** Compute which critics should be active (i.e., they can be
+    /**
+     * Compute which critics should be active (i.e., they can be
      * applied by applyAllCritics) for a given Designer. <p>
      *
      * TODO: I am setting global data, the
      * isEnabled bit in each critic, based on the needs of one designer.
-     * I don't really support more than one Designer. */
-    //@ should loop over simpler vector of critics, not CompoundCritics
+     * I don't really support more than one Designer.
+     */
+    // TODO: should loop over simpler vector of critics, not CompoundCritics
     public void determineActiveCritics(Designer d) {
         //     Enumeration clazzEnum = getCriticRegistry().keys();
         //     while (clazzEnum.hasMoreElements()) {
@@ -311,23 +324,26 @@ public class Agency extends Observable { //implements java.io.Serialization
     
     ////////////////////////////////////////////////////////////////
     // triggers
-    //   /** TODO */
+    //
     //   public static void addTrigger(Object dm, Designer dsgr, Object arg) {
     //     Trigger t = new Trigger(dm, dsgr, arg);
     //     getTriggers().addElement(t);
     //     notifyStaticObservers(t);
     //   }
-    //   /** TODO */
+    //
     //   public static void addTrigger(Object dm, Designer dsgr) {
     //     addTrigger(dm, dsgr, null);
     //   }
-    //   /** TODO */
+    //
     //   public static void fireTriggers() {
     //     while (getTriggers().size() > 0)
     //       fireTrigger((Trigger)(getTriggers().firstElement()));
     //   }
-    //   /** Fire the given trigger and remove all identical triggers from
-    //    * the list of pending triggers. */
+    //
+    //   /**
+    //    * Fire the given trigger and remove all identical triggers from
+    //    * the list of pending triggers.
+    //    */
     //   public static void fireTrigger(Trigger t) {
     //     Vector toRemove = new Vector();
     //     Vector ts = getTriggers();
@@ -346,18 +362,23 @@ public class Agency extends Observable { //implements java.io.Serialization
     ////////////////////////////////////////////////////////////////
     // notifications and updates
     
-    /** Let some object recieve notifications when the Agency changes
-     *  state.  Static observers are normal Observers on the singleton
-     *  instance of this class. */
+    /**
+     * Let some object recieve notifications when the Agency changes
+     * state.  Static observers are normal Observers on the singleton
+     * instance of this class.
+     */
     public static void addStaticObserver(Observer obs) {
         Agency a = theAgency();
-        if (a == null)
+        if (a == null) {
             return;
-        else
+	} else {
             a.addObserver(obs);
+	}
     }
     
-    /** When the agency changes, notify observers. */
+    /**
+     * When the agency changes, notify observers.
+     */
     public static void notifyStaticObservers(Object o) {
         if (theAgency() != null) {
             theAgency().setChanged();
@@ -383,7 +404,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 //     _dsgr = dsgr;
 //     _arg = arg;
 //   }
-//   /** TODO */
+//
 //   boolean equals(Trigger t2) {
 //     return _dm == t2._dm && _dsgr == t2._dsgr && _arg == t2._arg;
 //   }

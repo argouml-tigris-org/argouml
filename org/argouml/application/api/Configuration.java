@@ -31,13 +31,13 @@ import org.apache.log4j.*;
 import org.argouml.application.configuration.ConfigurationKeyImpl;
 
 /**
- *   This class provides the core user configuration implementation
- *   logic.  All fancy handling and registry access occurs
- *   behind the scenes.
+ * This class provides the core user configuration implementation
+ * logic.  All fancy handling and registry access occurs
+ * behind the scenes.
  *
- *   @stereotype singleton
- *   @author Thierry Lach
- *   @since  0.9.4
+ * @stereotype utility
+ * @author Thierry Lach
+ * @since  0.9.4
  */
 public class Configuration {
 
@@ -66,20 +66,20 @@ public class Configuration {
      */
     public static final String URL_SAVED = "configuration.save.url";
 
-    /** The only occurance of the configuration handler.
+    /**
+     * The only occurance of the configuration handler.
      */
-    private static ConfigurationHandler config = null;
+    private static ConfigurationHandler config =
+	getFactory().getConfigurationHandler();
 
-    private static Configuration SINGLETON = new Configuration();
-
-    /** Private constructor so it cannot be instantiated.
+    /**
+     * Private constructor so it cannot be instantiated.
      */
     private Configuration() {
-	ConfigurationFactory factory = ConfigurationFactory.getInstance();
-	config = factory.getConfigurationHandler();
     }
 
-    /** Returns the instance of the configuration singleton.
+    /**
+     * Returns the instance of the configuration singleton.
      *
      * @return the configuration handler
      */
@@ -88,16 +88,16 @@ public class Configuration {
 	return config;
     }
 
-    /** Returns the configuration factory instance.
+    /**
+     * Returns the configuration factory instance.<p>
      *
-     *  This is equivalent to ConfigurationFactory.getInstance() but
-     *  using Configuration.getFactory() is shorter to type and
-     *  allows us not to have to deal with ConfigurationFactory at
-     *  all if we don't need to modify or configure it.
+     * This is equivalent to ConfigurationFactory.getInstance() but
+     * using Configuration.getFactory() is shorter to type and
+     * allows us not to have to deal with ConfigurationFactory at
+     * all if we don't need to modify or configure it.
      *
      * @return the configuration factory
      */
-
     public static final ConfigurationFactory getFactory() {
 	return ConfigurationFactory.getInstance();
     }
