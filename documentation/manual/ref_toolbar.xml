@@ -173,13 +173,16 @@ A description of all the toolbar entries
 
     </section>
 
-    <!-- Find... -->
+    <!-- Find... & Zoom -->
 
     <section>
-      <title>Find operation</title>
+      <title>View operations</title>
 
-      <para>This button has identical behaviour as its counterpart in the
-        <literal>View</literal> menu.
+      <para>The <literal>Find...</literal> button has identical behaviour 
+        as its counterpart in the
+        <literal>View</literal> menu. The <literal>Zoom</literal> 
+        button is a more luxurously
+        version of the function in the <literal>View</literal> menu.
       </para>
 
       <itemizedlist>
@@ -223,7 +226,7 @@ A description of all the toolbar entries
                 </mediaobject>
               </screenshot>
             </figure>
-            In the open panel, the following actions are possible:
+            Once the panel is open, the following actions are possible:
           </para>
           <itemizedlist>
             <listitem>
@@ -236,7 +239,8 @@ A description of all the toolbar entries
               <para>
                 Clicking with &button1; on the shown percentage 
                 allows editing the given zoomfactor (in percent) directly 
-                with the numeric digit keys.
+                with the keyboard. Double clicking on the value shown selects
+                the whole entry for easy overtyping.
               </para>
             </listitem>
             <listitem>
@@ -250,8 +254,9 @@ A description of all the toolbar entries
               <para>
                 Clicking with &button1; or &button2; anywhere outside the 
                 slider panel closes the panel.
-                <!-- TODO: Clicking on the icon does not close the panel. 
-                Should it? -->
+                <!-- TODO: Clicking on the icon does not close the panel 
+                if it did not get the focus. 
+                It should get the focus inmediately. See issue 2421 -->
               </para>
               <!-- TODO: Investigate and describe keyboard functionality -->
             </listitem>
@@ -262,12 +267,11 @@ A description of all the toolbar entries
     
     <!-- the Diagrams -->
 
-    <section>
-      <title>Diagram creation operations</title>
+    <section id="ch.ref.toolbar.create">
+      <title>Create operations</title>
 
       <para>These buttons have identical functions as their counterparts in the
-        <literal>Create Diagram</literal> menu.
-        <!-- TODO: This name of this menu will change due to issue ... -->
+        <literal>Create</literal> menu.
       </para>
 
       <itemizedlist>
