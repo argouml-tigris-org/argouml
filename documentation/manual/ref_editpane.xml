@@ -212,6 +212,17 @@ outside of the menu area.
       </para>
     </sect2>
 
+    <!-- Alt key -->
+
+    <sect2>
+      <title>Alt with &Button1; motion</title>
+
+      <para>&Button1; down anywhere in the diagram 
+        while the ALT key is pressed, 
+        allows to scroll the canvas in all directions with &button1; motion.
+      </para>
+    </sect2>
+
     <!-- Button2 click -->
 
     <sect2>
