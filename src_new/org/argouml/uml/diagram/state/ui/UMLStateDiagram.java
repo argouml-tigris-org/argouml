@@ -39,6 +39,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
@@ -409,4 +410,16 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         return actionTransition;
     }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#needsToBeRemoved()
+     */
+    public boolean needsToBeRemoved() {
+        Object context = ModelFacade.getContext(theStateMachine);
+        if (context == null) return true;
+        if (UmlFactory.getFactory().isRemoved(theStateMachine)) return true;
+        if (UmlFactory.getFactory().isRemoved(getNamespace())) return true;
+        return false;
+    }
+    
 } /* end class UMLStateDiagram */

@@ -39,6 +39,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
@@ -571,6 +572,22 @@ public abstract class UMLDiagram
      * @return a string that can be used as a label for this kind of diagram
      */
     public abstract String getLabelName();
+    
+    /**
+     * This method shall indicate if the diagram needs to be removed 
+     * because the modelelements on which it depends are removed. 
+     * The default implementation is applicable to e.g. a ClassDiagram, 
+     * which only depends on its namespace. <p>
+     *  
+     * Matters get more complicated for e.g. a Statechart Diagram, 
+     * which also depends on its context (the represented modelelement).
+     * Hence such a diagram needs to override this method.
+     * 
+     * @return true if the diagram needs to be removed
+     */
+    public boolean needsToBeRemoved() {
+        return UmlFactory.getFactory().isRemoved(namespace);
+    }
     
 } /* end class UMLDiagram */
 

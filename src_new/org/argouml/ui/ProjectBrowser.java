@@ -430,7 +430,8 @@ public class ProjectBrowser
      * project name, active diagram, and save status.
      */
     protected void updateTitle() {
-        setTitle(ProjectManager.getManager().getCurrentProject().getName());
+        if (ProjectManager.getManager().getCurrentProject() != null)
+            setTitle(ProjectManager.getManager().getCurrentProject().getName());
     }
     
     /**
