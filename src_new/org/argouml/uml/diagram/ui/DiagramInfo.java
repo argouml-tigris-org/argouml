@@ -42,16 +42,15 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.tigris.gef.base.Diagram;
 
+/**
+ * This class holds information about a diagram.
+ * Currently, it only holds the name of the diagram.
+ *
+ */
 public class DiagramInfo extends JComponent {
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
 
     private Diagram diagram = null;
     private JLabel name = null;
-
-    ////////////////////////////////////////////////////////////////
-    // constructor
 
     /**
      * The constructor.
@@ -75,10 +74,8 @@ public class DiagramInfo extends JComponent {
 	return this;
     }
 
-    ////////////////////////////////////////////////////////////////
-    // updates
     /**
-     * the name of the diagram
+     * Update the name of the diagram.
      */
     public void updateName() {
 	if (name == null)

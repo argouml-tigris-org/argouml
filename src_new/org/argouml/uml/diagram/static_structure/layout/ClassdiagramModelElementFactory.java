@@ -42,7 +42,7 @@ public class ClassdiagramModelElementFactory
     /**
      * The singleton.
      */
-    public static ClassdiagramModelElementFactory SINGLETON =
+    public static final ClassdiagramModelElementFactory SINGLETON =
 	new ClassdiagramModelElementFactory();
     
     private ClassdiagramModelElementFactory() { }

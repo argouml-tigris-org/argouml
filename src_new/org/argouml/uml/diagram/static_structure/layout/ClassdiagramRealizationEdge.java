@@ -53,18 +53,14 @@ public class ClassdiagramRealizationEdge extends ClassdiagramInheritanceEdge {
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramInheritanceEdge#getCenterHigh()
      */
     public int getCenterHigh() {
-        return
-	    (int)
-	    (high.getLocation().getX() + high.getSize().getWidth() / 2 + 10);
+        return super.getCenterHigh() + 10;
     }
     
     /**
      * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramInheritanceEdge#getCenterLow()
      */
     public int getCenterLow() {
-        return
-	    (int)
-	    (low.getLocation().getX() + low.getSize().getWidth() / 2 + 10);
+        return super.getCenterLow() + 10;
     }    
 }
 

@@ -51,13 +51,15 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
         // runner find the way.
         if (getDestFigNode() == getSourceFigNode()) {
             Point centerRight = getCenterRight((FigNode) getSourceFigNode());
-            int yoffset = (int) ((getSourceFigNode().getSize().getHeight() / 2));
+            int yoffset = 
+                (int) ((getSourceFigNode().getSize().getHeight() / 2));
             yoffset = java.lang.Math.min(30, yoffset);
             getUnderlyingFig().addPoint(centerRight.x, centerRight.y);
             // move more right
             getUnderlyingFig().addPoint(centerRight.x + 30, centerRight.y);
             // move down
-            getUnderlyingFig().addPoint(centerRight.x + 30, centerRight.y + yoffset);
+            getUnderlyingFig().addPoint(centerRight.x + 30, 
+                                        centerRight.y + yoffset);
             // move left
             getUnderlyingFig().addPoint(centerRight.x, centerRight.y + yoffset);
             

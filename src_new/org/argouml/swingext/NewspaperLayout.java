@@ -174,14 +174,14 @@ public class NewspaperLayout extends GridLayout2 {
                         int i = r * ncols + c;
                         if (parent.getComponent(i).getPreferredSize().getWidth()
                                 > getColWidth()[c]) {
-                                getColWidth()[c] = (int) parent.getComponent(i)
+                            getColWidth()[c] = (int) parent.getComponent(i)
 				    .getPreferredSize().getWidth();
                             if (getColWidth()[c] > getLargestWidth())
 				setLargestWidth(getColWidth()[c]);
                         }
                         if ((parent.getComponent(i).getPreferredSize()
                                 .getHeight()) > getRowHeight()[r]) {
-                                getRowHeight()[r] = (int) parent.getComponent(i)
+                            getRowHeight()[r] = (int) parent.getComponent(i)
 				    .getPreferredSize().getHeight();
                             if (getRowHeight()[r] > getLargestHeight()) {
                                 setLargestHeight(getRowHeight()[r]);

@@ -48,7 +48,7 @@ import org.argouml.model.ModelFacade;
  */
 
 public class ActionModifier extends UMLAction {
-    private UMLBooleanProperty _property;
+    private UMLBooleanProperty property;
     private Object object;
     private Class mclassClass = (Class) ModelFacade.CLASS;
     private Class mpackageClass = (Class) ModelFacade.PACKAGE;
@@ -77,11 +77,11 @@ public class ActionModifier extends UMLAction {
 			  Object mclass) {
 	super(name, NO_ICON);
 	this.object = mclass;
-	_property =
+	property =
 	    new UMLReflectionBooleanProperty(propertyName, mclassClass,
 					     getMethod,
 					     setMethod);
-	putValue("SELECTED", new Boolean(_property.getProperty(object)));
+	putValue("SELECTED", new Boolean(property.getProperty(object)));
     }
 
     /**
@@ -111,14 +111,14 @@ public class ActionModifier extends UMLAction {
     {
 	super(name, NO_ICON);
 	this.object = mclass;
-	_property =
+	property =
 	    new UMLEnumerationBooleanProperty(propertyName, mclassClass,
 					      getMethod,
 					      setMethod,
 					      enumClass,
 					      theTrueValue,
 					      theFalseValue);
-	putValue("SELECTED", new Boolean(_property.getProperty(object)));
+	putValue("SELECTED", new Boolean(property.getProperty(object)));
     }
 
     ////////////////////////////////////////////////////////////////
@@ -131,7 +131,7 @@ public class ActionModifier extends UMLAction {
      */
     public void actionPerformed(ActionEvent ae) {
     	try {
-	    _property.setProperty(object, !_property.getProperty(object));
+	    property.setProperty(object, !property.getProperty(object));
     	}
     	catch (PropertyVetoException ve) { }
     }

@@ -26,12 +26,16 @@ package org.argouml.uml.diagram.state;
 
 import org.tigris.gef.util.Predicate;
 
+/**
+ * Predicate to test if this is a final state.
+ *
+ */
 public class PredIsFinalState implements Predicate {
 
     /**
      * TheInstance is the singleton.
      */
-    public static PredIsFinalState theInstance = new PredIsFinalState();
+    private static PredIsFinalState theInstance = new PredIsFinalState();
 
     private PredIsFinalState() { }
 
@@ -40,6 +44,13 @@ public class PredIsFinalState implements Predicate {
      */
     public boolean predicate(Object obj) {
 	return (org.argouml.model.ModelFacade.isAFinalState(obj));
+    }
+
+    /**
+     * @return the instance
+     */
+    public static PredIsFinalState getTheInstance() {
+        return theInstance;
     }
 
 } /* end class PredIsFinalState */
