@@ -37,5 +37,17 @@ public class ExtensionMechanismsHelper {
      */
     private ExtensionMechanismsHelper() {
     }
+    
+     /** Singleton instance.
+     */
+    private static ExtensionMechanismsHelper SINGLETON =
+                   new ExtensionMechanismsHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static ExtensionMechanismsHelper getHelper() {
+        return SINGLETON;
+    }
 }
 

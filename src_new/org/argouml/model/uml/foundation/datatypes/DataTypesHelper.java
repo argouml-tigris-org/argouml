@@ -37,5 +37,17 @@ public class DataTypesHelper {
      */
     private DataTypesHelper() {
     }
+    
+     /** Singleton instance.
+     */
+    private static DataTypesHelper SINGLETON =
+                   new DataTypesHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static DataTypesHelper getHelper() {
+        return SINGLETON;
+    }
 }
 

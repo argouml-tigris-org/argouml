@@ -37,5 +37,17 @@ public class UseCasesHelper {
      */
     private UseCasesHelper() {
     }
+    
+     /** Singleton instance.
+     */
+    private static UseCasesHelper SINGLETON =
+                   new UseCasesHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static UseCasesHelper getHelper() {
+        return SINGLETON;
+    }
 }
 

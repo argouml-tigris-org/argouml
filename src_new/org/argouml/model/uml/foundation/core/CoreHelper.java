@@ -23,6 +23,13 @@
 
 package org.argouml.model.uml.foundation.core;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+
 /**
  * Helper class for UML Foundation::Core Package.
  *
@@ -37,5 +44,52 @@ public class CoreHelper {
      */
     private CoreHelper() {
     }
+    
+     /** Singleton instance.
+     */
+    private static CoreHelper SINGLETON =
+                   new CoreHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static CoreHelper getHelper() {
+        return SINGLETON;
+    }
+    
+    /** This method returns all Classifiers of which this class is a 
+	 *	direct or indirect subtype.
+	 *
+	 * @param cls  the class you want to have the parents for
+	 * @return a collection of the parents, each of which is a 
+	 *					{@link MGeneralizableElement MGeneralizableElement}
+	 */
+	public Collection getAllSupertypes(MClassifier cls) {
+
+		Collection result = new HashSet();
+
+		Collection add = getSupertypes(cls);
+		do 
+		{
+			Collection newAdd = new HashSet();
+			Iterator addIter = add.iterator();
+			while (addIter.hasNext())
+			{
+				MGeneralizableElement next = (MGeneralizableElement) addIter.next();
+				if (next instanceof MClassifier) 
+				{
+					newAdd.addAll( getSupertypes((MClassifier) next) );
+				}
+			}
+			result.addAll(add);
+			add = newAdd;
+			add.removeAll(result);
+		}
+		while (! add.isEmpty());
+		
+		return result;
+	}
+	
+	
 }
 

@@ -37,5 +37,17 @@ public class CollaborationsHelper {
      */
     private CollaborationsHelper() {
     }
+    
+     /** Singleton instance.
+     */
+    private static CollaborationsHelper SINGLETON =
+                   new CollaborationsHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static CollaborationsHelper getHelper() {
+        return SINGLETON;
+    }
 }
 

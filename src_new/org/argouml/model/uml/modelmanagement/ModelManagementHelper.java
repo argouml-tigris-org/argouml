@@ -37,5 +37,17 @@ public class ModelManagementHelper {
      */
     private ModelManagementHelper() {
     }
+    
+     /** Singleton instance.
+     */
+    private static ModelManagementHelper SINGLETON =
+                   new ModelManagementHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static ModelManagementHelper getHelper() {
+        return SINGLETON;
+    }
 }
 

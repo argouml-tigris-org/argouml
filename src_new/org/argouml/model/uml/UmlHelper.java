@@ -26,6 +26,16 @@ package org.argouml.model.uml;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsHelper;
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
+import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.model_management.MModel;
 
@@ -36,6 +46,12 @@ import ru.novosoft.uml.model_management.MModel;
  * @author Thierry Lach
  */
 public class UmlHelper {
+	
+	/** Singleton instance.
+     */
+    private static UmlHelper SINGLETON =
+                   new UmlHelper();
+
 
     /** Don't allow instantiation.
      */
@@ -47,14 +63,14 @@ public class UmlHelper {
      *  to the UmlModelListener.  This is useful when the MModel is
      *  not created by the UmlFactory.
      */
-    public static void addListenersToModel(MModel model) {
+    public void addListenersToModel(MModel model) {
 	addListenersToMBase(model);
     }
 
     /** 
      *  Internal recursive worker to add UmlModelListener.
      */
-    protected static void addListenersToMBase(MBase mbase) {
+    protected void addListenersToMBase(MBase mbase) {
         mbase.addMElementListener(UmlModelListener.getInstance());
 	Collection elements = mbase.getModelElementContents();
 	if (elements != null) {
@@ -67,5 +83,93 @@ public class UmlHelper {
 	    }
 	}
     }
+    
+    /** Singleton instance access method.
+     */
+    public static UmlHelper getHelper() {
+        return SINGLETON;
+    }
+    
+    /** Returns the package helper for the UML
+     *  package Foundation::ExtensionMechanisms.
+     *  
+     *  @return the ExtensionMechanisms helper instance.
+     */
+    public ExtensionMechanismsHelper getExtensionMechanisms() {
+        return ExtensionMechanismsHelper.getHelper();
+    }
+
+    /** Returns the package helper for the UML
+     *  package Foundation::DataTypes.
+     *  
+     *  @return the DataTypes helper instance.
+     */
+    public DataTypesHelper getDataTypes() {
+        return DataTypesHelper.getHelper();
+    }
+
+    /** Returns the package helper for the UML
+     *  package Foundation::Core.
+     *  
+     *  @return the Core helper instance.
+     */
+    public CoreHelper getCore() {
+        return CoreHelper.getHelper();
+    }
+
+    /** Returns the package helper for the UML
+     *  package BehavioralElements::CommonBehavior.
+     *  
+     *  @return the CommonBehavior helper instance.
+     */
+    public CommonBehaviorHelper getCommonBehavior() {
+        return CommonBehaviorHelper.getHelper();
+    }
+
+    /** Returns the package helper for the UML
+     *  package BehavioralElements::UseCases.
+     *  
+     *  @return the UseCases helper instance.
+     */
+    public UseCasesHelper getUseCases() {
+        return UseCasesHelper.getHelper();
+    }
+
+    /** Returns the package helper for the UML
+     *  package BehavioralElements::StateMachines.
+     *  
+     *  @return the StateMachines helper instance.
+     */
+    public StateMachinesHelper getStateMachines() {
+        return StateMachinesHelper.getHelper();
+    }
+
+    /** Returns the package helper for the UML
+     *  package BehavioralElements::Collaborations.
+     *  
+     *  @return the Collaborations helper instance.
+     */
+    public CollaborationsHelper getCollaborations() {
+        return CollaborationsHelper.getHelper();
+    }
+
+    /** Returns the package helper for the UML
+     *  package BehavioralElements::ActivityGraphs.
+     *  
+     *  @return the ActivityGraphs helper instance.
+     */
+    public ActivityGraphsHelper getActivityGraphs() {
+        return ActivityGraphsHelper.getHelper();
+    }
+
+    /** Returns the package helper for the UML
+     *  package ModelManagement.
+     *  
+     *  @return the ModelManagement helper instance.
+     */
+    public ModelManagementHelper getModelManagement() {
+        return ModelManagementHelper.getHelper();
+    }
+    
 }
 

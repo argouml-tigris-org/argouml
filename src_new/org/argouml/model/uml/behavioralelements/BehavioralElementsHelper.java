@@ -37,5 +37,17 @@ public class BehavioralElementsHelper {
      */
     private BehavioralElementsHelper() {
     }
+    
+     /** Singleton instance.
+     */
+    private static BehavioralElementsHelper SINGLETON =
+                   new BehavioralElementsHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static BehavioralElementsHelper getHelper() {
+        return SINGLETON;
+    }
 }
 

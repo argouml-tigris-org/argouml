@@ -37,5 +37,17 @@ public class CommonBehaviorHelper {
      */
     private CommonBehaviorHelper() {
     }
+    
+     /** Singleton instance.
+     */
+    private static CommonBehaviorHelper SINGLETON =
+                   new CommonBehaviorHelper();
+
+    
+    /** Singleton instance access method.
+     */
+    public static CommonBehaviorHelper getHelper() {
+        return SINGLETON;
+    }
 }
 
