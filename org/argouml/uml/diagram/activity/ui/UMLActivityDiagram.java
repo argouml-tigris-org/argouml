@@ -94,15 +94,8 @@ public class UMLActivityDiagram extends UMLDiagram {
   protected static int _ActivityDiagramSerial = 1;
 
   public UMLActivityDiagram() {
-  	String name = null;
-  	Object[] args = {name};
-  	do {
-        name = "activity diagram " + _ActivityDiagramSerial;
-        _ActivityDiagramSerial++;
-        args[0] = name;
-    }
-    while (vetoCheck("name", args));
-    try { setName(name); }
+  	
+    try { setName(getNewDiagramName()); }
     catch (PropertyVetoException pve) { }
   }
 
@@ -226,6 +219,18 @@ public class UMLActivityDiagram extends UMLDiagram {
     _toolBar.addSeparator();
 
     _toolBar.add(_diagramName);
+  }
+  
+  protected static String getNewDiagramName() {
+  	String name = null;
+  	Object[] args = {name};
+  	do {
+        name = "activity diagram " + _ActivityDiagramSerial;
+        _ActivityDiagramSerial++;
+        args[0] = name;
+    }
+    while (TheInstance.vetoCheck("name", args));
+    return name;
   }
 
 
