@@ -746,6 +746,22 @@ public class GeneratorPHP4
         return "";
     }
 
+    /**
+     * Generates the String representation for an Event.
+     *
+     * @param modelElement Model element to generate notation for.
+     *
+     * @return Generated notation for model element.
+     */
+    public String generateEvent(Object modelElement) {
+        if (!ModelFacade.isAEvent(modelElement)) {
+            throw new ClassCastException(modelElement.getClass()
+                    + " has wrong object type, Event required");
+        }
+
+        return "";
+    }
+
     // --- org.argouml.uml.generator.FileGenerator -----------------------------
 
     /**
@@ -1024,6 +1040,7 @@ public class GeneratorPHP4
         if (sName.equals("char"))    return "string";
 
         if (sName.equals("boolean")) return "bool";
+        if (sName.equals("bool"))    return "bool";
 
         if (sName.equals("int"))     return "int";
         if (sName.equals("byte"))    return "int";
@@ -1078,14 +1095,18 @@ public class GeneratorPHP4
             }
         } else if (sType.equals("bool")) {
             String sReturn = bCast ? "(bool) " : "";
-            sDefault = sDefault.trim();
-            if (sDefault != null && sDefault.length() > 0) {
-                if (sDefault == "0") {
-                    return sReturn + "false";
-                } else if (sDefault == "false") {
-                    return sReturn + "false";
+            if (sDefault != null) {
+            	sDefault = sDefault.trim();
+                if (sDefault.length() > 0) {
+                	if (sDefault == "0") {
+                		return sReturn + "false";
+                	} else if (sDefault == "false") {
+                		return sReturn + "false";
+                	} else {
+                		return sReturn + "true";
+                	}
                 } else {
-                    return sReturn + "true";
+                	return sReturn + "false";
                 }
             } else {
                 return sReturn + "false";
