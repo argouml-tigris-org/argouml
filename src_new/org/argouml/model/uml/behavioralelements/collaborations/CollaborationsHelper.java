@@ -245,6 +245,22 @@ public class CollaborationsHelper {
 			mes2.setActivator(activator);
 		}
 	}
+    
+    public Collection getAllPossiblePredecessors(MMessage message) {
+        if (message == null) throw new IllegalArgumentException("In getAllPossiblePredecessors: argument message is null");
+        MInteraction inter = message.getInteraction();
+        Iterator it = inter.getMessages().iterator();
+        List list = new ArrayList();
+        while (it.hasNext()) {
+            MMessage mes = (MMessage)it.next();
+            if (mes.getActivator() == message.getActivator() 
+                && message != mes && !mes.getPredecessors().contains(message) 
+                && !message.getPredecessors().contains(message)) {
+                    list.add(mes);
+            }
+        }
+        return list;
+    }
 		
 }
 
