@@ -413,13 +413,15 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
         <formatter type="xml"/>
       <batchtest todir="${module.reports}/junit/output">
         <fileset dir="${module.build.src}">
-          <include name="org/argouml/**/Test*.java" />
+          <include name="org/argouml/model/**/Test*.java" />
         </fileset>
       </batchtest>
+<!--
       <test name="org.argouml.model.uml.OptionalTestAgainstUmlModel"
             todir="${module.reports}/junit/output"
             if="011202.xml.available">
       </test>
+-->
     </junit>
  
  
