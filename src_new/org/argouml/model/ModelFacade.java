@@ -1287,6 +1287,16 @@ public class ModelFacade {
     }
 
     /**
+     * Recognizer for SubmachineState
+     *
+     * @param handle candidate
+     * @return true if handle is a SubmachineState
+     */
+    public static boolean isASubmachineState(Object handle) {
+        return handle instanceof MSubmachineState;
+    }
+
+    /**
      * Recognizer for Subsystem
      *
      * @param handle candidate
