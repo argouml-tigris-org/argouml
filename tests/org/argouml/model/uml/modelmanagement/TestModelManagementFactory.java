@@ -34,7 +34,12 @@ public class TestModelManagementFactory extends TestCase {
 	"ElementImport", "Model", "Package", "Subsystem" 
     };
 
-    private TestModelManagementFactory(String n) {
+    /**
+     * The constructor.
+     * 
+     * @param n the name
+     */
+    public TestModelManagementFactory(String n) {
 	super(n);
     }
 
