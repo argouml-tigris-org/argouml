@@ -38,7 +38,6 @@ package org.argouml.language.csharp.generator;
 
 import java.util.*;
 import java.io.*;
-import java.lang.String;
 
 
 public class Section {
