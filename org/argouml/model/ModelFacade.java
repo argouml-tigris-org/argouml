@@ -1503,6 +1503,17 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Get the behavioral feature of an parameter.
+     *
+     * @param handle expression.
+     * @return the behavioral feature.
+     */
+    public static Object getBehavioralFeature(Object handle) {
+        if (handle instanceof MParameter)
+            return ((MParameter) handle).getBehavioralFeature();
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /** Get the body of an Expression.
      *
      *
