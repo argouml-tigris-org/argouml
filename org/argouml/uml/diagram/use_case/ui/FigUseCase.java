@@ -58,18 +58,18 @@ public class FigUseCase extends FigNodeModelElement {
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
 
-  FigCircle _bigPort;
+  FigMyCircle _bigPort;
 
   // add other Figs here aes needed
 
 
-  FigCircle _cover;
+  FigMyCircle _cover;
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public FigUseCase() {
-    _bigPort = new FigCircle(0, 0, 100, 40, Color.black, Color.white);
-    _cover = new FigCircle(0, 0, 100, 40, Color.black, Color.white);
+    _bigPort = new FigMyCircle(0, 0, 100, 40, Color.black, Color.white);
+    _cover = new FigMyCircle(0, 0, 100, 40, Color.black, Color.white);
     _name.setBounds(10, 10, 80, 20);
     _name.setTextFilled(false);
     _name.setFilled(false);
@@ -95,8 +95,8 @@ public class FigUseCase extends FigNodeModelElement {
   public Object clone() {
     FigUseCase figClone = (FigUseCase) super.clone();
     Vector v = figClone.getFigs();
-    figClone._bigPort = (FigCircle) v.elementAt(0);
-    figClone._cover = (FigCircle) v.elementAt(1);
+    figClone._bigPort = (FigMyCircle) v.elementAt(0);
+    figClone._cover = (FigMyCircle) v.elementAt(1);
     figClone._name = (FigText) v.elementAt(2);
     return figClone;
   }
@@ -144,6 +144,27 @@ public class FigUseCase extends FigNodeModelElement {
   public void setLineWidth(int w) { _cover.setLineWidth(w); }
   public int getLineWidth() { return _cover.getLineWidth(); }
 
+  /**
+   *  FigMyCircle is a FigCircle with corrected connectionPoint method:
+   *  this methods calculates where a connected edge ends.
+   */
+  public class FigMyCircle extends FigCircle {
+    public FigMyCircle(int x, int y, int w, int h, Color lColor, Color fColor) {
+      super(x, y, w, h, lColor, fColor);
+    }
+    public Point connectionPoint(Point anotherPt) {
+      //calculate border point of elypse, that is on the edge between (_x,_y) and anotherPt
+      double rx = _w/2;
+      double ry = _h/2;
+      double dx = anotherPt.x - _x;
+      double dy = anotherPt.y - _y;
+      double dd = ry*ry*dx*dx + rx*rx*dy*dy;
+      double mu = rx*ry/Math.sqrt(dd);
+      Point res = new Point((int)(mu*dx+_x+rx),(int)(mu*dy+_y+ry));
+      //System.out.println("    returns "+res.x+','+res.y+')');
+      return res;
+    }
+  }
 
   ////////////////////////////////////////////////////////////////
   // event handlers
