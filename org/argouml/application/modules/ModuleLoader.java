@@ -201,7 +201,7 @@ public class ModuleLoader {
 		    String s1 = atrs.getValue(Attributes.Name.SPECIFICATION_TITLE);
 		    String s2 = atrs.getValue(Attributes.Name.SPECIFICATION_VENDOR);
 
-		    // needs-more-work:  If we are in jdk1.3 or above, check
+		    // TODO:  If we are in jdk1.3 or above, check
 		    // EXTENSION_NAME.  Otherwise pass the class name.  It's not
 		    // as good of a check (we might get duplicate modules with
 		    // the same key), but it's better than nothing.
@@ -548,7 +548,7 @@ public class ModuleLoader {
           return null;
       }
 
-      // Needs-more-work:  The vector should be populated from
+      // TODO:  The vector should be populated from
       //                   the enumeration in FIFO sequence.
 
       ListIterator iterator = getModules().listIterator();
@@ -609,7 +609,7 @@ public class ModuleLoader {
           return false;
       }
 
-      // Needs-more-work:  The vector should be populated from
+      // TODO:  The vector should be populated from
       //                   the enumeration in FIFO sequence.
 
       ListIterator iterator = getModules().listIterator();
@@ -661,7 +661,7 @@ public class ModuleLoader {
           return null;
       }
 
-      // Needs-more-work:  The vector should be populated from
+      // TODO:  The vector should be populated from
       //                   the enumeration in FIFO sequence.
 
       ArrayList results = new ArrayList();

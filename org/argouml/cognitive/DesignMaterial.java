@@ -51,7 +51,7 @@ import org.argouml.cognitive.critics.*;
  *  (5) be notified when the user selects them in an editor, (6)
  *  highlight themselves to draw the designer's attention. <p>
  *
- *  Needs-More-Work: should I implement virtual copying? or
+ *  TODO: should I implement virtual copying? or
  *  instance-based inheritiance of properties? How are properties
  *  shared (it at all)?
  *
@@ -106,7 +106,7 @@ implements Highlightable, java.io.Serializable {
 
   /** Construct a new DesignMaterial with the given Properties. */
   public DesignMaterial(Hashtable ht) {
-    // Needs-More-Work: construct a new Hashtable that "inherits"
+    // TODO: construct a new Hashtable that "inherits"
   }
 
   ////////////////////////////////////////////////////////////////
@@ -276,7 +276,7 @@ implements Highlightable, java.io.Serializable {
    * may, for example, visually change their appearance to indicate
    * the presence of an error. One paper called this 'clarifiers'. <p>
    *
-   * Needs-More-Work: do I need a Clarifier object in the framework? */
+   * TODO: do I need a Clarifier object in the framework? */
   public void inform(ToDoItem item) { _pendingItems.addElement(item); }
 
   /** Draw the Designer's attention to this DesignMaterial in all

@@ -151,15 +151,15 @@ public abstract class Wizard implements java.io.Serializable {
       doAction(i);
       if (_item != null) _item.changed();
     }
-    // needs-more-work: do all following steps
-    // needs-more-work: resolve item from ToDoList
+    // TODO: do all following steps
+    // TODO: resolve item from ToDoList
     _finished = true;
   }
 
   /** Create a new panel for the given step. For example, When the
    *  given step is 1, create the first step of the wizard. <p>
    *
-   *  Needs-More-Work: It might be convient to make a reusable
+   *  TODO: It might be convient to make a reusable
    *  subclass of Wizard that shows all textual steps to guide the
    *  user without any automation.  Such a Wizard could be easily
    *  authored, stored in an XML file, and effiecntly presented by

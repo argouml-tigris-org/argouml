@@ -49,7 +49,7 @@ import org.argouml.cognitive.*;
  *  applied, regardless of the reason for the critiquing and a lot of
  *  CPU time is basically wasted.  <p>
  *
- *  Needs-More-Work: I am moving toward a more reactionary scheme in
+ *  TODO: I am moving toward a more reactionary scheme in
  *  which specific design manipulations in the editor cause critics
  *  relevant to those manipulations to be applied.  This transition is
  *  still half done.  Trigger's are the critiquing requests.  The code
@@ -255,7 +255,7 @@ public class Agency extends Observable { //implements java.io.Serialization
   /** Compute which critics should be active (i.e., they can be
    * applied by applyAllCritics) for a given Designer. <p>
    *
-   * Needs-More-Work: I am setting global data, the
+   * TODO: I am setting global data, the
    * isEnabled bit in each critic, based on the needs of one designer.
    * I don't really support more than one Designer. */
 
@@ -280,19 +280,19 @@ public class Agency extends Observable { //implements java.io.Serialization
   ////////////////////////////////////////////////////////////////
   // triggers
 
-//   /** Needs-More-Work */
+//   /** TODO */
 //   public static void addTrigger(Object dm, Designer dsgr, Object arg) {
 //     Trigger t = new Trigger(dm, dsgr, arg);
 //     getTriggers().addElement(t);
 //     notifyStaticObservers(t);
 //   }
 
-//   /** Needs-More-Work */
+//   /** TODO */
 //   public static void addTrigger(Object dm, Designer dsgr) {
 //     addTrigger(dm, dsgr, null);
 //   }
 
-//   /** Needs-More-Work */
+//   /** TODO */
 //   public static void fireTriggers() {
 //     while (getTriggers().size() > 0)
 //       fireTrigger((Trigger)(getTriggers().firstElement()));
@@ -345,7 +345,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 //  * instance is used as the pattern. Null values in either Trigger are
 //  * considered wild-card value. <p>
 //  *
-//  * Needs-More-Work: This code is not really used yet. Also, shouldn't
+//  * TODO: This code is not really used yet. Also, shouldn't
 //  * this be a public class so that the Editor can do something with it? */
 // class Trigger {
 //   Object _dm;
@@ -358,7 +358,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 //     _arg = arg;
 //   }
 
-//   /** Needs-More-Work */
+//   /** TODO */
 //   boolean equals(Trigger t2) {
 //     return _dm == t2._dm && _dsgr == t2._dsgr && _arg == t2._arg;
 //   }
@@ -369,7 +369,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 //   }
 
 //   void fire() {
-//     /* needs-more-work: should take arg into account, apply only some
+//     /* TODO: should take arg into account, apply only some
 //      critics */
 //     Agency.applyAllCritics(_dm, _dsgr);
 //   }

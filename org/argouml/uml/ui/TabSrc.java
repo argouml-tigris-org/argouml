@@ -55,7 +55,7 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
    *  Then add a notation selector onto it.
    */
   public TabSrc() {
-    // needs-more-work:  Temporarily remove toolbar until src selection
+    // TODO:  Temporarily remove toolbar until src selection
     // is working better.
     //
     //super("Source", true);
@@ -117,7 +117,7 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
 		   _notationName);
 	}
     else {
-        // needs-more-work:  Get it from the combo box
+        // TODO:  Get it from the combo box
 	cat.debug ("ComboBox.getSelectedItem() '" + NotationComboBox.getInstance().getSelectedItem() + "'");
 	_notationName = Notation.getDefaultNotation();
 	}

@@ -625,15 +625,15 @@ public class ProjectBrowser extends JFrame
     }
 
     public void moduleUnloaded(ArgoModuleEvent event) {
-        // needs-more-work:  Disable menu
+        // TODO:  Disable menu
     }
 
     public void moduleEnabled(ArgoModuleEvent event) {
-        // needs-more-work:  Enable menu
+        // TODO:  Enable menu
     }
 
     public void moduleDisabled(ArgoModuleEvent event) {
-        // needs-more-work:  Disable menu
+        // TODO:  Disable menu
     }
   
     /**

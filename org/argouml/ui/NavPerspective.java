@@ -383,7 +383,7 @@ implements Serializable, TreeModel, Cloneable {
     registerRule(new GoChildGenerator(new ChildGenRelated(),
 				      "ChildGenRelated"));
     registerRule(new GoChildGenerator(new ChildGenUML(), "ChildGenUML"));
-    // needs-more-work: this list is not updated
+    // TODO: this list is not updated
   }
 
   ////////////////////////////////////////////////////////////////

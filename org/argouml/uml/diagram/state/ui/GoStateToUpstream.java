@@ -59,7 +59,7 @@ public class GoStateToUpstream extends AbstractGoRule {
           new UnsupportedOperationException("getChildren should not be called");
   }
 
-  // needs-more-work: should be a set
+  // TODO: should be a set
   public int getChildCount(Object parent) {
     if (parent instanceof MStateVertex) {
       Collection incoming = ((MStateVertex)parent).getIncomings();

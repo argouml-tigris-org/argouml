@@ -69,7 +69,7 @@ public class FigAssociation extends FigEdgeModelElement {
     
    
 
-  // needs-more-work: should be part of some preferences object
+  // TODO: should be part of some preferences object
   public static boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
 
   /**
@@ -225,7 +225,7 @@ public class FigAssociation extends FigEdgeModelElement {
       MAssociationEnd destAE = (MAssociationEnd) ((Object[]) conn.toArray())[1];
       destAE.setName(_destRole.getText());
     }
-    // needs-more-work: parse multiplicities
+    // TODO: parse multiplicities
   }
   
   private void updateEnd(FigText multiToUpdate, FigText roleToUpdate, FigText orderingToUpdate, MAssociationEnd end) {

@@ -130,7 +130,7 @@ public class SettingsTabFonts extends SettingsTabHelper implements SettingsTabPa
     public String getModuleName() { return "SettingsTabFonts"; }
     public String getModuleDescription() { return "Settings of font"; }
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return ArgoVersion.VERSION; }
+    public String getModuleVersion() { return ArgoVersion.getVersion(); }
     public String getModuleKey() { return "module.settings.fonts"; }
     public String getTabKey() { return "tab.fonts"; }
 }

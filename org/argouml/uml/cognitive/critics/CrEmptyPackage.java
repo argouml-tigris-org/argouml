@@ -62,7 +62,7 @@ public class CrEmptyPackage extends CrUML {
     Collection elms = mod.getOwnedElements();
     if (elms == null || elms.size() == 0) return PROBLEM_FOUND;
     return NO_PROBLEM;
-    //needs-more-work: different critic for packages consisting only
+    //TODO: different critic for packages consisting only
     //of references to elements of other packages?
   }
 

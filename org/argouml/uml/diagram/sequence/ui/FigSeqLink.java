@@ -68,7 +68,7 @@ import org.argouml.model.uml.UmlFactory;
 
 public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
 
-  // needs-more-work: should be part of some preferences object
+  // TODO: should be part of some preferences object
   public static boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
 
   protected FigText _srcMult, _srcRole;

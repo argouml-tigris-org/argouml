@@ -92,7 +92,7 @@ public class TMResults extends AbstractTableModel {
 	if (d instanceof UMLClassDiagram) return "Class Diagram";
 	if (d instanceof UMLStateDiagram) return "State Diagram";
 	if (d instanceof UMLUseCaseDiagram) return "Use Case Diagram";
-	return "Diagram";  //needs-more-work
+	return "Diagram";  //TODO
       case 1: return d.getName();
       case 2: return "N/A";
       case 3:

@@ -50,7 +50,7 @@ public class CrCircularAssocClass extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    // needs-more-work: not implemented
+    // TODO: not implemented
     return NO_PROBLEM;
   }
 

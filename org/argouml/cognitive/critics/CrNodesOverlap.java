@@ -49,7 +49,7 @@ public class CrNodesOverlap extends CrUML {
   ////////////////////////////////////////////////////////////////
   // constructor
   public CrNodesOverlap() {
-    // needs-more-work: {name} is not expanded for diagram objects
+    // TODO: {name} is not expanded for diagram objects
     setHeadline("Clean Up Diagram");
     addSupportedDecision(CrUML.decCLASS_SELECTION);
     addSupportedDecision(CrUML.decEXPECTED_USAGE);
@@ -92,7 +92,7 @@ public class CrNodesOverlap extends CrUML {
   }
 
   public VectorSet computeOffenders(Diagram d) {
-    //needs-more-work: algorithm is n^2 in number of nodes
+    //TODO: algorithm is n^2 in number of nodes
     Vector figs = d.getLayer().getContents();
     int numFigs = figs.size();
     int numRects = 0;

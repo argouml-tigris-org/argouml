@@ -109,7 +109,7 @@ public class UMLComboBoxEntry implements Comparable {
     }
 
     // Refactoring: static to denote that it doesn't use any class members.
-    // Needs-more-work:
+    // TODO:
     // Idea to move this to MMUtil together with the same function from
     // org/argouml/uml/cognitive/critics/WizOperName.java
     // org/argouml/uml/generator/ParserDisplay.java

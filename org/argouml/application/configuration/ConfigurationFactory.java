@@ -65,7 +65,7 @@ public class ConfigurationFactory
    *  can be used to access and manipulate the configuration.
    */
   public ConfigurationHandler getConfigurationHandler() {
-      // needs-more-work:  Allow other configuration handlers.
+      // TODO:  Allow other configuration handlers.
       return _handler;
   }
 

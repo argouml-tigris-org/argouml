@@ -68,7 +68,7 @@ public class ConfigurationProperties extends ConfigurationHandler {
 	  Configuration.cat.debug("Configuration loaded from " + PROPERTIES);
       }
       catch (Exception ioe) {
-          // needs-more-work:  What should we do here?
+          // TODO:  What should we do here?
 	  Configuration.cat.warn("Configuration not loaded from " + PROPERTIES,
 	                          ioe);
       }

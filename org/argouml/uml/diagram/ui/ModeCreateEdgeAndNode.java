@@ -169,7 +169,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 		GraphModel gm = ce.getGraphModel();
 		if (!(gm instanceof MutableGraphModel)) f = null;
 		MutableGraphModel mgm = (MutableGraphModel) gm;
-		// needs-more-work: potential class cast exception
+		// TODO: potential class cast exception
 
 		if (f == null) {
 			cat.debug("make new node");

@@ -61,11 +61,11 @@ public class CrUnconventionalAttrName extends CrUML {
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
     while (nameStr.startsWith("_")) nameStr = nameStr.substring(1);
     if (nameStr.length() == 0) return NO_PROBLEM;
-    // needs-more-work: should check for all underscores
+    // TODO: should check for all underscores
     char initalChar = nameStr.charAt(0);
     MChangeableKind ck = attr.getChangeability();
     if (MChangeableKind.FROZEN.equals(ck)) return NO_PROBLEM;
-    // needs-more-work: should check for all caps constants
+    // TODO: should check for all caps constants
     if (!Character.isLowerCase(initalChar)) {
       return PROBLEM_FOUND;
     }

@@ -122,7 +122,7 @@ public class ConfigLoader {
 			Class res = null;
 			while (tabAlternatives.hasMoreElements()) {
 				String tabSpec = tabAlternatives.nextToken().trim();
-				String tabName = tabSpec;  //needs-more-work: arguments
+				String tabName = tabSpec;  //TODO: arguments
 				String tabClassName;
                                 
 				if ( tabName.indexOf('.') > 0 )

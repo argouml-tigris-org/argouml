@@ -36,7 +36,7 @@ import java.util.*;
  *  control information to the Agency so that only critics relevant to
  *  the designers goals are ever executed.
  *
- *  Needs-More-Work: Really this should be part of a domain extension
+ *  TODO: Really this should be part of a domain extension
  *  and not the kernel.  I have not developed this part of Argo very
  *  much. */
 
@@ -79,12 +79,12 @@ implements java.io.Serializable {
 
 //   public Object getGoalInfo(String goal) {
 //     return _goals.getProperty(goal);
-//     /* needs-more-work, we need a better representation of goals */
+//     /* TODO, we need a better representation of goals */
 //   }
 
 //   public void setGoalInfo(String goal, String info) {
 //     _goals.put(goal, info);
-//     /* needs-more-work, we need a better representation of goals */
+//     /* TODO, we need a better representation of goals */
 //   }
 
   /** The Designer wants to achieve the given goal. */

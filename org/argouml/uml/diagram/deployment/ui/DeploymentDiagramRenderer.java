@@ -29,7 +29,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
     else if (node instanceof MClass) return new FigClass(gm, node); 
     else if (node instanceof MInterface) return new FigInterface(gm, node); 
     else if (node instanceof MObject) return new FigObject(gm, node);
-    cat.debug("needs-more-work DeploymentDiagramRenderer getFigNodeFor");
+    cat.debug("TODO DeploymentDiagramRenderer getFigNodeFor");
     return null;
   }
 

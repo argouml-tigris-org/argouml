@@ -76,7 +76,7 @@ public final class ArgoSecurityManager extends SecurityManager
     }
 
     public void checkPermission(Permission perm) {
-        // needs-more-work:  
+        // TODO:  
 	// Don't allow write access to <code>sun.awt.exception.handler</code>
 	if (perm.getClass().equals(java.util.PropertyPermission.class)) {
 	    if ("sun.awt.exception.handler".equals(perm.getName())) {

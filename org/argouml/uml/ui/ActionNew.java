@@ -75,7 +75,7 @@ public class ActionNew extends UMLAction {
         }          
         if (!safe) return;
       }
-      //needs-more-work: if you cancel the save it should cancel open
+      //TODO: if you cancel the save it should cancel open
       // Steffen Zschaler 01/10/2002 - Well, it does, doesn't it? trySave will
       // return false in that case...
     }

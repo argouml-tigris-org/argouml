@@ -42,7 +42,7 @@ import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 
 /** Dialog box to list all critics and allow editing of some of their
- *  properties.  Needs-More-Work: knowledge type, supported goals,
+ *  properties.  TODO: knowledge type, supported goals,
  *  supported decisions, critic network. */
 public class CriticBrowserDialog extends JDialog
 implements ActionListener, ListSelectionListener, ItemListener, DocumentListener {
@@ -356,15 +356,15 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
       return;
     }
     if (e.getSource() == _goButton) {
-      cat.debug("needs-more-work go!");
+      cat.debug("TODO go!");
       return;
     }
     if (e.getSource() == _networkButton) {
-      cat.debug("needs-more-work network!");
+      cat.debug("TODO network!");
       return;
     }
     if (e.getSource() == _configButton) {
-      cat.debug("needs-more-work config!");
+      cat.debug("TODO config!");
       return;
     }
     if (e.getSource() == _wakeButton) {
@@ -480,7 +480,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
     Boolean enable = (Boolean) aValue;
     Critic cr = (Critic) _target.elementAt(rowIndex);
     cr.setEnabled(enable.booleanValue());
-    fireTableRowsUpdated(rowIndex, rowIndex); //needs-more-work
+    fireTableRowsUpdated(rowIndex, rowIndex); //TODO
   }
 
   ////////////////

@@ -55,7 +55,7 @@ class SplashPanel extends JPanel {
     topSouth.setBorder(new BevelBorder(BevelBorder.RAISED));
     topSouth.add(new JLabel(""), BorderLayout.CENTER);
 
-    JLabel topCenter = new JLabel("ArgoUML v" + ArgoVersion.VERSION,
+    JLabel topCenter = new JLabel("ArgoUML v" + ArgoVersion.getVersion(),
 		                  SwingConstants.CENTER);
     // 40 works for 0.10
     topCenter.setFont(new Font("SansSerif", Font.BOLD, 35));

@@ -176,7 +176,7 @@ public class PropPanelTransition extends PropPanelModelElement {
 	    MFactory factory=trans.getFactory();
             trigger = factory.createCallEvent();
 	    trigger.setName("anon");
-	    //needs-more-work
+	    //TODO
 	    trigger.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
             trans.setTrigger(trigger);
         }

@@ -60,7 +60,7 @@ public class PropPanelCallEvent extends PropPanelEvent {
 
   }
 
-    //needs-more-work: Operation should be selectable
+    //TODO: Operation should be selectable
     public MOperation getOperation() {
 	MOperation operation=null;
         Object target = getTarget();

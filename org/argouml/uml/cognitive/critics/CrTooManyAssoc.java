@@ -61,8 +61,8 @@ public class CrTooManyAssoc extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MClassifier)) return NO_PROBLEM;
     MClassifier cls = (MClassifier) dm;
-    // needs-more-work: consider inherited associations?
-    // needs-more-work: self loops are double counted
+    // TODO: consider inherited associations?
+    // TODO: self loops are double counted
     int threshold = ((Integer)getArg(THRESHOLD)).intValue();
     Collection aes = cls.getAssociationEnds();
     if (aes == null || aes.size() <= threshold) return NO_PROBLEM;

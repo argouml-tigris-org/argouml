@@ -100,7 +100,7 @@ public class Critic implements Poster, Serializable {
    *  @since 0.9.4
    */
   public final static Category cat = Category.getInstance("org.argouml.cognitive.critics");
-    // needs-more-work:  JDK 1.2 seems to not return the package name if
+    // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
   // public final static Category cat = Category.getInstance(Critic.class.getPackage().getName());
@@ -175,7 +175,7 @@ public class Critic implements Poster, Serializable {
    *  a static initializer block to make one instance of each critic and
    *  call {@link Agency#register} with that instance. */
   public Critic() {
-    /* needs-more-work:  THIS IS A HACK.
+    /* TODO:  THIS IS A HACK.
      * A much better way of doing this would be not to start
      * the critic in the first place.
      */
@@ -321,7 +321,7 @@ public class Critic implements Poster, Serializable {
    *  be easily check to see if it still holds, should override this
    *  method. <p>
    *
-   *  Needs-More-Work: Maybe ToDoItem should carry some data to make
+   *  TODO: Maybe ToDoItem should carry some data to make
    *  this method more efficient. */
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) {
@@ -497,7 +497,7 @@ public class Critic implements Poster, Serializable {
    *  ControlMech to compute, but if a subclass of Critic encapsulates
    *  some information you may need to override this method. <p>
    *
-   *  Needs-More-Work: I would like a better default action, but goals
+   *  TODO: I would like a better default action, but goals
    *  are typed and their values must be interperted by critics. They
    *  are not as generic as the DecisionModel. */
   public boolean isRelevantToGoals(Designer dsgr) {
@@ -632,7 +632,7 @@ public class Critic implements Poster, Serializable {
    *  may override this method or the accessor methods to add computed
    *  fields to the ToDoItem.
    *
-   *  Needs-More-Work: Critic's may want to add new fields to a
+   *  TODO: Critic's may want to add new fields to a
    *  ToDoItem to make stillValid more efficent.
    *
    * @see Critic#critique */
@@ -643,7 +643,7 @@ public class Critic implements Poster, Serializable {
   ////////////////////////////////////////////////////////////////
   // issue resolution
 
-  /** Needs-More-Work: Not implemented yet. The idea is that some
+  /** TODO: Not implemented yet. The idea is that some
    *  problems identified by Critic's can be fixed with certain design
    *  manipulations (or transforms) that can be applied automatically
    *  to resolve the problem. This method replies true iff the given
@@ -654,7 +654,7 @@ public class Critic implements Poster, Serializable {
     return false;
   }
 
-  /** Needs-More-Work: Not implemented yet. If the given ToDoItem can
+  /** TODO: Not implemented yet. If the given ToDoItem can
    *  be fixed automaically, and the user wants that to happen, then do
    *  it. Obviously, this depends on the specific Critic and
    *  problem. By default this method does nothing.

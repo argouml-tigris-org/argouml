@@ -78,7 +78,7 @@ public class ChildGenUML implements ChildGenerator {
       if (behavior != null) behavior.elements();
     }
 
-    // needs-more-work: associationclasses fit both of the next 2 cases
+    // TODO: associationclasses fit both of the next 2 cases
 
     if (o instanceof MClassifier) {
       MClassifier cls = (MClassifier) o;
@@ -96,7 +96,7 @@ public class ChildGenUML implements ChildGenerator {
       MAssociation asc = (MAssociation) o;
       Vector assocEnds = new Vector(asc.getConnections());
       if (assocEnds != null) return assocEnds.elements();
-      //needs-more-work: MAssociationRole
+      //TODO: MAssociationRole
     }
 
 

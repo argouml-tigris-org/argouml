@@ -49,7 +49,7 @@ public class CrTooManyClasses extends CrUML {
   ////////////////////////////////////////////////////////////////
   // constructor
   public CrTooManyClasses() {
-    // needs-more-work: <ocl>self.name</ocl> is not expanded for diagram objects
+    // TODO: <ocl>self.name</ocl> is not expanded for diagram objects
     setHeadline("Reduce Classes in diagram <ocl>self</ocl>");
     addSupportedDecision(CrUML.decCLASS_SELECTION);
     setArg(THRESHOLD, new Integer(20));

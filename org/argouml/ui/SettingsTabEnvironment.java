@@ -59,7 +59,7 @@ implements SettingsTabPanel {
 	JPanel top = new JPanel();
     	top.setLayout(new GridBagLayout()); 
 
-        // needs-more-work: I18N
+        // TODO: I18N
 
 	GridBagConstraints labelConstraints = new GridBagConstraints();
 	labelConstraints.anchor = GridBagConstraints.WEST;
@@ -162,7 +162,7 @@ implements SettingsTabPanel {
     /** This should call on a global config file somewhere
      * .9.4 is the last version of argo
      */    
-    public String getModuleVersion() { return ArgoVersion.VERSION; }
+    public String getModuleVersion() { return ArgoVersion.getVersion(); }
 
     public String getModuleKey() { return "module.settings.environment"; }
 

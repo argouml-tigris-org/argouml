@@ -70,7 +70,7 @@ public class Trash {
       // me.setNamespace(Trash_Model);
 	  cat.debug("added " + obj + " to trash");
     }
-    //needs-more-work: trash diagrams
+    //TODO: trash diagrams
   }
 
   public boolean contains(Object obj) {
@@ -83,9 +83,9 @@ public class Trash {
   }
   
   public void recoverItem(Object obj) {
-    cat.debug("needs-more-work: recover from trash");
+    cat.debug("TODO: recover from trash");
     if (obj instanceof MModelElement) {
-      TrashItem ti = null; //needs-more-work: find in trash
+      TrashItem ti = null; //TODO: find in trash
 	  //((MModelElement)obj).recoverFromTrash(ti);
     }
   }
@@ -95,12 +95,12 @@ public class Trash {
       cat.debug("tried to remove null from trash!");
       return;
     }
-    TrashItem ti = null; //needs-more-work: find in trash
+    TrashItem ti = null; //TODO: find in trash
     _contents.removeElement(ti);
   }
 
   public void emptyTrash() {
-    cat.debug("needs-more-work: emptyTheTrash not implemented yet");
+    cat.debug("TODO: emptyTheTrash not implemented yet");
     if (cat.getPriority() != null && cat.getPriority().equals(Priority.DEBUG)) {
         StringBuffer buf = new StringBuffer("Trash contents:");
         buf.append("\n");

@@ -52,9 +52,9 @@ import org.argouml.uml.MMUtil;
  *  UML Object      ---  Fig
  *  ---------------------------------------
  *  MClass         ---  FigClass
- *  MInterface       ---  FigClass (needs-more-work?)
+ *  MInterface       ---  FigClass (TODO?)
  *  MGeneralization  ---  FigGeneralization
- *  Realization     ---  FigDependency (needs-more-work)
+ *  Realization     ---  FigDependency (TODO)
  *  MAssociation     ---  FigAssociation
  *  MDependency      ---  FigDependency
  *  </pre>
@@ -73,7 +73,7 @@ public class ClassDiagramRenderer
         else if (node instanceof MInstance) return new FigInstance(gm, node);
         else if (node instanceof MPackage) return new FigPackage(gm, node);
         else if (node instanceof MModel) return new FigPackage(gm, node);
-        cat.debug("needs-more-work ClassDiagramRenderer getFigNodeFor "+node);
+        cat.debug("TODO ClassDiagramRenderer getFigNodeFor "+node);
         return null;
     }
 
@@ -170,7 +170,7 @@ public class ClassDiagramRenderer
                 return depFig;
             }
         }
-        cat.debug("needs-more-work ClassDiagramRenderer getFigEdgeFor");
+        cat.debug("TODO ClassDiagramRenderer getFigEdgeFor");
         return null;
     }
 

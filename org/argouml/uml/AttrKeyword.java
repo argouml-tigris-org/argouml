@@ -59,7 +59,7 @@ public class AttrKeyword implements java.io.Serializable {
   public static AttrKeyword KeywordFor(MAttribute attr) {
     MScopeKind sk = attr.getOwnerScope();
     MChangeableKind ck = attr.getChangeability();
-    // needs-more-work final?
+    // TODO final?
     if (MScopeKind.CLASSIFIER.equals(sk) && MChangeableKind.FROZEN.equals(ck))
       return STATFIN;
     else if (MScopeKind.CLASSIFIER.equals(sk))
@@ -86,7 +86,7 @@ public class AttrKeyword implements java.io.Serializable {
     MScopeKind sk = MScopeKind.INSTANCE;
 
     if (this == TRANS)
-        cat.info("needs-more-work: transient not supported");
+        cat.info("TODO: transient not supported");
      
     
     if (this == FINAL || this == STATFIN) ck = MChangeableKind.FROZEN;
@@ -94,6 +94,6 @@ public class AttrKeyword implements java.io.Serializable {
       
       target.setChangeability(ck);
       target.setOwnerScope(sk);
-      // needs-more-work: final
+      // TODO: final
   }
 } /* end class AttrKeyword */

@@ -118,7 +118,7 @@ implements VetoableChangeListener {
 
   /** Return all edges going from given port */
   public Vector getOutEdges(Object port) {
-    return new Vector(); // needs-more-work?
+    return new Vector(); // TODO?
   }
 
   /** Return one end of an edge */
@@ -126,7 +126,7 @@ implements VetoableChangeListener {
     if (edge instanceof MRelationship) {
         return CoreHelper.getHelper().getSource((MRelationship)edge);
     }
-    cat.debug("needs-more-work getSourcePort");
+    cat.debug("TODO getSourcePort");
     return null;
   }
 
@@ -135,7 +135,7 @@ implements VetoableChangeListener {
     if (edge instanceof MRelationship) {
         return CoreHelper.getHelper().getDestination((MRelationship)edge);
     }
-    cat.debug("needs-more-work getDestPort");
+    cat.debug("TODO getDestPort");
     return null;
   }
 
@@ -187,7 +187,7 @@ implements VetoableChangeListener {
     cat.debug("adding MClassifierRole node!!");
     if (!canAddNode(node)) return;
     _nodes.addElement(node);
-    // needs-more-work: assumes public, user pref for default visibility?
+    // TODO: assumes public, user pref for default visibility?
       if (node instanceof MClassifier) {
 		  _collab.addOwnedElement((MClassifier) node);
 		  // ((MClassifier)node).setNamespace(_collab.getNamespace());
@@ -201,7 +201,7 @@ implements VetoableChangeListener {
     cat.debug("adding class edge!!!!!!");
     if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
-    // needs-more-work: assumes public
+    // TODO: assumes public
        if (edge instanceof MModelElement &&
        ((MModelElement)edge).getNamespace() == null) {
       _collab.addOwnedElement((MModelElement) edge);

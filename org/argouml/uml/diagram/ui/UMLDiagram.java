@@ -120,7 +120,7 @@ public class UMLDiagram extends ArgoDiagram {
      return s + "|" + id;
   }
 
-	// needs-more-work: should be overwritten by each subclass of UMLDiagram
+	// TODO: should be overwritten by each subclass of UMLDiagram
 	public MModelElement  getOwner() { return _namespace; }
     
   public void setName(String n) throws PropertyVetoException {

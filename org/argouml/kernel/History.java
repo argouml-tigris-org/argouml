@@ -91,7 +91,7 @@ public class History {
 
   // items are never removed
 
-  // needs-more-work: support for search and queries
+  // TODO: support for search and queries
 
 
   ////////////////////////////////////////////////////////////////

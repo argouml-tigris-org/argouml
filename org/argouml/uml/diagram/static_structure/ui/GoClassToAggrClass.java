@@ -90,7 +90,7 @@ public class GoClassToAggrClass extends AbstractGoRule {
       MClassifier assocClass = otherEnd.getType();
       if (assocClass != null && !res.contains(assocClass))
 	res.addElement(assocClass);
-      // needs-more-work: handle n-way Associations
+      // TODO: handle n-way Associations
     }
     return res;
   }

@@ -62,7 +62,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   protected JComboBox _filterCombo  = new JComboBox();
   protected JLabel    _filterLabel  = new JLabel("Filter:");
 
-  // needs-more-work: line to select specified table rows
+  // TODO: line to select specified table rows
   //protected JComboBox _selectCombo = new JComboBox();
   //protected JLabel    _selectLabel = new JLabel("Select:");
 
@@ -155,7 +155,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
     _sp1.setSize(new Dimension(300, 400));
 
     _content.add(_sp1, BorderLayout.CENTER);
-    // needs-more-work: scrollpane does not resize when main divider moved
+    // TODO: scrollpane does not resize when main divider moved
 
 
     _content.setPreferredSize(new Dimension(600, 440));

@@ -42,7 +42,7 @@ import org.argouml.cognitive.critics.*;
 /** Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
-//needs-more-work: split into one critic for inherited problems and
+//TODO: split into one critic for inherited problems and
 //one for pproblems directly in this class.
 
 public class CrOppEndVsAttr extends CrUML {

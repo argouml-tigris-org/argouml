@@ -60,7 +60,7 @@ public class CrAssocNameConflict extends CrUML {
     while (enum.hasNext()) {
       MModelElement me = (MModelElement) enum.next();
       if (!(me instanceof MAssociation)) continue;
-      // needs-more-work: not implemented yet
+      // TODO: not implemented yet
     }
     return NO_PROBLEM;
   }

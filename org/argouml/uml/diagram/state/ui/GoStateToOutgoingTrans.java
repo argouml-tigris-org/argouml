@@ -44,7 +44,7 @@ public class GoStateToOutgoingTrans extends AbstractGoRule {
   }
   public void setRoot(Object r) { }
 
-  //needs-more-work: should not include internal transitions
+  //TODO: should not include internal transitions
 
   public Object getChild(Object parent, int index) {
     if (parent instanceof MStateVertex) {

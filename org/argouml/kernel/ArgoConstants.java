@@ -28,7 +28,7 @@ public interface ArgoConstants {
   ////////////////////////////////////////////////////////////////
   // domain-independent types of knowledge
 
-  //needs-more-work: what if there are more than 31 of these?
+  //TODO: what if there are more than 31 of these?
 
   public static int KT_CORRECTNESS    = 1<<0;
   public static int KT_COMPLETENESS   = 1<<1;

@@ -141,7 +141,7 @@ implements VetoableChangeListener  {
 
   /** Return all edges going from given port */
   public Vector getOutEdges(Object port) {
-    return new Vector(); // needs-more-work?
+    return new Vector(); // TODO?
   }
 
   /** Return one end of an edge */
@@ -149,7 +149,7 @@ implements VetoableChangeListener  {
     if (edge instanceof MRelationship) {
         return CoreHelper.getHelper().getSource((MRelationship)edge);
     }
-    cat.debug("needs-more-work getSourcePort");
+    cat.debug("TODO getSourcePort");
     return null;
   }
 
@@ -158,7 +158,7 @@ implements VetoableChangeListener  {
     if (edge instanceof MRelationship) {
         return CoreHelper.getHelper().getDestination((MRelationship)edge);
     }
-    cat.debug("needs-more-work getSourcePort");
+    cat.debug("TODO getSourcePort");
     return null;
   }
 
@@ -243,7 +243,7 @@ implements VetoableChangeListener  {
     cat.debug("adding class edge!!!!!!");
     if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
-    // needs-more-work: assumes public
+    // TODO: assumes public
     if (edge instanceof MModelElement &&
        ((MModelElement)edge).getNamespace() == null) {
       _model.addOwnedElement((MModelElement) edge);
@@ -360,7 +360,7 @@ implements VetoableChangeListener  {
           {
               MPackage fromPack = (MPackage) fromPort;
               MPackage toPack = (MPackage) toPort;
-              // needs-more-work: assumes public, user pref for default visibility?
+              // TODO: assumes public, user pref for default visibility?
               //do I have to check the namespace here? (Toby)
               if (edgeClass == MDependency.class) {
                   // nsuml: using Usage as default

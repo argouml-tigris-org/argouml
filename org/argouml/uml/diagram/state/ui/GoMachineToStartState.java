@@ -34,7 +34,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.ui.*;
 
-// needs-more-work: filter only start states
+// TODO: filter only start states
 
 public class GoMachineToStartState extends AbstractGoRule {
 

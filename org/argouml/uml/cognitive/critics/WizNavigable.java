@@ -87,7 +87,7 @@ public class WizNavigable extends Wizard {
     if (cls1 != null && !"".equals(cls1.getName()))
       _option1 = "Navigable Toward " + cls1.getName();
 
-    // needs-more-work: put in class names
+    // TODO: put in class names
     res.addElement(_option0);
     res.addElement(_option1);
     res.addElement(_option2);

@@ -63,7 +63,7 @@ public class SelectionUseCase extends SelectionWButtons {
   public SelectionUseCase(Fig f) { super(f); }
 
   /** Return a handle ID for the handle under the mouse, or -1 if
-   *  none. Needs-More-Work: in the future, return a Handle instance or
+   *  none. TODO: in the future, return a Handle instance or
    *  null. <p>
    *  <pre>
    *   0-------1-------2

@@ -42,7 +42,7 @@ public class HistoryEvent {
 
   ////////////////////////////////////////////////////////////////
   // accessors
-  //needs-more-work
+  //TODO
 
   public int getIndex() { return _index; }
 

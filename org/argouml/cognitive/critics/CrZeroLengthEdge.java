@@ -47,7 +47,7 @@ public class CrZeroLengthEdge extends CrUML {
   ////////////////////////////////////////////////////////////////
   // constructor
   public CrZeroLengthEdge() {
-    // needs-more-work: {name} is not expanded for diagram objects
+    // TODO: {name} is not expanded for diagram objects
     setHeadline("Make Edge More Visible");
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     addSupportedDecision(CrUML.decINHERITANCE);

@@ -28,9 +28,9 @@ package org.argouml.kernel;
 import java.util.*;
 import java.util.Enumeration;
 
-// needs-more-work: how can this possibly be persistent?
-// needs-more-work: provide accessors
-// needs-more-work: define subclasses for: modification, criticism
+// TODO: how can this possibly be persistent?
+// TODO: provide accessors
+// TODO: define subclasses for: modification, criticism
 
 public class HistoryItemManipulation extends HistoryItem {
 

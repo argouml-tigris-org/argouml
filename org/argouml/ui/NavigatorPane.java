@@ -189,7 +189,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
   /** called when the user selects an item in the tree, by clicking or
    *  otherwise. */
   public void valueChanged(TreeSelectionEvent e) {
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
     //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
@@ -198,7 +198,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
 
   /** called when the user clicks once on an item in the tree. */
   public void mySingleClick(int row, TreePath path) {
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     /*
     Object sel = getSelectedObject();
@@ -225,7 +225,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
 
   /** called when the user clicks twice on an item in the tree. */
   public void myDoubleClick(int row, TreePath path) {
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     mouseClick(row, path);
     _clicksInNavPane += 2;

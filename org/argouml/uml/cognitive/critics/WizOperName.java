@@ -136,7 +136,7 @@ public class WizOperName extends WizMEName {
     /** There is a possibility that the next step forward takes another path
      * in this wizard. To allow for this we must destroy the path already 
      * traveled by.
-     * needs-more-work:
+     * TODO:
      * I (Linus) would say that this is really a problem with the Wizard 
      * implementation since I believe it should be possible to explore a 
      * path in the wizard and then go back.
@@ -236,7 +236,7 @@ public class WizOperName extends WizMEName {
     }
     
     
-    // Needs-more-work:
+    // TODO:
     // Move to MMUtil or some other common place and merge with 
     // UMLComboBoxEntry::findNamespace()
     private static MNamespace findNamespace(MNamespace phantomNS, MModel targetModel) {

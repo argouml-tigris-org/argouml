@@ -121,7 +121,7 @@ implements ArgoModuleEventListener {
     public NotationProvider getDefaultProvider() {
       if (_defaultProvider == null) {
           _defaultProvider = (NotationProvider)org.argouml.uml.generator.GeneratorDisplay.getInstance();
-          // needs-more-work:  This must be the provider pointed to by the configuration,
+          // TODO:  This must be the provider pointed to by the configuration,
 	  // or UML 13 if none.
 	  // 
       }

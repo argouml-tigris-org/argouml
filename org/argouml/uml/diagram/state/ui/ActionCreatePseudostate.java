@@ -59,7 +59,7 @@ public class ActionCreatePseudostate extends CmdCreateNode {
 
   /** Actually instanciate the NetNode and FigNode objects and
    * set the global next mode to ModePlace */
-  // needs-more-work: should call super, reduce code volume!
+  // TODO: should call super, reduce code volume!
   public Object makeNode() {
     Object newNode = super.makeNode();
     MPseudostateKind kind = (MPseudostateKind) _args.get("kind");

@@ -91,7 +91,7 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
     _description.setWrapStyleWord(true);
     descPane.add(_affected, BorderLayout.SOUTH);
 
-    // needs-more-work: related design elements
+    // TODO: related design elements
 
     JPanel listPane = new JPanel();
     listPane.setLayout(new BorderLayout());
@@ -112,7 +112,7 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
 
   }
 
-  //needs-more-work: should be more than just a scrolling list
+  //TODO: should be more than just a scrolling list
   // need to examine individual items, filter, sort,...
 
 
@@ -122,7 +122,7 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
    * @param e the event that characterizes the change.
    */
   public void valueChanged(ListSelectionEvent e) {
-    // needs-more-work: called on each critique!
+    // TODO: called on each critique!
     cat.debug("user selected " + _list.getSelectedValue());
     Object sel = _list.getSelectedValue();
     if (sel instanceof HistoryItem) {

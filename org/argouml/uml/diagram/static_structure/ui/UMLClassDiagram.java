@@ -52,7 +52,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
   ////////////////
   // actions for toolbar
-  // needs-more-work: should these be static?
+  // TODO: should these be static?
 
 
 
@@ -172,7 +172,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
     _toolBar.add(ActionAddAttribute.SINGLETON);
     _toolBar.add(ActionAddOperation.SINGLETON);
-    // needs-more-work: remove attribute and operation?
+    // TODO: remove attribute and operation?
     _toolBar.addSeparator();
 
     _toolBar.add(ActionAddNote.SINGLETON);
