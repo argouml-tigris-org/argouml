@@ -77,7 +77,7 @@ go out to Alejandro Ramirez, Phillipe Vanpeperstraete and Andreas
 Rueckert.  Thank you!
 </para>
     </sect1>
-  
+
     <sect1 id="project">
       <title>About the project</title>
       <para>
@@ -87,7 +87,7 @@ area of development there is still so much to do!
 This Cookbook is dedicated to everyone interested in taking part
 in the ArgoUML project as such and
 should help to transfer the knowledge from the old experts to them.
-Please feel free to send more questions and/or answers to the 
+Please feel free to send more questions and/or answers to the
 <ulink url="mailto:dev@argouml.tigris.org">dev mailing list</ulink>!
 </para>
     </sect1>
@@ -103,7 +103,7 @@ part of the ArgoUML Project.
 This could be perceived as a ladder to climb but remember
 that if so it is firstly a ladder of levels of commitment
 and time spent by you.
-You get no price for climbing higher, you just get more 
+You get no price for climbing higher, you just get more
 responsibility in the project and more work.
 </para>
       <para>
@@ -304,7 +304,7 @@ Information on how you should add modules and Plug-ins to ArgoUML.
 </para>
 	<para>
 Information that you, as a developer of ArgoUML,
-needs to know about how the project is organised and
+need to know about how the project is organised and
 how to contribute.
 </para>
 
@@ -331,7 +331,7 @@ ArgoUML as a modelling tool.
       <indexterm><primary>Developers' Mailing List</primary></indexterm>
       <para>
 All developers <emphasis>MUST</emphasis> subscribe to the mailinglist
-for developers. Please find the details at: 
+for developers. Please find the details at:
 <ulink url="http://argouml.tigris.org/servlets/ProjectMailingListList">http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>
 </para>
       <indexterm>
@@ -368,7 +368,7 @@ A window from the newly compiled ArgoUML opens after a while!
 </para>
     <para>
 That was the compact version for Windows + JDK.
-(Note: jdk cannot be installed in a directory that contains space in its 
+(Note: jdk cannot be installed in a directory that contains space in its
 name.)
 </para>
     <para>
@@ -379,9 +379,9 @@ how.
      <sect1 id="starting">
      <title>Getting started</title>
       <para>
-In order to develop with ArgoUML it is absolutely mandatory to get get
+In order to develop with ArgoUML it is absolutely mandatory to get
 the CVS version of ArgoUML.
-How this is done is described in 
+How this is done is described in
 <xref endterm="cvs_checkout_term" linkend="cvs_checkout"></xref>.
 </para>
       <para>
@@ -505,7 +505,7 @@ Docbook XSL stylesheets.
 fop for generating pdf versions of the docbook format.
 </para>
 	    <para>
-To build a pdf file with the pictures included you 
+To build a pdf file with the pictures included you need Jimi.
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -605,7 +605,7 @@ You use your Tigris login and Tigris password.
       <para>
 This means that you will set the <varname>CVSROOT</varname>-variable to
 <parameter>:pserver:<replaceable>login</replaceable>@cvs.tigris.org:/cvs</parameter>
-where <replaceable>login</replaceable> is you Tigris login.
+where <replaceable>login</replaceable> is your Tigris login.
 This needs to be done for the first checkout.
 After that the root will be remembered by the checked out copy.
 </para>
@@ -631,7 +631,7 @@ and
 <filename class="directory">argouml/tests</filename>.
 </para>
       <para>
-If you want to build to documentation you check out the module
+If you want to build the documentation you check out the module
 <parameter>argouml_doc</parameter>.
 This will check out the directories
 <filename class="directory">argouml/lib</filename>
@@ -684,7 +684,7 @@ in what jar-file.
       </indexterm>
       <para>
 The rule file is named <filename>build.xml</filename>.
-There is one of those in every separately built directory
+There is one of those in every separate build directory
 (<filename class="directory">src_new</filename>,
 <filename class="directory">documentation</filename>, and
 <filename class="directory">modules/<replaceable>whatever</replaceable></filename>).
@@ -698,7 +698,7 @@ There is one of those in every separately built directory
 	</indexterm>
 	<para>
 For your convenience the ant tool of the correct version is present in the
-CVS repository of ArgoUML in the file 
+CVS repository of ArgoUML in the file
 <filename class="libraryfile">argouml/tools/ant-1.4.1/lib/ant.jar</filename>.
 </para>
 	<para>
@@ -719,7 +719,7 @@ there are two scripts (one for Unix and one for
 Windows) that are called <filename>build.sh</filename> and
 <filename>build.bat</filename> respectively present in most
 of the directories that contain a <filename>build.xml</filename> file.
-These two scripts runs the equivalence of the above paths.
+These two scripts run the equivalence of the above paths.
 </para>
 	<para>
 By setting JAVA_HOME to different values you can at different times
@@ -744,7 +744,7 @@ rather than
 	    <secondary>compilation</secondary>
 	  </indexterm>
 	  <para>
-Here is what you need to do in order to compile and run 
+Here is what you need to do in order to compile and run
 your checked out copy of ArgoUML under Unix.
 </para>
 	  <orderedlist>
@@ -793,7 +793,7 @@ or want to compile and run again.
 	  <orderedlist>
 	    <listitem>
 	      <para>
-<command>set JAVA_HOME=<replaceable>/where/you/have/installed/jdk</replaceable></command>
+<command>set JAVA_HOME=<replaceable>\where\you\have\installed\jdk</replaceable></command>
 </para>
 	    </listitem>
 	    <listitem>
@@ -939,14 +939,14 @@ The conversion is done whenever you need to look at the result or when
 you want to present the final result on the web site.
 </para>
 	  <para>
-There is currently three different books generated in this way, 
-each its own directory. They are cookbook (this document), 
+There are currently three different books generated in this way,
+each into its own directory. They are cookbook (this document), 
 manual and quick-guide. They are all generated and stored in the
 exact same way except for the name of the directory that is one
 of <filename class="directory">cookbook</filename>,
 <filename class="directory">manual</filename> or 
 <filename class="directory">quick-guide</filename>.
-Below I will reference this directory using 
+Below I will reference these directories using
 <filename class="directory"><replaceable>book</replaceable></filename>.
 </para>
 	  <para>
@@ -964,7 +964,7 @@ The module <parameter>argouml_docs</parameter> is there for this purpose.
 </para>
 	      <para>
 If wanted, the CVS repository could be tagged and then the tag
-can be checked out. This makes it possible to know exactly 
+can be checked out. This makes it possible to know exactly
 how a certain version of the documentation was generated.
 </para>
 	    </listitem>
@@ -973,7 +973,7 @@ how a certain version of the documentation was generated.
 The documentation is generated using <command>build docs</command>.
 </para>
 	      <para>
-This generates all three books and the result appears in 
+This generates all three books and the result appears in
 <filename class="directory">argouml/build/documentation/defaulthtml/<replaceable>book</replaceable></filename>,
 <filename class="directory">argouml/build/documentation/printablehtml/<replaceable>book</replaceable></filename>, and
 <filename class="directory">argouml/build/documentation/pdf/<replaceable>book</replaceable></filename>.
@@ -981,7 +981,7 @@ This generates all three books and the result appears in
 	      <para>
 This has been done several times before while preparing the release so
 no problems are expected. If there are problems then the preparations
-was not good enough and the process is best stopped right here.
+were not good enough and the process is best stopped right here.
 </para>
 	    </listitem>
 	    <listitem>
@@ -1024,9 +1024,9 @@ The "Unknown" files are scheduled to be added by:
 This removing of missing files and adding of unknown files may seem
 backward but it is from the perspective of CVS.
 The missing files are the ones that were present in the previous
-version of the documentation and that does not have a replacement,
+version of the documentation and do not have a replacement,
 either because that chapter does not exist anymore or that the tool
-generate filenames differently.
+generates filenames differently.
 The Unknown files are files with filenames that for the same reason
 appear from one version of the documentation to the next.
 </para>
@@ -1070,7 +1070,7 @@ In order to do this you need to check out the whole of the
 You also need the directory
 <filename class="directory">argouml/lib</filename> and
 <filename class="directory">argouml/tools</filename>
-that contains the tools used: ANT, Fop, saxon, ...
+that contain the tools used: ANT, Fop, saxon, ...
 </para>
 	  <para>
 The subdirectories of
@@ -1100,7 +1100,7 @@ contains all the required pictures for all the books.
 	  <title>Compiling failed. Any suggestions?</title>
 	  <para>
 It might be that some other developer has made a misstake in checking
-in things that contains error, or forgotten to check in some files
+in things that contain errors, or forgotten to check in some files
 in a change.
 Look at the last couple of hours on the
 <ulink url="http://argouml.tigris.org/servlets/BrowseList?listName=dev">
@@ -1109,9 +1109,9 @@ It is probably on fire.
 </para>
 	  <para>
 Another reason for problems is an unclean local source tree.
-This means that if you have updated different parts of your source 
-tree at different times it might contains inconsistencies.
-If you suspect this, first try fix it by doing
+This means that if you have updated different parts of your source
+tree at different times it might contain inconsistencies.
+If you suspect this, first try to fix it by doing
 <command>build clean</command> and <command>cvs update -d</command>
 before trying to build again.
 If that doesn't work remove your checked out copy completely and 
@@ -1143,7 +1143,7 @@ Discuss what you have done and how best to test it on the
 Eventually someone will commit it for you.
 </para>
 	  <para>
-Furthermore the checkout of your copy need to be done with your
+Furthermore the checkout of your copy needs to be done with your
 tigris id that has the Developer role.
 If you for some reason have earlier checked out
 a copy as guest and then made modifications, changed the CVSROOT
