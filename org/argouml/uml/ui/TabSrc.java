@@ -31,10 +31,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
 import org.argouml.application.api.NotationName;
-import org.argouml.application.events.ArgoEventPump;
-import org.argouml.application.events.ArgoEventTypes;
-import org.argouml.application.events.ArgoNotationEvent;
-import org.argouml.application.events.ArgoNotationEventListener;
 import org.argouml.language.ui.NotationComboBox;
 import org.argouml.model.Model;
 import org.argouml.ui.TabText;
@@ -48,10 +44,9 @@ import org.tigris.gef.presentation.FigNode;
  */
 public class TabSrc
     extends TabText
-    implements ArgoNotationEventListener, NotationContext, ItemListener {
+    implements NotationContext, ItemListener {
     
     private static final Logger LOG = Logger.getLogger(TabSrc.class);
-    private boolean stop;
     private NotationName notationName = null;
 
     ////////////////////////////////////////////////////////////////
@@ -67,16 +62,15 @@ public class TabSrc
         getToolbar().add(NotationComboBox.getInstance());
         NotationComboBox.getInstance().addItemListener(this);
         getToolbar().addSeparator();
-        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
     /**
      * @see java.lang.Object#finalize()
      */
     public void finalize() {
-        ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
         NotationComboBox.getInstance().removeItemListener(this);
     }
+    
     ////////////////////////////////////////////////////////////////
     // accessors
 
@@ -117,17 +111,7 @@ public class TabSrc
      */
     public void setTarget(Object t) {
         Object modelTarget = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        notationName = null;
         setShouldBeEnabled(Model.getFacade().isAModelElement(modelTarget));
-        // If the target is a notation context, use its notation.
-        if (t instanceof NotationContext) {
-            notationName = ((NotationContext) t).getContextNotation();
-        } else {
-            notationName = Notation.getDefaultNotation();
-        }
-        stop = true;
-        NotationComboBox.getInstance().setSelectedItem(notationName);
-        stop = false;
         super.setTarget(t);
     }
 
@@ -150,57 +134,12 @@ public class TabSrc
     }
 
     /**
-     * Invoked when any aspect of the notation has been changed.
-     *
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationChanged(ArgoNotationEvent e) {
-        refresh();
-    }
-
-    /**
-     * Ignored.
-     *
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationAdded(ArgoNotationEvent e) {
-    }
-
-    /**
-     * Ignored.
-     *
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationRemoved(ArgoNotationEvent e) {
-    }
-
-    /**
-     * Ignored.
-     *
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationProviderAdded(ArgoNotationEvent e) {
-    }
-
-    /**
-     * Ignored.
-     *
-     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
-     */
-    public void notationProviderRemoved(ArgoNotationEvent e) {
-    }
-
-    /**
      * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent event) {
-        if (!stop && event.getStateChange() == ItemEvent.SELECTED) {
+        if (event.getStateChange() == ItemEvent.SELECTED) {
             notationName = (NotationName) NotationComboBox.getInstance()
                 .getSelectedItem();
-            if (getTarget() instanceof NotationContext) {
-                ((NotationContext) getTarget())
-                    .setContextNotation(notationName);
-            }
             refresh();
         }
     }
