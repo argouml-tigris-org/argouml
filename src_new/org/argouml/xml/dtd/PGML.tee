@@ -498,39 +498,6 @@ height="<ocl>self.height.intValue</ocl>"
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 
-<template class="org.argouml.uml.diagram.static_structure.ui.FigNote">
-
-<![CDATA[
-
-<group name="<ocl>self.id</ocl>"
-
-     description="<ocl>self.classNameAndBounds</ocl>"
-
-     href="<ocl>self.owner.UUID</ocl>"
-
-     dynobjects="<ocl>self._dynObjects</ocl>"
-
-     FILL_AND_STROKE
-
->
-
-  <private>
-    ItemUID="<ocl>self.ItemUID</ocl>"
-    enclosingFig="<ocl>self.enclosingFig.id</ocl>"
-  </private>
-
-  <ocl>self.figs</ocl>
-
-</group>
-
-]]>
-
-</template>
-
-
-
-<!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-
 <template class="org.tigris.gef.presentation.FigCube">
 
 <![CDATA[
