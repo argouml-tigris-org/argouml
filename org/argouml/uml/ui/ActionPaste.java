@@ -39,7 +39,7 @@ public class ActionPaste extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionPaste() { super("Paste"); }
+    public ActionPaste() { super("action.paste"); }
 
 
     ////////////////////////////////////////////////////////////////

@@ -48,7 +48,7 @@ public class ActionImportFromSources extends UMLAction {
     // constructors
 
     protected ActionImportFromSources() {
-        super("Import sources...");
+        super("action.import-sources");
     }
 
 

@@ -73,7 +73,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabToDo() {
-    super("ToDoItem");
+    super("tab.todo-item");
     setLayout(new BorderLayout());
 //     JPanel buttonPane = new JPanel();
 //     buttonPane.setFont(new Font("Dialog", Font.PLAIN, 9));

@@ -61,7 +61,7 @@ implements TabModelTarget {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabTaggedValues() {
-    super("TaggedValues");
+    super("tab.tagged-values");
     _tableModel = new TableModelTaggedValues(this);
     _table.setModel(_tableModel);
     //     TableColumn keyCol = _table.getColumnModel().getColumn(0);

@@ -58,7 +58,7 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
     // TODO:  Temporarily remove toolbar until src selection
     // is working better.
     //
-    super("Source", true);
+    super("tab.source", true);
     // super("Source", false);
     _notationName = null;
     _toolbar.add(NotationComboBox.getInstance());

@@ -36,7 +36,7 @@ public abstract class AbstractActionNewModelElement extends UMLChangeAction {
     private MModelElement _target;
     
     protected AbstractActionNewModelElement() {
-        super(Argo.localize("CoreMenu", "New"), true, NO_ICON);
+        super(Argo.localize("CoreMenu", "action.new"), true, NO_ICON);
     }  
     
      /**

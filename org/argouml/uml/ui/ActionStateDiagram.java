@@ -51,7 +51,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
     // constructors
 
     private ActionStateDiagram() {
-        super("StateDiagram");
+        super("action.state-diagram");
     }
 
     protected ActionStateDiagram(String name) { super(name); }

@@ -45,7 +45,7 @@ public class ActionActivityDiagram extends ActionStateDiagram {
     protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionActivityDiagram.class);
 
     private ActionActivityDiagram() {
-        super("ActivityDiagram");
+        super("action.activity-diagram");
     }
 
     /**

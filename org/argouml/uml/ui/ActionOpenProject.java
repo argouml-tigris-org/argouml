@@ -64,7 +64,7 @@ public class ActionOpenProject extends UMLAction {
   ////////////////////////////////////////////////////////////////
   // constructors
   
-  public ActionOpenProject() { super ("Open Project..."); }
+  public ActionOpenProject() { super ("action.open-project"); }
   
   ////////////////////////////////////////////////////////////////
   // main methods

@@ -117,8 +117,8 @@ class InitMenusLater implements Runnable {
     nudge.add(new CmdNudge(CmdNudge.UP));
     nudge.add(new CmdNudge(CmdNudge.DOWN));
 
-    JMenuItem autoLayout = layout.add(new ActionLayout("Automatic"));
-    JMenuItem incrLayout = layout.add(new ActionLayout("Incremental"));
+    JMenuItem autoLayout = layout.add(new ActionLayout("action.layout-automatic"));
+    JMenuItem incrLayout = layout.add(new ActionLayout("action.layout-incremental"));
     /** incremental layout is currently not implemented */
     incrLayout.setEnabled(false);
 
@@ -126,33 +126,33 @@ class InitMenusLater implements Runnable {
     nextEditItem.setAccelerator(F6);
     editTabs.addSeparator();
 
-    JMenuItem tabe1Item = editTabs.add(new ActionGoToEdit("As Diagram"));
+    JMenuItem tabe1Item = editTabs.add(new ActionGoToEdit("action.as-diagram"));
     tabe1Item.setAccelerator(altshift1);
-    JMenuItem tabe2Item = editTabs.add(new ActionGoToEdit("As Table"));
+    JMenuItem tabe2Item = editTabs.add(new ActionGoToEdit("action.as-table"));
     tabe2Item.setAccelerator(altshift2);
-    JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("As Metrics"));
+    JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("action.as-metrics"));
     tabe3Item.setAccelerator(altshift3);
 
 //    JMenuItem nextDetailsItem = detailsTabs.add(Actions.NextDetailsTab);
 //    nextDetailsItem.setAccelerator(F5);
 //    detailsTabs.addSeparator();
 
-    JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("ToDo Item"));
+    JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("tab.todo-item"));
     tab1Item.setAccelerator(alt1);
-    JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("Properties"));
+    JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("tab.properties"));
     tab2Item.setAccelerator(alt2);
-    JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("Documentation"));
+    JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("tab.documentation"));
     tab3Item.setAccelerator(alt3);
-    JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("Source"));
+    JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("tab.source"));
     tab4Item.setAccelerator(alt4);
-    JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("Constraints"));
+    JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("tab.constraints"));
     tab5Item.setAccelerator(alt5);
-    JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("Tagged Values"));
+    JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("tab.tagged-values"));
     tab6Item.setAccelerator(alt6);
-    JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("Checklist"));
+    JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("tab.checklist"));
     tab7Item.setAccelerator(alt7);
-    JMenuItem tab8Item = detailsTabs.add(new ActionGoToDetails("History"));
-    tab8Item.setAccelerator(alt8);
+    //JMenuItem tab8Item = detailsTabs.add(new ActionGoToDetails("tab.history"));
+    //tab8Item.setAccelerator(alt8);
     //JMenuItem tab9Item = detailsTabs.add(new ActionGoToDetails(""));
     //tab9Item.setAccelerator(alt9);
     //JMenuItem tab0Item = detailsTabs.add(new ActionGoToDetails(""));

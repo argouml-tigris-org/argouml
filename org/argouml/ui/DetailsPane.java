@@ -145,6 +145,7 @@ public class DetailsPane
             JPanel t = (JPanel)_tabPanels.elementAt(i);
             if (t instanceof TabSpawnable)
                 title = ((TabSpawnable)t).getTitle();
+            title = Argo.localize("UMLMenu", title);
             if (t instanceof TabToDoTarget) {
                 _tabs.addTab(title, _leftArrowIcon, t);
             } else if (t instanceof TabModelTarget) {
@@ -334,8 +335,6 @@ public class DetailsPane
     }
 
     public boolean selectTabNamed(String tabName) {
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
-
         int index = getIndexOfNamedTab(tabName);
         if (index != -1) {
             _tabs.setSelectedIndex(index);

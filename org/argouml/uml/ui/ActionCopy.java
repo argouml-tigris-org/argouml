@@ -39,7 +39,7 @@ public class ActionCopy extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionCopy() { super("Copy"); }
+    public ActionCopy() { super("action.copy"); }
 
 
     ////////////////////////////////////////////////////////////////

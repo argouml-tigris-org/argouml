@@ -75,7 +75,7 @@ public class TabSpawnable
   public TabSpawnable(String tag) { this(tag, false); }
 
   public TabSpawnable(String tag, boolean tear) {
-    setTitle(Argo.localize(BUNDLE, tag));
+    setTitle(tag);
     _tear = tear;
   }
 
@@ -129,7 +129,7 @@ public class TabSpawnable
 
     JDialog  f = new JDialog(ProjectBrowser.TheInstance);    
     f.getContentPane().setLayout(new BorderLayout());
-    f.setTitle(_title);
+    f.setTitle(Argo.localize(BUNDLE, _title));
     TabSpawnable newPanel = (TabSpawnable) clone();
     if (newPanel == null)
         return null; //failed to clone
@@ -150,7 +150,7 @@ public class TabSpawnable
       it.setTarget(me.getTarget());
     }
     
-    newPanel.setTitle(_title);
+    newPanel.setTitle(Argo.localize(BUNDLE, _title));
     
     f.getContentPane().add(newPanel, BorderLayout.CENTER);
     Rectangle bounds = getBounds();

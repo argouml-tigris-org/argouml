@@ -46,7 +46,7 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
     // constructors
 
     private ActionDeleteFromDiagram() {
-        super("Delete From Diagram");
+        super("action.remove-from-diagram");
     }
 
     ////////////////////////////////////////////////////////////////

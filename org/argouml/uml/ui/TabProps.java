@@ -91,7 +91,7 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabProps() {
-    this("Properties", "ui.PropPanel");
+    this("tab.properties", "ui.PropPanel");
   }
 
   public TabProps(String tabName, String panelClassBase) {

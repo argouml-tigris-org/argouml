@@ -55,7 +55,7 @@ public class ActionSaveGraphics extends UMLAction {
     // constructors
 
     protected ActionSaveGraphics() {
-	super( "Save Graphics...", NO_ICON);
+	super( "action.save-graphics", NO_ICON);
     }
 
 

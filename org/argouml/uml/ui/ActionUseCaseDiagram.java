@@ -39,7 +39,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
     public static ActionUseCaseDiagram SINGLETON = new ActionUseCaseDiagram();
 
     private ActionUseCaseDiagram() {
-        super("UseCaseDiagram");
+        super("action.usecase-diagram");
     }
 
     /**
