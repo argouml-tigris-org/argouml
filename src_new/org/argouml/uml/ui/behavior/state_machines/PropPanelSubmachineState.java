@@ -25,11 +25,13 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 
+import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -42,26 +44,52 @@ import org.argouml.util.ConfigLoader;
 public class PropPanelSubmachineState extends PropPanelCompositeState {
 
     /**
+     * @param name
+     * @param icon
+     * @param orientation
+     */
+    public PropPanelSubmachineState(String name, ImageIcon icon, 
+            Orientation orientation) {
+        super(name, icon, orientation);
+        initialize();
+    }
+
+    /**
      * Constructor for PropPanelSubmachineState.
      */
     public PropPanelSubmachineState() {
-        // TODO: get the submachine state it's own icon
-        super("Submachine State", _compositeStateIcon, ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.container"), containerScroll);
-        JComboBox submachineBox = new UMLComboBox2(new UMLSubmachineStateComboBoxModel(), ActionSetSubmachineStateSubmachine.SINGLETON);
-        addField(Translator.localize("UMLMenu", "label.submachine"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-submachine"), submachineBox));
+        super("Submachine State", _compositeStateIcon, 
+                ConfigLoader.getTabPropsOrientation());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        // new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        // "tooltip.nav-stereo"), getStereotypeBox()));
+
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.container"), 
+                containerScroll);
+        JComboBox submachineBox = new UMLComboBox2(
+                new UMLSubmachineStateComboBoxModel(), 
+                ActionSetSubmachineStateSubmachine.SINGLETON);
+        addField(Translator.localize("UMLMenu", "label.submachine"), 
+                new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+                        "tooltip.nav-submachine"), submachineBox));
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Translator.localize("UMLMenu", "label.outgoing"), outgoingScroll);
+        addField(Translator.localize("UMLMenu", "label.incoming"), 
+                incomingScroll);
+        addField(Translator.localize("UMLMenu", "label.outgoing"), 
+                outgoingScroll);
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.subvertex"), new JScrollPane(new UMLMutableLinkedList(new UMLCompositeStateSubvertexListModel(), null, ActionNewStubState.SINGLETON)));
+        addField(Translator.localize("UMLMenu", "label.subvertex"), 
+                new JScrollPane(new UMLMutableLinkedList(
+                        new UMLCompositeStateSubvertexListModel(), null, 
+                        ActionNewStubState.SINGLETON)));
     }
 
 }

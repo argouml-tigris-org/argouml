@@ -24,21 +24,21 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import org.argouml.uml.ui.behavior.state_machines.PropPanelSimpleState;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelSubmachineState;
 import org.argouml.util.ConfigLoader;
 
 /**
- * 
- * @author mkl
- *  
- */
-public class PropPanelObjectFlowState extends PropPanelSimpleState {
+* 
+* @author mvw
+*  
+*/
+public class PropPanelSubactivityState extends PropPanelSubmachineState {
 
-    /**
-     * Constructor
-     */
-    public PropPanelObjectFlowState() {
-        super("ObjectFlowState", _objectFlowStateIcon, ConfigLoader
-                .getTabPropsOrientation());    
+ /**
+  * Constructor
+  */
+    public PropPanelSubactivityState() { 
+        super("SubactivityState", _subactivityStateIcon, ConfigLoader
+             .getTabPropsOrientation());    
     }
 }
