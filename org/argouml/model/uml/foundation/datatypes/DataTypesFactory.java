@@ -53,14 +53,16 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */
-    private static DataTypesFactory SINGLETON =
+    private static DataTypesFactory singleton =
                    new DataTypesFactory();
 
     /**
      * Singleton instance access method.
+     *
+     * @return the singleton
      */
     public static DataTypesFactory getFactory() {
-        return SINGLETON;
+        return singleton;
     }
 
     /** Don't allow instantiation
@@ -71,6 +73,8 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
     /**
      * Create an empty but initialized instance of a UML ActionExpression.
      *  
+     * @param language the language for the expression
+     * @param body the body for the expression
      * @return an initialized UML ActionExpression instance.
      */
     public Object/*MActionExpression*/ createActionExpression(String language,
@@ -83,6 +87,8 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
     /**
      * Create an empty but initialized instance of a UML ArgListsExpression.
      *  
+     * @param language the language for the expression
+     * @param body the body for the expression
      * @return an initialized UML ArgListsExpression instance.
      */
     public MArgListsExpression createArgListsExpression(String language,
@@ -96,6 +102,8 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
     /**
      * Create an empty but initialized instance of a UML BooleanExpression.
      *  
+     * @param language the language for the expression
+     * @param body the body for the expression
      * @return an initialized UML BooleanExpression instance.
      */
     public Object createBooleanExpression(String language,
@@ -106,8 +114,9 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Create an UML ExpressionEditor.
+     * Create an UML ExpressionEditor based on a given expression.
      *  
+     * @param expr Object MExpression the given expression
      * @return an initialized ExpressionEditor instance.
      */
     public Object/*MExpressionEditor */ createExpressionEditor(Object expr) {
@@ -121,7 +130,9 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /**
      * Create an empty but initialized instance of a UML Expression.
-     *  
+     * 
+     * @param language the language for the expression
+     * @param body the body for the expression  
      * @return an initialized UML Expression instance.
      */
     public MExpression createExpression(String language, String body) {
@@ -132,7 +143,9 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /**
      * Create an empty but initialized instance of a UML IterationExpression.
-     *  
+     * 
+     * @param language the language for the expression
+     * @param body the body for the expression
      * @return an initialized UML IterationExpression instance.
      */
     public Object createIterationExpression(String language,
@@ -144,8 +157,10 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
     }
 
     /** Create an empty but initialized instance of a UML MappingExpression.
-     *  
-     *  @return an initialized UML MappingExpression instance.
+     * 
+     * @param language the language for the expression
+     * @param body the body for the expression
+     * @return an initialized UML MappingExpression instance.
      */
     public MMappingExpression createMappingExpression(String language,
 						      String body) {
@@ -156,7 +171,9 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /**
      * Create an empty but initialized instance of a UML ObjectSetExpression.
-     *  
+     * 
+     * @param language the language for the expression
+     * @param body the body for the expression
      * @return an initialized UML ObjectSetExpression instance.
      */
     public MObjectSetExpression createObjectSetExpression(String language,
@@ -169,7 +186,9 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /**
      * Create an empty but initialized instance of a UML ProcedureExpression.
-     *  
+     * 
+     * @param language the language for the expression
+     * @param body the body for the expression
      * @return an initialized UML ProcedureExpression instance.
      */
     public MProcedureExpression createProcedureExpression(String language,
@@ -182,7 +201,9 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /**
      * Create an empty but initialized instance of a UML TimeExpression.
-     *  
+     * 
+     * @param language the language for the expression
+     * @param body the body for the expression
      * @return an initialized UML TimeExpression instance.
      */
     public MTimeExpression createTimeExpression(String language, String body) {
@@ -193,7 +214,9 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /**
      * Create an empty but initialized instance of a UML TypeExpression.
-     *  
+     * 
+     * @param language the language for the expression
+     * @param body the body for the expression
      * @return an initialized UML TypeExpression instance.
      */
     public MTypeExpression createTypeExpression(String language, String body) {
@@ -204,7 +227,19 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /**
      * Create an empty but initialized instance of a UML Multiplicity.
-     *  
+     * Quote from the standard:
+     * "In the metamodel a MultiplicityRange defines a range of integers. 
+     * The upper bound of the range cannot be below the lower bound. 
+     * The lower bound must be a nonnegative integer. The upper bound 
+     * must be a nonnegative integer or the special value unlimited, 
+     * which indicates there is no upper bound on the range."
+     *
+     * @param lower the lower bound of the range
+     * @param upper the upper bound of the range
+     *        TODO: UnlimitedInteger - which number represents "unlimited?".
+     *        Quote from standard: "In the metamodel UnlimitedInteger defines 
+     *        a data type whose range is the nonnegative integers augmented 
+     *        by the special value 'unlimited'."
      * @return an initialized UML Multiplicity instance.
      */
     public MMultiplicity createMultiplicity(int lower, int upper) {
@@ -215,7 +250,8 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
 
     /**
      * Create an empty but initialized instance of a UML Multiplicity.
-     *  
+     * 
+     * @param range a List containing the range
      * @return an initialized UML Multiplicity instance.
      */
     public MMultiplicity createMultiplicity(List range) {
@@ -227,6 +263,7 @@ public class DataTypesFactory extends AbstractUmlModelFactory {
     /**
      * Create an empty but initialized instance of a UML Multiplicity.
      *  
+     * @param str a String representing the multiplicity
      * @return an initialized UML Multiplicity instance.
      */
     public MMultiplicity createMultiplicity(String str) {
