@@ -2,11 +2,16 @@ Welcome to ArgoUML!
 -------------------
 
 
-This is the ArgoUML Documentation README file. In it you will find basic information on how to build and use the ArgoUML documentation.
+This is the ArgoUML Documentation README file. In it you will find basic 
+information on how to build and use the ArgoUML documentation.
 
 1. DOCUMENTATION STRUCTURE
 
-This README file should be located in the root directory of the ArgoUML documentation directory structure. At the time of writing, this was the 'documentation' sub-directory of the ArgoUML root directory. This directory will be referred to as ARGODOCS_HOME in the remainder of this document. This is shown diagramatically below:
+This README file should be located in the root directory of the ArgoUML 
+documentation directory structure. At the time of writing, this was the 
+'documentation' sub-directory of the ArgoUML root directory. 
+This directory will be referred to as ARGODOCS_HOME in the remainder of this 
+document. This is shown diagramatically below:
 
 	argouml			  <<-- ArgoUML root directory (aka ARGO_HOME)
          |
