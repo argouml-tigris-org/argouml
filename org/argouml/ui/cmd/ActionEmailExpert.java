@@ -29,8 +29,8 @@ import java.awt.event.ActionEvent;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.OsUtil;
 import org.argouml.ui.EmailExpertDialog;
-import org.argouml.util.osdep.OsUtil;
 
 
 

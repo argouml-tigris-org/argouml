@@ -33,8 +33,8 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.OsUtil;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.util.osdep.OsUtil;
 import org.argouml.ui.targetmanager.TargetManager;
 
 

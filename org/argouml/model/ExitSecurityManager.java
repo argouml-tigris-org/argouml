@@ -30,7 +30,6 @@ import java.util.PropertyPermission;
 import java.security.Permission;
 
 import org.apache.log4j.Logger;
-import org.argouml.util.osdep.OsUtil;
 
 /**
  * The Argo custom security manager.

@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.util.osdep;
+package org.argouml.model;
 
 import javax.swing.JFileChooser;
 import org.argouml.util.osdep.win32.Win32FileSystemView;

@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.OsUtil;
 
 
 /**
