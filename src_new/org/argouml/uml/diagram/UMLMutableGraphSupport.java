@@ -29,15 +29,29 @@
 
 package org.argouml.uml.diagram;
 
+import org.argouml.model.uml.UmlFactory;
+
+import java.util.Hashtable;
+import java.util.Vector;
+
+import org.apache.log4j.Category;
+
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
+
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.graph.MutableGraphSupport;
 
-import java.util.Vector;
 
 /** UMLMutableGraphSupport is a helper class which extends MutableGraphSupport to
  * provide additional helper and common methods for UML Diagrams.
  * @author mkl@tigris.org
  */
 public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
+    
+    protected static Category cat = Category.getInstance(UMLMutableGraphSupport.class);
     
     /** contains all the nodes in the graphmodel/diagram. */    
     protected Vector _nodes = new Vector();
@@ -87,5 +101,73 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             if (!containsEdge(edge)) return;
             _edges.removeElement(edge);
             fireEdgeRemoved(edge);
-    } 
+    }
+    
+    /** Assume that anything can be connected to anything unless overridden
+     * in a subclass.
+     */
+    public boolean canConnect(Object fromP, Object toP) {
+        return true;
+    }
+
+
+    /** The connect method without specifying a connection
+     * type is unavailable by default
+     */
+    public Object connect(Object fromPort, Object toPort) {
+        throw new UnsupportedOperationException("The connect method is not supported");
+    }
+
+    /** Contruct and add a new edge of the given kind and connect
+     * the given ports.
+     *
+     * @param fromPort   The originating port to connect
+     *
+     * @param toPort     The destination port to connect
+     *
+     * @param edgeClass  The NSUML type of edge to create.
+     *
+     * @return           The type of edge created (the same as
+     *                   <code>edgeClass</code> if we succeeded,
+     *                   <code>null</code> otherwise)
+     */
+    public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
+        Object connection = null;
+        try {
+            // If this was an association then there will be relevant information
+            // to fetch out of the mode arguments.
+            // If it not an association then these will be passed forward harmlessly
+            // as null.
+            Editor curEditor = Globals.curEditor();
+            ModeManager modeManager = curEditor.getModeManager();
+            Mode mode = (Mode)modeManager.top();
+            Hashtable args = mode.getArgs();
+            MAggregationKind style = (MAggregationKind)args.get("aggregation");
+            Boolean unidirectional = (Boolean)args.get("unidirectional");
+            // Create the UML connection of the given type between the given model elements.
+            connection = UmlFactory.getFactory().buildConnection(
+                edgeClass,
+                fromPort,
+                style,
+                toPort,
+                null, // default aggregation (none)
+                unidirectional
+            );
+        } catch (org.argouml.model.uml.UmlException ex) {
+            // fail silently as we expect users to accidentally drop on to wrong component
+        }
+        
+        if (connection == null) {
+            cat.debug("Cannot make a "+ edgeClass.getName() +
+                         " between a " + fromPort.getClass().getName() +
+                         " and a " + toPort.getClass().getName());
+            return null;
+        }
+        
+        addEdge(connection);
+        cat.debug("Connection type" + edgeClass.getName()+
+                         " made between a " + fromPort.getClass().getName() +
+                         " and a " + toPort.getClass().getName());
+        return connection;
+    }
 }

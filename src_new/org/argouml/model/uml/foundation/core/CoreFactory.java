@@ -435,17 +435,17 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	    MClassifier c2,
             boolean nav2,
             MAggregationKind agg2) {
-	if (c1 == null || c2 == null)
+	if (c1 == null || c2 == null) {
             throw new IllegalArgumentException("In buildAssociation: one of the classifiers to be connected is null");
+        }
 	MNamespace ns1 = c1.getNamespace();
 	MNamespace ns2 = c2.getNamespace();
-	if (ns1 == null || ns2 == null)
+	if (ns1 == null || ns2 == null) {
             throw new IllegalArgumentException("In buildAssociation: one of the classifiers does not belong to a namespace");
-	MAssociation assoc =
-            UmlFactory.getFactory().getCore().createAssociation();
+        }
+	MAssociation assoc = UmlFactory.getFactory().getCore().createAssociation();
 	assoc.setName("");
-	assoc.setNamespace(
-            CoreHelper.getHelper().getFirstSharedNamespace(ns1, ns2));
+	assoc.setNamespace(CoreHelper.getHelper().getFirstSharedNamespace(ns1, ns2));
 	buildAssociationEnd(
             assoc,
             null,
@@ -473,6 +473,71 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	return assoc;
     }
 
+    /**
+     * Builds a binary associationrole on basis of two classifierroles,
+     * navigation and aggregation
+     */
+    public MAssociation buildAssociation(
+            MClassifier from,
+            MAggregationKind agg1,
+            MClassifier to, 
+            MAggregationKind agg2,
+            Boolean unidirectional) {
+	if (from == null || to == null)
+            throw new IllegalArgumentException("In buildAssociation: one of the classifiers to be connected is null");
+	MNamespace ns1 = from.getNamespace();
+	MNamespace ns2 = to.getNamespace();
+	if (ns1 == null || ns2 == null)
+            throw new IllegalArgumentException("In buildAssociation: one of the classifiers does not belong to a namespace");
+	MAssociation assoc =
+            UmlFactory.getFactory().getCore().createAssociation();
+	assoc.setName("");
+	assoc.setNamespace(
+            CoreHelper.getHelper().getFirstSharedNamespace(ns1, ns2));
+        
+        boolean nav1 = true;
+        boolean nav2 = true;
+        
+        if (from instanceof MInterface) {
+            nav2 = false;
+            agg2 = agg1;
+            agg1 = null;
+        } else if (to instanceof MInterface) {
+            nav1 = false;
+        } else {
+            nav1 = !Boolean.TRUE.equals(unidirectional);
+            nav2 = true;
+        }
+        
+	buildAssociationEnd(
+            assoc,
+            null,
+            from,
+            null,
+            null,
+            nav1,
+            null,
+            agg1,
+            null,
+            null,
+            null);
+	buildAssociationEnd(
+            assoc,
+            null,
+            to,
+            null,
+            null,
+            nav2,
+            null,
+            agg2,
+            null,
+            null,
+            null);
+        
+        return assoc;
+    }
+   
+    
     /**
      * Builds a binary associations between two classifiers with default values for the
      * association ends and the association itself.
@@ -557,99 +622,100 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		return buildAssociatonClass(buildClass(), end1, end2);
 	}
 
-	/**
-	 * Builds a fully configurable association end. All variables for an associationend can
-	 * be given as parameter.
-	 * @param assoc The associaton this end will be part of
-	 * @param name The name of the association end
-	 * @param type The type (classifier) the end will connect. The end
-	 * is a connection piece between an association and a classifier
-	 * @param multi The multiplicity
-	 * @param stereo The stereotype
-	 * @param navigable The navigability. True if this association end can be 'passed' from the other
-	 * classifier.
-	 * @param order Ordering of the association
-	 * @param aggregation
-	 * @param scope
-	 * @param changeable
-	 * @param visibility
-	 * @return MAssociationEnd
-	 */
-	public MAssociationEnd buildAssociationEnd(
-		MAssociation assoc,
-		String name,
-		MClassifier type,
-		MMultiplicity multi,
-		MStereotype stereo,
-		boolean navigable,
-		MOrderingKind order,
-		MAggregationKind aggregation,
-		MScopeKind scope,
-		MChangeableKind changeable,
-		MVisibilityKind visibility) {
-		// wellformednessrules and preconditions
-		if (assoc == null || type == null)
-			throw new IllegalArgumentException("In buildAssociationend: either type or association are null");
-		if (type instanceof MDataType || type instanceof MInterface) {
-			if (!navigable)
-				throw new IllegalArgumentException("In buildAssocationend: type is either datatype or interface and is navigable to");
-			List ends = new ArrayList();
-			ends.addAll(assoc.getConnections());
-			Iterator it = ends.iterator();
-			while (it.hasNext()) {
-				MAssociationEnd end = (MAssociationEnd)it.next();
-				if (end.isNavigable())
-					throw new IllegalArgumentException("In buildAssocationend: type is either datatype or interface and is navigable to");
-			}
-		}
-		if (aggregation != null
-			&& aggregation.equals(MAggregationKind.COMPOSITE)) {
-			if (multi != null && multi.getUpper() > 1) {
-				throw new IllegalArgumentException("In buildAssociationend: aggregation is composite and multiplicity > 1");
-			}
-		}
+    /**
+     * Builds a fully configurable association end. All variables for an associationend can
+     * be given as parameter.
+     * @param assoc The associaton this end will be part of
+     * @param name The name of the association end
+     * @param type The type (classifier) the end will connect. The end
+     * is a connection piece between an association and a classifier
+     * @param multi The multiplicity
+     * @param stereo The stereotype
+     * @param navigable The navigability. True if this association end can be 'passed' from the other
+     * classifier.
+     * @param order Ordering of the association
+     * @param aggregation
+     * @param scope
+     * @param changeable
+     * @param visibility
+     * @return MAssociationEnd
+     */
+    public MAssociationEnd buildAssociationEnd(
+        MAssociation assoc,
+        String name,
+        MClassifier type,
+        MMultiplicity multi,
+        MStereotype stereo,
+        boolean navigable,
+        MOrderingKind order,
+        MAggregationKind aggregation,
+        MScopeKind scope,
+        MChangeableKind changeable,
+        MVisibilityKind visibility) {
+        // wellformednessrules and preconditions
+        if (assoc == null || type == null) {
+            throw new IllegalArgumentException("In buildAssociationend: either type or association are null");
+        }
+        if (type instanceof MDataType || type instanceof MInterface) {
+            if (!navigable) {
+                throw new IllegalArgumentException("In buildAssocationend: type is either datatype or interface and is navigable to");
+            }
+            List ends = new ArrayList();
+            ends.addAll(assoc.getConnections());
+            Iterator it = ends.iterator();
+            while (it.hasNext()) {
+                MAssociationEnd end = (MAssociationEnd)it.next();
+                if (end.isNavigable()) {
+                    throw new IllegalArgumentException("In buildAssocationend: type is either datatype or interface and is navigable to");
+                }
+            }
+        }
+        if (aggregation != null && aggregation.equals(MAggregationKind.COMPOSITE)) {
+            if (multi != null && multi.getUpper() > 1) {
+                throw new IllegalArgumentException("In buildAssociationend: aggregation is composite and multiplicity > 1");
+            }
+        }
 
-		MAssociationEnd end =
-			UmlFactory.getFactory().getCore().createAssociationEnd();
-		end.setAssociation(assoc);
-		end.setType(type);
-		end.setName(name);
-		if (multi != null) {
-			end.setMultiplicity(multi);
-		} else {
-			end.setMultiplicity(MMultiplicity.M1_1);
-		}
-		if (stereo != null) {
-			end.setStereotype(stereo);
-		}
-		end.setNavigable(navigable);
-		if (order != null) {
-			end.setOrdering(order);
-		} else {
-			end.setOrdering(MOrderingKind.UNORDERED);
-		}
-		if (aggregation != null) {
-			end.setAggregation(aggregation);
-		} else {
-			end.setAggregation(MAggregationKind.NONE);
-		}
-		if (scope != null) {
-			end.setTargetScope(scope);
-		} else {
-			end.setTargetScope(MScopeKind.INSTANCE);
-		}
-		if (changeable != null) {
-			end.setChangeability(changeable);
-		} else {
-			end.setChangeability(MChangeableKind.CHANGEABLE);
-		}
-		if (visibility != null) {
-			end.setVisibility(visibility);
-		} else {
-			end.setVisibility(MVisibilityKind.PUBLIC);
-		}
-		return end;
-	}
+        MAssociationEnd end = UmlFactory.getFactory().getCore().createAssociationEnd();
+        end.setAssociation(assoc);
+        end.setType(type);
+        end.setName(name);
+        if (multi != null) {
+            end.setMultiplicity(multi);
+        } else {
+            end.setMultiplicity(MMultiplicity.M1_1);
+        }
+        if (stereo != null) {
+            end.setStereotype(stereo);
+        }
+        end.setNavigable(navigable);
+        if (order != null) {
+            end.setOrdering(order);
+        } else {
+            end.setOrdering(MOrderingKind.UNORDERED);
+        }
+        if (aggregation != null) {
+            end.setAggregation(aggregation);
+        } else {
+            end.setAggregation(MAggregationKind.NONE);
+        }
+        if (scope != null) {
+            end.setTargetScope(scope);
+        } else {
+            end.setTargetScope(MScopeKind.INSTANCE);
+        }
+        if (changeable != null) {
+            end.setChangeability(changeable);
+        } else {
+            end.setChangeability(MChangeableKind.CHANGEABLE);
+        }
+        if (visibility != null) {
+            end.setVisibility(visibility);
+        } else {
+            end.setVisibility(MVisibilityKind.PUBLIC);
+        }
+        return end;
+    }
 
 	public MAssociationEnd buildAssociationEnd(
 		MClassifier type,
@@ -1059,42 +1125,42 @@ public class CoreFactory extends AbstractUmlModelFactory {
         return gen;
     }
 
-	/**
-	 * Builds a generalization between a parent and a child. Does not check if
-	 * multiple inheritance is allowed for the current notation.
-	 * @param child
-	 * @param parent
-	 * @return MGeneralization
-	 */
-	public MGeneralization buildGeneralization(
-		MGeneralizableElement child,
-		MGeneralizableElement parent) {
-		if (parent.getParents().contains(child))
-			return null;
-		if (!child.getClass().equals(parent.getClass()))
-			return null;
-		Iterator it = parent.getGeneralizations().iterator();
-		while (it.hasNext()) {
-			MGeneralization gen = (MGeneralization)it.next();
-			if (gen.getParent().equals(child))
-				return null;
-		}
-		if (parent.getNamespace() == null)
-			return null;
-		if (parent.isLeaf())
-			return null;
-		if (child.isRoot())
-			return null;
+    /**
+     * Builds a generalization between a parent and a child. Does not check if
+     * multiple inheritance is allowed for the current notation.
+     * @param child
+     * @param parent
+     * @return MGeneralization
+     */
+    public MGeneralization buildGeneralization(
+        MGeneralizableElement child,
+        MGeneralizableElement parent) {
+        if (parent.getParents().contains(child))
+            return null;
+        if (!child.getClass().equals(parent.getClass()))
+            return null;
+        Iterator it = parent.getGeneralizations().iterator();
+        while (it.hasNext()) {
+            MGeneralization gen = (MGeneralization)it.next();
+            if (gen.getParent().equals(child))
+                return null;
+        }
+        if (parent.getNamespace() == null)
+            return null;
+        if (parent.isLeaf())
+            return null;
+        if (child.isRoot())
+            return null;
 
-		MGeneralization gen = createGeneralization();
-		gen.setParent(parent);
-		gen.setChild(child);
-		if (parent.getNamespace() != null)
-			gen.setNamespace(parent.getNamespace());
-		else if (child.getNamespace() != null)
-			gen.setNamespace(child.getNamespace());
-		return gen;
-	}
+        MGeneralization gen = createGeneralization();
+        gen.setParent(parent);
+        gen.setChild(child);
+        if (parent.getNamespace() != null)
+            gen.setNamespace(parent.getNamespace());
+        else if (child.getNamespace() != null)
+            gen.setNamespace(child.getNamespace());
+        return gen;
+    }
 
 	/**
 	 * Builds a default method belonging to a certain operation. The language of the body is set to the
@@ -1307,32 +1373,24 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	 * @param supplier
 	 * @return MAbstraction
 	 */
-	public MAbstraction buildRealization(
-		MModelElement client,
-		MModelElement supplier) {
-		if (client == null
-			|| supplier == null
-			|| client.getNamespace() == null
-			|| supplier.getNamespace() == null) {
-			throw new IllegalArgumentException("In buildrealization faulty arguments.");
-		}
-		MAbstraction realization =
-			UmlFactory.getFactory().getCore().createAbstraction();
-		MNamespace nsc = client.getNamespace();
-		MNamespace nss = supplier.getNamespace();
-		MNamespace ns = null;
-		if (nsc != null && nsc.equals(nss)) {
-			ns = nsc;
-		} else
-			ns = ProjectManager.getManager().getCurrentProject().getModel();
-		ExtensionMechanismsFactory.getFactory().buildStereotype(
-			realization,
-			"realize",
-			ns);
-		client.addClientDependency(realization);
-		supplier.addSupplierDependency(realization);
+	public MAbstraction buildRealization(MModelElement client, MModelElement supplier) {
+            if (client == null || supplier == null || client.getNamespace() == null || supplier.getNamespace() == null) {
+                throw new IllegalArgumentException("In buildrealization faulty arguments.");
+            }
+            MAbstraction realization = UmlFactory.getFactory().getCore().createAbstraction();
+            MNamespace nsc = client.getNamespace();
+            MNamespace nss = supplier.getNamespace();
+            MNamespace ns = null;
+            if (nsc != null && nsc.equals(nss)) {
+                ns = nsc;
+            } else {
+                ns = ProjectManager.getManager().getCurrentProject().getModel();
+            }
+            ExtensionMechanismsFactory.getFactory().buildStereotype(realization, "realize", ns);
+            client.addClientDependency(realization);
+            supplier.addSupplierDependency(realization);
 
-		return realization;
+            return realization;
 	}
 
 	/**

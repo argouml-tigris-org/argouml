@@ -219,89 +219,79 @@ implements VetoableChangeListener {
     return false;
   }
 
+  
+    /** Contruct and add a new edge of the given kind */
+    public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
+        if (edgeClass == MLink.class && (fromPort instanceof MObject && toPort instanceof MObject)) {
+            MLink ml = UmlFactory.getFactory().getCommonBehavior().createLink();
+            MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
+            le0.setInstance((MObject) fromPort);
+            MLinkEnd le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
+            le1.setInstance((MObject) toPort);
+            ml.addConnection(le0);
+            ml.addConnection(le1);
+            addEdge(ml);
+            // add stimulus with given action, taken from global mode
+            Editor curEditor = Globals.curEditor();
+            if (ml.getStimuli() == null || ml.getStimuli().size() == 0) {
+                ModeManager modeManager = curEditor.getModeManager();
+                Mode mode = (Mode)modeManager.top();
+                Hashtable args = mode.getArgs();
+                if ( args != null ) {
+                    MAction action=null;
+                    // get "action"-Class taken from global mode
+                    Class actionClass = (Class) args.get("action");
+                    if (actionClass != null) {
+                        //create the action
+                        if(actionClass==MCallAction.class)
+                            action=UmlFactory.getFactory().getCommonBehavior().createCallAction();
+                        else if(actionClass==MCreateAction.class)
+                            action=UmlFactory.getFactory().getCommonBehavior().createCreateAction();
+                        else if(actionClass==MDestroyAction.class)
+                            action=UmlFactory.getFactory().getCommonBehavior().createDestroyAction();
+                        else if(actionClass==MSendAction.class)
+                            action=UmlFactory.getFactory().getCommonBehavior().createSendAction();
+                        else if(actionClass==MReturnAction.class)
+                            action=UmlFactory.getFactory().getCommonBehavior().createReturnAction();
 
-  /** Contruct and add a new edge of a kind determined by the ports */
-  public Object connect(Object fromPort, Object toPort) {
-      throw new UnsupportedOperationException("should not enter here!");
-  }
+                        if (action != null)  {
+                            // determine action type of arguments in mode
+                            action.setName("new action");
 
-  /** Contruct and add a new edge of the given kind */
-  public Object connect(Object fromPort, Object toPort,
-			java.lang.Class edgeClass) {
-    if (edgeClass == MLink.class &&
-      (fromPort instanceof MObject && toPort instanceof MObject)) {
-      MLink ml = UmlFactory.getFactory().getCommonBehavior().createLink();
-      MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-      le0.setInstance((MObject) fromPort);
-      MLinkEnd le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-      le1.setInstance((MObject) toPort);
-      ml.addConnection(le0);
-      ml.addConnection(le1);
-      addEdge(ml);
-      // add stimulus with given action, taken from global mode
-      Editor curEditor = Globals.curEditor();
-      if (ml.getStimuli()==null || ml.getStimuli().size() == 0) {
-        ModeManager modeManager = curEditor.getModeManager();
-        Mode mode = (Mode)modeManager.top();
-        Hashtable args = mode.getArgs();
-        if ( args != null ) {
-          MAction action=null;
-          // get "action"-Class taken from global mode
-          Class actionClass = (Class) args.get("action");
-          if (actionClass != null) {
-            //create the action
-            if(actionClass==MCallAction.class)
-                action=UmlFactory.getFactory().getCommonBehavior().createCallAction();
-            else if(actionClass==MCreateAction.class)
-                action=UmlFactory.getFactory().getCommonBehavior().createCreateAction();
-            else if(actionClass==MDestroyAction.class)
-                action=UmlFactory.getFactory().getCommonBehavior().createDestroyAction();
-            else if(actionClass==MSendAction.class)
-                action=UmlFactory.getFactory().getCommonBehavior().createSendAction();
-            else if(actionClass==MReturnAction.class)
-                action=UmlFactory.getFactory().getCommonBehavior().createReturnAction();
-	
-            if (action != null)  {
-						  						  
-				// determine action type of arguments in mode
-              action.setName("new action");
+                            if (action instanceof MSendAction || action instanceof MReturnAction) {
+                                action.setAsynchronous(true);
+                            } else {
+                                action.setAsynchronous(false);
+                            }
+                            // create stimulus
+                            MStimulus stimulus = UmlFactory.getFactory().getCommonBehavior().createStimulus();
+                            //if we want to allow the sequence number to appear
+                            /*UMLSequenceDiagram sd=(UMLSequenceDiagram) ProjectBrowser.TheInstance.getActiveDiagram();
+                            int num=sd.getNumStimuluss()+1;
+                            stimulus.setName(""+num);*/
+                            //otherwise: no sequence number
+                            stimulus.setName("");
 
-              if (action instanceof MSendAction || action instanceof MReturnAction) {
-                action.setAsynchronous(true);
-              } else {
-                action.setAsynchronous(false);
-              }
-                // create stimulus
-                MStimulus stimulus = UmlFactory.getFactory().getCommonBehavior().createStimulus();
-                //if we want to allow the sequence number to appear
-                /*UMLSequenceDiagram sd=(UMLSequenceDiagram) ProjectBrowser.TheInstance.getActiveDiagram();
-                int num=sd.getNumStimuluss()+1;
-                stimulus.setName(""+num);*/
-                //otherwise: no sequence number
-                stimulus.setName("");
-			  
-              //set sender and receiver
-              stimulus.setSender((MObject)fromPort);
-              stimulus.setReceiver((MObject)toPort);
-              // set action type
-              stimulus.setDispatchAction(action);
-              // add stimulus to link
-              ml.addStimulus(stimulus);
-              // add new modelelements: stimulus and action to namesapce
-              _Sequence.addOwnedElement(stimulus);
-              _Sequence.addOwnedElement(action);
+                            //set sender and receiver
+                            stimulus.setSender((MObject)fromPort);
+                            stimulus.setReceiver((MObject)toPort);
+                            // set action type
+                            stimulus.setDispatchAction(action);
+                            // add stimulus to link
+                            ml.addStimulus(stimulus);
+                            // add new modelelements: stimulus and action to namesapce
+                            _Sequence.addOwnedElement(stimulus);
+                            _Sequence.addOwnedElement(action);
+                        }
+                    }
+                }
             }
-          }
+            return ml;
+        } else {
+            cat.debug("Incorrect edge");
+            return null;
         }
-      }
-      return ml;
-    } else {
-      cat.debug("Incorrect edge");
-      return null;
     }
-    
-
-  }
 
 
 

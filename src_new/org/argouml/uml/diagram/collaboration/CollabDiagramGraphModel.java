@@ -33,7 +33,6 @@ package org.argouml.uml.diagram.collaboration;
 import org.apache.log4j.Category;
 
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
@@ -45,13 +44,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.model_management.*;
-
-import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Mode;
-import org.tigris.gef.base.ModeManager;
 
 
 /** This class defines a bridge between the UML meta-model
@@ -69,8 +62,8 @@ implements VetoableChangeListener {
    *  line to say what their model is. */
 
   /** The collaboration / interaction we are diagramming */
-	protected MCollaboration _collab;
-	protected MInteraction _interaction;
+    protected MCollaboration _collab;
+    protected MInteraction _interaction;
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -253,51 +246,6 @@ implements VetoableChangeListener {
     if ((fromP instanceof MClassifierRole) && (toP instanceof MClassifierRole)) return true;
     return false;
   }
-
-
-    /** Contruct and add a new edge of a kind determined by the ports */
-    public Object connect(Object fromPort, Object toPort) {
-        throw new UnsupportedOperationException("should not enter here! connect2");
-    }
-
-    /** Contruct and add a new edge of the given kind */
-    public Object connect(Object fromPort, Object toPort,
-                          java.lang.Class edgeClass) {
-        Object connection = null;
-        try {
-            // If this was an association then there will be relevant information
-            // to fetch out of the mode arguments.
-            // If it not an association then these will be passed forward harmlessly
-            // as null.
-            Editor curEditor = Globals.curEditor();
-            ModeManager modeManager = curEditor.getModeManager();
-            Mode mode = (Mode)modeManager.top();
-            Hashtable args = mode.getArgs();
-            MAggregationKind style = (MAggregationKind)args.get("aggregation");
-            Boolean unidirectional = (Boolean)args.get("unidirectional");
-            // Create the UML connection of the given type between the given model elements.
-            connection = UmlFactory.getFactory().buildConnection(
-                edgeClass,
-                (MClassifierRole)fromPort,
-                style,
-                (MClassifierRole)toPort,
-                null, // default aggregation (none)
-                unidirectional
-            );
-        } catch (org.argouml.model.uml.UmlException ex) {
-            // fail silently as we expect users to accidentally drop on to wrong component
-        }
-        
-        if (connection == null) {
-            cat.debug("Cannot make a "+ edgeClass.getName() +
-                         " between a " + fromPort.getClass().getName() +
-                         " and a " + toPort.getClass().getName());
-            return null;
-        }
-        
-        addEdge(connection);
-        return connection;
-    }
 
   ////////////////////////////////////////////////////////////////
   // VetoableChangeListener implementation

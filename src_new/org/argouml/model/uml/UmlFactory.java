@@ -23,6 +23,11 @@
 
 package org.argouml.model.uml;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.apache.log4j.Category;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
@@ -155,66 +160,263 @@ public class UmlFactory extends AbstractUmlModelFactory {
     }
 
     // Types of line
-    public static final Object GENERALIZATION = MGeneralization.class;
-    public static final Object ASSOCIATION_ROLE = MAssociationRole.class;
-    
-    // Types of node
-    public static final Object CLASSIFIER_ROLE = MClassifierRole.class;
+    public static final Class GENERALIZATION   = MGeneralization.class;
+    public static final Class ASSOCIATION_ROLE = MAssociationRole.class;
+    public static final Class ASSOCIATION      = MAssociation.class;
+    public static final Class DEPENDENCY       = MDependency.class;
+    public static final Class ABSTRACTION      = MAbstraction.class;
+    public static final Class LINK             = MLink.class;
+    public static final Class EXTEND           = MExtend.class;
+    public static final Class INCLUDE          = MInclude.class;
+    public static final Class PERMISSION       = MPermission.class;
+    public static final Class USAGE            = MUsage.class;
 
-    // A list of valid connections between elements, the connection type first and then
-    // the elements to be connected
-    private Object[][] validGrid = {
-        {ASSOCIATION_ROLE, CLASSIFIER_ROLE, CLASSIFIER_ROLE},
-        {GENERALIZATION,   CLASSIFIER_ROLE, CLASSIFIER_ROLE}
+    // Types of node
+    public static final Class CLASSIFIER_ROLE    = MClassifierRole.class;
+    public static final Class CLASS              = MClass.class;
+    public static final Class INTERFACE          = MInterface.class;
+    public static final Class PACKAGE            = MPackage.class;
+    public static final Class NODE               = MNode.class;
+    public static final Class NODE_INSTANCE      = MNodeInstance.class;
+    public static final Class COMPONENT          = MComponent.class;
+    public static final Class COMPONENT_INSTANCE = MComponentInstance.class;
+    public static final Class OBJECT             = MObject.class;
+    public static final Class ACTOR              = MActor.class;
+    public static final Class USE_CASE           = MUseCase.class;
+
+    /**
+     * A map of valid connections keyed by the connection type.
+     * The constructor builds this from the data in the validConnections array
+     */
+    private Map validConnectionMap = new HashMap();
+
+    /*
+     * An array of valid connections, the combination of connecting class
+     * and node classes must exist as a row in this list to be considered
+     * valid.
+     * The 1st column is the connecting element.
+     * The 2nd column is the "from" element type.
+     * The 3rd column is the "to" element type.
+     * The 3rd column is optional, if not given then it is assumed to be the same
+     * as the "to" element.
+     * The existence of a 4th column indicates that the connection is valid in one
+     * direction only.
+     */
+    private Object[][] validConnections = {
+        {MAssociationRole.class, MClassifierRole.class},
+        {MPermission.class,      MClass.class},
+        {MPermission.class,      MInterface.class},
+        {MPermission.class,      MPackage.class},
+        {MPermission.class,      MClass.class,             MPackage.class},
+        {MPermission.class,      MClass.class,             MInterface.class},
+        {MPermission.class,      MInterface.class,         MPackage.class},
+        {MUsage.class,           MClass.class},
+        {MUsage.class,           MInterface.class},
+        {MUsage.class,           MPackage.class},
+        {MUsage.class,           MClass.class,             MPackage.class},
+        {MUsage.class,           MClass.class,             MInterface.class},
+        {MUsage.class,           MInterface.class,         MPackage.class},
+        {MGeneralization.class,  MClassifierRole.class},
+        {MGeneralization.class,  MClass.class},
+        {MGeneralization.class,  MInterface.class},
+        {MGeneralization.class,  MUseCase.class},
+        {MGeneralization.class,  MActor.class},
+        {MDependency.class,      MPackage.class},
+        {MDependency.class,      MClass.class},
+        {MDependency.class,      MInterface.class},
+        {MDependency.class,      MInterface.class,         MClass.class},
+        {MDependency.class,      MUseCase.class},
+        {MDependency.class,      MComponent.class},
+        {MDependency.class,      MComponentInstance.class},
+        {MDependency.class,      MObject.class},
+        {MDependency.class,      MComponent.class,         MNode.class,                 null},
+        {MDependency.class,      MObject.class,            MComponent.class,            null},
+        {MDependency.class,      MComponentInstance.class, MNodeInstance.class,         null},
+        {MDependency.class,      MObject.class,            MComponentInstance.class,    null},
+        {MAbstraction.class,     MClass.class,             MInterface.class,            null},
+        {MAssociation.class,     MClass.class},
+        {MAssociation.class,     MClass.class,             MInterface.class},
+        {MAssociation.class,     MActor.class},
+        {MAssociation.class,     MUseCase.class},
+        {MAssociation.class,     MActor.class,             MUseCase.class},
+        {MAssociation.class,     MNode.class},
+        {MExtend.class,          MUseCase.class},
+        {MInclude.class,         MUseCase.class},
+        {MLink.class,            MNodeInstance.class},
+        {MLink.class,            MObject.class}
     };
-        
+     /*
+    Object[][] validConnections = {
+        {ASSOCIATION_ROLE, CLASSIFIER_ROLE},
+        {PERMISSION,       CLASS},
+        {PERMISSION,       INTERFACE},
+        {PERMISSION,       PACKAGE},
+        {PERMISSION,       CLASS,              PACKAGE},
+        {PERMISSION,       CLASS,              INTERFACE},
+        {PERMISSION,       INTERFACE,          PACKAGE},
+        {USAGE,            CLASS},
+        {USAGE,            INTERFACE},
+        {USAGE,            PACKAGE},
+        {USAGE,            CLASS,              PACKAGE},
+        {USAGE,            CLASS,              INTERFACE},
+        {USAGE,            INTERFACE,          PACKAGE},
+        {GENERALIZATION,   CLASSIFIER_ROLE},
+        {GENERALIZATION,   CLASS},
+        {GENERALIZATION,   INTERFACE},
+        {GENERALIZATION,   USE_CASE},
+        {GENERALIZATION,   ACTOR},
+        {DEPENDENCY,       PACKAGE},
+        {DEPENDENCY,       CLASS},
+        {DEPENDENCY,       INTERFACE},
+        {DEPENDENCY,       INTERFACE,          CLASS},
+        {DEPENDENCY,       USE_CASE},
+        {DEPENDENCY,       COMPONENT},
+        {DEPENDENCY,       COMPONENT_INSTANCE},
+        {DEPENDENCY,       OBJECT},
+        {DEPENDENCY,       COMPONENT,          NODE,               null},
+        {DEPENDENCY,       OBJECT,             COMPONENT,          null},
+        {DEPENDENCY,       COMPONENT_INSTANCE, NODE_INSTANCE,      null},
+        {DEPENDENCY,       OBJECT,             COMPONENT_INSTANCE, null},
+        {ABSTRACTION,      CLASS,              INTERFACE,          null},
+        {ASSOCIATION,      CLASS},
+        {ASSOCIATION,      CLASS,              INTERFACE},
+        {ASSOCIATION,      ACTOR},
+        {ASSOCIATION,      USE_CASE},
+        {ASSOCIATION,      ACTOR,              USE_CASE},
+        {ASSOCIATION,      NODE},
+        {EXTEND,           USE_CASE},
+        {INCLUDE,          USE_CASE},
+        {LINK,             NODE_INSTANCE},
+        {LINK,             OBJECT}
+    };
+     */
+    
     /** Don't allow external instantiation.
      *  Create a logger.
      */
     private UmlFactory() {
         logger = Category.getInstance("org.argouml.model.uml.factory");
+        buildValidConnectionMap();
     }
 
+    private void buildValidConnectionMap() {
+        // A list of valid connections between elements, the connection type first and then
+        // the elements to be connected
+        
+        Object connection = null;
+        Object lastConnection = null;
+        for (int i=0; i < validConnections.length; ++i) {
+            connection = validConnections[i][0];
+            ArrayList validItems = (ArrayList)validConnectionMap.get(connection);
+            if (validItems == null) {
+                validItems = new ArrayList();
+                validConnectionMap.put(connection, validItems);
+            }
+            if (validConnections[i].length < 3) {
+                // If there isn't a 3rd column then this represents a connection
+                // of elements of the same type.
+                Object[] modeElementPair = new Class[2];
+                modeElementPair[0] = validConnections[i][1];
+                modeElementPair[1] = validConnections[i][1];
+                validItems.add(modeElementPair);
+            } else {
+                // If there is a 3rd column then this represents a connection
+                // of between 2 different types of element.
+                Object[] modeElementPair = new Class[2];
+                modeElementPair[0] = validConnections[i][1];
+                modeElementPair[1] = validConnections[i][2];
+                validItems.add(modeElementPair);
+                // If the array hasn't been flagged to indicate otherwise
+                // swap elements the elemnts and add again.
+                if (validConnections[i].length < 4) {
+                    Object[] reversedModeElementPair = new Class[2];
+                    reversedModeElementPair[0] = validConnections[i][2];
+                    reversedModeElementPair[1] = validConnections[i][1];
+                    validItems.add(reversedModeElementPair);
+                }
+            }
+        }
+    }
+    
     /** Create a new connection model element (a relationship or link) between any
      *  existing node model elements.
-     *  TODO Bob Tarling: currently only coded for collaboration diagram
-     *  introduce other diagrams slowly.
      */
     public Object buildConnection(Object connectionType, Object fromElement, Object toElement) throws IllegalModelElementConnectionException {
         return buildConnection(connectionType, fromElement, null, toElement, null, null);
     }
+    
     public Object buildConnection(Object connectionType, Object fromElement, Object fromStyle, Object toElement, Object toStyle, Object unidirectional) throws IllegalModelElementConnectionException {
-        
-        // TODO Bob Tarling - validate against validGrid first.
-        
-        Object connection = null;
-        try {
-            if (connectionType == ASSOCIATION_ROLE) {
-                connection = getCollaborations().buildAssociationRole(
-                    (MClassifierRole)fromElement, 
-                    (MAggregationKind)fromStyle, 
-                    (MClassifierRole)toElement, 
-                    (MAggregationKind)toStyle, 
-                    (Boolean)unidirectional);
-            } else if (connectionType == GENERALIZATION) {
-                connection = getCore().buildGeneralization((MClassifierRole)fromElement, (MClassifierRole)toElement);
-            }
-      
-        } catch (Exception ex) {
-            throw new IllegalModelElementConnectionException("Cannot make a " + 
-                        connectionType.getClass().getName() +
-                         " between a " + fromElement.getClass().getName() +
-                         " and a " + toElement.getClass().getName(), ex);
-        }
-        
-        if (connection == null) {
+
+        if (!isConnectionValid(connectionType, fromElement, toElement)) {
             throw new IllegalModelElementConnectionException("Cannot make a " + 
                         connectionType.getClass().getName() +
                          " between a " + fromElement.getClass().getName() +
                          " and a " + toElement.getClass().getName());
         }
         
+        Object connection = null;
+        
+        if (connectionType == ASSOCIATION) {
+            connection = getCore().buildAssociation(
+                (MClassifier)fromElement, 
+                (MAggregationKind)fromStyle, 
+                (MClassifier)toElement, 
+                (MAggregationKind)toStyle, 
+                (Boolean)unidirectional);
+        } else if (connectionType == ASSOCIATION_ROLE) {
+            connection = getCollaborations().buildAssociationRole(
+                (MClassifierRole)fromElement, 
+                (MAggregationKind)fromStyle, 
+                (MClassifierRole)toElement,
+                (MAggregationKind)toStyle, 
+                (Boolean)unidirectional);
+        } else if (connectionType == GENERALIZATION) {
+            connection = getCore().buildGeneralization((MGeneralizableElement)fromElement, (MGeneralizableElement)toElement);
+        } else if (connectionType == PERMISSION) {
+            connection = getCore().buildPermission((MModelElement)fromElement, (MModelElement)toElement);
+        } else if (connectionType == USAGE) {
+            connection = getCore().buildUsage((MModelElement)fromElement, (MModelElement)toElement);
+        } else if (connectionType == GENERALIZATION) {
+            connection = getCore().buildGeneralization((MGeneralizableElement)fromElement, (MGeneralizableElement)toElement);
+        } else if (connectionType == DEPENDENCY) {
+            connection = getCore().buildDependency(fromElement, toElement);
+        } else if (connectionType == ABSTRACTION) {
+            connection = getCore().buildRealization((MModelElement)fromElement, (MModelElement)toElement);
+        } else if (connectionType == LINK) {
+            connection = getCommonBehavior().buildLink((MInstance)fromElement, (MInstance)toElement);
+        } else if (connectionType == EXTEND) {
+            // Extend, but only between two use cases. Remember we draw from the
+            // extension port to the base port.
+            connection = getUseCases().buildExtend((MUseCase)toElement, (MUseCase)fromElement);
+        } else if (connectionType == INCLUDE) {
+            connection = getUseCases().buildInclude((MUseCase)fromElement, (MUseCase)toElement);
+        }
+    
+        if (connection == null) {
+            throw new IllegalModelElementConnectionException("Cannot make a " + 
+                            connectionType.getClass().getName() +
+                             " between a " + fromElement.getClass().getName() +
+                             " and a " + toElement.getClass().getName());
+        }
+        
         return connection;
+    }
+    
+    public boolean isConnectionValid(Object connectionType, Object fromElement, Object toElement) {
+        // Get the list of valid model item pairs for the given connection type
+        ArrayList validItems = (ArrayList)validConnectionMap.get(connectionType);
+        if (validItems == null) {
+            return false;
+        }
+        // See if there's a pair in this list that match the given model elements
+        Iterator it = validItems.iterator();
+        while (it.hasNext()) {
+            Class[] modeElementPair = (Class[])it.next();
+            if (modeElementPair[0].isInstance(fromElement) && modeElementPair[1].isInstance(toElement)) {
+                return true;
+            }
+        }
+        return false;
     }
     
     /** Returns the package factory for the UML

@@ -107,20 +107,6 @@ public class UMLClassDiagram extends UMLDiagram {
     // contructors
     protected static int _ClassDiagramSerial = 1;
 
-    /**
-     * Creates a new diagramname.
-     * @return String
-     */
-    protected static String getNewDiagramName() {
-        String name = null;
-        name = "Class Diagram " + _ClassDiagramSerial;
-        _ClassDiagramSerial++;
-        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
-            name = getNewDiagramName();
-        }
-        return name;
-    }
-
     public UMLClassDiagram() {
         super();
     }
@@ -188,4 +174,17 @@ public class UMLClassDiagram extends UMLDiagram {
         return toolBox;
     }
     
+    /**
+     * Creates a new diagramname.
+     * @return String
+     */
+    protected static String getNewDiagramName() {
+        String name = null;
+        name = "Class Diagram " + _ClassDiagramSerial;
+        _ClassDiagramSerial++;
+        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+            name = getNewDiagramName();
+        }
+        return name;
+    }
 } /* end class UMLClassDiagram */

@@ -523,22 +523,13 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
      */
 
     public void addEdge(Object edge) {
-
         cat.debug("adding class edge!!!!!!");
-        
-        // Give up if we are already on the graph.
-
         if (!canAddEdge(edge)) return;
 
         // Add the element and place it in the namespace of the model
-
         _edges.addElement(edge);
 
-        if (((edge instanceof MAssociation) || 
-            (edge instanceof MGeneralization) ||
-            (edge instanceof MExtend) ||
-            (edge instanceof MInclude) ||
-            (edge instanceof MDependency)) && ((MModelElement)edge).getNamespace() == null) {
+        if (((MModelElement)edge).getNamespace() == null) {
             _model.addOwnedElement((MModelElement) edge);
         }
 
@@ -694,122 +685,6 @@ public class UseCaseDiagramGraphModel extends UMLMutableGraphSupport
     }
 
 
-    /**
-     * <p>Construct and add a new edge of a kind determined by the ports.</p>
-     *
-     * @param fromPort  The originating port to connect
-     *
-     * @param toPort    The destination port to connect
-     *
-     * @return          The type of edge created
-     *
-     * @deprecated  We don't try to work out the type of edge ourself. Use
-     *              {@link #connect(Object, Object, java.lang.Class)} instead.
-     *              This method will just print a rude message and do nothing.
-     */
-
-    public Object connect(Object fromPort, Object toPort) {
-        throw new UnsupportedOperationException("should not enter here!");
-    }
-
-
-    /**
-     * <p>Construct and add a new edge of the given kind.</p>
-     *
-     * <p>We use the MMUtil utilities to create the NSUML object of the type
-     *   desired.</p>
-     *
-     * <p><em>Note</em>. The MMUtil utitilities often do not set up default
-     *   attribute values for NSUML objects created.</p>
-     *
-     * @param fromPort   The originating port to connect
-     *
-     * @param toPort     The destination port to connect
-     *
-     * @param edgeClass  The NSUML type of edge to create.
-     *
-     * @return           The type of edge created (the same as
-     *                   <code>edgeClass</code> if we succeeded,
-     *                   <code>null</code> otherwise)
-     */
-
-    public Object connect(Object fromPort, Object toPort, java.lang.Class edgeClass) {
-
-        Object connection = null;
-        
-        try {
-            if (edgeClass == MAssociation.class) {
-                connection = connectAssociation((MModelElement)fromPort, (MModelElement)toPort);
-            } else if (edgeClass == MGeneralization.class) {
-                connection = connectGeneralization((MModelElement)fromPort, (MModelElement)toPort);
-            } else if (edgeClass == MExtend.class) {
-                connection = connectExtend((MUseCase)fromPort, (MUseCase)toPort);
-            } else if (edgeClass == MInclude.class) {
-                connection = connectInclude((MUseCase)fromPort, (MUseCase)toPort);
-            } else if (edgeClass == MDependency.class) {
-                connection = connectDependency((MUseCase)fromPort, (MUseCase)toPort);
-            }
-        } catch (ClassCastException ex) {
-            // fail silently as we expect users to accidentally drop on to wrong component
-        }
-        
-        if (connection == null) {
-            cat.debug("Cannot make a "+ edgeClass.getName() +
-                         " between a " + fromPort.getClass().getName() +
-                         " and a " + toPort.getClass().getName());
-            return null;
-        }
-        
-        addEdge(connection);
-        return connection;
-    }
-
-    /** Contruct and add a new association and connect to
-     * the given ports.
-     */
-    private Object connectAssociation(MModelElement fromPort, MModelElement toPort) {
-        if (fromPort instanceof MClassifier && toPort instanceof MClassifier) {
-            Editor curEditor = Globals.curEditor();
-            ModeManager modeManager = curEditor.getModeManager();
-            Mode mode = (Mode)modeManager.top();
-            Hashtable args = mode.getArgs();
-            boolean unidirectional = false;
-            MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
-            if (aggregation != null) {
-                unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
-            } else {
-                aggregation = MAggregationKind.NONE;
-            }
-            return UmlFactory.getFactory().getCore().buildAssociation((MClassifier)fromPort, !unidirectional, aggregation, (MClassifier)toPort, true, MAggregationKind.NONE);
-        }
-        
-        return null;
-    }
-    
-    private Object connectGeneralization(MModelElement fromPort, MModelElement toPort) {
-        if ((fromPort instanceof MActor && toPort instanceof MActor) ||
-            (fromPort instanceof MUseCase && toPort instanceof MUseCase)) {
-
-            return UmlFactory.getFactory().getCore().buildGeneralization((MClassifier)fromPort, (MClassifier)toPort);
-        }
-        return null;
-    }
-
-    private Object connectExtend(MUseCase fromPort, MUseCase toPort) {
-        // Extend, but only between two use cases. Remember we draw from the
-        // extension port to the base port.
-        // any reason? Does it matter?
-        return UmlFactory.getFactory().getUseCases().buildExtend(toPort, fromPort);
-    }
-    
-    private Object connectDependency(MUseCase fromPort, MUseCase toPort) {
-        return UmlFactory.getFactory().getCore().buildDependency(fromPort, toPort);
-    }
-    
-    private Object connectInclude(MUseCase fromPort, MUseCase toPort) {
-        return UmlFactory.getFactory().getUseCases().buildInclude(fromPort, toPort);
-    }
-    
     ///////////////////////////////////////////////////////////////////////////
     //
     // Methods that implement the VetoableChangeListener interface
