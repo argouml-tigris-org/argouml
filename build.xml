@@ -83,7 +83,7 @@ If you want to compile ArgoUML, you need to have following:
 - your compiler in your PATH
 - JAVA_HOME correctly set to where Java2 is installed
 - ANT_HOME correctly set to where ANT is installed
-- the additional libraries (nsuml.jar, ocl-argo.jar, xml4j.jar, gef.jar, antlrall.jar, swingext.jar) in argouml/lib
+- the additional libraries (nsuml.jar, ocl-argo.jar, xml4j.jar, gef.jar, antlrall.jar) in argouml/lib
 - the support file (uml13.dtd) is optional but desirable in argouml/lib
 
 when these are right the command
@@ -159,7 +159,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="src.dir" value="../src_new"/>
     <property name="lib.dir" value="../lib"/>
-    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/xerces.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/jh.jar:${lib.dir}/swingext.jar"/>
+    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/xerces.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/jh.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
     <property name="manifest" value="${src.dir}/org/argouml.mf"/>
@@ -432,7 +432,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
           <pathelement path="${lib.dir}/antlrall.jar"/>
           <pathelement path="${lib.dir}/log4j.jar"/>
           <pathelement path="${lib.dir}/xerces.jar"/>
-          <pathelement path="${lib.dir}/swingext.jar"/>
       </classpath>
       <link offline="true"
             href="${jdk.javadoc.link}"
@@ -467,8 +466,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar swingext.jar README.txt"/>
-    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar swingext.jar README.txt"/>
+    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
+    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
     <gzip zipfile="../${Name}-${version}.tar.gz" src="../${Name}-${version}.tar" />
     <delete file="../${Name}-${version}.tar"/>
   </target>
@@ -490,8 +489,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist-lib" depends="init">
     <echo message="Building the library distribution files (zip,tar)"/>
-    <zip zipfile="../${Name}-${version}-libs.zip" basedir="${lib.dir}/.." includes="lib/gef.jar lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar lib/swingext.jar" />
-    <tar tarfile="../${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/gef.jar lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar lib/swingext.jar" />
+    <zip zipfile="../${Name}-${version}-libs.zip" basedir="${lib.dir}/.." includes="lib/gef.jar lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <tar tarfile="../${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/gef.jar lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
     <gzip zipfile="../${Name}-${version}-libs.tar.gz" src="../${Name}-${version}-libs.tar" />
     <delete file="../${Name}-${version}-libs.tar"/>
   </target>
