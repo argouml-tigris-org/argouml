@@ -89,7 +89,7 @@ public class PropPanelUMLStateDiagram extends PropPanelDiagram {
     super.setTargetInternal(t);
     if (!(_target instanceof UMLStateDiagram)) return;
     UMLStateDiagram d = (UMLStateDiagram) _target;
-	System.out.println("Trying to cast "+d.getGraphModel()+" to StateDiagramGraphModel");
+	// System.out.println("Trying to cast "+d.getGraphModel()+" to StateDiagramGraphModel");
     StateDiagramGraphModel sdgm = (StateDiagramGraphModel) d.getGraphModel();
     _contextField.setSelectedItem(null);
     if (sdgm != null && sdgm.getMachine() != null)

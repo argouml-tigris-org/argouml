@@ -43,7 +43,7 @@ public class GenAncestorClasses implements ChildGenerator {
 	Vector res = new Vector();
 
     if (!(o instanceof MGeneralizableElement)) return res.elements();
-    MClassifier cls = (MClassifier) o;
+    MGeneralizableElement cls = (MGeneralizableElement) o;
     Collection gens = cls.getGeneralizations();
     if (gens == null) return res.elements();
     // Vector res = new Vector();

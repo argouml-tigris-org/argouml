@@ -47,7 +47,6 @@ class ArgoAny implements Any {
 	MClassifier foundType = null;
 
 	// first search for appropriate attributes:
-System.out.println("I'll look for attributes now");
 	com.sun.java.util.collections.Collection attributes = MMUtil.SINGLETON.getAttributesInh(classifier);
 	Iterator iter = attributes.iterator();
 	while (iter.hasNext() && foundType == null) {
@@ -59,7 +58,6 @@ System.out.println("I'll look for attributes now");
 
 	// if no attribute was found, look for associations:
 	if (foundType == null) {
-		System.out.println("I'll look for associations now");
 		com.sun.java.util.collections.Collection associationEnds = MMUtil.SINGLETON.getAssociateEndsInh(classifier);
 		Iterator asciter = associationEnds.iterator();
 		while (asciter.hasNext() && foundType == null) {
@@ -71,7 +69,6 @@ System.out.println("I'll look for attributes now");
 				if (oppositeName != null) {
 					String lowerOppositeName = oppositeName.substring(0,1).toLowerCase();
 					lowerOppositeName += oppositeName.substring(1);
-					System.out.println("lowerOppositeName is: "+lowerOppositeName);
 					if (lowerOppositeName.equals(name))
 						foundType = ae.getType();
 				}

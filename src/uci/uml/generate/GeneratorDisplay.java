@@ -461,7 +461,7 @@ public class GeneratorDisplay extends Generator {
   }
 
   public String generateAction(MAction m) {
-    return m.getName();
+    return m.getScript().getBody();
   }
 
   public String generateGuard(MGuard m) {

@@ -177,7 +177,7 @@ public class PropPanelTransition extends PropPanelTwoEnds {
     MTransition t = (MTransition) _target;
     String newText = _effectField.getText();
     //System.out.println("setTargetEffect: " + newText);
-	t.setEffect(ParserDisplay.SINGLETON.parseActions(newText));
+	t.setEffect(ParserDisplay.SINGLETON.parseAction(newText));
   }
 
   ////////////////////////////////////////////////////////////////

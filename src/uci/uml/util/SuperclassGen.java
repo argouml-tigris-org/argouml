@@ -48,4 +48,4 @@ public class SuperclassGen implements ChildGenerator {
     }
     return res.elements();
   }
-} /* end class SuperclassGen */
+} /* end class SuperclassGen  */

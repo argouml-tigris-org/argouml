@@ -42,7 +42,7 @@ public class GenDescendantClasses implements ChildGenerator {
     Vector res = new Vector();
     if (!(o instanceof MGeneralizableElement)) return res.elements();
 
-    MClassifier cls = (MClassifier) o;
+    MGeneralizableElement cls = (MGeneralizableElement) o;
     Collection gens = cls.getSpecializations();
     if (gens == null) return res.elements();
     accumulateDescendants(cls, res);

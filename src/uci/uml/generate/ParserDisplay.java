@@ -472,7 +472,9 @@ public class ParserDisplay extends Parser {
   }
 
   public MAction parseAction(String s) {
-    return null;
+	  MAction a = new MActionImpl();
+	  a.setScript(new MActionExpression("Java",s));
+	  return a;
   }
 
   public MActionSequence parseActions(String s) {
@@ -483,7 +485,7 @@ public class ParserDisplay extends Parser {
 
   public MGuard parseGuard(String s) {
 	MGuard g = new MGuardImpl();
-	g.setName(s);
+	g.setExpression(new MBooleanExpression("bool",s));
     return g;
   }
 
