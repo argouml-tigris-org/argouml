@@ -396,7 +396,7 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
         { "CrTooManyOper_head" ,
                 "Reduce Operations on <ocl>self</ocl>" },
         { "CrTooManyOper_desc" ,
-                "There are too many Operations on class <ocl>self</ocl>.  Whenever one class becomes too central to the design it may become a maintenance bottleneck that must be updated frequently. \n\nDefining the operations of objects is an important part of your design. \n\nTo fix this, press the \"Next>\" button, or remove attributes manually by double-clicking on the operation compartment of the  highlighted class in the diagram and removing the line of text for an operation." },
+                "There are too many Operations on class <ocl>self</ocl>.  Whenever one class becomes too central to the design it may become a maintenance bottleneck that must be updated frequently. \n\nDefining the operations of objects is an important part of your design. \n\nTo fix this, press the \"Next>\" button, or remove operations manually by double-clicking on the operation compartment of the  highlighted class in the diagram and removing the line of text for an operation." },
         { "CrTooManyStates_head" ,
                 "Reduce States in machine <ocl>self</ocl>" },
         { "CrTooManyStates_desc" ,

@@ -234,7 +234,7 @@ public class UMLCognitiveResourceBundle_es extends ListResourceBundle {
         { "CrTooManyOper_head" ,
                 "Reduce las operaciones de <ocl>self</ocl>" },
         { "CrTooManyOper_desc" ,
-                "Hay demasiadas operaciones en la clase <ocl>self</ocl>.  Cuando una clase es centraliza demasiado el dise\u00f1o puede convertirse en un cuello de botella que debe ser acutalizado frecuentemente. \n\nDefinir las operaciones de un objeto es una parte importante del dise\u00f1o. \n\nPara arreglar esto, pulsa el bot\u00f3n \"Siguiente>\", o quita manualmente los atributos haciendo doble click en el compartiemiento de la operaci\u00f3n de la clase realzada en el diagrama y quitando la l\u00ednea de texto para la operaci\u00f3n. " },
+                "Hay demasiadas operaciones en la clase <ocl>self</ocl>.  Cuando una clase es centraliza demasiado el dise\u00f1o puede convertirse en un cuello de botella que debe ser acutalizado frecuentemente. \n\nDefinir las operaciones de un objeto es una parte importante del dise\u00f1o. \n\nPara arreglar esto, pulsa el bot\u00f3n \"Siguiente>\", o quita manualmente los operaciones haciendo doble click en el compartiemiento de la operaci\u00f3n de la clase realzada en el diagrama y quitando la l\u00ednea de texto para la operaci\u00f3n. " },
         { "CrTooManyStates_head" ,
                 "Reduce estados en la m\u00e1quina <ocl>self</ocl>" },
         { "CrTooManyStates_desc" ,
