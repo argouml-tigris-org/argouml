@@ -75,7 +75,8 @@ public class AddToDoItemDialog extends ArgoDialog {
     
     /**
      * Create a new AddToDoItemDialog
-     * @param renderer the ListCellRenderer to use in order to display the offenders
+     * @param renderer the ListCellRenderer to use in order 
+     *                 to display the offenders
      */
     public AddToDoItemDialog(ListCellRenderer renderer) {
         super(ProjectBrowser.getInstance(), 
