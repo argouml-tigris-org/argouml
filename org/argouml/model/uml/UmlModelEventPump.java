@@ -440,7 +440,7 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void propertySet(MElementEvent e) {
         cat.debug("Pumping propertySet event with name " + e.getName() + " and source " + e.getSource());
-        if (e.getNewValue() != null && !(e.getNewValue().equals(e.getOldValue()))) {
+        if (e.getNewValue() == null || !(e.getNewValue().equals(e.getOldValue()))) {
             Iterator it = getListenerList(e).iterator();
 
             while (it.hasNext()) {
