@@ -95,13 +95,20 @@ public class CrConsiderSingleton extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 
-        // Only look at classes
+        // Only look at classes...
 
         if (!(ModelFacade.isAClass(dm))) {
             return NO_PROBLEM;
         }
-
-	if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
+        
+        // with a name...
+        if (ModelFacade.getName(dm) == null ||
+            "".equals(ModelFacade.getName(dm))) {
+                return NO_PROBLEM;
+        }
+        
+        // ... and not incompletely imported
+        if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
 
         // Check for Singleton stereotype, uninitialised instance variables and
         // outgoing associations, as per JavaDoc above.
