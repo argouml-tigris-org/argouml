@@ -36,17 +36,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
@@ -65,18 +60,11 @@ import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.argouml.util.ChangeRegistry;
 import org.argouml.util.FileConstants;
-import org.argouml.util.SubInputStream;
 import org.argouml.util.Trash;
-import org.argouml.xml.argo.ArgoParser;
-import org.argouml.xml.pgml.PGMLParser;
-import org.argouml.xml.xmi.XMIReader;
 
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Util;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 /**
  * A datastructure that represents the designer's current project.  A
@@ -108,7 +96,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /** TODO: should just be the directory to write
      */
     private URL url;
-    protected ChangeRegistry saveRegistry;
+    private ChangeRegistry saveRegistry;
 
     private String authorname;
     private String description;
@@ -274,6 +262,9 @@ public class Project implements java.io.Serializable, TargetListener {
         return n;
     }
 
+    /**
+     * @return the name of the project
+     */
     public String getName() {
         // TODO: maybe separate name
         if (url == null)
@@ -354,14 +345,24 @@ public class Project implements java.io.Serializable, TargetListener {
         }
     }
 
+    /**
+     * @return the search path
+     */
     public Vector getSearchPath() {
         return searchpath;
     }
 
+    /**
+     * @param searchPathElement the element to be added to the searchpath
+     */
     public void addSearchPath(String searchPathElement) {
         this.searchpath.addElement(searchPathElement);
     }
 
+    /**
+     * @param name the given string containing the searchpath
+     * @return the equivalent url
+     */
     public URL findMemberURLInSearchPath(String name) {
         //ignore searchpath, just find it relative to the project file
         String u = "";
@@ -390,6 +391,9 @@ public class Project implements java.io.Serializable, TargetListener {
         return members;
     }
 
+    /**
+     * @param d the diagram
+     */
     public void addMember(ArgoDiagram d) {
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
@@ -397,6 +401,9 @@ public class Project implements java.io.Serializable, TargetListener {
         members.addElement(pm);
     }
 
+    /**
+     * @param pm the member to be added
+     */
     public void addMember(ProjectMemberTodoList pm) {
         Iterator iter = members.iterator();
         Object currentMember = null;
@@ -411,10 +418,15 @@ public class Project implements java.io.Serializable, TargetListener {
         members.addElement(pm);
     }
 
+    /**
+     * @param m the member to be added
+     */
     public void addMember(Object m) {
         
         if (!ModelFacade.isAModel(m)) {
-            throw new IllegalArgumentException("The member must be a UML model. It is " + m.getClass().getName());
+            throw new IllegalArgumentException(
+                "The member must be a UML model. It is " 
+                    + m.getClass().getName());
         }
         
         Iterator iter = members.iterator();
@@ -484,6 +496,10 @@ public class Project implements java.io.Serializable, TargetListener {
         }
     }
 
+    /**
+     * @param name the name of the member to be found
+     * @return the member
+     */
     public ProjectMember findMemberByName(String name) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("findMemberByName called for \"" + name + "\".");
@@ -519,6 +535,9 @@ public class Project implements java.io.Serializable, TargetListener {
         }
     }
 
+    /**
+     * Load all members.
+     */
     public void loadAllMembers() {
         loadMembersOfType("xmi");
         loadMembersOfType("argo");
@@ -669,8 +688,8 @@ public class Project implements java.io.Serializable, TargetListener {
      * found. The newly created type is added to the currentNamespace
      * and given the name s.
      * @param s the name of the type/classifier to be found
-     * @param defineNew
-     * @return MClassifier
+     * @param defineNew if true, define a new one 
+     * @return MClassifier the found classifier
      */
     public Object findType(String s, boolean defineNew) {
         if (s != null) {
@@ -758,6 +777,9 @@ public class Project implements java.io.Serializable, TargetListener {
         return null;
     }
 
+    /**
+     * @param m the namespace
+     */
     public void setCurrentNamespace(Object m) {
         
         if (m != null && !ModelFacade.isANamespace(m)) {
@@ -767,10 +789,16 @@ public class Project implements java.io.Serializable, TargetListener {
         currentNamespace = m;
     }
 
+    /**
+     * @return the namespace
+     */
     public Object getCurrentNamespace() {
         return currentNamespace;
     }
 
+    /**
+     * @return the diagrams
+     */
     public Vector getDiagrams() {
         return diagrams;
     }
@@ -796,6 +824,9 @@ public class Project implements java.io.Serializable, TargetListener {
         return null;
     } 
 
+    /**
+     * @param d the diagram to be added
+     */
     public void addDiagram(ArgoDiagram d) {
         // send indeterminate new value instead of making copy of vector
         diagrams.addElement(d);
@@ -830,6 +861,10 @@ public class Project implements java.io.Serializable, TargetListener {
         setNeedsSave(true);
     }
 
+    /**
+     * @param me the given modelelement
+     * @return 
+     */
     public int getPresentationCountFor(Object me) {
         
         if (!ModelFacade.isAModelElement(me)) {
@@ -845,6 +880,9 @@ public class Project implements java.io.Serializable, TargetListener {
         return presentations;
     }
 
+    /**
+     * @return an initial target, in casu a diagram or a model
+     */
     public Object getInitialTarget() {
         if (diagrams.size() > 0) {
             return diagrams.elementAt(0);
@@ -855,10 +893,16 @@ public class Project implements java.io.Serializable, TargetListener {
         return null;
     }
 
+    /**
+     * @param cgp the generation preferences
+     */
     public void setGenerationPrefs(GenerationPreferences cgp) {
         cgPrefs = cgp;
     }
     
+    /**
+     * @return the generation preferences
+     */
     public GenerationPreferences getGenerationPrefs() {
         return cgPrefs;
     }
@@ -866,6 +910,9 @@ public class Project implements java.io.Serializable, TargetListener {
     ////////////////////////////////////////////////////////////////
     // event handling
 
+    /**
+     * @return
+     */
     public VetoableChangeSupport getVetoSupport() {
         if (vetoSupport == null) {
             vetoSupport = new VetoableChangeSupport(this);
@@ -970,12 +1017,20 @@ public class Project implements java.io.Serializable, TargetListener {
         setNeedsSave(needSave);
     }
 
+    /**
+     * @param obj the object to be moved from the trash
+     * TODO: Is "move" remove or restore? 
+     */
     public void moveFromTrash(Object obj) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("TODO: not restoring " + obj);
         }
     }
 
+    /**
+     * @param dm the object 
+     * @return true if the object is trashed
+     */
     public boolean isInTrash(Object dm) {
         return Trash.SINGLETON.contains(dm);
     }

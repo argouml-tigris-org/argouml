@@ -205,10 +205,16 @@ public class ArgoFilePersister extends AbstractFilePersister {
         }
     }
     
-    protected void loadProjectMembers(Project project, URL theUrl) throws OpenException {
+    /**
+     * @param project the project to load into
+     * @param theUrl the URL to load from
+     * @throws OpenException if opening the URL fails
+     */
+    protected void loadProjectMembers(Project project, URL theUrl) 
+        throws OpenException {
         try {
             String filename = theUrl.toString();
-            filename = filename.substring(0,filename.length()-4) + "xmi";
+            filename = filename.substring(0, filename.length() - 4) + "xmi";
             theUrl = new URL(filename);
             loadModel(project, theUrl);
         } catch (SAXException e) {
@@ -229,6 +235,7 @@ public class ArgoFilePersister extends AbstractFilePersister {
      * examined by the calling function.
      *
      * @param theUrl The url with the .zargo file
+     * @param project the project to load into
      * @return The model loaded
      * @throws IOException Thrown if the model or the .zargo file is corrupted.
      * @throws SAXException If the parser template is syntactically incorrect. 
@@ -236,7 +243,7 @@ public class ArgoFilePersister extends AbstractFilePersister {
      *         the parser fails.
      */
     protected Object loadModel(Project project, URL theUrl)
-            throws IOException, SAXException, ParserConfigurationException {
+        throws IOException, SAXException, ParserConfigurationException {
         if (LOG.isInfoEnabled()) {
             LOG.info("Loading Model from " + theUrl);
         }
@@ -253,15 +260,16 @@ public class ArgoFilePersister extends AbstractFilePersister {
      * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
      * examined by the calling function.
      *
-     * @param theUrl The url with the .zargo file
      * @return The model loaded
      * @throws IOException Thrown if the model or the .zargo file is corrupted.
      * @throws SAXException If the parser template is syntactically incorrect. 
      * @throws ParserConfigurationException If the initialization of 
      *         the parser fails.
+     * @param project the project to load into
+     * @param source the source to load from
      */
     protected Object loadModel(Project project, InputSource source)
-            throws IOException, SAXException, ParserConfigurationException {
+        throws IOException, SAXException, ParserConfigurationException {
         // 2002-07-18
         // Jaap Branderhorst
         // changed the loading of the projectfiles to solve hanging 
