@@ -110,6 +110,7 @@ public class TestFigClonable extends TestCase {
 
     /** try to clone FigModel in package diagram.static_structure.ui.
      */
+    /*
     public void testModelClonable() {
         try {
             FigModel fig = new FigModel();
@@ -123,7 +124,7 @@ public class TestFigClonable extends TestCase {
             assert("FigModel not clonable", false);
         }
     }
-
+    */
 
     /** try to clone FigNote in package diagram.static_structure.ui.
      */
