@@ -175,10 +175,11 @@ public class ModelManagementHelper {
     /**
      * Returns all modelelements of the given kind
      *
-     * @param kind is the class kind
+     * @param type is the class kind
      * @return Collection
      */
-    public Collection getAllModelElementsOfKind(Class kind) {
+    public Collection getAllModelElementsOfKind(Object type) {
+        Class kind = (Class) type;
         if (kind == null)
             return Collections.EMPTY_LIST;
         Project p = ProjectManager.getManager().getCurrentProject();

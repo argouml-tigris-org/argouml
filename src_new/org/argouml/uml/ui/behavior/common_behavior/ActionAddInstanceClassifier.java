@@ -42,7 +42,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  */
 public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
 
-    private Class choiceClass = (Class) ModelFacade.CLASSIFIER;
+    private Object choiceClass = ModelFacade.CLASSIFIER;
     
     /**
      * The constructor for ActionAddExtendExtensionPoint.
@@ -58,7 +58,7 @@ public class ActionAddInstanceClassifier extends AbstractActionAddModelElement {
      * 
      * @param choice the classifier type we are adding
      */
-    public ActionAddInstanceClassifier(Class choice) {
+    public ActionAddInstanceClassifier(Object choice) {
         super();
         choiceClass = choice;
     }
