@@ -151,7 +151,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public Project(URL theProjectUrl) {
         this();
-        url = (new PersistenceManager()).fixUrlExtension(theProjectUrl);
+        url = PersistenceManager.getInstance().fixUrlExtension(theProjectUrl);
     }
 
     /**
@@ -216,7 +216,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public String getBaseName() {
         String n = getName();
-        n = (new PersistenceManager()).getBaseName(n);
+        n = PersistenceManager.getInstance().getBaseName(n);
         return n;
     }
 
@@ -264,7 +264,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setURL(URL theUrl) {
         if (theUrl != null) {
-            theUrl = (new PersistenceManager()).fixUrlExtension(theUrl);
+            theUrl = PersistenceManager.getInstance().fixUrlExtension(theUrl);
         }
 
         if (LOG.isDebugEnabled()) {

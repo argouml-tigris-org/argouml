@@ -60,9 +60,9 @@ class ActionShowXMLDump extends AbstractAction {
     public void actionPerformed(ActionEvent e) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project project = ProjectManager.getManager().getCurrentProject();
-	PersistenceManager pm = new PersistenceManager();
-
-	String data = pm.getQuickViewDump(project);
+	
+	String data = 
+	    PersistenceManager.getInstance().getQuickViewDump(project);
 
 	JDialog pw = new JDialog(pb, Translator.localize("action.show-saved"), 
             false);

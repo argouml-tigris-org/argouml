@@ -130,7 +130,7 @@ public class ActionSaveProject extends ActionFileOperations {
         LOG.info("Saving the project");
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project project = ProjectManager.getManager().getCurrentProject();
-	PersistenceManager pm = new PersistenceManager();
+	PersistenceManager pm = PersistenceManager.getInstance();
 
 	try {
 	    if (file.exists() && !overwrite) {
