@@ -46,7 +46,7 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 
 public class TabChecklist extends TabSpawnable
 implements TabModelTarget, ActionListener, ListSelectionListener {
-  
+
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected uci.argo.checklist.CheckManager SINGLTON =
@@ -57,7 +57,7 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
   boolean _shouldBeEnabled = false;
   JTable _table = new JTable(10, 2);
 
-  
+
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabChecklist() {
@@ -67,23 +67,26 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
 
     Font labelFont = MetalLookAndFeel.getSubTextFont();
     _table.setFont(labelFont);
-    
+
     //_table.setRowSelectionAllowed(false);
     _table.setIntercellSpacing(new Dimension(0, 1));
     _table.setShowVerticalLines(false);
     _table.getSelectionModel().addListSelectionListener(this);
     _table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-    
+
     TableColumn checkCol = _table.getColumnModel().getColumn(0);
     TableColumn descCol = _table.getColumnModel().getColumn(1);
     checkCol.setMinWidth(20);
+    checkCol.setMaxWidth(30);
     checkCol.setWidth(30);
-    descCol.setMinWidth(250);
-    //descCol.setWidth(600);    
+    descCol.setPreferredWidth(900);
+    //descCol.setWidth(900);
+    _table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+    _table.sizeColumnsToFit(-1);
 
     //JScrollPane sp = JTable.createScrollPaneForTable(_table);
     JScrollPane sp = new JScrollPane(_table);
-    
+
     setLayout(new BorderLayout());
     add(sp, BorderLayout.CENTER);
   }
@@ -107,13 +110,16 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
     }
 
     _tableModel.setTarget(me);
-    
+
     TableColumn checkCol = _table.getColumnModel().getColumn(0);
     TableColumn descCol = _table.getColumnModel().getColumn(1);
     checkCol.setMinWidth(20);
+    checkCol.setMaxWidth(30);
     checkCol.setWidth(30);
-    descCol.setMinWidth(250);
-    //descCol.setWidth(600);    
+    //descCol.setWidth(900);
+    descCol.setPreferredWidth(900);
+    _table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+    _table.sizeColumnsToFit(-1);
     validate();
   }
   public Object getTarget() { return _target; }
@@ -131,12 +137,12 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
 
   public void actionPerformed(ActionEvent ae) {
     Object src = ae.getSource();
-    System.out.println("got actionPerformed from " + src);
+    //System.out.println("got actionPerformed from " + src);
   }
 
   public void valueChanged(ListSelectionEvent lse) {
     Object src = lse.getSource();
-    System.out.println("got valueChanged from " + src);
+    //System.out.println("got valueChanged from " + src);
   }
 
 } /* end class TabChecklist */
@@ -234,6 +240,5 @@ implements VetoableChangeListener, DelayedVChangeListener {
     fireTableStructureChanged();
   }
 
-  
 } /* end class TableModelChecklist */
 

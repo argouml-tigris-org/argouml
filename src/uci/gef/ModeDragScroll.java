@@ -101,7 +101,7 @@ public class ModeDragScroll extends Mode implements ActionListener {
    * @param me 
    */
   public void mousePressed(MouseEvent me) {
-    dragScrolling = (me.getModifiers() == InputEvent.BUTTON2_MASK);
+    dragScrolling = (me.isAltDown());
 
     // get the component and the view
     component = (JComponent) _editor.getAwtComponent();

@@ -125,7 +125,7 @@ public class ModeSelect extends Mode {
   /** On mouse dragging, stretch the selection rectangle. */
   public void mouseDragged(MouseEvent me) {
     if (me.isConsumed()) return;
-    if ((me.getModifiers() & InputEvent.BUTTON1_MASK) == 0) return;
+    if (me.isAltDown()) return;
     int x = me.getX(), y = me.getY();
     _showSelectRect = true;
     int bound_x = Math.min(_selectAnchor.x, x);

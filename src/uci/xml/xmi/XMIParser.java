@@ -1553,7 +1553,10 @@ public class XMIParser implements ElementHandler, TagHandler {
     _curME = _curTransition;
     if (_firstPass) return;
     //? addToModel(_curME);
-    if (_curStateMachine != null) _curStateMachine.addTransition(_curTransition);
+    if (inTag("StateMachine") && _curStateMachine != null)
+      _curStateMachine.addTransition(_curTransition);
+    else if (inTag("ActivityModel") && _curActivityModel != null)
+      _curActivityModel.addTransition(_curTransition);
   }
   protected void handlePartition(TXElement e) throws PropertyVetoException {
     _curPartition = (Partition) findOrCreate(e, Partition.class);
@@ -1572,12 +1575,16 @@ public class XMIParser implements ElementHandler, TagHandler {
     _curActionState = (ActionState) findOrCreate(e, ActionState.class);
     _curME = _curActionState;
     if (_firstPass) return;
+    if (inTag("CompositeState") && _curCompositeState != null)
+      _curCompositeState.addSubstate((StateVertex)_curME);
     //? addToModel(_curME);
   }
   protected void handleActivityState(TXElement e) throws PropertyVetoException {
     _curActivityState = (ActivityState) findOrCreate(e, ActivityState.class);
     _curME = _curActivityState;
     if (_firstPass) return;
+    if (inTag("CompositeState") && _curCompositeState != null)
+      _curCompositeState.addSubstate((StateVertex)_curME);
     //? addToModel(_curME);
   }
   protected void handle_inState(TXElement e) throws PropertyVetoException {

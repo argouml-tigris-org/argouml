@@ -624,32 +624,6 @@
                     </ActionSequence>
                   </effect>
                 </Transition>
-                <Transition XMI.id = "S.100794">
-                  <name></name>
-                  <visibility XMI.value = "public"/>
-                  <sourceState> <XMI.reference target="S.100791"/> </sourceState>
-                  <targetState> <XMI.reference target="S.100716"/> </targetState>
-                  <trigger>
-                    <SignalEvent XMI.id = "S.100806">
-                      <name></name>
-                      <visibility XMI.value = "public"/>
-                      <signal> <XMI.reference /> </signal>
-                    </SignalEvent>
-                  </trigger>
-                  <guard>
-                    <Guard XMI.id = "S.100807">
-                      <name></name>
-                      <visibility XMI.value = "public"/>
-                      <expression>valid</expression>
-                    </Guard>
-                  </guard>
-                  <effect>
-                    <ActionSequence XMI.id = "S.100809">
-                      <name></name>
-                      <visibility XMI.value = "public"/>
-                    </ActionSequence>
-                  </effect>
-                </Transition>
               </transitions>
             </StateMachine>
           </behavior>
@@ -1182,11 +1156,11 @@
           <isLeaf XMI.value="false"/>
           <isRoot XMI.value="false"/>
           <behavior>
-            <ActivityModel XMI.id = "S.100709">
+            <ActivityModel XMI.id = "S.100991">
               <name>Log InActivityModel</name>
               <visibility XMI.value = "public"/>
               <top>
-                <CompositeState XMI.id = "S.100710">
+                <CompositeState XMI.id = "S.100992">
                   <name>activities_top</name>
                   <visibility XMI.value = "public"/>
                   <isConcurrent XMI.value="false"/>
@@ -1197,34 +1171,232 @@
                   <internalTransition>
                   </internalTransition>
                   <substate>
-                    <PseudoState XMI.id = "S.100711">
+                    <PseudoState XMI.id = "S.100993">
                       <name>initial</name>
                       <visibility XMI.value = "public"/>
                       <stateKind XMI.value="initial"/>
-                      <parent> <XMI.reference target="S.100710"/> </parent>
+                      <parent> <XMI.reference target="S.100992"/> </parent>
                     </PseudoState>
-                    <PseudoState XMI.id = "S.100716">
+                    <PseudoState XMI.id = "S.100994">
                       <name>final</name>
                       <visibility XMI.value = "public"/>
                       <stateKind XMI.value="final"/>
-                      <parent> <XMI.reference target="S.100710"/> </parent>
+                      <parent> <XMI.reference target="S.100992"/> </parent>
                     </PseudoState>
-                    <PseudoState XMI.id = "S.100722">
+                    <ActionState XMI.id = "S.100995">
+                      <name>Prompt for ID</name>
+                      <visibility XMI.value = "public"/>
+                      <parent> <XMI.reference target="S.100992"/> </parent>
+                      <entry>
+                      </entry>
+                      <exit>
+                      </exit>
+                      <internalTransition>
+                      </internalTransition>
+                    </ActionState>
+                    <ActionState XMI.id = "S.100996">
+                      <name>Capture ID Digits</name>
+                      <visibility XMI.value = "public"/>
+                      <parent> <XMI.reference target="S.100992"/> </parent>
+                      <entry>
+                      </entry>
+                      <exit>
+                      </exit>
+                      <internalTransition>
+                      </internalTransition>
+                    </ActionState>
+                    <PseudoState XMI.id = "S.101000">
                       <name>branch</name>
                       <visibility XMI.value = "public"/>
                       <stateKind XMI.value="branch"/>
-                      <parent> <XMI.reference target="S.100710"/> </parent>
+                      <parent> <XMI.reference target="S.100992"/> </parent>
                     </PseudoState>
-                    <PseudoState XMI.id = "S.100791">
+                    <ActionState XMI.id = "S.101227">
+                      <name>Propmt for PIN</name>
+                      <visibility XMI.value = "public"/>
+                      <parent> <XMI.reference target="S.100992"/> </parent>
+                      <entry>
+                      </entry>
+                      <exit>
+                      </exit>
+                      <internalTransition>
+                      </internalTransition>
+                    </ActionState>
+                    <ActionState XMI.id = "S.101228">
+                      <name>Capture PIN</name>
+                      <visibility XMI.value = "public"/>
+                      <parent> <XMI.reference target="S.100992"/> </parent>
+                      <entry>
+                      </entry>
+                      <exit>
+                      </exit>
+                      <internalTransition>
+                      </internalTransition>
+                    </ActionState>
+                    <PseudoState XMI.id = "S.101229">
                       <name>branch</name>
                       <visibility XMI.value = "public"/>
                       <stateKind XMI.value="branch"/>
-                      <parent> <XMI.reference target="S.100710"/> </parent>
+                      <parent> <XMI.reference target="S.100992"/> </parent>
                     </PseudoState>
                   </substate>
                 </CompositeState>
               </top>
               <transitions>
+                <Transition XMI.id = "S.100997">
+                  <name></name>
+                  <visibility XMI.value = "public"/>
+                  <sourceState> <XMI.reference target="S.100993"/> </sourceState>
+                  <targetState> <XMI.reference target="S.100995"/> </targetState>
+                  <trigger>
+                  </trigger>
+                  <effect>
+                  </effect>
+                </Transition>
+                <Transition XMI.id = "S.100998">
+                  <name></name>
+                  <visibility XMI.value = "public"/>
+                  <sourceState> <XMI.reference target="S.100995"/> </sourceState>
+                  <targetState> <XMI.reference target="S.100996"/> </targetState>
+                  <trigger>
+                  </trigger>
+                  <effect>
+                  </effect>
+                </Transition>
+                <Transition XMI.id = "S.101001">
+                  <name></name>
+                  <visibility XMI.value = "public"/>
+                  <sourceState> <XMI.reference target="S.100996"/> </sourceState>
+                  <targetState> <XMI.reference target="S.101000"/> </targetState>
+                  <trigger>
+                  </trigger>
+                  <effect>
+                  </effect>
+                </Transition>
+                <Transition XMI.id = "S.101002">
+                  <name></name>
+                  <visibility XMI.value = "public"/>
+                  <sourceState> <XMI.reference target="S.101000"/> </sourceState>
+                  <targetState> <XMI.reference target="S.100995"/> </targetState>
+                  <trigger>
+                    <SignalEvent XMI.id = "S.101010">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <signal> <XMI.reference /> </signal>
+                    </SignalEvent>
+                  </trigger>
+                  <guard>
+                    <Guard XMI.id = "S.101011">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <expression>invalid</expression>
+                    </Guard>
+                  </guard>
+                  <effect>
+                    <ActionSequence XMI.id = "S.101013">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                    </ActionSequence>
+                  </effect>
+                </Transition>
+                <Transition XMI.id = "S.101230">
+                  <name></name>
+                  <visibility XMI.value = "public"/>
+                  <sourceState> <XMI.reference target="S.101000"/> </sourceState>
+                  <targetState> <XMI.reference target="S.101227"/> </targetState>
+                  <trigger>
+                    <SignalEvent XMI.id = "S.101257">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <signal> <XMI.reference /> </signal>
+                    </SignalEvent>
+                  </trigger>
+                  <guard>
+                    <Guard XMI.id = "S.101258">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <expression>valid</expression>
+                    </Guard>
+                  </guard>
+                  <effect>
+                    <ActionSequence XMI.id = "S.101260">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                    </ActionSequence>
+                  </effect>
+                </Transition>
+                <Transition XMI.id = "S.101233">
+                  <name></name>
+                  <visibility XMI.value = "public"/>
+                  <sourceState> <XMI.reference target="S.101227"/> </sourceState>
+                  <targetState> <XMI.reference target="S.101228"/> </targetState>
+                  <trigger>
+                  </trigger>
+                  <effect>
+                  </effect>
+                </Transition>
+                <Transition XMI.id = "S.101234">
+                  <name></name>
+                  <visibility XMI.value = "public"/>
+                  <sourceState> <XMI.reference target="S.101228"/> </sourceState>
+                  <targetState> <XMI.reference target="S.101229"/> </targetState>
+                  <trigger>
+                  </trigger>
+                  <effect>
+                  </effect>
+                </Transition>
+                <Transition XMI.id = "S.101235">
+                  <name></name>
+                  <visibility XMI.value = "public"/>
+                  <sourceState> <XMI.reference target="S.101229"/> </sourceState>
+                  <targetState> <XMI.reference target="S.101227"/> </targetState>
+                  <trigger>
+                    <SignalEvent XMI.id = "S.101252">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <signal> <XMI.reference /> </signal>
+                    </SignalEvent>
+                  </trigger>
+                  <guard>
+                    <Guard XMI.id = "S.101253">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <expression>invalid</expression>
+                    </Guard>
+                  </guard>
+                  <effect>
+                    <ActionSequence XMI.id = "S.101255">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                    </ActionSequence>
+                  </effect>
+                </Transition>
+                <Transition XMI.id = "S.101236">
+                  <name></name>
+                  <visibility XMI.value = "public"/>
+                  <sourceState> <XMI.reference target="S.101229"/> </sourceState>
+                  <targetState> <XMI.reference target="S.100994"/> </targetState>
+                  <trigger>
+                    <SignalEvent XMI.id = "S.101243">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <signal> <XMI.reference /> </signal>
+                    </SignalEvent>
+                  </trigger>
+                  <guard>
+                    <Guard XMI.id = "S.101247">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                      <expression>valid</expression>
+                    </Guard>
+                  </guard>
+                  <effect>
+                    <ActionSequence XMI.id = "S.101246">
+                      <name></name>
+                      <visibility XMI.value = "public"/>
+                    </ActionSequence>
+                  </effect>
+                </Transition>
               </transitions>
             </ActivityModel>
           </behavior>
@@ -1754,6 +1926,13 @@
       <isRoot XMI.value="false"/>
       <isActive XMI.value = "false"/>
     </Class>
+    <DataType XMI.id = "S.100006">
+      <name>int</name>
+      <visibility XMI.value = "public"/>
+      <isAbstract XMI.value="false"/>
+      <isLeaf XMI.value="false"/>
+      <isRoot XMI.value="false"/>
+    </DataType>
     <Class XMI.id = "S.100003">
       <name>String</name>
       <visibility XMI.value = "public"/>
@@ -1762,13 +1941,6 @@
       <isRoot XMI.value="false"/>
       <isActive XMI.value = "false"/>
     </Class>
-    <DataType XMI.id = "S.100006">
-      <name>int</name>
-      <visibility XMI.value = "public"/>
-      <isAbstract XMI.value="false"/>
-      <isLeaf XMI.value="false"/>
-      <isRoot XMI.value="false"/>
-    </DataType>
     <Class XMI.id = "S.100014">
       <name>Boolean</name>
       <visibility XMI.value = "public"/>

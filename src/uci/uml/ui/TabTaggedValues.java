@@ -62,12 +62,16 @@ implements TabModelTarget {
     super("TaggedValues");
 
     _table.setModel(_tableModel);
-    TableColumn keyCol = _table.getColumnModel().getColumn(0);
-    TableColumn valCol = _table.getColumnModel().getColumn(1);
-    keyCol.setMinWidth(50);
-    keyCol.setWidth(150);
-    valCol.setMinWidth(250);
-    valCol.setWidth(550);
+    //TableColumn keyCol = _table.getColumnModel().getColumn(0);
+    //TableColumn valCol = _table.getColumnModel().getColumn(1);
+    //keyCol.setMinWidth(50);
+    //keyCol.setWidth(150);
+    //keyCol.setPreferredWidth(150);
+    //valCol.setMinWidth(250);
+    //valCol.setWidth(550);
+    //valCol.setPreferredWidth(550);
+    _table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    _table.sizeColumnsToFit(0);
 
     _table.setRowSelectionAllowed(false);
     // _table.getSelectionModel().addListSelectionListener(this);
@@ -90,6 +94,17 @@ implements TabModelTarget {
     }
     _target = t;
     _shouldBeEnabled = true;
+
+    //TableColumn keyCol = _table.getColumnModel().getColumn(0);
+    //TableColumn valCol = _table.getColumnModel().getColumn(1);
+    //keyCol.setMinWidth(50);
+    //keyCol.setWidth(150);
+    //keyCol.setPreferredWidth(150);
+    //valCol.setMinWidth(250);
+    //valCol.setWidth(550);
+    //valCol.setPreferredWidth(550);
+    _table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+    _table.sizeColumnsToFit(0);
 
     ModelElement me = (ModelElement) _target;
     Vector tvs = me.getTaggedValue();

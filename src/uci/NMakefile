@@ -4,17 +4,17 @@ REL_DIR=uci
 
 all: classes archive
 
-classes: gefDir umlDir argoumlDir criticsDir swingDir
+classes: gefDir umlDir argoumlDir criticsDir 
 
 
-archive:: objdir gefDir umlDir argoumlDir criticsDir swingDir
-!IF ! EXIST( $(OUT_DIR)\dtd )
-	- mkdir $(OUT_DIR)\dtd
+archive:: objdir gefDir umlDir argoumlDir criticsDir 
+!IF ! EXIST( $(OUT_DIR)\xml\dtd )
+	- mkdir $(OUT_DIR)\xml\dtd
 !ENDIF
-	$(CD) dtd
+	$(CD) xml\dtd
 	for %f in (*.*) do \
-	copy %f $(OUT_DIR)\dtd
-	$(CD) ..
+	copy %f $(OUT_DIR)\xml\dtd
+	$(CD) ..\..
 !IF ! EXIST( $(OUT_DIR)\Images )
 	- mkdir $(OUT_DIR)\Images
 !ENDIF
@@ -25,7 +25,7 @@ archive:: objdir gefDir umlDir argoumlDir criticsDir swingDir
 	copy COPYRIGHT $(OUT_DIR)
 
 
-clean: gefDir umlDir argoumlDir criticsDir swingDir
+clean: gefDir umlDir argoumlDir criticsDir 
 
 processDir:
 	@echo.
@@ -42,7 +42,9 @@ GEF_DIRS= util           \
 	graph            \
 	beans\editors    \
 	ui               \
-	gef\demo
+	gef\demo	 \
+	xml		 \
+	xml\pgml
 
 UML_DIRS= uml\Foundation\Core                   \
 	uml\Foundation\Data_Types               \
@@ -58,7 +60,6 @@ UML_DIRS= uml\Foundation\Core                   \
 
 ARGOUML_DIRS= argo\kernel        \
 	argo\checklist           \
-	uml                      \
 	uml\ui                   \
 	uml\ui\nav               \
 	uml\ui\todo              \
@@ -67,7 +68,10 @@ ARGOUML_DIRS= argo\kernel        \
 	uml\ui\style             \
 	uml\visual               \
 	uml\ocl                  \
-	uml\xmi
+	xml\xmi                  \
+	xml\argo                 \
+	uml                      
+
 
 CRITICS_DIRS= uml\checklist       \
 	uml\critics               \
@@ -75,11 +79,6 @@ CRITICS_DIRS= uml\checklist       \
 	uml\critics\java          \
 	uml\critics\presentation  \
 	uml\checklist
-
-SWING_DIR="..\com\sun\java"
-SWING_DIRS=$(SWING_DIR)\swing         \
-	$(SWING_DIR)\swing\text       \
-	$(SWING_DIR)\swing\plaf\metal 
 
 
 gefDir:
@@ -135,18 +134,6 @@ criticsDir:
 	@echo UML\CRITICS directory does not exists.
 !ENDIF
 
-swingDir:
-!IF EXIST($(SWING_DIR))
-	@echo. 
-	@echo.
-	@echo PROCESSING SWING MODIFICATIONS ====
-	@for %d in ($(SWING_DIRS)) do \
-	@$(MAKE) /$(MAKEFLAGS) TARGET=$(TARGET) DIR=%d processDir
-!ELSE
-	@echo.
-	@echo.
-	@echo SWING MODS directory does not exists.
-!ENDIF
 
 
 
