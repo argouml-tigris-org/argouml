@@ -34,9 +34,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 
-
-import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
-
 /** A critic to detect when a state has no outgoing transitions. */
 
 public class CrNoTransitions extends CrUML {
@@ -61,7 +58,7 @@ public class CrNoTransitions extends CrUML {
 	boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
 	boolean needsIncoming = incoming == null || incoming.size() == 0;
 	if (ModelFacade.isAPseudostate(sv)) {
-	    if (ModelFacade.getKind(sv).equals(MPseudostateKind.INITIAL)) {
+	    if (ModelFacade.getKind(sv).equals(ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
                 needsIncoming = false;
             }
 	}

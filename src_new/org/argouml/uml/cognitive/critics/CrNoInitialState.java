@@ -34,13 +34,9 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
 
-
-import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
-
 /** A critic to detect whether the Compositestate attached to a 
  *  Statemachine has no initial state. 
  */
-
 public class CrNoInitialState extends CrUML {
 
     public CrNoInitialState() {
@@ -63,7 +59,8 @@ public class CrNoInitialState extends CrUML {
 	for (Iterator iter = peers.iterator(); iter.hasNext();) {
 	    Object sv = iter.next();
 	    if (ModelFacade.isAPseudostate(sv) 
-		&& (MPseudostateKind.INITIAL.equals(ModelFacade.getKind(sv))))
+		&& (ModelFacade.getKind(sv).equals(
+                        ModelFacade.INITIAL_PSEUDOSTATEKIND)))
 		initialStateCount++;
 	}
 	if (initialStateCount == 0) return PROBLEM_FOUND;

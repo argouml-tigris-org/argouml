@@ -72,9 +72,7 @@ public class Tools {
         try {
 
             // class preloading, so packages are there...
-            Class cls = Class.forName("ru.novosoft.uml.MBase");
-            cls = Class.forName("org.tigris.gef.base.Editor");
-            cls = Class.forName("ru.novosoft.uml.MBase");
+            Class cls = Class.forName("org.tigris.gef.base.Editor");
             cls = Class.forName("org.xml.sax.AttributeList");
             cls = Class.forName("org.apache.log4j.Logger");
 
