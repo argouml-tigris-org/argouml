@@ -65,7 +65,7 @@ public class Tools {
             in = pkg.getImplementationVersion();
             if (in != null) {
                 sb.append(", ").append(Translator.localize("label","label.version"))
-                  .append(": ");
+                  .append(" ");
                 sb.append(in);
                 sb.append('\n');
             }
