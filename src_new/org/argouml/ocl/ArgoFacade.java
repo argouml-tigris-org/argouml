@@ -23,7 +23,7 @@ public class ArgoFacade implements ModelFacade {
 
     public Any getClassifier(String name) {
       Project p = ProjectBrowser.TheInstance.getProject();
-      if (target != null && target.getName() == name ) {
+      if (target != null && target.getName().equals(name) ) {
 	  return new ArgoAny(target);
       }
       // else we have a problem: this is not clean!
