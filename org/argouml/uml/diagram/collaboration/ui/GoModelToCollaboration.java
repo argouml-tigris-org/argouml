@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -30,13 +29,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * @since Oct 1, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -50,15 +48,15 @@ public class GoModelToCollaboration extends AbstractGoRule {
      */
     public Collection getChildren(Object parent) {
 	if (org.argouml.model.ModelFacade.isAModel(parent)) {
-            MModel model = (MModel) parent;
+            Object model = /*(MModel)*/ parent;
             Collection col = ModelManagementHelper.getHelper()
 		.getAllModelElementsOfKind(model, MCollaboration.class);
             List returnList = new ArrayList();
             Iterator it = col.iterator();
             while (it.hasNext()) {
-                MCollaboration collab = (MCollaboration) it.next();
-                if (collab.getRepresentedClassifier() == null && 
-                    collab.getRepresentedOperation() == null) {
+                Object collab = /*(MCollaboration)*/ it.next();
+                if (ModelFacade.getRepresentedClassifier(collab) == null && 
+                    ModelFacade.getRepresentedOperation(collab) == null) {
                         
                     returnList.add(collab);
                 }

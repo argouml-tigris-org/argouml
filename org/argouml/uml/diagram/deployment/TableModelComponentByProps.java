@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -33,6 +32,7 @@ package org.argouml.uml.diagram.deployment;
 
 import java.util.*;
 import java.beans.*;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.core.*;
 
@@ -75,12 +75,12 @@ public class TableModelComponentByProps extends TableModelComposite {
 	    return res;
 	}
 	else {
-	    MNode n = (MNode) t;
+	    Object n = /*(MNode)*/ t;
 	    Vector res = new Vector();
-	    Collection residences = n.getResidents();
+	    Collection residences = ModelFacade.getResidents(n);
 	    Iterator it = residences.iterator();
 	    while (it.hasNext()) {
-		MClassifier cls = (MClassifier) it.next();
+		Object cls = /*(MClassifier)*/ it.next();
 		if (org.argouml.model.ModelFacade.isAComponent(cls)) res.addElement(cls);
 	    }
 	    return res;

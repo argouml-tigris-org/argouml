@@ -265,8 +265,12 @@ public class ModelFacade {
     public static final Object PROTECTED_VISIBILITYKIND =
         MVisibilityKind.PROTECTED;
     
+    public static final Object AGGREGATE_AGGREGATIONKIND =
+        MAggregationKind.COMPOSITE;
     public static final Object COMPOSITE_AGGREGATIONKIND =
         MAggregationKind.COMPOSITE;
+    public static final Object NONE_AGGREGATIONKIND =
+        MAggregationKind.NONE;
 
     /** Singleton instance */        
 	private static ModelFacade singleton = new ModelFacade();
@@ -1173,6 +1177,14 @@ public class ModelFacade {
 	return false;
     }
 
+    public static boolean isFrozen(Object handle) {
+        if (handle instanceof MChangeableKind) {
+            MChangeableKind ck = (MChangeableKind)handle;
+            return MChangeableKind.FROZEN.equals(ck);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /**
      * Returns true if a given associationend is a composite.
      * @param handle
@@ -1190,6 +1202,23 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /**
+     * Returns true if a given associationend is a composite.
+     * @param handle
+     * @return boolean
+     */
+    public static boolean isAggregate(Object handle) {
+        if (isAAssociationEnd(handle)) {
+            boolean composite = false;
+            MAssociationEnd end = (MAssociationEnd) handle;
+            if (end.getAggregation() != null
+                && end.getAggregation().equals(MAggregationKind.AGGREGATE))
+                composite = true;
+            return composite;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /** Recognizer for attributes that are initialized.
      *
      * @param handle candidate
@@ -1633,9 +1662,14 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    public static Object getChangeability(Object handle) {
+        if (handle instanceof MStructuralFeature) {
+            return ((MStructuralFeature) handle).getChangeability();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /** Get the child of a generalization.
-     *
-     * TODO: Check that the concepts parent and child exist in the UML model.
      *
      * @param handle generalization.
      * @return the child.
@@ -1644,6 +1678,8 @@ public class ModelFacade {
         if (handle instanceof MGeneralization) {
             return ((MGeneralization) handle).getChild();
         }
+
+        // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
@@ -1822,6 +1858,13 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    public static Collection getElementImports2(Object handle) {
+        if (handle instanceof MModelElement) {
+            return ((MModelElement) handle).getElementImports2();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /**
      * Returns the entry action to a state
      * @param handle
@@ -1846,6 +1889,12 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    public static Object getExpression(Object handle) {
+        if (handle instanceof MGuard)
+            return ((MGuard)handle).getExpression();
+        return null;
+    }
+    
     /**
      * Returns all extends of a use case or extension point
      * @param handle
@@ -2628,6 +2677,13 @@ public class ModelFacade {
         return (parameter.getKind().equals(MParameterDirectionKind.RETURN));
     }
 
+    public static Object getPackage(Object handle) {
+        if (handle instanceof MElementImport) {
+            return ((MElementImport) handle).getPackage();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /** Get a parameter of a behavioral feature.
      *
      * @param handle behavioral feature to retrieve from
@@ -2783,6 +2839,13 @@ public class ModelFacade {
     public static Object getResident(Object handle) {
         if (handle instanceof MElementResidence) {
             return ((MElementResidence) handle).getResident();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    public static Collection getResidentElements(Object handle) {
+        if (handle instanceof MComponent) {
+            return ((MComponent) handle).getResidentElements();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -3845,6 +3908,13 @@ public class ModelFacade {
                                            + handle);
     }
 
+    public static void setImplementationLocation(Object handle, Object component) {
+        if (handle instanceof MElementResidence
+                && (component == null || component instanceof MComponent)) {
+            ((MElementResidence)handle).setImplementationLocation((MComponent) component);
+        }
+    }
+
     /**
      * Sets an initial value of some attribute.
      * @param attribute
@@ -4208,6 +4278,12 @@ public class ModelFacade {
             }
         }
     }
+    
+    public static void setComponentInstance(Object o, Object c) {
+        if (o instanceof MInstance && c instanceof MComponentInstance) {
+            ((MInstance)o).setComponentInstance((MComponentInstance)c);
+        }
+    }
 
     /**
      * Set the concurrency of some operation.
@@ -4547,6 +4623,16 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + target
 					   + " or " + operation);
+    }
+
+    public static void setResident(Object handle, Object resident) {
+        if (handle instanceof MElementResidence
+                && (resident == null || resident instanceof MModelElement)) {
+            ((MElementResidence)handle).setResident((MModelElement) resident);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + resident);
     }
 
     /**
