@@ -59,7 +59,6 @@ import org.tigris.gef.presentation.Fig;
  */
 public class UMLCollaborationDiagram extends UMLDiagram {
 
-    private Object collaboration;
     /**
      * Logging.
      */
@@ -98,40 +97,13 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     /**
      * The constructor.
      * 
-     * @param namespace the namespace for the diagram
+     * @param collaboration the collaboration aka namespace for the diagram
      */
-    public UMLCollaborationDiagram(Object namespace) {
+    public UMLCollaborationDiagram(Object collaboration) {
         this();
-        if (Model.getFacade().isACollaboration(namespace)) {
-            collaboration = namespace;
-        }
-        setNamespace(namespace);
+        setNamespace(collaboration);
     }
 
-    /**
-     * The constructor.
-     *
-     * @param namespace the namespace for the diagram
-     * @param collab the collaboration of this diagram
-     */
-    public UMLCollaborationDiagram(Object namespace, Object collab) {
-        this();
-        collaboration = collab;
-        setNamespace(namespace);
-    }
-
-    /**
-     * The owner of a collaboration diagram is the collaboration
-     * it's showing.
-     * 
-     * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
-     */
-    public Object getOwner() {
-        CollabDiagramGraphModel gm = (CollabDiagramGraphModel) getGraphModel();
-        return gm.getCollaboration();
-        // TODO: MVW: Why not simply:   return collaboration;
-    }
-    
     /**
      * @return the number of UML messages in the diagram
      */
@@ -162,7 +134,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * in <I>LayerManager</I>(GEF) to control the adding, changing and
      * deleting layers on the diagram...
      *
-     * @param handle  MNamespace from the model in NSUML...
+     * @param handle the collaboration from the UML model
      * @author psager@tigris.org Jan. 24, 2002
      */
     public void setNamespace(Object handle) {
@@ -174,28 +146,14 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         }
         super.setNamespace(handle);
         CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
-        gm.setCollaboration(collaboration);
+        gm.setCollaboration(handle);
         LayerPerspective lay =
             new LayerPerspectiveMutable(Model.getFacade().getName(handle), gm);
         CollabDiagramRenderer rend = new CollabDiagramRenderer(); // singleton
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
-
     }
-
-    /**
-     * Called by the PGML parser to initialize the 
-     * diagram. First the parser creates a diagram via the
-     * default constructor. Then this method is called.
-     *
-     * @see org.tigris.gef.base.Diagram#initialize(Object)
-     */
-    public void initialize(Object owner) {
-        collaboration = owner;
-        super.initialize(owner);
-    }
-
     
     /**
      * Get the actions from which to create a toolbar or equivalent
@@ -239,7 +197,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         Collection messages;
         Iterator msgIterator;
         Collection ownedElements = 
-            Model.getFacade().getOwnedElements(collaboration);
+            Model.getFacade().getOwnedElements(getNamespace());
         Iterator oeIterator = ownedElements.iterator();
         Layer lay = getLayer();
         while (oeIterator.hasNext()) {
