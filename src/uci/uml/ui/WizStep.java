@@ -1,0 +1,101 @@
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
+package uci.uml.ui;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+import com.sun.java.swing.*;
+import com.sun.java.swing.event.*;
+import com.sun.java.swing.tree.*;
+
+import uci.ui.ToolBar;
+import uci.util.*;
+import uci.argo.kernel.*;
+
+
+public class WizStep extends JPanel implements ActionListener {
+
+  ////////////////////////////////////////////////////////////////
+  // instance variables
+
+  JPanel  _mainPanel = new JPanel();
+  JButton _backButton = new JButton("< Back");
+  JButton _nextButton = new JButton("Next >");
+  JButton _finishButton = new JButton("Finish");
+  JButton _helpButton = new JButton("Help");
+  JPanel  _buttonPanel = new JPanel();
+
+  ////////////////////////////////////////////////////////////////
+  // constructor
+
+  public WizStep() {
+    _backButton.setMnemonic('B');
+    _nextButton.setMnemonic('N');
+    _finishButton.setMnemonic('F');
+    _helpButton.setMnemonic('H');
+    _buttonPanel.setLayout(new GridLayout(1, 5));
+    _buttonPanel.add(_backButton);
+    _buttonPanel.add(_nextButton);
+    _buttonPanel.add(_finishButton);
+    _buttonPanel.add(new SpacerPanel());
+    _buttonPanel.add(_helpButton);
+
+    JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    southPanel.add(_buttonPanel);
+
+    setLayout(new BorderLayout());
+    add(_mainPanel, BorderLayout.CENTER);
+    add(southPanel, BorderLayout.SOUTH);
+
+    _backButton.addActionListener(this);
+    _nextButton.addActionListener(this);
+    _finishButton.addActionListener(this);
+    _helpButton.addActionListener(this);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // actions
+
+  public void doBack() { }
+  public void doNext() { }
+  public void doFinsh() { }
+  public void doHelp() { }
+
+  ////////////////////////////////////////////////////////////////
+  // event handlers
+
+  public void actionPreformed(ActionEvent ae) {
+    Object src = ae.getSource();
+    if (src == _backButton) doBack();
+    else if (src == _nextButton) doNext();
+    else if (src == _finishButton) doFinsh();
+    else if (src == _helpButton) doHelp();
+  }
+  
+} /* end class WizDescription */

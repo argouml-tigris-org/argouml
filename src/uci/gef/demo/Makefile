@@ -43,8 +43,7 @@ CLASSES = \
 	SampleNode2.class \
 	SamplePalette.class \
 	SamplePort.class \
-	SamplePort2.class \
-	ScrollingApplet.class
+	SamplePort2.class 
 
 all: $(GEN) $(CLASSES)
 
