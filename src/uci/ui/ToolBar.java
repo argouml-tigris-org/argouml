@@ -71,7 +71,9 @@ public class ToolBar extends JToolBar implements MouseListener {
       _lockable.addElement(b);
     PropertyChangeListener actionPropertyChangeListener =
       createActionChangeListener(b);
-    a.addPropertyChangeListener(actionPropertyChangeListener);
+	if ( actionPropertyChangeListener != null ) {
+		a.addPropertyChangeListener(actionPropertyChangeListener);
+	}
     b.addMouseListener(this);
     // needs-more-work: should buttons appear stuck down while action executes?
     return b;
