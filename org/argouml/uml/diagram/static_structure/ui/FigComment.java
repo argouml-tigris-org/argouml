@@ -64,8 +64,6 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.MElementEvent;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /** 
  * Class to display a UML note in a diagram 
  * Since we don't need stereotypes for the note and an
@@ -184,8 +182,13 @@ public class FigComment
      *
      * @param element The annotated model element.
      */
-    public FigComment(MModelElement element) {
+    public FigComment(Object element) {
         this(); // Construct the figure.
+        
+        if(!ModelFacade.isAModelElement(element)){
+            throw new IllegalArgumentException();
+        }
+        
 	// Create a new Comment node.
         Object comment =
 	    UmlFactory.getFactory().getCore().createComment();
@@ -211,7 +214,7 @@ public class FigComment
             }
         } else {
 	    // Add the comment to the same namespace as the annotated element.
-            ModelFacade.setNamespace(comment, element.getNamespace());
+            ModelFacade.setNamespace(comment, ModelFacade.getNamespace(element));
         }
 
         storeNote(placeString()); // Set the default text for this figure type.

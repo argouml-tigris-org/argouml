@@ -25,7 +25,6 @@
 // File: SelectionUseCase.java
 // Classes: SelectionUseCase
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.diagram.use_case.ui;
 
@@ -38,6 +37,7 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
 import org.tigris.gef.base.Editor;
@@ -49,6 +49,7 @@ import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
+
 import ru.novosoft.uml.behavior.use_cases.MActorImpl;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseImpl;
 import ru.novosoft.uml.foundation.core.MAssociation;
@@ -151,31 +152,31 @@ public class SelectionUseCase extends SelectionWButtons {
         Class edgeClass = null;
         Class nodeClass = null;
         if (hand.index == 10 || hand.index == 11)
-            nodeClass = MUseCaseImpl.class;
+            nodeClass = (Class)ModelFacade.USE_CASE;
         else
-            nodeClass = MActorImpl.class;
+            nodeClass = (Class)ModelFacade.ACTOR;
 
         int bx = mX, by = mY;
         boolean reverse = false;
         switch (hand.index) {
 	case 10 : //add superclass
-	    edgeClass = MGeneralization.class;
+	    edgeClass = (Class)ModelFacade.GENERALIZATION;
 	    by = cy;
 	    bx = cx + cw / 2;
 	    break;
 	case 11 : //add subclass
-	    edgeClass = MGeneralization.class;
+	    edgeClass = (Class)ModelFacade.GENERALIZATION;
 	    reverse = true;
 	    by = cy + ch;
 	    bx = cx + cw / 2;
 	    break;
 	case 12 : //add assoc
-	    edgeClass = MAssociation.class;
+	    edgeClass = (Class)ModelFacade.ASSOCIATION;
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13 : // add assoc
-	    edgeClass = MAssociation.class;
+	    edgeClass = (Class)ModelFacade.ASSOCIATION;
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -203,7 +204,7 @@ public class SelectionUseCase extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeAbove(MutableGraphModel gm, Object newNode) {
-        return gm.connect(_content.getOwner(), newNode, MGeneralization.class);
+        return gm.connect(_content.getOwner(), newNode, (Class)ModelFacade.GENERALIZATION);
     }
 
     /**
@@ -212,7 +213,7 @@ public class SelectionUseCase extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(), MAssociation.class);
+        return gm.connect(newNode, _content.getOwner(), (Class)ModelFacade.ASSOCIATION);
     }
 
     /**
@@ -221,7 +222,7 @@ public class SelectionUseCase extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-        return gm.connect(_content.getOwner(), newNode, MAssociation.class);
+        return gm.connect(_content.getOwner(), newNode, (Class)ModelFacade.ASSOCIATION);
     }
 
     /**
@@ -230,7 +231,7 @@ public class SelectionUseCase extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(), MGeneralization.class);
+        return gm.connect(newNode, _content.getOwner(), (Class)ModelFacade.GENERALIZATION);
     }
 
     /**

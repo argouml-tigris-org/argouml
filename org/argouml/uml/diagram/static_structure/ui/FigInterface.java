@@ -66,9 +66,6 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-
 
 /** Class to display graphics for a UML Interface in a diagram. */
 
@@ -277,8 +274,8 @@ public class FigInterface extends FigNodeModelElement {
 				   "visibility", "getVisibility",
 				   "setVisibility",
 				   mclass,
-				   ModelFacade.VISIBILITYKIND,
-				   MVisibilityKind.PUBLIC,
+				   (Class)ModelFacade.VISIBILITYKIND,
+				   ModelFacade.PUBLIC_VISIBILITYKIND,
 				   null));
         modifierMenu.addCheckItem(
 		new ActionModifier("Abstract",
@@ -810,8 +807,8 @@ public class FigInterface extends FigNodeModelElement {
                     oper.setText(Notation.generate(this, bf));
                     oper.setOwner(bf);
                     // underline, if static
-                    oper.setUnderline(
-			    MScopeKind.CLASSIFIER.equals(ModelFacade.getOwnerScope(bf)));
+                    oper.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
+                                      .equals(ModelFacade.getOwnerScope(bf)));
                     // italics, if abstract
                     //oper.setItalic(((MOperation)bf).isAbstract());
                     //// does not properly work (GEF bug?)

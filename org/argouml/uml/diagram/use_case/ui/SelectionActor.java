@@ -38,6 +38,7 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
 import org.tigris.gef.base.Editor;
@@ -49,8 +50,6 @@ import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
-import ru.novosoft.uml.behavior.use_cases.MUseCaseImpl;
-import ru.novosoft.uml.foundation.core.MAssociation;
 
 public class SelectionActor extends SelectionWButtons {
     protected static Logger cat = 
@@ -122,17 +121,17 @@ public class SelectionActor extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = MUseCaseImpl.class;
+	Class nodeClass = (Class)ModelFacade.USE_CASE;
 	int bx = mX, by = mY;
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12: //add assoc
-	    edgeClass = MAssociation.class;
+	    edgeClass = (Class)ModelFacade.ASSOCIATION;
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13: // add assoc
-	    edgeClass = MAssociation.class;
+	    edgeClass = (Class)ModelFacade.ASSOCIATION;
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -168,7 +167,7 @@ public class SelectionActor extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(), MAssociation.class);
+        return gm.connect(newNode, _content.getOwner(), (Class)ModelFacade.ASSOCIATION);
     }
 
     /**
@@ -177,7 +176,7 @@ public class SelectionActor extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-        return gm.connect(_content.getOwner(), newNode , MAssociation.class);
+        return gm.connect(_content.getOwner(), newNode , (Class)ModelFacade.ASSOCIATION);
     }
 
 } /* end class SelectionActor */

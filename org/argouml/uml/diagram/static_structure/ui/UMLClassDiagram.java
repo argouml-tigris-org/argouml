@@ -46,19 +46,6 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MPermission;
-import ru.novosoft.uml.foundation.core.MUsage;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
-import ru.novosoft.uml.model_management.MSubsystem;
-
 public class UMLClassDiagram extends UMLDiagram {
 
     ////////////////
@@ -66,53 +53,65 @@ public class UMLClassDiagram extends UMLDiagram {
     // TODO: should these be static?
 
     protected static Action _actionClass = new RadioAction(
-	new CmdCreateNode(MClass.class, "Class"));
+	new CmdCreateNode((Class)ModelFacade.CLASS, "Class"));
 
     protected static Action _actionObject = new RadioAction(
-	new CmdCreateNode(MInstance.class, "Instance"));
+	new CmdCreateNode((Class)ModelFacade.INSTANCE, "Instance"));
 
     protected static Action _actionInterface = new RadioAction(
-	new CmdCreateNode(MInterface.class, "Interface"));
+	new CmdCreateNode((Class)ModelFacade.INTERFACE, "Interface"));
 
     protected static Action _actionDepend = new RadioAction(
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MDependency.class, "Dependency"));
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
+                    (Class)ModelFacade.DEPENDENCY, "Dependency"));
 
     protected static Action _actionPermission = new RadioAction(
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MPermission.class, "Permission"));
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", 
+                    (Class)ModelFacade.PERMISSION, "Permission"));
 
     protected static Action _actionUsage = new RadioAction(
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MUsage.class, "Usage"));
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
+                    (Class)ModelFacade.USAGE, "Usage"));
 
     protected static Action _actionLink = new RadioAction(
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MLink.class, "Link"));
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
+                    (Class)ModelFacade.LINK, "Link"));
 
     protected static Action _actionGeneralize = new RadioAction(
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization"));
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
+                    (Class)ModelFacade.GENERALIZATION, "Generalization"));
 
     protected static Action _actionRealize = new RadioAction(
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", ModelFacade.ABSTRACTION, "Realization"));
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
+                    (Class)ModelFacade.ABSTRACTION, "Realization"));
 
     protected static Action _actionPackage = new RadioAction(
-	new CmdCreateNode(MPackage.class, "Package"));
+	new CmdCreateNode((Class)ModelFacade.PACKAGE, "Package"));
 
     protected static Action _actionModel = new RadioAction(
-	new CmdCreateNode(MModel.class, "Model"));
+	new CmdCreateNode((Class)ModelFacade.MODEL, "Model"));
 
     protected static Action _actionSubsystem = new RadioAction(
-	new CmdCreateNode(MSubsystem.class, "Subsystem"));
+	new CmdCreateNode((Class)ModelFacade.SUBSYSTEM, "Subsystem"));
 
     protected static Action _actionAssociation = new RadioAction(
-	new ActionAddAssociation(MAggregationKind.NONE, false, "Association"));
+	new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND,
+                    false, "Association"));
     protected static Action _actionAggregation = new RadioAction(
-	new ActionAddAssociation(MAggregationKind.AGGREGATE, false, "Aggregation"));
+	new ActionAddAssociation(ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                    false, "Aggregation"));
     protected static Action _actionComposition = new RadioAction(
-	new ActionAddAssociation(MAggregationKind.COMPOSITE, false, "Composition"));
+	new ActionAddAssociation(ModelFacade.COMPOSITE_AGGREGATIONKIND, 
+                    false, "Composition"));
     protected static Action _actionUniAssociation = new RadioAction(
-	new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation"));
+	new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND, 
+                    true, "UniAssociation"));
     protected static Action _actionUniAggregation = new RadioAction(
-	new ActionAddAssociation(MAggregationKind.AGGREGATE, true, "UniAggregation"));
+	new ActionAddAssociation(ModelFacade.AGGREGATE_AGGREGATIONKIND, 
+                    true, "UniAggregation"));
     protected static Action _actionUniComposition = new RadioAction(
-	new ActionAddAssociation(MAggregationKind.COMPOSITE, true, "UniComposition"));
+	new ActionAddAssociation(ModelFacade.COMPOSITE_AGGREGATIONKIND, 
+                    true, "UniComposition"));
 
     ////////////////////////////////////////////////////////////////
     // contructors

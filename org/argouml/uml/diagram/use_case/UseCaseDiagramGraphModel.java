@@ -22,17 +22,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 // File: UseCaseDiagramGraphModel.java
 // Classes: UseCaseDiagramGraphModel
-// Original Author: your email address here
-// $Id$
-
-// 3 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
-// the Extend and Include relationships. JavaDoc added for clarity. Adding edge
-// now correctly places dependency in the namespace of the
-// model. Vetoablechange picks up all edges removed (ignored dependencies).
-
 
 package org.argouml.uml.diagram.use_case;
 
@@ -46,14 +37,13 @@ import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import ru.novosoft.uml.foundation.core.MNamespace;
+
 /**
  * <p>This class defines a bridge between the UML meta-model representation of
  *   the design and the GraphModel interface used by GEF.</p>
  *
  * <p>This class handles only UML Use Case Diagrams.</p>
  */
-
 public class UseCaseDiagramGraphModel
     extends UMLMutableGraphSupport
     implements VetoableChangeListener
@@ -105,8 +95,11 @@ public class UseCaseDiagramGraphModel
      * @param m  The namespace to use for this graph model
      */
 
-    public void setNamespace(MNamespace m) {
-        _model = m;
+    public void setNamespace(Object namespace) {
+        
+        if(!ModelFacade.isANamespace(namespace))
+            throw new IllegalArgumentException();
+	_model = namespace;
     }
 
 

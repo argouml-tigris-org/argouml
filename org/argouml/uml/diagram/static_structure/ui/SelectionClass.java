@@ -25,7 +25,6 @@
 // File: SelectionClass.java
 // Classes: SelectionClass
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.diagram.static_structure.ui;
 
@@ -37,11 +36,14 @@ import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
+
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
+
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.ModeManager;
@@ -52,8 +54,6 @@ import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MGeneralization;
 
 public class SelectionClass extends SelectionWButtons {
     protected static Logger cat = 
@@ -186,28 +186,28 @@ public class SelectionClass extends SelectionWButtons {
         Dimension minSize = _content.getMinimumSize();
         int minWidth = minSize.width, minHeight = minSize.height;
         Class edgeClass = null;
-        Class nodeClass = ru.novosoft.uml.foundation.core.MClassImpl.class;
+        Class nodeClass = (Class)ModelFacade.CLASS;
         int bx = mX, by = mY;
         boolean reverse = false;
         switch (hand.index) {
         case 10: //add superclass
-            edgeClass = ru.novosoft.uml.foundation.core.MGeneralization.class;
+            edgeClass = (Class)ModelFacade.GENERALIZATION;
             by = cy;
             bx = cx + cw / 2;
             break;
         case 11: //add subclass
-            edgeClass = ru.novosoft.uml.foundation.core.MGeneralization.class;
+            edgeClass = (Class)ModelFacade.GENERALIZATION;
             reverse = true;
             by = cy + ch;
             bx = cx + cw / 2;
             break;
         case 12: //add assoc
-            edgeClass = ru.novosoft.uml.foundation.core.MAssociation.class;
+            edgeClass = (Class)ModelFacade.ASSOCIATION;
             by = cy + ch / 2;
             bx = cx + cw;
             break;
         case 13: // add assoc
-            edgeClass = ru.novosoft.uml.foundation.core.MAssociation.class;
+            edgeClass = (Class)ModelFacade.ASSOCIATION;
             reverse = true;
             by = cy + ch / 2;
             bx = cx;
@@ -255,7 +255,7 @@ public class SelectionClass extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
-        return mgm.connect(_content.getOwner(), newNode, MGeneralization.class);
+        return mgm.connect(_content.getOwner(), newNode, (Class)ModelFacade.GENERALIZATION);
     }
 
     /**
@@ -264,7 +264,7 @@ public class SelectionClass extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel mgm, Object newNode) {
-        return mgm.connect(newNode, _content.getOwner(), MAssociation.class);
+        return mgm.connect(newNode, _content.getOwner(), (Class)ModelFacade.ASSOCIATION);
     }
 
     /**
@@ -273,7 +273,7 @@ public class SelectionClass extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel mgm, Object newNode) {
-        return mgm.connect(_content.getOwner(), newNode, MAssociation.class);
+        return mgm.connect(_content.getOwner(), newNode, (Class)ModelFacade.ASSOCIATION);
     }
 
     /**
@@ -281,7 +281,7 @@ public class SelectionClass extends SelectionWButtons {
      * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeToSelf(org.tigris.gef.graph.MutableGraphModel)
      */
     protected Object createEdgeToSelf(MutableGraphModel mgm) {
-        return mgm.connect(_content.getOwner(), _content.getOwner(), MAssociation.class);
+        return mgm.connect(_content.getOwner(), _content.getOwner(), (Class)ModelFacade.ASSOCIATION);
     }
 
     /**
@@ -290,7 +290,7 @@ public class SelectionClass extends SelectionWButtons {
      * java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel mgm, Object newNode) {
-        return mgm.connect(newNode, _content.getOwner(), MGeneralization.class);
+        return mgm.connect(newNode, _content.getOwner(), (Class)ModelFacade.GENERALIZATION);
     }
 
 } /* end class SelectionClass */

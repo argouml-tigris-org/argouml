@@ -29,22 +29,24 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.util.*;
+import java.util.Collection;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-
-import org.argouml.uml.diagram.ui.*;
 import org.apache.log4j.Logger;
+
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigDependency;
+import org.argouml.uml.diagram.ui.FigGeneralization;
+import org.argouml.uml.diagram.ui.FigPermission;
+import org.argouml.uml.diagram.ui.FigRealization;
+import org.argouml.uml.diagram.ui.FigUsage;
 
-// could be singleton
-
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
 
 /** This class defines a renderer object for UML Class Diagrams. In a
  *  Class Diagram the following UML objects are displayed with the
@@ -52,12 +54,12 @@ import org.argouml.model.ModelFacade;
  * <pre>
  *  UML Object      ---  Fig
  *  ---------------------------------------
- *  MClass         ---  FigClass
- *  MInterface       ---  FigClass (TODO?)
- *  MGeneralization  ---  FigGeneralization
+ *  Class         ---  FigClass
+ *  Interface       ---  FigClass (TODO?)
+ *  Generalization  ---  FigGeneralization
  *  Realization     ---  FigDependency (TODO)
- *  MAssociation     ---  FigAssociation
- *  MDependency      ---  FigDependency
+ *  Association     ---  FigAssociation
+ *  Dependency      ---  FigDependency
  *  </pre>
  */
 
@@ -69,13 +71,13 @@ public class ClassDiagramRenderer
 
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-        if (org.argouml.model.ModelFacade.isAClass(node)) return new FigClass(gm, node);
-        else if (org.argouml.model.ModelFacade.isAInterface(node)) return new FigInterface(gm, node);
-        else if (org.argouml.model.ModelFacade.isAInstance(node)) return new FigInstance(gm, node);
-        else if (org.argouml.model.ModelFacade.isAModel(node)) return new FigModel(gm, node);
-        else if (org.argouml.model.ModelFacade.isASubsystem(node)) return new FigSubsystem(gm, node);
-        else if (org.argouml.model.ModelFacade.isAPackage(node)) return new FigPackage(gm, node);
-        else if (org.argouml.model.ModelFacade.isAModel(node)) return new FigPackage(gm, node);
+        if (ModelFacade.isAClass(node)) return new FigClass(gm, node);
+        else if (ModelFacade.isAInterface(node)) return new FigInterface(gm, node);
+        else if (ModelFacade.isAInstance(node)) return new FigInstance(gm, node);
+        else if (ModelFacade.isAModel(node)) return new FigModel(gm, node);
+        else if (ModelFacade.isASubsystem(node)) return new FigSubsystem(gm, node);
+        else if (ModelFacade.isAPackage(node)) return new FigPackage(gm, node);
+        else if (ModelFacade.isAModel(node)) return new FigPackage(gm, node);
         cat.debug("TODO ClassDiagramRenderer getFigNodeFor " + node);
         return null;
     }
@@ -83,21 +85,20 @@ public class ClassDiagramRenderer
     /** Return a Fig that can be used to represent the given edge */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
         cat.debug("making figedge for " + edge);
-        if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
+        if (ModelFacade.isAAssociation(edge)) {
             Object asc = /*(MAssociation)*/ edge;
             FigAssociation ascFig = new FigAssociation(asc, lay);
             return ascFig;
         }
-        if (org.argouml.model.ModelFacade.isALink(edge)) {
+        if (ModelFacade.isALink(edge)) {
             Object lnk = /*(MLink)*/ edge;
             FigLink lnkFig = new FigLink(lnk);
-            Collection linkEnds = ModelFacade.getConnections(lnk);
-            if (linkEnds == null) cat.debug("null linkRoles....");
-            Object[] leArray = linkEnds.toArray();
-            MLinkEnd fromEnd = (MLinkEnd) leArray[0];
-            Object fromInst = fromEnd.getInstance();
-            MLinkEnd toEnd = (MLinkEnd) leArray[1];
-            Object toInst = toEnd.getInstance();
+            Collection linkEndsColn = ModelFacade.getConnections(lnk);
+            
+            Object[] linkEnds = linkEndsColn.toArray();
+            Object fromInst = ModelFacade.getInstance(linkEnds[0]);
+            Object toInst = ModelFacade.getInstance(linkEnds[1]);
+            
             FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
             FigNode toFN = (FigNode) lay.presentationFor(toInst);
             lnkFig.setSourcePortFig(fromFN);
@@ -107,17 +108,17 @@ public class ClassDiagramRenderer
             lnkFig.getFig().setLayer(lay);
             return lnkFig;
         }
-        if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
+        if (ModelFacade.isAGeneralization(edge)) {
             Object gen = /*(MGeneralization)*/ edge;
             FigGeneralization genFig = new FigGeneralization(gen, lay);
             return genFig;
         }
-        if (org.argouml.model.ModelFacade.isAPermission(edge)) {
+        if (ModelFacade.isAPermission(edge)) {
             Object per = /*(MPermission)*/ edge;
             FigPermission perFig = new FigPermission(per, lay);
             return perFig;
         }
-        if (org.argouml.model.ModelFacade.isAUsage(edge)) {
+        if (ModelFacade.isAUsage(edge)) {
             Object usage = /*(MUsage)*/ edge;
             FigUsage usageFig = new FigUsage(usage, lay);
             return usageFig;
