@@ -52,6 +52,7 @@ import javax.swing.tree.TreePath;
  * 
  * @author original author not known.
  * @author jaap.branderhorst@xs4all.nl extensions
+ * @stereotype singleton
  */
 
 public class ActionRemoveFromModel extends UMLChangeAction {

@@ -23,7 +23,8 @@
 
 package org.argouml.uml.ui;
 
-
+/** @stereotype singleton
+ */
 public class ActionCut extends UMLAction {
 
     ////////////////////////////////////////////////////////////////

@@ -32,6 +32,7 @@ import javax.swing.*;
 
 
 /* class ActionLoadModelFromDB */
+/** @stereotype singleton */
 public class ActionLoadModelFromDB extends UMLAction {
 
     ////////////////////////////////////////////////////////////////

@@ -33,7 +33,8 @@ import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
 import java.beans.*;
 
-
+/** @stereotype singleton
+ */
 public class ActionAddTopLevelPackage extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////

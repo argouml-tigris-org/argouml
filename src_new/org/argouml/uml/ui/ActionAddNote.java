@@ -47,7 +47,9 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 
-
+/** Action to add a note.
+ *  @stereotype singleton
+ */
 public class ActionAddNote extends UMLChangeAction {
     
     protected static final int DISTANCE = 80;

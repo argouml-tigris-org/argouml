@@ -33,7 +33,9 @@ import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
 import java.beans.*;
 
-
+/** Action to create a new use case diagram.
+ *  @stereotype singleton
+ */
 public class ActionUseCaseDiagram extends ActionAddDiagram {
 
     public static ActionUseCaseDiagram SINGLETON = new ActionUseCaseDiagram(); 

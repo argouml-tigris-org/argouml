@@ -42,7 +42,9 @@ import ru.novosoft.uml.model_management.MModel;
 import java.awt.event.*;
 import java.beans.*;
 
-
+/** Action to trigger creation of new collaboration diagram.
+ *  @stereotype singleton
+ */
 public class ActionCollaborationDiagram extends ActionAddDiagram {
 
     public static ActionCollaborationDiagram SINGLETON = new ActionCollaborationDiagram(); 

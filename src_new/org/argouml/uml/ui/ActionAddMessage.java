@@ -38,7 +38,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 
-
+/** Action to add a message.
+ *  @stereotype singleton
+ */
 public class ActionAddMessage extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////

@@ -31,7 +31,9 @@ import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
 import java.beans.*;
 
-
+/** Action to trigger creation of new class diagram.
+ *  @stereotype singleton
+ */
 public class ActionClassDiagram extends ActionAddDiagram {
   
     ////////////////////////////////////////////////////////////////

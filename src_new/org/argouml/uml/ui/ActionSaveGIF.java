@@ -39,7 +39,9 @@ import javax.swing.*;
 import javax.swing.filechooser.*;
 
 
-/** Wraps a CmdSaveGIF to allow selection of an output file. */
+/** Wraps a CmdSaveGIF to allow selection of an output file. 
+ *  @stereotype singleton
+*/
 
 public class ActionSaveGIF extends UMLAction {
     protected static Category cat = Category.getInstance(ActionSaveGIF.class);

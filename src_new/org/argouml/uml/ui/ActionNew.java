@@ -32,6 +32,9 @@ import java.text.MessageFormat;
 
 import javax.swing.*;
 
+/** Action to trigger creation of a new project.
+ * @stereotype singleton
+ */
 public class ActionNew extends UMLAction {
 
   ////////////////////////////////////////////////////////////////

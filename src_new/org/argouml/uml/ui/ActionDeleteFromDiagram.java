@@ -35,6 +35,7 @@ import java.awt.event.*;
 import java.util.*;
 
 /** deletes an modelelement from the diagram, but not from the model.
+ *  @stereotype singleton
  */
 public class ActionDeleteFromDiagram extends UMLChangeAction {
 

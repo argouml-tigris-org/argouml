@@ -36,7 +36,9 @@ import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
 import java.beans.*;
 
-
+/** Action to add a new sequence diagram.
+ * @stereotype singleton
+ */
 public class ActionSequenceDiagram extends ActionAddDiagram {
 
     ////////////////////////////////////////////////////////////////

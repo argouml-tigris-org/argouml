@@ -31,7 +31,8 @@ import ru.novosoft.uml.foundation.core.*;
 import java.awt.event.*;
 import java.util.*;
 
-
+/** Action to trigger creation of one class to source.
+ *  @stereotype singleton */
 public class ActionGenerateOne extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
@@ -95,3 +96,5 @@ public class ActionGenerateOne extends UMLAction {
 	return foundOne;
     }
 } /* end class ActionGenerateOne */
+
+

@@ -37,6 +37,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * Used in UMLMutableList for deletion of modelelements from the list.
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public class ActionRemoveModelElement extends UMLChangeAction {
 
