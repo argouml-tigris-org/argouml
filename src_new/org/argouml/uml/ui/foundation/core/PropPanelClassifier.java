@@ -44,6 +44,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.swingext.Orientation;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
@@ -105,75 +106,15 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
   public PropPanelClassifier(String name, int columns) {
       this(name, null, columns);
   }
+  
+  public PropPanelClassifier(String title, ImageIcon icon, Orientation orientation) {
+  	super(title, icon, orientation);
+  	initialize();
+  }
 
   public PropPanelClassifier(String name, ImageIcon icon, int columns) {
       super(name,icon,columns);
-
-      Class mclass = MClassifier.class;
-
-      //
-      //   this will cause the components on this page to be notified
-      //      anytime a stereotype, namespace, operation, etc
-      //      has its name changed or is removed anywhere in the model
-      Class[] namesToWatch = { MStereotype.class,MNamespace.class,MOperation.class,
-			       MParameter.class,MAttribute.class,MAssociation.class,MClassifier.class };
-      setNameEventListening(namesToWatch);
-		
-	  	_extendsModel = new UMLReflectionListModel(this,"generalization",true,"getGeneralizations",null,"addGeneralization","deleteGeneralization");
-      // JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-      JList extendsList = new UMLList(_extendsModel,true);
-      extendsList.setBackground(getBackground());
-      extendsList.setForeground(Color.blue);
-      extendsList.setVisibleRowCount(3);
-      extendsScroll= new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-		_implementsModel = new UMLReflectionListModel(this,"realizations",true,"getRealizations",null,"addRealization","deleteRealization");
-	  	JList implementsList = new UMLList(_implementsModel,true);
- 		implementsList.setBackground(getBackground());
-        implementsList.setForeground(Color.blue);
-        implementsList.setVisibleRowCount(3);
-        implementsScroll=new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-      /*
-      JList implementsList = new UMLList(new UMLClientDependencyListModel(this,"implements",true),true);
-      implementsList.setBackground(getBackground());
-      implementsList.setForeground(Color.blue);
-      implementsList.setVisibleRowCount(3);
-      implementsScroll= new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-	  */
-      _modifiersPanel = new JPanel(new GridLayout(0,2));
-      _modifiersPanel.add(new UMLCheckBox(localize("public"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-      _modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-
-	  _derivedModel = new UMLReflectionListModel(this,"specialization",true,"getSpecializations",null,"addSpecialization","deleteSpecialization");
-      JList derivedList = new UMLList(_derivedModel,true);
-      derivedList.setForeground(Color.blue);
-      derivedList.setVisibleRowCount(3);
-      derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);      
-
-      JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
-      opsList.setForeground(Color.blue);
-      opsList.setVisibleRowCount(3);
-      opsScroll = new JScrollPane(opsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-      JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
-      attrList.setForeground(Color.blue);
-      attrList.setVisibleRowCount(3);
-      attrScroll= new JScrollPane(attrList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-	  _connectModel = new UMLReflectionListModel(this,"associations",true,"getAssociations",null,"addAssociation","deleteAssociation");
-      // TODO implement the methods for _connectModel.This is waiting on some advice
-      JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
-      connectList.setForeground(Color.blue);
-      connectList.setVisibleRowCount(3);
-      connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-      JList innerList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
-      innerList.setForeground(Color.blue);
-      innerList.setVisibleRowCount(3);
-      innerScroll= new JScrollPane(innerList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
+      initialize();
   }
 
 
@@ -196,6 +137,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
         }
     }
 
+/*
     public void removeElement() {
 	//overrides removeElement in PropPanel
 	
@@ -215,6 +157,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             }   
         }
     }
+    */
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Classifier") ||
@@ -479,6 +422,74 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
     		ProjectBrowser.TheInstance.setTarget(pt);
     	}
+    }
+    
+    private void initialize() {
+    	Class mclass = MClassifier.class;
+
+      //
+      //   this will cause the components on this page to be notified
+      //      anytime a stereotype, namespace, operation, etc
+      //      has its name changed or is removed anywhere in the model
+      Class[] namesToWatch = { MStereotype.class,MNamespace.class,MOperation.class,
+			       MParameter.class,MAttribute.class,MAssociation.class,MClassifier.class };
+      setNameEventListening(namesToWatch);
+		
+	  	_extendsModel = new UMLReflectionListModel(this,"generalization",true,"getGeneralizations",null,"addGeneralization","deleteGeneralization");
+      // JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+      JList extendsList = new UMLList(_extendsModel,true);
+      extendsList.setBackground(getBackground());
+      extendsList.setForeground(Color.blue);
+      extendsList.setVisibleRowCount(3);
+      extendsScroll= new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+		_implementsModel = new UMLReflectionListModel(this,"realizations",true,"getRealizations",null,"addRealization","deleteRealization");
+	  	JList implementsList = new UMLList(_implementsModel,true);
+ 		implementsList.setBackground(getBackground());
+        implementsList.setForeground(Color.blue);
+        implementsList.setVisibleRowCount(3);
+        implementsScroll=new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+      /*
+      JList implementsList = new UMLList(new UMLClientDependencyListModel(this,"implements",true),true);
+      implementsList.setBackground(getBackground());
+      implementsList.setForeground(Color.blue);
+      implementsList.setVisibleRowCount(3);
+      implementsScroll= new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+	  */
+      _modifiersPanel = new JPanel(new GridLayout(0,2));
+      _modifiersPanel.add(new UMLCheckBox(localize("public"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
+      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+      _modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+
+	  _derivedModel = new UMLReflectionListModel(this,"specialization",true,"getSpecializations",null,"addSpecialization","deleteSpecialization");
+      JList derivedList = new UMLList(_derivedModel,true);
+      derivedList.setForeground(Color.blue);
+      derivedList.setVisibleRowCount(3);
+      derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);      
+
+      JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
+      opsList.setForeground(Color.blue);
+      opsList.setVisibleRowCount(3);
+      opsScroll = new JScrollPane(opsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+      JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
+      attrList.setForeground(Color.blue);
+      attrList.setVisibleRowCount(3);
+      attrScroll= new JScrollPane(attrList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+	  // _connectModel = new UMLReflectionListModel(this,"associations",true,"getAssociations",null,"addAssociation","deleteAssociation");
+      // TODO implement the methods for _connectModel.This is waiting on some advice
+      JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
+      connectList.setForeground(Color.blue);
+      connectList.setVisibleRowCount(3);
+      connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+      JList innerList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
+      innerList.setForeground(Color.blue);
+      innerList.setVisibleRowCount(3);
+      innerScroll= new JScrollPane(innerList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
     }
 
 

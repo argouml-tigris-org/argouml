@@ -39,8 +39,10 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.application.api.*;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
+import org.argouml.util.ConfigLoader;
 
 public class PropPanelClass extends PropPanelClassifier {
 
@@ -48,7 +50,7 @@ public class PropPanelClass extends PropPanelClassifier {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelClass() {
-    super("Class",_classIcon, 3);
+    super("Class",_classIcon, ConfigLoader.getTabPropsOrientation());
 
     Class mclass = MClass.class;
 
@@ -59,7 +61,29 @@ public class PropPanelClass extends PropPanelClassifier {
     Class[] namesToWatch = { MStereotype.class,MNamespace.class,MOperation.class,
         MParameter.class,MAttribute.class,MAssociation.class,MClassifier.class };
     setNameEventListening(namesToWatch);
+    
+    addField(Argo.localize("UMLMenu", "label.name"), nameField);
+    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+    addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
+    _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
+    addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+    
+    add(LabelledLayout.getSeperator());
+    
+    addField(Argo.localize("UMLMenu", "label.implements"), implementsScroll);
+    addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
+    addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
+    
+    add(LabelledLayout.getSeperator());
+     
+    addField(Argo.localize("UMLMenu", "label.associations"), connectScroll);
+    addField(Argo.localize("UMLMenu", "label.operations"), opsScroll);
+    addField(Argo.localize("UMLMenu", "label.attributes"), attrScroll);
+    addField(Argo.localize("UMLMenu", "label.owned-elements"),innerScroll);
+    
+    
 
+	/*
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
@@ -94,7 +118,7 @@ public class PropPanelClass extends PropPanelClassifier {
 
     addCaption(Argo.localize("UMLMenu", "label.owned-elements"),2,2,0);
     addField(innerScroll,2,2,0);
-
+	*/
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
