@@ -83,14 +83,6 @@ public class DetailsPane
     private static final Logger LOG = Logger.getLogger(DetailsPane.class);
 
     ////////////////////////////////////////////////////////////////
-    // constants
-
-    public static final int WIDTH = 690;
-    public static final int HEIGHT = 520;
-    public static final int INITIAL_WIDTH = 400;
-    public static final int INITIAL_HEIGHT = 200;
-
-    ////////////////////////////////////////////////////////////////
     // instance variables
 
     /**
