@@ -32,6 +32,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
+import java.awt.event.*;
 import uci.gef.*;
 
 /** A compartment is a FigText that has the capacity to be
@@ -75,6 +76,16 @@ public class FigCompartment extends FigText {
   /** Check if it should be displayed. If yes, call super.paint. Otherwise, does nothing. */
   public void paint(Graphics g) {
     if ( _displayed ) super.paint(g);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // event handlers
+
+
+
+  public void mouseClicked(MouseEvent me) {
+    if (isDisplayed()) super.mouseClicked(me);
+    //do not process events if not displayed
   }
 
 } /* end class FigCompartment */

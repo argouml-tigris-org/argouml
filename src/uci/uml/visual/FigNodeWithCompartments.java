@@ -170,7 +170,7 @@ public abstract class FigNodeWithCompartments extends FigNodeModelElement {
         yAfterRegularFigs = yAfterRegularFigs + height;
       }
       else
-        comp.setBounds(x, yAfterRegularFigs-height, w, height+1);
+        comp.setBounds(x, yAfterRegularFigs-height, 0, height+1);
 // note: this last line is to make sure that FigCompartments
 // that are not displayed are keeping the proper height
     }
