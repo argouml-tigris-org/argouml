@@ -23,28 +23,21 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.Argo;
-import org.argouml.kernel.*;
-import org.argouml.i18n.Translator;
-import org.argouml.ui.*;
-import org.argouml.util.*;
-import org.argouml.util.osdep.*;
-import org.tigris.gef.ocl.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.MPackage;
-import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
-
-import sun.security.action.GetPropertyAction;
-
+import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URL;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
+
+import javax.swing.JFileChooser;
+
+import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.util.osdep.OsUtil;
+
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** Action to choose and set source path for model elements
  * @stereotype singleton

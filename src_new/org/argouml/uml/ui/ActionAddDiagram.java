@@ -31,6 +31,8 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
@@ -56,29 +58,22 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         Project p = ProjectManager.getManager().getCurrentProject();
-        Object target = pb.getDetailsTarget();
+        Object target = pb.getTarget();
         MNamespace ns = null;
-        Object realTarget = null;
-        if (target != null) realTarget = target; 
-        else {
-            realTarget = pb.getTarget();
-        }
         if (target instanceof MNamespace) {
-            ns = (MNamespace)target;
-        } else {
-            target = pb.getTarget();
-            if (target instanceof MNamespace) {
-                ns = (MNamespace)target;
-            }
-        }      
-        if (ns == null || !isValidNamespace(ns)) ns = ProjectManager.getManager().getCurrentProject().getModel();
-        ArgoDiagram diagram = createDiagram(ns, realTarget);
-        p.addMember(diagram);
-        ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(diagram);
-        ProjectBrowser.TheInstance.setTarget(diagram);
-        super.actionPerformed(e);
+            ns = (MNamespace) target;
+        }
+        if (ns == null || !isValidNamespace(ns))
+            ns = ProjectManager.getManager().getCurrentProject().getModel();
+        if (isValidNamespace(ns)) {
+            ArgoDiagram diagram = createDiagram(ns);
+            p.addMember(diagram);
+            ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(diagram);
+            ProjectBrowser.TheInstance.setTarget(diagram);
+            super.actionPerformed(e);
+        }
     }
-    
+
     /**
      * Returns true as the given namespace a valid namespace is to add the 
      * diagram to.
@@ -86,13 +81,13 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
      * @return boolean
      */
     public abstract boolean isValidNamespace(MNamespace ns);
-    
+
     /**
      * Creates the diagram. Classes derived from this class should implement any
      * specific behaviour to create the diagram.
-     * @param ns
-     * @return ArgoDiagram
+     * @param ns The namespace the UMLDiagram should get.
+     * @return UMLDiagram
      */
-    public abstract ArgoDiagram createDiagram(MNamespace ns, Object target);
+    public abstract UMLDiagram createDiagram(MNamespace ns);
 
 }
