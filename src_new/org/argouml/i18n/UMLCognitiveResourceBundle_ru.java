@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -34,25 +35,6 @@ import java.util.*;
 public class UMLCognitiveResourceBundle_ru extends ListResourceBundle {
 
     private static final Object[][] _contents = {
-	// General stuff
-        {"decision.behavior", "\u041f\u043e\u0432\u0435\u0434\u0435\u043d\u0438\u0435"},
-        {"decision.class-selection", "\u0412\u044b\u0431\u043e\u0440 \u043a\u043b\u0430\u0441\u0441\u0430"},
-        {"decision.code-generation", "\u0413\u0435\u043d\u0435\u0440\u0430\u0446\u0438\u044f \u043a\u043e\u0434\u0430"},
-        {"decision.containment", "\u0421\u0434\u0435\u0440\u0436\u0438\u0432\u0430\u043d\u0438\u0435"},
-        {"decision.design-patterns", "\u041f\u0430\u0442\u0442\u0435\u0440\u043d\u044b \u043f\u0440\u043e\u0435\u043a\u0442\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f"},
-        {"decision.expected-usage", "\u041e\u0436\u0438\u0434\u0430\u0435\u043c\u043e\u0435 \u0438\u0441\u043f\u043e\u043b\u044c\u0437\u043e\u0432\u0430\u043d\u0438\u0435"},
-        {"decision.inheritance", "\u041d\u0430\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u043d\u0438\u0435"},
-        {"decision.instantiation", "\u0418\u043d\u0441\u0442\u0430\u043d\u0446\u0438\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435"},
-        {"decision.methods", "\u041c\u0435\u0442\u043e\u0434\u044b"},
-        {"decision.modularity", "\u041c\u043e\u0434\u0443\u043b\u044c\u043d\u043e\u0441\u0442\u044c"},
-        {"decision.mstate-machines", "\u041a\u043e\u043d\u0435\u0447\u043d\u044b\u0439 \u0430\u0432\u0442\u043e\u043c\u0430\u0442"},
-        {"decision.naming", "\u0418\u043c\u0435\u043d\u043e\u0432\u0430\u043d\u0438\u0435"},
-        {"decision.planned-extensions", "\u0417\u0430\u043f\u043b\u0430\u043d\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u044b\u0435 \u0440\u0430\u0441\u0448\u0438\u0440\u0435\u043d\u0438\u044f"},
-        {"decision.relationships", "\u041e\u0442\u043d\u043e\u0448\u0435\u043d\u0438\u044f"},
-        {"decision.stereotypes", "\u0421\u0442\u0435\u0440\u0435\u043e\u0442\u0438\u043f\u044b"},
-        {"decision.storage", "\u0425\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0435"},
-        {"decision.uncategorized", "\u041d\u0435\u043a\u0430\u0442\u0435\u0433\u043e\u0440\u0438\u0437\u0438\u0440\u043e\u0432\u0430\u043d\u043d\u043e"},
-
 	// Critics text
         { "CrAssocNameConflict_head" ,
                 "Resolve Association Name Conflict" },

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,25 +40,6 @@ import java.util.*;
 public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
 
     private static final Object[][] _contents = {
-	// General stuff
-        {"decision.behavior", "Comportement"},
-        {"decision.class-selection", "S\u00e9lection de classe"},
-        {"decision.code-generation", "G\u00e9n\u00e9ration du code"},
-        {"decision.containment", "Conteneur"},
-        {"decision.design-patterns", "Mod\u00e8les de conception"},
-        {"decision.expected-usage", "Emploi attendu"},
-        {"decision.inheritance", "H\u00e9ritage"},
-        {"decision.instantiation", "Instanciation"},
-        {"decision.methods", "M\u00e9thodes"},
-        {"decision.modularity", "Modularit\u00e9"},
-        {"decision.mstate-machines", "Automates d'\u00e9tats finis"},
-        {"decision.naming", "Affectation de nom"},
-        {"decision.planned-extensions", "Extensions pr\u00e9vues"},
-        {"decision.relationships", "Relations"},
-        {"decision.stereotypes", "St\u00e9r\u00e9otypes"},
-        {"decision.storage", "Stockage"},
-        {"decision.uncategorized", "Non class\u00e9es"},
-
         { "CrAssocNameConflict_head" ,
                 "Supprimez les conflits de noms d'associations" },
         { "CrAssocNameConflict_desc" ,

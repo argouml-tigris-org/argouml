@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -25,7 +26,6 @@
 // File: UMLCognitiveResourceBundle.java
 // Classes: UMLCognitiveResourceBundle
 // Original Author: Curt Arnold
-// $Id$
 
 // 4 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed description of
 // CrConstructorNeeded, CrConsiderSingleton and CrSingletonViolated.
@@ -65,25 +65,6 @@ import java.util.*;
 public class UMLCognitiveResourceBundle extends ListResourceBundle {
 
     private static final Object[][] _contents = {
-	// General stuff
-        {"decision.behavior", "Behavior"},
-        {"decision.class-selection", "Class Selection"},
-        {"decision.code-generation", "Code Generation"},
-        {"decision.containment", "Containment"},
-        {"decision.design-patterns", "Design Patterns"},
-        {"decision.expected-usage", "Expected Usage"},
-        {"decision.inheritance", "Inheritance"},
-        {"decision.instantiation", "Instantiation"},
-        {"decision.methods", "Methods"},
-        {"decision.modularity", "Modularity"},
-        {"decision.mstate-machines", "State Machines"},
-        {"decision.naming", "Naming"},
-        {"decision.planned-extensions", "Planned Extensions"},
-        {"decision.relationships", "Relationships"},
-        {"decision.stereotypes", "Stereotypes"},
-        {"decision.storage", "Storage"},
-        {"decision.uncategorized", "Uncategorized"},
-
 	// Critics text
         { "CrAssocNameConflict_head" ,
                 "Resolve Association Name Conflict" },

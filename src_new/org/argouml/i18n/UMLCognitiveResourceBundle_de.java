@@ -45,25 +45,6 @@ import java.util.*;
 public class UMLCognitiveResourceBundle_de extends ListResourceBundle {
 
     private static final Object[][] _contents = {
-	// General stuff
-        {"decision.behavior", "Verhalten"},
-        {"decision.class-selection", "Klassen ausw\u00e4hlen"},
-        {"decision.code-generation", "Code generieren"},
-        {"decision.containment", "Festhalten"},
-        {"decision.design-patterns", "Entwurfsmuster"},
-        {"decision.expected-usage", "Erwartete Aussage"},
-        {"decision.inheritance", "Vererbung"},
-        {"decision.instantiation", "Instanz bilden"},
-        {"decision.methods", "Methoden"},
-        {"decision.modularity", "Modularit\u00e4t"},
-        {"decision.mstate-machines", "Zustandsautomaten"},
-        {"decision.naming", "Benennen"},
-        {"decision.planned-extensions", "Geplante Erweiterungen"},
-        {"decision.relationships", "Beziehungen"},
-        {"decision.stereotypes", "Stereotypen"},
-        {"decision.storage", "Speicher"},
-        {"decision.uncategorized", "Nicht kategorisiert"},
-
 	// Critics text
         { "CrAssocNameConflict_head" ,
 	  "L\u00f6sen Sie den Konflikt bei den Assoziationsnamen auf" },
