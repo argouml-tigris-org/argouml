@@ -324,11 +324,8 @@ public class ClassGenerationDialog
                             String fn = generator.generateFile2(node, path);
                             fileNames[i].add(fn);
                             // save the selected language in the model
-                            // TODO: 1: no support of multiple checked
+                            // TODO: no support of multiple checked
                             // languages
-                            //
-                            // TODO: 2: it's a change in the model ->
-                            // save needed!
                             Object taggedValue = ModelFacade.getTaggedValue(
                                 node, "src_lang");
                             String savedLang = null;
@@ -343,6 +340,8 @@ public class ClassGenerationDialog
                                     node,
                                     "src_lang",
                                     language.getConfigurationValue());
+                                ProjectManager.getManager().getCurrentProject()
+                                    .setNeedsSave(true);
                             }
                         }
                     }
@@ -366,8 +365,10 @@ public class ClassGenerationDialog
             chooser.setFileHidingEnabled(true);
             chooser.setMultiSelectionEnabled(false);
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            chooser.setDialogTitle("Choose Output Directory");
-            chooser.showDialog(this, "Choose");
+            chooser.setDialogTitle(Translator.localize(
+                    "dialog.generation.chooser.choose-output-dir"));
+            chooser.showDialog(this, Translator.localize(
+                    "dialog.generation.chooser.approve-button-text"));
 
             if ("" != chooser.getSelectedFile().getPath()) {
                 String path = chooser.getSelectedFile().getPath();
