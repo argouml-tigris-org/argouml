@@ -114,6 +114,9 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
   // constructors
 
   public ToDoPane(boolean doSplash) {
+    // TODO - Bob Tarling 8 Feb 2003
+    // Replace GEF ToolBar class with our own Toolbar class
+    // (only rely on GEF for diagram functionality)
     _toolbar = new ToolBar();
     _toolbar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
 
@@ -122,6 +125,8 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
     toolbarPanel.add(_toolbar, BorderLayout.WEST);
     //_toolbar.add(new JLabel("Group by "));
     _toolbar.add(_combo);
+    // This is the only reason GEF toolbar is used here.
+    // Must find a way to implement the same.
     _flatButton = _toolbar.addToggle(_flatView, "Flat", "Hierarchical", "Flat");
     _toolbar.add(_countLabel);
     ImageIcon hierarchicalIcon =
