@@ -34,8 +34,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.FigNode;
-// the following three ugly package dependency are for restoring 
-// compartment visibility
 import org.argouml.cognitive.ItemUID;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
