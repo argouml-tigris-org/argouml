@@ -54,7 +54,7 @@ public abstract class UMLComboBoxModel2
     /**
      * The taget of the comboboxmodel. This is some UML modelelement
      */    
-    private Object _target = null;
+    protected Object _target = null;
     
     /**
      * The list with objects that should be shown in the combobox
@@ -78,12 +78,12 @@ public abstract class UMLComboBoxModel2
      * The name of the event with which NSUML sets the attribute that is shown
      * in this comboboxmodel.
      */
-    private String _propertySetName;
+    protected String _propertySetName;
 	
     /**
      * Flag to indicate wether list events should be fired
      */
-    private boolean _fireListEvents = true;
+    protected boolean _fireListEvents = true;
     
     /**
      * Constructs a model for a combobox. The container given is used to retreive
