@@ -55,8 +55,8 @@ import javax.swing.event.ListSelectionListener;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.ArgoDialog;
-import org.argouml.ui.SpacerPanel;
 import org.argouml.ui.explorer.rules.PerspectiveRule;
 
 /**

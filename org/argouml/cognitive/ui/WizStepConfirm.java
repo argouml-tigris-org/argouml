@@ -29,15 +29,15 @@ import java.awt.GridBagLayout;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.border.EtchedBorder;
-import org.argouml.kernel.Wizard;
-import org.argouml.ui.SpacerPanel;
+
+import org.argouml.swingext.SpacerPanel;
 
 
 /** A simple non-modal wizard step that shows instructions and prompts
  *  the user to confirm an action.
  *
  * @see org.argouml.cognitive.critics.Critic
- * @see org.argouml.kernel.Wizard
+ * @see org.argouml.cognitive.ui.Wizard
  */
 
 public class WizStepConfirm extends WizStep {

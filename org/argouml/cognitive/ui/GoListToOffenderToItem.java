@@ -26,38 +26,29 @@ package org.argouml.cognitive.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;
+
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.PredicateNotInTrash;
 import org.tigris.gef.util.VectorSet;
-import org.tigris.gef.util.Predicate;
 
 
 /**
  * Rule for sorting the ToDo list: Offender -> Item.
  *
  */
-public class GoListToOffenderToItem implements TreeModel {
+public class GoListToOffenderToItem extends AbstractGoList {
   
-    ////////////////////////////////////////////////////////////////
-    // TreeModel implementation
-  
-    /**
-     * @see javax.swing.tree.TreeModel#getRoot()
-     */
-    public Object getRoot() {
-	throw new UnsupportedOperationException();
-    } 
+    public GoListToOffenderToItem() {
+        setListPredicate(new PredicateNotInTrash());
+    }
     
-    /**
-     * @param r ignored
-     */
-    public void setRoot(Object r) { }
+    ////////////////////////////////////////////////////////////////
+    // TreeModel implementation   
 
     /**
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
@@ -102,7 +93,7 @@ public class GoListToOffenderToItem implements TreeModel {
         VectorSet allOffenders = new VectorSet();
         allOffenders.addAllElementsSuchThat(Designer.theDesigner()
             .getToDoList().getOffenders(), 
-            new PredicateNotInTrash());
+            getListPredicate());
         
         
 	if (parent instanceof ToDoList) {
@@ -117,7 +108,7 @@ public class GoListToOffenderToItem implements TreeModel {
 		ToDoItem item = (ToDoItem) elems.nextElement();
 		VectorSet offs = new VectorSet();
                 offs.addAllElementsSuchThat(item.getOffenders(),
-                    new PredicateNotInTrash());
+                    getListPredicate());
 		if (offs.contains(parent)) res.addElement(item);
 	    }
 	    return res;
@@ -143,17 +134,3 @@ public class GoListToOffenderToItem implements TreeModel {
 
 
 } /* end class GoListToOffenderToItem */
-
-/** A Predicate to determine if a given object is in the Project Trash or not.
- * Required so that the GoListToOfffenderItem does not display offenders,
- * which are already in the trash bin.
- **/
-class PredicateNotInTrash implements Predicate {
-    private Project p; 
-    public boolean predicate(Object obj) {
-        p = ProjectManager.getManager().getCurrentProject();
-        if (p == null) return true;
-        if (p.isInTrash(obj)) return false;
-        return true;
-    }
-}

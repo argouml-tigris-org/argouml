@@ -32,31 +32,28 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
 
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-import org.tigris.gef.presentation.Fig;
-
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.checklist.CheckItem;
 import org.argouml.cognitive.checklist.CheckManager;
 import org.argouml.cognitive.checklist.Checklist;
 import org.argouml.cognitive.checklist.ChecklistStatus;
-import org.argouml.kernel.DelayedChangeNotify;
-import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.i18n.Translator;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.ui.TabModelTarget;
+import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -251,7 +248,7 @@ public class TabChecklist extends TabSpawnable
 
 
 class TableModelChecklist extends AbstractTableModel
-    implements VetoableChangeListener, DelayedVChangeListener, MElementListener
+    implements VetoableChangeListener, MElementListener
 {
     private static final Logger LOG =
         Logger.getLogger(TableModelChecklist.class);
@@ -352,15 +349,12 @@ class TableModelChecklist extends AbstractTableModel
     public void roleRemoved(MElementEvent mee) {
     }
 
-
     public void vetoableChange(PropertyChangeEvent pce) {
-	DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-	SwingUtilities.invokeLater(delayedNotify);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                fireTableStructureChanged();
+                panel.resizeColumns();
+            }
+    });
     }
-
-    public void delayedVetoableChange(PropertyChangeEvent pce) {
-	fireTableStructureChanged();
-	panel.resizeColumns();
-    }
-
 } /* end class TableModelChecklist */

@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-// File: CrMissingStateName.java
-// Classes: CrMissingStateName
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.cognitive.critics;
 
 import javax.swing.Icon;
@@ -34,7 +29,7 @@ import javax.swing.Icon;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.kernel.Wizard;
+import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 
 

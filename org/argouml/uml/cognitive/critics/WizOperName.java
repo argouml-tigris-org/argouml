@@ -69,7 +69,7 @@ public class WizOperName extends WizMEName {
     private boolean oldStereotypeIsSet = false;
 
     /**
-     * @see org.argouml.kernel.Wizard#getNumSteps()
+     * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
      */
     public int getNumSteps() {
 	if (possibleConstructor) {
@@ -97,7 +97,7 @@ public class WizOperName extends WizMEName {
     }
 
     /**
-     * @see org.argouml.kernel.Wizard#makePanel(int)
+     * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      *
      * Create a new panel for the given step.
      */
@@ -143,7 +143,7 @@ public class WizOperName extends WizMEName {
      * implementation since I believe it should be possible to explore a 
      * path in the wizard and then go back.
      *
-     * @see org.argouml.kernel.Wizard#undoAction(int)
+     * @see org.argouml.cognitive.ui.Wizard#undoAction(int)
      */
     public void undoAction(int origStep) {
 	super.undoAction(origStep);
@@ -166,7 +166,7 @@ public class WizOperName extends WizMEName {
      * they do along, as soon as possible, they should not wait until
      * the final step.
      *
-     * @see org.argouml.kernel.Wizard#doAction(int)
+     * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
 	if (!possibleConstructor) {

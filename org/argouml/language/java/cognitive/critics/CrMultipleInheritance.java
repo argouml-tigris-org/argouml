@@ -35,7 +35,7 @@ import java.util.Collection;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.kernel.Wizard;
+import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.cognitive.critics.CrUML;
 import org.argouml.uml.cognitive.critics.WizCueCards;

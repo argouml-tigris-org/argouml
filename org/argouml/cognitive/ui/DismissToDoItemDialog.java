@@ -24,6 +24,7 @@
 
 package org.argouml.cognitive.ui;
 
+import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -42,9 +43,8 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.UnresolvableException;
-import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 
@@ -74,9 +74,9 @@ public class DismissToDoItemDialog extends ArgoDialog {
      * The constructor.
      * 
      */
-    public DismissToDoItemDialog() {
+    public DismissToDoItemDialog(Frame owner) {
         super(
-            ProjectBrowser.getInstance(),
+            owner,
             Translator.localize("dialog.title.dismiss-todo-item"),
             ArgoDialog.OK_CANCEL_OPTION,
             true);
@@ -236,7 +236,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
         ToDoList list = Designer.theDesigner().getToDoList();
         try {
             list.explicitlyResolve(target, explanation.getText());
-            ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
+            Designer.firePropertyChange(Designer.MODEL_TODOITEM_DISMISSED, null, null);
         }
         catch (UnresolvableException ure) {
             LOG.error("Resolve failed (ure): " + ure);

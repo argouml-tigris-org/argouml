@@ -28,6 +28,7 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.cognitive.ui.AddToDoItemDialog;
 import org.argouml.uml.ui.UMLAction;
+import org.argouml.uml.ui.UMLListCellRenderer2;
 
 
 
@@ -48,7 +49,7 @@ public class ActionNewToDoItem extends UMLAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {       
-        AddToDoItemDialog dialog = new AddToDoItemDialog();
+        AddToDoItemDialog dialog = new AddToDoItemDialog(new UMLListCellRenderer2(true));
         dialog.show();
     }
 } /* end class ActionNewToDoItem */

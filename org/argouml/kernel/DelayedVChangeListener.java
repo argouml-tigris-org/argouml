@@ -24,7 +24,7 @@
 
 package org.argouml.kernel;
 
-import java.beans.*;
+import java.beans.PropertyChangeEvent;
 
 /**
  * This appears to be a gui specific class, therefore it does not belong in
