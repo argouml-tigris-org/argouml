@@ -24,9 +24,15 @@
 
 package org.argouml.language.cpp.generator;
 
+import java.util.Collection;
 import junit.framework.TestCase;
 import junit.framework.Test;
 import junit.framework.TestSuite;
+import org.apache.log4j.Logger;
+
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.ModelFacade;
 
 /**
  * Tests for the GeneratorCpp class.
@@ -35,6 +41,9 @@ import junit.framework.TestSuite;
  * @since 0.17.2
  */                                
 public class TestGeneratorCpp extends TestCase {
+
+    /** The Logger for this class */
+    private static final Logger LOG = Logger.getLogger(TestGeneratorCpp.class);
     
     /**
      * The constructor.
@@ -54,351 +63,104 @@ public class TestGeneratorCpp extends TestCase {
     }
 
     /**
+     * to enable debugging in poor IDEs...
+     * @param args the arguments given on the commandline
+     */
+    public static void main(java.lang.String[] args) {
+        junit.textui.TestRunner.run(suite());
+    }
+
+    /** factory for model elements */
+    CoreFactory _factory;
+
+    /** The venerable C++ generator instance used in the test fixtures. */
+    GeneratorCpp _generator;
+
+    /** the AClass model element */
+    Object _aClass;
+
+    /** the AClass::foo() operation */
+    Object _fooMethod;
+    
+    /*
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() {
+        _generator = GeneratorCpp.getInstance();
+        _factory = UmlFactory.getFactory().getCore();
+        _aClass = _factory.buildClass("AClass");
+        _fooMethod = _factory.buildOperation(_aClass, "foo");
+    }
+
+    /**
      * Test of getInstance method.
      */
     public void testGetInstance() {
-        System.out.println("testGetInstance");
-        GeneratorCpp generator = GeneratorCpp.getInstance();
-        assertNotNull(generator);
+        assertNotNull(_generator);
     }
 
     /**
      * Test of cppGenerate method.
      */
     public void testCppGenerate() {
-        System.out.println("testCppGenerate");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateFile2 method.
-     */
-    public void testGenerateFile2() {
-        System.out.println("testGenerateFile2");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateExtensionPoint method.
-     */
-    public void testGenerateExtensionPoint() {
-        System.out.println("testGenerateExtensionPoint");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateAssociationRole method.
-     */
-    public void testGenerateAssociationRole() {
-        System.out.println("testGenerateAssociationRole");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateObjectFlowState method.
-     */
-    public void testGenerateObjectFlowState() {
-        System.out.println("testGenerateObjectFlowState");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
+        // generate void AClass::foo();
+        String strFooMethod = _generator.generate(_fooMethod);
+        assertNotNull(strFooMethod);
+        assertEquals("void AClass::foo()", strFooMethod.trim());
     }
 
     /**
      * Test of generateOperation method.
      */
-    public void testGenerateOperation() {
-        System.out.println("testGenerateOperation");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateAttribute method.
-     */
-    public void testGenerateAttribute() {
-        System.out.println("testGenerateAttribute");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateParameter method.
-     */
-    public void testGenerateParameter() {
-        System.out.println("testGenerateParameter");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generatePackage method.
-     */
-    public void testGeneratePackage() {
-        System.out.println("testGeneratePackage");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateClassifierStart method.
-     */
-    public void testGenerateClassifierStart() {
-        System.out.println("testGenerateClassifierStart");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateClassifier method.
-     */
-    public void testGenerateClassifier() {
-        System.out.println("testGenerateClassifier");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateTaggedValue method.
-     */
-    public void testGenerateTaggedValue() {
-        System.out.println("testGenerateTaggedValue");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateConstraintEnrichedDocComment method.
-     */
-    public void testGenerateConstraintEnrichedDocComment() {
-        System.out.println("testGenerateConstraintEnrichedDocComment");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateAssociation method.
-     */
-    public void testGenerateAssociation() {
-        System.out.println("testGenerateAssociation");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateAssociationEnd method.
-     */
-    public void testGenerateAssociationEnd() {
-        System.out.println("testGenerateAssociationEnd");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateEvent method.
-     */
-    public void testGenerateEvent() {
-        System.out.println("testGenerateEvent");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateVisibility method.
-     */
-    public void testGenerateVisibility() {
-        System.out.println("testGenerateVisibility");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateMultiplicity method.
-     */
-    public void testGenerateMultiplicity() {
-        System.out.println("testGenerateMultiplicity");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateState method.
-     */
-    public void testGenerateState() {
-        System.out.println("testGenerateState");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateStateBody method.
-     */
-    public void testGenerateStateBody() {
-        System.out.println("testGenerateStateBody");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateTransition method.
-     */
-    public void testGenerateTransition() {
-        System.out.println("testGenerateTransition");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateAction method.
-     */
-    public void testGenerateAction() {
-        System.out.println("testGenerateAction");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateGuard method.
-     */
-    public void testGenerateGuard() {
-        System.out.println("testGenerateGuard");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateMessage method.
-     */
-    public void testGenerateMessage() {
-        System.out.println("testGenerateMessage");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
+    public void testGenerateOperationAndIssue2862() {
+        Collection params = ModelFacade.getParameters(_fooMethod);
+        assertEquals(1, params.size());
+        Object returnVal = params.iterator().next();
+        ModelFacade.setTaggedValue(returnVal, "pointer", "true");
+        ModelFacade.setType(returnVal, _aClass);
+        String genOp = _generator.generateOperation(_fooMethod, false);
+        LOG.info(genOp);
+		assertTrue(genOp.indexOf("*") != -1);
     }
 
     /**
      * Test of getModuleName method.
      */
     public void testGetModuleName() {
-        System.out.println("testGetModuleName");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
+        assertNonNullNonZeroLengthString(_generator.getModuleName());
     }
 
     /**
      * Test of getModuleDescription method.
      */
     public void testGetModuleDescription() {
-        System.out.println("testGetModuleDescription");
+        assertNonNullNonZeroLengthString(_generator.getModuleDescription());
+    }
 
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
+    private void assertNonNullNonZeroLengthString(String s) {
+        assertNotNull(s);
+        assertTrue(s.length() > 0);
     }
 
     /**
      * Test of getModuleAuthor method.
      */
     public void testGetModuleAuthor() {
-        System.out.println("testGetModuleAuthor");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
+        assertNonNullNonZeroLengthString(_generator.getModuleAuthor());
     }
 
     /**
      * Test of getModuleVersion method.
      */
     public void testGetModuleVersion() {
-        System.out.println("testGetModuleVersion");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
+        assertNonNullNonZeroLengthString(_generator.getModuleVersion());
     }
 
     /**
      * Test of getModuleKey method.
      */
     public void testGetModuleKey() {
-        System.out.println("testGetModuleKey");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of isLfBeforeCurly method.
-     */
-    public void testIsLfBeforeCurly() {
-        System.out.println("testIsLfBeforeCurly");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of isVerboseDocs method.
-     */
-    public void testIsVerboseDocs() {
-        System.out.println("testIsVerboseDocs");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of setLfBeforeCurly method.
-     */
-    public void testSetLfBeforeCurly() {
-        System.out.println("testSetLfBeforeCurly");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of setVerboseDocs method.
-     */
-    public void testSetVerboseDocs() {
-        System.out.println("testSetVerboseDocs");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
-    }
-
-    /**
-     * Test of generateActionState method.
-     */
-    public void testGenerateActionState() {
-        System.out.println("testGenerateActionState");
-
-        // TODO: add your test code below by replacing the default call to fail.
-        fail("The test case is empty.");
+        assertNonNullNonZeroLengthString(_generator.getModuleKey());
     }
 }
+

@@ -1026,6 +1026,8 @@ public class GeneratorCpp extends Generator2
             }
             else if (returnType != null) {
                 sb.append(generateNameWithPkgSelection(returnType)).append(' ');
+                // fixing 2862 - apply modifiers, i.e., pointer or reference TV
+                sb.append(generateAttributeParameterModifier(rp));
             }
         }
 
@@ -1247,9 +1249,7 @@ public class GeneratorCpp extends Generator2
         if (generatorPass != HEADER_PASS) return sb;
 
         String sClassifierKeyword;
-        if (ModelFacade.isAClass(cls)) {
-            sClassifierKeyword = "class";
-        } else if (ModelFacade.isAInterface(cls)) {
+        if (ModelFacade.isAClass(cls) || ModelFacade.isAInterface(cls)) {
             sClassifierKeyword = "class";
         } else {
             return null; // actors, use cases etc.
