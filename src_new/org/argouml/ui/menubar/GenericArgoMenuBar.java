@@ -414,12 +414,15 @@ public class GenericArgoMenuBar extends JMenuBar
             _file.add(ActionSaveConfiguration.SINGLETON);
         setMnemonic(saveConfiguration, "Save Configuration");
         _file.addSeparator();
+
+        // add last recently used list _before_ exit menu
+        _lruList = new LastRecentlyUsedMenuList( _file);
+
+        // and exit menu entry starting with separator
+        _file.addSeparator();
         JMenuItem exitItem = _file.add(ActionExit.SINGLETON);
         setMnemonic(exitItem, "Exit");
         setAccelerator(exitItem, altF4);
-
-        // add last recently used list
-        _lruList = new LastRecentlyUsedMenuList( _file);
 
 	// ------------------------------------- Edit Menu
 		
