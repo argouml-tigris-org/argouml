@@ -66,7 +66,7 @@ public class ActionAddConcurrentRegion extends UMLAction {
     // constructors
 
     private ActionAddConcurrentRegion() {
-        super("action.add-concurrent-region");
+        super("action.add-concurrent-region", true, true);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -76,7 +76,6 @@ public class ActionAddConcurrentRegion extends UMLAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        super.shouldBeEnabled();
         int size = 0;
         try {
             Editor ce = Globals.curEditor();
@@ -84,7 +83,7 @@ public class ActionAddConcurrentRegion extends UMLAction {
             size = figs.size();
         } catch (Exception e) {
         }
-        return size > 0;
+        return super.shouldBeEnabled() & (size > 0);
     }
 
     /**
