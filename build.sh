@@ -26,4 +26,4 @@ echo
 
 $ANT_HOME/bin/ant $*
 
-exit
+#exit
