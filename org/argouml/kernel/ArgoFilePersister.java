@@ -23,10 +23,26 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.kernel;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.ArgoVersion;
+import org.argouml.util.FileConstants;
+import org.tigris.gef.ocl.ExpansionException;
+import org.tigris.gef.ocl.OCLExpander;
+import org.tigris.gef.ocl.TemplateReader;
 
 /**
  * To persist to and from argo (xml file) storage.
@@ -48,12 +64,101 @@ public class ArgoFilePersister extends AbstractFilePersister {
     }
     
     /**
+     * It is being considered to save out individual
+     * xmi's from individuals diagrams to make
+     * it easier to modularize the output of Argo.
+     * 
+     * @param file The file to write.
+     * @param project the project to save
+     * @throws SaveException when anything goes wrong
+     *
      * @see org.argouml.kernel.ProjectFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
-    public void save(Project project, File file) throws SaveException {
-        throw new SaveException("Save as XMI has not yet been implemented");
+    public void save(Project project, File file)
+            throws SaveException {
+        
+        project.setFile(file);
+        project.setVersion(ArgoVersion.getVersion());
+        project.setPersistenceVersion(PERSISTENCE_VERSION);
+
+
+        // frank: first backup the existing file to name+"#"
+        File tempFile = new File( file.getAbsolutePath() + "#");
+        File backupFile = new File( file.getAbsolutePath() + "~");
+        if (tempFile.exists()) {
+            tempFile.delete();
+        }
+        
+        Writer writer = null;
+        try {
+            if (file.exists()) {
+                copyFile(tempFile, file);
+            }
+            // frank end
+    
+            FileOutputStream stream =
+                new FileOutputStream(file);
+            writer =
+                new PrintWriter(new BufferedWriter(new OutputStreamWriter(stream, "UTF-8")));
+    
+            expand(writer, project);
+            writer.flush();
+            
+            stream.close();
+
+            String path = file.getParent();
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Dir ==" + path);
+            }
+            
+            // if save did not raise an exception 
+            // and name+"#" exists move name+"#" to name+"~"
+            // this is the correct backup file
+            if (backupFile.exists()) {
+                backupFile.delete();
+            }
+            if (tempFile.exists() && !backupFile.exists()) {
+                tempFile.renameTo(backupFile);
+            }
+            if (tempFile.exists()) {
+                tempFile.delete();
+            }
+        } catch (Exception e) {
+            LOG.error("Exception occured during save attempt", e);
+            try {
+                writer.close();
+            } catch (IOException ex) { }
+            
+            // frank: in case of exception 
+            // delete name and mv name+"#" back to name if name+"#" exists
+            // this is the "rollback" to old file
+            file.delete();
+            tempFile.renameTo( file);
+            // we have to give a message to user and set the system to unsaved!
+            throw new SaveException(e);
+        }
+
+        try {
+            writer.close();
+        } catch (IOException ex) {
+            LOG.error("Failed to close save output writer", ex);
+        }
     }
+    
+    private void expand(Writer writer, Object project) throws SaveException {
+        if (expander == null) {
+            Hashtable templates = TemplateReader.readFile(ARGO2_TEE);
+            expander = new OCLExpander(templates);
+        }
+        
+        try {
+            expander.expand(writer, project, "", "");
+        } catch (ExpansionException e) {
+            throw new SaveException(e);
+        }
+    }
+    
     
     /**
      * @see org.argouml.kernel.ProjectFilePersister#loadProject(java.net.URL)

@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -42,6 +43,7 @@ import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.util.FileConstants;
 import org.argouml.xml.argo.ArgoParser;
+import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 import org.xml.sax.SAXException;
@@ -78,17 +80,12 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * org.argouml.kernel.Project, java.io.File)
      */
     public void save(Project project, File file)
-        
-        throws SaveException {
+            throws SaveException {
         
         project.setFile(file);
         project.setVersion(ArgoVersion.getVersion());
         project.setPersistenceVersion(PERSISTENCE_VERSION);
 
-        if (expander == null) {
-            Hashtable templates = TemplateReader.readFile(ARGO_TEE);
-            expander = new OCLExpander(templates);
-        }
 
         // frank: first backup the existing file to name+"#"
         File tempFile = new File( file.getAbsolutePath() + "#");
@@ -113,8 +110,9 @@ public class ZargoFilePersister extends AbstractFilePersister {
                 new ZipEntry(project.getBaseName() 
                         + FileConstants.UNCOMPRESSED_FILE_EXT);
             stream.putNextEntry(zipEntry);
-            expander.expand(writer, project, "", "");
+            expand(writer, project);
             writer.flush();
+            
             stream.closeEntry();
     
             String path = file.getParent();
@@ -134,9 +132,9 @@ public class ZargoFilePersister extends AbstractFilePersister {
                     (ProjectMember) project.getMembers().elementAt(i);
                 if (!(projectMember.getType().equalsIgnoreCase("xmi"))) {
                     if (LOG.isInfoEnabled()) {
-                        LOG.info("Saving member of type: "
+                        LOG.info("Saving member: "
                               + ((ProjectMember) project.getMembers()
-                                    .elementAt(i)).getType());
+                                    .elementAt(i)).getURL());
                     }
                     String name = projectMember.getName();
                     String originalName = name;
@@ -145,7 +143,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
                     }
                     names.add(name);
                     stream.putNextEntry(new ZipEntry(name));
-                    projectMember.save(writer);
+                    projectMember.save(writer, null);
                     writer.flush();
                     stream.closeEntry();
                 }
@@ -161,7 +159,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
                                     .elementAt(i)).getType());
                     }
                     stream.putNextEntry(new ZipEntry(projectMember.getName()));
-                    projectMember.save(writer);
+                    projectMember.save(writer, null);
                 }
             }
             
@@ -196,6 +194,19 @@ public class ZargoFilePersister extends AbstractFilePersister {
             writer.close();
         } catch (IOException ex) {
             LOG.error("Failed to close save output writer", ex);
+        }
+    }
+
+    private void expand(Writer writer, Object project) throws SaveException {
+        if (expander == null) {
+            Hashtable templates = TemplateReader.readFile(ARGO_TEE);
+            expander = new OCLExpander(templates);
+        }
+        
+        try {
+            expander.expand(writer, project, "", "");
+        } catch (ExpansionException e) {
+            throw new SaveException(e);
         }
     }
     

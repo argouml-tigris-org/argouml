@@ -23,19 +23,23 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ocl;
-import java.util.*;
 
+import java.util.Map;
+
+/**
+ * The only difference between Argo's expander
+ * and GEF's is which evaluator they use
+ */
 public class OCLExpander extends org.tigris.gef.ocl.OCLExpander {
 
     public OCLExpander(Map templates) {
-	super(templates);
+        super(templates);
     }
 
-    //
-    //   the only difference between Argo's expander
-    //       and GEF's is which evaluator they use
-    protected List evaluate(Map bindings, String expr) {
-        return org.argouml.ocl.OCLEvaluator.SINGLETON.eval(bindings, expr);
+    /**
+     * Create the specialist OCLEvaluator for ArgoUML
+     */
+    protected void createEvaluator() {
+        evaluator = new OCLEvaluator();
     }
-
 } /* end class OCLExpander */

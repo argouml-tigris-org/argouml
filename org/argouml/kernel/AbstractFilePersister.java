@@ -45,6 +45,7 @@ public abstract class AbstractFilePersister extends FileFilter
         Logger.getLogger(AbstractFilePersister.class);
     
     protected static final String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
+    protected static final String ARGO2_TEE = "/org/argouml/xml/dtd/argo2.tee";
 
     protected int PERSISTENCE_VERSION = 2;
     

@@ -24,12 +24,21 @@
 
 package org.argouml.uml;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Reader;
 import java.io.Writer;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.kernel.SaveException;
 import org.argouml.xml.xmi.XMIParser;
 import org.argouml.model.ModelFacade;
 
@@ -51,7 +60,7 @@ public class ProjectMemberModel extends ProjectMember {
 
     private static final String MEMBER_TYPE = "xmi";
     private static final String FILE_EXT = "." + MEMBER_TYPE;
-
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -135,26 +144,45 @@ public class ProjectMemberModel extends ProjectMember {
      * Save the project model to XMI.
      * @see org.argouml.kernel.ProjectMember#save(java.io.Writer)
      */
-    public void save(Writer writer) throws Exception {
-        if (writer == null) {
+    public void save(Writer w, Integer indent) throws SaveException {
+        if (w == null) {
             throw new IllegalArgumentException("No Writer specified!");
+        }
+
+        File tempFile = null;
+        Writer writer = null;
+        if (indent != null) {
+            try {
+                tempFile = File.createTempFile("xmi", null);
+                tempFile.deleteOnExit();
+                writer = new FileWriter(tempFile);
+            } catch (IOException e) {
+                throw new SaveException(e);
+            }
+        } else {
+            writer = w;
         }
         XMIWriter xmiwriter = null;
 
         try {
-
             xmiwriter = new XMIWriter((MModel) model, writer);
             xmiwriter.gen();
         } catch (Exception ex) {
             logNotContainedElements(xmiwriter);
-            throw ex;
+            if (ex instanceof SaveException) {
+                throw (SaveException)ex;
+            }
+            throw new SaveException(ex);
         } finally {
             if (xmiwriter != null) {
                 if (!xmiwriter.getNotContainedElements().isEmpty()) {
                     logNotContainedElements(xmiwriter);
-                    throw new IncompleteXMIException();
+                    throw new SaveException(new IncompleteXMIException());
                 }
             }
+        }
+        if (indent != null) {
+            addXmlFileToWriter((PrintWriter) w, tempFile, indent.intValue());
         }
     }
 

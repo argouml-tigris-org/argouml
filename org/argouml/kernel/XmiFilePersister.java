@@ -107,7 +107,7 @@ public class XmiFilePersister extends AbstractFilePersister {
                               + ((ProjectMember) project.getMembers()
                                     .elementAt(i)).getType());
                     }
-                    projectMember.save(writer);
+                    projectMember.save(writer, null);
                 }
             }
             

@@ -24,8 +24,11 @@
 
 package org.argouml.cognitive;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -35,10 +38,12 @@ import org.xml.sax.SAXException;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.kernel.SaveException;
 import org.argouml.ocl.OCLExpander;
 import org.argouml.xml.todo.ResolvedCriticXMLHelper;
 import org.argouml.xml.todo.ToDoItemXMLHelper;
 import org.argouml.xml.todo.TodoParser;
+import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.TemplateReader;
 
 
@@ -56,8 +61,6 @@ public class ProjectMemberTodoList extends ProjectMember {
 
     private static final String TO_DO_TEE = "/org/argouml/xml/dtd/todo.tee";
     private static final String TO_DO_EXT = ".todo";
-
-    private OCLExpander expander = null;
 
     /**
      * The constructor. 
@@ -159,20 +162,41 @@ public class ProjectMemberTodoList extends ProjectMember {
 
     /**
      * @see org.argouml.kernel.ProjectMember#save(java.io.Writer)
+     * @throws InvalidArgumentException if no writer specified.
      */
-    public void save(Writer writer) {
+    public void save(Writer writer, Integer indent) throws SaveException {
+        LOG.info("Saving todo list");
+
         if (writer == null) {
-            LOG.warn("ProjectMemberTodoList.cognitive.argouml.org:"
-        	     + " No writer specified");
-            return;
+            throw new IllegalArgumentException(
+                    "No writer specified to save todo list");
         }
         
-        if (expander == null) {
-            Hashtable templates = TemplateReader.readFile(TO_DO_TEE);
-            expander = new OCLExpander(templates);
+        OCLExpander expander = new OCLExpander(TemplateReader.readFile(TO_DO_TEE));
+
+        if (indent == null) {
+            try {
+                expander.expand(writer, this, "", "");
+            } catch (ExpansionException e) {
+                throw new SaveException(e);
+            }
+        } else {
+            try {
+                File tempFile = File.createTempFile("todo", null);
+                tempFile.deleteOnExit();
+                FileWriter w = new FileWriter(tempFile);
+                expander.expand(w, this, "", "");
+                w.close();
+                addXmlFileToWriter(
+                        (PrintWriter)writer,
+                        tempFile,
+                        indent.intValue());
+            } catch (ExpansionException e) {
+                throw new SaveException(e);
+            } catch (IOException e) {
+                throw new SaveException(e);
+            }
         }
-        
-        expander.expand(writer, this, "", "");
         
         LOG.debug("Done saving TO DO LIST!!!");
     }
