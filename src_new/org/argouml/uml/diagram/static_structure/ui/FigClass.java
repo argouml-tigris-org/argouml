@@ -690,6 +690,7 @@ public class FigClass extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(MElementEvent)
      */
     protected void modelChanged(MElementEvent mee) {
+        
         if (getOwner() == null)
             return;
         MClass cls = (MClass) getOwner();
@@ -705,6 +706,12 @@ public class FigClass extends FigNodeModelElement {
         }
         if (mee == null || mee.getName().equals("isAbstract")) {
             updateAbstract();
+            damage();
+        }
+        if (mee == null || mee.getName().equals("stereotype")) {
+            updateStereotypeText();
+            updateAttributes();
+            updateOperations();
             damage();
         }
         // name updating
