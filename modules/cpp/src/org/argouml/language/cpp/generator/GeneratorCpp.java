@@ -162,6 +162,12 @@ public class GeneratorCpp extends Generator2
     private static final GeneratorCpp SINGLETON = new GeneratorCpp();
 
     /**
+     * Prefix for names in the std namespace. Defaults to "std::",
+     * but could be "" if a "using namsepace std;" directive is used.  
+     */
+    private String stdPrefix = "std::";
+    
+    /**
      * Get the instance.
      *
      * @return the singleton of the generator.
@@ -191,7 +197,9 @@ public class GeneratorCpp extends Generator2
      */
     public String generateH(Object o) {
         generatorPass = HEADER_PASS;
-        return generate(o);
+        String ret = generate(o);
+        generatorPass = NONE_PASS;
+        return ret;
     }
 
     /** 2002-11-28 Achim Spangler
@@ -345,8 +353,8 @@ public class GeneratorCpp extends Generator2
                 writeTemplate(o, path, fos);
                 fos.write(headerTop);
                 fos.write(extraIncludes);
-                fos.write (header);
-                fos.write (src);
+                fos.write(header);
+                fos.write(src);
                 if (generatorPass == HEADER_PASS) {
                     fos.write("#endif");
                     fos.write(LINE_SEPARATOR);
@@ -607,7 +615,7 @@ public class GeneratorCpp extends Generator2
         StringBuffer sb = new StringBuffer(160);
         StringBuffer predeclare = new StringBuffer(60);
 
-        if (generatorPass != HEADER_PASS) { // include header in .cpp
+        if (generatorPass == SOURCE_PASS) { // include header in .cpp
             sb.append(generateHeaderImportLine4Item(cls));
 
             Iterator iter = Model.getFacade().getTaggedValues(cls);
@@ -1001,7 +1009,7 @@ public class GeneratorCpp extends Generator2
     private String generateOperationPrefix(Object op) {
         StringBuffer sb = new StringBuffer(80);
         sb.append(generateConcurrency(op));
-        if (generatorPass == HEADER_PASS) {
+        if (generatorPass != SOURCE_PASS) {
             // make all operations to virtual - as long as they are not "leaf"
             Object scope = Model.getFacade().getOwnerScope(op);
             // generate a function as virtual, if it can be overriden
@@ -1039,9 +1047,9 @@ public class GeneratorCpp extends Generator2
      */
     private boolean generateOperationNameAndTestForConstructor(Object op,
             StringBuffer sb) {
-        if (generatorPass != HEADER_PASS) {
-            sb.append(Model.getFacade().getName(Model.getFacade().getOwner(op)))
-                .append("::");
+        if (generatorPass == SOURCE_PASS) {
+            sb.append(Model.getFacade().getName(
+                          Model.getFacade().getOwner(op))).append("::");
         }
         boolean constructor = false;
         String name;
@@ -1068,7 +1076,7 @@ public class GeneratorCpp extends Generator2
     public String generateOperation(Object op, boolean documented) {
         // generate nothing for abstract functions, if we generate the
         // source .cpp file at the moment
-        if ((generatorPass != HEADER_PASS) 
+        if ((generatorPass == SOURCE_PASS) 
                 && (Model.getFacade().isAbstract(op))) {
             return "";
         }
@@ -1078,7 +1086,8 @@ public class GeneratorCpp extends Generator2
         boolean constructor =
             generateOperationNameAndTestForConstructor(op, nameBuffer);
 
-	if (documented) {
+        // if generating a file always document
+        if (documented || generatorPass != NONE_PASS) {
 	    // generate DocComment from tagged values
 	    String tv = generateTaggedValues (op, DOC_COMMENT_TAGS);
 	    if (tv != null && tv.length() > 0) {
@@ -1086,9 +1095,6 @@ public class GeneratorCpp extends Generator2
 	    }
 	}
 
-        // 2002-07-14
-        // Jaap Branderhorst
-        // missing concurrency generation
         sb.append(operationIndent)
             .append(generateOperationPrefix(op));
 
@@ -1193,7 +1199,7 @@ public class GeneratorCpp extends Generator2
         StringBuffer sb = new StringBuffer(80);
 
         // list tagged values for documentation
-	if (documented) {
+        if (documented || generatorPass != NONE_PASS) {
 	    String tv = generateTaggedValues (attr, DOC_COMMENT_TAGS);
 	    if (tv != null && tv.length() > 0) {
 		sb.append (LINE_SEPARATOR).append (INDENT).append (tv);
@@ -1241,8 +1247,8 @@ public class GeneratorCpp extends Generator2
         sb.append(generateAttributeParameterModifier(param));
         sb.append(generateName(Model.getFacade().getName(param)));
 
-        // insert default value, if we are generating the header
-        if ((generatorPass == HEADER_PASS)
+        // insert default value, if we are generating the header or notation
+        if ((generatorPass != SOURCE_PASS)
             && (Model.getFacade().getDefaultValue(param) != null)) {
             sb.append(" = ");
             sb.append(Model.getFacade().getBody(
@@ -1293,7 +1299,7 @@ public class GeneratorCpp extends Generator2
         StringBuffer sb = new StringBuffer (80);
 
         // don't create class-Start for implementation in .cpp
-        if (generatorPass != HEADER_PASS) return sb;
+        if (generatorPass == SOURCE_PASS) return sb;
 
         String sClassifierKeyword;
         if (Model.getFacade().isAClass(cls) 
@@ -1357,7 +1363,7 @@ public class GeneratorCpp extends Generator2
         StringBuffer sb = new StringBuffer();
         if (Model.getFacade().isAClass(cls) 
                 || Model.getFacade().isAInterface(cls)) {
-            if ((verboseDocs) && (generatorPass == HEADER_PASS)) {
+            if ((verboseDocs) && (generatorPass != SOURCE_PASS)) {
                 String classifierkeyword = null;
                 if (Model.getFacade().isAClass(cls)) {
                     classifierkeyword = "class";
@@ -1370,7 +1376,7 @@ public class GeneratorCpp extends Generator2
 		            .append(" ").append(Model.getFacade().getName(cls))
 		                .append(LINE_SEPARATOR);
             }
-            if (generatorPass == HEADER_PASS)
+            if (generatorPass != SOURCE_PASS)
 		sb.append("};").append(LINE_SEPARATOR);
             sb.append(generateHeaderPackageEnd());
         }
@@ -1388,7 +1394,7 @@ public class GeneratorCpp extends Generator2
         // generate all parts in order: public, protected, private
         for (int i = 0; i < ALL_PARTS.length; i++) {
             if (parts[i].toString().trim().length() > 0) {
-                if (generatorPass == HEADER_PASS) {
+                if (generatorPass != SOURCE_PASS) {
                     sb.append(LINE_SEPARATOR);
                     sb.append(' ').append(PART_NAME[i]).append(':');
                     sb.append(LINE_SEPARATOR);
@@ -1421,10 +1427,28 @@ public class GeneratorCpp extends Generator2
      * generated for classes and interfaces only at the moment.
      */
     public String generateClassifier(Object cls) {
+        if (generatorPass == NONE_PASS && Model.getFacade().isAClass(cls)) {
+            // we're probably in the notation pane, so do a special trick
+            // to show both header and source
+            StringBuffer sb = new StringBuffer();
+            String name = Model.getFacade().getName(cls);
+            sb.append("// ").append(name).append(".h");
+            sb.append(LINE_SEPARATOR);
+            generatorPass = HEADER_PASS;
+            sb.append(generateClassifier(cls));
+            sb.append(LINE_SEPARATOR);
+            sb.append("// ").append(name).append(".cpp");
+            sb.append(LINE_SEPARATOR);
+            generatorPass = SOURCE_PASS;
+            sb.append(generateClassifier(cls));
+            generatorPass = NONE_PASS;
+            return sb.toString();
+        }
+        
         StringBuffer returnValue = new StringBuffer();
         StringBuffer start = generateClassifierStart(cls);
         if (((start != null) && (start.length() > 0))
-            || (generatorPass != HEADER_PASS)) {
+            || (generatorPass == SOURCE_PASS)) {
             StringBuffer typedefs = generateGlobalTypedefs(cls);
             StringBuffer body = generateClassifierBody(cls);
             StringBuffer end = generateClassifierEnd(cls);
@@ -2422,16 +2446,41 @@ public class GeneratorCpp extends Generator2
     /**
      * @see org.argouml.application.api.NotationProvider2#generateVisibility(java.lang.Object)
      */
-    public String generateVisibility(Object handle) {
-        if (Model.getFacade().isAAttribute(handle)) {
+    public String generateVisibility(Object o) {
+        if (Model.getFacade().isAAttribute(o)) {
             return "";
         }
-        if (Model.getFacade().isAFeature(handle)) {
-            handle = Model.getFacade().getVisibility(handle);
+        // cut'n'pasted from GeneratorJava.java
+        if (Model.getFacade().isAFeature(o)) {
+            Object tv = Model.getFacade().getTaggedValue(o, "src_visibility");
+            if (tv != null) {
+                String tagged = (String) Model.getFacade().getValue(tv);
+                if (tagged != null) {
+                    if (tagged.trim().equals("")
+                            || tagged.trim().toLowerCase().equals("default")) {
+                        return "";
+                    } else {
+                        return tagged + ": ";
+                    }
+                }
+            }
         }
-        if (Model.getFacade().isPublic(handle)) return "public ";
-        if (Model.getFacade().isPrivate(handle)) return "private ";
-        if (Model.getFacade().isProtected(handle)) return "protected ";
+        if (Model.getFacade().isAModelElement(o)) {
+            if (Model.getFacade().isPublic(o))
+                return "public: ";
+            if (Model.getFacade().isPrivate(o))
+                return "private: ";
+            if (Model.getFacade().isProtected(o))
+                return "protected: ";
+        }
+        if (Model.getFacade().isAVisibilityKind(o)) {
+            if (Model.getVisibilityKind().getPublic().equals(o))
+                return "public: ";
+            if (Model.getVisibilityKind().getPrivate().equals(o))
+                return "private: ";
+            if (Model.getVisibilityKind().getProtected().equals(o))
+                return "protected: ";
+        }
         return "";
     }
 
@@ -2599,7 +2648,10 @@ public class GeneratorCpp extends Generator2
                     if (extraIncludes.indexOf("#include <map>") == -1) {
                         extraIncludes += "#include <map>" + LINE_SEPARATOR;
                     }
-                    sb.append("map<string, ");
+                    if (extraIncludes.indexOf("#include <string>") == -1) {
+                        extraIncludes += "#include <string>" + LINE_SEPARATOR;
+                    }
+                    sb.append(stdPrefix + "map<" + stdPrefix + "string, ");
                     if (modifier.indexOf('&') != -1) {
                         LOG.warn("cannot generate STL container "
                                 + "with references, using pointers");
@@ -2622,7 +2674,7 @@ public class GeneratorCpp extends Generator2
                 if (extraIncludes.indexOf(includeLine) == -1) {
                     extraIncludes += includeLine + LINE_SEPARATOR;
                 }
-                sb.append(containerType).append("< ");
+                sb.append(stdPrefix).append(containerType).append("< ");
                 if (modifier.indexOf('&') != -1) {
                     LOG.warn("cannot generate STL container "
                             + "with references, using pointers");
