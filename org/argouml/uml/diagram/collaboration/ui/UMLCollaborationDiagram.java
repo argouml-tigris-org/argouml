@@ -234,7 +234,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
             cat.error("Collaboration Diagram does not belong to a namespace");
             return;
         }
-        Collection ownedElements = getNamespace().getOwnedElements();
+        Collection ownedElements = ModelFacade.getOwnedElements(getNamespace());
         Iterator oeIterator = ownedElements.iterator();
         Layer lay = getLayer();
         while (oeIterator.hasNext()) {

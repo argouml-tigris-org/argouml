@@ -36,6 +36,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.Action;
 
 import org.apache.log4j.Category;
+
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
@@ -44,18 +45,11 @@ import org.argouml.uml.diagram.state.ui.ActionCreatePseudostate;
 import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionAddNote;
+
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-
-import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
-import ru.novosoft.uml.behavior.state_machines.MFinalState;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /** Enabling an activity diagram connected to an
  * actor has been requested as a feature.
@@ -73,27 +67,17 @@ public class UMLActivityDiagram extends UMLDiagram {
     protected static Action _actionState =
         new CmdCreateNode((Class) ModelFacade.ACTION_STATE, "ActionState");
 
-    // start state, end state, forks, joins, etc.
-    protected static Action _actionStartPseudoState =
-        new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
-
-    protected static Action _actionFinalPseudoState =
-        new CmdCreateNode(MFinalState.class, "FinalState");
-
-    protected static Action _actionBranchPseudoState =
-        new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
-
-    protected static Action _actionForkPseudoState =
-        new ActionCreatePseudostate(MPseudostateKind.FORK, "Fork");
-
-    protected static Action _actionJoinPseudoState =
-        new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
-
+    protected static Action _actionStartPseudoState;
+    protected static Action _actionFinalPseudoState;
+    protected static Action _actionBranchPseudoState;
+    protected static Action _actionForkPseudoState;
+    protected static Action _actionJoinPseudoState;
+    
     protected static Action _actionTransition =
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MTransition.class,
+		       (Class) ModelFacade.TRANSITION,
 		       "Transition");
 
     ////////////////////////////////////////////////////////////////
@@ -107,17 +91,39 @@ public class UMLActivityDiagram extends UMLDiagram {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) {
         }
+        
+        try{
+            // start state, end state, forks, joins, etc.
+            _actionStartPseudoState =
+            new ActionCreatePseudostate(
+            ((Class) ModelFacade.INITIAL_PSEUDOSTATEKIND).newInstance(), "Initial");
+            
+            _actionFinalPseudoState =
+            new CmdCreateNode((Class) ModelFacade.FINALSTATE, "FinalState");
+            
+            _actionBranchPseudoState =
+            new ActionCreatePseudostate(
+            ((Class) ModelFacade.BRANCH_PSEUDOSTATEKIND).newInstance(), "Branch");
+            
+            _actionForkPseudoState =
+            new ActionCreatePseudostate(
+            ((Class) ModelFacade.FORK_PSEUDOSTATEKIND).newInstance(), "Fork");
+            
+            _actionJoinPseudoState =
+            new ActionCreatePseudostate(
+            ((Class) ModelFacade.JOIN_PSEUDOSTATEKIND).newInstance(), "Join");
+        }catch(Exception ex){}
     }
 
-    public UMLActivityDiagram(MNamespace m) {
+    public UMLActivityDiagram(Object m) {
         this();
         setNamespace(m);
-        MStateMachine sm = getStateMachine();
+        Object context = ModelFacade.getContext(getStateMachine());
         String name = null;
-        if (sm.getContext() != null
-            && sm.getContext().getName() != null
-            && sm.getContext().getName().length() > 0) {
-            name = sm.getContext().getName();
+        if (context != null
+            && ModelFacade.getName(context) != null
+            && ModelFacade.getName(context).length() > 0) {
+            name = ModelFacade.getName(context);
             try {
                 setName(name);
             } catch (PropertyVetoException pve) {
@@ -125,19 +131,26 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
     }
 
-    public UMLActivityDiagram(MNamespace m, MActivityGraph agraph) {
+    public UMLActivityDiagram(Object namespace, Object agraph) {
 
         this();
-        if (m != null && m.getName() != null) {
+        
+        if(!ModelFacade.isANamespace(namespace) || 
+           !ModelFacade.isAActivityGraph(agraph))
+            throw new IllegalArgumentException();
+        
+        if (namespace != null && 
+            ModelFacade.getName(namespace) != null) {
             String name =
-                m.getName() + " activity " + (m.getBehaviors().size());
+                ModelFacade.getName(namespace) + " activity " + 
+                (ModelFacade.getBehaviors(namespace).size());
             try {
                 setName(name);
             } catch (PropertyVetoException pve) {
             }
         }
-        if (m != null)
-            setup(m, agraph);
+        if (namespace != null)
+            setup(namespace, agraph);
         else 
             throw new NullPointerException("Namespace may not be null");
     }
@@ -145,10 +158,9 @@ public class UMLActivityDiagram extends UMLDiagram {
     public void initialize(Object o) {
         if (!(org.argouml.model.ModelFacade.isAActivityGraph(o)))
             return;
-        MActivityGraph sm = (MActivityGraph) o;
-        MModelElement context = sm.getContext();
+        Object context = ModelFacade.getContext(o);
         if (context != null && org.argouml.model.ModelFacade.isANamespace(context))
-            setup((MNamespace) context, sm);
+            setup(context, o);
         else
             cat.debug("ActivityGraph without context not yet possible :-(");
     }
@@ -158,8 +170,8 @@ public class UMLActivityDiagram extends UMLDiagram {
      * 
      * each diagram type has a similar <I>UMLxxxDiagram</I> class.
      *
-     * @param m  MNamespace from the model in NSUML...
-     * @param agraph MActivityGraph from the model in NSUML...
+     * @param m  Namespace from the model
+     * @param agraph ActivityGraph from the model
      * @modified changed <I>lay</I> from <I>LayerPerspective</I> to
      * <I>LayerPerspectiveMutable</I>.  This class is a child of
      * <I>LayerPerspective</I> and was implemented to correct some
@@ -168,7 +180,12 @@ public class UMLActivityDiagram extends UMLDiagram {
      * deleting layers on the diagram...  psager@tigris.org Jan. 24,
      * 2oo2
      */
-    public void setup(MNamespace m, MActivityGraph agraph) {
+    public void setup(Object m, Object agraph) {
+        
+        if(!ModelFacade.isANamespace(m) || 
+           !ModelFacade.isAActivityGraph(agraph))
+            throw new IllegalArgumentException();
+        
         super.setNamespace(m);
         StateDiagramGraphModel gm = new StateDiagramGraphModel();
         gm.setNamespace(m);
@@ -176,7 +193,8 @@ public class UMLActivityDiagram extends UMLDiagram {
             gm.setMachine(agraph);
         }
         setGraphModel(gm);
-        LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+        LayerPerspective lay = 
+                new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
         setLayer(lay);
         StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
         lay.setGraphNodeRenderer(rend);
@@ -185,17 +203,21 @@ public class UMLActivityDiagram extends UMLDiagram {
 
     public Object getOwner() {
         StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
-        MStateMachine sm = gm.getMachine();
+        Object sm = gm.getMachine();
         if (sm != null)
             return sm;
         return gm.getNamespace();
     }
 
-    public MStateMachine getStateMachine() {
+    public Object getStateMachine() {
         return ((StateDiagramGraphModel) getGraphModel()).getMachine();
     }
 
-    public void setStateMachine(MStateMachine sm) {
+    public void setStateMachine(Object sm) {
+        
+        if(!ModelFacade.isAStateMachine(sm))
+            throw new IllegalArgumentException();
+        
         ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
     }
 

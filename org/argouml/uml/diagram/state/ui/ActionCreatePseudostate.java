@@ -32,13 +32,12 @@ package org.argouml.uml.diagram.state.ui;
 import java.util.Hashtable;
 
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.model.ModelFacade;
+
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
-
-
 /**  */
-
 public class ActionCreatePseudostate extends CmdCreateNode {
 
     ////////////////////////////////////////////////////////////////
@@ -46,10 +45,13 @@ public class ActionCreatePseudostate extends CmdCreateNode {
 
     /** Construct a new Cmd with the given classes for the NetNode
      *  and its FigNode. */
-    public ActionCreatePseudostate(MPseudostateKind kind, String name) {
+    public ActionCreatePseudostate(Object kind, String name) {
 	super(new Hashtable(), name);
-	setArg("className", MPseudostate.class);
-	//??? don't know, Toby, nsuml
+        
+        if(!ModelFacade.isAPseudostateKind(kind))
+            throw new IllegalArgumentException();
+        
+	setArg("className", (Class)ModelFacade.PSEUDOSTATE);
 	setArg("kind", kind);
     }
 

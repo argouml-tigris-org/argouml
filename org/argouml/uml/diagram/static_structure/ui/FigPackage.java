@@ -189,7 +189,7 @@ public class FigPackage extends FigNodeModelElement {
 			    while (diagEnum.hasMoreElements()) {
 				UMLDiagram lDiagram =
 				    (UMLDiagram) diagEnum.nextElement();
-				MNamespace lDiagramNS = lDiagram.getNamespace();
+				MNamespace lDiagramNS = (MNamespace)lDiagram.getNamespace();
 				if ((lNS == null && lDiagramNS == null)
 				    || (lNS.equals(lDiagramNS))) {
 				    /* save first */

@@ -74,7 +74,7 @@ public class ActionGenerateProjectCode extends UMLAction {
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram))
 	    return;
-	ru.novosoft.uml.foundation.core.MNamespace ns =
+	ru.novosoft.uml.foundation.core.MNamespace ns =(MNamespace)
 	    ((org.argouml.uml.diagram.ui.UMLDiagram) activeDiagram).getNamespace();
 	if (ns == null) return;
 	while (ns.getNamespace() != null) ns = ns.getNamespace();

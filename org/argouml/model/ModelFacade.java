@@ -212,6 +212,7 @@ public class ModelFacade {
     public static final Object COMPOSITESTATE     = MCompositeState.class;
     public static final Object STATEVERTEX        = MStateVertex.class;
     public static final Object PSEUDOSTATE        = MPseudostate.class;
+    public static final Object FINALSTATE         = MFinalState.class;
     public static final Object USE_CASE           = MUseCase.class;
 
     // Invisible model elements
@@ -845,6 +846,15 @@ public class ModelFacade {
         return handle instanceof MPseudostate;
     }
 
+    /** Recognizer for PseudostateKind
+     *
+     * @param handle candidate
+     * @returns true if handle is a PseudostateKind
+     */
+    public static boolean isAPseudostateKind(Object handle) {
+        return handle instanceof MPseudostateKind;
+    }
+    
     // TODO - Do we need this as well as getKind - I think not
     public static Object getPseudostateKind(Object handle) {
         if (handle instanceof MPseudostate) {
