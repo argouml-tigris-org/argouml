@@ -50,21 +50,24 @@ public class ActionCut extends AbstractAction implements CaretListener {
 
     private static ActionCut _Instance = new ActionCut();
 
+    private static final String LOCALIZE_KEY = "action.cut";
+
     ////////////////////////////////////////////////////////////////
     // constructors
 
     private ActionCut() {
+        super(Translator.localize("CoreMenu", LOCALIZE_KEY));
         Icon icon =
             ResourceLoaderWrapper
                 .getResourceLoaderWrapper()
                 .lookupIconResource(
-                Translator.getImageBinding("action.cut"),
-                Translator.localize("CoreMenu", "action.cut"));
+                Translator.getImageBinding(LOCALIZE_KEY),
+                Translator.localize("CoreMenu", LOCALIZE_KEY));
         if (icon != null)
             putValue(Action.SMALL_ICON, icon);
         putValue(
             Action.SHORT_DESCRIPTION,
-            Translator.localize("CoreMenu", "action.cut") + " ");
+            Translator.localize("CoreMenu", LOCALIZE_KEY) + " ");
     }
 
     public static ActionCut getInstance() {

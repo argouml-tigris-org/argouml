@@ -59,6 +59,8 @@ public class ActionPaste
 
     private static ActionPaste _Instance = new ActionPaste();
 
+    private static final String LOCALIZE_KEY = "action.paste";
+
     /**
      * Default constructor for action. We cannot use UMLChangeAction as a parent
      * for this class since it works with shouldBeEnabled etc. which doesn't give
@@ -66,17 +68,18 @@ public class ActionPaste
      *
      */
     private ActionPaste() {
+        super(Translator.localize("CoreMenu", LOCALIZE_KEY));
         Icon icon =
             ResourceLoaderWrapper
                 .getResourceLoaderWrapper()
                 .lookupIconResource(
-                Translator.getImageBinding("action.paste"),
-                Translator.localize("CoreMenu", "action.paste"));
+                Translator.getImageBinding(LOCALIZE_KEY),
+                Translator.localize("CoreMenu", LOCALIZE_KEY));
         if (icon != null)
             putValue(Action.SMALL_ICON, icon);
         putValue(
             Action.SHORT_DESCRIPTION,
-            Translator.localize("CoreMenu", "action.paste") + " ");
+            Translator.localize("CoreMenu", LOCALIZE_KEY) + " ");
         // setEnabled((Globals.clipBoard != null && !Globals.clipBoard.isEmpty()) || !isSystemClipBoardEmpty());
         setEnabled(false);
     }
