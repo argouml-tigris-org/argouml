@@ -397,7 +397,7 @@ public class ArgoParser extends SAXParserBase {
      * Work still in progress (Bob Tarling).
      */
     private InputStream openStreamAtXmi(URL theUrl) throws IOException {
-        XmiInputStream is = new XmiInputStream(theUrl.openStream());
+        XmlInputStream is = new XmlInputStream(theUrl.openStream(), "XMI");
         return is;
     }
 
@@ -463,30 +463,40 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * A BufferInputStream that is aware of the argo file format and returns
-     * only the data within the member tags of type "xmi".
+     * A BufferInputStream that is aware of XML structure.
+     * It can searches for the first occurence of a named tag
+     * and reads only the data (inclusively) from that tag
+     * to the matching end tag.
+     * The tag is not expected to be an empty tag.
      * @author Bob Tarling
      */
-    private class XmiInputStream extends BufferedInputStream {
+    private class XmlInputStream extends BufferedInputStream {
 
         private boolean xmiStarted;
         private boolean inTag;
-        private StringBuffer tag;
+        private StringBuffer currentTag = new StringBuffer();
         private boolean endStream;
+        private String tagName;
+        private String endTagName;
         
         /**
          * Construct a new XmiInputStream
-         * @param in
+         * @param in the input stream to wrap.
+         * @param tag the tag name from which to start reading
          */
-        public XmiInputStream(InputStream in) {
+        public XmlInputStream(InputStream in, String theTag) {
             super(in);
+            this.tagName = theTag;
+            this.endTagName = '/' + theTag;
         }
         
+        /**
+         * @see java.io.InputStream#read()
+         */
         public synchronized int read() throws IOException {
             
             if (!xmiStarted) {
-                readUntil("<member type=\"xmi\"");
-                while (super.read() != '>');
+                skipToTag();
                 xmiStarted = true;
             }
             if (endStream) {
@@ -497,16 +507,17 @@ public class ArgoParser extends SAXParserBase {
             return ch;
         }
         
+        /**
+         * @see java.io.InputStream#read(byte[], int, int)
+         */
         public synchronized int read(byte[] b, int off, int len)
             throws IOException {
             
             if (!xmiStarted) {
-                readUntil("<member type=\"xmi\"");
-                while (super.read() != '>');
+                skipToTag();
                 xmiStarted = true;
             }
             if (endStream) {
-                b[0] = -1;
                 return -1;
             }
             int read = super.read(b, off, len);
@@ -532,8 +543,7 @@ public class ArgoParser extends SAXParserBase {
         public int read(byte[] b) throws IOException {
             
             if (!xmiStarted) {
-                readUntil("<member type=\"xmi\"");
-                while (super.read() != '>');
+                skipToTag();
                 xmiStarted = true;
             }
             if (endStream) {
@@ -561,22 +571,25 @@ public class ArgoParser extends SAXParserBase {
         }
         
         /**
-         * Determines if the character is the last character of the last tag of interest.
-         * Every character read should be passed through
-         * @param ch
-         * @return
+         * Determines if the character is the last character of the last tag of
+         * interest.
+         * Every character read after the first tag of interest should be passed
+         * through this method in order.
+         * 
+         * @param ch the character to test.
+         * @return true if this is the end of the last tag.
          */
         private boolean isLastTag(int ch) {
             if (ch == '<') {
                 inTag = true;
-                tag = new StringBuffer();
+                currentTag.setLength(0);
             } else if (ch == '>') {
                 inTag = false;
-                if (tag.toString().equals("/XMI")) {
+                if (currentTag.toString().equals(endTagName)) {
                     return true;
                 }
             } else if (inTag) {
-                tag.append((char) ch);
+                currentTag.append((char) ch);
             }
             return false;
         }
@@ -588,25 +601,45 @@ public class ArgoParser extends SAXParserBase {
          * @param search the characters to search for.
          * @throws IOException
          */
-        private void readUntil(String search) throws IOException {
-            char[] searchChars = search.toCharArray();
+        private void skipToTag() throws IOException {
+            char[] searchChars = tagName.toCharArray();
             int i;
             boolean found;
             while (true) {
-                // Keep reading till we get the first character.
-                while (super.read() != searchChars[0]);
+                mark(tagName.length() + 3);
+                // Keep reading till we get the left bracket of an opening tag
+                while (realRead() != '<') {
+                    mark(tagName.length() + 3);
+                }
                 found = true;
-                // Compare each following character
-                for (i = 1; i < search.length(); ++i) {
-                    if (super.read() != searchChars[i]) {
+                // Compare each following character to see
+                // that it matches the tag we want
+                for (i = 0; i < tagName.length(); ++i) {
+                    if (realRead() != searchChars[i]) {
                         found = false;
                         break;
                     }
                 }
-                if (found) {
+                int terminator = realRead();
+                // We also want to match with the right bracket of the tag or
+                // some other terminator
+                if (found && isNameTerminator((char) terminator)) {
+                    reset();
                     return;
                 }
             }
+        }
+
+        private boolean isNameTerminator(char ch) {
+            return (ch == '>' || Character.isWhitespace(ch));
+        }
+                        
+        private int realRead() throws IOException {
+            int read = super.read();
+            if (read == -1) {
+                throw new IOException("Tag " + tagName + " not found");
+            }
+            return read;
         }
     }
 } /* end class ArgoParser */
