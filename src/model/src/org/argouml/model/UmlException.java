@@ -71,8 +71,16 @@ public class UmlException extends Exception {
      * @param c the cause of the exception
      */
     public UmlException(String message, Throwable c) {
-	super(message);
-	cause = c;
+        super(message);
+        cause = c;
+    }
+
+    /**
+     * @param c the cause of the exception
+     */
+    public UmlException(Throwable c) {
+        super();
+        cause = c;
     }
 
     /**

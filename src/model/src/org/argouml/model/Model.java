@@ -24,6 +24,8 @@
 
 package org.argouml.model;
 
+import java.io.Writer;
+
 import org.apache.log4j.Logger;
 
 
@@ -389,6 +391,27 @@ public final class Model {
         return impl.getVisibilityKind();
     }
 
+    /**
+     * Getter for the XmiReader object
+     * 
+     * @return the object implementing the XmiReader interface
+     * @throws UmlException on any error while reading
+     */
+    public static XmiReader getXmiReader() throws UmlException {
+        return impl.getXmiReader();
+    }
+    
+    /**
+     * Getter for the XmiWriter object
+     * 
+     * @return the object implementing the XmiWriter interface
+     * @throws UmlException on any error while writing
+     */
+    public static XmiWriter getXmiWriter(Object model, Writer writer)
+            throws UmlException {
+        return impl.getXmiWriter(model, writer);
+    }
+    
     /**
      * @return <code>true</code> if the Model subsystem is correctly initiated.
      */

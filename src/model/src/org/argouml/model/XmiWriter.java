@@ -22,15 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model.uml;
-
-import java.io.IOException;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-import org.apache.log4j.Logger;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
+package org.argouml.model;
 
 /**
  * A wrapper around the genuine XmiReader that provides public
@@ -38,45 +30,11 @@ import org.xml.sax.SAXException;
  *
  * @author Bob Tarling
  */
-public class XmiReader {
-    private static final Logger LOG = Logger.getLogger(XmiReader.class);
-
-    private NsumlXmiReader nsumlXmiReader;
+public interface XmiWriter {
 
     /**
-     * Constructor for XMIReader.
-     * @throws SAXException when there is a XML problem
-     * @throws ParserConfigurationException if a parser cannot
-     * be created which satisfies the requested configuration
+     * Write XMI to registered writer
+     * @throws SAXException if it goes wrong
      */
-    public XmiReader() throws SAXException, ParserConfigurationException {
-        nsumlXmiReader = new NsumlXmiReader();
-    }
-
-    /**
-     * Parses a given inputsource to a model. Does not override the novosoft
-     * parse method since that does not have the right signature.
-     * @param pIs the input source for parsing
-     * @return MModel the UML model
-     * @throws SAXException if there is an XML problem
-     * @throws IOException if there is a file I/O problem
-     */
-    public Object parseToModel(InputSource pIs)
-        throws SAXException, IOException {
-	return nsumlXmiReader.parseToModel(pIs);
-    }
-
-//    /**
-//     * @return true if there were errors
-//     */
-//    public boolean getErrors() {
-//        return nsumlXmiReader.getErrors();
-//    }
-
-    /**
-     * @return the map
-     */
-    public Map getXMIUUIDToObjectMap() {
-        return nsumlXmiReader.getXMIUUIDToObjectMap();
-    }
+    public void write() throws UmlException;
 }

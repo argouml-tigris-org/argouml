@@ -24,6 +24,9 @@
 
 package org.argouml.model;
 
+import java.io.Writer;
+
+
 /**
  * The interface that the ModelImplementation must implement. This is the
  * class finding all helpers and factories.
@@ -255,4 +258,20 @@ public interface ModelImplementation {
      * @return The object implementing the interface.
      */
     VisibilityKind getVisibilityKind();
+    
+    /**
+     * Getter for the XmiReader object
+     * 
+     * @return the object implementing the XmiReader interface
+     * @throws UmlException on any error while reading
+     */
+    XmiReader getXmiReader() throws UmlException;
+    
+    /**
+     * Getter for the XmiWriter object
+     * 
+     * @return the object implementing the XmiWriter interface
+     * @throws UmlException on any error while writing
+     */
+    XmiWriter getXmiWriter(Object model, Writer writer) throws UmlException;
 }
