@@ -928,7 +928,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	public MClass buildClass() {
 		MClass cl = createClass();
 		// cl.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
-		cl.setName("annon");
+		cl.setName("anon");
 		cl.setStereotype(null);
 		cl.setAbstract(false);
 		cl.setActive(false);
@@ -1232,6 +1232,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		oper.setRoot(false);
 		oper.setQuery(false);
 		oper.setOwnerScope(MScopeKind.INSTANCE);
+        oper.setNamespace(cls);
 		oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
 
 		MParameter returnParameter = buildParameter(oper);
