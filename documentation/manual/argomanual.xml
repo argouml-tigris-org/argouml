@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!DOCTYPE book SYSTEM "docbookx/docbookx.dtd">
+<!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd">
 <book>
 	<bookinfo>
 		<date>2/22/2000
