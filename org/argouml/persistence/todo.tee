@@ -44,7 +44,7 @@ UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="org.argouml.uml.cognitive.ProjectMemberTodoList">
 <![CDATA[
-<?xml version = "1.0" encoding = "ISO-8859-1" ?>
+<?xml version = "1.0" encoding = "UTF-8" ?>
 <!DOCTYPE todo SYSTEM "todo.dtd" >
 <todo>
 <todolist>
