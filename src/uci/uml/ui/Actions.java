@@ -267,7 +267,7 @@ class ActionNew extends UMLAction {
 } /* end class ActionNew */
 
 class ActionOpenProject extends UMLAction {
-  public static final String separator = "/"; //System.getProperty("file.separator");
+  public static final String separator = System.getProperty("file.separator");
   public ActionOpenProject() { super("Open Project..."); }
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -289,9 +289,9 @@ class ActionOpenProject extends UMLAction {
     }
 
     try {
-      JFileChooser chooser = null;
 
-      new JFileChooser(Globals.getLastDirectory());
+      String directory = Globals.getLastDirectory();
+      JFileChooser chooser = new JFileChooser(directory);
      	
       if (chooser == null) chooser = new JFileChooser();
 
@@ -304,11 +304,12 @@ class ActionOpenProject extends UMLAction {
       if (retval == 0) {
 	File theFile = chooser.getSelectedFile();
 	if (theFile != null) {
-	  String path = chooser.getSelectedFile().getParent() + separator;
+	  String path = chooser.getSelectedFile().getParent();
 	  String filename = chooser.getSelectedFile().getName();
+          filename = path + separator + filename;
 	  if (!filename.endsWith(Project.FILE_EXT)) {
 	    filename += Project.FILE_EXT;
-	    theFile = new File(path + filename);
+	    theFile = new File(filename);
 	  }
 	  Globals.setLastDirectory(path);
 	  if (filename != null) {
@@ -319,7 +320,7 @@ class ActionOpenProject extends UMLAction {
 	    p.loadAllMembers();
 	    p.postLoad();
 	    pb.setProject(p);
-	    pb.showStatus("Read " + path + filename);
+	    pb.showStatus("Read " + filename);
 	    return;
 	  }
 	}
