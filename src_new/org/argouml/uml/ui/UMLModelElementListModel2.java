@@ -272,7 +272,8 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
             ((MBase)_target).removeMElementListener(this);
         }
         _target = target;
-        if (target instanceof MBase) {
+        if (_target instanceof MBase) {
+            ((MBase)_target).removeMElementListener(this);
             ((MBase)_target).addMElementListener(this);
         }
     }
