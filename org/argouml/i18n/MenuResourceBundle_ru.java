@@ -75,7 +75,7 @@ public class MenuResourceBundle_ru extends ListResourceBundle {
         {"CollaborationDiagram", "Диаграмма коопераций" },  
         {"DeploymentDiagram", "Диаграмма развертывания" },  
         {"SequenceDiagram", "Диаграмма последовательности" },  
-        {"Add Attribute", "Добавить атрибут" },  
+        {"button.add-attribute", "Добавить атрибут" },  
         {"Add Operation", "Добавить операцию" },  
         {"Add Message", "Добавить сообщение" },  
         {"Add Internal Transition", "Добавить внутренний переход" },  
