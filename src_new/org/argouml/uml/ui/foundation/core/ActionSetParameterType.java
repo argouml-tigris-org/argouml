@@ -59,7 +59,6 @@ public class ActionSetParameterType extends UMLChangeAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
         Object source = e.getSource();
         MClassifier oldClassifier = null;
         MClassifier newClassifier = null;
@@ -82,6 +81,7 @@ public class ActionSetParameterType extends UMLChangeAction {
 				      newClassifier,
 				      para.getModel());
             para.setType(newClassifier);
+            super.actionPerformed(e);
         }
         
     }

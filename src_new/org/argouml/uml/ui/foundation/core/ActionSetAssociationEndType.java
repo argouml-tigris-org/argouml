@@ -57,7 +57,6 @@ public class ActionSetAssociationEndType extends UMLChangeAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
         Object source = e.getSource();
         MClassifier oldClassifier = null;
         MClassifier newClassifier = null;
@@ -76,6 +75,7 @@ public class ActionSetAssociationEndType extends UMLChangeAction {
         }
         if (newClassifier != oldClassifier && end != null && newClassifier != null) {
             end.setType(newClassifier);
+            super.actionPerformed(e);
         }
         
     }
