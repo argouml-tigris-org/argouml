@@ -128,7 +128,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("Package"), 
+        new PropPanelButton(this, lookupIcon("Package"), 
                 Translator.localize("button.new-package"), 
                 "addPackage", null);
         addButton(new PropPanelButton2(this, 

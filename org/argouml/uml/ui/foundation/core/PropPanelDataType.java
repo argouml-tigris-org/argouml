@@ -96,14 +96,14 @@ public class PropPanelDataType extends PropPanelClassifier {
 
         addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("DataType"), 
+        new PropPanelButton(this, lookupIcon("DataType"), 
                 Translator.localize("button.new-datatype"), 
                 "newDataType", null);
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("NewAttribute"), 
+        new PropPanelButton(this, lookupIcon("NewAttribute"), 
             Translator.localize("button.new-enumeration-literal"),
             "addAttribute", null);
 
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("NewOperation"), 
+        new PropPanelButton(this, lookupIcon("NewOperation"), 
                 Translator.localize(
                 "button.new-operation"), "addOperation", null);
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));

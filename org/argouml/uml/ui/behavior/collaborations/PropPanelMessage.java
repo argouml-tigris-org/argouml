@@ -108,7 +108,7 @@ public class PropPanelMessage extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("Message"),
+        new PropPanelButton(this, lookupIcon("Message"),
 	    Translator.localize("button.new-action"),
 	    "addAction",
 	    "isAddActionEnabled");

@@ -57,7 +57,7 @@ public class PropPanelSubsystem extends PropPanelPackage {
         addField(Translator.localize("label.available-features"),
                 getFeatureScroll());
 
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("NewOperation"), 
+        new PropPanelButton(this, lookupIcon("NewOperation"), 
                 Translator.localize("button.new-operation"), 
                 "addOperation", null);
     }

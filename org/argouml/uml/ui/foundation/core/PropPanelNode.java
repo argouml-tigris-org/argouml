@@ -78,7 +78,7 @@ public class PropPanelNode extends PropPanelClassifier {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("Reception"), 
+        new PropPanelButton(this, lookupIcon("Reception"), 
                 Translator.localize("button.new-reception"), 
                 getActionNewReception());
         addButton(new PropPanelButton2(this, 

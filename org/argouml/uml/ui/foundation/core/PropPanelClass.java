@@ -105,10 +105,10 @@ public class PropPanelClass extends PropPanelClassifier {
         addButton(new PropPanelButton2(this, 
                         new ActionAddOperation()));
         addButton(new PropPanelButton2(this, getActionNewReception()));
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("InnerClass"), 
+        new PropPanelButton(this, lookupIcon("InnerClass"), 
                 Translator.localize("button.new-inner-class"),
                 "addInnerClass", null);
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("Class"), 
+        new PropPanelButton(this, lookupIcon("Class"), 
                 Translator.localize(
                 "button.new-class"), "newClass", null);
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));

@@ -104,7 +104,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("Stereotype"), 
+        new PropPanelButton(this, lookupIcon("Stereotype"), 
                 Translator.localize("button.new-stereotype"), 
                 "newStereotype", null);
         addButton(new PropPanelButton2(this, 

@@ -87,7 +87,7 @@ public class PropPanelSignal extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, getButtonPanel(), 
+        new PropPanelButton(this, 
                 lookupIcon("SignalSending"), 
                 Translator.localize("button.new-signal"), 
                 "newSignal", null);

@@ -59,7 +59,7 @@ public class PropPanelAbstraction extends PropPanelDependency {
                 getClientScroll());
 
         // TODO: add Mapping
-        new PropPanelButton(this, getButtonPanel(), 
+        new PropPanelButton(this, 
                 ResourceLoaderWrapper.lookupIconResource("NavigateUp"), 
                 Translator.localize("button.go-up"), 
                 "navigateUp", null);
