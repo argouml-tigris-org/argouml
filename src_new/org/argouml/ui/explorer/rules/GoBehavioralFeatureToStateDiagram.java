@@ -44,9 +44,6 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
  */
 public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
-     */
     public Collection getChildren(Object parent) {
         
         if (ModelFacade.isABehavioralFeature(parent)) {
@@ -78,9 +75,7 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
 	return null;
     }
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getRuleName()
-     */
+    
     public String getRuleName() {
         return Translator.localize (
                 "misc.behavioral-feature.statechart-diagram");

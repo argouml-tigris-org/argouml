@@ -48,9 +48,6 @@ public class GoMachineToState extends AbstractPerspectiveRule {
         return Translator.localize ("misc.state-machine.state");
     }
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
-     */
     public Collection getChildren(Object parent) {
         
         if (ModelFacade.isAStateMachine(parent)) {

@@ -47,9 +47,6 @@ public class GoOperationToCollaboration extends AbstractPerspectiveRule {
         return Translator.localize ("misc.operation.collaboration");
     }
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
-     */
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAOperation(parent)) {
             return ModelFacade.getCollaborations(parent);

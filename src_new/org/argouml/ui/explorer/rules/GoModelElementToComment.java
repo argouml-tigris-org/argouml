@@ -40,9 +40,7 @@ import org.argouml.model.ModelFacade;
  */
 public class GoModelElementToComment extends AbstractPerspectiveRule {
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
-     */
+    
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAModelElement(parent)) {
             return ModelFacade.getComments(parent);
@@ -50,9 +48,6 @@ public class GoModelElementToComment extends AbstractPerspectiveRule {
         return null;
     }
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getRuleName()
-     */
     public String getRuleName() {
         return Translator.localize ("misc.model-element.comment");
     }

@@ -40,9 +40,6 @@ import org.argouml.model.ModelFacade;
  */
 public class GoStateToExit extends AbstractPerspectiveRule {
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
-     */
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAState(parent)
 	        && ModelFacade.getExit(parent) != null) {
@@ -65,9 +62,6 @@ public class GoStateToExit extends AbstractPerspectiveRule {
 	return null;
     }
 
-    /**
-     * @see org.argouml.ui.AbstractGoRule#getRuleName()
-     */
     public String getRuleName() {
         return Translator.localize ("misc.state.exit");
     }
