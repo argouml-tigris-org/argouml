@@ -33,9 +33,9 @@ import java.util.Collection;
  */
 public interface SourcePathController {
     /** 
-     * From a model element retrieve its source path or null if it does not have 
-     * a direct one (if that happens, you must use recursively its parent or the 
-     * parent's parent)
+     * From a model element retrieve its source path or null if it 
+     * does not have a direct one (if that happens, you must use 
+     * recursively its parent or the parent's parent)
      * @param modelElement model element 
      * @return The file reference that represents the source file.
      */
@@ -74,6 +74,8 @@ public interface SourcePathController {
     /**
      * Retrieve a collection of all model elements that have source path 
      * settings.
+     *
+     * @return the collection
      */
     public Collection getAllModelElementsWithSourcePath();
     
