@@ -136,6 +136,15 @@ public class ModelFacade {
 	return handle instanceof MGeneralizableElement;
     }
 
+    /** Recognizer for Interface
+     *
+     * @param handle candidate
+     * @returns true if handle is a Interface
+     */
+    public static boolean isAInterface(Object handle) {
+	return handle instanceof MInterface;
+    }
+
     /** Recognizer for Package
      *
      * @param handle candidate
@@ -165,16 +174,24 @@ public class ModelFacade {
      * @returns true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
-	if (handle instanceof MModelElement) {
-	    MModelElement element = (MModelElement) handle;
-	    MStereotype meSt = element.getStereotype();
+	return isStereotype(handle, "create");
+    }
 
-	    if (meSt == null) return false;
-	    
-	    String name = meSt.getName();
-	    if (name == null) return false;
 
-	    return name.equalsIgnoreCase("create");
+    /** Recognizer for attributes that are initialized.
+     *
+     * @param handle candidate
+     * @param true if the attribute is initialized.
+     */
+    public static boolean isInitialized(Object handle) {
+	if (handle instanceof MAttribute) {
+	    MExpression init = ((MAttribute)handle).getInitialValue();
+
+	    if (init != null
+		&& init.getBody() != null
+		&& init.getBody().trim().length() > 0)
+		return true;
+	    return false;
 	}
 
 	// ...
@@ -268,6 +285,16 @@ public class ModelFacade {
      * @returns true if handle is a singleton.
      */
     public static boolean isSingleton(Object handle) {
+	return isStereotype(handle, "singleton");
+    }
+
+    /** Recognizer for a specific stereotype.
+     *
+     * @param handle candidate
+     * @param stereotype a string that is the stereotype name.
+     * @returns true if handle is a singleton.
+     */
+    public static boolean isStereotype(Object handle, String stereotypename) {
 	if (handle instanceof MModelElement) {
 	    MModelElement element = (MModelElement) handle;
 	    MStereotype meSt = element.getStereotype();
@@ -277,14 +304,30 @@ public class ModelFacade {
 	    String name = meSt.getName();
 	    if (name == null) return false;
 
-	    return name.equalsIgnoreCase("singleton");
+	    return name.equalsIgnoreCase(stereotypename);
 	}
 
 	// ...
 	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Recognizer for type.
+     *
+     * @param handle candidate
+     * @returns true if handle is a type.
+     */
+    public static boolean isType(Object handle) {
+	return isStereotype(handle, "type");
+    }
 
+    /** Recognizer for utility.
+     *
+     * @param handle candidate
+     * @returns true if handle is a utility.
+     */
+    public static boolean isUtility(Object handle) {
+	return isStereotype(handle, "utility");
+    }
 
 
 
@@ -311,8 +354,8 @@ public class ModelFacade {
      * @return Iterator with association ends.
      */
     public static Iterator getAssociationEnds(Object handle) {
-	if (handle instanceof MClass) {
-	    Collection endc = ((MClass)handle).getAssociationEnds();
+	if (handle instanceof MClassifier) {
+	    Collection endc = ((MClassifier)handle).getAssociationEnds();
 	    if (endc == null)
 		return emptyIterator();
 	    return endc.iterator();
@@ -341,7 +384,25 @@ public class ModelFacade {
 	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
-    /** The list of Connections to an Association.
+
+    /** Get the child of a generalization.
+     *
+     * TODO: Check that the concepts parent and child exist in the UML model.
+     *
+     * @param handle generalization.
+     * @return the child.
+     */
+    public static Object getChild(Object handle) {
+	if (handle instanceof MGeneralization) {
+	    return ((MGeneralization)handle).getChild();
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+
+    /** The list of Connections or AssociationEnds to an Association.
      *
      * @param handle to the association.
      * @return an Iterator with all connections.
@@ -354,6 +415,43 @@ public class ModelFacade {
 	// ...
 	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+
+
+    /** The list of Generalizations from a GeneralizableElement.
+     *
+     * @param handle GeneralizableElement to retrieve from.
+     * @return Iterator with Generalizations
+     */
+    public static Iterator getGeneralizations(Object handle) {
+	if (handle instanceof MGeneralizableElement) {
+	    MGeneralizableElement ge = (MGeneralizableElement)handle;
+	    return ge.getGeneralizations().iterator();
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+
+    /** Get the namespace of an element.
+     *
+     * @param handle the model element that we are getting the namespace of
+     * @returns the namespace (or null)
+     */
+    public static Object getNamespace(Object handle) {
+	if (handle == null)
+	    return null;
+	if (handle instanceof MModel)
+	    return handle;
+	if (handle instanceof MSubsystem)
+	    return handle;
+	if (handle instanceof MModelElement)
+	    return getNamespace(((MModelElement)handle).getNamespace());
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
 
     /** The list of operations
      *
@@ -432,6 +530,24 @@ public class ModelFacade {
 	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+
+    /** Get the parent of a generalization.
+     *
+     * TODO: Check that the concepts parent and child exist in the UML model.
+     *
+     * @param handle generalization.
+     * @return the parent.
+     */
+    public static Object getParent(Object handle) {
+	if (handle instanceof MGeneralization) {
+	    return ((MGeneralization)handle).getParent();
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+
     /** The list of Specializations from a GeneralizableElement.
      *
      * @param handle GeneralizableElement to retrieve from.
@@ -456,6 +572,9 @@ public class ModelFacade {
     public static Object getType(Object handle) {
 	if (handle instanceof MAttribute) {
 	    return ((MAttribute)handle).getType();
+	}
+	if (handle instanceof MAssociationEnd) {
+	    return ((MAssociationEnd)handle).getType();
 	}
 
 	// ...
