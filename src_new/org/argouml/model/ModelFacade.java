@@ -2422,13 +2422,13 @@ public class ModelFacade {
     }
 
     /**
-     * Sets the classifiers of some object.
-     * @param object
+     * Sets the classifiers of some instance.
+     * @param instance
      * @param classifier vector
      */
     public static void setClassifiers(Object o, Vector v) {
-        if (o != null && o instanceof MObject) {
-            ((MObject) o).setClassifiers(v);
+        if (o != null && o instanceof MInstance) {
+            ((MInstance) o).setClassifiers(v);
         }
     }
 
