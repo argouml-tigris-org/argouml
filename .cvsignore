@@ -6,3 +6,4 @@ ArgoUML-*.tgz
 .checkclipse
 argouml.log
 .classpath.full
+bin
