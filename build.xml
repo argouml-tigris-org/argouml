@@ -209,10 +209,6 @@ Property files to be searched:
 
     <property name="version.package" value="org/argouml/application"/>
 
-    <!-- TODO:  Change name to javadoc.packages -->
-    
-    <property name="packages" value="org.argouml.*"/>
-
     <available classname="org.tigris.gef.base.Globals"
                classpathref="argo.compile.classpath" 
                property="has.gef"/>
@@ -555,7 +551,7 @@ Property files to be searched:
              destdir="${argo.javadocs.dir}"
              maxmemory="128M"
              overview="org/argouml/overview-argo.html"
-             packagenames="${packages}"
+             packagenames="org.argouml.*"
              private="true"
              sourcepath="${argo.src.dir}"
              splitindex="${javadoc.splitindex}"
