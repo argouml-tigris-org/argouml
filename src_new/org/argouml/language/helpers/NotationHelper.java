@@ -124,17 +124,17 @@ implements NotationProvider {
   public abstract String generateGuard(MGuard m);
   public abstract String generateMessage(MMessage m);
 
-  public String getLeftGuillemot() {
+  public static String getLeftGuillemot() {
 
       return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
-             ? "\u00bb"
+             ? "\u00ab"
 	     : "<<";
 
   }
 
-  public String getRightGuillemot() {
+  public static String getRightGuillemot() {
       return (Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false))
-             ? "\u00ab"
+             ? "\u00bb"
 	     : ">>";
   }
 
