@@ -26,7 +26,6 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -40,7 +39,9 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
  *
  */
 public class TestUseCasesFactory extends TestCase {
-    
+    /**
+     * List of elements to test.
+     */
     private static String[] allModelElements = {
         "Actor",
         "Extend",
@@ -48,11 +49,11 @@ public class TestUseCasesFactory extends TestCase {
         "Include",
         "UseCase",
         "UseCaseInstance",
-    }; 
+    };
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name of the test
      */
     public TestUseCasesFactory(String n) { super(n); }
@@ -79,23 +80,23 @@ public class TestUseCasesFactory extends TestCase {
 	    "Include",
 	    "UseCase",
 	    "UseCaseInstance",
-	    null
+	    null,
 	};
 
-	CheckUMLModelHelper.createAndRelease(this, 
+	CheckUMLModelHelper.createAndRelease(this,
 					     UseCasesFactory.getFactory(),
 					     objs);
     }
-    
+
     /**
      * Test deleteComplete().
      */
     public void testDeleteComplete() {
-        CheckUMLModelHelper.deleteComplete(this, 
-					   UseCasesFactory.getFactory(), 
+        CheckUMLModelHelper.deleteComplete(this,
+					   UseCasesFactory.getFactory(),
 					   allModelElements);
     }
-    
+
     /**
      * Test building extensions.
      */
@@ -111,7 +112,7 @@ public class TestUseCasesFactory extends TestCase {
         assertTrue("extend not added to base", !base.getExtends2().isEmpty());
         assertTrue("extend not added to extension",
 		   !extension.getExtends().isEmpty());
-        assertTrue("extend not added to correct extensionpoint", 
+        assertTrue("extend not added to correct extensionpoint",
 		   (extend.getExtensionPoints().contains(point)
 		    && extend.getExtensionPoints().size() == 1));
     }

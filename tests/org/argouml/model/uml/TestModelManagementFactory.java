@@ -26,7 +26,6 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.ModelManagementFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**
@@ -34,14 +33,16 @@ import org.argouml.util.CheckUMLModelHelper;
  *
  */
 public class TestModelManagementFactory extends TestCase {
-
+    /**
+     * The model elements to test.
+     */
     private static String[] allModelElements = {
-	"ElementImport", "Model", "Package", "Subsystem" 
+	"ElementImport", "Model", "Package", "Subsystem",
     };
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name
      */
     public TestModelManagementFactory(String n) {
@@ -67,8 +68,8 @@ public class TestModelManagementFactory extends TestCase {
     public void testCreates() {
 
 	String[] objs = {
-	    "ElementImport", "Model", "Package", "Subsystem", 
-	    null 
+	    "ElementImport", "Model", "Package", "Subsystem",
+	    null,
 	};
 
 	CheckUMLModelHelper.createAndRelease(

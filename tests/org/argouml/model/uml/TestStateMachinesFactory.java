@@ -26,7 +26,6 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.StateMachinesFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**
@@ -34,7 +33,9 @@ import org.argouml.util.CheckUMLModelHelper;
  *
  */
 public class TestStateMachinesFactory extends TestCase {
-
+    /**
+     * Model elements to test.
+     */
     private static String[] allModelElements =
     {
 	"CallEvent",
@@ -58,7 +59,7 @@ public class TestStateMachinesFactory extends TestCase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name of the test
      */
     public TestStateMachinesFactory(String n) {
@@ -101,7 +102,7 @@ public class TestStateMachinesFactory extends TestCase {
 	    "SynchState",
 	    "TimeEvent",
 	    "Transition",
-	    null 
+	    null,
 	};
 
 	CheckUMLModelHelper.createAndRelease(

@@ -26,7 +26,6 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.ExtensionMechanismsFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**
@@ -34,7 +33,9 @@ import org.argouml.util.CheckUMLModelHelper;
  *
  */
 public class TestExtensionMechanismsFactory extends TestCase {
-
+    /**
+     * List of model elements to test.
+     */
     private static String[] allModelElements = {
 	"Stereotype",
 	"TaggedValue",
@@ -42,7 +43,7 @@ public class TestExtensionMechanismsFactory extends TestCase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name of the test
      */
     public TestExtensionMechanismsFactory(String n) {
@@ -64,7 +65,7 @@ public class TestExtensionMechanismsFactory extends TestCase {
     public void testCreates() {
 
 	String[] objs = {
-	    "Stereotype", "TaggedValue", null 
+	    "Stereotype", "TaggedValue", null,
 	};
 
 	CheckUMLModelHelper.createAndRelease(
