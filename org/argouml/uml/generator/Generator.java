@@ -21,6 +21,18 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: Generator.java
+// Classes: Generator
+// Original Author:
+// $Id$
+
+// 10 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// extension points.
+
+// 25 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Patched
+// generateStereotype to handle the case where the stereotype has a null name
+// (caused NPE when making a new stereotype).
+
 package org.argouml.uml.generator;
 import org.argouml.application.api.*;
 import org.argouml.language.helpers.*;
@@ -31,6 +43,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
@@ -66,6 +79,8 @@ implements NotationProvider {
   public String generate(Object o) {
     if (o == null)
       return "";
+    if (o instanceof MExtensionPoint)
+      return generateExtensionPoint((MExtensionPoint) o);
     if (o instanceof MOperation)
       return generateOperation((MOperation) o, false);
     if (o instanceof MAttribute)
@@ -113,6 +128,7 @@ implements NotationProvider {
     return o.toString();
   }
 
+  public abstract String generateExtensionPoint(MExtensionPoint op);
   public abstract String generateOperation(MOperation op, boolean documented);
   public abstract String generateAttribute(MAttribute attr, boolean documented);
   public abstract String generateParameter(MParameter param);
@@ -154,6 +170,7 @@ implements NotationProvider {
 
   public String generateStereotype(MStereotype st) {
     if (st == null) return "";
+    if (st.getName() == null) return "";  // Patch by Jeremy Bennett
     if (st.getName().length() == 0) return "";
     return NotationHelper.getLeftGuillemot() +
            generateName(st.getName()) +
