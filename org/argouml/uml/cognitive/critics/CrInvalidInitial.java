@@ -30,10 +30,7 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
+import org.argouml.model.ModelFacade;
 import org.argouml.cognitive.*;
 
 /** A critic to detect when an initial state has more than one
@@ -49,14 +46,14 @@ public class CrInvalidInitial extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MPseudostate)) return NO_PROBLEM;
-    MPseudostate ps = (MPseudostate) dm;
-    MPseudostateKind k = ps.getKind();
-    if (!MPseudostateKind.INITIAL.equals(k)) return NO_PROBLEM;
-    Collection outgoing = ps.getOutgoings();
-    //Vector incoming = ps.getIncoming();
+    if (!(ModelFacade.isAPseudostate(dm))) return NO_PROBLEM;
+    Object k = ModelFacade.getPseudostateKind(dm);
+    if (!ModelFacade.
+        equalsPseudostateKind(k,
+                              ModelFacade.INITIAL_PSEUDOSTATEKIND))
+        return NO_PROBLEM;
+    Collection outgoing = ModelFacade.getOutgoings(dm);
     int nOutgoing = outgoing == null ? 0 : outgoing.size();
-    //int nIncoming = incoming == null ? 0 : incoming.size();
     if (nOutgoing > 1) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
