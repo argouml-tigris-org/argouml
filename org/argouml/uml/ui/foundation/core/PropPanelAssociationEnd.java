@@ -40,7 +40,7 @@ public class PropPanelAssociationEnd extends PropPanel {
 
   // contructors
   public PropPanelAssociationEnd() {
-    super("AssociationEnd Properties",2);
+    super("AssociationEnd Properties",3);
 
     Class mclass = MAssociationEnd.class;
 
@@ -53,7 +53,7 @@ public class PropPanelAssociationEnd extends PropPanel {
 
 
     addCaption(new JLabel("Type:"),2,0,0);
-    addField(new UMLClassifierComboBox(this,MClassifier.class,"type","getType","setType",true),2,0,0);
+    addField(new UMLClassifierComboBox(this,MClassifier.class,MDataType.class,"type","getType","setType",false),2,0,0);
 
     addCaption(new JLabel("Multiplicity:"),3,0,0);
     addField(new UMLMultiplicityComboBox(this,MAssociationEnd.class),3,0,0);
@@ -65,7 +65,7 @@ public class PropPanelAssociationEnd extends PropPanel {
     addField(namespaceList,4,0,0);
 
     addCaption(new JLabel("Ordering:"),0,1,0);
-    JPanel orderingPanel = new JPanel(new GridLayout(0,2));
+    JPanel orderingPanel = new JPanel(new GridLayout(0,1));
     ButtonGroup orderingGroup = new ButtonGroup();
     UMLRadioButton unordered = new UMLRadioButton("unordered",this,new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.UNORDERED,null));
     orderingGroup.add(unordered);
@@ -81,8 +81,8 @@ public class PropPanelAssociationEnd extends PropPanel {
     orderingPanel.add(sorted);
     addField(orderingPanel,0,1,0);
 
-    addCaption(new JLabel("Aggregation:"),1,1,0);
-    JPanel aggregationPanel = new JPanel(new GridLayout(0,2));
+    addCaption(new JLabel("Aggregation:"),1,1,1);
+    JPanel aggregationPanel = new JPanel(new GridLayout(0,1));
     ButtonGroup aggregationGroup = new ButtonGroup();
     UMLRadioButton none = new UMLRadioButton("none",this,new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation","setAggregation",MAggregationKind.class,MAggregationKind.NONE,null));
     aggregationGroup.add(none);
@@ -95,14 +95,15 @@ public class PropPanelAssociationEnd extends PropPanel {
     UMLRadioButton composite = new UMLRadioButton("composite",this,new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation","setAggregation",MAggregationKind.class,MAggregationKind.COMPOSITE,null));
     aggregationGroup.add(composite);
     aggregationPanel.add(composite);
-
     addField(aggregationPanel,1,1,0);
-    addCaption(new JLabel("Scope:"),2,1,0);
-    addField(new UMLCheckBox("classifier",this,new UMLEnumerationBooleanProperty("targetScope",mclass,"getTargetScope","setTargetScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)),2,1,0);
+    
+    
+    addCaption(new JLabel("Scope:"),0,2,0);
+    addField(new UMLCheckBox("classifier",this,new UMLEnumerationBooleanProperty("targetScope",mclass,"getTargetScope","setTargetScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)),0,2,0);
 
-    addCaption(new JLabel("Changeability:"),3,1,0);
+    addCaption(new JLabel("Changeability:"),1,2,0);
     ButtonGroup changeabilityGroup = new ButtonGroup();
-    JPanel changeabilityPanel = new JPanel(new GridLayout(0,2));
+    JPanel changeabilityPanel = new JPanel(new GridLayout(0,1));
 
     UMLRadioButton changeable = new UMLRadioButton("changeable",this,new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability","setChangeability",MChangeableKind.class,MChangeableKind.CHANGEABLE,null));
     changeabilityGroup.add(changeable);
@@ -116,10 +117,11 @@ public class PropPanelAssociationEnd extends PropPanel {
     UMLRadioButton addOnly = new UMLRadioButton("add only",this,new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability","setChangeability",MChangeableKind.class,MChangeableKind.ADD_ONLY,null));
     changeabilityGroup.add(addOnly);
     changeabilityPanel.add(addOnly);
-
-    addField(changeabilityPanel,3,1,0);
-    addCaption(new JLabel("Visibility:"),4,1,1);
-    addField(new UMLVisibilityPanel(this,mclass,3,false),4,1,0);
+    addField(changeabilityPanel,1,2,0);
+    
+    
+    addCaption(new JLabel("Visibility:"),2,2,1);
+    addField(new UMLVisibilityPanel(this,mclass,1,false),2,2,0);
 
   }
 
