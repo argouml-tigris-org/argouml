@@ -192,95 +192,188 @@ public class ModelFacade {
 
     // TODO: deprecate all of these constants in favor of a separate declaration
 
+    /**
+     * The constant ACC_PUBLIC determines visibility.
+     */
     public static final short ACC_PUBLIC = 1;
+    
+    /**
+     * The constant ACC_PRIVATE determines visibility.
+     */
     public static final short ACC_PRIVATE = 2;
+    
+    /**
+     * The constant ACC_PROTECTED determines visibility.
+     */
     public static final short ACC_PROTECTED = 3;
 
+    /**
+     * The constant CLASSIFIER_SCOPE determines scope.
+     */
     public static final short CLASSIFIER_SCOPE = 1;
+    /**
+     * The constant INSTANCE_SCOPE determines scope.
+     */
     public static final short INSTANCE_SCOPE = 2;
 
+    /**
+     * The constant GUARDED determines concurrency.
+     */
     public static final short GUARDED = 1;
+    
+    /**
+     * The constant SEQUENTIAL determines concurrency.
+     */
     public static final short SEQUENTIAL = 2;
 
     // Types of line
+    /** Type of line: ABSTRACTION */
     public static final Object ABSTRACTION = MAbstraction.class;
+    /** Type of line: ASSOCIATION */
     public static final Object ASSOCIATION = MAssociation.class;
+    /** Type of line: ASSOCIATION_CLASS */
     public static final Object ASSOCIATION_CLASS = MAssociationClass.class;
+    /** Type of line: ASSOCIATION_ROLE */
     public static final Object ASSOCIATION_ROLE = MAssociationRole.class;
+    /** Type of line: COLLABORATION */
     public static final Object COLLABORATION = MCollaboration.class;
+    /** Type of line: DEPENDENCY */
     public static final Object DEPENDENCY = MDependency.class;
+    /** Type of line: EXTEND */
     public static final Object EXTEND = MExtend.class;
+    /** Type of line: GENERALIZATION */
     public static final Object GENERALIZATION = MGeneralization.class;
+    /** Type of line: INCLUDE */
     public static final Object INCLUDE = MInclude.class;
+    /** Type of line: LINK */
     public static final Object LINK = MLink.class;
+    /** Type of line: MESSAGE */
     public static final Object MESSAGE = MMessage.class;
+    /** Type of line: PERMISSION */
     public static final Object PERMISSION = MPermission.class;
+    /** Type of line: SIGNAL */
     public static final Object SIGNAL = MSignal.class;
+    /** Type of line: USAGE */
     public static final Object USAGE = MUsage.class;
+    /** Type of line: TRANSITION */
     public static final Object TRANSITION = MTransition.class;
 
     // Types of node
+    /** Type of node: ACTOR */
     public static final Object ACTOR = MActor.class;
+    /** Type of node: CLASS */
     public static final Object CLASS = MClass.class;
+    /** Type of node: CLASSIFIER */
     public static final Object CLASSIFIER = MClassifier.class;
+    /** Type of node: CLASSIFIER_ROLE */
     public static final Object CLASSIFIER_ROLE = MClassifierRole.class;
+    /** Type of node: COMMENT */
     public static final Object COMMENT = MComment.class;
+    /** Type of node: COMPONENT */
     public static final Object COMPONENT = MComponent.class;
+    /** Type of node: COMPONENT_INSTANCE */
     public static final Object COMPONENT_INSTANCE = MComponentInstance.class;
+    /** Type of node: EXCEPTION */
     public static final Object EXCEPTION = MException.class;
+    /** Type of node: INSTANCE */
     public static final Object INSTANCE = MInstance.class;
+    /** Type of node: INTERFACE */
     public static final Object INTERFACE = MInterface.class;
+    /** Type of node: NODE */
     public static final Object NODE = MNode.class;
+    /** Type of node: NODE_INSTANCE */
     public static final Object NODE_INSTANCE = MNodeInstance.class;
+    /** Type of node: OBJECT */
     public static final Object OBJECT = MObject.class;
+    /** Type of node: PACKAGE */
     public static final Object PACKAGE = MPackage.class;
+    /** Type of node: MODEL */
     public static final Object MODEL = MModel.class;
+    /** Type of node: SUBSYSTEM */
     public static final Object SUBSYSTEM = MSubsystem.class;
+    /** Type of node: STATE */
     public static final Object STATE = MState.class;
+    /** Type of node: STATEIMPL */
     public static final Object STATEIMPL = MStateImpl.class;
+    /** Type of node: COMPOSITESTATE */
     public static final Object COMPOSITESTATE = MCompositeState.class;
+    /** Type of node: STATEVERTEX */
     public static final Object STATEVERTEX = MStateVertex.class;
+    /** Type of node: PSEUDOSTATE */
     public static final Object PSEUDOSTATE = MPseudostate.class;
+    /** Type of node: FINALSTATE */
     public static final Object FINALSTATE = MFinalState.class;
+    /** Type of node: USE_CASE */
     public static final Object USE_CASE = MUseCase.class;
+    /** Type of node: CALLSTATE */
     public static final Object CALLSTATE = MCallState.class;
+    /** Type of node: OBJECTFLOWSTATE */
     public static final Object OBJECTFLOWSTATE = MObjectFlowState.class;
+    /** Type of node: SUBACTIVITYSTATE  */
     public static final Object SUBACTIVITYSTATE = MSubactivityState.class;
 
-    // Invisible model elements
+    // Invisible model elements 
+    /** Invisible model element: ACTION */
     public static final Object ACTION = MAction.class;
+    /** Invisible model element: ACTION_EXPRESSION */
     public static final Object ACTION_EXPRESSION = MActionExpression.class;
+    /** Invisible model element: ACTION_STATE */
     public static final Object ACTION_STATE = MActionState.class;
+    /** Invisible model element: ASSOCIATION_END */
     public static final Object ASSOCIATION_END = MAssociationEnd.class;
+    /** Invisible model element: ASSOCIATION_END_ROLE */
     public static final Object ASSOCIATION_END_ROLE = MAssociationEndRole.class;
+    /** Invisible model element: CALL_ACTION */
     public static final Object CALL_ACTION = MCallAction.class;
+    /** Invisible model element: CALLCONCURRENCYKIND */
     public static final Object CALLCONCURRENCYKIND = MCallConcurrencyKind.class;
+    /** Invisible model element: CREATE_ACTION */
     public static final Object CREATE_ACTION = MCreateAction.class;
+    /** Invisible model element: DESTROY_ACTION */
     public static final Object DESTROY_ACTION = MDestroyAction.class;
+    /** Invisible model element: TERMINATE_ACTION */
     public static final Object TERMINATE_ACTION = MTerminateAction.class;
+    /** Invisible model element: NAMESPACE */
     public static final Object NAMESPACE = MNamespace.class;
+    /** Invisible model element: RECEPTION */
     public static final Object RECEPTION = MReception.class;
+    /** Invisible model element: RETURN_ACTION */
     public static final Object RETURN_ACTION = MReturnAction.class;
+    /** Invisible model element: SCOPEKIND */
     public static final Object SCOPEKIND = MScopeKind.class;
+    /** Invisible model element: SEND_ACTION */
     public static final Object SEND_ACTION = MSendAction.class;
+    /** Invisible model element: STEREOTYPE */
     public static final Object STEREOTYPE = MStereotype.class;
+    /** Invisible model element: PARTITION */
     public static final Object PARTITION = MPartition.class;
+    /** Invisible model element: PARAMETER */
     public static final Object PARAMETER = MParameter.class;
+    /** Invisible model element: PARAMETERDIRECTIONKIND */
     public static final Object PARAMETERDIRECTIONKIND =
         MParameterDirectionKind.class;
+    /** Invisible model element: GENERALAIZABLE_ELEMENT */
     public static final Object GENERALAIZABLE_ELEMENT =
         MGeneralizableElement.class;
+    /** Invisible model element: DATATYPE */
     public static final Object DATATYPE = MDataType.class;
+    /** Invisible model element: STATEMACHINE */
     public static final Object STATEMACHINE = MStateMachine.class;
 
+    /** Invisible model element: ATTRIBUTE */
     public static final Object ATTRIBUTE = MAttribute.class;
+    /** Invisible model element: OPERATION */
     public static final Object OPERATION = MOperation.class;
 
+    /** Invisible model element: MULTIPLICITY */
     public static final Object MULTIPLICITY = MMultiplicity.class;
 
+    /** Invisible model element: VISIBILITYKIND */
     public static final Object VISIBILITYKIND = MVisibilityKind.class;
 
+    /** Invisible model element: MODELELEMENT */
     public static final Object MODELELEMENT = MModelElement.class;
+    /** Invisible model element: STIMULUS */
     public static final Object STIMULUS = MStimulus.class;
 
     public static final Object AGGREGATIONKIND = MAggregationKind.class;
