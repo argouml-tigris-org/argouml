@@ -60,7 +60,7 @@ public class Critic implements Poster, Serializable {
   public static final String ENABLED = "enabled";
   public static final String SNOOZE_ORDER = "snoozeOrder";
 
-  public static final String RESOURCE_BUNDLE = "Cognitive";
+    protected static final String RESOURCE_BUNDLE = "Cognitive";
 
   /** Types of knowledge that critics can deliver */
   public static String KT_DESIGNERS = 
