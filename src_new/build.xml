@@ -1162,8 +1162,14 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- =================================================================== -->
   <!-- Removes generated files so that they are not checked by xenofarm.   -->
   <!-- =================================================================== -->
-  <target depends="init" name="delete-generated-for-checkstyle">
+  <target name="delete-generated-for-checkstyle" depends="init">
+    <echo>      
+Deleting some files that are actually in the cvs repository so
+if this is run by misstake your changes to these files are lost and
+you will have to resurrect them using cvs update.
+    </echo>
     <delete>
+      <!-- Generated files -->
       <fileset dir="${argo.src.dir}/org/argouml/uml/reveng/java">
         <include name="JavaLexer.java"/>
         <include name="JavaRecognizer.java"/>
@@ -1180,6 +1186,12 @@ For details see http://www.clarkware.com/software/JDepend.html.
         <include name="ClassfileTokenTypes.java"/>
         <include name="ClassfileTreeParser.java"/>
         <include name="ClassfileTreeParserTokenTypes.java"/>
+      </fileset>
+
+      <!-- Other files where we are not interested to check them. -->
+      <fileset dir="${argo.src.dir}/org/argouml/i18n">
+        <include name="MenuResourceBundle*.java"/>
+        <include name="UMLCognitiveResourceBundle*.java"/>
       </fileset>
     </delete>
   </target>
