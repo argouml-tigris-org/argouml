@@ -175,12 +175,9 @@ public abstract class UMLDiagram
   static final long serialVersionUID = -401219134410459387L;
 
   /**
-   * create a new toolbar each time.
-   * solves the issue of when you have spawned diagrams (by double
-   * clicking on the diagram tab).
    */
   public ToolBar getToolBar() {
-    initToolBar();
+    //initToolBar();
     return _toolBar;
   }
   
