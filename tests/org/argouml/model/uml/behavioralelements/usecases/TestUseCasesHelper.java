@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,31 +37,31 @@ import org.argouml.util.CheckUMLModelHelper;
  */
 public class TestUseCasesHelper extends TestCase {
 
-	/**
-	 * Constructor for TestUseCasesHelper.
-	 * @param arg0
-	 */
-	public TestUseCasesHelper(String arg0) {
-		super(arg0);
-	}
+    /**
+     * Constructor for TestUseCasesHelper.
+     * @param arg0
+     */
+    public TestUseCasesHelper(String arg0) {
+	super(arg0);
+    }
 
-	public void testGetMetaModelName() {
-		CheckUMLModelHelper.metaModelNameCorrect(
-			this,
-			UseCasesFactory.getFactory(),
-			TestUseCasesFactory.allModelElements);
-	}
+    public void testGetMetaModelName() {
+	CheckUMLModelHelper.metaModelNameCorrect(
+						 this,
+						 UseCasesFactory.getFactory(),
+						 TestUseCasesFactory.allModelElements);
+    }
 
-	public void testIsValidStereoType() {
-		CheckUMLModelHelper.isValidStereoType(
-			this,
-			UseCasesFactory.getFactory(),
-			TestUseCasesFactory.allModelElements);
-	}
+    public void testIsValidStereoType() {
+	CheckUMLModelHelper.isValidStereoType(
+					      this,
+					      UseCasesFactory.getFactory(),
+					      TestUseCasesFactory.allModelElements);
+    }
 
-	protected void setUp() {
-		ArgoSecurityManager.getInstance().setAllowExit(true);
+    protected void setUp() {
+	ArgoSecurityManager.getInstance().setAllowExit(true);
         UmlFactory.getFactory().setGuiEnabled(false);
-	}
+    }
 
 }

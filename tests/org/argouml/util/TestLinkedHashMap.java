@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 /*
  * LinkedHashMapTest.java
  * JUnit based test
@@ -53,17 +77,18 @@ public class TestLinkedHashMap extends TestCase {
 
     Object[] keys = {key0, key1, key2, key3, key4, key5, key6, key7, key8, key9};
 
-    Object[] values = {value0, value1, value2, value3, value4, value5, value6,
-                       value7and8,  // One of the values is repeated
-                       value7and8,   //  but with different keys
-                       value9
+    Object[] values = {
+	value0, value1, value2, value3, value4, value5, value6,
+	value7and8,  // One of the values is repeated
+	value7and8,   //  but with different keys
+	value9
     };
 
     LinkedHashMap linkedHashMap;
 
     public void setUp() {
         linkedHashMap = new LinkedHashMap();
-        for (int i=0; i<10; ++i) {
+        for (int i = 0; i < 10; ++i) {
             linkedHashMap.put(keys[i], values[i]);
         }
     }
@@ -203,7 +228,7 @@ public class TestLinkedHashMap extends TestCase {
     
     /** Test of values method, of class uk.co.jbob.collections.j2sdk1_4.LinkedHashMap. */
     
-     public void testValues_Iterator_Remove() {
+    public void testValues_Iterator_Remove() {
         System.out.println("testValues_Iterator_Remove");
         
         // What happens when we remove an item from the values that appear more than once?
@@ -370,7 +395,7 @@ public class TestLinkedHashMap extends TestCase {
         int count = 0;
         Iterator it = entrySet.iterator();
         while (it.hasNext()) {
-            Map.Entry entry = (Map.Entry)it.next();
+            Map.Entry entry = (Map.Entry) it.next();
             Object key = entry.getKey();
             Object value = entry.getValue();
             assertEquals(keyArray[count], key);

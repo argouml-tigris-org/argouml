@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -67,7 +68,7 @@ public class TestUMLInteractionMessagesListModel
         MMessage[] messages = new MMessage[10];
         for (int i = 0; i < 10; i++) {
             messages[i] = CollaborationsFactory.getFactory().createMessage();
-            ((MInteraction)elem).addMessage(messages[i]);
+            ((MInteraction) elem).addMessage(messages[i]);
         }
         return messages;
     }
@@ -76,8 +77,8 @@ public class TestUMLInteractionMessagesListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase)
      */
     protected void removeHalfModel(MBase[] elements) {
-        for (int i = 0 ; i < 5; i++) {
-            ((MInteraction)elem).removeMessage((MMessage)elements[i]);
+        for (int i = 0; i < 5; i++) {
+            ((MInteraction) elem).removeMessage((MMessage) elements[i]);
         }
     }
 

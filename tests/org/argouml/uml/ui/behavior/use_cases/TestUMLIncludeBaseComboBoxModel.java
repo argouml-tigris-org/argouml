@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -75,7 +76,7 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
         MModel m = ModelManagementFactory.getFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
         elem.setNamespace(m);
-        for (int i = 0 ; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             bases[i] = UseCasesFactory.getFactory().createUseCase();
             m.addOwnedElement(bases[i]);
         }      
@@ -87,7 +88,7 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         UmlFactory.getFactory().delete(elem);
-        for (int i = 0 ; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             UmlFactory.getFactory().delete(bases[i]);
         }
         MFactoryImpl.setEventPolicy(oldEventPolicy);

@@ -61,9 +61,9 @@ public class TestXMIReader extends TestCase {
     
     protected void setUp() {
         
-           ArgoSecurityManager.getInstance().setAllowExit(true);
+	ArgoSecurityManager.getInstance().setAllowExit(true);
         UmlFactory.getFactory().setGuiEnabled(false); 
-       }
+    }
 
     /**
      * This is a regression test for issue 1504. Unfortunately this test does

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -68,7 +69,7 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
         MAssociationEndRole[] ends = new MAssociationEndRole[10];
         for (int i = 0; i < ends.length; i++) {
             ends[i] = CollaborationsFactory.getFactory().createAssociationEndRole();
-            ends[i].setAssociation((MAssociationRole)elem);
+            ends[i].setAssociation((MAssociationRole) elem);
         }
         return ends;
     }
@@ -78,7 +79,7 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MAssociationRole)elem).removeConnection((MAssociationEnd)elements[i]);
+            ((MAssociationRole) elem).removeConnection((MAssociationEnd) elements[i]);
         }
     }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,26 +36,26 @@ import org.argouml.model.uml.UmlFactory;
  */
 public class TestProjectManager extends TestCase {
 
-	/**
-	 * Constructor for TestProjectManager.
-	 * @param arg0
-	 */
-	public TestProjectManager(String arg0) {
-		super(arg0);
-	}
+    /**
+     * Constructor for TestProjectManager.
+     * @param arg0
+     */
+    public TestProjectManager(String arg0) {
+	super(arg0);
+    }
 
-	public void testMakeEmptyProject() {
-		Project p = ProjectManager.getManager().makeEmptyProject();
-		assertEquals(2, p.getDiagrams().size());
-		assertEquals("untitledModel", p.getModel().getName());
-	}
-	/* (non-Javadoc)
-	     * @see junit.framework.TestCase#setUp()
-	     */
-	protected void setUp() throws Exception {
-		super.setUp();
-		ArgoSecurityManager.getInstance().setAllowExit(true);
+    public void testMakeEmptyProject() {
+	Project p = ProjectManager.getManager().makeEmptyProject();
+	assertEquals(2, p.getDiagrams().size());
+	assertEquals("untitledModel", p.getModel().getName());
+    }
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+	super.setUp();
+	ArgoSecurityManager.getInstance().setAllowExit(true);
         UmlFactory.getFactory().setGuiEnabled(false);
-	}
+    }
 
 }

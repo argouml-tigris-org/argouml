@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,34 +37,34 @@ import org.argouml.util.CheckUMLModelHelper;
  */
 public class TestCommonBehaviorHelper extends TestCase {
 
-	/**
-	 * Constructor for TestCommonBehaviorHelper.
-	 * @param arg0
-	 */
-	public TestCommonBehaviorHelper(String arg0) {
-		super(arg0);
-	}
+    /**
+     * Constructor for TestCommonBehaviorHelper.
+     * @param arg0
+     */
+    public TestCommonBehaviorHelper(String arg0) {
+	super(arg0);
+    }
 
-	public void testGetMetaModelName() {
-		CheckUMLModelHelper.metaModelNameCorrect(
-			this,
-			CommonBehaviorFactory.getFactory(),
-			TestCommonBehaviorFactory.allModelElements);
-	}
+    public void testGetMetaModelName() {
+	CheckUMLModelHelper.metaModelNameCorrect(
+						 this,
+						 CommonBehaviorFactory.getFactory(),
+						 TestCommonBehaviorFactory.allModelElements);
+    }
 
-	public void testIsValidStereoType() {
-		CheckUMLModelHelper.isValidStereoType(
-			this,
-			CommonBehaviorFactory.getFactory(),
-			TestCommonBehaviorFactory.allModelElements);
-	}
-	/* (non-Javadoc)
-	     * @see junit.framework.TestCase#setUp()
-	     */
-	protected void setUp() throws Exception {
-		super.setUp();
-		ArgoSecurityManager.getInstance().setAllowExit(true);
+    public void testIsValidStereoType() {
+	CheckUMLModelHelper.isValidStereoType(
+					      this,
+					      CommonBehaviorFactory.getFactory(),
+					      TestCommonBehaviorFactory.allModelElements);
+    }
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+	super.setUp();
+	ArgoSecurityManager.getInstance().setAllowExit(true);
         UmlFactory.getFactory().setGuiEnabled(false);
-	}
+    }
 
 }

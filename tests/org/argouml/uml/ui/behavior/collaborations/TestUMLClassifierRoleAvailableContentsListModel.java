@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -71,7 +72,7 @@ public class TestUMLClassifierRoleAvailableContentsListModel
      */
     protected MBase[] fillModel() {
         MModelElement[] elements = new MModelElement[10];
-        for (int i = 0; i < 10 ; i++) {
+        for (int i = 0; i < 10; i++) {
             elements[i] = CoreFactory.getFactory().createClass();
             base.addOwnedElement(elements[i]);
         }
@@ -82,8 +83,8 @@ public class TestUMLClassifierRoleAvailableContentsListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase)
      */
     protected void removeHalfModel(MBase[] elements) {
-        for (int i = 0 ; i < 5 ; i++) {
-            base.removeOwnedElement((MModelElement)elements[i]);
+        for (int i = 0; i < 5; i++) {
+            base.removeOwnedElement((MModelElement) elements[i]);
         }
     }
 
@@ -93,7 +94,7 @@ public class TestUMLClassifierRoleAvailableContentsListModel
     protected void setUp() throws Exception {
         super.setUp();
         base = CoreFactory.getFactory().createClass();
-        CollaborationsHelper.getHelper().addBase(((MClassifierRole)elem), base);
+        CollaborationsHelper.getHelper().addBase(((MClassifierRole) elem), base);
     }
 
     /**

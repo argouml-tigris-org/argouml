@@ -73,7 +73,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         MModel m = ModelManagementFactory.getFactory().createModel();
         p.setRoot(m);
         elem.setNamespace(m);
-        for (int i = 0 ; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             signals[i] = CommonBehaviorFactory.getFactory().createSignal();
             m.addOwnedElement(signals[i]);
         }      
@@ -87,7 +87,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         UmlFactory.getFactory().delete(elem);
-        for (int i = 0 ; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             UmlFactory.getFactory().delete(signals[i]);
         }
         MFactoryImpl.setEventPolicy(oldEventPolicy);

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -71,8 +72,8 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
         model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem}));
         types = new MClassifier[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
-         ProjectManager.getManager().getCurrentProject().setRoot(m);
-        for (int i = 0 ; i < 10; i++) {
+	ProjectManager.getManager().getCurrentProject().setRoot(m);
+        for (int i = 0; i < 10; i++) {
             types[i] = CoreFactory.getFactory().createClassifier();
             m.addOwnedElement(types[i]);
         }      
@@ -84,7 +85,7 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         UmlFactory.getFactory().delete(elem);
-        for (int i = 0 ; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             UmlFactory.getFactory().delete(types[i]);
         }
         MFactoryImpl.setEventPolicy(oldEventPolicy);

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -68,7 +69,7 @@ public class TestUMLCollaborationInteractionListModel
         MInteraction[] inter = new MInteraction[10];
         for (int i = 0; i < 10; i++) {
             inter[i] = CollaborationsFactory.getFactory().createInteraction();
-            inter[i].setContext((MCollaboration)elem);
+            inter[i].setContext((MCollaboration) elem);
         }
         return inter;
     }
@@ -78,7 +79,7 @@ public class TestUMLCollaborationInteractionListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MCollaboration)elem).removeInteraction((MInteraction)elements[i]);
+            ((MCollaboration) elem).removeInteraction((MInteraction) elements[i]);
         }
     }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -65,9 +66,9 @@ public class TestUMLExtendExtensionPointListModel
      */
     protected MBase[] fillModel() {
         MExtensionPoint[] points = new MExtensionPoint[10];
-        for (int i = 0 ; i < 10 ; i++) {
+        for (int i = 0; i < 10; i++) {
             points[i] = UseCasesFactory.getFactory().createExtensionPoint();
-            ((MExtend)elem).addExtensionPoint(points[i]);
+            ((MExtend) elem).addExtensionPoint(points[i]);
         }
         return points;
     }
@@ -76,8 +77,8 @@ public class TestUMLExtendExtensionPointListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase)
      */
     protected void removeHalfModel(MBase[] elements) {
-        for (int i = 0 ; i < 5; i++) {
-            ((MExtend)elem).removeExtensionPoint((MExtensionPoint)elements[i]);
+        for (int i = 0; i < 5; i++) {
+            ((MExtend) elem).removeExtensionPoint((MExtensionPoint) elements[i]);
         }
     }
 

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -36,34 +37,34 @@ import org.argouml.util.CheckUMLModelHelper;
  */
 public class TestStateMachinesHelper extends TestCase {
 
-	/**
-	 * Constructor for TestStateMachinesHelper.
-	 * @param arg0
-	 */
-	public TestStateMachinesHelper(String arg0) {
-		super(arg0);
-	}
+    /**
+     * Constructor for TestStateMachinesHelper.
+     * @param arg0
+     */
+    public TestStateMachinesHelper(String arg0) {
+	super(arg0);
+    }
 
-	public void testGetMetaModelName() {
-		CheckUMLModelHelper.metaModelNameCorrect(
-			this,
-			StateMachinesFactory.getFactory(),
-			TestStateMachinesFactory.allModelElements);
-	}
+    public void testGetMetaModelName() {
+	CheckUMLModelHelper.metaModelNameCorrect(
+						 this,
+						 StateMachinesFactory.getFactory(),
+						 TestStateMachinesFactory.allModelElements);
+    }
 
-	public void testIsValidStereoType() {
-		CheckUMLModelHelper.isValidStereoType(
-			this,
-			StateMachinesFactory.getFactory(),
-			TestStateMachinesFactory.allModelElements);
-	}
-	/* (non-Javadoc)
-	     * @see junit.framework.TestCase#setUp()
-	     */
-	protected void setUp() throws Exception {
-		super.setUp();
-		ArgoSecurityManager.getInstance().setAllowExit(true);
+    public void testIsValidStereoType() {
+	CheckUMLModelHelper.isValidStereoType(
+					      this,
+					      StateMachinesFactory.getFactory(),
+					      TestStateMachinesFactory.allModelElements);
+    }
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+	super.setUp();
+	ArgoSecurityManager.getInstance().setAllowExit(true);
         UmlFactory.getFactory().setGuiEnabled(false);
-	}
+    }
 
 }

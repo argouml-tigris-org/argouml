@@ -127,7 +127,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
 	throws BadLocationException
     {
         elem.setLocation("test");
-	model.remove(1, model.getLength()-2);
+	model.remove(1, model.getLength() - 2);
         assertEquals("tt", elem.getLocation());
     }
 

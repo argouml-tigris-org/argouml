@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,7 +47,7 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
 
-       private int oldEventPolicy;
+    private int oldEventPolicy;
     protected MClass elem;
     protected UMLModelElementStereotypeComboBoxModel model;
     private MStereotype[] stereotypes;

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -57,15 +58,15 @@ public class CheckResourceBundle {
     public static void checkNoDuplicates(TestCase tc,
 					 ResourceBundle b) {
         Set set = new HashSet();
-        for(Enumeration e = b.getKeys();
-	    e.hasMoreElements();
-	    ) {
+        for (Enumeration e = b.getKeys();
+	     e.hasMoreElements();
+	     ) {
 	    Object c = e.nextElement();
 	    TestCase.assertTrue("Duplicate key \"" 
-		      + c
-		      + "\" in "
-		      + b.getClass().getName(),
-		      !set.contains(c));
+				+ c
+				+ "\" in "
+				+ b.getClass().getName(),
+				!set.contains(c));
 	    set.add(c);
         }
     }
@@ -75,9 +76,9 @@ public class CheckResourceBundle {
 					    String[] tags) {
 	for (int i = 0; i < tags.length; i++)
 	    TestCase.assertTrue("Can't find tag \"" + tags[i]
-		      + "\" in "
-		      + b.getClass().getName(),
-		      bundleContains(b, tags[i]));
+				+ "\" in "
+				+ b.getClass().getName(),
+				bundleContains(b, tags[i]));
     }
 
     /**
@@ -91,13 +92,13 @@ public class CheckResourceBundle {
 	     ) {
 	    String tag = (String) e.nextElement();
 	    TestCase.assertTrue("Missing tag \""
-		      + tag
-		      + "\" in "
-		      + locb.getClass().getName()
-		      + " (it was present in "
-		      + b.getClass().getName()
-		      + ")",
-		      bundleContains(locb, tag));
+				+ tag
+				+ "\" in "
+				+ locb.getClass().getName()
+				+ " (it was present in "
+				+ b.getClass().getName()
+				+ ")",
+				bundleContains(locb, tag));
 	}
     }
 
@@ -112,13 +113,13 @@ public class CheckResourceBundle {
 	     ) {
 	    String tag = (String) e.nextElement();
 	    TestCase.assertTrue("Extra tag \""
-		      + tag
-		      + "\" in "
-		      + locb.getClass().getName()
-		      + " (it was not present in "
-		      + b.getClass().getName()
-		      + ")",
-		      bundleContains(b, tag));
+				+ tag
+				+ "\" in "
+				+ locb.getClass().getName()
+				+ " (it was not present in "
+				+ b.getClass().getName()
+				+ ")",
+				bundleContains(b, tag));
 	}
     }
 
@@ -126,11 +127,21 @@ public class CheckResourceBundle {
      * Localizations that we do.
      */
     private static final String[][] supportedLanguages = { 
-	{ "fr", "", "" },
-	{ "de", "", "" },
-	{ "en", "GB", "" },
-	{ "es", "", "" },
-	null };
+    {
+	"fr", "", "" 
+    },
+    {
+	"de", "", ""
+    },
+    {
+	"en", "GB", ""
+    },
+    {
+	"es", "", ""
+    },
+    null 
+    };
+
     /**
      * Returns a Vector of Locales modified from list of supported languages.
      * Lift up the current locales (actually copying them to the start).
@@ -172,7 +183,7 @@ public class CheckResourceBundle {
 
 	Vector v = new Vector();
 	for (Enumeration ele = el.elements(); ele.hasMoreElements(); ) {
-	    Locale elel = (Locale)ele.nextElement();
+	    Locale elel = (Locale) ele.nextElement();
 	    for (int j = 0; j < supportedLanguages.length; j++) {
 		if (supportedLanguages[j] == null)
 		    continue;
@@ -223,15 +234,15 @@ public class CheckResourceBundle {
 	Vector v = getModifiedSupportedLanguages();
 
 	for (Enumeration en = v.elements(); en.hasMoreElements(); ) {
-	    Locale l = (Locale)en.nextElement();
+	    Locale l = (Locale) en.nextElement();
 
 	    ResourceBundle locb = ResourceBundle.getBundle(bname, l);
 
 	    TestCase.assertTrue("Resource bundle "
-		      + bname
-		      + " does not exist for " 
-		      + l.toString(),
-		      locb != null && locb != b);
+				+ bname
+				+ " does not exist for " 
+				+ l.toString(),
+				locb != null && locb != b);
 
 	    checkContainsAllFrom(tc, locb, tags);
 	    checkNoDuplicates(tc, locb);
@@ -242,7 +253,8 @@ public class CheckResourceBundle {
 
     public static void checkResourceBundle(TestCase tc,
 					   String bname) {
-	String[] n = { };
+	String[] n = {
+	};
 	checkResourceBundle(tc, bname, n);
     }
 }

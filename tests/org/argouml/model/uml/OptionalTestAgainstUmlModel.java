@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -61,14 +62,14 @@ public class OptionalTestAgainstUmlModel extends TestCase {
     public OptionalTestAgainstUmlModel(String n) { super(n); }
 
     public void testDataModel()
-    throws SAXException,
-           IOException,
-	   ParserConfigurationException {
+	throws SAXException,
+	       IOException,
+	       ParserConfigurationException {
 	DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    String fileName = System.getProperty("test.model.uml13");
-    if (fileName == null) return;
-    File file = new File(fileName);
-    if (!file.exists()) return;
+	String fileName = System.getProperty("test.model.uml13");
+	if (fileName == null) return;
+	File file = new File(fileName);
+	if (!file.exists()) return;
 	Document doc = builder.parse(new File(System.getProperty("test.model.uml13")));
 	NodeList list = doc.getElementsByTagName("Model:Class");
 
@@ -105,7 +106,7 @@ public class OptionalTestAgainstUmlModel extends TestCase {
 	else if (factory instanceof AbstractUmlModelFactory) {
 	    String[] classarg = {umlclass, null};
 	    CheckUMLModelHelper.createAndRelease(this,
-	                                         (AbstractUmlModelFactory)factory,
+	                                         (AbstractUmlModelFactory) factory,
 			                         classarg);
 	}
 	else {
@@ -250,22 +251,22 @@ public class OptionalTestAgainstUmlModel extends TestCase {
         return refs;
     }
 
-	/* (non-Javadoc)
-	 * @see junit.framework.TestCase#setUp()
-	 */
-	protected void setUp() throws Exception {
-		super.setUp();
+    /* (non-Javadoc)
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+	super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true);
-	}
+    }
 
 }
 
 interface CannotTestThisClass {
 }
 
-class CannotTestFactoryMethod implements CannotTestThisClass{
+class CannotTestFactoryMethod implements CannotTestThisClass {
 }
 
-class CannotTestClassIsAbstract implements CannotTestThisClass{
+class CannotTestClassIsAbstract implements CannotTestThisClass {
 }
 

@@ -62,160 +62,162 @@ import ru.novosoft.uml.foundation.core.MClass;
 
 public class TestItemUID extends TestCase {
     
-	public TestItemUID(String name) {
-		super(name);
-	}
+    public TestItemUID(String name) {
+	super(name);
+    }
 
-	public void testConstructors() {
-		String strs[] = { "a", "b", "c", "d", "e" };
-		ItemUID uids[] = new ItemUID[10];
-		ItemUID uids2[] = new ItemUID[strs.length];
-		int i, j;
+    public void testConstructors() {
+	String strs[] = {
+	    "a", "b", "c", "d", "e" 
+	};
+	ItemUID uids[] = new ItemUID[10];
+	ItemUID uids2[] = new ItemUID[strs.length];
+	int i, j;
 
-		for (i = 0; i < uids.length; i++) {
-			uids[i] = new ItemUID();
-			for (j = 0; j < i; j++) {
-				assertTrue(
-					"ItemUID() does not generate unique UIDs",
-					!uids[j].toString().equals(uids[i].toString()));
-			}
-		}
-
-		for (i = 0; i < strs.length; i++) {
-			uids2[i] = new ItemUID(strs[i]);
-
-			assertTrue(
-				"ItemUID(sss) does not preserve UIDs",
-				strs[i].equals(uids2[i].toString()));
-
-			for (j = 0; j < i; j++) {
-				assertTrue(
-					"ItemUID(sss) does not generate unique UIDs",
-					!uids2[j].toString().equals(uids2[i].toString()));
-			}
-		}
-	}
-
-	public void testAssignIDsToObjects() {
-		MClass testmc = CoreFactory.getFactory().buildClass();
-		UMLActivityDiagram actdiag = new UMLActivityDiagram();
-		UMLClassDiagram classdiag = new UMLClassDiagram();
-		UMLCollaborationDiagram colldiag = new UMLCollaborationDiagram();
-		UMLDeploymentDiagram depdiag = new UMLDeploymentDiagram();
-		UMLSequenceDiagram seqdiag = new UMLSequenceDiagram();
-		UMLStateDiagram statediag = new UMLStateDiagram();
-		UMLUseCaseDiagram ucdiag = new UMLUseCaseDiagram();
-
-		FigActionState figactionstate = new FigActionState();
-
-		//		FigAssociationRole figassociationrole = new FigAssociationRole();
-		FigClassifierRole figclassifierrole = new FigClassifierRole();
-
-		FigComponent figcomponent = new FigComponent();
-		FigComponentInstance figcomponentinstance = new FigComponentInstance();
-		FigMNode figmnode = new FigMNode();
-		FigMNodeInstance figmnodeinstance = new FigMNodeInstance();
-		FigObject figobject = new FigObject();
-
-		FigSeqLink figseqlink = new FigSeqLink();
-		FigSeqObject figseqobject = new FigSeqObject();
-		FigSeqStimulus figseqstimulus = new FigSeqStimulus();
-
-		FigBranchState figbranchstate = new FigBranchState();
-		FigCompositeState figcompositestate = new FigCompositeState();
-		FigDeepHistoryState figdeephistorystate = new FigDeepHistoryState();
-		FigFinalState figfinalstate = new FigFinalState();
-		FigForkState figforkstate = new FigForkState();
-		FigHistoryState fighistorystate = new FigHistoryState();
-		FigInitialState figinitialstate = new FigInitialState();
-		FigJoinState figjoinstate = new FigJoinState();
-		FigShallowHistoryState figshallowhistorystate =
-			new FigShallowHistoryState();
-		//FigState figstate = new FigState();
-		FigTransition figtransition = new FigTransition();
-
-		FigClass figclass = new FigClass();
-		FigEdgeNote figedgenote = new FigEdgeNote();
-		FigInstance figinstance = new FigInstance();
-		FigInterface figinterface = new FigInterface();
-		FigLink figlink = new FigLink();
-		FigPackage figpackage = new FigPackage();
-
-		FigActor figactor = new FigActor();
-		FigExtend figextend = new FigExtend();
-		FigInclude figinclude = new FigInclude();
-		FigUseCase figusecase = new FigUseCase();
-
-		checkAssignIDToObject(testmc, true, true);
-		checkAssignIDToObject(actdiag, true, true);
-		checkAssignIDToObject(classdiag, true, true);
-		checkAssignIDToObject(colldiag, true, true);
-		checkAssignIDToObject(depdiag, true, true);
-		checkAssignIDToObject(seqdiag, true, true);
-		checkAssignIDToObject(statediag, true, true);
-		checkAssignIDToObject(ucdiag, true, true);
-
-		checkAssignIDToObject(figactionstate, true, true);
-
-		//checkAssignIDToObject(figassociationrole, true, true);
-		checkAssignIDToObject(figclassifierrole, true, true);
-
-		checkAssignIDToObject(figcomponent, true, true);
-		checkAssignIDToObject(figcomponentinstance, true, true);
-		checkAssignIDToObject(figmnode, true, true);
-		checkAssignIDToObject(figmnodeinstance, true, true);
-		checkAssignIDToObject(figobject, true, true);
-
-		checkAssignIDToObject(figseqlink, true, true);
-		checkAssignIDToObject(figseqobject, true, true);
-		checkAssignIDToObject(figseqstimulus, true, true);
-
-		checkAssignIDToObject(figbranchstate, true, true);
-		checkAssignIDToObject(figcompositestate, true, true);
-		checkAssignIDToObject(figdeephistorystate, true, true);
-		checkAssignIDToObject(figfinalstate, true, true);
-		checkAssignIDToObject(figforkstate, true, true);
-		checkAssignIDToObject(fighistorystate, true, true);
-		checkAssignIDToObject(figinitialstate, true, true);
-		checkAssignIDToObject(figjoinstate, true, true);
-		checkAssignIDToObject(figshallowhistorystate, true, true);
-		//checkAssignIDToObject(figstate, true, true);
-		checkAssignIDToObject(figtransition, true, true);
-
-		checkAssignIDToObject(figclass, true, true);
-		checkAssignIDToObject(figedgenote, true, true);
-		checkAssignIDToObject(figinstance, true, true);
-		checkAssignIDToObject(figinterface, true, true);
-		checkAssignIDToObject(figlink, true, true);
-		checkAssignIDToObject(figpackage, true, true);
-
-		checkAssignIDToObject(figactor, true, true);
-		checkAssignIDToObject(figextend, true, true);
-		checkAssignIDToObject(figinclude, true, true);
-		checkAssignIDToObject(figusecase, true, true);
-	}
-
-	private void checkAssignIDToObject(
-		Object obj,
-		boolean canCreate,
-		boolean willSucceed) {
-		String uid, uid2;
-		uid = ItemUID.getIDOfObject(obj, canCreate);
-		uid2 = ItemUID.getIDOfObject(obj, false);
+	for (i = 0; i < uids.length; i++) {
+	    uids[i] = new ItemUID();
+	    for (j = 0; j < i; j++) {
 		assertTrue(
-			"Assign ID to object "
-				+ obj.getClass().getName()
-				+ " "
-				+ (willSucceed ? "failed" : "succeeded")
-				+ " unexpectedly",
-			(uid != null) == willSucceed);
-		assertTrue(
-			"Assign ID to object "
-				+ obj.getClass().getName()
-				+ " yielded different results",
-			(uid == null && uid2 == null)
-				|| (uid != null && uid2 != null && uid.equals(uid2)));
+			   "ItemUID() does not generate unique UIDs",
+			   !uids[j].toString().equals(uids[i].toString()));
+	    }
 	}
+
+	for (i = 0; i < strs.length; i++) {
+	    uids2[i] = new ItemUID(strs[i]);
+
+	    assertTrue(
+		       "ItemUID(sss) does not preserve UIDs",
+		       strs[i].equals(uids2[i].toString()));
+
+	    for (j = 0; j < i; j++) {
+		assertTrue(
+			   "ItemUID(sss) does not generate unique UIDs",
+			   !uids2[j].toString().equals(uids2[i].toString()));
+	    }
+	}
+    }
+
+    public void testAssignIDsToObjects() {
+	MClass testmc = CoreFactory.getFactory().buildClass();
+	UMLActivityDiagram actdiag = new UMLActivityDiagram();
+	UMLClassDiagram classdiag = new UMLClassDiagram();
+	UMLCollaborationDiagram colldiag = new UMLCollaborationDiagram();
+	UMLDeploymentDiagram depdiag = new UMLDeploymentDiagram();
+	UMLSequenceDiagram seqdiag = new UMLSequenceDiagram();
+	UMLStateDiagram statediag = new UMLStateDiagram();
+	UMLUseCaseDiagram ucdiag = new UMLUseCaseDiagram();
+
+	FigActionState figactionstate = new FigActionState();
+
+	//		FigAssociationRole figassociationrole = new FigAssociationRole();
+	FigClassifierRole figclassifierrole = new FigClassifierRole();
+
+	FigComponent figcomponent = new FigComponent();
+	FigComponentInstance figcomponentinstance = new FigComponentInstance();
+	FigMNode figmnode = new FigMNode();
+	FigMNodeInstance figmnodeinstance = new FigMNodeInstance();
+	FigObject figobject = new FigObject();
+
+	FigSeqLink figseqlink = new FigSeqLink();
+	FigSeqObject figseqobject = new FigSeqObject();
+	FigSeqStimulus figseqstimulus = new FigSeqStimulus();
+
+	FigBranchState figbranchstate = new FigBranchState();
+	FigCompositeState figcompositestate = new FigCompositeState();
+	FigDeepHistoryState figdeephistorystate = new FigDeepHistoryState();
+	FigFinalState figfinalstate = new FigFinalState();
+	FigForkState figforkstate = new FigForkState();
+	FigHistoryState fighistorystate = new FigHistoryState();
+	FigInitialState figinitialstate = new FigInitialState();
+	FigJoinState figjoinstate = new FigJoinState();
+	FigShallowHistoryState figshallowhistorystate =
+	    new FigShallowHistoryState();
+	//FigState figstate = new FigState();
+	FigTransition figtransition = new FigTransition();
+
+	FigClass figclass = new FigClass();
+	FigEdgeNote figedgenote = new FigEdgeNote();
+	FigInstance figinstance = new FigInstance();
+	FigInterface figinterface = new FigInterface();
+	FigLink figlink = new FigLink();
+	FigPackage figpackage = new FigPackage();
+
+	FigActor figactor = new FigActor();
+	FigExtend figextend = new FigExtend();
+	FigInclude figinclude = new FigInclude();
+	FigUseCase figusecase = new FigUseCase();
+
+	checkAssignIDToObject(testmc, true, true);
+	checkAssignIDToObject(actdiag, true, true);
+	checkAssignIDToObject(classdiag, true, true);
+	checkAssignIDToObject(colldiag, true, true);
+	checkAssignIDToObject(depdiag, true, true);
+	checkAssignIDToObject(seqdiag, true, true);
+	checkAssignIDToObject(statediag, true, true);
+	checkAssignIDToObject(ucdiag, true, true);
+
+	checkAssignIDToObject(figactionstate, true, true);
+
+	//checkAssignIDToObject(figassociationrole, true, true);
+	checkAssignIDToObject(figclassifierrole, true, true);
+
+	checkAssignIDToObject(figcomponent, true, true);
+	checkAssignIDToObject(figcomponentinstance, true, true);
+	checkAssignIDToObject(figmnode, true, true);
+	checkAssignIDToObject(figmnodeinstance, true, true);
+	checkAssignIDToObject(figobject, true, true);
+
+	checkAssignIDToObject(figseqlink, true, true);
+	checkAssignIDToObject(figseqobject, true, true);
+	checkAssignIDToObject(figseqstimulus, true, true);
+
+	checkAssignIDToObject(figbranchstate, true, true);
+	checkAssignIDToObject(figcompositestate, true, true);
+	checkAssignIDToObject(figdeephistorystate, true, true);
+	checkAssignIDToObject(figfinalstate, true, true);
+	checkAssignIDToObject(figforkstate, true, true);
+	checkAssignIDToObject(fighistorystate, true, true);
+	checkAssignIDToObject(figinitialstate, true, true);
+	checkAssignIDToObject(figjoinstate, true, true);
+	checkAssignIDToObject(figshallowhistorystate, true, true);
+	//checkAssignIDToObject(figstate, true, true);
+	checkAssignIDToObject(figtransition, true, true);
+
+	checkAssignIDToObject(figclass, true, true);
+	checkAssignIDToObject(figedgenote, true, true);
+	checkAssignIDToObject(figinstance, true, true);
+	checkAssignIDToObject(figinterface, true, true);
+	checkAssignIDToObject(figlink, true, true);
+	checkAssignIDToObject(figpackage, true, true);
+
+	checkAssignIDToObject(figactor, true, true);
+	checkAssignIDToObject(figextend, true, true);
+	checkAssignIDToObject(figinclude, true, true);
+	checkAssignIDToObject(figusecase, true, true);
+    }
+
+    private void checkAssignIDToObject(
+				       Object obj,
+				       boolean canCreate,
+				       boolean willSucceed) {
+	String uid, uid2;
+	uid = ItemUID.getIDOfObject(obj, canCreate);
+	uid2 = ItemUID.getIDOfObject(obj, false);
+	assertTrue(
+		   "Assign ID to object "
+		   + obj.getClass().getName()
+		   + " "
+		   + (willSucceed ? "failed" : "succeeded")
+		   + " unexpectedly",
+		   (uid != null) == willSucceed);
+	assertTrue(
+		   "Assign ID to object "
+		   + obj.getClass().getName()
+		   + " yielded different results",
+		   (uid == null && uid2 == null)
+		   || (uid != null && uid2 != null && uid.equals(uid2)));
+    }
 	
     
     protected void setUp() throws Exception {

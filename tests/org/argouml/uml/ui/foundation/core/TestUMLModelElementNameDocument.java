@@ -137,7 +137,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
 	throws BadLocationException
     {
         elem.setName("test");
-	model.remove(1, model.getLength()-2);
+	model.remove(1, model.getLength() - 2);
         assertEquals("tt", elem.getName());
     }
 }

@@ -1,3 +1,27 @@
+// $Id$
+// Copyright (c) 2003 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 /*
  * LinkedHashSetTest.java
  * JUnit based test
@@ -28,16 +52,18 @@ public class TestLinkedHashSet extends TestCase {
     }
     
     LinkedHashSet linkedHashSet;
-    Object entity[] = {"entity0",
-                       "dsh1",
-                       "hfdgh2",
-                       "vrvds3",
-                       "yukjg4",
-                       "htdsg5",
-                       "ergtds6",
-                       null,
-                       "zdvfdg8",
-                       "xdhgfd9"};
+    Object entity[] = {
+	"entity0",
+	"dsh1",
+	"hfdgh2",
+	"vrvds3",
+	"yukjg4",
+	"htdsg5",
+	"ergtds6",
+	null,
+	"zdvfdg8",
+	"xdhgfd9"
+    };
  
     public void setUp() {
         linkedHashSet = new LinkedHashSet();
@@ -72,15 +98,17 @@ public class TestLinkedHashSet extends TestCase {
     }
     
     public void testIterator_Remove() {
-        Object[] compare = {entity[0],
-                            entity[1],
-                            entity[2],
-                            entity[3],
-                            entity[4],
-                            entity[6],
-                            entity[7],
-                            entity[8],
-                            entity[9]};
+        Object[] compare = {
+	    entity[0],
+	    entity[1],
+	    entity[2],
+	    entity[3],
+	    entity[4],
+	    entity[6],
+	    entity[7],
+	    entity[8],
+	    entity[9]
+	};
         
         int count = 0;
         Iterator it = linkedHashSet.iterator();
@@ -112,15 +140,17 @@ public class TestLinkedHashSet extends TestCase {
     
     public void testIterator_Remove3() {
         boolean exceptionCaught = false;
-        Object[] compare = {entity[0],
-                            entity[1],
-                            entity[2],
-                            entity[3],
-                            entity[4],
-                            entity[6],
-                            entity[7],
-                            entity[8],
-                            entity[9]};
+        Object[] compare = {
+	    entity[0],
+	    entity[1],
+	    entity[2],
+	    entity[3],
+	    entity[4],
+	    entity[6],
+	    entity[7],
+	    entity[8],
+	    entity[9]
+	};
         
         int count = 0;
         Iterator it = linkedHashSet.iterator();
@@ -198,13 +228,15 @@ public class TestLinkedHashSet extends TestCase {
         someMatch.add(entity[9]);
         assertTrue(linkedHashSet.removeAll(someMatch));
         
-        Object whatsleft[] = {entity[1],
-                              entity[2],
-                              entity[3],
-                              entity[4],
-                              entity[6],
-                              entity[7],
-                              entity[8]};
+        Object whatsleft[] = {
+	    entity[1],
+	    entity[2],
+	    entity[3],
+	    entity[4],
+	    entity[6],
+	    entity[7],
+	    entity[8]
+	};
 
         assertIteratorAgainstArray(linkedHashSet.iterator(), whatsleft);
     }
@@ -222,9 +254,11 @@ public class TestLinkedHashSet extends TestCase {
         someMatch.add(entity[9]);
         assertTrue(linkedHashSet.retainAll(someMatch));
         
-        Object whatsleft[] = {entity[0],
-                              entity[5],
-                              entity[9]};
+        Object whatsleft[] = {
+	    entity[0],
+	    entity[5],
+	    entity[9]
+	};
 
         assertIteratorAgainstArray(linkedHashSet.iterator(), whatsleft);
     }

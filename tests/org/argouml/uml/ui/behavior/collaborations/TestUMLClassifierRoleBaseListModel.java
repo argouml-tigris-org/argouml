@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -66,9 +67,9 @@ public class TestUMLClassifierRoleBaseListModel
      */
     protected MBase[] fillModel() {
         MClassifier[] bases = new MClassifier[10];
-        for(int i = 0 ; i < 10 ; i++) {
+        for (int i = 0; i < 10; i++) {
             bases[i] = CoreFactory.getFactory().createClass();
-            ((MClassifierRole)elem).addBase(bases[i]);
+            ((MClassifierRole) elem).addBase(bases[i]);
         }
         return bases;
     }
@@ -77,8 +78,8 @@ public class TestUMLClassifierRoleBaseListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#removeHalfModel(ru.novosoft.uml.MBase)
      */
     protected void removeHalfModel(MBase[] elements) {
-        for (int i = 0 ; i < 5 ; i++) {
-            ((MClassifierRole)elem).removeBase((MClassifier)elements[i]);
+        for (int i = 0; i < 5; i++) {
+            ((MClassifierRole) elem).removeBase((MClassifier) elements[i]);
         }
     }
 

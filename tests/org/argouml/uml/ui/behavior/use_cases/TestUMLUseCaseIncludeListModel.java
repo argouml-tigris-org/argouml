@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -65,9 +66,9 @@ public class TestUMLUseCaseIncludeListModel
      */
     protected MBase[] fillModel() {
         MInclude[] ext = new MInclude[10];
-        for (int i = 0 ; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             ext[i] = UseCasesFactory.getFactory().createInclude();
-            ((MUseCase)elem).addInclude(ext[i]);
+            ((MUseCase) elem).addInclude(ext[i]);
         }
         return ext;
     }
@@ -77,7 +78,7 @@ public class TestUMLUseCaseIncludeListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MUseCase)elem).removeInclude((MInclude)elements[i]);
+            ((MUseCase) elem).removeInclude((MInclude) elements[i]);
         }
     }
 }
