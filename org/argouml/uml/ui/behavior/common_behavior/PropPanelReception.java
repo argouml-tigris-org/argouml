@@ -29,87 +29,65 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-
 import org.argouml.swingext.GridLayout2;
-
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLCheckBox;
-import org.argouml.uml.ui.UMLReflectionBooleanProperty;
-import org.argouml.uml.ui.UMLTextArea;
-import org.argouml.uml.ui.UMLTextProperty;
+import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.util.ConfigLoader;
 
 /**
- * @author Jaap
- *
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
+ * PropertyPanel for a Reception.
  */
 public class PropPanelReception extends PropPanelModelElement {
 
     public PropPanelReception() {
-        super("Reception", _receptionIcon, ConfigLoader.getTabPropsOrientation());
+        super("Reception", _receptionIcon, ConfigLoader
+                .getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.RECEPTION;
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"),
+                getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"),
+                getNamespaceComboBox());
 
-        JPanel modPanel = new JPanel(new GridLayout2(0, 3, GridLayout2.ROWCOLPREFERRED));
-        // next line does not contain typing errors, NSUML is not correct (isabstarct instead of isabstract)
-        modPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.abstract-lc"), this, new UMLReflectionBooleanProperty("isAbstarct", mclass, "isAbstarct", "setAbstarct")));
-        modPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.final-lc"), this, new UMLReflectionBooleanProperty("isLeaf", mclass, "isLeaf", "setLeaf")));
-        modPanel.add(new UMLCheckBox(localize("root"), this, new UMLReflectionBooleanProperty("isRoot", mclass, "isRoot", "setRoot")));
-        addField(Translator.localize("UMLMenu", "label.modifiers"), modPanel);
+        JPanel _modifiersPanel = new JPanel(new GridLayout2(0, 2,
+                GridLayout2.ROWCOLPREFERRED));
+
+        _modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
+        _modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
+        _modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
+        // Reception are by definition never queries! see WFRs.
+        // therefore do not provide the according checkbox!
+
+        addField(Translator.localize("UMLMenu", "label.modifiers"),
+                _modifiersPanel);
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.signal"), new UMLReceptionSignalComboBox(this, new UMLReceptionSignalComboBoxModel()));
+        addField(Translator.localize("UMLMenu", "label.signal"),
+                new UMLReceptionSignalComboBox(this,
+                        new UMLReceptionSignalComboBoxModel()));
 
-        JScrollPane specificationScroll = new JScrollPane(new UMLTextArea(this, new UMLTextProperty(mclass, "specification", "getSpecification" , "setSpecification")), JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        addField(Translator.localize("UMLMenu", "label.specification"), specificationScroll);
+        UMLTextArea2 specText = new UMLTextArea2(
+                new UMLReceptionSpecificationDocument());
+        specText.setLineWrap(true);
+        specText.setRows(5);
+        JScrollPane specificationScroll = new JScrollPane(specText,
+                JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        addField(Translator.localize("UMLMenu", "label.specification"),
+                specificationScroll);
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-operation"), "removeElement", null);
-    }
-
-
-    /**
-     * Returns true if a given modelelement is an acceptable owner of this reception.
-     * Only classifiers that are no datatype are acceptable.
-     * @param element
-     * @return boolean
-     */
-    public boolean isAcceptibleClassifier(Object/*MModelElement*/ element) {
-        return (ModelFacade.isAClassifier(element) && !(ModelFacade.isADataType(element)));
-    }
-
-    /**
-     * Returns the owner of the reception. Necessary for the MClassifierComboBox.
-     * @return MClassifier
-     */
-    public Object getOwner() {
-        Object target = getTarget();
-        if (ModelFacade.isAReception(target)) {
-            return ModelFacade.getOwner(target);
-        }
-        return null;
-    }
-
-    /**
-     * Sets the owner of the reception. Necessary for the MClassifierComboBox.
-     * @param owner
-     */
-    public void setOwner(Object/*MClassifier*/ owner) {
-        Object target = getTarget();
-        if (ModelFacade.isAReception(target)) {
-            Object rec = /*(MReception)*/ target;
-            if (ModelFacade.getOwner(rec) != null) {
-                ModelFacade.setOwner(rec, null);
-            }
-            ModelFacade.setOwner(rec, owner);
-        }
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize(
+                "UMLMenu", "button.go-up"), "navigateUp", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator
+                .localize("UMLMenu", "button.delete-operation"),
+                "removeElement", null);
     }
 }
