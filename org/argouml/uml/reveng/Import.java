@@ -111,6 +111,8 @@ public class Import {
     
     private ImportStatusScreen iss;
     
+    private Hashtable attributes = new Hashtable();
+    
     /**
      * Unnecessary attribute
      * @deprecated As of ArgoUml version 0.13.5, don't use this!
@@ -166,6 +168,14 @@ public class Import {
      */
     public Project getProject() {
         return p;
+    }
+    
+    public Object getAttribute(String key) {
+        return attributes.get(key);
+    }
+    
+    public void setAttribute(String key, Object value) {
+        attributes.put(key, value);
     }
     
     /**
@@ -275,6 +285,7 @@ public class Import {
      */
     public void doFile() {
         Vector files = module.getList(this);
+	files.addAll(files); // for the second pass
         _diagram = getCurrentDiagram();
         
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -437,6 +448,11 @@ public class Import {
             
             if (_filesLeft.size() > 0) {
                 
+	        if (_filesLeft.size() <= _countFiles/2) {
+		    setAttribute("level", new Integer(2));
+		} else {
+		    setAttribute("level", new Integer(0));
+		}
                 Object curFile = _filesLeft.elementAt(0);
                 _filesLeft.removeElementAt(0);
                 
@@ -613,8 +629,11 @@ public class Import {
         public void setValue(int i) {
             
             _statusBar.setValue(i);
-            progressLabel.setText("Parsing file " + i + " of " + numberOfFiles
-				  + ".");
+	    String pass = "2-nd pass";
+	    if (i <= numberOfFiles/2) pass = "1-st pass";
+	    
+            progressLabel.setText("Parsing file " + (i/2+1) + " of " + numberOfFiles/2
+				  + ". "+pass);
             repaint();
         }
         

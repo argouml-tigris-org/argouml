@@ -128,6 +128,9 @@ public class JavaRecognizer extends antlr.LLkParser
         public static final short ACC_INTERFACE = 0x0200;
         public static final short ACC_ABSTRACT  = 0x0400;                     
 
+        int level = 1;
+	
+	
 	// This one is not(!) in the JVM specs, but required
 	public static final short ACC_SYNCHRONIZED  = 0x0800;
 
@@ -1152,8 +1155,8 @@ public JavaRecognizer(ParserSharedInputState state) {
 					ctorHead(mods);
 					compoundStatement();
 					if ( inputState.guessing==0 ) {
-						if (isOutestCompStat) {
-									   getModeller().addBodyToOperation(getMethod(),getBody());
+						if (isOutestCompStat && level > 0) {
+									   getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
 									   setMethod(null);
 									   setBody(null);
 									}
@@ -1213,9 +1216,9 @@ public JavaRecognizer(ParserSharedInputState state) {
 						}
 						}
 						if ( inputState.guessing==0 ) {
-							if (isOutestCompStat) {
+							if (isOutestCompStat && level > 0) {
 											     setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
-											     getModeller().addBodyToOperation(getMethod(),getBody());
+											     getModeller().addBodyToOperation(getMethod(), level>1?getBody():"");
 											     setMethod(null);
 											     setBody(null);
 											  }
@@ -1264,7 +1267,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		param=parameterDeclarationList();
 		match(RPAREN);
 		if ( inputState.guessing==0 ) {
-			if (isOutestCompStat) {
+			if (isOutestCompStat && level > 0) {
 					   setMethod(getModeller().addOperation(mods, null, 
 						name.getText(), param, getJavadocComment()));
 					 }
@@ -1455,7 +1458,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 		}
 		if ( inputState.guessing==0 ) {
 			
-					if (!isInCompoundStatement()) {
+					if (!isInCompoundStatement() && level > 0) {
 					getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
 					}
 					
