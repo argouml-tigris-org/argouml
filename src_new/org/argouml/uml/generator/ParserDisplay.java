@@ -2112,7 +2112,7 @@ public class ParserDisplay extends Parser {
 	if (s.charAt(s.length() - 1) == ';')
 	    s = s.substring(0, s.length() - 2);
 
-        // strip of the name, and the ":"
+        // strip off the name, and the ":"
 	String name = "";
 	String trigger = "";
 	String guard = "";
@@ -2144,9 +2144,10 @@ public class ParserDisplay extends Parser {
 	_cat.debug("guard=|" + guard + "|");
 	_cat.debug("actions=|" + actions + "|");
 
+        // use the name we found to (re)name the transition
 	ModelFacade.setName(trans, name);
 
-        /* The following handles the callevent that is the trigger of
+        /* The following handles the CallEvent that is the trigger of
         this transition. 
         We can distinct between 4 cases:
         1. A trigger is given. None exists yet.
@@ -2159,18 +2160,21 @@ public class ParserDisplay extends Parser {
         3. Nop.
         4. The existing trigger is unhooked and erased.
         
-        In fact it is even more complicated:
-        If a new/changed name is given for a trigger, and a trigger already
-        existed with that name, which was not yet hooked to this transition,
-        then it would be necessary in these cases to use the existing object!
+        In fact it is even more complicated for case 1:
+        If the transition did not have a trigger before, 
+        a trigger-name is given, and a trigger already
+        existed with that name,
+        then we have to use the existing trigger object!
         */
-        Object /*MEvent*/ evt = ModelFacade.getTrigger(trans);
+        Object evt = ModelFacade.getTrigger(trans);
 	if (trigger.length() > 0) {
             // case 1 and 2
             if (evt == null) {
                 // case 1
-                evt = parseEvent(trigger);
+                /* TODO: Why not createCallEvent() in the next line? */
+                evt = UmlFactory.getFactory().getStateMachines().buildCallEvent();
                 if (evt != null) {
+                    ModelFacade.setName(evt, trigger);
                     ModelFacade.setTrigger(trans, /*(MCallEvent)*/ evt);
                 }
             } else {
@@ -2179,11 +2183,16 @@ public class ParserDisplay extends Parser {
             }
 	} else { 
             // case 3 and 4
-	    ModelFacade.setTrigger(trans, null); // unhook it
-            //ModelFacade.removexxxx(evt); // erase it
-            /* This does not work:
-            StateMachinesFactory.getFactory().deleteCallEvent((MCallEvent) evt);
-            TODO: Erase the event!*/
+            if (trigger.length() == 0) {
+                // case 4
+                ModelFacade.setTrigger(trans, null); // unhook it
+                // now erase it
+                /* TODO: Erase the event!*/
+                /* This does not work: (and besides, it can be another kind of event) */
+                /* StateMachinesFactory.getFactory().deleteCallEvent((MCallEvent) evt); */
+            } else {
+                ;// case 3
+            }
         }
 
 	if (guard.length() > 0) {
