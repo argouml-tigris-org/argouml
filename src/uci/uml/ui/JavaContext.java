@@ -21,6 +21,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+package uci.uml.ui;
+
 import java.awt.*;
 import java.util.Vector;
 
