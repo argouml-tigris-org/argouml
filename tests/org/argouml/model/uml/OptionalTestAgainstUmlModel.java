@@ -23,18 +23,6 @@
 
 package org.argouml.model.uml;
 
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.foundation.datatypes.DataTypesFactory;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
-import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-import org.argouml.util.CheckUMLModelHelper;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
@@ -43,15 +31,21 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-import org.xml.sax.SAXException;
-
+import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.util.CheckUMLModelHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.NamedNodeMap;
-import org.argouml.model.uml.AbstractUmlModelFactory;
+import org.xml.sax.SAXException;
 
 public class OptionalTestAgainstUmlModel extends TestCase {
 

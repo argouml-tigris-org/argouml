@@ -61,7 +61,7 @@ public class CheckResourceBundle {
 	    e.hasMoreElements();
 	    ) {
 	    Object c = e.nextElement();
-	    tc.assertTrue("Duplicate key \"" 
+	    TestCase.assertTrue("Duplicate key \"" 
 		      + c
 		      + "\" in "
 		      + b.getClass().getName(),
@@ -74,7 +74,7 @@ public class CheckResourceBundle {
 					    ResourceBundle b,
 					    String[] tags) {
 	for (int i = 0; i < tags.length; i++)
-	    tc.assertTrue("Can't find tag \"" + tags[i]
+	    TestCase.assertTrue("Can't find tag \"" + tags[i]
 		      + "\" in "
 		      + b.getClass().getName(),
 		      bundleContains(b, tags[i]));
@@ -90,7 +90,7 @@ public class CheckResourceBundle {
 	     e.hasMoreElements();
 	     ) {
 	    String tag = (String) e.nextElement();
-	    tc.assertTrue("Missing tag \""
+	    TestCase.assertTrue("Missing tag \""
 		      + tag
 		      + "\" in "
 		      + locb.getClass().getName()
@@ -111,7 +111,7 @@ public class CheckResourceBundle {
 	     e.hasMoreElements();
 	     ) {
 	    String tag = (String) e.nextElement();
-	    tc.assertTrue("Extra tag \""
+	    TestCase.assertTrue("Extra tag \""
 		      + tag
 		      + "\" in "
 		      + locb.getClass().getName()
@@ -227,7 +227,7 @@ public class CheckResourceBundle {
 
 	    ResourceBundle locb = ResourceBundle.getBundle(bname, l);
 
-	    tc.assertTrue("Resource bundle "
+	    TestCase.assertTrue("Resource bundle "
 		      + bname
 		      + " does not exist for " 
 		      + l.toString(),

@@ -24,8 +24,6 @@
 // $header$
 package org.argouml.model.uml;
 
-import junit.framework.TestCase;
-
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 

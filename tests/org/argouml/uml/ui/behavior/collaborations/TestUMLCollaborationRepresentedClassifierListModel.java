@@ -29,11 +29,10 @@ import junit.framework.TestCase;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
  * @since Oct 28, 2002

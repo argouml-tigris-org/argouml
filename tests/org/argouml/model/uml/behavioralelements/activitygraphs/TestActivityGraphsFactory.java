@@ -46,16 +46,9 @@
 
 package org.argouml.model.uml.behavioralelements.activitygraphs;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import junit.framework.TestCase;
 
-import junit.framework.*;
-
-
-
-import org.argouml.util.*;
+import org.argouml.util.CheckUMLModelHelper;
 
 
 

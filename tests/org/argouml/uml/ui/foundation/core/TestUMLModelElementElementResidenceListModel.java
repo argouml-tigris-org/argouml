@@ -23,15 +23,12 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-
+import junit.framework.TestCase;
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClassImpl;
 import ru.novosoft.uml.foundation.core.MElementResidence;
 import ru.novosoft.uml.foundation.core.MElementResidenceImpl;
 import ru.novosoft.uml.foundation.core.MModelElement;
-
-import junit.framework.TestCase;
 
 /**
  * @since Oct 12, 2002

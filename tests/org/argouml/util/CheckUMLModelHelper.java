@@ -48,23 +48,18 @@ package org.argouml.util;
 
 
 
-import java.lang.ref.*;
+import java.lang.ref.WeakReference;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
-import java.lang.reflect.*;
+import junit.framework.TestCase;
 
-
-
-import junit.framework.*;
-
-
-
-import org.apache.log4j.spi.LoggingEvent;
-import org.argouml.model.uml.*;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 
-import ru.novosoft.uml.*;
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -103,7 +98,7 @@ public class CheckUMLModelHelper {
 
 	// something meaningfull.
 
-	tc.assertTrue("toString() corrupt in " + c, 
+	TestCase.assertTrue("toString() corrupt in " + c, 
 
 		  mo.toString() instanceof String);
 
@@ -115,7 +110,7 @@ public class CheckUMLModelHelper {
 
 	System.gc();
 
-	tc.assertTrue("Could not reclaim " + c, wo.get() == null);
+	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
 
     }
 
@@ -135,17 +130,17 @@ public class CheckUMLModelHelper {
 
 	// something meaningfull.
 
-	tc.assertTrue("toString() corrupt in " + c, 
+	TestCase.assertTrue("toString() corrupt in " + c, 
 
 		  mo.toString() instanceof String);
 
-	tc.assertTrue("getUMLClassName() corrupt in " + c, 
+	TestCase.assertTrue("getUMLClassName() corrupt in " + c, 
 
 		  mo.getUMLClassName() instanceof String);
 
 
 
-	tc.assertTrue("getUMLClassName() different from expected in " + c, 
+	TestCase.assertTrue("getUMLClassName() different from expected in " + c, 
 
 		  name.equals(mo.getUMLClassName()));
 
@@ -157,7 +152,7 @@ public class CheckUMLModelHelper {
 
 	System.gc();
 
-	tc.assertTrue("Could not reclaim " + c, wo.get() == null);
+	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
 
     }
 
@@ -195,7 +190,7 @@ public class CheckUMLModelHelper {
 
 	    catch (NoSuchMethodException e) {
 
-		tc.fail("Method create" + names[i] 
+		TestCase.fail("Method create" + names[i] 
 
 			+ " does not exist in " + f);
 
@@ -229,7 +224,7 @@ public class CheckUMLModelHelper {
 
 	    catch (IllegalAccessException e) {
 
-		tc.fail("Method create" + names[i] 
+		TestCase.fail("Method create" + names[i] 
 
 			+ " in " + f + " cannot be called");
 
@@ -239,7 +234,7 @@ public class CheckUMLModelHelper {
 
 	    catch (InvocationTargetException e) {
 
-		tc.fail("Method create" + names[i] 
+		TestCase.fail("Method create" + names[i] 
 
 			+ " in " + f + " throws an exception.");
 
@@ -275,7 +270,7 @@ public class CheckUMLModelHelper {
             methods = f.getClass().getMethods();
         }
         catch (SecurityException se) {
-            tc.fail("SecurityException while retrieving all methods from " + f.getClass().getName());
+            TestCase.fail("SecurityException while retrieving all methods from " + f.getClass().getName());
             return;
         }
         for(int i = 0 ; i < names.length; i ++) {
@@ -289,7 +284,7 @@ public class CheckUMLModelHelper {
                 }
             }
             if (testFailed) {
-                tc.fail("Method "+ methodName + " not found in " + f.getClass().getName());
+                TestCase.fail("Method "+ methodName + " not found in " + f.getClass().getName());
             }
         }
     }
@@ -301,7 +296,7 @@ public class CheckUMLModelHelper {
                     Method m = f.getClass().getMethod("create"+names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
                     if (base instanceof MModelElement) {
-                        tc.assertTrue("not a valid metaModelName " + names[i], ExtensionMechanismsHelper.getHelper().getMetaModelName((MModelElement)base).equals(names[i]));
+                        TestCase.assertTrue("not a valid metaModelName " + names[i], ExtensionMechanismsHelper.getHelper().getMetaModelName((MModelElement)base).equals(names[i]));
                     }
                 }
                 catch (NoSuchMethodException ns) {}
@@ -309,7 +304,7 @@ public class CheckUMLModelHelper {
         }
         catch (Exception ex) {
             ex.printStackTrace();
-            tc.fail("Exception during test metaModelnameCorrect. Message: " + ex.getMessage());
+            TestCase.fail("Exception during test metaModelnameCorrect. Message: " + ex.getMessage());
             
         }
     } 
@@ -325,13 +320,13 @@ public class CheckUMLModelHelper {
                     Object base = m.invoke(f, new Object[] {});
                     if (base instanceof MModelElement) {
                         MStereotype stereo2 = ExtensionMechanismsFactory.getFactory().buildStereotype((MModelElement)base, "test2", ns);
-                        tc.assertTrue("Unexpected invalid stereotype", ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo2));
+                        TestCase.assertTrue("Unexpected invalid stereotype", ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo2));
                         if (!(base instanceof MClass)) {
-                            tc.assertTrue("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo1));
+                            TestCase.assertTrue("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo1));
                         } else {
                             MInterface inter = CoreFactory.getFactory().createInterface();
                             MStereotype stereo3 = ExtensionMechanismsFactory.getFactory().buildStereotype(inter, "test3", ns);
-                            tc.assertTrue("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo3));
+                            TestCase.assertTrue("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo3));
                         }
                     }
                 }
@@ -340,7 +335,7 @@ public class CheckUMLModelHelper {
         }
         catch (Exception ex) {
             ex.printStackTrace();
-            tc.fail("Exception during test metaModelnameCorrect. Message: " + ex.getMessage());
+            TestCase.fail("Exception during test metaModelnameCorrect. Message: " + ex.getMessage());
             
         }
     }

@@ -1,4 +1,3 @@
-// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,61 +21,53 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
+// $Id$
 
-import org.argouml.application.security.ArgoSecurityManager;
+package org.argouml.uml.ui;
 
-import junit.framework.TestCase;
+import java.util.ArrayList;
+import java.util.List;
+
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MModelImpl;
+import ru.novosoft.uml.model_management.MPackageImpl;
 
 /**
- * @since Nov 23, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * Test for ActionClassDiagram.
+ * @author JBranderhorst
  */
-public class TestProjectBrowser extends TestCase {
+public class TestActionClassDiagram extends AbstractTestActionAddDiagram {
 
-    /**
-     * Constructor for TestProjectBrowser.
-     * @param arg0
-     */
-    public TestProjectBrowser(String arg0) {
-        super(arg0);
-    }
+	/**
+	 * Constructor for TestActionClassDiagram.
+	 * @param arg0
+	 */
+	public TestActionClassDiagram(String arg0) {
+		super(arg0);
+	}
 
-    /**
-     * Tests wether it is possible to construct a standalone projectbrowser
-     */
-    public void testConstruction() {
-        ProjectBrowser pb;
-        try {
-            pb = new ProjectBrowser("test", false);
-            assertNotNull(ProjectBrowser.TheInstance);
-        } catch (java.lang.InternalError e) {
-            // This is when we cannot connect to the display system.
-            // The test is inconclusive
-        }
-    }
+	/**
+	 * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getAction()
+	 */
+	protected ActionAddDiagram getAction() {
+		return ActionClassDiagram.SINGLETON;
+	}
 
-    /**
-     * Tests the construction of the splashscreen
-     */
-    public void testSplashScreen() {
-        ProjectBrowser pb;
-        try {
-            pb = new ProjectBrowser("test", true);
-            assertNotNull(ProjectBrowser.TheInstance.getSplashScreen());
-        } catch (java.lang.NoClassDefFoundError e) {
-            // Some problem caused by the lack of display system.
-            // The test is inconclusive
-        }
+	/**
+	 * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getNamespace()
+	 */
+	protected MNamespace getNamespace() {
+		return new MPackageImpl();
+	}
 
-    }
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-    }
+	/**
+	 * @see org.argouml.uml.ui.AbstractTestActionAddDiagram#getValidNamespaceClasses()
+	 */
+	protected List getValidNamespaceClasses() {
+		List returnList = new ArrayList();
+		returnList.add(MPackageImpl.class);
+		returnList.add(MModelImpl.class);
+		return returnList;
+	}
 
 }

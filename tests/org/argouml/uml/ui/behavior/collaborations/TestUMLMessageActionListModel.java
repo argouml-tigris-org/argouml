@@ -29,11 +29,7 @@ import junit.framework.TestCase;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
-import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
-import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import ru.novosoft.uml.MBase;
+
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
