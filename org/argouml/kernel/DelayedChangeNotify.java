@@ -31,15 +31,24 @@ import java.beans.*;
  * the Kernel.
  */
 public class DelayedChangeNotify implements Runnable {
-    DelayedVChangeListener _listener;
-    PropertyChangeEvent _pce;
+    private DelayedVChangeListener listener;
+    private PropertyChangeEvent pce;
 
-    public DelayedChangeNotify(DelayedVChangeListener list,
-			       PropertyChangeEvent pce) {
-	_listener = list;
-	_pce = pce;
+    /**
+     * The constructor.
+     * 
+     * @param l the listener
+     * @param p the event
+     */
+    public DelayedChangeNotify(DelayedVChangeListener l,
+			       PropertyChangeEvent p) {
+	listener = l;
+	pce = p;
     }
   
-    public void run() { _listener.delayedVetoableChange(_pce); }
+    /**
+     * @see java.lang.Runnable#run()
+     */
+    public void run() { listener.delayedVetoableChange(pce); }
 
 } /* end class DelayedChangeNotify */
