@@ -98,6 +98,12 @@ public class FigFinalState extends FigStateVertex {
   ////////////////////////////////////////////////////////////////
   // Fig accessors
 
+  public Selection makeSelection() {
+    SelectionState sel = new SelectionState(this);
+    sel.setOutgoingButtonEnabled(false);
+    return sel;
+  }
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
@@ -109,9 +115,9 @@ public class FigFinalState extends FigStateVertex {
   /** Final states are fixed size. */
   public boolean isResizable() { return false; }
 
-  public Selection makeSelection() {
-    return new SelectionMoveClarifiers(this);
-  }
+//   public Selection makeSelection() {
+//     return new SelectionMoveClarifiers(this);
+//   }
 
   public void setLineColor(Color col) { _outCircle.setLineColor(col); }
   public Color getLineColor() { return _outCircle.getLineColor(); }

@@ -116,6 +116,10 @@ public class FigActor extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // Fig accessors
 
+  public Selection makeSelection() {
+    return new SelectionActor(this);
+  }
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
@@ -124,9 +128,9 @@ public class FigActor extends FigNodeModelElement {
   /** Returns true if this Fig can be resized by the user. */
   public boolean isResizable() { return false; }
 
-  public Selection makeSelection() {
-    return new SelectionMoveClarifiers(this);
-  }
+//   public Selection makeSelection() {
+//     return new SelectionMoveClarifiers(this);
+//   }
 
   public void setLineColor(Color col) {
     _head.setLineColor(col);

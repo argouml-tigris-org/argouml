@@ -24,8 +24,8 @@
 
 
 
-// File: SelectionClass.java
-// Classes: SelectionClass
+// File: SelectionUseCase.java
+// Classes: SelectionUseCase
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -42,24 +42,21 @@ import uci.graph.*;
 import uci.util.Util;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Behavioral_Elements.Use_Cases.*;
 
 
-public class SelectionClass extends SelectionWButtons {
+public class SelectionUseCase extends SelectionWButtons {
   ////////////////////////////////////////////////////////////////
   // constants
   public static Icon inherit = Util.loadIconResource("Generalization");
   public static Icon assoc = Util.loadIconResource("Association");
-  public static Icon compos = Util.loadIconResource("CompositeAggregation");
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected boolean _useComposite = false;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /** Construct a new SelectionClass for the given Fig */
-  public SelectionClass(Fig f) { super(f); }
+  /** Construct a new SelectionUseCase for the given Fig */
+  public SelectionUseCase(Fig f) { super(f); }
 
   /** Return a handle ID for the handle under the mouse, or -1 if
    *  none. Needs-More-Work: in the future, return a Handle instance or
@@ -91,19 +88,19 @@ public class SelectionClass extends SelectionWButtons {
     int ah = assoc.getIconHeight();
     if (hitAbove(cx + cw/2, cy, iw, ih, r)) {
       h.index = 10;
-      h.instructions = "Add a superclass";
+      h.instructions = "Add a more general use case";
     }
     else if (hitBelow(cx + cw/2, cy + ch, iw, ih, r)) {
       h.index = 11;
-      h.instructions = "Add a subclass";
+      h.instructions = "Add a specialized use case";
     }
     else if (hitLeft(cx + cw, cy + ch/2, aw, ah, r)) {
       h.index = 12;
-      h.instructions = "Add an associated class";
+      h.instructions = "Add an associated actor";
     }
     else if (hitRight(cx, cy + ch/2, aw, ah, r)) {
       h.index = 13;
-      h.instructions = "Add an associated class";
+      h.instructions = "Add an associated actor";
     }
     else {
       h.index = -1;
@@ -121,14 +118,8 @@ public class SelectionClass extends SelectionWButtons {
     int ch = _content.getHeight();
     paintButtonAbove(inherit, g, cx + cw/2, cy, 10);
     paintButtonBelow(inherit, g, cx + cw/2, cy + ch, 11);
-    if (_useComposite) {
-      paintButtonLeft(compos, g, cx + cw, cy + ch/2, 12);
-      paintButtonRight(compos, g, cx, cy + ch/2, 13);
-    }
-    else {
-      paintButtonLeft(assoc, g, cx + cw, cy + ch/2, 12);
-      paintButtonRight(assoc, g, cx, cy + ch/2, 13);
-    }
+    paintButtonLeft(assoc, g, cx + cw, cy + ch/2, 12);
+    paintButtonRight(assoc, g, cx, cy + ch/2, 13);
   }
 
 
@@ -144,28 +135,33 @@ public class SelectionClass extends SelectionWButtons {
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
     Class edgeClass = null;
-    Class nodeClass = uci.uml.Foundation.Core.MMClass.class;
+    Class nodeClass = null;
+    if (hand.index == 10 || hand.index == 11)
+      nodeClass = UseCase.class;
+    else
+      nodeClass = Actor.class;
+
     int bx = mX, by = mY;
     boolean reverse = false;
     switch (hand.index) {
     case 10: //add superclass
-      edgeClass = uci.uml.Foundation.Core.Generalization.class;
+      edgeClass = Generalization.class;
       by = cy;
       bx = cx + cw/2;
       break;
     case 11: //add subclass
-      edgeClass = uci.uml.Foundation.Core.Generalization.class;
+      edgeClass = Generalization.class;
       reverse = true;
       by = cy + ch;
       bx = cx + cw/2;
       break;
     case 12: //add assoc
-      edgeClass = uci.uml.Foundation.Core.Association.class;
+      edgeClass = Association.class;
       by = cy + ch/2;
       bx = cx + cw;
       break;
     case 13: // add assoc
-      edgeClass = uci.uml.Foundation.Core.Association.class;
+      edgeClass = Association.class;
       reverse = true;
       by = cy + ch/2;
       bx = cx;
@@ -177,7 +173,7 @@ public class SelectionClass extends SelectionWButtons {
     if (edgeClass != null && nodeClass != null) {
       Editor ce = Globals.curEditor();
       ModeCreateEdgeAndNode m = new
-	ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, _useComposite);
+	ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
       m.setup((FigNode)_content, _content.getOwner(), bx, by, reverse);
       ce.mode(m);
     }
@@ -186,9 +182,14 @@ public class SelectionClass extends SelectionWButtons {
 
 
   public void buttonClicked(int buttonCode) {
-    MMClass newNode = new MMClass();
-    FigClass fc = (FigClass) _content;
-    MMClass cls = (MMClass) fc.getOwner();
+    Classifier newNode = null;
+    if (buttonCode == 10 || buttonCode == 11)
+      newNode = new UseCase();
+    else
+      newNode = new Actor();
+
+    FigUseCase fc = (FigUseCase) _content;
+    UseCase cls = (UseCase) fc.getOwner();
 
     Editor ce = Globals.curEditor();
     GraphModel gm = ce.getGraphModel();
@@ -250,34 +251,26 @@ public class SelectionClass extends SelectionWButtons {
     ce.getSelectionManager().select(fc);
   }
 
-  public Object addSuperClass(MutableGraphModel mgm, MMClass cls,
-			    MMClass newCls) {
+  public Object addSuperClass(MutableGraphModel mgm, UseCase cls,
+			    Classifier newCls) {
     return mgm.connect(cls, newCls, Generalization.class);
   }
 
-  public Object addSubClass(MutableGraphModel mgm, MMClass cls,
-			    MMClass newCls) {
+  public Object addSubClass(MutableGraphModel mgm, UseCase cls,
+			    Classifier newCls) {
     return mgm.connect(newCls, cls, Generalization.class);
   }
 
-  public Object addAssocClassRight(MutableGraphModel mgm, MMClass cls,
-			    MMClass newCls) {
-    return mgm.connect(cls, newCls, Association.class);
-  }
-
-  public Object addAssocClassLeft(MutableGraphModel mgm, MMClass cls,
-			    MMClass newCls) {
+  public Object addAssocClassLeft(MutableGraphModel mgm, UseCase cls,
+			    Classifier newCls) {
     return mgm.connect(newCls, cls, Association.class);
   }
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-
-  public void mouseEntered(MouseEvent me) {
-    super.mouseEntered(me);
-    _useComposite = me.isShiftDown();
+  public Object addAssocClassRight(MutableGraphModel mgm, UseCase cls,
+			    Classifier newCls) {
+    return mgm.connect(cls, newCls, Association.class);
   }
 
-} /* end class SelectionClass */
+
+} /* end class SelectionUseCase */
 

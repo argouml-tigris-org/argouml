@@ -1,6 +1,11 @@
 SOURCES= \
 	ModeCreateEdgeAndNode.java \
+	SelectionWButtons.java \
 	SelectionClass.java \
+ 	SelectionInterface.java \
+	SelectionState.java \
+	SelectionActor.java \
+	SelectionUseCase.java \
 	SelectionNodeClarifiers.java \
 	SelectionEdgeClarifiers.java \
 	SelectionMoveClarifiers.java \

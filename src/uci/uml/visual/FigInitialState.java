@@ -93,6 +93,16 @@ public class FigInitialState extends FigStateVertex {
   ////////////////////////////////////////////////////////////////
   // Fig accessors
 
+  public Selection makeSelection() {
+    SelectionState sel = new SelectionState(this);
+    sel.setIncomingButtonEnabled(false);
+    if (getOwner() != null) {
+      Vector outs = ((StateVertex)getOwner()).getOutgoing();
+      sel.setOutgoingButtonEnabled(outs == null || outs.size() == 0);
+    }
+    return sel;
+  }
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
@@ -104,9 +114,9 @@ public class FigInitialState extends FigStateVertex {
   /** Initial states are fixed size. */
   public boolean isResizable() { return false; }
 
-  public Selection makeSelection() {
-    return new SelectionMoveClarifiers(this);
-  }
+//   public Selection makeSelection() {
+//     return new SelectionMoveClarifiers(this);
+//   }
 
   public void setLineColor(Color col) { _head.setLineColor(col); }
   public Color getLineColor() { return _head.getLineColor(); }

@@ -43,12 +43,19 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class FigInterface extends FigNodeModelElement {
 
+  ////////////////////////////////////////////////////////////////
+  // constants
   public static int OVERLAP = 4;
 
+  ////////////////////////////////////////////////////////////////
+  // instance variables
   protected FigRect _bigPort;
   protected FigRect _outline;
   protected FigText _stereo;
   protected FigText _oper;
+
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
   public FigInterface() {
 
@@ -103,6 +110,13 @@ public class FigInterface extends FigNodeModelElement {
     figClone._name = (FigText) v.elementAt(3);
     figClone._oper = (FigText) v.elementAt(4);
     return figClone;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // Fig implemetation
+
+  public Selection makeSelection() {
+    return new SelectionInterface(this);
   }
 
   public void setOwner(Object node) {

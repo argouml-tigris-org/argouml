@@ -131,6 +131,10 @@ public class FigCompositeState extends FigStateVertex {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public Selection makeSelection() {
+    return new SelectionState(this);
+  }
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);

@@ -24,8 +24,8 @@
 
 
 
-// File: SelectionClass.java
-// Classes: SelectionClass
+// File: SelectionInterface.java
+// Classes: SelectionInterface
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -44,22 +44,17 @@ import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
 
-public class SelectionClass extends SelectionWButtons {
+public class SelectionInterface extends SelectionWButtons {
   ////////////////////////////////////////////////////////////////
   // constants
-  public static Icon inherit = Util.loadIconResource("Generalization");
-  public static Icon assoc = Util.loadIconResource("Association");
-  public static Icon compos = Util.loadIconResource("CompositeAggregation");
+  public static Icon realiz = Util.loadIconResource("Realization");
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected boolean _useComposite = false;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /** Construct a new SelectionClass for the given Fig */
-  public SelectionClass(Fig f) { super(f); }
+  /** Construct a new SelectionInterface for the given Fig */
+  public SelectionInterface(Fig f) { super(f); }
 
   /** Return a handle ID for the handle under the mouse, or -1 if
    *  none. Needs-More-Work: in the future, return a Handle instance or
@@ -85,25 +80,11 @@ public class SelectionClass extends SelectionWButtons {
     int cy = _content.getY();
     int cw = _content.getWidth();
     int ch = _content.getHeight();
-    int iw = inherit.getIconWidth();
-    int ih = inherit.getIconHeight();
-    int aw = assoc.getIconWidth();
-    int ah = assoc.getIconHeight();
-    if (hitAbove(cx + cw/2, cy, iw, ih, r)) {
-      h.index = 10;
-      h.instructions = "Add a superclass";
-    }
-    else if (hitBelow(cx + cw/2, cy + ch, iw, ih, r)) {
+    int iw = realiz.getIconWidth();
+    int ih = realiz.getIconHeight();
+    if (hitBelow(cx + cw/2, cy + ch, iw, ih, r)) {
       h.index = 11;
-      h.instructions = "Add a subclass";
-    }
-    else if (hitLeft(cx + cw, cy + ch/2, aw, ah, r)) {
-      h.index = 12;
-      h.instructions = "Add an associated class";
-    }
-    else if (hitRight(cx, cy + ch/2, aw, ah, r)) {
-      h.index = 13;
-      h.instructions = "Add an associated class";
+      h.instructions = "Add a realization";
     }
     else {
       h.index = -1;
@@ -119,16 +100,7 @@ public class SelectionClass extends SelectionWButtons {
     int cy = _content.getY();
     int cw = _content.getWidth();
     int ch = _content.getHeight();
-    paintButtonAbove(inherit, g, cx + cw/2, cy, 10);
-    paintButtonBelow(inherit, g, cx + cw/2, cy + ch, 11);
-    if (_useComposite) {
-      paintButtonLeft(compos, g, cx + cw, cy + ch/2, 12);
-      paintButtonRight(compos, g, cx, cy + ch/2, 13);
-    }
-    else {
-      paintButtonLeft(assoc, g, cx + cw, cy + ch/2, 12);
-      paintButtonRight(assoc, g, cx, cy + ch/2, 13);
-    }
+    paintButtonBelow(realiz, g, cx + cw/2, cy + ch, 11);
   }
 
 
@@ -144,31 +116,15 @@ public class SelectionClass extends SelectionWButtons {
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
     Class edgeClass = null;
-    Class nodeClass = uci.uml.Foundation.Core.MMClass.class;
+    Class nodeClass = MMClass.class;
     int bx = mX, by = mY;
     boolean reverse = false;
     switch (hand.index) {
-    case 10: //add superclass
-      edgeClass = uci.uml.Foundation.Core.Generalization.class;
-      by = cy;
-      bx = cx + cw/2;
-      break;
-    case 11: //add subclass
-      edgeClass = uci.uml.Foundation.Core.Generalization.class;
+    case 11: //add realization
+      edgeClass = Realization.class;
       reverse = true;
       by = cy + ch;
       bx = cx + cw/2;
-      break;
-    case 12: //add assoc
-      edgeClass = uci.uml.Foundation.Core.Association.class;
-      by = cy + ch/2;
-      bx = cx + cw;
-      break;
-    case 13: // add assoc
-      edgeClass = uci.uml.Foundation.Core.Association.class;
-      reverse = true;
-      by = cy + ch/2;
-      bx = cx;
       break;
     default:
       System.out.println("invalid handle number");
@@ -177,7 +133,7 @@ public class SelectionClass extends SelectionWButtons {
     if (edgeClass != null && nodeClass != null) {
       Editor ce = Globals.curEditor();
       ModeCreateEdgeAndNode m = new
-	ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, _useComposite);
+	ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
       m.setup((FigNode)_content, _content.getOwner(), bx, by, reverse);
       ce.mode(m);
     }
@@ -187,8 +143,8 @@ public class SelectionClass extends SelectionWButtons {
 
   public void buttonClicked(int buttonCode) {
     MMClass newNode = new MMClass();
-    FigClass fc = (FigClass) _content;
-    MMClass cls = (MMClass) fc.getOwner();
+    FigInterface fc = (FigInterface) _content;
+    Interface cls = (Interface) fc.getOwner();
 
     Editor ce = Globals.curEditor();
     GraphModel gm = ce.getGraphModel();
@@ -205,28 +161,11 @@ public class SelectionClass extends SelectionWButtons {
 					 Math.max(0, fc.getY() - 200),
 					 fc.getWidth() + 400,
 					 fc.getHeight() + 400);
-    if (buttonCode == 10) {
-      newFC.setLocation(fc.getX(), Math.max(0, fc.getY() - 200));
-      outputRect.height = 200;
-      lay.bumpOffOtherNodesIn(newFC, outputRect, false, false);
-    }
-    else if (buttonCode == 11) {
+    if (buttonCode == 11) {
       newFC.setLocation(fc.getX(), fc.getY() + fc.getHeight() + 100);
       outputRect.y = fc.getY() + fc.getHeight() + 100;
       outputRect.height = 200;
       lay.bumpOffOtherNodesIn(newFC, outputRect, false, false);
-    }
-    else if (buttonCode == 12) {
-      newFC.setLocation(fc.getX() + fc.getWidth() + 100, fc.getY());
-      outputRect.x = fc.getX()+ fc.getWidth() + 100 ;
-      outputRect.width = 200;
-      lay.bumpOffOtherNodesIn(newFC, outputRect, false, true);
-    }
-    else if (buttonCode == 13) {
-      newFC.setLocation(Math.max(0, fc.getX() - 200), fc.getY());
-      outputRect.x = fc.getX() - 200;
-      outputRect.width = 200;
-      lay.bumpOffOtherNodesIn(newFC, outputRect, false, true);
     }
     ce.add(newFC);
     mgm.addNode(newNode);
@@ -237,10 +176,7 @@ public class SelectionClass extends SelectionWButtons {
     Point newFCCenter = newFC.center();
     edgeShape.addPoint(newFCCenter.x, newFCCenter.y);
     Object newEdge = null;
-    if (buttonCode == 10) newEdge = addSuperClass(mgm, cls, newNode);
-    else if (buttonCode == 11) newEdge = addSubClass(mgm, cls, newNode);
-    else if (buttonCode == 12) newEdge = addAssocClassRight(mgm, cls, newNode);
-    else if (buttonCode == 13) newEdge = addAssocClassLeft(mgm, cls, newNode);
+    if (buttonCode == 11) newEdge = addRealization(mgm, cls, newNode);
 
     FigEdge fe = (FigEdge) lay.presentationFor(newEdge);
     edgeShape.setLineColor(Color.black);
@@ -250,34 +186,10 @@ public class SelectionClass extends SelectionWButtons {
     ce.getSelectionManager().select(fc);
   }
 
-  public Object addSuperClass(MutableGraphModel mgm, MMClass cls,
+  public Object addRealization(MutableGraphModel mgm, Interface cls,
 			    MMClass newCls) {
-    return mgm.connect(cls, newCls, Generalization.class);
+    return mgm.connect(newCls, cls, Realization.class);
   }
 
-  public Object addSubClass(MutableGraphModel mgm, MMClass cls,
-			    MMClass newCls) {
-    return mgm.connect(newCls, cls, Generalization.class);
-  }
-
-  public Object addAssocClassRight(MutableGraphModel mgm, MMClass cls,
-			    MMClass newCls) {
-    return mgm.connect(cls, newCls, Association.class);
-  }
-
-  public Object addAssocClassLeft(MutableGraphModel mgm, MMClass cls,
-			    MMClass newCls) {
-    return mgm.connect(newCls, cls, Association.class);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-
-  public void mouseEntered(MouseEvent me) {
-    super.mouseEntered(me);
-    _useComposite = me.isShiftDown();
-  }
-
-} /* end class SelectionClass */
+} /* end class SelectionInterface */
 
