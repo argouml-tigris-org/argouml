@@ -152,7 +152,7 @@ public class Project implements java.io.Serializable {
          // Jaap Branderhorst 2002-12-09
         // load the default model
         // this is NOT the way how it should be since this makes argo depend on Java even more.
-       setDefaultModel(ProfileJava.getInstance().getProfileModel());
+       setDefaultModel(ProfileJava.loadProfileModel());
     }
 
     public Project (MModel model) {
