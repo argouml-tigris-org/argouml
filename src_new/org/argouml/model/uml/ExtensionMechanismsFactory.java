@@ -108,11 +108,14 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     public MStereotype buildStereotype(Object theModelElementObject,
                                        Object theName,
                                        Object theNamespaceObject) {
+        if (theModelElementObject == null
+                || theName == null
+                || theNamespaceObject == null) {
+            throw new IllegalArgumentException("one of the arguments is null");
+        }
         MModelElement me = (MModelElement) theModelElementObject;
         String text = (String) theName;
         MNamespace ns = (MNamespace) theNamespaceObject;
-    	if (me == null || text == null || ns == null)
-	    throw new IllegalArgumentException("one of the arguments is null");
     	MStereotype stereo = (MStereotype) createStereotype();
     	stereo.setName(text);
     	stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
@@ -134,17 +137,20 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
      * 
      * @param theModelElementObject the baseclass for the new stereotype
      * @param theName               the name for the new stereotype
+     * @param model the current model of interest
+     * @param models all the models
      * @return                      the new stereotype
      */
-    public MStereotype buildStereotype(Object theModelElementObject,
-				       String theName) {
+    public MStereotype buildStereotype(
+            Object theModelElementObject,
+			String theName,
+            Object model,
+            Collection models) {
         MModelElement me = (MModelElement) theModelElementObject;
         MStereotype stereo = (MStereotype) createStereotype();
         stereo.setName(theName);
         stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
 			    .getMetaModelName(me));
-        Collection models =
-            ProjectManager.getManager().getCurrentProject().getModels();
         MStereotype stereo2 =
 	    ExtensionMechanismsHelper.getHelper().getStereotype(models, stereo);
         if (stereo2 != null) {
@@ -152,9 +158,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
             UmlFactory.getFactory().delete(stereo);
             return stereo2;
         }
-        ((MModel) ProjectManager.getManager().getCurrentProject()
-        .getModel())
-        .addOwnedElement(stereo);
+        ((MModel)model).addOwnedElement(stereo);
         if (me != null)
             stereo.addExtendedElement(me);
         return stereo;

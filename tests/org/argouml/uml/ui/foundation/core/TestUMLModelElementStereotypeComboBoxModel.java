@@ -24,6 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.Collection;
+
 import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
@@ -71,9 +73,11 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         p.setRoot(m);
         elem.setNamespace(m);       
         stereotypes = new MStereotype[10];
+        Object theModel = ProjectManager.getManager().getCurrentProject().getModel();
+        Collection models = ProjectManager.getManager().getCurrentProject().getModels();
         for (int i = 0; i < 10; i++) {
             stereotypes[i] = ExtensionMechanismsFactory.getFactory()
-                .buildStereotype(elem, "test" + i);
+                .buildStereotype(elem, "test" + i, theModel, models);
         }
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);   
