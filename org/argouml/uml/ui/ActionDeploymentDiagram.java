@@ -28,6 +28,7 @@ import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** Action to trigger creation of a deployment diagram.
  *  @stereotype singleton
@@ -61,7 +62,10 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
     public boolean isValidNamespace(MNamespace ns) {
-        return ns == ProjectManager.getManager().getCurrentProject().getModel(); // may only occur as child of the model
+        
+         // may only occur as child of the model or in a package
+        return (ns == ProjectManager.getManager().getCurrentProject().getModel()
+                || ns instanceof MPackage);
     }
 
 } /* end class ActionDeploymentDiagram */
