@@ -34,8 +34,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.Actions;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.StatusBar;
 
 /**
  * The prototype of all actions within ArgoUML.
@@ -147,8 +145,6 @@ public class UMLAction extends AbstractAction {
      */
     public void actionPerformed(ActionEvent e) {
         LOG.debug("pushed " + getValue(Action.NAME));
-        StatusBar sb = ProjectBrowser.getInstance().getStatusBar();
-        sb.doFakeProgress(stripJunk(getValue(Action.NAME).toString()), 100);
         Actions.updateAllEnabled();
     }
 
