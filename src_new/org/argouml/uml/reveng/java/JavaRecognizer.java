@@ -1327,20 +1327,21 @@ public JavaRecognizer(ParserSharedInputState state) {
 	) throws RecognitionException, TokenStreamException {
 		
 		Token  id = null;
-		String initializer=null;
+		String initializer=null; String b=null;
 		
 		{
 		id = LT(1);
 		match(IDENT);
-		declaratorBrackets();
+		b=declaratorBrackets();
 		initializer=varInitializer();
 		}
 		if ( inputState.guessing==0 ) {
-			getModeller().addAttribute(modifiers, varType, id.getText(), initializer, javadoc);
+			getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
 		}
 	}
 	
-	public final void declaratorBrackets() throws RecognitionException, TokenStreamException {
+	public final String  declaratorBrackets() throws RecognitionException, TokenStreamException {
+		String b="";
 		
 		
 		{
@@ -1349,6 +1350,9 @@ public JavaRecognizer(ParserSharedInputState state) {
 			if ((LA(1)==LBRACK)) {
 				match(LBRACK);
 				match(RBRACK);
+				if ( inputState.guessing==0 ) {
+					b += "[]";
+				}
 			}
 			else {
 				break _loop66;
@@ -1356,6 +1360,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 			
 		} while (true);
 		}
+		return b;
 	}
 	
 	public final String  varInitializer() throws RecognitionException, TokenStreamException {
