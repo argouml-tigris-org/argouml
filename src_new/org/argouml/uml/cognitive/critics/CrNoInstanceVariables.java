@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-02 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,8 +64,15 @@ public class CrNoInstanceVariables extends CrUML {
     if (!(dm instanceof MClass)) return NO_PROBLEM;
     MClass cls = (MClass) dm;
     if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
-    if ((cls.getStereotype()!=null) && "utility".equals(cls.getStereotype().getName()) )
-      return NO_PROBLEM;
+
+    // types can probably have variables, but we should not nag at them
+    // not having any.
+    // utility is a namespace collection - also not strictly required to have
+    // variables.
+    if (CriticUtils.hasStereotype(cls, "type") ||
+        CriticUtils.hasStereotype(cls, "utility"))
+        return NO_PROBLEM;
+
     Collection str = getInheritedStructuralFeatures(cls,0);
     
     if (str == null) return PROBLEM_FOUND;
