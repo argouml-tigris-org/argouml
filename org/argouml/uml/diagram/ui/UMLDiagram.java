@@ -30,6 +30,8 @@ import javax.swing.Action;
 import org.apache.log4j.Category;
 
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.UmlModelEventPump;
 
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.ModeBroom;
@@ -46,11 +48,24 @@ import org.tigris.gef.ui.ToolBar;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
-public abstract class UMLDiagram extends ArgoDiagram {
+/**
+ * This class provides support for writing a UML diagram for argo using
+ * the GEF framework.
+ * <p>It adds common buttons, a namespace, capability
+ * to delete itself when its namespace is deleted, some help
+ * with creating a valid diagram name.
+ *
+ */
+public abstract class UMLDiagram
+    extends ArgoDiagram
+    implements MElementListener {
     
 
   protected static Category cat = Category.getInstance(UMLDiagram.class);
+  
   ////////////////////////////////////////////////////////////////
   // actions for toolbar
 
@@ -126,8 +141,21 @@ public abstract class UMLDiagram extends ArgoDiagram {
   // accessors
 
   public MNamespace getNamespace() { return _namespace; }
-  public void setNamespace(MNamespace m) { _namespace = m; }
-
+  
+  /**
+   * sets the namespace of the Diagram, and
+   * adds the diagram as a listener of its namspace in the UML model.
+   * (so that it can delete itself when the model element is deleted).
+   */
+  public void setNamespace(MNamespace m) {
+      
+      _namespace = m;
+      
+      // add the diagram as a listener to the namspace so
+      // that when the namespace is remove()d the diagram is deleted also.
+      UmlModelEventPump.getPump().addModelEventListener(this, _namespace);
+  }
+  
   public String getClassAndModelID() {
      String s = super.getClassAndModelID();
      if (getOwner() == null) return s;
@@ -154,12 +182,57 @@ public abstract class UMLDiagram extends ArgoDiagram {
     // initToolBar();
     return _toolBar;
   }
-    
+  
     /**
      * @see org.tigris.gef.base.Diagram#initToolBar()
      */
     public void initToolBar() {
         super.initToolBar();
     }
+
+  /**
+   * This diagram listens to events from is namespace ModelElement;
+   * When the modelelement is removed, we also want to delete this diagram too.
+   */
+  public void removed(MElementEvent e){
+      
+      ProjectManager.getManager().getCurrentProject().moveToTrash(this);
+      UmlModelEventPump.getPump().removeModelEventListener(this,_namespace);
+  }
+  
+  /**
+   * not used the UMLDiagram is only interested in the removed() event.
+   */
+  public void propertySet(MElementEvent e){
+      
+  }
+  
+  /**
+   * not used the UMLDiagram is only interested in the removed() event.
+   */
+  public void roleAdded(MElementEvent e){
+      
+  }
+  
+  /**
+   * not used the UMLDiagram is only interested in the removed() event.
+   */
+  public void roleRemoved(MElementEvent e){
+      
+  }
+  
+  /**
+   * not used the UMLDiagram is only interested in the removed() event.
+   */
+  public void listRoleItemSet(MElementEvent e){
+      
+  }
+  
+  /**
+   * not used the UMLDiagram is only interested in the removed() event.
+   */
+  public void recovered(MElementEvent e){
+      
+  }
 
 } /* end class UMLDiagram */
