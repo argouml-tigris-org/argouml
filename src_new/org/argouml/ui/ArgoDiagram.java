@@ -157,13 +157,13 @@ public class ArgoDiagram extends Diagram {
     }
 
     /**
-     * @deprecated 0.16 in favour of getNodes(Collection)
+     * @deprecated 0.15.3 in favour of getNodes(Collection)
      */
     public Vector getNodes() {
         if (getGraphModel() != null) {
             return getGraphModel().getNodes();
         }
-        return super.getNodes();
+        return new Vector (getNodes(null));
     }
     
     /**
