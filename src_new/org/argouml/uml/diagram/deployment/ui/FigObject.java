@@ -293,7 +293,7 @@ public class FigObject extends FigNodeModelElement {
 	}
 
 	if (isReadyToEdit()) {
-	    if ( nameStr == "" && baseString == "") {
+	    if ((nameStr.length() == 0) && (baseString.length() == 0)) {
 		getNameFig().setText("");
 	    } else {
 		getNameFig().setText(nameStr.trim() + " : " + baseString);
