@@ -30,15 +30,14 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.foundation.core.MClass;
-
 public class GoModelToClass extends AbstractGoRule {
 
     public String getRuleName() { return "Package->Class"; }
   
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAPackage(parent)) {
-	    return ModelManagementHelper.getHelper().getAllModelElementsOfKind(parent, MClass.class);
+	    return ModelManagementHelper.getHelper()
+                .getAllModelElementsOfKind(parent, (Class)ModelFacade.CLASS);
 	}
 	return null;
     }

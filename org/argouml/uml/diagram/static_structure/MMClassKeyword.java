@@ -25,12 +25,10 @@
 
 package org.argouml.uml.diagram.static_structure;
 
-import java.util.*;
-import java.beans.*;
+import java.io.Serializable;
+import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.*;
-
-public class MMClassKeyword implements java.io.Serializable {
+public class MMClassKeyword implements Serializable {
     public static final MMClassKeyword NONE = new MMClassKeyword("none"); 
     public static final MMClassKeyword ABSTRACT =
 	new MMClassKeyword("abstract"); 
@@ -43,9 +41,14 @@ public class MMClassKeyword implements java.io.Serializable {
   
     private MMClassKeyword(String label) { _label = label; }
   
-    public static MMClassKeyword KeywordFor(MClassifier cls) {
-	if (cls.isLeaf()) return FINAL;
-	if (cls.isAbstract()) return ABSTRACT;
+    public static MMClassKeyword KeywordFor(Object cls) {
+        
+        if (!org.argouml.model.ModelFacade.isAClass(cls)) {
+            throw new IllegalArgumentException();
+        }
+        
+	if (ModelFacade.isLeaf(cls)) return FINAL;
+	if (ModelFacade.isAbstract(cls)) return ABSTRACT;
 	return NONE;
     }
   
@@ -59,8 +62,12 @@ public class MMClassKeyword implements java.io.Serializable {
   
     public String toString() { return _label.toString(); }
 
-    public void set(MClassifier target) {
-	target.setAbstract(this == ABSTRACT);
-	target.setLeaf(this == FINAL);
+    public void set(Object target) {
+        
+        if (!org.argouml.model.ModelFacade.isAClass(target)) {
+            throw new IllegalArgumentException();
+        }
+        ModelFacade.setAbstract(target, this == ABSTRACT);
+        ModelFacade.setLeaf(target, this == FINAL);
     }
 } /* end class MMClassKeyword */
