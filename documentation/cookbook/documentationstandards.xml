@@ -176,7 +176,14 @@ strangely biased.
 The top level document
 of the manual
 is argouml.xml (actually in argouml.in 
-and copied to argouml.xml by the build script). 
+and copied to argouml.xml by the build script).
+The top level document
+of the cookbook
+is cookbook.xml (actually in cookbook.in 
+and copied to cookbook.xml by the build script).
+  </para></listitem>
+
+  <listitem><para>
 Each chapter (or
         preface, glossary, appendix etc) is a separate file, defined as a
         system entity and included from this top level
@@ -186,7 +193,7 @@ Each chapter (or
         in the beginning of 
         this top level document. 
         E.g. use of
-        &amp;<sgmltag>argouml</sgmltag> will ensure consistent naming of the
+        <sgmltag>&amp;argouml;</sgmltag> will ensure consistent naming of the
 product (ArgoUML) and allow us to change it later (to Argo/UML,
         Argouml or whatever).</para></listitem>
 
@@ -194,17 +201,24 @@ product (ArgoUML) and allow us to change it later (to Argo/UML,
         sections are trying to achieve.</para></listitem>
 
       <listitem><para>Cross-referencing requires use of <literal>id.</literal>
-        attributes. To avoid confusion, use a prefix of <literal>ch.</literal>
+        attributes. 
+        Many of these used in the manual are of the following format, but the
+        use of this format is not obligatory any more.</para>
+        
+        <para>
+        To avoid confusion, use
+        a prefix of <literal>ch.</literal>
         for <sgmltag>chapter</sgmltag>, <literal>app.</literal> for
-        <sgmltag>appendix</sgmltag>, <literal>s1.</literal> through
-        <literal>s5.</literal> for <sgmltag>sect1</sgmltag> through
+        <sgmltag>appendix</sgmltag>, <literal>s.</literal> 
+        for <sgmltag>sect1</sgmltag> through
         <sgmltag>sect5</sgmltag>, <literal>fig.</literal> for
         <sgmltag>figure</sgmltag>, <literal>tab.</literal> for
         <sgmltag>table</sgmltag> and <literal>gl</literal> for
         <sgmltag>glossentry</sgmltag>.</para>
 
         <para>A second prefix of <literal>tut.</literal> or
-          <literal>ref.</literal> is used to distinguish tutorial and reference
+          <literal>ref.</literal> is allowed
+          to distinguish tutorial and reference
           material. The remainder of the tag should be descriptive, but concise
           with words separate by underscore. Where a graphic is involved this
           remainder should correspond to the file name. For example
@@ -273,6 +287,12 @@ Change it while changing the paragraphs.
 
       <listitem>
 	<para>
+    The indentation size is 2.
+  </para>
+      </listitem>
+
+      <listitem>
+	<para>
 Make a new line after each sentence or before expressions.
 The Docbook source is source that is handled by CVS.
 When structuring the text the parts are paragraphs, sentences and words.
@@ -305,11 +325,11 @@ Change it while changing the paragraphs.
         <sgmltag>mediaobject</sgmltag> should be wrapped by
         <sgmltag>guiicon</sgmltag></para></listitem>
 
-      <listitem><para>In general use <sgmltag>literal</sgmltag> for computer
+      <!--listitem><para>In general use <sgmltag>literal</sgmltag> for computer
         related text (input and output). There are a huge number of possible
         specialist tags, but I suggest restriction to the following list:
         <sgmltag>filename</sgmltag> and <sgmltag>application</sgmltag>.
-      </para></listitem>
+      </para></listitem-->
     </itemizedlist>
   </sect1>
 
