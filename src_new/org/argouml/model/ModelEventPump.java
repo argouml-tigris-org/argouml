@@ -37,7 +37,7 @@ import java.beans.PropertyChangeListener;
  * deliver events.<p>
  *
  * The reference to the listener is a WeakReference so you don't need to
- * call remove<whatever>Listener, you can just forget about your listener
+ * call removeWHATEVERListener, you can just forget about your listener
  * and it is eventually finalized and removed. This also means that you
  * will have to keep a reference to your listener while it is active.
  * Since the garbage collecting mechanism is not really deterministic
@@ -66,9 +66,9 @@ public interface ModelEventPump {
      * @param eventNames The array of eventnames the listener should listen
      * to.
      */
-    public void addModelEventListener(PropertyChangeListener listener,
-				      Object modelelement,
-				      String[] eventNames);
+    void addModelEventListener(PropertyChangeListener listener,
+            		       Object modelelement,
+			       String[] eventNames);
 
     /**
      * Adds a listener to modelevents that are fired by some given modelelement
@@ -78,9 +78,9 @@ public interface ModelEventPump {
      * @param modelelement The modelelement the listener should be added too
      * @param eventName The eventname the listener should listen to.
      */
-    public void addModelEventListener(PropertyChangeListener listener,
-				      Object modelelement,
-				      String eventName);
+    void addModelEventListener(PropertyChangeListener listener,
+			       Object modelelement,
+			       String eventName);
 
     /**
      * Adds a listener to all events fired by some modelelement.
@@ -88,8 +88,8 @@ public interface ModelEventPump {
      * @param listener is the listener to add
      * @param modelelement is the model element
      */
-    public void addModelEventListener(PropertyChangeListener listener,
-            			      Object modelelement);
+    void addModelEventListener(PropertyChangeListener listener,
+            		       Object modelelement);
 
     /**
      * Removes a listener that listens to modelevents with name
@@ -101,9 +101,9 @@ public interface ModelEventPump {
      * @param eventNames The list of event names the listener is
      * no longer interested in.
      */
-    public void removeModelEventListener(PropertyChangeListener listener,
-					 Object modelelement,
-					 String[] eventNames);
+    void removeModelEventListener(PropertyChangeListener listener,
+				  Object modelelement,
+				  String[] eventNames);
 
     /**
      * Removes a listener that listens to modelevents with name
@@ -114,9 +114,9 @@ public interface ModelEventPump {
      * listener is listening to.
      * @param eventName The name the listener is no longer interested in.
      */
-    public void removeModelEventListener(PropertyChangeListener listener,
-					 Object modelelement,
-					 String eventName);
+    void removeModelEventListener(PropertyChangeListener listener,
+				  Object modelelement,
+				  String eventName);
 
     /**
      * Removes a listener that listens to all events fired by the
@@ -125,8 +125,8 @@ public interface ModelEventPump {
      * @param listener is the listener
      * @param modelelement is the model element
      */
-    public void removeModelEventListener(PropertyChangeListener listener,
-					 Object modelelement);
+    void removeModelEventListener(PropertyChangeListener listener,
+				  Object modelelement);
 
     // Operations that work on classes of objects:
 
@@ -142,9 +142,9 @@ public interface ModelEventPump {
      * the modelClass is not a subclass of MBase.
      * @throws IllegalStateException if the listener is already registred.
      */
-    public void addClassModelEventListener(PropertyChangeListener listener,
-					   Object modelClass,
-					   String[] eventNames);
+    void addClassModelEventListener(PropertyChangeListener listener,
+				    Object modelClass,
+				    String[] eventNames);
 
     /**
      * Adds a listener that listens to the event that is named
@@ -158,9 +158,9 @@ public interface ModelEventPump {
      * the modelClass is not a subclass of MBase.
      * @throws IllegalStateException if the listener is already registred.
      */
-    public void addClassModelEventListener(PropertyChangeListener listener,
-					   Object modelClass,
-					   String eventName);
+    void addClassModelEventListener(PropertyChangeListener listener,
+				    Object modelClass,
+				    String eventName);
 
     /**
      * Removes a listener that listens to all modelevents fired by instances of
@@ -172,9 +172,9 @@ public interface ModelEventPump {
      * @param eventNames The eventnames the listener does not want to listen to
      * anymore
      */
-    public void removeClassModelEventListener(PropertyChangeListener listener,
-					      Object modelClass,
-					      String[] eventNames);
+    void removeClassModelEventListener(PropertyChangeListener listener,
+				       Object modelClass,
+				       String[] eventNames);
 
     /**
      * Removes a listener that listens to all modelevents fired by instances of
@@ -186,7 +186,7 @@ public interface ModelEventPump {
      * @param eventName The eventname the listener does not want to listen to
      * anymore.
      */
-    public void removeClassModelEventListener(PropertyChangeListener listener,
-					      Object modelClass,
-					      String eventName);
+    void removeClassModelEventListener(PropertyChangeListener listener,
+				       Object modelClass,
+				       String eventName);
 }
