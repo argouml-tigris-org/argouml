@@ -30,11 +30,13 @@ package org.argouml.api;
  * @author  Thierry Lach
  */
 public class InvalidObjectRequestException extends RuntimeException {
-    
+
+	// TODO Determine if this should be an Exception or a RuntimeException
+	    
 	/**
-	 *  The requested class that was not recognized as being valid
+	 *  The object that was not recognized as being valid
 	 */
-	private Class reason;
+	private Object reason;
 
 	/**
 	 *  The root cause of the request failure if caused by an exception.
@@ -46,7 +48,7 @@ public class InvalidObjectRequestException extends RuntimeException {
 	 * @param string Text describing why the requested object was not created.
 	 * @param reason The identifying class passed to the factory which was not recognized.
 	 */
-	public InvalidObjectRequestException(String message, Class reason) {
+	public InvalidObjectRequestException(String message, Object reason) {
         this(message, reason, null);
 	}
 
@@ -57,7 +59,7 @@ public class InvalidObjectRequestException extends RuntimeException {
 	 * @param cause  The underlying exception which caused the object creation to fail.
 	 */
 	public InvalidObjectRequestException(String message,
-	                                     Class reason,
+	                                     Object reason,
 	                                     Throwable cause) {
 		super(message);
 		this.reason = reason;
@@ -75,7 +77,7 @@ public class InvalidObjectRequestException extends RuntimeException {
 	/**
 	 * @return the identifying class which was not recognized.
 	 */
-	public Class getReason() {
+	public Object getReason() {
 		return reason;
 	}
 

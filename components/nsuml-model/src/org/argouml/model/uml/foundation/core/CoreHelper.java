@@ -31,6 +31,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Category;
 import org.argouml.api.FacadeManager;
+import org.argouml.api.InvalidObjectRequestException;
 import org.argouml.model.uml.MofHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -261,7 +262,13 @@ public class CoreHelper {
      */
     public Collection getAttributesInh(MClassifier classifier) {
         Collection result = new ArrayList();
-        result.addAll(FacadeManager.getUmlFacade().getStructuralFeatures(classifier));
+        try {
+			result.addAll(FacadeManager.getUmlFacade().getStructuralFeatures(classifier));
+		}
+		catch (InvalidObjectRequestException e) {
+			// TODO What should we do here?
+			e.printStackTrace();
+		}
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
             MClassifier parent = (MClassifier)parents.next();
@@ -277,7 +284,13 @@ public class CoreHelper {
      */
     public Collection getOperationsInh(MClassifier classifier) {
         Collection result = new ArrayList();
-        result.addAll(FacadeManager.getUmlFacade().getOperations(classifier));
+        try {
+			result.addAll(FacadeManager.getUmlFacade().getOperations(classifier));
+		}
+		catch (InvalidObjectRequestException e) {
+			// TODO what should we do here?
+			e.printStackTrace();
+		}
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
             result.addAll(getOperationsInh((MClassifier)parents.next()));

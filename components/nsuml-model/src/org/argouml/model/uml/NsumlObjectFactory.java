@@ -159,7 +159,7 @@ public class NsumlObjectFactory implements UmlObjectFactory {
 			Uml.STATE,
 			new NsumlObjectInfo(factory, MState.class, "createState"));
 		elements.put(
-			Uml.COMPOSITESTATE,
+			Uml.COMPOSITE_STATE,
 			new NsumlObjectInfo(
 				factory,
 				MCompositeState.class,
@@ -207,7 +207,10 @@ public class NsumlObjectFactory implements UmlObjectFactory {
 			Uml.OPERATION,
 			new NsumlObjectInfo(factory, MOperation.class, "createOperation"));
 		elements.put(
-			Uml.DATA_TYPE,
+			Uml.MODEL,
+			new NsumlObjectInfo(factory, MModel.class, "createModel"));
+		elements.put(
+			Uml.DATATYPE,
 			new NsumlObjectInfo(factory, MDataType.class, "createDataType"));
 
 		// NSUML does not have a factory method for this

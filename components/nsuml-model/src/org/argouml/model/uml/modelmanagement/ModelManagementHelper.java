@@ -33,6 +33,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Category;
 import org.argouml.api.FacadeManager;
+import org.argouml.api.InvalidObjectRequestException;
 import org.argouml.model.uml.CopyHelper;
 import org.argouml.model.uml.MofHelper;
 
@@ -154,16 +155,21 @@ public class ModelManagementHelper {
         if (!FacadeManager.getUmlFacade().isANamespace(nsa))
             throw new IllegalArgumentException(
                 "given argument " + nsa + " is not a namespace");
-        Iterator it = FacadeManager.getUmlFacade().getOwnedElements(nsa).iterator();
         List list = new ArrayList();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof MNamespace) {
-                list.addAll(getAllModelElementsOfKind((MNamespace)o, kind));
-            }
-            if (kind.isAssignableFrom(o.getClass())) {
-                list.add(o);
-            }
+        try {
+			Iterator it = FacadeManager.getUmlFacade().getOwnedElements(nsa).iterator();
+			while (it.hasNext()) {
+				Object o = it.next();
+				if (o instanceof MNamespace) {
+					list.addAll(getAllModelElementsOfKind((MNamespace)o, kind));
+				}
+				if (kind.isAssignableFrom(o.getClass())) {
+					list.add(o);
+				}
+			}
+        }
+        catch (InvalidObjectRequestException iore) {
+        	// ignore
         }
         return list;
 

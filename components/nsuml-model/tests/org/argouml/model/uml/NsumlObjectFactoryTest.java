@@ -76,7 +76,7 @@ public class NsumlObjectFactoryTest extends TestCase {
 			InvocationHandler ih = Proxy.getInvocationHandler(o);
 			if (ih instanceof RefBaseObjectProxy) {
 				Object ns = RefBaseObjectProxy.getProxiedObject((RefBaseObjectProxy)ih);
-				assertTrue("Did not get the expected class", expected.equals(ns.getClass()));
+				assertEquals("Did not get the expected class", expected, ns.getClass());
 			}
             else {
 				fail("Did not get the expected proxy");
@@ -114,7 +114,7 @@ public class NsumlObjectFactoryTest extends TestCase {
 		testObjectFactoryType(Uml.OBJECT, MObjectImpl.class, true);
 		testObjectFactoryType(Uml.PACKAGE, MPackageImpl.class, true);
 		testObjectFactoryType(Uml.STATE, MStateImpl.class, true);
-		testObjectFactoryType(Uml.COMPOSITESTATE, MCompositeStateImpl.class, true);
+		testObjectFactoryType(Uml.COMPOSITE_STATE, MCompositeStateImpl.class, true);
 		testObjectFactoryType(Uml.PSEUDOSTATE, MPseudostateImpl.class, true);
 		testObjectFactoryType(Uml.USE_CASE, MUseCaseImpl.class, true);
 		testObjectFactoryType(Uml.ACTION, MActionImpl.class, true);
@@ -126,7 +126,8 @@ public class NsumlObjectFactoryTest extends TestCase {
 		testObjectFactoryType(Uml.ATTRIBUTE, MAttributeImpl.class, true);
 		testObjectFactoryType(Uml.OPERATION, MOperationImpl.class, true);
 		testObjectFactoryType(Uml.ACTION_EXPRESSION, MActionExpression.class, true);
-		testObjectFactoryType(Uml.DATA_TYPE, MDataTypeImpl.class, true);
+		testObjectFactoryType(Uml.DATATYPE, MDataTypeImpl.class, true);
+		testObjectFactoryType(Uml.ACTOR, MActorImpl.class, true);
 
 		// NSUML cannot instantiate a State Vertex object
 		testObjectFactoryType(Uml.STATE_VERTEX, MStateVertexImpl.class, false);

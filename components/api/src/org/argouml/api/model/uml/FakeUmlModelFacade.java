@@ -45,6 +45,11 @@ implements UmlModelFacade
 		throw new RuntimeException(NOT_SET_MESSAGE);
 	}
 
+	public boolean isAActor(Object handle)
+	{
+		throw new RuntimeException(NOT_SET_MESSAGE);
+	}
+
 	public boolean isAAssociation(Object handle)
 	{
 		throw new RuntimeException(NOT_SET_MESSAGE);

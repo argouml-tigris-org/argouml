@@ -23,7 +23,10 @@
 
 package org.argouml.model.uml;
 
+import java.util.Collection;
+
 import org.argouml.api.FacadeManager;
+import org.argouml.api.InvalidObjectRequestException;
 import org.argouml.api.model.uml.UmlModelFacade;
 
 import junit.framework.TestCase;
@@ -67,707 +70,1188 @@ public class NsumlModelFacadeTest extends TestCase
 	/*
 	 * @see TestCase#tearDown()
 	 */
-	protected void tearDown() throws Exception
-	{
+	protected void tearDown() throws Exception {
 		super.tearDown();
 	}
 
-	public void testIsAAbstraction()
-	{
+	public void testIsAAbstraction() {
+
+			boolean b = facade.isAAbstraction(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAAssociation() {
+
+			boolean b = facade.isAAssociation(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAAssociationEnd() {
+			boolean b = facade.isAAssociationEnd(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAAssociationRole() {
+			boolean b = facade.isAAssociationRole(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAbstract() {
 		try {
-			facade.isAAbstraction(new Object());
-			fail ("Didn't throw RuntimeException");
+			boolean b = facade.isAbstract(new Object());
+			fail("should have thrown InvalidObjectRequestException");
 		}
-		catch (RuntimeException re) { }
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAAssociation()
-	{
+	public void testIsABase() {
+			boolean b = facade.isABase(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAClass() {
+
+			boolean b = facade.isAClass(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAClassifier() {
+
+			boolean b = facade.isAClassifier(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAComment() {
+
+			boolean b = facade.isAComment(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAComponent() {
+
+			boolean b = facade.isAComponent(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAComponentInstance() {
+
+			boolean b = facade.isAComponentInstance(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsADataType() {
+			boolean b = facade.isADataType(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsADependency() {
+			boolean b = facade.isADependency(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsACompositeState() {
+			boolean b = facade.isACompositeState(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAElement() {
+			boolean b = facade.isAElement(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAExpression() {
+			boolean b = facade.isAExpression(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAExtensionPoint() {
+			boolean b = facade.isAExtensionPoint(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAFeature() {
+			boolean b = facade.isAFeature(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAGeneralizableElement() {
+			boolean b = facade.isAGeneralizableElement(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAGeneralization() {
+			boolean b = facade.isAGeneralization(new Object());
+			assertEquals("passed an object", b, false);
+
+	}
+
+	public void testIsAInstance() {
+			boolean b = facade.isAInstance(new Object());
+			assertEquals("passed an object", b, false);
+
+	}
+
+	public void testIsAInteraction() {
+			boolean b = facade.isAInteraction(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAInterface() {
+			boolean b = facade.isAInterface(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsALink() {
+			boolean b = facade.isALink(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAMethod() {
+			boolean b = facade.isAMethod(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAModel() {
+			boolean b = facade.isAModel(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAModelElement() {
+			boolean b = facade.isAModelElement(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsANamespace() {
+			boolean b = facade.isANamespace(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsANode() {
+			boolean b = facade.isANode(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsANodeInstance() {
+			boolean b = facade.isANodeInstance(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAOperation() {
+			boolean b = facade.isAOperation(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAObject() {
+			boolean b = facade.isAObject(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAPermission() {
+			boolean b = facade.isAPermission(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAPackage() {
+			boolean b = facade.isAPackage(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAReception() {
+			boolean b = facade.isAReception(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsARelationship() {
+			boolean b = facade.isARelationship(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAStateMachine() {
+			boolean b = facade.isAStateMachine(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAStateVertex() {
+			boolean b = facade.isAStateVertex(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAStereotype() {
+			boolean b = facade.isAStereotype(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAStructuralFeature() {
+			boolean b = facade.isAStructuralFeature(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsATaggedValue() {
+			boolean b = facade.isATaggedValue(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsATransition() {
+			boolean b = facade.isATransition(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsAUseCase() {
+			boolean b = facade.isAUseCase(new Object());
+			assertEquals("passed an object", b, false);
+	}
+
+	public void testIsChangeable() {
 		try {
-			facade.isAAssociation(new Object());
-			fail ("Didn't throw RuntimeException");
+
+			boolean b = facade.isChangeable(new Object());
+			fail("should have thrown InvalidObjectRequestException");
 		}
-		catch (RuntimeException re) { }
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAAssociationEnd()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsClassifierScope() {
+		try {
 
-	public void testIsAAssociationRole()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isClassifierScope(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAbstract()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsConstructor() {
+		try {
 
-	public void testIsABase()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isConstructor(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAClass()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsComposite() {
+		try {
 
-	public void testIsAClassifier()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isComposite(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAComment()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsInitialized() {
+		try {
 
-	public void testIsAComponent()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isInitialized(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAComponentInstance()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsInstanceScope() {
+		try {
 
-	public void testIsADataType()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isInstanceScope(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsADependency()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsLeaf() {
+		try {
 
-	public void testIsACompositeState()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isLeaf(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAElement()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsNavigable() {
+		try {
 
-	public void testIsAExpression()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isNavigable(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAExtensionPoint()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsPrimaryObject() {
+		try {
 
-	public void testIsAFeature()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isPrimaryObject(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAGeneralizableElement()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsPrivate() {
+		try {
 
-	public void testIsAGeneralization()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isPrivate(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAInstance()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsRealize() {
+		try {
 
-	public void testIsAInteraction()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isRealize(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAInterface()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsReturn() {
+		try {
 
-	public void testIsALink()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isReturn(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAMethod()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsSingleton() {
+		try {
 
-	public void testIsAModel()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isSingleton(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAModelElement()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsTop() {
+		try {
 
-	public void testIsANamespace()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isTop(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsANode()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsType() {
+		try {
 
-	public void testIsANodeInstance()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isType(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAOperation()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testIsUtility() {
+		try {
 
-	public void testIsAObject()
-	{
-		// TODO Make sure it throws RuntimeException
+			boolean b = facade.isUtility(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAPermission()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetAssociationEnd() {
+		try {
 
-	public void testIsAPackage()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getAssociationEnd(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAReception()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetAssociationEnds() {
+		try {
 
-	public void testIsARelationship()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getAssociationEnds(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAStateMachine()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetAttributes() {
+		try {
 
-	public void testIsAStateVertex()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getAttributes(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAStereotype()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetBehaviors() {
+		try {
 
-	public void testIsAStructuralFeature()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getBehaviors(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsATaggedValue()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetBody() {
+		try {
 
-	public void testIsATransition()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getBody(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsAUseCase()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetChild() {
+		try {
 
-	public void testIsChangeable()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getChild(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsClassifierScope()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetChildren() {
+		try {
 
-	public void testIsConstructor()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getChildren(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsComposite()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetClientDependencies() {
+		try {
 
-	public void testIsInitialized()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getClientDependencies(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsInstanceScope()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetConcurrency() {
+		try {
 
-	public void testIsLeaf()
-	{
-		// TODO Make sure it throws RuntimeException
+			int o = facade.getConcurrency(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsNavigable()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetConnections() {
+		try {
 
-	public void testIsPrimaryObject()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getConnections(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsPrivate()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetFeatures() {
+		try {
 
-	public void testIsRealize()
-	{
-		// TODO Make sure it throws RuntimeException
+			Collection c = facade.getFeatures(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsReturn()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetGeneralization() {
+		try {
 
-	public void testIsSingleton()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getGeneralization(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsTop()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetGeneralizations() {
+		try {
 
-	public void testIsType()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getGeneralizations(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testIsUtility()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetIncomings() {
+		try {
 
-	public void testGetAssociationEnd()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getIncomings(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetAssociationEnds()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetMessages() {
+		try {
 
-	public void testGetAttributes()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getMessages(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetBehaviors()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetContainer() {
+		try {
 
-	public void testGetBody()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getContainer(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetChild()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetContext() {
+		try {
 
-	public void testGetChildren()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getContext(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetClientDependencies()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetNamespace() {
+		try {
 
-	public void testGetConcurrency()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getNamespace(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetConnections()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetOperations() {
+		try {
 
-	public void testGetFeatures()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getOperations(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetGeneralization()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetOperationsInh() {
+		try {
 
-	public void testGetGeneralizations()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getOperationsInh(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetIncomings()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetOppositeEnd() {
+		try {
 
-	public void testGetMessages()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getOppositeEnd(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetContainer()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetOutgoings() {
+		try {
 
-	public void testGetContext()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getOutgoings(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetNamespace()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetOtherAssociationEnds() {
+		try {
 
-	public void testGetOperations()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getOtherAssociationEnds(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetOperationsInh()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetOwnedElements() {
+		try {
 
-	public void testGetOppositeEnd()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getOwnedElements(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetOutgoings()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetParameter() {
+		try {
 
-	public void testGetOtherAssociationEnds()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getParameter(new Object(), 0);
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetOwnedElements()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetParameters() {
+		try {
 
-	public void testGetParameter()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getParameters(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetParameters()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetParent() {
+		try {
 
-	public void testGetParent()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getParent(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetResidents()
-	{
-		// TODO Make sure it throws RuntimeException
-	}
+	public void testGetResidents() {
+		try {
 
-	public void testGetSource()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getResidents(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testGetSource() {
+		try {
 
-	public void testGetSpecializations()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getSource(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetStereoType()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetSpecializations() {
+		try {
+
+			Object o = facade.getSpecializations(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetSubvertices()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetStereoType() {
+		try {
+
+			Object o = facade.getStereoType(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testGetSubvertices() {
+		try {
 
-	public void testGetSupplierDependencies()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getSubvertices(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetType()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetSupplierDependencies() {
+		try {
+
+			Object o = facade.getSupplierDependencies(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testGetType() {
+		try {
 
-	public void testGetTarget()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getType(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetUpper()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetTarget() {
+		try {
+
+			Object o = facade.getTarget(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetTransitions()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetUpper() {
+		try {
+
+			int o = facade.getUpper(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testGetTransitions() {
+		try {
 
-	public void testGetStructuralFeatures()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getTransitions(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetSpecifications()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetStructuralFeatures() {
+		try {
+
+			Collection c = facade.getStructuralFeatures(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetSuppliers()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetSpecifications() {
+		try {
+
+			Collection c = facade.getSpecifications(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testGetSuppliers() {
+		try {
 
-	public void testGetAssociatedClasses()
-	{
-		// TODO Make sure it throws RuntimeException
+			Collection c = facade.getSuppliers(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetName()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetAssociatedClasses() {
+		try {
+
+			Collection c = facade.getAssociatedClasses(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetOwner()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetName() {
+		try {
+
+			Object o = facade.getName(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testGetOwner() {
+		try {
 
-	public void testGetTaggedValues()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getOwner(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetTaggedValue()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetTaggedValues() {
+		try {
+
+			Object o = facade.getTaggedValues(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetTagOfTag()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetTaggedValue() {
+		try {
+
+			Object o = facade.getTaggedValue(new Object(), "");
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testGetTagOfTag() {
+		try {
 
-	public void testGetValueOfTag()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.getTagOfTag(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetUUID()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetValueOfTag() {
+		try {
+
+			Object o = facade.getValueOfTag(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testLookupIn()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testGetUUID() {
+		try {
+
+			Object o = facade.getUUID(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testLookupIn() {
+		try {
 
-	public void testAddFeature()
-	{
-		// TODO Make sure it throws RuntimeException
+			Object o = facade.lookupIn(new Object(), "");
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testAddMethod()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testAddFeature() {
+		try {
+
+			facade.addFeature(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testAddOwnedElement()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testAddMethod() {
+		try {
+
+			facade.addMethod(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testAddOwnedElement() {
+		try {
 
-	public void testAddSupplier()
-	{
-		// TODO Make sure it throws RuntimeException
+			facade.addOwnedElement(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testAddClient()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testAddSupplier() {
+		try {
+
+			facade.addSupplier(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testRemoveClientDependency()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testAddClient() {
+		try {
+
+			facade.addClient(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testRemoveClientDependency() {
+		try {
 
-	public void testRemoveFeature()
-	{
-		// TODO Make sure it throws RuntimeException
+			facade.removeClientDependency(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testRemoveParameter()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testRemoveFeature() {
+		try {
+
+			facade.removeFeature(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetBody()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testRemoveParameter() {
+		try {
+
+			facade.removeParameter(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testSetBody() {
+		try {
 
-	public void testSetInitialValue()
-	{
-		// TODO Make sure it throws RuntimeException
+			facade.setBody(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetMultiplicity()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetInitialValue() {
+		try {
+
+			facade.setInitialValue(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetName()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetMultiplicity() {
+		try {
+
+			facade.setMultiplicity(new Object(), "");
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testSetName() {
+		try {
 
-	public void testSetNamespace()
-	{
-		// TODO Make sure it throws RuntimeException
+			facade.setName(new Object(), "");
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetNavigable()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetNamespace() {
+		try {
+
+			facade.setNamespace(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetVisibility()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetNavigable() {
+		try {
+
+			facade.setNavigable(new Object(), true);
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testSetVisibility() {
+		try {
 
-	public void testSetOwnerScope()
-	{
-		// TODO Make sure it throws RuntimeException
+			short concur = 0;
+			facade.setVisibility(new Object(), concur);
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetTargetScope()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetOwnerScope() {
+		try {
+
+			short concur = 0;
+			facade.setOwnerScope(new Object(), concur);
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetConcurrency()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetTargetScope() {
+		try {
+
+			short concur = 0;
+			facade.setTargetScope(new Object(), concur);
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testSetConcurrency() {
+		try {
 
-	public void testSetChangeable()
-	{
-		// TODO Make sure it throws RuntimeException
+			short concur = 0;
+			facade.setConcurrency(new Object(), concur);
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetAbstract()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetChangeable() {
+		try {
+
+			facade.setChangeable(new Object(), true);
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetLeaf()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetAbstract() {
+
+		try {
+			facade.setAbstract(new Object(), true);
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testSetLeaf() {
+		try {
 
-	public void testSetRoot()
-	{
-		// TODO Make sure it throws RuntimeException
+			facade.setLeaf(new Object(), true);
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetKindToIn()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetRoot() {
+		try {
+
+			facade.setRoot(new Object(), true);
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetKindToReturn()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetKindToIn() {
+		try {
+
+			facade.setKindToIn(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testSetKindToReturn() {
+		try {
 
-	public void testSetType()
-	{
-		// TODO Make sure it throws RuntimeException
+			facade.setKindToReturn(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetTaggedValue()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetType() {
+		try {
+			facade.setType(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetValueOfTag()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetTaggedValue() {
+		try {
+
+			facade.setTaggedValue(new Object(), "", "");
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testSetStereotype()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testSetValueOfTag() {
+		try {
+
+			facade.setValueOfTag(new Object(), "");
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
+
+	public void testSetStereotype() {
+		try {
 
-	public void testAddConstraint()
-	{
-		// TODO Make sure it throws RuntimeException
+			facade.setStereotype(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
-	public void testGetUMLClassName()
-	{
-		// TODO Make sure it throws RuntimeException
+	public void testAddConstraint() {
+		try {
+
+			facade.addConstraint(new Object(), new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
 	}
 
+	public void testGetUMLClassName() {
+		try {
+
+			Object o = facade.getUMLClassName(new Object());
+			fail("should have thrown InvalidObjectRequestException");
+		}
+		catch (InvalidObjectRequestException e) {
+		}
+	}
 }

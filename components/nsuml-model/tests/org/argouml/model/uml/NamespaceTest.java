@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,44 +21,40 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml;
+package org.argouml.model.uml;
 
-import java.util.*;
-import java.beans.*;
+import org.argouml.api.model.uml.Uml;
 
-import ru.novosoft.uml.foundation.core.*;
-
-import org.argouml.api.FacadeManager;
-import org.argouml.api.InvalidObjectRequestException;
-import org.argouml.model.uml.NsumlModelFacade;
-
-public class TableModelAttr extends TableModelComposite {
-  ////////////////
-  // constructor
-  public TableModelAttr() { }
-
-  public void initColumns() {
-    addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.FeatureVis);
-    addColumn(ColumnDescriptor.AttrKeyword);
-    addColumn(ColumnDescriptor.Type);
-    addColumn(ColumnDescriptor.MStereotype);
-  }
-
-  public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof MClassifier)) return new Vector();
-    MClassifier cls = (MClassifier) t;
-    Vector attr = null;
-	try {
-		attr = new Vector(FacadeManager.getUmlFacade().getStructuralFeatures(cls));
+/**
+ * @author Thierry
+ *
+ * To change the template for this generated type comment go to
+ * Window>Preferences>Java>Code Generation>Code and Comments
+ */
+public class NamespaceTest extends GenericObjectFixture
+{
+	/**
+	 * Constructor for FakeUmlModelFacadeTest.
+	 * @param arg0
+	 */
+	public NamespaceTest(String arg0)
+	{
+		super(arg0);
+		validateTestClassIsGeneric(this);
 	}
-	catch (InvalidObjectRequestException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	}
-    return attr;
-  }
 
-  public String toString() { return "Attributes vs. Properties"; }
-} /* end class TableModelAttr */
+    public void testNamespace() {
+    	Object o = getFactory().create(Uml.NAMESPACE);
+    	assertNotNull("Didn't create object", o);
+		assertTrue("Should be a base", getFacade().isABase(o));
+		assertTrue("Should be a namespace", getFacade().isANamespace(o));
+		runTruthTests(o);
+    }
 
+    protected void initializeTruth() {
+		setTruth(Uml.ELEMENT, true);
+		setTruth(Uml.MODEL_ELEMENT, true);
+		setTruth(Uml.NAMESPACE, true);
+    }
+
+}

@@ -141,7 +141,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         if(target instanceof MDataType) {
             MDataType dt = (MDataType) target;
             MNamespace ns = dt.getNamespace();
-            MDataType newDt = (MDataType)ObjectFactoryManager.getUmlFactory().create(Uml.DATA_TYPE);
+            MDataType newDt = (MDataType)ObjectFactoryManager.getUmlFactory().create(Uml.DATATYPE);
             ns.addOwnedElement(newDt);
             TargetManager.getInstance().setTarget(newDt);
         }

@@ -27,6 +27,7 @@ import java.util.*;
 import java.beans.*;
 
 import org.argouml.api.FacadeManager;
+import org.argouml.api.InvalidObjectRequestException;
 import org.argouml.model.uml.NsumlModelFacade;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -48,7 +49,14 @@ public class TableModelOper extends TableModelComposite {
   public Vector rowObjectsFor(Object t) {
     if (!(t instanceof MClassifier)) return new Vector();
     MClassifier cls = (MClassifier) t;
-    Collection oper = FacadeManager.getUmlFacade().getOperations(cls);
+    Collection oper = null;
+	try {
+		oper = FacadeManager.getUmlFacade().getOperations(cls);
+	}
+	catch (InvalidObjectRequestException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
     return new Vector(oper);
   }
 

@@ -30,26 +30,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-//import org.argouml.application.api.Notation;
-//import org.argouml.application.api.NotationName;
-//import org.argouml.kernel.Project;
-//import org.argouml.kernel.ProjectManager;
 import org.argouml.api.FacadeManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.MofHelper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
-import org
-	.argouml
-	.model
-	.uml
-	.foundation
-	.extensionmechanisms
-	.ExtensionMechanismsFactory;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
-import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.foundation.core.MAbstraction;

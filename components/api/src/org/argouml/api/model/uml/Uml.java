@@ -32,54 +32,59 @@ package org.argouml.api.model.uml;
  */
 public final class Uml {
 
-	// Types of line
-	public static Class ABSTRACTION      = Uml.TypeAbstraction.class;
-	public static Class ASSOCIATION      = Uml.TypeAssociation.class;
-	public static Class ASSOCIATION_ROLE = Uml.TypeAssociationRole.class;
-	public static Class DEPENDENCY       = Uml.TypeDependency.class;
-	public static Class EXTEND           = Uml.TypeExtend.class;
-	public static Class GENERALIZATION   = Uml.TypeGeneralization.class;
-	public static Class INCLUDE          = Uml.TypeInclude.class;
-	public static Class LINK             = Uml.TypeLink.class;
-	public static Class PERMISSION       = Uml.TypePermission.class;
-	public static Class USAGE            = Uml.TypeUsage.class;
-	public static Class TRANSITION       = Uml.TypeTransition.class;
-
-	// Types of node
-	public static Class ACTOR              = Uml.TypeActor.class;
-	public static Class CLASS              = Uml.TypeClass.class;
-	public static Class CLASSIFIER         = Uml.TypeClassifier.class;
-	public static Class CLASSIFIER_ROLE    = Uml.TypeClassifierRole.class;
-	public static Class COMPONENT          = Uml.TypeComponent.class;
-	public static Class COMPONENT_INSTANCE = Uml.TypeComponentInstance.class;
-	public static Class INSTANCE           = Uml.TypeInstance.class;
-	public static Class INTERFACE          = Uml.TypeInterface.class;
-	public static Class NODE               = Uml.TypeNode.class;
-	public static Class NODE_INSTANCE      = Uml.TypeNodeInstance.class;
-	public static Class OBJECT             = Uml.TypeObject.class;
-	public static Class PACKAGE            = Uml.TypePackage.class;
-	public static Class STATE              = Uml.TypeState.class;
-	public static Class COMPOSITESTATE     = Uml.TypeCompositeState.class;
-	public static Class STATE_VERTEX        = Uml.TypeStateVertex.class;
-	public static Class PSEUDOSTATE        = Uml.TypePseudostate.class;
-	public static Class USE_CASE           = Uml.TypeUseCase.class;
-    
-	// Invisible model elements
-	public static Class ACTION             = Uml.TypeAction.class;
-	public static Class ACTION_EXPRESSION  = Uml.TypeActionExpression.class;
-	public static Class ASSOCIATION_END    = Uml.TypeAssociationEnd.class;
-	public static Class CALL_ACTION        = Uml.TypeCallAction.class;
-	public static Class NAMESPACE          = Uml.TypeNamespace.class;
-	public static Class RECEPTION          = Uml.TypeReception.class;
-	public static Class STEREOTYPE         = Uml.TypeStereotype.class;
-
-	public static Class ATTRIBUTE          = Uml.TypeAttribute.class;
-	public static Class OPERATION          = Uml.TypeOperation.class;
-
-	public static Class EVENT              = Uml.TypeEvent.class;
-    
-	public static Class MODEL_ELEMENT      = Uml.TypeModelElement.class;
-	public static Class DATA_TYPE          = Uml.TypeDataType.class;
+	public static Class ABSTRACTION              = Uml.TypeAbstraction.class;
+	public static Class ASSOCIATION              = Uml.TypeAssociation.class;
+	public static Class ASSOCIATION_ROLE         = Uml.TypeAssociationRole.class;
+	public static Class DEPENDENCY               = Uml.TypeDependency.class;
+	public static Class EXTEND                   = Uml.TypeExtend.class;
+	public static Class GENERALIZATION           = Uml.TypeGeneralization.class;
+	public static Class INCLUDE                  = Uml.TypeInclude.class;
+	public static Class LINK                     = Uml.TypeLink.class;
+	public static Class PERMISSION               = Uml.TypePermission.class;
+	public static Class USAGE                    = Uml.TypeUsage.class;
+	public static Class TRANSITION               = Uml.TypeTransition.class;
+	public static Class ACTOR                    = Uml.TypeActor.class;
+	public static Class CLASS                    = Uml.TypeClass.class;
+	public static Class CLASSIFIER               = Uml.TypeClassifier.class;
+	public static Class CLASSIFIER_ROLE          = Uml.TypeClassifierRole.class;
+	public static Class COMPONENT                = Uml.TypeComponent.class;
+	public static Class COMPONENT_INSTANCE       = Uml.TypeComponentInstance.class;
+	public static Class INSTANCE                 = Uml.TypeInstance.class;
+	public static Class INTERFACE                = Uml.TypeInterface.class;
+	public static Class NODE                     = Uml.TypeNode.class;
+	public static Class NODE_INSTANCE            = Uml.TypeNodeInstance.class;
+	public static Class OBJECT                   = Uml.TypeObject.class;
+	public static Class PACKAGE                  = Uml.TypePackage.class;
+	public static Class STATE                    = Uml.TypeState.class;
+	public static Class COMPOSITE_STATE          = Uml.TypeCompositeState.class;
+	public static Class STATE_VERTEX             = Uml.TypeStateVertex.class;
+	public static Class PSEUDOSTATE              = Uml.TypePseudostate.class;
+	public static Class USE_CASE                 = Uml.TypeUseCase.class;
+	public static Class ACTION                   = Uml.TypeAction.class;
+	public static Class ACTION_EXPRESSION        = Uml.TypeActionExpression.class;
+	public static Class ASSOCIATION_END          = Uml.TypeAssociationEnd.class;
+	public static Class CALL_ACTION              = Uml.TypeCallAction.class;
+	public static Class NAMESPACE                = Uml.TypeNamespace.class;
+	public static Class RECEPTION                = Uml.TypeReception.class;
+	public static Class STEREOTYPE               = Uml.TypeStereotype.class;
+	public static Class ATTRIBUTE                = Uml.TypeAttribute.class;
+	public static Class OPERATION                = Uml.TypeOperation.class;
+	public static Class EVENT                    = Uml.TypeEvent.class;
+	public static Class MODEL_ELEMENT            = Uml.TypeModelElement.class;
+	public static Class DATATYPE                 = Uml.TypeDataType.class;
+	public static Class MODEL                    = Uml.TypeModel.class;
+	public static Class METHOD                   = Uml.TypeMethod.class;
+	public static Class RELATIONSHIP             = Uml.TypeRelationship.class;
+	public static Class EXTENSION_POINT          = Uml.TypeExtensionPoint.class;
+	public static Class FEATURE                  = Uml.TypeFeature.class;
+	public static Class GENERALIZABLE_ELEMENT    = Uml.TypeGeneralizableElement.class;
+	public static Class INTERACTION              = Uml.TypeInteraction.class;
+	public static Class STATE_MACHINE            = Uml.TypeStateMachine.class;
+	public static Class STRUCTURAL_FEATURE       = Uml.TypeStructuralFeature.class;
+	public static Class TAGGED_VALUE             = Uml.TypeTaggedValue.class;
+	public static Class COMMENT                  = Uml.TypeComment.class;
+	public static Class ELEMENT                  = Uml.TypeElement.class;
+	public static Class EXPRESSION               = Uml.TypeExpression.class;
     
     /** An interface which all ArgoUML-recognized model types
      * must implement.
@@ -128,4 +133,17 @@ public final class Uml {
 	private class TypeNamespace implements Uml.Entity { }
 	private class TypeEvent implements Uml.Entity { }
 	private class TypeDataType implements Uml.Entity { }
+	private class TypeModel implements Uml.Entity { }
+	private class TypeMethod implements Uml.Entity { }
+	private class TypeRelationship implements Uml.Entity { }
+	private class TypeExtensionPoint implements Uml.Entity { }
+	private class TypeFeature implements Uml.Entity { }
+	private class TypeGeneralizableElement implements Uml.Entity { }
+	private class TypeInteraction implements Uml.Entity { }
+	private class TypeStateMachine implements Uml.Entity { }
+	private class TypeStructuralFeature implements Uml.Entity { }
+	private class TypeTaggedValue implements Uml.Entity { }
+	private class TypeComment implements Uml.Entity { }
+	private class TypeElement implements Uml.Entity { }
+	private class TypeExpression implements Uml.Entity { }
 }

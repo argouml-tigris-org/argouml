@@ -34,6 +34,7 @@ import java.util.Vector;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.api.Constants;
+import org.argouml.api.InvalidObjectRequestException;
 import org.argouml.api.model.uml.UmlModelFacade;
 
 import ru.novosoft.uml.MBase;
@@ -161,17 +162,32 @@ public class NsumlModelFacade implements UmlModelFacade {
     public NsumlModelFacade() {
     }
 
+    private void assertBase(Object handle) {
+		if (! isABase(handle)) {
+			throw new InvalidObjectRequestException("Unrecognized object", handle);
+		}
+    }
+
     ////////////////////////////////////////////////////////////////
     // Recognizer methods for the UML model (in alphabetic order)
 
-    /** Recognizer for Abstraction.
-     *
-     * @param handle candidate
-     * @returns true if handle is an Abstraction
-     */
-    public boolean isAAbstraction(Object handle) {
-        return handle instanceof MAbstraction;
-    }
+	/** Recognizer for Abstraction.
+	 *
+	 * @param handle candidate
+	 * @returns true if handle is an Abstraction
+	 */
+	public boolean isAAbstraction(Object handle) {
+		return handle instanceof MAbstraction;
+	}
+
+	/** Recognizer for Abstraction.
+	 *
+	 * @param handle candidate
+	 * @returns true if handle is an Actor
+	 */
+	public boolean isAActor(Object handle) {
+		return handle instanceof MActor;
+	}
 
     /** Recognizer for Association.
      *
@@ -205,13 +221,13 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle is abstract.
      */
-    public boolean isAbstract(Object handle) {
+    public boolean isAbstract(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MOperation)
             return ((MOperation)handle).isAbstract();
         if (handle instanceof MGeneralizableElement)
             return ((MGeneralizableElement)handle).isAbstract();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for bases. A base is an object that is some form of an element
@@ -572,7 +588,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle is changeable
      */
-    public boolean isChangeable(Object handle) {
+    public boolean isChangeable(Object handle) throws InvalidObjectRequestException {
         if (handle != null && handle instanceof MAttribute) {
             return MChangeableKind.CHANGEABLE.equals(
                 ((MAttribute)handle).getChangeability());
@@ -581,7 +597,7 @@ public class NsumlModelFacade implements UmlModelFacade {
                 ((MAssociationEnd)handle).getChangeability());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for attributes with classifier scope.
@@ -589,13 +605,13 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle has classifier scope.
      */
-    public boolean isClassifierScope(Object handle) {
+    public boolean isClassifierScope(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MAttribute) {
             MAttribute a = (MAttribute)handle;
             return MScopeKind.CLASSIFIER.equals(a.getOwnerScope());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+		throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for constructor.
@@ -603,7 +619,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle is a constructor.
      */
-    public boolean isConstructor(Object handle) {
+    public boolean isConstructor(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         return (
             CoreHelper.getHelper().isOperation(handle)
                 && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
@@ -623,7 +640,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return boolean
      */
-    public boolean isComposite(Object handle) {
+    public boolean isComposite(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isAAssociationEnd(handle)) {
             boolean composite = false;
             MAssociationEnd end = (MAssociationEnd)handle;
@@ -632,7 +650,7 @@ public class NsumlModelFacade implements UmlModelFacade {
                 composite = true;
             return composite;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for attributes that are initialized.
@@ -640,7 +658,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @param true if the attribute is initialized.
      */
-    public boolean isInitialized(Object handle) {
+    public boolean isInitialized(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MAttribute) {
             MExpression init = ((MAttribute)handle).getInitialValue();
 
@@ -652,7 +671,7 @@ public class NsumlModelFacade implements UmlModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for attributes with instance scope.
@@ -660,13 +679,14 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle has instance scope.
      */
-    public boolean isInstanceScope(Object handle) {
+    public boolean isInstanceScope(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MFeature) {
             MFeature a = (MFeature)handle;
             return MScopeKind.INSTANCE.equals(a.getOwnerScope());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for leafs
@@ -674,8 +694,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate GeneralizableElement
      * @returns true if handle is a leaf
      */
-    public boolean isLeaf(Object handle) {
-
+    public boolean isLeaf(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MGeneralizableElement) {
             return ((MGeneralizableElement)handle).isLeaf();
         }
@@ -683,7 +703,7 @@ public class NsumlModelFacade implements UmlModelFacade {
             return ((MOperation)handle).isLeaf();
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for Navigable elements
@@ -691,13 +711,14 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle is navigable
      */
-    public boolean isNavigable(Object handle) {
+    public boolean isNavigable(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd)handle).isNavigable();
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for primary objects.
@@ -708,7 +729,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if primary object.
      */
-    public boolean isPrimaryObject(Object handle) {
+    public boolean isPrimaryObject(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MModelElement) {
             MModelElement element = (MModelElement)handle;
             for (Iterator i = element.getTaggedValues().iterator();
@@ -722,7 +744,7 @@ public class NsumlModelFacade implements UmlModelFacade {
             return true;
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for attributes with private
@@ -730,13 +752,14 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle has private
      */
-    public boolean isPrivate(Object handle) {
+    public boolean isPrivate(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MBehavioralFeature) {
             MBehavioralFeature bf = (MBehavioralFeature)handle;
             return MVisibilityKind.PRIVATE.equals(bf.getVisibility());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for realize
@@ -744,7 +767,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle has a realize stereotype
      */
-    public boolean isRealize(Object handle) {
+    public boolean isRealize(Object handle) throws InvalidObjectRequestException {
         return isStereotype(handle, "realize");
     }
 
@@ -753,13 +776,14 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate parameter
      * @returns true if handle is a return parameter.
      */
-    public boolean isReturn(Object handle) {
+    public boolean isReturn(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MParameter) {
             MParameter p = (MParameter)handle;
             return MParameterDirectionKind.RETURN.equals(p.getKind());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Recognizer for singleton.
@@ -767,7 +791,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle is a singleton.
      */
-    public boolean isSingleton(Object handle) {
+    public boolean isSingleton(Object handle) throws InvalidObjectRequestException {
         return isStereotype(handle, "singleton");
     }
 
@@ -781,7 +805,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      *	instead. Since this should only ever be used together with predefined
      *	stereotypes the base class can be found in the UML 1.3 specification.
      */
-    public boolean isStereotype(Object handle, String stereotypename) {
+    public boolean isStereotype(Object handle, String stereotypename) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MModelElement) {
             MModelElement element = (MModelElement)handle;
             MStereotype meSt = element.getStereotype();
@@ -797,10 +822,11 @@ public class NsumlModelFacade implements UmlModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
-    public boolean isTop(Object handle) {
+    public boolean isTop(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         return isACompositeState(handle)
             && ((MCompositeState)handle).getStateMachine() != null;
     }
@@ -810,7 +836,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle is a type.
      */
-    public boolean isType(Object handle) {
+    public boolean isType(Object handle) throws InvalidObjectRequestException {
         return isStereotype(handle, "type");
     }
 
@@ -819,7 +845,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle candidate
      * @returns true if handle is a utility.
      */
-    public boolean isUtility(Object handle) {
+    public boolean isUtility(Object handle) throws InvalidObjectRequestException {
         return isStereotype(handle, "utility");
     }
 
@@ -836,6 +862,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @return association end
      */
     public Object getAssociationEnd(Object type, Object assoc) {
+		assertBase(type);
+		assertBase(assoc);
         if (type == null
             || assoc == null
             || !(type instanceof MClassifier)
@@ -855,14 +883,15 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle the object that we get the association ends from.
      * @return Iterator with association ends.
      */
-    public Collection getAssociationEnds(Object handle) {
+    public Collection getAssociationEnds(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MClassifier) {
             Collection endc = ((MClassifier)handle).getAssociationEnds();
             return endc;
         }
 
         //...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** The list of Attributes.
@@ -870,7 +899,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle classifier to examine.
      * @return iterator with attributes.
      */
-    public Collection getAttributes(Object handle) {
+    public Collection getAttributes(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
             // TODO: We are converting back and forth between collections and
@@ -881,7 +911,7 @@ public class NsumlModelFacade implements UmlModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Get the behaviors of a Modelelement.
@@ -890,10 +920,11 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle modelelement to examine.
      * @return the behaviors.
      */
-    public Collection getBehaviors(Object handle) {
+    public Collection getBehaviors(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isAModelElement(handle))
             return ((MModelElement)handle).getBehaviors();
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Get the body of an Expression.
@@ -902,10 +933,11 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle expression.
      * @return the body.
      */
-    public Object getBody(Object handle) {
+    public Object getBody(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MExpression)
             return ((MExpression)handle).getBody();
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Get the child of a generalization.
@@ -915,11 +947,12 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle generalization.
      * @return the child.
      */
-    public Object getChild(Object handle) {
+    public Object getChild(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MGeneralization) {
             return ((MGeneralization)handle).getChild();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /**
@@ -928,11 +961,12 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle to the generalizable element.
      * @return a collection with all children.
      */
-    public Collection getChildren(Object handle) {
+    public Collection getChildren(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isAGeneralizableElement(handle)) {
             return ((MGeneralizableElement)handle).getChildren();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /**
@@ -941,12 +975,13 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle to the classifier.
      * @return an iterator with all client dependencies.
      */
-    public Iterator getClientDependencies(Object handle) {
+    public Iterator getClientDependencies(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isAModelElement(handle)) {
             Collection c = ((MModelElement)handle).getClientDependencies();
             return (c != null) ? c.iterator() : null;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Get the concurrency of an operation.
@@ -954,14 +989,15 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param o operation.
      * @return the concurrency.
      */
-    public short getConcurrency(Object o) {
+    public short getConcurrency(Object o) throws InvalidObjectRequestException {
+		assertBase(o);
         if (o != null && o instanceof MOperation) {
             return ((MOperation)o).getConcurrency()
                 == MCallConcurrencyKind.GUARDED
                 ? GUARDED
                 : SEQUENTIAL;
         }
-        throw new IllegalArgumentException("Unrecognized object " + o);
+        throw new InvalidObjectRequestException("Unrecognized object", o);
     }
 
     /** The list of Connections or AssociationEnds to an Association.
@@ -969,13 +1005,14 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle to the association.
      * @return an Iterator with all connections.
      */
-    public Iterator getConnections(Object handle) {
+    public Iterator getConnections(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MAssociation) {
             return ((MAssociation)handle).getConnections().iterator();
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** The list of Features from a Classifier.
@@ -983,7 +1020,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle Classifier to retrieve from.
      * @return Collection with Features
      */
-    public Collection getFeatures(Object handle) {
+    public Collection getFeatures(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle != null && handle instanceof MClassifier)
             return ((MClassifier)handle).getFeatures();
         return new ArrayList();
@@ -996,7 +1034,9 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param parent
      * @return The generalization
      */
-    public Object getGeneralization(Object child, Object parent) {
+    public Object getGeneralization(Object child, Object parent) throws InvalidObjectRequestException {
+		assertBase(child);
+		assertBase(parent);
         if (child == null
             || parent == null
             || !(child instanceof MGeneralizableElement)
@@ -1017,14 +1057,14 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle GeneralizableElement to retrieve from.
      * @return Iterator with Generalizations
      */
-    public Iterator getGeneralizations(Object handle) {
+    public Iterator getGeneralizations(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MGeneralizableElement) {
             MGeneralizableElement ge = (MGeneralizableElement)handle;
             return ge.getGeneralizations().iterator();
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /**
@@ -1032,12 +1072,12 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return Collection
      */
-    public Collection getIncomings(Object stateVertex) {
+    public Collection getIncomings(Object stateVertex) throws InvalidObjectRequestException {
         if (isAStateVertex(stateVertex)) {
             return ((MStateVertex)stateVertex).getIncomings();
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + stateVertex);
+        throw new InvalidObjectRequestException(
+            "Unrecognized object", stateVertex);
     }
 
     /**
@@ -1045,11 +1085,11 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return Collection
      */
-    public Collection getMessages(Object handle) {
+    public Collection getMessages(Object handle) throws InvalidObjectRequestException {
         if (isAInteraction(handle)) {
             return ((MInteraction)handle).getMessages();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
     
     /**
@@ -1062,11 +1102,11 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return Object
      */
-    public Object getContainer(Object handle) {
+    public Object getContainer(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MBase) {
             return ((MBase) handle).getModelElementContainer();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
     
     /**
@@ -1075,11 +1115,11 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @return the context of the statemachine or null if the statemachine doesn't 
      * have a context.
      */
-    public Object getContext(Object handle) {
+    public Object getContext(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MStateMachine) {
             return ((MStateMachine)handle).getContext();            
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Get the namespace of an element.
@@ -1087,11 +1127,11 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle the model element that we are getting the namespace of
      * @returns the namespace (or null)
      */
-    public Object getNamespace(Object handle) {
+    public Object getNamespace(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MModelElement)
             return ((MModelElement)handle).getNamespace();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** The list of operations
@@ -1099,7 +1139,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle classifier to examine.
      * @return Collection with operations.
      */
-    public Collection getOperations(Object handle) {
+    public Collection getOperations(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
 
@@ -1107,7 +1147,7 @@ public class NsumlModelFacade implements UmlModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** The list of Operations of this classifier and all inherited.
@@ -1115,7 +1155,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle classifier to examine.
      * @return Iterator with operations.
      */
-    public Iterator getOperationsInh(Object handle) {
+    public Iterator getOperationsInh(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
 
@@ -1125,7 +1165,7 @@ public class NsumlModelFacade implements UmlModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
     
     /**
@@ -1133,11 +1173,11 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return Object the opposite end.
      */
-    public Object getOppositeEnd(Object handle) {
+    public Object getOppositeEnd(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd)handle).getOppositeEnd();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Returns the list of Transitions outgoing from the given stateVertex.
@@ -1145,12 +1185,12 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param statevertex
      * @return Collection
      */
-    public Collection getOutgoings(Object stateVertex) {
+    public Collection getOutgoings(Object stateVertex) throws InvalidObjectRequestException {
         if (isAStateVertex(stateVertex)) {
             return ((MStateVertex)stateVertex).getOutgoings();
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + stateVertex);
+        throw new InvalidObjectRequestException(
+            "Unrecognized object", stateVertex);
     }
 
     /** The list of Associations Ends connected to this association end
@@ -1158,7 +1198,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle association end to start from
      * @returns Iterator with all connected association ends.
      */
-    public Collection getOtherAssociationEnds(Object handle) {
+    public Collection getOtherAssociationEnds(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MAssociationEnd) {
             MAssociation a = ((MAssociationEnd)handle).getAssociation();
 
@@ -1177,7 +1217,7 @@ public class NsumlModelFacade implements UmlModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** The list of owned elements of the the package.
@@ -1185,13 +1225,13 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle package to retrieve from.
      * @return Iterator with operations
      */
-    public Collection getOwnedElements(Object handle) {
+    public Collection getOwnedElements(Object handle) throws InvalidObjectRequestException {
         if (handle instanceof MNamespace) {
             return ((MNamespace)handle).getOwnedElements();
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Get a parameter of an operation.
@@ -1201,6 +1241,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @return parameter.
      */
     public Object getParameter(Object op, int n) {
+		assertBase(op);
         if (op == null || !(op instanceof MOperation))
             return null;
         return ((MOperation)op).getParameter(n);
@@ -1211,13 +1252,14 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle operation to retrieve from
      * @return Iterator with operations.
      */
-    public Iterator getParameters(Object handle) {
+    public Iterator getParameters(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MOperation) {
             return ((MOperation)handle).getParameters().iterator();
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** Get the parent of a generalization.
@@ -1227,13 +1269,14 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle generalization.
      * @return the parent.
      */
-    public Object getParent(Object handle) {
+    public Object getParent(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MGeneralization) {
             return ((MGeneralization)handle).getParent();
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /**
@@ -1242,11 +1285,12 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return Collection
      */
-    public Collection getResidents(Object handle) {
+    public Collection getResidents(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isANode(handle)) {
             return ((MNode)handle).getResidents();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /**
@@ -1254,11 +1298,12 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return Object
      */
-    public Object getSource(Object handle) {
+    public Object getSource(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isATransition(handle)) {
             return ((MTransition)handle).getSource();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** The list of Specializations from a GeneralizableElement.
@@ -1266,14 +1311,15 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle GeneralizableElement to retrieve from.
      * @return Iterator with Specializations.
      */
-    public Iterator getSpecializations(Object handle) {
+    public Iterator getSpecializations(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MGeneralizableElement) {
             MGeneralizableElement ge = (MGeneralizableElement)handle;
             return ge.getSpecializations().iterator();
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /**
@@ -1281,11 +1327,12 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return Object
      */
-    public Object getStereoType(Object handle) {
+    public Object getStereoType(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isAModelElement(handle)) {
             return ((MModelElement)handle).getStereotype();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
     
     /**
@@ -1294,11 +1341,12 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return Collection
      */
-    public Collection getSubvertices(Object handle) {
+    public Collection getSubvertices(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isACompositeState(handle)) {
             return ((MCompositeState)handle).getSubvertices();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** The list of SupplierDependencies from a ModelElement.
@@ -1306,14 +1354,15 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle model element.
      * @returns Iterator with the supplier dependencies.
      */
-    public Iterator getSupplierDependencies(Object handle) {
+    public Iterator getSupplierDependencies(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MModelElement) {
             MModelElement me = (MModelElement)handle;
             return me.getSupplierDependencies().iterator();
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /** The type of an attribute
@@ -1321,7 +1370,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle the attribute
      * @returns the type
      */
-    public Object getType(Object handle) {
+    public Object getType(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MStructuralFeature) {
             return ((MAttribute)handle).getType();
         }
@@ -1333,7 +1383,7 @@ public class NsumlModelFacade implements UmlModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /**
@@ -1341,11 +1391,12 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return Object
      */
-    public Object getTarget(Object handle) {
+    public Object getTarget(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isATransition(handle)) {
             return ((MTransition)handle).getTarget();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /**
@@ -1354,7 +1405,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return int
      */
-    public int getUpper(Object handle) {
+    public int getUpper(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isAAssociationEnd(handle)) {
             int upper = 0;
             MAssociationEnd end = (MAssociationEnd)handle;
@@ -1362,7 +1414,7 @@ public class NsumlModelFacade implements UmlModelFacade {
                 upper = end.getMultiplicity().getUpper();
             return upper;
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
 
     /**
@@ -1374,13 +1426,14 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle
      * @return Collection
      */
-    public Collection getTransitions(Object handle) {
+    public Collection getTransitions(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (isAStateMachine(handle)) {
             return ((MStateMachine)handle).getTransitions();
         } else if (isACompositeState(handle)) {
             return ((MCompositeState)handle).getInternalTransitions();
         }
-        throw new IllegalArgumentException("Unrecognized object " + handle);
+        throw new InvalidObjectRequestException("Unrecognized object", handle);
     }
     
     /** This method returns all attributes of a given Classifier.
@@ -1388,7 +1441,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param classifier the classifier you want to have the attributes for
      * @return a collection of the attributes
      */
-    public Collection getStructuralFeatures(Object classifier) {
+    public Collection getStructuralFeatures(Object classifier) throws InvalidObjectRequestException {
+		assertBase(classifier);
         Collection result = new ArrayList();
         if (isAClassifier(classifier)) {
             MClassifier mclassifier = (MClassifier)classifier;
@@ -1408,7 +1462,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param classifier the classifier you want to have the operations for
      * @return a collection of the operations
      */
-    public Collection getOperations(MClassifier mclassifier) {
+    public Collection getOperations(MClassifier mclassifier) throws InvalidObjectRequestException {
+		assertBase(mclassifier);
         Collection result = new ArrayList();
         Iterator features = mclassifier.getFeatures().iterator();
         while (features.hasNext()) {
@@ -1425,6 +1480,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @return a collection of the Interfaces
      */
     public Collection getSpecifications(Object cls) {
+		assertBase(cls);
         Collection result = new Vector();
         if (cls instanceof MClassifier) {
             Collection deps = ((MClassifier)cls).getClientDependencies();
@@ -1448,7 +1504,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param abstraction
      * @return a collection of the suppliers
      */
-    public Collection getSuppliers(Object handle) {
+    public Collection getSuppliers(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle == null || !(handle instanceof MAbstraction))
             return null;
         return ((MAbstraction)handle).getSuppliers();
@@ -1463,6 +1520,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @return Collection
      */
     public Collection getAssociatedClasses(Object o) {
+		assertBase(o);
         Collection col = new ArrayList();
         if (o instanceof MClassifier) {
             MClassifier classifier = (MClassifier)o;
@@ -1494,7 +1552,8 @@ public class NsumlModelFacade implements UmlModelFacade {
 	 * @param handle that points out the object.
 	 * @returns the name
 	 */
-	public String getName(Object handle) {
+	public String getName(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
 		if (handle instanceof MModelElement) {
 			MModelElement me = (MModelElement)handle;
 
@@ -1502,7 +1561,7 @@ public class NsumlModelFacade implements UmlModelFacade {
 		}
 
 		// ...
-		throw new IllegalArgumentException("Unrecognized object " + handle);
+		throw new InvalidObjectRequestException("Unrecognized object", handle);
 	}
 
     /**
@@ -1510,11 +1569,12 @@ public class NsumlModelFacade implements UmlModelFacade {
        @param feature
        @return classifier
      */
-    public Object getOwner(Object f) {
+    public Object getOwner(Object f) throws InvalidObjectRequestException {
+		assertBase(f);
         if (f != null && f instanceof MFeature) {
             return ((MFeature)f).getOwner();
         }
-        throw new IllegalArgumentException("Unrecognized object " + f);
+        throw new InvalidObjectRequestException("Unrecognized object", f);
     }
 
     /**
@@ -1524,6 +1584,7 @@ public class NsumlModelFacade implements UmlModelFacade {
        @return The tagged values iterator
      */
     public Iterator getTaggedValues(Object modelElement) {
+		assertBase(modelElement);
         if (modelElement != null && modelElement instanceof MModelElement) {
             return ((MModelElement)modelElement).getTaggedValues().iterator();
         }
@@ -1538,6 +1599,7 @@ public class NsumlModelFacade implements UmlModelFacade {
        @return The found tag, null if not found
      */
     public Object getTaggedValue(Object modelElement, String name) {
+		assertBase(modelElement);
         if (modelElement != null && modelElement instanceof MModelElement) {
             for (Iterator i =
                 ((MModelElement)modelElement).getTaggedValues().iterator();
@@ -1559,6 +1621,7 @@ public class NsumlModelFacade implements UmlModelFacade {
        @return The found value, null if not found
      */
     public String getTagOfTag(Object tv) {
+		assertBase(tv);
         if (tv != null && tv instanceof MTaggedValue) {
             return ((MTaggedValue)tv).getTag();
         }
@@ -1572,6 +1635,7 @@ public class NsumlModelFacade implements UmlModelFacade {
        @return The found value, null if not found
      */
     public String getValueOfTag(Object tv) {
+		assertBase(tv);
         if (tv != null && tv instanceof MTaggedValue) {
             return ((MTaggedValue)tv).getValue();
         }
@@ -1585,12 +1649,9 @@ public class NsumlModelFacade implements UmlModelFacade {
        @param base base element (MBase type)
        @return UUID
     */
-    public String getUUID(Object base) {
-        if (isABase(base)) {
-            return ((MBase) base).getUUID();
-        }
-        //
-        throw new IllegalArgumentException("Unrecognized object " + base);
+    public String getUUID(Object base) throws InvalidObjectRequestException {
+		assertBase(base);
+        return ((MBase) base).getUUID();
     }
 
     ////////////////////////////////////////////////////////////////
@@ -1603,6 +1664,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @return found object, null otherwise
      */
     public Object lookupIn(Object o, String name) {
+		assertBase(o);
         if (o instanceof MModel)
             return ((MModel)o).lookup(name);
         if (o instanceof MNamespace)
@@ -1621,6 +1683,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param feature
      */
     public void addFeature(Object cls, Object f) {
+		assertBase(cls);
+		assertBase(f);
         if (cls != null
             && f != null
             && cls instanceof MClassifier
@@ -1635,6 +1699,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param method
      */
     public void addMethod(Object o, Object m) {
+		assertBase(o);
+		assertBase(m);
         if (o != null
             && m != null
             && o instanceof MOperation
@@ -1651,6 +1717,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param me model element
      */
     public void addOwnedElement(Object ns, Object me) {
+		assertBase(ns);
+		assertBase(me);
         if (ns != null
             && ns instanceof MNamespace
             && me != null
@@ -1665,6 +1733,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param cls supplier classifier
      */
     public void addSupplier(Object a, Object cls) {
+		assertBase(a);
+		assertBase(cls);
         if (a != null
             && cls != null
             && a instanceof MAbstraction
@@ -1679,6 +1749,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param cls client classifier
      */
     public void addClient(Object a, Object cls) {
+		assertBase(a);
+		assertBase(cls);
         if (a != null
             && cls != null
             && a instanceof MAbstraction
@@ -1693,6 +1765,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param dependency
      */
     public void removeClientDependency(Object o, Object dep) {
+		assertBase(o);
+		assertBase(dep);
         if (o != null
             && dep != null
             && o instanceof MModelElement
@@ -1707,6 +1781,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param feature
      */
     public void removeFeature(Object cls, Object feature) {
+		assertBase(cls);
+		assertBase(feature);
         if (cls != null
             && feature != null
             && cls instanceof MClassifier
@@ -1721,6 +1797,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param parameter
      */
     public void removeParameter(Object o, Object p) {
+		assertBase(o);
+		assertBase(p);
         if (o != null
             && p != null
             && o instanceof MOperation
@@ -1735,6 +1813,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param expression
      */
     public void setBody(Object m, Object expr) {
+		assertBase(m);
+		assertBase(expr);
         if (m != null
             && expr != null
             && m instanceof MMethod
@@ -1749,6 +1829,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param expression
      */
     public void setInitialValue(Object at, Object expr) {
+		assertBase(at);
+		assertBase(expr);
         if (at != null
             && expr != null
             && at instanceof MAttribute
@@ -1763,6 +1845,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param multiplicity as string
      */
     public void setMultiplicity(Object o, String mult) {
+		assertBase(o);
         // FIXME: the implementation is ugly, because I have no spec at hand...
         if (o == null)
             return;
@@ -1787,6 +1870,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param name
      */
     public void setName(Object o, String name) {
+		assertBase(o);
         if (o != null && o instanceof MModelElement) {
             ((MModelElement)o).setName(name);
         }
@@ -1798,6 +1882,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param namespace
      */
     public void setNamespace(Object o, Object ns) {
+		assertBase(o);
         if (o != null
             && o instanceof MModelElement
             && ns != null
@@ -1812,6 +1897,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param navigability flag
      */
     public void setNavigable(Object o, boolean flag) {
+		assertBase(o);
         if (o != null && o instanceof MAssociationEnd) {
             ((MAssociationEnd)o).setNavigable(flag);
         }
@@ -1823,6 +1909,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param visibility
      */
     public void setVisibility(Object o, short v) {
+		assertBase(o);
         if (o != null && o instanceof MModelElement) {
             if (v == ACC_PRIVATE) {
                 ((MModelElement)o).setVisibility(MVisibilityKind.PRIVATE);
@@ -1840,6 +1927,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param owner scope
      */
     public void setOwnerScope(Object f, short os) {
+		assertBase(f);
         if (f != null && f instanceof MFeature) {
             if (os == CLASSIFIER_SCOPE) {
                 ((MFeature)f).setOwnerScope(MScopeKind.CLASSIFIER);
@@ -1855,6 +1943,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param target scope
      */
     public void setTargetScope(Object ae, short ts) {
+		assertBase(ae);
         if (ae != null && ae instanceof MAssociationEnd) {
             if (ts == CLASSIFIER_SCOPE) {
                 ((MAssociationEnd)ae).setTargetScope(MScopeKind.CLASSIFIER);
@@ -1870,6 +1959,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param concurrency
      */
     public void setConcurrency(Object o, short c) {
+		assertBase(o);
         if (o != null && o instanceof MOperation) {
             if (c == GUARDED) {
                 ((MOperation)o).setConcurrency(MCallConcurrencyKind.GUARDED);
@@ -1885,6 +1975,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param changeability flag
      */
     public void setChangeable(Object o, boolean flag) {
+		assertBase(o);
         // FIXME: the implementation is ugly, because I have no spec at hand...
         if (o == null)
             return;
@@ -1908,6 +1999,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param flag
      */
     public void setAbstract(Object o, boolean flag) {
+		assertBase(o);
         if (o != null) {
             if (o instanceof MClassifier)
                  ((MClassifier)o).setAbstract(flag);
@@ -1922,6 +2014,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param flag
      */
     public void setLeaf(Object o, boolean flag) {
+		assertBase(o);
         if (o != null && o instanceof MClassifier) {
             ((MClassifier)o).setLeaf(flag);
         }
@@ -1933,6 +2026,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param flag
      */
     public void setRoot(Object o, boolean flag) {
+		assertBase(o);
         if (o != null && o instanceof MClassifier) {
             ((MClassifier)o).setRoot(flag);
         }
@@ -1943,6 +2037,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param parameter
      */
     public void setKindToIn(Object p) {
+		assertBase(p);
         if (p != null && p instanceof MParameter) {
             ((MParameter)p).setKind(MParameterDirectionKind.IN);
         }
@@ -1953,6 +2048,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param parameter
      */
     public void setKindToReturn(Object p) {
+		assertBase(p);
         if (p != null && p instanceof MParameter) {
             ((MParameter)p).setKind(MParameterDirectionKind.RETURN);
         }
@@ -1964,6 +2060,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param type
      */
     public void setType(Object p, Object cls) {
+		assertBase(p);
+		assertBase(cls);
         if (p != null && cls != null && cls instanceof MClassifier) {
             if (p instanceof MParameter)
                  ((MParameter)p).setType((MClassifier)cls);
@@ -1981,6 +2079,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param value
      */
     public void setTaggedValue(Object o, String tag, String value) {
+		assertBase(o);
         if (o != null && o instanceof MModelElement) {
             MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
             tv.setModelElement((MModelElement)o);
@@ -1995,6 +2094,7 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param value
      */
     public void setValueOfTag(Object tv, String value) {
+		assertBase(tv);
         if (tv != null && tv instanceof MTaggedValue) {
             ((MTaggedValue)tv).setValue(value);
         }
@@ -2007,6 +2107,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param stereo stereotype
      */
     public void setStereotype(Object m, Object stereo) {
+		assertBase(m);
+		assertBase(stereo);
         if (m != null && m instanceof MModelElement) {
             if (stereo != null
                 && stereo instanceof MStereotype
@@ -2025,6 +2127,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param mc constraint
      */
     public void addConstraint(Object me, Object mc) {
+		assertBase(me);
+		assertBase(mc);
         if (me != null
             && me instanceof MModelElement
             && mc != null
@@ -2038,7 +2142,8 @@ public class NsumlModelFacade implements UmlModelFacade {
      * @param handle Modelelement
      * @return classname of modelelement
      */
-    public String getUMLClassName(Object handle) {
+    public String getUMLClassName(Object handle) throws InvalidObjectRequestException {
+		assertBase(handle);
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getUMLClassName();
         }

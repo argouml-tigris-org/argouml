@@ -84,102 +84,198 @@ public class FakeUmlModelFacadeTest extends TestCase
 			facade.isAAssociation(new Object());
 			fail ("Didn't throw RuntimeException");
 		}
-		catch (RuntimeException re) { }
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAAssociationEnd()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAAssociationEnd(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAAssociationRole()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAAssociationRole(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAbstract()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAbstract(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsABase()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isABase(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAClass()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAClass(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAClassifier()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAClassifier(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAComment()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAComment(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAComponent()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAComponent(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAComponentInstance()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAComponentInstance(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsADataType()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isADataType(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsADependency()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isADependency(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsACompositeState()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isACompositeState(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAElement()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAElement(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAExpression()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAExpression(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAExtensionPoint()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAExtensionPoint(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAFeature()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAFeature(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAGeneralizableElement()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAGeneralizableElement(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAGeneralization()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAGeneralization(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAInstance()
 	{
-		// TODO Make sure it throws RuntimeException
+		try {
+			facade.isAInstance(new Object());
+			fail ("Didn't throw RuntimeException");
+		}
+		catch (RuntimeException re) {
+		}
 	}
 
 	public void testIsAInteraction()

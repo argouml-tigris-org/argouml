@@ -147,7 +147,7 @@ public class PropPanelParameter extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = (MDataType)ObjectFactoryManager.getUmlFactory().create(Uml.DATA_TYPE);
+            MModelElement ownedElem = (MDataType)ObjectFactoryManager.getUmlFactory().create(Uml.DATATYPE);
             ns.addOwnedElement(ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }
