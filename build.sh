@@ -7,6 +7,11 @@
 #               of $ANT_HOME for ant.jar. Checks added for $JAVA_HOME and
 #               $ARGO_HOME - these should be set in the environment.
 
+#  8 Jan 2001:  Thierry Lach. LOCALCLASSPATH simplified.
+
+#  9 Jan 2001:  Jeremy Bennett. xerces.jar added back to LOCALCLASSPATH, since
+#               otherwise build cannot find org.xml.sax.InputSource
+
 echo
 echo "Argo Build System (borrowed from FOP)"
 echo "-------------------------------------"
@@ -54,7 +59,7 @@ PATH=$PATH:$JAVA_HOME/bin
 NSUML_HOME=$ARGO_HOME/lib
 XML_HOME=$NSUML_HOME
 OCL_HOME=$NSUML_HOME
-LOCALCLASSPATH=$ANT_HOME/lib/ant.jar:$JAVA_HOME/lib/tools.jar
+LOCALCLASSPATH=$ANT_HOME/lib/ant.jar:$JAVA_HOME/lib/tools.jar:$ANT_HOME/lib/parser.jar:$ANT_HOME/lib/jaxp.jar
 
 echo Building with classpath $CLASSPATH:$LOCALCLASSPATH
 echo
