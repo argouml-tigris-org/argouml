@@ -36,11 +36,18 @@ import org.argouml.ui.explorer.WeakExplorerNode;
 public class InheritanceNode implements WeakExplorerNode {
     private Object parent;
 
-    /** Creates a new instance of AssociationsNode */
+    /** 
+     * Creates a new instance of AssociationsNode.
+     * 
+     * @param p the parent 
+     */
     public InheritanceNode(Object p) {
         parent = p;
     }
 
+    /**
+     * @return the parent node
+     */
     public Object getParent() {
 	return parent;
     }

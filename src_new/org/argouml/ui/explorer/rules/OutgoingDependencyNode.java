@@ -36,11 +36,18 @@ import org.argouml.ui.explorer.WeakExplorerNode;
 public class OutgoingDependencyNode implements WeakExplorerNode {
     private Object parent;
 
-    /** Creates a new instance of AssociationsNode */
+    /** 
+     * Creates a new instance of AssociationsNode
+     * 
+     * @param p the parent
+     */
     public OutgoingDependencyNode(Object p) {
         parent = p;
     }
 
+    /**
+     * @return the parent
+     */
     public Object getParent() {
 	return parent;
     }

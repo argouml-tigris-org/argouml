@@ -38,11 +38,18 @@ import org.argouml.ui.explorer.WeakExplorerNode;
 public class OperationsNode implements WeakExplorerNode {
     private Object parent;
     
-    /** Creates a new instance of OperationsNode */
+    /** 
+     * Creates a new instance of OperationsNode
+     * 
+     * @param p the parent
+     */
     public OperationsNode(Object p) {
         parent = p;
     }
     
+    /**
+     * @return the parent
+     */
     public Object getParent() {
 	return parent;
     }

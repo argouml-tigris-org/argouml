@@ -37,19 +37,32 @@ public class IncomingDependencyNode implements WeakExplorerNode {
 
     private Object parent;
 
-    /** Creates a new instance of DepedencyNode */
-    public IncomingDependencyNode(Object parent) {
-        this.parent = parent;
+    /** 
+     * Creates a new instance of DepedencyNode
+     * 
+     * @param theParent the parent node
+     */
+    public IncomingDependencyNode(Object theParent) {
+        this.parent = theParent;
     }
     
+    /**
+     * @return the parent
+     */
     public Object getParent() {
 	return parent;
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
 	return "Incoming Dependencies";
     }
 
+    /**
+     * @see org.argouml.ui.explorer.WeakExplorerNode#subsumes(java.lang.Object)
+     */
     public boolean subsumes(Object obj) {
 	return obj instanceof IncomingDependencyNode;
     }
