@@ -80,7 +80,7 @@ public class FigMessage extends FigNodeModelElement {
      */
     public FigMessage() {
 	getNameFig().setLineWidth(0);
-	getNameFig().setMultiLine(true);
+	getNameFig().setMultiLine(false);
 	getNameFig().setFilled(false);
 	Dimension nameMin = getNameFig().getMinimumSize();
 	getNameFig().setBounds(10, 10, 90, nameMin.height);
@@ -156,13 +156,13 @@ public class FigMessage extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
-	figPoly.setFillColor(col);
+	//figPoly.setFillColor(col);
 	getNameFig().setFillColor(col);
     }
     /**
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
-    public Color getFillColor() { return figPoly.getFillColor(); }
+    public Color getFillColor() { return getNameFig().getFillColor(); }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
