@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,14 +24,18 @@
 
 package org.argouml.uml.diagram.static_structure.layout;
 
+import java.awt.Point;
+
 import org.tigris.gef.presentation.*;
 
 /**
+ * This class represents note edges to enable an appropriate positioning
+ * of notes. 
  *
- * @author  mkl
+ * @author  David Gunkel
  */
-public class ClassdiagramGeneralizationEdge
-    extends ClassdiagramInheritanceEdge
+public class ClassdiagramNoteEdge
+    extends ClassdiagramEdge
 {
     
     /**
@@ -39,8 +43,42 @@ public class ClassdiagramGeneralizationEdge
      * 
      * @param edge the fig edge
      */
-    public ClassdiagramGeneralizationEdge(FigEdge edge) {
+    public ClassdiagramNoteEdge(FigEdge edge) {
         super(edge);
+    }
+
+    /**
+     * NoteEdges are drawn directly between the linked nodes, using vertically
+     * centered points on the right- resp. left-hand side of the nodes.
+     * @see org.argouml.uml.diagram.static_structure.layout.ClassdiagramEdge#layout()
+     */
+    public void layout() {
+        // use left and right, up and down
+        Fig fs = getSourceFigNode();
+        Fig fd = getDestFigNode();
+        if (fs.getLocation().x < fd.getLocation().x) {
+            addPoints(fs, fd);
+        } else {
+            addPoints(fd, fs);
+        }
+        FigPoly fig = getUnderlyingFig();
+        fig.setFilled(false);
+        getCurrentEdge().setFig(fig);
+    }
+
+    /**
+     * Add points to the underlying FigPoly
+     * @param fs - source Fig of this edge
+     * @param fd - destination Fig of this edge
+     */
+    private void addPoints(Fig fs, Fig fd) {
+        FigPoly fig = getUnderlyingFig();
+        Point p = fs.getLocation();
+        p.translate(fs.getWidth(), fs.getHalfHeight());
+        fig.addPoint(p);
+        p = fd.getLocation();
+        p.translate(0, fd.getHalfHeight());
+        fig.addPoint(p);
     }
 }
 

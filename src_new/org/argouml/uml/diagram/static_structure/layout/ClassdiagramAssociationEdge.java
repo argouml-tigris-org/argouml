@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,10 +33,10 @@ import java.awt.*;
  * @author  mkl
  */
 public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
-
+    
     /**
      * The constructor.
-     *
+     * 
      * @param edge the fig of the edge
      */
     public ClassdiagramAssociationEdge(FigEdge edge) {
@@ -51,49 +51,45 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
         // runner find the way.
         if (getDestFigNode() == getSourceFigNode()) {
             Point centerRight = getCenterRight((FigNode) getSourceFigNode());
-            int yoffset =
-                (int) ((getSourceFigNode().getSize().getHeight() / 2));
+            int yoffset = getSourceFigNode().getHalfHeight();
             yoffset = java.lang.Math.min(30, yoffset);
-            getUnderlyingFig().addPoint(centerRight.x, centerRight.y);
+            getUnderlyingFig().addPoint(centerRight);
             // move more right
             getUnderlyingFig().addPoint(centerRight.x + 30, centerRight.y);
             // move down
-            getUnderlyingFig().addPoint(centerRight.x + 30,
+            getUnderlyingFig().addPoint(centerRight.x + 30, 
                                         centerRight.y + yoffset);
             // move left
             getUnderlyingFig().addPoint(centerRight.x, centerRight.y + yoffset);
-
+            
             getUnderlyingFig().setFilled(false);
             getUnderlyingFig().setSelfLoop(true);
-            getCurrentEdge().setFig(getUnderlyingFig());
-        }
-        else {
-            ;// brute force rectangular layout
+            getCurrentEdge().setFig(getUnderlyingFig());  
+        } else {
+            // brute force rectangular layout
             /*
             Point centerSource = sourceFigNode.center();
             Point centerDest   = destFigNode.center();
 
             underlyingFig.addPoint(centerSource.x, centerSource.y);
-            underlyingFig.addPoint(centerSource.x +
+            underlyingFig.addPoint(centerSource.x + 
                                    (centerDest.x-centerSource.x)/2,
                                    centerSource.y);
-            underlyingFig.addPoint(centerSource.x +
+            underlyingFig.addPoint(centerSource.x +  
                                    (centerDest.x-centerSource.x)/2,
                                    centerDest.y);
             underlyingFig.addPoint(centerDest.x, centerDest.y);
             underlyingFig.setFilled(false);
             underlyingFig.setSelfLoop(false);
-            currentEdge.setFig(underlyingFig);
-            */
+            currentEdge.setFig(underlyingFig)*/;
         }
-    }
+    }   
 
     /** return a point which is just right of the center.
      */
     private Point getCenterRight(FigNode fig) {
         Point center = fig.center();
-        return new Point((int) (center.x + fig.getSize().getWidth() / 2),
-			 center.y);
+        return new Point(center.x + fig.getHalfWidth(), center.y);
     }
 
     /** return a Point which is just lower than the center of the
@@ -101,8 +97,7 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
      */
     private Point getCenterLow(FigNode fig) {
         Point center = fig.center();
-        return new Point(center.x,
-			 (int) (center.y + (fig.getSize().getHeight() / 2)));
+        return new Point(center.x, center.y + fig.getHalfHeight());
     }
 }
 
