@@ -265,6 +265,7 @@ public class FigInterface extends FigNodeModelElement {
     MModelElement me = (MModelElement) getOwner();
     MNamespace m = null;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
+    if (me.getNamespace() == null) {
     if ((encloser == null && me.getNamespace() == null) ||
         (encloser != null && encloser.getOwner() instanceof MPackage)) {
       if (encloser != null) {
@@ -277,6 +278,7 @@ public class FigInterface extends FigNodeModelElement {
       } catch (Exception e) {
         Argo.log.error("could not set package", e);
       }
+    }
     }
 
     // The next if-clause is important for the Deployment-diagram
