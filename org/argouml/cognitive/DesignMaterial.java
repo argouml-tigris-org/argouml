@@ -70,7 +70,8 @@ import org.argouml.cognitive.critics.Agency;
  */
 
 
-public abstract class DesignMaterial extends Observable implements Highlightable, Serializable 
+public abstract class DesignMaterial extends Observable 
+        implements Highlightable, Serializable 
 {
     /*
      * @see jargo.softarch.C2BrickDM
@@ -84,23 +85,23 @@ public abstract class DesignMaterial extends Observable implements Highlightable
 
     /** Observers of this object that should be saved and loaded with
      *  this object. */
-    protected Vector _persistObservers = null;
+    private Vector persistObservers = null;
 
-    protected transient Vector _propertyListeners = null;
+    private transient Vector propertyListeners = null;
   
     /** ToDoList items that are on the designers ToDoList because
      *  of this material. */
-    protected ToDoList _pendingItems = new ToDoList();
+    private ToDoList pendingItems = new ToDoList();
 
     /** Other DesignMaterial's that contain this one. */
-    protected Vector _parents = new Vector();
+    private Vector parents = new Vector();
 
     /** "Soft" Properties that this DesignMaterial may have, but we do
      *  not want to allocate an instance variable to them. */
-    protected Hashtable _props = new Hashtable();
+    private Hashtable props = new Hashtable();
 
 
-    protected boolean _highlight;
+    private boolean highlight;
 
   
   
@@ -110,7 +111,11 @@ public abstract class DesignMaterial extends Observable implements Highlightable
     /** Construct a new DesignMaterial with empty Properties. */
     public DesignMaterial() {  }
 
-    /** Construct a new DesignMaterial with the given Properties. */
+    /** 
+     * Construct a new DesignMaterial with the given Properties.
+     *  
+     * @param ht the hashtable
+     */
     public DesignMaterial(Hashtable ht) {
 	// TODO: construct a new Hashtable that "inherits"
     }
@@ -120,44 +125,79 @@ public abstract class DesignMaterial extends Observable implements Highlightable
 
     /** Make the given Design be the parent of this DesignMaterial. */
     void addParent(Design d) {
-	_parents.removeElement(d); /* behave like a set */
-	_parents.addElement(d);
+	parents.removeElement(d); /* behave like a set */
+	parents.addElement(d);
     }
 
     /** Remove the given parent. For example, this could be called when
      * a DesignMaterial is removed from a Design. */
-    void removeParent(Design d) { _parents.removeElement(d); }
+    void removeParent(Design d) { parents.removeElement(d); }
 
-    /** Enumerate over all my parents. For now most DesignMaterial's
+    /** 
+     * Enumerate over all my parents. For now most DesignMaterial's
      * have just one parent, but I think this might be useful in the
-     * future. */
-    public Enumeration parents() { return _parents.elements(); }
+     * future.
+     * 
+     * @return all the parents
+     */
+    public Enumeration parents() { return parents.elements(); }
 
-    /** Reply the value of one property, if not found reply
+    /** 
+     * Reply the value of one property, if not found reply
      * defaultValue. Even if subclasses store some properties in instance
      * variables, they should implement this method to give acces to
-     * those instance variables by name. */
+     * those instance variables by name.
+     * 
+     * @param key the key of the property
+     * @param defaultValue the default value if not found
+     * @return the value of the property
+     */
     public Object getProperty(String key, Object defaultValue) {
 	return get(key, defaultValue);
     }
 
-    /** Reply the value of one property, if not found reply null. */
+    /** 
+     * Reply the value of one property, if not found reply null.
+     * 
+     * @param k the key of the property
+     * @return the value of the property
+     */
     public Object getProperty(String k) { return get(k); }
 
-    public Object get(String k) { return _props.get(k); }
+    /**
+     * @param k the key of the property
+     * @return the value of the property
+     */
+    public Object get(String k) { return props.get(k); }
 
+    /**
+     * @param key the key of the property
+     * @param defaultValue the default value if not found
+     * @return the value of the property
+     */
     public Object get(String key, Object defaultValue) {
 	Object res = get(key);
 	if (res == null) res = defaultValue;
 	return res;
     }
 
-    /** Reply the value an int property, if not found reply 0. */
+    /** 
+     * Reply the value an int property, if not found reply 0. 
+     * 
+     * @param k the key of the property
+     * @return the value of the property
+     */
     public int getIntProperty(String k) {
 	return getIntProperty(k, 0);
     }
 
-    /** Reply the value an int property, if not found reply defaultValue. */
+    /** 
+     * Reply the value an int property, if not found reply defaultValue.
+     * 
+     * @param k the key of the property
+     * @param defaultValue the default value of the property
+     * @return the value of the property
+     */
     public int getIntProperty(String k, int defaultValue) {
 	Object o = getProperty(k);
 	if (o instanceof Integer) return ((Integer) o).intValue();
@@ -165,26 +205,44 @@ public abstract class DesignMaterial extends Observable implements Highlightable
     }
 
 
-    /** Reply the value an boolean property, if not found reply false. */
+    /** 
+     * Reply the value an boolean property, if not found reply false.
+     * 
+     * @param k the key of the property
+     * @return the value of the property
+     */
     public boolean getBoolProperty(String k) {
 	return getBoolProperty(k, false);
     }
 
-    /** Reply the value an int property, if not found reply defaultValue. */
+    /** 
+     * Reply the value an int property, if not found reply defaultValue.
+     * 
+     * @param k the key of the property
+     * @param defaultValue the default value of the property
+     * @return the value of the property
+     */
     public boolean getBoolProperty(String k, boolean defaultValue) {
 	Object o = getProperty(k);
 	if (o instanceof Boolean) return ((Boolean) o).booleanValue();
 	return defaultValue;
     }
 
-    /** Set the value of a property. */
+    /** Set the value of a property.
+     * @param k the key of the property
+     * @param v the value of the property
+     * @return always true, because when the key is not yet present, we add it
+     */
     public boolean put(String k, Object v) {
 	if (v == null || k == null) return false;
-	_props.put(k, v);
+	props.put(k, v);
 	changedProperty(k);
 	return true;
     }
 
+    /**
+     * @param ht the hashtable
+     */
     public void put(Hashtable ht) {
 	Enumeration keys = ht.keys();
 	while (keys.hasMoreElements()) {
@@ -194,54 +252,113 @@ public abstract class DesignMaterial extends Observable implements Highlightable
 	}
     }
 
-    /** Convenient function for setting the value of boolean
-     * properties. */
+    /** 
+     * Convenient function for setting the value of boolean
+     * properties. 
+     * 
+     * @param k the key of the property
+     * @param v the value of the property
+     * @return always true, because when the key is not yet present, we add it
+     */
     public boolean put(String k, boolean v) {
 	return put(k, v ? Boolean.TRUE : Boolean.FALSE);
     }
 
-    /** Convenient function for setting the value of boolean
-     * properties. */
+    /** 
+     * Convenient function for setting the value of boolean
+     * properties.
+     *  
+     * @param k the key of the property
+     * @param v the value of the property
+     * @return always true, because when the key is not yet present, we add it
+     */
     public boolean put(String k, int v) { return put(k, new Integer(v)); }
 
+    /**
+     * @param k the key of the property
+     * @param v the value of the property
+     */
     public void setProperty(String k, Object v) {
 	if (getProperty(k) != null) put(k, v);
     }
 
+    /**
+     * @param k the key of the property
+     * @param v the value of the property
+     */
     public void setProperty(String k, int v) {
 	if (getProperty(k) != null) put(k, new Integer(v));
     }
 
+    /**
+     * @param k the key of the property
+     * @param v the value of the property
+     */
     public void setProperty(String k, boolean v) {
 	if (getProperty(k) != null) put(k, new Boolean(v));
     }
 
+    /**
+     * @param k the key of the property
+     * @param v the value of the property
+     * @return true if a new property is created, false if it existed
+     */
     public boolean define(String k, Object v) {
 	if (getProperty(k) == null) return put(k, v);
 	return false;
     }
 
+    /**
+     * @param key the key of the property
+     * @return always true
+     */
     public boolean canPut(String key) { return true; }
+    
+    /**
+     * @param cat the category
+     * @return the key in this category
+     */
     public Enumeration keysIn(String cat) {
-	if (cat.equals("Model")) return _props.keys();
+	if (cat.equals("Model")) return props.keys();
 	else return EnumerationEmpty.theInstance();
     }
 
-    /** Set the value of a property iff it is not already set. */
+    /** 
+     * Set the value of a property iff it is not already set.
+     * 
+     * @param k the key of the property
+     * @param v the value of the property
+     */
     public void define(String k, boolean v) {
 	if (getProperty(k) == null) put(k, v);
     }
 
-    /** Set the value of a property iff it is not already set. */
+    /** 
+     * Set the value of a property iff it is not already set.
+     * 
+     * @param k the key of the property
+     * @param v the value of the property
+     */
     public void define(String k, int v) {
 	if (getProperty(k) == null) put(k, v);
     }
 
-    /** Make the given property undefined. */
-    public Object removeProperty(String k) { return _props.remove(k); }
+    /** 
+     * Make the given property undefined.
+     * 
+     * @param k the key of the property
+     * @return the value to which the key had been mapped in this hashtable,
+     *         or <code>null</code> if the key did not have a mapping
+     */
+    public Object removeProperty(String k) { return props.remove(k); }
 
-    /** Convenient function for getting the value of boolean
-     * properties. */
+    /** 
+     * Convenient function for getting the value of boolean
+     * properties. 
+     * 
+     * @param k the key of the property
+     * @return the value of the property 
+     */
     public boolean getBoolean(String k) {
 	return getProperty(k, "false").equals("true");
     }
@@ -249,17 +366,25 @@ public abstract class DesignMaterial extends Observable implements Highlightable
     ////////////////////////////////////////////////////////////////
     // critiquing
 
-    /** Critique this DesignMaterial and post ToDoItem's to the
-     * Designer's list. By default this is done by asking Agency. */
+    /** 
+     * Critique this DesignMaterial and post ToDoItem's to the
+     * Designer's list. By default this is done by asking Agency.
+     * 
+     * @param dsgr the designer
+     */
     public void critique(Designer dsgr) { Agency.applyAllCritics(this, dsgr); }
 
-    /** Remove all the ToDoItem's generated by this DesignMaterial from
+    /** 
+     * Remove all the ToDoItem's generated by this DesignMaterial from
      * the ToDoList of the given Designer. For example, this could be
      * called when the DesignMaterial is deleted from the design
-     * document. */
+     * document.
+     * 
+     * @param dsgr the designer
+     */
     public void removePendingItems(Designer dsgr) {
-	dsgr.removeToDoItems(_pendingItems);
-	_pendingItems.removeAllElements();
+	dsgr.removeToDoItems(pendingItems);
+	pendingItems.removeAllElements();
     }
 
     /** Remove this DesignMaterial from the design document and free up
@@ -276,52 +401,79 @@ public abstract class DesignMaterial extends Observable implements Highlightable
     ////////////////////////////////////////////////////////////////
     // user interface
 
-    /** When a critic produces a ToDoItem, both the Designer and the
+    /** 
+     * When a critic produces a ToDoItem, both the Designer and the
      * "offending" DesignMaterial's are notified. By default the
      * ToDoItem is added to the list of generated ToDoItem's. Subclasses
      * may, for example, visually change their appearance to indicate
      * the presence of an error. One paper called this 'clarifiers'. <p>
      *
-     * TODO: do I need a Clarifier object in the framework? */
-    public void inform(ToDoItem item) { _pendingItems.addElement(item); }
+     * TODO: do I need a Clarifier object in the framework? 
+     * 
+     * @param item the todo item
+     */
+    public void inform(ToDoItem item) { pendingItems.addElement(item); }
 
-    /** Draw the Designer's attention to this DesignMaterial in all
-     * views. */
+    /** 
+     * Draw the Designer's attention to this DesignMaterial in all
+     * views. 
+     * 
+     * @see org.tigris.gef.ui.Highlightable#setHighlight(boolean)
+     */
     public void setHighlight(boolean h) {
-	_highlight = h;
+	highlight = h;
 	setChanged();
 	notifyObservers("HIGHLIGHT");    
     }
-    public boolean getHighlight() { return _highlight; }
+    
+    /**
+     * @see org.tigris.gef.ui.Highlightable#getHighlight()
+     */
+    public boolean getHighlight() { return highlight; }
 
 
     ////////////////////////////////////////////////////////////////
     // notifications and updates
 
+    /**
+     * @param key the key of the property
+     */
     public void changedProperty(String key) {
 	setChanged();
 	notifyObservers(key);
     }
 
+    /**
+     * @param o the observer to be added
+     */
     public void addPersistantObserver(Observer o) {
-	if (_persistObservers == null) _persistObservers = new Vector();
-	_persistObservers.removeElement(o);
-	_persistObservers.addElement(o);
+	if (persistObservers == null) persistObservers = new Vector();
+	persistObservers.removeElement(o);
+	persistObservers.addElement(o);
     }
 
+    /**
+     * @param o the observer to be removed
+     */
     public void removePersistObserver(Observer o) {
-	_persistObservers.removeElement(o);
+	persistObservers.removeElement(o);
     }
 
+    /**
+     * @param arg the argument
+     */
     public void notifyPersistantObservers(Object arg) {
-	if (_persistObservers == null) return;
-	Enumeration eachObs = _persistObservers.elements();
+	if (persistObservers == null) return;
+	Enumeration eachObs = persistObservers.elements();
 	while (eachObs.hasMoreElements()) {
 	    Observer obs = (Observer) eachObs.nextElement();
 	    obs.update(this, arg);
 	}
     }
 
+    /**
+     * @see java.util.Observable#notifyObservers(java.lang.Object)
+     */
     public void notifyObservers(Object arg) {
 	super.notifyObservers(arg);
 	notifyPersistantObservers(arg);
@@ -331,21 +483,32 @@ public abstract class DesignMaterial extends Observable implements Highlightable
     ////////////////////////////////////////////////////////////////
     // property change events
   
+    /**
+     * @see org.tigris.gef.ui.Highlightable#addPropertyChangeListener(java.beans.PropertyChangeListener)
+     */
     public synchronized 
     void addPropertyChangeListener(PropertyChangeListener listener)
     {
-	if (_propertyListeners == null) _propertyListeners = new Vector();
-	_propertyListeners.removeElement(listener);
-	_propertyListeners.addElement(listener);
+	if (propertyListeners == null) propertyListeners = new Vector();
+	propertyListeners.removeElement(listener);
+	propertyListeners.addElement(listener);
     }
 
+    /**
+     * @see org.tigris.gef.ui.Highlightable#removePropertyChangeListener(java.beans.PropertyChangeListener)
+     */
     public synchronized 
     void removePropertyChangeListener(PropertyChangeListener listener)
     {
-	if (_propertyListeners == null) return;
-	_propertyListeners.removeElement(listener);
+	if (propertyListeners == null) return;
+	propertyListeners.removeElement(listener);
     }
 
+    /**
+     * @param propertyName the key of the property
+     * @param oldValue the old value of the property
+     * @param newValue the new value of the property
+     */
     public void firePropertyChange(String propertyName, 
 				   boolean oldValue, boolean newValue) {
 	firePropertyChange(propertyName,
@@ -353,6 +516,11 @@ public abstract class DesignMaterial extends Observable implements Highlightable
 			   new Boolean(newValue));
     }
 
+    /**
+     * @param propertyName the key of the property
+     * @param oldValue the old value of the property
+     * @param newValue the new value of the property
+     */
     public void firePropertyChange(String propertyName, 
 				   int oldValue, int newValue) {
 	firePropertyChange(propertyName,
@@ -360,17 +528,20 @@ public abstract class DesignMaterial extends Observable implements Highlightable
 			   new Integer(newValue));
     }
 
-
-
+    /**
+     * @param propertyName the key of the property
+     * @param oldValue the old value of the property
+     * @param newValue the new value of the property
+     */
     public void firePropertyChange(String propertyName, 
 				   Object oldValue, Object newValue) {
-	if (_propertyListeners == null) return;
+	if (propertyListeners == null) return;
 	if (oldValue != null && oldValue.equals(newValue)) return;
 	PropertyChangeEvent evt =
 	    new PropertyChangeEvent(this, propertyName, oldValue, newValue);
-	for (int i = 0; i < _propertyListeners.size(); i++) {
+	for (int i = 0; i < propertyListeners.size(); i++) {
 	    PropertyChangeListener target = 
-		(PropertyChangeListener) _propertyListeners.elementAt(i);
+		(PropertyChangeListener) propertyListeners.elementAt(i);
 	    target.propertyChange(evt);
 	}    
     }
