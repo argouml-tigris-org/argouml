@@ -400,7 +400,7 @@ implements Serializable, TreeModel, Cloneable {
     return _registeredPerspectives;
   }
 
-  public static void registerRule(TreeModel rule) {
+  public static void registerRule(AbstractGoRule rule) {
     _rules.addElement(rule);
   }
 

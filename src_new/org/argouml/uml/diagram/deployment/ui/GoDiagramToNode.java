@@ -36,9 +36,9 @@ import org.tigris.gef.graph.*;
 
 import org.argouml.ui.*;
 
-public class GoDiagramToNode implements TreeModel {
+public class GoDiagramToNode extends AbstractGoRule {
 
-  public String toString() { return "Diagram->Node"; }
+  public String getRuleName() { return "Diagram->Node"; }
 
   public Object getRoot() {
       throw
@@ -60,6 +60,11 @@ public class GoDiagramToNode implements TreeModel {
     }
     return 0;
   }
+
+  public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
+  }  
 
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof Diagram) {

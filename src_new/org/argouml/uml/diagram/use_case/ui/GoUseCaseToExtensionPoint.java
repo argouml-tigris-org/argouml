@@ -54,7 +54,7 @@ import org.argouml.uml.MMUtil;
  * @author  16 Apr 2002. Jeremy Bennett (mail@jeremybennett.com).
  */
 
-public class GoUseCaseToExtensionPoint implements TreeModel {
+public class GoUseCaseToExtensionPoint extends AbstractGoRule {
     protected static Category cat = Category.getInstance(GoUseCaseToExtensionPoint.class);
 
 
@@ -65,7 +65,7 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
      *          Point</code>"). 
      */
 
-    public String toString() {
+    public String getRuleName() {
         return Argo.localize ("Tree", "Use Case->Extension Point");
     }
   
@@ -202,6 +202,12 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
 
         return -1;
     }
+
+    public Collection getChildren(Object parent) { 
+      throw
+          new UnsupportedOperationException("getChildren should not be called");
+    }
+
 
 
     /**
