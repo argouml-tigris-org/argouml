@@ -814,7 +814,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
         // assumed to be actors or use cases. Note that at present we do permit
         // an association between pairs of use cases.
 
-        if (edgeClass == MAssociationImpl.class) {
+        if (edgeClass == MAssociation.class) {
             MClassifier fromCls = (MClassifier)fromPort;
             MClassifier toCls   = (MClassifier)toPort;
 
@@ -827,7 +827,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
         // Generalizations, but only between two actors or two use cases
 
-        else if ((edgeClass == MGeneralizationImpl.class) &&
+        else if ((edgeClass == MGeneralization.class) &&
                  (((fromPort instanceof MActor) &&
                    (toPort instanceof MActor)) ||
                   ((fromPort instanceof MUseCase) && 
@@ -846,7 +846,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
         // Extend, but only between two use cases. Remember we draw from the
         // extension port to the base port.
 
-        else if ((edgeClass == MExtendImpl.class) &&
+        else if ((edgeClass == MExtend.class) &&
                  ((fromPort instanceof MUseCase) && 
                   (toPort instanceof MUseCase))) {
 
@@ -862,7 +862,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
 
         // Include, but only between two use cases
 
-        else if ((edgeClass == MIncludeImpl.class) &&
+        else if ((edgeClass == MInclude.class) &&
                  ((fromPort instanceof MUseCase) && 
                   (toPort instanceof MUseCase))) {
 
@@ -880,7 +880,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
         // because they were used in the past for include and extend
         // relationships (now fixed).
 
-        else if ((edgeClass == MDependencyImpl.class) &&
+        else if ((edgeClass == MDependency.class) &&
                  ((fromPort instanceof MUseCase) &&
                   (toPort instanceof MUseCase))) {
 

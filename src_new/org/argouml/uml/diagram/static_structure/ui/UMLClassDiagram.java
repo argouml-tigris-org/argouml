@@ -67,28 +67,28 @@ public class UMLClassDiagram extends UMLDiagram {
 
 	protected static Action _actionDepend =
 		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MDependencyImpl.class,
+					   "edgeClass", MDependency.class,
 					   "Dependency");
 
 	protected static Action _actionAssoc =
 		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MAssociationImpl.class,
+					   "edgeClass", MAssociation.class,
 					   "Association");
 
 	protected static Action _actionLink =
 		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MLinkImpl.class,
+					   "edgeClass", MLink.class,
 					   "Link");
 
 	protected static Action _actionGeneralize =
 		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MGeneralizationImpl.class,
+					   "edgeClass", MGeneralization.class,
 					   "Generalization");
 
   
 	protected static Action _actionRealize =
 		new CmdSetMode(ModeCreatePolyEdge.class,
-					   "edgeClass", MAbstractionImpl.class,
+					   "edgeClass", MAbstraction.class,
 					   "Realization");
    
 	protected static Action _actionPackage =

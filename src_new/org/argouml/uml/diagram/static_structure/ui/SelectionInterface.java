@@ -191,7 +191,7 @@ public class SelectionInterface extends SelectionWButtons {
 	
   public Object addRealization(MutableGraphModel mgm, MInterface cls,
 			    MClass newCls) {
-    return mgm.connect(newCls, cls, MAbstractionImpl.class);
+    return mgm.connect(newCls, cls, MAbstraction.class);
   }
 	
 } /* end class SelectionInterface */

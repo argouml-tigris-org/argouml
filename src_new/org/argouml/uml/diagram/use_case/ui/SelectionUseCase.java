@@ -255,22 +255,22 @@ public class SelectionUseCase extends SelectionWButtons {
 
   public Object addSuperClass(MutableGraphModel mgm, MUseCase cls,
 			    MClassifier newCls) {
-    return mgm.connect(cls, newCls, MGeneralizationImpl.class);
+    return mgm.connect(cls, newCls, MGeneralization.class);
   }
 
   public Object addSubClass(MutableGraphModel mgm, MUseCase cls,
 			    MClassifier newCls) {
-    return mgm.connect(newCls, cls, MGeneralizationImpl.class);
+    return mgm.connect(newCls, cls, MGeneralization.class);
   }
 
   public Object addAssocClassLeft(MutableGraphModel mgm, MUseCase cls,
 			    MClassifier newCls) {
-    return mgm.connect(cls, newCls, MAssociationImpl.class);
+    return mgm.connect(cls, newCls, MAssociation.class);
   }
 
   public Object addAssocClassRight(MutableGraphModel mgm, MUseCase cls,
 			    MClassifier newCls) {
-    return mgm.connect(cls, newCls, MAssociationImpl.class);
+    return mgm.connect(cls, newCls, MAssociation.class);
   }
 
 

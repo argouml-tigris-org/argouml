@@ -234,21 +234,21 @@ public class SelectionNodeInstance extends SelectionWButtons {
 
   public Object addCompClassAbove(MutableGraphModel mgm, MNodeInstance cls,
 			    MNodeInstance newCls) {
-    return mgm.connect(cls, newCls, MLinkImpl.class);
+    return mgm.connect(cls, newCls, MLink.class);
   }
 
   public Object addCompClassBelow(MutableGraphModel mgm, MNodeInstance cls,
 			    MNodeInstance newCls) {
-    return mgm.connect(newCls, cls, MLinkImpl.class);
+    return mgm.connect(newCls, cls, MLink.class);
   }
   public Object addCompClassRight(MutableGraphModel mgm, MNodeInstance cls,
 			    MNodeInstance newCls) {
-    return mgm.connect(cls, newCls, MLinkImpl.class);
+    return mgm.connect(cls, newCls, MLink.class);
   }
 
   public Object addCompClassLeft(MutableGraphModel mgm, MNodeInstance cls,
 			    MNodeInstance newCls) {
-    return mgm.connect(newCls, cls, MLinkImpl.class);
+    return mgm.connect(newCls, cls, MLink.class);
   }
 
 

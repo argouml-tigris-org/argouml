@@ -31,10 +31,12 @@ package org.argouml.uml.diagram.state.ui;
 import java.util.*;
 import java.beans.*;
 
+import org.argouml.ui.CmdCreateNode;
+
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
-import org.tigris.gef.base.*;
+
 
 /**  */
 
@@ -47,7 +49,7 @@ public class ActionCreatePseudostate extends CmdCreateNode {
    *  and its FigNode. */
   public ActionCreatePseudostate(MPseudostateKind kind, String name) {
     super(new Hashtable(), name);
-    setArg("className", MPseudostateImpl.class);
+    setArg("className", MPseudostate.class);
 	//??? don't know, Toby, nsuml
     setArg("kind", kind);
   }

@@ -269,7 +269,7 @@ public class SelectionSeqObject extends SelectionWButtons  {
     Mode mode = (Mode)modeManager.top();
     mode.setArg("action", ru.novosoft.uml.behavior.common_behavior.MCallActionImpl.class);
 
-    return mgm.connect(cls, newCls, MLinkImpl.class);
+    return mgm.connect(cls, newCls, MLink.class);
   }
 
   public Object addLinkStimulusReturn(MutableGraphModel mgm, MObject cls,
@@ -278,7 +278,7 @@ public class SelectionSeqObject extends SelectionWButtons  {
     ModeManager modeManager = ce.getModeManager();
     Mode mode = (Mode)modeManager.top();
     mode.setArg("action", ru.novosoft.uml.behavior.common_behavior.MReturnActionImpl.class);
-    return mgm.connect(cls, newCls, MLinkImpl.class);
+    return mgm.connect(cls, newCls, MLink.class);
   }
 
   ////////////////////////////////////////////////////////////////
