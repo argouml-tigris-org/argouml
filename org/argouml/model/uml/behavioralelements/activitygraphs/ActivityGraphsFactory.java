@@ -27,7 +27,6 @@ import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 
 import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.behavior.activity_graphs.MCallState;
 import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
@@ -70,8 +69,8 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML ActionState instance.
      */
-    public MActionState createActionState() {
-        MActionState modelElement = MFactory.getDefaultFactory().createActionState();
+    public Object createActionState() {
+        Object modelElement = MFactory.getDefaultFactory().createActionState();
 	super.initialize(modelElement);
 	return modelElement;
     }
@@ -157,7 +156,7 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
     		throw new IllegalArgumentException("In buildActivityGraph: context null or not legal");
     }
     
-    public void deleteActionState(MActionState elem) {}
+    public void deleteActionState(Object elem) {}
     
     public void deleteActivityGraph(MActivityGraph elem) {}
     

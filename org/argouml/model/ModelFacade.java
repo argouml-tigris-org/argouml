@@ -39,6 +39,7 @@ import org.tigris.gef.base.Diagram;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
@@ -162,6 +163,7 @@ public class ModelFacade {
     // Invisible model elements
     public static final Object ACTION             = MAction.class;
     public static final Object ACTION_EXPRESSION  = MActionExpression.class;
+    public static final Object ACTION_STATE       = MActionState.class;
     public static final Object ASSOCIATION_END    = MAssociationEnd.class;
     public static final Object CALL_ACTION        = MCallAction.class;
     public static final Object NAMESPACE          = MNamespace.class;
@@ -208,6 +210,15 @@ public class ModelFacade {
      */
     public static boolean isAActionSequence(Object handle) {
         return handle instanceof MActionSequence;
+    }
+    
+    /**
+     * Recognizer for Action state
+     * @param handle
+     * @return
+     */
+    public static boolean isAActionState(Object handle) {
+        return handle instanceof MActionState;
     }
 
     /** Recognizer for Association.
