@@ -53,192 +53,300 @@ import org.tigris.gef.util.VectorSet;
  *  provide background knowledge of the domain. In the future
  *  ToDoItems will include ties back to the design rationale log.
  *  Also the run-time system needs to know who posted each ToDoItem so
- *  that it can automatically remove it if it is no longer valid. */
+ *  that it can automatically remove it if it is no longer valid. 
+ */
 public class ToDoItem implements Serializable {
 
     ////////////////////////////////////////////////////////////////
     // constants
+    /**
+     * the highest priority todoitem of 3 levels
+     */
     public static final int HIGH_PRIORITY = 1;
+    
+    /**
+     * the medium priority todoitem of 3 levels
+     */
     public static final int MED_PRIORITY = 2;
+    
+    /**
+     * the lowest priority todoitem of 3 levels
+     */
     public static final int LOW_PRIORITY = 3;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     /** Who posted this item (e.g., a Critic, or the designer)? */
-    private Poster _poster;
+    private Poster thePoster;
 
     /** One line description of issue.
      */
-    private String _headline;
+    private String theHeadline;
 
     /** How important is this issue? Enough to interrupt the designer? */
-    private int _priority;
+    private int thePriority;
 
     /** One paragraph description of the issue. */
-    private String _description;
+    private String theDescription;
 
     /** URL for background (textbook?) knowledge about the domain. */
-    private String _moreInfoURL;
+    private String theMoreInfoURL;
 
     /** Which part of the design this issue affects
      *
      * This is set by the constructor and cannot change.
      */
-    private VectorSet _offenders;
+    private VectorSet theOffenders;
 
-    private Icon _clarifier = null;
+    private Icon theClarifier = null;
 
-    private Wizard _wizard = null;
+    private Wizard theWizard = null;
 
     ////////////////////////////////////////////////////////////////
     // constructors
+    /**
+     * The constructor.
+     * 
+     * @param poster the poster
+     * @param h the headline
+     * @param p the priority
+     * @param d the description
+     * @param m the more info url
+     * @param offs the offenders
+     */
     public ToDoItem(Poster poster, String h, int p, String d, String m, 
 		    VectorSet offs) 
     {
-	_poster = poster;
-	_headline = h;
-	_offenders = offs;
-	_priority = p;
-	_description = d;
-	_moreInfoURL = m;
+	thePoster = poster;
+	theHeadline = h;
+	theOffenders = offs;
+	thePriority = p;
+	theDescription = d;
+	theMoreInfoURL = m;
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param poster the poster
+     * @param h the headline
+     * @param p the priority
+     * @param d the description
+     * @param m the more info url
+     */
     public ToDoItem(Poster poster, String h, int p, String d, String m) {
-	_poster = poster;
-	_headline = h;
-	_offenders = new VectorSet();
-	_priority = p;
-	_description = d;
-	_moreInfoURL = m;
+	thePoster = poster;
+	theHeadline = h;
+	theOffenders = new VectorSet();
+	thePriority = p;
+	theDescription = d;
+	theMoreInfoURL = m;
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param c the poster (critic)
+     * @param dm the offenders
+     * @param dsgr the designer
+     */
     public ToDoItem(Critic c, Object dm, Designer dsgr) {
-	_poster = c;
-	_headline = c.getHeadline(dm, dsgr);
-	_offenders = new VectorSet(dm);
-	_priority = c.getPriority(_offenders, dsgr);
-	_description = c.getDescription(_offenders, dsgr);
-	_moreInfoURL = c.getMoreInfoURL(_offenders, dsgr);
-	_wizard = c.makeWizard(this);
+	thePoster = c;
+	theHeadline = c.getHeadline(dm, dsgr);
+	theOffenders = new VectorSet(dm);
+	thePriority = c.getPriority(theOffenders, dsgr);
+	theDescription = c.getDescription(theOffenders, dsgr);
+	theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
+	theWizard = c.makeWizard(this);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param c the poster (critic)
+     * @param offs the offenders
+     * @param dsgr the designer
+     */
     public ToDoItem(Critic c, VectorSet offs, Designer dsgr) {
-	_poster = c;
-	_headline = c.getHeadline(offs, dsgr);
-	_offenders = offs;
-	_priority = c.getPriority(_offenders, dsgr);
-	_description = c.getDescription(_offenders, dsgr);
-	_moreInfoURL = c.getMoreInfoURL(_offenders, dsgr);
-	_wizard = c.makeWizard(this);
+	thePoster = c;
+	theHeadline = c.getHeadline(offs, dsgr);
+	theOffenders = offs;
+	thePriority = c.getPriority(theOffenders, dsgr);
+	theDescription = c.getDescription(theOffenders, dsgr);
+	theMoreInfoURL = c.getMoreInfoURL(theOffenders, dsgr);
+	theWizard = c.makeWizard(this);
     }
 
 
 
+    /**
+     * The constructor.
+     * 
+     * @param c the poster (critic)
+     */
     public ToDoItem(Critic c) {
-	_poster = c;
-	_headline = c.getHeadline();
-	_offenders = new VectorSet();
-	_priority = c.getPriority(null, null);
-	_description = c.getDescription(null, null);
-	_moreInfoURL = c.getMoreInfoURL(null, null);
-	_wizard = c.makeWizard(this);
+	thePoster = c;
+	theHeadline = c.getHeadline();
+	theOffenders = new VectorSet();
+	thePriority = c.getPriority(null, null);
+	theDescription = c.getDescription(null, null);
+	theMoreInfoURL = c.getMoreInfoURL(null, null);
+	theWizard = c.makeWizard(this);
     }
 
 
     // Cached expansions
-    private String _cachedExpandedHeadline = null;
-    private String _cachedExpandedDescription = null;
+    private String cachedExpandedHeadline = null;
+    private String cachedExpandedDescription = null;
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @return the headline
+     */
     public String getHeadline() {
-	if (_cachedExpandedHeadline == null) {
-	    _cachedExpandedHeadline = _poster.expand(_headline, _offenders);
+	if (cachedExpandedHeadline == null) {
+	    cachedExpandedHeadline = 
+	        thePoster.expand(theHeadline, theOffenders);
 	}
-	return _cachedExpandedHeadline;
+	return cachedExpandedHeadline;
     }
 
+    /**
+     * @param h the headline 
+     */
     public void setHeadline(String h) { 
-	_headline = h; 
-	_cachedExpandedHeadline = null;
+	theHeadline = h; 
+	cachedExpandedHeadline = null;
     }
 
+    /**
+     * @return the description
+     */
     public String getDescription() {
-	if (_cachedExpandedDescription == null) {
-	    _cachedExpandedDescription = 
-		_poster.expand(_description, _offenders);
+	if (cachedExpandedDescription == null) {
+	    cachedExpandedDescription = 
+		thePoster.expand(theDescription, theOffenders);
 	}
-	return _cachedExpandedDescription;
+	return cachedExpandedDescription;
     }
   
+    /**
+     * @param d the description
+     */
     public void setDescription(String d) {
-	_description = d;
-	_cachedExpandedDescription = null;
+	theDescription = d;
+	cachedExpandedDescription = null;
     }
 
-    public String getMoreInfoURL() { return _moreInfoURL; }
+    /**
+     * @return the more-info-url
+     */
+    public String getMoreInfoURL() { return theMoreInfoURL; }
   
-    public void setMoreInfoURL(String m) { _moreInfoURL = m; }
+    /**
+     * @param m the more-info-url
+     */
+    public void setMoreInfoURL(String m) { theMoreInfoURL = m; }
 
-    public int getPriority() { return _priority; }
+    /**
+     * @return the priority
+     */
+    public int getPriority() { return thePriority; }
 
-    public void setPriority(int p) { _priority = p; }
+    /**
+     * @param p the priority
+     */
+    public void setPriority(int p) { thePriority = p; }
 
+    /**
+     * @return the wizard progress. An integer between 0 and 100, 
+     *         shows percent done.
+     */
     public int getProgress() {
-	if (_wizard != null) return _wizard.getProgress();
+	if (theWizard != null) return theWizard.getProgress();
 	return 0;
     }
 
-    //   public void setProgress(int p) { 
-    //     if (_wizard != null) return _wizard.setProgress(p);
-    //   }
-  
-    /** Reply a Set of design material's that are the subject of this
-     * ToDoItem. */
-    public VectorSet getOffenders() { return _offenders; }
+    /** 
+     * Reply a Set of design material's that are the subject of this ToDoItem.
+     * 
+     * @return the offenders
+     */
+    public VectorSet getOffenders() { return theOffenders; }
     
-    /** Set the designmatial that is subject of this ToDoItem */
+    /** 
+     * Set the designmatial that is subject of this ToDoItem
+     * 
+     * @param offenders the offenders
+     */
     public void setOffenders(VectorSet offenders) {
-        _offenders = offenders;
+        theOffenders = offenders;
     }
 
-    /** Reply the Critic or Designer that posted this ToDoItem. */
-    public Poster getPoster() { return _poster; }
+    /** 
+     * Reply the Critic or Designer that posted this ToDoItem.
+     * 
+     * @return the poster
+     */
+    public Poster getPoster() { return thePoster; }
 
-    /** Find the email address of the poster. */
-    public String getExpertEmail() { return _poster.getExpertEmail(); }
+    /** 
+     * Find the email address of the poster.
+     * 
+     * @return the email address
+     */
+    public String getExpertEmail() { return thePoster.getExpertEmail(); }
 
-    /** Return a clarifier object that can graphical highlight this
-     *  error in a design diagram. Return a clarifier for this todoitem, if not found
-     *  by the poster, or null.
+    /** 
+     * Return a clarifier object that can graphical highlight this
+     * error in a design diagram. Return a clarifier for this todoitem, 
+     * if not found by the poster, or null.
      *
      * @return an Icon or null if none found.
      */
     public Icon getClarifier() {
-	if (_clarifier != null) return _clarifier;
-	Icon posterClarifier = _poster.getClarifier();
+	if (theClarifier != null) return theClarifier;
+	Icon posterClarifier = thePoster.getClarifier();
 	if (posterClarifier != null) return posterClarifier;
 	return null;
     }
 
-    public Wizard getWizard() { return _wizard; }
+    /**
+     * @return the wizard
+     */
+    public Wizard getWizard() { return theWizard; }
 
+    /**
+     * @param type the knowledgetype
+     * @return true if the poster contains the given knowledgetype
+     */
     public boolean containsKnowledgeType(String type) {
 	return getPoster().containsKnowledgeType(type);
     }
 
+    /**
+     * @param d the decision
+     * @return true if the decision is supported by the poster
+     */
     public boolean supports(Decision d) {
 	return getPoster().supports(d);
     }
 
+    /**
+     * @param g the given goal
+     * @return true if the poster supports the given goal
+     */
     public boolean supports(Goal g) {
 	return getPoster().supports(g);
     }
   
     /**
      * Is this item a copy?
+     *
+     * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
 	if (!(o instanceof ToDoItem)) return false;
@@ -297,11 +405,15 @@ public class ToDoItem implements Serializable {
 
     /** Some problems can be automatically fixed, ask the Critic to do
      *  it if it can. <p> */
-    public void fixIt() { _poster.fixIt(this, null); }
+    public void fixIt() { thePoster.fixIt(this, null); }
 
-    /** Some problems can be automatically fixed, ask the Critic to do
-     *  it if it can. <p> */
-    public boolean canFixIt() { return _poster.canFixIt(this); }
+    /** 
+     * Some problems can be automatically fixed, ask the Critic to do
+     * it if it can. 
+     * 
+     * @return true if the critic can automatically fix the problem
+     */
+    public boolean canFixIt() { return thePoster.canFixIt(this); }
 
     /** TODO: this is not done yet. Eventually this will also
      *  feed the rational log. */
@@ -310,18 +422,28 @@ public class ToDoItem implements Serializable {
     //     list.resolve(this, reason);
     //   }
 
-    /** Reply true iff this ToDoItem should be kept on the Designer's
-     *  ToDoList. This should return false if the poster has been
-     *  deactivated, or if it can be determined that the problem that
-     *  raised this issue is no longer present. */
+    /** 
+     * Reply true iff this ToDoItem should be kept on the Designer's
+     * ToDoList. This should return false if the poster has been
+     * deactivated, or if it can be determined that the problem that
+     * raised this issue is no longer present.
+     *  
+     * @param d the given designer
+     * @return true if the todoitem is still valid
+     */
     public boolean stillValid(Designer d) {
-	if (_poster == null) return true;
-	if (_wizard != null && _wizard.isStarted() && !_wizard.isFinished())
+	if (thePoster == null) return true;
+	if (theWizard != null && theWizard.isStarted() 
+	        && !theWizard.isFinished())
 	    return true;
-	return _poster.stillValid(this, d);
+	return thePoster.stillValid(this, d);
     }
 
-    /** Reply a string for debugging. */
+    /** 
+     * Reply a string for debugging.
+     * 
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
 	return this.getClass().getName() 
 	    + "(" + getHeadline() + ") on " + getOffenders().toString();
