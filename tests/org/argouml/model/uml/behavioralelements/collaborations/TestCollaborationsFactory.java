@@ -151,6 +151,7 @@ public class TestCollaborationsFactory extends TestCase {
         role = null;
         inter = null;
         mes = null;
+        System.gc();
         assertNull("ClassifierRole not removed", cr1wr.get());
         assertNull("AssociationRole not removed", rolewr.get());
         assertNull("Interaction not removed", interwr.get());
