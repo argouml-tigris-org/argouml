@@ -1220,11 +1220,11 @@ public class GeneratorPHP4
 
         sOutput += generateRequired(modelElement);
 
-        // TODO: find out, why udpated overwrites this section
         sOutput += "/* user defined includes */\n";
-        sOutput += "/* WARNING: don't use this section at the moment,\n"
-                + "            otherwise a bug will eat your changes :( */\n";
         sOutput += generateSection(modelElement, "", "includes") + "\n";
+
+        sOutput += "/* user defined constants */\n";
+        sOutput += generateSection(modelElement, "", "constants") + "\n";
 
         sOutput += generate(modelElement);
         sOutput += "\n\n?>";
@@ -1232,6 +1232,11 @@ public class GeneratorPHP4
         boolean bReturn = true;
         BufferedWriter bwOutput = null;
         try {
+            File ParentDir = new File(file.getParent());
+            if (!ParentDir.exists()) {
+                ParentDir.mkdirs();
+            }
+
             bwOutput = new BufferedWriter(new FileWriter(file));
             bwOutput.write(sOutput);
         } catch (IOException exp) {
