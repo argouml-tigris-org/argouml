@@ -510,6 +510,7 @@ public class FigClass extends FigNodeModelElement {
 	    f = (Fig)v.elementAt(i+1);
 		((CompartmentFigText)f).setHighlighted(true);
 		highlightedFigText = (CompartmentFigText)f;
+		ProjectBrowser.TheInstance.setTarget(f);
 	  }
 	}
     else if (f == _operVec && _operVec.getHeight() > 0) {
@@ -520,6 +521,7 @@ public class FigClass extends FigNodeModelElement {
 	    f = (Fig)v.elementAt(i+1);
 		((CompartmentFigText)f).setHighlighted(true);
 		highlightedFigText = (CompartmentFigText)f;
+		ProjectBrowser.TheInstance.setTarget(f);
 	  }
 	}
 	if (targetIsSet == false)
@@ -612,7 +614,7 @@ public class FigClass extends FigNodeModelElement {
 	  highlightedFigText = (CompartmentFigText)ft;
 	  highlightedFigText.setHighlighted(true);
 	  try {
-	    ParserDisplay.SINGLETON.parseAttributeFig(cls,(MAttribute)highlightedFigText.getFeature(),highlightedFigText.getText().trim());
+	    ParserDisplay.SINGLETON.parseAttributeFig(cls,(MAttribute)highlightedFigText.getOwner(),highlightedFigText.getText().trim());
 	    ProjectBrowser.TheInstance.getStatusBar().showStatus("");
 	  } catch (ParseException pe) {
 	    ProjectBrowser.TheInstance.getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
@@ -623,7 +625,7 @@ public class FigClass extends FigNodeModelElement {
 	if (i != -1) {
 	  highlightedFigText = (CompartmentFigText)ft;
 	  highlightedFigText.setHighlighted(true);
-	  ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)highlightedFigText.getFeature(),highlightedFigText.getText().trim());
+	  ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)highlightedFigText.getOwner(),highlightedFigText.getText().trim());
 	  return;
 	}
   }
@@ -740,7 +742,7 @@ public class FigClass extends FigNodeModelElement {
 		  attr = (CompartmentFigText)figs.elementAt(acounter);
 	    }
 	    attr.setText(Notation.generate(this,sf));
-	    attr.setFeature(sf);
+	    attr.setOwner(sf);
 	    // underline, if static
 	    attr.setUnderline(MScopeKind.CLASSIFIER.equals(sf.getOwnerScope()));
 	    acounter++;
@@ -773,7 +775,7 @@ public class FigClass extends FigNodeModelElement {
 		  oper = (CompartmentFigText)figs.elementAt(ocounter);
 	    }
 	    oper.setText(Notation.generate(this,bf));
-	    oper.setFeature(bf);
+	    oper.setOwner(bf);
 	    // underline, if static
 	    oper.setUnderline(MScopeKind.CLASSIFIER.equals(bf.getOwnerScope()));
 	    // italics, if abstract

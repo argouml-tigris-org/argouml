@@ -1111,7 +1111,7 @@ public class FigUseCase extends FigNodeModelElement {
         highlightedFigText.setHighlighted(true);
 
         MExtensionPoint ep   = 
-            (MExtensionPoint) (highlightedFigText.getModelElement());
+            (MExtensionPoint) (highlightedFigText.getOwner());
         String          text = highlightedFigText.getText().trim();
         
         ParserDisplay.SINGLETON.parseExtensionPointFig(useCase, ep, text);
@@ -1375,7 +1375,7 @@ public class FigUseCase extends FigNodeModelElement {
 		    epText = "";
 		}
                 epFig.setText(epText);
-                epFig.setModelElement(ep);
+                epFig.setOwner(ep);
 
                 epCount++;
             }
