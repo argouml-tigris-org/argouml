@@ -26,30 +26,39 @@ package org.argouml.uml.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JLabel;
+import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.toolbar.ToolBar;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -71,6 +80,7 @@ public class TabTaggedValues extends TabSpawnable
     private boolean shouldBeEnabled = false;
     private JTable table = new JTable(10, 2);
     private JLabel titleLabel;
+    private JToolBar buttonPanel;
 
     /**
      * The constructor.
@@ -78,18 +88,33 @@ public class TabTaggedValues extends TabSpawnable
      */
     public TabTaggedValues() {
         super("tab.tagged-values");
+        buttonPanel = new ToolBar();
+        buttonPanel.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
+        buttonPanel.setFloatable(false);
+        
+        JButton b = new JButton(); 
+        buttonPanel.add(b);
+        b.setToolTipText(Translator.localize("button.delete"));
+        b.setAction(new ActionRemoveTaggedValue(this));
+        
         tableModel = new TableModelTaggedValues(this);
         table.setModel(tableModel);
 
         table.setRowSelectionAllowed(false);
-        // _table.getSelectionModel().addListSelectionListener(this);
         JScrollPane sp = new JScrollPane(table);
         Font labelFont = LookAndFeelMgr.getInstance().getSmallFont();
         table.setFont(labelFont);
+        
         titleLabel = new JLabel("none");
         resizeColumns();
         setLayout(new BorderLayout());
-        add(titleLabel, BorderLayout.NORTH);
+        titleLabel.setLabelFor(buttonPanel);
+        
+        JPanel topPane = new JPanel(new BorderLayout());
+        topPane.add(titleLabel, BorderLayout.WEST);
+        topPane.add(buttonPanel, BorderLayout.CENTER);
+        
+        add(topPane, BorderLayout.NORTH);
         add(sp, BorderLayout.CENTER);
     }
 
@@ -207,6 +232,18 @@ public class TabTaggedValues extends TabSpawnable
 
     }
 
+    /**
+     * @return Returns the tableModel.
+     */
+    protected TableModelTaggedValues getTableModel() {
+        return tableModel;
+    }
+    /**
+     * @return Returns the table.
+     */
+    protected JTable getTable() {
+        return table;
+    }
 } /* end class TabTaggedValues */
 
 
@@ -359,3 +396,33 @@ class TableModelTaggedValues extends AbstractTableModel
     }
 
 } /* end class TableModelTaggedValues */
+
+
+class ActionRemoveTaggedValue extends AbstractAction {
+
+    private TabTaggedValues tab;
+    
+    /**
+     * The constructor.
+     */
+    public ActionRemoveTaggedValue(TabTaggedValues tabtv) {
+        super("", ResourceLoaderWrapper.lookupIconResource("Delete"));
+        tab = tabtv;
+    }
+    
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        TableModelTaggedValues model = tab.getTableModel();
+        JTable table = tab.getTable();
+        int row = table.getSelectedRow();
+        List c = new ArrayList(
+                ModelFacade.getTaggedValuesCollection(tab.getTarget()));
+        if ((row != -1) && (c.size() > row)) {
+            c.remove(row);
+            ModelFacade.setTaggedValues(tab.getTarget(), c);
+            model.fireTableChanged(new TableModelEvent(model));
+        }
+    }
+}
