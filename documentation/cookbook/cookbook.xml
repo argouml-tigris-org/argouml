@@ -134,7 +134,10 @@ How to convince your project to use ArgoUML as a modelling tool.
      <sect1 id="starting">
      <title>Getting started</title>
      <para>In order to develop with ArgoUML it is absolutely mandatory to get get the CVS version of ArgoUML. See the ArgoUML website for instructions for that.</para>
-     <para>It is also recommended that you check out GEF from <ulink url="http://gef.tigris.org">gef.tigris.org</ulink> because many things in Argo relate to GEF and it is quite handy to have the source code available. Especially since during development cycles new gef libraries to not as frequently get checked into the argouml modules, so it is useful to build the current version for yourself in order to avoid build errors.</para>
+     <para>
+<indexterm><primary>Libraries</primary><secondary>GEF</secondary></indexterm>
+<indexterm><primary>Libraries</primary><secondary>NSUML</secondary></indexterm>
+It is also recommended that you check out GEF from <ulink url="http://gef.tigris.org">gef.tigris.org</ulink> because many things in Argo relate to GEF and it is quite handy to have the source code available. Especially since during development cycles new gef libraries to not as frequently get checked into the argouml modules, so it is useful to build the current version for yourself in order to avoid build errors.</para>
      <para>If you want to - but that is really more of a gimmick - get yourself the source of the NSUML library to. But that is not strictly required.
  </para>
 
@@ -487,9 +490,13 @@ revert to the previous version of the tool.
  </sect1>
  <sect1 id="mailing_lists">
      <title>Mailing Lists</title>
+     <indexterm><primary>mailinglist</primary></indexterm>
+     <indexterm><primary>mailinglist</primary><secondary>developer</secondary></indexterm>
+     <indexterm><primary>mailinglist</primary><secondary>cvs</secondary></indexterm>
+     <indexterm><primary>mailinglist</primary><secondary>issues</secondary></indexterm>
      <para>All developers <emphasis>MUST</emphasis> subscribe to the mailinglist for developers. Please find the details at: <ulink url="http://argouml.tigris.org/servlets/ProjectMailingListList">http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>
      </para>
-     <para>It is also recommended to join the CVS and Issues mailinglist. Both have pretty low traffic, but it helps to see what is going on.
+     <para>It is also recommended to join the CVS and Issues mailinglists. Both have pretty low traffic, but it helps to see what is going on. Developers should also feel an obligation towards monitoring the Bug database.
      </para>
  </sect1>
 </chapter>
@@ -564,6 +571,8 @@ or a newly generated project (see Project.makeEmptyProject()).
     </sect1>
 
     <sect1 id="bigger_components">
+<indexterm><primary>libraries</primary></indexterm>
+<indexterm><primary>components</primary></indexterm>
     <title>The bigger picture, ArgoUML and supporting libraries</title>
     <para>
 <mediaobject>
@@ -880,6 +889,7 @@ F E D
 
 &cookbookmodules;
 &cookbooklogging;
+
 </chapter>
 
 <chapter id="cvs">
