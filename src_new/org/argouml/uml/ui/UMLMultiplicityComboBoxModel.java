@@ -28,8 +28,9 @@ package org.argouml.uml.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+//import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 
 /**
  * A model for multiplicities. This model is instantiated with a few default
@@ -42,11 +43,11 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
     private static List multiplicityList = new ArrayList();
     
     static {
-        multiplicityList.add(MMultiplicity.M0_N);
-        multiplicityList.add(MMultiplicity.M0_1);
-        multiplicityList.add(MMultiplicity.M1_1);
-        multiplicityList.add(MMultiplicity.M1_N);
-    }  
+        multiplicityList.add(ModelFacade.M0_N_MULTIPLICITY);
+        multiplicityList.add(ModelFacade.M0_1_MULTIPLICITY);
+        multiplicityList.add(ModelFacade.M1_1_MULTIPLICITY);
+        multiplicityList.add(ModelFacade.M1_N_MULTIPLICITY);
+    }
 
     /**
      * Constructor for UMLMultiplicityComboBoxModel.

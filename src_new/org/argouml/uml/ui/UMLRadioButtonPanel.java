@@ -38,13 +38,14 @@ import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.MBase;
+//import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
@@ -207,22 +208,18 @@ public abstract class UMLRadioButtonPanel
      */
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (org.argouml.model.ModelFacade.isABase(_target)) {
-            UmlModelEventPump.getPump().removeModelEventListener(
-								 this,
-								 (MBase) _target,
-								 _propertySetName);
+        UmlModelEventPump eventPump = UmlModelEventPump.getPump();
+        if (ModelFacade.isABase(_target)) {
+            eventPump.removeModelEventListener(this, _target, _propertySetName);
         }
         _target = target;
-        if (org.argouml.model.ModelFacade.isABase(_target)) {
+        if (ModelFacade.isABase(_target)) {
             // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
-            UmlModelEventPump.getPump().addModelEventListener(
-							      this,
-							      (MBase) _target,
-							      _propertySetName);
+            eventPump.addModelEventListener(this, _target, _propertySetName);
         }
-        if (_target != null)
+        if (_target != null) {
             buildModel();
+        }
     }
 
     /**

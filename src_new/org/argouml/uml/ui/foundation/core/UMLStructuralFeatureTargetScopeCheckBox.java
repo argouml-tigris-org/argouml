@@ -29,7 +29,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
+//import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
  * @author jaap.branderhorst@xs4all.nl
@@ -56,9 +56,8 @@ public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
     public void buildModel() {
         // repair action for possible NP after load
         if (ModelFacade.getTargetScope(getTarget()) == null) {
-            ModelFacade.setTargetScope(getTarget(), MScopeKind.INSTANCE);
+            ModelFacade.setTargetScope(getTarget(), ModelFacade.INSTANCE_SCOPEKIND);
         }
-        setSelected(ModelFacade.getTargetScope(getTarget()).equals(MScopeKind.CLASSIFIER));
+        setSelected(ModelFacade.getTargetScope(getTarget()).equals(ModelFacade.CLASSIFIER_SCOPEKIND));
     }
-
 }

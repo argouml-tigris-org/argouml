@@ -32,7 +32,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
-import ru.novosoft.uml.foundation.data_types.MOrderingKind;
+//import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 
 /**
  * 
@@ -61,7 +61,11 @@ public class ActionSetAssociationEndOrdering extends UMLChangeAction {
             Object target = source.getTarget();
             if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
                 Object m = /*(MAssociationEnd)*/ target;
-                ModelFacade.setOrdering(m, source.isSelected() ? MOrderingKind.ORDERED : MOrderingKind.UNORDERED);               
+                if (source.isSelected()) {
+                    ModelFacade.setOrdering(m, ModelFacade.ORDERED_ORDERINGKIND); 
+                } else {
+                    ModelFacade.setOrdering(m, ModelFacade.UNORDERED_ORDERINGKIND); 
+                }
             }
         }
     }

@@ -31,7 +31,7 @@ import java.util.Collection;
 import javax.swing.JPopupMenu;
 
 import org.argouml.model.uml.UmlFactory;
-import ru.novosoft.uml.foundation.core.MClassifier;
+//import ru.novosoft.uml.foundation.core.MClassifier;
 /**
  *   This class implements a list model for the attributes of a classifier.
  *   Used with a UMLList to display a list of attributes.  Since attributes
@@ -116,7 +116,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
     public void add(int index) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            Object/*MClassifier*/ classifier = (MClassifier) target;
+            Object/*MClassifier*/ classifier = target;
             Collection oldFeatures = ModelFacade.getFeatures(classifier);
             Object/*MAttribute*/ newAttr = UmlFactory.getFactory().getCore().buildAttribute(classifier);
             ModelFacade.setFeatures(classifier, addElement(oldFeatures, index, newAttr,
@@ -155,7 +155,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
     public void moveUp(int index) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            Object/*MClassifier*/ classifier = (MClassifier) target;
+            Object/*MClassifier*/ classifier = target;
             Collection oldFeatures = ModelFacade.getFeatures(classifier);
             ModelFacade.setFeatures(classifier, swap(oldFeatures, index - 1, _attributes.get(index - 1), _attributes.get(index)));
             fireContentsChanged(this, index - 1, index);
@@ -169,7 +169,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
     public void moveDown(int index) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
-            Object/*MClassifier*/ classifier = (MClassifier) target;
+            Object/*MClassifier*/ classifier = target;
             Collection oldFeatures = ModelFacade.getFeatures(classifier);
             ModelFacade.setFeatures(classifier, swap(oldFeatures, index, _attributes.get(index), _attributes.get(index + 1)));
             fireContentsChanged(this, index, index + 1);

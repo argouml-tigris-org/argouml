@@ -55,7 +55,7 @@ public class AssociationEndNameWellformednessRule
      * 
      * @see org.argouml.model.uml.AbstractWellformednessRule#isWellformed(MBase,Object)
      */
-    public boolean isWellformed(MBase element, Object newValue) {
+    public boolean isWellformed(Object/*MBase*/ element, Object newValue) {
 	if (element instanceof MAssociationEnd && newValue instanceof String) {
 	    MAssociationEnd modelelement = (MAssociationEnd) element;
 	    String name = (String) newValue;

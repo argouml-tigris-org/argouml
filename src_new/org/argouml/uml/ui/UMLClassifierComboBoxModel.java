@@ -44,9 +44,9 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.Profile;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.model_management.MModel;
+//import ru.novosoft.uml.behavior.common_behavior.MInstance;
+//import ru.novosoft.uml.foundation.core.MClassifier;
+//import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
@@ -91,7 +91,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	    getSet().add(new UMLComboBoxEntry(null, profile, false));
 	}
 	if (model != null) {
-	    collectElements((MModel)model, profile, false);
+	    collectElements(model, profile, false);
 	}
                  
 	if (addElementsFromProfileModel()) {
@@ -154,7 +154,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	    Object model = ModelFacade.getModel(event.getSource());
 	    if (ModelFacade.isAInstance(event.getSource()) ) {
 		
-		Object/*MInstance*/ instance = (MInstance) event.getSource();	    	    
+		Object/*MInstance*/ instance = event.getSource();	    	    
 		Collection col = ModelFacade.getClassifiers(instance);
 		if (col != null && col.size() > 0) {
 		    it  = col.iterator();		  
@@ -179,7 +179,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	    try {		
                 Object[] _noArgs = {};
                 Object current = getGetMethod().invoke(getContainer(), _noArgs);
-		makeSelection( model , (MClassifier) current);
+		makeSelection( model , current);
 		
 	    }
 	    catch (InvocationTargetException ex) {

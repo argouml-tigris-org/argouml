@@ -51,7 +51,7 @@ public abstract class AbstractWellformednessRule {
      * Checks if the combination of the element and the newValue give
      * a wellformed result
      */
-    public abstract boolean isWellformed(MBase element, Object newValue);
+    public abstract boolean isWellformed(Object/*MBase*/ element, Object newValue);
 	
     /**
      * Returns the localized user message

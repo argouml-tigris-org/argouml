@@ -25,6 +25,7 @@
 // $Id$
 package org.argouml.uml.ui;
 
+import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 
 /**
@@ -60,8 +61,8 @@ public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
         }
         catch (IllegalArgumentException e) {
             Object o = search(text);
-            if (o != null && org.argouml.model.ModelFacade.isAMultiplicity(o)) {
-                multi = (MMultiplicity) o;
+            if (o != null && ModelFacade.isAMultiplicity(o)) {
+                multi = o;
             }
         }
         if (multi != null) {

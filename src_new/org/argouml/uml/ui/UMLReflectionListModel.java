@@ -31,6 +31,7 @@ import java.util.Iterator;
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.targetmanager.TargetManager;
 
@@ -147,15 +148,15 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                         Iterator iter = ((Collection) collection).iterator();
                         for (int i = 0; iter.hasNext(); i++) {
                             obj = iter.next();
-                            if (i == index && org.argouml.model.ModelFacade.isAModelElement(obj)) {
-                                element = (MModelElement) obj;
+                            if (i == index && ModelFacade.isAModelElement(obj)) {
+                                element = obj;
                                 break;
                             }
                         }
                     }
                     else {
-                        if (index == 0 && org.argouml.model.ModelFacade.isAModelElement(collection)) {
-                            element = (MModelElement) collection;
+                        if (index == 0 && ModelFacade.isAModelElement(collection)) {
+                            element = collection;
                         }
                     }
                 }

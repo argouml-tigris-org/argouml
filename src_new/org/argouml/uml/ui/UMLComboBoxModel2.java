@@ -41,7 +41,7 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.MBase;
+//import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
@@ -315,20 +315,15 @@ public abstract class UMLComboBoxModel2
     protected void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
-            if (org.argouml.model.ModelFacade.isABase(_target)) {
-                UmlModelEventPump.getPump().removeModelEventListener(
-								     this,
-								     (MBase) _target,
-								     _propertySetName);
+            UmlModelEventPump eventPump = UmlModelEventPump.getPump();
+            if (ModelFacade.isABase(_target)) {
+                eventPump.removeModelEventListener(this, _target, _propertySetName);
             }
 
-            if (org.argouml.model.ModelFacade.isABase(target)) {
+            if (ModelFacade.isABase(target)) {
                 _target = target;
                 // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
-                UmlModelEventPump.getPump().addModelEventListener(
-								  this,
-								  (MBase) _target,
-								  _propertySetName);
+                eventPump.addModelEventListener(this, _target, _propertySetName);
             } else {
                 _target = null;
             }
@@ -453,7 +448,7 @@ public abstract class UMLComboBoxModel2
     protected boolean isValidEvent(MElementEvent e) {
         boolean valid = false;
         if (!(getChangedElement(e) instanceof Collection)) {
-            valid = isValidElement((MBase) getChangedElement(e));
+            valid = isValidElement(getChangedElement(e));
             if (!valid && e.getNewValue() == null && e.getOldValue() != null) {
                 valid = true; // we tried to remove a value
             }
@@ -464,7 +459,7 @@ public abstract class UMLComboBoxModel2
                 valid = true;
                 while (it.hasNext()) {
                     Object o = it.next();
-                    if (!isValidElement((MBase) o)) {
+                    if (!isValidElement(o)) {
                         valid = false;
                         break;
                     }

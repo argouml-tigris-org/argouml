@@ -52,7 +52,7 @@ import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
 import org.argouml.uml.ui.UMLRadioButton;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
+//import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**
  * TODO: this property panel needs refactoring to remove dependency on
@@ -82,8 +82,8 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                     mclass,
                     "getKind",
                     "setKind",
-                    MPseudostateKind.class,
-                    MPseudostateKind.JUNCTION,
+                    ModelFacade.PSEUDOSTATEKIND,
+                    ModelFacade.JUNCTION_PSEUDOSTATEKIND,
                     null));
         junctionButton.setEnabled(false);
         kindPanel.add(junctionButton);
@@ -98,8 +98,8 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                     mclass,
                     "getKind",
                     "setKind",
-                    MPseudostateKind.class,
-                    MPseudostateKind.BRANCH,
+                    ModelFacade.PSEUDOSTATEKIND,
+                    ModelFacade.BRANCH_PSEUDOSTATEKIND,
                     null));
         branchButton.setEnabled(false);
         kindPanel.add(branchButton);
@@ -114,8 +114,8 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                     mclass,
                     "getKind",
                     "setKind",
-                    MPseudostateKind.class,
-                    MPseudostateKind.FORK,
+                    ModelFacade.PSEUDOSTATEKIND,
+                    ModelFacade.FORK_PSEUDOSTATEKIND,
                     null));
         forkButton.setEnabled(false);
         kindPanel.add(forkButton);
@@ -130,8 +130,8 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                     mclass,
                     "getKind",
                     "setKind",
-                    MPseudostateKind.class,
-                    MPseudostateKind.JOIN,
+                    ModelFacade.PSEUDOSTATEKIND,
+                    ModelFacade.JOIN_PSEUDOSTATEKIND,
                     null));
         joinButton.setEnabled(false);
         kindPanel.add(joinButton);
@@ -146,8 +146,8 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                     mclass,
                     "getKind",
                     "setKind",
-                    MPseudostateKind.class,
-                    MPseudostateKind.DEEP_HISTORY,
+                    ModelFacade.PSEUDOSTATEKIND,
+                    ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND,
                     null));
         deepButton.setEnabled(false);
         kindPanel.add(deepButton);
@@ -162,8 +162,8 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                     mclass,
                     "getKind",
                     "setKind",
-                    MPseudostateKind.class,
-                    MPseudostateKind.SHALLOW_HISTORY,
+                    ModelFacade.PSEUDOSTATEKIND,
+                    ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND,
                     null));
         shallowButton.setEnabled(false);
         kindPanel.add(shallowButton);
@@ -178,8 +178,8 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                     mclass,
                     "getKind",
                     "setKind",
-                    MPseudostateKind.class,
-                    MPseudostateKind.INITIAL,
+                    ModelFacade.PSEUDOSTATEKIND,
+                    ModelFacade.INITIAL_PSEUDOSTATEKIND,
                     null));
         initialButton.setEnabled(false);
         kindPanel.add(initialButton);
