@@ -81,6 +81,13 @@ public class Main {
         //                   use Argo.getDirectory and Argo.setDirectory.
         String directory = Argo.getDirectory();
         org.tigris.gef.base.Globals.setLastDirectory(directory);
+        
+        // Set default locale
+        Locale.setDefault(
+	    new Locale(System.getProperty("user.language","en"),
+		       System.getProperty("user.country",
+					  System.getProperty("user.region",
+							     "CA"))));
 
         // then, print out some version info for debuggers...
 
@@ -195,9 +202,7 @@ public class Main {
         //  sets locale for menus
         //
 	st.mark("locales");
-
-        Locale.setDefault(new Locale(System.getProperty("user.language","en"),
-        System.getProperty("user.country","CA")));
+        
         ResourceLoader.addResourceExtension("gif");
         ResourceLoader.addResourceLocation("/org/argouml/Images");
         ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
