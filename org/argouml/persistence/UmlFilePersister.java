@@ -27,11 +27,14 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Hashtable;
@@ -109,7 +112,6 @@ public class UmlFilePersister extends AbstractFilePersister {
             tempFile.delete();
         }
 
-        PrintWriter writer = null;
         try {
             if (file.exists()) {
                 copyFile(tempFile, file);
@@ -120,22 +122,73 @@ public class UmlFilePersister extends AbstractFilePersister {
             project.setVersion(ArgoVersion.getVersion());
             project.setPersistenceVersion(PERSISTENCE_VERSION);
 
-            String encoding = "UTF-8";
             FileOutputStream stream =
                 new FileOutputStream(file);
-            writer =
-                new PrintWriter(new BufferedWriter(new OutputStreamWriter(
-                        stream, encoding)));
 
+            generateProject(project, stream);
+
+            stream.close();
+
+            String path = file.getParent();
+            if (LOG.isInfoEnabled()) {
+                LOG.info("Dir ==" + path);
+            }
+
+            // if save did not raise an exception
+            // and name+"#" exists move name+"#" to name+"~"
+            // this is the correct backup file
+            if (backupFile.exists()) {
+                backupFile.delete();
+            }
+            if (tempFile.exists() && !backupFile.exists()) {
+                tempFile.renameTo(backupFile);
+            }
+            if (tempFile.exists()) {
+                tempFile.delete();
+            }
+        } catch (Exception e) {
+            LOG.error("Exception occured during save attempt", e);
+
+            // frank: in case of exception
+            // delete name and mv name+"#" back to name if name+"#" exists
+            // this is the "rollback" to old file
+            file.delete();
+            tempFile.renameTo(file);
+            // we have to give a message to user and set the system to unsaved!
+            throw new SaveException(e);
+        }
+    }
+
+    /**
+     * Generate the output for a project on the given stream.
+     *
+     * @param project The project to output.
+     * @param stream The stream to write to.
+     * @throws FileNotFoundException If we cannot find the tempate file to
+     * 				     process.
+     * @throws SaveException If something goes wrong.
+     */
+    void generateProject(Project project, OutputStream stream)
+    	throws SaveException, FileNotFoundException {
+        OutputStreamWriter outputStreamWriter;
+        try {
+            outputStreamWriter = new OutputStreamWriter(stream, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new SaveException(e);
+        }
+        PrintWriter writer =
+            new PrintWriter(new BufferedWriter(outputStreamWriter));
+
+        try {
             Integer indent = new Integer(4);
 
             writer.println("<?xml version = \"1.0\" "
-                    + "encoding = \"" + encoding + "\" ?>");
+                    + "encoding = \"" + "UTF-8" + "\" ?>");
             writer.println("<uml version=\"" + PERSISTENCE_VERSION + "\">");
             // Write out header section
             try {
-                Hashtable templates = TemplateReader.getInstance()
-                    .read(ARGO_TEE);
+                Hashtable templates =
+                    TemplateReader.getInstance().read(ARGO_TEE);
                 OCLExpander expander = new OCLExpander(templates);
                 expander.expand(writer, project, "  ", "");
                 // For next version of GEF:
@@ -175,40 +228,9 @@ public class UmlFilePersister extends AbstractFilePersister {
             writer.println("</uml>");
 
             writer.flush();
-
-            stream.close();
-
-            String path = file.getParent();
-            if (LOG.isInfoEnabled()) {
-                LOG.info("Dir ==" + path);
-            }
-
-            // if save did not raise an exception
-            // and name+"#" exists move name+"#" to name+"~"
-            // this is the correct backup file
-            if (backupFile.exists()) {
-                backupFile.delete();
-            }
-            if (tempFile.exists() && !backupFile.exists()) {
-                tempFile.renameTo(backupFile);
-            }
-            if (tempFile.exists()) {
-                tempFile.delete();
-            }
-        } catch (Exception e) {
-            LOG.error("Exception occured during save attempt", e);
+        } finally {
             writer.close();
-
-            // frank: in case of exception
-            // delete name and mv name+"#" back to name if name+"#" exists
-            // this is the "rollback" to old file
-            file.delete();
-            tempFile.renameTo(file);
-            // we have to give a message to user and set the system to unsaved!
-            throw new SaveException(e);
         }
-
-        writer.close();
     }
 
     /**
@@ -217,7 +239,7 @@ public class UmlFilePersister extends AbstractFilePersister {
     public Project doLoad(URL url) throws OpenException {
         try {
             Project p = new Project(url);
-            
+
             // TODO: Uncomment this code when the mystery
             // of loading a resource is solved.
 //            int versionFromFile = Integer.parseInt(getVersion(url));
@@ -280,39 +302,40 @@ public class UmlFilePersister extends AbstractFilePersister {
         try {
             String upgradeFilesPath = "/org/argouml/persistence/";
             String upgradeFile = "upgrade" + version + ".xsl";
-    
-            // TODO This should not access the hard disk file
-            String sourcePath = "D:/CVS/argouml/src_new";   
+
+            // TODO: This should not access the hard disk file
+            String sourcePath = "D:/CVS/argouml/src_new";
             String xsltFileName = sourcePath + upgradeFilesPath + upgradeFile;
             File xsltFile = new File(xsltFileName);
             URL xsltUrl = xsltFile.toURL();
-            
-            // TODO But should instead access a resource inside the jar
+
+            // TODO: But should instead access a resource inside the jar
     //        String xsltFileName = upgradeFilesPath + upgradeFile;
     //        URL xsltUrl = UmlFilePersister.class.getResource(xsltFileName);
             LOG.info("Resource is " + xsltUrl);
-    
+
             // Read xsltStream into a temporary file
             // Get url for temp file.
             // openStream from url and wrap in StreamSource
-            StreamSource xsltStreamSource = new StreamSource(xsltUrl.openStream());
-    
+            StreamSource xsltStreamSource =
+                new StreamSource(xsltUrl.openStream());
+
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(xsltStreamSource);
-    
+
             File file = File.createTempFile("transformation", ".uml");
             file.deleteOnExit();
-            
+
             String encoding = "UTF-8";
             FileOutputStream stream =
                 new FileOutputStream(file);
             Writer writer = new BufferedWriter(new OutputStreamWriter(
                     stream, encoding));
             Result result = new StreamResult(writer);
-    
+
             StreamSource inputStreamSource = new StreamSource(url.openStream());
             transformer.transform(inputStreamSource, result);
-            
+
             writer.close();
             return file.toURL();
         } catch (IOException e) {
@@ -323,8 +346,10 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
 
     private String getVersion(URL url) throws IOException {
-        BufferedInputStream inputStream = new BufferedInputStream(url.openStream());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        BufferedInputStream inputStream =
+            new BufferedInputStream(url.openStream());
+        BufferedReader reader =
+            new BufferedReader(new InputStreamReader(inputStream));
         String rootLine = reader.readLine();
         while (!rootLine.startsWith("<uml ")) {
             rootLine = reader.readLine();
@@ -333,7 +358,7 @@ public class UmlFilePersister extends AbstractFilePersister {
         reader.close();
         return getVersion(rootLine);
     }
-    
+
     /**
      * Get the version attribute value from a string of XML.
      * @param rootLine
