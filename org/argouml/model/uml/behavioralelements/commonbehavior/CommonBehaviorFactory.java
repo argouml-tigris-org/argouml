@@ -29,9 +29,8 @@ import java.util.Iterator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+
 import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
 import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
@@ -87,8 +86,8 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML Action instance.
      */
-    public MAction createAction() {
-        MAction modelElement = MFactory.getDefaultFactory().createAction();
+    public Object createAction() {
+        Object modelElement = MFactory.getDefaultFactory().createAction();
         super.initialize(modelElement);
         return modelElement;
     }
@@ -406,7 +405,7 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         return reception;
     }
 
-    public void deleteAction(MAction elem) {
+    public void deleteAction(Object elem) {
     }
 
     public void deleteActionSequence(MActionSequence elem) {

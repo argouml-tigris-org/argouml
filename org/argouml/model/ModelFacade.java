@@ -51,6 +51,9 @@ import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.common_behavior.MReception;
+import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
+import ru.novosoft.uml.behavior.common_behavior.MSendAction;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.behavior.state_machines.MState;
@@ -222,6 +225,18 @@ public class ModelFacade {
      */
     public static boolean isAAssociationRole(Object handle) {
         return handle instanceof MAssociationRole;
+    }
+    
+    /**
+     * Recognizer for asynchronisity of an action
+     * @param handle
+     * @return
+     */
+    public static boolean isAsynchronous(Object handle) {
+        if (handle instanceof MAction) {
+            return ((MAction)handle).isAsynchronous();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for abstract classes and operations.
@@ -525,6 +540,15 @@ public class ModelFacade {
         return handle instanceof MReception;
     }
     
+    /** Recognizer for Returnaction
+    *
+    * @param handle candidate
+    * @returns true if handle is a returnaction
+    */
+    public static boolean isAReturnAction(Object handle) {
+       return handle instanceof MReturnAction;
+    }
+    
     /** Recognizer for Relationship
      *
      * @param handle candidate
@@ -534,6 +558,14 @@ public class ModelFacade {
         return handle instanceof MRelationship;
     }
     
+    /** Recognizer for SendAction
+     *
+     * @param handle candidate
+     * @returns true if handle is a SendAction
+     */
+    public static boolean isASendAction(Object handle) {
+        return handle instanceof MSendAction;
+    }
 
     /** Recognizer for StateMachine
      *
@@ -542,6 +574,15 @@ public class ModelFacade {
      */
     public static boolean isAStateMachine(Object handle) {
         return handle instanceof MStateMachine;
+    }
+    
+    /** Recognizer for stimulus
+     *
+     * @param handle candidate
+     * @returns true if handle is a stimulus
+     */
+    public static boolean isAStimulus(Object handle) {
+        return handle instanceof MStimulus;
     }
 
     /** Recognizer for StateVertex
@@ -1043,6 +1084,42 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+    
+    /**
+     * Returns the effect of some transition
+     * @param handle
+     * @return
+     */
+    public static Object getEffect(Object handle) {
+        if (handle instanceof MTransition) {
+            return ((MTransition)handle).getEffect();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
+     * Returns the entry action to a state
+     * @param handle
+     * @return
+     */
+    public static Object getEntry(Object handle) {
+        if (handle instanceof MState) {
+            return ((MState)handle).getEntry();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
+     * Returns the exit action to a state
+     * @param handle
+     * @return
+     */
+    public static Object getExit(Object handle) {
+        if (handle instanceof MState) {
+            return ((MState)handle).getExit();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** The list of Features from a Classifier.
      *
@@ -1112,7 +1189,7 @@ public class ModelFacade {
      * @return
      */
     public static Object getInteraction(Object handle) {
-        if (isAMessage(handle)) {
+        if (handle instanceof MMessage) {
             return ((MMessage)handle).getInteraction();
         }
         throw new IllegalArgumentException(
@@ -1160,6 +1237,30 @@ public class ModelFacade {
         }
         if (isAInteraction(handle)) {
             return ((MInteraction)handle).getContext();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /** Get the dispatchaction of a stimulus.
+     *
+     * @param handle the stimulus that we are getting the dispatchaction of
+     * @returns the dispatchaction (or null)
+     */
+    public static Object getDispatchAction(Object handle) {
+        if (handle instanceof MStimulus) {
+            return ((MStimulus)handle).getDispatchAction();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
+     * Returns the do activity action of a state
+     * @param handle
+     * @return
+     */
+    public static Object getDoActivity(Object handle) {
+        if (handle instanceof MState) {
+            return ((MState)handle).getDoActivity();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -1315,6 +1416,30 @@ public class ModelFacade {
         }
 
         // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
+     * Returns the recurense iteration expression of an action
+     * @param handle
+     * @return
+     */
+    public static Object getRecurrence(Object handle) {
+        if (handle instanceof MAction) {
+            return ((MAction)handle).getRecurrence();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
+     * Returns the script belonging to a given action
+     * @param handle
+     * @return
+     */
+    public static Object getScript(Object handle) {
+        if (handle instanceof MAction) {
+            return ((MAction)handle).getScript();
+        }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
@@ -1531,10 +1656,34 @@ public class ModelFacade {
      * @return a collection of the suppliers
      */
     public static Collection getSuppliers(Object handle) {
-        if (handle == null || !(isAAbstraction(handle)
+        if (handle == null || !(handle instanceof MAbstraction
         ))
             return null;
         return ((MAbstraction)handle).getSuppliers();
+    }
+    
+    /**
+     * Returns the action belonging to some message
+     * @param handle
+     * @return
+     */
+    public static Object getAction(Object handle) {
+        if (handle instanceof MMessage) {
+            return ((MMessage)handle).getAction();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
+    /**
+     * Returns the actual arguments for a given action. 
+     * @param handle
+     * @return
+     */
+    public static Collection getActualArguments(Object handle) {
+        if (handle instanceof MAction) {
+            return ((MAction)handle).getActualArguments();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /**
@@ -1781,7 +1930,7 @@ public class ModelFacade {
     public static void addClient(Object a, Object cls) {
         if (a != null
             && cls != null
-            && ModelFacade.isAAbstraction(a)
+            && a instanceof MAbstraction
             && cls instanceof MClassifier) {                
             ((MAbstraction)a).addClient((MClassifier)cls);
         }
@@ -1989,6 +2138,30 @@ public class ModelFacade {
             }
         }
     }
+    
+    /**
+     * Sets the dispatch action for some stimulus
+     * @param handle
+     * @param value
+     */
+    public static void setDispatchAction(Object handle, Object value) {
+        if (handle instanceof MStimulus && value instanceof MAction) {
+            ((MStimulus)handle).setDispatchAction((MAction)value);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+    }
+    
+    /**
+     * Sets the effect of some transition
+     * @param handle
+     * @param value
+     */
+    public static void setEffect(Object handle, Object value) {
+        if (handle instanceof MTransition && value instanceof MAction) {
+            ((MTransition)handle).setEffect((MAction)value);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
+    }
 
     /**
      * Set the changeability of some feature.
@@ -2012,6 +2185,7 @@ public class ModelFacade {
                  ((MAssociationEnd)o).setChangeability(MChangeableKind.FROZEN);
         }
     }
+    
 
     /**
      * Sets if of some classifier is abstract.
@@ -2033,10 +2207,22 @@ public class ModelFacade {
      * @param action
      */
     public static void setAction(Object message, Object action) {
-        if (isAMessage(message) && isAAction(action)) {
+        if (message instanceof MMessage && action instanceof MAction) {
             ((MMessage)message).setAction((MAction)action);
         }
         throw new IllegalArgumentException("Unrecognized object " + message  + " or " + action);        
+    }
+    
+    /**
+     * Sets the asynchronous property of an action
+     * @param handle the action
+     * @param value the value to alter the asynchronous property to
+     */
+    public static void setAsynchronous(Object handle, boolean value) {
+        if (handle instanceof MAction) {
+            ((MAction)handle).setAsynchronous(value);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /**

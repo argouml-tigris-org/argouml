@@ -26,9 +26,9 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
 import org.argouml.application.api.NotationProvider;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
@@ -103,10 +103,10 @@ implements NotationProvider {
       return generateState((MState)o);
     if (o instanceof MTransition)
       return generateTransition((MTransition)o);
-    if (o instanceof MAction)
-      return generateAction((MAction)o);
+    if (ModelFacade.isAAction(o))
+      return generateAction(o);
     if (o instanceof MCallAction)
-      return generateAction((MAction)o);
+      return generateAction(o);
     if (o instanceof MGuard)
       return generateGuard((MGuard)o);
     if (o instanceof MMessage)
@@ -132,7 +132,7 @@ implements NotationProvider {
   public abstract String generateMultiplicity(MMultiplicity m);
   public abstract String generateState(MState m);
   public abstract String generateTransition(MTransition m);
-  public abstract String generateAction(MAction m);
+  public abstract String generateAction(Object m);
   public abstract String generateGuard(MGuard m);
   public abstract String generateMessage(MMessage m);
 

@@ -30,6 +30,7 @@ import java.util.Vector;
 import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
@@ -720,7 +721,7 @@ class ColumnEntry extends ColumnDescriptor {
 		if (!(target instanceof MState)) return "";
 		MState st = (MState) target;
 		if (st.getEntry() != null) {
-			MAction acts = st.getEntry();
+			Object acts = ModelFacade.getEntry(st);
 			return GeneratorDisplay.Generate(acts);
 		}
 		return "";
@@ -747,8 +748,8 @@ class ColumnExit extends ColumnDescriptor {
   public Object getValueFor(Object target) {
     if (!(target instanceof MState)) return "";
     MState st = (MState) target;
-	if (st.getExit() != null) {
-		MAction acts = st.getExit();
+	if (ModelFacade.getExit(st) != null) {
+		Object acts = ModelFacade.getExit(st);
 		return GeneratorDisplay.Generate(acts);
 	}
 	return "";
@@ -884,7 +885,7 @@ class ColumnEffect extends ColumnDescriptor {
   public Object getValueFor(Object target) {
     if (!(target instanceof MTransition)) return "";
     MTransition t = (MTransition) target;
-    MAction effect = t.getEffect();
+    Object effect = ModelFacade.getEffect(t);
     if (effect == null) return "";
     return GeneratorDisplay.Generate(effect);
   }
@@ -895,7 +896,7 @@ class ColumnEffect extends ColumnDescriptor {
     MTransition tr = (MTransition) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
-    tr.setEffect(pd.parseAction(s));
+    ModelFacade.setEffect(tr, pd.parseAction(s));
   }
 } /* end class ColumnEffect */
 
@@ -1359,9 +1360,9 @@ class ColumnCommunication extends ColumnDescriptor {
   ColumnCommunication() { super("Communication", String.class, true); }
 
   public Object getValueFor(Object target) {
-    if (!(target instanceof MAction)) return null;
-    MAction act = (MAction) target;
-    boolean isAsync = act.isAsynchronous();
+    if (!(ModelFacade.isAAction(target))) return null;
+    Object act = target;
+    boolean isAsync = ModelFacade.isAsynchronous(act);
     String async = "";
     if (isAsync) async = "true";
     else async = "false";
@@ -1377,8 +1378,8 @@ class ColumnActionType extends ColumnDescriptor {
   ColumnActionType() { super("Action Type", String.class, true); }
 
   public Object getValueFor(Object target) {
-    if (!(target instanceof MAction)) return null;
-    MAction act = (MAction) target;
+    if (!(ModelFacade.isAAction(target))) return null;
+    Object act = target;
     String type = "";
     if (act instanceof MCallAction) type = "Call";
     else if (act instanceof MSendAction) type = "Send";

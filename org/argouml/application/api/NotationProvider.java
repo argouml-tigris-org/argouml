@@ -36,7 +36,6 @@ package org.argouml.application.api;
 //import org.argouml.language.*;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
@@ -73,7 +72,7 @@ public interface NotationProvider {
   public String generateState(MState m);
   public String generateStateBody(MState stt);
   public String generateTransition(MTransition m);
-  public String generateAction(MAction m);
+  public String generateAction(Object m);
   public String generateGuard(MGuard m);
   public String generateMessage(MMessage m);
   public String generateClassifierRef(MClassifier m);

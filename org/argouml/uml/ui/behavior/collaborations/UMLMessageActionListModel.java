@@ -24,11 +24,11 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 
 /**
  * @since Oct 3, 2002
@@ -57,7 +57,7 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase elem) {        
-        return elem instanceof MAction && 
+        return ModelFacade.isAAction(elem) && 
             ((MMessage)getTarget()).getAction() == elem;
     }
 

@@ -54,7 +54,6 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
 import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
@@ -509,8 +508,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
                 if (elem instanceof MComment) {
                     getCore().deleteComment((MComment)elem);
                 } else
-                if (elem instanceof MAction) {
-                    deleteAction((MAction)elem);
+                if (ModelFacade.isAAction(elem)) {
+                    deleteAction(elem);
                 } else
                 if (elem instanceof MAttributeLink) {
                     getCommonBehavior().deleteAttributeLink((MAttributeLink)elem);
@@ -708,7 +707,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * operation
      * @param elem
      */
-    private void deleteAction(MAction elem) {
+    private void deleteAction(Object elem) {
         getCommonBehavior().deleteAction(elem);
         if (elem instanceof MActionSequence) {
             getCommonBehavior().deleteActionSequence((MActionSequence)elem);

@@ -38,6 +38,7 @@ import java.util.Vector;
 
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Diagram;
@@ -50,7 +51,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
@@ -170,7 +170,7 @@ public class FigSeqStimulus extends FigNodeModelElement {
 	String actionString = "new Action";
 
 	if (sti.getDispatchAction() != null && sti.getDispatchAction().getName() != null)
-		actionString = Notation.generate(this, ((MAction)sti.getDispatchAction()).getName()).trim();
+		actionString = Notation.generate(this, ModelFacade.getName(ModelFacade.getDispatchAction(sti))).trim();
 
     if( nameStr.equals("") && actionString.equals("") )
       _name.setText("");

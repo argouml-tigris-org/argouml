@@ -64,7 +64,7 @@ public abstract class Parser {
   public abstract ru.novosoft.uml.foundation.data_types.MMultiplicity parseMultiplicity(String s);
   public abstract MState parseState(String s);
   public abstract MTransition parseTransition(MTransition trans, String s);
-  public abstract MAction parseAction(String s);
+  public abstract Object parseAction(String s);
   public abstract MGuard parseGuard(String s);
   public abstract MEvent parseEvent(String s);
 

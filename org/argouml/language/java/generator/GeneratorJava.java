@@ -55,7 +55,6 @@ import org.argouml.uml.generator.Generator;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
@@ -1632,9 +1631,9 @@ public class GeneratorJava
     public String generateStateBody(MState m) {
         Argo.log.info("GeneratorJava: generating state body");
         StringBuffer sb = new StringBuffer(80);
-        MAction entryAction = m.getEntry();
-        MAction exitAction = m.getExit();
-        MAction doAction = m.getDoActivity();
+        Object entryAction = ModelFacade.getEntry(m);
+        Object exitAction = ModelFacade.getExit(m);   
+        Object doAction = ModelFacade.getDoActivity(m);
 
         if (entryAction != null) {
             String entryStr = Generate(entryAction);
@@ -1708,12 +1707,13 @@ public class GeneratorJava
         return s;*/
     }
 
-    public String generateAction(MAction m) {
+    public String generateAction(Object m) {
         // return m.getName();
+        Object script = ModelFacade.getScript(m);
         if (m != null
-            && (m.getScript() != null)
-            && (m.getScript().getBody() != null))
-            return m.getScript().getBody();
+            && (script != null)
+            && (ModelFacade.getBody(script) != null))
+            return ModelFacade.getBody(script).toString();
         return "";
     }
 

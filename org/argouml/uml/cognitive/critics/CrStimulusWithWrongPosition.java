@@ -30,19 +30,20 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.argouml.cognitive.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.sequence.ui.FigSeqLink;
 import org.argouml.uml.diagram.sequence.ui.FigSeqObject;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
-
 import org.tigris.gef.presentation.FigActivation;
 import org.tigris.gef.util.VectorSet;
+
+import ru.novosoft.uml.behavior.common_behavior.MLink;
 
 
 public class CrStimulusWithWrongPosition extends CrUML {
@@ -91,10 +92,10 @@ public class CrStimulusWithWrongPosition extends CrUML {
           Collection col = ml.getStimuli();
           Iterator it = col.iterator();
           while (it.hasNext()) {
-            MStimulus ms = (MStimulus) it.next();
-            if (ms.getDispatchAction() != null) {
-              MAction ma = (MAction) ms.getDispatchAction();
-              if (ma instanceof MReturnAction) continue;
+            Object ms = it.next();
+            if (ModelFacade.getDispatchAction(ms) != null) {
+              Object ma = ModelFacade.getDispatchAction(ms);
+              if (ModelFacade.isAReturnAction(ma)) continue;
               else {
                 FigSeqObject fso = (FigSeqObject) fsl.getSourceFigNode();
 		if ( fso != null) {

@@ -3203,7 +3203,7 @@ predfor:
      sti.setName(name);
   }
 
-  public MAction parseAction(String s) {
+  public Object parseAction(String s) {
 	  MCallAction a = UmlFactory.getFactory().getCommonBehavior().createCallAction();
 
 	  a.setScript(UmlFactory.getFactory().getDataTypes().createActionExpression("Java",s));
