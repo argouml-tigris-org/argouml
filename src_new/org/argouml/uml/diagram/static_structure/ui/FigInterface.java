@@ -38,6 +38,8 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.argouml.application.api.*;
+import org.argouml.language.helpers.*;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
@@ -77,7 +79,9 @@ public class FigInterface extends FigNodeModelElement {
     _stereoFake.setFilled(false);
     _stereoFake.setLineWidth(0);
     _stereoFake.setEditable(false);
-    _stereoFake.setText("<<Interface>>");
+    _stereoFake.setText(NotationHelper.getLeftGuillemot() +
+                        "Interface" +
+			NotationHelper.getRightGuillemot());
     _stereoFake.setHeight(15);
 
     _name.setHeight(18);
@@ -263,7 +267,7 @@ public class FigInterface extends FigNodeModelElement {
     super.modelChanged();
     MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
-    //    String clsNameStr = GeneratorDisplay.Generate(cls.getName());
+    //    String clsNameStr = Notation.generate(this, cls.getName());
 
     Collection behs = MMUtil.SINGLETON.getOperations(cls);
     String operStr = "";
@@ -271,7 +275,7 @@ public class FigInterface extends FigNodeModelElement {
 	Iterator iter = behs.iterator();
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
-	    operStr += GeneratorDisplay.Generate(bf);
+	    operStr += Notation.generate(this, bf);
 	    if (iter.hasNext())
 	      operStr += "\n";
       }
@@ -289,6 +293,16 @@ public class FigInterface extends FigNodeModelElement {
  }
 
   static final long serialVersionUID = 4928213949795787107L;
+
+    public void renderingChanged() {
+        super.renderingChanged();
+        _stereoFake.setText(NotationHelper.getLeftGuillemot() +
+	                    "Interface" +
+			    NotationHelper.getRightGuillemot());
+	modelChanged();
+
+    }
+
 
 } /* end class FigInterface */
 

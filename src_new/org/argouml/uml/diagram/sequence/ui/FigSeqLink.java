@@ -53,6 +53,7 @@ import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.Mode;
 import org.tigris.gef.base.LayerPerspective;
 
+import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.generator.*;
@@ -147,7 +148,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     MLink ml = (MLink) getOwner();
     if (ml == null) return;
 
-    String mlNameStr = GeneratorDisplay.Generate(ml.getName());
+    String mlNameStr = Notation.generate(this, ml.getName());
 
     super.modelChanged();
 
@@ -157,8 +158,8 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     MLinkEnd le0 = (MLinkEnd) ((Object[])ends.toArray())[0];
     MLinkEnd le1 = (MLinkEnd) ((Object[])ends.toArray())[1];
 
-    _srcRole.setText(GeneratorDisplay.Generate(le0.getName()));
-    _destRole.setText(GeneratorDisplay.Generate(le1.getName()));
+    _srcRole.setText(Notation.generate(this, le0.getName()));
+    _destRole.setText(Notation.generate(this, le1.getName()));
 
 //    if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
 //      srcNav = destNav = false;

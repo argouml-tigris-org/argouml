@@ -44,6 +44,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.*;
@@ -313,7 +314,7 @@ public class FigClass extends FigNodeModelElement {
       try {
         me.setNamespace(m);
       } catch (Exception e) {
-        System.out.println("could not set package");
+        Argo.log.error("could not set package", e);
       }
     }
 
@@ -356,7 +357,7 @@ public class FigClass extends FigNodeModelElement {
     super.modelChanged();
     MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
-    // String clsNameStr = GeneratorDisplay.Generate(cls.getName());
+    // String clsNameStr = Notation.generate(this, cls.getName());
     Collection strs = MMUtil.SINGLETON.getAttributes(cls);
     String attrStr = "";
     if (strs != null) {
@@ -364,7 +365,7 @@ public class FigClass extends FigNodeModelElement {
       while (iter.hasNext()) {
 	    MStructuralFeature sf = (MStructuralFeature) iter.next();
 	    // sf.addMElementListener(this);
-	    attrStr += GeneratorDisplay.Generate(sf);
+	    attrStr += Notation.generate(this, sf);
 	    if (iter.hasNext())
 	      attrStr += "\n";
       }
@@ -377,7 +378,7 @@ public class FigClass extends FigNodeModelElement {
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
 	    // bf.addMElementListener(this);
-	    operStr += GeneratorDisplay.Generate(bf);
+	    operStr += Notation.generate(this, bf);
 	    if (iter.hasNext())
 	      operStr += "\n";
       }
@@ -414,8 +415,9 @@ public class FigClass extends FigNodeModelElement {
     }
     else {
 	Rectangle oldBounds = getBounds();
-	String stereoStr = stereo.getName();
-	_stereo.setText("<<" + stereoStr + ">>");
+	// String stereoStr = stereo.getName();
+	// _stereo.setText("<<" + stereoStr + ">>");
+	_stereo.setText(Notation.generateStereotype(this, stereo));
 	if (!_stereo.isDisplayed()) {
 	    _stereoLineBlinder.setDisplayed(true);
 	    _stereoLineBlinder.setBounds(oldBounds.x, oldBounds.y, oldBounds.width, 2);
@@ -496,6 +498,11 @@ public class FigClass extends FigNodeModelElement {
 	firePropChange("bounds", oldBounds, getBounds());
     }
 
+    public void renderingChanged() {
+        super.renderingChanged();
+	updateStereotypeText();
+	modelChanged();
+    }
 
   
 

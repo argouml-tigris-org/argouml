@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,6 +39,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.generator.*;
 
@@ -80,7 +81,7 @@ public class FigTransition extends FigEdgeModelElement {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
     //System.out.println("FigTransition modelChanged: " + me.getClass());
-    String nameStr = GeneratorDisplay.Generate(me);
+    String nameStr = Notation.generate(this, me);
     _name.setText(nameStr);
   }
 

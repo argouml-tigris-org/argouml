@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,6 +36,7 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
 
@@ -109,7 +110,7 @@ public class FigAssociationRole extends FigEdgeModelElement {
   protected void modelChanged() {
     MAssociationRole as = (MAssociationRole) getOwner();
     if (as == null) return;
-    String asNameStr = GeneratorDisplay.Generate(as.getName());
+    String asNameStr = Notation.generate(this, as.getName());
 
     super.modelChanged();
 
@@ -123,13 +124,13 @@ public class FigAssociationRole extends FigEdgeModelElement {
 
     MMultiplicity mult0 = ae0.getMultiplicity();
     MMultiplicity mult1 = ae1.getMultiplicity();
-    _srcMult.setText(GeneratorDisplay.Generate(mult0));
+    _srcMult.setText(Notation.generate(this, mult0));
     if (MMultiplicity.M1_1.equals(mult0)) _srcMult.setText("");
-    _destMult.setText(GeneratorDisplay.Generate(mult1));
+    _destMult.setText(Notation.generate(this, mult1));
     if (MMultiplicity.M1_1.equals(mult1)) _destMult.setText("");
 
-    _srcRole.setText(GeneratorDisplay.Generate(ae0.getName()));
-    _destRole.setText(GeneratorDisplay.Generate(ae1.getName()));
+    _srcRole.setText(Notation.generate(this, ae0.getName()));
+    _destRole.setText(Notation.generate(this, ae1.getName()));
 
     boolean srcNav = ae0.isNavigable();
     boolean destNav = ae1.isNavigable();
