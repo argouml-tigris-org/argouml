@@ -26,6 +26,10 @@ package org.argouml.kernel;
 
 import java.beans.*;
 
+/**
+ * This appears to be a gui specific class, therefore it does not belong in
+ * the Kernel.
+ */
 public class DelayedChangeNotify implements Runnable {
     DelayedVChangeListener _listener;
     PropertyChangeEvent _pce;

@@ -25,7 +25,12 @@
 package org.argouml.kernel;
 
 
-
+/**
+ * History is now managed by the TargetManager.
+ *
+ * @deprecated since 0.15.1, remove in 0.15.2,
+ *             Hreplaced by the TargetManager.
+ */
 public interface HistoryListener extends java.util.EventListener {
     void historyAdded(HistoryEvent he);
 } /* end interface HistoryListener */

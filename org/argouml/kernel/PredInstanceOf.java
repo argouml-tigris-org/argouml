@@ -28,6 +28,7 @@ import org.tigris.gef.util.*;
 
 /**
  * Predicate to test if an Object is and instance of a class.
+ * This class belongs in org.argouml.util
  */
 public class PredInstanceOf implements Predicate {
     protected Class _class;
