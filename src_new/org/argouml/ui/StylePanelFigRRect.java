@@ -3,14 +3,14 @@
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -34,69 +34,72 @@ import javax.swing.text.Document;
 
 import org.tigris.gef.presentation.FigRRect;
 
+/**
+ * Provide a stylepanel for rounded rectancles in order to set the rounding edge
+ * level.
+ *  
+ */
 public class StylePanelFigRRect extends StylePanelFig {
 
-    ////////////////////////////////////////////////////////////////
-    // instance vars
-    JLabel _roundingLabel = new JLabel("Rounding: ");
-    JTextField _roundingField = new JTextField();
+    protected JLabel _roundingLabel = new JLabel("Rounding: ");
 
-  
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    protected JTextField _roundingField = new JTextField();
+
+    /**
+     * construct a default panel for rounded rectancular elements.
+     *  
+     */
     public StylePanelFigRRect() {
-	super();
-	GridBagLayout gb = (GridBagLayout) getLayout();    
-	GridBagConstraints c = new GridBagConstraints();
-	c.fill = GridBagConstraints.BOTH;
-	c.ipadx = 0; c.ipady = 0;
+        super();
+        GridBagLayout gb = (GridBagLayout) getLayout();
+        GridBagConstraints c = new GridBagConstraints();
+        c.fill = GridBagConstraints.BOTH;
+        c.ipadx = 0;
+        c.ipady = 0;
 
-	Document roundingDoc = _roundingField.getDocument();
-	roundingDoc.addDocumentListener(this);
-    
-	c.weightx = 0.0;
-	c.gridx = 3;
-	c.gridy = 1;
-	gb.setConstraints(_roundingLabel, c);
-	add(_roundingLabel);
+        Document roundingDoc = _roundingField.getDocument();
+        roundingDoc.addDocumentListener(this);
 
-	c.weightx = 1.0;
-	c.gridx = 4;
-	c.gridy = 1;
-	gb.setConstraints(_roundingField, c);
-	add(_roundingField);
+        c.weightx = 0.0;
+        c.gridx = 3;
+        c.gridy = 1;
+        gb.setConstraints(_roundingLabel, c);
+        add(_roundingLabel);
+
+        c.weightx = 1.0;
+        c.gridx = 4;
+        c.gridy = 1;
+        gb.setConstraints(_roundingField, c);
+        add(_roundingField);
     }
 
-  
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
+    /**
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
     public void refresh() {
-	super.refresh();
-	String roundingStr = ((FigRRect) _target).getCornerRadius() + "";
-	_roundingField.setText(roundingStr);
+        super.refresh();
+        String roundingStr = ((FigRRect) _target).getCornerRadius() + "";
+        _roundingField.setText(roundingStr);
     }
 
-
-    public void setTargetRounding() {
-	if (_target == null) return;
-	String roundingStr = _roundingField.getText();
-	if (roundingStr.length() == 0) return;
-	int r = Integer.parseInt(roundingStr);
-	((FigRRect) _target).setCornerRadius(r);
-	_target.endTrans();
+    protected void setTargetRounding() {
+        if (_target == null) return;
+        String roundingStr = _roundingField.getText();
+        if (roundingStr.length() == 0) return;
+        int r = Integer.parseInt(roundingStr);
+        ((FigRRect) _target).setCornerRadius(r);
+        _target.endTrans();
     }
 
-  
-    ////////////////////////////////////////////////////////////////
-    // event handling
-
+    /**
+     * react to changes in the rounding field text box.
+     * 
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
     public void insertUpdate(DocumentEvent e) {
-	Document roundingDoc = _roundingField.getDocument();
-	if (e.getDocument() == roundingDoc) setTargetRounding();
-	super.insertUpdate(e);
+        Document roundingDoc = _roundingField.getDocument();
+        if (e.getDocument() == roundingDoc) setTargetRounding();
+        super.insertUpdate(e);
     }
 
-
-  
 } /* end class StylePanelFigRRect */
