@@ -126,7 +126,7 @@ public class ActionSaveProject extends UMLAction {
 	    pb.showStatus (sStatus);
 		
         ProjectFilePersister persister = null;
-        String name = project.getName();
+        String name = file.getName();
         if (name.endsWith("." + zargoPersister.getExtension())) {
             persister = zargoPersister;
         } else if (name.endsWith("." + argoPersister.getExtension())) {
