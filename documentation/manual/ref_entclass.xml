@@ -40,6 +40,9 @@ ArgoUML.
   <indexterm>
     <primary>Object Diagrams</primary>
   </indexterm>
+  <indexterm>
+    <primary>Package Diagrams</primary>
+  </indexterm>
 
   <sect1>
     <title>Introduction</title>
@@ -137,7 +140,7 @@ and can be used to draw object diagrams.
     </para></note>
 
     <para>ArgoUML also implements some less common aspects of UML model
-      management. In particular the relationship UML&nbsp;1.3 defines as
+      management. In particular the relationship UML 1.3 defines as
       <literal>Generalization</literal> and the sub-class dependency
       <literal>Permission</literal> for use between packages.
       <!-- TODO: Rephrase & explain -->
@@ -191,10 +194,10 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The <literal>Bounds:</literal> field
             defines the bounding box for the package on the
@@ -210,17 +213,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             declaration appropriate to the entire package. In the future
             this would be part of the code generation
             activity.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -270,17 +262,17 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add Package button -->
+        <!-- Entry for New Package button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/package.gif"/>
-		</imageobject>
+			</imageobject>
 	      </inlinemediaobject>
-</guiicon>
-<literal>Add Package</literal>
-</term>
+		</guiicon>
+		<literal>New Package</literal>
+		</term>
 
           <listitem>
 	    <para>
@@ -288,6 +280,64 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         within the package (which appears
         on no diagram), navigating immediately to the properties tab
         for that package.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New datatype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/datatype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Datatype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Datatype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Datatype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Datatype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Datatype (see <xref
+              linkend="s1.ref.datatype"/>) for the selected package, 
+              navigating immediately to the properties tab
+              for that datatype.</para>
+		  </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected package, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -376,9 +426,13 @@ By default a new package has no name defined.
 	    <para>Drop down selector.
 Package is provided by default
             with the UML standard stereotypes for package
-            (<literal>facade</literal>, <literal>framework</literal>,
-<literal>stub</literal>).
-</para>
+            (<literal>facade</literal>, 
+            <literal>framework</literal>,
+            <literal>metamodel</literal>,
+			<literal>stub</literal>,
+            <literal>topLevel</literal>,
+            <literal>systemModel</literal>).
+		</para>
 
 	  </listitem>
         </varlistentry>
@@ -424,8 +478,8 @@ Records the namespace for the
           <term><literal>Visibility</literal></term>
 
           <listitem><para>Radio box, with three entries
-            <literal>public</literal>, <literal>protected</literal> and
-            <literal>private</literal>. Indicates whether the package is visible 
+            <literal>public</literal>, <literal>private</literal> and
+            <literal>protected</literal>. Indicates whether the package is visible 
             outside the package.
           </para></listitem>
         </varlistentry>        
@@ -659,16 +713,17 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The tick boxes,
             <literal>Attributes</literal> and <literal>Operations</literal>
             allow the attributes and operations compartments to be shown (the
             default) or hidden.
-            This is a setting valid for all diagrams that show the class.
+            This is a setting valid for only the current diagram
+            that shows the class.
             The <literal>Bounds:</literal> field defines
             the bounding box for the package on the diagram.</para></listitem>
         </varlistentry>
@@ -744,6 +799,15 @@ standard tagged values defined.
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for a Classifier. </para></listitem>
+        </varlistentry>
+        
       </variablelist>
     </sect2>
 
@@ -774,13 +838,13 @@ standard tagged values defined.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add attribute -->
+        <!-- Entry for New attribute -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/attribute.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
+          </imageobject></inlinemediaobject></guiicon> <literal>New
             attribute</literal></term>
 
           <listitem><para>This creates a new attribute (see <xref
@@ -789,13 +853,13 @@ standard tagged values defined.
             attribute.</para></listitem> 
         </varlistentry>
 
-        <!-- Entry for Add operation button -->
+        <!-- Entry for New operation button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/operation.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
+          </imageobject></inlinemediaobject></guiicon> <literal>New
             operation</literal></term>
 
           <listitem><para>This creates a new operation (see <xref
@@ -804,13 +868,35 @@ standard tagged values defined.
               operation.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add inner class button -->
+        <!-- Entry for New reception -->
+
+        <varlistentry>
+          <term>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center"
+                             fileref="images/icons/reception.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>New reception</literal>
+          </term>
+
+          <listitem>
+            <para>This creates a new reception, navigating immediately to
+              the properties tab for that reception.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for New inner class button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/inner_class.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add inner
+          </imageobject></inlinemediaobject></guiicon> <literal>New inner
             class</literal></term>
 
           <listitem><para>This creates a new inner class (which appears on no
@@ -841,6 +927,35 @@ standard tagged values defined.
               class. 
             </para>
           </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected class, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -924,7 +1039,7 @@ by <quote>bumpy caps</quote>.
 Class is provided by default with the UML standard stereotypes for
 <literal>Class</literal> (<literal>implementationClass</literal> and
 <literal>type</literal>) and for <literal>Classifier</literal>
-(<literal>metaclass</literal>, <literal>powerType</literal>,
+(<literal>metaclass</literal>, <literal>powertype</literal>,
 <literal>process</literal>, <literal>thread</literal> and
 <literal>utility</literal>)<!--, as well as the stereotypes for
 classes in the UML standard profiles for <emphasis>software
@@ -1036,8 +1151,8 @@ strangely <literal>realize</literal> (a stereotype of
           <term><literal>Visibility</literal></term>
 
           <listitem><para>Radio box, with three entries
-            <literal>public</literal>, <literal>protected</literal> and
-            <literal>private</literal>. Indicates whether the class is visible 
+            <literal>public</literal>, <literal>private</literal> and
+            <literal>protected</literal>. Indicates whether the class is visible 
             outside the namespace.
           </para></listitem>
         </varlistentry>        
@@ -1099,9 +1214,9 @@ strangely <literal>realize</literal> (a stereotype of
           <term><literal>Specializations</literal></term>
 
           <listitem><para>Text box. Lists any specialized class (i.e. for
-            which this class is a generalization.</para>
+            which this class is a generalization).</para>
 
-            <para>&button1; double click navigates to the generalization and opens
+            <para>&Button1; double click navigates to the generalization and opens
               its property tab.
             </para>
 
@@ -1117,7 +1232,22 @@ strangely <literal>realize</literal> (a stereotype of
             <para>Text area. Lists all the attributes (see <xref
               linkend="s1.ref.attribute"/>) defined for this
               class. &Button1; double click navigates to the selected attribute.
+              &Button2; gives a pop up menu with two entries, 
+              which allow reordering the attributes.
             </para>
+            
+			<itemizedlist>
+              <listitem><para><literal>Move Up</literal>. Only available where
+                there are two or more attributes listed, and the attribute
+                selected is not at the top. It moves the attribute up
+                one position.</para></listitem>
+
+              <listitem><para><literal>Move Down</literal>. Only available where
+                there are two or more attributes listed, and the attribute
+                selected is not at the bottom. It moves the attribute down
+			    one position.</para></listitem>
+            </itemizedlist>            
+            
           </listitem>
         </varlistentry>
 
@@ -1149,7 +1279,22 @@ strangely <literal>realize</literal> (a stereotype of
             <para>Text area. Lists all the operations (see <xref
               linkend="s1.ref.operation"/>) defined on this
               class. &Button1; click navigates to the selected operation.
+              &Button2; gives a pop up menu with two entries, 
+              which allow reordering the operations.
             </para>
+                        
+			<itemizedlist>
+              <listitem><para><literal>Move Up</literal>. Only available where
+                there are two or more operations listed, and the operation
+                selected is not at the top. It moves the operation up
+                one position.</para></listitem>
+
+              <listitem><para><literal>Move Down</literal>. Only available where
+                there are two or more operations listed, and the operation
+                selected is not at the bottom. It moves the operation down
+			    one position.</para></listitem>
+            </itemizedlist>            
+            
           </listitem>
         </varlistentry>
 
@@ -1197,7 +1342,8 @@ strangely <literal>realize</literal> (a stereotype of
       <literal>StructuralFeature</literal> which is itself a sub-class of
       <literal>Feature</literal>.</para>
 
-    <para>An attribute is represented on a single line within the attribute
+    <para>An attribute is represented in the diagram 
+      on a single line within the attribute
       compartment of the class. Its syntax is as follows:</para>
 
     <blockquote><para><emphasis>visibility</emphasis>
@@ -1214,9 +1360,6 @@ strangely <literal>realize</literal> (a stereotype of
     <!--para><literal>static</literal> and <literal>final</literal> optionally
       appear if the attribute has those modifiers</para-->
 
-    <para>In addition any attribute declared static will have its whole entry
-      underlined on the diagram.</para>
-
     <para><emphasis>attributeName</emphasis> is the actual name of the
       attribute being declared.</para>
 
@@ -1226,6 +1369,9 @@ strangely <literal>realize</literal> (a stereotype of
     <para><emphasis>initialValue</emphasis> is any initial value to be given to
       the attribute when an instance of the class is created. This may be
       overridden by any constructor operation.</para>
+
+    <para>In addition any attribute declared static will have its whole entry
+      underlined on the diagram.</para>
 
     <!-- Attribute details tabs -->
 
@@ -1274,9 +1420,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
 </para>
           </listitem>
         </varlistentry>
-
-        <!-- Entry for Style tab -->
-        <!-- Always downlighted. -->
 
         <!-- Entry for Source tab -->
 
@@ -1361,6 +1504,15 @@ values defined.
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for a Attribute. </para></listitem>
+        </varlistentry>        
+
       </variablelist>
     </sect2>
 
@@ -1408,6 +1560,64 @@ values defined.
           <tip><para>This is a very convenient way to add a number of
             attributes, one after the other, to a
             class.</para></tip></listitem>
+        </varlistentry>
+
+        <!-- Entry for New datatype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/datatype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Datatype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Datatype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Datatype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Datatype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Datatype (see <xref
+              linkend="s1.ref.datatype"/>) for the selected attribute, 
+              navigating immediately to the properties tab
+              for that datatype.</para>
+		  </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected attribute, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -1527,25 +1737,25 @@ separated by <quote>bumpy caps</quote>.
               <secondary>of Attribute</secondary>
             </indexterm>
 
-            <para>Drop down selector.
+            <para>Editable drop down selector.
+			The default value (1) is that there is one instance of this
+			attribute for each instance of the class, i.e. it is a scalar.
+			The drop down provides a number of commonly used 
+			specifications for non-scalar attributes.
+		  </para>
 
-The default (empty) value is that there is one instance of this
-attribute for each instance of the class, i.e. it is a scalar.
+          <note>
+            <para>ArgoUML presents a number of predefined
+              ranges for multiplicity for easy access. 
+              The user may also enter any user defined range 
+              that follows the UML syntax, such as <quote>1..3,7,10</quote>.
+            </para><para>The value <literal>1..1</literal> is equivalent
+              to the default (exactly one scalar instance). The selection
+              <literal>0..1</literal> indicates an optional scalar
+              attribute.</para>
+          </note>
 
-The drop down provides a number of specifications for non-scalar
-attributes.
-</para>
-
-          <note><para>The selection <literal>1..1</literal> is equivalent
-            to the default (exactly one scalar instance). The selection
-            <literal>0..1</literal> indicates an optional scalar
-            attribute.</para></note>
-
-          <caution><para>ArgoUML restricts you to a number of predefined
-            ranges for multiplicity. There is no way to give a user defined
-            range.
-            <!-- TODO: See issue ... -->
-          </para></caution></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Type -->
@@ -1621,18 +1831,7 @@ The drop down menu provides access to the common values
 
             <caution><para>Any constructor operation may ignore this initial
               value.</para></caution>
-              
-            <warning>
-              <para>
-                This function is broken in V0.14 of ArgoUML. The textbox is
-                not editable, and if an initial value is given in the diagram
-                (by editing the attribute definition string), then something 
-                like: 
-                <quote>ru.novosoft.uml.foundation.data_types.MExpression@1b6484c</quote>
-                appears.
-                <!-- TODO: See issue ... -->
-              </para>
-            </warning>
+
           </listitem>
         </varlistentry>
 
@@ -1653,8 +1852,8 @@ The drop down menu provides access to the common values
             <para>
 Radio box, with entries
 <literal>public</literal>,
-<literal>protected</literal>, and
-<literal>private</literal>.
+<literal>private</literal>, and
+<literal>protected</literal>.
 </para>
 
           <itemizedlist>
@@ -1688,22 +1887,22 @@ Radio box, with entries
             </indexterm>
 
             <para>Radio box, with entries
-<literal>changeable</literal>,
-<literal>add only</literal>, and
+<literal>addOnly</literal>,
+<literal>changeable</literal>, and
 <literal>frozen</literal>.
 </para>
 
           <itemizedlist>
-            <listitem><para><literal>changeable</literal>. 
-              There are no restrictions of modification.
-            </para></listitem>
-
-            <listitem><para><literal>add only</literal>. 
+            <listitem><para><literal>addOnly</literal>. 
               Meaningful only if the multiplicity is not fixed to a
               single value. Additional values may be added to the set of
               values, but once created a value may not be removed or altered.
             </para></listitem>
             
+            <listitem><para><literal>changeable</literal>. 
+              There are no restrictions of modification.
+            </para></listitem>
+
             <listitem><para><literal>frozen</literal>. 
               Also named <quote>immutable</quote>.
               The value of the 
