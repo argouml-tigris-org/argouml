@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,13 +26,15 @@ package org.argouml.cognitive;
 
 import org.argouml.i18n.Translator;
 
-/** This is where the class makes the decision
+/**
+ * This is where the class makes the decision
  * to to fire critic.
  */
 public class Decision {
     ////////////////////////////////////////////////////////////////
     // constants
-    /** this ia another test
+    /**
+     * This is another test.
      */    
     public static final Decision UNSPEC = 
 	new Decision("misc.decision.uncategorized", 1);
@@ -43,6 +45,10 @@ public class Decision {
      * The localized name.
      */
     private String name;
+
+    /**
+     * The priority.
+     */
     private int priority;
   
     /**
@@ -60,10 +66,22 @@ public class Decision {
     // accessors
 
     /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+        if (name == null) {
+            return 0;
+        }
+        return name.hashCode();
+    }
+
+    /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object d2) {
-	if (!(d2 instanceof Decision)) return false;
+	if (!(d2 instanceof Decision)) {
+	    return false;
+	}
 	return ((Decision) d2).getName().equals(getName());
     }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: ToDoItem.java
-// Classes: ToDoItem
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.cognitive;
 
 import java.io.Serializable;
@@ -42,7 +35,8 @@ import org.tigris.gef.ui.Highlightable;
 import org.tigris.gef.util.VectorSet;
 
 
-/** This class defines the feedback items that can be placed on the
+/**
+ *  This class defines the feedback items that can be placed on the
  *  Designer's ToDoList.  The main point of a ToDoItem is to inform
  *  the Designer of some problem or open design issue.  Additional
  *  information in the ToDoItem helps put the designer in a mental
@@ -61,31 +55,36 @@ public class ToDoItem implements Serializable, WizardItem {
     ////////////////////////////////////////////////////////////////
     // constants
     /**
-     * the highest priority todoitem of 3 levels
+     * The highest priority todoitem of 3 levels.
      */
     public static final int HIGH_PRIORITY = 1;
     
     /**
-     * the medium priority todoitem of 3 levels
+     * The medium priority todoitem of 3 levels.
      */
     public static final int MED_PRIORITY = 2;
     
     /**
-     * the lowest priority todoitem of 3 levels
+     * The lowest priority todoitem of 3 levels.
      */
     public static final int LOW_PRIORITY = 3;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** Who posted this item (e.g., a Critic, or the designer)? */
+    /**
+     * Who posted this item (e.g., a Critic, or the designer)?
+     */
     private Poster thePoster;
 
-    /** One line description of issue.
+    /**
+     * One line description of issue.
      */
     private String theHeadline;
 
-    /** How important is this issue? Enough to interrupt the designer? */
+    /**
+     * How important is this issue? Enough to interrupt the designer?
+     */
     private int thePriority;
 
     /** One paragraph description of the issue. */
@@ -94,15 +93,16 @@ public class ToDoItem implements Serializable, WizardItem {
     /** URL for background (textbook?) knowledge about the domain. */
     private String theMoreInfoURL;
 
-    /** Which part of the design this issue affects
+    /**
+     * Which part of the design this issue affects.
      *
      * This is set by the constructor and cannot change.
      */
     private VectorSet theOffenders;
 
-    private Icon theClarifier = null;
+    private Icon theClarifier;
 
-    private Wizard theWizard = null;
+    private Wizard theWizard;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -117,8 +117,7 @@ public class ToDoItem implements Serializable, WizardItem {
      * @param offs the offenders
      */
     public ToDoItem(Poster poster, String h, int p, String d, String m, 
-		    VectorSet offs) 
-    {
+		    VectorSet offs) {
 	thePoster = poster;
 	theHeadline = h;
 	theOffenders = offs;
@@ -198,8 +197,8 @@ public class ToDoItem implements Serializable, WizardItem {
 
 
     // Cached expansions
-    private String cachedExpandedHeadline = null;
-    private String cachedExpandedDescription = null;
+    private String cachedExpandedHeadline;
+    private String cachedExpandedDescription;
 
     ////////////////////////////////////////////////////////////////
     // accessors
@@ -267,7 +266,9 @@ public class ToDoItem implements Serializable, WizardItem {
      *         shows percent done.
      */
     public int getProgress() {
-	if (theWizard != null) return theWizard.getProgress();
+	if (theWizard != null) {
+	    return theWizard.getProgress();
+	}
 	return 0;
     }
 
@@ -276,10 +277,12 @@ public class ToDoItem implements Serializable, WizardItem {
      * 
      * @return the offenders
      */
-    public VectorSet getOffenders() { return theOffenders; }
+    public VectorSet getOffenders() { 
+        return theOffenders;
+    }
     
     /** 
-     * Set the designmatial that is subject of this ToDoItem
+     * Set the designmatial that is subject of this ToDoItem.
      * 
      * @param offenders the offenders
      */
@@ -309,9 +312,13 @@ public class ToDoItem implements Serializable, WizardItem {
      * @return an Icon or null if none found.
      */
     public Icon getClarifier() {
-	if (theClarifier != null) return theClarifier;
+	if (theClarifier != null) {
+	    return theClarifier;
+	}
 	Icon posterClarifier = thePoster.getClarifier();
-	if (posterClarifier != null) return posterClarifier;
+	if (posterClarifier != null) {
+	    return posterClarifier;
+	}
 	return null;
     }
 
@@ -345,20 +352,45 @@ public class ToDoItem implements Serializable, WizardItem {
     }
   
     /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+        int code = 0;
+
+        code += getHeadline().hashCode();
+        if (getPoster() != null) {
+            code += getPoster().hashCode();
+        }
+        // The VectorSet.hashCode() doesn't exist so this will not work.
+        // if (getOffenders() != null) {
+        //     code += getOffenders().hashCode();
+        // }
+        return code;
+    }
+
+    /**
      * Is this item a copy?
      *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
-	if (!(o instanceof ToDoItem)) return false;
+	if (!(o instanceof ToDoItem)) {
+	    return false;
+	}
 	ToDoItem i = (ToDoItem) o;
-	if (!getHeadline().equals(i.getHeadline())) return false;
-	if (!(getPoster() == (i.getPoster()))) return false;
+	if (!getHeadline().equals(i.getHeadline())) {
+	    return false;
+	}
+	if (!(getPoster() == (i.getPoster()))) {
+	    return false;
+	}
 
 	// For some reason VectorSet.equals() allocates a lot of memory, well
 	// some memory at least. Lets try to avoid that when not needed by
 	// invoking this test only when the two previous tests are not decisive.
-	if (!getOffenders().equals(i.getOffenders())) return false;
+	if (!getOffenders().equals(i.getOffenders())) {
+	    return false;
+	}
 	return true;
     }
 
@@ -371,8 +403,9 @@ public class ToDoItem implements Serializable, WizardItem {
 	Enumeration offs = getOffenders().elements();
 	while (offs.hasMoreElements()) {
 	    Object dm = offs.nextElement();
-	    if (dm instanceof Highlightable)
-		((Highlightable) dm).setHighlight(true);
+	    if (dm instanceof Highlightable) {
+	        ((Highlightable) dm).setHighlight(true);
+	    }
 	}
     }
 
@@ -382,8 +415,9 @@ public class ToDoItem implements Serializable, WizardItem {
 	Enumeration offs = getOffenders().elements();
 	while (offs.hasMoreElements()) {
 	    Object dm =  offs.nextElement();
-	    if (dm instanceof Highlightable)
-		((Highlightable) dm).setHighlight(false);
+	    if (dm instanceof Highlightable) {
+	        ((Highlightable) dm).setHighlight(false);
+	    }
 	}
     }
 
@@ -433,10 +467,13 @@ public class ToDoItem implements Serializable, WizardItem {
      * @return true if the todoitem is still valid
      */
     public boolean stillValid(Designer d) {
-	if (thePoster == null) return true;
-	if (theWizard != null && theWizard.isStarted() 
-	        && !theWizard.isFinished())
+	if (thePoster == null) {
 	    return true;
+	}
+	if (theWizard != null && theWizard.isStarted() 
+	        && !theWizard.isFinished()) {
+	    return true;
+	}
 	return thePoster.stillValid(this, d);
     }
 
