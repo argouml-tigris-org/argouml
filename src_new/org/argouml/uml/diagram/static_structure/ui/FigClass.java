@@ -83,13 +83,13 @@ public class FigClass extends FigNodeModelElement {
      * <p>The vector of graphics for attributes (if any). First one is the
      *   rectangle for the entire attributes box.</p>
      */
-    private FigGroup attrVec;
+    private FigCompartment attrVec;
 
     /**
      * <p>The vector of graphics for operations (if any). First one is the
      *   rectangle for the entire operations box.</p>
      */
-    private FigGroup operVec;
+    private FigCompartment operVec;
 
     /**
      * <p>The rectangle for the entire attribute box.</p>
@@ -189,7 +189,7 @@ public class FigClass extends FigNodeModelElement {
         attrBigPort.setLineWidth(1);
 
         // Attributes inside. First one is the attribute box itself.
-        attrVec = new FigGroup();
+        attrVec = new FigCompartment();
         attrVec.setFilled(true);
         attrVec.setLineWidth(1);
         attrVec.addFig(attrBigPort);
@@ -202,7 +202,7 @@ public class FigClass extends FigNodeModelElement {
         operBigPort.setFilled(true);
         operBigPort.setLineWidth(1);
 
-        operVec = new FigGroup();
+        operVec = new FigCompartment();
         operVec.setFilled(true);
         operVec.setLineWidth(1);
         operVec.addFig(operBigPort);
@@ -242,15 +242,18 @@ public class FigClass extends FigNodeModelElement {
         // we're all done for efficiency.
         enableSizeChecking(false);
         setSuppressCalcBounds(true);
-        addFig(getBigPort());
         // addFig(getNameFig()space);
         addFig(getStereotypeFig());
         addFig(getNameFig());
-        addFig(stereoLineBlinder);
         addFig(attrVec);
         addFig(operVec);
-        setSuppressCalcBounds(false);
+        addFig(getBigPort());
+        addFig(stereoLineBlinder);
+        getBigPort().setLineWidth(1);
+        getBigPort().setLineColor(Color.black);
+        getBigPort().setFilled(false);
 
+        setSuppressCalcBounds(false);
         // Set the bounds of the figure to the total of the above (hardcoded)
         setBounds(10, 10, 60, 22 + 2 * ROWHEIGHT);
     }
@@ -292,12 +295,12 @@ public class FigClass extends FigNodeModelElement {
     public Object clone() {
         FigClass figClone = (FigClass) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone.setBigPort((FigRect) it.next());
         figClone.setStereotypeFig((FigText) it.next());
         figClone.setNameFig((FigText) it.next());
+        figClone.attrVec = (FigCompartment) it.next();
+        figClone.operVec = (FigCompartment) it.next();
+        figClone.setBigPort((FigRect) it.next());
         figClone.stereoLineBlinder = (FigRect) it.next();
-        figClone.attrVec = (FigGroup) it.next();
-        figClone.operVec = (FigGroup) it.next();
         return figClone;
     }
 
