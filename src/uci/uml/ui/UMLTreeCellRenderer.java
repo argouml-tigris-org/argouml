@@ -92,19 +92,21 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 	if (MPseudostateKind.BRANCH.equals(kind)) icon = _BranchIcon;
 	if (MPseudostateKind.FINAL.equals(kind)) icon = _FinalStateIcon;
       }
-
       if (icon == null) {
-	String clsPackName = value.getClass().getName();
-	if (clsPackName.startsWith("uci")) {
-	  String cName = clsPackName.substring(clsPackName.lastIndexOf(".")+1);
-	  // special case "UML*" e.g. UMLClassDiagram
-	  if (cName.startsWith("UML")) cName = cName.substring(3);
-	  // special case "MM*" e.g. MClass
-	  if (cName.startsWith("M")) cName = cName.substring(2);
-	  icon = Util.loadIconResource(cName);
-	  if (icon != null) _iconCache.put(value.getClass(), icon);
-	}
-      }
+		  String clsPackName = value.getClass().getName();
+		  if (clsPackName.startsWith("uci") || clsPackName.startsWith("ru")) {
+			  String cName =
+				  clsPackName.substring(clsPackName.lastIndexOf(".")+1);
+			  // special case "UML*" e.g. UMLClassDiagram
+			  if (cName.startsWith("UML")) cName = cName.substring(3);
+			  if (cName.startsWith("M"))
+				  cName = cName.substring(1);
+			  if (cName.endsWith("Impl"))
+				  cName = cName.substring(0,cName.length() -4 );
+			  icon = Util.loadIconResource(cName);
+			  if (icon != null) _iconCache.put(value.getClass(), icon);
+		  }
+	  }
 
       if (icon != null) lab.setIcon(icon);
 
