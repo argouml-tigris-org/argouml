@@ -85,4 +85,15 @@ public class ExplorerPerspective {
     public String toString() {
         return name;
     }
+    
+    /**
+     * Make a clone of this ExplorerPerspective with a different given name.
+     * @param newName the given name
+     * @return the new ExplorerPerspective
+     */
+    public ExplorerPerspective makeNamedClone(String newName) {
+        ExplorerPerspective ep = new ExplorerPerspective(newName);
+        ep.rules.addAll(rules);
+        return ep;
+    }
 }
