@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,50 +22,51 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer;
+// File: GoUseCaseToExtensionPoint.java
+// Classes: GoUseCaseToExtensionPoint
+// Original Author: mail@jeremybennett.com
+// $Id$
 
-import java.util.List;
-import java.util.ArrayList;
+// 16 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Created to support
+// display of extension points in the navigator pane.
 
-import org.argouml.ui.explorer.rules.PerspectiveRule;
+
+package org.argouml.ui.explorer.rules;
+
+import java.util.Collection;
+
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.AbstractGoRule;
+
 /**
- * Represents a perspective (or view) of the uml model for display in the
- * explorer.
+ * <p>Provides a rule to display extension points in the navigation pane.</p>
  *
- * This class replaces the old NavPerspective class. This is much simpler.
- *
- * The rules in the perspective generate child nodes for any given parent
- * node in the explorer tree view. Those nodes are then stored as user objects
- * in the ExplorerTreeModel for efficient rendering.
- *
- * @author  alexb
- * @since 0.15.2, Created on 27 September 2003, 09:32
+ * @author  16 Apr 2002. Jeremy Bennett (mail@jeremybennett.com).
  */
-public class ExplorerPerspective {
+
+public class GoUseCaseToExtensionPoint implements PerspectiveRule {
     
-    List rules;
-    String name;
-    
-    /** Creates a new instance of ExplorerPerspective */
-    public ExplorerPerspective(String newName) {
-        
-        name = Argo.localize("Tree", newName);
-        rules = new ArrayList();
+    protected static Logger cat =
+	Logger.getLogger(GoUseCaseToExtensionPoint.class);
+
+    /**
+     * <p>Give a name to this rule.</p>
+     *
+     * @return  The name of the rule ("<code>Use Case->Extension
+     *          Point</code>"). 
+     */
+
+    public String getRuleName() {
+        return Argo.localize ("Tree", "Use Case->Extension Point");
     }
-    
-    public void addRule(PerspectiveRule rule){
-        
-        rules.add(rule);
+
+    public Collection getChildren(Object parent) { 
+        if (ModelFacade.isAUseCase(parent)) {
+            return ModelFacade.getExtensionPoints(parent);
+        }
+        return null;
     }
-    
-    public Object[] getRulesArray(){
-        
-        return rules.toArray();
-    }
-    
-    public String toString(){
-        
-        return name;
-    }
-}
+
+}  /* End of class GoUseCaseToExtensionPoint */

@@ -43,7 +43,7 @@ import org.apache.log4j.Logger;
  * are shown for some tree element.
  *
  * <p>Since the new Explorer implemnentation,
- *    the only method used in go rules is the getChildren() method.
+ *    this class is no longer used by the explorer, replaced by PerspectiveRule.
  *
  *
  * @author jaap.branderhorst@xs4all.nl

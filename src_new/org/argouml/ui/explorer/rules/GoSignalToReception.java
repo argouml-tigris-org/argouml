@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,50 +22,35 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer;
+package org.argouml.ui.explorer.rules;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Collection;
 
-import org.argouml.ui.explorer.rules.PerspectiveRule;
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.AbstractGoRule;
+
+
 /**
- * Represents a perspective (or view) of the uml model for display in the
- * explorer.
- *
- * This class replaces the old NavPerspective class. This is much simpler.
- *
- * The rules in the perspective generate child nodes for any given parent
- * node in the explorer tree view. Those nodes are then stored as user objects
- * in the ExplorerTreeModel for efficient rendering.
- *
- * @author  alexb
- * @since 0.15.2, Created on 27 September 2003, 09:32
+ * Navigation rule for navperspective to navigate from signal to reception.
+ * Causes reception to be shown as child of signal.
+ * 
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class ExplorerPerspective {
-    
-    List rules;
-    String name;
-    
-    /** Creates a new instance of ExplorerPerspective */
-    public ExplorerPerspective(String newName) {
-        
-        name = Argo.localize("Tree", newName);
-        rules = new ArrayList();
+public class GoSignalToReception implements PerspectiveRule {
+	
+    public String getRuleName() {
+    	return Argo.localize ("Tree", "misc.interaction.messages");
     }
-    
-    public void addRule(PerspectiveRule rule){
-        
-        rules.add(rule);
+
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
+     */
+    public Collection getChildren(Object parent) {
+	if (ModelFacade.isASignal(parent)) {
+	    return ModelFacade.getReceptions(parent);
+	}
+	return null;
     }
-    
-    public Object[] getRulesArray(){
-        
-        return rules.toArray();
-    }
-    
-    public String toString(){
-        
-        return name;
-    }
+
 }
