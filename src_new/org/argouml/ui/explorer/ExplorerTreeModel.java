@@ -52,20 +52,20 @@ import org.argouml.ui.explorer.rules.PerspectiveRule;
  */
 public class ExplorerTreeModel extends DefaultTreeModel
 		implements TreeModelUMLEventListener, ItemListener {
-    
+
     /**
      * an array of 
      * {@link org.argouml.ui.explorer.rules.PerspectiveRule PerspectiveRules},
      * that determine the tree view.
      */
     Object rules[];
-    
+
     /**
      * a map used to resolve model elements to tree nodes when determining
      * what effect a model event will have on the tree.
      */
     Map modelElementMap;
-    
+
     /**
      * the global order for siblings in the tree.
      */
@@ -82,6 +82,10 @@ public class ExplorerTreeModel extends DefaultTreeModel
      */
     ExplorerUpdater nodeUpdater = new ExplorerUpdater();
 
+    /**
+     * Help class to semi-lazily update nodes in the tree.
+     * This class is thread safe.
+     */
     class ExplorerUpdater implements Runnable {
 	/**
 	 * The set of nodes pending being updated.
@@ -93,45 +97,59 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	 */
 	private boolean hot;
 
-	public synchronized void schedule() {
+	/** The maximum number of nodes to update in one chunk */
+	public static final int MAX_UPDATES_PER_RUN = 100;
+
+	/**
+	 * Schedule this object to run on AWT-EventQueue-0 at some later time.
+	 */
+	private synchronized void schedule() {
 	    if (hot)
 		return;
 	    hot = true;
 	    EventQueue.invokeLater(this);
 	}
 
+	/**
+	 * Schedule updateChildren to be called on node at some later time.
+	 * Does nothing if there already is a pending update of node.
+	 *
+	 * @param node The ExplorerTreeNode to be updated.
+	 * @throws NullPointerException If node is null.
+	 */
 	public synchronized void schedule(ExplorerTreeNode node) {
-	    if (!node.getPending()) {
-		pendingUpdates.add(node);
-		node.setPending(true);
-		if (hot)
-		    return;
-	    } else {
+	    if (node.getPending())
 		return;
-	    }
-	    hot = true;
-	    EventQueue.invokeLater(this);
+
+	    pendingUpdates.add(node);
+	    node.setPending(true);
+	    schedule();
 	}
 
+	/**
+	 * Call updateChildren for some pending nodes. Will call at most
+	 * MAX_UPDATES_PER_RUN each time. Should there still be pending
+	 * updates after that then it will reschedule itself.
+	 *
+	 * <p>This method should not be called explicitly, instead schedule
+	 * should be called and this method will be called automatically.
+	 */
 	public void run() {
 	    boolean done = false;
 
-	    synchronized (this) {
-		hot = false;
-	    }
-
-	    for (int i = 0; i < 100; i++) {
+	    for (int i = 0; i < MAX_UPDATES_PER_RUN; i++) {
 		ExplorerTreeNode node = null;
 		synchronized (this) {
 		    if (!pendingUpdates.isEmpty()) {
 			node = (ExplorerTreeNode) pendingUpdates.removeFirst();
 			node.setPending(false);
+		    } else {
+			done = true;
+			hot = false;
+			break;
 		    }
 		}
-		if (node == null) {
-		    done = true;
-		    break;
-		}
+
 		updateChildren(new TreePath(getPathToRoot(node)));
 	    }
 
@@ -143,8 +161,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
     /** Creates a new instance of ExplorerTreeModel */
     public ExplorerTreeModel(Object root) {
 	super(null);
+
 	setRoot(new ExplorerTreeNode(root, this));
-	this.setAsksAllowsChildren(false);
+	setAsksAllowsChildren(false);
 	modelElementMap = new HashMap();
 
 	ExplorerEventAdaptor.getInstance()
@@ -167,6 +186,10 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	traverseModified((TreeNode) getRoot(), node);
     }
 
+    /**
+     * Traverses the children, finds those affected by node, and notifies
+     * them that they are modified.
+     */
     private void traverseModified(TreeNode root, Object node) {
 	Enumeration children = root.children();
 	while (children.hasMoreElements()) {
@@ -183,34 +206,37 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * a model element has been removed from the model.
      */
     public void modelElementRemoved(Object node) {
-        
         Collection nodes = this.findNodes(node);
         Object[] nodesArray = nodes.toArray();
         
         for (int x = 0; x < nodesArray.length; x++) {
             ExplorerTreeNode changeNode = (ExplorerTreeNode) nodesArray[x];
             
-            if(changeNode.getParent() != null){
+            if (changeNode.getParent() != null) {
                 removeNodeFromParent(changeNode);
             }
         }
     }
-    
+
     /**
      * the model structure has changed, eg a new project.
      */
     public void structureChanged() {
-        
-        // remove references for gc
-        if(this.getRoot() instanceof ExplorerTreeNode)
-            ((ExplorerTreeNode)this.getRoot()).remove();
-        Collection values = modelElementMap.values();
-        Iterator valuesIt = values.iterator();
-        while (valuesIt.hasNext()) {
-            ((Collection)valuesIt.next()).clear();
-        }
-        modelElementMap.clear();
+	// remove references for gc
+	if (getRoot() instanceof ExplorerTreeNode)
+	    ((ExplorerTreeNode) getRoot()).remove();
 
+	// This should only be helpful for old garbage collectors.
+	Collection values = modelElementMap.values();
+	Iterator valuesIt = values.iterator();
+	while (valuesIt.hasNext()) {
+	    ((Collection) valuesIt.next()).clear();
+	}
+	modelElementMap.clear();
+
+	// This is somewhat inconsistent with the design of the constructor
+	// that receives the root object by argument. If this is okay
+	// then there may be no need for a constructor with that argument.
 	modelElementMap = new HashMap();
 	Project proj = ProjectManager.getManager().getCurrentProject();
 	ExplorerTreeNode rootNode = new ExplorerTreeNode(proj, this);
@@ -218,11 +244,11 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	addToMap(proj, rootNode);
 	setRoot(rootNode);
     }
-    
+
     /**
      * updates next level of the explorer tree for a given tree path.
      */
-    public void updateChildren(TreePath path){
+    public void updateChildren(TreePath path) {
 	ExplorerTreeNode node = (ExplorerTreeNode) path.getLastPathComponent();
 	Vector children = new Vector();
 	Vector reordered = new Vector();
@@ -258,7 +284,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
         for (int x = 0; x < reordered.size(); x++) {
 	    DefaultMutableTreeNode child = (DefaultMutableTreeNode) reordered.get(x);
-	    Object obj = node.getUserObject();
+	    Object obj = child.getUserObject();
 	    int ip = Collections.binarySearch(children, obj, order);
 
 	    if (ip < 0)
@@ -266,8 +292,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
 	    int cidx = node.getIndex(child);
 
-	    removeNodeFromParent(child);
-	    insertNodeInto(child, node, ip);
+	    // Avoid our initialization/deinitialization here
+	    super.removeNodeFromParent(child);
+	    super.insertNodeInto(child, node, ip);
 	    children.add(ip, obj);
 	}
 
@@ -344,6 +371,12 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * This will then message nodesWereInserted to create the appropriate
      * event. This is the preferred way to add children as it will create the
      * appropriate event.
+     *
+     * <p>Also performs subclass specific initialization.
+     *
+     * @param newChild The new child node.
+     * @param parent The parent node.
+     * @param index The index.
      */
     public void insertNodeInto(MutableTreeNode newChild, MutableTreeNode parent, int index) {
 	super.insertNodeInto(newChild, parent, index);
@@ -356,6 +389,10 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * nodesWereRemoved to create the appropriate event. This is the
      * preferred way to remove a node as it handles the event creation
      * for you.
+     *
+     * <p>Also performs subclass specific uninitialization.
+     *
+     * @param node The node to remove.
      */
     public void removeNodeFromParent(MutableTreeNode node) {
 	removeNodesFromMap(node);
@@ -401,8 +438,8 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * modelElementRemoved} event is received.
      */
     private void addToMap(Object modelElement, TreeNode node) {
-
 	Object value = modelElementMap.get(modelElement);
+
 	if (value != null) {
 	    ((Set) value).add(node);
 	} else {
@@ -425,7 +462,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 		modelElementMap.remove(modelElement);
 	}
     }
-    
+
     /**
      * node lookup for a given model element.
      */
@@ -438,7 +475,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	    return nodes;
 	}
     }
-    
+
     /**
      * Updates the explorer for new perspectives / orderings.
      */
