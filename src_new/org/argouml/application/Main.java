@@ -162,8 +162,8 @@ public class Main {
     //  sets locale for menus
     //
 
-    Locale.setDefault(new Locale(System.getProperty("user.language",""),
-				 System.getProperty("user.region","")));
+    Locale.setDefault(new Locale(System.getProperty("user.language","null"),
+				 System.getProperty("user.region","null")));
 	ResourceLoader.addResourceExtension("gif");
 	ResourceLoader.addResourceLocation("/org/argouml/Images");
 	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
