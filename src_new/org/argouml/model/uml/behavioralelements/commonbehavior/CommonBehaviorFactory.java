@@ -40,6 +40,7 @@ import ru.novosoft.uml.behavior.common_behavior.MException;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
+import ru.novosoft.uml.behavior.common_behavior.MLinkObject;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.common_behavior.MReception;
@@ -201,6 +202,16 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
      */
     public MLinkEnd createLinkEnd() {
         MLinkEnd modelElement = MFactory.getDefaultFactory().createLinkEnd();
+	super.initialize(modelElement);
+	return modelElement;
+    }
+
+    /** Create an empty but initialized instance of a UML LinkObject.
+     *  
+     *  @return an initialized UML LinkObject instance.
+     */
+    public MLinkObject createLinkObject() {
+        MLinkObject modelElement = MFactory.getDefaultFactory().createLinkObject();
 	super.initialize(modelElement);
 	return modelElement;
     }
