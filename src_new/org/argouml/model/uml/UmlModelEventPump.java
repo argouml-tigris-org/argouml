@@ -50,7 +50,7 @@ import ru.novosoft.uml.MElementListener;
  * @since Oct 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UmlModelEventPump implements MElementListener {
+public final class UmlModelEventPump implements MElementListener {
     
     private static UmlModelEventPump _instance = null;
     
@@ -71,7 +71,7 @@ public class UmlModelEventPump implements MElementListener {
     /**
      * Constructor for UmlModelEventPump.
      */
-    protected UmlModelEventPump() {
+    private UmlModelEventPump() {
         super();
     }
     
