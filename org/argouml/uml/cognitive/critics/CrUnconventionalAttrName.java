@@ -43,7 +43,7 @@ import org.tigris.gef.util.VectorSet;
  *  where trailing underscores are removed, and
  *  constants are not nagged at.
  */
-public class CrUnconventionalAttrName extends CrUML {
+public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 
     /**
      * The constructor.
@@ -116,6 +116,21 @@ public class CrUnconventionalAttrName extends CrUML {
     }
 
     /**
+     * 
+     * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
+     */
+    public String computeSuggestion(String name) {
+        String sug = name;
+        if (sug == null) return "";
+        // next if is not very nice, improve this suggestion and related test.
+        if ("_".equals(sug)) return "_";
+        if (sug.startsWith("_"))
+            sug = "_" + sug.substring(1, 2).toLowerCase() + sug.substring(2);
+        else
+            sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
+        return sug;
+    }
+    /**
      * @see org.argouml.cognitive.Poster#getClarifier()
      */
     public Icon getClarifier() {
@@ -146,29 +161,11 @@ public class CrUnconventionalAttrName extends CrUML {
 	    Object me =
 		/*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = computeSuggestion(ModelFacade.getName(me));
-	    if (sug.startsWith("_"))
-		sug =
-		    "_" + sug.substring(1, 2).toLowerCase() + sug.substring(2);
-	    else
-		sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
 	    String ins = "Change the attribute name to start with a " 
 	        + "lowercase letter.";
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	}
-    }
-    
-    public String computeSuggestion(String name) {
-        String sug = name;
-        if (sug == null) return "";
-        // next if is not very nice, improve this suggestion and related test.
-        if ("_".equals(sug)) return "_";
-        if (sug.startsWith("_"))
-		sug =
-		    "_" + sug.substring(1, 2).toLowerCase() + sug.substring(2);
-	    else
-		sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
-        return sug;
     }
     
     /**

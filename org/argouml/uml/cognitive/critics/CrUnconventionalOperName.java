@@ -33,15 +33,15 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
 
 /** Critic to detect whether an operation name obeys to certain rules.
  */
-public class CrUnconventionalOperName extends CrUML {
+public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
 
     /**
      * The constructor.
@@ -143,7 +143,7 @@ public class CrUnconventionalOperName extends CrUML {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = ModelFacade.getName(me);
-	    sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
+	    sug = computeSuggestion(sug);
 	    boolean cand = candidateForConstructor(me);
 	    String ins = "Change the operation name to start with a " 
 		+ "lowercase letter";
@@ -156,6 +156,16 @@ public class CrUnconventionalOperName extends CrUML {
 	}
     }
     
+    /**
+     * @param sug
+     * @return
+     */
+    public String computeSuggestion(String sug) {
+        if (sug == null) return "";
+        sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
+        return sug;
+    }
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
