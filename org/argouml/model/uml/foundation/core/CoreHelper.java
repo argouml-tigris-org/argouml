@@ -1383,7 +1383,22 @@ public class CoreHelper {
      * @return Collection
      */
     public Collection getAllRealizedInterfaces(Object o) {
-        Collection col = new ArrayList();
+        return internalGetAllRealizedInterfaces(
+						o,
+						new ArrayList(),
+						new HashSet());
+    }
+
+    /**
+     * Helper method for getAllRealizedInterfaces.
+     * @param o
+     * @param col
+     * @param visited
+     * @return Collection
+     */
+    private Collection internalGetAllRealizedInterfaces(
+				Object o, Collection col, Set visited) {
+        visited.add(o);
         if (o != null) {
             if (ModelFacade.isAClass(o)) {
                 MClass clazz = (MClass) o;
@@ -1402,7 +1417,10 @@ public class CoreHelper {
                 Collection superTypes = getSupertypes(o);
                 it = superTypes.iterator();
                 while (it.hasNext()) {
-                    col.addAll(getAllRealizedInterfaces(it.next()));
+		    Object obj = it.next();
+		    if (!visited.contains(obj)) {
+			internalGetAllRealizedInterfaces(obj, col, visited);
+		    }
                 }
             }
         }
