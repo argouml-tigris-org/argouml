@@ -75,7 +75,7 @@ import ru.novosoft.uml.model_management.MPackage;
 public final class Notation implements PropertyChangeListener {
 
     /** Define a static log4j category variable for ArgoUML notation.
-     * @deprecated in favor of {@link #getLogger() }
+     * @deprecated public access - will become private
      */
     public static final Logger cat =
         Logger.getLogger("org.argouml.application.notation");
@@ -749,13 +749,5 @@ public final class Notation implements PropertyChangeListener {
     public static void setDefaultShadowWidth(int width) {
         Configuration.setInteger(KEY_DEFAULT_SHADOW_WIDTH, width);
     }
-
-
-    /** Returns the logger.
-     * @return the logger.
-     */
-    public final static Logger getLogger() {
-        return cat;
-    }
-
+    
 } // END NOTATION
