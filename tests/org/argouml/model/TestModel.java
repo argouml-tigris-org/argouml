@@ -105,6 +105,11 @@ public class TestModel extends TestCase {
             return;
         }
 
+        // Handling the isInitiated method
+        if (factoryIF.isPrimitive() && factoryIF.getName().equals("boolean")) {
+            return;
+        }
+
         assertTrue("The return type from " + savedMethod
                 + " must be an interface.",
                 factoryIF.isInterface());
