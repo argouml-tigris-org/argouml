@@ -24,11 +24,14 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLThirdPartyEventListener;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * @since Oct 12, 2002
@@ -57,15 +60,15 @@ public class UMLFlowSourceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
      */
     protected boolean isValidPropertySet(MElementEvent e) {
-        return e.getSource() == getTarget() && e.getName().equals("source");
+        return (e.getSource() == getTarget() && e.getName().equals("source")) ||
+            (e.getSource() instanceof MNamespace && e.getName().equals("ownedElement"));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(((MFlow)getTarget()).getSources());
-        MFlow flow = (MFlow)getTarget();
+        setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(((MModelElement)getTarget()).getNamespace(), MModelElement.class));
     }
 
     /**
