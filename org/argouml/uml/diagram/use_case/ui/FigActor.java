@@ -36,12 +36,16 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.util.Vector;
 
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
+
+import ru.novosoft.uml.MElementEvent;
 
 /** Class to display graphics for a UML MState in a diagram. */
 
@@ -257,6 +261,71 @@ public class FigActor extends FigNodeModelElement {
         ret.add(new Point(((FigLine) getFigAt(ARMS_POSN)).getX1(),
                           ((FigLine) getFigAt(ARMS_POSN)).getY1()));
         return ret;
+    }
+    
+    /**
+     * Handles changes of the model. Takes into account the event that
+     * occured. If you need to update the whole fig, consider using
+     * renderingChanged.<p>
+     *
+     * @see FigNodeModelElement#modelChanged(MElementEvent)
+     */
+    protected void modelChanged(MElementEvent mee) {
+        //      name updating
+        super.modelChanged(mee);
+        
+        boolean damage = false;
+        if (getOwner() == null) {
+            return;
+        }
+        
+        if (mee == null || mee.getName().equals("isAbstract")) {
+            updateAbstract();
+            damage = true;
+        }
+        if (mee == null || mee.getName().equals("stereotype")) {
+            updateStereotypeText();
+            damage = true;
+        }
+        if (mee != null && ModelFacade.getStereotypes(getOwner())
+                                .contains(mee.getSource())) {
+            updateStereotypeText();
+            damage = true;
+        }
+        
+        if (damage) damage();
+    }
+    
+    /**
+     * Rerenders the fig if needed. This functionality was originally
+     * the functionality of modelChanged but modelChanged takes the
+     * event now into account.
+     */
+    public void renderingChanged() {
+        if (getOwner() != null) {
+            updateAbstract();
+        }
+        super.renderingChanged();
+        damage();
+    }
+
+    
+    /**
+     * Updates the name if modelchanged receives an "isAbstract" event
+     */
+    protected void updateAbstract() {
+        Rectangle rect = getBounds();
+        if (getOwner() == null) {
+            return;
+        }
+        Object cls = /*(MClass)*/ getOwner();
+        if (ModelFacade.isAbstract(cls)) {
+            getNameFig().setFont(getItalicLabelFont());
+	} else {
+            getNameFig().setFont(getLabelFont());
+	}
+        super.updateNameText();
+        setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
 } /* end class FigActor */
