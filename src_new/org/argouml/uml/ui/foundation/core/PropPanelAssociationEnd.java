@@ -65,23 +65,26 @@ import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     protected JLabel associationsLabel;
 
-    public PropPanelAssociationEnd(String name, ImageIcon icon, int columns) {
-        super(name,icon,columns);
-    }
-
     public PropPanelAssociationEnd(String name, ImageIcon icon, Orientation orientation) {
         super(name, icon, orientation);
     }
     
     public PropPanelAssociationEnd() {
-      super("AssociationEnd",_assocEndIcon, ConfigLoader.getTabPropsOrientation());
-      Class mclass = MAssociationEnd.class;
+        super("AssociationEnd",_assocEndIcon, ConfigLoader.getTabPropsOrientation());
+        Class mclass = MAssociationEnd.class;
+      
+      //   this will cause the components on this page to be notified
+      //      anytime a stereotype, namespace, operation, etc
+      //      has its name changed or is removed anywhere in the model
+      Class[] namesToWatch = { MStereotype.class,MNamespace.class, MAssociation.class,MClassifier.class };
+        setNameEventListening(namesToWatch);
       makeFields(mclass);
     }
 

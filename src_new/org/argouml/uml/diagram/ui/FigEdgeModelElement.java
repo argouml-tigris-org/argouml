@@ -509,5 +509,13 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         }
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#damage()
+     */
+    public void damage() {
+        super.damage();
+        _fig.damage();
+    }
+
 } /* end class FigEdgeModelElement */
 

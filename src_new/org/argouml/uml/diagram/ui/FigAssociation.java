@@ -35,12 +35,14 @@ import java.util.Vector;
 import javax.swing.JMenu;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.ActionAggregation;
 import org.argouml.uml.ui.ActionMultiplicity;
 import org.argouml.uml.ui.ActionNavigability;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConv;
 import org.tigris.gef.base.PathConvPercent;
@@ -51,6 +53,7 @@ import org.tigris.gef.presentation.ArrowHeadComposite;
 import org.tigris.gef.presentation.ArrowHeadDiamond;
 import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.ArrowHeadNone;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.foundation.core.MAssociation;
@@ -59,6 +62,7 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 
 public class FigAssociation extends FigEdgeModelElement {
@@ -226,15 +230,98 @@ public class FigAssociation extends FigEdgeModelElement {
     }
     // needs-more-work: parse multiplicities
   }
-
+  
+  private boolean updateClassifiers() {
+    MAssociation as = (MAssociation) getOwner();
+    if (as == null || getLayer() == null) throw new IllegalStateException("Association or layer null");
+    
+    MClassifier newSource = (MClassifier)CoreHelper.getHelper().getSource(as);
+    MClassifier newDest = (MClassifier)CoreHelper.getHelper().getDestination(as);
+    
+    Fig currentSourceFig = getSourceFigNode();
+    Fig currentDestFig = getDestFigNode();
+    MClassifier currentSource = null;
+    MClassifier currentDestination = null;
+    if (currentSourceFig != null && currentDestFig != null) {
+        
+        currentSource = (MClassifier)currentSourceFig.getOwner();
+        currentDestination = (MClassifier)currentDestFig.getOwner();
+    }
+    if (newSource != currentSource || newDest != currentDestination) {
+        Fig newSourceFig = getLayer().presentationFor(newSource);
+        Fig newDestFig = getLayer().presentationFor(newDest);
+        if (newSourceFig == null || newDestFig == null) {
+            delete();
+            return false;
+        }
+        if (newSourceFig != currentSourceFig || currentSourceFig == null) {
+            setSourceFigNode((FigNode)newSourceFig);
+            setSourcePortFig(newSourceFig);
+            
+        }
+        if (newDestFig != currentDestFig || currentDestFig == null) {
+            setDestFigNode((FigNode)newDestFig);
+            setDestPortFig(newDestFig);            
+        }
+        if (newDestFig != null) {
+            ((FigNode)newSourceFig).updateEdges();
+        }
+        if (newSourceFig != null) {
+            ((FigNode)newDestFig).updateEdges();
+        }
+        calcBounds();
+        // Globals.curEditor().remove(this);
+        // Globals.curEditor().add(this);
+        // Globals.curEditor().
+        // Globals.curEditor().getSelectionManager().select(this);
+    }
+    return true;
+  }
+  
+  private void updateEnd(FigText multiToUpdate, FigText roleToUpdate, FigText orderingToUpdate, MAssociationEnd end) {
+    MMultiplicity multi = end.getMultiplicity();
+    String name = end.getName();
+    MOrderingKind order = end.getOrdering();
+    MStereotype stereo = end.getStereotype();
+    
+    multiToUpdate.setText(Notation.generate(this, multi));
+    orderingToUpdate.setText(getOrderingName(order));
+    if (stereo != null) {
+        roleToUpdate.setText(Notation.generate(this, stereo) + " " + Notation.generate(this,name));
+    } else
+        roleToUpdate.setText(Notation.generate(this, name));
+  }
 
   protected void modelChanged() {
+    super.modelChanged();
     MAssociation as = (MAssociation) getOwner();
     if (as == null || getLayer() == null) return;
-    String asNameStr = Notation.generate(this, as.getName());
+    
+    if (!updateClassifiers()) return;
+    
+    MAssociationEnd ae0 =
+        (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
+    MAssociationEnd ae1 =
+        (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
+    updateEnd(_srcMult, _srcRole, _srcOrdering, ae0);
+    updateEnd(_destMult, _destRole, _destOrdering, ae1);
+    
+    boolean srcNav = ae0.isNavigable();
+    boolean destNav = ae1.isNavigable();
+    if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
+      srcNav = destNav = false;
+    sourceArrowHead = chooseArrowHead(ae0.getAggregation(), srcNav);
+    destArrowHead = chooseArrowHead(ae1.getAggregation(), destNav);
+    setSourceArrowHead(sourceArrowHead);
+    setDestArrowHead(destArrowHead);
+    _srcGroup.calcBounds();
+    _destGroup.calcBounds();
+    _middleGroup.calcBounds();
+  }
+    
 
-    super.modelChanged();
-
+/*
+  // String asNameStr = Notation.generate(this, as.getName());
     MAssociationEnd ae0 =
         (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
     MAssociationEnd ae1 =
@@ -327,6 +414,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcGroup.calcBounds();
     _destGroup.calcBounds();
     _middleGroup.calcBounds();
+*/
     /*
     if (setFigs) {
         computeRoute();
@@ -338,7 +426,7 @@ public class FigAssociation extends FigEdgeModelElement {
     }
     */
     
-  }
+  // }
 
   
 
