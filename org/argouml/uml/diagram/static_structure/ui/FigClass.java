@@ -241,7 +241,7 @@ public class FigClass extends FigNodeModelElement {
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
         enableSizeChecking(false);
-        suppressCalcBounds = true;
+        setSuppressCalcBounds(true);
         addFig(getBigPort());
         // addFig(getNameFig()space);
         addFig(getStereotypeFig());
@@ -249,7 +249,7 @@ public class FigClass extends FigNodeModelElement {
         addFig(stereoLineBlinder);
         addFig(attrVec);
         addFig(operVec);
-        suppressCalcBounds = false;
+        setSuppressCalcBounds(false);
 
         // Set the bounds of the figure to the total of the above (hardcoded)
         setBounds(10, 10, 60, 22 + 2 * ROWHEIGHT);
@@ -424,7 +424,7 @@ public class FigClass extends FigNodeModelElement {
     public void setAttributeVisible(boolean isVisible) {
         Rectangle rect = getBounds();
         int h =
-	    checkSize
+	    isCheckSize()
 	    ? ((ROWHEIGHT * Math.max(1, attrVec.getFigs(null).size() - 1) + 2)
 	       * rect.height
 	       / getMinimumSize().height)
@@ -462,7 +462,7 @@ public class FigClass extends FigNodeModelElement {
     public void setOperationVisible(boolean isVisible) {
         Rectangle rect = getBounds();
         int h =
-	    checkSize
+	    isCheckSize()
 	    ? ((ROWHEIGHT * Math.max(1, operVec.getFigs(null).size() - 1) + 2)
 	       * rect.height
 	       / getMinimumSize().height)
@@ -967,7 +967,7 @@ public class FigClass extends FigNodeModelElement {
         // compartment
 
         Rectangle oldBounds = getBounds();
-        Dimension aSize = checkSize ? getMinimumSize() : new Dimension(w, h);
+        Dimension aSize = isCheckSize() ? getMinimumSize() : new Dimension(w, h);
 
         int newW = Math.max(w, aSize.width);
         int newH = h;
@@ -1049,14 +1049,14 @@ public class FigClass extends FigNodeModelElement {
 	    (operVec.isVisible())
 	    ? Math.max(1, operVec.getFigs(null).size() - 1)
 	    : 0;
-        if (checkSize) {
+        if (isCheckSize()) {
             height = ROWHEIGHT * na + 2 + extraEach;
         } else if (newH > currentY - y && na + no > 0) {
             height = (newH + y - currentY) * na / (na + no) + 1;
         } else {
             height = 1;
         }
-        aSize = getUpdatedSize(attrVec, x, currentY, newW, height);
+        aSize = updateFigGroupSize(attrVec, x, currentY, newW, height);
 
         if (attrVec.isVisible()) {
             currentY += aSize.height - 1; // -1 for 1 pixel overlap
@@ -1065,7 +1065,7 @@ public class FigClass extends FigNodeModelElement {
         // Finally update the bounds of the operations box
 
         aSize =
-	    getUpdatedSize(operVec, x, currentY, newW, newH + y - currentY);
+	    updateFigGroupSize(operVec, x, currentY, newW, newH + y - currentY);
 
         // set bounds of big box
 
@@ -1188,7 +1188,7 @@ public class FigClass extends FigNodeModelElement {
             }
         }
         Rectangle rect = getBounds();
-        getUpdatedSize(attrVec, xpos, ypos, 0, 0);
+        updateFigGroupSize(attrVec, xpos, ypos, 0, 0);
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);
@@ -1259,7 +1259,7 @@ public class FigClass extends FigNodeModelElement {
             }
         }
         Rectangle rect = getBounds();
-        getUpdatedSize(operVec, xpos, ypos, 0, 0);
+        updateFigGroupSize(operVec, xpos, ypos, 0, 0);
         // ouch ugly but that's for a next refactoring
         // TODO: make setBounds, calcBounds and updateBounds consistent
         setBounds(rect.x, rect.y, rect.width, rect.height);

@@ -162,10 +162,10 @@ public class FigInterface extends FigNodeModelElement {
         // when we try to render it, if we find we have a stereotype.
         setStereotype(NotationHelper.getLeftGuillemot()
 		      + "Interface" + NotationHelper.getRightGuillemot());
-        _stereo.setExpandOnly(true);
+        getStereotypeFigText().setExpandOnly(true);
         getStereotypeFig().setFilled(true);
         getStereotypeFig().setLineWidth(1);
-        _stereo.setEditable(false);
+        getStereotypeFigText().setEditable(false);
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setVisible(true);
@@ -183,13 +183,13 @@ public class FigInterface extends FigNodeModelElement {
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
         enableSizeChecking(false);
-        suppressCalcBounds = true;
+        setSuppressCalcBounds(true);
         addFig(getBigPort());
         addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(_stereoLineBlinder);
         addFig(_operVec);
-        suppressCalcBounds = false;
+        setSuppressCalcBounds(false);
 
         // Set the bounds of the figure to the total of the above (hardcoded)
         enableSizeChecking(true);
@@ -320,7 +320,7 @@ public class FigInterface extends FigNodeModelElement {
     public void setOperationVisible(boolean isVisible) {
         Rectangle rect = getBounds();
         int h =
-	    checkSize
+	    isCheckSize()
 	    ? ((ROWHEIGHT * Math.max(1, _operVec.getFigs(null).size() - 1) + 2)
 	       * rect.height
 	       / getMinimumSize().height)
@@ -737,7 +737,7 @@ public class FigInterface extends FigNodeModelElement {
         // compartment
 
         Rectangle oldBounds = getBounds();
-        Dimension aSize = checkSize ? getMinimumSize() : new Dimension(w, h);
+        Dimension aSize = isCheckSize() ? getMinimumSize() : new Dimension(w, h);
 
         int newW = Math.max(w, aSize.width);
         int newH = h;
@@ -810,7 +810,7 @@ public class FigInterface extends FigNodeModelElement {
         // Finally update the bounds of the operations box
 
         aSize =
-	    getUpdatedSize(_operVec, x, currentY, newW, newH + y - currentY);
+	    updateFigGroupSize(_operVec, x, currentY, newW, newH + y - currentY);
 
         // set bounds of big box
 
@@ -895,7 +895,7 @@ public class FigInterface extends FigNodeModelElement {
 	    }
 	}
 	Rectangle rect = getBounds();
-	getUpdatedSize(_operVec, xpos, ypos, 0, 0);
+	updateFigGroupSize(_operVec, xpos, ypos, 0, 0);
 	// ouch ugly but that's for a next refactoring
 	// TODO: make setBounds, calcBounds and updateBounds consistent
 	setBounds(rect.x, rect.y, rect.width, rect.height);

@@ -722,7 +722,7 @@ public class FigUseCase extends FigNodeModelElement {
             // now we assume that extension points are the width of the overall
             // text rectangle (true unless the name is wider than any EP).
 
-            getUpdatedSize(epVec,
+            updateFigGroupSize(epVec,
                     	   x + ((newW - textSize.width) / 2),
                     	   currY,
                     	   textSize.width,

@@ -175,8 +175,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 				     "Dialog",
 				     12,
 				     false));
-        _stereo.setAllowsTab(false);
-        _stereo.setEditable(false);
+        getStereotypeFigText().setAllowsTab(false);
+        getStereotypeFigText().setEditable(false);
         getStereotypeFig().setFilled(false);
         getStereotypeFig().setLineWidth(0);
         setNameFig(new FigText(DEFAULT_WIDTH / 2,
@@ -252,7 +252,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      */
     protected void updateStereotypeText() {
         super.updateStereotypeText();
-        center(_stereo);
+        center(getStereotypeFigText());
     }
 
     private void center(FigText figText) {
