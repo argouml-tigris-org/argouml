@@ -50,8 +50,8 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
-import org.argouml.uml.diagram.ui.HasAttributesCompartment;
-import org.argouml.uml.diagram.ui.HasOperationsCompartment;
+import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
+import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
@@ -73,7 +73,7 @@ import ru.novosoft.uml.MElementEvent;
  */
 
 public class FigClass extends FigNodeModelElement 
-        implements HasAttributesCompartment, HasOperationsCompartment{
+        implements AttributesCompartmentContainer, OperationsCompartmentContainer{
 
 
     ////////////////////////////////////////////////////////////////
