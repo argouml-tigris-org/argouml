@@ -183,12 +183,13 @@ public class FigAssociationEnd extends FigEdgeModelElement {
 
         multiToUpdate.setText(Notation.generate(this, multi));
         orderingToUpdate.setText(getOrderingName(order));
+        String n = Notation.generate(this, name);
+        if (n.length() < 1) visi = ""; //temporary solution for issue 1011
         if (stereo != null) {
             roleToUpdate.setText(Notation.generate(this, stereo)
-                    + " " + visi
-                    + Notation.generate(this, name));
+                    + " " + visi + n);
         } else {
-            roleToUpdate.setText(visi + Notation.generate(this, name));
+            roleToUpdate.setText(visi + n);
         }
     }
 
