@@ -92,7 +92,6 @@ import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /** Abstract class to display diagram arcs for UML ModelElements that
@@ -494,7 +493,7 @@ public abstract class FigEdgeModelElement
             Object oldOwner = getOwner();
 
             if (org.argouml.model.ModelFacade.isAModelElement(oldOwner))
-		((MModelElement)oldOwner).removeMElementListener(this);
+                UmlModelEventPump.getPump().removeModelEventListener(this,oldOwner);
             if (org.argouml.model.ModelFacade.isAModelElement(newOwner)) {
                 UmlModelEventPump.getPump().addModelEventListener(this, newOwner);
                 if (ModelFacade.getUUID(newOwner) == null)

@@ -253,6 +253,7 @@ public class ModelFacade {
     public static final Object VISIBILITYKIND     = MVisibilityKind.class;
 
     public static final Object MODELELEMENT       = MModelElement.class;
+    public static final Object AGGREGATIONKIND = MAggregationKind.class;
 
     public static final Object INITIAL_PSEUDOSTATEKIND =
         MPseudostateKind.INITIAL;
@@ -378,7 +379,15 @@ public class ModelFacade {
         return handle instanceof MActor;
     }
 
-
+    /** Recognizer for AggregationKind
+     *
+     * @param handle candidate
+     * @returns true if handle is an AggregationKind
+     */
+    public static boolean isAAggregationKind(Object handle) {
+        return handle instanceof MAggregationKind;
+    }
+    
     /** Recognizer for Association.
      *
      * @param handle candidate
@@ -2444,6 +2453,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Get the discriminator.
+     *
+     * @param handle the Generalization
+     * @returns the discriminator a String
+     */
+    public static Object getDiscriminator(Object handle) {
+        if (handle instanceof MGeneralization) {
+            return ((MGeneralization) handle).getDiscriminator();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /** Get the dispatchaction of a stimulus.
      *
      * @param handle the stimulus that we are getting the dispatchaction of

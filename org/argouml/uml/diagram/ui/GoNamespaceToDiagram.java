@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -40,9 +37,6 @@ import org.argouml.ui.AbstractGoRule;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
-
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  * Shows the diagrams as children of their namespace. 
  * 
@@ -58,7 +52,7 @@ public class GoNamespaceToDiagram extends AbstractGoRule {
     public Collection getChildren(Object parent) {
         if (org.argouml.model.ModelFacade.isANamespace(parent)) {
             List returnList = new ArrayList();
-            MNamespace ns = (MNamespace) parent;
+            Object namespace = parent;//MNamespace
             Project proj = ProjectManager.getManager().getCurrentProject();
             Iterator it = proj.getDiagrams().iterator();
             while (it.hasNext()) {
@@ -72,7 +66,7 @@ public class GoNamespaceToDiagram extends AbstractGoRule {
                 if (d instanceof UMLSequenceDiagram) {
                     continue;
                 }
-                if (d.getNamespace() == ns)
+                if (d.getNamespace() == namespace)
                 	returnList.add(d);                 
             }
             return returnList;
