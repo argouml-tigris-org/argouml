@@ -66,37 +66,42 @@ import org.apache.log4j.Category;
 public class Import {
 
     // Create a interface to the current diagram
-    static DiagramInterface _diagram;
+    private DiagramInterface _diagram;
 
-    private static JComponent configPanel = null;
-    private static JCheckBox descend;
+    private JComponent configPanel = null;
+    private JCheckBox descend;
 
     /** The files that needs a second RE pass. */
-    private static Vector secondPassFiles;
+    private Vector secondPassFiles;
 
 	// Imported directory
-	private static String src_path;
+	private String src_path;
 	
-	static private JCheckBox create_diagrams;
-        static private JCheckBox minimise_figs;
+	private JCheckBox create_diagrams;
+    private JCheckBox minimise_figs;
 
     // log4j logging
     private static Category cat = Category.getInstance(org.argouml.uml.reveng.Import.class);
 
 	public static final String separator = "/"; //System.getProperty("file.separator");
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = ProjectManager.getManager().getCurrentProject();
-	JDialog dialog;
+	private ProjectBrowser pb = ProjectBrowser.TheInstance;
+	private Project p = ProjectManager.getManager().getCurrentProject();
+	private JDialog dialog;
+	// TODO: change to pluggable module
+	private JavaImport module = new JavaImport();
+	
+	private ImportStatusScreen iss;
 	
 	/**
 	 * Creates dialog window with chooser and configuration panel.
 	 *
 	 */
 	public Import() {
-			JComponent chooser = getChooser();
+			JComponent chooser = module.getChooser(this);
 			dialog = new JDialog(pb, "Import sources");
+			dialog.setModal(true);
 			dialog.getContentPane().add(chooser, BorderLayout.WEST);			
-			dialog.getContentPane().add(Import.getConfigPanel(), BorderLayout.EAST);
+			dialog.getContentPane().add(getConfigPanel(), BorderLayout.EAST);
 			dialog.pack();
 			int x = (pb.getSize().width-dialog.getSize().width)/2;
 			int y = (pb.getSize().height-dialog.getSize().height)/2;
@@ -104,43 +109,13 @@ public class Import {
 			dialog.setVisible(true);			
 	}
 	
-	/**
-	 * Create chooser for objects we are to import.
-	 * Default implemented chooser is JFileChooser.
-	 */
-	private JComponent getChooser() {
-		String directory = Globals.getLastDirectory();
-		JFileChooser ch = OsUtil.getFileChooser(directory);
-		if (ch == null) ch = OsUtil.getFileChooser();
-
-		final JFileChooser chooser = ch; 
-		chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-		SuffixFilter filter = FileFilters.JavaFilter;
-		chooser.addChoosableFileFilter(filter);
-		chooser.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent e) {
-				if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION)) {
-					File theFile = chooser.getSelectedFile();
-					if (theFile != null) {
-						String path = chooser.getSelectedFile().getParent();
-						String filename = chooser.getSelectedFile().getName();
-						filename = path + separator + filename;
-						Globals.setLastDirectory(path);
-						if (filename != null) {
-							disposeDialog();
-							pb.showStatus("Parsing " + filename + "...");
-							Import.doFile(p, theFile);
-							return;
-						}
-					}
-				} else if (e.getActionCommand().equals(JFileChooser.CANCEL_SELECTION)) {
-					disposeDialog();
-				}
-			}
-		});
-		return chooser;
+	public Project getProject() {
+		return p;
 	}
 	
+	public ProjectBrowser getProjectBrowser() {
+		return pb;
+	}
 	/**
 	 * Close dialog window.
 	 *
@@ -153,7 +128,7 @@ public class Import {
      * Get the panel that lets the user set reverse engineering
      * parameters.
      */
-    public static JComponent getConfigPanel() {
+    public JComponent getConfigPanel() {
 
 	if(configPanel == null) {
 	    JPanel general = new JPanel();
@@ -177,7 +152,7 @@ public class Import {
                 
 	    JTabbedPane tab = new JTabbedPane();
 	    tab.add(general, "General");
-	    tab.add(JavaImport.getConfigPanel(), "Java");
+	    tab.add(module.getConfigPanel(), "Java");
 	    configPanel = tab;
 	}
 	return configPanel;
@@ -195,95 +170,35 @@ public class Import {
      * @param p The current Argo project.
      * @param f The file or directory, we want to parse.
      */
-    public static void doFile(Project p, File f) {
-	Vector files = listDirectoryRecursively(f);
-	_diagram = getCurrentDiagram();
-	if (f.isDirectory()) src_path = f.getAbsolutePath();
-	else src_path = null;
+    public void doFile() {
+		Vector files = module.getList(this);
+		_diagram = getCurrentDiagram();
+
 	
-	ProjectBrowser.TheInstance.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         
         //turn off critiquing for reverse engineering
         boolean b = Designer.TheDesigner.getAutoCritique();
-        if (b)
-            Designer.TheDesigner.setAutoCritique(false);
-        
-        ImportStatusScreen iss = new ImportStatusScreen("Importing",
-							"Splash");
-
-	SwingUtilities.invokeLater(new ImportRun(iss, p, _diagram, files, b));
-
-	iss.show();
+        if (b)  Designer.TheDesigner.setAutoCritique(false);
+        iss = new ImportStatusScreen("Importing", "Splash");
+		SwingUtilities.invokeLater(new ImportRun(files, b));
+		iss.show();
     }
 
 	/**
+	 * Set path for processed directory.
+	 */
+	public void setSrcPath(String path) {
+		src_path = path;
+	}
+	
+	/**
 	 * @return path for processed directory.
 	 */
-	public static String getSrcPath() {
+	public String getSrcPath() {
 		return src_path;
 	}
 	
-    /**
-     * <p>This method returns a Vector with files to import.
-     *
-     * <p>Processing each file in turn is equivalent to a breadth first
-     * search through the directory structure.
-     *
-     * @param f The directory or a file.
-     */
-    private static Vector listDirectoryRecursively(File f) {
-	Vector res = new Vector();
-
-	Vector toDoDirectories = new Vector();
-	Vector doneDirectories = new Vector();
-
-	toDoDirectories.add(f);
-
-	while (toDoDirectories.size() > 0) {
-	    File curDir = (File)toDoDirectories.elementAt(0);
-	    toDoDirectories.removeElementAt(0);
-	    doneDirectories.add(curDir);
-
-	    if (!curDir.isDirectory()) {
-		// For some reason, this eledged directory is a single file
-		// This could be that there is some confusion or just
-		// the normal, that a single file was selected and is
-		// supposed to be imported.
-		res.add(curDir);
-		continue;
-	    }
-
-	    // Get the contents of the directory
-	    String [] files = curDir.list();
-
-	    for( int i = 0; i < files.length; i++) {
-		File curFile = new File(curDir, files[i]);
-
-		// The following test can cause trouble with links,
-		// because links are accepted as directories, even if
-		// they link files.
-		// Links could also result in infinite loops. For this reason
-		// we don't do this traversing recursively.
-		if (curFile.isDirectory()) {   // If this file is a directory
-		    if(descend.isSelected()) {
-			if (doneDirectories.indexOf(curFile) >= 0
-			    || toDoDirectories.indexOf(curFile) >= 0) {
-			    // This one is already seen or to be seen.
-			}
-			else {
-			    toDoDirectories.add(curFile);
-			}
-		    }
-		}
-		else {
-		    if (isParseable(curFile))
-			res.add(curFile);
-		}
-	    }
-	}
-	return res;
-    }
-
 
     /**
      * <p>Parse 1 Java file, using JavaImport.
@@ -291,11 +206,12 @@ public class Import {
      * @param f The file to parse.
      * @exception Parser exception.
      */
-    public static void parseFile( Project p, File f) throws Exception {
+    public void parseFile( Project p, Object f) throws Exception {
 
 	// Is this file a Java source file?
-	if ( f.getName().endsWith(".java")) {
-	    JavaImport.parseFile( p, f, _diagram);
+	if ( module.isParseable(f)) {
+		pb.showStatus("Parsing " + f.toString() + "...");
+	    module.parseFile( p, f, _diagram, this);
 	}
     }
 
@@ -303,40 +219,35 @@ public class Import {
 	 * Check, if "Create diagrams from imported code" is selected.
 	 * @return true, if "Create diagrams from imported code" is selected
 	 */
-	public static boolean isCreateDiagramsChecked() {
-            if(create_diagrams != null)
+	public boolean isCreateDiagramsChecked() {
+			if(create_diagrams != null)
 		return create_diagrams.isSelected();
-            else
-                return true;
+			else
+				return true;
+	}
+
+	/**
+	 * Check, if "Discend directories recursively" is selected.
+	 * @return true, if "Discend directories recursively" is selected
+	 */
+	public boolean isDiscendDirectoriesRecursively() {
+			if(descend != null)
+		return descend.isSelected();
+			else
+				return true;
 	}
 
 	/**
 	 * Check, if "Minimise Class icons in diagrams" is selected.
 	 * @return true, if "Minimise Class icons in diagrams" is selected
 	 */
-	public static boolean isMinimiseFigsChecked() {
+	public boolean isMinimiseFigsChecked() {
             if(minimise_figs != null)
 		return minimise_figs.isSelected();
             else
                 return false;
 	}
         
-    /**
-     * Tells if the file is (Java) parseable or not.
-     * Must match with files that are actually parseable.
-     *
-     * @see #parseFile
-     * @param f file to be tested.
-     * @return true if parseable, false if not.
-     */
-    private static boolean isParseable(File f) {
-	if (f.getName().endsWith(".java")) {
-	    return true;
-	}
-
-	return false;
-    }
-
     /**
      * If we have modified any diagrams, the project was modified and
      * should be saved. I don't consider a import, that only modifies
@@ -347,7 +258,7 @@ public class Import {
      *
      * @return true, if any diagrams where modified and the project should be saved before exit.
      */
-    public static boolean needsSave() {
+    public boolean needsSave() {
 	return (_diagram.getModifiedDiagrams().size() > 0);
     }
 
@@ -356,14 +267,14 @@ public class Import {
 	 * else return null.
 	 *
 	 */
-	private static DiagramInterface getCurrentDiagram() {
+	private DiagramInterface getCurrentDiagram() {
 		DiagramInterface result = null;
 		if (Globals.curEditor().getGraphModel() instanceof ClassDiagramGraphModel) {
 			result =  new DiagramInterface(Globals.curEditor());
 		}
 		return result;
 	}
-}
+//}
 
 /**
  * This class parses each file in turn and allows the GUI to refresh
@@ -373,9 +284,6 @@ public class Import {
  * in order to cancel long import runs.
  */
 class ImportRun implements Runnable {
-    ImportStatusScreen _iss;
-    Project _project;
-    DiagramInterface _diagram;
     Vector _filesLeft;
     int _countFiles;
     int _countFilesThisPass;
@@ -385,20 +293,12 @@ class ImportRun implements Runnable {
     
     boolean criticThreadWasOn;
 
-    // log4j logging
-    private static Category cat = Category.getInstance(org.argouml.uml.reveng.ImportRun.class);
-    
-    public ImportRun(ImportStatusScreen iss, Project p, DiagramInterface d,
-		     Vector f, boolean critic) {
-	_iss = iss;
-        
-        _iss.addCancelButtonListener(new ActionListener(){
+    public ImportRun(Vector f, boolean critic) {
+    iss.addCancelButtonListener(new ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
                 cancel();
             }});
         
-	_project = p;
-	_diagram = d;
 	_filesLeft = f;
 	_countFiles = _filesLeft.size();
 	_countFilesThisPass = _countFiles;
@@ -416,23 +316,22 @@ class ImportRun implements Runnable {
      * method.
      */
     public void run() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
 
 	if (_filesLeft.size() > 0) {
-	    File curFile = (File)_filesLeft.elementAt(0);
+	    Object curFile = _filesLeft.elementAt(0);
 	    _filesLeft.removeElementAt(0);
 
 	    try {
-		_st.mark(curFile.getName());
-		pb.showStatus("Importing " + curFile.getName()
-			      + " (in " + curFile.getParent());
-		Import.parseFile(_project, curFile); // Try to parse this file.
+		_st.mark(curFile.toString());
+		pb.showStatus("Importing " + curFile.toString());
+			      //+ " (in " + curFile.getParent());
+		parseFile(p, curFile); // Try to parse this file.
 
 		int tot;
-		_iss.setMaximum(tot = _countFiles
+		iss.setMaximum(tot = _countFiles
 				+ (_diagram == null ? 0 : _diagram.getModifiedDiagrams().size()/10));
 		int act;
-		_iss.setValue(act = _countFiles
+		iss.setValue(act = _countFiles
 			      - _filesLeft.size() - _nextPassFiles.size());
 		pb.getStatusBar().showProgress(100 * act/tot);
 	    }
@@ -470,11 +369,10 @@ class ImportRun implements Runnable {
 
 	// Check if any diagrams where modified and the project
 	// should be saved before exiting.
-	if(_diagram != null && Import.needsSave()) {
-	    _project.setNeedsSave(true);
+	if(_diagram != null && needsSave()) {
+	    p.setNeedsSave(true);
 	}
 
-	ProjectManager.getManager().setCurrentProject(_project);
 	pb.showStatus("Import done");
 
 	// Layout the modified diagrams.
@@ -488,24 +386,25 @@ class ImportRun implements Runnable {
 	    	layouter.layout();
 
 	    	// Resize the diagram???
-	    	_iss.setValue(_countFiles +(i + 1)/10);
+	    	iss.setValue(_countFiles +(i + 1)/10);
 		}
 	}
 
-	_iss.done();
-        ProjectBrowser.TheInstance.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+	iss.done();
+    pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
-        // turn criticing on again
-        if(criticThreadWasOn)
-          Designer.TheDesigner.setAutoCritique(true);
+    // turn criticing on again
+    if(criticThreadWasOn)  Designer.TheDesigner.setAutoCritique(true);
         
 	Argo.log.info(_st);
 	pb.getStatusBar().showProgress(0);
+
     }
     
     private void cancel(){cancelled=true;}
     
     private boolean isCancelled(){return cancelled;}
+
 }
 
 /**
@@ -569,4 +468,5 @@ class ImportStatusScreen extends JDialog {
 
     public void done() { hide(); dispose(); }
 
+}
 }

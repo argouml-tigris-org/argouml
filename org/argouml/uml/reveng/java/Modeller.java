@@ -60,6 +60,9 @@ public class Modeller
     private Object model;
 
     private DiagramInterface _diagram;
+    
+    /** Current import session */
+    private Import _import;
 
     /** The package which the currentClassifier belongs to. */
     private Object currentPackage;
@@ -90,12 +93,14 @@ public class Modeller
     */
     public Modeller(Object model,
                   DiagramInterface diagram,
+                  Import _import,
                   boolean noAssociations,
                   boolean arraysAsDatatype)
     {
 	this.model = model;
 	this.noAssociations = noAssociations;
 	this.arraysAsDatatype = arraysAsDatatype;
+	this._import = _import;
 	currentPackage = this.model;
 	parseState = new ParseState(this.model, getPackage("java.lang"));
 	parseStateStack = new Stack();
@@ -123,7 +128,7 @@ public class Modeller
 	// since I need diagrams for all the packages.
 	String ownerPackageName, currentName = name;
 	while( ! "".equals(ownerPackageName = getPackageName(currentName))) {
-	    if(getDiagram() != null && Import.isCreateDiagramsChecked() && getDiagram().isDiagramInProject(ownerPackageName)) {
+	    if(getDiagram() != null && _import.isCreateDiagramsChecked() && getDiagram().isDiagramInProject(ownerPackageName)) {
                 getDiagram().selectClassDiagram( getPackage(ownerPackageName), ownerPackageName);
                 getDiagram().addPackage(getPackage(currentName));
             }
@@ -131,8 +136,8 @@ public class Modeller
 	}
 	// Save src_path in the upper package
 	Object mPackage = getPackage(currentName);
-	if (Import.getSrcPath() != null && ModelFacade.getTaggedValue(mPackage, "src_path") == null)
-		ModelFacade.setTaggedValue(mPackage, "src_path", Import.getSrcPath());
+	if (_import.getSrcPath() != null && ModelFacade.getTaggedValue(mPackage, "src_path") == null)
+		ModelFacade.setTaggedValue(mPackage, "src_path", _import.getSrcPath());
 		
 	// Find or create a MPackage NSUML object for this package.
 	mPackage = getPackage(name);
@@ -291,7 +296,7 @@ public class Modeller
                 getGeneralization(currentPackage, parentInterface, mInterface);
             }
             catch(ClassifierNotFoundException e) {
-		// Currently if a classifier cannot be found in the
+				// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
                 // created on the fly.
@@ -366,7 +371,7 @@ public class Modeller
     public void popClassifier()
     {
         // now create diagram if it doesn't exists in project
-		if (Import.isCreateDiagramsChecked()) {
+		if (_import.isCreateDiagramsChecked()) {
                         if (getDiagram() == null) {
                                 _diagram = new DiagramInterface(Globals.curEditor());
                                 if (currentPackageName != null && !currentPackageName.trim().equals("")) {
@@ -393,10 +398,10 @@ public class Modeller
         // add the current classifier to the diagram.
         Object classifier = parseState.getClassifier();
         if(ModelFacade.isAInterface(classifier)) {
-            if (getDiagram() != null && Import.isCreateDiagramsChecked()) _diagram.addInterface(classifier,Import.isMinimiseFigsChecked());
+            if (getDiagram() != null && _import.isCreateDiagramsChecked()) _diagram.addInterface(classifier,_import.isMinimiseFigsChecked());
         } else {
             if(ModelFacade.isAClass(classifier)) {
-                if (getDiagram() != null && Import.isCreateDiagramsChecked()) _diagram.addClass(classifier,Import.isMinimiseFigsChecked());
+                if (getDiagram() != null && _import.isCreateDiagramsChecked()) _diagram.addClass(classifier,_import.isMinimiseFigsChecked());
             }
         }
 
