@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -134,11 +134,11 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Operation setRank changes the value of the attribute _rank.
      * 
-     * @param new_rank
+     * @param newRank
      *            represents the new value of _rank.
      */
-    public void setRank(int new_rank) {
-        _rank = new_rank;
+    public void setRank(int newRank) {
+        _rank = newRank;
     }
 
     /**
@@ -162,12 +162,12 @@ class ClassdiagramNode implements LayoutedNode {
 
     /**
      * Operation setColumn changes the value of the attribute _column.
-     * 
-     * @param new_column
+     *
+     * @param newColumn
      *            represents the new value of _column.
      */
-    public void setColumn(int new_column) {
-        _column = new_column;
+    public void setColumn(int newColumn) {
+        _column = newColumn;
     }
 
     /**
@@ -182,8 +182,7 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Get the uplink for a given index.
      * 
-     * @param The
-     *            index of this uplink.
+     * @param i The index of this uplink.
      * @return The ClassdiagramNode for this uplink.
      */
     public ClassdiagramNode getUplink(int i) {
@@ -193,11 +192,11 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Add an uplink to this node.
      * 
-     * @param new_uplink
+     * @param newUplink
      *            represents the new uplinks.
      */
-    public void addUplink(ClassdiagramNode new_uplink) {
-        _uplinks.add(new_uplink);
+    public void addUplink(ClassdiagramNode newUplink) {
+        _uplinks.add(newUplink);
     }
 
     /**
@@ -212,8 +211,7 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Get the downlink for a given index.
      * 
-     * @param The
-     *            index of this downlink.
+     * @param i The index of this downlink.
      * @return The ClassdiagramNode of this downlink.
      */
     public ClassdiagramNode getDownlink(int i) {
@@ -223,11 +221,10 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Operation setDownlinks changes the value of the attribute _downlinks.
      * 
-     * @param new_downlinks
-     *            represents the new value of _downlinks.
+     * @param newDownlink Represents the new value of _downlinks.
      */
-    public void addDownlink(ClassdiagramNode new_downlink) {
-        _downlinks.add(new_downlink);
+    public void addDownlink(ClassdiagramNode newDownlink) {
+        _downlinks.add(newDownlink);
     }
 
     /**
@@ -242,11 +239,11 @@ class ClassdiagramNode implements LayoutedNode {
     /**
      * Operation setFigure changes the value of the attribute _figure.
      * 
-     * @param new_figure
+     * @param newFigure
      *            represents the new value of _figure.
      */
-    public void setFigure(FigNode new_figure) {
-        _figure = new_figure;
+    public void setFigure(FigNode newFigure) {
+        _figure = newFigure;
     }
 
     /**
@@ -300,7 +297,7 @@ class ClassdiagramNode implements LayoutedNode {
      * Constant to be used as an initializer when this node has no rank assigned
      * yet.
      */
-    public static int NORANK = -1;
+    public static final int NORANK = -1;
 
     /**
      * Attribute _rank represents the current rank of this node.
@@ -311,7 +308,7 @@ class ClassdiagramNode implements LayoutedNode {
      * Constant to be used as an initializer when this node is not placed at an
      * column.
      */
-    public int NOCOLUMN = -1;
+    public static final int NOCOLUMN = -1;
 
     /**
      * Attribute _column represents the current column of this node.

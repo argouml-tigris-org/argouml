@@ -603,7 +603,7 @@ public final class Notation implements PropertyChangeListener {
      * @param o          The object to generate.
      *
      * @param documented  A flag of unknown meaning. Only has any effect for
-     *                    {@link MOperation} and {@link MAttribute}.
+     *                    Operations and Attributes.
      *
      * @return            The generated string.
      */
@@ -631,7 +631,7 @@ public final class Notation implements PropertyChangeListener {
      * @param o          The object to generate.
      *
      * @param documented  A flag of unknown meaning. Only has any effect for
-     *                    {@link MOperation} and {@link MAttribute}.
+     *                    Operations and Attributes.
      *
      * @return            The generated string.
      */

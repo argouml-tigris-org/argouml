@@ -220,7 +220,7 @@ public class CrReservedName extends CrUML {
     /** Dont critique the built-in java types, they are supposed to
      * have those "reserved" names.
      *
-     * @param the name of the type to test.
+     * @param name The name of the type to test.
      * @return true if it is a builtin.
      */
     private boolean isBuiltin(String name) {

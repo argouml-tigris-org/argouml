@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,7 +60,7 @@ public class UMLTextField
     implements DocumentListener, UMLUserInterfaceComponent, FocusListener {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(UMLTextField.class);
+    private static Logger LOG = Logger.getLogger(UMLTextField.class);
 
     private UMLUserInterfaceContainer _container;
     private UMLTextProperty _property;
@@ -137,11 +137,11 @@ public class UMLTextField
     }
 
     public void roleAdded(final MElementEvent p1) {
-        //        cat.info("UMLTextField.roleAdded: event p1 happened...");
+        //        LOG.info("UMLTextField.roleAdded: event p1 happened...");
     }
 
     public void recovered(final MElementEvent p1) {
-        //        cat.info("UMLTextField.recovered: event p1 happened...");
+        //        LOG.info("UMLTextField.recovered: event p1 happened...");
     }
 
     public void roleRemoved(final MElementEvent p1) {
@@ -179,19 +179,23 @@ public class UMLTextField
     }
     
     /**
-     * <p>Updates both the Collection (by setText()) and the drawing (using 
-     *   the if statements and code blocks).</p>
+     * Updates both the Collection (by setText()) and the drawing (using 
+     * the if statements and code blocks).<p>
      *
-     * <p>The code forces {@link FigClass} and {@link FigUseCase} to update the
-     *   drawing as information is typed into the text boxes in the property
-     *   panes. This is done by getting component parts (features or extension
-     *   points) from the NSUML object and setting them back again to force a
-     *   redraw. The setting back costs VERY much.</p>
+     * The code forces {@link
+     * org.argouml.uml.diagram.static_structure.ui.FigClass} and
+     * {@link org.argouml.uml.diagram.use_case.ui.FigUseCase} to
+     * update the drawing as information is typed into the text boxes
+     * in the property panes. This is done by getting component parts
+     * (features or extension points) from the NSUML object and
+     * setting them back again to force a redraw. The setting back
+     * costs VERY much.<p>
      *
      * @author modified by psager@tigris.org Aug. 27, 2001
      *
-     * @author 16 Apr, 2002. Jeremy Bennett (mail@jeremybennett.com). Modified
-     *         to support {@link FigUseCase}.
+     * @author 16 Apr, 2002. Jeremy Bennett (mail@jeremybennett.com).
+     *         Modified to support
+     *         {@link org.argouml.uml.diagram.use_case.ui.FigUseCase}.
      */
     private void update() {
         String oldText = getText();
@@ -306,15 +310,15 @@ public class UMLTextField
 		    SwingUtilities.invokeLater(textSetter);
                 }
                 catch (Exception e) {
-                    cat.fatal("Repeating exception");
-                    cat.fatal(e);
+                    LOG.fatal("Repeating exception");
+                    LOG.fatal(e);
                     System.exit(-1);
                 }
                 _firstException = false;
             }
             else {
-                cat.fatal("Repeating exception");
-                cat.fatal(ex);
+                LOG.fatal("Repeating exception");
+                LOG.fatal(ex);
                 System.exit(-1);
             }
         }

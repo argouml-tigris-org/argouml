@@ -126,7 +126,7 @@ public class GeneratorDisplay extends Generator2 {
      *
      *  @author jaap.branderhorst@xs4all.nl
      *  @see org.argouml.application.api.NotationProvider2#generateOperation(
-     *          MOperation, boolean)
+     *          Object, boolean)
      */
     public String generateOperation(Object op, boolean documented) {
         String stereoStr = generateStereotype(ModelFacade.getStereotypes(op));
@@ -245,7 +245,7 @@ public class GeneratorDisplay extends Generator2 {
      * initial value and properties are shown/not shown.
      *
      * @see org.argouml.application.api.NotationProvider2#generateAttribute(
-     *          MAttribute, boolean)
+     *          Object, boolean)
      */
     public String generateAttribute(Object attr, boolean documented) {
         String visibility = generateVisibility(attr);
@@ -313,11 +313,12 @@ public class GeneratorDisplay extends Generator2 {
     }
     
     /**
-     * Generates the representation of a parameter on the display (diagram). The string to be returned
-     * will have the following syntax:
-     * <p>
+     * Generates the representation of a parameter on the display
+     * (diagram). The string to be returned will have the following
+     * syntax:<p>
+     *
      * kind name : type-expression = default-value
-     * </p>
+     *
      * @see org.argouml.application.api.NotationProvider2#generateParameter(java.lang.Object)
      */
     public String generateParameter(Object parameter) {
@@ -330,7 +331,8 @@ public class GeneratorDisplay extends Generator2 {
             s.append(" : ");
             s.append(classRef);
         }
-        String defaultValue = generateExpression(ModelFacade.getDefaultValue(parameter));
+        String defaultValue =
+	    generateExpression(ModelFacade.getDefaultValue(parameter));
         if (defaultValue.length() > 0) {
             s.append(" = ");
             s.append(defaultValue);
@@ -466,14 +468,11 @@ public class GeneratorDisplay extends Generator2 {
         StringBuffer s = new StringBuffer();
         if (kind == null || kind == ModelFacade.IN_PARAMETERDIRECTIONKIND) {
             s.append("in");
-        } else 
-        if (kind == ModelFacade.INOUT_PARAMETERDIRECTIONKIND) {
+        } else if (kind == ModelFacade.INOUT_PARAMETERDIRECTIONKIND) {
             s.append("inout");
-        } else
-        if (kind == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
+        } else if (kind == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
             // return nothing
-        } else
-        if (kind == ModelFacade.OUT_PARAMETERDIRECTIONKIND) {
+        } else if (kind == ModelFacade.OUT_PARAMETERDIRECTIONKIND) {
             s.append("out");
         }
         return s.toString();
@@ -837,7 +836,7 @@ public class GeneratorDisplay extends Generator2 {
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateMultiplicity(
-     *          MMultiplicity)
+     *          Object)
      */
     public String generateMultiplicity(Object m) {
         if (m == null) {
@@ -1008,16 +1007,13 @@ public class GeneratorDisplay extends Generator2 {
             event.append("when(");
             event.append(generateExpression(ModelFacade.getExpression(m)));
             event.append(")");           
-        } else
-        if (ModelFacade.isATimeEvent(m)) {
+        } else if (ModelFacade.isATimeEvent(m)) {
             event.append("after(");
             event.append(generateExpression(ModelFacade.getExpression(m)));
             event.append(")");                   
-        } else 
-        if (ModelFacade.isASignalEvent(m)) {
+        } else if (ModelFacade.isASignalEvent(m)) {
             event.append(generateName(ModelFacade.getName(m)));         
-        } else
-        if (ModelFacade.isACallEvent(m)) {
+        } else if (ModelFacade.isACallEvent(m)) {
             event.append(generateName(ModelFacade.getName(m)));     
             event.append(generateParameterList(m));           
         }
@@ -1025,12 +1021,13 @@ public class GeneratorDisplay extends Generator2 {
     }
     
     /**
-     * Generates a list of parameters. The parameters belong to the given object o. 
-     * The returned string will have the following syntax:
-     * <p>
+     * Generates a list of parameters. The parameters belong to the
+     * given object.  The returned string will have the following
+     * syntax:<p>
+     * 
      * (param1, param2, param3, ..., paramN)
-     * </p>
-     * @param o the 'owner' of the parameters
+     *
+     * @param parameterListOwner the 'owner' of the parameters
      * @return the generated parameter list
      */
     private String generateParameterList(Object parameterListOwner) {
@@ -1067,41 +1064,6 @@ public class GeneratorDisplay extends Generator2 {
         return ret;
     }
     
-    /**
-     * @see java.lang.Object#hashCode()
-     */
-    public int hashCode() {
-        // TODO Auto-generated method stub
-        return super.hashCode();
-    }
-    /**
-     * @see java.lang.Object#finalize()
-     */
-    protected void finalize() throws Throwable {
-        // TODO Auto-generated method stub
-        super.finalize();
-    }
-    /**
-     * @see java.lang.Object#clone()
-     */
-    protected Object clone() throws CloneNotSupportedException {
-        // TODO Auto-generated method stub
-        return super.clone();
-    }
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    public boolean equals(Object obj) {
-        // TODO Auto-generated method stub
-        return super.equals(obj);
-    }
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        // TODO Auto-generated method stub
-        return super.toString();
-    }
     // public NotationName getNotation() {
     // return Notation.NOTATION_ARGO;
     // }

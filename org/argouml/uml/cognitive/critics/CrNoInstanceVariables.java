@@ -62,9 +62,10 @@ public class CrNoInstanceVariables extends CrUML {
 
         // if the object does not have a name,
         // than no problem
-        if ((ModelFacade.getName(dm) == null) ||
-            ("".equals(ModelFacade.getName(dm))))
+        if ((ModelFacade.getName(dm) == null)
+	    || ("".equals(ModelFacade.getName(dm)))) {
             return NO_PROBLEM;
+	}
 
 	// types can probably have variables, but we should not nag at them
 	// not having any.
@@ -87,8 +88,8 @@ public class CrNoInstanceVariables extends CrUML {
     /**
      * Searches for attributes that are changeable instance attributes.
      *
-     * @param handle the classifier to examine
-     * @param number of levels searched
+     * @param dm The classifier to examine.
+     * @param depth Number of levels searched.
      * @return true if an attribute can be found in this class
      *		or in any of its generalizations.
      */
@@ -139,6 +140,8 @@ public class CrNoInstanceVariables extends CrUML {
 	}
     }
     
-    public Class getWizardClass(ToDoItem item) { return WizAddInstanceVariable.class; }
+    public Class getWizardClass(ToDoItem item) {
+	return WizAddInstanceVariable.class;
+    }
 } /* end class CrNoInstanceVariables */
 

@@ -48,7 +48,7 @@ public class ArgoDialog extends Dialog {
     protected static final String MNEMONIC_KEY_SUFFIX = ".mnemonic";
     
     /**
-     * @see Dialog(Frame, String, boolean)
+     * @see Dialog#Dialog(Frame, String, boolean)
      *
      * Creates a new ArgoDialog with the default optionType.
      */
@@ -57,7 +57,7 @@ public class ArgoDialog extends Dialog {
     }
 
     /**
-     * @see Dialog(Frame, String, int, boolean)
+     * @see Dialog#Dialog(Frame, String, int, boolean)
      *
      * Creates a new ArgoDialog with the specified optionType.
      */

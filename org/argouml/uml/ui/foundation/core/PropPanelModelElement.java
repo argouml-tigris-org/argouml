@@ -40,9 +40,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.ArgoModule;
-import org.argouml.application.api.Pluggable;
-import org.argouml.application.api.PluggablePropertyPanel;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.uml.UmlHelper;
@@ -71,7 +68,8 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     protected static ImageIcon _objectIcon = lookupIcon("Object");
 
-    protected static ImageIcon _componentInstanceIcon = lookupIcon("ComponentInstance");
+    protected static ImageIcon _componentInstanceIcon =
+	lookupIcon("ComponentInstance");
 
     protected static ImageIcon _nodeInstanceIcon = lookupIcon("NodeInstance");
 
@@ -85,9 +83,11 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     protected static ImageIcon _assocEndIcon = lookupIcon("AssociationEnd");
 
-    protected static ImageIcon _assocEndRoleIcon = lookupIcon("AssociationEndRole");
+    protected static ImageIcon _assocEndRoleIcon =
+	lookupIcon("AssociationEndRole");
 
-    protected static ImageIcon _generalizationIcon = lookupIcon("Generalization");
+    protected static ImageIcon _generalizationIcon =
+	lookupIcon("Generalization");
 
     protected static ImageIcon _realizationIcon = lookupIcon("Realization");
 
@@ -123,7 +123,8 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     protected static ImageIcon _extendIcon = lookupIcon("Extend");
 
-    protected static ImageIcon _extensionPointIcon = lookupIcon("ExtensionPoint");
+    protected static ImageIcon _extensionPointIcon =
+	lookupIcon("ExtensionPoint");
 
     protected static ImageIcon _includeIcon = lookupIcon("Include");
 
@@ -145,9 +146,11 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     protected static ImageIcon _transitionIcon = lookupIcon("Transition");
 
-    protected static ImageIcon _classifierRoleIcon = lookupIcon("ClassifierRole");
+    protected static ImageIcon _classifierRoleIcon =
+	lookupIcon("ClassifierRole");
 
-    protected static ImageIcon _associationRoleIcon = lookupIcon("AssociationRole");
+    protected static ImageIcon _associationRoleIcon =
+	lookupIcon("AssociationRole");
 
     protected static ImageIcon _callActionIcon = lookupIcon("CallAction");
 
@@ -194,25 +197,35 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     private JTextField nameTextField;
 
-    private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
+    private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel =
+	new UMLModelElementNamespaceComboBoxModel();
 
-    private static UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
+    private static UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel =
+	new UMLModelElementStereotypeComboBoxModel();
 
-    private static UMLModelElementNamespaceListModel namespaceListModel = new UMLModelElementNamespaceListModel();
+    private static UMLModelElementNamespaceListModel namespaceListModel =
+	new UMLModelElementNamespaceListModel();
 
-    private static UMLModelElementClientDependencyListModel clientDependencyListModel = new UMLModelElementClientDependencyListModel();
+    private static UMLModelElementClientDependencyListModel clientDependencyListModel =
+	new UMLModelElementClientDependencyListModel();
 
-    private static UMLModelElementConstraintListModel constraintListModel = new UMLModelElementConstraintListModel();
+    private static UMLModelElementConstraintListModel constraintListModel =
+	new UMLModelElementConstraintListModel();
 
-    private static UMLModelElementElementResidenceListModel elementResidenceListModel = new UMLModelElementElementResidenceListModel();
+    private static UMLModelElementElementResidenceListModel elementResidenceListModel =
+	new UMLModelElementElementResidenceListModel();
 
-    private static UMLModelElementNameDocument nameDocument = new UMLModelElementNameDocument();
+    private static UMLModelElementNameDocument nameDocument =
+	new UMLModelElementNameDocument();
 
-    private static UMLModelElementSourceFlowListModel sourceFlowListModel = new UMLModelElementSourceFlowListModel();
+    private static UMLModelElementSourceFlowListModel sourceFlowListModel =
+	new UMLModelElementSourceFlowListModel();
 
-    private static UMLModelElementSupplierDependencyListModel supplierDependencyListModel = new UMLModelElementSupplierDependencyListModel();
+    private static UMLModelElementSupplierDependencyListModel supplierDependencyListModel =
+	new UMLModelElementSupplierDependencyListModel();
 
-    private static UMLModelElementTargetFlowListModel targetFlowListModel = new UMLModelElementTargetFlowListModel();
+    private static UMLModelElementTargetFlowListModel targetFlowListModel =
+	new UMLModelElementTargetFlowListModel();
 
     public PropPanelModelElement(String name, ImageIcon icon,
             Orientation orientation) {
@@ -231,7 +244,8 @@ public abstract class PropPanelModelElement extends PropPanel {
         this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("UMLMenu", "label.name"),
                 getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+		 getStereotypeBox());
 
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceScroll());
@@ -273,35 +287,36 @@ public abstract class PropPanelModelElement extends PropPanel {
     // are present to provide default implementations for any
     // property panel that extends this class.
     /**
-     * @see PluggablePropertyPanel#getPropertyPanel()
+     * @see org.argouml.application.api.PluggablePropertyPanel#getPropertyPanel()
      */
     public PropPanel getPropertyPanel() {
         return this;
     }
 
     /**
-     * @see ArgoModule#isModuleEnabled()
+     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
      */
     public boolean isModuleEnabled() {
         return true;
     }
 
     /**
-     * @see ArgoModule#getModulePopUpActions(Vector, Object)
+     * @see org.argouml.application.api.ArgoModule#getModulePopUpActions(
+     *         Vector, Object)
      */
     public Vector getModulePopUpActions(Vector v, Object o) {
         return null;
     }
 
     /**
-     * @see ArgoModule#shutdownModule()
+     * @see org.argouml.application.api.ArgoModule#shutdownModule()
      */
     public boolean shutdownModule() {
         return true;
     }
 
     /**
-     * @see ArgoModule#initializeModule()
+     * @see org.argouml.application.api.ArgoModule#initializeModule()
      */
     public boolean initializeModule() {
         LOG.debug("initializeModule()");
@@ -309,13 +324,13 @@ public abstract class PropPanelModelElement extends PropPanel {
     }
 
     /**
-     * @see ArgoModule#setModuleEnabled(boolean)
+     * @see org.argouml.application.api.ArgoModule#setModuleEnabled(boolean)
      */
     public void setModuleEnabled(boolean enabled) {
     }
 
     /**
-     * @see Pluggable#inContect(Object[])
+     * @see org.argouml.application.api.Pluggable#inContext(Object[])
      */
     public boolean inContext(Object[] o) {
         return true;
@@ -430,7 +445,8 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     protected JPanel getNamespaceVisibilityPanel() {
         if (namespaceVisibilityPanel == null) {
-            namespaceVisibilityPanel = new UMLModelElementVisibilityRadioButtonPanel(
+            namespaceVisibilityPanel =
+		new UMLModelElementVisibilityRadioButtonPanel(
                     Translator.localize("UMLMenu", "label.visibility"), true);
         }
         return namespaceVisibilityPanel;
@@ -438,7 +454,8 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     protected JCheckBox getSpecializationCheckBox() {
         if (specializationCheckBox == null) {
-            specializationCheckBox = new UMLElementOwnershipSpecificationCheckBox();
+            specializationCheckBox =
+		new UMLElementOwnershipSpecificationCheckBox();
         }
         return specializationCheckBox;
     }

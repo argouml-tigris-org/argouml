@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigClass.java
-// Classes: FigClass
-// Original Author: abonner
-
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
@@ -115,47 +111,50 @@ public class FigClass extends FigNodeModelElement {
     // constructors
 
     /**
-     * <p>Main constructor for a {@link FigClass}.</p>
+     * Main constructor for a {@link FigClass}.<p>
      *
-     * <p>Parent {@link FigNodeModelElement} will have created the main box
-     *   {@link #getBigPort()} and its name {@link #_name} and stereotype (@link
-     *   #_stereo}. This constructor creates a box for the attributes and
-     *   operations.</p>
+     * Parent {@link FigNodeModelElement} will have created the main
+     * box {@link #getBigPort()} and its name {@link #getNameFig()}
+     * and stereotype (@link #getStereotypeFig()}. This constructor
+     * creates a box for the attributes and operations.<p>
      *
-     * <p>The properties of all these graphic elements are adjusted
-     *   appropriately. The main boxes are all filled and have outlines.</p>
+     * The properties of all these graphic elements are adjusted
+     * appropriately. The main boxes are all filled and have
+     * outlines.<p>
      *
-     * <p>For reasons I don't understand the stereotype is created in a box
-     *   with lines. So we have to created a blanking rectangle to overlay the
-     *   bottom line, and avoid four compartments showing.</p>
+     * For reasons I don't understand the stereotype is created in a
+     * box with lines. So we have to created a blanking rectangle to
+     * overlay the bottom line, and avoid four compartments
+     * showing.<p>
      *
-     * <p>There is some complex logic to allow for the possibility that
-     *   stereotypes may not be displayed (unlike operations and attributes
-     *   this is not a standard thing for UML). Some care is needed to ensure
-     *   that additional space is not added, each time a stereotyped class is
-     *   loaded.</p>
+     * There is some complex logic to allow for the possibility that
+     * stereotypes may not be displayed (unlike operations and
+     * attributes this is not a standard thing for UML). Some care is
+     * needed to ensure that additional space is not added, each time
+     * a stereotyped class is loaded.<p>
      *
-     * <p>There is a particular problem when loading diagrams with stereotyped
-     *   classes. Because we create a FigClass indicating the stereotype is not
-     *   displayed, we then add extra space for such classes when they are
-     *   first rendered. This ought to be fixed by correctly saving the class
-     *   dimensions, but that needs more work. The solution here is to use a
-     *   simple flag to indicate the FigClass has just been created.</p>
+     * There is a particular problem when loading diagrams with
+     * stereotyped classes. Because we create a FigClass indicating
+     * the stereotype is not displayed, we then add extra space for
+     * such classes when they are first rendered. This ought to be
+     * fixed by correctly saving the class dimensions, but that needs
+     * more work. The solution here is to use a simple flag to
+     * indicate the FigClass has just been created.<p>
      *
-     * <p><em>Warning</em>. Much of the graphics positioning is hard coded. The
-     *   overall figure is placed at location (10,10). The name compartment (in
-     *   the parent {@link FigNodeModelElement} is 21 pixels high. The
-     *   stereotype compartment is created 15 pixels high in the parent, but we
-     *   change it to 19 pixels, 1 more than ({@link #STEREOHEIGHT} here. The
-     *   attribute and operations boxes are created at 19 pixels, 2 more than
-     *   {@link #ROWHEIGHT}.</p>
+     * <em>Warning</em>. Much of the graphics positioning is hard
+     * coded. The overall figure is placed at location (10,10). The
+     * name compartment (in the parent {@link FigNodeModelElement} is
+     * 21 pixels high. The stereotype compartment is created 15 pixels
+     * high in the parent, but we change it to 19 pixels, 1 more than
+     * ({@link #STEREOHEIGHT} here. The attribute and operations boxes
+     * are created at 19 pixels, 2 more than {@link #ROWHEIGHT}.<p>
      *
-     * <p>CAUTION: This constructor (with no arguments) is the only one
-     *   that does enableSizeChecking(false), all others must set it true.
-     *   This is because this constructor is the only one called when loading
-     *   a project. In this case, the parsed size must be maintained.</p>
+     * CAUTION: This constructor (with no arguments) is the only one
+     * that does enableSizeChecking(false), all others must set it
+     * true.  This is because this constructor is the only one called
+     * when loading a project. In this case, the parsed size must be
+     * maintained.<p>
      */
-
     public FigClass() {
 
         // Set name box. Note the upper line will be blanked out if there is

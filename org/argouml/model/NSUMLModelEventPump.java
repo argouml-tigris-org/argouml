@@ -93,8 +93,8 @@ class NSUMLModelEventPump
     }
 
     /**
-     * @param modelEventListeners2
-     * @param object
+     * @param listeners
+     * @param relay
      */
     private void register(Map listeners, NSUMLEventListener relay) {
         PropertyChangeListener listener = relay.getListener();
@@ -141,7 +141,7 @@ class NSUMLModelEventPump
     }
 
     /**
-     * @param modelEventListeners2
+     * @param listeners
      * @param listener
      * @param modelelement
      * @param eventNames
@@ -184,7 +184,7 @@ class NSUMLModelEventPump
     }
 
     /**
-     * @param modelEventListeners2
+     * @param listeners
      * @param relay
      */
     private void unregister(Map listeners, NSUMLEventListener relay) {

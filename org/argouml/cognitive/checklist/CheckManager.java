@@ -60,8 +60,9 @@ public class CheckManager implements Serializable {
      */
     private static Hashtable _Statuses = new Hashtable();
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * Constructor.
+     */
     public CheckManager() { }
 
     ////////////////////////////////////////////////////////////////
@@ -94,7 +95,7 @@ public class CheckManager implements Serializable {
      * add the result of the linear search to the hashtable so that the next
      * time we need not do it.
      *
-     * @returns Checklist or null if noone exist.
+     * @return Checklist or null if noone exist.
      * @param cls the class to lookup.
      */
     private static Checklist lookupChecklist(Class cls) {
