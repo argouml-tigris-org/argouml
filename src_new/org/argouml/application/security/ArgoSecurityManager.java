@@ -81,9 +81,11 @@ public final class ArgoSecurityManager extends SecurityManager
 	if (perm.getClass().equals(java.util.PropertyPermission.class)) {
 	    if ("sun.awt.exception.handler".equals(perm.getName())) {
 	        PropertyPermission pp = (PropertyPermission)perm;
-		if("write".equals(pp.getActions())) {
+		if("write".equals(pp.getActions()) &&
+		   (!org.argouml.util.osdep.OsUtil.isMac())) {
 		    // Don't allow this one to be trapped
 		    // by using ArgoSecurityException.
+		    cat.debug("Violating Permission Name: "+pp.getName());
 		    throw new SecurityException();
 		}
 	    }
