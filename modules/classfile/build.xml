@@ -152,7 +152,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="module.src.dir" value="${module.root}/src"/>
     <property name="argo.lib.dir" value="${argo.root}/lib"/>
     <property name="module.lib.dir" value="${module.root}/lib"/>
-    <property name="classpath" value="${argo.lib.dir}/nsuml.jar:${argo.lib.dir}/ocl-argo.jar:${argo.lib.dir}/gef.jar:${argo.lib.dir}/antlrall.jar:${argo.lib.dir}/log4j.jar:${argo.lib.dir}/argouml.jar"/>
+    <property name="classpath" value="${argo.lib.dir}/nsuml-0.4.19.jar:${argo.lib.dir}/ocl-argo.jar:${argo.lib.dir}/gef-0.9.6.jar:${argo.lib.dir}/antlrall-2.7.2.jar:${argo.lib.dir}/log4j-1.2.6.jar:${argo.lib.dir}/argouml.jar"/>
     <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
@@ -256,11 +256,11 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
         <classpath>
             <fileset dir="${argo.build.dir}">
                 <include name="argouml.jar" />
-                <include name="nsuml.jar" />
+                <include name="nsuml-0.4.19.jar" />
                 <include name="ocl-argo.jar" />
-                <include name="antlrall.jar" />
-                <include name="log4j.jar" />
-                <include name="gef.jar" />
+                <include name="antlrall-2.7.2.jar" />
+                <include name="log4j-1.2.6.jar" />
+                <include name="gef-0.9.6.jar" />
             </fileset>
         </classpath>
      </javac>
@@ -293,11 +293,11 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	    </fileset>
             <fileset dir="${argo.build.dir}">
                 <include name="argouml.jar" />
-                <include name="nsuml.jar" />
+                <include name="nsuml-0.4.19.jar" />
                 <include name="ocl-argo.jar" />
-                <include name="antlrall.jar" />
-                <include name="log4j.jar" />
-                <include name="gef.jar" />
+                <include name="antlrall-2.7.2.jar" />
+                <include name="log4j-1.2.6.jar" />
+                <include name="gef-0.9.6.jar" />
             </fileset>
             <fileset dir="${module.lib.dir}">
                 <include name="*.jar" />
