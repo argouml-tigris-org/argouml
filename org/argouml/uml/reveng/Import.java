@@ -36,6 +36,8 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.ListIterator;
 import java.util.Vector;
+import java.net.URLClassLoader;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -78,6 +80,9 @@ import org.tigris.gef.base.Globals;
  */
 public class Import {
     
+		/** logger */
+		private Logger cat = Logger.getLogger(Import.class);
+                
     /** Imported directory */
     private String src_path;
     
@@ -284,6 +289,12 @@ public class Import {
      * @param f The file or directory, we want to parse.
      */
     public void doFile() {
+        
+//        try{
+//        URL[] urls = {new URL("file://localhost/opt/hibernate/hibernate-2.1/lib/odmg.jar")};
+//        URLClassLoader loader = new URLClassLoader(urls);
+//        }catch(Exception e){cat.warn("error in class loader: "+e.toString());}
+        
         Vector files = module.getList(this);
 	files.addAll(files); // for the second pass
         _diagram = getCurrentDiagram();
@@ -485,13 +496,15 @@ public class Import {
                     _nextPassFiles.addElement(curFile);
                     
                     // RuntimeExceptions should be reported here!
-                    if (e1 instanceof RuntimeException)
+                    if (e1 instanceof RuntimeException){
                         cat.error("program bug encountered in reverese engineering, the project file will be corrupted\n"
 				  + e1);
+                        
+                        e1.printStackTrace();
+                    }
                     else
                         cat.warn("exception encountered in reverese engineering, the project file will be corrupted\n"
 				 + e1);
-                    e1.printStackTrace();
                 }
                 
                 if (!isCancelled()) {
