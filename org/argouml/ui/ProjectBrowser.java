@@ -299,10 +299,11 @@ public class ProjectBrowser extends JFrame
         }
         if (o instanceof ArgoDiagram) {
             setActiveDiagram ((ArgoDiagram) o);
-        }        
-        _editorPane.setTarget(o);
-        
-        setDetailsTarget(o);
+        } else {       
+                 
+            setDetailsTarget(o);
+        }
+         _editorPane.setTarget(o);  
 	Actions.updateAllEnabled();
     }
 

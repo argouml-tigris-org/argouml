@@ -176,8 +176,10 @@ implements MElementListener {
 
 
   public void setModel(TreeModel newModel) {
-    super.setModel(newModel);
     Object r = newModel.getRoot();
+    if (r != null)
+        super.setModel(newModel);
+    
     if (r instanceof MBase) {
       // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)r);
       UmlModelEventPump.getPump().addModelEventListener(this, (MBase)r);

@@ -59,7 +59,7 @@ public class Translator {
 
         Locale.setDefault(new Locale(System.getProperty("user.language","en"),
             System.getProperty("user.country","CA")));
-
+  
         Localizer.addResource("GefBase",
         "org.tigris.gef.base.BaseResourceBundle");
         Localizer.addResource("GefPres",
