@@ -48,23 +48,20 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.ui.ActionAddAssociation;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.UseCaseDiagramGraphModel;
 import org.argouml.uml.ui.ActionAddExtensionPoint;
 import org.argouml.uml.ui.ActionAddNote;
-import org.argouml.uml.diagram.ui.ActionAddAssociation;
-
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.ui.ToolBar;
 
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -245,7 +242,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * @author   psager@tigris.org  Jan 24, 2002
      */
 
-    public void setNamespace(MNamespace handle) {
+    public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
             cat.error(
                 "Illegal argument. Object " + handle + " is not a namespace");
