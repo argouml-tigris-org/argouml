@@ -588,6 +588,7 @@ public class GeneratorJava
         // nsuml: realizations!
         if (org.argouml.model.ModelFacade.isAClass(cls)) {
             String interfaces = generateSpecification((MClass) cls);
+	    System.out.println("Specification: " + interfaces);
             if (!interfaces.equals("")) {
                 sb.append(" ").append("implements ").append(interfaces);
             }
@@ -1508,6 +1509,7 @@ public class GeneratorJava
             ModelFacade.getSpecifications(cls);
         if (realizations == null)
             return "";
+	System.out.println("realizations: " + realizations.size());
         StringBuffer sb = new StringBuffer(80);
         Iterator clsEnum = realizations.iterator();
         while (clsEnum.hasNext()) {
@@ -1742,11 +1744,13 @@ public class GeneratorJava
 
     public String generateAction(Object m) {
         // return m.getName();
-        Object script = ModelFacade.getScript(m);
-        if (m != null
-            && (script != null)
-            && (ModelFacade.getBody(script) != null))
-            return ModelFacade.getBody(script).toString();
+        
+        if (m != null) {
+            Object script = ModelFacade.getScript(m);
+            if ((script != null)
+            && (ModelFacade.getBody(script) != null))                
+                return ModelFacade.getBody(script).toString();
+        }
         return "";
     }
 
