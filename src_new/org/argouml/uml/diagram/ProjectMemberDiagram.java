@@ -34,6 +34,8 @@ import java.io.*;
 
 import javax.swing.*;
 
+import org.apache.log4j.Logger;
+
 import org.argouml.xml.pgml.PGMLParser;
 
 import org.tigris.gef.base.*;
@@ -61,6 +63,8 @@ public class ProjectMemberDiagram extends ProjectMember {
   // static variables
 
   public static OCLExpander expander = null;
+    private static Logger cat = 
+        Logger.getLogger(ProjectMemberDiagram.class);
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -99,7 +103,7 @@ public class ProjectMemberDiagram extends ProjectMember {
   public String getFileExtension() { return FILE_EXT; }
 
   public void load() {
-    Dbg.log(getClass().getName(), "Reading " + getURL());
+    cat.debug("Reading " + getURL());
     PGMLParser.SINGLETON.setOwnerRegistry(getProject()._UUIDRefs);
     ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(getURL());
     setDiagram(d);

@@ -94,7 +94,6 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.util.Dbg;
 import org.tigris.gef.util.Util;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -634,12 +633,12 @@ public class Project implements java.io.Serializable {
     }
 
     public static Project load(URL url) throws IOException, org.xml.sax.SAXException {
-        Dbg.log("org.argouml.kernel.Project", "Reading " + url);
+        cat.debug("Reading " + url);
         ArgoParser.SINGLETON.readProject(url);
         Project p = ArgoParser.SINGLETON.getProject();
         p.loadAllMembers();
         p.postLoad();
-        Dbg.log("org.argouml.kernel.Project", "Done reading " + url);
+        cat.debug("Done reading " + url);
         return p;
     }
 
