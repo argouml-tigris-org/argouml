@@ -237,9 +237,9 @@ public class CoreFactoryImpl
      * @return an initialized UML Comment instance.
      */
     public Object createComment() {
-	MComment modelElement = MFactory.getDefaultFactory().createComment();
-	super.initialize(modelElement);
-	return modelElement;
+        MComment modelElement = MFactory.getDefaultFactory().createComment();
+        super.initialize(modelElement);
+        return modelElement;
     }
 
     /**
@@ -1516,15 +1516,18 @@ public class CoreFactoryImpl
      */
     public Object buildComment(Object element, Object model) {
         MModelElement elementToAnnotate = (MModelElement) element;
-	MComment comment = (MComment) createComment();
-	if (elementToAnnotate != null) {
-	    comment.addAnnotatedElement(elementToAnnotate);
-	    comment.setNamespace(elementToAnnotate.getModel());
-	} else {
-	    comment.setNamespace((MNamespace) model);
-	}
-
-	return comment;
+        MComment comment = (MComment) createComment();
+        
+        MNamespace commentsModel = null;
+        if (elementToAnnotate != null) {
+            comment.addAnnotatedElement(elementToAnnotate);
+            commentsModel = elementToAnnotate.getModel();
+        } else {
+            commentsModel = (MNamespace) model;
+        }
+        comment.setNamespace(commentsModel);
+        
+        return comment;
     }
 
 
@@ -1674,13 +1677,13 @@ public class CoreFactoryImpl
      * @see UmlFactoryImpl#delete(Object)
      */
     public void deleteClassifier(Object elem) {
-	if (elem != null && elem instanceof MClassifier) {
-	    Collection col = ((MClassifier) elem).getAssociationEnds();
-	    Iterator it = col.iterator();
-	    while (it.hasNext()) {
-		nsmodel.getUmlFactory().delete(it.next());
-	    }
-	}
+        if (elem != null && elem instanceof MClassifier) {
+            Collection col = ((MClassifier) elem).getAssociationEnds();
+            Iterator it = col.iterator();
+            while (it.hasNext()) {
+                nsmodel.getUmlFactory().delete(it.next());
+            }
+        }
     }
 
     /**
@@ -1690,7 +1693,6 @@ public class CoreFactoryImpl
         if (!(elem instanceof MComment)) {
             throw new IllegalArgumentException();
         }
-
     }
 
     /**
@@ -1859,14 +1861,6 @@ public class CoreFactoryImpl
 		nsmodel.getUmlFactory().delete(dep);
 	    }
 	}
-
-	it = ((MModelElement) elem).getComments().iterator();
-        while (it.hasNext()) {
-            MComment comment = (MComment) it.next();
-            if (comment.getAnnotatedElements().size() == 1) {
-                nsmodel.getUmlFactory().delete(comment);
-            }
-        }
 
         List ownedBehaviors = new ArrayList();
         ownedBehaviors.addAll(((MModelElement) elem).getBehaviors());
