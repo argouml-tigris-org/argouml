@@ -37,13 +37,13 @@ import java.util.Set;
 public interface PerspectiveRule {
     
     /**
-     * @return the name of the rule, like "from -> to".
+     * @return the name of the rule, like "from->to".
      */
     public String getRuleName();
     
     /**
-     * Gets a collection of 'child' objects for any 'parent' object in the
-     * uml model, this creates the tree structure.
+     * Gets a collection of 'child' objects for the given 'parent' object in the
+     * uml model, which creates the tree structure.
      *
      * @param parent the given parent
      * @return the children
