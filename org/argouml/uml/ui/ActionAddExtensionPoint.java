@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,7 +38,6 @@ import java.awt.event.ActionEvent;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 
@@ -139,7 +137,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
         // Create a new extension point and make it the browser target. Then
         // invoke the superclass action method.
 
-	MExtensionPoint ep =
+	Object/*MExtensionPoint*/ ep =
             UmlFactory.getFactory().getUseCases().buildExtensionPoint((MUseCase) target);
 
         TargetManager.getInstance().setTarget(ep);

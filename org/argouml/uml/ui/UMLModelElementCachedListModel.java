@@ -63,12 +63,12 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     }
 
     protected MModelElement getModelElementAt(int index) {
-        MModelElement element = null;
+        Object/*MModelElement*/ element = null;
         java.util.List cache = getCache();
         if (cache != null) {
             element = (MModelElement) cache.get(index);
         }
-        return element;
+        return (MModelElement)element;
     }
 
     public void targetChanged() {
@@ -193,7 +193,7 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
  *  @return dest    new collection as a ArrayList().
 */
     protected java.util.List addElement(Collection source, int index,
-					MModelElement newElement,
+					Object/*MModelElement*/ newElement,
 					Object element) {
 	java.util.List cache = getCache();
 	java.util.List dest  = new ArrayList(source);
@@ -253,7 +253,6 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         return cache;
     }
 }
-
 
 
 

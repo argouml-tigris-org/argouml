@@ -79,7 +79,6 @@ import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MMultiplicityRange;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
 import tudresden.ocl.OclTree;
@@ -226,7 +225,7 @@ public class GeneratorJava
     }
 
     public String generateHeader(
-				 MClassifier cls,
+				 Object/*MClassifier*/ cls,
 				 String pathname,
 				 String packagePath) {
         StringBuffer sb = new StringBuffer(80);
@@ -243,13 +242,13 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    public String generateImports(MClassifier cls, String packagePath) {
+    public String generateImports(Object/*MClassifier*/ cls, String packagePath) {
         // TODO: check also generalizations
         StringBuffer sb = new StringBuffer(80);
         java.util.HashSet importSet = new java.util.HashSet();
         String ftype;
         Iterator j;
-        Collection c = cls.getFeatures();
+        Collection c = ModelFacade.getFeatures(cls);
         if (c != null) {
             // now check packages of all feature types
             for (j = c.iterator(); j.hasNext();) {
@@ -290,7 +289,7 @@ public class GeneratorJava
                 }
             }
         }
-        c = cls.getAssociationEnds();
+        c = ModelFacade.getAssociationEnds(cls);
         if (!c.isEmpty()) {
             // check association end types
             for (j = c.iterator(); j.hasNext();) {
@@ -300,12 +299,12 @@ public class GeneratorJava
                 while (connEnum.hasNext()) {
                     Object associationEnd2 = /*(MAssociationEnd)*/ connEnum.next();
                     if (associationEnd2 != associationEnd
-                        && ModelFacade.isNavigable(associationEnd2)
-                        && !ModelFacade.isAbstract(ModelFacade.getAssociation(associationEnd2))) {
+                            && ModelFacade.isNavigable(associationEnd2)
+                            && !ModelFacade.isAbstract(ModelFacade.getAssociation(associationEnd2))) {
                         // association end found
                         Object multiplicity = ModelFacade.getMultiplicity(associationEnd2);
                         if (!MMultiplicity.M1_1.equals(multiplicity)
-                            && !MMultiplicity.M0_1.equals(multiplicity)) {
+                                && !MMultiplicity.M0_1.equals(multiplicity)) {
                             importSet.add("java.util.Vector");
                         } else if (
 				   (ftype =
@@ -368,13 +367,16 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(80);
         String nameStr = null;
         boolean constructor = false;
-        MStereotype stereo = op.getStereotype();
+        Object/*MStereotype*/ stereo = null;
+        if (ModelFacade.getStereotypes(op).size() > 0) {
+            stereo = ModelFacade.getStereotypes(op).iterator().next();
+        }
         if (stereo != null
-            && stereo.getName().equals("create")) { // constructor
-            nameStr = generateName(op.getOwner().getName());
+                && ModelFacade.getName(stereo).equals("create")) { // constructor
+            nameStr = generateName(ModelFacade.getName(ModelFacade.getOwner(op)));
             constructor = true;
         } else {
-            nameStr = generateName(op.getName());
+            nameStr = generateName(ModelFacade.getName(op));
         }
         // Each pattern here must be similar to corresponding code piece
         // Operation code piece doesn't start with '\n'
@@ -399,9 +401,9 @@ public class GeneratorJava
         sb.append(generateVisibility(op));
 
         // pick out return type
-        MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
+        Object/*MParameter*/ rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
         if (rp != null) {
-            MClassifier returnType = rp.getType();
+            Object/*MClassifier*/ returnType = ModelFacade.getType(rp);
             if (returnType == null && !constructor) {
                 sb.append("void ");
             } else if (returnType != null) {
@@ -469,8 +471,8 @@ public class GeneratorJava
 	*/
         // END OLD CODE
 
-        MClassifier type = attr.getType();
-        MMultiplicity multi = attr.getMultiplicity();
+        Object/*MClassifier*/ type = attr.getType();
+        Object/*MMultiplicity*/ multi = attr.getMultiplicity();
         // handle multiplicity here since we need the type
         // actually the API of generator is buggy since to generate
         // multiplicity correctly we need the attribute too
@@ -484,9 +486,9 @@ public class GeneratorJava
         }
 
         sb.append(generateName(attr.getName()));
-        MExpression init = attr.getInitialValue();
+        Object/*MExpression*/ init = attr.getInitialValue();
         if (init != null) {
-            String initStr = generateExpression(init).trim();
+            String initStr = generateExpression((MExpression)init).trim();
             if (initStr.length() > 0)
                 sb.append(" = ").append(initStr);
         }
@@ -639,7 +641,7 @@ public class GeneratorJava
      */
     StringBuffer appendClassifierEnd(
 				     StringBuffer sbPrefix,
-				     MClassifier cls,
+				     Object/*MClassifier*/ cls,
 				     boolean fPlain) {
         // 2002-07-11
         // Jaap Branderhorst
@@ -676,7 +678,7 @@ public class GeneratorJava
         // fplain. (verbosedocs has same semantics) To prevent
         // backward compatibility problems i didnt remove the method
         // but changed to:
-        sbPrefix.append(generateClassifierEnd(cls));
+        sbPrefix.append(generateClassifierEnd((MClassifier)cls));
 
         return sbPrefix;
 
@@ -1023,11 +1025,11 @@ public class GeneratorJava
             }
 
             // pick out return type
-            MParameter rp =
+            Object/*MParameter*/ rp =
                 UmlHelper.getHelper().getCore().getReturnParameter(op);
             if (rp != null) {
-                MClassifier returnType = rp.getType();
-                return generateDefaultReturnStatement(returnType);
+                Object/*MClassifier*/ returnType = ModelFacade.getType(rp);
+                return generateDefaultReturnStatement((MClassifier)returnType);
             }
         }
 
@@ -1155,11 +1157,11 @@ public class GeneratorJava
      * enhanced or completely generated
      */
     public String generateConstraintEnrichedDocComment(
-						       MModelElement me,
+						       Object/*MModelElement*/ me,
 						       MAssociationEnd ae) {
         String s = generateConstraintEnrichedDocComment(me, true, INDENT);
 
-        MMultiplicity m = ae.getMultiplicity();
+        Object/*MMultiplicity*/ m = ae.getMultiplicity();
         if (!(MMultiplicity.M1_1.equals(m) || MMultiplicity.M0_1.equals(m))) {
             // Multiplicity greater 1, that means we will generate some sort of
             // collection, so we need to specify the element type tag
@@ -1180,9 +1182,9 @@ public class GeneratorJava
             }
 
             // Build doccomment
-            MClassifier type = ae.getType();
+            Object/*MClassifier*/ type = ae.getType();
             if (type != null) {
-                sDocComment.append(" @element-type ").append(type.getName());
+                sDocComment.append(" @element-type ").append(ModelFacade.getName(type));
             } 
 
 	    // REMOVED: 2002-03-11 STEFFEN ZSCHALER: element type
@@ -1221,7 +1223,7 @@ public class GeneratorJava
      * element, either enhanced or completely generated
      */
     public static String generateConstraintEnrichedDocComment(
-            MModelElement me,
+            Object/*MModelElement*/ me,
 	    boolean documented,
 	    String indent) 
     {
@@ -1242,7 +1244,7 @@ public class GeneratorJava
             return sDocComment.toString();
 
         // Extract constraints
-        Collection cConstraints = me.getConstraints();
+        Collection cConstraints = ModelFacade.getConstraints(me);
 
         if (cConstraints.size() == 0) {
             return sDocComment.toString();
@@ -1383,7 +1385,7 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    public String generateAssociationFrom(MAssociation a, MAssociationEnd associationEnd) {
+    public String generateAssociationFrom(Object/*MAssociation*/ a, MAssociationEnd associationEnd) {
         // TODO: does not handle n-ary associations
         StringBuffer sb = new StringBuffer(80);
 
@@ -1395,7 +1397,7 @@ public class GeneratorJava
 	 s += DocumentationManager.getDocs(a) + "\n" + INDENT;
 	*/
 
-        Collection connections = a.getConnections();
+        Collection connections = ModelFacade.getConnections(a);
         Iterator connEnum = connections.iterator();
         while (connEnum.hasNext()) {
             Object associationEnd2 = /*(MAssociationEnd)*/ connEnum.next();
@@ -1454,7 +1456,7 @@ public class GeneratorJava
 	//         s += generateName(n) + " ";
         //     if (ae.isNavigable()) s += "navigable ";
         //     if (ae.getIsOrdered()) s += "ordered ";
-        MMultiplicity m = ae.getMultiplicity();
+        Object/*MMultiplicity*/ m = ae.getMultiplicity();
         if (MMultiplicity.M1_1.equals(m) || MMultiplicity.M0_1.equals(m))
             sb.append(generateClassifierRef(ae.getType()));
         else
@@ -1551,7 +1553,7 @@ public class GeneratorJava
             else
                 return f.getTaggedValue("src_visibility") + " ";
         }
-        MVisibilityKind vis = f.getVisibility();
+        Object/*MVisibilityKind*/ vis = f.getVisibility();
         //if (vis == null) return "";
         if (MVisibilityKind.PUBLIC.equals(vis))
             return "public ";
@@ -1763,8 +1765,8 @@ public class GeneratorJava
 
     public String generateAscEndName(MAssociationEnd ae) {
         String n = ae.getName();
-        MAssociation asc = ae.getAssociation();
-        String ascName = asc.getName();
+        Object/*MAssociation*/ asc = ModelFacade.getAssociation(ae);
+        String ascName = ModelFacade.getName(asc);
         if (n != null && n != null && n.length() > 0) {
             n = generateName(n);
         } else if (
@@ -1804,7 +1806,7 @@ public class GeneratorJava
        @param mClassifier The classifier to update from.
        @param file The file to update.
     */
-    protected static void update(MClassifier mClassifier, File file)
+    protected static void update(Object/*MClassifier*/ mClassifier, File file)
         throws Exception {
         Argo.log.info("Parsing " + file.getPath());
 
@@ -1822,7 +1824,7 @@ public class GeneratorJava
             backupFile.delete();
         //Argo.log.info("Generating " + newFile.getPath());
         _isInUpdateMode = true;
-        cpc.filter(file, newFile, mClassifier.getNamespace());
+        cpc.filter(file, newFile, ModelFacade.getNamespace(mClassifier));
         _isInUpdateMode = false;
         //Argo.log.info("Backing up " + file.getPath());
         file.renameTo(backupFile);

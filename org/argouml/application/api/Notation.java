@@ -231,15 +231,15 @@ public final class Notation implements PropertyChangeListener {
     }
     protected String generateOperation(
         NotationName notation,
-        MOperation op,
+        Object/*MOperation*/ op,
         boolean documented) {
-        return getProvider(notation).generateOperation(op, documented);
+        return getProvider(notation).generateOperation((MOperation)op, documented);
     }
     protected String generateAttribute(
         NotationName notation,
-        MAttribute attr,
+        Object/*MAttribute*/ attr,
         boolean documented) {
-        return getProvider(notation).generateAttribute(attr, documented);
+        return getProvider(notation).generateAttribute((MAttribute)attr, documented);
     }
     protected String generateParameter(
         NotationName notation,
@@ -348,7 +348,7 @@ public final class Notation implements PropertyChangeListener {
     }
     public static String generateOperation(
         NotationContext ctx,
-        MOperation op,
+        Object/*MOperation*/ op,
         boolean documented) {
         return SINGLETON.generateOperation(Notation.getNotation(ctx),
 					   op,
@@ -363,7 +363,7 @@ public final class Notation implements PropertyChangeListener {
     }
     public static String generateAttribute(
         NotationContext ctx,
-        MAttribute attr,
+        Object/*MAttribute*/ attr,
         boolean documented) {
         return SINGLETON.generateAttribute(Notation.getNotation(ctx),
 					   attr,
@@ -490,9 +490,9 @@ public final class Notation implements PropertyChangeListener {
         if (o == null)
             return "";
         if (org.argouml.model.ModelFacade.isAOperation(o))
-            return SINGLETON.generateOperation(nn, (MOperation) o, documented);
+            return SINGLETON.generateOperation(nn, /*(MOperation)*/ o, documented);
         if (org.argouml.model.ModelFacade.isAAttribute(o))
-            return SINGLETON.generateAttribute(nn, (MAttribute) o, documented);
+            return SINGLETON.generateAttribute(nn, /*(MAttribute)*/ o, documented);
         return generate(nn, o);
     }
 

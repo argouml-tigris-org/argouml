@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 import java.lang.reflect.*;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
@@ -43,7 +44,7 @@ public final class UMLExpressionModel  {
     private Method _getMethod;
     private Method _setMethod;
     private String _propertyName;
-    private MExpression _expression;
+    private Object/*MExpression*/ _expression;
     private boolean _mustRefresh;
     private Constructor _constructor;
     private static final Object[] _noArgs = {};
@@ -94,7 +95,7 @@ public final class UMLExpressionModel  {
         return isAffected;
     }
 
-    public MExpression getExpression() {
+    public Object/*MExpression*/ getExpression() {
         if (_mustRefresh) {
             _expression = null;
             Object target = _container.getTarget();
@@ -119,31 +120,31 @@ public final class UMLExpressionModel  {
         if (_expression == null) {
             return _emptyStr;
         }
-        return _expression.getLanguage();
+        return ((MExpression)_expression).getLanguage();
     }
     
-    public String getBody() {
+    public Object getBody() {
         if (_mustRefresh) {
             getExpression();
         }
         if (_expression == null) {
             return _emptyStr;
         }
-        return _expression.getBody();
+        return ModelFacade.getBody(_expression);
     }
     
     public void setLanguage(String lang) {
         boolean mustChange = true;
         if (_expression != null) {
-            String oldValue = _expression.getLanguage();
+            String oldValue = ((MExpression)_expression).getLanguage();
             if (oldValue != null && oldValue.equals(lang)) {
                 mustChange = false;
             }
         }
         if (mustChange) {
-            String body = null;
+            Object body = null;
             if (_expression != null) {
-                body = _expression.getBody();
+                body = ModelFacade.getBody(_expression);
             }
             if (body == null) body = _emptyStr;
             
@@ -151,10 +152,10 @@ public final class UMLExpressionModel  {
         }
     }
     
-    public void setBody(String body) {
+    public void setBody(Object body) {
         boolean mustChange = true;
         if (_expression != null) {
-            String oldValue = _expression.getBody();
+            Object oldValue = ModelFacade.getBody(_expression);
             if (oldValue != null && oldValue.equals(body)) {
                 mustChange = false;
             }
@@ -162,7 +163,7 @@ public final class UMLExpressionModel  {
         if (mustChange) {
             String lang = null;
             if (_expression != null) {
-                lang = _expression.getLanguage();
+                lang = ((MExpression)_expression).getLanguage();
             }
             if (lang == null) lang = _emptyStr;
             
@@ -171,10 +172,10 @@ public final class UMLExpressionModel  {
     }
     
     
-    private void setExpression(String lang, String body) {
+    private void setExpression(String lang, Object body) {
         try {
             //MExpression newExpression = (MExpression) _constructor.newInstance(new Object[] { lang,body });
-            _expression = (MExpression) _constructor.newInstance(new Object[] {
+            _expression = _constructor.newInstance(new Object[] {
 		lang, body 
 	    }); 
             

@@ -234,7 +234,7 @@ abstract public class UMLModelElementListModel
     public Object getElementAt(int index) {
         Object value = null;
         if (index >= 0 && index < getModelElementSize()) {
-            MModelElement element = getModelElementAt(index);
+            Object/*MModelElement*/ element = getModelElementAt(index);
             //
             //   shouldn't be null, here for debugging
             //
@@ -258,8 +258,8 @@ abstract public class UMLModelElementListModel
      *  @param @element model element
      *  @return rendering of the ModelElement
      */
-    public Object formatElement(MModelElement element) {
-        return _container.formatElement(element);
+    public Object formatElement(Object/*MModelElement*/ element) {
+        return _container.formatElement((MModelElement)element);
     }
 
     /**
@@ -387,7 +387,7 @@ abstract public class UMLModelElementListModel
      */
     public void open(int index) {
         if (index >= 0 && index < _currentModelElementSize) {
-            MModelElement modelElement = getModelElementAt(index);
+            Object/*MModelElement*/ modelElement = getModelElementAt(index);
             if (modelElement != null) {
                 navigateTo(modelElement);
             }
@@ -452,13 +452,6 @@ abstract public class UMLModelElementListModel
         return true;
     }
 
-    public static java.util.List addAtUtil(
-        Collection oldCollection,
-        Object newItem,
-        int index) {
-        return addAtUtil(oldCollection, (MModelElement) newItem, index);
-    }
-
     /**
      * <p>This utility function may be called in the implemention of an Add
      *   action.  It creates a new collection by adding an element at a
@@ -487,9 +480,9 @@ abstract public class UMLModelElementListModel
      *  @return               new list */
 
     public static java.util.List addAtUtil(
-        Collection oldCollection,
-        MModelElement newItem,
-        int index) {
+            Collection oldCollection,
+            Object/*MModelElement*/ newItem,
+            int index) {
 
         int oldSize = oldCollection.size();
 
@@ -626,7 +619,7 @@ abstract public class UMLModelElementListModel
      * @param index
      */
     public void delete(int index) {
-        MModelElement modElem = getModelElementAt(index);
+        Object/*MModelElement*/ modElem = getModelElementAt(index);
         Object target = TargetManager.getInstance().getTarget();
         ProjectBrowser.getInstance().setTarget(modElem);
         ActionEvent event = new ActionEvent(this, 1, "delete");

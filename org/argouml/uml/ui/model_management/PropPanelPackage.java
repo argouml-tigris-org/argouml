@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,6 +38,7 @@ import ru.novosoft.uml.model_management.MPackage;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import org.argouml.model.ModelFacade;
 
 
 /** PropPanelPackage defines the Property Panel for MPackage elements.
@@ -109,10 +109,10 @@ public class PropPanelPackage extends PropPanelNamespace  {
     public void addPackage() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAPackage(target)) {
-            MPackage newPackage =  UmlFactory.getFactory().
+            Object/*MPackage*/ newPackage =  UmlFactory.getFactory().
                 getModelManagement().createPackage();
-            MPackage currentPackage = (MPackage) target;
-            currentPackage.addOwnedElement(newPackage);
+            Object/*MPackage*/ currentPackage = (MPackage) target;
+            ModelFacade.addOwnedElement(currentPackage, newPackage);
             TargetManager.getInstance().setTarget(newPackage);
         }
     }

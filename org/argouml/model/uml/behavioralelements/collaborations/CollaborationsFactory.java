@@ -136,7 +136,8 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     /**
      * Builds a default collaboration not attached to a classifier
      */
-    public MCollaboration buildCollaboration(MNamespace namespace) {
+    public MCollaboration buildCollaboration(Object/*MNamespace*/ ns) {
+        MNamespace namespace = (MNamespace)ns;
     	MCollaboration modelelement = createCollaboration();
     	modelelement.setNamespace(namespace);
     	modelelement.setName("newCollaboration");
@@ -307,7 +308,9 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      * added to the first interaction inside the collaboration. If
      * there is no interaction yet, one is build.
      */
-    public MMessage buildMessage(MCollaboration collab, MAssociationRole role) {
+    public MMessage buildMessage(Object acollab, Object arole) {
+        MCollaboration collab = (MCollaboration)acollab;
+        MAssociationRole role = (MAssociationRole)arole;
     	MInteraction inter = null;
     	if (collab.getInteractions().size() == 0) {
 	    inter = buildInteraction(collab);

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -74,8 +73,8 @@ abstract public class UMLBinaryRelationListModel
      */
     public void add(int index) {
         Object target = getSource();
-        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-            MModelElement melement = (MModelElement) target;
+        if (ModelFacade.isAModelElement(target)) {
+            Object/*MModelElement*/ melement = (MModelElement) target;
             Vector choices = new Vector();
             Vector selected = new Vector();
             choices.addAll(getChoices());
@@ -92,7 +91,7 @@ abstract public class UMLBinaryRelationListModel
             if (returnValue == JOptionPane.OK_OPTION) {
                 Iterator it = dialog.getSelected().iterator();
                 while (it.hasNext()) {
-                    MModelElement othermelement = (MModelElement) it.next();
+                    Object/*MModelElement*/ othermelement = it.next();
                     if (!selected.contains(othermelement)) {
                         ProjectBrowser pb = ProjectBrowser.getInstance();
                         ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
@@ -114,7 +113,7 @@ abstract public class UMLBinaryRelationListModel
                 }
                 it = selected.iterator();
                 while (it.hasNext()) {
-                    MModelElement othermelement = (MModelElement) it.next();
+                    Object/*MModelElement*/ othermelement = (MModelElement) it.next();
                     if (!dialog.getSelected().contains(othermelement)) {
                         Object/*MModelElement*/ connector =
                             getRelation(melement, othermelement);
@@ -177,8 +176,8 @@ abstract public class UMLBinaryRelationListModel
      */
     abstract protected void connect(
         MutableGraphModel gm,
-        MModelElement from,
-        MModelElement to);
+        Object/*MModelElement*/ from,
+        Object/*MModelElement*/ to);
 
     /**
      * Builds a relation between two modelelements. A relation is for example
@@ -187,7 +186,7 @@ abstract public class UMLBinaryRelationListModel
      * @param from
      * @param to
      */
-    abstract protected void build(MModelElement from, MModelElement to);
+    abstract protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to);
 
     /**
      * Gets the relation between two modelelements. Implementations should 

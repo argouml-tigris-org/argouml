@@ -251,7 +251,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         }
     }
 
-    private boolean isAcceptible(MGeneralizableElement fixed,
+    private boolean isAcceptible(Object/*MGeneralizableElement*/ fixed,
 				 MModelElement candidate) {
         boolean isCompatible = true;
         Class[] keys = {

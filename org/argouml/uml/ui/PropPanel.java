@@ -108,7 +108,7 @@ abstract public class PropPanel
     ////////////////////////////////////////////////////////////////
     // instance vars
     private Object _target;
-    private MModelElement _modelElement;
+    private Object/*MModelElement*/ _modelElement;
     private static Profile _profile;
 
     private ResourceBundle _bundle = null;
@@ -387,7 +387,7 @@ abstract public class PropPanel
     }
 
     public final MModelElement getModelElement() {
-        return _modelElement;
+        return (MModelElement)_modelElement;
     }
 
     public void refresh() {

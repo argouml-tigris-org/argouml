@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -47,6 +46,7 @@ import org.argouml.ui.*;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -85,8 +85,8 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
      */
-    protected void build(MModelElement from, MModelElement to) {
-	CoreFactory.getFactory().buildGeneralization((MGeneralizableElement) to, (MGeneralizableElement) from);
+    protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
+	CoreFactory.getFactory().buildGeneralization(to, from);
     }
 
     /**
@@ -94,8 +94,8 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
      */
     protected void connect(
 			   MutableGraphModel gm,
-			   MModelElement from,
-			   MModelElement to) {
+			   Object/*MModelElement*/ from,
+			   Object/*MModelElement*/ to) {
 	gm.connect(to, from, MGeneralization.class);
     }
 	
@@ -112,14 +112,14 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
      */
     protected Collection getChoices() {
 	if (org.argouml.model.ModelFacade.isAGeneralizableElement(getTarget())) {
-	    MGeneralizableElement target = (MGeneralizableElement) getTarget();
-	    if (target.isLeaf()) return new ArrayList();
+	    Object/*MGeneralizableElement*/ target = (MGeneralizableElement) getTarget();
+	    if (ModelFacade.isLeaf(target)) return new ArrayList();
 	    Collection genElem = ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());
 	    List list = new ArrayList();
 	    Iterator it = genElem.iterator();
 	    while (it.hasNext()) {
-		MGeneralizableElement elem = (MGeneralizableElement) it.next();
-		if (elem == target || !elem.isRoot()) {
+		Object/*MGeneralizableElement*/ elem = it.next();
+		if (elem == target || !ModelFacade.isRoot(elem)) {
 		    list.add(elem);
 		}
 	    }
@@ -139,7 +139,7 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
      */
     protected Collection getSelected() {
-	MGeneralizableElement target = (MGeneralizableElement) getTarget();
+	Object/*MGeneralizableElement*/ target = getTarget();
 	return CoreHelper.getHelper().getExtendingElements(target);
     }
 

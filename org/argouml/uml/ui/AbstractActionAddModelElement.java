@@ -43,7 +43,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public abstract class AbstractActionAddModelElement extends UMLChangeAction {
 
-    private MModelElement _target;
+    private Object/*MModelElement*/ _target;
     private boolean _multiSelect = true;
     private boolean _exclusive = true;
     
@@ -57,7 +57,7 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
      * @return MModelElement
      */
     public MModelElement getTarget() {
-        return _target;
+        return (MModelElement)_target;
     }
 
     /**

@@ -66,8 +66,8 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
      */
-    protected void build(MModelElement from, MModelElement to) {
-	CoreFactory.getFactory().buildAssociation((MClassifier) from, (MClassifier) to);
+    protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
+	CoreFactory.getFactory().buildAssociation(from,to);
     }
 
     /**
@@ -75,8 +75,8 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
      */
     protected void connect(
 			   MutableGraphModel gm,
-			   MModelElement from,
-			   MModelElement to) {
+			   Object/*MModelElement*/ from,
+			   Object/*MModelElement*/ to) {
 	gm.connect(from, to, MAssociation.class);
     }
 
@@ -110,7 +110,6 @@ public class UMLConnectionListModel extends UMLBinaryRelationListModel  {
     }
 
 }
-
 
 
 

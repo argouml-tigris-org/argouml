@@ -214,7 +214,8 @@ public class ModelManagementHelper {
         return set;
     }
 
-    public MModelElement getElement(Vector path, MModelElement root) {
+    public MModelElement getElement(Vector path, Object rt) {
+        MModelElement root = (MModelElement) rt;
         Object name;
         int i;
 

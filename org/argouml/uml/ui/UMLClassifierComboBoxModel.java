@@ -46,7 +46,6 @@ import org.argouml.uml.Profile;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.model_management.MModel;
 
 /**
@@ -85,7 +84,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
     }
 
 
-    private void makeSelection(Object model, MClassifier selClass) {
+    private void makeSelection(Object model, Object/*MClassifier*/ selClass) {
 	getSet().clear();
 	Profile profile = getContainer().getProfile();
 	if (allowVoid()) {
@@ -96,7 +95,7 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	}
                  
 	if (addElementsFromProfileModel()) {
-	    MModel profileModel = profile.getProfileModel();
+	    Object/*MModel*/ profileModel = profile.getProfileModel();
 	    if (profileModel != null) {
 		collectElements(profileModel, profile, true);
 	    }
@@ -134,9 +133,9 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	while (it.hasNext()) {
 	    entry = (UMLComboBoxEntry) it.next();
 	    if (!entry.isPhantom() && entry.getElement(model) == selClass) {
-		MModelElement elem = entry.getElement(model);
+		Object/*MModelElement*/ elem = entry.getElement(model);
 		String name = null;
-		if (elem !=  null ) name = elem.getName();
+		if (elem !=  null ) name = ModelFacade.getName(elem);
 		cat.debug("setSelectedItem");
 		setSelectedItem( entry);
 			    
@@ -155,11 +154,11 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
 	    Object model = ModelFacade.getModel(event.getSource());
 	    if (ModelFacade.isAInstance(event.getSource()) ) {
 		
-		MInstance instance = (MInstance) event.getSource();	    	    
-		Collection col = instance.getClassifiers();	
+		Object/*MInstance*/ instance = (MInstance) event.getSource();	    	    
+		Collection col = ModelFacade.getClassifiers(instance);
 		if (col != null && col.size() > 0) {
 		    it  = col.iterator();		  
-		    MClassifier cls = (MClassifier) it.next();
+		    Object/*MClassifier*/ cls = it.next();
 
 		    makeSelection(model, cls);
 		}
@@ -175,8 +174,8 @@ public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
         Object target = getContainer().getTarget();	
         if (ModelFacade.isAModelElement(target)) {
 
-            MModelElement element = (MModelElement) target;	 	   
-            MModel model = element.getModel();
+            Object/*MModelElement*/ element = target;	 	   
+            Object/*MModel*/ model = ModelFacade.getModel(element);
 	    try {		
                 Object[] _noArgs = {};
                 Object current = getGetMethod().invoke(getContainer(), _noArgs);

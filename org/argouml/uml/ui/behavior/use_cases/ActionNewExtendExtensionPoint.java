@@ -30,8 +30,6 @@ import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -56,7 +54,7 @@ public class ActionNewExtendExtensionPoint
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (org.argouml.model.ModelFacade.isAExtend(getTarget())) {
-            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(ModelFacade.getBase(getTarget()));
+            Object/*MExtensionPoint*/ point = UseCasesFactory.getFactory().buildExtensionPoint(ModelFacade.getBase(getTarget()));
             ModelFacade.addExtensionPoint(getTarget(), point);
         }
     }

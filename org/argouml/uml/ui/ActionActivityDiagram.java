@@ -31,7 +31,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -55,7 +54,7 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      */
     public UMLDiagram createDiagram(Object ns) {
         Object target = TargetManager.getInstance().getModelTarget();
-        MActivityGraph graph =
+        Object/*MActivityGraph*/ graph =
 	    ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement) target);
         if (org.argouml.model.ModelFacade.isABehavioralFeature(target)) {
             ns = ModelFacade.getNamespace(target);

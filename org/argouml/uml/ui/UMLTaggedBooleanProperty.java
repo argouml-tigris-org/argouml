@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,6 +28,7 @@ import org.argouml.model.uml.UmlFactory;
 
 import java.lang.reflect.*;
 import java.util.*;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -54,21 +54,19 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     
     public void setProperty(Object obj, boolean newState) {
         if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
-            MModelElement element = (MModelElement) obj;
-            Collection taggedValues = element.getTaggedValues();
+            Object/*MModelElement*/ element = (MModelElement) obj;
+            Iterator iter = ModelFacade.getTaggedValues(element);
             boolean found = false;
-            if (taggedValues != null) {
-                MTaggedValue taggedValue;
-                Iterator iter = taggedValues.iterator();
+            if (iter != null) {
+                Object/*MTaggedValue*/ taggedValue;
                 
                 while (iter.hasNext()) {
                     taggedValue = (MTaggedValue) iter.next();
-                    if (_tagName.equals(taggedValue.getTag())) {
+                    if (_tagName.equals(ModelFacade.getTag(taggedValue))) {
                         if (newState) {
-                            taggedValue.setValue("true");
-                        }
-                        else {
-                            taggedValue.setValue("false");
+                            ModelFacade.setValue(taggedValue, "true");
+                        } else {
+                            ModelFacade.setValue(taggedValue, "false");
                         }
                         found = true;
                         break;
@@ -77,15 +75,14 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
             }
                 
             if (!found) {
-		MTaggedValue taggedValue = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
-		taggedValue.setTag(_tagName);
+		Object/*MTaggedValue*/ taggedValue = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+		ModelFacade.setTag(taggedValue, _tagName);
 		if (newState) {
-		    taggedValue.setValue("true");
+		    ModelFacade.setValue(taggedValue, "true");
+		} else {
+		    ModelFacade.setValue(taggedValue, "false");
 		}
-		else {
-		    taggedValue.setValue("false");
-		}
-		element.addTaggedValue(taggedValue);
+		ModelFacade.addTaggedValue(element, taggedValue);
             }
         }
     }
@@ -93,16 +90,15 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     
     public boolean getProperty(Object obj) {
         boolean state = false;
-        if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
-            MModelElement element = (MModelElement) obj;
-            Collection taggedValues = element.getTaggedValues();
-            if (taggedValues != null) {
-                MTaggedValue taggedValue;
-                Iterator iter = taggedValues.iterator();
+        if (ModelFacade.isAModelElement(obj)) {
+            Object/*MModelElement*/ element = (MModelElement) obj;
+            Iterator iter = ModelFacade.getTaggedValues(element);
+            if (iter != null) {
+                Object/*MTaggedValue*/ taggedValue;
                 while (iter.hasNext()) {
                     taggedValue = (MTaggedValue) iter.next();
-                    if (_tagName.equals(taggedValue.getTag())) {
-                        String value = taggedValue.getValue();
+                    if (_tagName.equals(ModelFacade.getTag(taggedValue))) {
+                        String value = (String)ModelFacade.getValue(taggedValue);
                         if ("true".equals(value)) {
                             state = true;
                         }
@@ -115,4 +111,3 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     }
     
 }
-

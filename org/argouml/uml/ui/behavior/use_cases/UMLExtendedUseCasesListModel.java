@@ -41,8 +41,6 @@ import org.tigris.gef.graph.MutableGraphModel;
 
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 /**
  * @since Sep 30, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -102,8 +100,8 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
      */
     protected void connect(
         MutableGraphModel gm,
-        MModelElement from,
-        MModelElement to) {
+        Object/*MModelElement*/ from,
+        Object/*MModelElement*/ to) {
             
         gm.connect(to, from, MExtend.class);
         List list = new ArrayList();
@@ -116,7 +114,7 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
      */
-    protected void build(MModelElement from, MModelElement to) {
+    protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to) {
         UseCasesFactory.getFactory().buildExtend(/*(MUseCase)*/ to, /*(MUseCase)*/ from, /*(MExtensionPoint)*/ getTarget());    
     }
 

@@ -51,7 +51,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        MNamespace ns = (MNamespace) handle;
+        Object/*MNamespace*/ ns = (MNamespace) handle;
         return new UMLUseCaseDiagram(ns);
     }
 

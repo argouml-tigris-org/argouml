@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -42,9 +40,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
-
-import ru.novosoft.uml.foundation.core.MComment;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /** Action to add a note.
  *  @stereotype singleton
@@ -91,8 +86,8 @@ public class ActionAddNote extends UMLChangeAction {
 
         if (target == null || !(org.argouml.model.ModelFacade.isAModelElement(target)))
             return;
-        MModelElement elem = (MModelElement) target;
-        MComment comment = CoreFactory.getFactory().buildComment(elem);
+        Object/*MModelElement*/ elem = target;
+        Object/*MComment*/ comment = CoreFactory.getFactory().buildComment(elem);
 
         // calculate the position of the comment
         ArgoDiagram diagram =

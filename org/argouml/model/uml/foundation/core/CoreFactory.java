@@ -564,7 +564,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param c2 The second classifier to connect
      * @return MAssociation
      */
-    public MAssociation buildAssociation(MClassifier c1, MClassifier c2) {
+    public MAssociation buildAssociation(Object classifier1, Object classifier2) {
+        MClassifier c1 = (MClassifier)classifier1;
+        MClassifier c2 = (MClassifier)classifier2;
         return buildAssociation(c1, true, MAggregationKind.NONE,
                                 c2, true, MAggregationKind.NONE);
     }
@@ -1502,7 +1504,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param elementToComment
      * @return MComment
      */
-    public MComment buildComment(MModelElement elementToComment) {
+    public MComment buildComment(Object/*MModelElement*/ element) {
+        MModelElement elementToComment = (MModelElement)element;
 	MComment comment = createComment();
 	if (elementToComment != null) {
 	    comment.addAnnotatedElement(elementToComment);
@@ -1521,7 +1524,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param constrainedElement
      * @return MConstraint
      */
-    public MConstraint buildConstraint(MModelElement constrainedElement) {
+    public MConstraint buildConstraint(Object/*MModelElement*/ constrElement) {
+        MModelElement constrainedElement = (MModelElement) constrElement;
 	if (constrainedElement == null)
 	    throw new IllegalArgumentException("the constrained element is "
 					       + "mandatory and may not be "

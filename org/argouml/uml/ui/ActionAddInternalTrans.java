@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,7 +37,7 @@ class ActionAddInternalTrans extends UMLChangeAction {
     public void actionPerformed(ActionEvent ae) {
 	Object target = TargetManager.getInstance().getModelTarget();
 	if (!(org.argouml.model.ModelFacade.isAState(target))) return;
-	MState st = (MState) target;
+	Object/*MState*/ st = (MState) target;
 	super.actionPerformed(ae);
     }
     public boolean shouldBeEnabled() {
