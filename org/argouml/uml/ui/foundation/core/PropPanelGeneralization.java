@@ -41,10 +41,7 @@ import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
 
 /**
- * The properties panel for a Generalization.<p>
- * 
- * TODO: this property panel needs refactoring to remove dependency on old gui
- * components.
+ * The properties panel for a Generalization.
  */
 public class PropPanelGeneralization extends PropPanelModelElement {
 

@@ -22,13 +22,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
 /**
+ * The document that is edited in the discriminator field of a generalization.
+ * 
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
