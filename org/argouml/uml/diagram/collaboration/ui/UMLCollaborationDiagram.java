@@ -39,7 +39,11 @@ import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.apache.log4j.*;
 
-import org.tigris.gef.base.*;
+import org.tigris.gef.base.CmdSetMode;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.LayerPerspectiveMutable;
+import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.ui.*;
 
