@@ -257,28 +257,25 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
       if (_diagram instanceof org.argouml.ui.ArgoDiagram) {
         ((org.argouml.ui.ArgoDiagram) _diagram).setItemUID(new org.argouml.cognitive.ItemUID(id));
       }
-      System.out.println("SetUID: diagram: " + _diagram);
+      //cat.debug("SetUID: diagram: " + _diagram);
       break;
 
     case 46:
       if (_currentNode instanceof org.argouml.uml.diagram.ui.FigNodeModelElement) {
         ((org.argouml.uml.diagram.ui.FigNodeModelElement) _currentNode).setItemUID(new org.argouml.cognitive.ItemUID(id));
       }
-      //if (_currentNode instanceof org.argouml.uml.diagram.static_structure.ui.FigNote) {
-      //  ((org.argouml.uml.diagram.static_structure.ui.FigNote) _currentNode).setItemUID(new org.argouml.cognitive.ItemUID(id));
-      //}
-      System.out.println("SetUID: node: " + _currentNode);
+      //cat.debug("SetUID: node: " + _currentNode);
       break;
 
     case 56:
       if (_currentEdge instanceof org.argouml.uml.diagram.ui.FigEdgeModelElement) {
         ((org.argouml.uml.diagram.ui.FigEdgeModelElement) _currentEdge).setItemUID(new org.argouml.cognitive.ItemUID(id));
       }
-      System.out.println("SetUID: edge: " + _currentEdge);
+      //cat.debug("SetUID: edge: " + _currentEdge);
       break;
 
     default:
-      System.out.println("SetUID state: " + _elementState);
+      cat.debug("SetUID state: " + _elementState);
     }
   }
 
@@ -319,6 +316,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
   }
   
   public synchronized Diagram readDiagram(InputStream is, boolean closeStream) {
+        String errmsg = "Exception in readDiagram";
         try {
             cat.info("=======================================");
             cat.info("== READING DIAGRAM");
@@ -346,7 +344,6 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             return _diagram;
         }
         catch(SAXException saxEx) {
-            System.err.println("Exception in readDiagram");
             //
             //  a SAX exception could have been generated
             //    because of another exception.
@@ -354,15 +351,14 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
             //    location of the true error
             Exception ex = saxEx.getException();
             if(ex == null) {
-                saxEx.printStackTrace();
+                cat.error(errmsg, saxEx);
             }
             else {
-                ex.printStackTrace();
+                cat.error(errmsg, ex);
             }
         }
         catch (Exception ex) {
-            System.err.println("Exception in readDiagram");
-            ex.printStackTrace();
+            cat.error(errmsg, ex);
         }
         return null;
     }
@@ -378,10 +374,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 		while (st.hasMoreElements()) {
 		    str = st.nextToken();
 		    NameVal nval = splitNameVal(str);
-		    System.out.println("Private Element: \"" + str + "\"");
+		    //cat.debug("Private Element: \"" + str + "\"");
 
 		    if (nval != null) {
-			System.out.println("Private Element: \"" + nval.name + "\" \"" + nval.value + "\"");
+			cat.debug("Private Element: \"" + nval.name +
+				  "\" \"" + nval.value + "\"");
 			if ("ItemUID".equals(nval.name.trim())) {
 			    nval.value = nval.value.trim();
 			    if (nval.value.length() > 0)

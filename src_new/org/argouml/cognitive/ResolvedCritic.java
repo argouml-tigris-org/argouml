@@ -30,6 +30,8 @@ import org.tigris.gef.util.VectorSet;
 
 import org.argouml.cognitive.critics.Critic;
 
+import org.apache.log4j.Category;
+
 // Needs-more-work: Maybe the exception strings should be internationalized
 
 /**
@@ -40,6 +42,9 @@ import org.argouml.cognitive.critics.Critic;
  */
 public class ResolvedCritic
 {
+	protected static Category cat = Category.getInstance(
+							ResolvedCritic.class);
+
 	/** The name of the critic. */
 	String _critic;
 
@@ -90,7 +95,7 @@ public class ResolvedCritic
 		if (c == null)
 			throw new NullPointerException();
 
-		//System.out.println("Adding resolution for: " + c.getClass());
+		//cat.debug("Adding resolution for: " + c.getClass());
 
 		try
 		{
@@ -206,20 +211,32 @@ public class ResolvedCritic
 			if (id == null)
 			{
 				if (!canCreate)
-					throw new UnresolvableException("ItemUID missing or unable to create for class: " + obj.getClass());
+					throw new UnresolvableException(
+						"ItemUID missing or unable " +
+						"to create for class: " +
+						obj.getClass());
+
 				if (fail == null)
 					fail = obj.getClass().toString();
 				else
 					fail = fail + ", " + obj.getClass().toString();
-				System.out.println("Offender " + obj.getClass() + " unresolvable");
-				//throw new UnresolvableException("Unable to create ItemUID for class: " + obj.getClass());
+
+				cat.warn("Offender " + obj.getClass() + " unresolvable");
+
+				// Use this for fast fail instead.
+				// Sacrificed for complete fail. d00mst
+				//throw new UnresolvableException(
+				//	"Unable to create ItemUID for class: "
+				//	+ obj.getClass());
 			}
 			else
 				_offenders.add(id);
 		}
 
 		if (fail != null)
-			throw new UnresolvableException("Unable to create ItemUID for some class(es): " + fail);
+			throw new UnresolvableException(
+				"Unable to create ItemUID for some class(es): "
+				+ fail);
 	}
 
 	/**

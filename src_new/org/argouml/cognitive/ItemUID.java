@@ -30,6 +30,8 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
+import org.apache.log4j.Category;
+
 /**
  * Instances of this class is supposed to be attached to other instances
  * of other classes to uniquely identify them. It is intended that such
@@ -47,6 +49,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
  */
 public class ItemUID
 {
+	protected static Category cat = Category.getInstance(ItemUID.class);
+
 	/** Keeps a reference to the Class object of this class */
 	protected final static Class _myclass = (new ItemUID()).getClass();
 
@@ -126,13 +130,14 @@ public class ItemUID
 	{
 		if (obj instanceof MBase)
 			return ((MBase)obj).getUUID();
+
 		/*
 		// Want to use the "built in" UID of the MXxx instances
 		// d00mst 2002-10-08
 		if (obj instanceof MModelElement)
 		{
 			String id = ((MModelElement)obj).getTaggedValue("org.argouml.uid");
-			//System.out.println("Read UID " + id + " from an object!");
+			//cat.debug("Read UID " + id + " from an object!");
 			return id;
 		}
 		*/
@@ -153,7 +158,9 @@ public class ItemUID
 		}
 		catch (InvocationTargetException tie)
 		{
-			System.out.println("getItemUID for " + obj.getClass() + " threw: " + tie);
+			cat.error("getItemUID for " + obj.getClass() +
+				  " threw: ",
+				  tie);
 			return null;
 		}
 		catch (IllegalAccessException iace)
@@ -162,7 +169,9 @@ public class ItemUID
 		}
 		catch (IllegalArgumentException iare)
 		{
-			System.out.println("getItemUID for " + obj.getClass() + " takes strange parameter: " + iare);
+			cat.error("getItemUID for " + obj.getClass() +
+				  " takes strange parameter: ",
+				  iare);
 			return null;
 		}
 		catch (ExceptionInInitializerError eiie)
@@ -175,7 +184,8 @@ public class ItemUID
 
 		if (!(rv instanceof ItemUID))
 		{
-			System.out.println("getItemUID for " + obj.getClass() + " returns strange value: " + rv.getClass());
+			cat.error("getItemUID for " + obj.getClass() +
+				  " returns strange value: " + rv.getClass());
 			return null;
 		}
 
@@ -205,7 +215,7 @@ public class ItemUID
 			mtv.setTag("org.argouml.uid");
 			mtv.setValue(id);
 			mtv.setModelElement((MModelElement)obj);
-			//System.out.println("Added UID " + id + " to an object");
+			//cat.debug("Added UID " + id + " to an object");
 			return id;
 		}
 		*/
@@ -230,7 +240,9 @@ public class ItemUID
 		}
 		catch (InvocationTargetException tie)
 		{
-			System.out.println("setItemUID for " + obj.getClass() + " threw: " + tie);
+			cat.error("setItemUID for " + obj.getClass() +
+				  " threw",
+				  tie);
 			return null;
 		}
 		catch (IllegalAccessException iace)
@@ -239,7 +251,9 @@ public class ItemUID
 		}
 		catch (IllegalArgumentException iare)
 		{
-			System.out.println("setItemUID for " + obj.getClass() + " takes strange parameter: " + iare);
+			cat.error("setItemUID for " + obj.getClass() +
+				  " takes strange parameter",
+				  iare);
 			return null;
 		}
 		catch (ExceptionInInitializerError eiie)

@@ -38,6 +38,8 @@ import org.argouml.kernel.ProjectMember;
 import org.argouml.ocl.OCLExpander;
 import org.argouml.xml.todo.*;
 
+import org.apache.log4j.Category;
+
 /**
  * Helper class to act as a project member on behalf of the todo list.
  * It helps the todo list get loaded and saved together with the rest
@@ -47,6 +49,9 @@ import org.argouml.xml.todo.*;
  */
 public class ProjectMemberTodoList extends ProjectMember
 {
+	protected static Category cat = Category.getInstance(
+						ProjectMemberTodoList.class);
+
 	public static final String TODO_TEE = "/org/argouml/xml/dtd/todo.tee";
 	public static final String TODO_EXT = ".todo";
 
@@ -142,11 +147,12 @@ public class ProjectMemberTodoList extends ProjectMember
 	{
 		if (writer == null)
 		{
-			System.out.println("ProjectMemberTodoList.cognitive.argouml.org: No writer specified");
+			cat.warn("ProjectMemberTodoList.cognitive.argouml.org:"
+				 + " No writer specified");
 			return;
 		}
 
-		System.out.println("Saving TODO LIST " + path + getName() + " !!!");
+		cat.debug("Saving TODO LIST " + path + "/" + getName() + " !!!");
 
 		if (expander == null)
 		{
@@ -156,7 +162,7 @@ public class ProjectMemberTodoList extends ProjectMember
 
 		expander.expand(writer, this, "", "");
 
-		System.out.println("Done saving TODO LIST!!!");
+		cat.debug("Done saving TODO LIST!!!");
 	}
 
 	public void save(String path, boolean overwrite)
