@@ -354,7 +354,7 @@ public final class TargetManager {
 
 	Object oldTargets[] = _targets.toArray();
 	_targets.clear();
-	internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
+	// internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
 	if (o != null)
 	    _targets.add(o);
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
@@ -412,6 +412,8 @@ public final class TargetManager {
      * an event will be fired also in case that that element would not equal
      * the element returned by getTarget().
      * Note also that any nulls within the Collection will be ignored.
+     * TODO make sure that the last target added to the list of targets is the first in
+     * the new list of targets. This has to be done so that multiple select works correctly
      * @param targetsList The new targets list.
      */
     public synchronized void setTargets(Collection targetsList) {
@@ -425,6 +427,8 @@ public final class TargetManager {
 
 	Object oldTargets[] = null;
 
+	// check if there are new elements in the list if the old and new list are of the same size
+	// set the oldTargets to the correct selection
 	if (targetsList.size() == _targets.size()) {
 	    boolean first = true;
 	    ntarg = targetsList.iterator();
@@ -445,17 +449,42 @@ public final class TargetManager {
 
 	if (oldTargets == null)
 	    return;
+	
+	// flag to indicate that the old selection is enlarged
+	// this is needed to handle selection in multiple steps like with multi selects
+	// for instance if a user uses the control key to select multiple figs.
+	boolean targetListEnlarged = false;
+	List newTargets = new ArrayList();	
+	if (_targets.size() < targetsList.size() && targetsList.containsAll(_targets)) {
+	    Iterator it = targetsList.iterator();
+	    while (it.hasNext()) {
+	        Object o = it.next();
+	        if (!_targets.contains(o) && !newTargets.contains(o)) {
+	            newTargets.add(o);
+	            targetListEnlarged = true;
+	        }
+	    }
+	}
 
 	startTargetTransaction();
-
+	
 	_targets.clear();
-	internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
+	
+	// implement set-like behaviour. The same element may not be added more then once.
+	// nulls are not allowed either.
 	ntarg = targetsList.iterator();
 	while (ntarg.hasNext()) {
 	    Object targ = ntarg.next();
 	    if (targ == null || _targets.contains(targ))
 		continue;
 	    _targets.add(targ);
+	}
+	
+	// make sure the last target added to the target selection is the target returned when getTarget is called
+	if (targetListEnlarged && _targets.size() > 1 && newTargets.size() > 0) {
+	    Object o = newTargets.get(newTargets.size()-1);
+	   _targets.remove(_targets.indexOf(o));	   
+	   _targets.add(0, o);	  
 	}
 
 	internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);

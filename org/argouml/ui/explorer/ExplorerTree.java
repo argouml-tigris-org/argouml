@@ -330,7 +330,7 @@ public class ExplorerTree
             if (!updatingSelection) {
                 updatingSelection = true;
                 
-                Set targets = new HashSet();
+                List targets = new ArrayList();
                 
                 //get existing selection
                 for (int i = 0; i < getSelectionCount(); i++) {
