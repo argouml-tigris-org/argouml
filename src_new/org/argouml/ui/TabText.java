@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,6 +33,8 @@ import javax.swing.text.*;
 
 import org.argouml.uml.ui.*;
 
+/** A tab that contains textual information.
+ */
 public class TabText extends TabSpawnable
 implements TabModelTarget, DocumentListener {
   ////////////////////////////////////////////////////////////////
@@ -41,16 +43,38 @@ implements TabModelTarget, DocumentListener {
   protected JTextArea _text = new JTextArea();
   protected boolean _parseChanges = true;
   protected boolean _shouldBeEnabled = false;
+  /** The optional toolbar.
+   *  Contains null if no toolbar was requested.
+   */
+  protected JToolBar _toolbar = null;
 
   ////////////////////////////////////////////////////////////////
   // constructor
+
+  /** Create a text tab without a toolbar.
+   */
   public TabText(String title) {
+      this(title, false);
+  }
+
+  /** Create a text tab and optionally request a toolbar.
+   *  @since ARGO0.9.4
+   */
+  public TabText(String title, boolean withToolbar) {
     super(title);
     setLayout(new BorderLayout());
     _text.setFont(new Font("Monospaced", Font.PLAIN, 12));
     _text.setTabSize(4);
     add(new JScrollPane(_text), BorderLayout.CENTER);
     _text.getDocument().addDocumentListener(this);
+
+    // If a toolbar was requested, create an empty one.
+    if (withToolbar) {
+        _toolbar = new JToolBar();
+        _toolbar.setFloatable(false);
+        _toolbar.setOrientation(JToolBar.HORIZONTAL);
+        add(_toolbar, BorderLayout.NORTH);
+    }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -119,7 +143,5 @@ implements TabModelTarget, DocumentListener {
     //System.out.println(getClass().getName() + " changed");
     if (_parseChanges) parseText(_text.getText());
   }
-
-
 
 } /* end class TabText */
