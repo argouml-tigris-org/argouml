@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,6 +38,8 @@ import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelpe
 import org.argouml.ui.ActionGoToDetails;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.ActionAddAllClassesFromModel;
 import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
 import org.argouml.uml.ui.ActionAddPackage;
@@ -69,6 +71,7 @@ public class ExplorerPopup extends JPopupMenu{
                 this.add((AbstractAction) e.nextElement());
             }
         } else {
+	    // TODO: explain which selectedItems should satisfy this condition
             if ((ModelFacade.isAClassifier(selectedItem) &&
             !(ModelFacade.isADataType(selectedItem)))
             || ((ModelFacade.isAPackage(selectedItem))
@@ -106,6 +109,8 @@ public class ExplorerPopup extends JPopupMenu{
                 action.setEnabled(action.shouldBeEnabled());
                 this.add(action);
             }
+
+	    // TODO: explain which selectedItems should satisfy this condition
             if ((ModelFacade.isARelationship(selectedItem) &&
             !(ModelFacade.isAFlow(selectedItem)))
             || ((ModelFacade.isALink(selectedItem))
@@ -123,6 +128,7 @@ public class ExplorerPopup extends JPopupMenu{
                 this.add(action);
             }
             
+	    // TODO: explain which selectedItems should satisfy this condition
             if ((ModelFacade.isAModelElement(selectedItem)
             && (selectedItem
             != ProjectManager
@@ -132,12 +138,29 @@ public class ExplorerPopup extends JPopupMenu{
             || selectedItem instanceof Diagram) {
                 this.add(ActionRemoveFromModel.SINGLETON);
             }
+
             if (ModelFacade.isAClassifier(selectedItem) ||
             ModelFacade.isAPackage(selectedItem)) {
                 this.add(ActionSetSourcePath.SINGLETON);
             }
+
             if (ModelFacade.isAPackage(selectedItem) || ModelFacade.isAModel(selectedItem)) {
                 this.add(ActionAddPackage.SINGLETON);
+            }
+
+	    // TODO: Make sure this shouldn't go into a previous condition -tml
+	    if (selectedItem instanceof UMLClassDiagram) {
+                UMLAction action =
+                new ActionAddAllClassesFromModel(
+		    menuLocalize("menu.popup.add-all-classes-to-diagram"),
+                    selectedItem);
+                action.setEnabled(action.shouldBeEnabled());
+                this.add(action);
+	    }
+
+            if (selectedItem != null) {
+                this.add(new ActionGoToDetails(
+                menuLocalize("action.properties")));
             }
         }
     }
