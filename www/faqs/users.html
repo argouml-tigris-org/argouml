@@ -4,7 +4,7 @@ DT {
 }
 </STYLE>
 <title>Frequently asked questions for ArgoUML.</title>
-<H2>Frequently asked questions for ArgoUML. (18 November 2002)</H2>
+<H2>Frequently asked questions for ArgoUML. (03 January 2003)</H2>
 <ul>
 <p>
 <br>
@@ -188,8 +188,7 @@ option. At this point, give a description for the file like "ArgoUML Model", and
 Notepad to open the file. That's not what you want to do ultimately, but it does get Windows to
 accept the .zargo extension as representing a valid file type.
 <p>
-Now close, and then reopen Windows Explorer. From the Explorer menu select View->Options. 
-You should get a two (or more) tabbed dialog. Click the "File Types" dialog and
+Now close, and then reopen Windows Explorer. If you are using a version of Windows prior to XP go to the Explorer menu and select View->Options. For XP you would use Tools->Folder Options. You should get a two (or more) tabbed dialog. Click the "File Types" dialog and
 then scroll through the list for the Description you gave - in this example
 "ArgoUML Model". Click to select that file type, and then click the "Edit"
 button.
@@ -199,7 +198,7 @@ then get a dialog that has a line for entering in the application action
 that will have a line for using Notepad to open the file. Replace that line
 with:
 <p>
-"C:\Program Files\Java\j2re1.4.0_01\bin\javaw.exe" -jar "c:\ArgoUML-0.10\argouml.jar" "%1"
+"C:\Program Files\Java\j2re1.4.1_01\bin\javaw.exe" -jar "c:\ArgoUML\argouml.jar" "%L"
 <p>
 Substitute your path to your JavaW.exe and ArgoUML.jar files if they aren't
 located where specified above. Click OK, then click OK, then click OK (three buttons on
