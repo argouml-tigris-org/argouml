@@ -30,26 +30,26 @@ import java.util.*;
 
 public abstract class ArrowHead
 {
-	protected final int			arrow_width = 5, arrow_height = 16;
+	protected final int			arrow_width = 7, arrow_height = 12;
 	protected Color arrowLineColor = Color.black;
 	protected Color arrowFillColor = Color.black;
 
-	Color getLineColor()
+	public Color getLineColor()
 	{
 		return arrowLineColor;
 	}
 
-	void setLineColor(Color newColor)
+	public void setLineColor(Color newColor)
 	{
 		arrowLineColor = newColor;
 	}
 
-	Color getFillColor()
+	public Color getFillColor()
 	{
 		return arrowFillColor;
 	}
 
-	void setFillColor(Color newColor)
+	public void setFillColor(Color newColor)
 	{
 		arrowFillColor = newColor;
 	}
@@ -57,4 +57,21 @@ public abstract class ArrowHead
 	public void paint(Graphics g, Point start, Point end) {
 		// put painting here
 	}
+
+  /** return the approximate arc length of the path in pixel units */
+  int getLineLength(Point one, Point two) {
+    int dxdx = (two.x - one.x) * (two.x - one.x);
+    int dydy = (two.y - one.y) * (two.y - one.y);
+    System.out.println("    ! pall dx, dy = " + dxdx + " , " + dydy);
+    return (int) Math.sqrt(dxdx + dydy);
+  }
+
+  /** return a point that is dist pixels along the path */
+  Point pointAlongLine(Point one, Point two, int dist) {
+    int len = getLineLength(one, two);
+    int p = dist;
+    System.out.println("    ! pall dist, len = " + dist + " , " + len);
+    return new Point(one.x + ((two.x - one.x) * p) / len, one.y + ((two.y - one.y) * p) / len);
+  }
+
 }
