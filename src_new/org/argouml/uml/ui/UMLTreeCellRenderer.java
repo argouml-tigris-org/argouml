@@ -41,9 +41,8 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.MComment;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * UMTreeCellRenderer determines how the entries in the Navigationpane
@@ -88,8 +87,8 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
             
             // setting the tooltip
             String tip = null;
-            if (value instanceof MModelElement){
-                tip = ((MModelElement) value).getUMLClassName();
+            if (ModelFacade.isAModelElement(value)) {
+                tip = ModelFacade.getUMLClassName(value);
             }
             else if(value instanceof UMLDiagram){
                 
