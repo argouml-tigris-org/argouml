@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui;
 
 import java.util.Collection;
@@ -278,6 +278,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
     /**
      * Returns true if the given element is valid, i.e. it may be added to the 
      * list of elements.
+     *
      * @param element
      */
     protected abstract boolean isValidElement(MBase element);

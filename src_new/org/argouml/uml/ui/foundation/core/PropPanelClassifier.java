@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -20,10 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// 26 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Minor fixes. Made
-// extends/derived scrollpanes have optional scrollbars.
-
 
 package org.argouml.uml.ui.foundation.core;
 
@@ -138,33 +135,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
         }
     }
 
-/*
-    public void removeElement() {
-	//overrides removeElement in PropPanel
-	
-	
-	
-	
-        Object target = getTarget();
-        if(target instanceof MClassifier) {
-            MClassifier cls = (MClassifier) target;
-            Object newTarget = cls.getNamespace();
-            ProjectBrowser.TheInstance.setTarget(cls);
-			ActionEvent event = new ActionEvent(this,0, "delete");
-			ActionRemoveFromModel.SINGLETON.actionPerformed(event); 
-            if(newTarget != null) {
-            	ProjectBrowser.TheInstance.setTarget(newTarget);
-                navigateTo(newTarget);
-            }   
-        }
-    }
-    */
 
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Classifier") ||
-            baseClass.equals("GeneralizableElement");
-    }
-    
     /**
 	 * Opens a new window where existing interfaces can be added to the class as interfaces.
 	 * realized by this class.

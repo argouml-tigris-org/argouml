@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +25,6 @@
 // File: FigNodeModelElement.java
 // Classes: FigNodeModelElement
 // Original Author: abonner
-
-// $Id$
 
 package org.argouml.uml.diagram.ui;
 
@@ -562,7 +561,8 @@ public abstract class FigNodeModelElement
 
     /** This is called aftern any part of the UML MModelElement has
      *  changed. This method automatically updates the name FigText.
-     *  Subclasses should override and update other parts. */
+     *  Subclasses should override and update other parts.
+     */
     protected void modelChanged(MElementEvent mee) {
         // TODO remove the mee == null as soon as we have been migrated
         MModelElement me = (MModelElement) getOwner();

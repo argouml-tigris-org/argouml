@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -46,7 +47,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
     }
 
     /**
-     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace)
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,Object)
      */
     public ArgoDiagram createDiagram(MNamespace ns, Object target) {
         return new UMLUseCaseDiagram(ns);

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,7 +55,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     // main methods
 
     /**
-     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace)
+     * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,Object)
      */
     public ArgoDiagram createDiagram(MNamespace ns, Object target) {
         return new UMLDeploymentDiagram(ns);

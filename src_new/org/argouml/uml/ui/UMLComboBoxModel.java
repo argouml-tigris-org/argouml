@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,25 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 // File: UMLComboBoxModel.java
 // Classes: UMLComboBoxModel
 // Original Author: 
 // $Id$
-
-// 23 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Layout tidied up,
-// whilst tracking bug. _model eliminated, since it seems to have no use (it is
-// always immediately overwritten and the stored value never used.
-// _shouldBeEnabled removed, since it did nothing. _noArgs made a local
-// variable, at the one place where it is used. collectElements() made
-// protected (it has no value outside this model). updateElement() and
-// isAcceptible() made private (they are only used in this class). propertySet
-// now extended to use nameChanged() (which changes the display name) rather
-// than updateName().
-
-// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
-// project as needing saving if the selected field is changed.
-
 
 package org.argouml.uml.ui;
 
@@ -538,7 +524,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *                 the drop down list, <code>false</code> otherwise.
      */
 
-    public boolean isAcceptible(MModelElement element) {
+    private boolean isAcceptible(MModelElement element) {
 
         boolean isAcceptible = false;
 

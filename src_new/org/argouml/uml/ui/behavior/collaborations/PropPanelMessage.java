@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -112,10 +113,6 @@ public class PropPanelMessage extends PropPanelModelElement {
             action = (MCallAction)CommonBehaviorFactory.getFactory().buildAction((MMessage)target);
         }
         return action;
-    }
-    
-   protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Message");
     }
     
     public boolean isAddActionEnabled() {
