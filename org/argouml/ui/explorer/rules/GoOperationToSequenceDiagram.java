@@ -42,7 +42,7 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
  * Go rule from represented operation to sequence diagram representing it
  * @author : jaap.branderhorst@xs4all.nl
  */
-public class GoOperationToSequenceDiagram implements PerspectiveRule {
+public class GoOperationToSequenceDiagram extends AbstractPerspectiveRule{
 
     /** 
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()

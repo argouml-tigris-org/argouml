@@ -45,7 +45,7 @@ import org.argouml.model.ModelFacade;
  * @author  16 Apr 2002. Jeremy Bennett (mail@jeremybennett.com).
  */
 
-public class GoUseCaseToExtensionPoint implements PerspectiveRule {
+public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule{
     
     protected static Logger cat =
 	Logger.getLogger(GoUseCaseToExtensionPoint.class);

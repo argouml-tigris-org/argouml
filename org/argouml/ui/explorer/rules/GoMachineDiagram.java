@@ -34,7 +34,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
-public class GoMachineDiagram implements PerspectiveRule {
+public class GoMachineDiagram extends AbstractPerspectiveRule{
 
     public String getRuleName() {
         return "Machine->Diagram";

@@ -40,7 +40,7 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 30, 2002
  */
-public class GoBehavioralFeatureToStateDiagram implements PerspectiveRule {
+public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule{
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)

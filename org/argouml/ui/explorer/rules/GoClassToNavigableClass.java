@@ -31,7 +31,7 @@ import java.util.List;
 
 import org.argouml.model.ModelFacade;
 
-public class GoClassToNavigableClass implements PerspectiveRule {
+public class GoClassToNavigableClass extends AbstractPerspectiveRule{
 
     public String getRuleName() {
         return "Class->Navigable Class";

@@ -28,7 +28,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import java.util.Collection;
 
-public class GoModelToElements implements PerspectiveRule {
+public class GoModelToElements extends AbstractPerspectiveRule{
 
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.namespace.owned-element");

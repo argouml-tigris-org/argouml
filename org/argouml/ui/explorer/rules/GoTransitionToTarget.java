@@ -29,7 +29,7 @@ import java.util.Collection;
 
 import org.argouml.model.ModelFacade;
 
-public class GoTransitionToTarget implements PerspectiveRule {
+public class GoTransitionToTarget extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "Transition->Target State"; }
 

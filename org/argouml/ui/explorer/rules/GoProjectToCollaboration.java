@@ -32,7 +32,7 @@ import org.argouml.kernel.Project;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.model.ModelFacade;
 
-public class GoProjectToCollaboration implements PerspectiveRule {
+public class GoProjectToCollaboration extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "Project->MCollaboration"; }
 

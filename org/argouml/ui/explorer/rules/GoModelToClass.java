@@ -29,7 +29,7 @@ import java.util.Collection;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
-public class GoModelToClass implements PerspectiveRule {
+public class GoModelToClass extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "Package->Class"; }
   

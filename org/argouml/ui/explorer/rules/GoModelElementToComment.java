@@ -34,7 +34,7 @@ import org.argouml.model.ModelFacade;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 21, 2003
  */
-public class GoModelElementToComment implements PerspectiveRule {
+public class GoModelElementToComment extends AbstractPerspectiveRule{
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)

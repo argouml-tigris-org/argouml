@@ -30,7 +30,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 	
 
-public class GoGenElementToDerived implements PerspectiveRule {
+public class GoGenElementToDerived extends AbstractPerspectiveRule{
 
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.class.subclass");

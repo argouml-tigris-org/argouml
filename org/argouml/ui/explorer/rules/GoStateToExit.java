@@ -33,7 +33,7 @@ import org.argouml.model.ModelFacade;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 25, 2002
  */
-public class GoStateToExit implements PerspectiveRule {
+public class GoStateToExit extends AbstractPerspectiveRule{
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)

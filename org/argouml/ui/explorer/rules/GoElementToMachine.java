@@ -29,7 +29,7 @@ import java.util.Collection;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
-public class GoElementToMachine implements PerspectiveRule {
+public class GoElementToMachine extends AbstractPerspectiveRule{
 
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.class.state-machine");

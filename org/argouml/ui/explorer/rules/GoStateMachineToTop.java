@@ -29,7 +29,7 @@ import java.util.ArrayList;
 
 import org.argouml.model.ModelFacade;
 
-public class GoStateMachineToTop implements PerspectiveRule {
+public class GoStateMachineToTop extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "State->Incoming Transitions"; }
 

@@ -36,7 +36,7 @@ import org.argouml.model.ModelFacade;
  * Go rule to navigate from some message to it's corresponding action
  * @author jaap.branderhorst
  */
-public class GoMessageAction implements PerspectiveRule {
+public class GoMessageAction extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "Message->Action"; }
 

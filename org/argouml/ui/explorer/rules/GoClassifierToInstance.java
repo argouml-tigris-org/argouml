@@ -33,7 +33,7 @@ import org.argouml.model.ModelFacade;
 /**
  * @author : jaap.branderhorst@xs4all.nl
  */
-public class GoClassifierToInstance implements PerspectiveRule {
+public class GoClassifierToInstance extends AbstractPerspectiveRule{
 
     /**
      * 

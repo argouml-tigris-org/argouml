@@ -35,7 +35,7 @@ import org.argouml.kernel.ProjectManager;
  * @author  alexb
  * @since 0.15.2, Created on 05 October 2003, 19:18
  */
-public class GoModelToDiagrams implements PerspectiveRule {
+public class GoModelToDiagrams extends AbstractPerspectiveRule{
 
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.model-diagram");

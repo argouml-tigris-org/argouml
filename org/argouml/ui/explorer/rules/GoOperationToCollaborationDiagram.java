@@ -40,7 +40,7 @@ import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoOperationToCollaborationDiagram implements PerspectiveRule {
+public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule{
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)

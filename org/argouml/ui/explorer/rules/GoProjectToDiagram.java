@@ -29,7 +29,7 @@ import java.util.Collection;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 
-public class GoProjectToDiagram implements PerspectiveRule {
+public class GoProjectToDiagram extends AbstractPerspectiveRule{
 
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.project.diagram");

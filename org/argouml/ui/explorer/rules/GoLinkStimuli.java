@@ -29,7 +29,7 @@ import java.util.Collection;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
-public class GoLinkStimuli implements PerspectiveRule {
+public class GoLinkStimuli extends AbstractPerspectiveRule{
     
     public Collection getChildren(Object parent) {
 	if (!(org.argouml.model.ModelFacade.isALink(parent))) return null;

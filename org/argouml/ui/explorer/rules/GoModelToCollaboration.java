@@ -36,7 +36,7 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
  * @since Oct 1, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoModelToCollaboration implements PerspectiveRule {
+public class GoModelToCollaboration extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "Model->Collaboration"; }
 

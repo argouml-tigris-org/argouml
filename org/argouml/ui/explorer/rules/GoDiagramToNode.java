@@ -28,7 +28,7 @@ import java.util.Collection;
 
 import org.tigris.gef.base.Diagram;
 
-public class GoDiagramToNode implements PerspectiveRule {
+public class GoDiagramToNode extends AbstractPerspectiveRule{
 
     public String getRuleName() { return "Diagram->Node"; }
 

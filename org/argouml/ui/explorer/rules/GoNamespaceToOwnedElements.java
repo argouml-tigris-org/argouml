@@ -30,7 +30,7 @@ import java.util.Iterator;
 
 import org.argouml.model.ModelFacade;
 
-public class GoNamespaceToOwnedElements implements PerspectiveRule {
+public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule{
 
     public String getRuleName() {
         return "nsp -> owned elems";

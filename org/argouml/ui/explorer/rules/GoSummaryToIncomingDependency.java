@@ -40,7 +40,7 @@ import org.argouml.model.ModelFacade;
  * @author  alexb, $Author$
  * @since argo 0.13.4, Created on 21 March 2003, 23:18
  */
-public class GoSummaryToIncomingDependency implements PerspectiveRule {
+public class GoSummaryToIncomingDependency extends AbstractPerspectiveRule{
 
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.class.attribute");
