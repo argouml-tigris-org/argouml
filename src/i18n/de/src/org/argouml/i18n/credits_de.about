@@ -1,0 +1,75 @@
+ArgoUML wurde durch folgende Personen entwickelt:
+
+Projektleiter:
+  Linus Tolke (linus@tigris.org)
+  
+Modul-Eigner (Bei Beträgen, kontaktieren Sie diese Personen):
+
+  Plugin-Unterstützung, Build-Prozess: Thierry Lach (thierry_lach@hotmail.com)
+  Roundtrip-Engineering: Thomas Neustupny (thn-d@gmx.de)
+  Benutzerhandbuch: Jeremy Bennett (jeremybennett@tigris.org)
+  Internationalisierung: Jean-Hugues de Raigniac (jhraigniac@tigris.org)
+  Benutzer-FAQ: Ewan R. Grantham
+  Release-Manager: Linus Tolke
+  
+Mitwirkende Entwickler in den vorhergehenden Versionen 0.13.*:
+
+  Markus Klink
+  Jaap Branderhorst
+  Thierry Lach
+  Bob Tarling
+  Linus Tolke
+  Jason Robbins
+  Michael Stockman
+  Thomas Neustupny
+  Jean-Hugues de Raigniac
+  Alex Bagehot
+  Steffen Zschaler
+  Alexander Lepekhine
+
+Frühere Entwickler:
+
+Forscher:  
+  Jason Robbins (Projektgründer)
+  David Redmiles
+  David Hilbert
+
+Entwickler und Tester:  
+  Jason Robbins
+  Adam Gauthier
+  Adam Bonner
+  David Hilbert
+  ICS 125 team Spring 1996
+  ICS 125 teams Spring 1998
+
+(alphabetische Reihenfolge):
+
+  Alexey Aphanasyev
+  Andreas Rueckert (a_rueckert@gmx.net) (Java RE)
+  Clemens Eichler
+  Curt Arnold
+  David Glaser
+  Dennis Daniels (denny_d@hotmail.com)
+  Donat Wullschleger
+  Edwin Park
+  Eric Lefevre
+  Eugenio Alvarez
+  Frank Finger
+  Frank Wienberg
+  Grzegorz Prokopski
+  Jim Holt
+  Luc Maisonobe
+  Marcus Andersson
+  Marko Boger (GentleWare) (UML Diagrams)
+  Nick Santucci
+  Phil Sager
+  Philippe Vanpeperstraete (Philippe.Vanpeperstraete@skynet.be) (User manual)
+  Piotr Kaminski
+  Scott Guyer
+  Sean Chen
+  Steve Poole
+  Stuart Zakon
+  Thomas Schaumburg
+  Thorsten Sturm (thorsten.sturm@gentleware.de) (GEF)
+  Toby Baier (Toby.Baier@gmx.net) (UML Metamodel, XMI, Project leader)
+  Will Howery
