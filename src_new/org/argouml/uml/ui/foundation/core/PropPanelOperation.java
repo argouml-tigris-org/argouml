@@ -62,7 +62,7 @@ import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
-/**
+/** A property panel for operations.
  * @todo this property panel needs refactoring to remove dependency on
  *       old gui components.
  */
@@ -264,7 +264,7 @@ public class PropPanelOperation extends PropPanelModelElement {
         new PropPanelButton(
             this,
             buttonPanel,
-            _operationIcon,
+            _addOpIcon,
             Argo.localize("UMLMenu", "button.add-new-operation"),
             "buttonAddOperation",
             null);
