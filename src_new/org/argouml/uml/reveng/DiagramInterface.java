@@ -221,13 +221,15 @@ public class DiagramInterface {
      * @param newClass The new class to add to the editor.
      */
     public void addClass(MClass newClass) {
-	GraphModel gm        = getEditor().getGraphModel();
+	ClassDiagramGraphModel gm        = (ClassDiagramGraphModel)getEditor().getGraphModel();
 	LayerPerspective lay = (LayerPerspective)getEditor().getLayerManager().getActiveLayer(); 	
 	FigClass newClassFig = new FigClass( gm, newClass); 
 	
 	getEditor().add( newClassFig);
-	((ClassDiagramGraphModel)gm).addNodeRelatedEdges( newClass);
+	if (gm.canAddNode(newClass))
+	    gm.addNode(newClass);
 	lay.putInPosition( (Fig)newClassFig);
+	gm.addNodeRelatedEdges( newClass);
 	getEditor().damaged( newClassFig);
     }
 
@@ -237,13 +239,15 @@ public class DiagramInterface {
      * @param newInterface The interface to add.
      */
     public void addInterface(MInterface newInterface) {
-	GraphModel       gm              = getEditor().getGraphModel();
+	ClassDiagramGraphModel gm        = (ClassDiagramGraphModel)getEditor().getGraphModel();
 	LayerPerspective lay             = (LayerPerspective)getEditor().getLayerManager().getActiveLayer(); 
 	FigInterface     newInterfaceFig = new FigInterface( gm, newInterface); 
 
 	getEditor().add( newInterfaceFig);
-	((ClassDiagramGraphModel)gm).addNodeRelatedEdges( newInterface);
+	if (gm.canAddNode(newInterface))
+	    gm.addNode(newInterface);
 	lay.putInPosition( (Fig)newInterfaceFig);
+	gm.addNodeRelatedEdges( newInterface);
 	getEditor().damaged( newInterfaceFig);		
     }
 }
