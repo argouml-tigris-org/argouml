@@ -139,7 +139,25 @@ public class PropPanelObject extends PropPanelModelElement {
 	    if (element != null) {
 	    	classifiers.add(element);
 	    }
-	    inst.setClassifiers(classifiers);
+        
+        boolean changed = false;
+        if (inst.getClassifiers() == null 
+            || classifiers.size() != inst.getClassifiers().size()) {
+            changed = true;
+        }
+        else {
+            Iterator iter1 = classifiers.iterator();
+            Iterator iter2 = inst.getClassifiers().iterator();
+            while (!changed && iter1.hasNext()) {
+                if (!(iter1.next().equals(iter2.next()))) {
+                    changed = true;
+                }
+            }
+        }
+                        
+        if (changed) {
+            inst.setClassifiers(classifiers);
+        }
         }
 	/*
 	//            ((MInstance) target).setClassifier((MClassifier) element);
