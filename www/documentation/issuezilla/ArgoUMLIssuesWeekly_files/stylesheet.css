@@ -111,12 +111,19 @@ td
 	white-space:normal;
 	mso-rotate:90;}
 .xl27
-	{mso-style-parent:style0;
-	text-align:left;
+	{mso-style-parent:style21;
+	color:blue;
+	text-decoration:underline;
+	text-underline-style:single;
+	white-space:normal;
 	mso-rotate:90;}
 .xl28
 	{mso-style-parent:style0;
-	mso-number-format:"Short Date";}
+	text-align:left;
+	mso-rotate:90;}
 .xl29
+	{mso-style-parent:style0;
+	mso-number-format:"Short Date";}
+.xl30
 	{mso-style-parent:style0;
 	mso-number-format:0;}
