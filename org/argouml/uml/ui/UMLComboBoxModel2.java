@@ -89,6 +89,11 @@ public abstract class UMLComboBoxModel2
      * Flag to indicate wether list events should be fired
      */
     protected boolean _fireListEvents = true;
+    
+    /**
+     * Flag to indicate wether the model is being build
+     */
+    private boolean _buildingModel = false;
 
     /**
      * Constructs a model for a combobox. The container given is used to retreive
@@ -238,12 +243,29 @@ public abstract class UMLComboBoxModel2
      * @param col
      */
     protected void removeAll(Collection col) {
-        // we don't want to mark to many elements as changed. 
-        // therefore we don't directly call removeall on the list
         Iterator it = col.iterator();
+        int lower = -1;
+        int index = -1;
+        int lastindex = -1;
+        _fireListEvents = false;
         while (it.hasNext()) {
-            removeElement(it.next());
+            Object o = it.next();
+            removeElement(o);
+            if (lower == -1) { // start of interval
+                lower = getIndexOf(o);
+                index = lower;
+            } else {
+                if (getIndexOf(o) != index + 1) { // end of interval
+                    _fireListEvents = true;
+                    fireIntervalRemoved(this, lower, index);
+                    _fireListEvents = false;
+                    lower = -1;
+                } else { // in middle of interval
+                    index++;
+                }
+            }
         }
+        _fireListEvents = true;
     }
 
     /**
@@ -253,11 +275,15 @@ public abstract class UMLComboBoxModel2
     protected void addAll(Collection col) {
         Iterator it = col.iterator();
         Object o2 = getSelectedItem();
+        _fireListEvents = false;
+        int oldSize = _objects.size();
         while (it.hasNext()) {
             Object o = it.next();
             addElement(o);
         }
         setSelectedItem(o2);
+        _fireListEvents = true;
+        fireIntervalAdded(this, oldSize - 1, _objects.size() - 1);
     }
 
     /**
@@ -306,7 +332,12 @@ public abstract class UMLComboBoxModel2
             removeAllElements();
             _fireListEvents = true;
             if (_target != null) {
+                _buildingModel = true;
                 buildModelList();
+                _buildingModel = false;
+                if (getSize() > 0) {
+                    fireIntervalAdded(this, 0, getSize() - 1);
+                }
                 setSelectedItem(getSelectedModelElement());
             }
             if (getSelectedItem() != null && _clearable) {
@@ -449,7 +480,7 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.AbstractListModel#fireContentsChanged(java.lang.Object, int, int)
      */
     protected void fireContentsChanged(Object source, int index0, int index1) {
-        if (_fireListEvents)
+        if (_fireListEvents && !_buildingModel)
             super.fireContentsChanged(source, index0, index1);
     }
 
@@ -457,7 +488,7 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.AbstractListModel#fireIntervalAdded(java.lang.Object, int, int)
      */
     protected void fireIntervalAdded(Object source, int index0, int index1) {
-        if (_fireListEvents)
+        if (_fireListEvents && !_buildingModel)
             super.fireIntervalAdded(source, index0, index1);
     }
 
@@ -465,7 +496,7 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.AbstractListModel#fireIntervalRemoved(java.lang.Object, int, int)
      */
     protected void fireIntervalRemoved(Object source, int index0, int index1) {
-        if (_fireListEvents)
+        if (_fireListEvents && !_buildingModel)
             super.fireIntervalRemoved(source, index0, index1);
     }
 
