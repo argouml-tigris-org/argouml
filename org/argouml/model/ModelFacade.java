@@ -87,6 +87,7 @@ import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.behavior.state_machines.MSignalEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateImpl;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
@@ -232,6 +233,7 @@ public class ModelFacade {
     public static final Object MODEL = MModel.class;
     public static final Object SUBSYSTEM = MSubsystem.class;
     public static final Object STATE = MState.class;
+    public static final Object STATEIMPL = MStateImpl.class;
     public static final Object COMPOSITESTATE = MCompositeState.class;
     public static final Object STATEVERTEX = MStateVertex.class;
     public static final Object PSEUDOSTATE = MPseudostate.class;
