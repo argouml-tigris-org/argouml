@@ -34,7 +34,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLAttributesListModel;
@@ -68,13 +68,13 @@ public class PropPanelDataType extends PropPanelClassifier {
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
         addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         addField("Generalizations:", getGeneralizationScroll());
         addField("Specializations:", getSpecializationScroll());
         addField(Argo.localize("UMLMenu", "label.dependency"), getSupplierDependencyScroll());
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         addField(Argo.localize("UMLMenu", "label.operations"), getFeatureScroll());
 
@@ -84,7 +84,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         JScrollPane attrScroll= new JScrollPane(attrList);
         addField(Argo.localize("UMLMenu", "label.literals"), attrScroll);
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);   
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
         new PropPanelButton(this,buttonPanel,_dataTypeIcon, Argo.localize("UMLMenu", "button.add-datatype"),"newDataType",null);
         new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-enumeration-literal"),"addAttribute",null);
         new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete datatype"),"removeElement",null);
@@ -130,7 +130,7 @@ public class PropPanelDataType extends PropPanelClassifier {
             MAttribute attr = CoreFactory.getFactory().buildAttribute(classifier);
             TargetManager.getInstance().setTarget(attr);
         }
-        
+
     }
 
     public void newDataType() {
@@ -144,6 +144,6 @@ public class PropPanelDataType extends PropPanelClassifier {
         }
     }
 
-   
+
 
 } /* end class PropPanelDataType */

@@ -38,7 +38,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.GridLayout2;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
@@ -117,7 +117,7 @@ public class PropPanelOperation extends PropPanelModelElement {
             Argo.localize("UMLMenu", "label.visibility"),
             new UMLVisibilityPanel(this, mclass, 2, false));
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         JPanel modPanel =
             new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));
@@ -218,7 +218,7 @@ public class PropPanelOperation extends PropPanelModelElement {
         concurPanel.add(concur);
         addField("Concurrency:", concurPanel);
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         JList paramList =
             new UMLList(

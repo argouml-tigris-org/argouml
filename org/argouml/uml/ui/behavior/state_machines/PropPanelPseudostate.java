@@ -37,7 +37,7 @@ import javax.swing.JPanel;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.diagram.state.ui.FigBranchState;
 import org.argouml.uml.diagram.state.ui.FigDeepHistoryState;
 import org.argouml.uml.diagram.state.ui.FigForkState;
@@ -70,7 +70,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
-        
+
         JPanel kindPanel = new JPanel(new GridLayout(0, 2));
         UMLRadioButton junctionButton =
             new UMLRadioButton(
@@ -186,13 +186,13 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
 
         addField(Argo.localize("UMLMenu", "label.pseudostate-kind"), kindPanel);
 
-        add(LabelledLayout.getSeperator());
-        
+        addSeperator();
+
         addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
         addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
 
     }
-   
+
 
     /**
      * @see org.argouml.uml.ui.TabModelTarget#setTarget(java.lang.Object)
@@ -216,11 +216,11 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
                 || i instanceof FigHistoryState
                 || i instanceof FigInitialState
                 || i instanceof FigJoinState
-                || i instanceof FigShallowHistoryState) {                
-                represented = true;           
-                break;     
+                || i instanceof FigShallowHistoryState) {
+                represented = true;
+                break;
             }
-        }        
+        }
         Enumeration e = kindGroup.getElements();
         while (e.hasMoreElements()) {
             ((UMLRadioButton)e.nextElement()).setEnabled(!represented);

@@ -34,7 +34,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
@@ -45,18 +45,18 @@ public class PropPanelCallEvent extends PropPanelEvent {
     // contructors
     public PropPanelCallEvent() {
         super("Call event", null, ConfigLoader.getTabPropsOrientation());
-        
+
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceScroll());
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         // TODO: make the next list into a scrollbox
         JList operationList = new UMLLinkedList(new UMLCallEventOperationListModel());
         addField(Argo.localize("UMLMenu", "label.operation"), new JScrollPane(operationList));
 	addField(Argo.localize("UMLMenu", "label.parameters"), paramScroll);
-	
+
 
   }
 

@@ -34,7 +34,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -58,7 +58,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 			Argo.localize("UMLMenu", "label.multiplicity"),
 			getMultiplicityComboBox());
 
-		add(LabelledLayout.getSeperator());
+		addSeperator();
 
 		addField(
 			Argo.localize("UMLMenu", "label.type"),
@@ -78,7 +78,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 			_navUpIcon,
 			Argo.localize("UMLMenu", "button.go-up"),
 			"navigateUp",
-			null);		
+			null);
 		new PropPanelButton(
 			this,
 			buttonPanel,
@@ -93,7 +93,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 			Argo.localize("UMLMenu", "button.delete-attribute"),
 			"removeElement",
 			null);
-	}	
+	}
 
 	public void newAttribute() {
         Object target = getTarget();
@@ -101,7 +101,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
             Object owner = ModelFacade.getOwner(target);
             TargetManager.getInstance().setTarget(UmlFactory.getFactory().getCore().buildAttribute(owner));
         }
-        
+
 	}
 
 } /* end class PropPanelAttribute */

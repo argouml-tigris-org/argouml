@@ -136,55 +136,6 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     protected Font smallFont = MetalLookAndFeel.getSubTextFont();
 
     /**
-     *    Constructs the PropPanel.
-     *    @param title Title of panel
-     *    @param panelCount number of horizontal panels
-     *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
-     *                {@link #PropPanel(String, ImageIcon, Orientation)}
-     *                I propose to remove this by version 0.13.7 (Bob Tarling)
-     */
-    public PropPanel(String title, int panelCount) {
-        this(title, null, panelCount);
-    }
-
-    /**
-     *    Constructs the PropPanel - DO NOT USE.
-     *    @param title Title of panel
-     *    @param panelCount number of horizontal panels
-     *
-     *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
-     *                {@link #PropPanel(????)}. Use of GridBagLayout is being
-     *                dropped in favour of
-     *                {@link org.argouml.swingext.LabelledLayout}
-     *                I propose to remove this by version 0.13.7 (Bob Tarling)
-     */
-    public PropPanel(String title, ImageIcon icon, int panelCount) {
-        super(title);
-        setLayout(new BorderLayout());
-        center = new JPanel();
-        center.setLayout(new GridLayout(1, 0));
-
-        JPanel panel;
-        for (long i = 0; i < panelCount; i++) {
-            panel = new JPanel(new GridBagLayout());
-            _panels.add(panel);
-            center.add(panel);
-        }
-        add(center, BorderLayout.CENTER);
-
-        //add caption panel and button panel
-        if (icon != null)
-            captionPanel.add(new JLabel(icon));
-        captionPanel.add(new JLabel(localize(title)));
-        addCaption(captionPanel, 0, 0, 0);
-
-        buttonPanel = new JPanel(new GridLayout(1, 0));
-        buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
-        buttonPanelWithFlowLayout.add(buttonPanel);
-        addField(buttonPanelWithFlowLayout, 0, 0, 0);
-    }
-    
-    /**
      * Construct new PropPanel using LabelledLayout
      * @param icon The icon to display for the panel
      * @param title The title of the panel
@@ -224,48 +175,6 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      */
     public void setOrientation(Orientation orientation) {
         super.setOrientation(orientation);
-    }
-
-    /**
-     *   Adds a component to the captions of the specified panel.
-     *   @param component Component to be added (typically a JLabel)
-     *   @param row row index, zero-based.
-     *   @param panel panel index, zero-based.
-     *   @param weighty specifies how to distribute extra vertical space,
-     *      see GridBagConstraint for details on usage.
-     *
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
-     *         GridBagConstraints is no longer used as a prop panel layout,
- *             replaced by ? - Labelled layout method.
-     */
-    public void addCaption(Component component, int row, int panel, double weighty) {
-        if (orientation == Vertical.getInstance()) {
-            row = lastRow;
-            panel = 0;
-        }
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridy = row;
-        gbc.weighty = weighty;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.gridheight = 1;
-        gbc.gridwidth = 1;
-        gbc.gridx = 0;
-        gbc.weightx = 0;
-        gbc.fill = GridBagConstraints.NONE;
-
-        JPanel pane = (JPanel) _panels.elementAt(panel);
-        GridBagLayout layout = (GridBagLayout) pane.getLayout();
-        layout.setConstraints(component, gbc);
-        pane.add(component);
-    }
-
-    /**
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
-     *         GridBagConstraints is no longer used as a prop panel layout,
- *             replaced by ? - Labelled layout method
-     */
-    public void addCaption(String label, int row, int panel, double weighty) {
-        addCaption(new JLabel(localize(label)), row, panel, weighty);
     }
 
     /**
@@ -350,65 +259,12 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         return localized;
     }
 
+    final protected void addSeperator() {
+        add(LabelledLayout.getSeperator());
+    }
+
     public ResourceBundle getResourceBundle() {
         return null;
-    }
-
-    /**
-     *   Adds a component to the fields of the specified panel.
-     *   @param component Component to be added
-     *   @param row row index, zero-based.
-     *   @param panel panel index, zero-based.
-     *   @param weighty specifies how to distribute extra vertical space,
-     *      see GridBagConstraint for details on usage.
-     *
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
-     *         GridBagConstraints is no longer used as a prop panel layout,
- *             replaced by ? - Labelled layout method.
-     */
-    public void addField(Component component, int row, int panel, double weighty) {
-        if (orientation == Vertical.getInstance()) {
-            row = lastRow;
-            panel = 0;
-            ++lastRow;
-        }
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridy = row;
-        gbc.weighty = weighty;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.gridheight = 1;
-        gbc.gridwidth = 1;
-        gbc.gridx = 1;
-        gbc.weightx = 1;
-        if (weighty == 0)
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-        else
-            gbc.fill = GridBagConstraints.BOTH;
-
-        JPanel pane = (JPanel) _panels.elementAt(panel);
-        GridBagLayout layout = (GridBagLayout) pane.getLayout();
-        layout.setConstraints(component, gbc);
-        pane.add(component);
-    }
-
-    /**
-     *   Adds a component to the fields of the specified panel
-     *     and sets the background and color to indicate
-     *     the field is a link.
-     *   @param component Component to be added
-     *   @param row row index, zero-based.
-     *   @param panel panel index, zero-based.
-     *   @param weighty specifies how to distribute extra vertical space,
-     *      see GridBagConstraint for details on usage.
-     *
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
-     *         GridBagConstraints is no longer used as a prop panel layout,
- *             replaced by ? - Labelled layout method.
-     */
-    final public void addLinkField(Component component, int row, int panel, double weighty) {
-        component.setBackground(getBackground());
-        component.setForeground(Color.blue);
-        addField(component, row, panel, weighty);
     }
 
     public Profile getProfile() {
@@ -808,5 +664,156 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
                }
            }
        }
+
+    /**
+     *    Constructs the PropPanel.
+     *    @param title Title of panel
+     *    @param panelCount number of horizontal panels
+     *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
+     *                {@link #PropPanel(String, ImageIcon, Orientation)}
+     *                I propose to remove this by version 0.13.7 (Bob Tarling)
+     */
+    public PropPanel(String title, int panelCount) {
+        this(title, null, panelCount);
+    }
+
+    /**
+     *    Constructs the PropPanel - DO NOT USE.
+     *    @param title Title of panel
+     *    @param panelCount number of horizontal panels
+     *
+     *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
+     *                {@link #PropPanel(????)}. Use of GridBagLayout is being
+     *                dropped in favour of
+     *                {@link org.argouml.swingext.LabelledLayout}
+     *                I propose to remove this by version 0.13.7 (Bob Tarling)
+     */
+    public PropPanel(String title, ImageIcon icon, int panelCount) {
+        super(title);
+        setLayout(new BorderLayout());
+        center = new JPanel();
+        center.setLayout(new GridLayout(1, 0));
+
+        JPanel panel;
+        for (long i = 0; i < panelCount; i++) {
+            panel = new JPanel(new GridBagLayout());
+            _panels.add(panel);
+            center.add(panel);
+        }
+        add(center, BorderLayout.CENTER);
+
+        //add caption panel and button panel
+        if (icon != null)
+            captionPanel.add(new JLabel(icon));
+        captionPanel.add(new JLabel(localize(title)));
+        addCaption(captionPanel, 0, 0, 0);
+
+        buttonPanel = new JPanel(new GridLayout(1, 0));
+        buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
+        buttonPanelWithFlowLayout.add(buttonPanel);
+        addField(buttonPanelWithFlowLayout, 0, 0, 0);
+    }
+    
+    /**
+     *   Adds a component to the captions of the specified panel.
+     *   @param component Component to be added (typically a JLabel)
+     *   @param row row index, zero-based.
+     *   @param panel panel index, zero-based.
+     *   @param weighty specifies how to distribute extra vertical space,
+     *      see GridBagConstraint for details on usage.
+     *
+     * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+     *         GridBagConstraints is no longer used as a prop panel layout,
+     *             replaced by addField(label, component) - Labelled layout method.
+     *                I propose to remove this by version 0.13.7 (Bob Tarling)
+     */
+    public void addCaption(Component component, int row, int panel, double weighty) {
+        if (orientation == Vertical.getInstance()) {
+            row = lastRow;
+            panel = 0;
+        }
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridy = row;
+        gbc.weighty = weighty;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 1;
+        gbc.gridx = 0;
+        gbc.weightx = 0;
+        gbc.fill = GridBagConstraints.NONE;
+
+        JPanel pane = (JPanel) _panels.elementAt(panel);
+        GridBagLayout layout = (GridBagLayout) pane.getLayout();
+        layout.setConstraints(component, gbc);
+        pane.add(component);
+    }
+
+    /**
+     * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+     *         GridBagConstraints is no longer used as a prop panel layout,
+     *             replaced by addField(label, component) - Labelled layout method
+     *                I propose to remove this by version 0.13.7 (Bob Tarling)
+     */
+    public void addCaption(String label, int row, int panel, double weighty) {
+        addCaption(new JLabel(localize(label)), row, panel, weighty);
+    }
+
+    /**
+     *   Adds a component to the fields of the specified panel.
+     *   @param component Component to be added
+     *   @param row row index, zero-based.
+     *   @param panel panel index, zero-based.
+     *   @param weighty specifies how to distribute extra vertical space,
+     *      see GridBagConstraint for details on usage.
+     *
+     * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+     *         GridBagConstraints is no longer used as a prop panel layout,
+     *             replaced by addField(label, component) - Labelled layout method.
+     *                I propose to remove this by version 0.13.7 (Bob Tarling)
+     */
+    public void addField(Component component, int row, int panel, double weighty) {
+        if (orientation == Vertical.getInstance()) {
+            row = lastRow;
+            panel = 0;
+            ++lastRow;
+        }
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridy = row;
+        gbc.weighty = weighty;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+        gbc.gridheight = 1;
+        gbc.gridwidth = 1;
+        gbc.gridx = 1;
+        gbc.weightx = 1;
+        if (weighty == 0)
+            gbc.fill = GridBagConstraints.HORIZONTAL;
+        else
+            gbc.fill = GridBagConstraints.BOTH;
+
+        JPanel pane = (JPanel) _panels.elementAt(panel);
+        GridBagLayout layout = (GridBagLayout) pane.getLayout();
+        layout.setConstraints(component, gbc);
+        pane.add(component);
+    }
+
+    /**
+     *   Adds a component to the fields of the specified panel
+     *     and sets the background and color to indicate
+     *     the field is a link.
+     *   @param component Component to be added
+     *   @param row row index, zero-based.
+     *   @param panel panel index, zero-based.
+     *   @param weighty specifies how to distribute extra vertical space,
+     *      see GridBagConstraint for details on usage.
+     *
+     * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+     *         GridBagConstraints is no longer used as a prop panel layout,
+     *             replaced by addLinkField(label, component) - Labelled layout method.
+     */
+    final public void addLinkField(Component component, int row, int panel, double weighty) {
+        component.setBackground(getBackground());
+        component.setForeground(Color.blue);
+        addField(component, row, panel, weighty);
+    }
 
 } /* end class PropPanel */

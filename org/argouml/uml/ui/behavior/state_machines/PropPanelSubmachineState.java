@@ -28,7 +28,7 @@ import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -52,12 +52,12 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
         JComboBox submachineBox = new UMLComboBox2(new UMLSubmachineStateComboBoxModel(), ActionSetSubmachineStateSubmachine.SINGLETON);
         addField(Argo.localize("UMLMenu", "label.submachine"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-submachine"), submachineBox));
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
         addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
 
-        add(LabelledLayout.getSeperator());
+        addSeperator();
 
         addField(Argo.localize("UMLMenu", "label.subvertex"), new JScrollPane(new UMLMutableLinkedList(new UMLCompositeStateSubvertexListModel(), null, ActionNewStubState.SINGLETON)));
     }

@@ -46,7 +46,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -86,13 +86,13 @@ public class PropPanelNode extends PropPanelClassifier {
 
         addField("Specializations:", getSpecializationScroll());
 
-        add(LabelledLayout.getSeperator());
-        
+        addSeperator();
+
         JList compList = new UMLList(new UMLReflectionListModel(this,"component",true,"getResidents","setResidents",null,null),true);
         compList.setForeground(Color.blue);
         addField(Argo.localize("UMLMenu", "label.components"), new JScrollPane(compList));
 
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);   
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
         new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete node"),"removeElement",null);
     }
 

@@ -31,7 +31,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import javax.swing.JComboBox;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -63,12 +63,12 @@ public class PropPanelInclude extends PropPanelModelElement {
         super("Include", ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), 
+        addField(Argo.localize("UMLMenu", "label.stereotype"),
             new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
-    
-        add(LabelledLayout.getSeperator());
-    
+
+        addSeperator();
+
         JComboBox baseBox = new UMLComboBox2(new UMLIncludeBaseComboBoxModel(), ActionSetIncludeBase.SINGLETON);
         addField(Argo.localize("UMLMenu", "label.usecase-base"), baseBox);
 
@@ -82,8 +82,8 @@ public class PropPanelInclude extends PropPanelModelElement {
         // of the NSUML bug we look for the "base" event, rather than the
         // "addition" event" here.
 
-        add(LabelledLayout.getSeperator());
-    
+        addSeperator();
+
         model = new UMLComboBoxModel(this, "isAcceptableUseCase",
                                      "base", "getAddition",
                                      "setAddition", true, MUseCase.class,
@@ -99,7 +99,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         new PropPanelButton(this, buttonPanel, _navUpIcon,
                             Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
-                            localize("Delete"), "removeElement", null); 
+                            localize("Delete"), "removeElement", null);
     }
 
 

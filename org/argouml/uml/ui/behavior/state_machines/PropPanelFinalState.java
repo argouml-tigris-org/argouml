@@ -31,7 +31,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.LabelledLayout;
+
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.util.ConfigLoader;
 
@@ -45,11 +45,11 @@ public class PropPanelFinalState extends PropPanelState {
         addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
         addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
         // TODO: maybe we should add a doactivity
-        
-        add(LabelledLayout.getSeperator());
-        
+
+        addSeperator();
+
         addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);        
+        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
 
     }
 
