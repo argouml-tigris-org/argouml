@@ -183,7 +183,9 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   	if (op.isLeaf()) {
   		propertySb.append("leaf,");
   	}
-  	propertySb.append(op.getConcurrency().getName().toString()).append(",");
+    if (op.getConcurrency() != null) {
+  	 propertySb.append(op.getConcurrency().getName().toString()).append(",");
+    }
   	Collection taggedValues = op.getTaggedValues();
   	StringBuffer taggedValuesSb = new StringBuffer();
   	if (taggedValues.size() > 0) {
@@ -248,10 +250,18 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   	cat.debug("Stereotype: " + stereo);
   	String name = attr.getName();
   	String multiplicity = generateMultiplicity(attr.getMultiplicity());
-    String type = attr.getType().getName();
-    String initialValue = attr.getInitialValue().getBody();
-    
-    String finall = attr.getChangeability().equals(MChangeableKind.FROZEN) ? "final" : "";
+    String type = ""; // fix for loading bad projects
+    if (attr.getType() != null) {
+        type = attr.getType().getName();
+    }
+    String initialValue = "";
+    if (attr.getInitialValue() != null) {
+        initialValue = attr.getInitialValue().getBody();
+    }   
+    String finall = "";
+    if (attr.getChangeability() != null) {
+        finall = attr.getChangeability().equals(MChangeableKind.FROZEN) ? "final" : "";
+    }
     String properties = "";
     if (finall.length() > 0) {
     	properties = "{ " + finall + " }";
