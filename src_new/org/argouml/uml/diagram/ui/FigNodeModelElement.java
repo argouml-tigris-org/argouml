@@ -43,8 +43,11 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.text.ParseException;
+import java.util.Comparator;
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.swing.Icon;
@@ -73,7 +76,6 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.UUIDManager;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.ActionDeleteFromDiagram;
@@ -148,6 +150,14 @@ public abstract class FigNodeModelElement
     public int _shadowSize =
         Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1);
     private ItemUID _id;
+    
+    /**
+     * A set of object arrays consisting of a sender of events and the event
+     * types this object is interested in. The eventSenders are a cache to 
+     * improve performance when this fig is disabled/enabled as interested listener
+     * to the events maintained in the _eventSenders set.
+     */
+    private Set _eventSenders = new HashSet();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -889,5 +899,25 @@ public abstract class FigNodeModelElement
         updateEdges();
         super.damage();
     }
+    
+    /**
+     * If the diagram this fig is part of is selected, this method is called so 
+     * this fig is (re)registred as model event listener to it's owner and the 
+     * fig is repainted.  
+     *
+     */
+    public void setAsTarget() {
+        Object owner = getOwner();        
+        setOwner(null);
+        setOwner(owner);
+        damage();
+    }
+    
+    public void removeAsTarget() {
+        // disableEventSenders();
+    }
+    
+   
 
 } /* end class FigNodeModelElement */
+

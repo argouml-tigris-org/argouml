@@ -74,6 +74,13 @@ public class MultiEditorPane
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Constructs the MultiEditorPane. This is the pane in which the tabs with
+     * the diagrams are drawn in ArgoUML. The MultiEditorPane is a JTabbedPane
+     * that holds 0-* JPanels that can show several editors but only show one
+     * editor at the moment (argouml version 0.13.3). With this editor diagrams
+     * can be edited.
+     */
     public MultiEditorPane() {
         Argo.log.info("making MultiEditorPane");
         ConfigLoader.loadTabs(_tabPanels, "multi", Horizontal.getInstance());
@@ -97,10 +104,7 @@ public class MultiEditorPane
         _tabs.addMouseListener(this);
         setTarget(null);
     }
-
-    ////////////////////////////////////////////////////////////////
-    // accessors
-
+    
     public Dimension getPreferredSize() {
         return new Dimension(400, 500);
     }
@@ -143,7 +147,14 @@ public class MultiEditorPane
         //        _tabs.setSelectedIndex(nextTab);
         //    _tabs.setVisible(nextTab != -1);
     }
-
+    
+    
+    /**
+     * Returns the current target of the multieditorpane.
+     * TODO: check if the target is needed for the multieditorpane as an
+     * instance variable.
+     * @return Object
+     */
     public Object getTarget() {
         return _target;
     }
@@ -151,6 +162,11 @@ public class MultiEditorPane
     ////////////////////////////////////////////////////////////////
     // actions
 
+    /**
+     * Returns the index of a tab with a certain name in the JTabbedPane which
+     * is the component shown by the multieditorpane. At the moment (version
+     * 0.13.3 of ArgoUML) there is only 1 tab, the Diagram tab.
+     */
     public int getIndexOfNamedTab(String tabName) {
         for (int i = 0; i < _tabPanels.size(); i++) {
             String title = _tabs.getTitleAt(i);
@@ -160,12 +176,21 @@ public class MultiEditorPane
         return -1;
     }
 
+    /**
+     * Selects a certain tab and shows it. At the moment (version
+     * 0.13.3 of ArgoUML) there is only 1 tab, the Diagram tab.
+     * @param tabName
+     */
     public void selectTabNamed(String tabName) {
         int index = getIndexOfNamedTab(tabName);
         if (index != -1)
             _tabs.setSelectedIndex(index);
     }
 
+    /**
+     * Selects the next tab in the JTabbedPane. At the moment (version 0.13.3 of
+     * ArgoUML) there is only 1 tab, the Diagram tab.
+     */
     public void selectNextTab() {
         int size = _tabPanels.size();
         int currentTab = _tabs.getSelectedIndex();
@@ -178,6 +203,10 @@ public class MultiEditorPane
         }
     }
 
+    /**
+     * Selects a Fig on a TabDiagram if the TabDiagram is currently shown. 
+     * @param o The Fig or the owner of the Fig to select.
+     */
     public void select(Object o) {
         Component curTab = _tabs.getSelectedComponent();
         if (curTab instanceof TabDiagram) {
@@ -190,7 +219,9 @@ public class MultiEditorPane
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /** called when the user selects a tab, by clicking or otherwise. */
+
+    /* called when the user selects a tab, by clicking or otherwise. */
+
     public void stateChanged(ChangeEvent e) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
@@ -214,6 +245,11 @@ public class MultiEditorPane
     public void mouseExited(MouseEvent me) {
     }
 
+    /**
+     * Catches a mouseevent and calls mySingleClick and myDoubleClick if a tab
+     * is clicked which is selected.
+     * @see java.awt.event.MouseListener#mouseClicked(MouseEvent)
+     */
     public void mouseClicked(MouseEvent me) {
         int tab = _tabs.getSelectedIndex();
         if (tab != -1) {
@@ -237,7 +273,11 @@ public class MultiEditorPane
         cat.debug("single: " + _tabs.getComponentAt(tab).toString());
     }
 
-    /** called when the user clicks twice on a tab. */
+    /**
+     * When the user double clicks on a tab, this tab is spawned by this method
+     * if it is selected.
+     * @param tab
+     */
     public void myDoubleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
@@ -276,6 +316,7 @@ public class MultiEditorPane
     /**
      * Removes all figs from all diagrams for some object obj. Does not remove 
      * the owner of the objects (does not do a call to dispose).
+     * TODO move this to ProjectManager for example, in any case: out of the GUI
      * @param obj
      */
     public void removePresentationFor(Object obj, Vector diagrams) {
@@ -301,6 +342,7 @@ public class MultiEditorPane
 
     /**
      * Returns a list with all figs for some object o on the given diagrams.
+     * TODO move this to ProjectManager for example, in any case: out of the GUI
      * @param o
      * @param diagrams
      * @return List

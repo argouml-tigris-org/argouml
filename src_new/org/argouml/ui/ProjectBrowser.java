@@ -88,7 +88,7 @@ public class ProjectBrowser
     ////////////////////////////////////////////////////////////////
     // class variables
 
-    public static ProjectBrowser TheInstance;
+    public static ProjectBrowser TheInstance = new ProjectBrowser();
 
     // ----- diagrams
 
