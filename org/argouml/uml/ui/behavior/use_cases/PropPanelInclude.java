@@ -66,7 +66,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // Invoke the ModelElement constructor, but passing in our name and
         // representation and requesting 2 columns
 
-        super("Include", _includeIcon, ConfigLoader.getTabPropsOrientation());
+        super("Include", ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
         addField(Argo.localize("UMLMenu", "label.stereotype"), 

@@ -45,7 +45,7 @@ public class PropPanelComment extends PropPanelModelElement {
      * @param orientation
      */
     public PropPanelComment() {
-        super("Comment", _commentIcon, ConfigLoader.getTabPropsOrientation());
+        super("Comment", ConfigLoader.getTabPropsOrientation());
         UMLTextArea2 text = new UMLTextArea2(new UMLModelElementNameDocument());
         text.setLineWrap(true);
         text.setRows(5);

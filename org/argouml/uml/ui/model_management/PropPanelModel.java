@@ -38,7 +38,7 @@ implements PluggablePropertyPanel {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelModel() {
-      super("Model", _modelIcon, ConfigLoader.getTabPropsOrientation());
+      super("Model", ConfigLoader.getTabPropsOrientation());
   }
 
     public Class getClassForPanel() {

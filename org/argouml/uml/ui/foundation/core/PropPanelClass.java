@@ -51,7 +51,7 @@ public class PropPanelClass extends PropPanelClassifier {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelClass() {
-    super("Class",_classIcon, ConfigLoader.getTabPropsOrientation());
+    super("Class", ConfigLoader.getTabPropsOrientation());
     Class mclass = MClass.class;
     
     addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));

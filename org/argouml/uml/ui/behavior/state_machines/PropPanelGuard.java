@@ -60,7 +60,7 @@ public class PropPanelGuard extends PropPanelModelElement {
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelGuard() {
-        super("Guard",_guardIcon, ConfigLoader.getTabPropsOrientation());
+        super("Guard", ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));

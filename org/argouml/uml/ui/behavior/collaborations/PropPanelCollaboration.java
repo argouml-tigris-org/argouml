@@ -52,7 +52,7 @@ public class PropPanelCollaboration extends PropPanelNamespace {
      * @param panelCount
      */
     public PropPanelCollaboration() {
-        super("Collaboration", _collaborationIcon, ConfigLoader.getTabPropsOrientation());
+        super("Collaboration", ConfigLoader.getTabPropsOrientation());
         
         addField(Argo.localize("UMLMenu", "label.name"),new UMLTextField2(new UMLModelElementNameDocument()));
         addField(Argo.localize("UMLMenu", "label.stereotype"), 

@@ -80,7 +80,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
         // Invoke the Classifier constructor, but passing in our name and
         // representation and requesting 3 columns
 
-        super("UseCase", _useCaseIcon, ConfigLoader.getTabPropsOrientation());
+        super("UseCase", ConfigLoader.getTabPropsOrientation());
         
         addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
     	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
