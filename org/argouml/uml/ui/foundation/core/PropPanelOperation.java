@@ -119,7 +119,7 @@ public class PropPanelOperation extends PropPanelFeature {
 
         addButton(new PropPanelButton2(this, new ActionNavigateOwner()));
         addButton(new PropPanelButton2(this, 
-                        ActionAddOperation.getSingleton()));
+                        new ActionAddOperation()));
         addButton(new PropPanelButton2(this, ActionNewParameter.getInstance()));
         new PropPanelButton(this, getButtonPanel(), lookupIcon("SignalSending"),
                 localize("New Raised Signal"), "buttonAddRaisedSignal", null);

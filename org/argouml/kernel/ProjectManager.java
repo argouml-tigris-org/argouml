@@ -247,7 +247,7 @@ public final class ProjectManager implements PropertyChangeListener {
         oldProject.remove();
     }
 
-    /* react to PropertyChangeEvents, e.g. send by the Designer.
+    /** React to PropertyChangeEvents, e.g. send by the Designer.
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent pce) {

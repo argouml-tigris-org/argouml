@@ -24,6 +24,10 @@
 
 package org.argouml.uml.diagram.sequence;
 
+/**
+ * An Activation Node for the sequence diagram.
+ *
+ */
 public class ActivationNode extends Node {
     private boolean cutOffTop;
 

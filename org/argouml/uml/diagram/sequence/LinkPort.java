@@ -29,6 +29,10 @@ package org.argouml.uml.diagram.sequence;
 import org.argouml.uml.diagram.sequence.ui.FigLinkPort;
 
 
+/**
+ * A Link Port for the sequence diagram.
+ *
+ */
 public interface LinkPort {
     
     /**

@@ -26,6 +26,10 @@
 
 package org.argouml.uml.diagram.sequence;
 
+/**
+ * An abstract Node for the sequence diagram.
+ *
+ */
 public abstract class Node {
 
     /**

@@ -641,7 +641,7 @@ public class FigInterface extends FigNodeModelElement
         if (cls == null) {
             return;
         }
-        ActionAddOperation.getSingleton().actionPerformed(null);
+        new ActionAddOperation().actionPerformed(null);
         // TODO: in future version of GEF call getFigs returning array
         CompartmentFigText ft =
             (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
