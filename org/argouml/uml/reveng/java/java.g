@@ -981,8 +981,13 @@ primaryExpression
  *  
  */
 newExpression
-	:	"new" type
-		(	LPAREN argList RPAREN (classBlock)?
+	{String t = null;}
+	:	"new" t=type
+		(	LPAREN argList RPAREN
+			(	{ getModeller().addAnonymousClass(t); }
+				classBlock
+				{ getModeller().popClassifier(); }
+			)?
 
 			//java 1.1
 			// Note: This will allow bad constructs like
