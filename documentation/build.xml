@@ -12,6 +12,8 @@
 <!--           Jeremy Bennett  14-March-2002. Changes to Fop classpath      -->
 <!--           suggested by Daniel Faensen's testing.                       -->
 <!--                                                                        -->
+<!--           Thierry Lach    Summer 2002. Changes to use ant 1.4.1.       -->
+<!--                                                                        -->
 <!-- Parts borrowed from the ArgoUML build file                             -->
 <!--                                                                        -->
 <!-- ====================================================================== -->
@@ -125,28 +127,7 @@ with which you can change certain properties. For example, by adding a line to
 build.compiler=jikes
 (without a blank after "jikes"!).
 
-This will force Ant to compile with jikes if you have it on your system. The
-other alternatives for this setting are;
-
-build.compiler=modern
-to use the most up-to-date version available to you which for Sun is currently
-javac from jdk1.3
-
-or the default if no explicit setting is made anywhere;
-
-build.compiler=classic
-to use a compiler/Virtual Machine combination compatible with jdk1.2.
-
-On machines using Windows the home directory is selected to be C:\ so the
-instructions in the build file will look there for .ant.properties.
-
-The filename is necessary for commonality with UNIX/LINUX systems but you will
-not be able to save or rename a file to this form of name using the Windows GUI
-directly. At least two workarounds are possible
-(i)  use Notepad (NOT Wordpad) to create, edit, rename or save the file
-(ii) go into a DOS window and use the DOS command Edit to create, edit, rename
-     or save the file. 
-After these operations the file will still be visible in the GUI.
+This will force Ant to compile with jikes if you have it on your system. Refer to the ant documentation for other settings and options.
 
 =========================================================================== -->
 
