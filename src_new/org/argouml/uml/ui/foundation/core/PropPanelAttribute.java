@@ -33,7 +33,6 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -75,7 +74,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         // but a simple text field. Bob Tarling 12 Feb 2004.
 	addField(Translator.localize("UMLMenu", "label.initial-value"), new UMLInitialValueComboBox(this));
 
-        add(new UMLModelElementVisibilityRadioButtonPanel(Translator.localize("UMLMenu", "label.visibility"), true));
+        add(getVisibilityPanel());
         add(getChangeabilityRadioButtonPanel());
         add(getOwnerScopeCheckbox());
 

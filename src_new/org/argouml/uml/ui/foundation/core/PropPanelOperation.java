@@ -28,10 +28,10 @@ import java.awt.Color;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
@@ -41,10 +41,8 @@ import org.argouml.swingext.GridLayout2;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLRadioButton;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.util.ConfigLoader;
 
@@ -85,49 +83,24 @@ public class PropPanelOperation extends PropPanelFeature {
         addLinkField(Translator.localize("UMLMenu", "label.owner"),
                 getOwnerScroll());
 
-        addField(Translator.localize("UMLMenu", "label.visibility"),
-                getVisibilityPanel());
+        add(getVisibilityPanel());
 
         addSeperator();
 
-        JPanel _modifiersPanel = new JPanel(new GridLayout2(0, 2,
-                GridLayout2.ROWCOLPREFERRED));
-        
+        JPanel _modifiersPanel =
+            new JPanel(new GridLayout2(0,3,GridLayout2.ROWCOLPREFERRED)); 
+        _modifiersPanel.setBorder(
+                new TitledBorder(Translator.localize("UMLMenu", "label.modifiers")));
         _modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
         _modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
         _modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
         _modifiersPanel.add(new UMLBehavioralFeatureQueryCheckBox());
         _modifiersPanel.add(new UMLFeatureOwnerScopeCheckBox());
 
-        addField(Translator.localize("UMLMenu", "label.modifiers"),
-                _modifiersPanel);
-
-        JPanel concurPanel = new JPanel(new GridLayout2(0, 2,
-                GridLayout2.ROWCOLPREFERRED));
-        ButtonGroup group = new ButtonGroup();
-        UMLRadioButton sequential = new UMLRadioButton("sequential", this,
-                new UMLEnumerationBooleanProperty("concurrency", mclass,
-                        "getConcurrency", "setConcurrency",
-                        ModelFacade.CALLCONCURRENCYKIND,
-                        ModelFacade.SEQUENTIAL_CONCURRENCYKIND, null));
-        group.add(sequential);
-        concurPanel.add(sequential);
-        UMLRadioButton synchd = new UMLRadioButton("guarded", this,
-                new UMLEnumerationBooleanProperty("concurrency", mclass,
-                        "getConcurrency", "setConcurrency",
-                        ModelFacade.CALLCONCURRENCYKIND,
-                        ModelFacade.GUARDED_CONCURRENCYKIND, null));
-        group.add(synchd);
-        concurPanel.add(synchd);
-        UMLRadioButton concur = new UMLRadioButton("concurrent", this,
-                new UMLEnumerationBooleanProperty("concurrency", mclass,
-                        "getConcurrency", "setConcurrency",
-                        ModelFacade.CALLCONCURRENCYKIND,
-                        ModelFacade.CONCURRENT_CONCURRENCYKIND, null));
-        group.add(concur);
-        concurPanel.add(concur);
-        addField("Concurrency:", concurPanel);
-
+        add(_modifiersPanel);
+        // TODO: i18n
+        add(new UMLOperationConcurrencyRadioButtonPanel("Concurrency:", true));
+        
         addSeperator();
 
         addLinkField(Translator.localize("UMLMenu", "label.parameters"),

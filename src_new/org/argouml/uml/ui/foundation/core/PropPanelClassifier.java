@@ -132,7 +132,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     private void initialize() { 
 
         _modifiersPanel =
-            new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED)); 
+            new JPanel(new GridLayout2()); 
         _modifiersPanel.setBorder(
                 new TitledBorder(Translator.localize("UMLMenu", "label.modifiers")));
         _modifiersPanel.add(
@@ -141,7 +141,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             new UMLGeneralizableElementLeafCheckBox());
         _modifiersPanel.add(
             new UMLGeneralizableElementRootCheckBox());
-
+       
     }
 
     public void addDataType() {

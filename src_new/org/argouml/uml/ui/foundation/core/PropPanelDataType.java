@@ -69,11 +69,10 @@ public class PropPanelDataType extends PropPanelClassifier {
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceComboBox());
         add(_modifiersPanel);
-        addField(Translator.localize("UMLMenu", "label.namespace-visibility"),
-                getNamespaceVisibilityPanel());
-
+        
         addSeperator();
 
+        add(getNamespaceVisibilityPanel());
         addField(Translator.localize("UMLMenu", "label.client-dependencies"),
                 getClientDependencyScroll());
         addField(Translator.localize("UMLMenu", "label.supplier-dependencies"),
