@@ -142,33 +142,28 @@ public class JavaImport {
      */
     public static void parseFile( Project p, File f, DiagramInterface diagram)
 	throws Exception {
-	try {
-	    // Create a scanner that reads from the input stream passed to us
-	    JavaLexer lexer = new JavaLexer( new FileInputStream( f));
-
-	    // We use a special Argo token, that stores the preceding
-	    // whitespaces.
-	    lexer.setTokenObjectClass( "org.argouml.uml.reveng.java.ArgoToken");     
-
-	    // Create a parser that reads from the scanner
-	    JavaRecognizer parser = new JavaRecognizer( lexer);
-
-	    // Create a modeller for the parser
-	    Modeller modeller = new Modeller((MModel)p.getModel(),
-					     diagram,
-					     attribute.isSelected(),
-					     datatype.isSelected());   
-
-	    // Print the name of the current file, so we can associate
-	    // exceptions to the file.
-	    System.out.println("Parsing " + f.getAbsolutePath());
-
-	    // start parsing at the compilationUnit rule
-	    parser.compilationUnit(modeller, lexer);
-	} catch ( Exception e) {
-	    System.err.println("parser exception: "+e);
-	    e.printStackTrace();   // so we can get stack trace		
-	}
+	// Create a scanner that reads from the input stream passed to us
+	JavaLexer lexer = new JavaLexer( new FileInputStream( f));
+	
+	// We use a special Argo token, that stores the preceding
+	// whitespaces.
+	lexer.setTokenObjectClass( "org.argouml.uml.reveng.java.ArgoToken");     
+	
+	// Create a parser that reads from the scanner
+	JavaRecognizer parser = new JavaRecognizer( lexer);
+	
+	// Create a modeller for the parser
+	Modeller modeller = new Modeller((MModel)p.getModel(),
+					 diagram,
+					 attribute.isSelected(),
+					 datatype.isSelected());   
+	
+	// Print the name of the current file, so we can associate
+	// exceptions to the file.
+	System.out.println("Parsing " + f.getAbsolutePath());
+	
+	// start parsing at the compilationUnit rule
+	parser.compilationUnit(modeller, lexer);
     }
 }
 

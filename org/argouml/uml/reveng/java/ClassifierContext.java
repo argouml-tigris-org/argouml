@@ -71,7 +71,8 @@ class ClassifierContext extends Context
      * @param classifierName The name of the classifier to retrieve.
      * @return A classifier for the name.
      */
-    public MClassifier get(String classifierName) {
+    public MClassifier get(String classifierName)
+    {
 	// Check if it is this classifier
 	if(classifierName.equals(mClassifier.getName())) {
 	    return mClassifier;
