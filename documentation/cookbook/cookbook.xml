@@ -656,9 +656,25 @@ What needs to be done when one actually does a release:
 	  <listitem><para>file uploads</para></listitem>
 	  <listitem><para>webstart</para></listitem>
 	</itemizedlist>
-Markus Klink will provide in-depth descriptions here.
 </para>
-    </sect1>
+<para>In the past the process of releasing ArgoUML had been frequently delayed and we are still in the middle of the process of establishing how we will go about it in the future. Therefore this section deals with the brief details, which are not likely to change in the near future.
+</para>
+<para>
+A new release of ArgoUML is build using ant. In order to do a release it is required to modify build.xml. The target to change is setversion where you will need to change the property names accordingly. 
+TO DO: GIVE CONCRETE EXAMPLE.
+After that has been done, a release can be build with ant dist-release. The output should be some tar.gz and .zip files in the top-level argouml directory.
+</para>
+<para>Before you build a release make sure and sure again that you have a clean copy of the source. The whole cvs directory needs to be tagged afterwards. Normally a tag would consist of "VERSION_X_Y_Z", e.g. VERSION_0_9_6. The according command line cvs command is cvs tag VERSION_X_Y_Z. In case you make a mistake doing that (you shouldn't really), one can still retag things. TO DO: Find out how to retag.
+</para>
+<para>
+These files need to be uploaded onto the tigris website. Only a project owner can do that. Please take the previous releases as an example to write the descriptions of the files. If erveryone follows his own conventions it is likely to be confusing. Hint: upload all the files first, then change all the texts at once in the edit window. It is much faster since you can copy and paste most of the texts.
+</para>
+<para>Webstart: contact Jason to make the new version available</para>
+<para>Announcements: write to the dev, users and announce lists. Announcer should make sure that he/she is already subscribed to all lists. A particular bad aspect in the past releases was that we didn't really inform the user what has changed.</para>
+<para>Freshmeat: currently Thierry Lach does the freshmeat announcements which require a login.
+</para>
+
+</sect1>
 
  <sect1 id="mailing_lists">
      <title>Mailing Lists</title>
