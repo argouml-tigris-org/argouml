@@ -28,7 +28,7 @@
 <!--
 
 Description of all the artifacts associated with Sequence Diagrams within
-Argo/UML.
+ArgoUML.
 
 -->
 
@@ -83,7 +83,7 @@ need it because they are still working with ArgoUML 0.10.1.
       </mediaobject></screenshot>
     </figure>
 
-    <!-- Limitations in Argo/UML relating to support in general -->
+    <!-- Limitations in ArgoUML relating to support in general -->
 
     <sect2>
       <title>Limitations Concerning Sequence Diagrams in ArgoUML</title>
@@ -160,22 +160,17 @@ need it because they are still working with ArgoUML 0.10.1.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The values for the bounds of the
             object notionally define the bounding box of the object and its
             time line. However if you change them it will have no effect,
             and the original values will be reset when you next revisit the
             tab.</para>
-
-          <caution><para>In the current release of ArgoUML changing the
-            values of this field is possible, but will make a (temporary)
-            mess of the screen display. Selecting the object on the screen
-            causes the original values to be restored and the screen
-            refreshed.</para></caution></listitem>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -188,17 +183,6 @@ need it because they are still working with ArgoUML 0.10.1.
             <caution><para>An object should not generate any code, so
               having this tab active is probably a
               mistake.</para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -238,6 +222,15 @@ need it because they are still working with ArgoUML 0.10.1.
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for a Classifier. </para></listitem>
+        </varlistentry>        
+        
       </variablelist>
     </sect2>
 
@@ -259,6 +252,35 @@ need it because they are still working with ArgoUML 0.10.1.
 
           <listitem><para>Navigate up through the package
             structure.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected object, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -301,44 +323,14 @@ need it because they are still working with ArgoUML 0.10.1.
             convention.</para></note></listitem>
         </varlistentry>
 
-        <!-- Entry for Classifier -->
-
-        <varlistentry>
-          <term><literal>Classifier</literal></term>
-
-          <listitem><para>Drop down selector. The name of the classifier
-            of which this is an object.</para>
-
-          <caution><para>In the current release of ArgoUML the drop down
-            selector will include <emphasis>all</emphasis> classifiers
-            (i.e. interfaces, actors, use cases and datatypes as well),
-            which is what is wanted on the diagram, although it should
-            properly be called an instance, rather than an object. In
-            practice only instances of classes and actors make much
-            sense.</para></caution>
-
-          <note><para>In the current release of ArgoUML the same
-            graphical presentation is used, even if the object is actually
-            representing an instance of an actor (when a stick-man would be
-            more usual).</para></note></listitem>
-        </varlistentry>
-
         <!-- Entry for Stereotype -->
 
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. Object has no stereotypes by
-            default in the UML standard, but ArgoUML provides the
-            stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-            <literal>person</literal>.</para>
-
-          <caution><para>ArgoUML also provides the stereotype
-            <literal>realize</literal> for objects. This appears to be an
-            error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+            default in the UML standard.</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -362,10 +354,7 @@ need it because they are still working with ArgoUML 0.10.1.
 
           <listitem><para>Text box. Records the namespace for the
             object. This is the package hierarchy.</para>
-
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Stimuli Sent -->
@@ -376,7 +365,7 @@ need it because they are still working with ArgoUML 0.10.1.
           <listitem><para>Text area. Lists the stimuli sent to this
             object.</para>
 
-          <para>&Button1; click navigates to the selected entry, &button2;
+          <!--para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with five entries.</para>
 
           <itemizedlist>
@@ -414,7 +403,8 @@ need it because they are still working with ArgoUML 0.10.1.
               is always grayed out. Stimuli can not be moved in the
               order. To change the order a stimulus must be deleted and
               then recreated on the diagram.</para></caution></listitem>
-              </itemizedlist></listitem>
+              </itemizedlist-->
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Stimuli Received -->
@@ -425,10 +415,10 @@ need it because they are still working with ArgoUML 0.10.1.
           <listitem><para>Text area. Lists the stimuli received by this
             object.</para>
 
-          <warning><para>In the current release of ArgoUML this field is
-            completely broken. No entries are every shown.</para></warning>
+          <!--warning><para>In the current release of ArgoUML this field is
+            completely broken. No entries are every shown.</para></warning-->
 
-          <para>&Button1; click navigates to the selected entry, &button2;
+          <!--para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with five entries.</para>
 
           <itemizedlist>
@@ -466,8 +456,32 @@ need it because they are still working with ArgoUML 0.10.1.
               is always grayed out. Stimuli can not be moved in the
               order. To change the order a stimulus must be deleted and
               then recreated on the diagram.</para></caution></listitem>
-              </itemizedlist></listitem>
+              </itemizedlist-->
+          </listitem>
         </varlistentry>
+        
+        <!-- Entry for Classifier -->
+
+        <varlistentry>
+          <term><literal>Classifier</literal></term>
+
+          <listitem><para>Drop down selector. The name of the classifier
+            of which this is an object.</para>
+
+          <caution><para>In the current release of ArgoUML the drop down
+            selector will include <emphasis>all</emphasis> classifiers
+            (i.e. interfaces, actors, use cases and datatypes as well),
+            which is what is wanted on the diagram, although it should
+            properly be called an instance, rather than an object. In
+            practice only instances of classes and actors make much
+            sense.</para></caution>
+
+          <note><para>In the current release of ArgoUML the same
+            graphical presentation is used, even if the object is actually
+            representing an instance of an actor (when a stick-man would be
+            more usual).</para></note></listitem>
+        </varlistentry>
+        
       </variablelist>
     </sect2>
   </sect1>
@@ -978,19 +992,20 @@ need it because they are still working with ArgoUML 0.10.1.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. The values for the bounds of the link
-            notionally define the bounding box of the link. However if you
-            change them it will have no effect.</para>
+            are downlighted, since they are determined by the objects connected.
+            </para>
 
-          <caution><para>In the current release of ArgoUML changing the
+          <!--caution><para>In the current release of ArgoUML changing the
             values of the line field will alter the color of the line, but
             <emphasis>not</emphasis> the arrow
-            head.</para></caution></listitem>
+            head.</para></caution-->
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -1002,17 +1017,6 @@ need it because they are still working with ArgoUML 0.10.1.
 
           <caution><para>A link should not generate any code, so having
             this tab active is probably a mistake.</para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1052,6 +1056,15 @@ need it because they are still working with ArgoUML 0.10.1.
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for a Classifier. </para></listitem>
+        </varlistentry>
+        
       </variablelist>
     </sect2>
 
@@ -1073,6 +1086,35 @@ need it because they are still working with ArgoUML 0.10.1.
 
           <listitem><para>Navigate up through the package
             structure.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected link, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -1121,16 +1163,9 @@ need it because they are still working with ArgoUML 0.10.1.
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. Link has no stereotypes by
-            default in the UML standard, but ArgoUML provides the
-            stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-            <literal>person</literal>.</para>
+            default in the UML standard.</para>
 
-          <caution><para>ArgoUML also provides the stereotype
-            <literal>realize</literal> for links. This appears to be an
-            error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -1155,10 +1190,23 @@ need it because they are still working with ArgoUML 0.10.1.
           <listitem><para>Text box. Records the namespace for the
             link. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will navigate to the package
+          <!--para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+            namespace).</para--></listitem>
         </varlistentry>
+        
+        <!-- Entry for Connections -->
+
+        <varlistentry>
+          <term><literal>Connections</literal></term>
+
+          <listitem><para>List box. Lists the connections of the
+            link, i.e. the link-ends.</para>
+
+          <para>&Button1; double click on the entry will navigate to the 
+            link-end.</para></listitem>
+        </varlistentry>        
+        
       </variablelist>
     </sect2>
   </sect1>

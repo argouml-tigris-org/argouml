@@ -46,11 +46,6 @@ Description of all the artifacts associated with Statechart Diagrams within Argo
       <xref linkend="s1.ref.proptab"/>). That section covers Properties in
       general, in this chapter they are linked to specific artifacts.</para>
 
-    <note><para>The whole area of behavioral modeling is still under
-      development in ArgoUML. Many of the facilities described in the UML
-      standard have yet to be implemented or are not fully implemented in the
-      current release.</para></note>
-
     <!-- A diagram to show all things visible on the diagram -->
 
     <para><xref linkend="fig.ref.state_diagram"/> shows a statechart diagram with
@@ -69,41 +64,23 @@ Description of all the artifacts associated with Statechart Diagrams within Argo
       </mediaobject></screenshot>
     </figure>
 
-    <!-- Limitations in Argo/UML relating to support for events and code
+    <!-- Limitations in ArgoUML relating to support for events and code
          generation. -->
 
     <sect2 id="s2.ref.state_limitations">
       <title>Limitations Concerning Statechart Diagrams in ArgoUML</title>
 
-      <para>
-The statechart diagrams are generally well drawn, but the 4 event types 
-supported (CallEvent, SignalEvent, ChangeEvent and TimeEvent), are purely 
-textual, with no way to link them back to their associated operations.
-<!-- TODO: See issue ... -->
-Also the various kinds of Actions are only supported in the same way.
-</para>
+      <para>The statechart diagrams support the 4 event types defined
+        (CallEvent, SignalEvent, ChangeEvent and TimeEvent), but the SignalEvent 
+        is purely textual, with no way to link it back 
+        to its associated Signal.
+		<!-- TODO: See issue ... -->
+		Also the various kinds of Actions are only supported in the same way.
+	  </para>
 
       <para>
-Code generation from statechart diagrams is not properly developed yet.
-</para>
-
-      <para>
-In the current version of ArgoUML, it is not possible to draw dashed lines 
-which indicate regions within a it composite state. 
-Or, in more formal terms, there is no distinction in the 
-diagram between a CompositeState with the (derived) attribute 
-<literal>isRegion</literal> true or false.
-      </para>
-      
-      <tip><para>
-The advisable work-around is, to draw regions as composite states.
-That way, the diagram would not look like it is supposed to be, 
-but the underlaying model will be correct according the UML standard, 
-an exported XMI file will be usable by all tools, 
-and the project file will be loaded and displayed correctly 
-in future versions of ArgoUML.
-      </para></tip>
-
+		Code generation from statechart diagrams is not developed yet.
+	  </para>
 
     </sect2>
   </sect1>
