@@ -28,68 +28,89 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
+ * Fig to show an object on a sequence diagram
  * @author jaap.branderhorst@xs4all.nl
  * Aug 11, 2003
  */
 public class FigObject extends FigNodeModelElement implements MouseListener {
-    
-    /**
-     * The defaultwidth of the object rectangle
-     */
-    public final static int DEFAULT_WIDTH = 50;
-    
+
     /**
      * The distance between two rows in the object rectangle.
      */
     public final static int ROWDISTANCE = 2;
-    
+
     /**
      * The defaultheight of the object rectangle. That's 3 times the rowheight + 
      * 3 times a distance of 2 between the rows + the stereoheight. 
      */
-    public final static int DEFAULT_HEIGHT = 3 * ROWHEIGHT + 3 * ROWDISTANCE + STEREOHEIGHT;
-        
-    
-    
+    public final static int DEFAULT_HEIGHT =
+        (3 * ROWHEIGHT + 3 * ROWDISTANCE + STEREOHEIGHT);
+
     /**
-     * The fig whose owner is the Object. Used in selections.
-     */
-    private Fig _bigPort;
-    
+	* The defaultwidth of the object rectangle
+	*/
+    public final static int DEFAULT_WIDTH = 3 * DEFAULT_HEIGHT / 2;
+
     /**
      * The fig that's the upper rectangle (the object rectangle) itself. It contains
      * the stereotype textfield and the name textfield.
      */
     private FigRect _objectFig;
-       
 
     /**
      * Default constructor. Constructs the object rectangle, the name box and the stereotype box.
      */
     public FigObject() {
         super();
-        _bigPort = new FigRect(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
-        _objectFig = new FigRect(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT, Color.black, Color.white);
-        _stereo = new FigText(DEFAULT_WIDTH / 2, ROWHEIGHT + ROWDISTANCE, 0, 0, Color.black, "Dialog", 12, false);
+        // _bigPort = new FigRect(0, 0, DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        _objectFig =
+            new FigRect(
+                0,
+                0,
+                DEFAULT_WIDTH,
+                DEFAULT_HEIGHT,
+                Color.black,
+                Color.white);
+        _stereo =
+            new FigText(
+                DEFAULT_WIDTH / 2,
+                ROWHEIGHT + ROWDISTANCE,
+                0,
+                0,
+                Color.black,
+                "Dialog",
+                12,
+                false);
         _stereo.setAllowsTab(false);
         _stereo.setEditable(false);
-        _stereo.setText("");        
-        _name = new FigText(DEFAULT_WIDTH / 2, 2 * ROWDISTANCE + STEREOHEIGHT + ROWHEIGHT, 0, 0, Color.black, "Dialog", 12, false);
+        _stereo.setLineColor(Color.white);
+        // _stereo.setText("");        
+        _name =
+            new FigText(
+                DEFAULT_WIDTH / 2,
+                2 * ROWDISTANCE + STEREOHEIGHT + ROWHEIGHT,
+                0,
+                0,
+                Color.black,
+                "Dialog",
+                12,
+                false);
         _name.setEditable(false);
-        _name.setText("");
+        // _name.setText("");
         _name.setAllowsTab(false);
-        addFig(_bigPort);
+        _name.setLineColor(Color.white);
+        // addFig(_bigPort);
         addFig(_objectFig);
         addFig(_stereo);
-        addFig(_name);                
+        addFig(_name);
     }
 
     /**
@@ -98,20 +119,40 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      */
     public FigObject(Object node) {
         this();
-        setOwner(node);                
+        setOwner(node);
     }
-              
 
     /**
      * When the mouse button is released, this fig will be moved into position
      * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
-    public void mouseReleased(MouseEvent me) {        
+    public void mouseReleased(MouseEvent me) {
         super.mouseReleased(me);
         Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
         if (lay instanceof SequenceDiagramLayout) {
-        	((SequenceDiagramLayout)lay).putInPosition(this);
+            ((SequenceDiagramLayout)lay).putInPosition(this);
         }
+    }
+    
+    
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
+     */
+    protected void updateNameText() {       
+        super.updateNameText();
+        String name = _name.getText();
+        int halfWidth = _name.getHalfWidth();
+        _name.setX(getX() + getHalfWidth()-halfWidth);        
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateStereotypeText()
+     */
+    protected void updateStereotypeText() {
+		super.updateStereotypeText();
+		int halfWidth = _stereo.getHalfWidth();
+		_stereo.setX(getX() + getHalfWidth()-halfWidth);   
     }
 
 }
