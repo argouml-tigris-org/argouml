@@ -251,9 +251,9 @@ abstract class NSUMLEventListener implements MElementListener {
     /**
      * Contains a WeakReference.
      */
-    Reference listenerRef;
-    Object element;
-    String[] events;
+    private Reference listenerRef;
+    private Object element;
+    private String[] events;
 
     /**
      * Constructor for the NSUMLEventListener.
