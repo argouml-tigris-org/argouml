@@ -648,60 +648,96 @@ The best solution is to always checkout with your developer role.
     <sect1 id="release_process">
       <title>Making a release</title>
       <para>
-What needs to be done when one actually does a release:
-<itemizedlist>
-	  <listitem><para>freshmeat</para></listitem>
-	  <listitem><para>building a release</para></listitem>
-	  <listitem><para>announcing</para></listitem>
-	  <listitem><para>file uploads</para></listitem>
-	  <listitem><para>webstart</para></listitem>
-	</itemizedlist>
+To simplify for the person that is actually doing the release work
+and to make sure that everything is done in the exact same way 
+every time and nothing is forgotten,
+this list of what to do when releasing is maintained.
 </para>
-<para>In the past the process of releasing ArgoUML had been frequently delayed and we are still in the middle of the process of establishing how we will go about it in the future. Therefore this section deals with the brief details, which are not likely to change in the near future.
-</para>
-<para>
-A new release of ArgoUML is build using ant. In order to do a release it is required to modify build.xml. The target to change is setversion where you will need to change the property names accordingly. 
-TO DO: GIVE CONCRETE EXAMPLE.
-After that has been done, a release can be build with ant dist-release. The output should be some tar.gz and .zip files in the top-level argouml directory.
-</para>
-<para>Before you build a release make sure and sure again that you have a clean copy of the source. The whole cvs directory needs to be tagged afterwards. Normally a tag would consist of "VERSION_X_Y_Z", e.g. VERSION_0_9_6. The according command line cvs command is cvs tag VERSION_X_Y_Z. In case you make a mistake doing that (you shouldn't really), one can still retag things. TO DO: Find out how to retag.
-</para>
-<para>
-These files need to be uploaded onto the tigris website. Only a project owner can do that. Please take the previous releases as an example to write the descriptions of the files. If erveryone follows his own conventions it is likely to be confusing. Hint: upload all the files first, then change all the texts at once in the edit window. It is much faster since you can copy and paste most of the texts.
-</para>
-<para>Webstart: contact Jason to make the new version available</para>
-<para>Announcements: write to the dev, users and announce lists. Announcer should make sure that he/she is already subscribed to all lists. A particular bad aspect in the past releases was that we didn't really inform the user what has changed.</para>
-<para>Freshmeat: currently Thierry Lach does the freshmeat announcements which require a login.
+      <para>
+It is provided with the hopes of being helpful.
+If you, the release responsible, finds it unhelpful, please remove it!
 </para>
 
       <para>
-Linus' imperative suggestion:
+What needs to be done when one actually does a release:
+</para>
+
+      <para>
 	<orderedlist>
 	  <listitem>
 	    <para>Modify <filename>build.xml</filename>!</para>
 	    <para>
-The target to change is setversion where you will need to change the
+The target to change is <methodname>setversion</methodname>
+where you will need to change the
 property names accordingly.
-TO DO: GIVE CONCRETE EXAMPLE.
+</para>
+	    <para>
+For release 0.9.6 it should look like this:
+<programlisting>
+  &lt;target name="setversion"&gt;
+    &lt;!-- These cannot be changed in .ant.properties --&gt;
+    &lt;property name="nextversion" value="0.9.7"/&gt;
+    &lt;property name="lastversion" value="0.9.6"/&gt;
+  &lt;/target&gt;
+</programlisting>
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Tag the whole cvs directory with the freeze tag!</para>
+	    <para>
+Normally this tag is "VERSION_<replaceable>X_Y_Z</replaceable>_F",
+e.g. VERSION_0_9_6_F.
+The according command line cvs command is 
+<command>cvs rtag VERSION_<replaceable>X_Y_Z</replaceable>_F argouml</command>.
+In case you make a mistake doing that (you shouldn't really), 
+you need to remove the tag you mistakenly put ther and start over.
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>Make sure you have a clean copy of the source!</para>
+	    <para>
+This is done by checking out from the tag using the command
+<command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml</command>
+</para>
 	  </listitem>
 	  <listitem>
 	    <para>Build the release with <command>build dist-release</command>!</para>
 	    <para>
-The output should be some tar.gz and .zip files in the top-level
+The output should be the files
+ArgoUML-<replaceable>VERSION-TIMESTAMP</replaceable>.tar.gz and 
+ArgoUML-<replaceable>VERSION-TIMESTAMP</replaceable>.zip files in the top-level
 argouml directory.
 </para>
 	  </listitem>
 	  <listitem>
-	    <para>Tag the whole cvs directory!</para>
+	    <para>Test the release!</para>
 	    <para>
-Normally a tag would consist of "VERSION_X_Y_Z", e.g. VERSION_0_9_6.
+Either the tar or zip-file is tested by unpacking, starting and then
+running through the test cases.
+Currently there isn't any defined test cases.
+</para>
+	    <para>
+All JUnit test cases are run by 
+cd:ing to the <filename class="directory">modules/junit</filename> source directory,
+running <command>build run</command>,
+invoking JUnit tests from the Tools menu,
+specifying the Test Case TestAll,
+and running.
+No problems shall be found.
+</para>
+	    <para>
+If the tests did not pass See <xref linkend="release_process_test_failed"/>.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>Tag the whole repository with the release tag!</para>
+	    <para>
+This tag is "VERSION_<replaceable>X_Y_Z</replaceable>",
+e.g. VERSION_0_9_6.
 The according command line cvs command is 
-<command>cvs tag VERSION_X_Y_Z</command>.
-In case you make a mistake doing that (you shouldn't really), one can still retag things. TO DO: Find out how to retag.
+<command>cvs tag VERSION_<replaceable>X_Y_Z</replaceable></command>
+when your are standing in the
+<filename class="directory">argouml</filename>-directory.
 </para>
 	  </listitem>
 	  <listitem>
@@ -710,22 +746,29 @@ In case you make a mistake doing that (you shouldn't really), one can still reta
 Only a project owner can do that.
 Please take the previous releases as an example to write the
 descriptions of the files.
-If erveryone follows his own conventions it is likely to be confusing.
+If everyone follows his own conventions it is likely to be confusing.
 Hint: upload all the files first, then change all the texts at once in
 the edit window.
 It is much faster since you can copy and paste most of the texts.
 </para>
 	  </listitem>
 	  <listitem>
-	    <para>Contact Jason to make the new Webstart version available!</para>
+	    <para>
+Contact Jason Robbins to make the new Webstart version available!
+</para>
+	    <para>
+Jason Robbins takes care of the signing and publishing of the
+Webstart version.
+</para>
 	  </listitem>
 	  <listitem>
 	    <para>Make announcements!</para>
 	    <para>
+The announcement shall include a list of what has changed.
+</para>
+	    <para>
 Write to the dev, users and announce lists.
 Announcer should make sure that he/she is already subscribed to all lists.
-A particular bad aspect in the past releases was that we didn't really
-inform the user what has changed.
 </para>
 	    <para>
 Freshmeat: currently Thierry Lach does the freshmeat announcements
@@ -734,7 +777,23 @@ which require a login so just inform him.
 	  </listitem>
 	</orderedlist>
 </para>
-
+      <sect2 id="release_process_test_failed">
+	<title>The release did not work</title>
+	<para>
+This shouldn't happen! This really shouldn't happen!
+</para>
+	<para>
+The reason that this has happened is that one of the developers 
+has made a misstake.
+You now must decide a way forward.
+</para>
+	<para>
+Fix the problem yourself.
+</para>
+	<para>
+Delay the release waiting for the developer to fix the problem.
+</para>
+      </sect2>
 
 
 </sect1>
