@@ -42,7 +42,7 @@ public class Design extends DesignMaterial {
     // instance variables
 
     /** The contained DesignMaterial's (including other Design's). */
-    private Vector _subdesigns = new Vector();
+    private Vector subdesigns = new Vector();
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -54,43 +54,73 @@ public class Design extends DesignMaterial {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** Reply a vector of contained DesignMaterial's. */
-    public Vector getSubdesigns() { return _subdesigns; }
+    /** 
+     * Reply a vector of contained DesignMaterial's. 
+     * 
+     * @return the contained design material
+     */
+    public Vector getSubdesigns() { return subdesigns; }
 
-    /** Set the vector of contained DesignMaterial's. */
-    public void setSubdesigns(Vector subs) { _subdesigns = subs; }
+    /** 
+     * Set the vector of contained DesignMaterial's.
+     * 
+     * @param subs replace the complete list of dm
+     */
+    public void setSubdesigns(Vector subs) { subdesigns = subs; }
 
-    /** Enumerate all contained DesignMaterial's. */
-    public Enumeration elements() { return _subdesigns.elements(); }
-    /** Enumerate all contained DesignMaterial's. */
-    public Iterator iterator() { return _subdesigns.iterator(); }
+    /** 
+     * Enumerate all contained DesignMaterial's. 
+     * 
+     * @return an enumeration for all dm
+     */
+    public Enumeration elements() { return subdesigns.elements(); }
+    
+    /** 
+     * Iterate through all contained DesignMaterial's. 
+     * 
+     * @return an iterator for the subdesigns
+     */
+    public Iterator iterator() { return subdesigns.iterator(); }
 
-    /** Reply true if the given DesignMaterial is part of this design. */
+    /** 
+     * Reply true if the given DesignMaterial is part of this design.
+     * 
+     * @param dm the design material
+     * @return true if the dm is included
+     */
     public boolean transativelyIncludes(DesignMaterial dm) {
 	Enumeration cur = elements();
 	while (cur.hasMoreElements()) {
 	    DesignMaterial dm2 = (DesignMaterial) cur.nextElement();
 	    if (dm == dm2) return true;
-	    if ((dm2 instanceof Design) &&
-		(((Design) dm2).transativelyIncludes(dm))) {
+	    if ((dm2 instanceof Design) 
+                && (((Design) dm2).transativelyIncludes(dm))) {
 		return true;
 	    }
 	}
 	return false;
     }
 
-    /** Add the given DesignMaterial to this Design, if it is not
-     * already. */
+    /** 
+     * Add the given DesignMaterial to this Design, if it is not
+     * already.
+     *  
+     * @param dm the design material
+     */
     public synchronized void addElement(DesignMaterial dm) {
 	if (!transativelyIncludes(dm)) {
-	    _subdesigns.addElement(dm);
+	    subdesigns.addElement(dm);
 	    dm.addParent(this);
 	}
     }
 
-    /** Remove the given DesignMaterial from this Design. */
+    /** 
+     * Remove the given DesignMaterial from this Design. 
+     * 
+     * @param dm the design material 
+     */
     public synchronized void removeElement(DesignMaterial dm) {
-	_subdesigns.removeElement(dm);
+	subdesigns.removeElement(dm);
 	dm.removeParent(this);
     }
 
@@ -102,7 +132,10 @@ public class Design extends DesignMaterial {
      *
      * TODO: in the future Argo will use less tree walking
      * and more trigger-driven critiquing. I.e., critiquing will be done
-     * in response to specific manipulations in the editor.  */
+     * in response to specific manipulations in the editor.  
+     * 
+     * @see org.argouml.cognitive.DesignMaterial#critique(org.argouml.cognitive.Designer)
+     */
     public void critique(Designer d) {
 	super.critique(d);
 	Enumeration cur = elements();
@@ -113,8 +146,12 @@ public class Design extends DesignMaterial {
 	}
     }
 
-    /** Reply a string that describes this Design. Inteneded for
-     * debugging. */
+    /** 
+     * Reply a string that describes this Design. Inteneded for
+     * debugging. 
+     * 
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
 	String printString = super.toString() + " [\n";
 	Enumeration cur = elements();

@@ -53,25 +53,70 @@ public interface Poster {
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** Get some contact information on the Poster. */
+    /** 
+     * Get some contact information on the Poster.
+     *  
+     * @return the email address of the poster
+     */
     String getExpertEmail();
 
-    /** Update the Poster's contact info. Is this needed? */
+    /** 
+     * Update the Poster's contact info. Is this needed?
+     * 
+     * @param addr the emailaddress
+     */
     void setExpertEmail(String addr);
 
-    /** Reply true if the given item should be kept on the Designer's
-     * ToDoList, false if it is no longer valid. */
+    /** 
+     * Reply true if the given item should be kept on the Designer's
+     * ToDoList, false if it is no longer valid. 
+     * 
+     * @param i the todo item
+     * @param d the designer
+     * @return true if thisitem is still valid
+     */
     boolean stillValid(ToDoItem i, Designer d);
 
+    /**
+     * @param d the decision
+     * @return true if the decision is still supported
+     */
     boolean supports(Decision d);
+    
+    /**
+     * @return the list of supported decisions
+     */
     Vector getSupportedDecisions();
+    
+    /**
+     * @param g the goal
+     * @return true if the goal is still supported
+     */
     boolean supports(Goal g);
+    
+    /**
+     * @return the list of supported goals
+     */
     Vector getSupportedGoals();
+    
+    /**
+     * @param knowledgeType the knowledge type
+     * @return true if it is valid
+     */
     boolean containsKnowledgeType(String knowledgeType);
 
-    /** Customize the description string just before it is displayed. */
+    /** 
+     * Customize the description string just before it is displayed. 
+     * 
+     * @param desc the description
+     * @param offs the offenders
+     * @return the customized/expanded string
+     */
     String expand(String desc, VectorSet offs);
 
+    /**
+     * @return the icon shown on the todo item to show the wizard's progress
+     */
     public Icon getClarifier();
 
     ////////////////////////////////////////////////////////////////
@@ -87,8 +132,21 @@ public interface Poster {
     ////////////////////////////////////////////////////////////////
     // issue resolution
 
+    /**
+     * TODO: Not implemented yet. If the given ToDoItem can
+     * be fixed automatically, and the user wants that to happen, then do
+     * it. Obviously, this depends on the specific Critic and
+     * problem. By default this method does nothing.
+     * 
+     * @param item the todo item
+     * @param arg the design material (?)
+     */
     void fixIt(ToDoItem item, Object arg);
 
+    /**
+     * @param item the todo item
+     * @return true if it can be fixed
+     */
     boolean canFixIt(ToDoItem item);
 
 } /* end interface Poster */

@@ -53,7 +53,7 @@ public class CrUselessAbstract extends CrUML {
     public CrUselessAbstract() {
 	setHeadline("Define Concrete (Sub)Class");
 	addSupportedDecision(CrUML.decINHERITANCE);
-	addSupportedGoal(Goal.UNSPEC);
+	addSupportedGoal(Goal.getUnspecifiedGoal());
 	addTrigger("specialization");
 	addTrigger("isAbstract");
     }
