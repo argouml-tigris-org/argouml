@@ -268,6 +268,7 @@ public class Init {
 	Agency.register(crNoAssociations, actorCls);
 	Agency.register(crNoAssociations, useCaseCls);
 	Agency.register(crNoOperations, classCls);
+        Agency.register(crNoOperations, interfaceCls);
 	Agency.register(crCompoundConstructorNeeded, classCls);
 	Agency.register(crEmptyPackage, packageCls);
 	Agency.register(crNonAggDataType, datatypeCls);
