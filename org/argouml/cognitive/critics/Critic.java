@@ -86,6 +86,22 @@ public class Critic implements Poster, Serializable {
   public static String KT_TOOL = 
       Argo.localize(RESOURCE_BUNDLE, "knowledge.tool");
 
+    /** This function calculates the default url to describe this critic.
+     * This syntax is synchronized with:
+     * <OL>
+     * <LI>Tags in the manual.
+     * <LI>Name of the ArgoUML site.
+     * <LI>How the manual is deployed on the site.
+     * </OL>
+     * so this must be updated when any of these change.
+     */
+    public final String defaultMoreInfoURL() {
+	String clsName = getClass().getName();
+	clsName = clsName.substring(clsName.lastIndexOf(".") + 1);
+	return "http://argouml.tigris.org/documentation/printablehtml/"
+	    + "manual/argomanual.html"
+	    + "#critics." + clsName;
+    }
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -187,8 +203,9 @@ public class Critic implements Poster, Serializable {
     _knowledgeTypes.addElement("Correctness");
     _decisionCategory = "Checking";
     _emailAddr = "jrobbins@ics.uci.edu";
-    _moreInfoURL = "http://argouml.tigris.org/documentation/printablehtml/"
-	+ "manual/argomanual.html#critic." + this.getClass().getName();
+
+    _moreInfoURL = defaultMoreInfoURL();
+
     _description = "no description is availible";
     _headline = "default critic headline (" + getClass().getName() + ")";
     _priority = ToDoItem.MED_PRIORITY;
