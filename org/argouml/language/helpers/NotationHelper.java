@@ -26,7 +26,7 @@ package org.argouml.language.helpers;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
-import org.argouml.application.api.NotationProvider;
+import org.argouml.application.api.NotationProvider2;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -57,7 +57,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>. */
 
 public abstract class NotationHelper
-    implements NotationProvider 
+    implements NotationProvider2
 {
 
     private NotationName _notationName;

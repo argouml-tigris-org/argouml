@@ -27,9 +27,6 @@
 // Original Author: Thierry Lach
 // $Id$
 
-// 8 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
-// extension points.
-
 package org.argouml.application.api;
 
 import java.beans.PropertyChangeEvent;
@@ -132,7 +129,7 @@ public final class Notation implements PropertyChangeListener {
     private static final Notation SINGLETON = new Notation();
 
     // private ArrayList _providers = null;
-    // private NotationProvider _defaultProvider = null;
+    // private NotationProvider2 _defaultProvider = null;
 
     private Notation() {
         // _providers = new ArrayList();
@@ -151,8 +148,8 @@ public final class Notation implements PropertyChangeListener {
         Configuration.removeListener(KEY_UML_NOTATION_ONLY, this);
     }
 
-    private static NotationProvider getProvider(NotationName notation) {
-        NotationProvider np;
+    private static NotationProvider2 getProvider(NotationName notation) {
+        NotationProvider2 np;
         np = NotationProviderFactory.getInstance().getProvider(notation);
         cat.debug("getProvider(" + notation + ") returns " + np);
         return np;
@@ -653,7 +650,7 @@ public final class Notation implements PropertyChangeListener {
             new ArgoNotationEvent(ArgoEvent.NOTATION_CHANGED, pce));
     }
 
-    public static NotationProvider getDefaultProvider() {
+    public static NotationProvider2 getDefaultProvider() {
         return NotationProviderFactory.getInstance().getDefaultProvider();
     }
 

@@ -41,10 +41,10 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.Generator;
+import org.argouml.uml.generator.Generator2;
 
 /**
- * Provides support for setting a "src_path" tagged value used in Java 
+ * Provides support for setting a "src_path" tagged value used in Java
  * round trip engineering.
  */
 public class SourcePathDialog extends ArgoDialog implements ActionListener {
@@ -71,7 +71,7 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
         TableColumn elemCol = _srcPathTable.getColumnModel().getColumn(0);
         elemCol.setMinWidth(0);
         elemCol.setMaxWidth(0);
-        
+
         setContent(new JScrollPane(_srcPathTable));
     }
 
@@ -80,7 +80,7 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        
+
         // OK Button ------------------------------------------
         if (e.getSource() == getOkButton()) {
             buttonOkActionPerformed();
@@ -101,7 +101,7 @@ public class SourcePathDialog extends ArgoDialog implements ActionListener {
 } /* end class SourcePathDialog */
 
 /**
- * Provides support for setting a "src_path" tagged value used in Java 
+ * Provides support for setting a "src_path" tagged value used in Java
  * round trip engineering.
  */
 class SrcPathTableModel extends DefaultTableModel {
@@ -110,7 +110,7 @@ class SrcPathTableModel extends DefaultTableModel {
     public SrcPathTableModel() {
         super(new Object[][] {
         }, new String[] {
-	    " ", "Name", "Type", "Source path" 
+	    " ", "Name", "Type", "Source path"
 	});
         Project p = ProjectManager.getManager().getCurrentProject();
         Collection elems =
@@ -120,7 +120,7 @@ class SrcPathTableModel extends DefaultTableModel {
         Iterator iter = elems.iterator();
         while (iter.hasNext()) {
             Object me = iter.next();
-            String path = Generator.getCodePath(me);
+            String path = Generator2.getCodePath(me);
             if (path != null) {
                 String type = "";
                 String name = ModelFacade.getName(me);
@@ -141,7 +141,7 @@ class SrcPathTableModel extends DefaultTableModel {
                     type = "Interface";
                 }
                 addRow(new Object[] {
-		    me, name, type, path 
+		    me, name, type, path
 		});
             }
         }

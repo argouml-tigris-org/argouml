@@ -245,7 +245,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-	
+
 
     /** Create an empty but initialized instance of a UML Constraint.
      *
@@ -486,7 +486,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
     public MAssociation buildAssociation(
 					 MClassifier from,
 					 MAggregationKind agg1,
-					 MClassifier to, 
+					 MClassifier to,
 					 MAggregationKind agg2,
 					 Boolean unidirectional) {
 	if (from == null || to == null)
@@ -505,10 +505,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	assoc.setNamespace(
 			   CoreHelper.getHelper().getFirstSharedNamespace(ns1,
 									  ns2));
-        
+
         boolean nav1 = true;
         boolean nav2 = true;
-        
+
         if (from instanceof MInterface) {
             nav2 = false;
             agg2 = agg1;
@@ -519,7 +519,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
             nav1 = !Boolean.TRUE.equals(unidirectional);
             nav2 = true;
         }
-        
+
 	buildAssociationEnd(
 			    assoc,
 			    null,
@@ -544,11 +544,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
 			    null,
 			    null,
 			    null);
-        
+
         return assoc;
     }
-   
-    
+
+
     /**
      * Builds a binary associations between two classifiers with
      * default values for the association ends and the association
@@ -1110,7 +1110,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      */
     public MDependency buildDependency(Object clientObj,
 				       Object supplierObj) {
-                    
+
 	MModelElement client = (MModelElement) clientObj;
 	MModelElement supplier = (MModelElement) supplierObj;
 	if (client == null
@@ -1138,7 +1138,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      */
     public MPermission buildPermission(Object clientObj,
 				       Object supplierObj) {
-                    
+
 	MModelElement client = (MModelElement) clientObj;
 	MModelElement supplier = (MModelElement) supplierObj;
 	if (client == null
@@ -1194,10 +1194,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
         if (!(child1 instanceof MGeneralizableElement)
 	    || !(parent1 instanceof MGeneralizableElement))
             throw new IllegalArgumentException();
-        
+
         MGeneralizableElement child = (MGeneralizableElement) child1;
         MGeneralizableElement parent = (MGeneralizableElement) parent1;
-        
+
         if (parent.getParents().contains(child))
             return null;
         if (!child.getClass().equals(parent.getClass()))

@@ -51,7 +51,7 @@ import org.argouml.ui.ShadowComboBox;
  */
 
 public class SettingsTabNotation extends SettingsTabHelper
-    implements SettingsTabPanel 
+    implements SettingsTabPanel
 {
 
     private JCheckBox _allowNotations = null;
@@ -152,7 +152,7 @@ public class SettingsTabNotation extends SettingsTabHelper
 
     public void handleSettingsTabSave() {
         Notation.setUseGuillemots(_useGuillemots.isSelected());
-        Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY, 
+        Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY,
                  _allowNotations.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY,
                  _showVisibility.isSelected());
