@@ -25,36 +25,18 @@
 package org.argouml.uml.diagram;
 
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Writer;
-
-import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
-import org.argouml.persistence.SaveException;
 import org.argouml.ui.ArgoDiagram;
-import org.tigris.gef.ocl.ExpansionException;
-import org.tigris.gef.ocl.OCLExpander;
-import org.tigris.gef.ocl.TemplateReader;
 import org.tigris.gef.util.Util;
 
 /**
  * @author Piotr Kaminski
  */
 public class ProjectMemberDiagram extends ProjectMember {
-    private static final Logger LOG = 
-        Logger.getLogger(ProjectMemberDiagram.class);
-
-    ////////////////////////////////////////////////////////////////
-    // constants
 
     private static final String MEMBER_TYPE = "pgml";
     private static final String FILE_EXT = "." + MEMBER_TYPE;
-    private static final String PGML_TEE = "/org/argouml/persistence/PGML.tee";
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -107,43 +89,6 @@ public class ProjectMemberDiagram extends ProjectMember {
      */
     public String getFileExtension() {
         return FILE_EXT;
-    }
-
-    /**
-     * Write the diagram to the given writer.
-     * @see org.argouml.kernel.ProjectMember#save(java.io.Writer, Integer)
-     */
-    public void save(Writer writer, Integer indent) throws SaveException {
-        OCLExpander expander;
-        try {
-            expander = 
-                new OCLExpander(TemplateReader.getInstance().read(PGML_TEE));
-        } catch (FileNotFoundException e) {
-            throw new SaveException(e);
-        }
-        if (indent == null) {
-            try {
-                expander.expand(writer, diagram, "", "");
-            } catch (ExpansionException e) {
-                throw new SaveException(e);
-            }
-        } else {
-            try {
-                File tempFile = File.createTempFile("pgml", null);
-                tempFile.deleteOnExit();
-                FileWriter w = new FileWriter(tempFile);
-                expander.expand(w, diagram, "", "");
-                w.close();
-                addXmlFileToWriter(
-                        (PrintWriter) writer,
-                        tempFile,
-                        indent.intValue());
-            } catch (ExpansionException e) {
-                throw new SaveException(e);
-            } catch (IOException e) {
-                throw new SaveException(e);
-            }
-        }
     }
 
     /**

@@ -45,6 +45,9 @@ import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
+import org.argouml.uml.ProjectMemberModel;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
+import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.util.FileConstants;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
@@ -166,7 +169,15 @@ public class ZargoFilePersister extends UmlFilePersister {
                     }
                     names.add(name);
                     stream.putNextEntry(new ZipEntry(name));
-                    projectMember.save(writer, null);
+                    MemberFilePersister persister = null;
+                    if (projectMember instanceof ProjectMemberDiagram) {
+                        persister = new DiagramMemberFilePersister();
+                    } else if (projectMember instanceof ProjectMemberTodoList) {
+                        persister = new TodoListMemberFilePersister();
+                    } else if (projectMember instanceof ProjectMemberModel) {
+                        persister = new ModelMemberFilePersister();
+                    }
+                    persister.save(projectMember, writer, null);
                     writer.flush();
                     stream.closeEntry();
                 }
@@ -182,7 +193,15 @@ public class ZargoFilePersister extends UmlFilePersister {
                                         .get(i)).getType());
                     }
                     stream.putNextEntry(new ZipEntry(projectMember.getName()));
-                    projectMember.save(writer, null);
+                    MemberFilePersister persister = null;
+                    if (projectMember instanceof ProjectMemberDiagram) {
+                        persister = new DiagramMemberFilePersister();
+                    } else if (projectMember instanceof ProjectMemberTodoList) {
+                        persister = new TodoListMemberFilePersister();
+                    } else if (projectMember instanceof ProjectMemberModel) {
+                        persister = new ModelMemberFilePersister();
+                    }
+                    persister.save(projectMember, writer, null);
                 }
             }
             // if save did not raise an exception
