@@ -1517,6 +1517,7 @@ public abstract class FigNodeModelElement
         if (ModelFacade.isABase(own)) {
             Model.getPump().removeModelEventListener(this, own);
         }
+        shadowSize = 0;
         super.removeFromDiagram();
     }
 
