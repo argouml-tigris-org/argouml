@@ -1,4 +1,5 @@
 package org.argouml.uml.diagram.deployment;
+import org.argouml.model.uml.UmlFactory;
 
 import java.util.*;
 import java.beans.*;
@@ -332,10 +333,10 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	MNodeInstance toNoI = (MNodeInstance) toPort; 
    	
     	if (edgeClass == MLinkImpl.class) {
-    	  MLink link = new MLinkImpl();
-		  MLinkEnd le0 = new MLinkEndImpl();
+    	  MLink link = UmlFactory.getFactory().getCommonBehavior().createLink();
+		  MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
 		  le0.setInstance(fromNoI);
-		  MLinkEnd le1 = new MLinkEndImpl();
+		  MLinkEnd le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
 		  le1.setInstance(toNoI);
 		  link.addConnection(le0);
 		  link.addConnection(le1);
@@ -457,10 +458,10 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	MObject toObj = (MObject) toPort; 
 
     	if (edgeClass == MLinkImpl.class) {
-    	  MLink link = new MLinkImpl();
-		  MLinkEnd le0 = new MLinkEndImpl();
+    	  MLink link = UmlFactory.getFactory().getCommonBehavior().createLink();
+		  MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
 		  le0.setInstance(fromObj);
-		  MLinkEnd le1 = new MLinkEndImpl();
+		  MLinkEnd le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
 		  le1.setInstance(toObj);
 		  link.addConnection(le0);
 		  link.addConnection(le1);

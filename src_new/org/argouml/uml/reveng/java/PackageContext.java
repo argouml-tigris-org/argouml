@@ -23,6 +23,9 @@
 
 package org.argouml.uml.reveng.java;
 
+import org.argouml.model.uml.UmlFactory;
+
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 
@@ -71,7 +74,7 @@ class PackageContext extends Context
 			Class.forName(javaName + "." + name);
 		}		    
 		if(classifier.isInterface()) {
-		    mInterface = new MInterfaceImpl();
+		    mInterface = UmlFactory.getFactory().getCore().createInterface();
 		    mInterface.setName(name);
 		    mInterface.setNamespace(mPackage);
 		}
@@ -120,10 +123,10 @@ class PackageContext extends Context
 			Class.forName(javaName + "." + name);
 		}		    
 		if(classifier.isInterface()) {
-		    mClassifier = new MInterfaceImpl();
+		    mClassifier = UmlFactory.getFactory().getCore().createInterface();
 		}
 		else {
-		    mClassifier = new MClassImpl();
+		    mClassifier = UmlFactory.getFactory().getCore().createClass();
 		}
 		mClassifier.setName(name);
 		mClassifier.setNamespace(mPackage);
@@ -150,7 +153,7 @@ class PackageContext extends Context
 		   name.equals("void") ||
 		   // How do I represent arrays in UML?
 		   name.indexOf("[]") != -1) {
-		    mClassifier = new MDataTypeImpl();
+		    mClassifier = UmlFactory.getFactory().getCore().createDataType();
 		    mClassifier.setName(name);
 		    mClassifier.setNamespace(mPackage);
 		}
@@ -163,4 +166,4 @@ class PackageContext extends Context
 	return mClassifier;
     }
 }
-	
+

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,20 +23,21 @@
 
 package org.argouml.uml;
 
+import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.*;
+import org.argouml.xml.xmi.XMIParser;
+
 import java.net.URL;
 import java.io.*;
 import java.util.zip.*;
 import javax.swing.*;
 
-import org.argouml.xml.xmi.XMIParser;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.xmi.*;
 
 import org.tigris.gef.util.Dbg;
-
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
 
 /**
  * @author Piotr Kaminski

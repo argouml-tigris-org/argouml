@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@
 // $Id$
 
 package org.argouml.uml.diagram.collaboration;
+import org.argouml.model.uml.UmlFactory;
 
 import java.util.*;
 import java.beans.*;
@@ -243,10 +244,10 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
     //try {
       if (edgeClass == MAssociationRoleImpl.class &&
 		(fromPort instanceof MClassifierRole && toPort instanceof MClassifierRole)) {
-	    MAssociationRole asr = new MAssociationRoleImpl();
-		MAssociationEndRole aer0 = new MAssociationEndRoleImpl();
+	    MAssociationRole asr = UmlFactory.getFactory().getCollaborations().createAssociationRole();
+		MAssociationEndRole aer0 = UmlFactory.getFactory().getCollaborations().createAssociationEndRole();
 		aer0.setType((MClassifierRole) fromPort);
-		MAssociationEndRole aer1 = new MAssociationEndRoleImpl();
+		MAssociationEndRole aer1 = UmlFactory.getFactory().getCollaborations().createAssociationEndRole();
 		aer1.setType((MClassifierRole) toPort);
 		asr.addConnection(aer0);
 		asr.addConnection(aer1);
@@ -256,7 +257,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
       /*else if (edgeClass == MGeneralization.class &&
 		((fromPort instanceof MActor && toPort instanceof MActor) ||
 		 (fromPort instanceof MUseCase && toPort instanceof MUseCase))) {
-	    MGeneralization gen = new MGeneralization((MClassifier) fromPort,
+	    MGeneralization gen = UmlFactory.getFactory().getCore().createGeneralization((MClassifier) fromPort,
 						(MClassifier) toPort);
 	    gen.addStereotype(MStereotype.EXTENDS);
 	    addEdge(gen);

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,9 +24,11 @@
 package org.argouml.uml.ui;
 
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.activity.ui.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.state_machines.*;
@@ -67,10 +69,10 @@ public class ActionActivityDiagram extends UMLChangeAction {
 	    MNamespace ns=(MNamespace)me;
 	    String contextNameStr = ns.getName();
 	    if (contextNameStr == null) contextNameStr = "untitled";
-	    MActivityGraph am = new MActivityGraphImpl();
+	    MActivityGraph am = UmlFactory.getFactory().getActivityGraphs().createActivityGraph();
 	    am.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	    am.setName(contextNameStr + "ActivityGraph");
-	    MCompositeState cs = new MCompositeStateImpl();
+	    MCompositeState cs = UmlFactory.getFactory().getStateMachines().createCompositeState();
 	    cs.setName("activities_top");
 	    //cs.setNamespace(ns);
 	    am.setNamespace(ns);

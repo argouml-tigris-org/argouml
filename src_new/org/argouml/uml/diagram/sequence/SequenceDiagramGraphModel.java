@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,8 @@
 // $Id$
 
 package org.argouml.uml.diagram.sequence;
+
+import org.argouml.model.uml.UmlFactory;
 
 import java.util.*;
 import java.beans.*;
@@ -223,10 +225,10 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
   
     if (edgeClass == MLinkImpl.class &&
       (fromPort instanceof MObject && toPort instanceof MObject)) {
-      MLink ml = new MLinkImpl();
-      MLinkEnd le0 = new MLinkEndImpl();
+      MLink ml = UmlFactory.getFactory().getCommonBehavior().createLink();
+      MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
       le0.setInstance((MObject) fromPort);
-      MLinkEnd le1 = new MLinkEndImpl();
+      MLinkEnd le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
       le1.setInstance((MObject) toPort);
       ml.addConnection(le0);
       ml.addConnection(le1);
@@ -257,7 +259,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
                 action.setAsynchronous(false);
               }
               // create stimulus
-              MStimulus stimulus = new MStimulusImpl();
+              MStimulus stimulus = UmlFactory.getFactory().getCommonBehavior().createStimulus();
               stimulus.setName("");
               //set sender and receiver
               stimulus.setSender((MObject)fromPort);

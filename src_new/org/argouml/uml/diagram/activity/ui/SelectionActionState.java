@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,6 +33,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.Icon;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.state_machines.*;
@@ -43,6 +44,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.util.*;
 
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.ui.*;
 
@@ -213,7 +215,7 @@ public class SelectionActionState extends SelectionWButtons {
 
   public void buttonClicked(int buttonCode) {
     super.buttonClicked(buttonCode);
-    MActionState newNode =  new MActionStateImpl();
+    MActionState newNode =  UmlFactory.getFactory().getActivityGraphs().createActionState();
 
     FigStateVertex fc = (FigStateVertex) _content;
     MStateVertex cls = (MStateVertex) fc.getOwner();
