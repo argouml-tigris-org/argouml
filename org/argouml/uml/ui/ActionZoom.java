@@ -32,7 +32,9 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.presentation.Fig;
 
-
+/** @deprecated ActionZoom is obsolete, not used in ArgoUML and was replaced by GEF's CmdZoom.
+ *  @since 0.13.5
+ */
 public class ActionZoom extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
