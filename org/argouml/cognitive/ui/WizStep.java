@@ -152,8 +152,11 @@ implements TabToDoTarget, ActionListener, DocumentListener {
 
   /**
       * Returns the target of the TabToDo
-      * @deprecated this method will be removed in a couple of releases
-      * Use TargetManager.getInstance().getTarget() instead
+      *
+      * @deprecated As of ArgoUml version 0.13.5,
+      *             the visibility of this method will change in the future,
+      *             replaced by {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}.
+      *             this method will be removed in a couple of releases
       * @return The current target of the TabToDo
       */
   public Object getTarget() { return TargetManager.getInstance().getTarget(); }

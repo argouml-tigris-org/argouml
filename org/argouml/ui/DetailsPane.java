@@ -234,7 +234,10 @@ public class DetailsPane
      * the owner(model element) of a selected fig.
      *
      * <p>Decides which panels to enable.
-     * @deprecated replaced by TargetListener, will become non-public in 
+     * @deprecated As of ArgoUml version 0.13.5,
+     *             replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetListener},
+     *             will become non-public in 
      * the future
      */
     public void setTarget(Object target) {

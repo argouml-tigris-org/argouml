@@ -220,7 +220,8 @@ public class ModelManagementHelper {
      * TODO: make this only move/copy the asked element
      * @param element
      * @param to
-     * @deprecated You should use getCorrespondingElement instead.
+     * @deprecated As of ArgoUml version 0.13.5, 
+     *             You should use {@link #getCorrespondingElement(MModelElement,MModel,boolean)} instead.
      */
     public void moveElement(MModelElement element, MModel to) {
         MModel currentModel = element.getModel();

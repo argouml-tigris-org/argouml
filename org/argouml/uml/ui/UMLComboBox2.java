@@ -41,7 +41,8 @@ public class UMLComboBox2
     
     /**
      * Constructor for UMLMessageActivatorComboBox.
-     * @deprecated use the constructor with the action
+     * @deprecated As of ArgoUml version unknown (before 0.13.5),
+     *             replaced by {@link #UMLComboBox2(UMLComboBoxModel2 , UMLAction, boolean )}
      * @param arg0
      */
     protected UMLComboBox2(UMLComboBoxModel2 arg0) {

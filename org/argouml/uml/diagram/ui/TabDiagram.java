@@ -136,7 +136,9 @@ public class TabDiagram
      * Sets the target of the tab. The target should allways be an instance of
      * UMLDiagram
      * @param t
-     * @deprecated the visibility of this method will change in the future
+     * @deprecated As of ArgoUml version 0.13.5,
+     *             the visibility of this method will change in the future,
+     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
      */
     public void setTarget(Object t) {
 

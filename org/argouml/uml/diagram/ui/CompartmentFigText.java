@@ -233,7 +233,7 @@ public class CompartmentFigText extends FigText
      *
      * @param feature  The feature to set.
      *
-     * @deprecated  Use the more general {@link
+     * @deprecated  As of ArgoUml version 0.9.9, Use the more general {@link
      *              #setModelElement(MModelElement)} instead.
      */
 
@@ -252,7 +252,8 @@ public class CompartmentFigText extends FigText
      * @return  The feature associated with this compartment or 
      * 		null if none can be found.
      *
-     * @deprecated  Use the more general {@link #getOwner()} instead.
+     * @deprecated  As of ArgoUml version 0.9.9, Use the more general
+     * {@link #getOwner()} instead.
      */
 
     public MFeature getFeature() {
@@ -272,7 +273,7 @@ public class CompartmentFigText extends FigText
      *
      * @param modelElement  The model element to set.
      * 
-     * @deprecated use the more general setOwner
+     * @deprecated As of ArgoUml version 0.9.9, use the more general setOwner
      */
 
     public void setModelElement(MModelElement modelElement) {
@@ -286,7 +287,7 @@ public class CompartmentFigText extends FigText
      *
      * @return  The modelElement associated with this compartment.
      * 
-     * @deprecated use getOwner()
+     * @deprecated As of ArgoUml version 0.9.9, use getOwner()
      */
 
     public MModelElement getModelElement() {

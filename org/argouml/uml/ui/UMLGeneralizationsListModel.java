@@ -40,7 +40,7 @@ import ru.novosoft.uml.model_management.*;
  *   @author Curt Arnold
  *   @see UMLModelElementListModel
  *   @see UMLList
- * 	 @deprecated
+ * 	 @deprecated As of ArgoUml version unknown (before 0.13.5).
  */
 public class UMLGeneralizationsListModel extends UMLOwnedElementListModel  {
 

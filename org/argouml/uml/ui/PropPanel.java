@@ -136,7 +136,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *    Constructs the PropPanel.
      *    @param title Title of panel
      *    @param panelCount number of horizontal panels
-     *    @deprecated 7-Dec-2002 by Bob Tarling. Use the constructor
+     *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
+     *                {@link #PropPanel(????)}
      *    specifying orientation instead.
      */
     public PropPanel(String title, int panelCount) {
@@ -147,6 +148,12 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *    Constructs the PropPanel - DO NOT USE.
      *    @param title Title of panel
      *    @param panelCount number of horizontal panels
+     *
+     *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
+     *                {@link #PropPanel(????)}. Use of GridBagLayout is being
+     *                dropped in favour of
+     *                {@link org.argouml.swingext.LabelledLayout}
+     *
      *    @todo 7-Dec-2002 by Bob Tarling. this constructor should be deprecated once no
      *    longer in use. Use of GridBagLayout is being dropped in favour of LabelledLayout
      */
@@ -413,7 +420,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      * <p>Set the target to be associated with a particular property panel.</p>
      *
      * <p>This involves resetting the third party listeners.</p>
-     * @deprecated This will change visibility from release 0.16
+     * @deprecated As Of Argouml version 0.13.5,
+     *             This will change visibility from release 0.16
      * @param t  The object to be set as a target.
      */
 
@@ -566,7 +574,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     }
 
     /**
-     * @deprecated replaced by TargetManager.getInstance().setTarget(Object target)
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#setTarget(Object) TargetManager.getInstance().setTarget(Object target)}
      */
     public void navigateTo(Object element) {
         TargetManager.getInstance().setTarget(element);
@@ -575,7 +584,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
    
 
     /**
-     * @deprecated replaced by TargetManager.getInstance().navigateBack();
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateBackward() TargetManager.getInstance().navigateBackward()}
      */
     public boolean navigateBack(boolean attempt) {
        TargetManager.getInstance().navigateBackward();
@@ -583,7 +593,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     }
     
     /**
-     * @deprecated replaced by TargetManager.getInstance().navigateBack();
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager.getInstance().navigateBack();
      *
      */
     public void navigateBackAction() {
@@ -591,7 +602,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     }
 
     /**
-     * @deprecated replaced by TargetManager.getInstance().navigateForward()
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateForward() TargetManager.getInstance().navigateForward()}
      */
     public boolean navigateForward(boolean attempt) {
         TargetManager.getInstance().navigateForward();
@@ -599,21 +611,24 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
     }
 
     /**
-     * @deprecated replaced by TargetManager.getInstance().navigateForward()
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateForward() TargetManager.getInstance().navigateForward()}
      */
     public void navigateForwardAction() {
         TargetManager.getInstance().navigateForward();
     }
 
     /**
-     * @deprecated replaced by TargetManager.getInstance().navigateForwardPossible();
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateForwardPossible() TargetManager.getInstance().navigateForwardPossible()}
      */
     public boolean isNavigateForwardEnabled() {
         return TargetManager.getInstance().navigateForwardPossible();
     }
     
     /**
-     * @deprecated replaced by TargetManager.getInstance().navigateBackPossible();
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateBackPossible() TargetManager.getInstance().navigateBackPossible()}
      */
     public boolean isNavigateBackEnabled() {
         return TargetManager.getInstance().navigateBackPossible();
@@ -638,7 +653,9 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      * in the events themselves. If components on the proppanels are interested,
      * these components should register themselves.</p>
      * 
-     * @deprecated since components should register themselves.
+     * @deprecated As of ArgoUml version unknown(earlier than 0.13.5),
+     *             replaced by {@link org.argouml.model.uml.UmlModelEventPump#addModelEventListener(Object , Object)}.
+     *             since components should register themselves.
      *
      * @param metaclasses  The metaclass array we wish to listen to.
      */
