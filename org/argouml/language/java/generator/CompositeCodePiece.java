@@ -96,7 +96,10 @@ public class CompositeCodePiece extends CodePiece
     */
     public int getStartPosition()
     {
-	return ((CodePiece)codePieces.firstElement()).getStartPosition();
+	if (codePieces.size() > 0)
+	    return ((CodePiece)codePieces.firstElement()).getStartPosition();
+	else
+	    return 0;
     }
 
     /**
@@ -104,7 +107,10 @@ public class CompositeCodePiece extends CodePiece
     */
     public int getEndPosition()
     {
-	return ((CodePiece)codePieces.lastElement()).getEndPosition();
+	if (codePieces.size() > 0)
+	    return ((CodePiece)codePieces.lastElement()).getEndPosition();
+	else
+	    return 0;
     }
 
     /**
@@ -112,7 +118,10 @@ public class CompositeCodePiece extends CodePiece
     */
     public int getStartLine()
     {
-	return ((CodePiece)codePieces.firstElement()).getStartLine();
+	if (codePieces.size() > 0)
+	    return ((CodePiece)codePieces.firstElement()).getStartLine();
+	else
+	    return 0;
     }
 
     /**
@@ -120,6 +129,9 @@ public class CompositeCodePiece extends CodePiece
     */
     public int getEndLine()
     {
-	return ((CodePiece)codePieces.lastElement()).getEndLine();
+	if (codePieces.size() > 0)
+	    return ((CodePiece)codePieces.lastElement()).getEndLine();
+	else
+	    return 0;
     }
 }
