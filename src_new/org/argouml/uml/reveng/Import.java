@@ -33,6 +33,7 @@ import ru.novosoft.uml.model_management.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.*;
 
 /**
  * This is the main class for all import classes.
@@ -50,6 +51,9 @@ public class Import {
 
     private static JComponent configPanel = null;
     private static JCheckBox descend;
+
+    /** The files that needs a second RE pass. */
+    private static Vector secondPassFiles;
 
     /**
      * Get the panel that lets the user set reverse engineering
@@ -93,10 +97,28 @@ public class Import {
      * @exception Parser exceptions.  */
     public static void doFile(Project p, File f) throws Exception {
 
-	if ( f.isDirectory())       // If f is a directory, 
+	secondPassFiles = new Vector();
+
+	if ( f.isDirectory()) {     // If f is a directory, 
 	    doDirectory( p, f);     // import all the files in this directory
-	else
-	    parseFile(p, f);       // Try to parse this file.
+	}
+	else {
+	    try {
+		parseFile(p, f);       // Try to parse this file.
+	    }
+	    catch(Exception e1) {
+		secondPassFiles.addElement(f);
+	    }
+	}
+
+	for(Iterator i = secondPassFiles.iterator(); i.hasNext();) {
+	    try {
+		parseFile(p, (File)i.next());
+	    }
+	    catch(Exception e2) {
+		System.out.println("ERROR: " + e2.getMessage());
+	    }
+	}
 
 	// Layout the modified diagrams.
 	for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {
@@ -133,8 +155,15 @@ public class Import {
 		if(descend.isSelected()) {
 		    doDirectory(p, curFile);
 		}
-	    } else
-		parseFile(p, curFile);      // Parse the file.
+	    }
+	    else {
+		try {
+		    parseFile(p, curFile);       // Try to parse this file.
+		}
+		catch(Exception e) {
+		    secondPassFiles.add(curFile);
+		}
+	    }
 	} 
     }
 

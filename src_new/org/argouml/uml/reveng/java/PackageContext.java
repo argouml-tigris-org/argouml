@@ -79,24 +79,14 @@ class PackageContext extends Context
 		// We didn't find any interface
 	    }
 	}
-	if(mInterface == null) {
+	if(mInterface == null && context != null) {
 	    // Continue the search through the rest of the model
-	    if(context != null) {
-		mInterface = context.getInterface(name);
-	    }
-	    else {
-		MPackage unknown = getUnknown(mPackage);
-		MClassifier mClassifier = (MClassifier)unknown.lookup(name);
-		if((mClassifier != null) && (mClassifier instanceof MInterface)) {
-		    mInterface = (MInterface)mClassifier;
-		} 
-		else {
-		    mInterface = new MInterfaceImpl();
-		    mInterface.setName(name);
-		    mInterface.setNamespace(unknown);
-		}
-	    }
+	    mInterface = context.getInterface(name);
         }
+	if(mInterface == null) {
+	    throw new ClassifierNotFoundException(name);
+	}
+
         return mInterface;
     }        
 
@@ -162,35 +152,13 @@ class PackageContext extends Context
 		    mClassifier.setName(name);
 		    mClassifier.setNamespace(mPackage);
 		}
-		else {
-		    MPackage unknown = getUnknown(mPackage);
-		    mClassifier =
-			(MClassifier)unknown.lookup(name);
-		    if(mClassifier == null) {
-			mClassifier = new MClassImpl();
-			mClassifier.setName(name);
-			mClassifier.setNamespace(unknown);
-		    }         
-		}
 	    }
 	}
+	if(mClassifier == null) {
+	    throw new ClassifierNotFoundException("name");
+	}
+
 	return mClassifier;
     }
-
-    private MPackage getUnknown(MPackage parent)
-    {
-        MPackage unknown = (MPackage)mPackage.lookup("*UNKNOWN*");
-        if(unknown == null) {
-            unknown = new MPackageImpl();
-            unknown.setName("*UNKNOWN*");
-            unknown.setNamespace(parent);
-        }
-        if(unknown.getUUID() == null) {
-            unknown.setUUID("*UNKNOWN*");
-        }
-        return unknown;
-    }           
-
-    
 }
 	
