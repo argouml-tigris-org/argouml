@@ -118,16 +118,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
     }
     if (edge instanceof MGeneralization) {
       MGeneralization gen = (MGeneralization) edge;
-      FigGeneralization genFig = new FigGeneralization(gen);
-      MGeneralizableElement subType = gen.getChild();
-      MGeneralizableElement superType = gen.getParent();
-      FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
-      FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
-      genFig.setSourcePortFig(subTypeFN);
-      genFig.setSourceFigNode(subTypeFN);
-      genFig.setDestPortFig(superTypeFN);
-      genFig.setDestFigNode(superTypeFN);
-      genFig.getFig().setLayer(lay);
+      FigGeneralization genFig = new FigGeneralization(gen, lay);
       return genFig;
     }
 	/*    if (edge instanceof Realization) {

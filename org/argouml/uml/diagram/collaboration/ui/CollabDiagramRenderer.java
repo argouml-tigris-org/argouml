@@ -55,9 +55,13 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       very related to it. */
   public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
     if (edge instanceof MAssociationRole) {
-      MAssociationRole asr = (MAssociationRole) edge;
       FigAssociationRole asrFig = new FigAssociationRole(edge, lay);
       return asrFig;
+    } else 
+    if (edge instanceof MGeneralization) {
+    	MGeneralization   gen    = (MGeneralization) edge;
+        FigGeneralization genFig = new FigGeneralization(gen, lay);
+        return genFig;
     }
 
     System.out.println("needs-more-work CollabDiagramRenderer getFigEdgeFor");
