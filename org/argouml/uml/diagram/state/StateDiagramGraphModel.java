@@ -27,7 +27,10 @@
 // $Id$
 
 package org.argouml.uml.diagram.state;
+
 import org.apache.log4j.Category;
+
+import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
@@ -48,14 +51,11 @@ import org.tigris.gef.graph.*;
  *  representation of the design and the GraphModel interface used by
  *  GEF.  This class handles only UML MState Digrams.  */
 
-public class StateDiagramGraphModel extends MutableGraphSupport
+public class StateDiagramGraphModel extends UMLMutableGraphSupport
 implements VetoableChangeListener {
     protected static Category cat = 
         Category.getInstance(StateDiagramGraphModel.class);
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected Vector _nodes = new Vector();
-  protected Vector _edges = new Vector();
+
 
   /** The "home" UML model of this diagram, not all ModelElements in this
    *  graph are in the home model, but if they are added and don't
@@ -86,11 +86,7 @@ implements VetoableChangeListener {
   ////////////////////////////////////////////////////////////////
   // GraphModel implementation
 
-  /** Return all nodes in the graph */
-  public Vector getNodes() { return _nodes; }
-
-  /** Return all nodes in the graph */
-  public Vector getEdges() { return _edges; }
+  
 
   /** Return all ports on node or edge */
   public Vector getPorts(Object nodeOrEdge) {
@@ -169,12 +165,7 @@ implements VetoableChangeListener {
     return true;
   }
 
-  /** Remove the given node from the graph. */
-  public void removeNode(Object node) {
-    if (!_nodes.contains(node)) return;
-    _nodes.removeElement(node);
-    fireNodeRemoved(node);
-  }
+
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
@@ -224,12 +215,6 @@ implements VetoableChangeListener {
   }
 
 
-  /** Remove the given edge from the graph. */
-  public void removeEdge(Object edge) {
-    if (!_edges.contains(edge)) return;
-    _edges.removeElement(edge);
-    fireEdgeRemoved(edge);
-  }
 
   /** Return true if the two given ports can be connected by a
    * kind of edge to be determined by the ports. */
