@@ -36,6 +36,7 @@
 package org.argouml.uml.generator;
 import org.argouml.application.api.*;
 import org.argouml.language.helpers.*;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -240,18 +241,10 @@ public void setTestModus(boolean _testModus)
  * @param me The model element
  * @return String
  */
-public static String getCodePath(MModelElement me) {
-  Collection tValues = me.getTaggedValues();
-  if (!tValues.isEmpty()) {
-    Iterator iter = tValues.iterator();
-    while(iter.hasNext()) {
-      MTaggedValue tv = (MTaggedValue)iter.next();
-      String tag = tv.getTag();
-      if (tag.equals("src_path")) {
-        return tv.getValue().trim();
-      }
-    }
-  }
+public static String getCodePath(Object me) {
+  String s = ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(me,"src_path"));
+  if (s != null)
+    return s.trim();
   return null;
 }
 

@@ -23,22 +23,11 @@
 
 package org.argouml.uml.generator;
 
-import ru.novosoft.uml.foundation.core.*;
-//import ru.novosoft.uml.foundation.data_types.*;
-//import ru.novosoft.uml.foundation.extension_mechanisms.*;
-//import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-//import ru.novosoft.uml.foundation.data_types.MExpression;
-//import ru.novosoft.uml.behavior.common_behavior.*;
-//import ru.novosoft.uml.behavior.collaborations.*;
-//import ru.novosoft.uml.behavior.state_machines.*;
-//import ru.novosoft.uml.model_management.*;
-import java.util.*;
-
 /** This class is the interface that tells that a certain generator
  * can generate a file.
  */
 public interface FileGenerator {
-	
+
    /**
    * The fileseperation for this operating system.
    */
@@ -49,5 +38,5 @@ public interface FileGenerator {
      * in a separate files (one or more).
      * @returns filename
      */
-    public String GenerateFile(MClassifier node, String path);
+    public String GenerateFile(Object node, String path);
 }

@@ -32,8 +32,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
 
-import ru.novosoft.uml.foundation.core.*;
-
 import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
@@ -44,6 +42,7 @@ import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.application.notation.*;
 import org.argouml.uml.generator.*;
+import org.argouml.model.ModelFacade;
 
 public class ClassGenerationDialog extends JDialog implements ActionListener {
     protected static Category cat = Category.getInstance(ClassGenerationDialog.class);
@@ -250,16 +249,16 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
         Set nodes = _classTableModel.getChecked(language);
         for (Iterator iter = nodes.iterator(); iter.hasNext(); ) {
           Object node = iter.next();
-          if (node instanceof MClassifier) {
+          if (ModelFacade.isAClassifier(node)) {
             if (isPathInModel) {
-              path = Generator.getCodePath((MClassifier)node);
+              path = Generator.getCodePath(node);
               if (path == null) {
-                MNamespace parent = ((MClassifier)node).getNamespace();
+                Object parent = ModelFacade.getNamespace(node);
                 while (parent != null) {
                   path = Generator.getCodePath(parent);
                   if (path != null)
                     break;
-                  parent = parent.getNamespace();
+                  parent = ModelFacade.getNamespace(parent);
                 }
               }
             }
@@ -267,14 +266,14 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
             // This will only work for languages that have each node
             // in a separate files (one or more).
             if (path != null) {
-              String fn = generator.GenerateFile((MClassifier) node, path);
+              String fn = generator.GenerateFile(node, path);
               fileNames[i].add(fn);
               // save the selected language in the model
               // TODO 1: no support of multiple checked languages
               // TODO 2: it's a change in the model -> save needed!
-              String savedLang = ((MClassifier)node).getTaggedValue("src_lang");
+              String savedLang = ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(node,"src_lang"));
               if (!language.getConfigurationValue().equals(savedLang))
-                ((MClassifier)node).setTaggedValue("src_lang",language.getConfigurationValue());
+                ModelFacade.setTaggedValue(node,"src_lang",language.getConfigurationValue());
             }
           }
         }
@@ -342,8 +341,8 @@ class TableModelClassChecks extends AbstractTableModel {
 
     int size = _classes.size();
     for (int i = 0; i < size; i++) {
-      MClassifier cls = (MClassifier) _classes.elementAt(i);
-      String name = cls.getName();
+      Object cls = _classes.elementAt(i);
+      String name = ModelFacade.getName(cls);
       if (!(name.length() > 0))
 	  continue;
 
@@ -360,10 +359,10 @@ class TableModelClassChecks extends AbstractTableModel {
     fireTableStructureChanged();
   }
 
-  private boolean isSupposedToBeGeneratedAsLanguage(NotationName lang, MClassifier cls) {
+  private boolean isSupposedToBeGeneratedAsLanguage(NotationName lang, Object cls) {
     if (lang == null)
       return false;
-    String savedLang = cls.getTaggedValue("src_lang");
+    String savedLang = ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(cls,"src_lang"));
     return (lang.getConfigurationValue().equals(savedLang));
   }
 
@@ -410,10 +409,10 @@ class TableModelClassChecks extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int col) {
-	MClassifier cls = (MClassifier) _classes.elementAt(row);
+	Object cls = _classes.elementAt(row);
 	if (col == 0)
 	    return false;
-	if (!(cls.getName().length() > 0))
+	if (!(ModelFacade.getName(cls).length() > 0))
 	    return false;
 	int langindex = col - 1;
 	if (langindex >= 0 && langindex < getLanguagesCount())
@@ -427,10 +426,10 @@ class TableModelClassChecks extends AbstractTableModel {
     }
 
     public Object getValueAt(int row, int col) {
-	MClassifier cls = (MClassifier) _classes.elementAt(row);
+	Object cls = _classes.elementAt(row);
 	int langindex = col - 1;
 	if (col == 0) {
-	    String name = cls.getName();
+	    String name = ModelFacade.getName(cls);
 	    return (name.length() > 0) ? name : "(anon)";
 	}
 	else if (langindex >= 0 && langindex < getLanguagesCount()) {
