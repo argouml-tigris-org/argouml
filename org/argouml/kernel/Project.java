@@ -1578,6 +1578,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     private void setTarget(Object target) {
         Object currentNamespace = null;
+	target = TargetManager.getInstance().getModelTarget();
         if (target instanceof UMLDiagram) {
             currentNamespace = ((UMLDiagram) target).getNamespace();
         } else
