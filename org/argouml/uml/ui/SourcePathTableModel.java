@@ -24,15 +24,14 @@
 
 package org.argouml.uml.ui;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
-import java.io.File;
-import org.apache.log4j.Logger;
 
 import javax.swing.table.DefaultTableModel;
-import org.argouml.i18n.Translator;
 
-import org.argouml.uml.ui.SourcePathController;
+import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -59,7 +58,8 @@ class SourcePathTableModel extends DefaultTableModel {
      */
     static final int SOURCE_PATH_COLUMN = 3;
     
-    private static Logger LOG = Logger.getLogger(SourcePathTableModel.class);
+    private static final Logger LOG = 
+        Logger.getLogger(SourcePathTableModel.class);
 
     /** Creates a new instance of SourcePathTableModel */
     public SourcePathTableModel(SourcePathController srcPathCtrl) {
@@ -99,7 +99,8 @@ class SourcePathTableModel extends DefaultTableModel {
                 } else if (ModelFacade.isAInterface(me)) {
                     type = strInterface;
                 } else {
-                    LOG.warn("Can't assign a type to this model element: " + me);
+                    LOG.warn("Can't assign a type to this model element: " 
+                            + me);
                 }
                 addRow(new Object[] {
                     me, name, type, path.toString()
