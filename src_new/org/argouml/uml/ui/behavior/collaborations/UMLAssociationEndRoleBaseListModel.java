@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * @since Oct 5, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -55,7 +54,7 @@ public class UMLAssociationEndRoleBaseListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
-    protected boolean isValidElement(MBase base) {
+    protected boolean isValidElement(Object/*MBase*/ base) {
         if (!ModelFacade.isAAssociationEnd(base)) return false;
         
         Object assocEndRole = /*(MAssociationEndRole)*/ getTarget();

@@ -258,7 +258,7 @@ class ColumnStereotype extends ColumnDescriptor {
 	if (!(ModelFacade.isAModelElement(target))) return;
 	if (!(value instanceof String)) return;
 	String stereoName = (String) value;
-	MStereotype s =
+	Object/*MStereotype*/ s =
 	    UmlFactory.getFactory().getExtensionMechanisms()
 	    .buildStereotype(target,
 			     stereoName,
@@ -919,7 +919,7 @@ class ColumnReturn extends ColumnDescriptor {
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isAOperation(target))) return "";
 	Object operation = /*(MOperation)*/ target;
-	MParameter returnParameter = UmlHelper.getHelper().getCore().getReturnParameter(operation);
+	Object/*MParameter*/ returnParameter = UmlHelper.getHelper().getCore().getReturnParameter(operation);
 	if (returnParameter != null && ModelFacade.getType(returnParameter) != null) {
 	    Object returnType = ModelFacade.getType(returnParameter);
 	    GeneratorDisplay gd = GeneratorDisplay.getInstance();

@@ -222,7 +222,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
      * @return an object (typically a string) representing the element.
      */
 
-    public Object formatElement(MModelElement element) {
+    public Object formatElement(Object/*MModelElement*/ element) {
 
         Object value = _nullLabel;
 
@@ -521,5 +521,4 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
 
 } /* End of class UMLIncludeListModel */
-
 

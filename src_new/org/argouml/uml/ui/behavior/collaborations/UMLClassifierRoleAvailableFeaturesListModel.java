@@ -33,7 +33,6 @@ import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHel
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 /**
  * @since Oct 4, 2002
@@ -132,7 +131,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object/*MBase*/ element) {
         return false;
     }
 

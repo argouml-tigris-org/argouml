@@ -156,8 +156,10 @@ public final class CopyHelper {
      * @return a copy of element, or null.
      * @throw NullPointerException if element is null.
      */
-    public MModelElement copy(MModelElement element, MNamespace ns) {
+    public Object/*MModelElement*/ copy(Object/*MModelElement*/ anelement, Object/*MNamespace*/ ans) {
 	// Don't explicitly check if element is null
+        MModelElement element = (MModelElement) anelement;
+        MNamespace ns = (MNamespace) ans;
 	CopyFunction f =
 	    (CopyFunction) copyfunctions.get(element.getClass());
 	if (f == null) {

@@ -36,14 +36,8 @@ import org.xml.sax.InputSource;
 
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  *   This class implements the abstract class Profile for use in modelling
  *   Java language projects.  Eventually, this class may be replaced by
@@ -60,13 +54,13 @@ public class ProfileJava extends Profile {
 	return _instance;
     }
 
-    MModel _defaultModel;
+    Object/*MModel*/ _defaultModel;
 
     private ProfileJava() {
 	getProfileModel();
     }
 
-    public String formatElement(MModelElement element, Object namespace) {
+    public String formatElement(Object/*MModelElement*/ element, Object namespace) {
 	String value = null;
 	if (element == null) {
 	    value = "";
@@ -83,7 +77,7 @@ public class ProfileJava extends Profile {
 		}
 	    }
 	    if (elementNs == namespace) {
-		value = element.getName();
+		value = ModelFacade.getName(element);
 		if (value == null || value.length() == 0) {
 		    value = defaultName(element, namespace);
 		}
@@ -97,22 +91,22 @@ public class ProfileJava extends Profile {
 	return value;
     }
 
-    protected String defaultAssocEndName(MAssociationEnd assocEnd,
+    protected String defaultAssocEndName(Object/*MAssociationEnd*/ assocEnd,
 					 Object namespace) {
 	String name = null;
-	MClassifier type = assocEnd.getType();
+	Object/*MClassifier*/ type = ModelFacade.getType(assocEnd);
 	if (type != null) {
 	    name = formatElement(type, namespace);
 	} else {
 	    name = "unknown type";
 	}
-	MMultiplicity mult = assocEnd.getMultiplicity();
+	Object/*MMultiplicity*/ mult = ModelFacade.getMultiplicity(assocEnd);
 	if (mult != null) {
 	    StringBuffer buf = new StringBuffer(name);
 	    buf.append("[");
-	    buf.append(Integer.toString(mult.getLower()));
+	    buf.append(Integer.toString(ModelFacade.getLower(mult)));
 	    buf.append("..");
-	    int upper = mult.getUpper();
+	    int upper = ModelFacade.getUpper(mult);
 	    if (upper >= 0) {
 		buf.append(Integer.toString(upper));
 	    } else {
@@ -124,9 +118,9 @@ public class ProfileJava extends Profile {
 	return name;
     }
 
-    protected String defaultAssocName(MAssociation assoc, Object ns) {
+    protected String defaultAssocName(Object/*MAssociation*/ assoc, Object ns) {
 	StringBuffer buf = new StringBuffer();
-	Iterator iter = assoc.getConnections().iterator();
+	Iterator iter = ModelFacade.getConnections(assoc).iterator();
 	for (int i = 0; iter.hasNext(); i++) {
 	    if (i != 0) {
 		buf.append("-");
@@ -136,11 +130,10 @@ public class ProfileJava extends Profile {
 	return buf.toString();
     }
 
-    protected String defaultGeneralizationName(
-					       MGeneralization gen,
+    protected String defaultGeneralizationName(Object/*MGeneralization*/ gen,
 					       Object namespace) {
-	MGeneralizableElement child = gen.getChild();
-	MGeneralizableElement parent = gen.getParent();
+	Object/*MGeneralizableElement*/ child = ModelFacade.getChild(gen);
+	Object/*MGeneralizableElement*/ parent = ModelFacade.getParent(gen);
 	StringBuffer buf = new StringBuffer();
 	buf.append(formatElement(child, namespace));
 	buf.append(" extends ");
@@ -148,7 +141,7 @@ public class ProfileJava extends Profile {
 	return buf.toString();
     }
 
-    protected String defaultName(MModelElement element, Object namespace) {
+    protected String defaultName(Object/*MModelElement*/ element, Object namespace) {
 	String name = null;
 	if (ModelFacade.isAAssociationEnd(element)) {
 	    name = defaultAssocEndName((MAssociationEnd) element, namespace);
@@ -174,15 +167,15 @@ public class ProfileJava extends Profile {
 
     private void buildPath(
 			   StringBuffer buffer,
-			   MModelElement element,
+			   Object/*MModelElement*/ element,
 			   String pathSep) {
 	if (element != null) {
-	    MNamespace parent = element.getNamespace();
+	    Object/*MNamespace*/ parent = ModelFacade.getNamespace(element);
 	    if (parent != null && parent != element) {
 		buildPath(buffer, parent, pathSep);
 		buffer.append(pathSep);
 	    }
-	    String name = element.getName();
+	    String name = ModelFacade.getName(element);
 	    if (name == null || name.length() == 0) {
 		name = defaultName(element, null);
 	    }
@@ -223,14 +216,14 @@ public class ProfileJava extends Profile {
 	return value;
     }
 
-    public MModel getProfileModel() {
+    public Object/*MModel*/ getProfileModel() {
 	if (_defaultModel == null) {
 	    _defaultModel = loadProfileModel();
 	}
 	return _defaultModel;
     }
 	
-    public static MModel loadProfileModel() {
+    public static Object/*MModel*/ loadProfileModel() {
 	//
 	//    get a file name for the default model
 	//
@@ -288,7 +281,7 @@ public class ProfileJava extends Profile {
 		//
 		//   would really like to turn validation off to save
 		//      a lot of scary messages
-		MModel model = xmiReader.parseToModel(new InputSource(is));
+		Object/*MModel*/ model = xmiReader.parseToModel(new InputSource(is));
 		// 2002-07-18 Jaap Branderhorst changed the loading of
 		// the projectfiles to solve hanging of argouml if a
 		// project is corrupted. Issue 913 Created xmireader

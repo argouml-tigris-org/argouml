@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * The list of classifiers represented by some collaboration as shown on the 
  * collaboration proppanel
@@ -57,7 +56,7 @@ public class UMLCollaborationRepresentedClassifierListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
-    protected boolean isValidElement(MBase elem) {         
+    protected boolean isValidElement(Object/*MBase*/ elem) {         
         return org.argouml.model.ModelFacade.isAClassifier(elem) && 
             ModelFacade.getRepresentedClassifier(getTarget()) == elem;
     }

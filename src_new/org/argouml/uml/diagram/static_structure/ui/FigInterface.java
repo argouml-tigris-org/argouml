@@ -66,6 +66,7 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.foundation.core.MClass;
 
 /** Class to display graphics for a UML Interface in a diagram. */
 
@@ -273,20 +274,20 @@ public class FigInterface extends FigNodeModelElement {
 		new ActionModifier("Public",
 				   "visibility", "getVisibility",
 				   "setVisibility",
-				   mclass,
+				   (MClass)mclass,
 				   (Class)ModelFacade.VISIBILITYKIND,
 				   ModelFacade.PUBLIC_VISIBILITYKIND,
 				   null));
         modifierMenu.addCheckItem(
 		new ActionModifier("Abstract",
 				   "isAbstract", "isAbstract", "setAbstract",
-				   mclass));
+				   (MClass)mclass));
         modifierMenu.addCheckItem(
 		new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf",
-				   mclass));
+				   (MClass)mclass));
         modifierMenu.addCheckItem(
 		new ActionModifier("Root",
-				   "isRoot", "isRoot", "setRoot", mclass));
+				   "isRoot", "isRoot", "setRoot", (MClass)mclass));
 
         popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
         // end of block

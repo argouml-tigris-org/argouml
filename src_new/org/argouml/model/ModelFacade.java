@@ -24,6 +24,7 @@
 
 package org.argouml.model;
 
+import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -127,8 +128,10 @@ import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MIterationExpression;
+import ru.novosoft.uml.foundation.data_types.MMessageDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MObjectSetExpression;
+import ru.novosoft.uml.foundation.data_types.MOperationDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MProcedureExpression;
@@ -584,6 +587,13 @@ public class ModelFacade {
      */
     public static boolean isACreateAction(Object handle) {
         return handle instanceof MCreateAction;
+    }
+
+    public static boolean isActive(Object handle) {
+        if (handle instanceof MClass) {
+            return ((MClass)handle).isActive();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for DataType
@@ -2048,6 +2058,13 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    public static Object getIcon(Object handle) {
+        if (handle instanceof MStereotype) {
+            return ((MStereotype) handle).getIcon();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /**
      * Gets the compoent of some element residence
      * @param handle
@@ -3538,8 +3555,44 @@ public class ModelFacade {
     }
 
     public static Object getValue(Object handle) {
+        if (handle instanceof MTaggedValue) {
+            return ((MTaggedValue)handle).getValue();
+        }
         if (handle instanceof MArgument) {
             return ((MArgument)handle).getValue();
+        }
+        if (handle instanceof MExtension) {
+            return ((MExtension)handle).getValue();
+        }
+        if (handle instanceof MAttributeLink) {
+            return ((MAttributeLink)handle).getValue();
+        }
+        if (handle instanceof MAggregationKind) {
+            return new Integer(((MAggregationKind)handle).getValue());
+        }
+        if (handle instanceof MOrderingKind) {
+            return new Integer(((MOrderingKind)handle).getValue());
+        }
+        if (handle instanceof MOperationDirectionKind) {
+            return new Integer(((MOperationDirectionKind)handle).getValue());
+        }
+        if (handle instanceof MVisibilityKind) {
+            return new Integer(((MVisibilityKind)handle).getValue());
+        }
+        if (handle instanceof MScopeKind) {
+            return new Integer(((MScopeKind)handle).getValue());
+        }
+        if (handle instanceof MMessageDirectionKind) {
+            return new Integer(((MMessageDirectionKind)handle).getValue());
+        }
+        if (handle instanceof MChangeableKind) {
+            return new Integer(((MChangeableKind)handle).getValue());
+        }
+        if (handle instanceof MPseudostateKind) {
+            return new Integer(((MPseudostateKind)handle).getValue());
+        }
+        if (handle instanceof MCallConcurrencyKind) {
+            return new Integer(((MCallConcurrencyKind)handle).getValue());
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -4103,6 +4156,13 @@ public class ModelFacade {
         throw new IllegalArgumentException("Object " + event
                                            + " cannot be owned by "
                                            + handle);
+    }
+
+    public static void setIcon(Object handle, Object icon) {
+        if (handle instanceof MStereotype
+                && (icon == null || icon instanceof String)) {
+            ((MStereotype)handle).setIcon((String) icon);
+        }
     }
 
     public static void setImplementationLocation(Object handle, Object component) {
@@ -4866,6 +4926,14 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
 					   + " or " + message);
+    }
+
+    public static void setActive(Object handle, boolean active) {
+        if (handle instanceof MClass) {
+            ((MClass)handle).setActive(active);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /**

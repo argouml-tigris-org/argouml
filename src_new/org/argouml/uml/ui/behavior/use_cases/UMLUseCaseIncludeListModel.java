@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.use_cases;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -53,7 +52,7 @@ public class UMLUseCaseIncludeListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase o) {
+    protected boolean isValidElement(Object/*MBase*/ o) {
         return ModelFacade.getIncludes(getTarget()).contains(o);
     }
 

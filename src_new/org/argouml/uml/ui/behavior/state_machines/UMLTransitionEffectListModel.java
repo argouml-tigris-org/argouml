@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -54,7 +53,7 @@ public class UMLTransitionEffectListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase element) {
+    protected boolean isValidElement(Object/*MBase*/ element) {
         return element == ModelFacade.getEffect(getTarget());
     }
 

@@ -81,7 +81,7 @@ public class GUITestCopyHelper extends TestCase {
 	k = CoreFactory.getFactory().createClass();
 	m1.addOwnedElement(k);
 
-	st = ExtensionMechanismsFactory.getFactory().createStereotype();
+	st = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
 	st.setName("clsStT");
 	st.setBaseClass("Class");
 	m1.addOwnedElement(st);
@@ -142,7 +142,7 @@ public class GUITestCopyHelper extends TestCase {
 	d = CoreFactory.getFactory().createDataType();
 	m1.addOwnedElement(d);
 
-	st = ExtensionMechanismsFactory.getFactory().createStereotype();
+	st = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
 	st.setName("dttStT");
 	st.setBaseClass("DataType");
 	m1.addOwnedElement(st);
@@ -200,7 +200,7 @@ public class GUITestCopyHelper extends TestCase {
 	i = CoreFactory.getFactory().createInterface();
 	m1.addOwnedElement(i);
 
-	st = ExtensionMechanismsFactory.getFactory().createStereotype();
+	st = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
 	st.setName("intStT");
 	st.setBaseClass("Interface");
 	m1.addOwnedElement(st);
@@ -258,7 +258,7 @@ public class GUITestCopyHelper extends TestCase {
 	p = ModelManagementFactory.getFactory().createPackage();
 	m1.addOwnedElement(p);
 
-	st = ExtensionMechanismsFactory.getFactory().createStereotype();
+	st = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
 	st.setName("pkgStT");
 	st.setBaseClass("Package");
 	m1.addOwnedElement(st);
@@ -313,10 +313,10 @@ public class GUITestCopyHelper extends TestCase {
 	MStereotype s;
 	MStereotype st;
 
-	s = ExtensionMechanismsFactory.getFactory().createStereotype();
+	s = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
 	m1.addOwnedElement(s);
 
-	st = ExtensionMechanismsFactory.getFactory().createStereotype();
+	st = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
 	st.setName("sttStT");
 	st.setBaseClass("Stereotype");
 	m1.addOwnedElement(st);

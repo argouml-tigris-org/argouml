@@ -226,8 +226,8 @@ public final class Notation implements PropertyChangeListener {
 
     protected String generateExtensionPoint(
         NotationName notation,
-        MExtensionPoint ep) {
-        return getProvider(notation).generateExtensionPoint(ep);
+        Object/*MExtensionPoint*/ ep) {
+        return getProvider(notation).generateExtensionPoint((MExtensionPoint)ep);
     }
     protected String generateOperation(
         NotationName notation,
@@ -243,75 +243,75 @@ public final class Notation implements PropertyChangeListener {
     }
     protected String generateParameter(
         NotationName notation,
-        MParameter param) {
-        return getProvider(notation).generateParameter(param);
+        Object/*MParameter*/ param) {
+        return getProvider(notation).generateParameter((MParameter)param);
     }
     protected String generateName(NotationName notation, String name) {
         return getProvider(notation).generateName(name);
     }
-    protected String generatePackage(NotationName notation, MPackage pkg) {
-        return getProvider(notation).generatePackage(pkg);
+    protected String generatePackage(NotationName notation, Object/*MPackage*/ pkg) {
+        return getProvider(notation).generatePackage((MPackage)pkg);
     }
     protected String generateExpression(
         NotationName notation,
-        MExpression expr) {
-        return getProvider(notation).generateExpression(expr);
+        Object/*MExpression*/ expr) {
+        return getProvider(notation).generateExpression((MExpression)expr);
     }
     protected String generateClassifier(
         NotationName notation,
-        MClassifier cls) {
-        return getProvider(notation).generateClassifier(cls);
+        Object/*MClassifier*/ cls) {
+        return getProvider(notation).generateClassifier((MClassifier)cls);
     }
-    protected String generateStereotype(NotationName notation, MStereotype s) {
-        return getProvider(notation).generateStereotype(s);
+    protected String generateStereotype(NotationName notation, Object/*MStereotype*/ s) {
+        return getProvider(notation).generateStereotype((MStereotype)s);
     }
     protected String generateTaggedValue(
         NotationName notation,
-        MTaggedValue s) {
-        return getProvider(notation).generateTaggedValue(s);
+        Object/*MTaggedValue*/ s) {
+        return getProvider(notation).generateTaggedValue((MTaggedValue)s);
     }
     protected String generateAssociation(
         NotationName notation,
-        MAssociation a) {
-        return getProvider(notation).generateAssociation(a);
+        Object/*MAssociation*/ a) {
+        return getProvider(notation).generateAssociation((MAssociation)a);
     }
     protected String generateAssociationEnd(
         NotationName notation,
-        MAssociationEnd ae) {
-        return getProvider(notation).generateAssociationEnd(ae);
+        Object/*MAssociationEnd*/ ae) {
+        return getProvider(notation).generateAssociationEnd((MAssociationEnd)ae);
     }
     protected String generateMultiplicity(
         NotationName notation,
-        MMultiplicity m) {
-        return getProvider(notation).generateMultiplicity(m);
+        Object/*MMultiplicity*/ m) {
+        return getProvider(notation).generateMultiplicity((MMultiplicity)m);
     }
-    protected String generateState(NotationName notation, MState m) {
-        return getProvider(notation).generateState(m);
+    protected String generateState(NotationName notation, Object/*MState*/ m) {
+        return getProvider(notation).generateState((MState)m);
     }
-    protected String generateStateBody(NotationName notation, MState stt) {
-        return getProvider(notation).generateStateBody(stt);
+    protected String generateStateBody(NotationName notation, Object/*MState*/ stt) {
+        return getProvider(notation).generateStateBody((MState)stt);
     }
-    protected String generateTransition(NotationName notation, MTransition m) {
-        return getProvider(notation).generateTransition(m);
+    protected String generateTransition(NotationName notation, Object/*MTransition*/ m) {
+        return getProvider(notation).generateTransition((MTransition)m);
     }
     protected String generateAction(NotationName notation, Object m) {
         return getProvider(notation).generateAction(m);
     }
-    protected String generateGuard(NotationName notation, MGuard m) {
-        return getProvider(notation).generateGuard(m);
+    protected String generateGuard(NotationName notation, Object/*MGuard*/ m) {
+        return getProvider(notation).generateGuard((MGuard)m);
     }
-    protected String generateMessage(NotationName notation, MMessage m) {
-        return getProvider(notation).generateMessage(m);
+    protected String generateMessage(NotationName notation, Object/*MMessage*/ m) {
+        return getProvider(notation).generateMessage((MMessage)m);
     }
     protected String generateClassifierRef(
         NotationName notation,
-        MClassifier m) {
+        Object/*MClassifier*/ m) {
         return getProvider(notation).generateClassifierRef(m);
     }
     protected String generateAssociationRole(
         NotationName notation,
-        MAssociationRole m) {
-        return getProvider(notation).generateAssociationRole(m);
+        Object/*MAssociationRole*/ m) {
+        return getProvider(notation).generateAssociationRole((MAssociationRole)m);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -335,13 +335,13 @@ public final class Notation implements PropertyChangeListener {
 
     public static String generateExtensionPoint(
         NotationContext ctx,
-        MExtensionPoint ep) {
+        Object/*MExtensionPoint*/ ep) {
         return SINGLETON.generateExtensionPoint(Notation.getNotation(ctx), ep);
     }
 
     public static String generateOperation(
         NotationContext ctx,
-        MOperation op) {
+        Object/*MOperation*/ op) {
         return SINGLETON.generateOperation(Notation.getNotation(ctx),
 					   op,
 					   false);
@@ -356,7 +356,7 @@ public final class Notation implements PropertyChangeListener {
     }
     public static String generateAttribute(
         NotationContext ctx,
-        MAttribute attr) {
+        Object/*MAttribute*/ attr) {
         return SINGLETON.generateAttribute(Notation.getNotation(ctx),
 					   attr,
 					   false);
@@ -371,70 +371,70 @@ public final class Notation implements PropertyChangeListener {
     }
     public static String generateParameter(
         NotationContext ctx,
-        MParameter param) {
+        Object/*MParameter*/ param) {
         return SINGLETON.generateParameter(Notation.getNotation(ctx), param);
     }
-    public static String generatePackage(NotationContext ctx, MPackage p) {
+    public static String generatePackage(NotationContext ctx, Object/*MPackage*/ p) {
         return SINGLETON.generatePackage(Notation.getNotation(ctx), p);
     }
     public static String generateClassifier(
         NotationContext ctx,
-        MClassifier cls) {
+        Object/*MClassifier*/ cls) {
         return SINGLETON.generateClassifier(Notation.getNotation(ctx), cls);
     }
     public static String generateStereotype(
         NotationContext ctx,
-        MStereotype s) {
+        Object/*MStereotype*/ s) {
         return SINGLETON.generateStereotype(Notation.getNotation(ctx), s);
     }
     public static String generateTaggedValue(
         NotationContext ctx,
-        MTaggedValue s) {
+        Object/*MTaggedValue*/ s) {
         return SINGLETON.generateTaggedValue(Notation.getNotation(ctx), s);
     }
     public static String generateAssociation(
         NotationContext ctx,
-        MAssociation a) {
+        Object/*MAssociation*/ a) {
         return SINGLETON.generateAssociation(Notation.getNotation(ctx), a);
     }
     public static String generateAssociationEnd(
         NotationContext ctx,
-        MAssociationEnd ae) {
+        Object/*MAssociationEnd*/ ae) {
         return SINGLETON.generateAssociationEnd(Notation.getNotation(ctx), ae);
     }
     public static String generateMultiplicity(
         NotationContext ctx,
-        MMultiplicity m) {
+        Object/*MMultiplicity*/ m) {
         return SINGLETON.generateMultiplicity(Notation.getNotation(ctx), m);
     }
-    public static String generateState(NotationContext ctx, MState m) {
+    public static String generateState(NotationContext ctx, Object/*MState*/ m) {
         return SINGLETON.generateState(Notation.getNotation(ctx), m);
     }
-    public static String generateStateBody(NotationContext ctx, MState m) {
+    public static String generateStateBody(NotationContext ctx, Object/*MState*/ m) {
         return SINGLETON.generateStateBody(Notation.getNotation(ctx), m);
     }
     public static String generateTransition(
         NotationContext ctx,
-        MTransition m) {
+        Object/*MTransition*/ m) {
         return SINGLETON.generateTransition(Notation.getNotation(ctx), m);
     }
     public static String generateAction(NotationContext ctx, Object m) {
         return SINGLETON.generateAction(Notation.getNotation(ctx), m);
     }
-    public static String generateGuard(NotationContext ctx, MGuard m) {
+    public static String generateGuard(NotationContext ctx, Object/*MGuard*/ m) {
         return SINGLETON.generateGuard(Notation.getNotation(ctx), m);
     }
-    public static String generateMessage(NotationContext ctx, MMessage m) {
+    public static String generateMessage(NotationContext ctx, Object/*MMessage*/ m) {
         return SINGLETON.generateMessage(Notation.getNotation(ctx), m);
     }
     public static String generateClassifierRef(
         NotationContext ctx,
-        MClassifier cls) {
+        Object/*MClassifier*/ cls) {
         return SINGLETON.generateClassifierRef(Notation.getNotation(ctx), cls);
     }
     public static String generateAssociationRole(
         NotationContext ctx,
-        MAssociationRole m) {
+        Object/*MAssociationRole*/ m) {
         return SINGLETON.generateAssociationRole(Notation.getNotation(ctx), m);
     }
 

@@ -52,7 +52,6 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -104,7 +103,7 @@ public class PropPanelObject extends PropPanelModelElement {
 
 
 
-    public boolean isAcceptibleClassifier(MModelElement classifier) {
+    public boolean isAcceptibleClassifier(Object/*MModelElement*/ classifier) {
         return org.argouml.model.ModelFacade.isAClassifier(classifier);
     }
 
@@ -126,7 +125,7 @@ public class PropPanelObject extends PropPanelModelElement {
         return classifier;
     }
 
-    public void setClassifier(MClassifier element) {
+    public void setClassifier(Object/*MClassifier*/ element) {
         Object target = getTarget();
 
         if (org.argouml.model.ModelFacade.isAInstance(target)) {

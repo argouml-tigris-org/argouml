@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
 /**
  * Listmodel to show the sender belonging to some message.
  * @since Oct 3, 2002
@@ -55,7 +54,7 @@ public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidElement(MBase elem) {
+    protected boolean isValidElement(Object/*MBase*/ elem) {
         return ModelFacade.getSender(getTarget()) == elem;
     }
 

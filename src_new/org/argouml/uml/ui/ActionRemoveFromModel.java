@@ -214,7 +214,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             }
         } else if (target instanceof Fig) {
             // we can delete figs like figrects now too
-            if (org.argouml.model.ModelFacade.isAModelElement(((Fig) target).getOwner())) {
+            if (ModelFacade.isAModelElement(((Fig) target).getOwner())) {
                 sure = sureRemove((MModelElement) ((Fig) target).getOwner());
             } else
                 sure = true;
@@ -245,7 +245,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             doAsk = true;
         }
 
-        Collection beh = me.getBehaviors();
+        Collection beh = ModelFacade.getBehaviors(me);
         if (beh != null && beh.size() > 0) {
             confirmStr
                 += Argo.localize(
@@ -258,7 +258,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             return true;
         }
 
-        String name = me.getName();
+        String name = ModelFacade.getName(me);
         if (name == null || name.equals("")) {
             name =
                 Argo.localize(

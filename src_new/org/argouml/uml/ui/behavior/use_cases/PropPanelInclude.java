@@ -39,10 +39,6 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MModelElement;
-
-
 /**
  * <p>Builds the property panel for an Include relationship.</p>
  *
@@ -146,7 +142,7 @@ public class PropPanelInclude extends PropPanelModelElement {
      *              with the type specified for the {@link UMLComboBoxModel}.
      */
 
-    public void setBase(MUseCase base) {
+    public void setBase(Object/*MUseCase*/ base) {
         Object target = getTarget();
 
         // Note that because of the NSUML bug, we must use setAddition() rather
@@ -204,7 +200,7 @@ public class PropPanelInclude extends PropPanelModelElement {
      *                   {@link UMLComboBoxModel}.
      */
 
-    public void setAddition(MUseCase addition) {
+    public void setAddition(Object/*MUseCase*/ addition) {
         Object target = getTarget();
 
         // Note that because of the NSUML bug, we must use setBase() rather
@@ -231,7 +227,7 @@ public class PropPanelInclude extends PropPanelModelElement {
      *                 <code>false</code> otherwise.
      */
 
-    public boolean isAcceptableUseCase(MModelElement modElem) {
+    public boolean isAcceptableUseCase(Object/*MModelElement*/ modElem) {
 
         return org.argouml.model.ModelFacade.isAUseCase(modElem);
     }

@@ -27,8 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
-
 /**
  * List model that shows the AssociationEndRoles belonging to some 
  * AssociationRole. 
@@ -56,7 +54,7 @@ public class UMLAssociationRoleAssociationEndRoleListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
-    protected boolean isValidElement(MBase o) {
+    protected boolean isValidElement(Object/*MBase*/ o) {
         return org.argouml.model.ModelFacade.isAAssociationEndRole(o) && ModelFacade.getConnections(getTarget()).contains(o);
     }
 

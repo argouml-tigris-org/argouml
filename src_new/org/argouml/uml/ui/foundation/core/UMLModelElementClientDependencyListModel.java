@@ -27,8 +27,6 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
-import ru.novosoft.uml.MBase;
-
 /**
  * The listmodel of the client dependencies for some modelelement
  * @since Oct 12, 2002
@@ -56,7 +54,7 @@ public class UMLModelElementClientDependencyListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
-    protected boolean isValidElement(MBase o) {  
+    protected boolean isValidElement(Object/*MBase*/ o) {  
         return ModelFacade.isADependency(o) && ModelFacade.getClientDependencies(getTarget()).contains(o);
     }
 }

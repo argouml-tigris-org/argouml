@@ -28,12 +28,9 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
+import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-
-
-
 /** Utility class to generate the children of a class.  In this case
  *  the "children" of a class are it's base classes. */
 
@@ -42,13 +39,13 @@ public class SuperclassGen implements ChildGenerator {
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
 
-	MGeneralizableElement ge = (MGeneralizableElement) o;
-	Collection gens = ge.getGeneralizations();
+	Object/*MGeneralizableElement*/ ge = (MGeneralizableElement) o;
+	Collection gens = ModelFacade.getGeneralizations(ge);
 	if (gens == null) return res.elements();
 	Iterator enum = gens.iterator();
 	while (enum.hasNext()) {
-	    MGeneralization g = (MGeneralization) enum.next();
-	    res.add(g.getParent());
+	    Object/*MGeneralization*/ g = enum.next();
+	    res.add(ModelFacade.getParent(g));
 	}
 	return res.elements();
     }
