@@ -28,12 +28,20 @@
 
 package org.argouml.application.notation;
 
+import java.util.ArrayList;
+import java.util.ListIterator;
+
 import org.apache.log4j.Logger;
-import org.argouml.application.api.*;
-import org.argouml.application.events.*;
-
-import java.util.*;
-
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.NotationName;
+import org.argouml.application.api.NotationProvider2;
+import org.argouml.application.api.PluggableNotation;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoModuleEvent;
+import org.argouml.application.events.ArgoModuleEventListener;
+import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.uml.generator.GeneratorDisplay;
 
 /** Provides a factory for handling notation providers.
