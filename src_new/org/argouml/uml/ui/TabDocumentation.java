@@ -35,39 +35,37 @@ import org.argouml.swingext.Vertical;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * This the tab in the details pane for documentation.
+ * This the tab in the details pane for documentation.<p>
  * 
- * <p>
- * This prop panel now uses the new (0.13.*) event implementation.
+ * This prop panel now uses the new (0.13.*) event implementation.<p>
  * 
- * <p>
- * questions regarding where the data is stored i.e. author etc.
- * edit>settings... and setting 'global' author does not affect the author field
- * in the documentation tab
- * <p>
+ * All data in this tab is stored as Tagged Values, 
+ * and saved and reloaded correctly.<p>
+ * 
+ * Selecting the menu Edit>Settings... and setting the user name 
+ * does not affect the author field
+ * in the documentation tab. <p>
+ * 
  * Enabling output from the documentation fields when generating code as
- * embedded in javadocs and for html/ diagram creation is considered important
- * by users
+ * embedded in javadocs and for html/diagram creation is considered important
+ * by users.<p>
  * 
- * <p>
  * When importing sources, already saved javadoc statements are not
  * automatically added to the documenation Jtext window. When Adding notes to
- * classes the notes are not included in the documentation text window.
- * <p>
- * Since: field is not validated for real date. change to DateField?
+ * classes the notes are not included in the documentation text window.<p>
  * 
- * <p>
- * Note all fields in the TabDocumentation are added automatically to the tagged
- * value tab view.
+ * Since: field is not validated for real date. Change to DateField?<p>
  * 
- * <p>
- * refactored by: raphael-langerhorst@gmx.at; 5th April 03 changes: uses
- * LabelledLayout instead of GridBagLayout uses the new event pump introduced
- * late 2002 by Jaap
+ * Note that all fields in the TabDocumentation are added automatically 
+ * to the tagged value tab view.<p>
  * 
- * <p>
+ * Refactored by: raphael-langerhorst@gmx.at; 5th April 03<p> 
+ * Changes: <ul>
+ * <li>uses LabelledLayout instead of GridBagLayout 
+ * <li>uses the new event pump introduced late 2002 by Jaap</ul><p>
+ * 
  * UMLModelElementTaggedValueDocument is used to access the tagged values of an
- * MModelElement
+ * MModelElement.
  */
 public class TabDocumentation extends PropPanel {
 
@@ -78,14 +76,6 @@ public class TabDocumentation extends PropPanel {
      * Construct new documentation tab
      */
     public TabDocumentation() {
-
-        //uses the new LabelledLayout;
-        //TODO: the title of the prop panel is localized using the
-        // localisation of documentation
-        //- should this change? (Raphael)
-        // MVW: I changed label.documentation into tab.documentation
-        // to get rid of ":" in the tab.
-
         super(Translator.localize("tab.documentation"), (orientation
                 .equals("West") || orientation.equals("East")) ? Vertical
                 .getInstance() : Horizontal.getInstance());
@@ -93,8 +83,6 @@ public class TabDocumentation extends PropPanel {
         addField(Translator.localize("label.author"), new UMLTextField2(
                 new UMLModelElementTaggedValueDocument("author")));
 
-        //unknown where this information is stored; it does not go to
-        // myproject.argo (xml file)
         addField(Translator.localize("label.version"), new UMLTextField2(
                 new UMLModelElementTaggedValueDocument("version")));
 
