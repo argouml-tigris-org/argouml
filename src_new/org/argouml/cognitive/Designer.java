@@ -881,7 +881,7 @@ public final class Designer
      */
     public int disruptiveThreshold() {
         // TODO: check prefs
-        return 9;
+        return ToDoItem.INTERRUPTIVE_PRIORITY;
     }
 
     /**

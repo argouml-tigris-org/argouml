@@ -53,18 +53,24 @@ public class ToDoItem implements Serializable, WizardItem {
 
     ////////////////////////////////////////////////////////////////
     // constants
+
     /**
-     * The highest priority todoitem of 3 levels.
+     * The interruptive priority todoitem of 4 levels.
+     */
+    public static final int INTERRUPTIVE_PRIORITY = 9;
+
+    /**
+     * The high priority todoitem of 4 levels.
      */
     public static final int HIGH_PRIORITY = 1;
 
     /**
-     * The medium priority todoitem of 3 levels.
+     * The medium priority todoitem of 4 levels.
      */
     public static final int MED_PRIORITY = 2;
 
     /**
-     * The lowest priority todoitem of 3 levels.
+     * The lowest priority todoitem of 4 levels.
      */
     public static final int LOW_PRIORITY = 3;
 
