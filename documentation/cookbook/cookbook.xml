@@ -1321,7 +1321,7 @@ Verify that all the tests are Run and that there are
 no "Errors" and no "Failures".
 </para>
 	      <para>
-If there are "Errors" or "Failures" they you can hopefully easily
+If there are "Errors" or "Failures" there you can hopefully easily
 pinpoint the problem.
 </para>
 	    </listitem>
@@ -1352,7 +1352,7 @@ Verify that all the tests are Run and that there are
 no "Errors" and no "Failures".
 </para>
 	      <para>
-If there are "Errors" or "Failures" they you can hopefully easily
+If there are "Errors" or "Failures" there you can hopefully easily
 pinpoint the problem.
 </para>
 	    </listitem>
@@ -1410,7 +1410,7 @@ all public constructors, and all other public methods that are not
 otherwise tested.
 These methods are never called.
 They serve as a guarantee that the public interface of a class will
-ever loose any of the functionality provided by its signature in an
+never lose any of the functionality provided by its signature in an
 uncontrolled way in just the same way as the test-methods serve as a
 guarantee that no features will ever be lost.
 </para>
@@ -1720,7 +1720,7 @@ target milestones created for them.
 	      </listitem>
 	      <listitem>
 		<para>
-Change the target milestones of all the non yet resolved issues 
+Change the target milestones of all the not yet resolved issues 
 for this release to ---.
 </para>
 	      </listitem>
@@ -1791,7 +1791,7 @@ This shouldn't happen! This really shouldn't happen!
 </para>
 	<para>
 The reason that this has happened is that one of the developers 
-has made a misstake.
+has made a mistake.
 You now must decide a way forward.
 </para>
 	<sect3 id="release_work_fix_problem_yourself">
@@ -1807,7 +1807,7 @@ This is done by doing the following:
 </para>
 	      </listitem>
 	      <listitem>
-		<para>Update you checked out copy to be on that branch</para>
+		<para>Update your checked out copy to be on that branch</para>
 		<para>
 <command>cvs update -r BRANCH_<replaceable>X_Y_Z</replaceable></command>
 </para>
@@ -1842,7 +1842,7 @@ in some other way.
 At this point an in-detail description of how poor programming skills
 the culprit has and how ugly his mother is, is probably in place but
 please keep it constructive!
-Remember, you might be misstaken when you guess who the responsible is.
+Remember, you might be mistaken when you guess who the responsible is.
 </para>
 	      </listitem>
 	    </itemizedlist>
@@ -1862,7 +1862,7 @@ release branch a.s.a.p.
 </para>
 	  <para>
 Monitor the changes made to the branch to verify that
-noone commits anything else but the solutions to the
+no one commits anything else but the solutions to the
 problems.
 </para>
 	  <para>
@@ -1913,7 +1913,7 @@ This describes how the ArgoUML look and feel shall behave.
 	  <listitem>
 	    <para>
 When multiple visual components are showing the same model element
-they shall be updated in a consistent manner throught the application.
+they shall be updated in a consistent manner throughout the application.
 </para>
 	  </listitem>
 
@@ -2301,7 +2301,7 @@ Every other component can use the classes available with the JRE.
       <title>Layer 1 - Description of components</title>
       <para>
 Layer 1 is the lowest layer.
-The components in this layer does not rely on any other part
+The components in this layer do not rely on any other part
 (except layer 0)
 of ArgoUML to do their work.
 They can all be tested in full individually 
@@ -2393,7 +2393,7 @@ The Help System Component is described in detail in
     <sect1 id="layer2">
       <title>Layer 2 - Description of components</title>
       <para>
-These components rely on components of layer 1 in order to their
+These components rely on components of layer 1 in order to do their
 work.
 </para>
 
@@ -2835,7 +2835,7 @@ where sectionname is one of the following:
 	    <para>behavioralelements</para>
 	  </listitem>
 	  <listitem>
-	    <para>behavioralelements.commonbehaviour</para>
+	    <para>behavioralelements.commonbehavior</para>
 	  </listitem>
 	  <listitem>
 	    <para>behavioralelements.statemachines</para>
