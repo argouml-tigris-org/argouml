@@ -23,8 +23,10 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+
 import java.awt.event.*;
 import javax.swing.*;
 
@@ -68,6 +70,7 @@ public class ActionExit extends UMLAction {
 		}
 	    }
 	}
+	Configuration.save();
 	System.exit(0);
     }
 } /* end class ActionExit */

@@ -221,8 +221,8 @@ implements IStatusBar, NavigationListener {
     JMenuItem saveGraphicsItem = file.add(ActionSaveGraphics.SINGLETON);
     setMnemonic(saveGraphicsItem,"SaveGraphics",'G');
     // JMenuItem savePSItem = file.add(Actions.SavePS);
-    //file.addSeparator();
-    //file.add(_actionProjectInfo);
+    file.addSeparator();
+    file.add(ActionSaveConfiguration.SINGLETON);
     file.addSeparator();
     JMenuItem exitItem = file.add(ActionExit.SINGLETON);
     setMnemonic(exitItem,"Exit",'x');
@@ -262,6 +262,8 @@ implements IStatusBar, NavigationListener {
     setMnemonic(removeItem,"DeleteFromModel",'D');
     setAccelerator(removeItem,delKey);
     JMenuItem emptyItem = edit.add(ActionEmptyTrash.SINGLETON);
+    edit.addSeparator();
+    edit.add(ActionSettings.getInstance());
 
     Menu view = (Menu) _menuBar.add(new Menu(menuLocalize("View")));
     // maybe should be Navigate instead of view

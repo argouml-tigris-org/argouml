@@ -92,6 +92,15 @@ public class ActionOpenProject extends UMLAction {
 		    Globals.setLastDirectory(path);
 		    URL url = theFile.toURL();
 		    if(url != null) {
+
+			// This is actually a hack! Some diagram types
+			// (like the state diagrams) access the current
+			// diagram to get some info. This might cause 
+			// problems if there's another state diagram
+			// active, so I remove the current project, before
+			// loading the new one.
+			pb.setProject(Project.makeEmptyProject());
+
 			p = Project.loadProject(url);
 			pb.setProject(p);
 			pb.showStatus("Read " + url.toString());

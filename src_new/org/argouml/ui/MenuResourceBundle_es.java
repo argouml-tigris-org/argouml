@@ -21,6 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
 package org.argouml.ui;
 import java.util.*;
 import org.argouml.util.*;
@@ -46,15 +47,18 @@ public class MenuResourceBundle_es extends ListResourceBundle {
         {"Load model from DB", "Cargar modelo de la BD" },
         {"Store model to DB", "Guardar modelo en la BD" },
         {"Save Project As...", "Guardar proyecto como..." },
+        {"Import sources...", "Importar fuentes..." },
         {"Print...", "Imprimir..." },
         {"Save GIF...", "Guardar GIF..." },
         {"Save Graphics...", "Guardar gr\u00e1ficos..." },
+        {"Save Configuration", "Guardar configuracion"},
         {"Exit", "Salir" },
         {"Undo", "Deshacer" },
         {"Redo", "Rehacer" },
         {"Cut", "Cortar" },
         {"Copy", "Copiar" },
         {"Paste", "Pegar" },
+        {"Settings...", "Propiedades..."},
         {"Remove From Diagram", "Quitar del diagrama" },
         {"Delete From Model", "Borrar del modelo" },
         {"Empty Trash", "Eliminar basura" },
@@ -130,6 +134,7 @@ public class MenuResourceBundle_es extends ListResourceBundle {
         {"Create", "Crear" },
         {"Mnemonic_Create", "C" },
         {"Diagrams", "Diagramas" },
+        {"Create Diagram", "Crear diagrama" },
         {"Arrange", "Arreglar" },
         {"Mnemonic_Arrange", "A" },
         {"Align", "Alinear" },
@@ -142,6 +147,7 @@ public class MenuResourceBundle_es extends ListResourceBundle {
         {"Mnemonic_Critique", "R" },
         {"Help", "Ayuda" },
         {"Mnemonic_Help", "H" },
+        {"Automatic", "Automatico" },
         {"As Diagram", "Como diagrama" },
         {"As Table", "Como tabla" },
         {"As Metrics", "Como m\u00e9trica" },
@@ -173,3 +179,4 @@ public class MenuResourceBundle_es extends ListResourceBundle {
      }
 
 }
+
