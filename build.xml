@@ -838,6 +838,7 @@ ${Name} Build file
            optimize="false">
         <classpath>
             <pathelement location="${argo.build.classes}" />
+            <pathelement location="${junit.jar.path}" />
             <pathelement location="${xerces.jar.path}" />
             <pathelement location="${nsuml.jar.path}" />
             <pathelement location="${ocl-argo.jar.path}" />
@@ -888,7 +889,6 @@ ${Name} Build file
         <classpath>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
-            <pathelement location="${junit.jar.path}" />
             <pathelement location="${xerces.jar.path}" />
             <pathelement location="${nsuml.jar.path}" />
             <pathelement location="${ocl-argo.jar.path}" />
