@@ -35,6 +35,8 @@ import javax.swing.JFileChooser;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.osdep.OsUtil;
 
@@ -70,29 +72,27 @@ public class ActionSetSourcePath extends UMLAction {
     public void actionPerformed(ActionEvent e) {
 	File f = getNewDirectory();
 	if (f != null) {
-	    ProjectBrowser pb = ProjectBrowser.getInstance();
-	    Object obj = pb.getNavigatorPane().getSelectedObject();
-	    if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
+	    Object obj = NavigatorPane.getInstance().getSelectedObject();
+	    if (ModelFacade.isAModelElement(obj)) {
 		((MModelElement) obj).setTaggedValue("src_path", f.getPath());
 	    }
 	}
     }
 
     protected File getNewDirectory() {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
-	Object obj = pb.getNavigatorPane().getSelectedObject();
+	Object obj = NavigatorPane.getInstance().getSelectedObject();
 	String name = null;
 	String type = null;
 	String path = null;
-	if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
-	    name = org.argouml.model.ModelFacade.getName(obj);
+	if (ModelFacade.isAModelElement(obj)) {
+	    name = ModelFacade.getName(obj);
 	    path = ((MModelElement) obj).getTaggedValue("src_path");
-	    if (org.argouml.model.ModelFacade.isAPackage(obj))
+	    if (ModelFacade.isAPackage(obj))
 		type = "Package";
-	    else if (org.argouml.model.ModelFacade.isAClass(obj))
+	    else if (ModelFacade.isAClass(obj))
 		type = "Class";
-	    if (org.argouml.model.ModelFacade.isAInterface(obj))
+	    if (ModelFacade.isAInterface(obj))
 		type = "Interface";
 	} else {
 	    return null;
@@ -122,7 +122,7 @@ public class ActionSetSourcePath extends UMLAction {
 	chooser.setDialogTitle(sChooserTitle);
 	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-	int retval = chooser.showDialog(pb, "OK");
+	int retval = chooser.showDialog(ProjectBrowser.getInstance(), "OK");
 	if (retval == JFileChooser.APPROVE_OPTION) {
 	    return chooser.getSelectedFile();
 	} else {

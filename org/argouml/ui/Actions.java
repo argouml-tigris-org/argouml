@@ -319,9 +319,9 @@ class ActionNavForw extends UMLAction {
 class ActionNavConfig extends UMLAction {
     public ActionNavConfig() { super("action.nav-config"); }
     public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	NavigatorPane nav = pb.getNavigatorPane();
-	NavigatorConfigDialog ncd = new NavigatorConfigDialog(pb, nav);
+	NavigatorConfigDialog ncd = 
+            new NavigatorConfigDialog(ProjectBrowser.getInstance(),
+                                      NavigatorPane.getInstance());
 	ncd.setVisible(true);
     }
 } /* end class ActionNavConfig */

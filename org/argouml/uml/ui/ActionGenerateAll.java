@@ -35,6 +35,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
@@ -83,7 +84,7 @@ public class ActionGenerateAll extends UMLAction {
 		continue;
             classes.addElement(owner);
 	}
-	TreePath[] paths = pb.getNavigatorPane().getTree().getSelectionPaths();
+	TreePath[] paths = NavigatorPane.getInstance().getTree().getSelectionPaths();
 	if (classes.size() == 0 && paths != null) {
 	    for (int i = 0; i < paths.length; i++ ) {
 		Object selected = paths[i].getLastPathComponent();

@@ -55,6 +55,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -1050,7 +1051,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 needSave = true;
             }
         }        
-        ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
+        NavigatorPane.getInstance().forceUpdate();
         setNeedsSave(needSave);
     }
 
