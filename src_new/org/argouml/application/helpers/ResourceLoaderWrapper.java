@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,9 +22,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.application.helpers;
 
+import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
 import java.util.Hashtable;
 
 import javax.swing.Icon;
@@ -36,43 +36,45 @@ import org.argouml.model.uml.UmlHelper;
 import org.tigris.gef.util.ResourceLoader;
 
 /**
- * Wrapper around org.tigris.gef.util.ResourceLoader. 
+ * Wrapper around org.tigris.gef.util.ResourceLoader.<p>
  * 
- * Necessary since ArgoUML needs some extra init
+ * Necessary since ArgoUML needs some extra init.
+ *
  * @since Nov 24, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @stereotype singleton
  */
 public final class ResourceLoaderWrapper {
     static {
         initResourceLoader();
     }
 
-    protected static ImageIcon _ActionStateIcon =
+    private static ImageIcon actionStateIcon =
 	 ResourceLoader.lookupIconResource("ActionState");
-    protected static ImageIcon _StateIcon =
+    private static ImageIcon stateIcon =
 	 ResourceLoader.lookupIconResource("State");
-    protected static ImageIcon _InitialStateIcon =
+    private static ImageIcon initialStateIcon =
 	 ResourceLoader.lookupIconResource("Initial");
-    protected static ImageIcon _DeepIcon =
+    private static ImageIcon deepIcon =
 	 ResourceLoader.lookupIconResource("DeepHistory");
-    protected static ImageIcon _ShallowIcon =
+    private static ImageIcon shallowIcon =
 	 ResourceLoader.lookupIconResource("ShallowHistory");
-    protected static ImageIcon _ForkIcon =
+    private static ImageIcon forkIcon =
 	 ResourceLoader.lookupIconResource("Fork");
-    protected static ImageIcon _JoinIcon =
+    private static ImageIcon joinIcon =
 	 ResourceLoader.lookupIconResource("Join");
-    protected static ImageIcon _BranchIcon =
+    private static ImageIcon branchIcon =
 	 ResourceLoader.lookupIconResource("Branch");
-    protected static ImageIcon _FinalStateIcon =
+    private static ImageIcon finalStateIcon =
 	 ResourceLoader.lookupIconResource("FinalState");
-    protected static ImageIcon _RealizeIcon =
+    private static ImageIcon realizeIcon =
 	 ResourceLoader.lookupIconResource("Realization");
-    protected static ImageIcon _SignalIcon =
+    private static ImageIcon signalIcon =
 	 ResourceLoader.lookupIconResource("SignalSending");
-    protected static ImageIcon _CommentIcon =
+    private static ImageIcon commentIcon =
 	 ResourceLoader.lookupIconResource("Note");
 
-    protected Hashtable _iconCache = new Hashtable();
+    private Hashtable _iconCache = new Hashtable();
 
     /**
      * Singleton implementation
@@ -92,6 +94,9 @@ public final class ResourceLoaderWrapper {
 
     /**
      * Constructor for ResourceLoaderWrapper.
+     *
+     * @deprecated by Linus Tolke as of 0.15.5. Will be private.
+     * Use {@link #getResourceLoaderWrapper()} to get hold of the singleton.
      */
     public ResourceLoaderWrapper() {
         super();
@@ -148,103 +153,82 @@ public final class ResourceLoaderWrapper {
     }
 
     /**
-     * Wrapped method
-     * @param extension
+     * @see ResourceLoader#addResourceExtension(String)
      */
-    public void addResourceExtension(String extension) {
+    public static void addResourceExtension(String extension) {
         ResourceLoader.addResourceExtension(extension);
     }
 
     /**
-     * Wrapped method
-     * @param location
+     * @see ResourceLoader#addResourceLocation(String)
      */
-    public void addResourceLocation(String location) {
+    public static void addResourceLocation(String location) {
         ResourceLoader.addResourceLocation(location);
     }
 
     /**
-     * Wrapped method
-     * @param extension
-     * @return boolean
+     * @see ResourceLoader#containsExtension(String)
      */
-    public boolean containsExtension(String extension) {
+    public static boolean containsExtension(String extension) {
         return ResourceLoader.containsExtension(extension);
     }
 
     /**
-     * Wrapped method
-     * @param location
-     * @return boolean
+     * @see ResourceLoader#containsLocation(String)
      */
-    public boolean containsLocation(String location) {
+    public static boolean containsLocation(String location) {
         return ResourceLoader.containsLocation(location);
     }
 
     /**
-     * Wrapped method
-     * @param resource
-     * @return boolean
+     * @see ResourceLoader#isInCache(String)
      */
-    public boolean isInCache(String resource) {
+    public static boolean isInCache(String resource) {
         return ResourceLoader.isInCache(resource);
     }
 
     /**
-     * Wrapped method
-     * @param resource
-     * @return ImageIcon
+     * @see ResourceLoader#lookupIconResource(String)
      */
-    public ImageIcon lookupIconResource(String resource) {
+    public static ImageIcon lookupIconResource(String resource) {
         return ResourceLoader.lookupIconResource(resource);
     }
 
     /**
-     * Wrapped method
-     * @param resource
-     * @param loader
-     * @return ImageIcon
+     * @see ResourceLoader#lookupIconResource(String, ClassLoader)
      */
-    public ImageIcon lookupIconResource(String resource, ClassLoader loader) {
+    public static ImageIcon lookupIconResource(String resource,
+					       ClassLoader loader) {
         return ResourceLoader.lookupIconResource(resource, loader);
     }
 
     /**
-     * Wrapped method
-     * @param resource
-     * @param desc
-     * @return ImageIcon
+     * @see ResourceLoader#lookupIconResource(String, String)
      */
-    public ImageIcon lookupIconResource(String resource, String desc) {
+    public static ImageIcon lookupIconResource(String resource, String desc) {
         return ResourceLoader.lookupIconResource(resource, desc);
     }
 
     /**
-     * Wrapped method
-     * @param resource
-     * @param desc
-     * @param loader
-     * @return ImageIcon
+     * @see ResourceLoader#lookupIconResource(String, String, ClassLoader)
      */
-    public ImageIcon lookupIconResource(String resource, String desc, 
-					ClassLoader loader) 
+    public static ImageIcon lookupIconResource(String resource, String desc, 
+					       ClassLoader loader) 
     {
         return ResourceLoader.lookupIconResource(resource, desc, loader);
     }
 
     /** 
-     * Wrapped method
-     * @param extension
+     * @see ResourceLoader#removeResourceExtension(String)
      */
-    public void removeResourceExtension(String extension) {
+    public static void removeResourceExtension(String extension) {
         ResourceLoader.removeResourceExtension(extension);
     }
 
     /**
-     * Wrapped method
-     * @param location
+     * @see ResourceLoader#removeResourceLocation(String)
      */
-    public void removeResourceLocation(String location) {
+    public static void removeResourceLocation(String location) {
         ResourceLoader.removeResourceExtension(location);
     }
 
@@ -257,37 +241,38 @@ public final class ResourceLoaderWrapper {
             if (ModelFacade.isAPseudostate(value) ) {
                 
 		Object kind = ModelFacade.getKind(value);
-                if (UmlHelper.getHelper().getDataTypes()
-                    .equalsINITIALKind(kind))
-		    icon = _InitialStateIcon;
-		if (UmlHelper.getHelper().getDataTypes()
-                    .equalsDEEP_HISTORYKind(kind))
-		    icon = _DeepIcon;
-		if (UmlHelper.getHelper().getDataTypes()
-                    .equalsSHALLOW_HISTORYKind(kind))
-		    icon = _ShallowIcon;
-		if (UmlHelper.getHelper().getDataTypes()
-                    .equalsFORKKind(kind))
-		    icon = _ForkIcon;
-		if (UmlHelper.getHelper().getDataTypes()
-                    .equalsJOINKind(kind))
-		    icon = _JoinIcon;
-		if (UmlHelper.getHelper().getDataTypes()
-                    .equalsBRANCHKind(kind))
-		    icon = _BranchIcon;
+                DataTypesHelper helper = UmlHelper.getHelper().getDataTypes();
+                if (helper.equalsINITIALKind(kind)) {
+		    icon = initialStateIcon;
+		}
+		if (helper.equalsDEEP_HISTORYKind(kind)) {
+		    icon = deepIcon;
+		}
+		if (helper.equalsSHALLOW_HISTORYKind(kind)) {
+		    icon = shallowIcon;
+		}
+		if (helper.equalsFORKKind(kind)) {
+		    icon = forkIcon;
+		}
+		if (helper.equalsJOINKind(kind)) {
+		    icon = joinIcon;
+		}
+		if (helper.equalsBRANCHKind(kind)) {
+		    icon = branchIcon;
+		}
 		// if (MPseudostateKind.FINAL.equals(kind)) 
 		// icon = _FinalStateIcon;
 	    }
 	    if (ModelFacade.isAAbstraction(value)) {
-		icon = _RealizeIcon;
+		icon = realizeIcon;
 	    }
 	    // needs more work: sending and receiving icons
 	    if (ModelFacade.isASignal(value)) {
-		icon = _SignalIcon;
+		icon = signalIcon;
 	    }
 
 	    if (ModelFacade.isAComment(value)) {
-		icon = _CommentIcon;
+		icon = commentIcon;
 	    }
 
 	    if (icon == null) {
@@ -299,16 +284,20 @@ public final class ResourceLoaderWrapper {
 			clsPackName.substring(clsPackName.lastIndexOf(".")
 					      + 1);
 		    // special case "UML*" e.g. UMLClassDiagram
-		    if (cName.startsWith("UML"))
+		    if (cName.startsWith("UML")) {
 			cName = cName.substring(3);
-		    if (cName.startsWith("M"))
+		    }
+		    if (cName.startsWith("M")) {
 			cName = cName.substring(1);
-		    if (cName.endsWith("Impl"))
+		    }
+		    if (cName.endsWith("Impl")) {
 			cName = cName.substring(0, cName.length() - 4);
-		    icon = ResourceLoaderWrapper.getResourceLoaderWrapper()
-			.lookupIconResource(cName);
-		    if (icon != null)
+		    }
+		    icon =
+			getResourceLoaderWrapper().lookupIconResource(cName);
+		    if (icon != null) {
 			_iconCache.put(value.getClass(), icon);
+		    }
 		}
 	    }
         }
