@@ -161,8 +161,9 @@ public class Main {
     //  do some initialization work before anything is drawn
     //  sets locale for menus
     //
-    Locale.setDefault(new Locale(System.getProperty("user.language"),
-				 System.getProperty("user.region")));
+
+    Locale.setDefault(new Locale(System.getProperty("user.language",""),
+				 System.getProperty("user.region","")));
 	ResourceLoader.addResourceExtension("gif");
 	ResourceLoader.addResourceLocation("/org/argouml/Images");
 	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
