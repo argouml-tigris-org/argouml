@@ -1333,6 +1333,22 @@ ArgoUML to JMI.
   </target>
 
 
+  <!-- =================================================================== -->
+  <!-- Finds undeclared tags in the code.                                  -->
+  <!-- Unluckily Linus doesn't know how to write this in a                 -->
+  <!-- platform-independant way (i.e. with just ant-calls) so it will only -->
+  <!-- be working for unix/shell enabled platforms. If you know how to     -->
+  <!-- solve this within ant, please go ahead.                             -->
+  <!-- =================================================================== -->
+
+  <target name="find-undeclared-tags"
+          description="Scans through all source files and find all tags that are not in the corresponding properties files.">
+    <exec executable="sh">
+      <arg value="-c"/>
+      <arg value="../tools/bin/i18n-find-undeclared-tags.sh"/>
+    </exec>
+  </target>
+
 
 <!-- Attempts at generating code. -->
 
