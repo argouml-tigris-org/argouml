@@ -59,6 +59,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
+import org.argouml.uml.ProfileJava;
 import org.argouml.uml.diagram.static_structure.*;
 import org.argouml.uml.diagram.deployment.*;
 import org.apache.log4j.Category;
@@ -531,6 +532,10 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     *	initial-value and before the type or end (to allow java-style array
     *	indexing in the initial value). It must be given on form
     *	[multiplicity] with the square brackets included.
+    * <li>Stereotype can be given between any element except after the
+    *	initial-value and before the type or end (to allow java-style
+    *   bit-shifts in the initial value). It must be given on form
+    *	<<stereotype>>.
     *</ul>
     * <p>It is compatible with the UML 1.3 spec.
     *
@@ -570,14 +575,18 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 		if (hasEq)
 		    value += token;
 	    } else if ("<<".equals(token)) {
-		if (stereotype != null)
-		    throw new ParseException("Attribute cannot have two stereotypes", st.getTokenIndex());
-		stereotype = "";
-		while (true) {
-		    token = st.nextToken();
-		    if (">>".equals(token))
-			break;
-		    stereotype += token;
+		if (hasEq) {
+		    value += token;
+		} else {
+		    if (stereotype != null)
+			throw new ParseException("Attribute cannot have two stereotypes", st.getTokenIndex());
+		    stereotype = "";
+		    while (true) {
+			token = st.nextToken();
+			if (">>".equals(token))
+			    break;
+			stereotype += token;
+		    }
 		}
 	    } else if ("[".equals(token)) {
 		if (hasEq) {
@@ -713,8 +722,11 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 	setProperties(attr, properties, _attributeSpecialStrings);
 
     // Stereotype
-//    if (stereotype != null)
-//	attr.setStereotype();
+    if (stereotype != null) {
+	MStereotype stereo = getStereotype(attr.getModel(), stereotype.trim());
+	if (stereo != null)
+	    attr.setStereotype(stereo);
+    }
   }
 
   /**
@@ -796,6 +808,73 @@ nextProp:
 
 	elem.setTaggedValue(name, value);
     }
+  }
+
+  /**
+   * Recursively search a hive of a model for a MStereotype with the name
+   * given in name.
+   *
+   * @param root The MModelElement to search from.
+   * @param name The name of the MStereotype to search for.
+   * @return An MStereotype named name, or null if none is found.
+   */
+  private MStereotype recFindStereotype(MModelElement root, String name) {
+    MStereotype stereo;
+
+    if (root == null)
+	return null;
+
+    if (root instanceof MStereotype &&
+	name.equals(root.getName())) {
+
+	return (MStereotype) root;
+    }
+
+    if (!(root instanceof MNamespace))
+	return null;
+
+    MNamespace nameSpace     = (MNamespace) root;
+    Collection ownedElements = nameSpace.getOwnedElements();
+
+    if(ownedElements == null) {
+	return null;
+    }
+
+    // Loop through each element in the namespace, recursing.
+
+    Iterator iter = ownedElements.iterator();
+
+    while(iter.hasNext()) {
+	stereo = recFindStereotype((MModelElement) iter.next(), name);
+	if (stereo != null)
+	    return stereo;
+    }
+    return null;
+  }
+
+  /**
+   * Finds a MStereotype named name either in the subtree of the model
+   * rooted at root, or in the the ProfileJava model.
+   *
+   * <p>needs-more-work: Should create the MStereotype under root if it
+   * isn't found.
+   *
+   * @param root A tree of MModelElements to search.
+   * @param name The name of the MStereotype to search for.
+   * @return An MStereotype named name, or possibly null.
+   */
+  private MStereotype getStereotype(MModelElement root, String name) {
+    MStereotype stereo;
+
+    stereo = recFindStereotype(root, name);
+    if (stereo == null)
+	stereo = recFindStereotype(ProfileJava.getInstance().getProfileModel(), name);
+
+    //if (stereo == null) {
+    //    Create a new stereotype
+    //}
+
+    return stereo;
   }
 
 /**
