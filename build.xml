@@ -809,9 +809,6 @@ ${Name} Build file
      <copy file="${app.source.dir}/GenericJavaApp.icns"
          todir="${bundle.contents.resources.dir}"
          preservelastmodified="true"/>
-     <copy file="${app.source.dir}/MRJApp.properties"
-         todir="${bundle.contents.resources.dir}"
-         preservelastmodified="true"/>
      <mkdir dir="${bundle.contents.resources.java.dir}"/>
      <copy todir="${bundle.contents.resources.java.dir}">
        <fileset dir="${argo.build.dir}"
