@@ -83,7 +83,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         {"decision.relationships", "Relationships"},
         {"decision.stereotypes", "Stereotypes"},
         {"decision.storage", "Storage"},
-        {"decision.uncategorized", "Uncategorized"},
+        {"decision.uncategorized", "Uncategorised"},
 
         {"goal.unspecified", "Unspecified"},
 
@@ -92,8 +92,8 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         {"knowledge.correctness", "Correctness"},
         {"knowledge.designers", "Designer's"},
         {"knowledge.experiential", "Experiential"},
-        {"knowledge.optimization", "Optimization"},
-        {"knowledge.organizational", "Organizational"},
+        {"knowledge.optimization", "Optimisation"},
+        {"knowledge.organizational", "Organisational"},
         {"knowledge.presentation", "Presentation"},
         {"knowledge.semantics", "Semantics"},
         {"knowledge.syntax", "Syntax"},
@@ -153,7 +153,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         { "CrCircularInheritance_head" ,
                 "Remove <ocl>self</ocl>'s Circular Inheritance" },
         { "CrCircularInheritance_desc" ,
-                "Inheritances relationships cannot have cycles. \n\nA legal class inheritance hierarchy is needed for code generation and the correctness of the design. \n\nTo fix this, use the \"Next>\" button, or manually select one of the  generalization arrows in the cycle and remove it." },
+                "Inheritances relationships cannot have cycles. \n\nA legal class inheritance hierarchy is needed for code generation and the correctness of the design. \n\nTo fix this, use the \"Next>\" button, or manually select one of the  generalisation arrows in the cycle and remove it." },
         { "CrCircularComposition_head" ,
                 "Remove Circular Composition" },
         { "CrCircularComposition_desc" ,
@@ -209,11 +209,11 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         { "CrIllegalGeneralization_head" ,
                 "Illegal Generalization " },
         { "CrIllegalGeneralization_desc" ,
-                "Model elements can only be inherit from others of the same type. \n\nA legal inheritance hierarchy is needed for code generation and the correctness of the design. \n\nTo fix this, use the \"Next>\" button, or manually select the  generalization arrow and remove it." },
+                "Model elements can only be inherit from others of the same type. \n\nA legal inheritance hierarchy is needed for code generation and the correctness of the design. \n\nTo fix this, use the \"Next>\" button, or manually select the  generalisation arrow and remove it." },
         { "CrAlreadyRealizes_head" ,
-                "Remove Unneeded Realizes from <ocl>self</ocl>" },
+                "Remove Unneeded Realises from <ocl>self</ocl>" },
         { "CrAlreadyRealizes_desc" ,
-                "The selected class already indirectly realizes Interface {item.extra}.  There is no need to directly realize it again.\n\nSimplifying the design is always a good idea.  You might dismiss this \"to do\" item if you want to make it very explicit that the selected Class realizes this Interface.\n\nTo fix this, select the Realization (dashed line with white triangular arrowhead) and press the \"Delete\" key." },
+                "The selected class already indirectly realises Interface {item.extra}.  There is no need to directly realise it again.\n\nSimplifying the design is always a good idea.  You might dismiss this \"to do\" item if you want to make it very explicit that the selected Class realises this Interface.\n\nTo fix this, select the Realisation (dashed line with white triangular arrowhead) and press the \"Delete\" key." },
         { "CrInterfaceAllPublic_head" ,
                 "Operations in Interfaces must be public" },
         { "CrInterfaceAllPublic_desc" ,
@@ -335,7 +335,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         { "CrParamTypeNotImported_head" ,
                 "Import Parameter Type into Class" },
         { "CrParamTypeNotImported_desc" ,
-                "The type of each operation parameter must be visible and imported into the class that owns the operation.\n\nImporting classes is needed for code generation. Good modularization of classes into packages is key to an understandable design.\n\nTo fix this, use the \"Next>\" button, or manually add an import to the class that owns this operation." },
+                "The type of each operation parameter must be visible and imported into the class that owns the operation.\n\nImporting classes is needed for code generation. Good modularisation of classes into packages is key to an understandable design.\n\nTo fix this, use the \"Next>\" button, or manually add an import to the class that owns this operation." },
         { "CrUselessAbstract_head" ,
                 "Define Concrete (Sub)Class" },
         { "CrUselessAbstract_desc" ,
@@ -343,7 +343,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         { "CrUselessInterface_head" ,
                 "Define Class to Implement <ocl>self</ocl>" },
         { "CrUselessInterface_desc" ,
-                "<ocl>self</ocl> can never be used because no classes implement it.\n\nTo fix this problem, press the \"Next>\" button or manually use the toolbar \"Class\" button to define classes and the \"Realizes\" button to make a relationship from the class to the highlighted interface." },
+                "<ocl>self</ocl> can never be used because no classes implement it.\n\nTo fix this problem, press the \"Next>\" button or manually use the toolbar \"Class\" button to define classes and the \"Realises\" button to make a relationship from the class to the highlighted interface." },
         { "CrDisambigClassName_head" ,
                 "Choose a Unique Name for <ocl>self</ocl>" },
         { "CrDisambigClassName_desc" ,
@@ -437,7 +437,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
 
         { "CrConstructorNeeded_desc" ,
           "You have not yet defined a constructor for class " +
-          "<ocl>self</ocl>. Constructors initialize new instances such that " +
+          "<ocl>self</ocl>. Constructors initialise new instances such that " +
           "their attributes have valid values.  This class probably needs a " +
           "constructor because not all of its attributes have initial" +
           "values. \n" +
@@ -463,11 +463,11 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         { "CrNameConfusion_head" ,
                 "Revise Name to Avoid Confusion" },
         { "CrNameConfusion_desc" ,
-                "Names should be clearly distinct from each other. These two names are so close to each other that readers might be confused.\n\nClear and unambiguous naming is key to code generation and the understandability and maintainability of the design. \n\nTo fix this, use the \"Next>\" button, or manually select the elements and use the Properties tab to change their names.  Avoid names that differ from other names only in capitalization, or use of underscore characters, or by only one character." },
+                "Names should be clearly distinct from each other. These two names are so close to each other that readers might be confused.\n\nClear and unambiguous naming is key to code generation and the understandability and maintainability of the design. \n\nTo fix this, use the \"Next>\" button, or manually select the elements and use the Properties tab to change their names.  Avoid names that differ from other names only in capitalisation, or use of underscore characters, or by only one character." },
         { "CrMergeClasses_head" ,
                 "Consider Combining Classes" },
         { "CrMergeClasses_desc" ,
-                "The highlighted class, <ocl>self</ocl>, only participates in one association and that association is one-to-one with another class.  Since instances of these two classes must always be created together and destroyed together, combining these classes might simplify your design without loss of any representation power.  However, you may find the combined class too large and complex, in which case separating them is usually better.\n\nOrganizing classes to manage complexity of the design is always important, especially when the design is already complex. \n\nTo fix this, click on the \"Next>\" button, or manually add the attribues and operations of the highlighted class to the other class, then remove the highlighted class from the project." },
+                "The highlighted class, <ocl>self</ocl>, only participates in one association and that association is one-to-one with another class.  Since instances of these two classes must always be created together and destroyed together, combining these classes might simplify your design without loss of any representation power.  However, you may find the combined class too large and complex, in which case separating them is usually better.\n\nOrganising classes to manage complexity of the design is always important, especially when the design is already complex. \n\nTo fix this, click on the \"Next>\" button, or manually add the attribues and operations of the highlighted class to the other class, then remove the highlighted class from the project." },
         { "CrSubclassReference_head" ,
                 "Remove Reference to Specific Subclass" },
         { "CrSubclassReference_desc" ,
@@ -537,7 +537,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         { "CrUnconventionalAttrName_desc" ,
                 "Normally attributes begin with a lowercase letter. The name '<ocl>self</ocl>' is unconventional because it does not.\n\nFollowing good naming conventions help to improve the understandability and maintainability of the design. \n\nTo fix this, use the \"Next>\" button, or manually select <ocl>self</ocl> and use the Properties tab to give it a different name." },
         { "CrUnconventionalClassName_head" ,
-                "Capitalize Class Name <ocl>self</ocl>" },
+                "Capitalise Class Name <ocl>self</ocl>" },
         { "CrUnconventionalClassName_desc" ,
                 "Normally classes begin with a capital letter. The name '<ocl>self</ocl>' is unconventional because it does not begin with a capital.\n\nFollowing good naming conventions help to improve the understandability and maintainability of the design. \n\nTo fix this, use the \"Next>\" button, or manually select <ocl>self</ocl> and use the Properties tab to give it a different name." },
         { "CrUnconventionalPackName_head" ,
@@ -683,7 +683,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         { "CrZeroLengthEdge_desc" ,
                 "This edge is too small to see easily. This may hide important information and make it difficult for humans to understand. A neat appearance may also make your diagrams more influencial on other designers, implementors, and decision makers.\n\nConstructing an understandable set of diagrams is an important part of your design. \n\nTo fix this, move one or more nodes so that the highlighted edges will be longer, or click in the center of the edge and drag to make a new vertex." },
         //
-        //   these phrases should be localized here
+        //   these phrases should be localised here
         //      not in the following check list section
         { "Naming", "Naming" },
         { "Encoding", "Encoding" },
@@ -703,7 +703,7 @@ public class UMLCognitiveResourceBundle_en_GB extends ListResourceBundle {
         //      the value is an array of categories which
         //      are each an array of Strings.  The first
         //      string in each category is the name of the
-        //      category and should not be localized here
+        //      category and should not be localised here
         //      but should be in the immediate preceeding
         //      section
         //
