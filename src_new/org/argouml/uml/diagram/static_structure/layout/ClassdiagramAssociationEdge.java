@@ -35,9 +35,6 @@ import java.awt.*;
  */
 public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
 
-    /** the starting and endpoint of the association line.
-     */
-    //Point startPoint, endpoint;
     
     public ClassdiagramAssociationEdge(FigEdge edge) {
         super(edge);
@@ -64,7 +61,23 @@ public class ClassdiagramAssociationEdge extends ClassdiagramEdge {
             currentEdge.setFig(underlyingFig);  
         }
         else {
-            // I do not know yet how to deal with this
+            // brute force rectangular layout
+            /*
+            Point centerSource = sourceFigNode.center();
+            Point centerDest   = destFigNode.center();
+
+            underlyingFig.addPoint(centerSource.x, centerSource.y);
+            underlyingFig.addPoint(centerSource.x + 
+                                   (centerDest.x-centerSource.x)/2,
+                                   centerSource.y);
+            underlyingFig.addPoint(centerSource.x +  
+                                   (centerDest.x-centerSource.x)/2,
+                                   centerDest.y);
+            underlyingFig.addPoint(centerDest.x, centerDest.y);
+            underlyingFig.setFilled(false);
+            underlyingFig.setSelfLoop(false);
+            currentEdge.setFig(underlyingFig);
+            */
         }
     }   
 
