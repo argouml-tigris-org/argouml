@@ -57,7 +57,7 @@ public class PropPanelAssociation extends PropPanelModelElement {
     addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
     addCaption("Namespace:",3,0,0);
-    addLinkField(new JScrollPane(new UMLList(new UMLNamespaceListModel(this),true)),3,0,0);
+    addLinkField(namespaceScroll,3,0,0);
 
     addCaption("Modifiers:",4,0,1);
 

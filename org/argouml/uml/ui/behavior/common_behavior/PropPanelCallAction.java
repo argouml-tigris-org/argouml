@@ -50,14 +50,17 @@ public class PropPanelCallAction extends PropPanelModelElement {
 
         Class mclass = MCallAction.class;
 
+	addCaption("Name:",1,0,0);
+        addField(nameField,1,0,0);
+
         UMLExpressionModel expressionModel = new UMLExpressionModel(this,MAction.class,"script",
             MActionExpression.class,"getScript","setScript");
 
-        addCaption("Expression:",1,0,0);
-        addField(new JScrollPane(new UMLExpressionBodyField(expressionModel,true)),1,0,0);
+        addCaption("Expression:",2,0,0);
+        addField(new JScrollPane(new UMLExpressionBodyField(expressionModel,true)),2,0,0);
 
-        addCaption("Language:",2,0,1);
-        addField(new UMLExpressionLanguageField(expressionModel,true),2,0,0);
+        addCaption("Language:",3,0,1);
+        addField(new UMLExpressionLanguageField(expressionModel,true),3,0,0);
 
 	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
 	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");

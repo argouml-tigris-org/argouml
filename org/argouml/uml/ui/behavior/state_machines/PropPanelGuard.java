@@ -51,18 +51,26 @@ public class PropPanelGuard extends PropPanelModelElement {
 
         Class mclass = MGuard.class;
 
+	addCaption("Name:",1,0,0);
+        addField(nameField,1,0,0);
+
         UMLExpressionModel expressionModel = new UMLExpressionModel(this,MGuard.class,"expression",
 		    MBooleanExpression.class,"getExpression","setExpression");
 
-        addCaption("Expression:",1,0,0);
-        addField(new JScrollPane(new UMLExpressionBodyField(expressionModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),1,0,0);
+        addCaption("Expression:",2,0,0);
+        addField(new JScrollPane(new UMLExpressionBodyField(expressionModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),2,0,0);
 
-        addCaption("Language:",2,0,0);
-        addField(new UMLExpressionLanguageField(expressionModel,true),2,0,0);
+        addCaption("Language:",3,0,0);
+        addField(new UMLExpressionLanguageField(expressionModel,true),3,0,0);
 
-        addCaption("Transition:",3,0,1);
-        JList transitionList = new UMLList(new UMLReflectionListModel(this,"transition",false,"getTransition",null,null,null),true);
-        addLinkField(new JScrollPane(transitionList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),3,0,0);
+        addCaption("Transition:",4,0,1);
+	UMLModelElementListModel transitionModel=new UMLReflectionListModel(this,"transition",false,"getTransition",null,null,null);
+	transitionModel.setUpperBound(1);
+        JList transitionList = new UMLList(transitionModel,true);
+	transitionList.setForeground(Color.blue);
+	transitionList.setVisibleRowCount(1);
+	transitionList.setFont(smallFont);
+        addLinkField(new JScrollPane(transitionList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),4,0,0);
 
 	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
 	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");

@@ -72,20 +72,20 @@ public class PropPanelPackage extends PropPanelNamespace {
     derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     derivedList.setFont(smallFont);
-    JScrollPane derivedScroll = new JScrollPane(derivedList);
+    JScrollPane derivedScroll = new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     addField(derivedScroll,5,0,0);
 
     addCaption("Extends:",0,1,0);
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
-    addField(new JScrollPane(extendsList),0,1,0);
+    addField(new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),0,1,0);
 
     addCaption("Implements:",1,1,0);
     JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
     implementsList.setBackground(getBackground());
     implementsList.setForeground(Color.blue);
-    addField(new JScrollPane(implementsList),1,1,0);
+    addField(new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),1,1,0);
 
     addCaption("Owned Elements",2,1,1);
     UMLOwnedElementRootNode root = new UMLOwnedElementRootNode(this,"ownedElement",false);
@@ -107,7 +107,6 @@ public class PropPanelPackage extends PropPanelNamespace {
     new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
     new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete package"),"removeElement",null);
-
 
   }
 
