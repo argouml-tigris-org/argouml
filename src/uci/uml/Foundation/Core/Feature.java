@@ -42,5 +42,9 @@ public abstract class Feature extends ModelElementImpl {
   //  classifierRole = x;
   //}
 
+  ////////////////////////////////////////////////////////////////
+  // debugging
   
+  public String toString() { return getName().getBody(); }
+
 }

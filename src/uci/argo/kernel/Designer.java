@@ -188,6 +188,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   public DecisionModel getDecisionModel() { return _decisions; }
   public Vector getDecisions() { return _decisions.getDecisions(); }
   public GoalModel getGoalModel() { return _goals; }
+  public Vector getGoals() { return _goals.getGoals(); }
   //public SkillsModel getSkillsModel() { return _skills; }
 
   /** ToDoItem's that are posted by the designer are assumed to be
@@ -199,13 +200,25 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
    */
   public boolean stillValid(ToDoItem i, Designer d) { return true; }
 
-
+  public static Vector UNSPEC_DECISION_VECTOR = null;
+  public static Vector UNSPEC_GOAL_VECTOR = null;
+  static {
+      UNSPEC_DECISION_VECTOR = new Vector();
+      UNSPEC_DECISION_VECTOR.addElement(Decision.UNSPEC);
+      UNSPEC_GOAL_VECTOR = new Vector();
+      UNSPEC_GOAL_VECTOR.addElement(Goal.UNSPEC);
+  }  
   public boolean supports(Decision d) { return d == Decision.UNSPEC; }
-  public Vector getSupportedDecisions() { return null; }
+  public Vector getSupportedDecisions() { return UNSPEC_DECISION_VECTOR; }
 
   public boolean supports(Goal g) { return true; }
+  public Vector getSupportedGoals() { return UNSPEC_GOAL_VECTOR; }
 
   public boolean includesKnowledgeType(int knowledgeType) { return true; }
+  public Vector getSupportedKnowledgeType() {
+    //needs-more-work
+    return null;
+  }
 
 
   /** Reply this Designer's ToDoList, a list of pending problems and
@@ -236,6 +249,10 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
     return _decisions.isConsidering(decision);
   }
 
+  public boolean isConsidering(Decision d) {
+    return d.getPriority() > 0;
+  }
+
   /** Record the extent to which the designer is considering the given
    *  decision. */
   public void setDecisionPriority(String decision, int priority) {
@@ -250,8 +267,16 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
     _decisions.startConsidering(decision);
   }
 
+  public void startConsidering(Decision d) {
+    _decisions.startConsidering(d);
+  }
+
   public void stopConsidering(String decision) {
     _decisions.stopConsidering(decision);
+  }
+
+  public void stopConsidering(Decision d) {
+    _decisions.stopConsidering(d);
   }
 
   /** Record the extent to which the designer desires the given goal. */
@@ -261,13 +286,13 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
     _goals.setGoalPriority(goal, priority);
   }
 
-  public Object getGoalInfo(String goal){
-    return _goals.getGoalInfo(goal);
-  }
+//   public Object getGoalInfo(String goal){
+//     return _goals.getGoalInfo(goal);
+//   }
 
-  public void setGoalInfo(String goal, String info) {
-    _goals.setGoalInfo(goal, info);
-  }
+//   public void setGoalInfo(String goal, String info) {
+//     _goals.setGoalInfo(goal, info);
+//   }
 
   public void startDesiring(String goal) { _goals.startDesiring(goal); }
   public void stopDesiring(String goal) { _goals.stopDesiring(goal); }

@@ -40,7 +40,8 @@ import uci.gef.Layer;
  *
  * @see uci.graph.demo.WordNodeRenderer */
 
-public class DefaultGraphNodeRenderer implements GraphNodeRenderer {
+public class DefaultGraphNodeRenderer
+implements GraphNodeRenderer, java.io.Serializable {
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel graph, Layer lay, Object node) {
     if (node instanceof NetNode)

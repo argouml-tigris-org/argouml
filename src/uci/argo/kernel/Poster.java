@@ -54,6 +54,7 @@ public interface Poster {
   boolean supports(Decision d);
   Vector getSupportedDecisions();
   boolean supports(Goal g);
+  Vector getSupportedGoals();
   boolean includesKnowledgeType(int knowledgeType);
   
   ////////////////////////////////////////////////////////////////

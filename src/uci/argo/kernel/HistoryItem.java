@@ -12,7 +12,7 @@ public class HistoryItem {
   ////////////////////////////////////////////////////////////////
   // instance variables
   public Date _when;
-  public Designer _who;
+  public Poster _who;
   public String _desc;
   public Object _target;
   public Object _oldValue;
@@ -27,7 +27,13 @@ public class HistoryItem {
     _who = Designer.TheDesigner;
     _desc = desc;    
   }
-  
+
+  public HistoryItem(ToDoItem item, String desc) {
+    _when = new Date(); // right now
+    _who = item.getPoster();
+    _desc = desc + item.getDescription();
+  }
+
   public HistoryItem(String desc, Object target,
 		     Object oldValue, Object newValue) {
     _when = new Date(); // right now

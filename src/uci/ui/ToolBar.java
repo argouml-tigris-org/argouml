@@ -19,8 +19,20 @@ public class ToolBar extends JToolBar {
    * @param a the Action object to add as a new menu item
    */
   public JButton add(Action a) {
-    JButton b = new JButton((Icon)a.getValue(Action.SMALL_ICON));
-    b.setToolTipText((String)a.getValue(Action.NAME));
+    String name = (String) a.getValue(Action.NAME);
+    Icon icon = (Icon) a.getValue(Action.SMALL_ICON);
+    return add(a, name, icon);
+  }
+  
+  public JButton add(Action a, String name, String iconResourceStr) {
+    Icon icon = loadIconResource(imageName(iconResourceStr), name);
+    System.out.println(icon);
+    return add(a, name, icon);
+  }
+  
+  public JButton add(Action a, String name, Icon icon) {
+    JButton b = new JButton(icon);
+    b.setToolTipText(name);
     b.setEnabled(a.isEnabled());
     b.addActionListener(a);
     add(b);
@@ -64,4 +76,36 @@ public class ToolBar extends JToolBar {
     return bg;
   }
 
+
+  protected static ImageIcon loadIconResource(String imgName, String desc) {
+    ImageIcon res = null;
+    try {
+      java.net.URL imgURL = ToolBar.class.getResource(imgName);
+      System.out.println(imgName);
+      System.out.println(imgURL);
+      return new ImageIcon(imgURL, desc);
+    }
+    catch (Exception ex) {
+      System.out.println("Exception in loadIconResource");
+      ex.printStackTrace();
+      return new ImageIcon(desc);
+    }
+  }
+
+  protected static String imageName(String name) {
+    return "/uci/Images/" + stripJunk(name) + ".gif";
+  }
+
+
+  protected static String stripJunk(String s) {
+    String res = "";
+    int len = s.length();
+    for (int i = 0; i < len; i++) {
+      char c = s.charAt(i);
+      if (Character.isJavaLetterOrDigit(c)) res += c;
+    }
+    return res;
+  }
+
+  
 } /* end class ToolBar */

@@ -155,6 +155,8 @@ public abstract class Classifier extends GeneralizableElementImpl {
   ////////////////////////////////////////////////////////////////
   // debugging
 
+  public String toString() { return getName().getBody(); }
+  
   public String dbgString() {
     String s = "";
     Vector v;

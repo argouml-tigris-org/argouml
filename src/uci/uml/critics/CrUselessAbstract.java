@@ -44,8 +44,8 @@ public class CrUselessAbstract extends CrUML {
 		"To fix this problem: (1) define concrete subclasses that\n"+
 		"implement the interface of this class; or (2) make this\n"+
 		"class or one of its existing subclasses concrete");
-    setDecisionCategory(CrUML.decINHERITANCE); //needs-more-work: remove
-    addSupportedDecision(CrUML.decisionINHERITANCE);
+    addSupportedDecision(CrUML.decINHERITANCE);
+    addSupportedGoal(Goal.UNSPEC);
   }
 
   public boolean predicate(Object dm, Designer dsgr) {

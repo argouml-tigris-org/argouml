@@ -16,36 +16,38 @@
 // IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
 // WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
 
-// File: ModeCreateFigClass.java
-// Classes: ModeCreateFigClass
-// Original Author: abonner
+// File: CrNameConflictAC.java.java
+// Classes: CrNameConflictAC.java
+// Original Author: jrobbins@ics.uci.edu
 // $Id$
 
-package uci.uml.visual;
+package uci.uml.critics;
 
-import java.awt.event.*;
+import java.util.*;
+import uci.argo.kernel.*;
+import uci.util.*;
+import uci.uml.Foundation.Core.*;
 
-import uci.gef.*;
+/** Well-formedness rule [1] for AssociationClass. See page 28 of UML 1.1
+ *  Semantics. OMG document ad/97-08-04. */
 
-/** A Mode to interpert user input while creating a FigRect. All of
- *  the actual event handling is inherited from ModeCreate. This class
- *  just implements the differences needed to make it specific to
- *  rectangles.
- *  <A HREF="../features.html#basic_shapes_rect">
- *  <TT>FEATURE: basic_shapes_rect</TT></A>
- */
+public class CrNameConflictAC extends CrUML {
 
-public class ModeCreateFigClass extends ModeCreateFigRect {
-  ////////////////////////////////////////////////////////////////
-  // Mode API
+  public CrNameConflictAC() {
+    setHeadline("Role name conflicts with member");
+    sd("Association role names of an AssociationClass must not conflict \n"+
+       "with the names of structral features (e.g., instance variables) \n"+
+       "of the class.\n");
+
+    addSupportedDecision(CrUML.decNAMING);
+  }
+
+  protected void sd(String s) { setDescription(s); }
   
-  public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-    return new FigClass();
+  public boolean predicate(Object dm, Designer dsgr) {
+    // needs-more-work: not implemented
+    return NO_PROBLEM;
   }
 
-  public String instructions() {
-    return "Drag to create a class";
-  }
-
-} /* end class ModeCreateFigClass */
+} /* end class CrNameConflictAC.java */
 

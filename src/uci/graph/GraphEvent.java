@@ -39,7 +39,7 @@ import java.util.EventListener;
  *  node or edge that was involved when a node or edge is added or
  *  removed. The argument is null if the entire graph changed. */
 
-public class GraphEvent extends EventObject {
+public class GraphEvent extends EventObject implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
   /** The specific node, port, or arc that was modified. */

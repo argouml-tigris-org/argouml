@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: PropSheetCategory.java
 // Interfaces: PropSheetCategory
@@ -22,7 +31,9 @@
 // $Id$
 
 package uci.ui;
+
 import java.awt.*;
+import com.sun.java.swing.*;
 import java.util.*;
 import java.beans.*;
 import java.lang.reflect.*;
@@ -38,7 +49,8 @@ public class PropSheetCategory extends PropSheet {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final String dots = ".  .  .  .  .  .  .  .  .  .  .  .  .  .";
+  //public static final String dots = ".  .  .  .  .  .  .  .  .  .  .  .  .  .";
+  public static final String dots = "";
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -53,15 +65,15 @@ public class PropSheetCategory extends PropSheet {
   protected String _category = "Misc";
 
   protected PropertyDescriptor _properties[];
-  protected Frame _frame;
+  protected JFrame _jframe;
 
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public PropSheetCategory(Frame f) {
+  public PropSheetCategory(JFrame f) {
     super();
-    _frame = f;
+    _jframe = f;
     setTabName("no key");
     //{{INIT_CONTROLS
     setLayout(new PropsGridLayout(4, 4));
@@ -70,7 +82,6 @@ public class PropSheetCategory extends PropSheet {
     //addNotify();
     resize(insets().left + insets().right + 250,insets().top + insets().bottom + 300);
     setFont(getPropertiesFont());
-    setBackground(new Color(12632256));
     //}}
     _keysComps = new Hashtable(20);
     _compsKeys = new Hashtable(20);
@@ -108,7 +119,7 @@ public class PropSheetCategory extends PropSheet {
       comp = makeComp(pd);
       _keysComps.put(pd, comp);
       _compsKeys.put(comp, pd);
-      Label lab = new Label(pd.getName() + dots);
+      JLabel lab = new JLabel(pd.getName() + dots);
       _labels.put(pd, lab);
     }
     _inUse.put(pd, pd);
@@ -129,7 +140,6 @@ public class PropSheetCategory extends PropSheet {
 			 ex.toString());
       return;
     }
-
     for (int i = 0; i < _properties.length; i++) {
       // //addPropertyDescriptor(_properties[i], selClass);
       // Don't display hidden or expert properties.
@@ -144,26 +154,38 @@ public class PropSheetCategory extends PropSheet {
   }
 
   public void show(PropertyDescriptor pd) {
-    Label lab = (Label) _labels.get(pd);
+    JLabel lab = (JLabel) _labels.get(pd);
     Component comp = (Component) _keysComps.get(pd);
     setComponentValue(pd, comp);
     if (_shown.containsKey(pd)) return;
     add(lab);
     add(comp);
-    lab.show();
-    comp.show();
+    lab.setVisible(true);
+    comp.setVisible(true);
     _shown.put(pd, pd);
   }
 
   public void hide(PropertyDescriptor pd) {
     if (!_shown.containsKey(pd)) return;
-    Label lab = (Label)_labels.get(pd);
-    Component comp = (Component)_keysComps.get(pd);
-    lab.hide();
-    comp.hide();
+    JLabel lab = (JLabel) _labels.get(pd);
+    Component comp = (Component) _keysComps.get(pd);
+    lab.setVisible(false);
+    comp.setVisible(false);
     remove(lab);
     remove(comp);
     _shown.remove(pd);
+  }
+
+  public Dimension getMinimumSize() {
+    return new Dimension(100, 100);
+  }
+
+  public Dimension getPreferredSize() {
+    return new Dimension(300, 400);
+  }
+
+  public Dimension getSize() {
+    return new Dimension(300, 400);
   }
 
 
@@ -185,6 +207,7 @@ public class PropSheetCategory extends PropSheet {
 	try {
 	  editor = (PropertyEditor)pec.newInstance();
 	} catch (Exception ex) {
+	  System.out.println("exception in makecomp");
 	  // Drop through.
 	}
       }
@@ -192,7 +215,7 @@ public class PropSheetCategory extends PropSheet {
 	editor = PropertyEditorManager.findEditor(type);
       }
       if (editor == null) {
-	return new Label(value == null ? "(null)" : value.toString());
+	return new JLabel(value == null ? "(null)" : value.toString());
       }
       editor.setValue(value);
       editor.addPropertyChangeListener(this);
@@ -202,7 +225,7 @@ public class PropSheetCategory extends PropSheet {
 	comp = (java.awt.Component) editor;
       }
       else if (editor.isPaintable() && editor.supportsCustomEditor())
-	comp = new PropertyCanvas(_frame, editor);
+	comp = new PropertyCanvas(_jframe, editor);
       // if it has a small custom editor, embed it
       // if it has a custom editor but not paintable, use an "Edit" button
       else if (editor.getTags() != null)
@@ -231,24 +254,37 @@ public class PropSheetCategory extends PropSheet {
 
   /** Display the value of a given property */
   public void setComponentValue(PropertyDescriptor pd, Component comp) {
-//     Object value = null;
-//     try {
-//       Method getter = pd.getReadMethod();
-//       Method setter = pd.getWriteMethod();
-//       Object args[] = { };
-//       value = getter.invoke(_sel, args);
-//       //Object value = _sel.get(pd);
-//     }
-//     catch (Exception ex) { System.out.println("unexpected Exception!"); }
-//     if (value == null) return;
-//     // System.out.println("set component value");
-//     if (value instanceof String && comp instanceof TextComponent)
-//       ((TextComponent)comp).setText((String) value);
-//     else if (comp instanceof Choice) {
-//       Vector items = (Vector) _enumProps.get(pd);
-//       if (items != null && items.contains(value))
-// 	((Choice)comp).select(items.indexOf(value));
-//     }
+    //System.out.println("setComponentValue");
+    Object value = null;
+    try {
+       Method getter = pd.getReadMethod();
+       Method setter = pd.getWriteMethod();
+       Object args[] = { };
+       value = getter.invoke(_sel, args);
+    }
+    catch (Exception ex) { System.out.println("unexpected Exception!"); }
+    if (value == null) { System.out.println("null value"); return;}
+    // System.out.println("set component value");
+
+    
+    
+     if (comp instanceof PropertyEditor)
+       ((PropertyEditor)comp).setValue(value);
+     else if (comp instanceof PropertyText) {
+       ((PropertyText)comp).setText(value.toString());
+     }
+     else if (comp instanceof PropertySelector) {
+       //System.out.println("setComponentValue case 2:" + value);
+       String tag = value.toString();
+       if (value instanceof Boolean) {
+	 if (((Boolean)value).booleanValue()) tag = "True";
+	 else tag = "False";
+       }
+       ((PropertySelector)comp).select(tag);
+//        Vector items = (Vector) _enumProps.get(pd);
+//        if (items != null && items.contains(value))
+//  	((Choice)comp).select(items.indexOf(value));
+     }
 //     else if (value instanceof Integer && comp instanceof TextComponent) {
 //       TextComponent tc = (TextComponent) comp;
 //       tc.setText(((Integer) value).toString());
@@ -256,8 +292,19 @@ public class PropSheetCategory extends PropSheet {
 //     else if (value instanceof Boolean && comp instanceof Checkbox) {
 //       ((Checkbox)comp).setState(value.equals(Boolean.TRUE));
 //     }
-//     else if (comp instanceof Label)
-//       ((Label)comp).setText(value.toString());
+     else if (comp instanceof Label)
+       ((Label)comp).setText(value.toString());
+     else {
+       PropertyEditor editor = (PropertyEditor) _pdsEditors.get(pd);
+       //System.out.println("editor = " + editor);
+       if (editor != null) {
+	 _ignorePropChanges = true;
+	 //System.out.println("safe update?");
+	 editor.setValue(value);
+	 _ignorePropChanges = false;
+       }
+       else System.out.println("xxx");
+     }
   }
 
 
@@ -275,6 +322,7 @@ public class PropSheetCategory extends PropSheet {
   }
 
   public void updateComponents() {
+    //System.out.println("updateComponents");
     super.updateComponents();
     updateKeysComps();
     Enumeration keysEnum = _keysComps.keys();
@@ -286,6 +334,7 @@ public class PropSheetCategory extends PropSheet {
   }
 
   public void updateComponent(PropertyDescriptor pd) {
+    //System.out.println("updateComponent");
     Component comp = (Component) _keysComps.get(pd);
     if (comp != null) setComponentValue(pd, comp);
   }

@@ -53,7 +53,9 @@ implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // constructor
 
-  public DecisionModel() { }
+  public DecisionModel() {
+    _decisions.addElement(Decision.UNSPEC);
+  }
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -66,6 +68,7 @@ implements java.io.Serializable {
     if 	(null == d) return false;
     return d.getPriority() > 0;
   }
+
 
   public synchronized void setDecisionPriority(String decision, int priority) {
     Decision d = findDecision(decision);
@@ -93,10 +96,19 @@ implements java.io.Serializable {
     setDecisionPriority(decision, 1);
   }
 
+  public void startConsidering(Decision d) {
+    _decisions.removeElement(d);
+    _decisions.addElement(d);
+  }
+
   /** The Designer has indicated that he is not interested in the
    * given decision right now. */
   public void stopConsidering(String decision) {
     setDecisionPriority(decision, 0);
+  }
+
+  public void stopConsidering(Decision d) {
+    _decisions.removeElement(d);
   }
 
   protected Decision findDecision(String decName) {

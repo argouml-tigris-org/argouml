@@ -45,7 +45,8 @@ import uci.gef.NetEdge;
  * @see AdjacencyMatrixGraphModel
  * @see uci.graph.demo.WordTransforms */
 
-public abstract class MutableGraphSupport implements MutableGraphModel {
+public abstract class MutableGraphSupport
+implements MutableGraphModel, java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -134,6 +135,7 @@ public abstract class MutableGraphSupport implements MutableGraphModel {
   // event notifications
 
   public void fireNodeAdded(Object node) {
+    if (_graphListeners == null) return;
     GraphEvent ge = new GraphEvent(this, node);
     Enumeration listeners = _graphListeners.elements();
     while (listeners.hasMoreElements()) {
@@ -143,6 +145,7 @@ public abstract class MutableGraphSupport implements MutableGraphModel {
   }
 
   public void fireNodeRemoved(Object node) {
+    if (_graphListeners == null) return;
     GraphEvent ge = new GraphEvent(this, node);
     Enumeration listeners = _graphListeners.elements();
     while (listeners.hasMoreElements()) {
@@ -152,6 +155,7 @@ public abstract class MutableGraphSupport implements MutableGraphModel {
   }
 
   public void fireEdgeAdded(Object edge) {
+    if (_graphListeners == null) return;
     GraphEvent ge = new GraphEvent(this, edge);
     Enumeration listeners = _graphListeners.elements();
     while (listeners.hasMoreElements()) {
@@ -161,6 +165,7 @@ public abstract class MutableGraphSupport implements MutableGraphModel {
   }
 
   public void fireEdgeRemoved(Object edge) {
+    if (_graphListeners == null) return;
     GraphEvent ge = new GraphEvent(this, edge);
     Enumeration listeners = _graphListeners.elements();
     while (listeners.hasMoreElements()) {
@@ -170,6 +175,7 @@ public abstract class MutableGraphSupport implements MutableGraphModel {
   }
 
   public void fireGraphChanged() {
+    if (_graphListeners == null) return;
     GraphEvent ge = new GraphEvent(this, null);
     Enumeration listeners = _graphListeners.elements();
     while (listeners.hasMoreElements()) {

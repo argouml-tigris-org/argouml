@@ -37,15 +37,19 @@ public class Critic implements Poster, java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // constants
+  
+  public static final boolean PROBLEM_FOUND = true;
+  public static final boolean NO_PROBLEM = false;
 
+  
   /** The keys of some predefined control records. */
   public static final String ENABLED = "enabled";
   public static final String HUSH_ORDER = "hushOrder";
 
   /** Some priority constants for ToDoItem's. */
-  public static final int LOWEST_PRIORITY = 1;
-  public static final int DEFAULT_PRIORITY = 5;
-  public static final int HIGHEST_PRIORITY = 10;
+  //public static final int LOWEST_PRIORITY = 1;
+  //public static final int DEFAULT_PRIORITY = 5;
+  //public static final int HIGHEST_PRIORITY = 10;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -77,7 +81,9 @@ public class Critic implements Poster, java.io.Serializable {
    * @see GoalModel
    * @see ControlMech */
   private String _decisionCategory;
-  protected Vector _supportedDecisions;
+  protected Vector _supportedDecisions = new Vector();
+
+  protected Vector _supportedGoals = new Vector();
 
   /** The decision type of this critic.  For example, correctness,
    *  completeness, consistency, alternative, presentation,
@@ -113,7 +119,7 @@ public class Critic implements Poster, java.io.Serializable {
     _moreInfoURL = "http://ics.uci.edu/~jrobbins";
     _description = "no description is availible";
     _headline = "default critic headline";
-    _priority = DEFAULT_PRIORITY;
+    _priority = ToDoItem.MED_PRIORITY;
   }
 
 
@@ -137,6 +143,7 @@ public class Critic implements Poster, java.io.Serializable {
    * @see Critic#predicate
    # @see Critic#toDoItem */
   public void critique(Object dm, Designer dsgr) {
+    //System.out.println("applying critic: " + _headline);
     if (predicate(dm, dsgr)) {
       //       if (Boolean.getBoolean("debug")) {
       // 	System.out.println(this.toString() + " detected error");
@@ -193,21 +200,27 @@ public class Critic implements Poster, java.io.Serializable {
   }
 
   public boolean supports(Decision d) {
-    if (_supportedDecisions == null) return false;
     return _supportedDecisions.contains(d);
   }
 
   public Vector getSupportedDecisions() {
-    System.out.println("critic getSupportedDecisions");
     return _supportedDecisions;
   }
 
   public void addSupportedDecision(Decision d) {
-    if (_supportedDecisions == null) _supportedDecisions = new Vector();
     _supportedDecisions.addElement(d);
   }
 
   public boolean supports(Goal g) { return true; }
+
+  public Vector getSupportedGoals() {
+    return _supportedGoals;
+  }
+
+  public void addSupportedGoal(Goal g) {
+    _supportedGoals.addElement(g);
+  }
+
 
   public boolean includesKnowledgeType(int knowledgeType) {
     return (knowledgeType & _knowledgeTypeMask) != 0;
@@ -270,7 +283,13 @@ public class Critic implements Poster, java.io.Serializable {
    *  Critic encapsulates some information you may need to override
    *  this method. */
   public boolean isRelevantToDecisions(Designer dsgr) {
-    return dsgr.isConsidering(getDecisionCategory());
+    Enumeration enum = getSupportedDecisions().elements();
+    while (enum.hasMoreElements()) {
+      Decision d = (Decision) enum.nextElement();
+      //if (dsgr.isConsidering(d)) return true;
+      if (d.getPriority() > 0) return true;
+    }
+    return false;
   }
 
   /** Reply true iff this Critic is relevant to the goals that the

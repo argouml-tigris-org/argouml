@@ -29,14 +29,43 @@ import uci.argo.kernel.*;
  *  critics in the UML domain. */
 
 public class CrUML extends Critic {
-  public static final String decINHERITANCE = "Inheritance";
-  public static final Decision decisionINHERITANCE = new
-  Decision(decINHERITANCE, 1);
-  public static final String decCONTAINMENT = "Containment";
-  public static final Decision decisionCONTAINMENT = new
-  Decision(decCONTAINMENT, 1);
+  public static final Decision decINHERITANCE = new
+  Decision("Inheritance", 5);
 
-  
+  public static final Decision decCONTAINMENT = new
+  Decision("Containment", 5);
+
+  public static final Decision decPATTERNS = new
+  Decision("Design Paterns", 5); //??
+
+  public static final Decision decRELATIONSHIPS = new
+  Decision("Relationships", 5);
+
+  public static final Decision decSTORAGE = new
+  Decision("Storage", 5);
+
+  public static final Decision decINSTANCIATION = new
+  Decision("Instanciation", 5);
+
+  public static final Decision decNAMING = new
+  Decision("Naming", 5);
+
+  public static final Decision decMODULARITY = new
+  Decision("Modularity", 5);
+
+  public static final Decision decCLASS_SELECTION = new
+  Decision("Class Selection", 5);
+
+  public static final Decision decMETHODS = new
+  Decision("methods", 5); //??
+
+  public static final Decision decCODE_GEN = new
+  Decision("Code Generation", 5); //??
+
+  public static final Decision decPLANNED_EXTENSIONS = new
+  Decision("Planned Extensions", 5);
+
+    
   public CrUML() {
     //decisionCategory("UML Decisions");
     // what do UML critics have in common? anything?
@@ -45,8 +74,19 @@ public class CrUML extends Critic {
   /** Static initializer for this class. Called when the class is
    *  loaded (which is before any subclass instances are instanciated). */
   static {
-    Designer.theDesigner().defineDecision(decINHERITANCE, 1);
-    Designer.theDesigner().defineDecision(decCONTAINMENT, 1);
+    Designer d = Designer.theDesigner();
+    d.startConsidering(decINHERITANCE);
+    d.startConsidering(decCONTAINMENT);
+    d.startConsidering(decPATTERNS);
+    d.startConsidering(decRELATIONSHIPS);
+    d.startConsidering(decSTORAGE);
+    d.startConsidering(decINSTANCIATION);
+    d.startConsidering(decNAMING);
+    d.startConsidering(decMODULARITY);
+    d.startConsidering(decCLASS_SELECTION);
+    d.startConsidering(decMETHODS);
+    d.startConsidering(decCODE_GEN);
+    d.startConsidering(decPLANNED_EXTENSIONS);
   }
 
 } /* end class CrUML */

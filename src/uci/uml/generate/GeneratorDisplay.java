@@ -24,12 +24,15 @@ public class GeneratorDisplay extends Generator {
 
     // pick out return type
     Classifier returnType = null;
-    java.util.Enumeration params = op.getParameter().elements();
-    while (params.hasMoreElements()) {
-      Parameter p = (Parameter) params.nextElement();
-      if (p.getName() == Parameter.RETURN_NAME) {
-	returnType = p.getType();
-	break;
+    Vector params = op.getParameter();
+    if (params != null) {
+      java.util.Enumeration enum = params.elements();
+      while (enum.hasMoreElements()) {
+	Parameter p = (Parameter) enum.nextElement();
+	if (p.getName() == Parameter.RETURN_NAME) {
+	  returnType = p.getType();
+	  break;
+	}
       }
     }
     if (returnType == null) s += "void?? ";
@@ -38,14 +41,17 @@ public class GeneratorDisplay extends Generator {
     
     // name and params
     s += generateName(op.getName()) + "(";
-    params = op.getParameter().elements();
-    boolean first = true;
-    while (params.hasMoreElements()) {
-      Parameter p = (Parameter) params.nextElement();
-      if (p.getName() == Parameter.RETURN_NAME) continue;
-      if (!first) s += ", ";
-      s += generateParameter(p);
-      first = false;
+    params = op.getParameter();
+    if (params != null) {
+      java.util.Enumeration enum = params.elements();
+      boolean first = true;
+      while (enum.hasMoreElements()) {
+	Parameter p = (Parameter) enum.nextElement();
+	if (p.getName() == Parameter.RETURN_NAME) continue;
+	if (!first) s += ", ";
+	s += generateParameter(p);
+	first = false;
+      }
     }
     s += ")";
     return s;
@@ -55,6 +61,7 @@ public class GeneratorDisplay extends Generator {
     String s = "";
     s += generateVisibility(attr);
     s += generateScope(attr);
+    s += generateChangability(attr);
     if (attr.getMultiplicity() != Multiplicity.ONE)
       s += generateMultiplicity(attr.getMultiplicity()) + " ";
 
@@ -118,6 +125,7 @@ public class GeneratorDisplay extends Generator {
     String s = "";
     s += generateVisibility(cls.getElementOwnership());
     if (cls.getIsAbstract().booleanValue()) s += "abstract ";
+    if (cls.getIsLeaf().booleanValue()) s += "final ";
     s += classifierKeyword + " " + generatedName + " ";
     String baseClass = generateGeneralzation(cls.getGeneralization());
     if (!baseClass.equals("")) s += "extends " + baseClass + " ";
@@ -289,6 +297,14 @@ public class GeneratorDisplay extends Generator {
     ScopeKind scope = f.getOwnerScope();
     if (scope == null) return "";
     if (scope == ScopeKind.CLASSIFIER) return "static ";
+    return "";
+  }
+
+  public String generateChangability(StructuralFeature sf) {
+    ChangeableKind ck = sf.getChangeable();
+    if (ck == null) return "";
+    if (ck == ChangeableKind.FROZEN) return "final ";
+    //if (ck == ChangeableKind.ADDONLY) return "final ";
     return "";
   }
 

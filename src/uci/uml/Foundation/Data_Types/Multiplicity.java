@@ -37,4 +37,33 @@ public class Multiplicity {
     _ranges.removeElement(x);
   }
 
+  ////////////////////////////////////////////////////////////////
+  // utility methods
+
+  public int max() {
+    int res = 0;
+    if (_ranges == null) return Integer.MAX_VALUE;
+    java.util.Enumeration rangeEnum = _ranges.elements();
+    while (rangeEnum.hasMoreElements()) {
+      MultiplicityRange mr = (MultiplicityRange) rangeEnum.nextElement();
+      Integer upBound = mr.getUpper();
+      int upper = (upBound == null) ? Integer.MAX_VALUE : upBound.intValue();
+      res = Math.max(res, upper);
+    }
+    return res;
+  }
+  
+  public int min() {
+    int res = Integer.MAX_VALUE;
+    if (_ranges == null) return 0;
+    java.util.Enumeration rangeEnum = _ranges.elements();
+    while (rangeEnum.hasMoreElements()) {
+      MultiplicityRange mr = (MultiplicityRange) rangeEnum.nextElement();
+      Integer loBound = mr.getLower();
+      int lower = (loBound == null) ? 0 : loBound.intValue();
+      res = Math.min(res, lower);
+    }
+    return res;
+  }
+
 }

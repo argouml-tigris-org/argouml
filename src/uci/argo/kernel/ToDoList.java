@@ -95,8 +95,10 @@ implements Runnable, java.io.Serializable {
     }
     cur = removes.elements();
     while (cur.hasMoreElements()) {
-      Object item = cur.nextElement();
-      ((ToDoItem)item).resolve("no longer valid");
+      ToDoItem item = (ToDoItem) cur.nextElement();
+      resolve(item);
+      History.TheHistory.addItemResolution(item, "no longer valid");
+      //((ToDoItem)item).resolve("no longer valid");
       notifyObservers("removeElement", item);
     }
   }
@@ -144,6 +146,10 @@ implements Runnable, java.io.Serializable {
       return;
     }
     _items.addElement(item);
+    if (item.getPoster() instanceof Designer)
+      History.TheHistory.addItem(item, "note: ");
+    else
+      History.TheHistory.addItemCritique(item);
     notifyObservers("addElement", item);
     fireToDoItemAdded(item);
   }
@@ -182,12 +188,16 @@ implements Runnable, java.io.Serializable {
     return res;
   }
 
-  public boolean resolve(ToDoItem item, Object reason) {
-    boolean res = removeE(item);
-    //System.out.println("reason=" + reason.toString());
-    if ("explicit resolve".equals(reason))
-      _resolvedItems.addElement(item);
+  public boolean resolve(ToDoItem item) {
+    boolean res = removeE(item);    
     fireToDoItemRemoved(item);
+    return res;
+  }
+
+  public boolean explicitlyResolve(ToDoItem item, String reason) {
+    boolean res = resolve(item);    
+    _resolvedItems.addElement(item);
+    History.TheHistory.addItemResolution(item, reason); 
     return res;
   }
 

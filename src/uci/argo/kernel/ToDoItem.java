@@ -69,6 +69,8 @@ public class ToDoItem implements java.io.Serializable {
   /** Which part of the design does this issue affect? */
   private Set _offenders;
 
+  private int _progress = (int) (Math.random()*100); // 0-100%
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -113,14 +115,19 @@ public class ToDoItem implements java.io.Serializable {
   // accessors
 
   public String getHeadline() { return _headline; }
-  public String getDescription() { return _description; }
-  public String getMoreInfoURL() { return _moreInfoURL; }
-  public int getPriority() { return _priority; }
+  public void setHeadline(String h) { _headline = h; }
 
-   public void setHeadline(String h) { _headline = h; }
-   public void setDescription(String d) { _description = d; }
-   public void setMoreInfoURL(String m) { _moreInfoURL = m; }
-   public void setPriority(int p) { _priority = p; }
+  public String getDescription() { return _description; }
+  public void setDescription(String d) { _description = d; }
+
+  public String getMoreInfoURL() { return _moreInfoURL; }
+  public void setMoreInfoURL(String m) { _moreInfoURL = m; }
+
+  public int getPriority() { return _priority; }
+  public void setPriority(int p) { _priority = p; }
+
+  public int getProgress() { return _progress; }
+  public void setProgress(int p) { _progress = p; }
 
   /** Reply a Set of design material's that are the subject of this
    * ToDoItem. */
@@ -187,10 +194,10 @@ public class ToDoItem implements java.io.Serializable {
 
   /** Needs-More-Work: this is not done yet. Eventually this will also
    *  feed the rational log. */
-  public void resolve(Object reason) {
-    ToDoList list = Designer.theDesigner().getToDoList();
-    list.resolve(this, reason);
-  }
+//   public void resolve(Object reason) {
+//     ToDoList list = Designer.theDesigner().getToDoList();
+//     list.resolve(this, reason);
+//   }
 
   /** Reply true iff this ToDoItem should be kept on the Designer's
    * ToDoList. This should return false if the poster has been

@@ -42,45 +42,56 @@ implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  private Properties _goals = new Properties();
+  private Vector _goals = new Vector();
 
   ////////////////////////////////////////////////////////////////
   // constructor
 
-  public GoalModel() { }
+  public GoalModel() {
+    addGoal(Goal.UNSPEC);
+  }
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  /** Reply true iff the Designer wants to achieve the given goal. */
-  public boolean hasGoal(String goal) {
-    String intStr = _goals.getProperty(goal);
-    if 	(null == intStr) return false;
-    int priority = Integer.parseInt(intStr);
-    return priority >= 1;
+  public Vector getGoals() { return _goals; }
+  public void addGoal(Goal g) { _goals.addElement(g); }
+  public void removeGoal(Goal g) { _goals.removeElement(g); }
+  
+   /** Reply true iff the Designer wants to achieve the given goal. */
+   public boolean hasGoal(String goalName) {
+     Enumeration goalEnum = _goals.elements();
+     while (goalEnum.hasMoreElements()) {
+       Goal g = (Goal) goalEnum.nextElement();
+       if (g.getName().equals(goalName)) return g.getPriority() > 0;
+     }
+     return false;
+   }
+
+  public synchronized void setGoalPriority(String goalName, int priority) {
+    Goal g = new Goal(goalName, priority);
+    _goals.removeElement(g);
+    _goals.addElement(g);
   }
 
-  public synchronized void setGoalPriority(String goal, int priority) {
-    String priStr = (new Integer(priority)).toString();
-    if (priority > 0) _goals.put(goal, priStr);
-    else _goals.remove(goal);
-  }
+//   public Object getGoalInfo(String goal) {
+//     return _goals.getProperty(goal);
+//     /* needs-more-work, we need a better representation of goals */
+//   }
 
-  public Object getGoalInfo(String goal) {
-    return _goals.getProperty(goal);
-    /* needs-more-work, we need a better representation of goals */
-  }
-
-  public void setGoalInfo(String goal, String info) {
-    _goals.put(goal, info);
-    /* needs-more-work, we need a better representation of goals */
-  }
+//   public void setGoalInfo(String goal, String info) {
+//     _goals.put(goal, info);
+//     /* needs-more-work, we need a better representation of goals */
+//   }
 
   /** The Designer wants to achieve the given goal. */
-  public void startDesiring(String goal) { setGoalPriority(goal, 1); }
+  public void startDesiring(String goalName) {
+    addGoal(new Goal(goalName, 1)); }
 
   /** The Designer does not care about the given goal. */
-  public void stopDesiring(String goal) { setGoalPriority(goal, 0); }
+  public void stopDesiring(String goalName) {
+    removeGoal(new Goal(goalName, 0));
+  }
 
 
 } /* end class GoalModel */

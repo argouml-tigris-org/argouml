@@ -42,6 +42,28 @@ public class History {
     addItem(hi);
   }
 
+  public void addItem(ToDoItem item, String desc) {
+    HistoryItem hi = new HistoryItem(item, desc);
+    addItem(hi);
+  }
+
+  public void addItemResolution(ToDoItem item, String reason) {
+    HistoryItem hi = new HistoryItemResolve(item, reason);
+    addItem(hi);
+  }
+
+  public void addItemManipulation(String desc, Object target,
+		     Object oldValue, Object newValue) {
+    HistoryItem hi = new HistoryItemManipulation(desc, target,
+						 oldValue, newValue);
+    addItem(hi);
+  }
+
+  public void addItemCritique(ToDoItem item) {
+    HistoryItem hi = new HistoryItemCritique(item);
+    addItem(hi);
+  }
+
   // items are never removed
 
   // needs-more-work: support for search and queries

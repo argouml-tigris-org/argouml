@@ -8,7 +8,9 @@ import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Collaborations.*;
-import uci.uml.Model_Management.*;
+import uci.uml.Model_Management.ElementOwnership;
+import uci.uml.Model_Management.Model;
+import uci.uml.Model_Management.ElementReference;
 
 
 public class ModelElementImpl extends ElementImpl implements ModelElement {
@@ -53,7 +55,12 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public void setElementOwnership(ElementOwnership x)
   throws PropertyVetoException {
     fireVetoableChange("elementOwnership", _elementOwnership, x);
+    ElementOwnership old = _elementOwnership;
     _elementOwnership = x;
+    
+    if (old != null && (x == null || old.getNamespace() != x.getNamespace())) {
+      old.getNamespace().removeOwnedElement(old);
+    }
   }
 
   public Vector getConstraint() { return _constraint; }

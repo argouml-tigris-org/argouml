@@ -19,7 +19,8 @@ public class ChildGenUML implements ChildGenerator {
     }
 
     if (o instanceof Package) {
-      return ((Package)o).getOwnedElement().elements();
+      Vector ownedElements = ((Package)o).getOwnedElement();
+      if (ownedElements != null) return ownedElements.elements();
     }
     
     if (o instanceof ElementOwnership) {

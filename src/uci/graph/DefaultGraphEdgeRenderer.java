@@ -40,12 +40,12 @@ import uci.gef.Layer;
  *
  * @see uci.graph.demo.TranscriptionRenderer */
 
-public class DefaultGraphEdgeRenderer implements GraphEdgeRenderer {
+public class DefaultGraphEdgeRenderer
+implements GraphEdgeRenderer, java.io.Serializable {
   /** Return a Fig that can be used to represent the given Edge */
   public FigEdge getFigEdgeFor(GraphModel graph, Layer lay, Object edge) {
-    if (edge instanceof NetEdge)
-      return ((NetEdge)edge).presentationFor(lay);
-    return null;
+    if (!(edge instanceof NetEdge))  return null;
+    return ((NetEdge)edge).presentationFor(lay);
   }
 
 } /* end class DefaultGraphEdgeRenderer */

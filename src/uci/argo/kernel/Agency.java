@@ -188,6 +188,7 @@ public class Agency extends Observable { //implements java.io.Serialization
    * I would call this critique, but it causes a compilation error 
    * because it conflicts with the instance method critique! */
   public static void applyAllCritics(Object dm, Designer d) {
+    //System.out.println("applying all critics ====================");
     Class dmClazz = dm.getClass();
     Vector critics = criticsForClass(dmClazz);
     Enumeration cur = critics.elements();
@@ -222,10 +223,12 @@ public class Agency extends Observable { //implements java.io.Serialization
       while (criticEnum.hasMoreElements()) {
         Critic c = (Critic)(criticEnum.nextElement());
         if (_controlMech.isRelevant(c, d)) {
+	  //System.out.println("Activated: " + c.toString());
 	  //Dbg.log("debugActivation","Activated: " + c.toString());
 	  c.beActive();
 	}
         else {
+	  //System.out.println("Deactivated: " + c.toString());
 	  //Dbg.log("debugActivation","Deactivated: " + c.toString());
 	  c.beInactive();
 	}

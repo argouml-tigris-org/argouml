@@ -3,10 +3,12 @@ package uci.uml;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.beans.*;
 import com.sun.java.swing.*;
 
 import uci.util.*;
 import uci.uml.ui.*;
+import uci.uml.visual.*;
 import uci.uml.critics.*;
 import uci.uml.Model_Management.Model;
 import uci.uml.test.omg.*;
@@ -24,15 +26,16 @@ public class Main {
   public static int SPLASH_HEIGHT = 200;
 
   ////////////////////////////////////////////////////////////////
-  // class variables
+  // static variables
 
   public static Vector UMLPerspectives = new Vector();
   public static Vector ToDoPerspectives = new Vector();
 
   // static initializer
   static {
-    UMLPerspectives.addElement(new NavM_DE_F());
-    UMLPerspectives.addElement(new NavM_DE_F());
+    UMLPerspectives.addElement(new NavPackageCentric());
+    UMLPerspectives.addElement(new NavDiagramCentric());
+    UMLPerspectives.addElement(new NavInheritance());
 
     ToDoPerspectives.addElement(new ToDoByOffender());
     ToDoPerspectives.addElement(new ToDoByDecision());
@@ -41,10 +44,10 @@ public class Main {
     ToDoPerspectives.addElement(new ToDoByType());
     ToDoPerspectives.addElement(new ToDoByPoster());
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // main
-  
+
   public static void main(String args[]) {
     defineMockHistory();
     com.sun.java.swing.plaf.metal.MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsTheme());
@@ -79,7 +82,7 @@ public class Main {
     // should be in logon wizard?
     dsgr.startConsidering(uci.uml.critics.CrUML.decINHERITANCE);
     dsgr.startConsidering(uci.uml.critics.CrUML.decCONTAINMENT);
-    
+
   }
 
 
@@ -89,8 +92,8 @@ public class Main {
     h.addItem("And then I wrote a bunch of papers");
     h.addItem("Now there is ArgoUML!");
   }
-  
-} /* end class Main */
+
+} /* end Class Main */
 
 
 class WindowCloser extends WindowAdapter {
@@ -99,16 +102,22 @@ class WindowCloser extends WindowAdapter {
 };
 
 class MockProject extends Project {
-  
+
   public MockProject() {
     super("MockProject");
-    _diagrams.addElement(makeDiagram());
-    _models.addElement(makeModel1());
-    _models.addElement(makeModel2());
+    Model m1 = makeModel1();
+    Model m2 = makeModel2();
+    try {
+      addDiagram(makeDiagram(m1));
+      addDiagram(makeDiagram(m2));
+      addModel(m1);
+      addModel(m2);
+    }
+    catch (PropertyVetoException pve) { }
   }
 
-  public uci.gef.LayerDiagram makeDiagram() {
-    return new uci.gef.LayerDiagram();
+  public UMLDiagram makeDiagram(Model m) {
+    return new UMLClassDiagram(m);
   }
 
   public Model makeModel1() {

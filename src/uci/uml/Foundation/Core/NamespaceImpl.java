@@ -25,41 +25,56 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
     fireVetoableChange("ownedElement", _ownedElement, x);
     if (_ownedElement == null) _ownedElement = new Vector();
     _ownedElement.addElement(x);
+    x.getModelElement().setElementOwnership(x);    
   }
   public void removeOwnedElement(ElementOwnership x) throws PropertyVetoException {
+    if (_ownedElement == null) return;
     fireVetoableChange("ownedElement", _ownedElement, x);
     _ownedElement.removeElement(x);
+    x.getModelElement().setElementOwnership(null);
   }
   public void addPublicOwnedElement(ModelElement x) throws PropertyVetoException {
     ElementOwnership eo = new ElementOwnership(this, VisibilityKind.PUBLIC, x);
     addOwnedElement(eo);
-    updateElementOwnership(eo, x);
   }
   public void addPrivateOwnedElement(ModelElement x) throws PropertyVetoException {
     ElementOwnership eo = new ElementOwnership(this, VisibilityKind.PRIVATE, x);
     addOwnedElement(eo);
-    updateElementOwnership(eo, x);
   }
   public void addProtectedOwnedElement(ModelElement x)
        throws PropertyVetoException {
     ElementOwnership eo = new ElementOwnership(this, VisibilityKind.PROTECTED, x);
     addOwnedElement(eo);
-    updateElementOwnership(eo, x);
   }
   public void addUnspecOwnedElement(ModelElement x)
        throws PropertyVetoException {
     ElementOwnership eo = new ElementOwnership(this, VisibilityKind.UNSPEC, x);
     addOwnedElement(eo);
-    updateElementOwnership(eo, x);
   }
 
 
-  protected void updateElementOwnership(ElementOwnership eo, ModelElement me)
-       throws PropertyVetoException {
-    if (me.getElementOwnership() != null) {
-      // needs-more-work: remove from old package if any
+  public ElementOwnership elementOwnershipFor(ModelElement me,
+					      VisibilityKind vk) {
+    java.util.Enumeration eoEnum = _ownedElement.elements();
+    while (eoEnum.hasMoreElements()) {
+      ElementOwnership eo = (ElementOwnership) eoEnum.nextElement();
+      if (eo.getModelElement() == me &&
+	  (vk == null || vk == eo.getVisibility()))
+	return eo;
     }
-    me.setElementOwnership(eo);
+    return null;
   }
+
+  public boolean contains(ModelElement me) { return contains(me, null); }
+
+  public boolean contains(ModelElement me, VisibilityKind vk) {
+    return elementOwnershipFor(me, vk) != null;
+  }
+
+  public boolean containsPublic(ModelElement me) {
+    return elementOwnershipFor(me, VisibilityKind.PUBLIC) != null;
+  }
+
+
 }
 

@@ -55,6 +55,9 @@ public interface ModelElement extends Element {
   public Vector getElementReference();
   public void setElementReference(Vector x) throws PropertyVetoException;
 
+  public Vector getStereotype();
+  public void setStereotype(Vector x) throws PropertyVetoException;
+
   public Vector getBehavior();
   public void setBehavior(Vector x) throws PropertyVetoException;
 

@@ -21,9 +21,16 @@ public class Decision {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public boolean equals(Object d2) {
+    if (!(d2 instanceof Decision)) return false;
+    return ((Decision)d2).getName().equals(getName());
+  }
+  
   public String getName() { return _name; }
   public void setName(String n) { _name = n; }
   public int getPriority() { return _priority; }
   public void setPriority(int p) { _priority = p; }
+
+  public String toString() { return getName(); }
   
 } /* end class Decision */

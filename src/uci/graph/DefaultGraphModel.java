@@ -44,7 +44,8 @@ import uci.gef.NetEdge;
  * @see AdjacencyMatrixGraphModel
  * @see uci.graph.demo.WordTransforms */
 
-public class DefaultGraphModel extends MutableGraphSupport {
+public class DefaultGraphModel extends MutableGraphSupport
+implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -194,7 +195,10 @@ public class DefaultGraphModel extends MutableGraphSupport {
 
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object srcPort, Object destPort, Class edgeClass) {
-    if (!canConnect(srcPort, destPort)) return null;
+    if (!canConnect(srcPort, destPort)) {
+      System.out.println("illegal connection");
+      return null;
+    }
     if (srcPort instanceof NetPort && destPort instanceof NetPort) {
       NetPort s = (NetPort) srcPort;
       NetPort d = (NetPort) destPort;
@@ -209,6 +213,7 @@ public class DefaultGraphModel extends MutableGraphSupport {
   }
 
   protected Object connectInternal(NetPort s, NetPort d, NetEdge e) {
+    System.out.println("connectInternal");
     e.connect(this, s, d);
     addEdge(e);
     return e;

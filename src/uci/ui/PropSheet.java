@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: PropSheet.java
 // Interfaces: PropSheet
@@ -26,7 +35,9 @@ package uci.ui;
 import java.beans.*;
 import java.lang.reflect.*;
 import java.awt.*;
+import com.sun.java.swing.*;
 import java.util.*;
+
 import uci.gef.Fig;
 
 /** Class that defines the interface for several different kinds of
@@ -34,8 +45,8 @@ import uci.gef.Fig;
  *  supplied with GEF is PropSheetCategory, but others could be
  *  defined. */
 
-public class PropSheet extends Panel
-implements Observer, PropertyChangeListener {
+public class PropSheet extends JPanel
+implements PropertyChangeListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -84,11 +95,12 @@ implements Observer, PropertyChangeListener {
 // //   }
 
   public void setSelection(Object s) {
+    System.out.println("setting selection in PropSheet to " + s);
     if (_sel == s) return;
-    if (_sel instanceof Observable) ((Observable)_sel).deleteObserver(this);
+    //if (_sel instanceof Observable) ((Observable)_sel).deleteObserver(this);
     if (_sel instanceof Fig) ((Fig)_sel).removePropertyChangeListener(this);
     _sel = s;
-    if (_sel instanceof Observable) ((Observable)_sel).addObserver(this);
+    //if (_sel instanceof Observable) ((Observable)_sel).addObserver(this);
     if (_sel instanceof Fig) ((Fig)_sel).addPropertyChangeListener(this);
     updateComponents();
   }
@@ -103,9 +115,9 @@ implements Observer, PropertyChangeListener {
 
   public boolean canEdit(Object item) { return true; }
 
-  public void hide() {
-    super.hide();
-    setSelection(null);
+  public void setVisible(boolean b) {
+    super.setVisible(b);
+    if (!b) setSelection(null);
   }
 
   public Font getPropertiesFont() { return _propertiesFont; }
@@ -142,8 +154,8 @@ implements Observer, PropertyChangeListener {
       _pendingStores.clear();
     }
     finally {
-      _ignorePropChanges = false;
       updateComponents();
+      _ignorePropChanges = false;
     }
   }
 
@@ -183,28 +195,35 @@ implements Observer, PropertyChangeListener {
   public void updateComponent(PropertyDescriptor pd) { updateComponents(); }
 
   /** The selected object may have changed one of its properties. */
-  public void update(Observable obs, Object arg) {
-    // special case for bounding box, because too many updates make dragging
-    // choppy
-    if (obs == _sel && arg instanceof PropertyDescriptor) {
-      String propName = ((PropertyDescriptor)arg).getName();
-      long now = System.currentTimeMillis();
-      if ("bounds".equals(propName) && _lastUpdateTime + MIN_UPDATE > now)
-	return;
-      updateComponent((PropertyDescriptor)arg);
-      _lastUpdateTime = now;
-    }
-  }
+//   public void propertyChange(PropertyChangeEvent pce) {
+//     // special case for bounding box, because too many updates make dragging
+//     // choppy
+//     Object arg = null;
+//     Object src = pce.getSource();
+//     if (src == _sel && arg instanceof PropertyDescriptor) {
+//       String propName = ((PropertyDescriptor)arg).getName();
+//       long now = System.currentTimeMillis();
+//       if ("bounds".equals(propName) && _lastUpdateTime + MIN_UPDATE > now)
+// 	return;
+//       updateComponent((PropertyDescriptor)arg);
+//       _lastUpdateTime = now;
+//     }
+//   }
 
   public void propertyChange(PropertyChangeEvent e) {
+    System.out.println("propertyChange:" + _ignorePropChanges);
+    if (_ignorePropChanges) return; //HACK!
     // special case for bounding box, because too many updates make dragging
     // choppy
     String pName = e.getPropertyName();
     Object src = e.getSource();
     if (src == _sel && !_ignorePropChanges) {
       long now = System.currentTimeMillis();
-      if ("bounds".equals(pName) && _lastUpdateTime + MIN_UPDATE > now)
+      //if ("bounds".equals(pName) && _lastUpdateTime + MIN_UPDATE > now)
+      if (_lastUpdateTime + MIN_UPDATE > now) {
+	System.out.println("too soon");
 	return;
+      }
       updateComponents(); //needs-more-work: narrow to sender?
       // pd?
       _lastUpdateTime = now;
@@ -213,6 +232,7 @@ implements Observer, PropertyChangeListener {
       PropertyDescriptor pd = (PropertyDescriptor) _editorsPds.get(src);
       if (pd != null) store(pd, ((PropertyEditor)src).getValue());
     }
+    System.out.println("end propertyChange");
   }
 
 } /* end class PropSheet */

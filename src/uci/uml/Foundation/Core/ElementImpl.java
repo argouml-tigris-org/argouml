@@ -16,7 +16,7 @@ public class ElementImpl implements Element {
   public Stereotype _classification;
   //% public TaggedValue _taggedValue[];
   public Vector _taggedValue;
-  public transient VetoableChangeSupport vetoSupport;
+  public transient Vector vetoListeners;
   
   public ElementImpl() { }
   public ElementImpl(Name name) {
@@ -83,21 +83,47 @@ public class ElementImpl implements Element {
 
   public synchronized void
   addVetoableChangeListener(VetoableChangeListener listener) {
-    if (vetoSupport == null) vetoSupport = new VetoableChangeSupport(this);
-    vetoSupport.addVetoableChangeListener(listener);
+    if (vetoListeners == null)
+      vetoListeners = new Vector();
+    vetoListeners.removeElement(listener);
+    vetoListeners.addElement(listener);
   }
 
   public synchronized void
   removeVetoableChangeListener(VetoableChangeListener listener) {
-    if (vetoSupport == null) return;
-    vetoSupport.removeVetoableChangeListener(listener);
+    if (vetoListeners == null) return;
+    vetoListeners.removeElement(listener);
   }
 
   public void fireVetoableChange(String propertyName, 
-				 Object oldValue, Object newValue)
+				 Object oldValue, Object newValue) 
        throws PropertyVetoException {
-	 if (vetoSupport == null) return;
-	 vetoSupport.fireVetoableChange(propertyName, oldValue, newValue);
+	 if (vetoListeners == null) return;
+    if (oldValue != null && oldValue.equals(newValue)) return;
+    PropertyChangeEvent evt =
+      new PropertyChangeEvent(this,
+			      propertyName, oldValue, newValue);
+    try {
+      for (int i = 0; i < vetoListeners.size(); i++) {
+	VetoableChangeListener target = 
+	  (VetoableChangeListener) vetoListeners.elementAt(i);
+	target.vetoableChange(evt);
+      }
+    } catch (PropertyVetoException veto) {
+      // Create an event to revert everyone to the old value.
+      evt = new PropertyChangeEvent(this, propertyName, newValue, oldValue);
+      for (int i = 0; i < vetoListeners.size(); i++) {
+	try {
+	  VetoableChangeListener target =
+	    (VetoableChangeListener) vetoListeners.elementAt(i);
+	  target.vetoableChange(evt);
+	} catch (PropertyVetoException ex) {
+	  // We just ignore exceptions that occur during reversions.
+	}
+      }
+      // And now rethrow the PropertyVetoException.
+      throw veto;
+    }    
   }
   
   ////////////////////////////////////////////////////////////////

@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED `AS IS' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: TabPropFrame.java
 // Interfaces: TabPropFrame
@@ -26,8 +35,10 @@
 package uci.ui;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
-import symantec.itools.awt.TabPanel;
+import com.sun.java.swing.*;
+import com.sun.java.swing.event.*;
 
 /** A window that displays a tabbed Property Sheet user interface with
  *  one tab for each PropSheet instance that is added to this object.
@@ -42,7 +53,8 @@ import symantec.itools.awt.TabPanel;
  *  <TT>FEATURE: property_sheet</TT></A>
  */
 
-public class TabPropFrame extends Frame {
+public class TabPropFrame extends JFrame
+implements ChangeListener, ActionListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -53,7 +65,8 @@ public class TabPropFrame extends Frame {
   private Vector _sheets = new Vector();
 
   //{{DECLARE_CONTROLS
-  private symantec.itools.awt.TabPanel tabPanel;
+  //private symantec.itools.awt.TabPanel tabPanel;
+  private JTabbedPane tabPanel;
   //private Panel tabPanel;
   private Panel choicePanel;
   private PropSheetCategory PropSheetCategory1;
@@ -61,17 +74,17 @@ public class TabPropFrame extends Frame {
   private PropSheetCategory PropSheetCategory3;
   private PropSheetCategory PropSheetCategory4;
   private PropSheetCategory PropSheetCategory5;
-  private java.awt.Panel buttonPanel;
+  private JPanel buttonPanel;
   /** <A HREF="../features.html#property_sheet_auto_apply">
    *  <TT>FEATURE: property_sheet_auto_apply</TT></A>
    */
-  private java.awt.Checkbox autoApplyCheckbox;
-  private java.awt.Button applyButton;
+  private JCheckBox autoApplyCheckbox;
+  private JButton applyButton;
   /** <A HREF="../features.html#property_sheet_revert">
    *  <TT>FEATURE: property_sheet_revert</TT></A>
    */
-  private java.awt.Button revertButton;
-  private java.awt.Button closeButton;
+  private JButton revertButton;
+  private JButton closeButton;
   // // private java.awt.Choice universeChoice;
   //}}
 
@@ -86,23 +99,23 @@ public class TabPropFrame extends Frame {
 
   public TabPropFrame() {
     //{{INIT_CONTROLS
-    setLayout(new BorderLayout(0,0));
+    getContentPane().setLayout(new BorderLayout(0,0));
     addNotify();
-    resize(insets().left + insets().right + 300,insets().top + insets().bottom + 406);
-    setFont(new Font("Dialog", Font.PLAIN, 10));
-    setBackground(new Color(12632256));
-    tabPanel = new TabPanel();
-    tabPanel.setLayout(null);
+    resize(insets().left + insets().right + 350,insets().top + insets().bottom + 406);
+    getContentPane().setFont(new Font("Dialog", Font.PLAIN, 10));
+    getContentPane().setBackground(new Color(12632256));
+    tabPanel = new JTabbedPane();
+    tabPanel.addChangeListener(this);
+    //tabPanel.setLayout(null);
     //tabPanel.reshape(insets().left + 0,
     //                  insets().top + 24,300,351);
-    tabPanel.setBackground(new Color(12632256));
-    add("Center", tabPanel);
+    getContentPane().add(tabPanel, BorderLayout.CENTER);
     //tabPanel = new Panel();
     //tabPanel.setLayout(new CardLayout());
     //tabPanel.reshape(insets().left + 0,
     //                  insets().top + 24,300,351);
-    tabPanel.setBackground(new Color(12632256));
-    add("Center", tabPanel);
+    //tabPanel.setBackground(new Color(12632256));
+    //add("Center", tabPanel);
     PropSheetCategory1 = new PropSheetCategory(this);
     PropSheetCategory1.reshape(12,33,276,307);
     PropSheetCategory2 = new PropSheetCategory(this);
@@ -113,24 +126,30 @@ public class TabPropFrame extends Frame {
     PropSheetCategory4.reshape(12,33,276,307);
     PropSheetCategory5 = new PropSheetCategory(this);
     PropSheetCategory5.reshape(12,33,276,307);
-    buttonPanel = new java.awt.Panel();
+    buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER,5,5));
     buttonPanel.reshape(insets().left + 0,insets().top + 375,300,31);
-    add("South", buttonPanel);
-    autoApplyCheckbox = new java.awt.Checkbox("AutoApply");
+    getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+    autoApplyCheckbox = new JCheckBox("AutoApply");
     autoApplyCheckbox.reshape(66,5,78,21);
-    autoApplyCheckbox.setState(true);
+    autoApplyCheckbox.setSelected(true);
+    autoApplyCheckbox.addChangeListener(this);
     buttonPanel.add(autoApplyCheckbox);
-    applyButton = new java.awt.Button("Apply");
+    applyButton = new JButton("Apply");
     applyButton.reshape(149,5,40,21);
     applyButton.enable(false);
     buttonPanel.add(applyButton);
-    revertButton = new java.awt.Button("Revert");
+    applyButton.addActionListener(this);
+    applyButton.setEnabled(false);
+    revertButton = new JButton("Revert");
     revertButton.reshape(149,5,40,21);
     revertButton.enable(false);
+    revertButton.addActionListener(this);
+    revertButton.setEnabled(false);
     buttonPanel.add(revertButton);
-    closeButton = new java.awt.Button("Close");
+    closeButton = new JButton("Close");
     closeButton.reshape(194,5,40,21);
+    closeButton.addActionListener(this);
     buttonPanel.add(closeButton);
     // //universeChoice = new java.awt.Choice();
     // // universeChoice.reshape(insets().left + 0,insets().top + 0,300,21);
@@ -160,7 +179,7 @@ public class TabPropFrame extends Frame {
     addPropSheet(PropSheetCategory2);
     addPropSheet(PropSheetCategory3);
     addPropSheet(PropSheetCategory5);
-    tabPanel.showTabPanel(0);
+    tabPanel.setSelectedIndex(0);
     //((CardLayout)tabPanel.getLayout()).first(tabPanel);
   }
 
@@ -174,20 +193,26 @@ public class TabPropFrame extends Frame {
 
   /** Reply the PropSheet that is currently shown. */
   public Component getCurrentSheet() {
-    Component sheet = null;
-    //int sheetIndex = sheetChoice.getSelectedIndex();
-    int sheetIndex = tabPanel.getCurrentPanelNdx();
-    if (sheetIndex >= 0 && sheetIndex < _sheets.size()) {
-      //sheet = (Component) _sheets.elementAt(sheetIndex);
-      sheet = tabPanel.getTabPanel(sheetIndex);
-    }
-    return sheet;
+    return tabPanel.getSelectedComponent();
+//     Component sheet = null;
+//     //int sheetIndex = sheetChoice.getSelectedIndex();
+//     int sheetIndex = tabPanel.getCurrentPanelNdx();
+//     if (sheetIndex >= 0 && sheetIndex < _sheets.size()) {
+//       //sheet = (Component) _sheets.elementAt(sheetIndex);
+//       sheet = tabPanel.getTabPanel(sheetIndex);
+//     }
+//     return sheet;
   }
 
   /** Add a new PropSheet to this window under the name it supplies. */
   public void addPropSheet(PropSheet ps) {
     if (tabPanel == null) return;
-    tabPanel.addTabPanel(ps.getTabName(), ps.canEdit(_selection), ps);
+    //tabPanel.addTabPanel(ps.getTabName(), ps.canEdit(_selection),
+    //ps);
+    int i = tabPanel.getTabCount();
+    //System.out.println("adding tab, size = " + tabPanel.getTabCount());
+    tabPanel.addTab(ps.getTabName(), ps);
+    tabPanel.setEnabledAt(i, ps.canEdit(_selection));
     String curSheetName = ps.getTabName();
     //tabPanel.add(curSheetName, ps);
     //sheetChoice.addItem(curSheetName);
@@ -228,6 +253,7 @@ public class TabPropFrame extends Frame {
 // //   }
 
   public void select(Object item) {
+    //System.out.println("TabPropFrame select");
     if (item != _selection) {
       _selection = item;
       // //updateUniverseSelection();
@@ -242,41 +268,19 @@ public class TabPropFrame extends Frame {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  public boolean handleEvent(Event event) {
-    if (event.id == Event.WINDOW_DESTROY) {
-      hide();         // hide the Frame
-      return true;
-    }
-    if (event.target == closeButton && event.id == Event.ACTION_EVENT) {
-      closeButton_Clicked(event);
-      return true;
-    }
-    if (event.target == applyButton && event.id == Event.ACTION_EVENT) {
-      applyButton_Clicked(event);
-      return true;
-    }
-    if (event.target == revertButton && event.id == Event.ACTION_EVENT) {
-      revertButton_Clicked(event);
-      return true;
-    }
-    if (event.target == autoApplyCheckbox && event.id == Event.ACTION_EVENT) {
-      autoApplyCheckbox_Action(event);
-      return true;
-    }
-// // if (event.target == universeChoice && event.id == Event.ACTION_EVENT) {
-// //       universeChoice_Action(event);
-// //       return true;
-// //     }
-    if (event.target == tabPanel && event.id == Event.ACTION_EVENT) {
-      tabPanel_Action(event);
-      return true;
-    }
-  //    if (event.target == sheetChoice && event.id == Event.ACTION_EVENT) {
-  //      sheetChoice_Action(event);
-  //      return true;
-  //    }
-    return super.handleEvent(event);
+  public void actionPerformed(ActionEvent ae) {
+    Object src = ae.getSource();
+    if (src == closeButton) closeButton_Clicked(ae);
+    if (src == applyButton) applyButton_Clicked(ae);
+    if (src == revertButton) revertButton_Clicked(ae);
   }
+
+  public void stateChanged(ChangeEvent ce) {
+    Object src = ce.getSource();
+    if (src == autoApplyCheckbox) autoApplyCheckbox_Action(ce);
+    if (src == tabPanel) updateCurSheet();
+  }
+  
 
   /** When the user switches tabs, update the newly shown PropSheet.
    *  <A HREF="../bugs.html#switch_tabs_without_apply">
@@ -297,21 +301,21 @@ public class TabPropFrame extends Frame {
   //    updateCurSheet();
   //  }
 
-  protected void autoApplyCheckbox_Action(Event event) {
+  protected void autoApplyCheckbox_Action(ChangeEvent event) {
     //{{CONNECTION
     // Enable the Button on condition... Is Checkbox Off?
-    applyButton.enable(!autoApplyCheckbox.getState());
-    revertButton.enable(!autoApplyCheckbox.getState());
+    applyButton.setEnabled(!autoApplyCheckbox.isSelected());
+    revertButton.setEnabled(!autoApplyCheckbox.isSelected());
     //}}
     Component p = getCurrentSheet();
     if (p instanceof PropSheet)//?
-      ((PropSheet)p).setAutoApply(autoApplyCheckbox.getState());
+      ((PropSheet)p).setAutoApply(autoApplyCheckbox.isSelected());
   }
 
-  void closeButton_Clicked(Event event) {
+  void closeButton_Clicked(ActionEvent event) {
     //{{CONNECTION
     // Hide the Frame
-    hide();
+    setVisible(false);
     //}}
     dispose();
   }
@@ -321,13 +325,13 @@ public class TabPropFrame extends Frame {
    *  When auto-apply is off, if I make changes and then switch tabs
    *  and then press Apply, nothing happens.
    * */
-  void applyButton_Clicked(Event event) {
+  void applyButton_Clicked(ActionEvent event) {
     Component sheet = getCurrentSheet();
     if (sheet instanceof PropSheet) ((PropSheet)sheet).apply();
   }
 
   /** Ask the currently shown PropSheet to apply any outstanding changes. */
-  void revertButton_Clicked(Event event) {
+  void revertButton_Clicked(ActionEvent event) {
     Component sheet = getCurrentSheet();
     if (sheet instanceof PropSheet) ((PropSheet)sheet).revert();
   }
@@ -361,15 +365,16 @@ public class TabPropFrame extends Frame {
 // //   }
 
   public void updateTabs() {
+    System.out.println("updateTabs");
     try {
     int firstEnabled = -1;
-    int numTabs = tabPanel.countTabs();
+    int numTabs = tabPanel.getTabCount();
     for (int tab = 0; tab < numTabs; ++tab)
       if (updateTabEnabled(tab) && firstEnabled == -1)
 	firstEnabled = tab;
-    int curTab = tabPanel.getCurrentPanelNdx();
+    int curTab = tabPanel.getSelectedIndex();
     if (curTab < 0 && firstEnabled != -1)
-      tabPanel.showTab(firstEnabled);
+      tabPanel.setSelectedIndex(firstEnabled);
     }
     catch (Exception ex) { }
   }
@@ -377,11 +382,11 @@ public class TabPropFrame extends Frame {
   public boolean updateTabEnabled(int tab) {
     boolean canEdit;
     try {
-    Component c = tabPanel.getTabPanel(tab);
+    Component c = tabPanel.getComponentAt(tab);
     if (c instanceof PropSheet)
       canEdit = ((PropSheet) c).canEdit(_selection);
     else canEdit = true;
-    tabPanel.enableTabPanel(canEdit, tab);
+    tabPanel.setEnabledAt(tab, canEdit);
     return canEdit;
     }
     catch (Exception ex) { }
@@ -392,15 +397,18 @@ public class TabPropFrame extends Frame {
  *  <FONT COLOR=660000><B>BUG: win_prop_sheet_grabs_focus</B></FONT></A>
  */
   public void updateCurSheet() {
-    int curTab = tabPanel.getCurrentPanelNdx();
-    Component c = tabPanel.getTabPanel(curTab);
+    System.out.println("updateCurSheet");
+    int curTab = tabPanel.getSelectedIndex();
+    Component c = tabPanel.getSelectedComponent();
     //int curTab = sheetChoice.getSelectedIndex();
     //Component c = getCurrentSheet();
     //updateTabEnabled(_lastTab);
     if (c instanceof PropSheet) {
       PropSheet curPropSheet = (PropSheet) c;
       curPropSheet.setSelection(_selection);
+      System.out.println("updateCurSheet1: " + curPropSheet);
       if (_lastPropSheet != curPropSheet) {
+	System.out.println("updateCurSheet2");
 	uci.beans.editors.ColorPickerGrid.stopEditing();
 	if (_lastPropSheet != null) _lastPropSheet.setSelection(null);
       }
