@@ -71,7 +71,7 @@ public class FigInterface extends FigNodeModelElement {
 
     _outline = new FigRect(8,8,92,30, Color.black, Color.white);
 
-    _stereoFake = new FigText(10,10,92,15,Color.black, "Times", 10);
+    _stereoFake = new FigText(10,10,88,15,Color.black, "Times", 10);
     _stereoFake.setExpandOnly(true);
     _stereoFake.setFilled(false);
     _stereoFake.setLineWidth(0);
@@ -118,7 +118,7 @@ public class FigInterface extends FigNodeModelElement {
   }
 
   ////////////////////////////////////////////////////////////////
-  // Fig implemetation
+  // Fig implementation
 
   public Vector getPopUpActions(MouseEvent me) {
     Vector popUpActions = super.getPopUpActions(me);
@@ -156,11 +156,20 @@ public class FigInterface extends FigNodeModelElement {
     _name.setLineWidth(0);
   }
 
-  public void setLineWidth(int w) {
-    super.setLineWidth(w);
-    _stereoFake.setLineWidth(0);
-    _name.setLineWidth(0);
-  }
+    // stop group setFilled from override stereo/name fill.
+    public void setFilled(boolean f) {
+	super.setFilled(f);
+	_stereo.setFilled(false);
+	_name.setFilled(false);
+    }
+
+    // stop group setLineWidth from overriding stereo/name line width.
+    public void setLineWidth(int w) {
+	super.setLineWidth(w);
+	_stereo.setLineWidth(0);
+	_stereoFake.setLineWidth(0);
+	_name.setLineWidth(0);
+    }
 
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
@@ -173,7 +182,7 @@ public class FigInterface extends FigNodeModelElement {
 
     _outline.setBounds(x, y, w,
 		       stereoMin.height + nameMin.height - OVERLAP);
-    _stereoFake.setBounds(x+1, y+1, w-2, stereoMin.height);
+    _stereoFake.setBounds(x+2, y+1, w-4, stereoMin.height);
     _name.setBounds(x+1, y + stereoMin.height - OVERLAP + 1, w-2, nameMin.height);
     _oper.setBounds(x, y + _outline.getBounds().height-1,
 		    w, h - _outline.getBounds().height+1);
