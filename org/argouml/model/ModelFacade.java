@@ -29,6 +29,7 @@ import java.util.*;
 // NS-UML imports:
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.model_management.*;
 
 // GEF imports:
 import org.tigris.gef.base.*;
@@ -123,6 +124,17 @@ public class ModelFacade {
 	return handle instanceof MClassifier;
     }
 
+    /** Recognizer for Package
+     *
+     * @param handle candidate
+     * @returns true if handle is a Package
+     */
+    public static boolean isAPackage(Object handle) {
+	return handle instanceof MPackage;
+    }
+
+
+
     // Recognizer methods for the diagrams (in alphabetic order)
     /** Recognizer for Diagram.
      *
@@ -132,6 +144,8 @@ public class ModelFacade {
     public static boolean isADiagram(Object handle) { 
 	return handle instanceof Diagram;
     }
+
+
 
     ////////////////////////////////////////////////////////////////
     // Getters for the UML model (in alphabetic order)
@@ -171,7 +185,7 @@ public class ModelFacade {
     /** The list of Operations of this classifier and all inherited.
      *
      * @param handle classifier to examine.
-     * @return iterator with operations.
+     * @return Iterator with operations.
      */
     public static Iterator getOperationsInh(Object handle) {
 	if (!(handle instanceof MClassifier)) return emptyIterator();
@@ -182,6 +196,20 @@ public class ModelFacade {
 	// iterators. I (Linus) prefer iterators.
 	return CoreHelper.getHelper().getOperationsInh(c).iterator();
     }
+
+    /** The list of owned elements of the the package.
+     *
+     * @param handle package to retrieve from.
+     * @return Iterator with operaitons
+     */
+    public static Iterator getOwnedElements(Object handle) {
+	if (handle instanceof MNamespace) {
+	    return ((MNamespace)handle).getOwnedElements().iterator();
+	}
+	// ...
+	return emptyIterator();
+    }
+
 
     ////////////////////////////////////////////////////////////////
     // Common getters

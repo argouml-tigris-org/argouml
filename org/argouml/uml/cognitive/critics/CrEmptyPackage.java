@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,21 +29,21 @@
 // File: CrEmptyPackage.java
 // Classes: CrEmptyPackage
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.*;
-
 import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
+// Use Model through ModelFacade
+import org.argouml.model.ModelFacade;
+
 /** A critic whether a package/subsystem/model is empty. */
+
+//TODO: different critic for packages consisting only
+//of references to elements of other packages?
 
 public class CrEmptyPackage extends CrUML {
     protected static Category cat = Category.getInstance(CrEmptyPackage.class);
@@ -54,16 +55,13 @@ public class CrEmptyPackage extends CrUML {
     addTrigger("ownedElement");
   }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    cat.debug("predicate2 on " + dm);
-    if (!(dm instanceof MPackage)) return NO_PROBLEM;
-    MPackage mod = (MPackage) dm;
-    Collection elms = mod.getOwnedElements();
-    if (elms == null || elms.size() == 0) return PROBLEM_FOUND;
-    return NO_PROBLEM;
-    //TODO: different critic for packages consisting only
-    //of references to elements of other packages?
-  }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	cat.debug("predicate2 on " + dm);
+	if (!(ModelFacade.isAPackage(dm))) return NO_PROBLEM;
+	Iterator enum = ModelFacade.getOwnedElements(dm);
+	if (!enum.hasNext()) return PROBLEM_FOUND;
+	return NO_PROBLEM;
+    }
 
 } /* end class CrEmptyPackage */
 
