@@ -202,10 +202,14 @@ public class WizStep extends JPanel
 	    updateTabToDo();
 	}
     }
+
+    /**
+     * Called when the Help button is pressed.
+     */
     public void doHelp() {
-	if (!(TargetManager.getInstance().getTarget() instanceof ToDoItem))
+	if (!(_target instanceof ToDoItem))
 	    return;
-	ToDoItem item = (ToDoItem) TargetManager.getInstance().getTarget();
+	ToDoItem item = (ToDoItem) _target;
 	String urlString = item.getMoreInfoURL();
 	StartBrowser.openUrl(urlString);
     }
