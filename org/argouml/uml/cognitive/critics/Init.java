@@ -166,7 +166,6 @@ public class Init {
 
   // Pattern specific
   public static Critic crConsiderSingleton = new CrConsiderSingleton();
-  public static Critic crSingletonViolated = new CrSingletonViolated();
   public static Critic crSingletonViolatedMSA =
       new CrSingletonViolatedMissingStaticAttr();
   public static Critic crSingletonViolatedOPC =
@@ -321,7 +320,6 @@ public class Init {
       Agency.register(crUnconventionalPackName, modelCls);
 
       Agency.register(crConsiderSingleton, classCls);
-      Agency.register(crSingletonViolated, classCls);
       Agency.register(crSingletonViolatedMSA, classCls);
       Agency.register(crSingletonViolatedOPC, classCls);
 

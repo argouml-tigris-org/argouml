@@ -648,65 +648,6 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
         // Updated to reflect use of <<create>> stereotype for constructors and
         // lack of a wizard at this stage
 
-        { "CrSingletonViolated_head",
-          "Singleton Stereotype Violated in <ocl>self</ocl>" },
-
-        { "CrSingletonViolated_desc",
-          "<ocl>self</ocl> is marked with the <<singleton>>; stereotype, " +
-          "but it does not satisfy the constraints imposed on Singletons " +
-          "(ArgoUML will also accept <<Singleton>> stereotype as defining a " +
-          "Singleton).\n" +
-          "\n" +
-          "A Singleton class can have at most one instance.  This means " +
-          "that the class must meet the design criteria for a singleton.\n" +
-          "\n" +
-          "1. It should have a static attribute (a class variable) to hold " +
-          "the instance.\n" +
-          "\n" +
-          "2. It must have only private constructors so that new instances " +
-          "cannot be made by other code.\n" +
-          "\n" +
-          "3.  It must have at least one constructor to override the " +
-          "default constructor, so that the default constructor is not used " +
-          "to create multiple instances.\n" +
-          "\n" +
-          "Whenever you mark a class with a stereotype, the class should " +
-          "satisfy all constraints of the stereotype.  This is an important " +
-          "part of making a self-consistent and understandable design. " +
-          "Using the Singleton Pattern can save time and memory space.\n" +
-          "\n" +
-          "If you no longer want this class to be a Singleton, remove the " +
-          "<<singleton>> or <<Singleton>> stereotype by clicking on the " +
-          "class and selecting the blank selection on the stereotype " +
-          "drop-down within the properties tab.\n" +
-          "\n" +
-          "To apply the Singleton Pattern you should do the following.\n" +
-          "\n" +
-          "1. Define a static attribute (a class variable) holding the " +
-          "instance. This must therefore have <ocl>self</ocl> as its " +
-          "type.\n" +
-          "\n" +
-          "2. Provide only private constructors for <ocl>self</ocl> so that " +
-          "new instances cannot be made by other code. The creation of the " +
-          "single instance could be through a suitable helper operation, " +
-          "which invokes this private constructor just once.\n" +
-          "\n" +
-          "3. Provide at least one constructor to override the default " +
-          "constructor, so that the default constructor is not used to " +
-          "create multiple instances.\n" +
-          "\n" +
-          "In the UML 1.3 standard, a constructor is an operation with the " +
-          "stereotype <<create>>. Although not strictly standard, ArgoUML " +
-          "will also accept <<Create>> as a stereotype for " +
-          "constructors.\n" +
-          "\n" +
-          "By convention in Java and C++ a constructor has the same name as " +
-          "the class, is not static, and returns no value. Note that in " +
-          "ArgoUML this means you must remove the return value created by " +
-          "default for an operation. ArgoUML; will also accept any " +
-          "operation that follows these conventions as a constructor even " +
-          "if it is not stereotyped <<create>> or <<Create>>." },
-
         { "CrSingletonViolatedMissingStaticAttr_head",
           "Singleton Stereotype Violated, missing static attribute " +
 	  "in <ocl>self</ocl>" },
