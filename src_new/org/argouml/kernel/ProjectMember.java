@@ -33,15 +33,14 @@ public abstract class ProjectMember {
     ////////////////////////////////////////////////////////////////
     // instance varables
 
-    //protected String _name;
-    private String _name;
-    protected Project _project = null;
+    private String name;
+    private Project project = null;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ProjectMember(String name, Project project) {
-	_project = project;
+    public ProjectMember(String name, Project theProject) {
+	project = theProject;
 	setName(name);
     }
 
@@ -56,9 +55,11 @@ public abstract class ProjectMember {
      * {@link Project#findMemberByName} goes by.
      *
      * @author Steffen Zschaler
+     *
+     * @return the member's name without the prepended name of the project
      */
     public String getPlainName() {
-	String s = _name;
+	String s = name;
     
 	if (s != null) {
 	    if (!s.endsWith (getFileExtension())) {
@@ -73,15 +74,17 @@ public abstract class ProjectMember {
      * In contrast to {@link #getPlainName} returns the member's name
      * including the project's base name. The project's base name is
      * prepended followed by an underscore '_'.
+     *
+     * @return the member's name including the project's base name
      */
     public String getName() {
-	if (_name == null)
+	if (name == null)
 	    return null;
 
-	String s = _project.getBaseName();
+	String s = project.getBaseName();
 
-	if (_name.length() > 0)
-	    s += "_" + _name;
+	if (name.length() > 0)
+	    s += "_" + name;
     
 	if (!s.endsWith(getFileExtension()))
 	    s += getFileExtension();
@@ -90,28 +93,28 @@ public abstract class ProjectMember {
     }
   
     public void setName(String s) { 
-	_name = s;
+	name = s;
 
-	if (_name == null)
+	if (name == null)
 	    return;
 
-	if (_name.startsWith (_project.getBaseName())) {
-	    _name = _name.substring (_project.getBaseName().length());
+	if (name.startsWith (project.getBaseName())) {
+	    name = name.substring (project.getBaseName().length());
 	    int i = 0;
-	    for (; i < _name.length(); i++)
-		if (_name.charAt(i) != '_')
+	    for (; i < name.length(); i++)
+		if (name.charAt(i) != '_')
 		    break;
 	    if (i > 0)
-		_name = _name.substring(i);
+		name = name.substring(i);
 	}
 
-	if (_name.endsWith(getFileExtension()))
-	    _name =
-		_name.substring(0,
-				_name.length() - getFileExtension().length());
+	if (name.endsWith(getFileExtension()))
+	    name =
+		name.substring(0,
+				name.length() - getFileExtension().length());
     }
 
-    public Project getProject() { return _project; }
+    public Project getProject() { return project; }
 
     public abstract String getType();
     public abstract String getFileExtension();
@@ -133,8 +136,8 @@ public abstract class ProjectMember {
     public abstract void save(Writer writer) throws Exception;
 
     public void remove() {
-        _name = null;
-        _project = null;
+        name = null;
+        project = null;
     }
 } /* end class ProjectMember */
 
