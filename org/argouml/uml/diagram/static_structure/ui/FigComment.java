@@ -139,9 +139,9 @@ public class FigComment
         _urCorner.setFilled(true);
         _urCorner.setLineWidth(1);
 
-        _bigPort = new FigRect(x, y, width, height, null, null);
-        _bigPort.setFilled(false);
-        _bigPort.setLineWidth(0);
+        setBigPort(new FigRect(x, y, width, height, null, null));
+        getBigPort().setFilled(false);
+        getBigPort().setLineWidth(0);
 
         _text = new FigText(2, 2, width - 2 - gapY, height - 4, true);
         _text.setFont(LABEL_FONT);
@@ -155,7 +155,7 @@ public class FigComment
         //_text.setLineColor(Color.white);
 
         // add Figs to the FigNode in back-to-front order
-        addFig(_bigPort);
+        addFig(getBigPort());
         addFig(_body);
         addFig(_urCorner);
         addFig(_text);
@@ -243,7 +243,7 @@ public class FigComment
     public Object clone() {
         FigComment figClone = (FigComment) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone._bigPort = (FigRect) it.next();
+        figClone.setBigPort((FigRect) it.next());
         figClone._body = (FigPoly) it.next();
         figClone._urCorner = (FigPoly) it.next();
         figClone._text = (FigText) it.next();
@@ -461,7 +461,7 @@ public class FigComment
         _text.setBounds(x + 2, y + 2, w - 4 - gapY, h - 4);
 
         // Resize the big port around the figure
-        _bigPort.setBounds(x, y, w, h);
+        getBigPort().setBounds(x, y, w, h);
 
         // Since this is a complex polygon, there's no easy way to resize it.
         Polygon newPoly = new Polygon();

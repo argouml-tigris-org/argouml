@@ -97,7 +97,7 @@ public class FigFinalState extends FigStateVertex {
 	setNameFig(new FigText(x + 10, y + 22, 0, 21, true));
 	getNameFig().setFilled(false);
 	getNameFig().setLineWidth(0);
-	getNameFig().setFont(LABEL_FONT);
+	getNameFig().setFont(getLabelFont());
 	getNameFig().setTextColor(Color.black);
 	getNameFig().setMultiLine(false);
 	getNameFig().setAllowsTab(false);

@@ -114,7 +114,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         // The big port and cover. Color of the big port is irrelevant
 
-        _bigPort = new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan);
+        setBigPort(new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan));
         _cover   = new FigRect(10, 10, 90, 50, Color.black, Color.white);
 
         // The stereotype. Width is the same as the cover, height is whatever
@@ -146,7 +146,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         // add Figs to the FigNode in back-to-front order
 
-        addFig(_bigPort);
+        addFig(getBigPort());
         addFig(_cover);
         addFig(getStereotypeFig());
         addFig(getNameFig());
@@ -203,7 +203,7 @@ public class FigClassifierRole extends FigNodeModelElement {
         FigClassifierRole figClone = (FigClassifierRole) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
 
-        figClone._bigPort = (FigRect) it.next();
+        figClone.setBigPort((FigRect) it.next());
         figClone._cover   = (FigRect) it.next();
         figClone.setStereotypeFig((FigText) it.next());
         figClone.setNameFig((FigText) it.next());
@@ -316,7 +316,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
     public Dimension getMinimumSize() {
 
-        Dimension bigPortMin = _bigPort.getMinimumSize();
+        Dimension bigPortMin = getBigPort().getMinimumSize();
         Dimension coverMin   = _cover.getMinimumSize();
         Dimension stereoMin  = getStereotypeFig().getMinimumSize();
         Dimension nameMin    = getNameFig().getMinimumSize();
@@ -403,7 +403,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
         // Set the bounds of the bigPort and cover
 
-        _bigPort.setBounds(x, y, newW, newH);
+        getBigPort().setBounds(x, y, newW, newH);
         _cover.setBounds(x, y, newW, newH);
 
         // Record the changes in the instance variables of our parent, tell GEF

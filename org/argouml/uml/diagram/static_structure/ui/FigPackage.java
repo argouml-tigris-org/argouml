@@ -87,7 +87,7 @@ public class FigPackage extends FigNodeModelElement {
     protected FigRect _stereoLineBlinder;
 
     public FigPackage() {
-        _bigPort = new FigRect(x, y, width, height, null, null);
+        setBigPort(new FigRect(x, y, width, height, null, null));
 
         //
         // Create a Body that reacts to double-clicks and jumps to a diagram.
@@ -99,8 +99,8 @@ public class FigPackage extends FigNodeModelElement {
         getNameFig().setBounds(x, y, width - indentX, textH + 2);
         getNameFig().setJustification(FigText.JUSTIFY_LEFT);
 
-        _bigPort.setFilled(false);
-        _bigPort.setLineWidth(0);
+        getBigPort().setFilled(false);
+        getBigPort().setLineWidth(0);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
@@ -133,7 +133,7 @@ public class FigPackage extends FigNodeModelElement {
         // that will be hard work.
 
         // add Figs to the FigNode in back-to-front order
-        addFig(_bigPort);
+        addFig(getBigPort());
         addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(_stereoLineBlinder);
@@ -174,7 +174,7 @@ public class FigPackage extends FigNodeModelElement {
     public Object clone() {
         FigPackage figClone = (FigPackage) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone._bigPort = (FigRect) it.next();
+        figClone.setBigPort((FigRect) it.next());
         figClone.setStereotypeFig((FigText) it.next());
         figClone.setNameFig((FigText) it.next());
         figClone._stereoLineBlinder = (FigRect) it.next();
@@ -451,7 +451,7 @@ public class FigPackage extends FigNodeModelElement {
 
         // set bounds of big box
 
-        _bigPort.setBounds(xa, ya, newW, newH);
+        getBigPort().setBounds(xa, ya, newW, newH);
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property

@@ -184,7 +184,7 @@ public class FigInterface extends FigNodeModelElement {
         // we're all done for efficiency.
         enableSizeChecking(false);
         suppressCalcBounds = true;
-        addFig(_bigPort);
+        addFig(getBigPort());
         addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(_stereoLineBlinder);
@@ -233,7 +233,7 @@ public class FigInterface extends FigNodeModelElement {
     public Object clone() {
         FigInterface figClone = (FigInterface) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone._bigPort = (FigRect) it.next();
+        figClone.setBigPort((FigRect) it.next());
         figClone.setStereotypeFig((FigText) it.next());
         figClone.setNameFig((FigText) it.next());
         figClone._stereoLineBlinder = (FigRect) it.next();
@@ -814,7 +814,7 @@ public class FigInterface extends FigNodeModelElement {
 
         // set bounds of big box
 
-        _bigPort.setBounds(x, y, newW, newH);
+        getBigPort().setBounds(x, y, newW, newH);
 
         // Now force calculation of the bounds of the figure, update the edges
         // and trigger anyone who's listening to see if the "bounds" property
@@ -863,7 +863,7 @@ public class FigInterface extends FigNodeModelElement {
 		    // bounds not relevant here
 		    oper.setFilled(false);
 		    oper.setLineWidth(0);
-		    oper.setFont(LABEL_FONT);
+		    oper.setFont(getLabelFont());
 		    oper.setTextColor(Color.black);
 		    oper.setJustification(FigText.JUSTIFY_LEFT);
 		    oper.setMultiLine(false);
@@ -881,9 +881,9 @@ public class FigInterface extends FigNodeModelElement {
 		//oper.setItalic(((MOperation)bf).isAbstract());
 		//// does not properly work (GEF bug?)
 		if (ModelFacade.isAbstract(behavioralFeature)) {
-		    oper.setFont(ITALIC_LABEL_FONT);
+		    oper.setFont(getItalicLabelFont());
 		} else {
-		    oper.setFont(LABEL_FONT);
+		    oper.setFont(getLabelFont());
 		}
 		ocounter++;
 	    }

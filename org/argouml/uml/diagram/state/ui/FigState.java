@@ -61,7 +61,7 @@ public abstract class FigState extends FigStateVertex {
         internal = new FigText(getInitialX() + 2, getInitialY() + 2 + 21 + 4,
                 getInitialWidth() - 4, getInitialHeight()
                         - (getInitialY() + 2 + 21 + 4));
-        internal.setFont(LABEL_FONT);
+        internal.setFont(getLabelFont());
         internal.setTextColor(Color.black);
         internal.setLineWidth(0);
         internal.setFilled(false);
