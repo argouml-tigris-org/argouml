@@ -1122,6 +1122,15 @@ This chapter is currently under rework with new component organization.
     </warning>
 <para>...</para>
 
+<!--
+    Each section in this chapter describes a component.
+    It starts with:
+    Purpose - one or two sentences/lines.
+    Where that component is located.
+    What layer it belongs to.
+ -->
+
+
     &componentmodel;
     &componentcritics;
     &componentdiagrams;
@@ -1901,6 +1910,26 @@ The OCL is located in
 The OCL is a Layer 3 component. See <xref linkend="layer3"></xref>.
 </para>
       <para>
+The OCL editor gui interface is 
+<classname>org.argouml.uml.ui.TabConstraints</classname>
+(shown in the bottom right hand panel - details panel).
+</para>
+      <para>
+<classname>org.argouml.ocl.ArgoFacade</classname> adapts the 
+<classname>tudresden.ocl.gui.OCLEditor</classname> for ArgoUML.
+There are some other helper classes in 
+<classname>org.argouml.ocl</classname>, 
+with names beginning with OCL but they are used for other purposes.
+Historicaly GEF uses OCL as a kind of template language to 
+convert the uml diagrams to pgml(and back again), 
+it doesn't have anything to do with ocl constraints in your uml model.
+</para>
+      <para>
+<classname>ArgoFacade</classname> is reused by 
+<classname>GeneratorJava</classname> and 
+<classname>TabConstraints</classname>.
+</para>
+      <para>
 	<indexterm>
 	  <primary>Dresden OCL Toolkit</primary>
 	</indexterm>
@@ -1912,8 +1941,8 @@ and adaptation.
 
   </chapter>
 
-  <chapter id="general">
-    <title>General information</title>
+  <chapter id="extending">
+    <title>Extending ArgoUML</title>
 
       <para>
 This section is not yet updated to discuss layers.
