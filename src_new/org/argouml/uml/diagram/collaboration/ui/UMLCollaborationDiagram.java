@@ -39,20 +39,21 @@ import javax.swing.JToolBar;
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.CmdCreateNode;
 import org.argouml.swingext.PopupToolBoxButton;
+import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
+import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionAddMessage;
-import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
+import org.argouml.uml.ui.ActionAddNote;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.ui.ToolBar;
+
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -191,6 +192,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         //toolBar.add(_actionAssoc);
         toolBar.add(ActionAddMessage.SINGLETON);
         toolBar.add(_actionGeneralize);
+        toolBar.addSeparator();
+        toolBar.add(ActionAddNote.SINGLETON);
     }
 
     private PopupToolBoxButton buildAssociationPopup() {

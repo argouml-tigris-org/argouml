@@ -27,9 +27,11 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
@@ -86,6 +88,8 @@ public class UMLClassifierRoleAvailableFeaturesListModel
             }
             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)getTarget(), "base");
         }
+        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
+        if (!ModelFacade.isABase(target)) return;
         _target = target;
         if (_target != null) {
             Collection bases = ((MClassifierRole)_target).getBases();
