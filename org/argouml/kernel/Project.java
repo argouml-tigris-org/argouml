@@ -699,8 +699,11 @@ public class Project implements java.io.Serializable {
                     // Jaap Branderhorst
                     // zipentry is not closed properly. Added next two lines.
                     // could be patch for issues 893 and 925
+                    // OUCH didn't work
+                    /*
                     writer.flush();
                     stream.closeEntry();
+                    */
                     // end patch
                 }
             }
