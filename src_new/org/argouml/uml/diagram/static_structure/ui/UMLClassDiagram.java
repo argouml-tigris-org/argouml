@@ -156,12 +156,12 @@ public class UMLClassDiagram extends UMLDiagram {
         _toolBar.add(_actionPackage);
         _toolBar.add(_actionClass);
         
-        //_toolBar.add(_actionAssociation);
+        _toolBar.add(_actionAssociation);
         // TODO
         // Bobs nasty hack. The PopupToolBoxButton class can only be trusted for
         // now on metal. Use old style popup for other plafs.
         //if (LookAndFeelMgr.SINGLETON.determineLookAndFeel().equals(LookAndFeelMgr.METAL_PLAF)) {
-            _toolBar.add(buildAssociationPopup());
+        //    _toolBar.add(buildAssociationPopup());
         //} else {
         //    JButton associationButton = _toolBar.add(_actionAssociation);
         //    _toolBar.add(buildUglyAssociationPopup(associationButton));
