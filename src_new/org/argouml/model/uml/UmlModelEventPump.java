@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.MBaseImpl;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
@@ -86,7 +87,11 @@ public final class UmlModelEventPump implements MElementListener {
      * @return String
      */
     private String getKey(Class modelClass, String eventName) {
-        return modelClass.getName() + eventName;
+        String className = modelClass.getName();
+        if (className.endsWith("Impl")) {
+            className = className.substring(0, className.lastIndexOf("Impl"));
+        }
+        return className + eventName;
     }
     
     /**
@@ -267,17 +272,22 @@ public final class UmlModelEventPump implements MElementListener {
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        fireClassRoleItemSet(e);
+        fireClassRoleItemSet(e.getSource().getClass(), e);
         fireObjectRoleItemSet(e);
     }
     
-    private void fireClassRoleItemSet(MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(e.getSource().getClass(), e.getName()));
-        if (listenerList == null) return;
-        Iterator it = listenerList.iterator();
-        while(it.hasNext()) {
-            ((MElementListener)it.next()).listRoleItemSet(e);
+    private void fireClassRoleItemSet(Class clazz, MElementEvent e) {
+        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        if (listenerList != null) {
+            Iterator it = listenerList.iterator();
+            while(it.hasNext()) {
+                ((MElementListener)it.next()).listRoleItemSet(e);
+            }
         }
+        if (clazz.equals(MBase.class) || clazz.equals(MBaseImpl.class)) { 
+            return;
+        }
+        fireClassRoleItemSet(clazz.getSuperclass(), e);
     }
     
     private void fireObjectRoleItemSet(MElementEvent e) {
@@ -293,17 +303,22 @@ public final class UmlModelEventPump implements MElementListener {
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        fireClassPropertySet(e);
+        fireClassPropertySet(e.getSource().getClass(), e);
         fireObjectPropertySet(e);
     }
     
-    private void fireClassPropertySet(MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(e.getSource().getClass(), e.getName()));
-        if (listenerList == null) return;
-        Iterator it = listenerList.iterator();
-        while(it.hasNext()) {
-            ((MElementListener)it.next()).propertySet(e);
+    private void fireClassPropertySet(Class clazz, MElementEvent e) {
+        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        if (listenerList != null) {
+            Iterator it = listenerList.iterator();
+            while(it.hasNext()) {
+                ((MElementListener)it.next()).propertySet(e);
+            }
         }
+        if (clazz.equals(MBase.class) || clazz.equals(MBaseImpl.class)) { 
+            return;
+        }
+        fireClassPropertySet(clazz.getSuperclass(), e);
     }
     
     private void fireObjectPropertySet(MElementEvent e) {
@@ -320,16 +335,20 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void recovered(MElementEvent e) {
         fireObjectRecovered(e);
-        fireClassRecovered(e);
+        fireClassRecovered(e.getSource().getClass(), e);
     }
     
-    private void fireClassRecovered(MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(e.getSource().getClass(), e.getName()));
-        if (listenerList == null) return;
-        Iterator it = listenerList.iterator();
-        while(it.hasNext()) {
-            ((MElementListener)it.next()).recovered(e);
+    private void fireClassRecovered(Class clazz, MElementEvent e) {
+        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        if (listenerList != null) {
+            Iterator it = listenerList.iterator();
+            while(it.hasNext()) {
+                ((MElementListener)it.next()).recovered(e);
+            }
         }
+        if (!(clazz.equals(MBase.class) || clazz.equals(MBaseImpl.class))) {
+            fireClassRecovered(clazz.getSuperclass(), e);
+        } 
     }
     
     private void fireObjectRecovered(MElementEvent e) {
@@ -346,16 +365,20 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void removed(MElementEvent e) {
         fireObjectRemoved(e);
-        fireClassRemoved(e);
+        fireClassRemoved(e.getSource().getClass(), e);
     }
     
-    private void fireClassRemoved(MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(e.getSource().getClass(), REMOVE));
-        if (listenerList == null) return;
-        Iterator it = listenerList.iterator();
-        while(it.hasNext()) {
-            ((MElementListener)it.next()).removed(e);
+    private void fireClassRemoved(Class clazz, MElementEvent e) {
+        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, REMOVE));
+        if (listenerList != null) {
+            Iterator it = listenerList.iterator();
+            while(it.hasNext()) {
+                ((MElementListener)it.next()).removed(e);
+            }
         }
+        if (!(clazz.equals(MBase.class) || clazz.equals(MBaseImpl.class))) {
+            fireClassRemoved(clazz.getSuperclass(), e);
+        } 
     }
     
     private void fireObjectRemoved(MElementEvent e) {
@@ -372,16 +395,20 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void roleAdded(MElementEvent e) {
         fireObjectRoleAdded(e);
-        fireClassRoleAdded(e);
+        fireClassRoleAdded(e.getSource().getClass(), e);
     }
     
-    private void fireClassRoleAdded(MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(e.getSource().getClass(), e.getName()));
-        if (listenerList == null) return;
-        Iterator it = listenerList.iterator();
-        while(it.hasNext()) {
-            ((MElementListener)it.next()).roleAdded(e);
+    private void fireClassRoleAdded(Class clazz, MElementEvent e) {
+        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        if (listenerList != null) {
+            Iterator it = listenerList.iterator();
+            while(it.hasNext()) {
+                ((MElementListener)it.next()).roleAdded(e);
+            }
         }
+        if (!(clazz.equals(MBase.class) || clazz.equals(MBaseImpl.class))) {
+            fireClassRoleAdded(clazz.getSuperclass(), e);
+        } 
     }
     
     private void fireObjectRoleAdded(MElementEvent e) {
@@ -398,16 +425,20 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void roleRemoved(MElementEvent e) {
         fireObjectRoleRemoved(e);
-        fireClassRoleRemoved(e);
+        fireClassRoleRemoved(e.getSource().getClass(), e);
     }
     
-    private void fireClassRoleRemoved(MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(e.getSource().getClass(), e.getName()));
-        if (listenerList == null) return;
-        Iterator it = listenerList.iterator();
-        while(it.hasNext()) {
-            ((MElementListener)it.next()).roleRemoved(e);
+    private void fireClassRoleRemoved(Class clazz, MElementEvent e) {
+        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        if (listenerList != null) {
+            Iterator it = listenerList.iterator();
+            while(it.hasNext()) {
+                ((MElementListener)it.next()).roleRemoved(e);
+            }
         }
+        if (!(clazz.equals(MBase.class) || clazz.equals(MBaseImpl.class))) {
+            fireClassRoleRemoved(clazz.getSuperclass(), e);
+        } 
     }
     
     private void fireObjectRoleRemoved(MElementEvent e) {
