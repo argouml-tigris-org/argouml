@@ -59,8 +59,7 @@ implements TabModelTarget, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabJavaSrc() {
-    setTitle("Source");
-    System.out.println("making TabJavaSrc");
+    super("Source");
 
     _text.setEditorKitForContentType("text/java", kit);
     _text.setContentType("text/java");

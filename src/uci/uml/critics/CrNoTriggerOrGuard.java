@@ -57,6 +57,8 @@ public class CrNoTriggerOrGuard extends CrUML {
 
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     setKnowledgeTypes(Critic.KT_COMPLETENESS);
+    addTrigger("trigger");
+    addTrigger("guard");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
@@ -64,14 +66,17 @@ public class CrNoTriggerOrGuard extends CrUML {
     Transition tr = (Transition) dm;
     Event t = tr.getTrigger();
     Guard g = tr.getGuard();
+    StateVertex sv = tr.getSource();
+    if (!(sv instanceof State)) return NO_PROBLEM;
+    if (sv instanceof ActionState) return NO_PROBLEM;
     boolean hasTrigger = (t != null && t.getName().getBody().length() > 0);
     if (hasTrigger) return NO_PROBLEM;
-    boolean hasGuard = (g != null && g.getExpression() != null &&
-			g.getExpression().getBody() != null &&
-			g.getExpression().getBody().getBody() != null &&
-			g.getExpression().getBody().getBody().length() > 0);
-    if (hasGuard) return NO_PROBLEM;
-    return PROBLEM_FOUND;
+    boolean noGuard = (g == null || g.getExpression() == null ||
+			g.getExpression().getBody() == null ||
+			g.getExpression().getBody().getBody() == null ||
+			g.getExpression().getBody().getBody().length() == 0);
+    if (noGuard) return PROBLEM_FOUND;
+    return NO_PROBLEM;
   }
 
 } /* end class CrNoTriggerOrGuard */

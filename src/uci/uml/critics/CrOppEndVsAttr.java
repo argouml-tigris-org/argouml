@@ -53,13 +53,15 @@ public class CrOppEndVsAttr extends CrUML {
        "This may because of an inherited attribute. \n\n"+
        "Clear and unambiguous names are key to code generation and producing "+
        "an understandable and maintainable design.\n\n"+
-       "To fix this, use the FixIt button, or manually select the one of the "+
+       "To fix this, use the \"Next>\" button, or manually select the one of the "+
        "conflicting roles or attributes of this class and change its name.");
 
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("associationEnd");
+    addTrigger("structuralFeature");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -99,6 +99,14 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     ((FigPoly)_fig).setRectilinear(false);
   }
 
+  public Stack getPopUpActions() {
+    Stack popUpActions = super.getPopUpActions();
+    popUpActions.push(new CmdUMLProperties());
+    return popUpActions;
+  }
+
+  public FigText getNameFig() { return _name; }
+  public FigText getStereotypeFig() { return _stereo; }
 
   public void vetoableChange(PropertyChangeEvent pce) {
     Object src = pce.getSource();

@@ -46,8 +46,7 @@ public class TabUMLDisplay extends TabText {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabUMLDisplay() {
-    setTitle("English");
-    System.out.println("making TabUMLDisplay");
+    super("English");
   }
 
   ////////////////////////////////////////////////////////////////

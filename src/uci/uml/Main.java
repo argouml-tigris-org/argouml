@@ -89,18 +89,20 @@ public class Main {
       splash.getStatusBar().showProgress(10);
     }
 
-    ProjectBrowser pb = new ProjectBrowser("Argo/UML");
+    ProjectBrowser pb = new ProjectBrowser("Argo/UML", splash.getStatusBar());
     JOptionPane.setRootFrame(pb);
     //pb.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
     Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
     pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    pb.setLocation(scrSize.width/2 - WIDTH/2,
-		       scrSize.height/2 - HEIGHT/2);
-    pb.setSize(WIDTH, HEIGHT);
+    int w = Math.min(WIDTH, scrSize.width);
+    int h = Math.min(HEIGHT, scrSize.height);
+    pb.setLocation(scrSize.width/2 - w/2,
+		       scrSize.height/2 - h/2);
+    pb.setSize(w, h);
 
     if (splash != null) {
       splash.getStatusBar().showStatus("Making Default Project");
-      splash.getStatusBar().showProgress(20);
+      splash.getStatusBar().showProgress(40);
     }
     EmptyProject empty = new EmptyProject();
     pb.setProject(empty);

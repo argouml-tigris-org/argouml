@@ -33,6 +33,7 @@ import java.beans.*;
 
 import uci.graph.*;
 import uci.ui.*;
+import uci.util.Set;
 
 /** A diagram is just combination of a GraphModel, a Layer, and a
     title. The GraphModel stores the connected graph representation,
@@ -100,6 +101,23 @@ public class Diagram implements java.io.Serializable {
   public LayerPerspective getLayer() { return _lay; }
   public void setLayer(LayerPerspective lay) { _lay = lay; }
 
+  public int countContained(Set owners) {
+    int count = 0;
+    int numOwners = owners.size();
+    Vector nodes = getGraphModel().getNodes();
+    for (int i = 0; i < nodes.size(); i++)
+      for (int j = 0; j < numOwners; j++)
+	if (nodes.elementAt(i) == owners.elementAt(j)) count++;
+    Vector edges = getGraphModel().getEdges();
+    for (int i = 0; i < edges.size(); i++)
+      for (int j = 0; j < numOwners; j++)
+	if (edges.elementAt(i) == owners.elementAt(j)) count++;
+    Vector figs = getLayer().getContents();
+    for (int i = 0; i < figs.size(); i++)
+      for (int j = 0; j < numOwners; j++)
+	if (figs.elementAt(i) == owners.elementAt(j)) count++;
+    return count;
+  }
 
   ////////////////////////////////////////////////////////////////
   // VetoableChangeSupport

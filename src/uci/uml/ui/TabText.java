@@ -51,9 +51,8 @@ implements TabModelTarget, DocumentListener {
 
   ////////////////////////////////////////////////////////////////
   // constructor
-  public TabText() {
-    super("toString()");
-    System.out.println("making TabText");
+  public TabText(String title) {
+    super(title);
     setLayout(new BorderLayout());
     setFont(new Font("Dialog", Font.PLAIN, 10));
     add(new JScrollPane(_text), BorderLayout.CENTER);

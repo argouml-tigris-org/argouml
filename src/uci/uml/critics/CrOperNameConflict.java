@@ -53,6 +53,8 @@ public class CrOperNameConflict extends CrUML {
 
     addSupportedDecision(CrUML.decMETHODS);
     addSupportedDecision(CrUML.decNAMING);
+    addTrigger("behavioralFeature");
+    addTrigger("feature_name");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -56,21 +56,27 @@ public class UMLStateDiagram extends UMLDiagram {
   protected static Action _actionSelect =
   new CmdSetMode(ModeSelect.class, "Select");
 
-  protected static Action _actionState = 
+  protected static Action _actionBroom =
+  new CmdSetMode(ModeBroom.class, "Broom");
+
+  protected static Action _actionState =
   new CmdCreateNode(State.class, "State");
 
   // start state, end state, forks, joins, etc.
-  protected static Action _actionStartPseudoState = 
-  new ActionCreatePseudostate(PseudostateKind.INITIAL, "StartState");
+  protected static Action _actionStartPseudoState =
+  new ActionCreatePseudostate(PseudostateKind.INITIAL, "Initial");
 
-  protected static Action _actionFinalPseudoState = 
+  protected static Action _actionFinalPseudoState =
   new ActionCreatePseudostate(PseudostateKind.FINAL, "FinalState");
 
-//   protected static Action _actionForkPseudoState = 
-//   new CmdCreateNode(Pseudostate.class, "Fork");
+  protected static Action _actionBranchPseudoState =
+  new ActionCreatePseudostate(PseudostateKind.BRANCH, "Branch");
 
-//   protected static Action _actionJoinPseudoState = 
-//   new CmdCreateNode(Pseudostate.class, "Join");
+  protected static Action _actionForkPseudoState =
+  new ActionCreatePseudostate(PseudostateKind.FORK, "Fork");
+
+  protected static Action _actionJoinPseudoState =
+  new ActionCreatePseudostate(PseudostateKind.JOIN, "Join");
 
 
   protected static Action _actionTransition =
@@ -96,6 +102,9 @@ public class UMLStateDiagram extends UMLDiagram {
 
   protected static Action _actionPoly =
   new CmdSetMode(ModeCreateFigPoly.class, "Polygon");
+
+  protected static Action _actionSpline =
+  new CmdSetMode(ModeCreateFigSpline.class, "Spline");
 
   protected static Action _actionInk =
   new CmdSetMode(ModeCreateFigInk.class, "Ink");
@@ -140,14 +149,16 @@ public class UMLStateDiagram extends UMLDiagram {
 //     _toolBar.addSeparator();
 
     _toolBar.add(_actionSelect);
+    _toolBar.add(_actionBroom);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionState);
     _toolBar.add(_actionTransition);
     _toolBar.add(_actionStartPseudoState);
     _toolBar.add(_actionFinalPseudoState);
-//     _toolBar.add(_actionForkPseudoState);
-//     _toolBar.add(_actionJoinPseudoState);
+    _toolBar.add(_actionBranchPseudoState);
+    _toolBar.add(_actionForkPseudoState);
+    _toolBar.add(_actionJoinPseudoState);
     _toolBar.addSeparator();
 
     _toolBar.add(Actions.InternalTransition);
@@ -159,9 +170,8 @@ public class UMLStateDiagram extends UMLDiagram {
     _toolBar.add(_actionLine);
     _toolBar.add(_actionText);
     _toolBar.add(_actionPoly);
+    _toolBar.add(_actionSpline);
     _toolBar.add(_actionInk);
   }
-
-  static final long serialVersionUID = -7053852720393032172L;
 
 } /* end class UMLStateDiagram */

@@ -52,6 +52,7 @@ public class CrNoIncomingTransitions extends CrUML {
        "another state to {name}. ");
 
     addSupportedDecision(CrUML.decSTATE_MACHINES);
+    addTrigger("incoming");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

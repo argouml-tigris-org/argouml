@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
 package uci.uml.ui;
 
 //import jargo.kernel.*;
@@ -47,21 +44,33 @@ import uci.uml.ui.nav.*;
 
 public class NavigatorPane extends JPanel
 implements ItemListener, TreeSelectionListener {
+  //, CellEditorListener
+
+  ////////////////////////////////////////////////////////////////
+  // constants
+  public static int MAX_HISTORY = 10;
+
   ////////////////////////////////////////////////////////////////
   // instance variables
 
   // vector of TreeModels
-  protected Vector _perspectives = new Vector(); 
+  protected Vector _perspectives = new Vector();
 
   protected ToolBar _toolbar = new ToolBar();
   protected JComboBox _combo = new JComboBox();
   protected Object _root = null;
+  protected Vector _navHistory = new Vector();
+  protected int _historyIndex = 0;
   protected NavPerspective _curPerspective = null;
   protected JTree _tree = new DisplayTextTree();
-  protected Action _navBack = Actions.NavBack;
-  protected Action _navForw = Actions.NavForw;
-  protected Action _navConfig = Actions.NavConfig;
+//   protected Action _navBack = Actions.NavBack;
+//   protected Action _navForw = Actions.NavForw;
+//   protected Action _navConfig = Actions.NavConfig;
 
+  public static int _clicksInNavPane = 0;
+  public static int _navPerspectivesChanged = 0;
+  
+  
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -70,9 +79,9 @@ implements ItemListener, TreeSelectionListener {
     //_toolbar.add(new JLabel("Perspective "));
     _toolbar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
     _toolbar.add(_combo);
-    _toolbar.add(_navBack);
-    _toolbar.add(_navForw);
-    _toolbar.add(_navConfig);
+    _toolbar.add(Actions.NavBack);
+    _toolbar.add(Actions.NavForw);
+    _toolbar.add(Actions.NavConfig);
     add(_toolbar, BorderLayout.NORTH);
     add(new JScrollPane(_tree), BorderLayout.CENTER);
     _combo.addItemListener(this);
@@ -82,6 +91,8 @@ implements ItemListener, TreeSelectionListener {
     _tree.addMouseListener(new NavigatorMouseListener());
     _tree.addKeyListener(new NavigatorKeyListener());
     //_tree.addActionListener(new NavigatorActionListener());
+    //_tree.setEditable(true);
+    //_tree.getCellEditor().addCellEditorListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -93,6 +104,7 @@ implements ItemListener, TreeSelectionListener {
       _curPerspective.setRoot(_root);
       _tree.setModel(_curPerspective); //forces a redraw
     }
+    clearHistory();
   }
   public Object getRoot() { return _root; }
 
@@ -119,6 +131,7 @@ implements ItemListener, TreeSelectionListener {
     _curPerspective = per;
     if (_perspectives == null || !_perspectives.contains(per)) return;
     _combo.setSelectedItem(_curPerspective);
+    _navPerspectivesChanged++;
   }
 
   public Object getSelectedObject() {
@@ -168,6 +181,7 @@ implements ItemListener, TreeSelectionListener {
     //System.out.println("single: " + getSelectedObject().toString());
     //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
     ProjectBrowser.TheInstance.select(getSelectedObject());
+    _clicksInNavPane++;
   }
 
   /** called when the user clicks twice on an item in the tree. */ 
@@ -176,8 +190,61 @@ implements ItemListener, TreeSelectionListener {
     //should register a listener
     if (getSelectedObject() == null) return;
     //System.out.println("double: " + getSelectedObject().toString());
+    addToHistory(getSelectedObject());
     ProjectBrowser.TheInstance.setTarget(getSelectedObject());
     repaint();
+  }
+
+  public void navDown() {
+    int row = _tree.getMinSelectionRow();
+    if (row == _tree.getUI().getRowCount()) row = 0;
+    else row = row + 1;
+    _tree.setSelectionRow(row);
+    ProjectBrowser.TheInstance.select(getSelectedObject());
+  }
+
+  public void navUp() {
+    int row = _tree.getMinSelectionRow();
+    if (row == 0) row = _tree.getUI().getRowCount();
+    else row = row - 1;
+    _tree.setSelectionRow(row);
+    ProjectBrowser.TheInstance.select(getSelectedObject());
+  }
+
+  public void clearHistory() {
+    _historyIndex = 0;
+    _navHistory.removeAllElements();
+  }
+
+  public void addToHistory(Object sel) {
+    if (_navHistory.size() == 0)
+      _navHistory.addElement(ProjectBrowser.TheInstance.getTarget());
+    while (_navHistory.size() -1 > _historyIndex) {
+      _navHistory.removeElementAt(_navHistory.size() - 1);
+    }
+    if (_navHistory.size() > MAX_HISTORY) {
+      _navHistory.removeElementAt(0);
+    }
+    _navHistory.addElement(sel);
+    _historyIndex = _navHistory.size() - 1;
+  }
+  public boolean canNavBack() {
+    return _navHistory.size() > 0 && _historyIndex > 0;
+  }
+  public void navBack() {
+    _historyIndex = Math.max(0, _historyIndex - 1);
+    if (_navHistory.size() <= _historyIndex) return;
+    Object oldTarget = _navHistory.elementAt(_historyIndex);
+    ProjectBrowser.TheInstance.setTarget(oldTarget);
+  }
+
+  public boolean canNavForw() {
+    return _historyIndex < _navHistory.size() - 1;
+  }
+  public void navForw() {
+    _historyIndex = Math.min(_navHistory.size() - 1, _historyIndex + 1);
+    Object oldTarget = _navHistory.elementAt(_historyIndex);
+    ProjectBrowser.TheInstance.setTarget(oldTarget);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -201,6 +268,15 @@ implements ItemListener, TreeSelectionListener {
 
   }
 
+//   /** This tells the listeners the editor has ended editing */
+//   public void editingStopped(ChangeEvent e) {
+//     System.out.println("editingStopped NavigatorPane");
+//   }
+
+//   /** This tells the listeners the editor has canceled editing */
+//   public void editingCanceled(ChangeEvent e) {
+//     System.out.println("editingCanceled NavigatorPane");
+//   }
 
   ////////////////////////////////////////////////////////////////
   // inner classes
@@ -211,12 +287,23 @@ implements ItemListener, TreeSelectionListener {
       int row = _tree.getRowForLocation(me.getX(), me.getY());
       TreePath path = _tree.getPathForLocation(me.getX(), me.getY());
       if (row != -1) {
-	      if (me.getClickCount() == 1) mySingleClick(row, path);
-	      else if (me.getClickCount() >= 2) myDoubleClick(row, path);
-	      //me.consume();
+	if (me.getClickCount() == 1) mySingleClick(row, path);
+	else if (me.getClickCount() >= 2) myDoubleClick(row, path);
+	//me.consume();
+
       }
     }
-  }
+    public void mouseReleased(MouseEvent me) {
+      if (me.isPopupTrigger() ||
+	  me.getModifiers() == InputEvent.BUTTON3_MASK) {
+        //TreeCellEditor tce = _tree.getCellEditor();
+        JPopupMenu POP = new JPopupMenu("test");
+        POP.add(new CmdUMLProperties());
+        POP.show(NavigatorPane.this, me.getX(), me.getY()+25);
+        me.consume();
+      }
+    }
+  } /* end class NavigatorMouseListener */
 
   class NavigatorKeyListener extends KeyAdapter {
     // maybe use keyTyped?
@@ -226,7 +313,7 @@ implements ItemListener, TreeSelectionListener {
       if (code == KeyEvent.VK_ENTER || code  == KeyEvent.VK_SPACE) {
 	Object newTarget = getSelectedObject();
 	if (newTarget != null)
-	  ProjectBrowser.TheInstance.setTarget(newTarget);
+	  ProjectBrowser.TheInstance.select(newTarget);
       }
     }
   }

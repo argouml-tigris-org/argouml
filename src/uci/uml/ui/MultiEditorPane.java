@@ -62,9 +62,9 @@ implements ChangeListener, MouseListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public MultiEditorPane() {
+  public MultiEditorPane(StatusBar sb) {
     System.out.println("making MultiEditorPane");
-    ConfigLoader.loadTabs(_tabPanels, "multi");
+    ConfigLoader.loadTabs(_tabPanels, "multi", sb);
 
     setLayout(new BorderLayout());
     add(_tabs, BorderLayout.CENTER);
@@ -151,10 +151,10 @@ implements ChangeListener, MouseListener {
   public void select(Object o) {
     Component curTab = _tabs.getSelectedComponent();
     if (curTab instanceof TabDiagram) {
-      ((TabDiagram)curTab).getJGraph().selectByOwner(o);
+      JGraph jg = ((TabDiagram)curTab).getJGraph();
+      jg.selectByOwnerOrFig(o);
     }
     //needs-more-work: handle tables
-
   }
 
   ////////////////////////////////////////////////////////////////

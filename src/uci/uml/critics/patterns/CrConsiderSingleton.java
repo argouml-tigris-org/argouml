@@ -61,7 +61,7 @@ public class CrConsiderSingleton extends CrUML {
        "information representation part of your design.  Using the Singleton "+
        "Pattern can save time and memory space.\n"+
        "\n"+
-       "To automatically apply the Singleton Pattern, press the FixIt icon; "+
+       "To automatically apply the Singleton Pattern, press the \"Next>\" button; "+
        "or manually (1) mark the class with the Singlton stereotype, (2) add "+
        "a static variable that holds one instance of this class, (3) and "+
        "make all constructors private.\n"+
@@ -70,6 +70,9 @@ public class CrConsiderSingleton extends CrUML {
 
     addSupportedDecision(CrUML.decPATTERNS);
     setPriority(ToDoItem.LOW_PRIORITY);
+    addTrigger("stereotype");
+    addTrigger("structuralFeature");
+    addTrigger("associationEnd");
   }
 
   protected void sd(String s) { setDescription(s); }

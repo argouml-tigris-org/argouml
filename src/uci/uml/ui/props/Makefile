@@ -33,6 +33,7 @@ GEN =
 
 CLASSES = \
 	PropPanel.class \
+	PropPanelActionState.class \
 	PropPanelAssociation.class \
 	PropPanelAttribute.class \
 	PropPanelOperation.class \

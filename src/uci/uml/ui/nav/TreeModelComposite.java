@@ -203,7 +203,10 @@ implements TreeModel, Cloneable {
    * @param path path to the node that the user has altered.
    * @param newValue the new value from the TreeCellEditor.
    */
-  public void valueForPathChanged(TreePath path, Object newValue) { }
+  public void valueForPathChanged(TreePath path, Object newValue) {
+    System.out.println("valueForPathChanged TreeModelComposite");
+  }
+
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
   

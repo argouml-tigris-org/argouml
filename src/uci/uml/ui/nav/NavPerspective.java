@@ -293,7 +293,7 @@ implements Serializable, TreeModel, Cloneable {
    * @param newValue the new value from the TreeCellEditor.
    */
   public void valueForPathChanged(TreePath path, Object newValue) {
-    // needs-more-work 
+    System.out.println("valueForPathChanged NavPerspective");
   }
 
 

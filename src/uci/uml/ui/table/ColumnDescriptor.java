@@ -114,6 +114,10 @@ public abstract class ColumnDescriptor {
 
 class ColumnName extends ColumnDescriptor {
   ColumnName() { super("Name", String.class, true); }
+
+  public boolean isEditable(Object rowObj) {
+    return super.isEditable(rowObj) && !(rowObj instanceof Pseudostate); }
+
   
   public Object getValueFor(Object target) {
     if (target instanceof Element) {
@@ -813,10 +817,6 @@ class ColumnReturn extends ColumnDescriptor {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     Classifier rt = p.findType(s);
-    if (rt == null) {
-      System.out.println("return type not found");
-      return;
-    }
     ParserDisplay pd = ParserDisplay.SINGLETON;
     try { op.setReturnType(rt); }
     catch (PropertyVetoException pve) {

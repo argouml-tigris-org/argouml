@@ -33,71 +33,77 @@ GEN =
 
 CLASSES = \
 	ChildGenUML.class \
+	ClAttributeCompartment.class \
+	ClClassName.class \
+	ClOperationCompartment.class \
 	CrAlreadyRealizes.class \
 	CrAssocNameConflict.class \
 	CrAttrNameConflict.class \
-	CrOperNameConflict.class \
 	CrCircularAssocClass.class \
 	CrCircularComposition.class \
 	CrCircularInheritance.class \
 	CrClassMustBeAbstract.class \
+	CrConflictingComposites.class \
+	CrConstructorNeeded.class \
 	CrCrossNamespaceAssoc.class \
 	CrDisambigClassName.class \
 	CrDisambigStateName.class \
 	CrDupParamName.class \
 	CrDupRoleNames.class \
+	CrEmptyPackage.class \
 	CrFinalSubclassed.class \
 	CrIllegalGeneralization.class \
+	CrIllegalName.class \
 	CrInterfaceAllPublic.class \
 	CrInterfaceOperOnly.class \
+	CrInvalidBranch.class \
+	CrInvalidFork.class \
+	CrInvalidInitial.class \
+	CrInvalidJoin.class \
 	CrMergeClasses.class \
 	CrMissingAttrName.class \
 	CrMissingClassName.class \
 	CrMissingStateName.class \
 	CrMultiComposite.class \
 	CrMultipleAgg.class \
-	CrUnnavigableAssoc.class \
+	CrMultipleInitialStates.class \
 	CrNWayAgg.class \
 	CrNameConflict.class \
 	CrNameConflictAC.class \
+	CrNameConfusion.class \
 	CrNavFromInterface.class \
+	CrNoAssociations.class \
+	CrNoGuard.class \
+	CrNoIncomingTransitions.class \
+	CrNoInitialState.class \
 	CrNoInstanceVariables.class \
 	CrNoOperations.class \
-	CrNoAssociations.class \
+	CrNoOutgoingTransitions.class \
 	CrNoTransitions.class \
 	CrNoTriggerOrGuard.class \
-	CrNoIncomingTransitions.class \
-	CrNoOutgoingTransitions.class \
-	CrMultipleInitialStates.class \
-	CrNoInitialState.class \
 	CrNonAggDataType.class \
+	CrOperNameConflict.class \
 	CrOppEndConflict.class \
 	CrOppEndVsAttr.class \
 	CrParamTypeNotImported.class \
+	CrReservedName.class \
 	CrSignatureConflict.class \
+	CrSubclassReference.class \
 	CrTooManyAssoc.class \
 	CrTooManyAttr.class \
-	CrTooManyOper.class \
-	CrTooManyTransitions.class \
-	CrTooManyStates.class \
 	CrTooManyClasses.class \
+	CrTooManyOper.class \
+	CrTooManyStates.class \
+	CrTooManyTransitions.class \
 	CrUML.class \
 	CrUnconventionalAttrName.class \
 	CrUnconventionalClassName.class \
 	CrUnconventionalOperName.class \
 	CrUnconventionalPackageName.class \
-	CrUtilityViolated.class \
+	CrUnnavigableAssoc.class \
 	CrUselessAbstract.class \
 	CrUselessInterface.class \
-	CrReservedName.class \
-	CrNoInstanceVariables.class \
-	CrNameConfusion.class \
-	CrInterfaceOperOnly.class \
-	CrEmptyPackage.class \
-	CrConflictingComposites.class \
-	ClClassName.class \
-	ClOperationCompartment.class \
-	ClAttributeCompartment.class \
+	CrUtilityViolated.class \
 	Init.class
 
 all: $(GEN) $(CLASSES)

@@ -39,6 +39,7 @@ public class EmptyProject extends Project {
     try {
       addDiagram(makeDiagram(m1));
       addModel(m1);
+      setNeedsSave(false);
     }
     catch (PropertyVetoException pve) { }
   }
@@ -47,5 +48,5 @@ public class EmptyProject extends Project {
     return new UMLClassDiagram(m);
   }
 
-
+  static final long serialVersionUID = 135154216086373429L;
 } /* end class EmptyProject */

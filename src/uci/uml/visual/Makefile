@@ -34,6 +34,7 @@ GEN =
 CLASSES = \
 	ClassDiagramGraphModel.class \
 	ClassDiagramRenderer.class \
+	FigActionState.class \
 	FigNodeModelElement.class \
 	FigEdgeModelElement.class \
 	FigActor.class \
@@ -52,11 +53,15 @@ CLASSES = \
 	FigPackage.class \
 	FigPseudostate.class \
 	FigState.class \
+	FigJoinState.class \
+	FigForkState.class \
+	FigBranchState.class \
 	FigTrace.class \
 	FigTransition.class \
 	FigUseCase.class \
 	StateDiagramGraphModel.class \
 	StateDiagramRenderer.class \
+	UMLActivityDiagram.class \
 	UMLClassDiagram.class \
 	UMLDiagram.class \
 	UMLStateDiagram.class \

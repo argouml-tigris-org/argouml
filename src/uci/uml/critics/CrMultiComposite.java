@@ -49,12 +49,14 @@ public class CrMultiComposite extends CrUML {
        "Since each instance can only be contained in one other object, the \n"+
        "multiplicity of a composite role must be 0..1 or 1..1.\n\n"+
        "Good OO design depends on building good is-part-of relationships.\n\n"+
-       "To fix this, use the FixIt button, or manually set the multiplicity \n"+
+       "To fix this, use the \"Next>\" button, or manually set the multiplicity \n"+
        "to 0..1 or 1..1, or change the composite aggregation into another kind \n"+
        "of aggregation (e.g., a white diamond is less strict).");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
     setKnowledgeTypes(Critic.KT_SEMANTICS);
+    addTrigger("aggregation");
+    addTrigger("multiplicity");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -49,12 +49,14 @@ public class CrFinalSubclassed extends CrUML {
        "A well thought-out class inheritance hierarchy that conveys and "+
        "supports intended extensions is an important part of achieving "+
        "an understandable and maintainable design.\n\n"+
-       "To fix this, use the FixIt button, or manually select the class and "+
+       "To fix this, use the \"Next>\" button, or manually select the class and "+
        "change its base class, or select the base class and use the properties "+
        "tab to remove the 'final' keyword.");
 
     addSupportedDecision(CrUML.decINHERITANCE);
     setKnowledgeTypes(Critic.KT_SEMANTICS);
+    addTrigger("specialization");
+    addTrigger("isLeaf");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -139,6 +139,7 @@ implements TabModelTarget, DocumentListener, ActionListener,
     _leButton.addActionListener(this);
     _eqButton.addActionListener(this);
     _sizeButton.addActionListener(this);
+    _asSetButton.addActionListener(this);
     _forAllButton.addActionListener(this);
     _existsButton.addActionListener(this);
 

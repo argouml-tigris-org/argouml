@@ -51,6 +51,7 @@ public class CrNoInitialState extends CrUML {
        "initial state from the tool bar and place it in the diagram. ");
 
     addSupportedDecision(CrUML.decSTATE_MACHINES);
+    addTrigger("substate");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

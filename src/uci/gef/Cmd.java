@@ -70,7 +70,9 @@ implements java.io.Serializable {
 
   /** Construct a new Cmd with the given arguments */
   public Cmd(Hashtable args, String name) {
-    super(name, loadIconResource(imageName(name), name));
+    super(name);
+    Icon icon = loadIconResource(imageName(name), name);
+    if (icon != null) putValue(Action.SMALL_ICON, icon);
     _args = args;
   }
 
@@ -89,7 +91,9 @@ implements java.io.Serializable {
       java.net.URL imgURL = Cmd.class.getResource(imgName);
       return new ImageIcon(imgURL, desc);
     }
-    catch (Exception ex) { return new ImageIcon(desc); }
+    catch (Exception ex) {
+      return null;
+    }
   }
 
   protected static String imageName(String name) {

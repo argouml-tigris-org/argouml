@@ -54,6 +54,9 @@ public class UMLUseCaseDiagram extends UMLDiagram {
   protected static Action _actionSelect =
   new CmdSetMode(ModeSelect.class, "Select");
 
+  protected static Action _actionBroom =
+  new CmdSetMode(ModeBroom.class, "Broom");
+
   protected static Action _actionActor = 
   new CmdCreateNode(Actor.class, "Actor");
 
@@ -93,6 +96,9 @@ public class UMLUseCaseDiagram extends UMLDiagram {
   protected static Action _actionPoly =
   new CmdSetMode(ModeCreateFigPoly.class, "Polygon");
 
+  protected static Action _actionSpline =
+  new CmdSetMode(ModeCreateFigSpline.class, "Spline");
+
   protected static Action _actionInk =
   new CmdSetMode(ModeCreateFigInk.class, "Ink");
 
@@ -125,6 +131,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 //     _toolBar.addSeparator();
 
     _toolBar.add(_actionSelect);
+    _toolBar.add(_actionBroom);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionActor);
@@ -140,9 +147,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     _toolBar.add(_actionLine);
     _toolBar.add(_actionText);
     _toolBar.add(_actionPoly);
+    _toolBar.add(_actionSpline);
     _toolBar.add(_actionInk);
   }
-  
-  static final long serialVersionUID = 9120268784682936786L;
 
 } /* end class UMLUseCaseDiagram */

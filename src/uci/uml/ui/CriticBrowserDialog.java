@@ -45,7 +45,7 @@ import uci.argo.kernel.*;
  *  supported decisions, critic network. */
 public class CriticBrowserDialog extends JFrame
 implements ActionListener, ListSelectionListener, ItemListener, DocumentListener {
-
+  public static int _numCriticBrowser = 0;
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -66,11 +66,11 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 
   TableModelCritics _tableModel  = new TableModelCritics();
   protected JTable _table        = new JTable(30, 3);
-  protected JLabel _className    = new JLabel("Classname goes here");
-  protected JTextField _headline = new JTextField("Headline goes here", 40);
+  protected JLabel _className    = new JLabel("");
+  protected JTextField _headline = new JTextField("", 40);
   protected JComboBox _priority  = new JComboBox(PRIORITIES);
-  protected JTextField _moreInfo = new JTextField("URL goes here", 35);
-  protected JTextArea _desc      = new JTextArea("Desc goes here", 6, 40);
+  protected JTextField _moreInfo = new JTextField("", 35);
+  protected JTextArea _desc      = new JTextArea("", 6, 40);
   protected JComboBox _useClar   = new JComboBox(USE_CLAR);
 
   
@@ -89,16 +89,17 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     super("Critics");
 
     Container mainContent = getContentPane();
-    GridBagLayout gb = new GridBagLayout();
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 3; c.ipady = 3;
+//     GridBagLayout gb = new GridBagLayout();
+//     GridBagConstraints c = new GridBagConstraints();
+//     c.fill = GridBagConstraints.BOTH;
+//     c.weightx = 0.0;
+//     c.ipadx = 3; c.ipady = 3;
 
 
     JPanel content = new JPanel();
     mainContent.add(content, BorderLayout.CENTER);
-    content.setLayout(gb);
+    //content.setLayout(gb);
+    content.setLayout(null);
 
     _tableModel.setTarget(Agency.getCritics());
     _table.setModel(_tableModel);
@@ -142,12 +143,13 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 //     westPanel.add(tableSP, BorderLayout.CENTER);
 //     mainContent.add(westPanel, BorderLayout.WEST);
     
-    c.gridx = 0;
-    c.gridy = 0;
-    gb.setConstraints(_criticsLabel, c);
+//     c.gridx = 0;
+//     c.gridy = 0;
+//     gb.setConstraints(_criticsLabel, c);
+    _criticsLabel.setBounds(2, 2, 300, 25);
     content.add(_criticsLabel);
-    c.gridy = 1;
-    c.gridheight = 11; //GridBagConstraints.REMAINDER
+//     c.gridy = 1;
+//     c.gridheight = 11; //GridBagConstraints.REMAINDER
     JScrollPane tableSP = new JScrollPane(_table);
     JPanel p = new JPanel();
     p.setLayout(new BorderLayout());
@@ -158,99 +160,116 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 //     tableSP.setPreferredSize(new Dimension(310, 100));
 //     tableSP.setSize(new Dimension(310, 100));
 //     tableSP.setMaximumSize(new Dimension(310, 100));
-    gb.setConstraints(p, c);
+//     gb.setConstraints(p, c);
+    p.setBounds(2, 2 + 2 + 25, 340, 300);
     content.add(p);
 
-    c.gridx = 1;
-    c.gridy = 0;
-    c.gridwidth = 1;
-    c.gridheight = 1;
-    SpacerPanel spacer = new SpacerPanel();
-    gb.setConstraints(spacer, c);
-    content.add(spacer);
+//     c.gridx = 1;
+//     c.gridy = 0;
+//     c.gridwidth = 1;
+//     c.gridheight = 1;
+//     SpacerPanel spacer = new SpacerPanel();
+//     gb.setConstraints(spacer, c);
+//     content.add(spacer);
 
-    c.weightx = 0.0;
-    c.gridx = 2;
-    c.gridy = 1;
-    gb.setConstraints(_clsNameLabel, c);
+//     c.weightx = 0.0;
+//     c.gridx = 2;
+//     c.gridy = 1;
+//     gb.setConstraints(_clsNameLabel, c);
+    _clsNameLabel.setBounds(360, 2, 100, 25);
     content.add(_clsNameLabel);
 
-    c.gridy = 2;
-    gb.setConstraints(_headlineLabel, c);
+//     c.gridy = 2;
+//     gb.setConstraints(_headlineLabel, c);
+    _headlineLabel.setBounds(360, 2+25+2, 100, 25);
     content.add(_headlineLabel);
 
-    c.gridy = 3;
-    gb.setConstraints(_priorityLabel, c);
+//     c.gridy = 3;
+//     gb.setConstraints(_priorityLabel, c);
+    _priorityLabel.setBounds(360, 2*3+25*2, 100, 25);
     content.add(_priorityLabel);
 
-    c.gridy = 4;
-    gb.setConstraints(_moreInfoLabel, c);
+//     c.gridy = 4;
+//     gb.setConstraints(_moreInfoLabel, c);
+    _moreInfoLabel.setBounds(360, 2*4 + 25*3, 100, 25);
     content.add(_moreInfoLabel);
 
-    c.gridy = 5;
-    gb.setConstraints(_descLabel, c);
+//     c.gridy = 5;
+//     gb.setConstraints(_descLabel, c);
+    _descLabel.setBounds(360, 2*5 + 25*4, 100, 25);
     content.add(_descLabel);
 
-    c.gridy = 8;
-    gb.setConstraints(_clarifierLabel, c);
+//     c.gridy = 8;
+//     gb.setConstraints(_clarifierLabel, c);
+    _clarifierLabel.setBounds(360, 2 + (2+25)*5 + 85, 100, 25);
     content.add(_clarifierLabel);
 
 
-    c.weightx = 1.0;
-    c.gridx = 3;
-    c.gridy = 1;
-    c.gridwidth = 2;
-    gb.setConstraints(_className, c);
+//     c.weightx = 1.0;
+//     c.gridx = 3;
+//     c.gridy = 1;
+//     c.gridwidth = 2;
+//     gb.setConstraints(_className, c);
+    _className.setBounds(465, 2, 320, 25);
     content.add(_className);
 
-    c.gridy = 2;
-    gb.setConstraints(_headline, c);
+//     c.gridy = 2;
+//     gb.setConstraints(_headline, c);
+    _headline.setBounds(465, 2 + (2+25)*1, 320, 25);
     content.add(_headline);
 
-    c.gridy = 3;
-    gb.setConstraints(_priority, c);
+//     c.gridy = 3;
+//     gb.setConstraints(_priority, c);
+    _priority.setBounds(465, 2 + (2+25)*2, 320, 25);
     content.add(_priority);
 
-    c.gridy = 4;
-    c.gridwidth = 1;
-    gb.setConstraints(_moreInfo, c);
+//     c.gridy = 4;
+//     c.gridwidth = 1;
+//     gb.setConstraints(_moreInfo, c);
+    _moreInfo.setBounds(465, 2 + (2+25)*3, 320-60, 25);
     content.add(_moreInfo);
 
-    c.weightx = 0.0;
-    c.gridx = 4;
-    c.gridy = 4;
-    c.gridwidth = 1;
-    gb.setConstraints(_goButton, c);
+//     c.weightx = 0.0;
+//     c.gridx = 4;
+//     c.gridy = 4;
+//     c.gridwidth = 1;
+//     gb.setConstraints(_goButton, c);
+    _goButton.setBounds(465+320-60, 2 + (2+25)*3, 60, 25);
     content.add(_goButton);
 
-    c.weightx = 1.0;
-    c.gridx = 3;
-    c.gridy = 5;
-    c.gridwidth = 2;
+//     c.weightx = 1.0;
+//     c.gridx = 3;
+//     c.gridy = 5;
+//     c.gridwidth = 2;
     JScrollPane descSP = new JScrollPane(_desc);
-    gb.setConstraints(descSP, c);
+//     gb.setConstraints(descSP, c);
+    descSP.setBounds(465, 2 + (2+25)*4, 320, 25+85);
     content.add(descSP);
 
-    c.gridy = 8;
-    gb.setConstraints(_useClar, c);
+//     c.gridy = 8;
+//     gb.setConstraints(_useClar, c);
+    _useClar.setBounds(465, 2 + (2+25)*5 + 85, 320, 25);
     content.add(_useClar);
 
-    c.gridy = 9;
+//     c.gridy = 9;
     JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new GridLayout(1, 2));
+    //buttonPanel.setLayout(new GridLayout(1, 3));
     buttonPanel.add(_wakeButton);
     buttonPanel.add(_configButton);
     buttonPanel.add(_networkButton);
-    gb.setConstraints(buttonPanel, c);
+//     gb.setConstraints(buttonPanel, c);
+    buttonPanel.setBounds(465, 2 + (2+25)*6+85, 320, 25+5+5);
     content.add(buttonPanel);
 
-    c.gridx = 2;
-    c.gridy = 10;
-    c.gridwidth = GridBagConstraints.REMAINDER;
+//     c.gridx = 2;
+//     c.gridy = 10;
+//     c.gridwidth = GridBagConstraints.REMAINDER;
     JPanel buttonPane = new JPanel();
     buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
     buttonPane.add(_okButton);
-    gb.setConstraints(buttonPane, c);
+//     gb.setConstraints(buttonPane, c);
+//     buttonPane.setBounds(465, 2 + (2+25)*7 + 5+85, 320, 25+5);
+    buttonPane.setBounds(465, 360 - (25 + 5) - 35, 320, 25+5+5);
     content.add(buttonPane);
 
     _goButton.addActionListener(this);
@@ -264,12 +283,17 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     _priority.addItemListener(this);
     _useClar.addItemListener(this);
 
+    _wakeButton.setEnabled(false);
+    _networkButton.setEnabled(false);
+    _configButton.setEnabled(false);
+    
     _desc.setLineWrap(true);
     _desc.setWrapStyleWord(true);
 
     setLocation(100, 150);
-    pack();
+    setSize(465+320+10, 360);
     setResizable(false);
+    _numCriticBrowser++;
   }
 
   public void setTarget(Object t) {
@@ -283,14 +307,16 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     _headline.setText(_target.getHeadline());
 
     int p = _target.getPriority();
-    if (p == ToDoItem.HIGH_PRIORITY) _priority.setSelectedIndex(0);
-    else if (p == ToDoItem.MED_PRIORITY) _priority.setSelectedIndex(1);
-    else _priority.setSelectedIndex(2);
-
+    if (p == ToDoItem.HIGH_PRIORITY) _priority.setSelectedItem("High");
+    else if (p == ToDoItem.MED_PRIORITY) _priority.setSelectedItem("Medium");
+    else _priority.setSelectedItem("Low");
+    _priority.repaint();
+    
     _moreInfo.setText(_target.getMoreInfoURL());
     _desc.setText(_target.getDescriptionTemplate());
     _desc.setCaretPosition(0);
-    _useClar.setSelectedIndex(0);
+    _useClar.setSelectedItem("Always");
+    _useClar.repaint();
   }
 
   public void setTargetHeadline() {

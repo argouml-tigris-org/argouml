@@ -76,7 +76,8 @@ implements DocumentListener, ItemListener {
     c.weightx = 0.0;
     c.ipadx = 0; c.ipady = 0;
 
-
+    remove(_nameLabel);
+    remove(_nameField);
     c.gridx = 0;
     c.gridwidth = 1;
     c.gridy = 1;

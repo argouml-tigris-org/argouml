@@ -55,7 +55,6 @@ public class ModeBroom extends Mode {
 
   public final Font HINT_FONT = new Font("Dialog", Font.PLAIN, 9);
 
-  
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -67,6 +66,7 @@ public class ModeBroom extends Mode {
 
   private int _dir = UNDEFINED;
   private boolean _magnetic = false;
+  private boolean _draw = false;
 
   private Fig _touched[] = new Fig[MAX_TOUCHED];
   private int _origX[] = new int[MAX_TOUCHED];
@@ -105,6 +105,15 @@ public class ModeBroom extends Mode {
    *  the shift key is not down, then go to ModeModify. If the mouse
    *  down event happens on a port, to to ModeCreateEdge.   */
   public void mousePressed(MouseEvent me) {
+    _touched = new Fig[MAX_TOUCHED];
+    _origX = new int[MAX_TOUCHED];
+    _origY = new int[MAX_TOUCHED];
+    _offX = new int[MAX_TOUCHED];
+    _offY = new int[MAX_TOUCHED];
+    _nTouched = 0;
+    _dir = UNDEFINED;
+    _magnetic = false;
+    _draw = true;
     x1 = x2 = _start.x = me.getX();
     y1 = y2 = _start.y = me.getY();
     _lastX1 = x1;  _lastY1 = y1;
@@ -114,6 +123,7 @@ public class ModeBroom extends Mode {
     _editor.getSelectionManager().deselectAll();
     me.consume();
     _hint = null;
+    start();
   }
 
   /** On mouse dragging, stretch the selection rectangle. */
@@ -257,6 +267,7 @@ public class ModeBroom extends Mode {
     _editor.damaged(_bigDamageRect);
     _editor.damaged(_selectRect);
     _editor.getSelectionManager().select(touching());
+    _draw = false;
     done();
     me.consume();
     _hint = null;
@@ -355,14 +366,16 @@ public class ModeBroom extends Mode {
   
   /** Reply a string of instructions that should be shown in the
    *  statusbar when this mode starts. */
-  public String instructions() { return "Push objects around, "+
-				   "use shift to pull"; }
+  public String instructions() {
+    return "Push objects around. Shift key pulls.  Space key distributes.";
+  }
 
   ////////////////////////////////////////////////////////////////
   // painting methods
 
   /** Paint this mode by painting the selection rectangle if appropriate. */
   public void paint(Graphics g) {
+    if (!_draw) return;
     Color selectRectColor = (Color) Globals.getPrefs().getRubberbandColor();
     if (_magnetic) g.setColor(Color.red);
     else g.setColor(selectRectColor);

@@ -45,10 +45,11 @@ implements VetoableChangeListener {
 
   Hashtable _expandedPathsInModel = new Hashtable();
   boolean _reexpanding = false;
-  
+
   public DisplayTextTree() {
     setCellRenderer(new UMLTreeCellRenderer());
     putClientProperty("JTree.lineStyle", "Angled");
+    //setEditable(true);
   }
 
   public String convertValueToText(Object value, boolean selected,

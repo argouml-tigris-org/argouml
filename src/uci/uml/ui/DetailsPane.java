@@ -72,9 +72,9 @@ implements ChangeListener, MouseListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public DetailsPane() {
+  public DetailsPane(StatusBar sb) {
     System.out.println("making DetailsPane");    
-    ConfigLoader.loadTabs(_tabPanels, "details");
+    ConfigLoader.loadTabs(_tabPanels, "details", sb);
 
 
 //     _tabPanels.addElement(new TabToDo());

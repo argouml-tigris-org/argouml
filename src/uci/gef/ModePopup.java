@@ -27,6 +27,7 @@
 package uci.gef;
 
 import java.awt.*;
+import java.util.*;
 import java.awt.event.*;
 import com.sun.java.swing.*;
 
@@ -36,23 +37,6 @@ import com.sun.java.swing.*;
  *  offer. */
 
 public class ModePopup extends Mode {
-
-  ////////////////////////////////////////////////////////////////
-  // static variables
-  
-  /** A test menu to pop up. */
-  static JPopupMenu POP = new JPopupMenu("test");
-
-  ////////////////////////////////////////////////////////////////
-  // static initializer
-  
-  /** Configures test menu */
-  static {
-    POP.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
-    POP.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
-    POP.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
-    POP.add(new CmdReorder(CmdReorder.BRING_FORWARD));
-  }
 
   ////////////////////////////////////////////////////////////////
   //  constructor
@@ -74,10 +58,18 @@ public class ModePopup extends Mode {
   /** Show a popup menu on right-mouse-button up. */
   public void mouseReleased(MouseEvent me) {
     if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
+      int x = me.getX(), y = me.getY();
+      Fig underMouse = _editor.hit(x, y);
+      if (!(underMouse instanceof Fig)) return;
+      JPopupMenu POP = new JPopupMenu("test");
+      Stack popUpActions = _editor._curFig.getPopUpActions();
+      while ( !popUpActions.empty() ) {
+        AbstractAction action = (AbstractAction) popUpActions.pop();
+        POP.add(action);
+      }
       POP.show(_editor.getAwtComponent(), me.getX(), me.getY());
       me.consume();
     }
   }
 
-  static final long serialVersionUID = -7730689944964381534L;
 } /* end class ModePopup */

@@ -56,12 +56,13 @@ public class CrTooManyStates extends CrUML {
        "to understand. \n\n"+
        "Defining an understandable set of states is an important "+
        "part of your design. \n\n"+
-       "To fix this, press the FixIt button, or remove states manually "+
+       "To fix this, press the \"Next>\" button, or remove states manually "+
        "by clicking on a states in the navigator pane or "+
        "diagram and presing the \"Del\" key.  Or you can nest states...");
 
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     setArg(THRESHOLD, new Integer(20));
+    addTrigger("substate");
   }
 
   ////////////////////////////////////////////////////////////////

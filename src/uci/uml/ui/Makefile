@@ -33,6 +33,7 @@ GEN =
 
 CLASSES = \
 	AboutBox.class \
+	UMLAction.class \
 	Actions.class \
 	ActionCreatePseudostate.class \
 	AddToDoItemDialog.class \
@@ -40,6 +41,7 @@ CLASSES = \
 	ClassGenerationDialog.class \
 	ConfigLoader.class \
 	CriticBrowserDialog.class \
+	CmdUMLProperties.class \
 	DelayedChangeNotify.class \
 	DelayedVetoableChangeListener.class \
 	DesignIssuesDialog.class \
@@ -49,6 +51,7 @@ CLASSES = \
 	DocumentationManager.class \
 	EmailExpertDialog.class \
 	EmptyProject.class \
+	FindDialog.class \
 	GoalsDialog.class \
 	JasonsTheme.class \
 	JasonsBigTheme.class \
@@ -76,6 +79,7 @@ CLASSES = \
 	TabJavaSrc.class \
 	TabModelTarget.class \
 	TabProps.class \
+	TabResults.class \
 	TabSpawnable.class \
 	TabSrc.class \
 	TabTable.class \
@@ -84,6 +88,7 @@ CLASSES = \
 	TabToDo.class \
 	TabToDoTarget.class \
 	TabUMLDisplay.class \
+	ToDoPane.class \
 	ToDoTreeRenderer.class \
 	Token.class \
 	Trash.class \

@@ -113,6 +113,7 @@ implements TabModelTarget, DocumentListener {
     _target = t;
     ModelElement me = (ModelElement) _target;
     _nameField.setText(me.getName().getBody());
+    _nameField.setCaretPosition(0);
     Vector stereos = me.getStereotype();
     JTextField ed = (JTextField) _stereoField.getEditor().getEditorComponent();
     if (stereos != null && stereos.size() == 1) {

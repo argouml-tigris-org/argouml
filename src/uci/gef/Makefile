@@ -81,6 +81,7 @@ CLASSES = \
 	FigPoly.class \
 	FigRRect.class \
 	FigRect.class \
+	FigSpline.class \
 	FigText.class \
 	FigTextEditor.class \
 	Geometry.class \
@@ -110,6 +111,7 @@ CLASSES = \
 	ModeCreateFigPoly.class \
 	ModeCreateFigRRect.class \
 	ModeCreateFigRect.class \
+	ModeCreateFigSpline.class \
 	ModeCreateFigText.class \
 	ModeManager.class \
 	ModeModify.class \

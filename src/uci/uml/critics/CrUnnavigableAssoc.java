@@ -54,6 +54,7 @@ public class CrUnnavigableAssoc extends CrUML {
        "navigablility. ");
 
     addSupportedDecision(CrUML.decRELATIONSHIPS);
+    addTrigger("end_navigable");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

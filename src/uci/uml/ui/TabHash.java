@@ -44,8 +44,7 @@ public class TabHash extends TabText {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabHash() {
-    setTitle("hashcode()");
-    System.out.println("making TabHash");
+    super("Hashcode");
   }
 
   ////////////////////////////////////////////////////////////////

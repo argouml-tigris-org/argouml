@@ -50,10 +50,11 @@ public class CrMissingClassName extends CrUML {
     sd("Every class and interface within a package must have a name. \n\n"+
        "Clear and unambiguous naming is key to code generation and "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select the "+
+       "To fix this, use the \"Next>\" button, or manually select the "+
        "class and use the Properties tab to give it a name.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_COMPLETENESS, Critic.KT_SYNTAX);
+    addTrigger("name");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

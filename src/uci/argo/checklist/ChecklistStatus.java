@@ -43,7 +43,7 @@ import uci.util.*;
  */
 
 public class ChecklistStatus implements java.io.Serializable {
-
+  public static int _numChecks = 0;
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -60,7 +60,10 @@ public class ChecklistStatus implements java.io.Serializable {
 
   public Vector getCheckItems() { return _items; }
 
-  public void addItem(CheckItem item) { _items.addElement(item); }
+  public void addItem(CheckItem item) {
+    _items.addElement(item);
+    _numChecks++;
+  }
 
   public synchronized void addAll(ChecklistStatus list) {
     Enumeration cur = list.elements();

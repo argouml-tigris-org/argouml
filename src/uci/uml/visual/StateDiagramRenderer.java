@@ -49,9 +49,13 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
  *  UML Object      ---  Fig
  *  ---------------------------------------
  *  State           ---  FigState
+ *  ActionState     ---  FigActionState
  *  Pseudostate     ---  FigPseudostate
- *    as a Final St ---  FigFinalState
- *    as a Init St  ---  FigInitialState
+ *    Final         ---  FigFinalState
+ *    Inititial     ---  FigInitialState
+ *    Branch        ---  FigBranchState
+ *    Fork          ---  FigForkState
+ *    Join          ---  FigJoinState
  *  Transition      ---  FigTransition
  *  more...
  *  </pre>
@@ -62,7 +66,8 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-    if (node instanceof State) return new FigState(gm, node);
+    if (node instanceof ActionState) return new FigActionState(gm, node);
+    else if (node instanceof State) return new FigState(gm, node);
     else if (node instanceof Pseudostate) 
     {
        Pseudostate pState = (Pseudostate) node;
@@ -72,6 +77,15 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
        }
        else if (pState.getKind().equals(PseudostateKind.FINAL)) {
 	 return new FigFinalState(gm, node);
+       }
+       else if (pState.getKind().equals(PseudostateKind.BRANCH)) {
+	 return new FigBranchState(gm, node);
+       }
+       else if (pState.getKind().equals(PseudostateKind.FORK)) {
+	 return new FigForkState(gm, node);
+       }
+       else if (pState.getKind().equals(PseudostateKind.JOIN)) {
+	 return new FigJoinState(gm, node);
        }
        else { System.out.println("found a type not known"); }
     };

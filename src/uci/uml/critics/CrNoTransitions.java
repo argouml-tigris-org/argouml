@@ -52,6 +52,8 @@ public class CrNoTransitions extends CrUML {
 
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     setKnowledgeTypes(Critic.KT_COMPLETENESS);
+    addTrigger("incoming");
+    addTrigger("outgoing");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

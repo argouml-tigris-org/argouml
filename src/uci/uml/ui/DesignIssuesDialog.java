@@ -47,12 +47,13 @@ import uci.uml.Model_Management.*;
 
 public class DesignIssuesDialog extends JDialog
 implements ActionListener, ChangeListener {
+  public static int _numDecisionModel = 0;
 
   ////////////////////////////////////////////////////////////////
   // constants
   public final int WIDTH = 300;
   public final int HEIGHT = 450;
-  
+
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected JPanel  _mainPanel = new JPanel();
@@ -89,6 +90,8 @@ implements ActionListener, ChangeListener {
     _okButton.addActionListener(this);
 
     getRootPane().setDefaultButton(_okButton);
+
+    _numDecisionModel++;
   }
 
 

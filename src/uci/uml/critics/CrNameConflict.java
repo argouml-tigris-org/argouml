@@ -46,12 +46,14 @@ public class CrNameConflict extends CrUML {
   public CrNameConflict() {
     setHeadline("Revise Name to Avoid Conflict");
     sd("Every element of a namespace must have a unique name. \n\n"+
-       "Clear and unambiguous naming is key to code generation and \n"+
+       "Clear and unambiguous naming is key to code generation and "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select the elements \n"+
-       "and use the Properties tab to change their names.");
+       "To fix this, use the \"Next>\" button, or manually select the  "+
+       "elements and use the Properties tab to change their names.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("name");
+    addTrigger("feature_name");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

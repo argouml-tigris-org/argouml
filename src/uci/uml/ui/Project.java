@@ -33,6 +33,8 @@ import java.beans.*;
 import uci.gef.Layer;
 import uci.gef.Diagram;
 import uci.gef.Fig;
+import uci.argo.kernel.*;
+import uci.argo.checklist.*;
 import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.generate.*;
@@ -138,6 +140,8 @@ public class Project implements java.io.Serializable {
     _definedTypes.put(cls.getName().getBody(), cls);
   }
   public Classifier findType(String s) {
+    if (s != null) s = s.trim();
+    if (s == null || s.length()==0) return null;
     Classifier cls = (Classifier) _definedTypes.get(s);
     if (cls == null) {
       cls = new MMClass(s);
@@ -193,12 +197,14 @@ public class Project implements java.io.Serializable {
     for (int i = 0; i < _diagrams.size(); i++)
       ((Diagram)_diagrams.elementAt(i)).postSave();
     // needs-more-work: is postSave needed for models?
+    _needsSave = false;    
   }
 
   public void postLoad() {
     for (int i = 0; i < _diagrams.size(); i++)
       ((Diagram)_diagrams.elementAt(i)).postLoad();
     // needs-more-work: is postLoad needed for models?
+    _needsSave = false;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -232,4 +238,97 @@ public class Project implements java.io.Serializable {
       ((ModelElement)dm).getElementOwnership() == null;
   }
 
+  public void setStats(Hashtable stats) {
+    System.out.println(stats);
+    Integer clicksInToDoPane = (Integer) stats.get("clicksInToDoPane");
+    Integer dblClicksInToDoPane = (Integer) stats.get("dblClicksInToDoPane");
+    Integer longestToDoList = (Integer) stats.get("longestToDoList");
+    Integer longestAdd = (Integer) stats.get("longestAdd");
+    Integer longestHot = (Integer) stats.get("longestHot");
+    Integer numCriticsFired = (Integer) stats.get("numCriticsFired");
+    Integer numNotValid = (Integer) stats.get("numNotValid");
+    Integer numCriticsApplied = (Integer) stats.get("numCriticsApplied");
+    Integer toDoPerspectivesChanged =
+      (Integer) stats.get("toDoPerspectivesChanged");
+
+    Integer navPerspectivesChanged =
+      (Integer) stats.get("navPerspectivesChanged");
+    Integer clicksInNavPane = (Integer) stats.get("clicksInNavPane");
+    Integer numFinds = (Integer) stats.get("numFinds");
+    Integer numJumpToRelated = (Integer) stats.get("numJumpToRelated");
+    Integer numDecisionModel = (Integer) stats.get("numDecisionModel");
+    Integer numGoalsModel = (Integer) stats.get("numGoalsModel");
+    Integer numCriticBrowser = (Integer) stats.get("numCriticBrowser");
+    Integer numNavConfig = (Integer) stats.get("numNavConfig");
+    Integer numHushes = (Integer) stats.get("numHushes");
+    Integer numChecks = (Integer) stats.get("numChecks");
+
+    if (clicksInToDoPane != null)
+      ToDoPane._clicksInToDoPane = clicksInToDoPane.intValue();
+    if (dblClicksInToDoPane != null)
+      ToDoPane._dblClicksInToDoPane = dblClicksInToDoPane.intValue();
+    if (longestToDoList != null)
+      ToDoList._longestToDoList = longestToDoList.intValue();
+    if (longestAdd != null)
+      Designer._longestAdd = longestAdd.intValue();
+    if (longestHot != null)
+      Designer._longestHot = longestHot.intValue();
+    if (numCriticsFired != null)
+      Critic._numCriticsFired = numCriticsFired.intValue();
+    if (numNotValid != null)
+      ToDoList._numNotValid = numNotValid.intValue();
+    if (numCriticsApplied != null)
+      Agency._numCriticsApplied = numCriticsApplied.intValue();
+    if (toDoPerspectivesChanged != null)
+      ToDoPane._toDoPerspectivesChanged = toDoPerspectivesChanged.intValue();
+
+    if (navPerspectivesChanged != null)
+      NavigatorPane._navPerspectivesChanged = navPerspectivesChanged.intValue();
+    if (clicksInNavPane != null)
+      NavigatorPane._clicksInNavPane = clicksInNavPane.intValue();
+    if (numFinds != null)
+      FindDialog._numFinds = numFinds.intValue();
+    if (numJumpToRelated != null)
+      TabResults._numJumpToRelated = numJumpToRelated.intValue();
+    if (numDecisionModel != null)
+      DesignIssuesDialog._numDecisionModel = numDecisionModel.intValue();
+    if (numGoalsModel != null)
+      GoalsDialog._numGoalsModel = numGoalsModel.intValue();
+
+    if (numCriticBrowser != null)
+      CriticBrowserDialog._numCriticBrowser = numCriticBrowser.intValue();
+    if (numNavConfig != null)
+      NavigatorConfigDialog._numNavConfig = numNavConfig.intValue();
+    if (numHushes != null)
+      TabToDo._numHushes = numHushes.intValue();
+    if (numChecks != null)
+      ChecklistStatus._numChecks = numChecks.intValue();
+  }
+
+  public Hashtable getStats() {
+    Hashtable stats = new Hashtable();
+    stats.put("clicksInToDoPane", new Integer(ToDoPane._clicksInToDoPane));
+    stats.put("dblClicksInToDoPane", new Integer(ToDoPane._dblClicksInToDoPane));
+    stats.put("longestToDoList", new Integer(ToDoList._longestToDoList));
+    stats.put("longestAdd", new Integer(Designer._longestAdd));
+    stats.put("longestHot", new Integer(Designer._longestHot));
+    stats.put("numCriticsFired", new Integer(Critic._numCriticsFired));
+    stats.put("numNotValid", new Integer(ToDoList._numNotValid));
+    stats.put("numCriticsApplied", new Integer(Agency._numCriticsApplied));
+    stats.put("toDoPerspectivesChanged", new Integer(ToDoPane._toDoPerspectivesChanged));
+
+    stats.put("navPerspectivesChanged", new Integer(NavigatorPane._navPerspectivesChanged));
+    stats.put("clicksInNavPane", new Integer(NavigatorPane._clicksInNavPane));
+    stats.put("numFinds", new Integer(FindDialog._numFinds));
+    stats.put("numJumpToRelated", new Integer(TabResults._numJumpToRelated));
+    stats.put("numDecisionModel", new Integer(DesignIssuesDialog._numDecisionModel));
+    stats.put("numGoalsModel", new Integer(GoalsDialog._numGoalsModel));
+    stats.put("numCriticBrowser", new Integer(CriticBrowserDialog._numCriticBrowser));
+    stats.put("numNavConfig", new Integer(NavigatorConfigDialog._numNavConfig));
+    stats.put("numHushes", new Integer(TabToDo._numHushes));
+    stats.put("numChecks", new Integer(ChecklistStatus._numChecks));
+    return stats;
+  }
+
+  static final long serialVersionUID = 1399111233978692444L;
 } /* end class Project */

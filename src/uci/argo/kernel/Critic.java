@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
 // File: Critic.java
 // Classes: Critic
 // Original Author: jrobbins@ics.uci.edu
@@ -132,6 +128,9 @@ public class Critic implements Poster, java.io.Serializable {
   private Hashtable _controlRecs = new Hashtable();
 
   protected Set _knowledgeTypes = new Set();
+  protected long _triggerMask = 0L;
+
+  public static int _numCriticsFired = 0;
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -180,6 +179,7 @@ public class Critic implements Poster, java.io.Serializable {
       //       if (Boolean.getBoolean("debug")) {
       // 	System.out.println(this.toString() + " detected error");
       //       }
+      _numCriticsFired++;
       ToDoItem item = toDoItem(dm, dsgr);
       postItem(item, dm, dsgr);
     }
@@ -279,6 +279,19 @@ public class Critic implements Poster, java.io.Serializable {
     addKnowledgeType(t3);
   }
 
+  public static int reasonCodeFor(String s) {
+    return 1 << (s.hashCode() % 62);
+  }
+  
+  public long getTriggerMask() { return _triggerMask; }
+  public void addTrigger(String s) {
+    int newCode = reasonCodeFor(s);
+    _triggerMask |= newCode;
+  }
+  public boolean matchReason(long patternCode) {
+    return (_triggerMask == 0) || ((_triggerMask & patternCode) != 0);
+  }
+  
   public String expand(String desc, Set offs) { return desc; }
 
   public Icon getClarifier() {

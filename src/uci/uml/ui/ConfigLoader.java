@@ -35,7 +35,8 @@ public class ConfigLoader {
 
   public static String TabPath = "uci.uml.ui";
 
-  public static void loadTabs(Vector tabs, String panelName) {
+  public static void loadTabs(Vector tabs, String panelName,
+			      StatusBar sb) {
     String configFile = System.getProperty("argo.config", "argo.ini");
     LineNumberReader lnr = null;
     try {
@@ -53,8 +54,8 @@ public class ConfigLoader {
       try {
 	String line = lnr.readLine();
 	while (line != null) {
-	  Class tabClass = parseConfigLine(line, panelName,
-					   lnr.getLineNumber(), configFile);
+	  Class tabClass = parseConfigLine(line, panelName, lnr.getLineNumber(),
+					   configFile, sb);
 	  if (tabClass != null) {
 	    //System.out.println("tab=" + tabClass.getName());
 	    try {
@@ -79,7 +80,8 @@ public class ConfigLoader {
   }
 
   public static Class parseConfigLine(String line, String panelName,
-				      int lineNum, String configFile) {
+				      int lineNum, String configFile,
+				      StatusBar sb) {
     if (line.startsWith("tabpath")) {
       String newPath = stripBeforeColon(line).trim();
       if (newPath.length() > 0) TabPath = newPath;
@@ -97,7 +99,15 @@ public class ConfigLoader {
 	  res = Class.forName(tabClassName);
 	}
 	catch (ClassNotFoundException cnfe) { }
-	if (res != null) return res;
+	catch (Exception e) {
+	  System.out.println("Unanticipated exception, skipping "+tabName);
+	  System.out.println(e.toString());
+	}
+	if (res != null) {
+	  sb.showStatus("Making Project Browser: " + tabName);
+	  sb.incProgress(2);
+	  return res;
+	}
       }
       if (Boolean.getBoolean("dbg")) {
 	System.out.println("\nCould not find any of these classes:\n" +

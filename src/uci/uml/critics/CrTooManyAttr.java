@@ -56,13 +56,14 @@ public class CrTooManyAttr extends CrUML {
        "bottleneck that must be updated frequently. \n\n"+
        "Defining the attributes of objects is an important "+
        "part of your design. \n\n"+
-       "To fix this, press the FixIt button, or remove attributes manually "+
+       "To fix this, press the \"Next>\" button, or remove attributes manually "+
        "by double-clicking on the attribute compartment of the  "+
        "highlighted class in the diagram and removing the line of text "+
        "for an attribute. ");
 
     addSupportedDecision(CrUML.decSTORAGE);
     setArg(THRESHOLD, new Integer(7));
+    addTrigger("structuralFeature");
   }
 
   ////////////////////////////////////////////////////////////////

@@ -36,6 +36,7 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Model_Management.*;
+import uci.uml.ui.DocumentationManager;
 
 /** Generator subclass to generate text for display in diagrams in in
  * text fields in the Argo/UML user interface.  The generated code
@@ -125,17 +126,21 @@ public class GeneratorJava extends Generator {
 
   public String generateOperation(Operation op) {
     String s = "";
+    String nameStr = generateName(op.getName());
+    String clsName = generateName(op.getOwner().getName());
+
+    s += DocumentationManager.getDocs(op) + "\n" + INDENT;
     s += generateVisibility(op);
     s += generateScope(op);
 
     // pick out return type
     Classifier returnType = op.getReturnType();
-    if (returnType == null) s += "void?? ";
-    else s += generateClassifierRef(returnType) + " ";
+    if (returnType == null && !nameStr.equals(clsName)) s += "void?? ";
+    else if (returnType != null) s += generateClassifierRef(returnType) + " ";
 
 
     // name and params
-    s += generateName(op.getName()) + "(";
+    s += nameStr + "(";
     Vector params = op.getParameter();
     if (params != null) {
       java.util.Enumeration enum = params.elements();
@@ -154,6 +159,7 @@ public class GeneratorJava extends Generator {
 
   public String generateAttribute(Attribute attr) {
     String s = "";
+    s += DocumentationManager.getDocs(attr) + "\n" + INDENT;
     s += generateVisibility(attr);
     s += generateScope(attr);
     s += generateChangability(attr);
@@ -217,13 +223,14 @@ public class GeneratorJava extends Generator {
     else if (cls instanceof Interface) classifierKeyword = "interface";
     else return ""; // actors and use cases
     String s = "";
+    s += DocumentationManager.getDocs(cls) + "\n";
     s += generateVisibility(cls.getElementOwnership());
     if (cls.getIsAbstract()) s += "abstract ";
     if (cls.getIsLeaf()) s += "final ";
     s += classifierKeyword + " " + generatedName + " ";
     String baseClass = generateGeneralzation(cls.getGeneralization());
     if (!baseClass.equals("")) s += "extends " + baseClass + " ";
-    String interfaces = generateRealization(cls.getRealization());
+    String interfaces = generateSpecification(cls.getSpecification());
     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
     s += "{\n";
 
@@ -329,7 +336,12 @@ public class GeneratorJava extends Generator {
     int size = cs.size();
     for (int i = 0; i < size; i++) {
       Constraint c = (Constraint) cs.elementAt(i);
-      s += INDENT + "// " + generateConstraint(c) + "\n";
+      String constrStr = generateConstraint(c);
+      StringTokenizer st = new StringTokenizer(constrStr, "\n\r");
+      while (st.hasMoreElements()) {
+	String constrLine = st.nextToken();
+	s += INDENT + "// " + constrLine + "\n";
+      }
     }
     s += "\n";
     return s;
@@ -348,6 +360,7 @@ public class GeneratorJava extends Generator {
   public String generateAssociationFrom(IAssociation a, AssociationEnd ae) {
     // needs-more-work: does not handle n-ary associations
     String s = "";
+    s += DocumentationManager.getDocs(a) + "\n" + INDENT;
     Vector connections = a.getConnection();
     java.util.Enumeration connEnum = connections.elements();
     while (connEnum.hasMoreElements()) {
@@ -374,7 +387,7 @@ public class GeneratorJava extends Generator {
 
   public String generateAssociationEnd(AssociationEnd ae) {
     if (!ae.getIsNavigable()) return "";
-    String s = "protected ";
+    String s = INDENT + "protected ";
     if (ScopeKind.CLASSIFIER.equals(ae.getTargetScope()))
 	s += "static ";
 //     Name n = ae.getName();
@@ -441,7 +454,8 @@ public class GeneratorJava extends Generator {
     }
     return generateClassList(classes);
   }
-  public String generateRealization(Vector realizations) {
+
+  public String generateSpecification(Vector realizations) {
     if (realizations == null) return "";
     String s = "";
     java.util.Enumeration clsEnum = realizations.elements();

@@ -36,6 +36,7 @@ import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Model_Management.*;
 
 
@@ -47,10 +48,11 @@ public class CrUnconventionalOperName extends CrUML {
        "The name '{name}' is unconventional because it does not.\n\n"+
        "Following good naming conventions help to improve "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select {name} "+
+       "To fix this, use the \"Next>\" button, or manually select {name} "+
        "and use the Properties tab to give it a new name.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("feature_name");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
@@ -61,8 +63,34 @@ public class CrUnconventionalOperName extends CrUML {
     String nameStr = myName.getBody();
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
     char initalChar = nameStr.charAt(0);
+    if (oper.containsStereotype(Stereotype.CONSTRUCTOR)) return NO_PROBLEM;
     if (!Character.isLowerCase(initalChar)) return PROBLEM_FOUND;
     return NO_PROBLEM;
+  }
+
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+    Feature f = (Feature) dm;
+    Set offs = computeOffenders(f);
+    return new ToDoItem(this, offs, dsgr);
+  }
+
+  protected Set computeOffenders(Feature dm) {
+    Set offs = new Set(dm);
+    offs.addElement(dm.getOwner());
+    return offs;
+  }
+
+  public boolean stillValid(ToDoItem i, Designer dsgr) {
+    if (!isActive()) return false;
+    Set offs = i.getOffenders();
+    Feature f = (Feature) offs.firstElement();
+    if (!predicate(f, dsgr)) return false;
+    Set newOffs = computeOffenders(f);
+    boolean res = offs.equals(newOffs);
+//      System.out.println("offs="+ offs.toString() +
+//  		       " newOffs="+ newOffs.toString() +
+//  		       " res = " + res);
+    return res;
   }
 
 } /* end class CrUnconventionalOperName */

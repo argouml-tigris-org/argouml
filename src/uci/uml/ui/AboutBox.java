@@ -75,11 +75,11 @@ public class AboutBox extends JFrame {
 //     _credits.setFont(ctrlFont);
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
-    
-    _version.setText("Argo/UML Version 0.5.1\n"+
-		     "Built on October 8, 1998\n"+
+
+    _version.setText("Argo/UML Version 0.5.2\n"+
+		     "Built on October 26, 1998\n"+
 		     "Includes:\n"+
-		     "  GEF v0.6 beta 3\n"+
+		     "  GEF v0.6 beta 4\n"+
 		     "  Argo v0.8\n"+
 		     "  uci.uml v0.4.1\n"
 		     );
@@ -137,24 +137,19 @@ public class AboutBox extends JFrame {
     s+="ENHANCEMENTS, OR MODIFICATIONS.\n";
     _legal.setText(s);
 
-
-
-    
     _tabs.addTab("Splash", _splashButton);
     _tabs.addTab("Version", new JScrollPane(_version));
     _tabs.addTab("Credits", new JScrollPane(_credits));
     _tabs.addTab("Contact Info", new JScrollPane(_contact));
     _tabs.addTab("Legal", new JScrollPane(_legal));
-    
-    
+
     getContentPane().setLayout(new BorderLayout(0, 0));
     getContentPane().add(_tabs, BorderLayout.CENTER);
     // add preloading progress bar?
     setSize(imgWidth + 20, imgHeight + 50);
     //pack();
-    
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // static methods
 

@@ -229,11 +229,27 @@ public class JGraph extends JPanel implements Cloneable {
     else _editor.getSelectionManager().select(f);
   }
 
-  /** Add the Fig that owns the given item to this Editor's selections. */
+  /** Find the Fig that owns the given item and select it. */
   public void selectByOwner(Object owner) {
     Layer lay = _editor.getLayerManager().getActiveLayer();
     if (lay instanceof LayerDiagram)
       select(((LayerDiagram)lay).presentationFor(owner));
+  }
+
+  /** Find Fig that owns the given item, or the item if it is a
+   *  Fig, and select it. */
+  public void selectByOwnerOrFig(Object owner) {
+    if (owner instanceof Fig) select((Fig) owner);
+    else selectByOwner(owner);
+  }
+
+  /** Add the Fig that owns the given item to this Editor's selections. */
+  public void selectByOwnerOrNoChange(Object owner) {
+    Layer lay = _editor.getLayerManager().getActiveLayer();
+    if (lay instanceof LayerDiagram) {
+      Fig f = ((LayerDiagram)lay).presentationFor(owner);
+      if (f != null) select(f);
+    }
   }
 
   /** Remove the given item from this editors selections.   */

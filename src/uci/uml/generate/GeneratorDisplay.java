@@ -61,27 +61,17 @@ public class GeneratorDisplay extends Generator {
     String s = "";
     s += generateVisibility(op);
     s += generateScope(op);
+    String nameStr = generateName(op.getName());
+    String clsName = generateName(op.getOwner().getName());
 
     // pick out return type
-    Classifier returnType = null;
-    Vector params = op.getParameter();
-    if (params != null) {
-      java.util.Enumeration enum = params.elements();
-      while (enum.hasMoreElements()) {
-	Parameter p = (Parameter) enum.nextElement();
-	if (Parameter.RETURN_NAME.equals(p.getName())) {
-	  //System.out.println("generateOperation found returnType");
-	  returnType = p.getType();
-	  break;
-	}
-      }
-    }
-    if (returnType == null) s += "void?? ";
-    else s += generateClassifierRef(returnType) + " ";
-
+    Classifier returnType = op.getReturnType();
+    if (returnType == null && !nameStr.equals(clsName)) s += "void?? ";
+    else if (returnType != null) s += generateClassifierRef(returnType) + " ";
 
     // name and params
-    s += generateName(op.getName()) + "(";
+    Vector params = op.getParameter();
+    s += nameStr + "(";
     params = op.getParameter();
     if (params != null) {
       java.util.Enumeration enum = params.elements();
@@ -117,9 +107,9 @@ public class GeneratorDisplay extends Generator {
     if (init != null)
       s += " = " + generateExpression(init);
 
-    String constraintStr = generateConstraints(attr);
-    if (constraintStr.length() > 0)
-      s += " " + constraintStr;
+//     String constraintStr = generateConstraints(attr);
+//     if (constraintStr.length() > 0)
+//       s += " " + constraintStr;
 
     return s;
   }
@@ -170,7 +160,7 @@ public class GeneratorDisplay extends Generator {
     s += classifierKeyword + " " + generatedName + " ";
     String baseClass = generateGeneralzation(cls.getGeneralization());
     if (!baseClass.equals("")) s += "extends " + baseClass + " ";
-    String interfaces = generateRealization(cls.getRealization());
+    String interfaces = generateSpecification(cls.getSpecification());
     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
     s += "{\n";
 
@@ -322,10 +312,10 @@ public class GeneratorDisplay extends Generator {
     }
     return generateClassList(classes);
   }
-  public String generateRealization(Vector realizations) {
+  public String generateSpecification(Vector realizations) {
     // Realization is much simplier than Generalization.
     // There is no Realization class in UML metamodel
-    return generateRealizationList(realizations);
+    return generateSpecificationList(realizations);
   }
 
   public String generateClassList(Vector classifiers) {
@@ -339,7 +329,7 @@ public class GeneratorDisplay extends Generator {
     return s;
   }
 
-  public String generateRealizationList(Vector realizations) {
+  public String generateSpecificationList(Vector realizations) {
     String s = "";
     if (realizations == null) return "";
     java.util.Enumeration clsEnum = realizations.elements();

@@ -48,11 +48,13 @@ public class CrCircularInheritance extends CrUML {
     sd("Inheritances relationships cannot have cycles. \n\n"+
        "A legal class inheritance hierarchy is needed for code generation "+
        "and the correctness of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select one of the  "+
+       "To fix this, use the \"Next>\" button, or manually select one of the  "+
        "generalization arrows in the cycle and remove it.");
     setPriority(ToDoItem.HIGH_PRIORITY);
     addSupportedDecision(CrUML.decINHERITANCE);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("generalization");
+    // no need for trigger on "specialization"
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

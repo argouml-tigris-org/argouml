@@ -282,7 +282,7 @@ public class RedrawManager implements Runnable {
       r.setBounds(r.x-F, r.y-F, r.width+F*2, r.height+F*2);
       offscreen = findReusedImage(r.width, r.height, ed);
       if (offscreen == null) {
-	System.out.println("failed to alloc image!!!");
+	//System.out.println("failed to alloc image!!!");
 	paintOnscreen(ed, g);
 	return;
       }
@@ -343,9 +343,12 @@ public class RedrawManager implements Runnable {
       if (image512x512 == null) image512x512 = ed.createImage(512, 512);
       return image512x512;
     }
-    else if (x > 1050 || y > 1050) {
+    else if (x > 2050 || y > 2050) {
       System.out.println("very large repaint request, probably an error: "+
 			 x + ", " + y + ".");
+      return null;
+    }
+    else if (x > 1050 || y > 1050) {
       return null;
     }
     else return ed.createImage(x, y);

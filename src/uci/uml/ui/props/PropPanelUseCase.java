@@ -93,37 +93,46 @@ public class PropPanelUseCase extends PropPanel {
     descCol.setMinWidth(50);
 
 
-    SpacerPanel spacer1 = new SpacerPanel();
-    c.gridx = 0;
-    c.gridy = 5;
-    c.weighty = 1.0;
-    gb.setConstraints(spacer1, c);
-    add(spacer1);
+//     SpacerPanel spacer1 = new SpacerPanel();
+//     c.gridx = 0;
+//     c.gridy = 5;
+//     c.weighty = 1.0;
+//     gb.setConstraints(spacer1, c);
+//     add(spacer1);
 
-    SpacerPanel spacer2 = new SpacerPanel();
-    c.weightx = 0.0;
-    c.gridx = 2;
-    c.gridy = 0;
-    gb.setConstraints(spacer2, c);
-    add(spacer2);
+
+//     SpacerPanel spacer2 = new SpacerPanel();
+//     c.weightx = 0.0;
+//     c.gridx = 2;
+//     c.gridy = 0;
+//     gb.setConstraints(spacer2, c);
+//     add(spacer2);
 
     // add all widgets and labels
-    c.gridx = 3;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    c.weighty = 0.0;
-    gb.setConstraints(_extPtsLabel, c);
-    add(_extPtsLabel);
+    JPanel rightPanel = new JPanel();
+    rightPanel.setLayout(new BorderLayout());
+    rightPanel.add(_extPtsLabel, BorderLayout.NORTH);
 
-    c.gridy = 1;
-    c.gridheight = 5;
+    c.gridx = 0;
+    c.gridwidth = 2;
+//     c.gridy = 0;
+//     c.weighty = 0.0;
+//     gb.setConstraints(_extPtsLabel, c);
+//     add(_extPtsLabel);
+
+    //c.gridy = 1;
+    c.gridy = 7;
+    c.gridheight = 7;
     c.weightx = 0.0;
-    c.weighty = 0.0;
+    c.weighty = 10.0;
     JScrollPane scroll = new JScrollPane(_extPts,
 					 JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 					 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    gb.setConstraints(scroll, c);
-    add(scroll);
+//     gb.setConstraints(scroll, c);
+//     add(scroll);
+    rightPanel.add(scroll, BorderLayout.CENTER);
+    gb.setConstraints(rightPanel, c);
+    add(rightPanel);
     _extPts.setTableHeader(null);
 
     // register interest in change events from all widgets

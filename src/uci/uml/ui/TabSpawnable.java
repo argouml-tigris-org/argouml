@@ -38,19 +38,23 @@ import com.sun.java.swing.*;
 
 public class TabSpawnable extends JPanel implements Cloneable {
   public final int OVERLAPP = 30;
-  
+
   ////////////////////////////////////////////////////////////////
   // instance variables
   String _title = "untitled";
-
+  boolean _tear = false; // if true, remove tab from parent JTabbedPane
 
   ////////////////////////////////////////////////////////////////
   // constructor
-  
-  public TabSpawnable() { }
-  
-  public TabSpawnable(String title) {
+
+  public TabSpawnable() { this("untitled", false); }
+
+  public TabSpawnable(String title) { this(title, false); }
+
+  public TabSpawnable(String title, boolean tear) {
     setTitle(title);
+    _tear = tear;
+    System.out.println("making " + title);
   }
 
   public Object clone() {
@@ -60,7 +64,7 @@ public class TabSpawnable extends JPanel implements Cloneable {
     }
     return null;
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -70,7 +74,7 @@ public class TabSpawnable extends JPanel implements Cloneable {
 
   ////////////////////////////////////////////////////////////////
   // actions
-  
+
   public void spawn() {
     JFrame f = new JFrame();
     f.getContentPane().setLayout(new BorderLayout());
@@ -92,12 +96,15 @@ public class TabSpawnable extends JPanel implements Cloneable {
     Rectangle bounds = getBounds();
     bounds.height += OVERLAPP*2;
     f.setBounds(bounds);
-    
+
     Point loc = new Point(0,0);
     SwingUtilities.convertPointToScreen(loc, this);
     loc.y -= OVERLAPP;
     f.setLocation(loc);
     f.setVisible(true);
+
+    if (_tear && (getParent() instanceof JTabbedPane))
+      ((JTabbedPane)getParent()).remove(this);
   }
 
 } /* end class TabSpawnable */

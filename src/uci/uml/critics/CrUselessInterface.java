@@ -57,6 +57,7 @@ public class CrUselessInterface extends CrUML {
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedGoal(Goal.UNSPEC);
     setKnowledgeTypes(Critic.KT_COMPLETENESS);
+    addTrigger("realization");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

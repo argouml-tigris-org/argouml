@@ -25,8 +25,9 @@
 package uci.uml.critics;
 
 import uci.argo.kernel.*;
-import uci.uml.critics.patterns.*;
 import uci.uml.critics.java.*;
+import uci.uml.critics.patterns.*;
+import uci.uml.critics.presentation.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
@@ -94,6 +95,10 @@ public class Init {
   public static Critic crMultipleInitialStates = new CrMultipleInitialStates();
   public static Critic crNoInitialState = new CrNoInitialState();
   public static Critic crNoTriggerOrGuard = new CrNoTriggerOrGuard();
+  public static Critic crNoGuard = new CrNoGuard();
+  public static Critic crInvalidFork = new CrInvalidFork();
+  public static Critic crInvalidJoin = new CrInvalidJoin();
+  public static Critic crInvalidBranch = new CrInvalidBranch();
 
   public static Critic crEmptyPackage = new CrEmptyPackage();
   public static Critic crNoOperations = new CrNoOperations();
@@ -101,6 +106,7 @@ public class Init {
 
   public static Critic crNameConfusion = new CrNameConfusion();
   public static Critic crMergeClasses = new CrMergeClasses();
+  public static Critic crSubclassReference = new CrSubclassReference();
 
   // from UML 1.1 Semantics spec
 
@@ -129,6 +135,9 @@ public class Init {
   public static Critic crConsiderSingleton = new CrConsiderSingleton();
   public static Critic crSingletonViolated = new CrSingletonViolated();
 
+  // Presentation critics
+  public static Critic crNodesOverlap = new CrNodesOverlap();
+  public static Critic crZeroLengthEdge = new CrZeroLengthEdge();
 
 
   // Compound critics
@@ -167,10 +176,13 @@ public class Init {
       java.lang.Class transitionCls = Transition.class;
       //java.lang.Class stateMachineCls = StateMachine.class;
 
+      java.lang.Class diagramCls        = UMLDiagram.class;
       java.lang.Class classDiagramCls   = UMLClassDiagram.class;
       java.lang.Class stateDiagramCls   = UMLStateDiagram.class;
       java.lang.Class useCaseDiagramCls = UMLUseCaseDiagram.class;
-      //java.lang.Class classDiagramCls = UMLClassDiagram.class;
+      java.lang.Class nodeCls           = FigNodeModelElement.class;
+      java.lang.Class edgeCls           = FigEdgeModelElement.class;
+
 
       // needs-more-work: Agency should allow registration by interface
       // useful for IAssociation.
@@ -213,7 +225,7 @@ public class Init {
       Agency.register(crNoAssociations, actorCls);
       Agency.register(crNoAssociations, useCaseCls);
       Agency.register(crNoOperations, classCls);
-      Agency.register(crConstructorNeeded, classCls); //needs-more-work
+      Agency.register(crConstructorNeeded, classCls);
       Agency.register(crEmptyPackage, modelCls);
       Agency.register(crNonAggDataType, datatypeCls);
       Agency.register(crOppEndConflict, classifierCls);
@@ -225,13 +237,18 @@ public class Init {
       Agency.register(crNameConfusion, classifierCls);
       Agency.register(crNameConfusion, stateCls);
       Agency.register(crMergeClasses, classCls);
+      Agency.register(crSubclassReference, classCls);
       Agency.register(crIllegalName, classCls);
+      Agency.register(crIllegalName, interfaceCls);
+      Agency.register(crIllegalName, assocCls);
       Agency.register(crIllegalName, operCls);
       Agency.register(crIllegalName, attrCls);
+      Agency.register(crIllegalName, stateCls);
       Agency.register(crReservedName, classifierCls);
       Agency.register(crReservedName, operCls);
       Agency.register(crReservedName, attrCls);
       Agency.register(crReservedName, stateCls);
+      Agency.register(crReservedName, assocCls);
       Agency.register(crMultiInherit, classCls);
       Agency.register(crConflictingComposites, classifierCls);
       Agency.register(crTooManyAssoc, classCls);
@@ -249,6 +266,10 @@ public class Init {
       Agency.register(crMultipleInitialStates, pseudostateCls);
       Agency.register(crNoInitialState, compositieStateCls);
       Agency.register(crNoTriggerOrGuard, transitionCls);
+      Agency.register(crInvalidJoin, pseudostateCls);
+      Agency.register(crInvalidFork, pseudostateCls);
+      Agency.register(crInvalidBranch, pseudostateCls);
+      Agency.register(crNoGuard, transitionCls);
 
       Agency.register(crUnconventionalOperName, operCls);
       Agency.register(crUnconventionalAttrName, attrCls);
@@ -259,6 +280,12 @@ public class Init {
       Agency.register(crSingletonViolated, classCls);
 
 
+      Agency.register(crNodesOverlap, diagramCls);
+      Agency.register(crZeroLengthEdge, edgeCls);
+
+
+      
+      
       //Agency.register(crTooMuchFeedback, project);
       //Agency.register(crTooManyDisabled, project);
       //Agency.dumpRegistry();

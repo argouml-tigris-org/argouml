@@ -50,11 +50,13 @@ public class CrDisambigStateName extends CrUML {
        "\"{name}\".\n\n"+
        "Clear and unambiguous naming is key to code generation and "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select one of the "+
+       "To fix this, use the \"Next>\" button, or manually select one of the "+
        "conflicting states and use the \"Properties\" tab to change "+
        "their names.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("name");
+    addTrigger("parent");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

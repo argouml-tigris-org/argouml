@@ -44,8 +44,7 @@ public class TabDocs extends TabText {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabDocs() {
-    setTitle("Javadocs");
-    System.out.println("making TabDocs");
+    super("Javadocs");
   }
 
   ////////////////////////////////////////////////////////////////

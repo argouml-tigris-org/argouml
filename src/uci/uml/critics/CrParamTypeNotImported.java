@@ -47,7 +47,7 @@ public class CrParamTypeNotImported extends CrUML {
        "into the class that owns the operation.\n\n"+
        "Importing classes is needed for code generation. Good modularization "+
        "of classes into packages is key to an understandable design.\n\n"+
-       "To fix this, use the FixIt button, or manually add in import to the "+
+       "To fix this, use the \"Next>\" button, or manually add in import to the "+
        "class that owns this operation.");
 
     addSupportedDecision(CrUML.decCONTAINMENT);

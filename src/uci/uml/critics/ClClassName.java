@@ -47,12 +47,19 @@ public class ClClassName implements Clarifier {
   public void setToDoItem(ToDoItem i) { }
 
   public void paintIcon(Component c, Graphics g, int x, int y) {
+    FigText ft = null;
     if (_fig instanceof FigNodeModelElement) {
-      FigNodeModelElement fc = (FigNodeModelElement) _fig;
-      FigText ft = fc.getNameFig();
-      int left  = ft.getX() + 10;
-      int height = ft.getY() + ft.getHeight() - 7;
-      int right = ft.getX() + ft.getWidth() - 10;
+      FigNodeModelElement fnme = (FigNodeModelElement) _fig;
+      ft = fnme.getNameFig();
+    }
+    if (_fig instanceof FigEdgeModelElement) {
+      FigEdgeModelElement feme = (FigEdgeModelElement) _fig;
+      ft = feme.getNameFig();
+    }
+    if (ft != null) {
+      int left  = ft.getX() + 6;
+      int height = ft.getY() + ft.getHeight() - 4;
+      int right = ft.getX() + ft.getWidth() - 6;
       g.setColor(Color.red);
       int i = left;
       while (true) {
@@ -77,11 +84,17 @@ public class ClClassName implements Clarifier {
   public int getIconHeight() { return 0; }
 
   public boolean hit(int x, int y) {
-    FigNodeModelElement fc = (FigNodeModelElement) _fig;
-    FigText ft = fc.getNameFig();
-    boolean res = ft.contains(x, y);
+    FigText ft = null;
+    if (_fig instanceof FigNodeModelElement) {
+      FigNodeModelElement fnme = (FigNodeModelElement) _fig;
+      ft = fnme.getNameFig();
+    }
+    if (_fig instanceof FigEdgeModelElement) {
+      FigEdgeModelElement feme = (FigEdgeModelElement) _fig;
+      ft = feme.getNameFig();
+    }
     _fig = null;
-    return res;
+    return (ft != null) && ft.contains(x, y);
   }
 
 } /* end class ClClassName */

@@ -55,12 +55,13 @@ public class CrNoOperations extends CrUML {
        "Normally classes provide operations that define their behavior. \n\n"+
        "Defining operations is needed to complete the behavioral "+
        "specification part of your design. \n\n"+
-       "To fix this, press the FixIt button, or add operations manually "+
+       "To fix this, press the \"Next>\" button, or add operations manually "+
        "by clicking on {name} in the navigator pane and "+
        "using the Create menu to make a new operations. ");
 
     addSupportedDecision(CrUML.decBEHAVIOR);
     setKnowledgeTypes(Critic.KT_COMPLETENESS);
+    addTrigger("behavioralFeature");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: f:/jr/projects/uml/Foundation/Core/Operation.java
-
 package uci.uml.Foundation.Core;
 
 import java.util.*;

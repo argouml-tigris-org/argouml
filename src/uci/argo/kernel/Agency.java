@@ -63,11 +63,13 @@ public class Agency extends Observable { //implements java.io.Serialization
 
   private static Vector _critics = new Vector();
 
-  private static Vector _triggers = new Vector();
+//   private static boolean _hot = false;
 
   /** The main control mechanism for determining which critics should
    * be active. */
   private ControlMech _controlMech;
+
+  public static int _numCriticsApplied = 0;
 
   private static Hashtable _singletonCritics = new Hashtable(40);
 
@@ -102,11 +104,9 @@ public class Agency extends Observable { //implements java.io.Serialization
   /** Reply the registery. */
   private static Hashtable getCriticRegistry() { return _criticRegistry; }
 
-  private static Vector getTriggers() { return _triggers; }
-
   public static Vector getCritics() { return _critics; }
 
-  
+//   public static void setHot(boolean b) { _hot = b; }
 
   ////////////////////////////////////////////////////////////////
   // critic registration
@@ -219,19 +219,36 @@ public class Agency extends Observable { //implements java.io.Serialization
    *
    * I would call this critique, but it causes a compilation error 
    * because it conflicts with the instance method critique! */
+  public static void applyAllCritics(Object dm, Designer d, long reasonCode) {
+    Class dmClazz = dm.getClass();
+    Vector critics = criticsForClass(dmClazz);
+    applyCritics(dm, d, critics, reasonCode);
+  }
+
   public static void applyAllCritics(Object dm, Designer d) {
     //System.out.println("applying all critics ====================");
     Class dmClazz = dm.getClass();
     Vector critics = criticsForClass(dmClazz);
-    //Enumeration cur = critics.elements();
-    /* needs-more-work: execution policies here? */
-    //Dbg.log("debug", "Applying: " + critics.toString());
-    //while (cur.hasMoreElements()) {
+    applyCritics(dm, d, critics, -1L);
+  }
+  
+  public static void applyCritics(Object dm, Designer d, Vector
+				  critics, long reasonCode) {
     int size = critics.size();
+//     if (_hot) System.out.println("----------");
+//     if (_hot) System.out.println("HOT: " +
+// 				 Long.toBinaryString(reasonCode) +
+// 				 " " +  dm);
     for (int i = 0; i < size; i++) {
       Critic c = (Critic) critics.elementAt(i);
-      if (c.isActive()) {
-	try { c.critique(dm, d); }
+      if (c.isActive() && c.matchReason(reasonCode)) {
+// 	if (_hot) System.out.println("hot: " +
+// 				     Long.toBinaryString(c.getTriggerMask()) +
+// 				     " " + c.getClass().getName());
+	try {
+	  //_numCriticsApplied++;
+	  c.critique(dm, d);
+	}
 	catch (Exception ex) {
 	  System.out.println("Exception raised in critique");
 	  System.out.println(c.toString());
@@ -276,41 +293,41 @@ public class Agency extends Observable { //implements java.io.Serialization
   ////////////////////////////////////////////////////////////////
   // triggers
 
-  /** Needs-More-Work */
-  public static void addTrigger(Object dm, Designer dsgr, Object arg) {
-    Trigger t = new Trigger(dm, dsgr, arg);
-    getTriggers().addElement(t);
-    notifyStaticObservers(t);
-  }
+//   /** Needs-More-Work */
+//   public static void addTrigger(Object dm, Designer dsgr, Object arg) {
+//     Trigger t = new Trigger(dm, dsgr, arg);
+//     getTriggers().addElement(t);
+//     notifyStaticObservers(t);
+//   }
 
-  /** Needs-More-Work */
-  public static void addTrigger(Object dm, Designer dsgr) {
-    addTrigger(dm, dsgr, null);
-  }
+//   /** Needs-More-Work */
+//   public static void addTrigger(Object dm, Designer dsgr) {
+//     addTrigger(dm, dsgr, null);
+//   }
 
-  /** Needs-More-Work */
-  public static void fireTriggers() {
-    while (getTriggers().size() > 0) 
-      fireTrigger((Trigger)(getTriggers().firstElement()));
-  }
+//   /** Needs-More-Work */
+//   public static void fireTriggers() {
+//     while (getTriggers().size() > 0) 
+//       fireTrigger((Trigger)(getTriggers().firstElement()));
+//   }
 
-  /** Fire the given trigger and remove all identical triggers from
-   * the list of pending triggers. */
-  public static void fireTrigger(Trigger t) {
-    Vector toRemove = new Vector();
-    Vector ts = getTriggers();
-    Enumeration cur = ts.elements();
-    while (cur.hasMoreElements()) {
-      Trigger t2 = (Trigger) cur.nextElement();
-      if (t.equals(t2)) toRemove.addElement(t2);
-    }
-    cur = toRemove.elements();
-    while (cur.hasMoreElements()) {
-      Trigger t2 = (Trigger) cur.nextElement();
-      ts.removeElement(t2);
-    }
-    t.fire();
-  }
+//   /** Fire the given trigger and remove all identical triggers from
+//    * the list of pending triggers. */
+//   public static void fireTrigger(Trigger t) {
+//     Vector toRemove = new Vector();
+//     Vector ts = getTriggers();
+//     Enumeration cur = ts.elements();
+//     while (cur.hasMoreElements()) {
+//       Trigger t2 = (Trigger) cur.nextElement();
+//       if (t.equals(t2)) toRemove.addElement(t2);
+//     }
+//     cur = toRemove.elements();
+//     while (cur.hasMoreElements()) {
+//       Trigger t2 = (Trigger) cur.nextElement();
+//       ts.removeElement(t2);
+//     }
+//     t.fire();
+//   }
 
   ////////////////////////////////////////////////////////////////
   // notifications and updates
@@ -335,38 +352,38 @@ public class Agency extends Observable { //implements java.io.Serialization
 } /* end class Agency */
 
 
-/** This class store information about a design manipulation that
- * happens in some design editor and then it is matched against a
- * pattern associated with each Critic. Currently another Trigger
- * instance is used as the pattern. Null values in either Trigger are
- * considered wild-card value. <p>
- *
- * Needs-More-Work: This code is not really used yet. Also, shouldn't
- * this be a public class so that the Editor can do something with it? */
-class Trigger {
-  Object _dm;
-  Designer _dsgr;
-  Object _arg;
+// /** This class store information about a design manipulation that
+//  * happens in some design editor and then it is matched against a
+//  * pattern associated with each Critic. Currently another Trigger
+//  * instance is used as the pattern. Null values in either Trigger are
+//  * considered wild-card value. <p>
+//  *
+//  * Needs-More-Work: This code is not really used yet. Also, shouldn't
+//  * this be a public class so that the Editor can do something with it? */
+// class Trigger {
+//   Object _dm;
+//   Designer _dsgr;
+//   Object _arg;
 
-  Trigger(Object dm, Designer dsgr, Object arg) {
-    _dm = dm;
-    _dsgr = dsgr;
-    _arg = arg;
-  }
+//   Trigger(Object dm, Designer dsgr, Object arg) {
+//     _dm = dm;
+//     _dsgr = dsgr;
+//     _arg = arg;
+//   }
 
-  /** Needs-More-Work */
-  boolean equals(Trigger t2) {
-    return _dm == t2._dm && _dsgr == t2._dsgr && _arg == t2._arg;
-  }
+//   /** Needs-More-Work */
+//   boolean equals(Trigger t2) {
+//     return _dm == t2._dm && _dsgr == t2._dsgr && _arg == t2._arg;
+//   }
 
-  public String toString() {
-    return "Trigger[" + _dm.toString() + "\n----\n" +
-       (_arg == null ? " " : _arg.toString()) + "]";
-  }
+//   public String toString() {
+//     return "Trigger[" + _dm.toString() + "\n----\n" +
+//        (_arg == null ? " " : _arg.toString()) + "]";
+//   }
 
-  void fire() {
-    /* needs-more-work: should take arg into account, apply only some
-     critics */
-    Agency.applyAllCritics(_dm, _dsgr);
-  }
-} /* end class Trigger */
+//   void fire() {
+//     /* needs-more-work: should take arg into account, apply only some
+//      critics */
+//     Agency.applyAllCritics(_dm, _dsgr);
+//   }
+// } /* end class Trigger */

@@ -101,7 +101,6 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
 
   protected Fig _group = null;
 
-
   ////////////////////////////////////////////////////////////////
   // static initializer
 
@@ -460,6 +459,19 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
    *  size. Subclasses must override to return something useful. */
   public Dimension getPreferedSize() { return new Dimension(_w, _h); }
 
+  public Stack getPopUpActions() { 
+    Stack popUpActions = setPopUpActions();
+    return popUpActions; 
+  }
+
+  public Stack setPopUpActions() { 
+    Stack popUpActions = new Stack();
+    popUpActions.push(new CmdReorder(CmdReorder.BRING_FORWARD));
+    popUpActions.push(new CmdReorder(CmdReorder.SEND_BACKWARD));
+    popUpActions.push(new CmdReorder(CmdReorder.BRING_TO_FRONT));
+    popUpActions.push(new CmdReorder(CmdReorder.SEND_TO_BACK));
+    return popUpActions;
+  }
 
   // needs-more-work: property change events?
   public void setX(int x) { setBounds(x, _y, _w, _h); }
@@ -623,8 +635,15 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
   /** Reply true if the object intersects the given rectangle. Used
    *  for selective redrawing and by ModeSelect to select all Figs
    *  that are partly within the selection rectangle. */
-  public boolean intersects(Rectangle r) { return getBounds().intersects(r); }
-
+  public boolean intersects(Rectangle r) {
+    return !((r.x + r.width <= _x) ||
+	     (r.y + r.height <= _y) ||
+	     (r.x >= _x + _w) ||
+	     (r.y >= _y + _h));
+  }
+  // note: computing non-intersection is faster on average.  Maybe I
+  // should structure the API to allow clients to take advantage of that?
+  
   /** Return the center of the given Fig. By default the center is the
    *  center of its bounding box. Subclasses may want to define
    *  something else. */

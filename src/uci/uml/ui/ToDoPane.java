@@ -69,12 +69,16 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   protected ToDoList _root = null;
   protected Action _flatView = Actions.FlatToDo;
   protected JToggleButton _flatButton;
+  protected JLabel _countLabel = new JLabel(" 000 Items ");
   protected ToDoPerspective _curPerspective = null;
   protected JTree _tree = new DisplayTextTree();
   protected boolean _flat = false;
   protected Object _lastSel;
 
-  
+  public static int _clicksInToDoPane = 0;
+  public static int _dblClicksInToDoPane = 0;
+  public static int _toDoPerspectivesChanged = 0;
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -84,6 +88,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     //_toolbar.add(new JLabel("Group by "));
     _toolbar.add(_combo);
     _flatButton = _toolbar.addToggle(_flatView, "Flat", "Hierarchical", "Flat");
+    _toolbar.add(_countLabel);
     ImageIcon hierarchicalIcon = loadIconResource("Hierarchical", "Hierarchical");
     ImageIcon flatIcon = loadIconResource("Flat", "Flat");
     _flatButton.setIcon(hierarchicalIcon);
@@ -134,6 +139,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   public void setCurPerspective(TreeModel per) {
     if (_perspectives == null || !_perspectives.contains(per)) return;
     _combo.setSelectedItem(per);
+    _toDoPerspectivesChanged++;
   }
 
   public Object getSelectedObject() {
@@ -198,6 +204,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
 
   /** called when the user clicks once on an item in the tree. */ 
   public void mySingleClick(int row, TreePath path) {
+    _clicksInToDoPane++;
     if (getSelectedObject() == null) return;
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
@@ -206,10 +213,14 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
 
   /** called when the user clicks once on an item in the tree. */ 
   public void myDoubleClick(int row, TreePath path) {
+    _dblClicksInToDoPane++;
     if (getSelectedObject() == null) return;
     Object sel = getSelectedObject();
-    if (sel instanceof ToDoItem)
+    if (sel instanceof ToDoItem) {
       ((ToDoItem)sel).action();
+      Set offs = ((ToDoItem)sel).getOffenders();
+      ProjectBrowser.TheInstance.jumpToDiagramShowing(offs);
+    }
 
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
@@ -230,21 +241,28 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   public void toDoItemsAdded(ToDoListEvent tde) {
     if (_curPerspective instanceof ToDoListListener) 
       ((ToDoListListener)_curPerspective).toDoItemsAdded(tde);
+    updateCountLabel();
     //paintImmediately(getBounds());
   }
 
   public void toDoItemsRemoved(ToDoListEvent tde) {
     if (_curPerspective instanceof ToDoListListener)
       ((ToDoListListener)_curPerspective).toDoItemsRemoved(tde);
+    updateCountLabel();
     //paintImmediately(getBounds());
   }
 
   public void toDoListChanged(ToDoListEvent tde) { 
     if (_curPerspective instanceof ToDoListListener)
       ((ToDoListListener)_curPerspective).toDoListChanged(tde);
+    updateCountLabel();
   }
 
-
+  public void updateCountLabel() {
+    int size = Designer.TheDesigner.getToDoList().size();
+    if (size == 0) _countLabel.setText(" No Items ");
+    else _countLabel.setText(" " + size + " Items");
+  }
 
   ////////////////////////////////////////////////////////////////
   // internal methods

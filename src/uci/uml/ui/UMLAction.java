@@ -48,9 +48,11 @@ import uci.uml.visual.*;
 public class UMLAction extends AbstractAction {
 
   public UMLAction(String name) { this(name, true); }
-  
-  public UMLAction(String name, boolean global) { 
-    super(name, loadIconResource(imageName(name), name));
+
+  public UMLAction(String name, boolean global) {
+    super(name);
+    Icon icon = loadIconResource(imageName(name), name);
+    if (icon != null) putValue(Action.SMALL_ICON, icon);
     putValue(Action.SHORT_DESCRIPTION, name);
     if (global) Actions._allActions.addElement(this);
   }
@@ -62,14 +64,13 @@ public class UMLAction extends AbstractAction {
       return new ImageIcon(imgURL, desc);
     }
     catch (Exception ex) {
-      return new ImageIcon(desc);
+      return null;
     }
   }
 
   protected static String imageName(String name) {
     return "/uci/Images/" + stripJunk(name) + ".gif";
   }
-  
 
   /** Perform the work the action is supposed to do. */
   // needs-more-work: should actions run in their own threads?
@@ -81,6 +82,11 @@ public class UMLAction extends AbstractAction {
     Actions.updateAllEnabled();
   }
 
+  public void markNeedsSave() {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    p.needsSave();
+  }
 
   public void updateEnabled(Object target) { setEnabled(shouldBeEnabled()); }
   public void updateEnabled() { setEnabled(shouldBeEnabled()); }
@@ -97,7 +103,7 @@ public class UMLAction extends AbstractAction {
     int len = s.length();
     for (int i = 0; i < len; i++) {
       char c = s.charAt(i);
-      if (Character.isJavaLetterOrDigit(c)) res += c;
+      if (Character.isJavaIdentifierPart(c)) res += c;
     }
     return res;
   }

@@ -61,7 +61,7 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     super("Diagram");
     setLayout(new BorderLayout());
     _jgraph = new JGraph();
-    _jgraph.setDrawingSize(1000, 1000);
+    _jgraph.setDrawingSize((612-30) * 2, (792-55-20)*2);
     // needs-more-work: should update to size of diagram contents
 
     uci.gef.Globals.setStatusBar(ProjectBrowser.TheInstance);
@@ -136,9 +136,6 @@ implements TabModelTarget, uci.gef.event.GraphSelectionListener {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     if (sels.size() == 1) pb.setDetailsTarget(sels.elementAt(0));
     else pb.setDetailsTarget(null);
-    // needs-more-work: single-clicking objects from navigator pane that do
-    // not have a Fig in the diagram cause the DetailsPane to jump to
-    // tab 0 (the TabToDo).
   }
 
   public void removeGraphSelectionListener(GraphSelectionListener listener) {

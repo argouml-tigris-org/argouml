@@ -23,10 +23,6 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
-
-// Source file: Foundation/Core/Feature.java
-
 package uci.uml.Foundation.Core;
 
 import java.util.*;
@@ -63,6 +59,7 @@ public abstract class Feature extends ModelElementImpl {
   public void setOwner(Classifier x) throws PropertyVetoException {
     fireVetoableChange("owner", _visibility, x);
     _owner = x;
+    setNamespace(x);
   }
 
 

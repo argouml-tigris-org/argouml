@@ -87,8 +87,12 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
 
   /** dm's that should be critiqued ASAP. */
   private Vector _hotQueue = new Vector();
+  private Vector _hotReasonQueue = new Vector();
   private Vector _addQueue = new Vector();
+  private Vector _addReasonQueue = new Vector();
   private Vector _removeQueue = new Vector();
+  public static int _longestAdd = 0;
+  public static int _longestHot = 0;
 
   /** dm's that should be critiqued relatively soon. */
   private Vector _warmQueue = new Vector();
@@ -146,13 +150,18 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
         synchronized (_hotQueue) {
 	  synchronized (_addQueue) {
 	    int size = _addQueue.size();
-	    for (int i = 0; i < size; i++)
+	    for (int i = 0; i < size; i++) {
 	      _hotQueue.addElement(_addQueue.elementAt(i));
+	      _hotReasonQueue.addElement(_addReasonQueue.elementAt(i));
+	    }
 	    _addQueue.removeAllElements();
+	    _addReasonQueue.removeAllElements();
 	  }
 	}
 	synchronized (_hotQueue) {
+	  _longestHot = Math.max(_longestHot, _hotQueue.size());
           _agency.determineActiveCritics(this);
+	  //_agency.setHot(true);
           // jer added 970911
           // now use ChildGenerators instead of elements()
           //- _CritiquingRoot.critique(this);
@@ -163,8 +172,10 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
 	    //System.currentTimeMillis() < cutoffTime + 1000) {
 	    //System.out.println("hot:"+ _hotQueue.size());
             Object dm = _hotQueue.elementAt(0);
+	    Long reasonCode = (Long) _hotReasonQueue.elementAt(0);
             _hotQueue.removeElementAt(0);
-	    Agency.applyAllCritics(dm, theDesigner());
+	    _hotReasonQueue.removeElementAt(0);
+	    Agency.applyAllCritics(dm, theDesigner(), reasonCode.longValue());
 // 	    Enumeration subDMs = _cg.gen(dm);
 // 	    while (subDMs.hasMoreElements()) {
 // 	      Object nextDM = subDMs.nextElement();
@@ -181,7 +192,8 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
 	  }
 	}
 
-	  synchronized (_warmQueue) {
+	synchronized (_warmQueue) {
+	    //_agency.setHot(false);
 	    if (_warmQueue.size() == 0)
 	      _warmQueue.addElement(_CritiquingRoot);
 	    while (_warmQueue.size() > 0 && System.currentTimeMillis() < cutoffTime) {
@@ -212,13 +224,26 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
     }
   }
 
-
-  public void critiqueASAP(Object dm) {
+  // needs-more-work: what about when objects are first created?
+  public void critiqueASAP(Object dm, String reason) {
+    long rCode = Critic.reasonCodeFor(reason);
     synchronized (_addQueue) {
       if (!_userWorking) return;
       //System.out.println("critiqueASAP:" + dm);
-      if (!(_addQueue.contains(dm))) _addQueue.addElement(dm);
+      int addQueueIndex = _addQueue.indexOf(dm);
+      if (addQueueIndex == -1) {
+	_addQueue.addElement(dm);
+	Long reasonCodeObj = new Long(rCode);
+	_addReasonQueue.addElement(reasonCodeObj);
+      }
+      else {
+	Long reasonCodeObj = (Long) _addReasonQueue.elementAt(addQueueIndex);
+	long rc = reasonCodeObj.longValue() | rCode;
+	Long newReasonCodeObj = new Long(rc);
+	_addReasonQueue.setElementAt(newReasonCodeObj, addQueueIndex);
+      }
       _removeQueue.addElement(dm);
+      _longestAdd = Math.max(_longestAdd, _addQueue.size());
     }
   }
 
@@ -259,6 +284,15 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
    public synchronized static void setCritiquingRoot(Object d) {
      _CritiquingRoot = d;
      theDesigner()._toDoList.removeAllElements();
+     synchronized (theDesigner()._hotQueue) {
+       theDesigner()._hotQueue.removeAllElements();
+       theDesigner()._hotReasonQueue.removeAllElements();
+       theDesigner()._addQueue.removeAllElements();
+       theDesigner()._addReasonQueue.removeAllElements();
+       theDesigner()._removeQueue.removeAllElements();
+       theDesigner()._warmQueue.removeAllElements();
+     }
+     //clear out queues! @@@
    }
    public static Object getCritiquingRoot() { return _CritiquingRoot; }
 

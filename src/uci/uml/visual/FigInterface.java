@@ -126,6 +126,11 @@ public class FigInterface extends FigNodeModelElement {
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
+    Classifier cls = (Classifier) getOwner();
+    if (ft == _oper) {
+      String s = ft.getText();
+      ParserDisplay.SINGLETON.parseOperationCompartment(cls, s);
+    }
   }
 
   protected void modelChanged() {

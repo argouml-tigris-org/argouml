@@ -89,6 +89,7 @@ criticsClasses:
 	cd critics; make classes; cd .. ; \
 	cd critics/patterns; make classes; cd ../.. ; \
 	cd critics/java; make classes; cd ../.. ; \
+	cd critics/presentation; make classes; cd ../.. ; \
 	cd checklist; make classes; cd ../.. ; \
 	cd .. ; \
 	fi
@@ -164,6 +165,7 @@ criticsClean:
 	cd critics; make clean; cd .. ; \
 	cd critics/patterns; make clean; cd ../.. ; \
 	cd critics/java; make clean; cd ../.. ; \
+	cd critics/presentation; make clean; cd ../.. ; \
 	cd checklist; make clean; cd ../.. ; \
 	cd .. ; \
 	fi

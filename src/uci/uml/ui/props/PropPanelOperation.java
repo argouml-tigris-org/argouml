@@ -150,22 +150,26 @@ implements ItemListener {
     _visField.setSelectedItem(vk);
 
     ScopeKind sk = oper.getOwnerScope();
+    CallConcurrencyKind ck = oper.getConcurrency();
     // needs-more-work: concurrency
     // needs-more-work: final methods?
-    if (ScopeKind.CLASSIFIER.equals(sk))
-      _keywordsField.setSelectedItem("static");
-    else
-      _keywordsField.setSelectedItem("None");
+    if (ScopeKind.CLASSIFIER.equals(sk)) {
+      if (CallConcurrencyKind.GUARDED.equals(ck))
+	_keywordsField.setSelectedItem("static synchronized");
+      else
+	_keywordsField.setSelectedItem("static");
+    }
+    else {
+      if (CallConcurrencyKind.GUARDED.equals(ck))
+	_keywordsField.setSelectedItem("synchronized");
+      else
+	_keywordsField.setSelectedItem("None");
+    }
 
     Vector params = oper.getParameter();
     if (params != null && params.size() > 0) {
-      Parameter p = null;
-      java.util.Enumeration enum = params.elements();
-      while (enum.hasMoreElements()) {
-	p = (Parameter) enum.nextElement();
-	if (p.getName().equals(Parameter.RETURN_NAME)) break;
-      }
-      if (p != null) _typeField.setSelectedItem(p.getType());
+      Classifier rt = oper.getReturnType();
+      if (rt != null) _typeField.setSelectedItem(rt);
       else _typeField.setSelectedItem(null);
     }
   }
@@ -247,13 +251,14 @@ implements ItemListener {
       rt = (Classifier) rtObj;
     }
     else {
-      System.out.println("selected return type was a " + rtObj.getClass());
-      System.out.println("selected return type is " + rtObj);
+      // watch out for null rtObj
+//       System.out.println("selected return type was a " + rtObj.getClass());
+//       System.out.println("selected return type is " + rtObj);
       // needs-more-work: selected predefined class
     }
     if (rt != null) {
       try {
-	//System.out.println("setting return type: " + rt);
+	//System.out.println("Props setting return type: " + rt);
 	op.setReturnType(rt);
       }
       catch (PropertyVetoException pve) { }

@@ -34,6 +34,7 @@ package uci.uml.critics;
 
 import java.util.*;
 import uci.util.*;
+import uci.gef.*;
 import uci.uml.ui.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
@@ -48,12 +49,19 @@ import uci.uml.Model_Management.*;
  * @see uci.argo.kernel.Agency */
 
 public class ChildGenUML implements ChildGenerator {
+  public static ChildGenUML SINGLETON = new ChildGenUML();
+
   /** Reply a Enumeration of the children of the given Object */
   public Enumeration gen(Object o) {
     if (o instanceof Project) {
       Project p = (Project) o;
       return new EnumerationComposite(p.getModels().elements(),
 				      p.getDiagrams().elements());
+    }
+
+    if (o instanceof Diagram) {
+      Vector figs = ((Diagram)o).getLayer().getContents();
+      if (figs != null) return figs.elements();
     }
 
     if (o instanceof Package) {
@@ -78,6 +86,7 @@ public class ChildGenUML implements ChildGenerator {
       EnumerationComposite res = new EnumerationComposite();
       res.addSub(cls.getBehavioralFeature());
       res.addSub(cls.getStructuralFeature());
+      
       Vector sms = cls.getBehavior();
       StateMachine sm = null;
       if (sms != null && sms.size() > 0) sm = (StateMachine) sms.elementAt(0);

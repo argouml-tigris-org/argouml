@@ -69,9 +69,15 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public void setBehavioralFeature(Vector x)
   throws PropertyVetoException {
     if (_behavioralFeature == null) _behavioralFeature = new Vector();
-    fireVetoableChange("behavioralFeature", _behavioralFeature, x);
-    _behavioralFeature = x;
+    fireVetoableChangeNoCompare("behavioralFeature", _behavioralFeature, x);
     java.util.Enumeration enum = _behavioralFeature.elements();
+    while (enum.hasMoreElements()) {
+      BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
+      bf.setOwner(null);
+      bf.setNamespace(null);
+    }
+    _behavioralFeature = x;
+    enum = _behavioralFeature.elements();
     while (enum.hasMoreElements()) {
       BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
       bf.setOwner(this);
@@ -110,8 +116,14 @@ public abstract class Classifier extends GeneralizableElementImpl {
   throws PropertyVetoException {
     if (_structuralFeature == null) _structuralFeature = new Vector();
     fireVetoableChangeNoCompare("structuralFeature", _structuralFeature, x);
-    _structuralFeature = x;
     java.util.Enumeration enum = _structuralFeature.elements();
+    while (enum.hasMoreElements()) {
+      StructuralFeature sf = (StructuralFeature) enum.nextElement();
+      sf.setOwner(null);
+      sf.setNamespace(null);
+    }
+    _structuralFeature = x;
+    enum = _structuralFeature.elements();
     while (enum.hasMoreElements()) {
       StructuralFeature sf = (StructuralFeature) enum.nextElement();
       sf.setOwner(this);

@@ -114,6 +114,7 @@ public abstract class Generator {
   }
 
   public String generateClassifierRef(Classifier cls) {
+    if (cls == null) return "";
     return generateName(cls.getName());
   }
 

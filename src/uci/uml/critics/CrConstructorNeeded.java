@@ -53,18 +53,18 @@ public class CrConstructorNeeded extends CrUML {
        "because not all of its attributes have initial values. \n\n"+
        "Defining good constructors is key to establishing class invariants, and "+
        "class invariants are a powerful aid in writing solid code. \n\n"+
-       "To fix this, press the FixIt button, or add a constructor manually "+
+       "To fix this, press the \"Next>\" button, or add a constructor manually "+
        "by clicking on {name} in the navigator pane and "+
        "using the Create menu to make a new constructor. ");
 
     addSupportedDecision(CrUML.decSTORAGE);
+    addTrigger("behavioralFeature");
+    addTrigger("structuralFeature");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MMClass)) return NO_PROBLEM;
     MMClass cls = (MMClass) dm;
-
-    //needs-more-work: how do I detect constructors in UML
 
     boolean uninitializedIVar = false;
     Vector str = cls.getStructuralFeature();
@@ -75,25 +75,30 @@ public class CrConstructorNeeded extends CrUML {
       if (!(sf instanceof Attribute)) continue;  // what else could it be?
       Attribute attr = (Attribute) sf;
       ScopeKind sk = attr.getOwnerScope();
+      ChangeableKind ck = attr.getChangeable();
       Expression init = attr.getInitialValue();
-      if (ScopeKind.INSTANCE.equals(sk) && init == null ||
-	  init.getBody() == null)
-	uninitializedIVar = true;
-      // needs-more-work: check for empty string initializer
+      if (ScopeKind.INSTANCE.equals(sk) && ChangeableKind.NONE.equals(ck))
+	if (init == null || init.getBody() == null ||
+	    init.getBody().getBody() == null ||
+	    init.getBody().getBody().trim().length() == 0)
+	  uninitializedIVar = true;
     }
 
     if (!uninitializedIVar) return NO_PROBLEM;
 
-    Vector beh = cls.getInheritedBehavioralFeatures();
+    Vector beh = cls.getBehavioralFeature();
+    String className = cls.getName().getBody();
     if (beh == null) return PROBLEM_FOUND;
     enum = beh.elements();
     while (enum.hasMoreElements()) {
       BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
-      // if (!constructor) continue;
+      String operName = bf.getName().getBody();
+      if (bf.getReturnType() != null) continue;
+      if (!operName.equals(className)) continue;
       ScopeKind sk = bf.getOwnerScope();
-      if (ScopeKind.INSTANCE.equals(sk)) return NO_PROBLEM;
+      if (!ScopeKind.INSTANCE.equals(sk)) continue;
+      if (bf.getReturnType() == null) return NO_PROBLEM;
     }
-    //needs-more-work?: don't count static or constants?
     return PROBLEM_FOUND;
   }
 

@@ -55,6 +55,7 @@ public class CrUnconventionalPackageName extends CrUML {
        "and use the Properties tab to give it a different name.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("name");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

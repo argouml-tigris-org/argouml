@@ -96,6 +96,12 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
 
   public FigText getNameFig() { return _name; }
 
+  public Stack getPopUpActions() {
+    Stack popUpActions = super.getPopUpActions();
+    popUpActions.push(new CmdUMLProperties());
+    return popUpActions;
+  }
+
   public void vetoableChange(PropertyChangeEvent pce) {
     //System.out.println("in vetoableChange");
     Object src = pce.getSource();

@@ -193,6 +193,8 @@ public class CrReservedName extends CrUML {
     setPriority(ToDoItem.HIGH_PRIORITY);
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("name");
+    addTrigger("feature_name");
   }
 
   ////////////////////////////////////////////////////////////////

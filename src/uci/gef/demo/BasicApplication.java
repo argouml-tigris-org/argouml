@@ -60,7 +60,7 @@ public class BasicApplication {
     _jgf.getGraph().bindKey(new CmdDispose(), KeyEvent.VK_DELETE, 0);
 
     _jgf.setBounds(10, 10, 300, 200);
-    _jgf.show();
+    _jgf.setVisible(true);
   }
 
   ////////////////////////////////////////////////////////////////

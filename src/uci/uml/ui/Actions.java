@@ -53,7 +53,6 @@ import uci.uml.generate.*;
 public class Actions {
 
   static Vector _allActions = new Vector(100);
-  
 
   public static UMLAction New = new ActionNew();
   public static UMLAction Open = new ActionOpen();
@@ -91,6 +90,7 @@ public class Actions {
   public static UMLAction ClassDiagram = new ActionClassDiagram();
   public static UMLAction UseCaseDiagram = new ActionUseCaseDiagram();
   public static UMLAction StateDiagram = new ActionStateDiagram();
+  public static UMLAction ActivityDiagram = new ActionActivityDiagram();
 
   public static UMLAction Class = new ActionClass();
   public static UMLAction Interface = new ActionInterface();
@@ -106,6 +106,7 @@ public class Actions {
 
   public static UMLAction GenerateOne = new ActionGenerateOne();
   public static UMLAction GenerateAll = new ActionGenerateAll();
+  public static UMLAction GenerateWeb = new ActionGenerateWeb();
 
 
   public static UMLAction AutoCritique = new ActionAutoCritique();
@@ -153,6 +154,17 @@ class ActionNew extends UMLAction {
   public ActionNew() { super("New..."); }
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    if (p != null) { // && p.getNeedsSave()) {
+      String t = "Save changes to " + p.getName();
+      int response =
+	JOptionPane.showConfirmDialog(pb, t, t,
+				      JOptionPane.YES_NO_CANCEL_OPTION);
+      if (response == JOptionPane.CANCEL_OPTION) return;
+      if (response == JOptionPane.YES_OPTION)
+	if (!((ActionSave)Actions.Save).trySave()) return;
+      //needs-more-work: if you cancel the save it should cancel open
+    }
     pb.setProject(new EmptyProject());
   }
 } /* end class ActionNew */
@@ -161,8 +173,28 @@ class ActionOpen extends UMLAction {
   public ActionOpen() { super("Open..."); }
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    if (p != null) { // && p.getNeedsSave()) {
+      String t = "Save changes to " + p.getName();
+      int response =
+	JOptionPane.showConfirmDialog(pb, t, t,
+				      JOptionPane.YES_NO_CANCEL_OPTION);
+      if (response == JOptionPane.CANCEL_OPTION) return;
+      if (response == JOptionPane.YES_OPTION)
+	if (!((ActionSave)Actions.Save).trySave()) return;
+    }
+
+    Hashtable stats;
+
     try {
-      JFileChooser chooser = new JFileChooser();
+      JFileChooser chooser;
+      if (p != null && p.getPathname() != null && p.getPathname().length()>0) {
+	System.out.println("open initial path=" + p.getPathname());
+	chooser = new JFileChooser(p.getPathname());
+      }
+      else chooser = new JFileChooser();
+      
+      chooser.setDialogTitle("Open Project...");
       ArgoFileFilter filter = new ArgoFileFilter();
       chooser.addChoosableFileFilter(filter);
       chooser.setFileFilter(filter);
@@ -174,16 +206,40 @@ class ActionOpen extends UMLAction {
     	pb.showStatus("Reading " + pathname + "...");
     	FileInputStream fis = new FileInputStream(pathname);
     	ObjectInput s = new ObjectInputStream(fis);
-    	Project p = (Project) s.readObject();
+	stats = (Hashtable) s.readObject();
+    	p = (Project) s.readObject();
 	p.postLoad();
+	DocumentationManager._docs = (Hashtable) s.readObject();
 	if (fis != null) fis.close();
     	pb.showStatus("Read " + pathname);
 	pb.setProject(p);
+	p.setStats(stats);
 	return;
 	}
       }
-      JOptionPane.showMessageDialog(pb, "No file chosen");
     }
+//     try {
+//       JFileChooser chooser = new JFileChooser();
+//       ArgoFileFilter filter = new ArgoFileFilter();
+//       chooser.addChoosableFileFilter(filter);
+//       chooser.setFileFilter(filter);
+//       int retval = chooser.showOpenDialog(pb);
+//       if(retval == 0) {
+// 	File theFile = chooser.getSelectedFile();
+// 	if(theFile != null) {
+// 	  String pathname = chooser.getSelectedFile().getAbsolutePath();
+//     	pb.showStatus("Reading " + pathname + "...");
+//     	FileInputStream fis = new FileInputStream(pathname);
+//     	ObjectInput s = new ObjectInputStream(fis);
+//     	Project p = (Project) s.readObject();
+// 	p.postLoad();
+// 	if (fis != null) fis.close();
+//     	pb.showStatus("Read " + pathname);
+// 	pb.setProject(p);
+// 	return;
+// 	}
+//       }
+//     }
     catch (FileNotFoundException ignore) {
       System.out.println("got an FileNotFoundException");
      }
@@ -193,7 +249,6 @@ class ActionOpen extends UMLAction {
     catch (IOException ignore) {
       System.out.println("got an IOException");
     }
-
   }
 } /* end class ActionOpen */
 
@@ -201,11 +256,15 @@ class ActionSave extends UMLAction {
   public ActionSave() { super("Save"); }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null && p.getNeedsSave();
+    return super.shouldBeEnabled() && p != null; // && p.getNeedsSave();
   }
   public void actionPerformed(ActionEvent ae) {
     // needs-more-work: should just save
-    Actions.SaveAs.actionPerformed(ae);
+    trySave();
+  }
+  public boolean trySave() {
+    // needs-more-work: should just save
+    return ((ActionSaveAs)Actions.SaveAs).trySave();
   }
 } /* end class ActionSave */
 
@@ -216,33 +275,77 @@ class ActionSaveAs extends UMLAction {
     return super.shouldBeEnabled() && p != null;
   }
   public void actionPerformed(ActionEvent ae) {
+    trySave();
+  }
+
+  public boolean trySave() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p =  pb.getProject();
     try {
-      JFileChooser chooser = new JFileChooser();
+      JFileChooser chooser;
+      if (p != null && p.getPathname() != null && p.getPathname().length()>0) {
+	chooser  = new JFileChooser(p.getPathname());
+      }
+      else chooser = new JFileChooser();
+
+      chooser.setDialogTitle("Save " + p.getName());
       ArgoFileFilter filter = new ArgoFileFilter();
       chooser.addChoosableFileFilter(filter);
       chooser.setFileFilter(filter);
+      Hashtable stats = p.getStats();
+
       int retval = chooser.showSaveDialog(pb);
       if(retval == 0) {
 	File theFile = chooser.getSelectedFile();
 	if (theFile != null) {
 	  String pathname = chooser.getSelectedFile().getAbsolutePath();
 	  pb.showStatus("Writing " + pathname + "...");
+	  p.setPathname(chooser.getSelectedFile().getParent());
+	  String name = chooser.getSelectedFile().getName();
+	  if (!name.endsWith(".argo")) name += ".argo";
+	  if (!pathname.endsWith(".argo")) pathname += ".argo";
+	  p.setName(name);
 	  FileOutputStream fos = new FileOutputStream(pathname);
 	  ObjectOutput oo = new ObjectOutputStream(fos);
 	  p.preSave();
+	  oo.writeObject(stats);
 	  oo.writeObject(p);
+	  oo.writeObject(DocumentationManager._docs);
 	  p.postSave();
 	  if (fos != null) fos.close();
 	  pb.showStatus("Wrote " + pathname);
-	  return;
+	  pb.updateTitle();
+	  return true;
 	}
       }
-      JOptionPane.showMessageDialog(pb, "No file chosen");
     }
+//     try {
+//       JFileChooser chooser = new JFileChooser();
+//       ArgoFileFilter filter = new ArgoFileFilter();
+//       chooser.addChoosableFileFilter(filter);
+//       chooser.setFileFilter(filter);
+//       int retval = chooser.showSaveDialog(pb);
+//       if(retval == 0) {
+// 	File theFile = chooser.getSelectedFile();
+// 	if (theFile != null) {
+// 	  String pathname = chooser.getSelectedFile().getAbsolutePath();
+// 	  pb.showStatus("Writing " + pathname + "...");
+// 	  FileOutputStream fos = new FileOutputStream(pathname);
+// 	  ObjectOutput oo = new ObjectOutputStream(fos);
+// 	  p.preSave();
+// 	  oo.writeObject(p);
+// 	  p.postSave();
+// 	  if (fos != null) fos.close();
+// 	  pb.showStatus("Wrote " + pathname);
+// 	  return true;
+// 	}
+//       }
+//     }
     catch (FileNotFoundException ignore) {
       System.out.println("got an FileNotFoundException");
+    }
+    catch (PropertyVetoException ignore) {
+      System.out.println("got an PropertyVetoException in SaveAs");
     }
 //     catch (PropertyVetoException ignore) {
 //       System.out.println("got an PropertyVetoException");
@@ -254,6 +357,7 @@ class ActionSaveAs extends UMLAction {
       System.out.println("got an IOException");
       ignore.printStackTrace();
     }
+    return false;
   }
 } /* end class ActionSaveAS */
 
@@ -279,6 +383,15 @@ class ActionPrint extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
+  public void actionPerformed(ActionEvent ae) {
+    CmdPrint cmd = new CmdPrint();
+    Object target = ProjectBrowser.TheInstance.getTarget();
+    if (target instanceof Diagram) {
+      String n = ((Diagram)target).getName();
+      cmd.setDiagramName(n);
+      cmd.doIt();
+    }
+  }
 } /* end class ActionPrint */
 
 class ActionAddToProj extends UMLAction {
@@ -292,8 +405,18 @@ class ActionAddToProj extends UMLAction {
 class ActionExit extends UMLAction {
   public ActionExit() { super("Exit"); }
 
-  public void actionPerformed(ActionEvent e) {
-    //needs-more-work: are you sure you want to quit?
+  public void actionPerformed(ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    if (p != null) { // && p.getNeedsSave()) {
+      String t = "Save changes to " + p.getName();
+      int response =
+	JOptionPane.showConfirmDialog(pb, t, t,
+				      JOptionPane.YES_NO_CANCEL_OPTION);
+      if (response == JOptionPane.CANCEL_OPTION) return;
+      if (response == JOptionPane.YES_OPTION)
+	if (!((ActionSave)Actions.Save).trySave()) return;
+    }
     System.exit(0);
   }
 } /* end class ActionExit */
@@ -303,22 +426,27 @@ class ActionExit extends UMLAction {
 
 class ActionUndo extends UMLAction {
   public ActionUndo() { super("Undo"); }
+  public boolean shouldBeEnabled() { return false; }
 } /* end class ActionUndo */
 
 class ActionRedo extends UMLAction {
   public ActionRedo() { super("Redo"); }
+  public boolean shouldBeEnabled() { return false; }
 } /* end class ActionRedo */
 
 class ActionCut extends UMLAction {
   public ActionCut() { super("Cut"); }
+  public boolean shouldBeEnabled() { return false; }
 } /* end class ActionCut */
 
 class ActionCopy extends UMLAction {
   public ActionCopy() { super("Copy"); }
+  public boolean shouldBeEnabled() { return false; }
 } /* end class ActionCopy */
 
 class ActionPaste extends UMLAction {
   public ActionPaste() { super("Paste"); }
+  public boolean shouldBeEnabled() { return false; }
 } /* end class ActionPaste */
 
 
@@ -331,6 +459,10 @@ class ActionNavUp extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
+  public void actionPerformed(ActionEvent ae) {
+    NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+    np.navUp();
+  }
 } /* end class ActionNavUp */
 
 class ActionNavDown extends UMLAction {
@@ -338,6 +470,10 @@ class ActionNavDown extends UMLAction {
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
+  }
+  public void actionPerformed(ActionEvent ae) {
+    NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+    np.navDown();
   }
 } /* end class ActionNavDown */
 
@@ -347,6 +483,9 @@ class ActionFind extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
+  public void actionPerformed(ActionEvent ae) {
+    FindDialog.SINGLETON.setVisible(true);
+  }
 } /* end class ActionFind */
 
 class ActionGotoDiagram extends UMLAction {
@@ -355,13 +494,36 @@ class ActionGotoDiagram extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
+  public void actionPerformed(ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    //needs-more-work: class TearOffHostFrame and TearOffManager.
+    //idea: pop-up on tab that lists docking locations, new window.
+    JFrame f = new JFrame("Goto Diagram...");
+    f.getContentPane().setLayout(new BorderLayout());
+    JTabbedPane tabs = new JTabbedPane();
+    f.getContentPane().add(tabs, BorderLayout.CENTER);
+    TabResults allDiagrams = new TabResults(false); // no related
+    allDiagrams.setResults(p.getDiagrams(), p.getDiagrams());
+    tabs.addTab("All Diagrams", allDiagrams);
+    //needs-more-work: tabs for class, state, usecase, help
+    f.setSize(500, 300);
+    f.setLocation(pb.getLocation().x + 100, pb.getLocation().y + 100);
+    f.setVisible(true);
+  }
 } /* end class ActionGotoDiagram */
 
 class ActionNavBack extends UMLAction {
   public ActionNavBack() { super("Navigate Back"); }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
+    if (!(super.shouldBeEnabled() && p != null)) return false;
+    NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+    return np.canNavBack();
+  }
+  public void actionPerformed(ActionEvent ae) {
+    NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+    np.navBack();
   }
 } /* end class ActionNavBack */
 
@@ -369,7 +531,13 @@ class ActionNavForw extends UMLAction {
   public ActionNavForw() { super("Navigate Forward"); }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
+    if (!(super.shouldBeEnabled() && p != null)) return false;
+    NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+    return np.canNavForw();
+  }
+  public void actionPerformed(ActionEvent ae) {
+    NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
+    np.navForw();
   }
 } /* end class ActionNavForw */
 
@@ -438,8 +606,9 @@ class ActionPrevDetailsTab extends UMLAction {
 class ActionCreateMultiple extends UMLAction {
   public ActionCreateMultiple() { super("Create Multiple..."); }
   public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
+    //Project p = ProjectBrowser.TheInstance.getProject();
+    //return super.shouldBeEnabled() && p != null;
+    return false;
   }
 } /* end class ActionCreateMultiple */
 
@@ -462,7 +631,10 @@ class ActionClassDiagram extends UMLAction {
     //_cmdCreateNode.doIt();
     Project p = ProjectBrowser.TheInstance.getProject();
     try {
-      p.addDiagram(new UMLClassDiagram(p.getCurrentModel()));
+      Diagram d = new UMLClassDiagram(p.getCurrentModel());
+      p.addDiagram(d);
+      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+      ProjectBrowser.TheInstance.setTarget(d);
     }
     catch (PropertyVetoException pve) { }
   }
@@ -480,7 +652,10 @@ class ActionUseCaseDiagram extends UMLAction {
     //_cmdCreateNode.doIt();
     Project p = ProjectBrowser.TheInstance.getProject();
     try {
-      p.addDiagram(new UMLUseCaseDiagram(p.getCurrentModel()));
+      Diagram d  = new UMLUseCaseDiagram(p.getCurrentModel());
+      p.addDiagram(d);
+      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+      ProjectBrowser.TheInstance.setTarget(d);
     }
     catch (PropertyVetoException pve) { }
   }
@@ -515,6 +690,8 @@ class ActionStateDiagram extends UMLAction {
       context.addBehavior(sm);
       UMLStateDiagram d = new UMLStateDiagram(p.getCurrentModel(), sm);
       p.addDiagram(d);
+      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+      pb.setTarget(d);
     }
     catch (PropertyVetoException pve) {
       System.out.println("PropertyVetoException in ActionStateDiagram");
@@ -527,6 +704,47 @@ class ActionStateDiagram extends UMLAction {
     return super.shouldBeEnabled() && p != null && (target instanceof ModelElement);
   }
 } /* end class ActionStateDiagram */
+
+class ActionActivityDiagram extends UMLAction {
+  public ActionActivityDiagram() { super("ActivityDiagram"); }
+
+  public void actionPerformed(ActionEvent e) {
+    //System.out.println("making state diagram...");
+    //_cmdCreateNode.doIt();
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    try {
+      ModelElement context = (ModelElement) pb.getDetailsTarget();
+      if (context == null) {System.out.println("null context"); return;}
+      Name contextName = context.getName();
+      String contextNameStr = "untitled";
+      if (contextName != null && !contextName.equals(Name.UNSPEC))
+	contextNameStr = contextName.getBody();
+      ActivityModel am = new ActivityModel(contextNameStr + "Activities");
+      CompositeState cs = new CompositeState("activities_top");
+      if (context instanceof Namespace) {
+	cs.setNamespace((Namespace)context);
+	am.setNamespace((Namespace)context);
+      }
+      am.setTop(cs);
+      context.addBehavior(am);
+      UMLActivityDiagram d = new UMLActivityDiagram(p.getCurrentModel(), am);
+      p.addDiagram(d);
+      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+      pb.setTarget(d);
+    }
+    catch (PropertyVetoException pve) {
+      System.out.println("PropertyVetoException in ActionActivityDiagram");
+    }
+  }
+  public boolean shouldBeEnabled() {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    Object target = pb.getDetailsTarget();
+    return super.shouldBeEnabled() && p != null &&
+      (target instanceof UseCase || target instanceof Operation);
+  }
+} /* end class ActionActivityDiagram */
 
 
 ////////////////////////////////////////////////////////////////
@@ -541,6 +759,7 @@ class ActionClass extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     //System.out.println("making class...");
     _cmdCreateNode.doIt();
+    markNeedsSave();
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -557,6 +776,7 @@ class ActionInterface extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     System.out.println("making interface...");
     _cmdCreateNode.doIt();
+    markNeedsSave();
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -573,6 +793,7 @@ class ActionActor extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     //System.out.println("making actor...");
     _cmdCreateNode.doIt();
+    markNeedsSave();
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -589,6 +810,7 @@ class ActionUseCase extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     //System.out.println("making Use Case...");
     _cmdCreateNode.doIt();
+    markNeedsSave();
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -605,6 +827,7 @@ class ActionState extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     //System.out.println("making state...");
     _cmdCreateNode.doIt();
+    markNeedsSave();
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -628,6 +851,7 @@ class ActionInternalTransition extends UMLAction {
       t.setGuard(new Guard("condition"));
       t.setEffect(new ActionSequence(new Name("actions")));
       t.setState(st);
+      markNeedsSave();
     }
     catch (PropertyVetoException pve) {
       System.out.println("PropertyVetoException in ActionInternalTransition");
@@ -649,6 +873,7 @@ class ActionPseudostate extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     //System.out.println("making Pseudostate...");
     _cmdCreateNode.doIt();
+    markNeedsSave();
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -665,6 +890,7 @@ class ActionPackage extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     //System.out.println("making Package...");
     _cmdCreateNode.doIt();
+    markNeedsSave();
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -681,6 +907,7 @@ class ActionInstance extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     System.out.println("making Instance...");
     _cmdCreateNode.doIt();
+    markNeedsSave();
   }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -703,6 +930,7 @@ class ActionAttr extends UMLAction {
       Attribute attr = new Attribute("newAttr", INT_TYPE, "0");
       attr.setVisibility(VisibilityKind.PUBLIC);
       cls.addStructuralFeature(attr);
+      markNeedsSave();
     }
     catch (PropertyVetoException pve) {
       System.out.println("PropertyVetoException in ActionOper");
@@ -731,6 +959,7 @@ class ActionOper extends UMLAction {
       Operation oper = new Operation(VOID_TYPE, "newOperation");
       oper.setVisibility(VisibilityKind.PUBLIC);
       cls.addBehavioralFeature(oper);
+      markNeedsSave();
     }
     catch (PropertyVetoException pve) {
       System.out.println("PropertyVetoException in ActionOper");
@@ -756,6 +985,7 @@ class ActionModel extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     try {
       p.addModel(new Model());
+      markNeedsSave();
     }
     catch (PropertyVetoException pve) { }
   }
@@ -767,7 +997,7 @@ class ActionModel extends UMLAction {
 } /* end class ActionModel */
 
 ////////////////////////////////////////////////////////////////
-// tool menu actions
+// generate menu actions
 
 class ActionGenerateOne extends UMLAction {
   public ActionGenerateOne() { super("Generate Selected Classes"); }
@@ -843,6 +1073,17 @@ class ActionGenerateAll extends UMLAction {
   }
 } /* end class ActionGenerateAll */
 
+class ActionGenerateWeb extends UMLAction {
+  public ActionGenerateWeb() { super("Generate Web Site"); }
+
+  public void actionPerformed(ActionEvent e) {
+
+  }
+
+  public boolean shouldBeEnabled() {
+    return false;
+  }
+} /* end class ActionGenerateWeb */
 
 ////////////////////////////////////////////////////////////////
 // critiquing related actions
@@ -963,6 +1204,7 @@ class ActionSnooze extends ToDoItemAction {
     ToDoItem item = (ToDoItem) _target;
     Poster p = item.getPoster();
     p.snooze();
+    TabToDo._numHushes++;
   }
 } /* end class ActionSnooze */
 

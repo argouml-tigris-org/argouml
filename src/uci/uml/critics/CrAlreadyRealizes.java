@@ -50,6 +50,8 @@ public class CrAlreadyRealizes extends CrUML {
        "triangular arrowhead) and press the \"Delete\" key.");
     addSupportedDecision(CrUML.decINHERITANCE);
     setKnowledgeTypes(Critic.KT_SEMANTICS, Critic.KT_PRESENTATION);
+    addTrigger("genealization");
+    addTrigger("realization");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -58,7 +58,7 @@ public class CrSingletonViolated extends CrUML {
        "If you no longer want this class to be a Singleton, remove the "+
        "Singleton stereotype by clicking on the class and deleting Singleton "+
        "from the Props tab. \n"+
-       "To automatically apply the Singleton Pattern, press the FixIt icon; "+
+       "To automatically apply the Singleton Pattern, press the \"Next>\" button; "+
        "or manually (1) mark the class with the Singlton stereotype, (2) add "+
        "a static variable that holds one instance of this class, (3) and "+
        "make all constructors private.\n"+
@@ -67,6 +67,9 @@ public class CrSingletonViolated extends CrUML {
 
     addSupportedDecision(CrUML.decPATTERNS);
     setPriority(ToDoItem.LOW_PRIORITY);
+    addTrigger("stereotype");
+    addTrigger("structuralFeature");
+    addTrigger("associationEnd");
   }
 
   protected void sd(String s) { setDescription(s); }

@@ -68,7 +68,7 @@ public class ChClass extends UMLChecklist {
 	  "or eliminated because it serves the same purpose as {name}?");
 
   setNextCategory("Updates");
-  addItem("For what reasons will an instance of {name} be updated?\n");
+  addItem("For what reasons will an instance of {name} be updated?");
   addItem("Is there some other object that must be updated whenever "+
 	  "{name} is updated?");
     

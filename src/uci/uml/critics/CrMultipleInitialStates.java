@@ -51,6 +51,8 @@ public class CrMultipleInitialStates extends CrUML {
        "one of the extra initial states and remove it. ");
 
     addSupportedDecision(CrUML.decSTATE_MACHINES);
+    addTrigger("parent");
+    addTrigger("kind");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

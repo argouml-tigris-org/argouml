@@ -52,13 +52,15 @@ public class CrUtilityViolated extends CrUML {
        "Applying and following the constraints imposed by stereotypes "+
        "allows you to add additional meaning to your design that helps "+
        "to clarify and make explicit your intent. \n\n"+
-       "To fix this, press the FixIt button, or remove instance "+
+       "To fix this, press the \"Next>\" button, or remove instance "+
        "variables by dobule clicking on them in the navigator pane and "+
        "using the Remove From Project command, or remove the <<utility>> "+
        "stereotype. ");
        
     addSupportedDecision(CrUML.decSTORAGE);
     addSupportedDecision(CrUML.decSTEREOTYPES);
+    addTrigger("stereotype");
+    addTrigger("behavioralFeature");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -66,6 +66,10 @@ public class StatusBar extends JPanel implements Runnable {
     _progress.setValue(percent);
   }
 
+  public void incProgress(int delataPercent) {
+    _progress.setValue(_progress.getValue() + delataPercent);
+  }
+
   public synchronized void doFakeProgress(String s, int work) {
     _statusText = s;
     showStatus(_statusText + "... not implemented yet ...");

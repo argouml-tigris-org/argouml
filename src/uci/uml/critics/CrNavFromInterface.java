@@ -54,6 +54,7 @@ public class CrNavFromInterface extends CrUML {
        "away from the Interface.");
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("end_navigable");
   }
 
   /** Applies to Associations only, not AssociationClasses. */

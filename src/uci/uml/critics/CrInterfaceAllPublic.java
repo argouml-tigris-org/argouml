@@ -48,10 +48,11 @@ public class CrInterfaceAllPublic extends CrUML {
        "other classes must implement.  The must be public. \n\n"+
        "A well-designed set of interfaces is a good way to define the "+
        "possible extensions of a class framework. \n\n"+
-       "To fix this, use the FixIt button, or manually select the operations "+
+       "To fix this, use the \"Next>\" button, or manually select the operations "+
        "of the interface and use the Properties tab add them public.");
     addSupportedDecision(CrUML.decPLANNED_EXTENSIONS);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("behavioralFeature");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

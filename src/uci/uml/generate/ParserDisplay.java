@@ -71,13 +71,17 @@ public class ParserDisplay extends Parser {
       Operation curOp = (Operation) cls.findBehavioralFeature(op.getName());
       if (curOp == null || touched.contains(curOp)) {
 	curOps.insertElementAt(op, i);
-	try { op.setOwner(cls); }
+	try {
+	  op.setOwner(cls);
+	  //op.setNamespace(cls);
+	}
 	catch (PropertyVetoException pve) { }
       }
       else {
 	try {
 	  curOp.setVisibility(op.getVisibility());
 	  curOp.setOwnerScope(op.getOwnerScope());
+	  curOp.setConcurrency(op.getConcurrency());
 	  curOp.setParameter(op.getParameter());
 	  touched.put(curOp, curOp);
 	}
@@ -91,8 +95,12 @@ public class ParserDisplay extends Parser {
       if (!touched.containsKey(op)) removes.addElement(op);
     }
     int nRemove = removes.size();
-    for (i = 0; i < nRemove; i++)
-      curOps.removeElement(removes.elementAt(i));
+    for (i = 0; i < nRemove; i++) {
+      Operation oldOper = (Operation) removes.elementAt(i);
+      curOps.removeElement(oldOper);
+      try { oldOper.setOwner(null); }
+      catch (PropertyVetoException pve) { }
+    }
   }
 
   public void parseAttributeCompartment(Classifier cls, String s) {
@@ -124,7 +132,10 @@ public class ParserDisplay extends Parser {
 	cls.findStructuralFeature(attr.getName());
       if (curAttr == null || touched.contains(curAttr)) {
 	curAttrs.insertElementAt(attr, i);
-	try { attr.setOwner(cls); }
+	try {
+	  attr.setOwner(cls);
+	  //attr.setNamespace(cls);
+	}
 	catch (PropertyVetoException pve) { }
       }
       else {
@@ -145,8 +156,12 @@ public class ParserDisplay extends Parser {
       if (!touched.containsKey(attr)) removes.addElement(attr);
     }
     int nRemove = removes.size();
-    for (i = 0; i < nRemove; i++)
-      curAttrs.removeElement(removes.elementAt(i));
+    for (i = 0; i < nRemove; i++) {
+      Attribute oldAttr = (Attribute) removes.elementAt(i);
+      curAttrs.removeElement(oldAttr);
+      try { oldAttr.setOwner(null); }
+      catch (PropertyVetoException pve) { }
+    }
   }
 
   /** Parse a line of the form:
@@ -161,7 +176,7 @@ public class ParserDisplay extends Parser {
     s = parseOutName(res, s);
     s = parseOutParams(res, s);
     s = s.trim();
-    if (s.length() != 0)
+    if (s.length() > 2)
       System.out.println("leftover in parseOperation=|" + s + "|");
     return res;
   }
@@ -172,13 +187,14 @@ public class ParserDisplay extends Parser {
   public Attribute parseAttribute(String s) {
     s = s.trim();
     if (s.endsWith(";")) s = s.substring(0, s.length()-1);
-    Attribute res = new Attribute();
+    Attribute res = new uci.uml.Foundation.Core.Attribute();
     s = parseOutVisibility(res, s);
     s = parseOutKeywords(res, s);
     s = parseOutType(res, s);
     s = parseOutName(res, s);
     s = parseOutInitValue(res, s);
-    System.out.println("leftover in parseAttribute=|" + s + "|");
+    if (s.length() > 2)
+      System.out.println("leftover in parseAttribute=|" + s + "|");
     return res;
   }
 
@@ -221,6 +237,8 @@ public class ParserDisplay extends Parser {
     try {
       if (visStr.equals("static"))
 	f.setOwnerScope(ScopeKind.CLASSIFIER);
+      else if (visStr.equals("synchronized") && (f instanceof Operation))
+	((Operation)f).setConcurrency(CallConcurrencyKind.GUARDED);
       else if (visStr.equals("transient"))
 	System.out.println("'transient' keyword is currently ignored");
       else if (visStr.equals("final"))
@@ -240,6 +258,11 @@ public class ParserDisplay extends Parser {
     int firstSpace = s.indexOf(" ");
     if (firstSpace == -1) return s;
     String rtStr = s.substring(0, firstSpace);
+    if (rtStr.indexOf("(") > 0) {
+      try { op.addStereotype(Stereotype.CONSTRUCTOR); }
+      catch (PropertyVetoException pve) { }
+      return s;
+    }
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     Classifier rt = p.findType(rtStr);
@@ -247,7 +270,10 @@ public class ParserDisplay extends Parser {
       //System.out.println("setting return type: " + rtStr);
       op.setReturnType(rt);
     }
-    catch (PropertyVetoException pve) { }
+    catch (PropertyVetoException pve) {
+      System.out.println("PropertyVetoException in parseOutReturnType");
+    }
+    if (op.getReturnType() != rt) System.out.println("rt not set");
     return s.substring(firstSpace+1);
   }
 
@@ -265,8 +291,8 @@ public class ParserDisplay extends Parser {
     }
     //System.out.println("parsed " + params.size() + " params");
     //System.out.println("leftOver = '" + leftOver  + "'");
-    Classifier rt = op.getReturnType();
 
+    Classifier rt = op.getReturnType(); // must set again because we overwrite
     try {
       op.setParameter(params);
       op.setReturnType(rt);
@@ -352,6 +378,8 @@ public class ParserDisplay extends Parser {
   /** Parse a string of the form: "range, ...", where range is of the
    *  form "lower..upper", or "integer" */
   public Multiplicity parseMultiplicity(String s) {
+    s = s.trim();
+    if (s.length() == 0) return Multiplicity.ONE;
     Multiplicity m = new Multiplicity();
     StringTokenizer st1 = new StringTokenizer(s, ",");
     while (st1.hasMoreElements()) {

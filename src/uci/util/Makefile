@@ -27,9 +27,13 @@ CLASSES =	Dbg.class \
 		Progress.class \
 		Predicate.class \
 		PredicateTrue.class \
+		PredicateEquals.class \
+		PredicateType.class \
+		PredicateStringMatch.class \
 		EnumerationComposite.class \
 		EnumerationPredicate.class \
 		EnumerationEmpty.class \
+		EnumerationSingle.class \
 		Enum.class \
 		Functor.class \
 		FunctorIdentity.class

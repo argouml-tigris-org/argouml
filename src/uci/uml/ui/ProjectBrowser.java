@@ -73,7 +73,7 @@ implements IStatusBar {
   // -----
   protected static Action _actionAddToProj = Actions.AddToProj;
   // -----
-  protected static Action _actionPrint = new CmdPrint(); //Actions.Print;
+  protected static Action _actionPrint = Actions.Print;
   // -----
   protected static Action _actionExit = Actions.Exit;
 
@@ -89,6 +89,8 @@ implements IStatusBar {
   // view menu
   protected static Action _actionNavUp = Actions.NavUp;
   protected static Action _actionNavDown = Actions.NavDown;
+  protected static Action _actionNavBack = Actions.NavBack;
+  protected static Action _actionNavForw = Actions.NavForw;
   protected static Action _actionFind = Actions.Find;
   protected static Action _actionGotoDiagram = Actions.GotoDiagram;
   protected static Action _actionNextEditTab = Actions.NextEditTab;
@@ -101,6 +103,8 @@ implements IStatusBar {
   protected static Action _actionClassDiagram = Actions.ClassDiagram;
   protected static Action _actionUseCaseDiagram = Actions.UseCaseDiagram;
   protected static Action _actionStateDiagram = Actions.StateDiagram;
+  protected static Action _actionActivityDiagram = Actions.ActivityDiagram;
+
   // ----- model elements
   protected static Action _actionModel = Actions.Model;
   protected static Action _actionClass = Actions.Class;
@@ -123,6 +127,7 @@ implements IStatusBar {
   // actions menu
   protected static Action _actionGenerateOne = Actions.GenerateOne;
   protected static Action _actionGenerateAll = Actions.GenerateAll;
+  protected static Action _actionGenerateWeb = Actions.GenerateWeb;
 
   // critique menu
   protected static Action _actionAutoCritique = Actions.AutoCritique;
@@ -140,10 +145,10 @@ implements IStatusBar {
   protected String _appName = "ProjectBrowser";
   protected Project _project = null;
 
-  protected NavigatorPane _navPane = new NavigatorPane();
-  public ToDoPane _toDoPane = new ToDoPane();
-  protected MultiEditorPane _multiPane = new MultiEditorPane();
-  protected DetailsPane _detailsPane = new DetailsPane();
+  protected NavigatorPane _navPane;
+  public ToDoPane _toDoPane;
+  protected MultiEditorPane _multiPane;
+  protected DetailsPane _detailsPane;
   protected JMenuBar _menuBar = new JMenuBar();
   protected StatusBar _statusBar = new StatusBar();
   //protected JToolBar _toolBar = new JToolBar();
@@ -158,8 +163,16 @@ implements IStatusBar {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public ProjectBrowser(String appName) {
+  public ProjectBrowser(String appName, StatusBar sb) {
     super(appName);
+    sb.showStatus("Making Project Browser: Navigator Pane");
+    sb.incProgress(5);
+    _navPane = new NavigatorPane();
+    sb.showStatus("Making Project Browser: To Do Pane");
+    sb.incProgress(5);
+    _toDoPane = new ToDoPane();
+    _multiPane = new MultiEditorPane(sb);
+    _detailsPane = new DetailsPane(sb);
     setAppName(appName);
     if (TheInstance == null) TheInstance = this;
     //setName(title);
@@ -196,6 +209,7 @@ implements IStatusBar {
     KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK);
     KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK);
     KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlA = KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_MASK);
     KeyStroke F1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
     KeyStroke F2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
     KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
@@ -229,6 +243,15 @@ implements IStatusBar {
       KeyStroke.getKeyStroke(KeyEvent.VK_3,
 			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
 
+    KeyStroke ctrlup =
+      KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.CTRL_MASK);
+    KeyStroke ctrldown =
+      KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlleft =
+      KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlright =
+      KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.CTRL_MASK);
+
     JMenuItem mi;
     // File Menu
     JMenu file = (JMenu) _menuBar.add(new JMenu("File"));
@@ -257,6 +280,17 @@ implements IStatusBar {
 
     JMenu edit = (JMenu) _menuBar.add(new JMenu("Edit"));
     edit.setMnemonic('E');
+
+    JMenu select = new JMenu("Select");
+    edit.add(select);
+    JMenuItem selectAllItem = select.add(new CmdSelectAll());
+    selectAllItem.setAccelerator(ctrlA);
+    JMenuItem selectNextItem = select.add(new CmdSelectNext(false));
+    //tab
+    JMenuItem selectPrevItem = select.add(new CmdSelectNext(true));
+    // shift tab
+    select.add(new CmdSelectInvert());
+
     edit.add(_actionUndo);
     edit.add(_actionRedo);
     edit.addSeparator();
@@ -270,14 +304,23 @@ implements IStatusBar {
     JMenu view = (JMenu) _menuBar.add(new JMenu("View"));
     // maybe should be Navigate instead of view
     view.setMnemonic('V');
-    view.add(_actionNavDown);
-    view.add(_actionNavUp);
-    view.addSeparator();
+
+    JMenu nav = (JMenu) view.add(new JMenu("Navigate"));
+    JMenuItem downItem = nav.add(_actionNavDown);
+    downItem.setAccelerator(ctrldown);
+    JMenuItem upItem = nav.add(_actionNavUp);
+    upItem.setAccelerator(ctrlup);
+    JMenuItem backItem = nav.add(_actionNavBack);
+    backItem.setAccelerator(ctrlleft);
+    JMenuItem forwItem = nav.add(_actionNavForw);
+    forwItem.setAccelerator(ctrlright);
+
     view.add(_actionGotoDiagram);
-    view.add(_actionFind);
+    JMenuItem findItem =  view.add(_actionFind);
+    findItem.setAccelerator(F3);
     view.addSeparator();
 
-    JMenu editTabs = (JMenu) view.add(new JMenu("Edit Tabs"));
+    JMenu editTabs = (JMenu) view.add(new JMenu("Editor Tabs"));
     JMenuItem nextEditItem = editTabs.add(_actionNextEditTab);
     nextEditItem.setAccelerator(F6);
     editTabs.addSeparator();
@@ -332,6 +375,7 @@ implements IStatusBar {
     createDiagrams.add(_actionClassDiagram);
     createDiagrams.add(_actionUseCaseDiagram);
     createDiagrams.add(_actionStateDiagram);
+    createDiagrams.add(_actionActivityDiagram);
 
     JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
     createModelElements.add(_actionModel);
@@ -386,7 +430,9 @@ implements IStatusBar {
     JMenu generate = (JMenu) _menuBar.add(new JMenu("Generation"));
     generate.setMnemonic('G');
     generate.add(_actionGenerateOne);
-    generate.add(_actionGenerateAll);
+    JMenuItem genAllItem = generate.add(_actionGenerateAll);
+    genAllItem.setAccelerator(F7);
+    generate.add(_actionGenerateWeb);
 
     Menu critique = (Menu) _menuBar.add(new Menu("Critique"));
     critique.setMnemonic('R');
@@ -424,7 +470,7 @@ implements IStatusBar {
   public void setProject(Project p) {
     _project = p;
     _navPane.setRoot(_project);
-    setTitle(getAppName() + " - " + _project.getName());
+    updateTitle();
     Actions.updateAllEnabled();
     //Designer.TheDesigner.getToDoList().removeAllElements();
     Designer.TheDesigner.setCritiquingRoot(_project);
@@ -433,6 +479,11 @@ implements IStatusBar {
   }
   public Project getProject() { return _project; }
 
+  public void updateTitle() {
+    if (_project == null) setTitle(getAppName());
+    else setTitle(getAppName() + " - " + _project.getName());
+  }
+  
   public String getAppName() { return _appName; }
   public void setAppName(String n) { _appName = n; }
 
@@ -507,9 +558,47 @@ implements IStatusBar {
   public MultiEditorPane getEditorPane() { return _multiPane; }
   public DetailsPane getDetailsPane() { return _detailsPane; }
 
+  public void jumpToDiagramShowing(Set dms) {
+    if (dms.size() == 0) return;
+    Object first = dms.elementAt(0);
+    if (first instanceof Diagram && dms.size() > 1) {
+      setTarget(first);
+      select(dms.elementAt(1));
+      return;
+    }
+    if (first instanceof Diagram && dms.size() == 1) {
+      setTarget(first);
+      select(null);
+      return;
+    }
+    Vector diagrams = getProject().getDiagrams();
+    Object target = _multiPane.getTarget();
+    if ((target instanceof Diagram) &&
+	((Diagram)target).countContained(dms) == dms.size()) {
+      select(first);
+      return;
+    }
+
+    Diagram bestDiagram = null;
+    int bestNumContained = 0;
+    for (int i = 0; i < diagrams.size(); i++) {
+      Diagram d = (Diagram) diagrams.elementAt(i);
+      int nc = d.countContained(dms);
+      if (nc > bestNumContained) {
+	bestNumContained = nc;
+	bestDiagram = d;
+      }
+      if (nc == dms.size()) break;
+    }
+    if (bestDiagram != null) {
+      setTarget(bestDiagram);
+      select(first);
+    }
+  }
 
   ////////////////////////////////////////////////////////////////
   // window operations
+
   public void setVisible(boolean b) {
     super.setVisible(b);
     if (b) uci.gef.Globals.setStatusBar(this);

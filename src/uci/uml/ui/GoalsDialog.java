@@ -48,6 +48,8 @@ import uci.uml.Model_Management.*;
 public class GoalsDialog extends JDialog
 implements ActionListener, ChangeListener {
 
+  public static int _numGoalsModel = 0;
+
   ////////////////////////////////////////////////////////////////
   // constants
   public final int WIDTH = 300;
@@ -89,6 +91,7 @@ implements ActionListener, ChangeListener {
     _okButton.addActionListener(this);
 
     getRootPane().setDefaultButton(_okButton);
+    _numGoalsModel++;
   }
 
 

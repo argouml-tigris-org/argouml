@@ -97,6 +97,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void paint(Graphics g) {
     if (_content instanceof FigNode)
       ((FigNode)_content).paintClarifiers(g);
+    if (_content instanceof FigEdge)
+      ((FigEdge)_content).paintClarifiers(g);
   }
 
   /** Tell the content to start a transaction that causes damage */

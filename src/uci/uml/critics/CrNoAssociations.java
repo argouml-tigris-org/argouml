@@ -49,12 +49,13 @@ public class CrNoAssociations extends CrUML {
        "Normally classes, actors and use cases are associated with others. \n\n"+
        "Defining the associations between objects an important "+
        "part of your design. \n\n"+
-       "To fix this, press the FixIt button, or add associations manually "+
+       "To fix this, press the \"Next>\" button, or add associations manually "+
        "by clicking on the association tool in the tool bar and dragging "+
        "from {name} to another node. ");
 
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     setKnowledgeTypes(Critic.KT_COMPLETENESS);
+    addTrigger("associationEnd");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

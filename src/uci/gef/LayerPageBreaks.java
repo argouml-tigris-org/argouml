@@ -58,8 +58,9 @@ public class LayerPageBreaks extends Layer {
   /** The color of the grid lines or dots. */
   protected Color _color = Color.white;
 
-  /** The size of the page in pixels. */
-  protected Dimension _pageSize = new Dimension(612, 792);
+  /** The size of the page in pixels.  Needs-More-Work: this is a
+   *  hack.  To get the true page size I need to start a print job! */
+  protected Dimension _pageSize = new Dimension(612-30, 792-55-20);
 
   ////////////////////////////////////////////////////////////////
   // constructors

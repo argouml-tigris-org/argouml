@@ -47,7 +47,7 @@ public class CrClassMustBeAbstract extends CrUML {
        "interfaces must be marked Abstract.\n\n"+
        "Deciding which classes are abstract or concrete is a key part of class "+
        "hierarchy design.\n\n"+
-       "To fix this, use the FixIt button, or manually select the class and use the "+
+       "To fix this, use the \"Next>\" button, or manually select the class and use the "+
        "properties tab to add the Abstract keyword, or manually override each abstract "+
        "operation that is inherited from a base class or interface.");
 

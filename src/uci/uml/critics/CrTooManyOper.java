@@ -56,13 +56,14 @@ public class CrTooManyOper extends CrUML {
        "bottleneck that must be updated frequently. \n\n"+
        "Defining the operations of objects is an important "+
        "part of your design. \n\n"+
-       "To fix this, press the FixIt button, or remove attributes manually "+
+       "To fix this, press the \"Next>\" button, or remove attributes manually "+
        "by double-clicking on the operation compartment of the  "+
        "highlighted class in the diagram and removing the line of text "+
        "for an operation. ");
 
     addSupportedDecision(CrUML.decMETHODS);
     setArg(THRESHOLD, new Integer(20));
+    addTrigger("behavioralFeature");
   }
 
   ////////////////////////////////////////////////////////////////

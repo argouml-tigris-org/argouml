@@ -49,10 +49,11 @@ public class CrUnconventionalClassName extends CrUML {
        "is unconventional because it does not begin with a capital.\n\n"+
        "Following good naming conventions help to improve "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select {name} "+
+       "To fix this, use the \"Next>\" button, or manually select {name} "+
        "and use the Properties tab to give it a different name.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("name");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

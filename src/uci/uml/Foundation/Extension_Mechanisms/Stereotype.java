@@ -79,6 +79,8 @@ public class Stereotype extends GeneralizableElementImpl {
   public static Stereotype USECASEMODEL = new Stereotype("useCaseModel", "Model");
   public static Stereotype USES = new Stereotype("uses", "Generalization");
   public static Stereotype UTILITY = new Stereotype("utility", "Classifier");
+
+  public static Stereotype CONSTRUCTOR = new Stereotype("constructor", "Operation");
   
   public static Stereotype DESTROY =
   new Stereotype("destroy", "BehavioralFeature");

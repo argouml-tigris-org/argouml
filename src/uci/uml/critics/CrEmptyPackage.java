@@ -56,6 +56,7 @@ public class CrEmptyPackage extends CrUML {
        "diagrams or model elements such as classes or use cases. ");
        
     addSupportedDecision(CrUML.decMODULARITY);
+    addTrigger("ownedElement");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

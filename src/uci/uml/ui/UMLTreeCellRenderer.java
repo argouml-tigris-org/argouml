@@ -51,6 +51,7 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   protected ImageIcon _ClassDiagramIcon = loadIconResource("ClassDiagram");
   protected ImageIcon _UseCaseDiagramIcon = loadIconResource("UseCaseDiagram");
   protected ImageIcon _StateDiagramIcon = loadIconResource("StateDiagram");
+  protected ImageIcon _ActivityDiagramIcon = loadIconResource("ActivityDiagram");
 
   protected ImageIcon _AttributeIcon = loadIconResource("Attribute");
   protected ImageIcon _OperationIcon = loadIconResource("Operation");
@@ -70,9 +71,10 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
 
 
   protected ImageIcon _StateMachineIcon = loadIconResource("StateMachine");
+  protected ImageIcon _ActionStateIcon = loadIconResource("ActionState");
   protected ImageIcon _StateIcon = loadIconResource("State");
   protected ImageIcon _CompositeStateIcon = loadIconResource("CompositeState");
-  protected ImageIcon _StartStateIcon = loadIconResource("StartState");
+  protected ImageIcon _InitialStateIcon = loadIconResource("Initial");
   protected ImageIcon _DeepIcon = loadIconResource("DeepHistory");
   protected ImageIcon _ShallowIcon = loadIconResource("ShallowHistory");
   protected ImageIcon _ForkIcon = loadIconResource("Fork");
@@ -104,6 +106,8 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
       if (value instanceof UMLClassDiagram) lab.setIcon(_ClassDiagramIcon);
       if (value instanceof UMLUseCaseDiagram) lab.setIcon(_UseCaseDiagramIcon);
       if (value instanceof UMLStateDiagram) lab.setIcon(_StateDiagramIcon);
+      if (value instanceof UMLActivityDiagram)
+	lab.setIcon(_ActivityDiagramIcon);
 
       if (value instanceof Attribute) lab.setIcon(_AttributeIcon);
       if (value instanceof Operation) lab.setIcon(_OperationIcon);
@@ -130,7 +134,7 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
       else if (value instanceof Pseudostate) {
 	Pseudostate ps = (Pseudostate) value;
 	PseudostateKind kind = ps.getKind();
-	if (PseudostateKind.INITIAL.equals(kind)) lab.setIcon(_StartStateIcon);
+	if (PseudostateKind.INITIAL.equals(kind)) lab.setIcon(_InitialStateIcon);
 	if (PseudostateKind.DEEP_HISTORY.equals(kind)) lab.setIcon(_DeepIcon);
 	if (PseudostateKind.SHALLOW_HISTORY.equals(kind))
 	  lab.setIcon(_ShallowIcon);
@@ -139,6 +143,9 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
 	if (PseudostateKind.BRANCH.equals(kind)) lab.setIcon(_BranchIcon);
 	if (PseudostateKind.FINAL.equals(kind)) lab.setIcon(_FinalStateIcon);
       }
+      else if (value instanceof
+	       uci.uml.Behavioral_Elements.State_Machines.ActionState)
+	lab.setIcon(_ActionStateIcon);
       else if (value instanceof State) lab.setIcon(_StateIcon);
 
       if (value instanceof UseCase) lab.setIcon(_UseCaseIcon);

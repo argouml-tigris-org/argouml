@@ -52,13 +52,14 @@ public class CrNameConfusion extends CrUML {
        "names are so close to each other that readers might be confused. \n\n"+
        "Clear and unambiguous naming is key to code generation and \n"+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select the elements \n"+
+       "To fix this, use the \"Next>\" button, or manually select the elements \n"+
        "and use the Properties tab to change their names.  Avoid names\n" +
        "that differ from other names only in capitalization, or use of \n"+
        "underscore characters, or by only one character.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_PRESENTATION);
     setKnowledgeTypes(Critic.KT_SYNTAX);
+    addTrigger("name");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

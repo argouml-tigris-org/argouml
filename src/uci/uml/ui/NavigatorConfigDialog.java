@@ -49,6 +49,7 @@ import uci.uml.ui.nav.*;
 public class NavigatorConfigDialog extends JDialog
 implements ActionListener, ChangeListener, ListSelectionListener, MouseListener {
 
+  public static int _numNavConfig = 0;
   ////////////////////////////////////////////////////////////////
   // constants
   public final int WIDTH = 400;
@@ -124,6 +125,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     content.add(_mainButtons, BorderLayout.SOUTH);
     
     getRootPane().setDefaultButton(_okButton);
+    _numNavConfig++;
   }
 
 

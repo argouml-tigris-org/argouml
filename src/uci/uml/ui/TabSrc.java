@@ -47,8 +47,7 @@ public class TabSrc extends TabText {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabSrc() {
-    setTitle("Source");
-    System.out.println("making TabSrc");
+    super("Source");
   }
 
   ////////////////////////////////////////////////////////////////

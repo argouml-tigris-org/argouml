@@ -46,7 +46,7 @@ import uci.argo.kernel.*;
 /** Class to present a node (such as a NetNode) in a diagram. */
 
 public class FigNode extends FigGroup
-implements MouseListener, PropertyChangeListener, Serializable {
+implements MouseListener, PropertyChangeListener, Highlightable {
   ////////////////////////////////////////////////////////////////
   // constants
   
@@ -341,6 +341,18 @@ implements MouseListener, PropertyChangeListener, Serializable {
       icon.paintIcon(null, g, iconX, iconY);
       iconX += icon.getIconWidth();
     }
+    items = list.elementsForOffender(this);
+    size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+      }
+      icon.paintIcon(null, g, iconX, iconY);
+      iconX += icon.getIconWidth();
+    }
   }
 
   public ToDoItem hitClarifier(int x, int y) {
@@ -365,15 +377,43 @@ implements MouseListener, PropertyChangeListener, Serializable {
 	if (((Clarifier)icon).hit(x, y)) return item;
       }
     }
+    items = list.elementsForOffender(this);
+    size = items.size();
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      int width = icon.getIconWidth();
+      if (y >= _y - 15 && y <= _y + 10 &&
+	  x >= iconX && x <= iconX + width) return item;
+      iconX += width;
+    }
+    for (int i = 0; i < size; i++) {
+      ToDoItem item = (ToDoItem) items.elementAt(i);
+      Icon icon = item.getClarifier();
+      if (icon instanceof Clarifier) {
+	((Clarifier)icon).setFig(this);
+	((Clarifier)icon).setToDoItem(item);
+	if (((Clarifier)icon).hit(x, y)) return item;
+      }
+    }
     return null;
   }
-
+  
   public String getTipString(MouseEvent me) {
     ToDoItem item = hitClarifier(me.getX(), me.getY());
     if (item != null) return item.getHeadline();
     return super.getTipString(me);
   }
 
+  ////////////////////////////////////////////////////////////////
+  // Highlightable implementation
+  public void setHighlight(boolean b) {
+    _highlight = b;
+    damage();
+  }
+  public boolean getHighlight() { return _highlight; }
+
+  
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
@@ -384,10 +424,8 @@ implements MouseListener, PropertyChangeListener, Serializable {
     String pName = pce.getPropertyName();
     Object src = pce.getSource();
     if (pName.equals("dispose") && src == getOwner()) { delete(); }
-    if (pName.equals("highlight") && src == getOwner()) {
-      _highlight = ((Boolean)pce.getNewValue()).booleanValue();
-      damage();
-    }
+    if (pName.equals("highlight") && src == getOwner())
+      setHighlight(((Boolean)pce.getNewValue()).booleanValue());
   }
 
 

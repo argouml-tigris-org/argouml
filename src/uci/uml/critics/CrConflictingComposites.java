@@ -49,13 +49,14 @@ public class CrConflictingComposites extends CrUML {
        "Since each instance can only be contained in one other object, each "+
        "object can be the 'part' in at most one is-part-of relationship.\n\n"+
        "Good OO design depends on building good is-part-of relationships.\n\n"+
-       "To fix this, use the FixIt button, or manually change one association "+
+       "To fix this, use the \"Next>\" button, or manually change one association "+
        "to have multiplicity to 0..1 or 1..1, or another kind "+
        "of aggregation (e.g., a white diamond is less strict), "+
        "or remove one of the associations");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
     setKnowledgeTypes(Critic.KT_SEMANTICS);
+    // no good trigger
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

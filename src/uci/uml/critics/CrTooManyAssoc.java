@@ -56,12 +56,13 @@ public class CrTooManyAssoc extends CrUML {
        "bottleneck that must be updated frequently. \n\n"+
        "Defining the associations between objects is an important "+
        "part of your design. \n\n"+
-       "To fix this, press the FixIt button, or remove associations manually "+
+       "To fix this, press the \"Next>\" button, or remove associations manually "+
        "by clicking on an association in the navigator pane or "+
        "diagram and presing the \"Del\" key. ");
 
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     setArg(THRESHOLD, new Integer(7));
+    addTrigger("associationEnd");
   }
 
   ////////////////////////////////////////////////////////////////

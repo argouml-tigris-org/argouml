@@ -52,6 +52,7 @@ public class CrMultipleAgg extends CrUML {
 
     addSupportedDecision(CrUML.decCONTAINMENT);
     setKnowledgeTypes(Critic.KT_SEMANTICS);
+    addTrigger("end_aggregation");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

@@ -56,6 +56,8 @@ public class CrUselessAbstract extends CrUML {
     setDescription(s);
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedGoal(Goal.UNSPEC);
+    addTrigger("specialization");
+    addTrigger("isAbstract");
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
