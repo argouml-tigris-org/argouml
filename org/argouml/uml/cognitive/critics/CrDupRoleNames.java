@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,21 +27,15 @@
 // File: CrDupRoleNames.java
 // Classes: CrDupRoleNames
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 12 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Code corrected as part
-// of fix to issue 619.
-
 
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-
 import org.argouml.cognitive.*;
+
+// Use Model through Facade
+import org.argouml.model.ModelFacade;
 
 /**
  * <p> A critic to check that the ends of an association all have distinct
@@ -113,50 +108,42 @@ public class CrDupRoleNames extends CrUML {
 
         // Only work for associations
 
-        if (!(dm instanceof MAssociation)) {
+        if (!(ModelFacade.isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
-        // Get the assocations and connections. No problem if there are no
-        // connections defined, or this is an association role.
+	// No problem if this is an association role.
+	if (ModelFacade.isAAssociationRole(dm)) {
+	    return NO_PROBLEM;
+	}
 
-        MAssociation asc = (MAssociation) dm;
-
-        if (asc instanceof MAssociationRole) {
-            return NO_PROBLEM;
-        }
-
-        Collection   conns = asc.getConnections();
-
-        if (conns == null) {
-            return NO_PROBLEM;
-        }
+        Iterator enum = ModelFacade.getConnections(dm);
 
         // Loop through all the ends, comparing the name against those already
         // seen (ignoring any with no name).
+        // No problem if there are no connections defined, we will fall
+	// through immediatly.
 
         Vector   namesSeen = new Vector();
-        Iterator enum      = conns.iterator();
 
         while (enum.hasNext()) {
 
-            MAssociationEnd ae     = (MAssociationEnd) enum.next();
-            String          aeName = ae.getName();
+            String          name = ModelFacade.getName(enum.next());
 
             // Ignore non-existent and empty names
 
-            if ((aeName == null) || aeName.equals("")) {
+            if ((name == null) || name.equals("")) {
                 continue;
             }
 
             // Is the name already in the vector of those seen, if not add it
             // and go on round.
 
-            if (namesSeen.contains(aeName)) {
+            if (namesSeen.contains(name)) {
                 return PROBLEM_FOUND;
             }
 
-            namesSeen.addElement(aeName);
+            namesSeen.addElement(name);
         }
 
         // If we drop out there were no clashes
