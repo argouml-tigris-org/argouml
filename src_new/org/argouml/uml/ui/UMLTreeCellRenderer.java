@@ -32,6 +32,15 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.apache.log4j.Category;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.application.api.Argo;
 
 import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -78,15 +87,33 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 cat.warn("UMLTreeCellRenderer: using default Icon");
             
             // setting the tooltip
-            String tip;
-            if (value instanceof MModelElement)
-                tip = ((MModelElement) value).getUMLClassName() + ": " + 
-                            ((MModelElement) value).getName() + " ";
-            else
-                tip = (value == null) ? "null " : value.toString() + " ";
+            String tip = null;
+            if (value instanceof MModelElement){
+                tip = ((MModelElement) value).getUMLClassName();
+            }
+            else if(value instanceof UMLDiagram){
                 
-                lab.setToolTipText(tip);
-                //tree.setToolTipText(tip);
+                if(value instanceof UMLActivityDiagram)
+                    tip = Argo.localize("UMLMenu", "label.activity-diagram");
+                else if(value instanceof UMLSequenceDiagram)
+                    tip = Argo.localize("UMLMenu", "label.sequence-diagram");
+                else if(value instanceof UMLCollaborationDiagram)
+                    tip = Argo.localize("UMLMenu", "label.collaboration-diagram");
+                else if(value instanceof UMLDeploymentDiagram)
+                    tip = Argo.localize("UMLMenu", "label.deployment-diagram");
+                else if(value instanceof UMLStateDiagram)
+                    tip = Argo.localize("UMLMenu", "label.state-chart-diagram");
+                else if(value instanceof UMLUseCaseDiagram)
+                    tip = Argo.localize("UMLMenu", "label.usecase-diagram");
+                else if(value instanceof UMLClassDiagram)
+                    tip = Argo.localize("UMLMenu", "label.class-diagram");
+            }
+            else
+                // TODO I18n
+                tip = (value == null) ? "empty" : value.toString() + " ";
+                
+            lab.setToolTipText(tip);
+            tree.setToolTipText(tip);
         }
         return r;
     }
