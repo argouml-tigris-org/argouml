@@ -264,9 +264,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
       if (_currentNode instanceof org.argouml.uml.diagram.ui.FigNodeModelElement) {
         ((org.argouml.uml.diagram.ui.FigNodeModelElement) _currentNode).setItemUID(new org.argouml.cognitive.ItemUID(id));
       }
-      if (_currentNode instanceof org.argouml.uml.diagram.static_structure.ui.FigNote) {
-        ((org.argouml.uml.diagram.static_structure.ui.FigNote) _currentNode).setItemUID(new org.argouml.cognitive.ItemUID(id));
-      }
+      //if (_currentNode instanceof org.argouml.uml.diagram.static_structure.ui.FigNote) {
+      //  ((org.argouml.uml.diagram.static_structure.ui.FigNote) _currentNode).setItemUID(new org.argouml.cognitive.ItemUID(id));
+      //}
       System.out.println("SetUID: node: " + _currentNode);
       break;
 
