@@ -30,14 +30,14 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 
 /** Critic to detect whether a class implements unneedded realizations through
  *  inheritance.
@@ -55,66 +55,18 @@ public class CrAlreadyRealizes extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClass)) return NO_PROBLEM;
-    MClass cls = (MClass) dm;
-    Collection interfaces = getSpecifications(cls);
-    Vector indirect = findIndirectRealizations(cls);
-    Iterator enum = interfaces.iterator();
-    while (enum.hasNext()) {
-      Object o = enum.next();
-      if (!(o instanceof MClassifier))
-        continue;
-      MClassifier intf = (MClassifier)o;
-      if (indirect.contains(intf)) return PROBLEM_FOUND;
-    }
-    return NO_PROBLEM;
-  }
-
-  /** find all indirect realizations of the given classifier.
-   */
-  public Vector findIndirectRealizations(MClassifier cls) {
-    Vector res = new Vector();
-    Collection interfaces = getSpecifications(cls);
-    for (Iterator iter = interfaces.iterator(); iter.hasNext();) {
-      Object o = iter.next();
-      if (!(o instanceof MClassifier))
-        continue;
-      MClassifier intf = (MClassifier)o;
-      accumIndirect(intf, res);
-    }
-    return res;
-  }
-
-  public void accumIndirect(MGeneralizableElement intf, Vector res) {
-    if (intf == null) return;
-      Collection gens = intf.getGeneralizations();
-      for (Iterator iter = gens.iterator(); iter.hasNext(); ) {
-  
-        MGeneralization g = (MGeneralization) iter.next();
-        MGeneralizableElement sup = g.getParent();
-  
-        if (!res.contains(sup)) {
-            res.addElement(sup);
-            accumIndirect(sup, res);
-        }
+      boolean problem = NO_PROBLEM;
+      if (ModelFacade.isAClass(dm)) {
+          Collection col = CoreHelper.getHelper().getAllRealizedInterfaces(dm);
+          int size = col.size();
+          Set set = new HashSet();
+          set.addAll(col);
+          if (set.size() < col.size()) {
+              problem = PROBLEM_FOUND; 
+          }
       }
+      return problem;
   }
 
-  /** get all the direct dependencies of the Classifier.
-   *  @param cls the Classifier to inspect.
-   */
-  private Collection getSpecifications(MClassifier cls)
-  {
-     Vector res = new Vector();
-     Collection deps = cls.getClientDependencies();
-     if (deps==null) return res;
-     for (Iterator iter = deps.iterator(); iter.hasNext();) {
-       MDependency dependency = (MDependency)iter.next();
-       MStereotype stereotype = dependency.getStereotype();
-       if ((stereotype==null) || ("realize".equals(stereotype.getName())))
-         res.addAll(dependency.getSuppliers());
-     };
-     return res;
-  };
 } /* end class CrAlreadyRealizes */
 
