@@ -62,12 +62,12 @@ public class TabResults
                 ListSelectionListener,
                 KeyListener
 {
-    protected static Logger cat = Logger.getLogger(TabResults.class);
+    private static final Logger LOG = Logger.getLogger(TabResults.class);
 
     public static int _numJumpToRelated = 0;
 
     ////////////////////////////////////////////////////////////////
-    // insatnce variables
+    // instance variables
     PredicateFind _pred;
     ChildGenerator _cg = null;
     Object _root = null;
@@ -85,13 +85,20 @@ public class TabResults
     JTable _relatedTable = new JTable(4, 4);
     TMResults _relatedModel = new TMResults();
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * The constructor.
+     * 
+     */
     public TabResults()
     {
 	this(true);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param showRelated true if related results should be shown
+     */
     public TabResults(boolean showRelated)
     {
 	super("Results", true);
@@ -140,11 +147,17 @@ public class TabResults
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @param p the predicate for the search
+     */
     public void setPredicate(PredicateFind p)
     {
 	_pred = p;
     }
     
+    /**
+     * @param root the root object for the search
+     */
     public void setRoot(Object root)
     {
 	_root = root;
@@ -259,7 +272,7 @@ public class TabResults
 	}
 
 	if (d != null)
-	    cat.debug("go " + sel + " in " + d.getName());
+	    LOG.debug("go " + sel + " in " + d.getName());
 	if (d != null)
 	    TargetManager.getInstance().setTarget(d);
 	TargetManager.getInstance().setTarget(sel);
@@ -307,10 +320,10 @@ public class TabResults
 	if (_showRelated) {
 	    int row = lse.getFirstIndex();
 	    Object sel = _results.elementAt(row);
-	    cat.debug("selected " + sel);
+	    LOG.debug("selected " + sel);
 	    _related.removeAllElements();
 	    Enumeration elems =
-		ChildGenRelated.SINGLETON.gen(sel);
+		ChildGenRelated.getSingleton().gen(sel);
 	    if (elems != null) {
 		while (elems.hasMoreElements()) {
 		    _related.addElement(elems.nextElement());

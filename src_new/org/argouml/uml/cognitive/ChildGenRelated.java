@@ -43,11 +43,19 @@ import org.tigris.gef.util.ChildGenerator;
 /** @stereotype singleton
  */
 public class ChildGenRelated implements ChildGenerator {
-    public static ChildGenRelated SINGLETON = new ChildGenRelated();
+    private static final ChildGenRelated SINGLETON = new ChildGenRelated();
 
-    /** Reply a java.util.Enumeration of the children of the given Object 
-     *
-     * @return an enumeration or null if not possible to get the children.
+    /**
+     * @return Returns the singleton.
+     */
+    public static ChildGenRelated getSingleton() {
+        return SINGLETON;
+    }
+    /** 
+     * Reply a java.util.Enumeration of the children of the given Object 
+     * Returns an enumeration or null if not possible to get the children.
+     * 
+     * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object o) {
 		
