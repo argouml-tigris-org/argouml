@@ -50,6 +50,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JProgressBar;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -645,27 +646,9 @@ public class Import {
     }
     
     /**
-     * The statusbar showing the progress of the Import run.
-     */
-    class ImportStatusBar extends StatusBar {
-        
-        public void setMaximum(int i) { _progress.setMaximum(i); }
-        
-        public void setValue(int i) { _progress.setValue(i); }
-        
-        public ImportStatusBar() {
-            
-            super();
-            _progress.setPreferredSize(new Dimension(150, 30));
-        }
-    }
-    
-    /**
      * A window that shows the progress bar and a cancel button.
      */
     class ImportStatusScreen extends JDialog {
-        
-        protected ImportStatusBar _statusBar;
         
         private JButton cancelButton;
         
@@ -673,10 +656,11 @@ public class Import {
         
         private int numberOfFiles;
         
+        private JProgressBar _progress;
+        
         public ImportStatusScreen(String title, String iconName) {
             
             super();
-            _statusBar = new ImportStatusBar();
             if (title != null) setTitle(title);
             Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
             getContentPane().setLayout(new BorderLayout(0, 0));
@@ -688,7 +672,8 @@ public class Import {
             getContentPane().add(topPanel, BorderLayout.NORTH);
             
             // progress bar
-            getContentPane().add(_statusBar, BorderLayout.CENTER);
+            _progress = new JProgressBar();
+            getContentPane().add(_progress, BorderLayout.CENTER);
             
             // stop button
             cancelButton = new JButton("Stop");
@@ -704,18 +689,22 @@ public class Import {
         }
         
         public void setMaximum(int i) {
-	    _statusBar.setMaximum(i); numberOfFiles = i;
+	    _progress.setMaximum(i); numberOfFiles = i;
 	}
         
         public void setValue(int i) {
             
-            _statusBar.setValue(i);
-	    String pass = "2-nd pass";
-	    if (i <= numberOfFiles/2) pass = "1-st pass";
+            _progress.setValue(i);
+            
+	    String pass = "1-st pass";
+            // if there ae 2 passes:
+            if(importLevel > 0){
+                if (i >= numberOfFiles/2) pass = "2-nd pass";
+            }
 	    
             progressLabel.setText("Parsing file " + ((i-1)%(numberOfFiles/2)+1) + " of " + numberOfFiles/2
 				  + ". "+pass);
-            repaint();
+            pack();
         }
         
         public void addCancelButtonListener(ActionListener al) {
