@@ -60,17 +60,24 @@ Preface to the whole manual.
     provide.</para>
 
   <para>The current developer release of ArgoUML implements all the diagram
-    types of the <ulink
-      url="http://www.omg.org/technology/documents/formal/uml.htm">
+    types of the 
+      <!-- The link below was originally:
+           http://www.omg.org/technology/documents/formal/uml.htm -->
+      <!-- But the above link leads to a 1.5 UML spec. -->
+      <ulink url="http://www.omg.org/cgi-bin/doc?ad/99-06-08">
     UML&nbsp;1.3 standard</ulink>. It is written in Java and runs on every
-    computer which provides a Java 2 platform of Java 1.3 or newer.  It uses the
-    open file formats <ulink
-      url="http://www.omg.org/technology/documents/formal/xmi.htm">XMI 
-    </ulink> (XML Metadata Interchange format) (for model information) and
+    computer which provides a Java 2 platform of Java 
+    &minimumjavaversion; 
+    or newer.  It uses the open file formats 
+    <ulink url="http://www.omg.org/technology/documents/formal/xmi.htm">
+    XMI </ulink> (XML Metadata Interchange format) (for model information) and
     <ulink url="http://www.w3.org/TR/1998/NOTE-PGML">PGML</ulink> (Portable
     Graphics Markup Language) (for graph information) for storage. A new
-    file format with graphs embedded as <ulink
-      url="http://www.w3.org/TR/2000/CR-SVG-20001102/index.html">SVG </ulink>
+    file format with graphs embedded as 
+    <ulink url="http://www.w3.org/TR/SVG/">
+    SVG </ulink>
+    <!-- This link originally pointed to: 
+    http://www.w3.org/TR/2000/CR-SVG-20001102/index.html -->
     (Scalable Vector Graphics) in the XMI is in discussion, but is postponed
     until a standard for such a file format is defined by the <ulink
       url="http://www.omg.org">OMG</ulink> (Object Management Group).</para>
@@ -90,11 +97,12 @@ He also added things from some of the other documents namely
 the developers cookbook by Markus Klink and Linus Tolke,
 the Quick Guide by Kunle Odutola, and
 the FAQ by Dennis Daniels.
-Connected to the release 0.14 some changes were made by Linus Tolke.
+Connected to the release 0.14 changes were made by Linus Tolke, 
+and by Michiel van der Wulp.
 These changes were mostly to adopt the manual to the new functions
-and appearance of &argouml; and introduction of the index.
-The users and developers that has contributed by providing valuable input 
-as review comments or observations made while reading and using this manual
+and appearance of &argouml; version 0.14, and introduction of the index.
+The users and developers that have contributed by providing valuable input, 
+such as review comments or observations while reading and using this manual
 are too many to name.
 </para>
 
@@ -111,8 +119,8 @@ are too many to name.
 
   <para>
 The manual is written in DocBook/XML and available as both HTML and PDF. 
-However due to the limitations of the tools currently
-available to produce PDF, this version has some layout anomalies.
+<!-- However due to the limitations of the tools currently
+available to produce PDF, this version has some layout anomalies.-->
 </para>
 
   <para>The &argouml; project welcomes those who want to get more

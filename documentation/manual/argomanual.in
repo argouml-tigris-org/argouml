@@ -37,18 +37,19 @@
 <!ENTITY applegal SYSTEM "app_legal.xml">
 <!ENTITY appumlres SYSTEM "app_umlres.xml">
 <!ENTITY refentseq SYSTEM "ref_entseq.xml">
-<!ENTITY notupdatedfor014disclaimer "<caution>
+<!ENTITY notupdatedfor016disclaimer "<caution>
       <para>
-This chapter is not fully gone through and updated to fit the 0.14
-release of &argouml; but describes the version 0.10 instead.
+This chapter is not fully gone through and updated to fit the 0.16
+release of &argouml; but describes the version 0.14 instead.
 This means that some of the functions might not work exactly
 as described and icons and screenshots does not look exactly like
-in the 0.14 version.
+in the 0.16 version.
 </para>
     </caution>">
 <!ENTITY tutreqs SYSTEM "tut_reqs.xml">
 <!ENTITY frontis SYSTEM "frontis.xml">
 <!ENTITY refcritics SYSTEM "ref_critics.xml">
+<!ENTITY minimumjavaversion "1.3">
 ]>
 <book>
   <!-- The frontispiece, table of contents and overall introduction for the
