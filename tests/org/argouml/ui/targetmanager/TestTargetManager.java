@@ -130,6 +130,9 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().setTarget(test);
 	assertTrue(targetSetCalled);
 	assertEquals(new Object[] {test}, targetSetObjects);
+	targetSetCalled = false;
+	TargetManager.getInstance().setTarget(test);
+	assertTrue(!targetSetCalled);
 
 	TargetManager.getInstance().removeTargetListener(listener);
     }
@@ -250,14 +253,20 @@ public class TestTargetManager extends TestCase {
 	assertEquals(expectedValue, TargetManager.getInstance().getTargets());
 
 	TargetListener listener = new TestTargetListener();
+	TargetManager.getInstance().addTargetListener(listener);
 	targetSetCalled = false;
 	targetSetTarget = null;
 	targetSetObjects = null;
-	TargetManager.getInstance().addTargetListener(listener);
 	TargetManager.getInstance().setTargets(test);
 	assertTrue(targetSetCalled);
 	assertEquals(test.get(0), targetSetTarget);
 	assertEquals(test.toArray(), targetSetObjects);
+	targetSetCalled = false;
+	TargetManager.getInstance().setTargets(test);
+	assertTrue(!targetSetCalled);
+	test.remove(1);
+	TargetManager.getInstance().setTargets(test);
+	assertTrue(targetSetCalled);
 
 	TargetManager.getInstance().removeTargetListener(listener);
     }
