@@ -22,7 +22,7 @@ public class DialogConstraint extends JDialog {
     public DialogConstraint(MModelElement me, JFrame parentFrame) {
       super(parentFrame, true);
       setTitle("Enter new OCL constraint");
-      ace=new ArgoConstraintEvaluation(this);
+      ace=new ArgoConstraintEvaluation(this, me);
       ace.setConstraint("context " + me.getName());
       getContentPane().add(ace);
       pack();

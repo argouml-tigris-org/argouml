@@ -222,6 +222,17 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   </target>
 
   <!-- =================================================================== -->
+  <!-- Creates the source distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist-src" depends="package">
+    <echo message="Building the source distribution files (zip,tar)"/>
+    <chmod src="${src.dir}/build.sh" perm="ugo+rx" />
+    <zip zipfile="${Name}-${version}.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
+    <tar tarfile="${Name}-${version}.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
+    <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
+    <delete file="${Name}-${version}.tar"/>
+  </target>                                                                                                                                                                    
+  <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
   <target name="clean" depends="init">

@@ -197,14 +197,17 @@ public class FigComponentInstance extends FigNodeModelElement {
     super.setEnclosingFig(encloser);
 
     Vector figures = getEnclosedFigs();
-    elementOrdering(figures);
-    Vector contents = getLayer().getContents();
-    int contentsSize = contents.size();
-    for (int j=0; j<contentsSize; j++) {
-      Object o = contents.elementAt(j);
-      if (o instanceof FigEdgeModelElement) {
-        FigEdgeModelElement figedge = (FigEdgeModelElement) o;
-        figedge.getLayer().bringToFront(figedge);
+
+    if (getLayer() != null) {  
+      elementOrdering(figures);
+      Vector contents = getLayer().getContents();
+      int contentsSize = contents.size();
+      for (int j=0; j<contentsSize; j++) {
+        Object o = contents.elementAt(j);
+        if (o instanceof FigEdgeModelElement) {
+          FigEdgeModelElement figedge = (FigEdgeModelElement) o;
+          figedge.getLayer().bringToFront(figedge);
+        }
       }
     }
 
@@ -256,13 +259,14 @@ public class FigComponentInstance extends FigNodeModelElement {
   // internal methods
 
   protected void textEdited(FigText ft) throws PropertyVetoException { 
-    super.textEdited(ft); 
+      //super.textEdited(ft); 
     MComponentInstance coi = (MComponentInstance) getOwner(); 
     if (ft == _name) { 
       String s = ft.getText().trim();
-      if (s.length()>0) {
-        s = s.substring(0, (s.length() - 1)); 
-      }
+      //why this???
+//       if (s.length()>0) {
+//         s = s.substring(0, (s.length() - 1)); 
+//       }
       ParserDisplay.SINGLETON.parseComponentInstance(coi, s); 
     } 
   } 
@@ -274,13 +278,18 @@ public class FigComponentInstance extends FigNodeModelElement {
     String nameStr = ""; 
     if (coi.getName() != null) { 
       nameStr = coi.getName().trim(); 
-    } 
+    }
+    
+    // construct bases string (comma separated)
+    String baseStr = "";
     Collection col = coi.getClassifiers(); 
-    Iterator it = col.iterator(); 
-    String baseStr = ""; 
-    while (it.hasNext()) { 
-        baseStr = ((MClassifier)it.next()).getName(); 
-    } 
+    if (col != null && col.size() > 0){
+	Iterator it = col.iterator();
+	baseStr = ((MClassifier)it.next()).getName(); 
+	while (it.hasNext()) { 
+	    baseStr += ", "+((MClassifier)it.next()).getName(); 
+	} 
+    }
     if (_readyToEdit) { 
       if( nameStr == "" && baseStr == "") 
 	_name.setText(""); 

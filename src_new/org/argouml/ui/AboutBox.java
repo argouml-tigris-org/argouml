@@ -21,10 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
 package org.argouml.ui;
 
 import java.awt.*;
@@ -33,11 +29,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
-// import javax.swing.text.*;
-// import javax.swing.border.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-
-
 
 public class AboutBox extends JFrame {
 
@@ -75,27 +67,56 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
 
-    _version.setText("ArgoUML Version 0.8.0\n"+
-		     "Built on August, , 2000\n"+
+    _version.setText("ArgoUML Version 0.9.0\n"+
+		     "Built on 18/09/2000\n"+
 		     "\n"+
-		     "Includes:\n"+
-		     "  GEF\n"+
-		     "  GIF generation code from www.acme.com\n"+
+		     "Needed:\n"+
+		     "  GEF (Graph Editing Framework)\n"+
+		     "  GIF generation code from www.acme.com (comes with GEF)\n"+
 		     "\n"+
 		     "Intended for use with:\n"+
 		     "  JDK 1.2 only plus\n"+
 		     "    IBM's XML4J 2.0.15 or higher\n"+
-		     "    Novosoft's NSUML 0.4.4 or higher (nsuml.sourceforge.net)\n"+
+		     "    Novosoft's NSUML 0.4.8 or higher (nsuml.sourceforge.net)\n"+
 		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"
 		     );
 
     _credits.setText("ArgoUML was developed by the following:\n"+
+		     "Project Lead:\n"+
+		     "  Jason Robbins (Collab.net)\n"+
+		     "  \n"+
+		     "Version 0.8 release manager:\n"+
+		     "  Toby Baier (University of Hamburg, Germany)\n"+
+		     "  Marko Boger (GentleWare)\n"+
+		     "  \n"+
+		     "Module Owners (contact these people for contributions):\n"+
+		     "  GEF: Edwin Park (esp@parkplace.dhs.org)\n"+
+		     "  UML Diagrams: Marko Boger (boger@informatik.uni-hamburg.de)\n"+
+		     "  UML Metamodel, XMI: Toby Baier (Toby.Baier@gmx.net)\n"+
+		     "  Plugin-support: Sean Chen (schen@bw.webex.net)\n"+
+		     "  Java RE: Andreas Rückert (a_rueckert@gmx.net)\n"+
+		     "  Knowledge support: Jason Robbins (jrobbins@collab.net)\n"+
+		     "  User manual: Philippe Vanpeperstraete (Philippe.Vanpeperstraete@skynet.be)\n"+
+		     "  \n"+
+		     "Contributing Developers (in no special order):\n"+
+		     "  Jim Holt\n"+
+		     "  Thomas Schaumburg\n"+
+		     "  David Glaser\n"+
+		     "  Toby Baier\n"+
+		     "  Eugenio Alvarez\n"+
+		     "  Clemens Eichler\n"+
+		     "  Curt Arnolds\n"+
+		     "  Andreas Rückert\n"+
+		     "  Frank Finger\n"+
+		     "  Stuart Zakon\n"+
+		     "  Frank Wienberg\n"+
+
+		     "\n"+
+		     "Credits for previous versions:\n"+
 		     "\nResearchers:  \n"+
 		     "  Jason Robbins\n"+
 		     "  David Redmiles\n"+
 		     "  David Hilbert\n"+
-		     "\nProject Lead:  \n"+
-		     "  Jason Robbins\n"+
 		     "\nDevelopers and Testers:  \n"+
 		     "  Jason Robbins\n"+
 		     "  Adam Gauthier\n"+
@@ -181,8 +202,7 @@ public class AboutBox extends JFrame {
   }
 
   protected static String imageName(String name) {
-	return "/org/argouml/Images/" + stripJunk(name) + ".gif";
-    //return "/org/tigris/gef/Images/" + stripJunk(name) + ".gif";
+    return "/org/argouml/Images/" + stripJunk(name) + ".gif";
   }
 
 

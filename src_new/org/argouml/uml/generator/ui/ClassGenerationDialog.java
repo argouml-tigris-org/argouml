@@ -55,6 +55,7 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
   protected JTable _table = new JTable(15, 2);
 //  protected JTextField _dir = new JTextField();
   protected JComboBox _dir;
+  protected JCheckBox _compile;
   protected JButton _generateButton = new JButton("Generate");
   protected JButton _cancelButton = new JButton("Cancel");
 
@@ -70,6 +71,10 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 	return;
     }
     _dir = new JComboBox(Converter.convert(getClasspathEntries()));
+    _dir.setEditable(true);
+
+    _compile = new JCheckBox("compile generated source");
+    
 
     JLabel promptLabel = new JLabel("Generate Classes:");
     JLabel dirLabel = new JLabel("Output Directory:");
@@ -138,6 +143,10 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
     gb.setConstraints(_dir, c);
     top.add(_dir);
 
+    c.gridy = 4;
+    gb.setConstraints(_compile, c);
+    top.add(_compile);
+
     JPanel buttonPanel = new JPanel();
     buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
     JPanel buttonInner = new JPanel(new GridLayout(1, 2));
@@ -174,10 +183,10 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 	      entries.addElement(entry);
 	  }
       }
-      if (entries.size() == 0) {
-	  JOptionPane.showMessageDialog(null, "In order to generate Java files, you need to have\nat least one directory in your CLASSPATH environment variable,\nwhere ArgoUML can store and compile the files.", "Code generation", JOptionPane.ERROR_MESSAGE);
-	  return null;
-      }
+      // if (entries.size() == 0) {
+// 	  JOptionPane.showMessageDialog(null, "In order to generate Java files, you need to have\nat least one directory in your CLASSPATH environment variable,\nwhere ArgoUML can store and compile the files.", "Code generation", JOptionPane.ERROR_MESSAGE);
+// 	  return null;
+//       }
       return entries;
   }
 
@@ -197,27 +206,30 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
       Vector nodes = _tableModel.getChecked();
       int size = nodes.size();
       String[] compileCmd=new String[size+1];
-      String compiler=System.getProperty("argo.compiler");
-      if (compiler==null || compiler.length()==0)
-	  compiler="javac";
-      compileCmd[0]=compiler;
-      //compileCmd[0] += " -d "+path+" -classpath "+System.getProperty("java.class.path");
+
       for (int i = 0; i <size; i++) {
 	Object node = nodes.elementAt(i);
 	if (node instanceof MClassifier)
 	  compileCmd[i+1] = GeneratorJava.GenerateFile((MClassifier) node, path);
       }
-
-      String compilerOutput=compile(compileCmd);
-      if (compilerOutput==null) {
-	  		System.out.println("Compilation done.");
-	  		JOptionPane.showMessageDialog(this, "Compilation done.","Code Generation", JOptionPane.INFORMATION_MESSAGE);
-      } else {
-	  // todo: should display errors in a window!
-		  System.out.println("Compiler errors -> System.err");
-		  System.err.println(compilerOutput);
-		  JOptionPane.showMessageDialog(this, "Compiler errors -> System.err\n"+compilerOutput, "Code Generation", JOptionPane.ERROR_MESSAGE);
-
+      if (_compile.isSelected()) {
+	  String compiler=System.getProperty("argo.compiler");
+	  if (compiler==null || compiler.length()==0)
+	      compiler="javac";
+	  compileCmd[0]=compiler;
+	  //compileCmd[0] += " -d "+path+" -classpath "+System.getProperty("java.class.path");
+	  
+	  String compilerOutput=compile(compileCmd);
+	  if (compilerOutput==null) {
+	      System.out.println("Compilation done.");
+	      JOptionPane.showMessageDialog(this, "Compilation done.","Code Generation", JOptionPane.INFORMATION_MESSAGE);
+	  } else {
+	      // todo: should display errors in a window!
+	      System.out.println("Compiler errors -> System.err");
+	      System.err.println(compilerOutput);
+	      JOptionPane.showMessageDialog(this, "Compiler errors -> System.err\n"+compilerOutput, "Code Generation", JOptionPane.ERROR_MESSAGE);
+	      
+	  }
       }
 
       setVisible(false);

@@ -259,7 +259,7 @@ public class PGMLParser implements ElementHandler, TagHandler {
 
   protected void handlePGML(TXElement e) {
     String name = e.getAttribute("name");
-    String clsName = e.getAttribute("description");
+    String clsName = translateClassName(e.getAttribute("description"));
     try {
       if (clsName != null && !clsName.equals("")) initDiagram(clsName);
       if (name != null && !name.equals("")) _diagram.setName(name);
@@ -268,7 +268,7 @@ public class PGMLParser implements ElementHandler, TagHandler {
   }
 
   protected Fig handlePolyLine(TXElement e) {
-    String clsName = e.getAttribute("description");
+    String clsName = translateClassName(e.getAttribute("description"));
     if (clsName != null && clsName.indexOf("FigLine") != -1)
       return handleLine(e);
     else
@@ -379,7 +379,7 @@ public class PGMLParser implements ElementHandler, TagHandler {
       hStr = st.nextToken();
     }
     try {
-      Class nodeClass = Class.forName(clsName);
+      Class nodeClass = Class.forName(translateClassName(clsName));
       f = (Fig) nodeClass.newInstance();
       if (xStr != null && !xStr.equals("")) {
 	int x = Integer.parseInt(xStr);
