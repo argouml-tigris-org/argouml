@@ -32,16 +32,24 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.awt.image.ByteLookupTable;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
+import java.awt.image.LookupOp;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Enumeration;
 import java.util.HashSet;
@@ -128,21 +136,43 @@ public abstract class FigNodeModelElement
     protected boolean checkSize = true;
     // Needed for loading. Warning: if false, a too small size might look bad!
     
+    // Fields used in paint() for painting shadows
+    private BufferedImage           _shadowImage = null;
+    private int                     _cachedWidth = -1;
+    private int                     _cachedHeight = -1;
+    private static final LookupOp   _shadowLookupOp;
+    private static final ConvolveOp _shadowConvolveOp;
+
     /**
-     * The intensity value of the shadow color.
+     * The intensity value of the shadow color (0-255).
     **/
-    protected static final float SHADOW_COLOR_VALUE = 0.1f;
+    protected static final int SHADOW_COLOR_VALUE = 32;
     
     /**
-     * The transparency value of the shadow color.
+     * The transparency value of the shadow color (0-255).
     **/    
-    protected static final float SHADOW_COLOR_ALPHA = 0.5f;
+    protected static final int SHADOW_COLOR_ALPHA = 128;
 
     static {
         LABEL_FONT =
             new javax.swing.plaf.metal.DefaultMetalTheme().getSubTextFont();
         ITALIC_LABEL_FONT =
             new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
+
+        // Setup image ops used in rendering shadows            
+        byte[][] data = new byte[4][256];
+        for (int i = 1; i < 256; ++i) {
+            data[0][i] = (byte) SHADOW_COLOR_VALUE;
+            data[1][i] = (byte) SHADOW_COLOR_VALUE;
+            data[2][i] = (byte) SHADOW_COLOR_VALUE;
+            data[3][i] = (byte) SHADOW_COLOR_ALPHA;
+        }        
+        float[] blur = new float[9];
+        for (int i = 0; i < blur.length; ++i) {
+            blur[i] = 1 / 12f;
+        }
+        _shadowLookupOp = new LookupOp(new ByteLookupTable(0, data), null);        
+        _shadowConvolveOp = new ConvolveOp(new Kernel(3, 3, blur));            
     }
 
     ////////////////////////////////////////////////////////////////
@@ -174,7 +204,7 @@ public abstract class FigNodeModelElement
     public FigNodeModelElement() {
         // this rectangle marks the whole interface figure; everything
         // is inside it:
-        _bigPort = new ShadowRect(10, 10, 0, 0, Color.cyan, Color.cyan);
+        _bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
         _name = new FigText(10, 10, 90, 21, true);
         _name.setFont(LABEL_FONT);
@@ -341,6 +371,56 @@ public abstract class FigNodeModelElement
         return new SelectionNodeClarifiers(this);
     }
 
+    /**
+     * Overridden to paint shadows. This method supports painting shadows
+     * for any FigNodeModelElement. Any Figs that are nested within the
+     * FigNodeModelElement will be shadowed.
+    **/
+    public void paint(Graphics g) {
+        if (_shadowSize > 0) {
+            int width = getWidth();
+            int height = getHeight();
+            int x = getX();
+            int y = getY();
+
+            // Only create new shadow image if figure size has changed.
+            if (width != _cachedWidth 
+                || height != _cachedHeight) {
+                _cachedWidth = width;
+                _cachedHeight = height;
+
+                BufferedImage img = new BufferedImage(
+                    width + 100,
+                    height + 100,
+                    BufferedImage.TYPE_INT_ARGB);
+
+                // Paint figure onto offscreen image
+                setLocation(50, 50);
+                super.paint(img.getGraphics());
+                setLocation(x, y);
+
+                // Apply two filters to the image:
+                // 1. Apply LookupOp which converts all pixel data in the
+                //    figure to the same shadow color.
+                // 2. Apply ConvolveOp which creates blurred effect around
+                //    the edges of the shadow.
+                _shadowImage = _shadowConvolveOp.filter(
+                    _shadowLookupOp.filter(img, null), null);
+            }
+
+            // Paint shadow image onto canvas
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.drawImage(
+                _shadowImage,
+                null,
+                x + _shadowSize - 50,
+                y + _shadowSize - 50);
+        }
+            
+        // Paint figure on top of shadow
+        super.paint(g);
+    }
+    
     /**
      * Displays visual indications of pending ToDoItems.
      * Please note that the list of advices (ToDoList) is not the same
@@ -961,49 +1041,4 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /**
-     * A FigRect that is drawn with a shadow using the current figure's
-     * shadow size.
-    **/
-    protected class ShadowRect extends FigRect {
-        public ShadowRect(int x, int y, int w, int h) {
-            super(x, y, w, h);
-        }
-
-        public ShadowRect(
-            int x,
-            int y,
-            int w,
-            int h,
-            Color lColor,
-            Color fColor) {
-            super(x, y, w, h, lColor, fColor);
-        }
-
-        public void paint(Graphics g) {
-            super.paint(g);
-            if (_shadowSize > 0) {
-                for (int i = 0; i < _shadowSize; ++i) {
-                    Color shadow = new Color(
-                        SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, 
-                        SHADOW_COLOR_ALPHA
-                            * (((float) _shadowSize - i)
-                            / (float) _shadowSize));
-                    g.setColor(shadow);
-        
-                    g.drawLine(
-                           _x + _shadowSize,
-                           _y + _h + i,
-                           _x + _w + i,
-                           _y + _h + i);
-        
-                    g.drawLine(
-                           _x + _w + i,
-                           _y + _shadowSize,
-                           _x + _w + i,
-                           _y + _h + i - 1);                        
-                }
-            }
-        }
-    };
 } /* end class FigNodeModelElement */

@@ -108,59 +108,7 @@ public class FigPackage extends FigNodeModelElement {
 
     public FigPackage() {
         Color handleColor = Globals.getPrefs().getHandleColor();
-        _bigPort = new FigRect(x, y, width, height, null, null) 
-	    {
-		public void paint(Graphics g) {
-		    super.paint(g);
-                
-		    // Draw the shadow                
-		    if (_shadowSize > 0) {
-			for (int i = 0; i < _shadowSize; ++i) {
-                Color shadow = new Color(
-                    SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, 
-                    SHADOW_COLOR_ALPHA
-                        * (((float) _shadowSize - i)
-                        / (float) _shadowSize));
-			    g.setColor(shadow);
-
-			    g.drawLine(
-				       _body.getX() + _shadowSize,
-				       _body.getY() + _body.getHeight() + i,
-				       _body.getX() + _body.getWidth() + i,
-				       _body.getY() + _body.getHeight() + i);
-
-			    g.drawLine(
-				       _body.getX() + _body.getWidth() + i,
-				       _body.getY() + _shadowSize,
-				       _body.getX() + _body.getWidth() + i,
-				       _body.getY() + _body.getHeight() + i - 1);                        
-                    
-			    if (_stereo.getHeight() > _shadowSize) {
-				g.drawLine(
-					   _stereo.getX() + _stereo.getWidth() + i,
-					   _stereo.getY() + _shadowSize,
-					   _stereo.getX() + _stereo.getWidth() + i,
-					   _stereo.getY() + _stereo.getHeight() + _name.getHeight() + _shadowSize - 2);
-                                
-				//int blinderheight = (_name.getY() -
-				//1 - (_stereo.getY() +
-				//_stereo.getHeight() + 1)); if
-				//(blinderheight > 0) {
-				//g.fillRect(_stereo.getX()+_stereo.getWidth(),
-				//_stereo.getY()+_stereo.getHeight(),
-				//_shadowSize, blinderheight); }
-			    }
-			    else if (_name.getHeight() > _shadowSize) {
-				g.drawLine(
-					   _name.getX() + _name.getWidth() + i,
-					   _name.getY() + _shadowSize,
-					   _name.getX() + _name.getWidth() + i,
-					   _name.getY() + _name.getHeight());
-			    }
-			}
-		    }
-		}
-	    };
+        _bigPort = new FigRect(x, y, width, height, null, null);
 
         //
         // Create a Body that reacts to double-clicks and jumps to a diagram.
