@@ -34,7 +34,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 /**
  *  This class is implements a tree model for ownedElements of a MNamespace
- *
+ * @deprecated As of ArgoUml version 0.13.5, 
+ * This class is not used and probably shouldn't be in the future either.
  *  @author Curt Arnold
  */
 abstract public class UMLTreeRootNode implements TreeNode, 

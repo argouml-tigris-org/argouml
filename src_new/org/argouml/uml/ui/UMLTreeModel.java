@@ -34,7 +34,8 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 /**
  *  This class is an abstract superclass for classes that provide a tree model
  *  of UML model elements.
- *
+ * @deprecated As of ArgoUml version 0.13.5, 
+ * This class is not used and probably shouldn't be in the future either.
  *  @author Curt Arnold
  */
 public class UMLTreeModel extends DefaultTreeModel 
