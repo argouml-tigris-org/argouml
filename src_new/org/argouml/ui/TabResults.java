@@ -36,6 +36,7 @@ import java.awt.event.MouseListener;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -70,6 +71,9 @@ public class TabResults
     private static final Logger LOG = Logger.getLogger(TabResults.class);
 
     private static int numJumpToRelated = 0;
+    
+    /** Insets in pixels  */
+    private static final int INSET_PX = 3;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -83,8 +87,8 @@ public class TabResults
     private boolean relatedShown = false;
 
     private JLabel resultsLabel = new JLabel(/*"Results:"*/);
-    private JTable resultsTable = new JTable(10, 4);
-    private TMResults resultsModel = new TMResults();
+    private JTable resultsTable;
+    private TMResults resultsModel;
 
     private JLabel relatedLabel = new JLabel(/*"Related Elements:"*/);
     private JTable relatedTable = new JTable(4, 4);
@@ -109,10 +113,14 @@ public class TabResults
 	super("Results", true);
 	relatedShown = showRelated;
 	setLayout(new BorderLayout());
+	resultsTable = new JTable(10, showRelated ? 4 : 3);
+	resultsModel = new TMResults(showRelated);
 
 	JPanel resultsW = new JPanel();
 	JScrollPane resultsSP = new JScrollPane(resultsTable);
 	resultsW.setLayout(new BorderLayout());
+	resultsLabel.setBorder(BorderFactory.createEmptyBorder(
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
 	resultsW.add(resultsLabel, BorderLayout.NORTH);
 	resultsW.add(resultsSP, BorderLayout.CENTER);
 	resultsTable.setModel(resultsModel);
@@ -128,6 +136,8 @@ public class TabResults
 	if (relatedShown) {
 	    JScrollPane relatedSP = new JScrollPane(relatedTable);
 	    relatedW.setLayout(new BorderLayout());
+            relatedLabel.setBorder(BorderFactory.createEmptyBorder(
+                    INSET_PX, INSET_PX, INSET_PX, INSET_PX));
 	    relatedW.add(relatedLabel, BorderLayout.NORTH);
 	    relatedW.add(relatedSP, BorderLayout.CENTER);
 	    relatedTable.setModel(relatedModel);
@@ -141,7 +151,6 @@ public class TabResults
 		new JSplitPane(JSplitPane.VERTICAL_SPLIT,
 			       resultsW,
 			       relatedW);
-	    mainPane.setDividerSize(2);
 	    add(mainPane, BorderLayout.CENTER);
 	} else {
 	    add(resultsW, BorderLayout.CENTER);

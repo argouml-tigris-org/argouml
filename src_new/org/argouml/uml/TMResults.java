@@ -43,14 +43,26 @@ public class TMResults extends AbstractTableModel {
 
     private Vector rowObjects;
     private Vector diagrams;
+    private boolean showInDiagramColumn;
 
     /**
      * The constructor.
      * 
      */
     public TMResults() {
+        showInDiagramColumn = true;
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param showTheInDiagramColumn true if the "In Diagram" column 
+     *                               should be shown
+     */
+    public TMResults(boolean showTheInDiagramColumn) {
+        showInDiagramColumn = showTheInDiagramColumn;
+    }
+    
     ////////////////
     // accessors
     
@@ -71,7 +83,7 @@ public class TMResults extends AbstractTableModel {
      * @see javax.swing.table.TableModel#getColumnCount()
      */
     public int getColumnCount() {
-        return 4;
+        return showInDiagramColumn ? 4 : 3;
     }
     
     /**
@@ -92,7 +104,9 @@ public class TMResults extends AbstractTableModel {
         if (c == 1)
             return Translator.localize("dialog.find.column-name.name");
         if (c == 2)
-            return Translator.localize("dialog.find.column-name.in-diagram");
+            return Translator.localize(showInDiagramColumn 
+                    ? "dialog.find.column-name.in-diagram"
+                    : "dialog.find.column-name.description");
         if (c == 3)
             return Translator.localize("dialog.find.column-name.description");
         return "XXX";
@@ -118,7 +132,7 @@ public class TMResults extends AbstractTableModel {
     public Object getValueAt(int row, int col) {
         if (row < 0 || row >= rowObjects.size())
             return "bad row!";
-        if (col < 0 || col >= 4)
+        if (col < 0 || col >= (showInDiagramColumn ? 4 : 3))
             return "bad col!";
         Object rowObj = rowObjects.elementAt(row);
         if (rowObj instanceof Diagram) {
@@ -131,16 +145,12 @@ public class TMResults extends AbstractTableModel {
 		return name;
 	    case 1 : // the name of this instance of diagram
 		return d.getName();
-	    case 2 : // N/A
-		return Translator.localize("dialog.find.not-applicable");
+	    case 2 : // "N/A" or "x nodes and x edges"
+		return showInDiagramColumn 
+		    ? Translator.localize("dialog.find.not-applicable")
+                    : countNodesAndEdges(d);
 	    case 3 : // "x nodes and x edges"
-		//GraphModel gm = d.getGraphModel();
-		int numNodes = d.getNodes(null).size();
-		int numEdges = d.getEdges(null).size();
-		Object[] msgArgs = {new Integer(numNodes), 
-		                    new Integer(numEdges) }; 
-		return Translator.messageFormat("dialog.nodes-and-edges", 
-		        msgArgs);
+		return countNodesAndEdges(d);
             }
         }
         if (ModelFacade.isAModelElement(rowObj)) {
@@ -174,6 +184,18 @@ public class TMResults extends AbstractTableModel {
 	    return "docs";
         }
         return "unknown!";
+    }
+
+    /**
+     * @param d the diagram to count the nodes and edges of
+     * @return a string which says it all
+     */
+    private Object countNodesAndEdges(Diagram d) {
+        int numNodes = d.getNodes(null).size();
+        int numEdges = d.getEdges(null).size();
+        Object[] msgArgs = {new Integer(numNodes), 
+                            new Integer(numEdges) }; 
+        return Translator.messageFormat("dialog.nodes-and-edges", msgArgs);
     }
 
     /**
