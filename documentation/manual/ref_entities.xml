@@ -232,9 +232,9 @@ Modifications
             <row>
               <entry>Constraints</entry>
 
-              <entry><para>Standard tab. You can stereotype a model, and
-                constraints may be useful under these
-                circumstances.</para></entry>
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>Model</literal> within the UML
+                metamodel.</para></entry>
             </row>
 
             <!-- Entry for Tagged Values tab -->
@@ -242,9 +242,28 @@ Modifications
             <row>
               <entry>Tagged Values</entry>
 
-              <entry><para>Standard tab. However there are no standard tagged
-                values defined by UML that relate to the standard stereotypes
-                offered for a model.</para></entry>
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Model</literal> has the following standard tagged
+                values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the class is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived models still have their value in
+                    analysis to introduce useful names or concepts, and in
+                    design to avoid recomputation.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
             </row>
           </tbody>
         </tgroup>
@@ -258,7 +277,7 @@ Modifications
 
       <!-- The properties toolbar -->
 
-      <para>The property tab toolbar for use cases is described in <xref
+      <para>The property tab toolbar for the model is described in <xref
         linkend="tab.ref.model_property_toolbar"/>.</para>
 
       <table id="tab.ref.model_property_toolbar" frame="all" colsep="1"
@@ -304,7 +323,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate back to the previous
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Go forward button -->
@@ -318,7 +341,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate forward to the next
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Add class button -->
@@ -371,7 +398,7 @@ Modifications
                 fileref="images/icons/datatype.gif"/>
               </imageobject></inlinemediaobject></guiicon></entry>
 
-              <entry><para>This creates a new interface (see <xref
+              <entry><para>This creates a new datatype (see <xref
                   linkend="s1.ref.datatype"/>) within the model (which appears
                 on no diagram), navigating immediately to the properties tab
                 for that datatype.</para></entry>
@@ -384,13 +411,13 @@ Modifications
 
               <entry><guiicon><inlinemediaobject><imageobject><imagedata
                 format="GIF" align="center"
-                fileref="images/icons/interface.gif"/>
+                fileref="images/icons/stereotype.gif"/>
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>This creates a new stereotype (see <xref
-                  linkend="s1.ref.stereotype"/>) within the model (which
-                  appears on no diagram), navigating immediately to the
-                  properties tab for that stereotype.</para></entry>
+                  linkend="s1.ref.stereotype"/>) within the model, navigating
+                immediately to the properties tab for that
+                stereotype.</para></entry>
             </row>
 
             <!-- Entry for Add actor button -->
@@ -433,7 +460,7 @@ Modifications
                 where you want them.</para></tip></entry>
             </row>
 
-            <!-- Entry for Add package button -->
+            <!-- Entry for Add subpackage button -->
 
             <row>
               <entry>Add subpackage</entry>
@@ -448,9 +475,9 @@ Modifications
                 on no diagram), navigating immediately to the properties tab
                 for that package.</para>
 
-              <tip><para>Whilst it can make sense to create sub-packages this
-                way, it is usally a lot clearer to create them within diagrams
-                where you want them.</para></tip></entry>
+              <tip><para>Whilst it can make sense to create sub-packages of the
+                model this way, it is usally a lot clearer to create them
+                within diagrams where you want them.</para></tip></entry>
             </row>
 
             <!-- Entry for Add generalization button -->
@@ -464,9 +491,10 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>This creates a new generalization (see <xref
-                  linkend="s1.ref.generalization"/>) within the model (which
-                appears on no diagram), navigating immediately to the
-                properties tab for that generalization.</para>
+                  linkend="s1.ref.generalization_use_case"/> and <xref
+                  linkend="s1.ref.generalization_class"/>) within the model
+                  (which appears on no diagram), navigating immediately to the
+                  properties tab for that generalization.</para>
 
               <tip><para>Whilst it can make sense to create generalizations
                 this way, it is usally a lot clearer to create them within
@@ -557,24 +585,32 @@ Modifications
                 (<literal>systemModel</literal> and
                 <literal>metamodel</literal>) and package
                 (<literal>facade</literal>, <literal>framework</literal>,
-                <literal>stub</literal>, <literal>topLevel</literal> ), as well
-                as the stereotypes for models and packages in the UML standard
-                profiles for <emphasis>software development process</emphasis>
+                <literal>stub</literal>), as well as the stereotypes for models
+                and packages in the UML standard profiles for
+                <emphasis>software development process</emphasis>
                 (<literal>use-case&nbsp;model</literal>,
                 <literal>analysis&nbsp;model</literal>,
                 <literal>design&nbsp;model</literal>,
                 <literal>implementation&nbsp;model</literal>,
-                <literal>use&nbsp;case&nbsp;system</literal>,
-                <literal>analysis&nbsp;system</literal>,
-                <literal>analysis&nbsp;package</literal>,
                 <literal>use&nbsp;case&nbsp;package</literal> and
-                <literal>analysis&nbsp;service&nbsp;package</literal>) and
-                <emphasis>business modelling</emphasis>
-                (<literal>object&nbsp;system</literal> in addition to several
-                of the software development process stereotypes).&argouml; also
-                provides the additional stereotypes,
+                <literal>analysis&nbsp;service&nbsp;package</literal>).
+                &argouml; also provides the additional stereotypes,
                 <literal>machine</literal>, <literal>organization</literal> and
                 <literal>person</literal>.</para>
+
+              <note><para>A number of standard stereotypes are currently
+                missing from &argouml;: <literal>topLevel</literal> (from
+                package), <literal>use&nbsp;case&nbsp;system</literal>,
+                <literal>analysis&nbsp;system</literal>,
+                <literal>analysis&nbsp;package</literal> (all three from the
+                <emphasis>software development process</emphasis>
+                profile).</para></note>
+
+              <caution><para>&argouml; provides the stereotype
+                <literal>realize</literal> for models and packages. This
+                appears to be an error, since this stereotype properly belongs
+                to the <literal>Association</literal>
+                metaclass.</para></caution>
 
               <para>Stereotyping models is a useful thing, although it is of
                 limited value in &argouml; where you have only a single
@@ -612,17 +648,30 @@ Modifications
               <entry>Modifiers</entry>
 
               <entry><para>Check box, with entries <literal>Abstract</literal>,
-                <literal>Final</literal> and <literal>Root</literal>. These are
-                present, because a model derives (via
-                <literal>Package</literal>) from
-                <literal>GeneralizableElement</literal> in the UML
-                metamodel. <literal>GeneralizableElement</literal> has
-                attributes <literal>isAbstract</literal>,
-                <literal>isLeaf</literal> and <literal>isRoot</literal>,
-                corresponding to these check boxes.</para>
+                <literal>Final</literal> and <literal>Root</literal>.</para>
 
-              <para>However since &argouml; can only have one model, these are
-                not particularly relevant.</para></entry>
+              <itemizedlist>
+                <listitem><para><literal>abstract</literal> is used to declare
+                  that this model cannot be instantiated, but must always be
+                  specialized.</para>
+
+                <tip><para>The meaning of <literal>abstract</literal> applied
+                  to a model is not that clear. It might mean that the model
+                  contains interfaces or abstract classes without
+                  realizations. Since &argouml; only permits one model, this is
+                  not a meaningful box to check.</para></tip></listitem>
+
+                <listitem><para><literal>final</literal> indicates that this
+                  model can have no further subpackages, while
+                  <literal>root</literal> indicates it is the top level
+                  model.</para>
+
+                <tip><para>Within &argouml; <literal>root</literal> only
+                  meaningfully applies to the Model, since all packages sit
+                  within the model. In the absence of the
+                  <literal>topLevel</literal> stereotype, this could be used to
+                  emphasise that the Model is at the top
+                  level.</para></tip></listitem> </itemizedlist></entry>
             </row>
 
             <!-- Entry for Derived -->
@@ -643,15 +692,6 @@ Modifications
                 this model. Meaningless for a model.</para></entry>
             </row>
 
-            <!-- Entry for Derived -->
-
-            <row>
-              <entry>Derived</entry>
-
-              <entry><para>Text box. Lists any derived class. Meaningless for
-                a model.</para></entry>
-            </row>
-
             <!-- Entry for Implements -->
 
             <row>
@@ -661,7 +701,7 @@ Modifications
                 the realization. Of little value within &argouml;, since
                 multiple models are not permitted.</para>
 
-              <para>It is possible to add abstractions from this menu, although
+              <para>It is possible to add realizations from this menu, although
                 since there is no way to add a model to the other end of the
                 abstraction, it is meaningless. &Button1; click allows you
                 to navigate to them and &button2; click gives a pop up menu
@@ -732,6 +772,601 @@ Modifications
                 <listitem><para><literal>Open</literal>. This is always
                   greyed out for a model.</para></listitem>
               </itemizedlist></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+  </sect1>
+
+  <!-- Datatype artifact. Sub-Artifact of a model or package. -->
+
+  <sect1 id="s1.ref.datatype">
+    <title>Datatype</title>
+
+    <para>Datatypes can be thought of as simple classes. They have no
+      attributes, and any operations on them must have no side-effects. A
+      useful analogy is primitive datatypes in a language like Java. The
+      integer <quote>3</quote> stands on its own&mdash;it has no inner
+      structure. There are operations (for example addition) on the integers,
+      but when I perform <literal>3&nbsp;+&nbsp;4</literal> the result is a new
+      number, <quote>3</quote> and <quote>4</quote> are unchanged by the
+      exercise.</para>
+
+    <para>Within UML&nbsp;1.3, <literal>DataType</literal> is a sub-class of
+      the <literal>Classifier</literal> metaclass. It embraces the predefined
+      primitive types (<literal>byte</literal>, <literal>char</literal>,
+      <literal>double</literal>, <literal>float</literal>,
+      <literal>int</literal>, <literal>long</literal> and <literal>
+      short</literal>), the predefined enumeration, <literal>boolean</literal>
+      and user defined <emphasis>enumeration types</emphasis>.</para>
+
+    <note><para><literal>void</literal> is implemented as a class rather than a
+      datatype within &argouml;</para></note>
+
+    <para>Within &argouml; new datatypes may be created using the <literal>New
+      datatype</literal> button on the property tabs of the model and packages
+      (in which case the new datatype is restricted in scope to the
+      package), as well as the properties tab for datatype..</para>
+
+    <para>You can navigate to existing property types via the
+      <literal>NavClass</literal> button on any property sheet that has a Type
+      dropdown (for example attribute or parameter).</para>
+
+    <caution><para>UML&nbsp;1.3 allows user defined datatypes to be placed on
+      class diagrams. This is not permitted in &argouml;.</para></caution>
+
+    <!-- Datatype details tabs -->
+
+    <sect2>
+      <title>Datatype Details Tabs</title>
+
+      <para>The details tabs that are active for datatypes are described in
+        <xref linkend="tab.ref.datatype_details_tabs"/>.</para>
+
+      <table id="tab.ref.datatype_details_tabs" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Details tabs for datatype</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Tab</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for ToDo Item tab -->
+
+            <row>
+              <entry>ToDo Item</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Properties tab -->
+
+            <row>
+              <entry>Properties</entry>
+
+              <entry><para>See <xref
+                  linkend="tab.ref.datatype_property_toolbar"/> and <xref
+                  linkend="tab.ref.datatype_property_fields"/>
+                below.</para></entry>
+            </row>
+
+            <!-- Entry for Documentation tab -->
+
+            <row>
+              <entry>Documentation</entry>
+
+              <entry><para>Standard tab.</para></entry>
+            </row>
+
+            <!-- Entry for Style tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab, but with no effect. In a future
+                version of &argouml; the <literal>Attributes</literal> and
+                <literal>Operations</literal> tick boxes will control the
+                display of literals and operations defined for the
+                datatype.</para></entry>
+            </row>
+
+            <!-- Entry for Source tab -->
+
+            <row>
+              <entry>Source</entry>
+
+              <entry><para>Standard tab. Unused. One would expect a class
+                 declaration for the new datatype to support code
+                 generation.</para></entry>
+            </row>
+
+            <!-- Entry for Constraints tab -->
+
+            <row>
+              <entry>Constraints</entry>
+
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>Datatype</literal> (or
+                <literal>Enumeration</literal> within the UML
+                metamodel.</para></entry>
+            </row>
+
+            <!-- Entry for Tagged Values tab -->
+
+            <row>
+              <entry>Tagged Values</entry>
+
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Datatype</literal> has the following standard tagged
+                values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>persistence</literal> (from the
+                    superclass, <literal>Classifier</literal>). Values
+                    <literal>transitory</literal>, indicating state is
+                    destroyed when an instance is destroyed or
+                    <literal>persistant</literal>, marking state is
+                    preserved when an instance is destroyed.</para>
+
+                  <tip><para>Since user defined datatypes are enumerations,
+                    they have no state to preserve, and the value of this
+                    tagged value is irrelevant.</para></tip></listitem>
+
+                  <listitem><para><literal>semantics</literal> (from the
+                    superclass, <literal>Classifier</literal>). The value is a
+                    specification of the semantics of the
+                    datatype.</para></listitem>
+
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the class is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <tip><para>Whilst formally available, a derived datatype
+                    does not have an obvious value, and so datatypes should
+                    always be marked with
+                    <literal>derived=false</literal>.</para></tip></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+    </sect2>
+
+    <!-- Datatype properties -->
+
+    <sect2>
+      <title>Datatype Properties</title>
+
+      <!-- The properties toolbar -->
+
+      <para>The property tab toolbar for datatypes is described in <xref
+        linkend="tab.ref.datatype_property_toolbar"/>.</para>
+
+      <table id="tab.ref.datatype_property_toolbar" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property toolbar for package</title>
+
+        <tgroup cols='3' colsep='0' rowsep='0'>
+          <colspec align="left"   colwidth="*2"/>
+          <colspec align="center" colwidth="*1"/>
+          <colspec align="left"   colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Button</entry>
+              <entry align="center">Icon</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Go up button -->
+
+            <row>
+              <entry>Go up</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_up.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate up through the package
+                structure.</para></entry>
+            </row>
+
+            <!-- Entry for Go back button -->
+
+            <row>
+              <entry>Go back</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_back.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate back to the previous
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Go forward button -->
+
+            <row>
+              <entry>Go forward</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/navigate_forward.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>Navigate forward to the next
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
+            </row>
+
+            <!-- Entry for New datatype button -->
+
+            <row>
+              <entry>New datatype</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/datatype.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new datatype (see <xref
+                  linkend="s1.ref.class"/>) within the same package as the
+                  current datatype.</para>
+
+              <tip><para>Whilst it can make sense to create datatypes this way,
+                it can be clearer to create them within the package or model
+                where you want them.</para></tip></entry>
+            </row>
+
+            <!-- Entry for Add enumeration literal button -->
+
+            <row>
+              <entry>Add enumeration literal</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/enumeration_literal.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This creates a new enumeration literal within the
+                datatype, navigating immediately to the properties tab for that
+                literal.</para>
+
+              <caution><para>&argouml; does not actually have a seperate
+                concept of a literal. The navigation will take you to the
+                property sheet for an attribute of a class (see <xref
+                linkend="s1.ref.attribute"/>). When defining a literal, all
+                that matters is its name. Other parts of the attribute property
+                sheet should be ignored.</para></caution></entry>
+            </row>
+
+            <!-- Entry for Delete button -->
+
+            <row>
+              <entry>Delete</entry>
+
+              <entry><guiicon><inlinemediaobject><imageobject><imagedata
+                format="GIF" align="center"
+                fileref="images/icons/property_delete.gif"/>
+              </imageobject></inlinemediaobject></guiicon></entry>
+
+              <entry><para>This deletes the datatype from the
+                model.</para></entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+  
+      <!-- Fields in the properties tab -->
+
+      <para>The fields on the property tab for datatypes are described in
+        <xref linkend="tab.ref.datatype_property_fields"/>.</para>
+
+      <table id="tab.ref.datatype_property_fields" frame="all" colsep="1"
+             rowsep="1" pgwide="1">
+        <title>Property fields for datatype</title>
+
+        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
+          <colspec align="left" colwidth="*3"/>
+          <colspec align="left" colwidth="*9"/>
+          <thead>
+            <row>
+              <entry align="left">Field</entry>
+              <entry align="left">Meaning</entry>
+            </row>
+          </thead>
+
+          <tbody valign="top">
+
+            <!-- Entry for Name -->
+
+            <row>
+              <entry>Name</entry>
+
+              <entry><para>Text box. The name of the datatype. The primitive
+                datatypes all have lower case names, but there is no formal
+                convention.</para>
+
+              <note><para>The default name supplied to a new package by
+                &argouml; is the empty string <quote></quote>. The datatype
+                will appear with the name <literal>anon</literal> in the
+                navigation pane.</para></note></entry>
+            </row>
+
+            <!-- Entry for Stereotype -->
+
+            <row>
+              <entry>Stereotype</entry>
+
+              <entry><para>Drop down selector. Package is provided by default
+                with the UML standard stereotypes for classifier
+                (<literal>metaclass</literal>, <literal>powertype</literal>,
+                <literal>process</literal>, <literal>thread</literal> and
+                <literal>utility</literal>). &argouml; also provides the
+                additional stereotypes, <literal>machine</literal>,
+                <literal>organization</literal> and <literal>person</literal>
+                as well as the abstration stereotype
+                <literal>realize</literal>.</para>
+
+              <para>Most important of all, &argouml; provides the stereotype
+                <literal>enumeration</literal> for use with user defined
+                enumeration data types.</para>
+
+              <tip><para><literal>enumeration</literal> should always be used
+                as the stereotype of any created datatypes.</para></tip>
+
+              <caution><para>Use of other stereotypes (particularly
+                <literal>realize</literal> is unwise. If you really need to
+                stereotype user defined types, you should consider creating
+                your own stereotype derived from
+                enumeration.</para></caution></entry>
+            </row>
+
+            <!-- Entry for NavStereo -->
+
+            <row>
+              <entry>Navigate Stereotype</entry>
+
+              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
+                  format="GIF" align="center"
+                  fileref="images/icons/navigate_stereotype.gif"/>
+                </imageobject></inlinemediaobject></guiicon> icon. If a
+                  stereotype has been selected, this will navigate you to the
+                  stereotype property panel (see <xref
+                    linkend="s1.ref.stereotype"/>.</para></entry>
+            </row>
+
+            <!-- Entry for Extends -->
+
+            <row>
+              <entry>Extends</entry>
+
+              <entry><para>Text box. Lists any use case extended by this
+                datatype. Meaningless for a datatype. The entry is always none
+                and the pop up menu greyed out.</para></entry>
+            </row>
+
+            <!-- Entry for Implements -->
+
+            <row>
+              <entry>Implements</entry>
+
+              <entry><para>Text box. Lists any abstract classes or interfaces
+                realized by this datatype. By default shows the entry
+                <literal>none</literal>.</para> 
+
+              <para>&Button1; click takes you to any entry (but see the warning
+                below), &button2; gives a pop up menu with five entries.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Where an abstraction
+                  dependency exists, navigate to it (but see warning
+                  below).</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new abstraction
+                  dependency.</para>
+
+                <note><para>&argouml; does not navigate to the new abstraction,
+                  and this field shows the name [empty], whatever name you
+                  choose to give the abstraction.</para></note>
+
+                <tip><para>Whilst adding abstractions is possible, only the
+                  supplier end is created, and there is no way to supply the
+                  client end. The value of such abstractions is therefore
+                  minimal.</para></tip></listitem>
+
+                <listitem><para><literal>Delete</literal>. Where an abstraction
+                  has been added this removes it completely from the
+                  model.</para></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more abstractions, and the abstraction
+                  selected is not at the top. It is moved one up the
+                  list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more abstractions listed, and the
+                  abstraction selected is not at the bottom. It is moved
+                  one down the list.</para></listitem>
+              </itemizedlist>
+
+              <tip><para>In principle a datatype could realize some
+                other artifact, but it would be unusual. Best
+                avoided.</para></tip>
+
+              <warning><para>&Button1; click on the default entry navigates to
+                the most recently selected to-do item in the to-do pane. This
+                seems to be a bug in &argouml;.</para></warning></entry>
+            </row>
+
+            <!-- Entry for Modifiers -->
+
+            <row>
+              <entry>Modifiers</entry>
+
+              <entry><para>Check box, with entries <literal>public</literal>,
+                <literal>abstract</literal>, <literal>final</literal> and
+                <literal>root</literal>.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>public</literal> has identical meaning
+                  to the <literal>public</literal> declaration in Java. It
+                  indicates whether this datatype is restricted to use in its
+                  own package (the default) or can be used by
+                  anyone.</para></listitem>
+
+                <listitem><para><literal>abstract</literal> is used to declare
+                  that this datatype cannot be instantiated, but must always be
+                  specialized.</para>
+
+                <caution><para>&argouml; provides no mechanism for specializing
+                  datatypes, so this check box is of little use.
+                </para></caution></listitem>
+
+                <listitem><para><literal>final</literal> indicates that this
+                  datatype can have no further subtypes, while
+                  <literal>root</literal> indicates it is a top level
+                  datatype.</para>
+
+                <tip><para>In the absence of specialization of datatypes within
+                  &argouml; these have little value. In effect all datatypes
+                  are both <literal>root</literal> and
+                  <literal>final</literal></para></tip></listitem>
+              </itemizedlist></entry>
+            </row>
+
+            <!-- Entry for Namespace -->
+
+            <row>
+              <entry>Namespace</entry>
+
+              <entry><para>Text box. Records the namespace for the
+                datatype. This is the package hierarchy.</para>
+
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
+            </row>
+
+            <!-- Entry for Derived -->
+
+            <row>
+              <entry>Derived</entry>
+
+              <entry><para>Text box. Meaningless for a datatype (which can
+                never be a generalization), which always
+                shows the entry <literal>none</literal> here. The pop-up menu
+                is always greyed out.</para></entry>
+            </row>
+
+            <!-- Entry for Operations -->
+
+            <row>
+              <entry>Operations</entry>
+
+              <entry><para>Text area. Lists all the operations defined on this
+                dataType. &Button1; click takes you to the selected operation,
+                &button2; click brings up a pop up menu with five
+                entries.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected operation.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  operation and navigate to it.</para></listitem>
+
+                <listitem><para><literal>Delete</literal>. Removes the selected
+                  operation from the model.</para></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more operations, and the operation
+                  selected is not at the top. It is moved one up the
+                  list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more operations listed, and the
+                  operation selected is not at the bottom. It is moved
+                  one down the list.</para></listitem>
+              </itemizedlist>
+
+              <para>See <xref linkend="s1.ref.operation"/> for details of
+                operations.</para>
+
+              <caution><para>&argouml; treats all operations as equivalent. Any
+                operations created here will use the same mechanism as
+                operations for classes. Remember that operations on datatypes
+                must have no side effects (they are read-only). This means the
+                <literal>query</literal> modifier <emphasis>must</emphasis> be
+                checked for all operations.</para></caution></entry>
+            </row>
+
+            <!-- Entry for literals -->
+
+            <row>
+              <entry>Literals</entry>
+
+              <entry><para>Text area. Lists all the literals defined for this
+                dataType. &Button1; click takes you to the selected literal,
+                &button2; click brings up a pop up menu with five
+                entries.</para>
+
+              <itemizedlist>
+                <listitem><para><literal>Open</literal>. Navigate to the
+                  selected literal.</para></listitem>
+
+                <listitem><para><literal>Add</literal>. Add a new
+                  literal and navigate to it.</para></listitem>
+
+                <listitem><para><literal>Delete</literal>. Removes the selected
+                  literal from the model.</para></listitem>
+
+                <listitem><para><literal>Move Up</literal>. Only available
+                  where there are two or more literals, and the literal
+                  selected is not at the top. It is moved one up the
+                  list.</para></listitem>
+
+                <listitem><para><literal>Move Down</literal>. Only available
+                  where there are two or more literals listed, and the
+                  literal selected is not at the bottom. It is moved
+                  one down the list.</para></listitem>
+              </itemizedlist>
+
+              <caution><para>&argouml; does not actually have a seperate
+                concept of a literal. The navigations listed above will all
+                take you to the property sheet for an attribute of a class (see
+                <xref linkend="s1.ref.attribute"/>). When defining a literal,
+                all that matters is its name. Other parts of the attribute
+                property sheet should be ignored.</para></caution></entry>
             </row>
           </tbody>
         </tgroup>
@@ -839,10 +1474,15 @@ Modifications
             <row>
               <entry>Constraints</entry>
 
-              <entry><para>Standard tab. It is not clear that constraints
-                applied to a stereotype have any meaning (as opposed to
-                constraints applied <emphasis>with</emphasis> a stereotype,
-                which make a lot of sense).</para></entry>
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>Package</literal> within the UML
+                metamodel.</para>
+
+              <caution><para>Constraints for a stereotype are rather different
+                to those for elements in the UML core architecture, in that
+                they apply to all artifacts to which the stereotype is applied,
+                <emphasis>not</emphasis> just the stereotype
+                itself.</para></caution></entry>
             </row>
 
             <!-- Entry for Tagged Values tab -->
@@ -850,10 +1490,34 @@ Modifications
             <row>
               <entry>Tagged Values</entry>
 
-              <entry><para>Standard tab. It is not clear that tagged values
-                applied to a stereotype have any meaning (as opposed to
-                tagged values applied <emphasis>with</emphasis> a stereotype,
-                which make a lot of sense).</para></entry>
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Stereotype</literal> has the following standard tagged
+                values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the class is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>This indicates any element with this stereotype
+                    has the <literal>derived</literal> tag set
+                    accordingly.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note>
+
+                <caution><para>Tagged values for a stereotype are rather
+                  different to those for elements in the UML core architecture,
+                  in that they apply to all artifacts to which the stereotype
+                  is applied, <emphasis>not</emphasis> just the stereotype
+                  itself.</para></caution></entry>
             </row>
           </tbody>
         </tgroup>
@@ -867,7 +1531,7 @@ Modifications
 
       <!-- The properties toolbar -->
 
-      <para>The property tab toolbar for use cases is described in <xref
+      <para>The property tab toolbar for stereotypes is described in <xref
         linkend="tab.ref.stereotype_property_toolbar"/>.</para>
 
       <table id="tab.ref.stereotype_property_toolbar" frame="all" colsep="1"
@@ -913,7 +1577,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate back to the previous
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Go forward button -->
@@ -927,7 +1595,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate forward to the next
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Add stereotype button -->
@@ -965,12 +1637,12 @@ Modifications
   
       <!-- Fields in the properties tab -->
 
-      <para>The fields on the property tab for use cases are described in
+      <para>The fields on the property tab for stereotypes are described in
         <xref linkend="tab.ref.stereotype_property_fields"/>.</para>
 
       <table id="tab.ref.stereotype_property_fields" frame="all" colsep="1"
              rowsep="1" pgwide="1">
-        <title>Property fields for use case</title>
+        <title>Property fields for stereotype</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
           <colspec align="left" colwidth="*3"/>
@@ -1028,17 +1700,14 @@ Modifications
             <!-- Entry for Namespace -->
 
             <row>
-              <entry>Namespace</entry>
+              <entry>Namesparce</entry>
 
-              <entry><para>Text box. Records the namespace for the stereotype.
-                This is the package hierarchy. Stereotypes may be created
-                within packages as well as at the top (model)
-                level. &Button1; click on this entry will take you to that
-                package.</para>
+              <entry><para>Text box. Records the namespace for the
+                stereotype. This is the package hierarchy.</para>
 
-              <note><para>You can sometimes find yourselves navigating to
-                deleted artifacts in the model. These will show a namespace of
-                <literal>Trash</literal>.</para></note></entry>
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
             </row>
 
             <!-- Entry for Extends -->
@@ -1056,21 +1725,27 @@ Modifications
               <entry>Modifiers</entry>
 
               <entry><para>Check box, with entries <literal>Abstract</literal>,
-                <literal>Final</literal> and <literal>Root</literal>. These are
-                present, because a stereotype derives from
-                <literal>GeneralizableElement</literal> in the UML
-                metamodel. <literal>GeneralizableElement</literal> has
-                attributes <literal>isAbstract</literal>,
-                <literal>isLeaf</literal> and <literal>isRoot</literal>,
-                corresponding to these check boxes.</para>
+                <literal>Final</literal> and <literal>Root</literal>.</para>
 
-              <para>Because stereotypes can be derived from other stereotypes
-                it is meaningful to indicate whether a stereotype falls into
-                one or more of these categories.</para>
+              <itemizedlist>
+                <listitem><para><literal>abstract</literal> is used to declare
+                  that artifacts that use this stereotype cannot be
+                  instantiated, but must always be
+                  specialized.</para></listitem>
 
-              <note><para>It does not appear possible to actually create a
-                hierarchy of stereotypes within
-                &argouml;.</para></note></entry>
+                <listitem><para><literal>final</literal> indicates that
+                  artifacts that use this stereotype can have no further
+                  subtypes, while <literal>root</literal> indicates it is a top
+                  level artifact.</para></listitem>
+              </itemizedlist>
+
+              <caution><para>Remember that these modifiers apply to the
+                artifacts using the stereotype, not just the
+                stereotype.</para></caution>
+
+              <warning><para>&argouml; does neither imposes, nor checks that
+                artifacts using a stereotype adopt the stereotype's
+                modifiers.</para></warning></entry> 
             </row>
 
             <!-- Entry for Derived -->

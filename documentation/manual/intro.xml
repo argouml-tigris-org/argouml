@@ -310,21 +310,22 @@ url="http://argouml.tigris.org/documentation/defaulthtml/faq/index.html">
         user interface, known as <emphasis>Panes</emphasis>, and the menu
         bar.</para>
 
-      <para><xref linkend="ch.ref.entities"/> is an overview of the artifacts with
-        &argouml;. The following chapters (<xref linkend="ch.ref.entusecase"/>
-        through <xref linkend="ch.ref.entbuiltin"/>) describe, the artifacts that
-        can be created through each &argouml; diagram, and their
-        properties, as well as some standard artifacts provided with the
-        system.</para>
+      <para><xref linkend="ch.ref.entities"/> is an overview of the artifacts
+        with &argouml;. The following chapters (<xref
+          linkend="ch.ref.entusecase"/> through <xref
+          linkend="ch.ref.entbuiltin"/>) describe, the artifacts that can be
+        created through each &argouml; diagram, and their properties, as well
+        as some standard artifacts provided with the system.</para>
 
       <para>A complete <xref linkend="glossary"/> is provided.  <xref
-          linkend="appcasestudy"/> provides material to supplement the case
-        study used throughout the document. <xref linkend="appumlres"/> and
-        <xref linkend="appumlcase"/> identify background information on UML
-        and UML CASE tools. <xref linkend="appdocplan"/> describes the plan
-        for creation of this manual. <xref linkend="appdocstand"/> gives some
-        guidelines for those writing this manual. <xref linkend="applegal"/> is
-        a copy of the GNU Free Documentation Licence.</para>
+          linkend="app.casestudy"/> provides material to supplement the case
+        study used throughout the document. <xref linkend="app.umlres"/> and
+        <xref linkend="app.umlcase"/> identify background information on UML
+        and UML CASE tools. <xref linkend="app.docplan"/> describes the plan
+        for creation of this manual. <xref linkend="app.docstand"/> gives
+        some guidelines for those writing this manual. <xref
+          linkend="app.legal"/> is a copy of the GNU Free Documentation
+        Licence.</para>
 
       <para>A future ambition is to provide a comprehensive index</para>
     </sect2>

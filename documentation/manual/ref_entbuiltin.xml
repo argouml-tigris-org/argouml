@@ -76,9 +76,8 @@ Modifications
   <sect1>
     <title>Built In Datatypes</title>
 
-    <para>These are the built in atomic types. Strictly speaking they are
-      classes (like all types) and you can change them if you wish. However
-      this is not good practice</para>
+    <para>These are the built in atomic types. You can change them if you
+      wish. However this is not good practice</para>
 
     <para>All these can be found in the <literal>java.lang</literal> subpackage
       of the main model.</para>

@@ -51,12 +51,12 @@ Modifications
 
       <remark>To be written&hellip;</remark>
 
-      <!-- Example of a Static Diagram. Classes in the language of the problem
+      <!-- Example of a Static Diagram. Objects in the language of the problem
            space, but starts to show elements of the solution. Needs to use
-           stereotyping. -->
+           stereotyping. Note that this is done on a deployment diagram. -->
 
       <sect3>
-        <title>Concept Class Diagram</title>
+        <title>Concept Diagram</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>

@@ -182,9 +182,9 @@ Modifications
             <row>
               <entry>Constraints</entry>
 
-              <entry><para>Standard tab. However it would not be usual to
-                provide constraints for an actor, since it is external to the
-                system.</para></entry>
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>Actor</literal> within the UML
+                metamodel.</para></entry>
             </row>
 
             <!-- Entry for Tagged Values tab -->
@@ -192,9 +192,45 @@ Modifications
             <row>
               <entry>Tagged Values</entry>
 
-              <entry><para>Standard tab. However the standard tagged values
-                that UML defines make little sense in the context of an
-                actor.</para></entry>
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Actor</literal> has the following standard tagged
+                values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>persistence</literal> (from the
+                    superclass, <literal>Classifier</literal>). Values
+                    <literal>transitory</literal>, indicating state is
+                    destroyed when an instance is destroyed or
+                    <literal>persistant</literal>, marking state is
+                    preserved when an instance is destroyed.</para>
+
+                  <tip><para>Actors sit outside the system, and so their
+                    internal behaviour is of little concern, and this tagged
+                    value is best ignored.</para></tip></listitem>
+
+                  <listitem><para><literal>semantics</literal> (from the
+                    superclass, <literal>Classifier</literal>). The value is a
+                    specification of the semantics of the
+                    actor.</para></listitem>
+
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the actor is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived actors have limited value, since they sit
+                    outside the system being designed. They may have their
+                    value in analysis to introduce useful names or
+                    concepts.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
             </row>
 
           </tbody>
@@ -255,7 +291,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate back to the previous
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Go forward button -->
@@ -269,7 +309,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate forward to the next
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for New actor button -->
@@ -386,12 +430,11 @@ Modifications
               <entry>Namespace</entry>
 
               <entry><para>Text box. Records the namespace for the actor. This
-                is the package hierarchy. &Button1; click on this entry
-                will take you to that package.</para>
+                is the package hierarchy.</para>
 
-              <note><para>You can sometimes find yourselves navigating to
-                deleted artifacts in the model. These will show a namespace of
-                <literal>Trash</literal>.</para></note></entry>
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
             </row>
 
             <!-- Entry for Modifiers -->
@@ -400,18 +443,24 @@ Modifications
               <entry>Modifiers</entry>
 
               <entry><para>Check box, with entries <literal>Abstract</literal>,
-                <literal>Final</literal> and <literal>Root</literal>. These are
-                present, because an actor derives (via
-                <literal>Classifier</literal>) from
-                <literal>GeneralizableElement</literal> in the UML
-                metamodel. <literal>GeneralizableElement</literal> has
-                attributes <literal>isAbstract</literal>,
-                <literal>isLeaf</literal> and <literal>isRoot</literal>,
-                corresponding to these check boxes.</para>
+                <literal>Final</literal> and <literal>Root</literal>.</para>
 
-              <para>However from an &ooad; perspective, these attributes relate
-                to design of the solution, and are not particularly relevant to
-                actors.</para></entry>
+              <itemizedlist>
+                <listitem><para><literal>abstract</literal> is used to declare
+                  that this actor cannot be instantiated, but must always be
+                  specialized.</para>
+
+                <caution><para>Whilst actors can be specialized and
+                  generalized, it is not clear that an abstract actor has any
+                  meaning. Perhaps it might be used to indicate an actor that
+                  does not itself interact with a use case, but whose children
+                  do.</para></caution></listitem>
+
+                <listitem><para><literal>final</literal> indicates that this
+                  actor can have no further children, while
+                  <literal>root</literal> indicates it is a top level
+                  actor with no parent.</para></listitem>
+              </itemizedlist></entry>
             </row>
 
             <!-- Entry for Derived -->
@@ -651,10 +700,9 @@ Modifications
             <row>
               <entry>Constraints</entry>
 
-              <entry><para>Standard tab. It can be useful to stereotype use
-                cases, in which case constraints may be needed. None of the
-                standard stereotypes (and hence constraints) are particularly
-                well suited however.</para></entry>
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>UseCase</literal> within the UML
+                metamodel.</para></entry>
             </row>
 
             <!-- Entry for Tagged Values tab -->
@@ -662,9 +710,46 @@ Modifications
             <row>
               <entry>Tagged Values</entry>
 
-              <entry><para>Standard tab. However the standard tagged values
-                that UML defines make little sense in the context of a use
-                case.</para></entry>
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>UseCase</literal> has the following standard tagged
+                values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>persistence</literal> (from the
+                    superclass, <literal>Classifier</literal>). Values
+                    <literal>transitory</literal>, indicating state is
+                    destroyed when an instance is destroyed or
+                    <literal>persistant</literal>, marking state is
+                    preserved when an instance is destroyed.</para>
+
+                  <tip><para>In general the instantiation of use cases is not a
+                    major aspect of any design method (they are mostly
+                    concerned with requirements capture. For most &ooad;
+                    methodoologies, this tag can safely be
+                    ignored.</para></tip></listitem>
+
+                  <listitem><para><literal>semantics</literal> (from the
+                    superclass, <literal>Classifier</literal>). The value is a
+                    specification of the semantics of the
+                    use case.</para></listitem>
+
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the use case is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived use cases still have their value in
+                    analysis to introduce useful names or
+                    concepts.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
             </row>
           </tbody>
         </tgroup>
@@ -724,7 +809,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate back to the previous
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Go forward button -->
@@ -738,7 +827,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate forward to the next
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for New use case button -->
@@ -858,13 +951,12 @@ Modifications
             <row>
               <entry>Namespace</entry>
 
-              <entry><para>Text box. Records the namespace for the use
-                case. This is the package hierarchy. &Button1; click on
-                this entry will take you to that package.</para>
+              <entry><para>Text box. Records the namespace for the
+                use case. This is the package hierarchy.</para>
 
-              <note><para>You can sometimes find yourselves navigating to
-                deleted artifacts in the model. These will show a namespace of
-                <literal>Trash</literal>.</para></note></entry>
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
             </row>
 
             <!-- Entry for Modifiers -->
@@ -873,18 +965,24 @@ Modifications
               <entry>Modifiers</entry>
 
               <entry><para>Check box, with entries <literal>Abstract</literal>,
-                <literal>Final</literal> and <literal>Root</literal>. These are
-                present, because a use case derives (via
-                <literal>Classifier</literal>) from
-                <literal>GeneralizableElement</literal> in the UML
-                metamodel. <literal>GeneralizableElement</literal> has
-                attributes <literal>isAbstract</literal>,
-                <literal>isLeaf</literal> and <literal>isRoot</literal>,
-                corresponding to these check boxes.</para>
+                <literal>Final</literal> and <literal>Root</literal>.</para>
 
-              <para>However from an &ooad; perspective, these attributes relate
-                to design of the solution, and are not particularly relevant to
-                use cases.</para></entry>
+              <itemizedlist>
+                <listitem><para><literal>abstract</literal> is used to declare
+                  that this use case cannot be instantiated, but must always be
+                  specialized.</para>
+
+                <caution><para>Whilst use cases can be specialized and
+                  generalized, it is not clear that an abstract use case has
+                  any meaning. Perhaps it might be used to indicate an use case
+                  that does not itself interact with an actor, but whose
+                  children do.</para></caution></listitem>
+
+                <listitem><para><literal>final</literal> indicates that this
+                  use case can have no further children, while
+                  <literal>root</literal> indicates it is a top level
+                  use case with no parent.</para></listitem>
+              </itemizedlist></entry>
             </row>
 
             <!-- Entry for Generalizations -->
@@ -1159,7 +1257,7 @@ Modifications
 
   <!-- Association (has Association End as a sub-artifact) -->
 
-  <sect1 id="s1.ref.association">
+  <sect1 id="s1.ref.association_use_case">
     <title>Association</title>
 
     <para>An association on a use case diagram represents is a relationship
@@ -1263,14 +1361,16 @@ Modifications
             <row>
               <entry>Constraints</entry>
 
-              <entry><para>Standard tab. It can be useful to stereotype
-                abstrations, in which case constraints may be needed.</para>
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Association</literal> has the following standard
+                constraints defined.</para>
 
-              <para>In the UML metamodel, <literal>Association</literal>
-                includes the standard constraint, <literal>xor</literal>,
-                applied to a set of associations, indicating that over that
-                set, exactly one association is manifest for any particular
-                association instance.</para></entry>
+                <itemizedlist>
+                  <listitem><para><literal>xor</literal>. Applied to a set of
+                    associations, indicating that over that set, exactly one
+                    association is manifest for any particular association
+                    instance.</para></listitem>
+                </itemizedlist></entry>
             </row>
 
             <!-- Entry for Tagged Values tab -->
@@ -1278,14 +1378,34 @@ Modifications
             <row>
               <entry>Tagged Values</entry>
 
-              <entry><para>Standard tab. It can be useful to stereotype
-                abstrations, in which case tagged values may be needed.</para>
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Association</literal> has the following standard
+                tagged values defined.</para>
 
-              <para>In the UML metamodel, <literal>Association</literal>
-                includes the standard tagged value,
-                <literal>persistence</literal>, to mark an association as
-                <literal>persistent</literal> or
-                <literal>transitory</literal>.</para></entry>
+                <itemizedlist>
+                  <listitem><para><literal>persistence</literal>. Values
+                    <literal>transitory</literal>, indicating state is
+                    destroyed when an instance is destroyed or
+                    <literal>persistant</literal>, marking state is
+                    preserved when an instance is destroyed.</para></listitem>
+
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the association is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived associations still have their value in
+                    analysis to introduce useful names or concepts, and in
+                    design to avoid recomputation.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
             </row>
           </tbody>
         </tgroup>
@@ -1346,7 +1466,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate back to the previous
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Go forward button -->
@@ -1360,7 +1484,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate forward to the next
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Delete button -->
@@ -1479,13 +1607,12 @@ Modifications
             <row>
               <entry>Namespace</entry>
 
-              <entry><para>Text box. Records the namespace for the use
-                case. This is the package hierarchy. &Button1; click on
-                this entry will take you to that package.</para>
+              <entry><para>Text box. Records the namespace for the
+                association. This is the package hierarchy.</para>
 
-              <note><para>You can sometimes find yourselves navigating to
-                deleted artifacts in the model. These will show a namespace of
-                <literal>Trash</literal>.</para></note></entry>
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
             </row>
 
             <!-- Entry for Modifiers -->
@@ -1500,7 +1627,7 @@ Modifications
               <warning><para>The presence of these modifiers, which reflect the
                 attributes of a <literal>GeneralizableElement</literal> within
                 the UML metamodel, appears to be a mistake in &argouml;
-                <literal>Attribute</literal> is not derived from
+                <literal>Association</literal> is not derived from
                 <literal>GeneralizableElement</literal>, and so does not
                 inherit these attributes.</para></warning></entry>
             </row>
@@ -1586,8 +1713,9 @@ Modifications
     <title>Association End</title>
 
     <para>Two or more association ends are associated with each association
-      (see <xref linkend="s1.ref.association"/>), although for the purposes
-      of use case diagrams, the number of ends can only usefully be two.</para>
+      (see <xref linkend="s1.ref.association_use_case"/>), although for the
+      purposes of use case diagrams, the number of ends can only usefully be
+      two.</para>
 
     <para>Within the UML metamodel, <literal>AssociationEnd</literal> is a
       sub-class of <literal>ModelElement</literal>.</para>
@@ -1602,6 +1730,9 @@ Modifications
       are of limited relevance to use cases. The most useful attributes to
       consider altering are the name (used as the role name) and the
       multiplicity.</para></tip>
+
+    <note><para>&argouml; does not currently support qualifiers, as described
+      in the UML&nbsp;1.3 standard.</para></note>
 
     <!-- The details tabs -->
 
@@ -1683,9 +1814,9 @@ Modifications
             <row>
               <entry>Constraints</entry>
 
-              <entry><para>Standard tab. In the context of use case diagrams,
-                sereotyping an association end is not particularly useful, and
-                associated constraints unlikely to be needed.</para></entry>
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>AssociationEnd</literal> within the UML
+                metamodel.</para></entry>
             </row>
 
             <!-- Entry for Tagged Values tab -->
@@ -1693,10 +1824,31 @@ Modifications
             <row>
               <entry>Tagged Values</entry>
 
-              <entry><para>Standard tab. In the context of use case diagrams,
-                sereotyping an association end is not particularly useful, and
-                associated tagged values are unlikely to be
-                needed.</para></entry>
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>AssociationEnd</literal> has the following standard
+                tagged values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the association end is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <tip><para>Derived association ends still have their value in
+                    analysis to introduce useful names or concepts, and in
+                    design to avoid recomputation. However they their
+                    composition with association, means they can only sensibly
+                    have a true <literal>derived</literal> tag if the
+                    association also does.</para></tip></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
             </row>
           </tbody>
         </tgroup>
@@ -1756,7 +1908,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate back to the previous
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Go forward button -->
@@ -1770,7 +1926,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate forward to the next
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Go to other end button -->
@@ -2038,7 +2198,7 @@ Modifications
 
   <!-- Generalization -->
 
-  <sect1 id="s1.ref.generalization">
+  <sect1 id="s1.ref.generalization_use_case">
     <title>Generalization</title>
 
     <para>Generalization is a relationship between two use cases or two
@@ -2152,9 +2312,57 @@ Modifications
             <row>
               <entry>Constraints</entry>
 
-              <entry><para>Standard tab. The one standard stereotype of a
-                generalization, is of little value in a use case diagram, and
-                associated constraints unlikely to be needed.</para></entry>
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Generalization</literal> has the following standard
+                constraints defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>complete</literal>. Applied to a set
+                    of generalizations with the same discriminator (see <xref
+                    linkend="s1.ref.generalization_class"/> and same parent,
+                    indicating that an instance of the parent must be an
+                    instance of one of those children.</para>
+
+                  <para>Where there is only one discriminator, this implies the
+                    parent must be abstract.</para>
+
+                  <tip><para>The point of this constraint is to indicate that
+                    within the design, no more children are expected to be
+                    created for this parent. If more are created, the
+                    implication is that there will be significant rework
+                    required within the design.</para></tip></listitem>
+
+                  <listitem><para><literal>disjoint</literal>. Applied to a set
+                    of generalizations indicates and instance of the parent
+                    must be an instance of no more than one of the children
+                    within the set.</para>
+
+                  <note><para>This is the default semantics of
+                    generalization</para></note></listitem> 
+
+                  <listitem><para><literal>incomplete</literal>. The converse
+                    of <literal>complete</literal> indicating that within a set
+                    of generalizations of the same parent sharing the same
+                    discriminator, an instance of the parent need not be an
+                    instance of a child within the set (there is no guarantee
+                    such an instance exists)</para>
+
+                  <para>This implies the parent must be concrete.</para>
+
+                  <tip><para>The point of this constraint is to indicate that
+                    within the design, more children may be created for this
+                    parent. If more are created, the implication is that there
+                    should be no significant rework required within the
+                    design.</para></tip></listitem>
+
+                  <listitem><para><literal>overlapping</literal>. The inverse f
+                    <literal>disjoint</literal>. Applied to a set of
+                    generalizations indicates an instance of one child in the
+                    set may simultaneously be an instance of another child
+                    within the set (although this is not
+                    guaranteed).</para></listitem>
+
+                </itemizedlist></entry>
             </row>
 
             <!-- Entry for Tagged Values tab -->
@@ -2162,9 +2370,28 @@ Modifications
             <row>
               <entry>Tagged Values</entry>
 
-              <entry><para>Standard tab. There are no standard tagged values
-                associated with generalization, and associated tagged values
-                are unlikely to be needed.</para></entry>
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Generalization</literal> has the following standard
+                tagged values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the generalization is
+                    redundant&mdash;it can be formally derived from other
+                    elements, or <literal>false</literal> meaning it
+                    cannot.</para>
+
+                  <note><para>Derived generalizations still have their value in
+                    analysis to introduce useful names or concepts, and in
+                    design to avoid recomputation.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
             </row>
           </tbody>
         </tgroup>
@@ -2225,7 +2452,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate back to the previous
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Go forward button -->
@@ -2239,7 +2470,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate forward to the next
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Delete button -->
@@ -2346,9 +2581,12 @@ Modifications
                 into a number of sets, on the basis of this value.</para>
 
               <tip><para>The empty string <quote></quote> is a valid entry (and
-                the default) for this field. It is hard to see where any other
-                value would be useful on a use case
-                diagram.</para></tip></entry>
+                the default) for this field. The discriminator is only of
+                practical use in cases of multiple inheritance. An example is
+                discussed in the section covering generalization on class
+                diagrams (see <xref
+                linkend="s1.ref.generalization_class"/>). There is little point
+                in use this with a use case diagram.</para></tip></entry>
             </row>
 
             <!-- Entry for Namespace -->
@@ -2357,12 +2595,11 @@ Modifications
               <entry>Namespace</entry>
 
               <entry><para>Text box. Records the namespace for the
-                generalization. This is the package hierarchy. &Button1; click
-                on this entry will take you to that package.</para>
+                generalization. This is the package hierarchy.</para>
 
-              <note><para>You can sometimes find yourselves navigating to
-                deleted artifacts in the model. These will show a namespace of
-                <literal>Trash</literal>.</para></note></entry>
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
             </row>
 
             <!-- Entry for Parent -->
@@ -2413,6 +2650,23 @@ Modifications
           </tbody>
         </tgroup>
       </table>
+
+    <figure id="fig.discriminator_example" float="1">
+      <title>Example use of a discriminator with generalization</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/discriminator_example.gif"/>
+        </imageobject>
+
+        <textobject>
+          <para>A class  diagram, showing a number of generalizations, grouped
+            by use of discriminators.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+
     </sect2>
   </sect1>
 
@@ -2531,12 +2785,10 @@ Modifications
             <row>
               <entry>Constraints</entry>
 
-              <entry><para>Standard tab. There are no standard stereotypes of
-                dependency, since it would be usual to adopt one its
-                sub-classes, so there are no standard constraints. The
-                &argouml; stereotypes of <literal>extend</literal> and
-                <literal>include</literal> have no predefined
-                constraints.</para></entry>
+              <entry><para>Standard tab. There are no standard constraints
+                defined for <literal>Dependency</literal>,
+                <literal>Extend</literal> or <literal>Include</literal> within
+                the UML metamodel.</para></entry>
             </row>
 
             <!-- Entry for Tagged Values tab -->
@@ -2544,11 +2796,31 @@ Modifications
             <row>
               <entry>Tagged Values</entry>
 
-              <entry><para>Standard tab. There are no standard stereotypes of
-              dependency, since it would be usual to adopt one its sub-classes,
-              so there are no standard tagged values. The &argouml; stereotypes
-              of <literal>extend</literal> and <literal>include</literal> have
-              no predefined tagged values.</para></entry>
+              <entry><para>Standard tab. In the UML metamodel,
+                <literal>Extends</literal>, <literal>Includes</literal> and
+                <literal>Dependency</literal> have no tagged values of their
+                own, but through superclasses have the following standard
+                tagged values defined.</para>
+
+                <itemizedlist>
+                  <listitem><para><literal>derived</literal> (from the
+                    superclass, <literal>ModelElement</literal>). Values
+                    <literal>true</literal>, meaning the dependency, includes
+                    or extends relationship is redundant&mdash;it can be
+                    formally derived from other elements, or
+                    <literal>false</literal> meaning it cannot.</para>
+
+                  <note><para>Derived dependencies, includes and extends
+                    relationships still have their value in analysis to
+                    introduce useful names or
+                    concepts.</para></note></listitem>
+                </itemizedlist>
+
+                <note><para>The UML <literal>Element</literal> metaclass from
+                  which all other artifacts are derived includes the tagged
+                  element <literal>documentation</literal> which is handled by
+                  the <emphasis>documentation tab</emphasis> under
+                  &argouml;</para></note></entry>
             </row>
           </tbody>
         </tgroup>
@@ -2609,7 +2881,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate back to the previous
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Go forward button -->
@@ -2623,7 +2899,11 @@ Modifications
               </imageobject></inlinemediaobject></guiicon></entry>
 
               <entry><para>Navigate forward to the next
-                artifact.</para></entry>
+                artifact.</para>
+
+              <warning><para>This feature is currently broken within &argouml;
+                and there is no guarantee where (if anywhere) this button will
+                take you.</para></warning></entry>
             </row>
 
             <!-- Entry for Delete button -->
@@ -2729,12 +3009,11 @@ Modifications
               <entry>Namespace</entry>
 
               <entry><para>Text box. Records the namespace for the
-                dependency. This is the package hierarchy. &Button1; click on
-                this entry will take you to that package.</para>
+                dependency. This is the package hierarchy.</para>
 
-              <note><para>You can sometimes find yourselves navigating to
-                deleted artifacts in the model. These will show a namespace of
-                <literal>Trash</literal>.</para></note></entry>
+              <para>&Button1; click on the entry will take you to the package
+                defining this namespace (or the model for the top level
+                namespace).</para></entry>
             </row>
 
             <!-- Entry for Suppliers -->
