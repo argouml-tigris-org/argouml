@@ -52,7 +52,8 @@ import org.argouml.ocl.*;
 import org.apache.log4j.Category;
 
 /**
-  * Tab for OCL constraint editing.
+  * Tab for OCL constraint editing, only supports constraints for classes
+  * and Features currently.
   *
   * @author v1.0: Falk Finger
   * @author v2.0: Steffen Zschaler
@@ -110,10 +111,12 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
     return (JToolBar)m_ocleEditor.getComponent(0);
   }
   
-  //TabModelTarget interface methods
+  // ------------ TabModelTarget interface methods ---------------
+  
   /**
-    * Should this tab be activated for the current target element?
-    */
+   * Argo only supports constraints for Classes and Features (eg. Attributes
+   *  and Operations) currently.
+   */
   public boolean shouldBeEnabled(Object target) {
 
       if ((target instanceof MClass) ||
