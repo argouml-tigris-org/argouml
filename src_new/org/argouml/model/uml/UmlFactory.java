@@ -397,6 +397,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
             new ObjectCreateInfo(MObject.class, factory, "createObject"));
         elements.put(Uml.PACKAGE,
             new ObjectCreateInfo(MPackage.class, factory, "createPackage"));
+	elements.put(Uml.PARTITION,
+	    new ObjectCreateInfo(MPartition.class, factory, "createPartition"));
         elements.put(Uml.STATE,
             new ObjectCreateInfo(MState.class, factory, "createState"));
         elements.put(Uml.COMPOSITE_STATE,
