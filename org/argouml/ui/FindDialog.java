@@ -77,7 +77,7 @@ public class FindDialog extends ArgoDialog
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected JButton     _search     = new JButton("Search");
+    protected JButton     _search     = new JButton("Find");
     protected JButton     _clearTabs  = new JButton("Clear Tabs");
     protected JTabbedPane _tabs       = new JTabbedPane();
     protected JPanel      _nameLocTab = new JPanel();
@@ -108,7 +108,7 @@ public class FindDialog extends ArgoDialog
     }
     
     public FindDialog() {
-        super(ProjectBrowser.getInstance(), "Search", false);
+        super(ProjectBrowser.getInstance(), "Find", false);
         
         JPanel mainPanel = new JPanel(new BorderLayout());
 
@@ -182,7 +182,7 @@ public class FindDialog extends ArgoDialog
         JLabel elementNameLabel = new JLabel("Element Name:");
         JLabel diagramNameLabel = new JLabel("In Diagram:");
         JLabel typeLabel = new JLabel("Element Type:");
-        JLabel locLabel = new JLabel("Search In:");
+        JLabel locLabel = new JLabel("Find In:");
 
         _location.addItem("Entire Project");
 
@@ -270,7 +270,7 @@ public class FindDialog extends ArgoDialog
         s =
             "Please follow these steps to find model elements:\n\n" +
             "1. Enter search information in the tabs at the top of this window.\n\n" +
-            "2. Press the \"Search\" button.  This will produce a new tab.\n\n" +
+            "2. Press the \"Find\" button.  This will produce a new tab.\n\n" +
             "3. The top half of each result tab lists each results.\n" +
             "   + Single clicking on a result shows more information about it,\n" +
             "     including a list of related objects.\n" +
@@ -354,7 +354,7 @@ public class FindDialog extends ArgoDialog
         String typeName = _type.getSelectedItem().toString();
         if (!typeName.equals("Any Type")) name += " " + typeName;
         if (name.length() == 0)
-            name = "Search" + (nextResultNum++);
+            name = "Find" + (nextResultNum++);
         if (name.length() > 15)
             name = name.substring(0, 12) + "...";
 
