@@ -37,8 +37,16 @@ import javax.swing.Icon;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
+/**
+ * The critic for ambiguous names.
+ *
+ */
 public class CrDisambigStateName extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrDisambigStateName() {
 	setHeadline("Choose a Unique Name for <ocl>self</ocl>");
 	addSupportedDecision(CrUML.decNAMING);
@@ -47,6 +55,10 @@ public class CrDisambigStateName extends CrUML {
 	addTrigger("parent");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAState(dm))) return NO_PROBLEM;
 	Object state = /*(MState)*/ dm;
@@ -77,8 +89,11 @@ public class CrDisambigStateName extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
     public Icon getClarifier() {
-	return ClClassName.TheInstance;
+	return ClClassName.getTheInstance();
     }
 
 } /* end class CrDisambigStateName */
