@@ -39,38 +39,19 @@ import org.argouml.ui.targetmanager.TargettableModelView;
 
 /**
  * This class is derived from a Swing JList, and adds:<p>
- * Mouselistener for the implementation of a popup menu.<p>
- * TargettableModelView: ???
  * 
+ * Mouselistener for the implementation of a popup menu. 
+ * The popup menu itself is to be created by the model.<p>
+ * 
+ * TargettableModelView: Which determines that the model of this list 
+ * listens to target changes, i.e. implements the TargetListener interface.
+ *
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class UMLList2
     extends JList
     implements TargettableModelView, MouseListener {
-
-    /**
-     * Constructor for UMLList2.
-     * @param dataModel the date model
-     * @param showIcon true if an icon should be shown representing the
-     * modelelement in each cell.
-     */
-    public UMLList2(UMLModelElementListModel2 dataModel, boolean showIcon) {
-        super(dataModel);
-        // setDoubleBuffered(true);
-        setCellRenderer(new UMLListCellRenderer2(showIcon));
-        setFont(LookAndFeelMgr.getInstance().getSmallFont());
-        addMouseListener(this);
-    }
-
-    /**
-     * The constructor.
-     * 
-     * @param dataModel the date model
-     */
-    public UMLList2(UMLModelElementListModel2 dataModel) {
-        this(dataModel, false);
-    }
 
     /**
      * Constructor for UMLList2. Used by subclasses that want to add their own
