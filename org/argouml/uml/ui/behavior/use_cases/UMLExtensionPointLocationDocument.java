@@ -22,13 +22,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
 /**
+ * The model for the location field of an extension point of a usecase.
+ * 
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
