@@ -26,6 +26,7 @@ package org.argouml.model;
 import java.util.HashMap;
 
 import org.argouml.model.uml.Uml;
+import org.argouml.ui.NavigatorPane;
 
 import junit.framework.TestCase;
 
@@ -54,6 +55,7 @@ public abstract class GenericObjectTestFixture extends TestCase
 	protected void setUp() throws Exception
 	{
 		super.setUp();
+		NavigatorPane.setInstance(null);
 		initializeTruth();
 	}
 
