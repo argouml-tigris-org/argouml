@@ -395,7 +395,7 @@ Initially this
         <literal>Help</literal>. This will fire up a browser to a URL with
         further help.</para>
   
-      <warning><para>In the V0.14 release of &argouml; 
+      <warning><para>In the V0.18 release of &argouml; 
         the URLs are generally invalid. 
         <!-- TODO: How do I know? See issue ... -->
         The few that are valid have no information.
@@ -423,7 +423,7 @@ Initially this
       
       <listitem><para>Context sensitive pop-up menu
         <literal>Properties</literal> (using &button2; click) on an artifact in
-        the editing or explorer, which will select the item
+        the editing area, which will select the item
         <emphasis>and</emphasis>select the <literal>Properties</literal> tab in
         the details pane.
         <!-- TODO: Get rid of such useless way of selecting a tab by selecting a
@@ -560,13 +560,13 @@ Initially this
       practical.</para></tip>
   </sect1>
 
-  <!-- The Style tab -->
+  <!-- The Presentation tab -->
 
   <sect1>
-    <title>Style Tab</title>
+    <title>Presentation Tab</title>
 
     <para>This tab provides some limited control over the graphical
-      representation of artifacts in the editing pane.</para>
+      representation of artifacts in the diagram in the editing pane.</para>
 
     <para>Artifacts that do not have any specific direct graphical
       representation on the screen (beyond their textual description) do not
@@ -582,7 +582,7 @@ Initially this
    </para>
 
     <figure id="fig.ref.details_style" float="1">
-      <title>A typical <literal>Style</literal> tab on the details
+      <title>A typical <literal>Presentation</literal> tab on the details
         pane</title>
 
       <screenshot><mediaobject>
@@ -600,15 +600,16 @@ Initially this
     <itemizedlist>
       <listitem><para><literal>Bounds:</literal> This defines the corners of
         the bounding box for a 2D artifact. It comprises four numbers separated
-        by periods. These four numbers are respectively: i) the X coordinate of
+        by commas. These four numbers are respectively: i) the X coordinate of
         the upper left corner of the box; ii) the Y coordinate of the upper
         left corner of the box; iii) the width of the box; and iv) the height
         of the box. All units are pixels on the editing pane.</para>
 
-        <caution><para>This field has no effect on 1D artifacts that link other
+        <para>This field has no effect on 1D artifacts that link other
           artifacts (associations, generalizations etc), since their position is
-          constrained by their connectedness.
-        </para></caution>
+          constrained by their connectedness. 
+          In this case the field is downlighted.
+        </para>
       </listitem>
 
       <listitem><para><literal>Fill:</literal> This drop-down selector
@@ -677,7 +678,7 @@ Initially this
       required (most specifically for classes). The intention is that you will
       add artifact specific code here, and it will be incorporated.</para>
 
-    <warning><para>This part of &argouml; is very much under
+    <warning><para>This part of &argouml; is under
       development. At this stage any code you add will be lost.
       </para>
     </warning>
@@ -695,7 +696,7 @@ Initially this
 
     <caution>
       <para>
-        The OCL editor implementation for &argouml; V0.14
+        The OCL editor implementation for &argouml; V0.18
         doesn't support OCL constraints for elements other than
         Classes and Features.
         <!-- See issue 1805 -->
@@ -786,7 +787,8 @@ Initially this
         <warning>
           <para>
             It seems logical, that when a new constraint is created, 
-            it needs to be edited. But &argouml; V0.14 fails to start the OCL editor 
+            it needs to be edited. But &argouml; V0.18
+            fails to start the OCL editor 
             upon creation; you have to do this by 
             primo selecting the new constraint first, 
             secundo rename it, 
@@ -816,7 +818,7 @@ Initially this
         
         <caution>
           <para>
-            In V0.14 of &argouml; this button is not downlighted when 
+            In V0.18 of &argouml; this button is not downlighted when 
             it is not functional, i.e. when
             no constraint is selected.
             <!-- TODO: See issue ... -->
@@ -839,7 +841,7 @@ Initially this
         
         <caution>
           <para>
-            In V0.14 of &argouml; this button is not downlighted when 
+            In V0.18 of &argouml; this button is not downlighted when 
             it is not functional, i.e. when
             no constraint is selected.
             <!-- TODO: See issue ... -->
@@ -1014,7 +1016,7 @@ Initially this
           <warning>
             <para>Whether type checking is included should be configurable with the
               <literal>Configure&nbsp;Constraint&nbsp;Editor</literal> button (see
-              below). But &argouml; V0.14 does always check, and refuses to
+              below). But &argouml; V0.18 does always check, and refuses to
               accept any constraint with the slightest error.
               <!-- TODO: See issue ... -->
             </para>
@@ -1138,17 +1140,12 @@ Initially this
         <literal>Ctrl-C</literal> and <literal>Ctrl-V</literal>
         respectively.</para>
 
-      <warning><para>There is a known problem with the V0.14 release of
+      <warning><para>There is a known problem with the V0.18 release of
         &argouml;. The <literal>Cut</literal>, <literal>Copy</literal> and
         <literal>Paste</literal> functions on the <literal>Edit</literal> menu
         cannot be used within the constraint editor. If used they will work on
         the currently selected artifact in the editing pane.</para>
-
-      <para>Given the known problems with these menu buttons in the V0.14
-        release of &argouml; (see <xref linkend="s2.ref.menu_cut"/>,
-        <xref linkend="s2.ref.menu_copy"/> and
-        <xref linkend="s2.ref.menu_paste"/>) this could disrupt the model. It
-        should be avoided at all costs.</para></warning>
+      </warning>
     </sect2>
   </sect1>
 
@@ -1181,17 +1178,12 @@ Initially this
       <literal>Ctrl-C</literal> and <literal>Ctrl-V</literal>
       respectively.</para>
 
-    <warning><para>There is a known problem with the V0.14 release of
+    <warning><para>There is a known problem with the V0.18 release of
       &argouml;. The <literal>Cut</literal>, <literal>Copy</literal> and
       <literal>Paste</literal> functions on the <literal>Edit</literal> menu
       cannot be used within the constraint editor. If used they will work on
       the currently selected artifact in the editing pane.</para>
-
-   <para>Given the known problems with these menu buttons in the V0.14
-      release of &argouml; (see <xref linkend="s2.ref.menu_cut"/>, <xref
-      linkend="s2.ref.menu_copy"/> and <xref linkend="s2.ref.menu_paste"/>)
-      this could disrupt the model. It should be avoided at all
-      costs.</para></warning>
+    </warning>
   </sect1>
 
   <!-- The Checklist tab -->
@@ -1245,9 +1237,10 @@ Initially this
       </screenshot>
     </figure>
     
-    <!--caution><para>In the V0.14 release of &argouml;, this tab is not
+    <caution><para>In the V0.18 release of &argouml;, this tab is not
       completely implemented. E.g. the checks are not saved.
-    </para></caution-->
+    </para></caution>
+    
   </sect1>
 </chapter>
 
