@@ -1,9 +1,0 @@
-SOURCES= \
-	DTDEntityResolver.java \
-	NodeRealizer.java \
-	NodeRealizerAdapter.java \
-	RealizerFactory.java \
-	XMLRealizer.java \
-	XMLTokenTableBase.java \
-	XMLElement.java \
-	SAXParserBase.java \
