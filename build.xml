@@ -395,6 +395,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	     private="true"
 	     splitindex="true"
 	     windowtitle="ArgoUML API Documentation"
+	     overview="org/argouml/overview-argo.html"
 	     >
       <link offline="true"
             href="${jdk.javadoc.link}"
@@ -404,6 +405,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
             packagelistLoc="${log4j.javadoc.link}"/>
 
     </javadoc>
+
+    <copy todir="${docs.dir}/org/argouml/doc-files">
+      <fileset dir="${build.src}/org/argouml/doc-files" includes="**/**" excludes="CVS/**" />
+    </copy>
 
   </target>
 
