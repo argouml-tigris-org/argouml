@@ -324,7 +324,7 @@ public class GeneratorDisplay extends Generator {
   }
 
 
-  public static final String ANY_RANGE = "*..0";
+  public static final String ANY_RANGE = "0..*";
   //public static final String ANY_RANGE = "*";
   // needs-more-work: user preference between "*" and "0..*"
   

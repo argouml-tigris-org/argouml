@@ -21,34 +21,42 @@ implements DocumentListener, ItemListener, ChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final VisibilityKind VISIBILITIES[] = {
-    VisibilityKind.PUBLIC, VisibilityKind.PRIVATE,
-    VisibilityKind.PROTECTED, VisibilityKind.PACKAGE };
+//   public static final VisibilityKind VISIBILITIES[] = {
+//     VisibilityKind.PUBLIC, VisibilityKind.PRIVATE,
+//     VisibilityKind.PROTECTED, VisibilityKind.PACKAGE };
 
   public static final Multiplicity MULTS[] = {
     Multiplicity.ONE, Multiplicity.ONE_OR_ZERO,
     Multiplicity.ONE_OR_MORE, Multiplicity.ZERO_OR_MORE };
 
+  public static final AggregationKind AGGS[] = {
+    AggregationKind.NONE, AggregationKind.AGG,
+    AggregationKind.COMPOSITE };
+  
   
   ////////////////////////////////////////////////////////////////
   // instance vars
   JLabel _roleALabel = new JLabel("Role Name: ");
   JTextField _roleAField = new JTextField();
-  JLabel _visALabel = new JLabel("Visibility: ");
-  JComboBox _visAField = new JComboBox(VISIBILITIES);
   JLabel _multALabel = new JLabel("Multiplicity: ");
   JComboBox _multAField = new JComboBox(MULTS);
+  JLabel _aggALabel = new JLabel("Aggregation: ");
+  JComboBox _aggAField = new JComboBox(AGGS);
   JLabel _navALabel = new JLabel("Navigable: ");
-  JCheckBox _navAField = new JCheckBox(" ");
+  JCheckBox _navAField = new JCheckBox("");
+//   JLabel _visALabel = new JLabel("Visibility: ");
+//   JComboBox _visAField = new JComboBox(VISIBILITIES);
 
   JLabel _roleBLabel = new JLabel("Role Name: ");
   JTextField _roleBField = new JTextField();
-  JLabel _visBLabel = new JLabel("Visibility: ");
-  JComboBox _visBField = new JComboBox(VISIBILITIES);
   JLabel _multBLabel = new JLabel("Multiplicity: ");
   JComboBox _multBField = new JComboBox(MULTS);
+  JLabel _aggBLabel = new JLabel("Aggregation: ");
+  JComboBox _aggBField = new JComboBox(AGGS);
+//   JLabel _visBLabel = new JLabel("Visibility: ");
+//   JComboBox _visBField = new JComboBox(VISIBILITIES);
   JLabel _navBLabel = new JLabel("Navigable: ");
-  JCheckBox _navBField = new JCheckBox(" ");
+  JCheckBox _navBField = new JCheckBox("");
 
   SpacerPanel _spacer = new SpacerPanel();
 
@@ -63,10 +71,10 @@ implements DocumentListener, ItemListener, ChangeListener {
     c.ipadx = 0; c.ipady = 0;
 
 
-    _multAField.setEditable(true);
-    _multBField.setEditable(true);
-    _multAField.getEditor().getEditorComponent().setBackground(Color.white);
-    _multBField.getEditor().getEditorComponent().setBackground(Color.white);
+//     _multAField.setEditable(true);
+//     _multBField.setEditable(true);
+//     _multAField.getEditor().getEditorComponent().setBackground(Color.white);
+//     _multBField.getEditor().getEditorComponent().setBackground(Color.white);
 
 
     c.gridx = 0;
@@ -75,12 +83,15 @@ implements DocumentListener, ItemListener, ChangeListener {
     gb.setConstraints(_roleALabel, c);
     add(_roleALabel);
     c.gridy = 6;
-    gb.setConstraints(_visALabel, c);
-    add(_visALabel);
-    c.gridy = 7;
     gb.setConstraints(_multALabel, c);
     add(_multALabel);
-    c.gridy = 8;
+    c.gridy = 7;
+    gb.setConstraints(_aggALabel, c);
+    add(_aggALabel);
+//     c.gridy = 8;
+//     gb.setConstraints(_visALabel, c);
+//     add(_visALabel);
+    c.gridy = 9;
     gb.setConstraints(_navALabel, c);
     add(_navALabel);
 
@@ -90,12 +101,15 @@ implements DocumentListener, ItemListener, ChangeListener {
     gb.setConstraints(_roleAField, c);
     add(_roleAField);
     c.gridy = 6;
-    gb.setConstraints(_visAField, c);
-    add(_visAField);
-    c.gridy = 7;
     gb.setConstraints(_multAField, c);
     add(_multAField);
-    c.gridy = 8;
+    c.gridy = 7;
+    gb.setConstraints(_aggAField, c);
+    add(_aggAField);
+//     c.gridy = 8;
+//     gb.setConstraints(_visAField, c);
+//     add(_visAField);
+    c.gridy = 9;
     gb.setConstraints(_navAField, c);
     add(_navAField);
 
@@ -115,12 +129,15 @@ implements DocumentListener, ItemListener, ChangeListener {
     gb.setConstraints(_roleBLabel, c);
     add(_roleBLabel);
     c.gridy = 6;
-    gb.setConstraints(_visBLabel, c);
-    add(_visBLabel);
-    c.gridy = 7;
     gb.setConstraints(_multBLabel, c);
     add(_multBLabel);
-    c.gridy = 8;
+    c.gridy = 7;
+    gb.setConstraints(_aggBLabel, c);
+    add(_aggBLabel);
+//     c.gridy = 8;
+//     gb.setConstraints(_visBLabel, c);
+//     add(_visBLabel);
+    c.gridy = 9;
     gb.setConstraints(_navBLabel, c);
     add(_navBLabel);
 
@@ -130,34 +147,40 @@ implements DocumentListener, ItemListener, ChangeListener {
     gb.setConstraints(_roleBField, c);
     add(_roleBField);
     c.gridy = 6;
-    gb.setConstraints(_visBField, c);
-    add(_visBField);
-    c.gridy = 7;
     gb.setConstraints(_multBField, c);
     add(_multBField);
-    c.gridy = 8;
+    c.gridy = 7;
+    gb.setConstraints(_aggBField, c);
+    add(_aggBField);
+//     c.gridy = 8;
+//     gb.setConstraints(_visBField, c);
+//     add(_visBField);
+    c.gridy = 9;
     gb.setConstraints(_navBField, c);
     add(_navBField);
 
 
-    Component ed = _multAField.getEditor().getEditorComponent();
-    Document typeDoc = ((JTextField)ed).getDocument();
-    typeDoc.addDocumentListener(this);
+//     Component ed = _multAField.getEditor().getEditorComponent();
+//     Document typeDoc = ((JTextField)ed).getDocument();
+//     typeDoc.addDocumentListener(this);
 
-    ed = _multBField.getEditor().getEditorComponent();
-    typeDoc = ((JTextField)ed).getDocument();
-    typeDoc.addDocumentListener(this);
+//     ed = _multBField.getEditor().getEditorComponent();
+//     typeDoc = ((JTextField)ed).getDocument();
+//     typeDoc.addDocumentListener(this);
 
     _roleAField.getDocument().addDocumentListener(this);
     _roleBField.getDocument().addDocumentListener(this);
 
-    _visAField.addItemListener(this);
-    _visBField.addItemListener(this);
+//     _visAField.addItemListener(this);
+//     _visBField.addItemListener(this);
     _multAField.addItemListener(this);
     _multBField.addItemListener(this);
 
+    _aggAField.addItemListener(this);
+    _aggBField.addItemListener(this);
+
     _navAField.addChangeListener(this);
-    _navAField.addChangeListener(this);
+    _navBField.addChangeListener(this);
 
 
   }
@@ -168,29 +191,42 @@ implements DocumentListener, ItemListener, ChangeListener {
   public void setTarget(Object t) {
     super.setTarget(t);
     Association asc = (Association) t;
+    Vector conns = asc.getConnection();
+    if (conns == null) return; //set fields to blanks?
+    if (conns.size() != 2) return; //set fields to blanks?
+    AssociationEnd endA = (AssociationEnd) conns.elementAt(0);
+    AssociationEnd endB = (AssociationEnd) conns.elementAt(1);
 
-    // VisibilityKind vk = attr.getVisibility();
-//     _visField.setSelectedItem(vk);
-
-//     ScopeKind sk = attr.getOwnerScope();
-//     ChangeableKind ck = attr.getChangeable();
+    Name roleA = endA.getName();
+    String roleAStr = "(anon)";
+    if (roleA != null) roleAStr = roleA.getBody();
+    Name roleB = endB.getName();
+    String roleBStr = "(anon)";
+    if (roleB != null) roleBStr = roleB.getBody();
     
-//     if (sk == ScopeKind.CLASSIFIER && ck == ChangeableKind.FROZEN)
-//       _keywordsField.setSelectedItem("static final");
-//     else if (sk == ScopeKind.CLASSIFIER)
-//       _keywordsField.setSelectedItem("static");
-//     else if (ck == ChangeableKind.FROZEN)
-//       _keywordsField.setSelectedItem("final");
-//     else
-//       _keywordsField.setSelectedItem("None");
+//     VisibilityKind vkA = endA.getVisibility();
+//     _visAField.setSelectedItem(vkA);
+//     VisibilityKind vkB = endB.getVisibility();
+//     _visBField.setSelectedItem(vkB);
 
-//     Classifier type = attr.getType();
-//     _typeField.setSelectedItem(type);
+    Multiplicity mA = endA.getMultiplicity();
+    Multiplicity mB = endB.getMultiplicity();
+
+    AggregationKind akA = endA.getAggregation();
+    AggregationKind akB = endB.getAggregation();
+
+    boolean navA = endA.getIsNavigable();
+    boolean navB = endB.getIsNavigable();
+
+    _roleAField.setText(roleAStr);
+    _roleBField.setText(roleBStr);
+    _multAField.setSelectedItem(mA);
+    _multBField.setSelectedItem(mB);
+    _aggAField.setSelectedItem(akA);
+    _aggBField.setSelectedItem(akB);
+    _navAField.getModel().setSelected(navA);
+    _navBField.getModel().setSelected(navB);
     
-//     Expression expr = attr.getInitialValue();
-//     if (expr == null) _initText.setText("");
-//     else _initText.setText(expr.getBody().getBody());
-
   }
 
 
@@ -203,8 +239,92 @@ implements DocumentListener, ItemListener, ChangeListener {
 //     attr.setVisibility(vk);
   }
 
+  public void setMult() {
+    if (_target == null) return;
+    Multiplicity mA, mB;
+    Object mAs = _multAField.getSelectedItem();
+    Object mBs = _multBField.getSelectedItem();
 
+    if (mAs == null || mBs == null) return;
+    
+    // will be a String if I allow editing, needs-more-work: implement
+    // parsing of multiplicities
+    //System.out.println("a mult:" + _multAField.getSelectedItem().getClass());
+    //System.out.println("b mult:" + _multBField.getSelectedItem().getClass());
 
+    if (mAs instanceof Multiplicity) mA = (Multiplicity) mAs;
+    else mA = Multiplicity.ONE; // needs-more-work: parse
+
+    if (mBs instanceof Multiplicity) mB = (Multiplicity) mBs;
+    else mB = Multiplicity.ONE; // needs-more-work: parse
+
+    
+    Association asc = (Association) _target;
+    Vector conns = asc.getConnection();
+    if (conns == null || conns.size() != 2) return;
+    AssociationEnd endA = (AssociationEnd) conns.elementAt(0);
+    AssociationEnd endB = (AssociationEnd) conns.elementAt(1);
+    try {
+      endA.setMultiplicity(mA);
+      endB.setMultiplicity(mB);
+    }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public void setAgg() {
+    System.out.println("setagg");
+    if (_target == null) return;
+    AggregationKind aggA = (AggregationKind) _aggAField.getSelectedItem();
+    AggregationKind aggB = (AggregationKind) _aggBField.getSelectedItem();
+    //if (aggA == null || aggB == null) return;
+    Association asc = (Association) _target;
+    Vector conns = asc.getConnection();
+    if (conns == null || conns.size() != 2) return;
+    AssociationEnd endA = (AssociationEnd) conns.elementAt(0);
+    AssociationEnd endB = (AssociationEnd) conns.elementAt(1);
+    try {
+      endA.setAggregation(aggA);
+      endB.setAggregation(aggB);
+    }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public void setNav() {
+    if (_target == null) return;
+    boolean navA = _navAField.getModel().isSelected();
+    boolean navB = _navBField.getModel().isSelected();
+    //System.out.println("navA=" + navA + " navB=" + navB);
+    Association asc = (Association) _target;
+    Vector conns = asc.getConnection();
+    if (conns == null || conns.size() != 2) return;
+    AssociationEnd endA = (AssociationEnd) conns.elementAt(0);
+    AssociationEnd endB = (AssociationEnd) conns.elementAt(1);
+    try {
+      endA.setIsNavigable(navA);
+      endB.setIsNavigable(navB);
+    }
+    catch (PropertyVetoException pve) { }
+  }
+  
+  public void setRoleNames() {
+    if (_target == null) return;
+    String roleAStr = _roleAField.getText();
+    String roleBStr = _roleBField.getText();
+    if (roleBStr == null || roleBStr == null) return;
+    //System.out.println("roleA=" + roleAStr + " roleB=" + roleBStr);
+    Association asc = (Association) _target;
+    Vector conns = asc.getConnection();
+    if (conns == null || conns.size() != 2) return;
+    AssociationEnd endA = (AssociationEnd) conns.elementAt(0);
+    AssociationEnd endB = (AssociationEnd) conns.elementAt(1);
+    try {
+      endA.setName(new Name(roleAStr));
+      endB.setName(new Name(roleBStr));
+    }
+    catch (PropertyVetoException pve) { }
+  }
+
+  
 
   
   ////////////////////////////////////////////////////////////////
@@ -216,9 +336,11 @@ implements DocumentListener, ItemListener, ChangeListener {
 //     Component ed = _typeField.getEditor().getEditorComponent();
 //     Document typeDoc = ((JTextField)ed).getDocument();
 
-//     Document initDoc = _initText.getDocument();
+    Document roleADoc = _roleAField.getDocument();
+    Document roleBDoc = _roleBField.getDocument();
 
-//     if (e.getDocument() == typeDoc) setTargetType();
+    if (e.getDocument() == roleADoc) setRoleNames();
+    else if (e.getDocument() == roleBDoc) setRoleNames();
 //     else if (e.getDocument() == initDoc) setTargetInit();
     super.insertUpdate(e);
   }
@@ -234,29 +356,41 @@ implements DocumentListener, ItemListener, ChangeListener {
   
   public void stateChanged(ChangeEvent e) {
     System.out.println("got stateChanged");
+    Object src = e.getSource();
+    if (src == _navAField || src == _navBField) setNav();
   }
 
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
-    if (src == _visAField) {
-      System.out.println("assoc vis A now is " +
-			 _visAField.getSelectedItem());
-      //setTargetKeywords();
-    }
-    else if (src == _visBField) {
-      System.out.println("assoc vis B now is " +
-			 _visBField.getSelectedItem());
-      //setTargetKeywords();
-    }
-    else if (src == _multAField) {
+//     if (src == _visAField) {
+//       System.out.println("assoc vis A now is " +
+// 			 _visAField.getSelectedItem());
+//       //setTargetKeywords();
+//     }
+//     else if (src == _visBField) {
+//       System.out.println("assoc vis B now is " +
+// 			 _visBField.getSelectedItem());
+//       //setTargetKeywords();
+//     }
+    if (src == _multAField) {
       System.out.println("assoc mult A now is " +
 			 _multAField.getSelectedItem());
-      //setTargetKeywords();
+      setMult();
     }
     else if (src == _multBField) {
       System.out.println("assoc mult B now is " +
 			 _multBField.getSelectedItem());
-      //setTargetKeywords();
+      setMult();
+    }
+    if (src == _aggAField) {
+      System.out.println("assoc agg A now is " +
+			 _aggAField.getSelectedItem());
+      setAgg();
+    }
+    else if (src == _aggBField) {
+      System.out.println("assoc agg B now is " +
+			 _aggBField.getSelectedItem());
+      setAgg();
     }
     
   }
