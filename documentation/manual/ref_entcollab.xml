@@ -115,8 +115,8 @@ Modifications
         <title>Details tabs for classifier role</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -257,9 +257,9 @@ Modifications
         <title>Property tool bar for classifier role</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -353,8 +353,8 @@ Modifications
         <title>Property fields for classifier role</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
@@ -551,8 +551,8 @@ Modifications
         <title>Details tabs for association role</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -685,9 +685,9 @@ Modifications
         <title>Property tool bar for association role</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -781,8 +781,8 @@ Modifications
         <title>Property fields for association role</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
@@ -992,8 +992,8 @@ Modifications
         <title>Details tabs for message of all forms</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -1125,9 +1125,9 @@ Modifications
         <title>Property tool bar for message</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -1220,8 +1220,8 @@ Modifications
         <title>Property fields for message</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>

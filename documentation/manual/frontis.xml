@@ -18,7 +18,9 @@ Modifications
 
 20 Feb 2002:  Jeremy Bennett. Updated for issue 0.9.6.
 
-20 Feb 2002:  Jeremy Bennett. Updated for first draft (A) after 0.9.6
+ 5 Mar 2002:  Jeremy Bennett. Updated for first draft (A) after 0.9.6
+
+13 Mar 2002:  Jeremy Bennett. Updated for issue 0.9.7.
 
 -->
 
@@ -92,6 +94,20 @@ Modifications
   </legalnotice>
 
   <revhistory>
+    <revision>
+      <revnumber>0.9.7</revnumber> <date>13 Mar 2002</date>
+      <revdescription><para>Full issue for release 0.9.7. Update with minor
+        changes tracking bug fixes. The reference part of the manual (chapters
+        7 through 22) is now completed. In addition chapter 1 (introduction),
+        tutorial chapter 2 (UML based &ooad;) are now largely complete.</para>
+
+      <para>Updated to fix description for critics regarding operation name
+        conflict, aggregation on binary associations, aggregation on on 3-way
+        (or more) associations and associations across namespaces. Duplicate
+        critic for signature conflict removed, and critic for duplicate
+        association ends (roles) added.</para></revdescription>
+    </revision>
+
     <revision>
       <revnumber>0.9.7, draft A</revnumber> <date>5 Mar 2002</date>
       <revdescription><para>Update to correct things left unfinished in the

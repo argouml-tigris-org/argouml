@@ -86,8 +86,8 @@ Modifications
         <title>Details tabs for the model</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -192,9 +192,9 @@ Modifications
         <title>Property tool bar for the model</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -458,8 +458,8 @@ Modifications
         <title>Property fields for the model</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
@@ -739,8 +739,8 @@ Modifications
         <title>Details tabs for datatype</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -875,9 +875,9 @@ Modifications
         <title>Property tool bar for package</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -1006,8 +1006,8 @@ Modifications
         <title>Property fields for datatype</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
@@ -1329,8 +1329,8 @@ Modifications
         <title>Details tabs for stereotype</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -1451,9 +1451,9 @@ Modifications
         <title>Property tool bar for stereotype</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -1557,8 +1557,8 @@ Modifications
         <title>Property fields for stereotype</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
@@ -1706,8 +1706,8 @@ Modifications
         <title>Details tabs for diagram</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -1767,9 +1767,9 @@ Modifications
         <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -1823,8 +1823,8 @@ Modifications
         <title>Property fields for diagram</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>

@@ -10,6 +10,8 @@ Modifications
  1 Feb 2002:  Jeremy Bennett. Broken out as separate chapter from the menu
               chapter.
 
+12 Mar 2002:  Jeremy Bennett. Updated naming of critics, in line with some bug
+              fixes.
 -->
 
 <chapter id="ch.ref.critics">
@@ -157,9 +159,50 @@ Modifications
     <sect2 id="s2.ref.critics_oper_name_conflict">
       <title>Change Names or Signatures in &lt;artifact&gt;</title>
 
-      <para>Suggestion that two or more operations in the specified class or
-        interface have the same signature, which will prevent valid code
-        generation.</para>
+      <para>Two operations in &lt;artifact&gt; have the same signature. This
+        means their name is the same, and the list of parameters has the same
+        type.</para>
+
+      <para>Where there are conflicting signatures, correct code cannot be
+        generated for mainstream OO languages. It also leads to very unclear
+        semantics of the design.</para>
+
+      <para>In comparing signatures, this critic considers:</para>
+
+      <orderedlist>
+        <listitem><para>the name;</para></listitem>
+ 
+        <listitem><para>the list of in, out and in-out parameter types
+          <emphasis>in order</emphasis>; and</para></listitem>
+      </orderedlist>
+
+      <para>Only if these all match in both type and order, will the signatures
+        be considered as the same.</para>
+
+      <para>This follows the line of Java/C++ in ignoring the return parameters
+        for the signature. This <emphasis>may</emphasis> be unsatisfactory for
+        some functional OO languages.</para>
+
+      <note><para>Some purists would argue that the comparison should really
+        differentiate between in, out and in-out parameters. However no
+        practical programming language can do this when resolving an overloaded
+        method invocation, so this critics lumps them all
+        together.</para></note>
+    </sect2>
+
+    <sect2 id="s2.ref.critics_dup_role_names">
+      <title>Duplicate End (Role) Names for &lt;Association:&gt;</title>
+
+      <para>The specified association has two (or more) ends (roles) with the
+        same name. One of the well-formedness rules in UML 1.3 for
+        associations, is that all end (role) names must be unique.</para>
+
+      <para>This ensures that there can be unambiguous reference to the ends of
+        the association.</para>
+
+      <para>To fix this, manually select the association and change the names
+      of one or more of the offending ends (roles) using the &button2; pop-up
+      menu or the property sheet.</para>
     </sect2>
 
     <sect2 id="s2.ref.critics_name_conflict_a_c">
@@ -868,17 +911,25 @@ Modifications
       category.</para>
 
     <sect2 id="s2.ref.critics_cross_namespace_assoc">
-      <title>Aggregate Role in N-way Association (First Version)</title>
+      <title>Classifier not in Namespace of its Association</title>
 
-      <para>Suggestion that aggregation may not be used for associations with
-        more than two ends.</para>
+      <para>One of the well-formedness rules in UML 1.3 for associations, is
+        that all the classifiers attached to the ends of the association should
+        belong to the same namespace as the association.</para>
 
-      <warning><para>Whilst it is possible to create N-way associations
-        in the current release of &argouml;, it is not supported
-        graphically, and of little use. It is a known limitation of the
-        current release that if you do create such associations, they
-        will always trigger this critic, even if there is no aggregation
-        on any end.</para></warning>
+      <para>If this were not the case, there would be no naming, by which each
+        end could refer to all the others.</para>
+
+      <para>This critic is triggered when an association does not meet this
+        criterion. The solution is to delete the association, and recreate it
+        on a diagram, whose namespace includes those of all the attached
+        classifiers.</para>
+
+      <caution><para>In the current implementation of &argouml; this critic
+        does not handle hierarchical namespaces. As a consequence it will
+        trigger for associations where the immediate namespaces of the attached
+        classifiers is different, even though they are part of the same
+        namespace hierarchy.</para></caution>
     </sect2>
 
     <sect2 id="s2.ref.critics_empty_package">
@@ -920,7 +971,7 @@ Modifications
 
     <para>Critics concerning operations in &argouml;.</para>
 
-    <para>The current version of &argouml; has five critics in this
+    <para>The current version of &argouml; has four critics in this
       category.</para>
 
     <sect2>
@@ -942,14 +993,6 @@ Modifications
 
       <para>Suggestion that the specified class has no operations defined. This
         is required for the class to be useful in a design.</para>
-    </sect2>
-
-    <sect2 id="s2.ref.critics_signature_conflict">
-      <title>Resolve Signature Conflict</title>
-
-      <para>Suggestion that two or more operations in the specified class or
-        interface have the same signature, which will prevent valid code
-        generation.</para>
     </sect2>
 
     <sect2 id="s2.ref.critics_too_many_oper">
@@ -1114,25 +1157,56 @@ Modifications
     </sect2>
 
     <sect2 id="s2.ref.critics_multiple_agg">
-      <title>Multiple Aggregate Roles</title>
+      <title>Two Aggregate Ends (Roles) in Binary Association</title>
 
-      <para>Suggestion that more than one end of an association is aggregate or
-        composite. At most one end should have multiplicity of any
-        sort.</para>
+      <para>Only one end (role) of a binary association can be aggregate or
+        composite. This a well-formedness rule of the UML 1.3 standard.</para>
+
+      <para>Aggregation and composition are used to indicate whole-part
+        relationships, and by definition, the <quote>part</quote> end cannot be
+        aggregate.</para>
+
+      <para>To fix this, identify the <quote>part</quote> end of the
+        association, and use the critic wizard (the <literal>Next&gt;</literal>
+        button, or manually set its aggregation to <literal>none</literal>
+        using the &button2; pop-up menu or the property sheet.</para>
+
+      <para>Composition (more correctly called composite aggregation) is used
+        where there is a whole-part relationship that is one-to-one or
+        one-to-many, and the lifetime of the part is inextricably tied to the
+        lifetime of the whole. Instances of the whole will have responsibility
+        for creating and destroying instances of the associated part. This also
+        means that a class can only be a part in one composite
+        aggregation.</para>
+
+      <para>An example of a composite aggregation might be a database of cars
+        and their wheels. This is a one-to-four relationship, and the database
+        entry for a wheel is associated with its car. When the car ceases to
+        exist in the database, so do its wheels.</para>
+
+      <para>Aggregation (more correctly called shared aggregation) is used
+        where there is a whole-part relationship, that does not meet the
+        criteria for a composite aggregation. An example might be a database of
+        university courses and the students that attend them. There is a
+        whole-part relationship between courses and students. However there is
+        no lifetime relationship between students and course (a student
+        continues to exist even after a course is finished) and the
+        relationship is many-to-many.</para>
     </sect2>
 
     <sect2 id="s2.ref.critics_n_way_agg">
-      <title>Aggregate Role in N-way Association (Second Version)</title>
+      <title>Aggregate End (Role) in 3-way (or More) Association</title>
 
-      <para>Suggestion that more than one end of an association is aggregate or
-        composite. At most one end should have multiplicity of any sort.</para>
+      <para>Three-way (or more) associations can not have aggregate ends
+        (roles). This a well-formedness rule of the UML 1.3 standard.</para>
 
-      <caution><para>This appears to duplicate the critic
-        <literal>Multiple Aggregate Roles</literal> within this design
-        category (see <xref linkend="s2.ref.critics_multiple_agg"/> and the
-        critic of the same name under the modularity design issue (see
-        <xref linkend="s2.ref.critics_cross_namespace_assoc"/>).
-      </para></caution>
+      <para>Aggregation and composition are used to indicate whole-part
+        relationships, and by definition can only apply to binary associations
+        between artifacts.</para>
+
+      <para>To fix this, manually select the association, and set the
+        aggregation of each of its ends (roles) to <literal>none</literal>
+        using the &button2; pop-up menu or the property sheet.</para>
     </sect2>
 
     <sect2>

@@ -15,6 +15,8 @@ Modifications
 29 Jan 2002:  Jeremy Bennett. Updated to reflect bug fix preventing attributes
               being added to classes and fix to Remove from Diagram function.
 
+12 Mar 2002:  Jeremy Bennett. Updated to reflect bux fixes to a number of
+              critics.
 -->
 
 <chapter id="ch.ref.menu">
@@ -1972,7 +1974,7 @@ v           new datatypes in their own right (the default) or as their base
           <xref linkend="s1.ref.design_issues_class_selection"/>.
         </para></listitem>
 
-        <listitem><para><literal>Naming</literal>. Eighteen
+        <listitem><para><literal>Naming</literal>. Nineteen
           critics (see
           <xref linkend="s1.ref.design_issues_naming"/>.
         </para></listitem>
@@ -2231,14 +2233,19 @@ v           new datatypes in their own right (the default) or as their base
           <xref linkend="s2.ref.critics_class_must_be_abstract"/>
         </para></listitem>
 
-        <listitem><para><literal>Aggregate Role in N-way
-          Association</literal> (first version). See
+        <listitem><para><literal>Classifier not in Namespace of its
+          Association</literal>. See
           <xref linkend="s2.ref.critics_cross_namespace_assoc"/>
         </para></listitem>
 
         <listitem><para><literal>Duplicate Parameter
           Name</literal>. See
           <xref linkend="s2.ref.critics_dup_param_name"/>
+        </para></listitem>
+
+        <listitem><para><literal>Duplicate end (role)
+          names for &lt;Association&gt;</literal>. See
+          <xref linkend="s2.ref.critics_dup_role_names"/>
         </para></listitem>
 
         <listitem><para><literal>Remove final keyword or remove
@@ -2266,8 +2273,8 @@ v           new datatypes in their own right (the default) or as their base
           <xref linkend="s2.ref.critics_interface_oper_only"/>
         </para></listitem>
 
-        <listitem><para><literal>Multiple Aggregate
-          Roles</literal>. See
+        <listitem><para><literal>Two aggregate ends (roles) in binary
+          association</literal>. See
           <xref linkend="s2.ref.critics_multiple_agg"/>
         </para></listitem>
 
@@ -2276,8 +2283,8 @@ v           new datatypes in their own right (the default) or as their base
           <xref linkend="s2.ref.critics_unnavigable_assoc"/>
         </para></listitem>
 
-        <listitem><para><literal>Aggregate Role in N-way
-          Association</literal> (second version). See
+        <listitem><para><literal>Aggregate end (role) in 3-way (or more)
+          Association</literal>. See
           <xref linkend="s2.ref.critics_n_way_agg"/>
         </para></listitem>
 
@@ -2345,11 +2352,6 @@ v           new datatypes in their own right (the default) or as their base
         <listitem><para><literal>Import Parameter Type into
           Class</literal>. See
           <xref linkend="s2.ref.critics_param_type_not_imported"/>
-        </para></listitem>
-
-        <listitem><para><literal>Resolve Signature
-          Conflict</literal>. See
-          <xref linkend="s2.ref.critics_signature_conflict"/>
         </para></listitem>
 
         <listitem><para><literal>Define Concrete

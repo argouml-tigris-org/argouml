@@ -113,8 +113,8 @@ Modifications
         <title>Details tabs for actor</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -248,9 +248,9 @@ Modifications
         <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -363,8 +363,8 @@ Modifications
         <title>Property fields for actor</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
@@ -632,8 +632,8 @@ Modifications
         <title>Details tabs for use case</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -766,9 +766,9 @@ Modifications
         <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -881,8 +881,8 @@ Modifications
         <title>Property fields for use case</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
@@ -1290,8 +1290,8 @@ Modifications
         <title>Details tabs for association</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -1424,9 +1424,9 @@ Modifications
         <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -1521,8 +1521,8 @@ Modifications
         <title>Property fields for association</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
@@ -1751,8 +1751,8 @@ Modifications
         <title>Details tabs for association end</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -1874,9 +1874,9 @@ Modifications
         <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -1964,8 +1964,8 @@ Modifications
         <title>Property fields for association end</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
@@ -2254,8 +2254,8 @@ Modifications
         <title>Details tabs for generalization</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -2426,9 +2426,9 @@ Modifications
         <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -2523,8 +2523,8 @@ Modifications
         <title>Property fields for generalization</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
@@ -2742,8 +2742,8 @@ Modifications
         <title>Details tabs for generalization</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Tab</entry>
@@ -2855,9 +2855,9 @@ Modifications
         <title>Property tool bar for diagram</title>
 
         <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="*2"/>
-          <colspec align="center" colwidth="*1"/>
-          <colspec align="left"   colwidth="*9"/>
+          <colspec align="left"   colwidth="2*"/>
+          <colspec align="center" colwidth="1*"/>
+          <colspec align="left"   colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Button</entry>
@@ -2952,8 +2952,8 @@ Modifications
         <title>Property fields for dependency</title>
 
         <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="*3"/>
-          <colspec align="left" colwidth="*9"/>
+          <colspec align="left" colwidth="3*"/>
+          <colspec align="left" colwidth="9*"/>
           <thead>
             <row>
               <entry align="left">Field</entry>
