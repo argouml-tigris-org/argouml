@@ -84,9 +84,11 @@ This could be everything happening within the application.
             all logging entries that belong to the above levels ERROR
             and FATAL are logged as well.
         </para>
+        <para>
         For performance reasons, it is advised to do a check before all DEBUG
         and INFO log4j messages (see <xref linkend="example.log4j.speed"/>).
 The purpose of this test is to avoid the creation of the argument.
+        </para>
     </sect2>
     
     <sect2>
@@ -104,9 +106,9 @@ like to print the usage message in <filename>Main.java</filename>.
             To make log entries from within your own classes, you just
             need to follow the three steps below:
             <orderedlist>
-                <listitem>Import the org.apache.log4j.Logger package</listitem>
-                <listitem>Get a Logger</listitem>
-                <listitem>Start Logging...</listitem>
+                <listitem><para>Import the org.apache.log4j.Logger package</para></listitem>
+                <listitem><para>Get a Logger</para></listitem>
+                <listitem><para>Start Logging...</para></listitem>
             </orderedlist>
         </para>
         <example>
@@ -130,11 +132,12 @@ public class <replaceable>theClass</replaceable> {
     }
             </programlisting>
         </example>
-
+        <para>
         For performance reasons, a check before the actual logging statement 
         saves the overhead of all the concatenations, data conversions and
         temporary objects that would be created otherwise. Even if logging 
         is turned off for DEBUG and/or INFO level.
+        </para>
         <example id="example.log4j.speed">
             <title>Improving on speed/performance</title>
             <programlisting>
@@ -209,29 +212,27 @@ stuck with the overhead of creating a <classname>StringBuffer</classname>
         </para>
         <example>
             <title>Various URLs</title>
-            <programlistingco>
-                <programlisting>
+            <programlisting>
 org/argouml/resource/<emphasis>filename.lcf</emphasis>              <co id="ex.url.package"/>
 
 http://localhost/shared/argouml/<emphasis>filename.lcf</emphasis>   <co id="ex.url.link"/>
 
 file://home/username/<emphasis>filename.lcf</emphasis>              <co id="ex.url.file"/>
-                </programlisting>
-                <calloutlist>
-                    <callout arearefs="ex.url.package">
+            </programlisting>
+            <calloutlist>
+                    <callout arearefs="ex.url.package"><para>
                         Reference to a configuration file <emphasis>filename.lcf</emphasis> 
-                        within argouml.jar.
+                        within argouml.jar.</para>
                     </callout>
-                    <callout arearefs="ex.url.link">
+                    <callout arearefs="ex.url.link"><para>
                         Reference to a configuration file <emphasis>filename.lcf</emphasis> 
-                        on a remote server/localhost.
+                        on a remote server/localhost.</para>
                     </callout>
-                    <callout arearefs="ex.url.file">
+                    <callout arearefs="ex.url.file"><para>
                         Reference to a configuration file <emphasis>filename.lcf</emphasis>
-                        on your localmachine.
+                        on your localmachine.</para>
                     </callout>
-                </calloutlist>
-            </programlistingco>
+            </calloutlist>
         </example>
         <sect3>
             <title>...when running ArgoUML from the command line</title>
@@ -240,13 +241,13 @@ file://home/username/<emphasis>filename.lcf</emphasis>              <co id="ex.u
                 <application>ArgoUML</application> from the command
                 line:
                 <orderedlist>
-                    <listitem>
+                    <listitem><para>
                         Run <application>ArgoUML</application> using
-                        <filename>argouml.jar</filename>
+                        <filename>argouml.jar</filename></para>
                     </listitem>
-                    <listitem>
+                    <listitem><para>
                         Run <application>ArgoUML</application> using
-                        the ant script
+                        the ant script</para>
                     </listitem>                    
                 </orderedlist>
 
@@ -336,14 +337,14 @@ when running ArgoUML from Java Web Start.
     <sect2>
         <title>References</title>
         <itemizedlist>
-            <listitem>
+            <listitem><para>
                 The log4j project homepage at 
                     <ulink url="http://jakarta.apache.org/log4j/">http://jakarta.apache.org/log4j</ulink>
-            </listitem>
-            <listitem>
+            </para></listitem>
+            <listitem><para>
                 The configlog4j homepage at
                     <ulink url="http://www.japhy.de/configLog4j/">http://www.japhy.de/configLog4j</ulink>
-            </listitem>
+            </para></listitem>
             <!-- TO DO
                 ... add links to other log4j tutorials etc.
             -->

@@ -207,14 +207,14 @@ event and not for all events fired by some modelelement.
 	  <para>
 <mediaobject>
 	      <imageobject>
-		<imagedata fileref="images/cookbook/eventsbeforepump.gif" format="gif"/>
+		<imagedata fileref="images/cookbook/eventsbeforepump.gif" format="GIF"/>
 	      </imageobject>
 	    </mediaobject>
 </para>
 	  <para>
 <mediaobject>
 	      <imageobject>
-		<imagedata fileref="images/cookbook/eventsafterpump.gif" format="gif"/>
+		<imagedata fileref="images/cookbook/eventsafterpump.gif" format="GIF"/>
 	      </imageobject>
 	    </mediaobject>
 </para>

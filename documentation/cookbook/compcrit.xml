@@ -294,7 +294,7 @@ have any effect.
 	<title>org.argouml.cognitive.critics.* class diagram</title> 
 	  <mediaobject>
 	    <imageobject>
-	      <imagedata fileref="images/screenshots/argocogcriticsreduced.png" format="png"/> 
+	      <imagedata fileref="images/screenshots/argocogcriticsreduced.png" format="PNG"/> 
 	    </imageobject>
 	</mediaobject>
       </sect2>

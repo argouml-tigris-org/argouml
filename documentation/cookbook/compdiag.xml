@@ -38,7 +38,7 @@ in the classdiagram.
         <mediaobject>
 	  <imageobject>
 	    <imagedata fileref="images/cookbook/multieditorpane.gif" 
-		       format="gif"/>
+		       format="GIF"/>
 	  </imageobject>
         </mediaobject>
 </para>
