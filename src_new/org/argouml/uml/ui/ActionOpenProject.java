@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
+import org.argouml.application.api.CommandLineInterface;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.*;
@@ -52,9 +53,10 @@ import javax.swing.*;
  * point so some extra caution.
  *
  * @see ActionSaveProject
- * @stereotype singleton
  */
-public class ActionOpenProject extends UMLAction {
+public class ActionOpenProject
+    extends UMLAction
+    implements CommandLineInterface {
 
     protected static Logger cat =
         Logger.getLogger(org.argouml.uml.ui.ActionOpenProject.class);
@@ -62,14 +64,26 @@ public class ActionOpenProject extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use the constructor instead
+     * to build yourself an object of your own.
+     */
     public static ActionOpenProject SINGLETON = new ActionOpenProject();
 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. It is not used in this class
+     * and this class is not a file system resource interface so you should
+     * search for another solution.
+     */
     public static final String separator = System.getProperty("file.separator");
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionOpenProject() {
+    /**
+     * Constructor for this action.
+     */
+    public ActionOpenProject() {
         super("action.open-project");
     }
 
@@ -88,11 +102,11 @@ public class ActionOpenProject extends UMLAction {
             String t =
                 MessageFormat.format(
                         Translator.localize(
-						   "Actions",
-						   "optionpane.open-project-save-changes-to"),
-				     new Object[] {
-					 p.getName()
-				     });
+			        "Actions",
+				"optionpane.open-project-save-changes-to"),
+			new Object[] {
+			    p.getName()
+			});
 
             int response =
                 JOptionPane.showConfirmDialog(
@@ -151,7 +165,7 @@ public class ActionOpenProject extends UMLAction {
                 File theFile = chooser.getSelectedFile();
                 if (theFile != null) {
                     String path = theFile.getParent();
-                    // TODO Use something other than Globals to
+                    // TODO: Use something other than Globals to
                     // store last directory. We should rely on GEF
                     // only for Diagrams. Bob Tarling 15 Jan 2004.
                     Globals.setLastDirectory(path);
@@ -159,8 +173,9 @@ public class ActionOpenProject extends UMLAction {
                     if (url != null) {
 			loadProject(url);
 			// notification of menu bar
-			GenericArgoMenuBar menuBar = (GenericArgoMenuBar) pb.getJMenuBar();
-			menuBar.addFileSaved( theFile.getCanonicalPath());					
+			GenericArgoMenuBar menuBar =
+			    (GenericArgoMenuBar) pb.getJMenuBar();
+			menuBar.addFileSaved(theFile.getCanonicalPath());
                     }
                 }
             }
@@ -198,8 +213,9 @@ public class ActionOpenProject extends UMLAction {
             p = ProjectManager.getManager().loadProject(url);
 
             ProjectBrowser.getInstance().showStatus(
-		    MessageFormat.format(Translator.localize("Actions",
-						       "label.open-project-status-read"),
+		    MessageFormat.format(Translator.localize(
+			    "Actions",
+			    "label.open-project-status-read"),
 					 new Object[] {
 					     url.toString()
 					 }));
@@ -208,8 +224,9 @@ public class ActionOpenProject extends UMLAction {
 			  "Could not load the project "
 			  + url.toString()
 			  + " due to configuration errors.\n"
-			  + "Please read the instructions at www.argouml.org on the"
-			  + " requirements of argouml and how to install it.");
+			  + "Please read the instructions at www.argouml.org "
+			  + "on the "
+			  + "requirements of argouml and how to install it.");
             p = oldProject;
         } catch (IllegalFormatException ex) {
             showErrorPane(
@@ -235,8 +252,10 @@ public class ActionOpenProject extends UMLAction {
 			  + "\n"
 			  + io.getMessage() + "\n"
 			  + "\n"
-			  + "Please file a bug report at argouml.tigris.org including"
-			  + " the corrupted project file.");
+			  + "Please file a bug report at argouml.tigris.org "
+			  + "including information on what actions you took "
+			  + "when creating the file and "
+			  + "the corrupted project file.");
             p = oldProject;
         } catch (SAXException ex) {
             showErrorPane(
@@ -244,7 +263,8 @@ public class ActionOpenProject extends UMLAction {
 			  + url.toString()
 			  + "\n"
 			  + "Project file probably corrupted.\n"
-			  + "If the problem keeps persisting, please file a bug report at www.argouml.org.\n");
+			  + "If the problem keeps persisting, "
+			  + "please file a bug report at www.argouml.org.\n");
             p = oldProject;
         } finally {
             if (!ArgoParser.SINGLETON.getLastLoadStatus()) {
@@ -268,10 +288,9 @@ public class ActionOpenProject extends UMLAction {
             else if (oldProject != null) {
                 // if p equals oldProject there was an exception and we do
                 // not have to gc the old project
-                if( p!= null && !p.equals(oldProject)) {
-                
-                	//prepare the old project for gc
-	                ProjectManager.getManager().removeProject(oldProject);
+                if (p != null && !p.equals(oldProject)) {
+		    //prepare the old project for gc
+		    ProjectManager.getManager().removeProject(oldProject);
                 }
             }
             ProjectManager.getManager().setCurrentProject(p);
@@ -291,6 +310,26 @@ public class ActionOpenProject extends UMLAction {
 				      message,
 				      "Error",
 				      JOptionPane.ERROR_MESSAGE);
+    }
+
+
+    /**
+     * Execute this action from the command line.
+     *
+     * @see org.argouml.application.api.CommandLineInterface#doCommand(String)
+     * @param argument is the url of the project we load.
+     * @return true if it is OK.
+     */
+    public boolean doCommand(String argument) {
+	final URL url;
+	try {
+	    url = new URL(argument);
+	} catch (MalformedURLException e) {
+	    cat.error("Incorrectly formatted URL.", e);
+	    return false;
+	}
+	loadProject(url);
+	return true;
     }
 
 } /* end class ActionOpenProject */
