@@ -106,21 +106,29 @@ public class ArgoEventPump {
     private void handleFireEvent(ArgoEvent event,
                                  ArgoEventListener listener) {
 	if (event.getEventType() == ArgoEvent.ANY_EVENT) {
-	    handleFireModuleEvent((ArgoModuleEvent)event,
-	                          (ArgoModuleEventListener)listener);
-	    handleFireNotationEvent((ArgoNotationEvent)event,
-	                          (ArgoNotationEventListener)listener);
+            if (listener instanceof ArgoModuleEventListener) {
+	        handleFireModuleEvent((ArgoModuleEvent)event,
+	                              (ArgoModuleEventListener)listener);
+            }
+            if (listener instanceof ArgoNotationEventListener) {
+	        handleFireNotationEvent((ArgoNotationEvent)event,
+	                              (ArgoNotationEventListener)listener);
+            }
 	}
 	else {
 	    if (event.getEventType() >= ArgoEvent.ANY_MODULE_EVENT &&
 	            event.getEventType() < ArgoEvent.ANY_MODULE_EVENT + 100) {
-	        handleFireModuleEvent((ArgoModuleEvent)event,
-	                              (ArgoModuleEventListener)listener);
+                if (listener instanceof ArgoModuleEventListener) {
+	            handleFireModuleEvent((ArgoModuleEvent)event,
+	                                  (ArgoModuleEventListener)listener);
+                }
 	    }
 	    if (event.getEventType() >= ArgoEvent.ANY_NOTATION_EVENT &&
 	            event.getEventType() < ArgoEvent.ANY_NOTATION_EVENT + 100) {
-	        handleFireNotationEvent((ArgoNotationEvent)event,
-	                              (ArgoNotationEventListener)listener);
+                if (listener instanceof ArgoNotationEventListener) {
+	            handleFireNotationEvent((ArgoNotationEvent)event,
+	                                  (ArgoNotationEventListener)listener);
+                }
 	    }
 	}
     }
