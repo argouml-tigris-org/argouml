@@ -58,15 +58,17 @@ public class ExtensionMechanismsHelper {
 
     /** Singleton instance.
      */
-    private static ExtensionMechanismsHelper SINGLETON =
+    private static ExtensionMechanismsHelper singleton =
 	new ExtensionMechanismsHelper();
 
 
     /**
      * Singleton instance access method.
+     *
+     * @return the singleton
      */
     public static ExtensionMechanismsHelper getHelper() {
-        return SINGLETON;
+        return singleton;
     }
 
     /**
@@ -137,6 +139,10 @@ public class ExtensionMechanismsHelper {
 
     /**
      * Searches the given stereotype in all models in the current project.
+     * TODO: MVW: If we have the stereotype, then why are we looking for it? 
+     *       What is the purpose of this function? Maybe it is meant to look 
+     *       for duplicates? Then why does it retuirn only one, and not the 
+     *       whole collection of duplicates?
      *
      * @param stereo is the given stereotype
      * @return MStereotype
@@ -166,11 +172,19 @@ public class ExtensionMechanismsHelper {
         return null;
     }
 
+    /**
+     * @param m the ModelElement
+     * @return the meta name of the ModelElement
+     */
     public String getMetaModelName(MModelElement m) {
         if (m == null) return null;
         return getMetaModelName(m.getClass());
     }
 
+    /**
+     * @param clazz the UML class
+     * @return the meta name of the UML class
+     */
     protected String getMetaModelName(Class clazz) {
         if (clazz == null) return null;
         String name = clazz.getName();
@@ -206,6 +220,16 @@ public class ExtensionMechanismsHelper {
         return ret;
     }
 
+    /**
+     * This function answers the question: 
+     * Can we apply the given stereotype to the given class?
+     * TODO: Why not simply: return ModelFacade.IsAModelElement(clazz);
+     *       instead of this recursive complex way?
+     * 
+     * @param clazz the class we want to apply the stereotype to 
+     * @param stereo the given stereotype
+     * @return true if the stereotype may be applied
+     */
     protected boolean isValidStereoType(Class clazz, Object stereo) {
         if (clazz == null || stereo == null) return false;
         if (getMetaModelName(clazz).equals(ModelFacade.getBaseClass(stereo)))
@@ -230,6 +254,10 @@ public class ExtensionMechanismsHelper {
 	return isValidStereoType(m.getClass(), stereo);
     }
 
+    /**
+     * @return the collection of stereotypes in all models 
+     *         in the current project
+     */
     public Collection getStereotypes() {
         List ret = new ArrayList();
         Project p = ProjectManager.getManager().getCurrentProject();

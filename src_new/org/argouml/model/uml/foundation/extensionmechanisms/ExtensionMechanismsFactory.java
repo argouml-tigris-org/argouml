@@ -89,28 +89,41 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
 
     /**
      * Builds a stereotype for some kind of modelelement.
+     * If any of the parameters are null, an IllegalArgumentException is thrown.
+     * TODO: MVW: This needs rethinking/rework! I have the following questions:
+     *       What does a NameSpace have to do with this?
+     *       Why are the extended elm and the baseclass identical?
+     *       Why is an already existing stereotype for the namespace also 
+     *       set to the modelelem, and in this case the text thrown away?
+     * 
+     * @param theModelElementObject    the extended modelelement, which is 
+     *                                 also the baseclass for 
+     *                                 this build function
+     * @param theName                  the name for the stereotype
+     * @param theNamespaceObject       the namespace 
+     * @return                         the resulting stereotype object
      */
-    public MStereotype buildStereotype(Object mObj,
-                                       Object textObj,
-                                       Object nsObj) {
-        MModelElement m = (MModelElement) mObj;
-        String text = (String) textObj;
-        MNamespace ns = (MNamespace) nsObj;
-    	if (m == null || text == null || ns == null)
+    public MStereotype buildStereotype(Object theModelElementObject,
+                                       Object theName,
+                                       Object theNamespaceObject) {
+        MModelElement me = (MModelElement) theModelElementObject;
+        String text = (String) theName;
+        MNamespace ns = (MNamespace) theNamespaceObject;
+    	if (me == null || text == null || ns == null)
 	    throw new IllegalArgumentException("one of the arguments is null");
     	MStereotype stereo = (MStereotype) createStereotype();
     	stereo.setName(text);
     	stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
-			    .getMetaModelName(m));
+			    .getMetaModelName(me));
     	MStereotype stereo2 =
 	    ExtensionMechanismsHelper.getHelper().getStereotype(ns, stereo);
     	if (stereo2 != null) {
-	    stereo2.addExtendedElement(m);
+	    stereo2.addExtendedElement(me);
 	    UmlFactory.getFactory().delete(stereo);
 	    return stereo2;
     	} else {
 	    ns.addOwnedElement(stereo);
-	    stereo.addExtendedElement(m);
+	    stereo.addExtendedElement(me);
 	    return stereo;
     	}
     }
@@ -119,7 +132,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
      * Builds an initialized stereotype.
      *
      * @param text is the name of the stereotype
-     * @param ns namespace
+     * @param ns namespace where the stereotype lives (is known)
      * @return an initialized stereotype.
      */
     public Object/*MStereotype*/ buildStereotype(String text, Object ns) {
@@ -130,27 +143,34 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     	return stereo;
     }
 
-    public MStereotype buildStereotype(Object/*MModelElement*/ modelElement,
-				       String text) {
-        MModelElement m = (MModelElement) modelElement;
-        // if (m == null && text == null)
+    /**
+     * Builds an initialized stereotype.
+     * 
+     * @param theModelElementObject the baseclass for the new stereotype
+     * @param theName               the name for the new stereotype
+     * @return                      the new stereotype
+     */
+    public MStereotype buildStereotype(Object theModelElementObject,
+				       String theName) {
+        MModelElement me = (MModelElement) theModelElementObject;
+        // if (me == null && text == null)
 	//  throw new IllegalArgumentException("one of the arguments is null");
         MStereotype stereo = (MStereotype) createStereotype();
-        stereo.setName(text);
+        stereo.setName(theName);
         stereo.setBaseClass(ExtensionMechanismsHelper.getHelper()
-			    .getMetaModelName(m));
+			    .getMetaModelName(me));
         MStereotype stereo2 =
 	    ExtensionMechanismsHelper.getHelper().getStereotype(stereo);
         if (stereo2 != null) {
-            stereo2.addExtendedElement(m);
+            stereo2.addExtendedElement(me);
             UmlFactory.getFactory().delete(stereo);
             return stereo2;
         } else {
             ((MModel) ProjectManager.getManager().getCurrentProject()
 		    .getModel())
 		.addOwnedElement(stereo);
-            if (m != null)
-                stereo.addExtendedElement(m);
+            if (me != null)
+                stereo.addExtendedElement(me);
             return stereo;
         }
     }
@@ -169,8 +189,14 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
         return tv;
     }
 
+    /**
+     * @param elem the stereotype
+     */
     public void deleteStereotype(MStereotype elem) { }
 
+    /**
+     * @param elem the taggedvalue
+     */
     public void deleteTaggedValue(MTaggedValue elem) { }
 
     /**
