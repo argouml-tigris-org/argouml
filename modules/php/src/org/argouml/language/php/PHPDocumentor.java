@@ -132,7 +132,7 @@ public final class PHPDocumentor {
     /**
      * Zero-argument class constructor
      *
-     * @throws Exception
+     * @throws Exception never thrown in this case
      */
     public PHPDocumentor() throws Exception {
         super();
@@ -145,7 +145,8 @@ public final class PHPDocumentor {
      *
      * @param modelElement The model element to document.
      *
-     * @throws Exception
+     * @throws Exception IllegalArgumentException if the modelElement
+     *                   is not a Classifier, Attribute or Operation
      */
     public PHPDocumentor(Object modelElement) throws Exception {
         super();
@@ -159,7 +160,8 @@ public final class PHPDocumentor {
      * @param modelElement The model element to document.
      * @param iType        The type of DocBlock to generate.
      *
-     * @throws Exception
+     * @throws Exception IllegalArgumentException if the modelElement 
+     *                   is of the wrong type
      */
     public PHPDocumentor(Object modelElement, int iType) throws Exception {
         super();
@@ -1131,9 +1133,9 @@ public final class PHPDocumentor {
                 return setTag(TAG_TYPE_VERSION, sTagValue);
             } else {
                 /* tags we ignore for PHP */
-                if (!sTagName.equals("src_lang") &&
-                    !sTagName.equals("transient") &&
-                    !sTagName.equals("volatile")) {
+                if (!sTagName.equals("src_lang") 
+                    && !sTagName.equals("transient") 
+                    && !sTagName.equals("volatile")) {
                     throw new IllegalArgumentException("Can not set value '"
                             + sTagValue + "' for tag '" + sTagName + "'");
                 } else {
