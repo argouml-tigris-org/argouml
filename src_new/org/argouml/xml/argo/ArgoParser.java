@@ -126,13 +126,6 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * @param theUrl the url
-     */
-    public void setURL(URL theUrl) {
-        this.url = theUrl;
-    }
-
-    /**
      * @throws IOException for a file problem
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
@@ -395,51 +388,6 @@ public class ArgoParser extends SAXParserBase {
                 throw new SAXException(e);
             }
         }
-            
-            
-            
-            
-            
-//        if (type.equals("xmi")) {
-//            String filename = url.toString();
-//            filename = filename.substring(0, filename.length() - 4) + "xmi";
-//            try {
-//                loadModel(new URL(filename));
-//            } catch (IOException e) {
-//                throw new SAXException(e);
-//            }
-//        }
-        
-        
-        
-        
-        
-//            String xslt = 
-//                "<xsl:stylesheet version='1.0' " +
-//                        "xmlns:xsl='http://www.w3.org/1999/XSL/Transform' " +
-//                        "xmlns:e4='http://csc/e4/Envelope'> " +
-//                    "<xsl:output method='xml' indent='yes'/> " +
-//                    "<xsl:template match='argo/member'> " +
-//                        "<xsl:copy> " +
-//                            "<xsl:apply-templates select='@*|node()' /> " +
-//                        "</xsl:copy> " +
-//                    "</xsl:template> " +
-//                "</xsl:stylesheet> ";
-//            Source xsltSource = new StreamSource(new StringReader(xslt));
-//            Source inputSource = new StreamSource(theUrl.openStream());
-//
-//            Transformer transformer = 
-//                TransformerFactory.newInstance().newTransformer(xsltSource);
-//            
-//            PipedReader pipedReader = new PipedReader();
-//            Writer pipedWriter = new PipedWriter(pipedReader);
-//            StreamResult result = new StreamResult(pipedWriter);
-//            
-//            transformer.transform(inputSource, result);
-//            
-//            InputSource is = new InputSource(pipedReader);
-//            loadModel(project, is);
-            
     }
 
     /**
@@ -449,68 +397,8 @@ public class ArgoParser extends SAXParserBase {
      * Work still in progress (Bob Tarling).
      */
     private InputStream openStreamAtXmi(URL theUrl) throws IOException {
-        InputStream is = url.openStream();
-        BufferedInputStream bis = null;
-        if (is instanceof BufferedInputStream) {
-            bis = (BufferedInputStream) is;
-        } else {
-            bis = new BufferedInputStream(is);
-        }
-        readUntil(bis, "<member type=\"xmi\"");
-        while (bis.read() != '>');
-        return bis;
-    }
-
-    /**
-     * Keep on reading an input stream until a specific
-     * sequence of characters has ben read.
-     * This method assumes there is at least one match.
-     * @param is the input stream.
-     * @param search the characters to search for.
-     * @throws IOException
-     */
-    private void readUntil(InputStream is, String search) throws IOException {
-        char[] searchChars = search.toCharArray();
-        int i;
-        boolean found;
-        while (true) {
-            // Keep reading till we get the first character.
-            while (is.read() != searchChars[0]);
-            found = true;
-            // Compare each following character
-            for (i = 1; i < search.length(); ++i) {
-                if (is.read() != searchChars[i]) {
-                    found = false;
-                    break;
-                }
-            }
-            if (found) {
-                return;
-            }
-        }
-    }
-    
-    /**
-     * Loads a model (XMI only) from a .zargo file. BE ADVISED this
-     * method has a side effect. It sets _UUIDREFS to the model.
-     * 
-     * If there is a problem with the xmi file, an error is set in the
-     * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
-     * examined by the calling function.
-     *
-     * @param theUrl The url with the .zargo file
-     * @param project the project to load into
-     * @return The model loaded
-     * @throws IOException Thrown if the model or the .zargo file is corrupted.
-     * @throws SAXException If the parser template is syntactically incorrect. 
-     */
-    private Object loadModel(URL theUrl)
-        throws SAXException, IOException {
-        if (LOG.isInfoEnabled()) {
-            LOG.info("Loading Model from " + theUrl);
-        }
-        InputStream is = theUrl.openStream();
-        return loadModel(is);
+        XmiInputStream is = new XmiInputStream(theUrl.openStream());
+        return is;
     }
 
     /**
@@ -572,5 +460,153 @@ public class ArgoParser extends SAXParserBase {
 
         project.setUUIDRefs(new HashMap(xmiReader.getXMIUUIDToObjectMap()));
         return mmodel;
+    }
+
+    /**
+     * A BufferInputStream that is aware of the argo file format and returns
+     * only the data within the member tags of type "xmi".
+     * @author Bob Tarling
+     */
+    private class XmiInputStream extends BufferedInputStream {
+
+        private boolean xmiStarted;
+        private boolean inTag;
+        private StringBuffer tag;
+        private boolean endStream;
+        
+        /**
+         * Construct a new XmiInputStream
+         * @param in
+         */
+        public XmiInputStream(InputStream in) {
+            super(in);
+        }
+        
+        public synchronized int read() throws IOException {
+            
+            if (!xmiStarted) {
+                readUntil("<member type=\"xmi\"");
+                while (super.read() != '>');
+                xmiStarted = true;
+            }
+            if (endStream) {
+                return -1;
+            }
+            int ch = super.read();
+            endStream = isLastTag(ch);
+            return ch;
+        }
+        
+        public synchronized int read(byte[] b, int off, int len)
+            throws IOException {
+            
+            if (!xmiStarted) {
+                readUntil("<member type=\"xmi\"");
+                while (super.read() != '>');
+                xmiStarted = true;
+            }
+            if (endStream) {
+                b[0] = -1;
+                return -1;
+            }
+            int read = super.read(b, off, len);
+            if (read == -1) {
+                return -1;
+            }
+            for (int i = 0; i < read; ++i) {
+                if (endStream) {
+                    b[i] = -1;
+                    read = i;
+                    return read;
+                }
+                endStream = isLastTag(b[i + off]);
+            }
+            return read;
+        }
+        
+        
+        
+        /**
+         * @see java.io.InputStream#read(byte[])
+         */
+        public int read(byte[] b) throws IOException {
+            
+            if (!xmiStarted) {
+                readUntil("<member type=\"xmi\"");
+                while (super.read() != '>');
+                xmiStarted = true;
+            }
+            if (endStream) {
+                b[0] = -1;
+                return -1;
+            }
+            int read = super.read(b);
+            if (read == -1) {
+                b[0] = -1;
+                return -1;
+            }
+            for (int i = 0; i < read; ++i) {
+                if (endStream) {
+                    read = i;
+                    b[i] = -1;
+                    if (i == 0) {
+                        return -1;
+                    } else {
+                        return i;
+                    }
+                }
+                endStream = isLastTag(b[i]);
+            }
+            return read;
+        }
+        
+        /**
+         * Determines if the character is the last character of the last tag of interest.
+         * Every character read should be passed through
+         * @param ch
+         * @return
+         */
+        private boolean isLastTag(int ch) {
+            if (ch == '<') {
+                inTag = true;
+                tag = new StringBuffer();
+            } else if (ch == '>') {
+                inTag = false;
+                if (tag.toString().equals("/XMI")) {
+                    return true;
+                }
+            } else if (inTag) {
+                tag.append((char) ch);
+            }
+            return false;
+        }
+        
+        /**
+         * Keep on reading an input stream until a specific
+         * sequence of characters has ben read.
+         * This method assumes there is at least one match.
+         * @param search the characters to search for.
+         * @throws IOException
+         */
+        private void readUntil(String search) throws IOException {
+            char[] searchChars = search.toCharArray();
+            int i;
+            boolean found;
+            while (true) {
+                // Keep reading till we get the first character.
+                while (super.read() != searchChars[0]);
+                found = true;
+                // Compare each following character
+                for (i = 1; i < search.length(); ++i) {
+                    if (super.read() != searchChars[i]) {
+                        found = false;
+                        break;
+                    }
+                }
+                if (found) {
+                    return;
+                }
+            }
+        }
     }
 } /* end class ArgoParser */
