@@ -24,7 +24,8 @@
 
 package org.argouml.uml.cognitive.checklist;
 
-import org.argouml.cognitive.checklist.*;
+import org.argouml.cognitive.checklist.CheckItem;
+import org.argouml.cognitive.checklist.Checklist;
 
 /** Exacly like Checklist, but makes UMLCheckItems by default. */
 

@@ -32,16 +32,26 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
+import org.argouml.kernel.Project;
+import org.argouml.model.ModelFacade;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.util.ChildGenerator;
+import org.tigris.gef.util.EnumerationComposite;
+import org.tigris.gef.util.EnumerationEmpty;
+import org.tigris.gef.util.EnumerationSingle;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.model_management.MElementImport;
+import ru.novosoft.uml.model_management.MPackage;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.model_management.*;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.util.*;
 
-import org.argouml.kernel.*;
 
 /** This class gives critics access to parts of the UML model of the
  *  design.  It defines a gen() function that returns the "children"
@@ -55,7 +65,7 @@ public class ChildGenUML implements ChildGenerator {
     public static ChildGenUML SINGLETON = new ChildGenUML();
 
     /** Reply a java.util.Enumeration of the children of the given Object */
-    public java.util.Enumeration gen(Object o) {
+    public Enumeration gen(Object o) {
 	if (o instanceof Project) {
 	    Project p = (Project) o;
 	    return new EnumerationComposite(p.getUserDefinedModels().elements(),
@@ -67,25 +77,25 @@ public class ChildGenUML implements ChildGenerator {
 	    if (figs != null) return figs.elements();
 	}
 
-	if (org.argouml.model.ModelFacade.isAPackage(o)) {
+	if (ModelFacade.isAPackage(o)) {
 	    Vector ownedElements =
 		new Vector(((MPackage) o).getOwnedElements());
 	    if (ownedElements != null) return ownedElements.elements();
 	}
 
-	if (org.argouml.model.ModelFacade.isAElementImport(o)) {
+	if (ModelFacade.isAElementImport(o)) {
 	    MModelElement me = ((MElementImport) o).getModelElement();
 	    return new EnumerationSingle(me);  //wasteful!
 	}
 
-	if (org.argouml.model.ModelFacade.isAModelElement(o)) {
+	if (ModelFacade.isAModelElement(o)) {
 	    Vector behavior = new Vector(((MModelElement) o).getBehaviors());
 	    if (behavior != null) behavior.elements();
 	}
 
 	// TODO: associationclasses fit both of the next 2 cases
 
-	if (org.argouml.model.ModelFacade.isAClassifier(o)) {
+	if (ModelFacade.isAClassifier(o)) {
 	    MClassifier cls = (MClassifier) o;
 	    EnumerationComposite res = new EnumerationComposite();
 	    res.addSub(new Vector(cls.getFeatures()));
@@ -98,7 +108,7 @@ public class ChildGenUML implements ChildGenerator {
 	    return res;
 	}
 
-	if (org.argouml.model.ModelFacade.isAAssociation(o)) {
+	if (ModelFacade.isAAssociation(o)) {
 	    MAssociation asc = (MAssociation) o;
 	    Vector assocEnds = new Vector(asc.getConnections());
 	    if (assocEnds != null) return assocEnds.elements();
@@ -110,7 +120,7 @@ public class ChildGenUML implements ChildGenerator {
 
 
 	// // needed?
-	if (org.argouml.model.ModelFacade.isAStateMachine(o)) {
+	if (ModelFacade.isAStateMachine(o)) {
 	    MStateMachine sm = (MStateMachine) o;
 	    EnumerationComposite res = new EnumerationComposite();
 	    MState top = sm.getTop();
@@ -120,7 +130,7 @@ public class ChildGenUML implements ChildGenerator {
 	}
 
 	// needed?
-	if (org.argouml.model.ModelFacade.isACompositeState(o)) {
+	if (ModelFacade.isACompositeState(o)) {
 	    MCompositeState cs = (MCompositeState) o;
 	    Vector substates = new Vector(cs.getSubvertices());
 	    if (substates != null) return substates.elements();

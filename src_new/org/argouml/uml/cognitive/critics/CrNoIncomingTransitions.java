@@ -29,14 +29,15 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
-import org.argouml.cognitive.*;
+import java.util.Collection;
+import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
+
+
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /** A critic to detect when a state has no outgoing transitions. */
 

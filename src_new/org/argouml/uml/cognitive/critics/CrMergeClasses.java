@@ -24,13 +24,17 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
+import java.util.Collection;
+import java.util.List;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
 
-import org.argouml.cognitive.*;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+
 
 /** A critic to check whether to classes sharing a 1..1 association can or
  *  should be combined.

@@ -29,14 +29,17 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.diagram.deployment.ui.FigComponent;
+import org.argouml.uml.diagram.deployment.ui.FigMNode;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.tigris.gef.util.VectorSet;
+import ru.novosoft.uml.foundation.core.MComponent;
 
-import ru.novosoft.uml.foundation.core.*;
 
-import org.tigris.gef.util.*;
 
-import org.argouml.cognitive.*;
-import org.argouml.uml.diagram.deployment.ui.*;
 
 /**
  * A critic to detect when there are components that

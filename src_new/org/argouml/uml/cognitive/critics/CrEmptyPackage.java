@@ -22,23 +22,19 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
 // File: CrEmptyPackage.java
 // Classes: CrEmptyPackage
 // Original Author: jrobbins@ics.uci.edu
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
+import java.util.Iterator;
 import org.apache.log4j.Category;
-import org.argouml.cognitive.*;
 
+import org.argouml.cognitive.Designer;
 // Use Model through ModelFacade
 import org.argouml.model.ModelFacade;
+
 
 /** A critic whether a package/subsystem/model is empty. */
 

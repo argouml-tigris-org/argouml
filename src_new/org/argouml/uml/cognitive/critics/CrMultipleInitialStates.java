@@ -29,12 +29,15 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import org.apache.log4j.Category;
 
+import org.tigris.gef.util.VectorSet;
+
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.ModelFacade;
-import org.tigris.gef.util.*;
-
-import org.apache.log4j.Category; import org.argouml.cognitive.*;
 
 /** A critic to detect when a state has no outgoing transitions. */
 

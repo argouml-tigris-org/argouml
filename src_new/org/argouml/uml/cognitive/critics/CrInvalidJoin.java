@@ -29,10 +29,10 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
+import java.util.Collection;
+import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-import org.argouml.cognitive.*;
+
 
 /** A critic to detect when a join state has the wrong number of
  *  transitions.  Implements constraint [4] on MPseudostate in the UML

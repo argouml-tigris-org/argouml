@@ -25,7 +25,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import org.apache.log4j.Category;
-import org.argouml.cognitive.*;
+import org.argouml.cognitive.Designer;
 
 /**
  * A critic to suggest using the facade stereotype. 

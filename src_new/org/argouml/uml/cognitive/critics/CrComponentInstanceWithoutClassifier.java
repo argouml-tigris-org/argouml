@@ -28,15 +28,18 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
+import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.tigris.gef.util.VectorSet;
+import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
 
-import org.tigris.gef.util.*;
 
-import org.argouml.cognitive.*;
-import org.argouml.uml.diagram.deployment.ui.*;
 
 /**
  * A critic to detect when there are component-instances that

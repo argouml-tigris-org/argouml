@@ -31,12 +31,10 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
 
-import ru.novosoft.uml.foundation.core.*;
 
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
 
 /** Well-formedness rule [2] for MAssociationClass. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */

@@ -31,16 +31,17 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.argouml.cognitive.*;
+import java.util.Collection;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.uml.diagram.sequence.ui.FigSeqLink;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-
 import org.tigris.gef.util.VectorSet;
+
+
+
+import ru.novosoft.uml.behavior.common_behavior.MLink;
 
 
 

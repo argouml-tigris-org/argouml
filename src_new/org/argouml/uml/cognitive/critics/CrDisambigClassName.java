@@ -32,16 +32,20 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-import javax.swing.*;
+import java.util.Collection;
+import java.util.Iterator;
+import javax.swing.Icon;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.kernel.Wizard;
+import org.argouml.model.ModelFacade;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MElementImport;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
 
-import org.argouml.kernel.*;
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
 
 /** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -57,7 +61,7 @@ public class CrDisambigClassName extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
 	MClassifier cls = (MClassifier) dm;
 	String myName = cls.getName();
 	//@ if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
@@ -77,7 +81,7 @@ public class CrDisambigClassName extends CrUML {
 	    while (enum.hasNext()) {
 		MElementImport eo = (MElementImport) enum.next();
 		MModelElement me = (MModelElement) eo.getModelElement();
-		if (!(org.argouml.model.ModelFacade.isAClassifier(me))) continue;
+		if (!(ModelFacade.isAClassifier(me))) continue;
 		if (me == cls) continue;
 		String meName = me.getName();
 		if (meName == null || meName.equals("")) continue;

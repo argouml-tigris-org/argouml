@@ -36,15 +36,14 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
-
+import java.util.Collection;
+import java.util.Iterator;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.ModelFacade;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /**
  * <p> A critic to check that no end of a 3-way (or more) association is an
@@ -124,7 +123,7 @@ public class CrNWayAgg extends CrUML {
 
         // Only work for associatins
 
-        if (!(org.argouml.model.ModelFacade.isAAssociation(dm))) {
+        if (!(ModelFacade.isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
@@ -133,7 +132,7 @@ public class CrNWayAgg extends CrUML {
 
         MAssociation asc = (MAssociation) dm;
 
-        if (org.argouml.model.ModelFacade.isAAssociationRole(asc)) {
+        if (ModelFacade.isAAssociationRole(asc)) {
             return NO_PROBLEM;
         }
 
