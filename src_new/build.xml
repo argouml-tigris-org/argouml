@@ -1270,8 +1270,12 @@ you will have to resurrect them using cvs update.
 
     <echo>
 If this target was run with a clean build/classes directory (after clean),
-the delete files here depend directly or indirectly on the model component
-and should be investigated:
+the deleted files here are the files that the model depend on, directly or
+indirectly. 
+These dependencies need to be removed before it is possible to move 
+the model component to a separate directory.
+(If this was run without a previous clean this list contains all classes
+except those in the model component and doesn't give any valuable information.)
     </echo>
     <delete verbose="yes">
       <fileset dir="${argo.build.dir}/classes"
@@ -1279,7 +1283,12 @@ and should be investigated:
                excludes="org/argouml/model/**"/>
     </delete>
 
-    <!-- build the rest of ArgoUML that should not have references to nsuml -->
+    <echo>
+We build the rest of ArgoUML without nsuml. This means that all references
+to nsuml classes will generate a compilation error.
+These compilation errors need to be removed before it is possible to move
+ArgoUML to JMI.
+    </echo>
     <javac debug="${debug}"
            deprecation="off"
            destdir="${argo.build.classes}"
