@@ -422,7 +422,8 @@ public class ModelFacade {
     /** Pseudo state kind: JUNCTION_PSEUDOSTATEKIND */
     public static final Object JUNCTION_PSEUDOSTATEKIND =
         MPseudostateKind.JUNCTION;
-    /** Pseudo state kind: BRANCH_PSEUDOSTATEKIND */
+    /** Pseudo state kind: BRANCH_PSEUDOSTATEKIND 
+     * This is a Choice ! */
     public static final Object BRANCH_PSEUDOSTATEKIND = MPseudostateKind.BRANCH;
 
     /** Visibility kind: PUBLIC_VISIBILITYKIND */
