@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -117,8 +117,6 @@ public class CrDupRoleNames extends CrUML {
 	    return NO_PROBLEM;
 	}
 
-        Iterator enum = ModelFacade.getConnections(dm).iterator();
-
         // Loop through all the ends, comparing the name against those already
         // seen (ignoring any with no name).
         // No problem if there are no connections defined, we will fall
@@ -126,9 +124,9 @@ public class CrDupRoleNames extends CrUML {
 
         Vector   namesSeen = new Vector();
 
-        while (enum.hasNext()) {
-
-            String          name = ModelFacade.getName(enum.next());
+        Iterator conns = ModelFacade.getConnections(dm).iterator();
+        while (conns.hasNext()) {
+            String name = ModelFacade.getName(conns.next());
 
             // Ignore non-existent and empty names
 

@@ -54,9 +54,9 @@ public class CrConflictingComposites extends CrUML {
 	Collection conns = ModelFacade.getAssociationEnds(classifier);
 	if (conns == null) return NO_PROBLEM;
 	int compositeCount = 0;
-	Iterator enum = conns.iterator();
-	while (enum.hasNext()) {
-            Object myEnd = enum.next();
+	Iterator assocEnds = conns.iterator();
+	while (assocEnds.hasNext()) {
+            Object myEnd = assocEnds.next();
 	    if (UmlHelper.getHelper().getCore()
                 .equalsAggregationKind(myEnd, "composite")) {
 		continue;

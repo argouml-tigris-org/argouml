@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -63,9 +63,9 @@ public class CrDisambigStateName extends CrUML {
 	    if (ns == null) return NO_PROBLEM;
 	    Collection oes = ModelFacade.getOwnedElements(ns);
 	    if (oes == null) return NO_PROBLEM;
-	    Iterator enum = oes.iterator();
-	    while (enum.hasNext()) {
-		Object eo = /*(MElementImport)*/ enum.next();
+	    Iterator elems = oes.iterator();
+	    while (elems.hasNext()) {
+		Object eo = /*(MElementImport)*/ elems.next();
 		Object me = /*(MModelElement)*/ ModelFacade.getModelElement(eo);
 		if (!(ModelFacade.isAClassifier(me))) continue;
 		if (me == state) continue;

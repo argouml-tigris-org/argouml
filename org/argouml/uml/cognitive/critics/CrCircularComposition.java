@@ -66,9 +66,9 @@ public class CrCircularComposition extends CrUML {
     protected VectorSet computeOffenders(Object dm) {
 	VectorSet offs = new VectorSet(dm);
 	VectorSet above = offs.reachable(GenCompositeClasses.SINGLETON);
-	Enumeration enum = above.elements();
-	while (enum.hasMoreElements()) {
-	    Object cls2 = enum.nextElement();
+	Enumeration elems = above.elements();
+	while (elems.hasMoreElements()) {
+	    Object cls2 = elems.nextElement();
 	    VectorSet trans =
 		(new VectorSet(cls2)).reachable(GenCompositeClasses.SINGLETON);
 	    if (trans.contains(dm)) offs.addElement(cls2);

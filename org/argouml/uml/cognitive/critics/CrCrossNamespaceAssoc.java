@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -101,13 +101,12 @@ public class CrCrossNamespaceAssoc extends CrUML {
         // Get the Association and its connections.
         // Iterate over all the AssociationEnds and check that each connected
         // classifier is in the same sub-system or model
-        Iterator enum = ModelFacade.getConnections(dm).iterator();
-
-        while (enum.hasNext()) {
+        Iterator assocEnds = ModelFacade.getConnections(dm).iterator();
+        while (assocEnds.hasNext()) {
             // The next AssociationEnd, and its classifier. Check the
             // classifier is in the namespace of the association. If not we
             // have a problem.
-            Object clf = ModelFacade.getType(enum.next());
+            Object clf = ModelFacade.getType(assocEnds.next());
             if (ns != ModelFacade.getNamespace(clf))
                 return PROBLEM_FOUND;
         }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,9 +73,9 @@ public class CrNameConfusion extends CrUML {
 	if (ns == null) return res;
 	Collection oes = ModelFacade.getOwnedElements(ns);
 	if (oes == null) return res;
-	Iterator enum = oes.iterator();
-	while (enum.hasNext()) {
-	    Object me2 = /*(MModelElement)*/ enum.next();
+	Iterator elems = oes.iterator();
+	while (elems.hasNext()) {
+	    Object me2 = /*(MModelElement)*/ elems.next();
 	    if (me2 == dm) continue;
 	    String meName = ModelFacade.getName(me2);
 	    if (meName == null || meName.equals("")) continue;
