@@ -1,5 +1,0 @@
-SOURCES= \
-	XMITokenTable.java \
-	XMIParserBase.java \
-	XMIParser.java 
-
