@@ -24,8 +24,6 @@
 
 package org.argouml.model;
 
-import javax.swing.JFileChooser;
-import org.argouml.util.osdep.win32.Win32FileSystemView;
 
 /** Utility class providing hooks to
  *  operating-system-specific functionality.
@@ -75,41 +73,5 @@ public class OsUtil {
      */
     public static boolean isJdk131() {
         return (System.getProperty("java.version").startsWith("1.3.")); 
-    }
-
-    /** 
-     * Return a proper FileChooser. This replaces the normal FileChooser with a
-     * system-dependent one, but solely in case of Sun Java 1.3.1 on Windows. 
-     * 
-     * @return <code>JFileChooser</code>
-     */
-    public static JFileChooser getFileChooser() {
-        if (isWin32() && isSunJdk() && isJdk131()) {
-	    return new JFileChooser(new Win32FileSystemView());
-	}
-	else {
-	    return new JFileChooser();
-	}
-    }
-    /**
-     * Return a proper FileChooser. This replaces the normal FileChooser with a
-     * system-dependent one, but solely in case of Sun Java 1.3.1 on Windows. 
-     * 
-     * @param directory a <code>String</code> giving the path to a file 
-     * or directory. Passing in a <code>null</code>
-     * string causes the file chooser to point to the user's default directory.
-     * This default depends on the operating system. It is
-     * typically the "My Documents" folder on Windows, and the user's
-     * home directory on Unix.
-     * 
-     * @return <code>JFileChooser</code>
-     */
-    public static JFileChooser getFileChooser(String directory) {
-        if (isWin32() && isSunJdk() && isJdk131()) {
-	    return new JFileChooser(directory, new Win32FileSystemView());
-	}
-	else {
-	    return new JFileChooser(directory);
-	}
     }
 }

@@ -39,6 +39,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.OsUtil;
 import org.argouml.persistence.AbstractFilePersister;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 
 /**
@@ -107,10 +108,10 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         JFileChooser chooser = null;
         URL url = p.getURL();
         if ((url != null) && (url.getFile().length() > 0)) {
-            chooser = OsUtil.getFileChooser(url.getFile());
+            chooser = FileChooserFactory.getFileChooser(url.getFile());
         }
         if (chooser == null) {
-            chooser = OsUtil.getFileChooser();
+            chooser = FileChooserFactory.getFileChooser();
         }
 
         if (url != null) {
