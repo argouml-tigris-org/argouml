@@ -91,20 +91,16 @@ public class TabDocumentation extends PropPanel {
 
         addField(
 		 Argo.localize(BUNDLE, "label.author"),
-		 new UMLTextField2(new UMLModelElementTaggedValueDocument(
-                    Configuration.getString(Argo.KEY_USER_FULLNAME, 
-                                            System.getProperty("user.name")))));
+		 new UMLTextField2(new UMLModelElementTaggedValueDocument("author")));
 
         //unknown where this information is stored; it does not go to myproject.argo (xml file)
         addField(
 		 Argo.localize(BUNDLE, "label.version"),
-		 new UMLTextField2(new UMLModelElementTaggedValueDocument(
-                    Argo.localize(BUNDLE, "label.version-p"))));
+		 new UMLTextField2(new UMLModelElementTaggedValueDocument("version")));
 
         addField(
 		 Argo.localize(BUNDLE, "label.since"),
-		 new UMLTextField2(new UMLModelElementTaggedValueDocument(
-                    Argo.localize(BUNDLE, "label.since-p"))));
+		 new UMLTextField2(new UMLModelElementTaggedValueDocument("since")));
 
         //TODO: change UMLCheckBox to UMLCheckBox2 (Raphael)
         addField(
@@ -112,12 +108,10 @@ public class TabDocumentation extends PropPanel {
 		 new UMLCheckBox(
 				 "",
 				 this,
-				 new UMLTaggedBooleanProperty(
-                                 Argo.localize(BUNDLE, "label.deprecated-p"))));
+				 new UMLTaggedBooleanProperty("deprecated")));
 
         UMLTextArea2 _see =
-            new UMLTextArea2(new UMLModelElementTaggedValueDocument(
-                Argo.localize(BUNDLE, "label.see-p")));
+            new UMLTextArea2(new UMLModelElementTaggedValueDocument("see"));
         _see.setRows(2);
         _see.setLineWrap(true);
         _see.setWrapStyleWord(true);
@@ -129,8 +123,7 @@ public class TabDocumentation extends PropPanel {
         add(LabelledLayout.getSeperator());
 
         UMLTextArea2 _doc =
-            new UMLTextArea2(new UMLModelElementTaggedValueDocument(
-                Argo.localize(BUNDLE, "label.documentation-p")));
+            new UMLTextArea2(new UMLModelElementTaggedValueDocument("documentation"));
 
         _doc.setRows(2);
         _doc.setLineWrap(true);
