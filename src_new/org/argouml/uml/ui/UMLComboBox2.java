@@ -58,7 +58,7 @@ public class UMLComboBox2
     public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action, boolean showIcon) {
         super(arg0);
         addActionListener(action);
-        setDoubleBuffered(true);
+        // setDoubleBuffered(true);
         setRenderer(new UMLListCellRenderer2(showIcon));        
     }
            

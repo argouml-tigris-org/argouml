@@ -171,6 +171,8 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
 
 
 	public void setTarget(Object target) {
+        if (target == _modelTarget || ((target instanceof Fig) && ((Fig)target).getOwner() == _modelTarget))
+            return;
 		if (target == null) {
 			_figTarget = null;
 			_modelTarget = null;

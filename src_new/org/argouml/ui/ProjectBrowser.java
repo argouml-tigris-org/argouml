@@ -72,12 +72,10 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 
 /** The main window of the ArgoUML application. */
 
-public class ProjectBrowser extends JFrame
-    implements IStatusBar, NavigationListener, PropertyChangeListener {
-    
-    protected static Category cat = 
-        Category.getInstance(ProjectBrowser.class);
-    
+public class ProjectBrowser extends JFrame implements IStatusBar, NavigationListener, PropertyChangeListener {
+
+    protected static Category cat = Category.getInstance(ProjectBrowser.class);
+
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -97,7 +95,7 @@ public class ProjectBrowser extends JFrame
     protected String _appName = "ProjectBrowser";
 
     protected MultiEditorPane _editorPane;
-    
+
     /* Work in progress here to allow multiple details panes with 
     ** different contents - Bob Tarling
     */
@@ -107,9 +105,9 @@ public class ProjectBrowser extends JFrame
     protected DetailsPane _eastPane;
     protected DetailsPane _southEastPane;
     protected DetailsPane _southPane;
-  
+
     private Map detailsPanesByCompassPoint = new HashMap();
-  
+
     private GenericArgoMenuBar _menuBar;
 
     /** partially implemented. needs work to display
@@ -134,12 +132,12 @@ public class ProjectBrowser extends JFrame
      * The splash screen shown at startup
      */
     private SplashScreen _splash;
-    
+
     /**
      * The navigator pane containing the modelstructure
      */
     private NavigatorPane _navPane;
-    
+
     /**
      * The todopane (lower left corner of screen)
      */
@@ -152,8 +150,6 @@ public class ProjectBrowser extends JFrame
     ////////////////////////////////////////////////////////////////
     // constructors
 
-   
-
     public ProjectBrowser(String appName, boolean doSplash) {
         super(appName);
         TheInstance = this;
@@ -164,27 +160,32 @@ public class ProjectBrowser extends JFrame
             _splash.setVisible(true);
         }
         _menuBar = new GenericArgoMenuBar();
-        
-            
+
         _editorPane = new MultiEditorPane();
         _editorPane.addNavigationListener(this);
-        
+
         /* Work in progress here to allow multiple details panes with 
         ** different contents - Bob Tarling
         */
-        _eastPane      = makeDetailsPane(BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
-        _southPane     = makeDetailsPane(BorderSplitPane.SOUTH. toLowerCase(), Horizontal.getInstance());
+        _eastPane = makeDetailsPane(BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
+        _southPane = makeDetailsPane(BorderSplitPane.SOUTH.toLowerCase(), Horizontal.getInstance());
         _southEastPane = makeDetailsPane(BorderSplitPane.SOUTHEAST.toLowerCase(), Horizontal.getInstance());
         _northWestPane = makeDetailsPane(BorderSplitPane.NORTHWEST.toLowerCase(), Horizontal.getInstance());
-        _northPane     = makeDetailsPane(BorderSplitPane.NORTH.toLowerCase(), Horizontal.getInstance());
+        _northPane = makeDetailsPane(BorderSplitPane.NORTH.toLowerCase(), Horizontal.getInstance());
         _northEastPane = makeDetailsPane(BorderSplitPane.NORTHEAST.toLowerCase(), Horizontal.getInstance());
 
-        if (_southPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
-        if (_southEastPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST, _southEastPane);
-        if (_eastPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.EAST, _eastPane);
-        if (_northWestPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST, _northWestPane);
-        if (_northPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, _northPane);
-        if (_northEastPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST, _northEastPane);
+        if (_southPane != null)
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
+        if (_southEastPane != null)
+            detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST, _southEastPane);
+        if (_eastPane != null)
+            detailsPanesByCompassPoint.put(BorderSplitPane.EAST, _eastPane);
+        if (_northWestPane != null)
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST, _northWestPane);
+        if (_northPane != null)
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, _northPane);
+        if (_northEastPane != null)
+            detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST, _northEastPane);
 
         getTabProps().addNavigationListener(this);
 
@@ -202,7 +203,7 @@ public class ProjectBrowser extends JFrame
         ImageIcon argoImage = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Model");
         this.setIconImage(argoImage.getImage());
         // 
-        
+
         // adds this as listener to projectmanager so it gets updated when the 
         // project changes
         ProjectManager.getManager().addPropertyChangeListener(this);
@@ -223,7 +224,7 @@ public class ProjectBrowser extends JFrame
         ArrayList arraylist = Argo.getPlugins(PluggableMenu.class, context);
         ListIterator iterator = arraylist.listIterator();
         while (iterator.hasNext()) {
-            PluggableMenu module = (PluggableMenu)iterator.next();
+            PluggableMenu module = (PluggableMenu) iterator.next();
             menuitem.add(module.getMenuItem(context));
             menuitem.setEnabled(true);
         }
@@ -236,9 +237,7 @@ public class ProjectBrowser extends JFrame
     protected Component createPanels(boolean doSplash) {
         // Set preferred sizes from config file
         if (_southPane != null) {
-            _southPane.setPreferredSize(new Dimension(
-                                        0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-                                        ));
+            _southPane.setPreferredSize(new Dimension(0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)));
         }
 
         // The workarea is all the visible space except the menu, toolbar and status bar.
@@ -264,9 +263,9 @@ public class ProjectBrowser extends JFrame
         // different tabs pages according to users settings (work
         // in progress) - Bob Tarling
         Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
-        while(it.hasNext()) {
-            Map.Entry entry = (Map.Entry)it.next();
-            _workarea.add((DetailsPane)entry.getValue(), (String)entry.getKey());
+        while (it.hasNext()) {
+            Map.Entry entry = (Map.Entry) it.next();
+            _workarea.add((DetailsPane) entry.getValue(), (String) entry.getKey());
         }
         _workarea.add(_editorPane);
 
@@ -284,44 +283,51 @@ public class ProjectBrowser extends JFrame
     // accessors
 
     public void setTitle(String title) {
-        if (title == null || "".equals(title)) setTitle(getAppName());
-        else super.setTitle(getAppName() + " - " + title);
+        if (title == null || "".equals(title))
+            setTitle(getAppName());
+        else
+            super.setTitle(getAppName() + " - " + title);
     }
 
-    public String getAppName() { return _appName; }
-    public void setAppName(String n) { _appName = n; }
+    public String getAppName() {
+        return _appName;
+    }
+    public void setAppName(String n) {
+        _appName = n;
+    }
 
     public void setTarget(Object o) {
-        _editorPane.setTarget(o);
-        setDetailsTarget(o);  
-        _target = o;
-        if (o instanceof MNamespace) {
-            ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)o);
-        } else 
-        if (o instanceof MModelElement) {
-            if (((MModelElement)o).getNamespace() != null) {
-                ProjectManager.getManager().getCurrentProject().setCurrentNamespace(((MModelElement)o).getNamespace());
-            } else
-                ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)ProjectManager.getManager().getCurrentProject().getRoot());
+        if (getTarget() != o) {
+            _editorPane.setTarget(o);
+
+            setDetailsTarget(o);
+            _target = o;
+            if (o instanceof MNamespace) {
+                ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace) o);
+            } else if (o instanceof MModelElement) {
+                if (((MModelElement) o).getNamespace() != null) {
+                    ProjectManager.getManager().getCurrentProject().setCurrentNamespace(((MModelElement) o).getNamespace());
+                } else
+                    ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace) ProjectManager.getManager().getCurrentProject().getRoot());
+            }
+
+            if (o instanceof ArgoDiagram) {
+                setActiveDiagram((ArgoDiagram) o);
+                if (o instanceof UMLDiagram) {
+                    MNamespace m = ((UMLDiagram) o).getNamespace();
+                    if (m != null)
+                        ProjectManager.getManager().getCurrentProject().setCurrentNamespace(m);
+                }
+            }
+
+            Actions.updateAllEnabled();
         }
-        
-        if (o instanceof ArgoDiagram) {
-            setActiveDiagram ((ArgoDiagram) o);
-            if (o instanceof UMLDiagram) {
-                MNamespace m = ((UMLDiagram)o).getNamespace();
-                if (m != null) 
-                    ProjectManager.getManager().getCurrentProject().setCurrentNamespace(m);
-            }       
-        }
-               
-	Actions.updateAllEnabled();
     }
 
     /** return the current target in the editor pane */
     public Object getTarget() {
         return _target;
     }
-
 
     /**
      * Set the diagram on which the user is currently working. 
@@ -330,11 +336,10 @@ public class ProjectBrowser extends JFrame
      * It should also default the model name as well.
      *{@link #setTarget}.
      */
-    public void setActiveDiagram (ArgoDiagram ad) {
-        _activeDiagram = ad;    
-        cat.debug ("Active diagram set to " + ad.getName());
+    public void setActiveDiagram(ArgoDiagram ad) {
+        _activeDiagram = ad;
+        cat.debug("Active diagram set to " + ad.getName());
     }
-
 
     /**
      * Return the diagram, the user is currently working on.
@@ -350,16 +355,17 @@ public class ProjectBrowser extends JFrame
      */
     public void setToDoItem(Object o) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while(it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
-            if (detailsPane.setToDoItem(o)) return;
+        while (it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane) it.next();
+            if (detailsPane.setToDoItem(o))
+                return;
         }
     }
 
     private void setDetailsTarget(Object o) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while(it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
+        while (it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane) it.next();
             detailsPane.setTarget(o);
         }
     }
@@ -367,12 +373,12 @@ public class ProjectBrowser extends JFrame
     public Object getDetailsTarget() {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         if (it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
+            DetailsPane detailsPane = (DetailsPane) it.next();
             return detailsPane.getTarget();
         }
         return null; // TODO Bob Tarling - Should probably throw exception here
     }
-    
+
     /**
      * Get the tab page containing the properties
      * @return the TabProps tabpage
@@ -382,8 +388,8 @@ public class ProjectBrowser extends JFrame
         // progress). It must first be determined which details
         // page contains the properties tab. Bob Tarling 7 Dec 2002
         Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while(it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
+        while (it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane) it.next();
             TabProps tabProps = detailsPane.getTabProps();
             if (tabProps != null) {
                 return tabProps;
@@ -392,12 +398,17 @@ public class ProjectBrowser extends JFrame
         throw new IllegalStateException("No properties tab found");
     }
 
+    public StatusBar getStatusBar() {
+        return _statusBar;
+    }
 
-    public StatusBar getStatusBar() { return _statusBar; }
+    public JMenuBar getJMenuBar() {
+        return _menuBar;
+    }
 
-    public JMenuBar getJMenuBar() { return _menuBar; }
-
-    public MultiEditorPane getEditorPane() { return _editorPane; }
+    public MultiEditorPane getEditorPane() {
+        return _editorPane;
+    }
 
     /**
      * Find the tabpage with the given label and make it the front tab
@@ -406,9 +417,10 @@ public class ProjectBrowser extends JFrame
      */
     public void selectTabNamed(String tabName) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while(it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
-            if (detailsPane.selectTabNamed(tabName)) return;
+        while (it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane) it.next();
+            if (detailsPane.selectTabNamed(tabName))
+                return;
         }
         throw new IllegalArgumentException("No such tab named " + tabName);
     }
@@ -421,19 +433,21 @@ public class ProjectBrowser extends JFrame
     public JPanel getNamedTab(String tabName) {
         JPanel panel;
         Iterator it = detailsPanesByCompassPoint.values().iterator();
-        while(it.hasNext()) {
-            DetailsPane detailsPane = (DetailsPane)it.next();
+        while (it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane) it.next();
             panel = detailsPane.getNamedTab(tabName);
-            if (panel != null) return panel;
+            if (panel != null)
+                return panel;
         }
         //I'd prefer to throw this exception here but doing Argo currently
         //falls over - needs more investigation Bob Tarling 8 Dec 2002
         //throw new IllegalArgumentException("No such tab named " + tabName);
         return null;
     }
-    
+
     public void jumpToDiagramShowing(VectorSet dms) {
-        if (dms.size() == 0) return;
+        if (dms.size() == 0)
+            return;
         Object first = dms.elementAt(0);
         if (first instanceof Diagram && dms.size() > 1) {
             setTarget(first);
@@ -446,7 +460,7 @@ public class ProjectBrowser extends JFrame
         }
         Vector diagrams = ProjectManager.getManager().getCurrentProject().getDiagrams();
         Object target = _editorPane.getTarget();
-        if ((target instanceof Diagram) && ((Diagram)target).countContained(dms) == dms.size()) {
+        if ((target instanceof Diagram) && ((Diagram) target).countContained(dms) == dms.size()) {
             setTarget(first);
             return;
         }
@@ -460,7 +474,8 @@ public class ProjectBrowser extends JFrame
                 bestNumContained = nc;
                 bestDiagram = d;
             }
-            if (nc == dms.size()) break;
+            if (nc == dms.size())
+                break;
         }
         if (bestDiagram != null) {
             setTarget(bestDiagram);
@@ -477,12 +492,15 @@ public class ProjectBrowser extends JFrame
 
     public void setVisible(boolean b) {
         super.setVisible(b);
-        if (b) org.tigris.gef.base.Globals.setStatusBar(this);
+        if (b)
+            org.tigris.gef.base.Globals.setStatusBar(this);
     }
 
     ////////////////////////////////////////////////////////////////
     // IStatusBar
-    public void showStatus(String s) { _statusBar.showStatus(s); }
+    public void showStatus(String s) {
+        _statusBar.showStatus(s);
+    }
 
     /**    Called by a user interface element when a request to
      *    navigate to a model element has been received.
@@ -500,9 +518,9 @@ public class ProjectBrowser extends JFrame
 
     public boolean navigateBack(boolean attempt) {
         boolean navigated = false;
-        if(attempt) {
+        if (attempt) {
             Object target = _history.navigateBack(attempt);
-            if(target != null) {
+            if (target != null) {
                 navigated = true;
                 setTarget(target);
             }
@@ -512,9 +530,9 @@ public class ProjectBrowser extends JFrame
 
     public boolean navigateForward(boolean attempt) {
         boolean navigated = false;
-        if(attempt) {
+        if (attempt) {
             Object target = _history.navigateForward(attempt);
-            if(target != null) {
+            if (target != null) {
                 navigated = true;
                 setTarget(target);
             }
@@ -554,8 +572,7 @@ public class ProjectBrowser extends JFrame
     public void moduleDisabled(ArgoModuleEvent event) {
         // TODO:  Disable menu
     }
-    
- 
+
     /**
      * Build a new details pane for the given compass point
      * @param compassPoint the position for which to build the pane
@@ -565,26 +582,26 @@ public class ProjectBrowser extends JFrame
      */
     private DetailsPane makeDetailsPane(String compassPoint, Orientation orientation) {
         DetailsPane detailsPane = new DetailsPane(compassPoint, orientation);
-        if (detailsPane.getTabCount() == 0) return null;
+        if (detailsPane.getTabCount() == 0)
+            return null;
         return detailsPane;
     }
 
-
     class WindowCloser extends WindowAdapter {
-        public WindowCloser() { }
+        public WindowCloser() {
+        }
         public void windowClosing(WindowEvent e) {
-      
+
             ActionExit.SINGLETON.actionPerformed(null);
         }
     } /* end class WindowCloser */
-
 
     /**
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getPropertyName().equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
-            Project p = (Project)evt.getNewValue();
+            Project p = (Project) evt.getNewValue();
             setTitle(p.getName());
             Actions.updateAllEnabled();
             //Designer.TheDesigner.getToDoList().removeAllElements();
@@ -594,23 +611,23 @@ public class ProjectBrowser extends JFrame
             return;
         }
     }
-    
+
     /**
      * Returns the todopane. 
      * @return ToDoPane
      */
     public ToDoPane getTodoPane() {
-        return _todoPane;    
+        return _todoPane;
     }
-    
+
     /**
      * Returns the navigatorpane. 
      * @return NavigatorPane The navigatorpane
      */
     public NavigatorPane getNavigatorPane() {
-        return _navPane;    
+        return _navPane;
     }
-    
+
     /**
      * Returns the splashscreen shown at startup. 
      * @return SplashScreen
@@ -618,7 +635,7 @@ public class ProjectBrowser extends JFrame
     public SplashScreen getSplashScreen() {
         return _splash;
     }
-    
+
     /**
      * Sets the splashscreen. Sets the current splashscreen to invisible
      * @param splash
@@ -626,10 +643,7 @@ public class ProjectBrowser extends JFrame
     public void setSplashScreen(SplashScreen splash) {
         if (_splash != null && _splash != splash) {
             _splash.setVisible(false);
-        }                    
+        }
         _splash = splash;
     }
 } /* end class ProjectBrowser */
-
-
-
