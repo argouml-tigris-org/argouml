@@ -9,6 +9,9 @@ ArgoUML.
 
 <chapter id="ch.ref.entusecase">
   <title>&argouml; Use Case Diagram Artifact Reference</title>
+  <indexterm>
+    <primary>Use Case Diagram</primary>
+  </indexterm>
 
   <sect1>
     <title>Introduction</title>
@@ -46,6 +49,9 @@ ArgoUML.
 
     <sect2>
       <title>&argouml; Limitations Concerning Use Case Diagrams</title>
+      <indexterm>
+        <primary>Use Case Diagram Limitations</primary>
+      </indexterm>
 
       <para>
 Use case diagrams are now well supported within &argouml;. 
@@ -69,6 +75,12 @@ Earlier versions of &argouml; (0.9 and earlier) implemented extend and
 
   <sect1 id="s1.ref.actor">
     <title>Actor</title>
+    <indexterm>
+      <primary>Actor</primary>
+    </indexterm>
+    <indexterm>
+      <primary>External entity</primary>
+    </indexterm>
 
     <para>An actor represents any external entity (human or machine) that
       interacts with the system, providing input, receiving output, or
@@ -84,6 +96,14 @@ Earlier versions of &argouml; (0.9 and earlier) implemented extend and
 
     <sect2>
       <title>Actor Details Tabs</title>
+      <indexterm>
+        <primary>Actor</primary>
+        <secondary>Details Tabs</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Actor</secondary>
+      </indexterm>
 
       <para>The details tabs that are active for actors are as
         follows.</para>
@@ -230,7 +250,19 @@ metamodel so this is greyed out.
 <literal>Add Actor</literal>
 </term>
 
-          <listitem><para>This creates a new actor within the model, (but not
+          <listitem>
+            <indexterm>
+              <primary>Add Actor</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Actor</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create a new Actor</primary>
+            </indexterm>
+
+            <para>
+This creates a new actor within the model, (but not
             within the diagram), navigating immediately to the
             properties tab for that actor.</para>
 
@@ -275,7 +307,18 @@ metamodel so this is greyed out.
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the actor. Since an actor is a
+          <listitem>
+            <indexterm>
+              <primary>Actor Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Actor</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the actor.
+Since an actor is a
             classifier, it would be conventional to Capitalize the first
             letter (and initial letters of any component words),
             e.g. <literal>RemoteSensor</literal>.</para>
@@ -289,7 +332,17 @@ metamodel so this is greyed out.
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Actor is provided by default with
+          <listitem>
+            <indexterm>
+              <primary>Actor Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Actor</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+Actor is provided by default with
             the UML standard stereotypes (<literal>metaclass</literal>,
             <literal>powertype</literal>, <literal>process</literal>,
             <literal>thread</literal>, <literal>utility</literal>) for
@@ -325,7 +378,18 @@ However, they are not provided by default with &argouml;.
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the actor. This
+          <listitem>
+            <indexterm>
+              <primary>Actor Namespace</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Namespace</primary>
+              <secondary>of Actor</secondary>
+            </indexterm>
+
+            <para>Text box.
+Records the namespace for the actor.
+This
             is the package hierarchy.</para>
           </listitem>
         </varlistentry>
@@ -335,7 +399,17 @@ However, they are not provided by default with &argouml;.
         <varlistentry>
           <term><literal>Modifiers</literal></term>
 
-          <listitem><para>Check box, with entries <literal>Abstract</literal>,
+          <listitem>
+            <indexterm>
+              <primary>Actor Modifiers</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Modifiers</primary>
+              <secondary>of Actor</secondary>
+            </indexterm>
+
+            <para>Check box, with entries 
+<literal>Abstract</literal>,
 <literal>Leaf</literal> and
 <literal>Root</literal>.
 </para>
@@ -368,7 +442,17 @@ indicates that this
         <varlistentry>
           <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text area. Lists any actor that
+          <listitem>
+            <indexterm>
+              <primary>Actor Generalizations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Generalizations</primary>
+              <secondary>of Actor</secondary>
+            </indexterm>
+
+            <para>Text area.
+Lists any actor that
             <emphasis>generalizes</emphasis> this actor.</para>
 
             <para>
@@ -384,7 +468,17 @@ navigates to the generalization and opens
         <varlistentry>
           <term><literal>Specializations</literal></term>
 
-          <listitem><para>Text box. Lists any specialized actor (i.e. for which
+          <listitem>
+            <indexterm>
+              <primary>Actor Specializations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Specializations</primary>
+              <secondary>of Actor</secondary>
+            </indexterm>
+
+            <para>Text box.
+Lists any specialized actor (i.e. for which
             this actor is a generalization. The specialized actors can
             communicate with the same use case instances as this actor.</para>
 
@@ -399,7 +493,17 @@ navigates to the generalization and opens
         <varlistentry>
           <term><literal>Associations</literal></term>
 
-          <listitem><para>Text area. Lists any associations connected to the
+          <listitem>
+            <indexterm>
+              <primary>Actor Associations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Associations</primary>
+              <secondary>of Actor</secondary>
+            </indexterm>
+
+            <para>Text area. 
+Lists any associations connected to the
 actor.
 &Button1; Double Click
 on an association will navigate to that association.
@@ -416,6 +520,9 @@ on an association will navigate to that association.
 
   <sect1 id="s1.ref.use_case">
     <title>Use Case</title>
+    <indexterm>
+      <primary>Use Case</primary>
+    </indexterm>
 
     <para>A use case represents a complete meaningful <quote>chunk</quote> of
       activity by the system in relation to its external users (actors), human
@@ -447,6 +554,14 @@ On reload, no compartments will be visible.
 
     <sect2>
       <title>Use Case Details Tabs</title>
+      <indexterm>
+        <primary>Use Case</primary>
+        <secondary>Details Tabs</secondary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Use Case</secondary>
+      </indexterm>
 
       <para>The details tabs that are active for use cases are as
         follows.</para>
@@ -595,7 +710,19 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </imageobject></inlinemediaobject></guiicon> <literal>Add use
             case</literal></term>
 
-          <listitem><para>This creates a new use case within the model, (but
+          <listitem>
+            <indexterm>
+              <primary>Add Use Case</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Use Case</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create a new Use Case</primary>
+            </indexterm>
+
+            <para>
+This creates a new use case within the model, (but
             not within the diagram), navigating immediately to the
             properties tab for that use case.</para>
 
@@ -613,7 +740,19 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </imageobject></inlinemediaobject></guiicon> <literal>Add extension
             point</literal></term>
 
-          <listitem><para>This creates a new use extension point within the
+          <listitem>
+            <indexterm>
+              <primary>Add Extension Point</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Extension Point</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create a new Extension Point</primary>
+            </indexterm>
+
+            <para>
+This creates a new use extension point within the
             namespace of the current use case, with the current use case as its
             associated use case, navigating immediately to the properties tab
             for that extension point.</para></listitem>
@@ -655,7 +794,18 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the use case. Since a use case
+          <listitem>
+            <indexterm>
+              <primary>Use Case Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the use case.
+Since a use case
             is a classifier, it would be conventional to Capitalize the
             first letter (and initial letters of any component words),
             e.g. <literal>RemoteSensor</literal>.</para>
@@ -669,7 +819,17 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Use case is provided by default
+          <listitem>
+            <indexterm>
+              <primary>Use Case Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+Use case is provided by default
             with the UML standard stereotypes (<literal>metaclass</literal>,
             <literal>powertype</literal>, <literal>process</literal>,
             <literal>thread</literal>, <literal>utility</literal>) for
@@ -701,7 +861,17 @@ Stereotyping can be useful when
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
+          <listitem>
+            <indexterm>
+              <primary>Use Case Namespace</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Namespace</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
+            <para>Text box.
+Records the namespace for the
             use case. This is the package hierarchy.</para>
 
           </listitem>
@@ -713,6 +883,14 @@ Stereotyping can be useful when
           <term><literal>Modifiers</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Use Case Modifiers</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Modifiers</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
             <para>Check box,
 with entries
 <literal>leaf</literal> and
@@ -736,7 +914,17 @@ use case with no parent.
         <varlistentry>
           <term><literal>Extension Points</literal></term>
 
-          <listitem><para>Text box. If this use case is, or can be extended,
+          <listitem>
+            <indexterm>
+              <primary>Use Case Extension Points</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Extension Points</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
+            <para>Text box.
+If this use case is, or can be extended,
             this field lists the extension points for the use case.</para>
 
           <note><para>Extension points are listed by their location point
@@ -791,7 +979,17 @@ one.
             <anchor id="ref.use_case_generalization"/>Generalizations
           </literal></term>
 
-          <listitem><para>Text area. Lists use cases which are generalizations
+          <listitem>
+            <indexterm>
+              <primary>Use Case Generalizations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Generalizations</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
+            <para>Text area.
+Lists use cases which are generalizations
             of this one. Will be set whenever a generalization is created
 on the from this Use Case.
 &Button1; Double Click on a generalization will
@@ -806,7 +1004,17 @@ navigate to that generalization.
         <varlistentry>
           <term><literal>Specializations</literal></term>
 
-          <listitem><para>Text box. Lists any specialized use case (i.e. for
+          <listitem>
+            <indexterm>
+              <primary>Use Case Specializations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Specializations</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
+            <para>Text box.
+Lists any specialized use case (i.e. for
             which this use case is a generalization.</para>
 
             <para>
@@ -822,7 +1030,17 @@ navigates to the generalization and opens its property tab.
         <varlistentry>
           <term><literal>Extends</literal></term>
 
-          <listitem><para>Text box. Lists any class that is extended by this
+          <listitem>
+            <indexterm>
+              <primary>Use Case Extends relationships</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Extends relationships</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
+            <para>Text box.
+Lists any class that is extended by this
             use case.</para>
 
             <para>
@@ -839,7 +1057,17 @@ will navigate to that relationship.
         <varlistentry>
           <term><literal>Includes</literal></term>
 
-          <listitem><para>Text box. Lists any use case that this use case
+          <listitem>
+            <indexterm>
+              <primary>Use Case Includes relationships</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Includes relationships</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+ 
+            <para>Text box.
+Lists any use case that this use case
             includes.</para>
 
             <para>
@@ -857,7 +1085,17 @@ will navigate to that relationship.
         <varlistentry>
           <term><literal>Associations</literal></term>
 
-          <listitem><para>Text area. Lists any associations connected to the
+          <listitem>
+            <indexterm>
+              <primary>Use Case Associations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Associations</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
+            <para>Text area.
+Lists any associations connected to the
             use case. &Button1; click on an association will navigate
             to that association. &Button2; click gives a pop up menu with
             five options.</para>
@@ -907,7 +1145,17 @@ one.
         <varlistentry>
           <term><literal>Operations</literal></term>
 
-          <listitem><para>Text area. Listing the operations that are available
+          <listitem>
+            <indexterm>
+              <primary>Use Case Operations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Operations</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
+            <para>Text area.
+Listing the operations that are available
             on this use case. As a sub-class of the UML classifier
             metaclass, a use case has many of the properties of a
             class (see <xref linkend="s1.ref.class_class"/>).</para>
@@ -933,7 +1181,17 @@ one.
         <varlistentry>
           <term><literal>Attributes</literal></term>
 
-          <listitem><para>Text area. Listing the attributes that are available
+          <listitem>
+            <indexterm>
+              <primary>Use Case Attributes</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Attributes</primary>
+              <secondary>of Use Case</secondary>
+            </indexterm>
+
+            <para>Text area.
+Listing the attributes that are available
             on this use case. As a sub-class of the UML classifier
             metaclass, a use case has many of the properties of a
             class (see <xref linkend="s1.ref.class_class"/>).</para>
@@ -960,6 +1218,9 @@ one.
 
   <sect1 id="s1.ref.extension_point">
     <title>Extension Point</title>
+    <indexterm>
+      <primary>Extension Point</primary>
+    </indexterm>
 
     <para>An extension point describes a point in a use case where an extending
       use case may provide additional behavior.</para>
@@ -983,6 +1244,13 @@ one.
 
     <sect2>
       <title>Extension Point Details Tabs</title>
+      <indexterm>
+        <primary>Extension Point Details Tabs</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tab</primary>
+        <secondary>for Extension Point</secondary>
+      </indexterm>
 
       <para>The details tabs that are active for extension points are as
         follows.</para>
@@ -2240,8 +2508,9 @@ will navigate to that relationship.
               <listitem>
                 <para><literal>Add</literal>.
 <!-- Issue: 2150 -->
-<!-- HERE! This is so far Linus' work through this file has proceeded. -->
-The add extensionpoints window opens.
+<!-- Issue: 2157 -->
+The selected extension points window opens.
+In this window it is possible to select extension points.
 </para>
               </listitem>
 
@@ -2253,23 +2522,6 @@ Add a new extension point
               of extending relationships of the new extension
               point.</para></listitem>
 
-            <listitem><para><literal>Link</literal>. Where there are existing
-              extension points (other than those currently used by the extend
-              relationship) this produces a drop down menu of those extension
-              points. They are shown in two groups. First those that are
-              extension points of the current extend relationships base use
-              case (and which are therefore semantically valid within the UML
-              standard). Secondly those of other use cases (which are not
-              semnatically valid).</para>
-
-            <para>&button1; click on an extension point will add it to the
-              extension point list of the extend relationship before the
-              selected point in the current extension point list.</para>
-
-            <tip><para>It may still make sense to link to an extension point in
-              the second part of the list in the middle of a model
-              reorganisation. In the fullness of time, an &argouml; critic will
-              warn of this problem.</para></tip></listitem>
             </itemizedlist>
           </listitem>
         </varlistentry>
@@ -2348,7 +2600,11 @@ attached to the extend relationship.
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem>
+            <para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -2397,11 +2653,7 @@ attached to the extend relationship.
                 concepts.</para></note></listitem>
             </itemizedlist>
 
-            <note><para>The UML <literal>Element</literal> metaclass from
-              which all other artifacts are derived includes the tagged
-              element <literal>documentation</literal> which is handled by
-              the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2472,8 +2724,7 @@ attached to the extend relationship.
           <note><para>&argouml; does not enforce any naming convention for
             include relationships.</para></note>
 
-          <note><para>There is no representation of the stereotype of an
-            include relationship on the diagram.</para></note></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -2481,16 +2732,16 @@ attached to the extend relationship.
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. &argouml; provides the
-            non-standard stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-<literal>person</literal>. 
-It also rather bizarrely provides the
-            <literal>realize</literal> stereotype (which is more properly just
-            a stereotype of abstraction relationships.</para>
+          <listitem>
+            <para>Drop down selector.
+&argouml; does not provide any stereotypes for include relationships.
+</para>
 
           <tip><para>Stereotyping does not have great value on an include
-            relationship.</para></tip></listitem>
+            relationship.</para></tip>
+          <note><para>There is no representation of the stereotype of an
+            include relationship on the diagram.</para></note>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -2531,7 +2782,10 @@ It also rather bizarrely provides the
             (and an empty entry) which may be selected by &button1;
             click.</para>
 
-          <caution><para>In the current version of &argouml; if you change the
+            <caution>
+              <!-- Issue: 2159 -->
+              <para>
+In the current version of &argouml; if you change the
             base use case on an include relationship that is already shown on a
             diagram, then it will NOT be redrawn. Currently the only way to
             effect a redraw is to remove the use cases at each end from the
@@ -2539,24 +2793,10 @@ It also rather bizarrely provides the
           </para></caution></listitem>
         </varlistentry>
 
-        <!-- Entry for NavUseCase (Base) -->
+        <!-- Entry for Included Usecase -->
 
         <varlistentry>
-          <term><literal>Navigate Use Case (Base)</literal></term>
-
-          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-              format="GIF" align="center"
-              fileref="images/icons/navigate_stereotype.gif"/>
-            </imageobject></inlinemediaobject></guiicon> icon. If a
-              base use case has been selected, this will navigate to the
-              use case property panel (see <xref
-                linkend="s1.ref.use_case"/>).</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Addition -->
-
-        <varlistentry>
-          <term><literal>Addition</literal></term>
+          <term><literal>Included Usecase</literal></term>
 
           <listitem><para>Drop down selector. Records the use case that is
             being included by this include relationship.  &Button1;
@@ -2564,7 +2804,10 @@ It also rather bizarrely provides the
             cases (and an empty entry) which may be selected by &button1;
             click.</para>
 
-          <caution><para>In the current version of &argouml; if you change the
+            <caution>
+              <!-- Issue: 2159 -->
+              <para>
+In the current version of &argouml; if you change the
             addition use case on an include relationship that is already shown
             on a diagram, then it will NOT be redrawn. Currently the only way
             to effect a redraw is to remove the use cases at each end from the
@@ -2572,19 +2815,6 @@ It also rather bizarrely provides the
           </para></caution></listitem>
         </varlistentry>
 
-        <!-- Entry for NavUseCase (Addition) -->
-
-        <varlistentry>
-          <term><literal>Navigate Use Case (Addition)</literal></term>
-
-          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-              format="GIF" align="center"
-              fileref="images/icons/navigate_stereotype.gif"/>
-            </imageobject></inlinemediaobject></guiicon> icon. If a
-              addition use case has been selected, this will navigate to
-              the use case property panel (see <xref
-                linkend="s1.ref.use_case"/>).</para></listitem>
-        </varlistentry>
       </variablelist>
     </sect2>
   </sect1>
