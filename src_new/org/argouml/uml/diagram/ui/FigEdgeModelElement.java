@@ -595,8 +595,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     Object owner = getOwner();
     if (owner == null || getLayer() == null) return false;
     
-    MModelElement newSource = getSource();
-    MModelElement newDest = getDestination();
+    MModelElement newSource = (MModelElement)getSource();
+    MModelElement newDest = (MModelElement)getDestination();
     
     Fig currentSourceFig = getSourceFigNode();
     Fig currentDestFig = getDestFigNode();
@@ -641,9 +641,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
  * this is the sender.
  * @return MModelElement
  */
-  protected MModelElement getSource() {
+  protected Object getSource() {
     if (getOwner() != null) {
-        return CoreHelper.getHelper().getSource((MRelationship)getOwner());
+        return CoreHelper.getHelper().getSource((MRelationship)getOwner());            
     }
     return null;
   }
@@ -652,9 +652,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     * travels to in a binary relationship. For instance: for a classifierrole, 
     * this is the receiver. Since we don't support n-array associations but only
     * binary relations, source/destination works for all edges.
-    * @return MModelElement
+    * @return Object
     */
-  protected MModelElement getDestination() {
+  protected Object getDestination() {
     if (getOwner() != null) {
         return (MClassifier)CoreHelper.getHelper().getDestination((MRelationship)getOwner());
     }

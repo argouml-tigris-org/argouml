@@ -30,42 +30,72 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyVetoException;
+import java.beans.VetoableChangeListener;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
+import javax.swing.Icon;
+import javax.swing.JMenu;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.application.events.*;
-import org.argouml.kernel.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.NotationContext;
+import org.argouml.application.api.NotationName;
+import org.argouml.application.events.ArgoEvent;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.events.ArgoNotationEventListener;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.ui.*;
+import org.argouml.ui.ActionAutoResize;
+import org.argouml.ui.ActionGoToCritique;
+import org.argouml.ui.Clarifier;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
-import org.argouml.cognitive.*;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.generator.*;
-import org.argouml.util.*;
+import org.argouml.uml.UUIDManager;
+import org.argouml.uml.ui.ActionProperties;
+import org.argouml.util.Trash;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.model_management.MModel;
 
 
 /** Abstract class to display diagram icons for UML ModelElements that
@@ -103,6 +133,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
    * The figtext that shows the 'from [package blah]'
    */
   protected FigText _namespace; 
+  /**
+   * The namespace the modelelement is in before some move is made (set in updateNamespaceText)
+   */
+  protected MNamespace _currentNamespace;
   protected Vector _enclosedFigs = new Vector();
   protected Fig _encloser = null;
   protected boolean _readyToEdit = true;
@@ -145,7 +179,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     _namespace.setFont(LABEL_FONT);
     _namespace.setTextColor(Color.black);
     _namespace.setFilled(false);
-    _namespace.setText(getNamespaceText());
+    _namespace.setText("");
     _readyToEdit = false;
     ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
   }
@@ -208,28 +242,29 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
   public Fig getEnclosingFig() { return _encloser; }
 
-  public void setEnclosingFig(Fig f) {
-    super.setEnclosingFig(f);
-    if (_encloser instanceof FigNodeModelElement)
-      ((FigNodeModelElement)_encloser)._enclosedFigs.removeElement(this);
-      if (_encloser != null && f == null && getOwner() != null) {
-        // moved it from some package into the free wild
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
-        UMLDiagram diagram = (UMLDiagram)pb.getActiveDiagram();
-        MNamespace ns = diagram.getNamespace();
-        ns.addOwnedElement((MModelElement)getOwner());
-      }
-    _encloser = f;
-    if (_encloser instanceof FigNodeModelElement) {
-      ((FigNodeModelElement)_encloser)._enclosedFigs.addElement(this);
-      if (_encloser.getOwner() != null && _encloser.getOwner() instanceof MNamespace) {
-        if (CoreHelper.getHelper().isValidNamespace((MModelElement)getOwner(), (MNamespace)_encloser.getOwner())) {
-            ((MNamespace)_encloser.getOwner()).addOwnedElement((MModelElement)getOwner());
+    /**
+     * Sets the fig that encloses this fig. For instance a figclass drawn onto a figpackage,
+     * in that case the figpackage is the enclosing fig.
+     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(Fig)
+     */
+    public void setEnclosingFig(Fig f) {
+        super.setEnclosingFig(f);
+        // remove the element if necessary from the encloser
+        if (_encloser instanceof FigNodeModelElement)
+            ((FigNodeModelElement)_encloser)._enclosedFigs.removeElement(this);
+        // set the encloser
+        _encloser = f;
+        // add the fig to the new encloser
+        if (_encloser instanceof FigNodeModelElement) {
+            ((FigNodeModelElement)_encloser)._enclosedFigs.addElement(this);
+            if (_encloser.getOwner() != null && _encloser.getOwner() instanceof MNamespace) {
+                if (CoreHelper.getHelper().isValidNamespace((MModelElement)getOwner(), (MNamespace)_encloser.getOwner())) {
+                    ((MNamespace)_encloser.getOwner()).addOwnedElement((MModelElement)getOwner());
+                }
+            }
         }
-      }
+       
     }
-   
-  }
 
   public Vector getEnclosedFigs() { return _enclosedFigs; }
 
@@ -503,12 +538,24 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       _name.setText(nameStr);
     }
     updateStereotypeText();
-
     if (ActionAutoResize.isAutoResizable()) {
         CmdSetPreferredSize cmdSPS = 
             new CmdSetPreferredSize(CmdSetPreferredSize.MINIMUM_SIZE);
         cmdSPS.setFigToResize(this);
         cmdSPS.doIt();
+    }
+  }
+  
+  /**
+   * Update method called in modelchanged to update the namespace text (the 
+   * line of text with 'from blah namespace'
+   */
+  protected void updateNamespaceText(MNamespace oldNamespace, MNamespace newNamespace) {
+    if (newNamespace == null) return;
+    _namespace.setText(getNamespaceText(oldNamespace, newNamespace));
+    Object o = getOwner();
+    if (o != null) {
+        _currentNamespace = ((MModelElement)o).getNamespace();
     }
   }
 
@@ -525,6 +572,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
                     String nameStr = Notation.generate(this, me.getName());
                      _name.setText(nameStr);
                 }
+            } else
+            if (mee.getName().equals("namespace")) {
+                updateNamespaceText((MNamespace)mee.getOldValue(), (MNamespace)mee.getNewValue());
             } else
 	       modelChanged();
 	    damage();
@@ -763,19 +813,37 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
      * 
      * @return String
      */
-    protected String getNamespaceText() {
+    protected String getNamespaceText(MNamespace oldNamespace, MNamespace newNamespace) {
         if (getOwner() == null) return "";
         if (getOwner() instanceof MModelElement) {
-            MModelElement m = (MModelElement)getOwner();
-            if (m.getNamespace() instanceof MModel) return "";
-            MNamespace ns = m.getNamespace();
-            Fig namespaceFig = getLayer().presentationFor(ns);
-            if (namespaceFig == null) {
-                return Argo.localize("UMLMenu", "label.from") + Notation.generate(this, ns);
+            // several different situations
+            // 1: modelelement is moved from the rootmodel towards another namespace
+            // 2: modelelement is moved from a namespace that is not the rootmodel onto
+            //  a modelelement that is not the rootmodel (change of namespace therefore)
+            // 3: modelelement is inserted on a diagram and the namespace differs from the owner of the enclosing fig (if any)
+            // 4: modelelement is moved from a namespace that is not the rootmodel onto 
+            //  the rootmodel (no change of namespace)
+            // 5: the modelelement has no namespace
+            // How to handle:
+            // 1: do nothing, return ""
+            // 2: do nothing, return ""
+            // 3: return "from current namespace"
+            // 4: return "from current namespace"
+            // 5: return ""
+            Fig namespaceFig = null;
+            MModel root = ProjectManager.getManager().getCurrentProject().getRoot();
+            if (getLayer() != null) {
+                namespaceFig = getLayer().presentationFor(newNamespace);
             }
-            if (getEnclosingFig() != namespaceFig) {
-                return Argo.localize("UMLMenu", "label.from") + Notation.generate(this, ns);
-            }
+            if (newNamespace == null) return ""; // situation 5
+            if (oldNamespace != null && oldNamespace.equals(root) && !(oldNamespace.equals(newNamespace)))  // situation 1
+                return "";
+            if (oldNamespace != null && !(oldNamespace.equals(newNamespace)) && !(oldNamespace.equals(root)) && !(newNamespace.equals(root))) // situation 2
+                return ""; 
+            if (oldNamespace == null && !(newNamespace.equals(root))) //situation 3
+                return Argo.localize("UMLMenu", "label.from") + Notation.generate(this, newNamespace);
+            if (_currentNamespace != null && _currentNamespace.equals(newNamespace) && !(newNamespace.equals(root)) && !(namespaceFig.equals(getEnclosingFig()))) // situation 4
+                return Argo.localize("UMLMenu", "label.from") + Notation.generate(this, newNamespace);                                     
         }
         return "";
     }

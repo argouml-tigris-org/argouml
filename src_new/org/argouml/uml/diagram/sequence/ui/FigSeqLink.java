@@ -24,47 +24,54 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.util.*;
+import java.awt.Color;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
+import java.util.Collection;
 import java.util.Enumeration;
-import javax.swing.*;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.*;
-
-//import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
-import org.tigris.gef.graph.GraphEdgeRenderer;
+import org.argouml.application.api.Notation;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.PathConvPercentPlusConst;
-import org.tigris.gef.base.ModeManager;
-import org.tigris.gef.base.Mode;
-import org.tigris.gef.base.LayerPerspective;
-
-import org.argouml.application.api.*;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-
-
-import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.model.uml.UmlFactory;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.ArrowHeadGreater;
+import org.tigris.gef.presentation.ArrowHeadHalfTriangle;
+import org.tigris.gef.presentation.ArrowHeadNone;
+import org.tigris.gef.presentation.ArrowHeadTriangle;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigActivation;
+import org.tigris.gef.presentation.FigDynPort;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
+import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
+import ru.novosoft.uml.behavior.common_behavior.MSendAction;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
 
@@ -899,6 +906,26 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
 
   }
 
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getDestination()
+     */
+    protected Object getDestination() {
+        if (getOwner() != null) {
+            return CommonBehaviorHelper.getHelper().getDestination((MLink)getOwner());
+        }
+        return null;
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#getSource()
+     */
+    protected Object getSource() {
+        if (getOwner() != null) {
+            return CommonBehaviorHelper.getHelper().getSource((MLink)getOwner());
+        }
+        return null;
+    }
 
 } /* end class FigSeqLink */
 
