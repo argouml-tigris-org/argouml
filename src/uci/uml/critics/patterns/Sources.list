@@ -1,5 +1,0 @@
-SOURCES= \
-	CrConsiderSingleton.java \
-	CrSingletonViolated.java \
-	PatternStereotypes.java
-

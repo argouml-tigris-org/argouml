@@ -1,9 +1,0 @@
-SOURCES= \
-	StylePanel.java \
-	StylePanelFig.java \
-	StylePanelFigClass.java \
-	SPFigEdgeModelElement.java \
-	StylePanelFigMessage.java \
-	StylePanelFigRRect.java \
-	StylePanelFigText.java
-
