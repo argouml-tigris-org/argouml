@@ -71,7 +71,7 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
      * Test of getInstance method.
      */
     public void testGetInstance() {
-        assertNotNull(generator);
+        assertNotNull(getGenerator());
     }
 
     /**
@@ -79,7 +79,7 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
      */
     public void testCppGenerate() {
         // generate void AClass::foo();
-        String strFooMethod = generator.generate(fooMethod);
+        String strFooMethod = getGenerator().generate(getFooMethod());
         assertNotNull(strFooMethod);
         assertEquals("void AClass::foo()", strFooMethod.trim());
     }
@@ -88,12 +88,12 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
      * Test of generateOperation method.
      */
     public void testGenerateOperationAndIssue2862() {
-        Collection params = ModelFacade.getParameters(fooMethod);
+        Collection params = ModelFacade.getParameters(getFooMethod());
         assertEquals(1, params.size());
         Object returnVal = params.iterator().next();
         ModelFacade.setTaggedValue(returnVal, "pointer", "true");
-        ModelFacade.setType(returnVal, aClass);
-        String genOp = generator.generateOperation(fooMethod, false);
+        ModelFacade.setType(returnVal, getAClass());
+        String genOp = getGenerator().generateOperation(getFooMethod(), false);
         LOG.info(genOp);
         assertTrue(genOp.indexOf("*") != -1);
     }
@@ -102,14 +102,14 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
      * Test of getModuleName method.
      */
     public void testGetModuleName() {
-        assertNonNullNonZeroLengthString(generator.getModuleName());
+        assertNonNullNonZeroLengthString(getGenerator().getModuleName());
     }
 
     /**
      * Test of getModuleDescription method.
      */
     public void testGetModuleDescription() {
-        assertNonNullNonZeroLengthString(generator.getModuleDescription());
+        assertNonNullNonZeroLengthString(getGenerator().getModuleDescription());
     }
 
     private void assertNonNullNonZeroLengthString(String s) {
@@ -121,20 +121,20 @@ public class TestGeneratorCpp extends BaseTestGeneratorCpp {
      * Test of getModuleAuthor method.
      */
     public void testGetModuleAuthor() {
-        assertNonNullNonZeroLengthString(generator.getModuleAuthor());
+        assertNonNullNonZeroLengthString(getGenerator().getModuleAuthor());
     }
 
     /**
      * Test of getModuleVersion method.
      */
     public void testGetModuleVersion() {
-        assertNonNullNonZeroLengthString(generator.getModuleVersion());
+        assertNonNullNonZeroLengthString(getGenerator().getModuleVersion());
     }
 
     /**
      * Test of getModuleKey method.
      */
     public void testGetModuleKey() {
-        assertNonNullNonZeroLengthString(generator.getModuleKey());
+        assertNonNullNonZeroLengthString(getGenerator().getModuleKey());
     }
 }

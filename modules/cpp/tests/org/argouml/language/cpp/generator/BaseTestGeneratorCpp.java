@@ -46,24 +46,80 @@ class BaseTestGeneratorCpp extends TestCase {
     }
 
     /** factory for model elements */
-    protected CoreFactory factory;
+    private CoreFactory factory;
 
     /** The venerable C++ generator instance used in the test fixtures. */
-    protected GeneratorCpp generator;
+    private GeneratorCpp generator;
 
     /** the AClass model element */
-    protected Object aClass;
+    private Object aClass;
 
     /** the AClass::foo() operation */
-    protected Object fooMethod;
+    private Object fooMethod;
     
     /*
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
-        generator = GeneratorCpp.getInstance();
-        factory = UmlFactory.getFactory().getCore();
-        aClass = factory.buildClass("AClass");
-        fooMethod = factory.buildOperation(aClass, "foo");
+        setGenerator(GeneratorCpp.getInstance());
+        setFactory(UmlFactory.getFactory().getCore());
+        setAClass(getFactory().buildClass("AClass"));
+        setFooMethod(getFactory().buildOperation(getAClass(), "foo"));
+    }
+
+    /**
+     * @param theFactory The factory to set.
+     */
+    protected void setFactory(CoreFactory theFactory) {
+        this.factory = theFactory;
+    }
+
+    /**
+     * @return Returns the factory.
+     */
+    protected CoreFactory getFactory() {
+        return factory;
+    }
+
+    /**
+     * @param theGenerator The generator to set.
+     */
+    protected void setGenerator(GeneratorCpp theGenerator) {
+        this.generator = theGenerator;
+    }
+
+    /**
+     * @return Returns the generator.
+     */
+    protected GeneratorCpp getGenerator() {
+        return generator;
+    }
+
+    /**
+     * @param theAClass The aClass to set.
+     */
+    protected void setAClass(Object theAClass) {
+        this.aClass = theAClass;
+    }
+
+    /**
+     * @return Returns the aClass.
+     */
+    protected Object getAClass() {
+        return aClass;
+    }
+
+    /**
+     * @param theFooMethod The fooMethod to set.
+     */
+    protected void setFooMethod(Object theFooMethod) {
+        this.fooMethod = theFooMethod;
+    }
+
+    /**
+     * @return Returns the fooMethod.
+     */
+    protected Object getFooMethod() {
+        return fooMethod;
     }
 }

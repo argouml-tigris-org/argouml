@@ -43,7 +43,7 @@ import org.argouml.model.uml.ModelManagementFactory;
  * method.
  * @see GeneratorCpp
  * @author euluis
- * @since 0.17.2
+ * @since 0.17.3
  */
 public class TestCppFileGeneration extends BaseTestGeneratorCpp {
 
@@ -51,7 +51,10 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     private static final Logger LOG = Logger.getLogger(
         TestCppFileGeneration.class);
 
-    /** Creates a new instance of TestCppFileGeneration */
+    /**
+     * Creates a new instance of TestCppFileGeneration.
+     * @param testName name of the test
+     */
     public TestCppFileGeneration(String testName) {
         super(testName);
     }
@@ -65,7 +68,7 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     }
 
     /**
-     * to enable debugging in poor IDEs...
+     * Enables debugging in IDEs that don't support debugging unit tests...
      * @param args the arguments given on the commandline
      */
     public static void main(java.lang.String[] args) {
@@ -76,12 +79,12 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     static final String SYSPROPNAME_TMPDIR = "java.io.tmpdir";
     
     /** path of the temporary directory in the system */
-    File tmpDir;
+    private File tmpDir;
 
     /** directory to be deleted on tearDown if not null */
-    File genDir;
+    private File genDir;
     
-    /*
+    /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
@@ -89,12 +92,12 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         String packageName = "pack";
         Object aPackage = ModelManagementFactory.getFactory().
             buildPackage(packageName, UUIDManager.getInstance().getNewUUID());
-        ModelFacade.setNamespace(aClass, aPackage);
+        ModelFacade.setNamespace(getAClass(), aPackage);
 
         tmpDir = new File(System.getProperty(SYSPROPNAME_TMPDIR));
     }
 
-    /*
+    /**
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws IOException {
@@ -123,7 +126,8 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     public void testIssue2828() throws IOException {
         genDir = setUpDirectory4Test("testIssue2828");
         // generate the classifier for the first time in temp dir
-        String filePath = generator.generateFile2(aClass, genDir.getPath());
+        String filePath = getGenerator().generateFile2(
+                getAClass(), genDir.getPath());
         assertNotNull(filePath);
         File genFile = new File(filePath);
         
@@ -148,7 +152,7 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         
         // generate the classifier for the second time
         assertEquals(filePath, 
-            generator.generateFile2(aClass, genDir.getPath()));
+            getGenerator().generateFile2(getAClass(), genDir.getPath()));
         // check if the file generated in the second time is equal to the 
         // modified file
         String secondGenerated = FileUtils.readFileToString(genFile, encoding);

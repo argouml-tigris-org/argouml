@@ -104,9 +104,9 @@ public abstract class AbstractSection
                             endSectionId = getSectId(line);
                         } while (endSectionId == null);
                         if (!endSectionId.equals(sectionId))
-                            LOG.error("Mismatch between sectionId (\"" + 
-                                    sectionId + "\") and endSectionId (\"" + 
-                                    endSectionId + "\")!");
+                            LOG.error("Mismatch between sectionId (\"" 
+                                    + sectionId + "\") and endSectionId (\"" 
+                                    + endSectionId + "\")!");
                     }
                     mAry.remove(sectionId);
                 }
