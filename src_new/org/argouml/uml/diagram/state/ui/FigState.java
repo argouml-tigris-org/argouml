@@ -51,7 +51,7 @@ public abstract class FigState extends FigStateVertex {
     /**
      * the text inside the state
      */
-    protected FigText internal;
+    private FigText internal;
 
     /**
      * Constructor for FigState.
@@ -216,5 +216,19 @@ public abstract class FigState extends FigStateVertex {
      * @return the initial height
      */
     protected abstract int getInitialHeight();
+
+    /**
+     * @param theInternal The internal to set.
+     */
+    protected void setInternal(FigText theInternal) {
+        this.internal = theInternal;
+    }
+
+    /**
+     * @return Returns the internal.
+     */
+    protected FigText getInternal() {
+        return internal;
+    }
 
 }

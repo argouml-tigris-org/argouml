@@ -46,7 +46,7 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
     JLabel _arrowLabel = new JLabel("Arrow: ");
 
     JComboBox _arrowField = new JComboBox(Converter
-            .convert(FigMessage.ARROW_DIRECTIONS));
+            .convert(FigMessage.getArrowDirections()));
 
     
     public StylePanelFigMessage() {
@@ -76,13 +76,13 @@ public class StylePanelFigMessage extends StylePanelFigNodeModelElement {
     public void refresh() {
         super.refresh();
         int direction = ((FigMessage) _target).getArrow();
-        _arrowField.setSelectedItem(FigMessage.ARROW_DIRECTIONS
+        _arrowField.setSelectedItem(FigMessage.getArrowDirections()
                 .elementAt(direction));
     }
 
     public void setTargetArrow() {
         String ad = (String) _arrowField.getSelectedItem();
-        int arrowDirection = FigMessage.ARROW_DIRECTIONS.indexOf(ad);
+        int arrowDirection = FigMessage.getArrowDirections().indexOf(ad);
         if (_target == null || arrowDirection == -1) return;
         ((FigMessage) _target).setArrow(arrowDirection);
         _target.endTrans();

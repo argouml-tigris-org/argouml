@@ -43,30 +43,31 @@ import org.tigris.gef.presentation.FigText;
  */
 public class FigPartition extends FigNodeModelElement {
 
-    private FigLine _leftLine, _rightLine;
-
-    private final int PADDING = 8;
+    private FigLine leftLine, rightLine;
+    private FigRect bigPort;
+    
+    private static final int PADDING = 8;
 
     /**
      * Constructor.
      *  
      */
     public FigPartition() {
-        _bigPort = new FigRect(10, 10, 150, 200, Color.white, Color.white);
-        _bigPort.setFilled(true);
-        _leftLine = new FigLine(10, 10, 10, 300, Color.gray);
-        _rightLine = new FigLine(150, 10, 150, 300, Color.gray);
-        _leftLine.setDashed(true);
-        _rightLine.setDashed(true);
+        bigPort = new FigRect(10, 10, 150, 200, Color.white, Color.white);
+        bigPort.setFilled(true);
+        leftLine = new FigLine(10, 10, 10, 300, Color.gray);
+        rightLine = new FigLine(150, 10, 150, 300, Color.gray);
+        leftLine.setDashed(true);
+        rightLine.setDashed(true);
 
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(10 + PADDING, 10, 50 - PADDING * 2, 25);
         getNameFig().setFilled(false);
         getNameFig().setMultiLine(true);
 
-        addFig(_bigPort);
-        addFig(_rightLine);
-        addFig(_leftLine);
+        addFig(bigPort);
+        addFig(rightLine);
+        addFig(leftLine);
         addFig(getNameFig());
 
         Rectangle r = getBounds();
@@ -74,10 +75,10 @@ public class FigPartition extends FigNodeModelElement {
     }
 
     /**
-     * Constructor.
+     * Constructor which hooks the Fig into an existing UML element
      * 
-     * @param gm
-     * @param node
+     * @param gm ignored
+     * @param node the UML element
      */
     public FigPartition(GraphModel gm, Object node) {
         this();
@@ -91,9 +92,9 @@ public class FigPartition extends FigNodeModelElement {
     public Object clone() {
         FigPartition figClone = (FigPartition) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone._bigPort = (FigRect) it.next();
-        figClone._rightLine = (FigLine) it.next();
-        figClone._leftLine = (FigLine) it.next();
+        figClone.bigPort = (FigRect) it.next();
+        figClone.rightLine = (FigLine) it.next();
+        figClone.leftLine = (FigLine) it.next();
         figClone.setNameFig((FigText) it.next());
         return figClone;
     }
@@ -103,8 +104,8 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
-        _rightLine.setLineColor(col);
-        _leftLine.setLineColor(col);
+        rightLine.setLineColor(col);
+        leftLine.setLineColor(col);
     }
 
     /**
@@ -112,7 +113,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
-        return _rightLine.getLineColor();
+        return rightLine.getLineColor();
     }
 
     /**
@@ -120,7 +121,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
-        _bigPort.setFillColor(col);
+        bigPort.setFillColor(col);
         getNameFig().setFillColor(col);
     }
 
@@ -129,7 +130,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
-        return _bigPort.getFillColor();
+        return bigPort.getFillColor();
     }
 
     /**
@@ -137,7 +138,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
-        _bigPort.setFilled(f);
+        bigPort.setFilled(f);
     }
 
     /**
@@ -145,7 +146,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
-        return _bigPort.getFilled();
+        return bigPort.getFilled();
     }
 
     /**
@@ -153,8 +154,8 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
-        _rightLine.setLineWidth(w);
-        _leftLine.setLineWidth(w);
+        rightLine.setLineWidth(w);
+        leftLine.setLineWidth(w);
     }
 
     /**
@@ -162,7 +163,7 @@ public class FigPartition extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
-        return _rightLine.getLineWidth();
+        return rightLine.getLineWidth();
     }
 
     /**
@@ -173,6 +174,9 @@ public class FigPartition extends FigNodeModelElement {
         return "new Swimlane";
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
         int w = nameDim.width + PADDING * 2;
@@ -203,9 +207,9 @@ public class FigPartition extends FigNodeModelElement {
         getNameFig().setBounds(x + PADDING, y, w - PADDING * 2,
                 nameBounds.height);
 
-        _bigPort.setBounds(x, y, w, h);
-        _leftLine.setBounds(x, y, 0, h);
-        _rightLine.setBounds(x + w , y, 0, h);
+        bigPort.setBounds(x, y, w, h);
+        leftLine.setBounds(x, y, 0, h);
+        rightLine.setBounds(x + w , y, 0, h);
 
         firePropChange("bounds", oldBounds, getBounds());
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;

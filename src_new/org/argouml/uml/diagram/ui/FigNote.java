@@ -39,14 +39,14 @@ import org.tigris.gef.presentation.FigRect;
  *             'old' .zargo project files, replaced by 
  *             {@link org.argouml.uml.diagram.static_structure.ui.FigComment 
  *             FigComment}
- * TODO: When can this be removed?
+ * TODO: When can this be removed? What do we need to do to remove this?
  */
 public class FigNote extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public final int MARGIN = 2;
+    private static final int MARGIN = 2;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -57,6 +57,9 @@ public class FigNote extends FigNodeModelElement {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Main constructor
+     */
     public FigNote() {
 	Color handleColor = Globals.getPrefs().getHandleColor();
 	_bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
@@ -73,6 +76,11 @@ public class FigNote extends FigNodeModelElement {
 	Rectangle r = getBounds();
     }
 
+    /**
+     * Constructor 
+     * @param gm ignored
+     * @param node the UML element
+     */
     public FigNote(GraphModel gm, Object node) {
 	this();
 	setOwner(node);
@@ -80,6 +88,9 @@ public class FigNote extends FigNodeModelElement {
     }
 
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getMinimumSize()
+     */
     public Dimension getMinimumSize() {
 	Dimension nameDim = getNameFig().getMinimumSize();
 	int w = nameDim.width;
@@ -87,6 +98,9 @@ public class FigNote extends FigNodeModelElement {
 	return new Dimension(w, h);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
     public void setBounds(int x, int y, int w, int h) {
 	Rectangle oldBounds = getBounds();
 	getNameFig().setBounds(x, y, w, h);

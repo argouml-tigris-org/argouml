@@ -38,21 +38,32 @@ import org.tigris.gef.presentation.FigGroup;
 
 import ru.novosoft.uml.MElementEvent;
 
+
+
+/**
+ * This class represents the Fig of an AssociationRole 
+ * for a collaboration diagram.
+ * 
+ */
 public class FigAssociationRole extends FigAssociation {
+ 
+    private FigMessageGroup messages = new FigMessageGroup();
+ 
     ////////////////////////////////////////////////////////////////
     // constructors
-  
-    protected FigMessageGroup _messages = new FigMessageGroup();
-
+ 
+    /**
+     * Main Constructor  
+     */
     public FigAssociationRole() {
 	super(); // this really is questionable
-	addPathItem(_messages, new PathConvPercent(this, 50, 10));
+	addPathItem(messages, new PathConvPercent(this, 50, 10));
     }
 
     /**
      * Constructor for FigAssociationRole.
-     * @param edge
-     * @param lay
+     * @param edge the owning UML element
+     * @param lay the layer
      */
     public FigAssociationRole(Object edge, Layer lay) {
 	this();
@@ -68,7 +79,7 @@ public class FigAssociationRole extends FigAssociation {
      * calls the method on the "super" (FigAssociation)
      * and then changes the name to take care of the
      * "/ name : base association name" form.
-     **/    
+     */    
     protected void modelChanged(MElementEvent e) {
         super.modelChanged(e);
         //change the name
@@ -80,11 +91,14 @@ public class FigAssociationRole extends FigAssociation {
         getNameFig().setText(asNameStr);
     }
     
+    /**
+     * @param message the message to be added
+     */
     public void addMessage(FigMessage message) {
-    	_messages.addFig(message);
+    	messages.addFig(message);
     	// damage();
     	updatePathItemLocations();
-    	_messages.damage();
+    	messages.damage();
     }
 
     /**
@@ -92,12 +106,15 @@ public class FigAssociationRole extends FigAssociation {
      */
     public void delete() {
         super.delete();
-        _messages.delete();
+        messages.delete();
     }
 
 } /* end class FigAssociationRole */
 
-// TODO: Should this be in its own source file?
+/**
+ * TODO: Should this be in its own source file?
+ *
+ */
 class FigMessageGroup extends FigGroup {
 	
     /**

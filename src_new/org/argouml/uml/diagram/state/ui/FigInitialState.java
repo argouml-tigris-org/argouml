@@ -49,106 +49,184 @@ public class FigInitialState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public final int MARGIN = 2;
-    public int x = 10;
-    public int y = 10;
-    public int width = 20;
-    public int height = 20;
+    private static final int MARGIN = 2;
+
+    private static final int X = 10;
+
+    private static final int Y = 10;
+
+    private static final int WIDTH = 20;
+
+    private static final int HEIGHT = 20;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** UML does not really use ports, so just define one big one so
-     *  that users can drag edges to or from any point in the icon. */
+    /**
+     * UML does not really use ports, so just define one big one so that users
+     * can drag edges to or from any point in the icon.
+     */
+    private FigCircle bigPort;
 
-    protected FigCircle _bigPort;
-    protected FigCircle _head;
+    private FigCircle head;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * Main constructor
+     */
     public FigInitialState() {
-	_bigPort = new FigCircle(x, y, width, height, Color.cyan, Color.cyan);
-	_head = new FigCircle(x, y, width, height, Color.black, Color.black);
-	// add Figs to the FigNode in back-to-front order
-	addFig(_bigPort);
-	addFig(_head);
+        bigPort = new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan);
+        head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.black);
+        // add Figs to the FigNode in back-to-front order
+        addFig(bigPort);
+        addFig(head);
 
-	setBlinkPorts(false); //make port invisble unless mouse enters
-	Rectangle r = getBounds();
+        setBlinkPorts(false); //make port invisble unless mouse enters
+        Rectangle r = getBounds();
     }
 
+    /**
+     * Constructor which hooks the Fig into an existing UML element
+     * 
+     * @param gm ignored 
+     * @param node the UML element
+     */
     public FigInitialState(GraphModel gm, Object node) {
-	this();
-	setOwner(node);
+        this();
+        setOwner(node);
     }
 
+    /**
+     * @see java.lang.Object#clone()
+     */
     public Object clone() {
-	FigInitialState figClone = (FigInitialState) super.clone();
-	Iterator it = figClone.getFigs(null).iterator();
-	figClone._bigPort = (FigCircle) it.next();
-	figClone._head = (FigCircle) it.next();
-	return figClone;
+        FigInitialState figClone = (FigInitialState) super.clone();
+        Iterator it = figClone.getFigs(null).iterator();
+        figClone.bigPort = (FigCircle) it.next();
+        figClone.head = (FigCircle) it.next();
+        return figClone;
     }
 
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#makeSelection()
+     */
     public Selection makeSelection() {
         Object pstate = null;
         Selection sel = null;
         if (getOwner() != null) {
             pstate = getOwner();
-            if (pstate == null) return sel;
-            if (org.argouml.model.ModelFacade.isAActivityGraph(
-                    ModelFacade.getStateMachine(
-                        ModelFacade.getContainer(pstate)))) {
+            if (pstate == null)
+                return sel;
+            if (org.argouml.model.ModelFacade.isAActivityGraph(ModelFacade
+                    .getStateMachine(ModelFacade.getContainer(pstate)))) {
                 sel = new SelectionActionState(this);
                 ((SelectionActionState) sel).setIncomingButtonEnabled(false);
                 Collection outs = ModelFacade.getOutgoings(getOwner());
-                ((SelectionActionState) sel).
-                    setOutgoingButtonEnabled(outs == null || outs.size() == 0);
-            }
-            else {
+                ((SelectionActionState) sel)
+                        .setOutgoingButtonEnabled(outs == null
+                                || outs.size() == 0);
+            } else {
                 sel = new SelectionState(this);
                 ((SelectionState) sel).setIncomingButtonEnabled(false);
                 Collection outs = ModelFacade.getOutgoings(getOwner());
-                ((SelectionState) sel).
-                    setOutgoingButtonEnabled(outs == null || outs.size() == 0);
+                ((SelectionState) sel).setOutgoingButtonEnabled(outs == null
+                        || outs.size() == 0);
             }
         }
         return sel;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object node) {
-	super.setOwner(node);
-	bindPort(node, _bigPort);
+        super.setOwner(node);
+        bindPort(node, bigPort);
     }
 
-    /** Initial states are fixed size. */
-    public boolean isResizable() { return false; }
+    /**
+     * Initial states are fixed size.
+     * 
+     * @see org.tigris.gef.presentation.Fig#isResizable()
+     */
+    public boolean isResizable() {
+        return false;
+    }
 
-    //   public Selection makeSelection() {
-    //     return new SelectionMoveClarifiers(this);
-    //   }
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
+    public void setLineColor(Color col) {
+        head.setLineColor(col);
+    }
 
-    public void setLineColor(Color col) { _head.setLineColor(col); }
-    public Color getLineColor() { return _head.getLineColor(); }
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
+    public Color getLineColor() {
+        return head.getLineColor();
+    }
 
-    public void setFillColor(Color col) { _head.setFillColor(col); }
-    public Color getFillColor() { return _head.getFillColor(); }
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
+    public void setFillColor(Color col) {
+        head.setFillColor(col);
+    }
 
-    public void setFilled(boolean f) { }
-    public boolean getFilled() { return true; }
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
+    public Color getFillColor() {
+        return head.getFillColor();
+    }
 
-    public void setLineWidth(int w) { _head.setLineWidth(w); }
-    public int getLineWidth() { return _head.getLineWidth(); }
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
+    public void setFilled(boolean f) {
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFilled()
+     */
+    public boolean getFilled() {
+        return true;
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
+    public void setLineWidth(int w) {
+        head.setLineWidth(w);
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
+    public int getLineWidth() {
+        return head.getLineWidth();
+    }
 
     ////////////////////////////////////////////////////////////////
     // Event handlers
 
-    public void mouseClicked(MouseEvent me) { }
-    public void keyPressed(KeyEvent ke) { }
+    /**
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
+    public void mouseClicked(MouseEvent me) {
+    }
+
+    /**
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
+    public void keyPressed(KeyEvent ke) {
+    }
 
     static final long serialVersionUID = 6572261327347541373L;
 
