@@ -89,7 +89,15 @@ public class ModuleLoader {
 	    else {
 	        argoHome = new File(argoRoot).getAbsoluteFile().getParent();
 	    }
-            argoHome = java.net.URLDecoder.decode(argoHome);
+	    try {
+	        /* JDK 1.2 URLDecoder.decode(String) throws Exception
+		 * so we catch it here (and ignore it).
+		 * JDK 1.3 and JDK 1.4 do not.
+		 */
+	        argoHome = java.net.URLDecoder.decode(argoHome);
+	    }
+	    catch (Exception e) { }
+
 	    ArgoModule.cat.info("argoHome is " + argoHome);
 	}
     }
