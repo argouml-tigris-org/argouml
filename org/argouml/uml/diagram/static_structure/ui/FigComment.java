@@ -45,11 +45,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.diagram.state.StateDiagramGraphModel;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -100,6 +95,8 @@ public class FigComment
      * The main constructor used for file loading.
      */
     public FigComment() {
+        allowRemoveFromDiagram(false);
+        
         body = new FigPoly(Color.black, Color.white);
         body.addPoint(x, y);
         body.addPoint(x + width - 1 - gapY, y);
@@ -195,7 +192,7 @@ public class FigComment
 //		    (((UMLStateDiagram) TargetManager.getInstance()
 //		            .getTarget()).getGraphModel());
 //		// We are editing, so we set the Namespace directly.
-//                Model.getCoreHelper().setNamespace(comment, gm.getNamespace());
+//              Model.getCoreHelper().setNamespace(comment, gm.getNamespace());
 //            }
 //        } else {
 //	    // Add the comment to the same namespace as the annotated element.
@@ -203,7 +200,8 @@ public class FigComment
 //                    ModelFacade.getNamespace(element));
 //        }
 //
-//        storeNote(placeString()); // Set the default text for this figure type.
+//        // Set the default text for this figure type.
+//        storeNote(placeString()); 
 //    }
 
     /**

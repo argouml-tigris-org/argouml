@@ -95,6 +95,12 @@ public abstract class FigEdgeModelElement
 
     private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
+    
+    /**
+     * Set the removeFromDiagram to false if this edge may not 
+     * be removed from the diagram.
+     */
+    private boolean removeFromDiagram = true;
 
     /**
      * <code>BUNDLE</code>
@@ -254,7 +260,9 @@ public abstract class FigEdgeModelElement
         // POPUP_ADD_OFFSET should be equal to the number of items added here:
         popUpActions.addElement(new JSeparator());
         popUpActions.addElement(ActionProperties.getSingleton());
-        popUpActions.addElement(ActionDeleteFromDiagram.getSingleton());
+        if (removeFromDiagram) {
+            popUpActions.addElement(ActionDeleteFromDiagram.getSingleton());
+        }
         return popUpActions;
     }
 
@@ -922,4 +930,10 @@ public abstract class FigEdgeModelElement
         return ITALIC_LABEL_FONT;
     }
 
+    /**
+     * @param allowed true if the function RemoveFromDiagram is allowed
+     */
+    protected void allowRemoveFromDiagram(boolean allowed) {
+        this.removeFromDiagram = allowed;
+    }
 } /* end class FigEdgeModelElement */
