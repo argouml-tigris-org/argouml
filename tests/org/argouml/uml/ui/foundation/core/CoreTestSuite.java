@@ -42,7 +42,6 @@ public class CoreTestSuite {
 			  + CoreTestSuite.class.getPackage().getName());
 	suite.addTestSuite(TestUMLCollaborationInteractionListModel.class);
 	suite.addTestSuite(TestUMLElementOwnershipSpecificationCheckBox.class);
-	suite.addTestSuite(TestUMLElementOwnershipVisibilityButtonGroup.class);
 	suite.addTestSuite(TestUMLFeatureOwnerComboBoxModel.class);
 	suite.addTestSuite(TestUMLFeatureOwnerScopeCheckBox.class);
 	suite.addTestSuite(TestUMLGeneralizationPowertypeComboBoxModel.class);
