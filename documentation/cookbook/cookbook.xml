@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd">
+
+<!-- THIS IS THE ARGO/UML DEVELOPER COOKBOOK 
+     - PLEASE FEEL FREE TO ADD TO THE CONTENT AND INSERT YOUR 
+     NAME IN THE AUTHOR GROUP.
+     - IMAGES SHOULD BE LOCATED IN THE GENERAL IMAGES SECTION OF THE 
+     DOCUMENTATION MODULE UNDER THE DIRECTORY COOKBOOK
+     - PLEASE VERIFY THAT YOUR CHANGES COMPILE CORRECTLY BEFORE COMMITING THEM
+-->
+     
+<book>
+     <bookinfo>
+         <date>2001-11-10
+         </date>
+         <title>ArgoUML Programmers Cookbook</title>
+         <subtitle>An introduction to ArgoUML Programming</subtitle>
+         <authorgroup>
+             <author>
+                 <firstname>Markus</firstname>
+                 <surname>Klink</surname>
+             </author>
+         </authorgroup>
+         <legalnotice>
+             <para>No notice here.</para>
+         </legalnotice>
+     </bookinfo>
+     <toc/>
+     <chapter id="thanks">
+     <title>Thanks</title>
+     <para>We, the authors would like to take the opportunity to thank everyone involved in the creation of this documentation, and especially the people behind setting up the DocBook environment. In particular thanks go out to Alejandro Ramirez, Phillipe Vanpeperstraete and Andreas Rueckert.  Thank you!</para>
+ </chapter>
+     <chapter id="Preliminaries">
+     <title>Preliminaries</title>
+     <sect1 id="starting">
+     <title>Getting started</title>
+     <para>In order to develop with ArgoUML it is absolutely mandatory to get get the CVS version of ArgoUML. See the ArgoUML website for instructions for that.</para>
+     <para>It is also recommended that you check out GEF from <ulink url="http://gef.tigris.org">gef.tigris.org</ulink> because many things in Argo relate to GEF and it is quite handy to have the source code available. Especially since during development cycles new gef libraries to not as frequently get checked into the argouml modules, so it is useful to build the current version for yourself in order to avoid build errors.</para>
+     <para>If you want to - but that is really more of a gimmick - get yourself the source of the NSUML library to. But that is not strictly required.
+ </para>
+ </sect1>
+ <sect1 id="Build">
+     <title>Build Process</title>
+     <para>
+     The ArgoUML build process is driven by ant, and it is highly recommend that you stick to that. There are people known to build from JBuilder or Netbeans, but always make sure that your work compile with the plain vanilla build process.
+     </para>
+ </sect1>
+ <sect1 id="mailing_lists">
+     <title>Mailing Lists</title>
+     <para>All developers <emphasis>MUST</emphasis> subscribe to the mailinglist for developers. Please find the details at: <ulink url="http://argouml.tigris.org/servlets/ProjectMailingListList">http://argouml.tigris.org/servlets/ProjectMailingListList</ulink>
+     </para>
+     <para>It is also recommended to join the CVS and Issues mailinglist. Both have pretty low traffic, but it helps to see what is going on.
+     </para>
+ </sect1>
+</chapter>
+<chapter id="components">
+    <title>ArgoUML Components</title>
+    <sect1 id="bigger_components">
+    <title>The bigger picture, ArgoUML and supporting libraries</title>
+    <para>
+<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/cookbook/big.gif"/>
+					</imageobject>
+				</mediaobject>
+    <itemizedlist>
+      <listitem><para>Well, ArgoUML is obviously the main thing.</para></listitem>
+      <listitem><para> stands for <emphasis>Graph Editing Framework</emphasis>. It is the package which controls most of the graphical aspects of ArgoUML.</para></listitem>
+      <listitem><para>NSUML stands for <emphasis>Novosoft UML</emphasis>. This library gives ArgoUML all the components which are required to deal with UML objects and their relationships with each other. Normally you can recognize everything out of the NSUML packages very easily because the classes start with a capital M.</para>
+</listitem>
+</itemizedlist>
+</para>
+</sect1>
+<sect1 id="nsuml">
+<title>NS-UML</title>
+<para>
+<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/cookbook/nsuml_foundation"/>
+					</imageobject>
+</mediaobject>
+</para>
+<para>
+<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/cookbook/nsuml_behaviour"/>
+					</imageobject>
+</mediaobject>
+</para>
+</sect1>
+
+<sect1 id="small">
+<title>The smaller components, inside ArgoUML</title>
+<para>
+ArgoUML itself breaks down into several components. The graphic does not reflect the true package names, neither the true dependencies of the packages.
+<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/cookbook/small.gif"/>
+					</imageobject>
+				</mediaobject>
+<itemizedlist>
+<listitem><para>Critics</para></listitem>
+<listitem><para>Diagrams</para></listitem>
+<listitem><para>Notation</para></listitem>
+<listitem><para>Code Generation</para></listitem>
+<listitem><para>Reverse Engineering</para></listitem>
+<listitem><para>Help System</para></listitem>
+<listitem><para>Internationalization</para></listitem>
+<listitem><para>Plugin-Module API</para></listitem>
+<listitem><para>Logging</para></listitem>
+</itemizedlist>
+</para>
+</sect1>
+</chapter>
+
+<chapter id="inside_components">
+<title>Inside the components</title>
+<para>...</para>
+<sect1 id="general">
+<title>General information</title>
+<para>This section explains some general concepts which come in handy, when 
+programming in Argo/UML.
+</para>
+<sect2 id="howdoi_general">
+<title>How do I ...?</title>
+<para>
+<itemizedlist>
+<listitem><para>...get the according NS-UML element for a given FigXXX class?</para>
+<para>each FigXXX implements the method getOwner() which returns the appropriate owner element which is responsible for this Fig element.
+</para>
+</listitem>
+<listitem><para>...get the according Fig element for a given MModelElement?</para>
+<para>for this one needs to iterate through all fig elements and invoke getOwner. Compare the result with the given MModelElement. Beware that there might be more than one Fig Element per MModelElement.</para>
+</listitem>
+</itemizedlist>
+</para> 
+</sect2>
+</sect1>
+
+
+
+<sect1 id="critics">
+<title>Critics</title>
+<para>Here is a small illustration</para>
+<mediaobject>
+					<imageobject>
+						<imagedata format="GIF" fileref="images/cookbook/critics.gif"/>
+					</imageobject>
+				</mediaobject>
+<para>Critics are currently located in:
+<itemizedlist>
+<listitem><para>org.argouml.cognitive.critics</para>
+<para>These are basic critics, which are very general in nature. For example ArgoUML keeps nagging when Modelelements overlap, which makes the Diagram hard to read.</para></listitem>
+<listitem><para>org.argouml.uml.cognitive.critics</para>
+<para>These are Critics which are directly related to UML issues (well, more or less). For example, it will nag when a class has two many operations, because that makes it hard to maintain the particular class.</para></listitem>
+<listitem><para>org.argouml.pattern.cognitive.critics</para>
+<para>These are critics related to patterns. Currently they deal only with the Singleton pattern</para>
+</listitem>
+<listitem><para>org.argouml.language.java.cognitive.critics</para>
+<para>These are critics which deal with java specific issues. Currently this is only a warning agains modelling multiple inheritance.</para>
+</listitem>
+</itemizedlist>
+</para>
+<sect2 id="howdoi_critics">
+<title>How do I ...?</title>
+<para>
+<itemizedlist>
+<listitem><para>...add a critique?</para>
+<para>Your best bet is to look for a critique, which does something similiar and copy what it does. The locations of the critics are mentioned above.
+</para>
+</listitem>
+<listitem><para>...fix a critique?</para>
+<para>Locate the critique and insert some logging code. You should make sure that you understand all the implications of changes, therefore it is a good idea to see what makes the critic nag in the first place. But rest assured: some of the critics haven't been updated to reflect the latest changes in ArgoUML, so this is a procedure which is well worth digging into, since it gives you also some exposure to related NSUML elements.</para>
+</listitem>
+<listitem><para>...change the text of a critique?</para>
+<para>The texts of the critics should be in the according localization files and resource bundles. Be careful: in some critics the text is still in the critic, but if yo change that, you will notice that it doesn't have any effect.</para>
+</listitem>
+</itemizedlist>
+</para> 
+</sect2>
+</sect1>
+<sect1 id="notation">
+<title>Notation</title>
+<sect2 id="howdoi_notation">
+<title>How do I ...?</title>
+<para>...</para>
+</sect2>
+</sect1>
+
+<sect1 id="diagrams">
+<title>Diagrams</title>
+<sect2 id="howdoi_diagrams">
+<title>How do I ...?</title>
+<para>...</para></sect2>
+</sect1>
+
+<sect1 id="reverse">
+<title>Reverse Engineering</title>
+<sect2 id="howdoi_reverse">
+<title>How do I ...?</title>
+<para>...</para></sect2>
+</sect1>
+
+<sect1 id="help">
+<title>Help System</title>
+<sect2 id="howdoi_help">
+<title>How do I ...?</title>
+<para>...</para></sect2>
+</sect1>
+
+<sect1 id="internationalization">
+<title>Internalization</title>
+<sect2 id="howdoi_internationalization">
+<title>How do I ...?</title>
+<para>...</para></sect2>
+</sect1>
+
+<sect1 id="plugins">
+<title>PlugIns</title>
+<sect2 id="howdoi_plugins">
+<title>How do I ...?</title>
+<para>...</para></sect2>
+</sect1>
+
+<sect1 id="logging">
+<title>Logging</title>
+<sect2 id="howdoi_logging">
+<title>How do I ...?</title>
+<para>
+<itemizedlist>
+<listitem><para>... create logging entries?</para>
+<para>ArgoUML uses the standard <ulink url="http://jakarta.apache.org/log4j/">Log4j</ulink> logging procedures. This is not fully implemented yet at the time of writing. However in <emphasis>org.argouml.resources</emphasis> you will some example log configuration files. Modify these to your needs.</para>
+<para>In order to invoke ArgoUML with logging support give it the command line parameter <emphasis>-Dlog4j.configuration=org/argouml/resource/<emphasis>your-file.lcf</emphasis></emphasis>. You also need to make sure that the log configuration file is in the build directory, so do an ant package for example before starting ArgoUML.
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</sect2>
+</sect1>
+</chapter>
+
+<chapter id="cvs">
+<title>Employed CVS standards</title>
+<sect1 id="branches">
+<title>Creating and using branches</title>
+<para>We use the following standards in Argo/UML:
+<itemizedlist>
+          <listitem><para>Released versions get the tag <emphasis>VERSION_X_X_X</emphasis></para></listitem>
+          <listitem><para>Versions which are considered stable in between official releases get build numbers assigned to them: <emphasis>VERSION_X_X_X_BLDYYY</emphasis></para></listitem>
+          <listitem><para>Developers working on code, with an unspecified due date are requested to put the code into a branch if it is deemed useful that the code can be shared. Developer branches follow the scheme: <emphasis>work_explanation_owner</emphasis>, where 
+            <itemizedlist>
+              <listitem><para>work is a literal</para></listitem>
+              <listitem><para>explanation is something like javahelp, propertypanel, cppcodegeneration</para></listitem>
+              <listitem><para>owner is a self explaining code for the owner of the branch, e.g. tlach (Thierry Lach) or mklink (Markus Klink).</para></listitem>
+              </itemizedlist>
+</para>
+          </listitem>
+</itemizedlist>
+</para>
+<para>Merging branches together is causing some work. So please use them sparingly and announce your attention before on the mailinglist.
+</para>
+</sect1>
+</chapter>
+
+<chapter id="further_reading">
+<title>Further Reading</title>
+<sect1 id="robbins">
+<title>Jason Robbins Dissertation</title>
+<para>
+The dissertation of Jason Robbins is a <emphasis>MUST READ</emphasis> for everyone concerned about ArgoUML. Be careful though, since it is based on an old version of ArgoUML, but many of the concepts remain intact.
+</para>
+<para><emphasis>LINK: </emphasis><ulink url="http://argouml.tigris.org/docs/robbins_dissertation/">Robbins Dissertation</ulink>
+</para>
+</sect1>
+</chapter>
+</book>
+
+
