@@ -421,20 +421,22 @@ public class FigInterface extends FigNodeModelElement {
     MModelElement me = (MModelElement) getOwner();
     MNamespace m = null;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    if (me.getNamespace() == null) {
-    if ((encloser == null && me.getNamespace() == null) ||
-        (encloser != null && encloser.getOwner() instanceof MPackage)) {
-      if (encloser != null) {
-        m = (MNamespace) encloser.getOwner();
-      } else if (pb.getTarget() instanceof UMLDiagram) {
-	    m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
-      }
-      try {
-        me.setNamespace(m);
-      } catch (Exception e) {
-        Argo.log.error("could not set package", e);
-      }
+
+    try {
+       // If moved into an Package
+        if (encloser != null && encloser.getOwner() instanceof MPackage) {
+             me.setNamespace((MNamespace) encloser.getOwner());
+        }
+
+        // If default Namespace is not already set
+        if (me.getNamespace() == null &&
+	    pb.getTarget() instanceof UMLDiagram) {
+	  m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
+          me.setNamespace(m);
+        }
     }
+    catch (Exception e) {
+      System.out.println("could not set package due to:"+e + "' at "+encloser);
     }
 
     // The next if-clause is important for the Deployment-diagram
