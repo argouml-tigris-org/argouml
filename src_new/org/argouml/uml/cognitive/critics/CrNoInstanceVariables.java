@@ -62,6 +62,7 @@ public class CrNoInstanceVariables extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MClass)) return NO_PROBLEM;
     MClass cls = (MClass) dm;
+    if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
     if ((cls.getStereotype()!=null) && "utility".equals(cls.getStereotype().getName()) )
       return NO_PROBLEM;
     Collection str = getInheritedStructuralFeatures(cls,0);

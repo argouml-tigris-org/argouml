@@ -192,33 +192,46 @@ implements Runnable, java.io.Serializable {
 
   public Vector getToDoItems() { return _items; }
 
-    // needs-more-work: not implemented
+    /**
+     * @return the set of offenders
+     */
     public VectorSet getOffenders() {
-	if (_allOffenders == null) {
+	// Extra care to be taken since _allOffenders can be reset while
+	// this method is running.
+	VectorSet all = _allOffenders;
+	if (all == null) {
 	    int size = _items.size();
-	    _allOffenders = new VectorSet(size*2);
+	    all = new VectorSet(size*2);
 	    for (int i = 0; i < size; i++) {
 		ToDoItem item = (ToDoItem) _items.elementAt(i);
-		_allOffenders.addAllElements(item.getOffenders());
+		all.addAllElements(item.getOffenders());
 	    }
+	    _allOffenders = all;
 	}
-	return _allOffenders; 
+	return all; 
     }
     private void addOffenders(VectorSet newoffs) {
 	if (_allOffenders != null)
 	    _allOffenders.addAllElements(newoffs);
     }
 
+    /**
+     * @return the set of all the posters
+     */
     public VectorSet getPosters() { 
-	if (_allPosters == null) {
-	    _allPosters = new VectorSet();
+	// Extra care to be taken since _allPosters can be reset while
+	// this method is running.
+	VectorSet all = _allPosters;
+	if (all == null) {
 	    int size = _items.size();
+	    all = new VectorSet();
 	    for (int i = 0; i < size; i++) {
 		ToDoItem item = (ToDoItem) _items.elementAt(i);
-		_allPosters.addElement(item.getPoster());
+		all.addElement(item.getPoster());
 	    }
+	    _allPosters = all;
 	}
-	return _allPosters;
+	return all;
     }
     private void addPosters(Poster newp) {
 	if (_allPosters != null)

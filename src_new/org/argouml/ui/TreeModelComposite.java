@@ -109,6 +109,13 @@ implements TreeModel, Cloneable {
   public void setRoot(Object r) { _root = r; }
 
 
+    /**
+     * Finds the each of the children of a parent in the tree.
+     *
+     * @param parent in the tree
+     * @param index of child to find
+     * @return the child found at index. Null if index is out of bounds.
+     */
   public Object getChild(Object parent, int index) {
     if (_flat && parent == _root) {
       return _flatChildren.elementAt(index);
@@ -120,7 +127,7 @@ implements TreeModel, Cloneable {
       if (index < childCount) return tm.getChild(parent, index);
       index -= childCount;
     }
-    throw new Error("TreeModelComposite should never get here");
+    return null;
   }
 
   public int getChildCount(Object parent) {

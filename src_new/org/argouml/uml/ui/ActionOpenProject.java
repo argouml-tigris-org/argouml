@@ -65,6 +65,10 @@ public class ActionOpenProject extends UMLAction {
   ////////////////////////////////////////////////////////////////
   // main methods
   
+    /** Performs the action.
+     *
+     * @param e an event
+     */
   public void actionPerformed (ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();

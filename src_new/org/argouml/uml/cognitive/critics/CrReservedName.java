@@ -177,6 +177,8 @@ public class CrReservedName extends CrUML {
     _javaReserved.addElement("var");
     _javaReserved.addElement("volatile");
     _javaReserved.addElement("transient");
+
+    _javaReserved.addElement("assert");
   }
 
 

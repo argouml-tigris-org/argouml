@@ -53,6 +53,7 @@ public class CrNoOperations extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MClass)) return NO_PROBLEM;
     MClass cls = (MClass) dm;
+    if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
     //if (cls.containsStereotype(MStereotype.UTILITY)) return NO_PROBLEM;
     // stereotype <<record>>?
     //needs-more-work: different critic or special message for classes
