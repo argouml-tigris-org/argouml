@@ -57,7 +57,7 @@ implements PluggableDiagram {
     public boolean isModuleEnabled() { return true; }
     public Vector getModulePopUpActions(Vector v, Object o) { return null; }
     public boolean shutdownModule() { return true; }
-    public JMenuItem getDiagramMenuItem() { return new JMenuItem(Argo.localize(_bundle,"diagram_type")); } // add icon if desired
+    public JMenuItem getDiagramMenuItem() { return new JMenuItem(Argo.localize(_bundle,"menu.item.diagram-type")); } // add icon if desired
 
     public String getDiagramResourceBundleKey() {
         return DIAGRAM_BUNDLE;
