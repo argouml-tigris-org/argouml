@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,53 +22,25 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.util;
+package org.argouml.kernel;
 
-import java.io.File;
-import javax.swing.filechooser.FileFilter;
+/**
+ * An exception to be thrown during failure of a opening
+ * and reading some storage medium.
+ * @author Bob Tarling
+ */
+public class OpenException extends PersistenceException {
 
-public class SuffixFilter extends FileFilter {
-
-    ////////////////////////////////////////////////////////////////
-    // instance varaibles
-
-    public final String _suffix;
-    public final String _desc;
-
-    ////////////////////////////////////////////////////////////////
-    // constructor
-
-    public SuffixFilter(String s, String d) {
-	_suffix = s;
-	_desc = d;
+    public OpenException(String message) {
+        super(message);
     }
-
-    ////////////////////////////////////////////////////////////////
-    // FileFilter API
-
-    public boolean accept(File f) {
-	if (f == null) return false;
-	if (f.isDirectory()) return true;
-	String extension = getExtension(f);
-	if (_suffix.equalsIgnoreCase(extension)) return true;
-	return false;
+    
+    public OpenException(String message, Throwable cause) {
+        super(message, cause);
     }
-
-    public static String getExtension(File f) {
-	if (f == null) return null;
-	return getExtension(f.getName());
+    
+    public OpenException(Throwable cause) {
+        super(cause);
     }
+}
 
-    public static String getExtension(String filename) {
-	int i = filename.lastIndexOf('.');
-	if (i > 0 && i < filename.length() - 1) {
-	    return filename.substring(i + 1).toLowerCase();
-	}
-	return null;
-    }
-
-    public String getDescription() {
-	return _desc + " (*." + _suffix + ")";
-    }
-
-} /* end class SuffixFilter */

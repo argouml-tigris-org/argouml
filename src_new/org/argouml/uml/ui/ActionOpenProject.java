@@ -33,23 +33,24 @@ import java.text.MessageFormat;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.xml.parsers.ParserConfigurationException;
+import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.IllegalFormatException;
+import org.argouml.kernel.AbstractFilePersister;
+import org.argouml.kernel.ArgoFilePersister;
+import org.argouml.kernel.OpenException;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.kernel.XmiFilePersister;
+import org.argouml.kernel.ZargoFilePersister;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.menubar.GenericArgoMenuBar;
-import org.argouml.util.FileFilters;
-import org.argouml.util.SuffixFilter;
 import org.argouml.util.osdep.OsUtil;
 import org.argouml.xml.argo.ArgoParser;
 import org.tigris.gef.base.Globals;
-import org.xml.sax.SAXException;
 
 /**
  * Action that loads the project.
@@ -64,6 +65,10 @@ public class ActionOpenProject
 
     private static final Logger LOG =
         Logger.getLogger(ActionOpenProject.class);
+    
+    private AbstractFilePersister zargoPersister = new ZargoFilePersister();
+    private AbstractFilePersister argoPersister  = new ArgoFilePersister();
+    private AbstractFilePersister xmiPersister  = new XmiFilePersister();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -144,11 +149,15 @@ public class ActionOpenProject
             chooser.setDialogTitle(
                     Translator.localize("Actions",
 						 "filechooser.open-project"));
-            SuffixFilter filter = FileFilters.CompressedFileFilter;
-            chooser.addChoosableFileFilter(filter);
-            chooser.addChoosableFileFilter(FileFilters.UncompressedFileFilter);
-            chooser.addChoosableFileFilter(FileFilters.XMIFilter);
-            chooser.setFileFilter(filter);
+            
+            FileFilter allFiles = chooser.getFileFilter();
+            chooser.removeChoosableFileFilter(allFiles);
+            
+            chooser.addChoosableFileFilter(zargoPersister);
+            chooser.addChoosableFileFilter(argoPersister);
+            chooser.addChoosableFileFilter(xmiPersister);
+            chooser.setFileFilter(zargoPersister);
+            
 
             int retval = chooser.showOpenDialog(pb);
             if (retval == 0) {
@@ -200,7 +209,20 @@ public class ActionOpenProject
 
         Project p = null;
         try {
-            p = ProjectManager.getManager().loadProject(url);
+            AbstractFilePersister persister = null;
+            String file = url.getFile();
+            if (file.endsWith("." + zargoPersister.getExtension())) {
+                persister = zargoPersister;
+            } else if (file.endsWith("." + argoPersister.getExtension())) {
+                persister = argoPersister;
+            } else if (file.endsWith("." + xmiPersister.getExtension())) {
+                persister = xmiPersister;
+            } else {
+                throw new IllegalStateException("Filename " + url.getFile() + 
+                                                " is not of a known file type");
+            }
+          
+            p = persister.loadProject(url);
 
             ProjectBrowser.getInstance().showStatus(
 		    MessageFormat.format(Translator.localize(
@@ -209,7 +231,7 @@ public class ActionOpenProject
 					 new Object[] {
 					     url.toString()
 					 }));
-        } catch (ParserConfigurationException ex) {
+        } catch (OpenException ex) {
             LOG.error("Exception while loading project", ex);
             ex.printStackTrace();
             showErrorPane(
@@ -219,50 +241,6 @@ public class ActionOpenProject
 			  + "Please read the instructions at www.argouml.org "
 			  + "on the "
 			  + "requirements of argouml and how to install it.");
-            p = oldProject;
-        } catch (IllegalFormatException ex) {
-            LOG.error("Exception while loading project", ex);
-            ex.printStackTrace();
-            showErrorPane(
-			  "Could not load the project "
-			  + url.toString()
-			  + "\n"
-			  + "The format of the file is not supported.");
-            p = oldProject;
-        } catch (java.io.FileNotFoundException ex) {
-            showErrorPane(
-			  "Could not load the project "
-			  + url.toString()
-			  + "\n"
-			  + "The file was not found.");
-            p = oldProject;
-        } catch (IOException io) {
-            LOG.error("Exception while loading project", io);
-            io.printStackTrace();
-            // now we have to handle the case of a corrupted XMI file
-            showErrorPane(
-			  "Could not load the project "
-			  + url.toString()
-			  + "\n"
-			  + "Project file probably corrupted.\n"
-			  + "\n"
-			  + io.getMessage() + "\n"
-			  + "\n"
-			  + "Please file a bug report at argouml.tigris.org "
-			  + "including information on what actions you took "
-			  + "when creating the file and "
-			  + "the corrupted project file.");
-            p = oldProject;
-        } catch (SAXException ex) {
-            LOG.error("Exception while loading project", ex);
-            ex.printStackTrace();
-            showErrorPane(
-			  "Could not load the project "
-			  + url.toString()
-			  + "\n"
-			  + "Project file probably corrupted.\n"
-			  + "If the problem keeps persisting, "
-			  + "please file a bug report at www.argouml.org.\n");
             p = oldProject;
         } finally {
             if (!ArgoParser.SINGLETON.getLastLoadStatus()) {
@@ -319,16 +297,16 @@ public class ActionOpenProject
      * @return true if it is OK.
      */
     public boolean doCommand(String argument) {
-	final URL url;
-	try {
-	    url = new URL(argument);
-	} catch (MalformedURLException e) {
-            e.printStackTrace();
-	    LOG.error("Incorrectly formatted URL.", e);
-	    return false;
-	}
-	loadProject(url);
-	return true;
+        final URL url;
+        try {
+            url = new URL(argument);
+        } catch (MalformedURLException e) {
+                e.printStackTrace();
+            LOG.error("Incorrectly formatted URL.", e);
+            return false;
+        }
+        loadProject(url);
+        return true;
     }
 
 } /* end class ActionOpenProject */
