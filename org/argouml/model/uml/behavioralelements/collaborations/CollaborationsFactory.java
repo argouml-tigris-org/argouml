@@ -289,8 +289,20 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     	}
     	return buildMessage(inter, role);
     }
-
-
+    
+    /**
+     * Builds an activator for some message
+     */
+    public MMessage buildActivator(MMessage owner, MInteraction interaction) {
+    	if (owner == null) return null;
+    	if (interaction == null) interaction = owner.getInteraction();
+    	if (interaction == null) return null;
+    	
+    	MMessage activator = createMessage();
+    	activator.setInteraction(interaction);
+    	owner.setActivator(activator);
+    	return activator;
+    }
 
 }
 
