@@ -1542,6 +1542,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Get the residences of an element.
+     *
+     * @param handle the model element that we are getting the residences of
+     * @returns the residence collection
+     */
+    public static Collection getElementResidences(Object handle) {
+        if (handle instanceof MModelElement)
+            return ((MModelElement) handle).getElementResidences();
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /**
      * Returns the entry action to a state
      * @param handle
@@ -1702,6 +1714,13 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    public static Collection getConstraints(Object handle) {
+        if (handle instanceof MModelElement) {
+            return ((MModelElement) handle).getConstraints();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+    
     /**
      * Returns the container for the given modelelement. The container is the
      * owner of the modelelement. It will be null for elements that don't have
@@ -1995,6 +2014,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /**
+     * Returns the sourceflows of a model element
+     * @param handle
+     * @return a collection of sourceflows
+     */
+    public static Collection getSourceFlows(Object handle) {
+        if (handle instanceof MModelElement) {
+            return ((MModelElement) handle).getSourceFlows();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /** The list of Specializations from a GeneralizableElement.
      *
      * @param handle GeneralizableElement to retrieve from.
@@ -2028,6 +2059,18 @@ public class ModelFacade {
      * @return Object
      */
     public static Object getStereoType(Object handle) {
+        if (isAModelElement(handle)) {
+            return ((MModelElement) handle).getStereotype();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the stereotype belonging to some given modelelement
+     * @param handle
+     * @return Object
+     */
+    public static Object getStereotype(Object handle) {
         if (isAModelElement(handle)) {
             return ((MModelElement) handle).getStereotype();
         }
@@ -2090,6 +2133,18 @@ public class ModelFacade {
     public static Object getTarget(Object handle) {
         if (isATransition(handle)) {
             return ((MTransition) handle).getTarget();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the targetflows of a model element
+     * @param handle
+     * @return a collection of targetflows
+     */
+    public static Collection getTargetFlows(Object handle) {
+        if (handle instanceof MModelElement) {
+            return ((MModelElement) handle).getTargetFlows();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }

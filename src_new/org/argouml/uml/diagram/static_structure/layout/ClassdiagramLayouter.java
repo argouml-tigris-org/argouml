@@ -173,8 +173,7 @@ public class ClassdiagramLayouter implements Layouter {
                 
                 if ( ModelFacade.isAModelElement(node)) {
                     Vector specs =
-			new Vector(((MModelElement) node)
-				   .getClientDependencies());
+			new Vector(ModelFacade.getClientDependencies(node));
                     specs.addAll(ModelFacade.getSupplierDependencies(node));
                     for ( Iterator iter = specs.iterator(); iter.hasNext(); ) {
                         
@@ -801,7 +800,6 @@ public class ClassdiagramLayouter implements Layouter {
     /** internal */
     private int yPos;
 }
-
 
 
 

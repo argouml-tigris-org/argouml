@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -42,6 +41,7 @@ import java.util.*;
 
 import javax.swing.event.*;
 import javax.swing.*;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -516,7 +516,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
             // If the element was a namespace, we recurse to find more elements
 
-            if (org.argouml.model.ModelFacade.isANamespace(element)) {
+            if (ModelFacade.isANamespace(element)) {
                 collectElements((MNamespace) element, profile, isPhantom);
             }
         }
@@ -584,7 +584,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         Object target = _container.getTarget();
 
-        if (!(org.argouml.model.ModelFacade.isAModelElement(target))) {
+        if (!(ModelFacade.isAModelElement(target))) {
             return;
         }
 
@@ -986,7 +986,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         Object source = event.getSource();
 
-        if ((!(org.argouml.model.ModelFacade.isAModelElement(source))) ||
+        if ((!(ModelFacade.isAModelElement(source))) ||
              (!(isAcceptible((MModelElement) source)))) {
             return;
         }
@@ -1036,10 +1036,10 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // If we are a model element, we should have an associated model.
 
         Object target = _container.getTarget();
-        MModel model  = null;
+        Object model  = null;
 
-        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
-            model = ((MModelElement) target).getModel();
+        if (ModelFacade.isAModelElement(target)) {
+            model = ModelFacade.getModel(target);
         }
 
         // Build up an argument list and invoke the set method (remembering to
@@ -1051,8 +1051,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         try {
             _setMethod.invoke(_container, args);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             cat.error(e.toString() + ". " +
                                this.getClass().toString() +
                                ": actionPerformed() - set method failed.", e);

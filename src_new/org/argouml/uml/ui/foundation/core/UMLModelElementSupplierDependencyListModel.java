@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,11 +24,10 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 12, 2002
@@ -52,7 +49,7 @@ public class UMLModelElementSupplierDependencyListModel
      */
     protected void buildModelList() {
         if (_target != null) {
-            setAllElements(((MModelElement) getTarget()).getSupplierDependencies());
+            setAllElements(ModelFacade.getSupplierDependencies(getTarget()));
         }
     }
 
@@ -60,7 +57,7 @@ public class UMLModelElementSupplierDependencyListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return org.argouml.model.ModelFacade.isADependency(o) && ((MModelElement) getTarget()).getSupplierDependencies().contains(o);
+        return ModelFacade.isADependency(o) && ModelFacade.getSupplierDependencies(getTarget()).contains(o);
     }
 
 }

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -121,7 +120,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MModelElement) getTarget()).getStereotype();
+            return ModelFacade.getStereotype(getTarget());
         }
         return null;
     }
