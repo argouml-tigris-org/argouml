@@ -30,16 +30,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.argouml.model.ActivityGraphsFactory;
-import org.argouml.model.CollaborationsFactory;
-import org.argouml.model.CommonBehaviorFactory;
-import org.argouml.model.CoreFactory;
-import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
-import org.argouml.model.ModelManagementFactory;
-import org.argouml.model.StateMachinesFactory;
 import org.argouml.model.UmlFactory;
-import org.argouml.model.UseCasesFactory;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
@@ -526,8 +518,9 @@ class UmlFactoryImpl
      *
      * @return the ExtensionMechanisms factory instance.
      */
-    private ExtensionMechanismsFactory getExtensionMechanisms() {
-        return nsmodel.getExtensionMechanismsFactory();
+    private ExtensionMechanismsFactoryImpl getExtensionMechanisms() {
+        return (ExtensionMechanismsFactoryImpl)
+        	nsmodel.getExtensionMechanismsFactory();
     }
 
     /**
@@ -536,8 +529,8 @@ class UmlFactoryImpl
      *
      * @return the Core factory instance.
      */
-    public CoreFactory getCore() {
-        return nsmodel.getCoreFactory();
+    public CoreFactoryImpl getCore() {
+        return (CoreFactoryImpl) nsmodel.getCoreFactory();
     }
 
     /**
@@ -546,8 +539,8 @@ class UmlFactoryImpl
      *
      * @return the CommonBehavior factory instance.
      */
-    public CommonBehaviorFactory getCommonBehavior() {
-        return nsmodel.getCommonBehaviorFactory();
+    public CommonBehaviorFactoryImpl getCommonBehavior() {
+        return (CommonBehaviorFactoryImpl) nsmodel.getCommonBehaviorFactory();
     }
 
     /**
@@ -556,8 +549,8 @@ class UmlFactoryImpl
      *
      * @return the UseCases factory instance.
      */
-    public UseCasesFactory getUseCases() {
-        return nsmodel.getUseCasesFactory();
+    public UseCasesFactoryImpl getUseCases() {
+        return (UseCasesFactoryImpl) nsmodel.getUseCasesFactory();
     }
 
     /**
@@ -566,8 +559,8 @@ class UmlFactoryImpl
      *
      * @return the StateMachines factory instance.
      */
-    public StateMachinesFactory getStateMachines() {
-        return nsmodel.getStateMachinesFactory();
+    public StateMachinesFactoryImpl getStateMachines() {
+        return (StateMachinesFactoryImpl) nsmodel.getStateMachinesFactory();
     }
 
     /**
@@ -576,8 +569,8 @@ class UmlFactoryImpl
      *
      * @return the Collaborations factory instance.
      */
-    public CollaborationsFactory getCollaborations() {
-        return nsmodel.getCollaborationsFactory();
+    public CollaborationsFactoryImpl getCollaborations() {
+        return (CollaborationsFactoryImpl) nsmodel.getCollaborationsFactory();
     }
 
     /**
@@ -586,8 +579,8 @@ class UmlFactoryImpl
      *
      * @return the ActivityGraphs factory instance.
      */
-    private ActivityGraphsFactory getActivityGraphs() {
-        return nsmodel.getActivityGraphsFactory();
+    private ActivityGraphsFactoryImpl getActivityGraphs() {
+        return (ActivityGraphsFactoryImpl) nsmodel.getActivityGraphsFactory();
     }
 
     /**
@@ -596,8 +589,8 @@ class UmlFactoryImpl
      *
      * @return the ModelManagement factory instance.
      */
-    public ModelManagementFactory getModelManagement() {
-        return nsmodel.getModelManagementFactory();
+    public ModelManagementFactoryImpl getModelManagement() {
+        return (ModelManagementFactoryImpl) nsmodel.getModelManagementFactory();
     }
 
     /**

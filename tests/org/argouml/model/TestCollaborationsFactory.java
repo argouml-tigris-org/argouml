@@ -82,16 +82,6 @@ public class TestCollaborationsFactory extends TestCase {
     }
 
     /**
-     * Test for deletion.
-     */
-    public void testDeleteComplete() {
-        CheckUMLModelHelper.deleteComplete(
-            this,
-            Model.getCollaborationsFactory(),
-            allModelElements);
-    }
-
-    /**
      * Test to check whether elements which are attached to a
      * ClassifierRole get deleted upon deletion of the
      * ClassifierRole. These elements are Interaction, Message,

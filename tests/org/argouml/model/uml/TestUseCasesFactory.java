@@ -90,25 +90,18 @@ public class TestUseCasesFactory extends TestCase {
     }
 
     /**
-     * Test deleteComplete().
-     */
-    public void testDeleteComplete() {
-        CheckUMLModelHelper.deleteComplete(this,
-					   Model.getUseCasesFactory(),
-					   allModelElements);
-    }
-
-    /**
      * Test building extensions.
      */
     public void testBuildExtend1() {
         MUseCase base = (MUseCase) Model.getUseCasesFactory().createUseCase();
-        MUseCase extension = 
+        MUseCase extension =
             (MUseCase) Model.getUseCasesFactory().createUseCase();
-        MExtensionPoint point = (MExtensionPoint) Model.getUseCasesFactory()
-            .buildExtensionPoint(base);
-        MExtend extend = (MExtend) Model.getUseCasesFactory()
-            .buildExtend(base, extension, point);
+        MExtensionPoint point =
+            (MExtensionPoint) Model.getUseCasesFactory()
+            	.buildExtensionPoint(base);
+        MExtend extend =
+            (MExtend) Model.getUseCasesFactory()
+            	.buildExtend(base, extension, point);
         assertTrue("extensionpoint not added to base",
 		   !base.getExtensionPoints().isEmpty());
         assertTrue("extend not added to base", !base.getExtends2().isEmpty());

@@ -137,16 +137,6 @@ public class TestCoreFactory extends TestCase {
     }
 
     /**
-     * Test complete deletion.
-     */
-    public void testDeleteComplete() {
-	CheckUMLModelHelper.deleteComplete(
-					   this,
-					   Model.getCoreFactory(),
-					   allModelElements);
-    }
-
-    /**
      * Test if deleting a classifier does also delete its association.
      */
     public void testDeleteClassifier1() {

@@ -86,15 +86,6 @@ public class TestActivityGraphsFactory extends TestCase {
     }
 
     /**
-     * The test for deletion.
-     */
-    public void testDeleteComplete() {
-        CheckUMLModelHelper.deleteComplete(this,
-					   Model.getActivityGraphsFactory(),
-					   allModelElements);
-    }
-
-    /**
      * @return Returns the allModelElements.
      */
     static String[] getAllModelElements() {

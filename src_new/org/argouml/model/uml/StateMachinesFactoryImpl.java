@@ -672,7 +672,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteCallEvent(Object elem) {
+    void deleteCallEvent(Object elem) {
         if (!(elem instanceof MCallEvent)) {
             throw new IllegalArgumentException();
         }
@@ -682,7 +682,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteChangeEvent(Object elem) {
+    void deleteChangeEvent(Object elem) {
         if (!(elem instanceof MChangeEvent)) {
             throw new IllegalArgumentException();
         }
@@ -694,7 +694,7 @@ public class StateMachinesFactoryImpl
      *
      * @param elem the UML element to be deleted
      */
-    public void deleteCompositeState(Object elem) {
+    void deleteCompositeState(Object elem) {
         if (!(elem instanceof MCompositeState)) {
             throw new IllegalArgumentException();
         }
@@ -710,7 +710,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteEvent(Object elem) {
+    void deleteEvent(Object elem) {
         if (!(elem instanceof MEvent)) {
             throw new IllegalArgumentException();
         }
@@ -720,7 +720,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteFinalState(Object elem) {
+    void deleteFinalState(Object elem) {
         if (!(elem instanceof MFinalState)) {
             throw new IllegalArgumentException();
         }
@@ -730,7 +730,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteGuard(Object elem) {
+    void deleteGuard(Object elem) {
         if (!(elem instanceof MGuard)) {
             throw new IllegalArgumentException();
         }
@@ -740,7 +740,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deletePseudostate(Object elem) {
+    void deletePseudostate(Object elem) {
         if (!(elem instanceof MPseudostate)) {
             throw new IllegalArgumentException();
         }
@@ -750,7 +750,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteSignalEvent(Object elem) {
+    void deleteSignalEvent(Object elem) {
         if (!(elem instanceof MSignalEvent)) {
             throw new IllegalArgumentException();
         }
@@ -760,7 +760,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteSimpleState(Object elem) {
+    void deleteSimpleState(Object elem) {
         if (!(elem instanceof MSimpleState)) {
             throw new IllegalArgumentException();
         }
@@ -771,7 +771,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteState(Object elem) {
+    void deleteState(Object elem) {
         if (!(elem instanceof MState)) {
             throw new IllegalArgumentException();
         }
@@ -783,7 +783,7 @@ public class StateMachinesFactoryImpl
      *
      * @param elem the state machine to be removed.
      */
-    public void deleteStateMachine(Object elem) {
+    void deleteStateMachine(Object elem) {
         if (!(elem instanceof MStateMachine)) {
             throw new IllegalArgumentException();
         }
@@ -800,7 +800,7 @@ public class StateMachinesFactoryImpl
      *
      * @param elem the UML element to be deleted
      */
-    public void deleteStateVertex(Object elem) {
+    void deleteStateVertex(Object elem) {
         if (!(elem instanceof MStateVertex)) {
             throw new IllegalArgumentException();
         }
@@ -820,7 +820,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteStubState(Object elem) {
+    void deleteStubState(Object elem) {
         if (!(elem instanceof MStubState)) {
             throw new IllegalArgumentException();
         }
@@ -830,7 +830,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteSubmachineState(Object elem) {
+    void deleteSubmachineState(Object elem) {
         if (!(elem instanceof MSubmachineState)) {
             throw new IllegalArgumentException();
         }
@@ -840,7 +840,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteSynchState(Object elem) {
+    void deleteSynchState(Object elem) {
         if (!(elem instanceof MSynchState)) {
             throw new IllegalArgumentException();
         }
@@ -850,7 +850,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteTimeEvent(Object elem) {
+    void deleteTimeEvent(Object elem) {
         if (!(elem instanceof MTimeEvent)) {
             throw new IllegalArgumentException();
         }
@@ -860,7 +860,7 @@ public class StateMachinesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteTransition(Object elem) {
+    void deleteTransition(Object elem) {
         if (!(elem instanceof MTransition)) {
             throw new IllegalArgumentException();
         }

@@ -73,7 +73,7 @@ public final class CheckNSUMLModelHelper {
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
 	TestCase.assertTrue("toString() corrupt in " + c,
-		      mo.toString() instanceof String);
+		      	    mo.toString() != null);
 
 	Model.getUmlFactory().delete(mo);
 
@@ -102,9 +102,9 @@ public final class CheckNSUMLModelHelper {
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
 	TestCase.assertTrue("toString() corrupt in " + c,
-		      mo.toString() instanceof String);
+		      	    mo.toString() != null);
 	TestCase.assertTrue("getUMLClassName() corrupt in " + c,
-		      Model.getFacade().getUMLClassName(mo) instanceof String);
+		      	    Model.getFacade().getUMLClassName(mo) != null);
 
 	TestCase.assertTrue(
             "getUMLClassName() different from expected in " + c,
@@ -202,7 +202,7 @@ public final class CheckNSUMLModelHelper {
 				      String[] names) {
         Method[] methods = null;
         try {
-            methods = f.getClass().getMethods();
+            methods = f.getClass().getDeclaredMethods();
         } catch (SecurityException se) {
             TestCase.fail(
                     "SecurityException while retrieving all methods from "
@@ -246,7 +246,7 @@ public final class CheckNSUMLModelHelper {
                         TestCase.assertTrue(
                             "not a valid metaModelName " + names[i],
                             Model.getExtensionMechanismsHelper()
-                                .getMetaModelName((MModelElement) base)
+                                .getMetaModelName(base)
                                     .equals(names[i]));
                     }
                 } catch (NoSuchMethodException ns) { }

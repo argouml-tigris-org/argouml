@@ -90,9 +90,9 @@ public class CheckUMLModelHelper {
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
 	TestCase.assertTrue("toString() corrupt in " + c,
-		      mo.toString() instanceof String);
+		      	    mo.toString() != null);
 	TestCase.assertTrue("getUMLClassName() corrupt in " + c,
-		      Model.getFacade().getUMLClassName(mo) instanceof String);
+		      	    Model.getFacade().getUMLClassName(mo) != null);
 
 	TestCase.assertTrue(
             "getUMLClassName() different from expected in " + c,
@@ -175,43 +175,6 @@ public class CheckUMLModelHelper {
 	};
 
 	createAndRelease(tc, f, names, noarguments);
-    }
-
-    /**
-     * Test the presence of deletion functions for a list of modelelements.
-     *
-     * @param tc the testcase class
-     * @param f the model factory that provides the "delete" functions
-     *          for the modelelements
-     * @param names the names of the modelelements
-     */
-    public static void deleteComplete(TestCase tc,
-				      Object f,
-				      String[] names) {
-        Method[] methods = null;
-        try {
-            methods = f.getClass().getMethods();
-        } catch (SecurityException se) {
-            TestCase.fail(
-                    "SecurityException while retrieving all methods from "
-                    + f.getClass().getName());
-            return;
-        }
-        for (int i = 0; i < names.length; i++) {
-            String methodName = "delete" + names[i];
-            boolean testFailed = true;
-            for (int j = 0; j < methods.length; j++) {
-                Method method = methods[j];
-                if (method.getName().equals(methodName)) {
-                    testFailed = false;
-                    break;
-                }
-            }
-            if (testFailed) {
-                TestCase.fail("Method " + methodName + " not found in "
-                        + f.getClass().getName());
-            }
-        }
     }
 
     /**

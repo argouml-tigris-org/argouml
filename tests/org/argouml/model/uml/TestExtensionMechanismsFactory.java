@@ -77,16 +77,6 @@ public class TestExtensionMechanismsFactory extends TestCase {
     }
 
     /**
-     * Test complete deletion.
-     */
-    public void testDeleteComplete() {
-	CheckUMLModelHelper.deleteComplete(
-		   this,
-		   Model.getExtensionMechanismsFactory(),
-		   allModelElements);
-    }
-
-    /**
      * @return Returns the allModelElements.
      */
     static String[] getAllModelElements() {

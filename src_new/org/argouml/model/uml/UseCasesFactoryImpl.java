@@ -333,7 +333,7 @@ public class UseCasesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteActor(Object elem) {
+    void deleteActor(Object elem) {
         if (!(elem instanceof MActor)) {
             throw new IllegalArgumentException();
         }
@@ -343,7 +343,7 @@ public class UseCasesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteExtend(Object elem) {
+    void deleteExtend(Object elem) {
         if (!(elem instanceof MExtend)) {
             throw new IllegalArgumentException();
         }
@@ -355,7 +355,7 @@ public class UseCasesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteExtensionPoint(Object elem) {
+    void deleteExtensionPoint(Object elem) {
         if (!(elem instanceof MExtensionPoint)) {
             throw new IllegalArgumentException();
         }
@@ -365,7 +365,7 @@ public class UseCasesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteInclude(Object elem) {
+    void deleteInclude(Object elem) {
         if (!(elem instanceof MInclude)) {
             throw new IllegalArgumentException();
         }
@@ -375,7 +375,7 @@ public class UseCasesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteUseCase(Object elem) {
+    void deleteUseCase(Object elem) {
         if (!(elem instanceof MUseCase)) {
             throw new IllegalArgumentException();
         }
@@ -390,7 +390,7 @@ public class UseCasesFactoryImpl
     /**
      * @param elem the UML element to be deleted
      */
-    public void deleteUseCaseInstance(Object elem) {
+    void deleteUseCaseInstance(Object elem) {
         if (!(elem instanceof MUseCaseInstance)) {
             throw new IllegalArgumentException();
         }

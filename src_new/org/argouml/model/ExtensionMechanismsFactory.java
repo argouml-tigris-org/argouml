@@ -100,16 +100,6 @@ public interface ExtensionMechanismsFactory {
     Object buildTaggedValue(String tag, String value);
 
     /**
-     * @param elem the stereotype
-     */
-    void deleteStereotype(Object elem);
-
-    /**
-     * @param elem the taggedvalue
-     */
-    void deleteTaggedValue(Object elem);
-
-    /**
      * Copies a stereotype.
      *
      * @param source is the stereotype to copy.

@@ -113,16 +113,6 @@ public class TestStateMachinesFactory extends TestCase {
     }
 
     /**
-     * Test deletion.
-     */
-    public void testDeleteComplete() {
-	CheckUMLModelHelper.deleteComplete(
-					   this,
-					   Model.getStateMachinesFactory(),
-					   allModelElements);
-    }
-
-    /**
      * @return Returns the allModelElements.
      */
     static String[] getAllModelElements() {

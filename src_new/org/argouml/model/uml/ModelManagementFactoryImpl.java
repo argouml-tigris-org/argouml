@@ -127,7 +127,7 @@ public class ModelManagementFactoryImpl
     /**
      * @param elem to be deleted
      */
-    public void deleteElementImport(Object elem) {
+    void deleteElementImport(Object elem) {
         if (!(elem instanceof MElementImport)) {
             throw new IllegalArgumentException();
         }
@@ -137,7 +137,7 @@ public class ModelManagementFactoryImpl
     /**
      * @param elem to be deleted
      */
-    public void deleteModel(Object elem) {
+    void deleteModel(Object elem) {
         if (!(elem instanceof MModel)) {
             throw new IllegalArgumentException();
         }
@@ -147,7 +147,7 @@ public class ModelManagementFactoryImpl
     /**
      * @param elem to be deleted
      */
-    public void deletePackage(Object elem) {
+    void deletePackage(Object elem) {
         if (!(elem instanceof MPackage)) {
             throw new IllegalArgumentException();
         }
@@ -157,7 +157,7 @@ public class ModelManagementFactoryImpl
     /**
      * @param elem to be deleted
      */
-    public void deleteSubsystem(Object elem) {
+    void deleteSubsystem(Object elem) {
         if (!(elem instanceof MSubsystem)) {
             throw new IllegalArgumentException();
         }

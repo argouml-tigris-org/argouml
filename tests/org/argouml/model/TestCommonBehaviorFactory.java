@@ -111,16 +111,6 @@ public class TestCommonBehaviorFactory extends TestCase {
     }
 
     /**
-     * Test for deletion.
-     */
-    public void testDeleteComplete() {
-	CheckUMLModelHelper.deleteComplete(
-					   this,
-					   Model.getCommonBehaviorFactory(),
-					   allModelElements);
-    }
-
-    /**
      * @return Returns the allModelElements.
      */
     static String[] getAllModelElements() {

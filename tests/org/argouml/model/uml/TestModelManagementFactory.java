@@ -81,16 +81,6 @@ public class TestModelManagementFactory extends TestCase {
     }
 
     /**
-     * Test deletion.
-     */
-    public void testDeleteComplete() {
-	CheckUMLModelHelper.deleteComplete(
-		   this,
-		   Model.getModelManagementFactory(),
-		   allModelElements);
-    }
-
-    /**
      * @return Returns the allModelElements.
      */
     protected static String[] getAllModelElements() {
