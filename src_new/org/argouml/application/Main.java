@@ -211,9 +211,11 @@ public class Main {
             lookAndFeelClassName = "javax.swing.plaf.metal.MetalLookAndFeel";
         }
 
-        String lookAndFeelImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/general";
+        String lookAndFeelGeneralImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/general";
+        String lookAndFeelDiagramImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/diagrams";
         ResourceLoader.addResourceExtension("gif");
-        ResourceLoader.addResourceLocation(lookAndFeelImagePath);
+        ResourceLoader.addResourceLocation(lookAndFeelGeneralImagePath);
+        ResourceLoader.addResourceLocation(lookAndFeelDiagramImagePath);
         ResourceLoader.addResourceLocation("/org/argouml/Images");
         ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
