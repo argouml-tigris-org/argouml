@@ -1059,7 +1059,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
         // now, because this triggers even when we just show the combo for
         // the first time on selection.
 
-        Project p = ProjectBrowser.TheInstance.getProject();
+        //Project p = ProjectBrowser.TheInstance.getProject();
         //p.setNeedsSave(true);
     }
 
