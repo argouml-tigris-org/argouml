@@ -66,6 +66,10 @@ import org.argouml.util.Trash;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 
+/**
+ * Here it all starts...
+ *
+ */
 public class Main {
 
     /** logger */
@@ -74,6 +78,9 @@ public class Main {
     ////////////////////////////////////////////////////////////////
     // constants
 
+    /**
+     * The location of the default logging configuration (.lcf) file
+     */
     public static final String DEFAULT_LOGGING_CONFIGURATION =
         "org/argouml/resource/default.lcf";
 
@@ -86,6 +93,10 @@ public class Main {
     ////////////////////////////////////////////////////////////////
     // main
 
+    /**
+     * The main entry point of ArgoUML.
+     * @param args command line parameters
+     */
     public static void main(String args[]) {        
 
         checkJVMVersion();
@@ -94,11 +105,6 @@ public class Main {
         Configuration.load();
 
         // Synchronize the startup directory
-        //
-        // TODO:  This is a temporary hack.  The real change must
-        //                   be to never refer to Globals.getLastDirectory
-        //                   or Globals.setLastDirectory within Argo, but
-        //                   use Argo.getDirectory and Argo.setDirectory.
         String directory = Argo.getDirectory();
         org.tigris.gef.base.Globals.setLastDirectory(directory);
 
@@ -106,7 +112,6 @@ public class Main {
         Translator.init();
 
         // then, print out some version info for debuggers...
-
         org.argouml.util.Tools.logVersionInfo();
 
         SimpleTimer st = new SimpleTimer("Main.main");
@@ -403,7 +408,7 @@ public class Main {
      * If it is a non supported JVM version we exit immediatly.
      */
     private static void checkJVMVersion() {
-        // check we are using a supported java version
+        // check if we are using a supported java version
         String javaVersion = System.getProperty("java.version", "");
         // exit if unsupported java version.
         if (javaVersion.startsWith("1.2")
@@ -415,6 +420,9 @@ public class Main {
         }
     }
 
+    /** Add an element to the PostLoadActions list.
+     * @param r a "Runnable" action
+     */
     public static void addPostLoadAction(Runnable r) {
         postLoadActions.addElement(r);
     }
@@ -612,8 +620,8 @@ class PostLoad implements Runnable {
     /** logger */
     private static final Logger LOG = Logger.getLogger(PostLoad.class);
 
-    Vector postLoadActions = null;
-    Thread myThread = null;
+    private Vector postLoadActions = null;
+    private Thread myThread = null;
     public PostLoad(Vector v) {
         postLoadActions = v;
     }
