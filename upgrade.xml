@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+
+<project name="argouml" default="upgrade-step-2" basedir=".">
+
+    <target name="refresh.local" if="eclipse.running">
+        <eclipse.refreshLocal resource="." depth="infinite"/>
+    </target>
+    
+    <target name="upgrade-step-1">
+        <delete file="src_new/org/argouml/model/ModelFacade.java"/>
+        <replace dir="."
+                 includes="**/*.java"
+                 summary="true">
+            <include name="src_new/**/*.java"/>
+            <include name="modules/**/*.java"/>
+            <replacetoken>import org.argouml.model.ModelFacade;</replacetoken>
+            <replacevalue><![CDATA[import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;]]></replacevalue>
+        </replace>
+
+        <replace dir="."
+                 includes="**/*.java"
+                 token="ModelFacade.getInstance().isADiagram("
+                 value="FacadeManager.getDiagramFacade().isADiagram("
+                 summary="true">
+            <include name="src_new/**/*.java"/>
+            <include name="modules/**/*.java"/>
+        </replace>
+
+        <replace dir="."
+                 includes="**/*.java"
+                 token="ModelFacade.getInstance()."
+                 value="FacadeManager.getUmlFacade()."
+                 summary="true">
+            <include name="src_new/**/*.java"/>
+            <include name="modules/**/*.java"/>
+        </replace>
+
+        <replace dir="."
+                 includes="**/*.java"
+                 token="ModelFacade."
+                 value="NsumlModelFacade."
+                 summary="true">
+            <include name="src_new/**/*.java"/>
+            <include name="modules/**/*.java"/>
+        </replace>
+
+        <replace dir="."
+                 includes="**/*.java"
+                 token="CoreFactory.getFactory().createInterface()"
+                 value="(MInterface)ObjectFactoryManager.getUmlFactory().create(Uml.INTERFACE)"
+                 summary="true">
+            <include name="src_new/**/*.java"/>
+            <include name="modules/**/*.java"/>
+        </replace>
+
+        <replace dir="."
+                 includes="**/*.java"
+                 token="ExtensionMechanismsFactory.getFactory().createTaggedValue()"
+                 value="(MTaggedValue)ObjectFactoryManager.getUmlFactory().create(Uml.TAGGED_VALUE)"
+                 summary="true">
+            <include name="src_new/**/*.java"/>
+            <include name="modules/**/*.java"/>
+        </replace>
+
+        <replace dir="."
+                 includes="**/*.java"
+                 token="ModelManagementFactory.getFactory().createPackage()"
+                 value="(MPackage)ObjectFactoryManager.getUmlFactory().create(Uml.PACKAGE)"
+                 summary="true">
+            <include name="src_new/**/*.java"/>
+            <include name="modules/**/*.java"/>
+        </replace>
+
+        <replace dir="."
+                 includes="**/*.java"
+                 token="CoreFactory.getFactory().createDataType()"
+                 value="(MDataType)ObjectFactoryManager.getUmlFactory().create(Uml.DATA_TYPE)"
+                 summary="true">
+            <include name="src_new/**/*.java"/>
+            <include name="modules/**/*.java"/>
+        </replace>
+
+        <antcall target="refresh.local"/>
+    </target>
+    
+    <target name="upgrade-step-2">
+        <antcall target="refresh.local"/>
+    </target>
+    
+</project>
