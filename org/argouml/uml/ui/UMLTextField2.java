@@ -24,13 +24,10 @@
 // $header$
 package org.argouml.uml.ui;
 
-import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.text.Document;
 
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 /**
  * @since Oct 6, 2002
@@ -38,27 +35,13 @@ import ru.novosoft.uml.MElementEvent;
  */
 public class UMLTextField2
     extends JTextField
-    implements UMLUserInterfaceComponent {
+    implements TargetChangedListener, MElementListener {
         
     /**
      * Constructor for UMLTextField2.
      */
     public UMLTextField2(PropPanel panel, UMLPlainTextDocument doc) {
         super(doc, null, 0);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
-     */
-    public void targetChanged() {
-        ((UMLPlainTextDocument)getDocument()).targetChanged();
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
-     */
-    public void targetReasserted() {
-         ((UMLPlainTextDocument)getDocument()).targetReasserted();
     }
 
     /**
@@ -101,6 +84,20 @@ public class UMLTextField2
      */
     public void recovered(MElementEvent e) {
         ((UMLPlainTextDocument)getDocument()).recovered(e);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
+     */
+    public void targetChanged(Object newTarget) {
+        ((UMLPlainTextDocument)getDocument()).targetChanged(newTarget);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
+     */
+    public void targetReasserted(Object newTarget) {
+        ((UMLPlainTextDocument)getDocument()).targetReasserted(newTarget);
     }
 
 }

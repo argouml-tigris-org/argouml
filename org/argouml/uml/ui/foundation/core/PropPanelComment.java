@@ -25,12 +25,9 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.Dimension;
-import javax.swing.ImageIcon;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLTextArea;
 import org.argouml.uml.ui.UMLTextProperty;

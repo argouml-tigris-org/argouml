@@ -24,10 +24,7 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLPlainTextDocument;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -42,9 +39,8 @@ public class UMLModelElementNameDocument extends UMLPlainTextDocument {
      * @param panel
      * @param propertyList
      */
-    public UMLModelElementNameDocument(
-        UMLUserInterfaceContainer container) {
-        super(container, "name");
+    public UMLModelElementNameDocument() {
+        super("name");
     }
 
     /**
