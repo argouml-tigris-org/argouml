@@ -138,7 +138,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
   <!-- These cannot be changed in .ant.properties -->
   <target name="setversion">
-    <property name="thisversion" value="0.10"/>
+    <property file="default.properties"/>
   </target>
 
 
@@ -152,7 +152,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="${thisversion}-${DSTAMP}-${TSTAMP}"/>
+    <property name="version" value="${argo.release.version}-${DSTAMP}-${TSTAMP}"/>
     <property name="year" value="2002"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
@@ -275,6 +275,20 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${build.dir}/ext"/>
     <mkdir dir="${build.dest}"/>
+
+    <property name="version.package" value="org/argouml/application"/>
+
+    <uptodate property="version.is.current"
+	    targetfile="${build.src}/${version.package}/ArgoVersion.java">
+	    <srcfiles dir="${build.src}/${version.package}">
+          <include name="ArgoVersion.template"/>
+      </srcfiles>
+      <srcfiles dir="${build.src}">
+          <include name="default.properties"/>
+          <include name="build.properties"/>
+      </srcfiles>
+    </uptodate>
+
     <copy todir="${build.dest}/org/argouml/Images">
       <fileset dir="${build.src}/org/argouml/Images" includes="**/**" excludes="CVS/**" />
     </copy>
@@ -356,11 +370,22 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   </target>
 
   <!-- =================================================================== -->
+  <!-- Updates the version source file if necessary                        -->
+  <!-- =================================================================== -->
+  <target name="update-version" depends="prepare" unless="version.is.current">
+    <echo message="Creating ArgoVersion.java for version ${argo.release.version}"/>
+    <filter token="ARGO_RELEASE_VERSION"
+	    value="${argo.release.version}"/>
+    <copy file="${build.src}/${version.package}/ArgoVersion.template"
+	  tofile="${build.src}/${version.package}/ArgoVersion.java"
+	  filtering="on"
+	  overwrite="on"/>
+  </target>
+
+  <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <!-- <target name="compile" depends="generateparser,prepare"> -->
-
-  <target name="compile" depends="prepare, prerequisites">
+  <target name="compile" depends="prepare, prerequisites, update-version">
 
     <echo message="Compiling the sources"/>
 
@@ -514,7 +539,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Creates the whole distribution with adjusted version number         -->
   <!-- =================================================================== -->
   <target name="dist-release" depends="setversion">
-  	<property name="version" value="${thisversion}"/>
+  	<property name="version" value="${argo.release.version}"/>
   	<antcall target="dist-all">
   	</antcall>
   </target>
@@ -526,6 +551,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <delete dir="${build.dir}/src_new"/>
     <delete dir="${build.dir}/classes"/>
     <delete dir="${build.dir}/bin"/>
+    <delete file="${build.src}/${version.package}/ArgoVersion.java"/>
     <delete>
         <fileset dir="${build.dir}">
             <include name="*.jar"/>
@@ -577,5 +603,4 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 </project>
 
 <!-- End of file -->
-
 
