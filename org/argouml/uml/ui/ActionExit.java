@@ -68,7 +68,7 @@ public class ActionExit extends UMLAction {
       String t = MessageFormat.format (
           Argo.localize (
             "Actions",
-            "template.exit.save_changes_to"
+            "optionpane.exit-save-changes-to"
           ),
           new Object[] {p.getName()}
         );

@@ -75,8 +75,6 @@ public class Translator {
         "org.argouml.i18n.UMLResourceBundle");
         Localizer.addResource("Cognitive",
         "org.argouml.i18n.UMLCognitiveResourceBundle");
-        Localizer.addResource("Actions",
-        "org.argouml.i18n.ActionResourceBundle");
     }
 
     /**

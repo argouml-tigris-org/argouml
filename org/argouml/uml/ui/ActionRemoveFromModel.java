@@ -166,11 +166,11 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     		if ((nodes.size() + edges.size()) > 0) {
     			 // the diagram contains figs so lets ask the user if he/she is sure
     			 String confirmStr = MessageFormat.format(Argo.localize("Actions",
-                                         "template.remove_from_model.confirm_delete"),
+                                         "optionpane.remove-from-model-confirm-delete"),
                                           new Object[] {diagram.getName(), ""});
                  int response = JOptionPane.showConfirmDialog(ProjectBrowser.getInstance(), confirmStr,
                                             Argo.localize("Actions", 
-                                            "text.remove_from_model.confirm_delete_title"),
+                                            "optionpane.remove-from-model-confirm-delete-title"),
                                             JOptionPane.YES_NO_OPTION);
         		sure = (response == JOptionPane.YES_OPTION);
     		} else { // no content of diagram
@@ -203,14 +203,14 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         String confirmStr = "";
         if (count > 1) {
             confirmStr += Argo.localize("Actions",
-                                    "text.remove_from_model.will_remove_from_diagrams");
+                                    "optionpane.remove-from-model-will-remove-from-diagrams");
             doAsk = true;
         }
         
         Collection beh = me.getBehaviors();
         if (beh != null && beh.size() > 0) {
             confirmStr += Argo.localize("Actions",
-                                    "text.remove_from_model.will_remove_subdiagram");
+                                    "optionpane.remove-from-model-will-remove-subdiagram");
             doAsk = true;
         }
         
@@ -220,15 +220,15 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         
         String name = me.getName();
         if (name == null || name.equals("")) {
-            name = Argo.localize("Actions", "text.remove_from_model.anon_element_name");
+            name = Argo.localize("Actions", "optionpane.remove-from-model-anon-element-name");
         }
         
         confirmStr = MessageFormat.format(Argo.localize("Actions",
-                                         "template.remove_from_model.confirm_delete"),
+                                         "optionpane.remove-from-model-confirm-delete"),
                                           new Object[] {name, confirmStr});
         int response = JOptionPane.showConfirmDialog(pb, confirmStr,
                                             Argo.localize("Actions", 
-                                            "text.remove_from_model.confirm_delete_title"),
+                                            "optionpane.remove-from-model-confirm-delete-title"),
                                             JOptionPane.YES_NO_OPTION);
         
         return (response == JOptionPane.YES_OPTION);

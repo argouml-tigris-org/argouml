@@ -58,7 +58,7 @@ public class ActionNew extends UMLAction {
 
     if (p != null && p.needsSave()) {
       String t = MessageFormat.format (
-          Argo.localize ("Actions", "template.new_project.save_changes_to"),
+          Argo.localize ("Actions", "optionpane.new-project-save-changes-to"),
           new Object[] {p.getName()}
         );
       int response = JOptionPane.showConfirmDialog (
