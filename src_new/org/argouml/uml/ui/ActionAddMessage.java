@@ -62,48 +62,30 @@ public class ActionAddMessage extends UMLChangeAction {
 	
 	if (!(target instanceof MAssociationRole) && ((MAssociationRole)target).getNamespace() instanceof MCollaboration) return;
 		MAssociationRole ar = (MAssociationRole) target;
-		MCollaboration collab = (MCollaboration)ar.getNamespace();
-		// TODO find out how collabs and several interactions collaborate together
-		MMessage msg = UmlFactory.getFactory().getCollaborations().buildMessage(collab, ar);
-		String nextStr = "" + ((MInteraction)(collab.getInteractions().toArray())[0]).getMessages().size();
-		
-		Editor e = Globals.curEditor();
-		GraphModel gm = e.getGraphModel();
-		Layer lay = e.getLayerManager().getActiveLayer();
-		GraphNodeRenderer gr = e.getGraphNodeRenderer();
-		FigNode figMsg = gr.getFigNodeFor(gm, lay, msg);
-		lay.add(figMsg);
-		
-		FigEdge figRole = (FigEdge)lay.presentationFor(target);
-		figRole.addPathItem(figMsg, new PathConvPercent(figRole, 50, 10));
-		figRole.updatePathItemLocations();
-		
-		e.damageAll();
-		/*
-	
-
-	Editor ce = Globals.curEditor();
-	GraphModel gm = ce.getGraphModel();
-	GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
-	Layer lay = ce.getLayerManager().getActiveLayer();
-	SelectionManager sm = ce.getSelectionManager();
-	Vector figs = sm.selections();
-	Selection cf = (Selection) figs.firstElement();
-	FigEdge curFig = (FigEdge) cf.getContent();
-	Point center = curFig.center();
-	
-	FigNode pers = renderer.getFigNodeFor(gm, lay, msg);
-	Collection messages = ar.getMessages();
-	int size = messages.size();
-	int percent = 15 + size*10;
-	if (percent > 100) percent = 100;
-	curFig.addPathItem(pers, new PathConvPercent(curFig, percent, 10));
-	curFig.updatePathItemLocations();
-	lay.add(pers);
-	super.actionPerformed(ae);
-	*/
+                this.addMessage(ar);
     }
     
+    /**
+     * <p> add a message to an associationRole: it builds it using the Factory method
+     * and then it creates the Fig and adds it to the diagram </p>
+     * @param ar the associationRole to which the new message must be added
+     **/
+    public MMessage addMessage(MAssociationRole ar){
+        MCollaboration collab = (MCollaboration)ar.getNamespace();
+        MMessage msg = UmlFactory.getFactory().getCollaborations().buildMessage(collab, ar);
+        String nextStr = "" + ((MInteraction)(collab.getInteractions().toArray())[0]).getMessages().size();	
+        Editor e = Globals.curEditor();
+        GraphModel gm = e.getGraphModel();
+        Layer lay = e.getLayerManager().getActiveLayer();
+        GraphNodeRenderer gr = e.getGraphNodeRenderer();
+        FigNode figMsg = gr.getFigNodeFor(gm, lay, msg);
+        lay.add(figMsg);
+        FigEdge figRole = (FigEdge)lay.presentationFor(ar);
+        figRole.addPathItem(figMsg, new PathConvPercent(figRole, 50, 10));
+        figRole.updatePathItemLocations();
+        e.damageAll();                
+        return msg;
+    }
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;

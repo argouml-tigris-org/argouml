@@ -544,6 +544,22 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     return generateExpression(c);
   }
 
+  /**
+   * generate the name of an association role of the form:
+   *  / name : name of the base association
+   * @return the generated name
+   **/
+    public String generateAssociationRole(MAssociationRole assocRole){
+        //get the associationRole name
+        String text="/"+assocRole.getName()+":";		
+        //get the base association name
+        MAssociation assoc=assocRole.getBase();
+        if(assoc!=null){
+            text=text+assoc.getName();
+        }				
+        return text;
+    }
+
   ////////////////////////////////////////////////////////////////
   // internal methods?
 
