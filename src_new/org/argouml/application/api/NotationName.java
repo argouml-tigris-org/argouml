@@ -23,6 +23,8 @@
 
 package org.argouml.application.api;
 
+import javax.swing.*;
+
 /** Encapsulates specific attributes about a notation.
  *
  *  @author Thierry Lach
@@ -41,6 +43,10 @@ public interface NotationName {
     /** Returns a textual title for the notation.
      */
     public String getTitle();
+
+    /** Returns an icon for the notation, or null if no icon is available.
+     */
+    public Icon getIcon();
 
     /** Returns the text string stored in the configuration
      *  for this notation.  This string is used to determine
