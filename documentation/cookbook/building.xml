@@ -1079,7 +1079,18 @@ this list of what to do when releasing is maintained.
 </para>
       <para>
 It is provided with the hopes of being helpful.
-If you, the release responsible, finds it unhelpful, please remove it!
+<!-- If you, the release responsible, finds it unhelpful, please remove it! -->
+</para>
+      <para>
+To understand this you need knowledge of how cvs works and 
+how you normally build and test ArgoUML.
+</para>
+      <para>
+This instruction is supposed to work on a windows system (running build.bat).
+The author (Linus Tolke) has for some time been running it 
+on a cygwin system (running build.sh) 
+assuming that this will be the same as on any unix system.
+How it is actually run on a cygwin/unix system is also noted.
 </para>
 
       <para>
@@ -1088,25 +1099,6 @@ What needs to be done when one actually does a release:
 
       <para>
 	<orderedlist>
-<!--
-	  <listitem>
-	    <para>Modify <filename>default.properties</filename> if necessary!</para>
-	    <para>
-The property to change is 
-<methodname>argo.core.version</methodname>
-where you will set the version number.
-</para>
-	    <para>
-For release 0.9.8 it should look like this:
-<programlisting>
-#
-# Argo version
-#
-argo.core.version=0.9.8
-</programlisting>
-</para>
-	  </listitem>
- -->
 	  <listitem>
 	    <para>Tag the whole CVS repository with the freeze tag!</para>
 	    <para>
@@ -1116,61 +1108,90 @@ The according command line CVS command is
 <command>cvs rtag VERSION_<replaceable>X_Y_Z</replaceable>_F argouml</command>.
 (Because of a problem on the Tigris site, this doesn't work, 
 instead make sure you have a complete checked out copy of ArgoUML,
-go to the root directory and run the command
+go to the root directory 
+<filename class="directory">argouml</filename>
+and run the command
 <command>cvs tag VERSION_<replaceable>X_Y_Z</replaceable>_F</command>.)
 </para>
 	  </listitem>
 	  <listitem>
-	    <para>Make sure you have a clean copy of the source!</para>
+	    <para>Check out a new copy of the source!</para>
 	    <para>
 This is done by checking out from the tag using the command
 <command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml_modules</command>
 and
 <command>cvs co -r VERSION_<replaceable>X_Y_Z</replaceable>_F argouml/tests</command>
-in a new directory.
+in a newly created directory.
+</para>
+	    <para>
+These commands assume that you have set the CVSROOT correctly. 
+If not you will have to use commands like
+<command>cvs -d :pserver:<replaceable>user</replaceable>@cvs.tigris.org:/cvs co ...</command>
+instead.
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>
-Build the release with <command>build dist-release</command>!
+Build the release!
 </para>
 	    <para>
-This is done in the 
+This is done in the
 <filename class="directory">argouml/src_new</filename>
-directory.
+directory of the newly created copy
+by issueing the command <command>build dist-release</command>!
+This takes around 10 minutes on my machine 
+(Linus Tolke May 2003 JDK1.3.1_01/700MHz/256MB).
+</para>
+	    <para>
+On a Cygwin/Unix system you need to 
+first make the <command>ant</command> executable with the command
+<command>chmod +x ../tools/ant-1.4.1/bin/ant</command>
+and then issue the command with 
+<command>./build.sh</command> instead of 
+<command>build</command>.
 </para>
 	    <para>
 The output should be the files
-ArgoUML-<replaceable>VERSION</replaceable>-libs.tar.gz,
-ArgoUML-<replaceable>VERSION</replaceable>-libs.zip,
-ArgoUML-<replaceable>VERSION</replaceable>-src.tar.gz,
-ArgoUML-<replaceable>VERSION</replaceable>-src.zip,
-ArgoUML-<replaceable>VERSION</replaceable>-app.tgz,
-ArgoUML-<replaceable>VERSION</replaceable>.tar.gz, and
-ArgoUML-<replaceable>VERSION</replaceable>.zip
-in the top-level argouml directory.
-
+<filename>ArgoUML-<replaceable>VERSION</replaceable>-libs.tar.gz</filename>,
+<filename>ArgoUML-<replaceable>VERSION</replaceable>-libs.zip</filename>,
+<filename>ArgoUML-<replaceable>VERSION</replaceable>-modules.tar.gz</filename>,
+<filename>ArgoUML-<replaceable>VERSION</replaceable>-modules.zip</filename>,
+<filename>ArgoUML-<replaceable>VERSION</replaceable>-src.tar.gz</filename>,
+<filename>ArgoUML-<replaceable>VERSION</replaceable>-src.zip</filename>,
+<filename>ArgoUML-<replaceable>VERSION</replaceable>-app.tgz</filename>,
+<filename>ArgoUML-<replaceable>VERSION</replaceable>.tar.gz</filename>, and
+<filename>ArgoUML-<replaceable>VERSION</replaceable>.zip</filename>
+in the <filename class="directory">argouml</filename> directory
+in your new copy.
 </para>
 	  </listitem>
 	  <listitem>
 	    <para>Test the release!</para>
 	    <para>
-Either the tar or zip-file is tested by unpacking, starting and then
+Either the 
+<filename>ArgoUML-<replaceable>VERSION</replaceable>.tar.gz</filename> or
+<filename>ArgoUML-<replaceable>VERSION</replaceable>.zip</filename>
+file is tested by unpacking, starting and then
 running through the test cases.
-Currently there isn't any defined test cases.
+Currently there isn't any defined test cases for manual testing.
 </para>
 	    <para>
-All JUnit test cases are run by
+There are two sets of automatic test cases.
 <itemizedlist>
 		<listitem>
 		  <para>
 Run the JUnit test cases in
-<filename>argouml/tests</filename>
+<filename class="directory">argouml/tests</filename>
 by issueing the command
-<command>build tests</command>!
+<command>build alltests</command>
+in the <filename class="directory">argouml/src_new</filename> directory.
+This takes around 12 minutes on my machine 
+(Linus Tolke May 2003 JDK1.3.1_01/700MHz/256MB).
 </para>
 		  <para>
-There should not be any failed tests.
+There should not be any failed tests. 
+(See details on where to find the result in
+<xref linkend="junittests"></xref>).
 </para>
 		</listitem>
 		<listitem>
@@ -1182,7 +1203,20 @@ by cd:ing to
 and running <command>build run</command>,
 invoking JUnit tests from the Tools menu,
 specifying the Test Case TestAll,
-and running.
+and running without "Reload classes every run" checked.
+(See details in <xref linkend="junittests"></xref>).
+</para>
+		  <para>
+The corresponding <filename>build.sh</filename> is not available for
+a Cygwin/Unix system so you must run the ant command directly.
+First make the <command>ant</command> executable with the command
+<command>chmod +x ../../tools/ant-1.4.1/bin/ant</command>
+if you havn't made it above
+and then issue the command 
+<command>../../tools/ant-1.4.1/bin/ant run</command> instead of the
+<command>build run</command> command.
+</para>
+		  <para>
 No problems shall be found.
 </para>
 		</listitem>
@@ -1210,8 +1244,12 @@ Open the repository for commits towards the next version.
 	    <para>
 This is done by setting the <methodname>argo.core.version</methodname>
 in <filename>default.properties</filename> to 
-<replaceable>Number of next release</replaceable>
-and commiting.
+<replaceable>Number of next release</replaceable>, commiting
+and telling everyone on the developers mailing list.
+Notice that this cannot be done in the tagged copy but you either need
+to go back to your other working tree or need to check out the file
+<filename>argouml/src_new/default.properties</filename>
+specifically to do this.
 </para>
 	  </listitem>
 	  <listitem>
