@@ -258,14 +258,14 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 					       + handle
 					       + " is not a namespace");
         }
-        MNamespace m = (MNamespace) handle;
+        Object m = /*(MNamespace)*/ handle;
         super.setNamespace(m);
 
         UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
-        gm.setNamespace(m);
+        ModelFacade.setNamespace(gm, m);
         setGraphModel(gm);
 
-        LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+        LayerPerspective lay = new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
         setLayer(lay);
 
         // The renderer should be a singleton

@@ -82,9 +82,9 @@ public class UseCasesHelper {
      * @return         A collection of the extension points.
      */
 
-    public Collection getExtensionPoints(MUseCase useCase) {
+    public Collection getExtensionPoints(Object/*MUseCase*/ useCase) {
 
-        return useCase.getExtensionPoints();
+        return ((MUseCase)useCase).getExtensionPoints();
     }
     
     /**
