@@ -183,9 +183,14 @@ class CoreHelperImpl implements CoreHelper {
      * association ends for
      * @return a collection of the opposite associationends
      */
-    public Collection getAssociateEnds(MClassifier classifier) {
+    public Collection getAssociateEnds(Object classifier) {
+        if (!(classifier instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+
         Collection result = new ArrayList();
-        Iterator ascends = classifier.getAssociationEnds().iterator();
+        Iterator ascends =
+            ((MClassifier) classifier).getAssociationEnds().iterator();
         while (ascends.hasNext()) {
             MAssociationEnd ascend = (MAssociationEnd) ascends.next();
             if ((ascend.getOppositeEnd() != null)) {
@@ -318,9 +323,13 @@ class CoreHelperImpl implements CoreHelper {
      * @param classifier the classifier you want to have the attributes for
      * @return a collection of the attributes
      */
-    public Collection getAttributes(MClassifier classifier) {
+    public Collection getAttributes(Object classifier) {
+        if (!(classifier instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+
 	Collection result = new ArrayList();
-	Iterator features = classifier.getFeatures().iterator();
+	Iterator features = ((MClassifier) classifier).getFeatures().iterator();
 	while (features.hasNext()) {
 	    MFeature feature = (MFeature) features.next();
 	    if (feature instanceof MAttribute) {
@@ -384,12 +393,16 @@ class CoreHelperImpl implements CoreHelper {
      * @param classifier the classifier you want to have the operations for
      * @return a collection of the operations
      */
-    public Collection getOperationsInh(MClassifier classifier) {
+    public Collection getOperationsInh(Object classifier) {
+        if (!(classifier instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+
         Collection result = new ArrayList();
         result.addAll(ModelFacade.getOperations(classifier));
-        Iterator parents = classifier.getParents().iterator();
+        Iterator parents = ((MClassifier) classifier).getParents().iterator();
         while (parents.hasNext()) {
-            result.addAll(getOperationsInh((MClassifier) parents.next()));
+            result.addAll(getOperationsInh(parents.next()));
         }
         return result;
     }
@@ -406,7 +419,7 @@ class CoreHelperImpl implements CoreHelper {
      * @return If this operation has only one paramter with Kind: RETURN,
      *         this is it, otherwise null
      */
-    public MParameter getReturnParameter(Object operation1) {
+    public Object getReturnParameter(Object operation1) {
 
         if (!(operation1 instanceof MOperation)) {
             throw new IllegalArgumentException();
@@ -462,7 +475,7 @@ class CoreHelperImpl implements CoreHelper {
      * @param object  the method you want the realized operation of.
      * @return an operation, or null.
      */
-    public MOperation getSpecification(Object object) {
+    public Object getSpecification(Object object) {
 	if (!(object instanceof MMethod)) {
 	    return null;
 	}
@@ -503,9 +516,13 @@ class CoreHelperImpl implements CoreHelper {
      * @return a collection of the children, each of which is a
      *         {@link MGeneralizableElement MGeneralizableElement}
      */
-    public Collection getSubtypes(MClassifier cls) {
+    public Collection getSubtypes(Object cls) {
+        if (!(cls instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+
         Collection result = new Vector();
-        Collection gens = cls.getSpecializations();
+        Collection gens = ((MClassifier) cls).getSpecializations();
         Iterator genIterator = gens.iterator();
         while (genIterator.hasNext()) {
             MGeneralization next = (MGeneralization) genIterator.next();
@@ -521,16 +538,29 @@ class CoreHelperImpl implements CoreHelper {
      * @param element is the element
      * @return Collection
      */
-    public Collection getAllBehavioralFeatures(MModelElement element) {
-        Iterator it = element.getModelElementContents().iterator();
+    public Collection getAllBehavioralFeatures(Object element) {
+        if (!(element instanceof MModelElement)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it =
+            ((MModelElement) element).getModelElementContents().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MClassifier) {
-                list.addAll(getAllBehavioralFeatures((MClassifier) o));
+                MClassifier clazz = (MClassifier) o;
+                if (!(clazz instanceof MDataType)) {
+                    Iterator it1 = clazz.getFeatures().iterator();
+                    while (it1.hasNext()) {
+                        Object o1 = it1.next();
+                        if (o1 instanceof MBehavioralFeature) {
+                            list.add(o1);
+                        }
+                    }
+                }
             } else {
-                list.addAll(getAllBehavioralFeatures(
-			(MModelElement) it.next()));
+                list.addAll(getAllBehavioralFeatures(it.next()));
             }
         }
         return list;
@@ -558,42 +588,25 @@ class CoreHelperImpl implements CoreHelper {
     }
 
     /**
-     * Returns all behavioralfeatures found in this classifier and its
-     * children.<p>
-     *
-     * @param clazz is the classifier.
-     * @return Collection
-     */
-    public Collection getAllBehavioralFeatures(MClassifier clazz) {
-        List features = new ArrayList();
-        if (!(clazz instanceof MDataType)) {
-            Iterator it = clazz.getFeatures().iterator();
-            while (it.hasNext()) {
-                Object o = it.next();
-                if (o instanceof MBehavioralFeature) {
-                    features.add(o);
-                }
-            }
-        }
-        return features;
-    }
-
-    /**
      * Returns all interfaces found in this namespace and in its children.
      *
      * @param ns the given namespace
      * @return Collection with all interfaces found
      */
-    public Collection getAllInterfaces(MNamespace ns) {
+    public Collection getAllInterfaces(Object ns) {
         if (ns == null) {
             return new ArrayList();
         }
-        Iterator it = ns.getOwnedElements().iterator();
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllInterfaces((MNamespace) o));
+                list.addAll(getAllInterfaces(o));
             }
             if (o instanceof MInterface) {
                 list.add(o);
@@ -608,16 +621,20 @@ class CoreHelperImpl implements CoreHelper {
      * @param ns is the namespace.
      * @return Collection
      */
-    public Collection getAllClasses(MNamespace ns) {
+    public Collection getAllClasses(Object ns) {
         if (ns == null) {
             return new ArrayList();
         }
-        Iterator it = ns.getOwnedElements().iterator();
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllClasses((MNamespace) o));
+                list.addAll(getAllClasses(o));
             }
             if (o instanceof MClass) {
                 list.add(o);
@@ -698,7 +715,7 @@ class CoreHelperImpl implements CoreHelper {
      * @param aparent is the parent generalizable element.
      * @return MGeneralization
      */
-    public MGeneralization getGeneralization(Object achild,
+    public Object getGeneralization(Object achild,
 					     Object aparent) {
         MGeneralizableElement child = (MGeneralizableElement) achild;
         MGeneralizableElement parent = (MGeneralizableElement) aparent;
@@ -723,13 +740,20 @@ class CoreHelperImpl implements CoreHelper {
      * @param target is the target model element.
      * @return Collection
      */
-    public Collection getFlows(MModelElement source, MModelElement target) {
+    public Collection getFlows(Object source, Object target) {
         if (source == null || target == null) {
             return null;
         }
+        if (!(source instanceof MModelElement)) {
+            throw new IllegalArgumentException("source");
+        }
+        if (!(target instanceof MModelElement)) {
+            throw new IllegalArgumentException("target");
+        }
+
         List ret = new ArrayList();
-        Collection targetFlows = target.getTargetFlows();
-        Iterator it = source.getSourceFlows().iterator();
+        Collection targetFlows = ((MModelElement) target).getTargetFlows();
+        Iterator it = ((MModelElement) source).getSourceFlows().iterator();
         while (it.hasNext()) {
             MFlow flow = (MFlow) it.next();
             if (targetFlows.contains(flow)) {
@@ -767,11 +791,15 @@ class CoreHelperImpl implements CoreHelper {
      * @param clazz is the classifier.
      * @return Collection
      */
-    public Collection getExtendingClassifiers(MClassifier clazz) {
+    public Collection getExtendingClassifiers(Object clazz) {
         if (clazz == null) {
             return new ArrayList();
         }
-        Iterator it = clazz.getSpecializations().iterator();
+        if (!(clazz instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((MGeneralizableElement) clazz).getSpecializations().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             MGeneralization gen = (MGeneralization) it.next();
@@ -789,16 +817,20 @@ class CoreHelperImpl implements CoreHelper {
      * @param ns is the namespace.
      * @return Collection
      */
-    public Collection getAllComponents(MNamespace ns) {
+    public Collection getAllComponents(Object ns) {
         if (ns == null) {
             return new ArrayList();
         }
-        Iterator it = ns.getOwnedElements().iterator();
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllComponents((MNamespace) o));
+                list.addAll(getAllComponents(o));
             }
             if (o instanceof MComponent) {
                 list.add(o);
@@ -813,16 +845,20 @@ class CoreHelperImpl implements CoreHelper {
      * @param ns is the namespace
      * @return Collection
      */
-    public Collection getAllDataTypes(MNamespace ns) {
+    public Collection getAllDataTypes(Object ns) {
         if (ns == null) {
             return new ArrayList();
         }
-        Iterator it = ns.getOwnedElements().iterator();
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllDataTypes((MNamespace) o));
+                list.addAll(getAllDataTypes(o));
             }
             if (o instanceof MDataType) {
                 list.add(o);
@@ -837,16 +873,20 @@ class CoreHelperImpl implements CoreHelper {
      * @param ns is the namespace
      * @return Collection
      */
-    public Collection getAllNodes(MNamespace ns) {
+    public Collection getAllNodes(Object ns) {
         if (ns == null) {
             return new ArrayList();
         }
-        Iterator it = ns.getOwnedElements().iterator();
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();
             if (o instanceof MNamespace) {
-                list.addAll(getAllNodes((MNamespace) o));
+                list.addAll(getAllNodes(o));
             }
             if (o instanceof MNode) {
                 list.add(o);
@@ -963,15 +1003,22 @@ class CoreHelperImpl implements CoreHelper {
      * @param assoc is the association
      * @return MAssociationEnd
      */
-    public MAssociationEnd getAssociationEnd(MClassifier type,
-					     MAssociation assoc) {
+    public Object getAssociationEnd(Object type,
+            Object assoc) {
         if (type == null || assoc == null) {
             return null;
         }
-        Iterator it = type.getAssociationEnds().iterator();
+        if (!(type instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+        if (!(assoc instanceof MAssociation)) {
+            throw new IllegalArgumentException();
+        }
+
+        Iterator it = ((MClassifier) type).getAssociationEnds().iterator();
         while (it.hasNext()) {
             MAssociationEnd end = (MAssociationEnd) it.next();
-            if (assoc.getConnections().contains(end)) {
+            if (((MAssociation) assoc).getConnections().contains(end)) {
                 return end;
             }
         }
@@ -985,12 +1032,16 @@ class CoreHelperImpl implements CoreHelper {
      * @param clazz is the classifier
      * @return Collection
      */
-    public Collection getAllContents(MClassifier clazz) {
+    public Collection getAllContents(Object clazz) {
         if (clazz == null) {
             return new ArrayList();
         }
+        if (!(clazz instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+
         List list = new ArrayList();
-        Iterator it = clazz.getOwnedElements().iterator();
+        Iterator it = ((MNamespace) clazz).getOwnedElements().iterator();
         while (it.hasNext()) {
             MModelElement element = (MModelElement) it.next();
             if (element.getVisibility().equals(MVisibilityKind.PUBLIC)
@@ -998,9 +1049,9 @@ class CoreHelperImpl implements CoreHelper {
                 list.add(element);
             }
         }
-        it = clazz.getGeneralizations().iterator();
+        it = ((MGeneralizableElement) clazz).getGeneralizations().iterator();
         while (it.hasNext()) {
-            list.addAll(getAllContents((MClassifier) it.next()));
+            list.addAll(getAllContents(it.next()));
         }
         return list;
     }
@@ -1011,21 +1062,25 @@ class CoreHelperImpl implements CoreHelper {
      * @param clazz is the classifier
      * @return Collection
      */
-    public Collection getAllAttributes(MClassifier clazz) {
+    public Collection getAllAttributes(Object clazz) {
         if (clazz == null) {
             return new ArrayList();
         }
+        if (!(clazz instanceof MClassifier)) {
+            throw new IllegalArgumentException();
+        }
+
         List list = new ArrayList();
-        Iterator it = clazz.getFeatures().iterator();
+        Iterator it = ((MClassifier) clazz).getFeatures().iterator();
         while (it.hasNext()) {
             MFeature element = (MFeature) it.next();
             if (element instanceof MAttribute) {
                 list.add(element);
             }
         }
-        it = clazz.getGeneralizations().iterator();
+        it = ((MClassifier) clazz).getGeneralizations().iterator();
         while (it.hasNext()) {
-            list.addAll(getAllAttributes((MClassifier) it.next()));
+            list.addAll(getAllAttributes(it.next()));
         }
         return list;
     }
@@ -1246,12 +1301,19 @@ class CoreHelperImpl implements CoreHelper {
      * @param dest is the destination model element
      * @return Collection
      */
-    public Collection getRelationships(MModelElement source,
-				       MModelElement dest) {
+    public Collection getRelationships(Object source,
+				       Object dest) {
         Set ret = new HashSet();
         if (source == null || dest == null) {
             return ret;
         }
+        if (!(source instanceof MModelElement)) {
+            throw new IllegalArgumentException("source");
+        }
+        if (!(dest instanceof MModelElement)) {
+            throw new IllegalArgumentException("dest");
+        }
+
         ret.addAll(getFlows(source, dest));
         ret.addAll(getFlows(dest, source));
         ret.addAll(getDependencies(source, dest));
@@ -1454,13 +1516,20 @@ class CoreHelperImpl implements CoreHelper {
      * @param ns2 is the second name space
      * @return MNamespace
      */
-    public MNamespace getFirstSharedNamespace(MNamespace ns1, MNamespace ns2) {
+    public Object getFirstSharedNamespace(Object ns1, Object ns2) {
         if (ns1 == null || ns2 == null) {
             return null;
         }
         if (ns1 == ns2) {
             return ns1;
         }
+        if (!(ns1 instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+        if (!(ns2 instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
         boolean ns1Owner =
             nsmodel.getModelManagementHelper()
 	        .getAllNamespaces(ns1).contains(ns2);
@@ -1473,7 +1542,9 @@ class CoreHelperImpl implements CoreHelper {
         if (ns2Owner) {
             return ns2;
         }
-        return getFirstSharedNamespace(ns1.getNamespace(), ns2.getNamespace());
+        return getFirstSharedNamespace(
+                ((MModelElement) ns1).getNamespace(),
+                ((MModelElement) ns2).getNamespace());
     }
 
     /**
