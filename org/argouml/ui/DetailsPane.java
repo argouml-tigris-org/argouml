@@ -216,6 +216,7 @@ public class DetailsPane
      */
     public boolean setToDoItem(Object item) {
         _item = item;
+        enableTabs(item);
         for (int i = 0; i < _tabPanels.size(); i++) {
             JPanel t = (JPanel) _tabPanels.elementAt(i);
             if (t instanceof TabToDoTarget) {
