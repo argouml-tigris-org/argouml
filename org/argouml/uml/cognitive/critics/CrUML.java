@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,7 +39,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ocl.OCLEvaluator;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
 
 /** "Abstract" Critic subclass that captures commonalities among all
@@ -132,10 +131,17 @@ public class CrUML extends Critic {
     public CrUML() {
     }
 
+    /**
+     * Set the resources for this critic based on the class name.
+     *
+     * @param key is the class name.
+     */
     public void setResource(String key) {
-        String head = Translator.localize("Cognitive", key + "_head");
+        // String head = Translator.localize("Cognitive", key + "_head");
+        String head = Translator.localize("critics." + key + "-head");
         super.setHeadline(head);
-        String desc = Translator.localize("Cognitive", key + "_desc");
+        // String desc = Translator.localize("Cognitive", key + "_desc");
+        String desc = Translator.localize("critics." + key + "-desc");
         super.setDescription(desc);
     }
 
@@ -176,6 +182,10 @@ public class CrUML extends Critic {
     /**
      * Expand text with ocl brackets in it.
      * No recursive expansion.
+     *
+     * @return the expanded text
+     * @param res is the text to expand.
+     * @param offs is the elements to replace
      */
     public String expand(String res, VectorSet offs) {
 //	cat.debug("expanding: " + res);
