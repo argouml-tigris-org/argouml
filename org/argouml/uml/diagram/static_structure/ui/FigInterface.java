@@ -38,6 +38,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
+import org.argouml.i18n.Translator;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
@@ -45,16 +46,16 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.ActionAddNote;
+import org.argouml.uml.diagram.ui.ActionAddOperation;
+import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
+import org.argouml.uml.diagram.ui.ActionModifier;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.generator.ParserDisplay;
-import org.argouml.uml.diagram.ui.ActionAddOperation;
-import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
-import org.argouml.uml.diagram.ui.ActionModifier;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -255,47 +256,31 @@ public class FigInterface extends FigNodeModelElement
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
+        
+        // Add ...
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
-        addMenu.add(ActionAddOperation.getSingleton());
+        addMenu.add(new ActionAddOperation());
         addMenu.add(ActionAddNote.getSingleton());
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
+        
+        // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
         if (operVec.isVisible()) {
             showMenu.add(ActionCompartmentDisplay.hideOperCompartment());
         } else {
             showMenu.add(ActionCompartmentDisplay.showOperCompartment());
         }
-
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
-        // Block added by BobTarling 7-Jan-2001
-        Object minterface = /*(MInterface)*/ getOwner();
-        ArgoJMenu modifierMenu = new ArgoJMenu("menu.popup.modifiers");
-
-        modifierMenu.addCheckItem(
-		new ActionModifier("Public",
-				   "visibility", "getVisibility",
-				   "setVisibility",
-				   /*(MInterface)*/ minterface,
-				   (Class) ModelFacade.VISIBILITYKIND,
-				   ModelFacade.PUBLIC_VISIBILITYKIND,
-				   null));
-        modifierMenu.addCheckItem(
-		new ActionModifier("Abstract",
-				   "isAbstract", "isAbstract", "setAbstract",
-				   minterface));
-        modifierMenu.addCheckItem(
-		new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf",
-				   minterface));
-        modifierMenu.addCheckItem(
-		new ActionModifier("Root", "isRoot", "isRoot", "setRoot",
-				   minterface));
-
-        popUpActions.insertElementAt(modifierMenu,
-            popUpActions.size() - POPUP_ADD_OFFSET);
-        // end of block
+        // Modifier ...
+        popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
+                popUpActions.size() - POPUP_ADD_OFFSET);
+        
+        // Visibility ...
+        popUpActions.insertElementAt(buildVisibilityPopUp(),
+                popUpActions.size() - POPUP_ADD_OFFSET);
 
         return popUpActions;
     }
