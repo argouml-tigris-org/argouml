@@ -26,14 +26,6 @@ package org.argouml.model;
 
 import java.util.List;
 
-import ru.novosoft.uml.foundation.data_types.MArgListsExpression;
-import ru.novosoft.uml.foundation.data_types.MExpression;
-import ru.novosoft.uml.foundation.data_types.MMappingExpression;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-import ru.novosoft.uml.foundation.data_types.MObjectSetExpression;
-import ru.novosoft.uml.foundation.data_types.MProcedureExpression;
-import ru.novosoft.uml.foundation.data_types.MTimeExpression;
-import ru.novosoft.uml.foundation.data_types.MTypeExpression;
 
 /**
  * The interface for the factory for DataTypes.<p>
@@ -58,7 +50,7 @@ public interface DataTypesFactory {
      * @param body the body for the expression
      * @return an initialized UML ArgListsExpression instance.
      */
-    MArgListsExpression createArgListsExpression(String language, String body);
+    Object createArgListsExpression(String language, String body);
 
     /**
      * Create an empty but initialized instance of a UML BooleanExpression.
@@ -84,7 +76,7 @@ public interface DataTypesFactory {
      * @param body the body for the expression
      * @return an initialized UML Expression instance.
      */
-    MExpression createExpression(String language, String body);
+    Object createExpression(String language, String body);
 
     /**
      * Create an empty but initialized instance of a UML IterationExpression.
@@ -102,7 +94,7 @@ public interface DataTypesFactory {
      * @param body the body for the expression
      * @return an initialized UML MappingExpression instance.
      */
-    MMappingExpression createMappingExpression(String language, String body);
+    Object createMappingExpression(String language, String body);
 
     /**
      * Create an empty but initialized instance of a UML ObjectSetExpression.
@@ -111,8 +103,7 @@ public interface DataTypesFactory {
      * @param body the body for the expression
      * @return an initialized UML ObjectSetExpression instance.
      */
-    MObjectSetExpression createObjectSetExpression(String language,
-            					   String body);
+    Object createObjectSetExpression(String language, String body);
 
     /**
      * Create an empty but initialized instance of a UML ProcedureExpression.
@@ -121,8 +112,7 @@ public interface DataTypesFactory {
      * @param body the body for the expression
      * @return an initialized UML ProcedureExpression instance.
      */
-    MProcedureExpression createProcedureExpression(String language,
-            					   String body);
+    Object createProcedureExpression(String language, String body);
 
     /**
      * Create an empty but initialized instance of a UML TimeExpression.
@@ -131,7 +121,7 @@ public interface DataTypesFactory {
      * @param body the body for the expression
      * @return an initialized UML TimeExpression instance.
      */
-    MTimeExpression createTimeExpression(String language, String body);
+    Object createTimeExpression(String language, String body);
 
     /**
      * Create an empty but initialized instance of a UML TypeExpression.
@@ -140,7 +130,7 @@ public interface DataTypesFactory {
      * @param body the body for the expression
      * @return an initialized UML TypeExpression instance.
      */
-    MTypeExpression createTypeExpression(String language, String body);
+    Object createTypeExpression(String language, String body);
 
     /**
      * Create an empty but initialized instance of a UML Multiplicity.
@@ -159,7 +149,7 @@ public interface DataTypesFactory {
      *        by the special value 'unlimited'."
      * @return an initialized UML Multiplicity instance.
      */
-    MMultiplicity createMultiplicity(int lower, int upper);
+    Object createMultiplicity(int lower, int upper);
 
     /**
      * Create an empty but initialized instance of a UML Multiplicity.
@@ -167,7 +157,7 @@ public interface DataTypesFactory {
      * @param range a List containing the range
      * @return an initialized UML Multiplicity instance.
      */
-    MMultiplicity createMultiplicity(List range);
+    Object createMultiplicity(List range);
 
     /**
      * Create an empty but initialized instance of a UML Multiplicity.
@@ -175,5 +165,5 @@ public interface DataTypesFactory {
      * @param str a String representing the multiplicity
      * @return an initialized UML Multiplicity instance.
      */
-    MMultiplicity createMultiplicity(String str);
+    Object createMultiplicity(String str);
 }

@@ -76,7 +76,7 @@ public class DataTypesFactoryImpl
      * @param body the body for the expression
      * @return an initialized UML ActionExpression instance.
      */
-    public Object/*MActionExpression*/ createActionExpression(String language,
+    public Object createActionExpression(String language,
 							      String body) {
         MActionExpression expression = new MActionExpression(language, body);
 	super.initialize(expression);
@@ -90,8 +90,8 @@ public class DataTypesFactoryImpl
      * @param body the body for the expression
      * @return an initialized UML ArgListsExpression instance.
      */
-    public MArgListsExpression createArgListsExpression(String language,
-							String body) {
+    public Object createArgListsExpression(String language,
+            				   String body) {
         MArgListsExpression expression =
 	    new MArgListsExpression(language, body);
 	super.initialize(expression);
@@ -118,7 +118,7 @@ public class DataTypesFactoryImpl
      * @param expr Object MExpression the given expression
      * @return an initialized ExpressionEditor instance.
      */
-    public Object/*MExpressionEditor */ createExpressionEditor(Object expr) {
+    public Object createExpressionEditor(Object expr) {
         MExpressionEditor editor = new MExpressionEditor();
         MExpression expression = (MExpression) expr;
 	super.initialize(editor);
@@ -134,7 +134,7 @@ public class DataTypesFactoryImpl
      * @param body the body for the expression
      * @return an initialized UML Expression instance.
      */
-    public MExpression createExpression(String language, String body) {
+    public Object createExpression(String language, String body) {
         MExpression expression = new MExpression(language, body);
 	super.initialize(expression);
 	return expression;
@@ -162,7 +162,7 @@ public class DataTypesFactoryImpl
      * @param body the body for the expression
      * @return an initialized UML MappingExpression instance.
      */
-    public MMappingExpression createMappingExpression(String language,
+    public Object createMappingExpression(String language,
 						      String body) {
         MMappingExpression expression = new MMappingExpression(language, body);
 	super.initialize(expression);
@@ -176,7 +176,7 @@ public class DataTypesFactoryImpl
      * @param body the body for the expression
      * @return an initialized UML ObjectSetExpression instance.
      */
-    public MObjectSetExpression createObjectSetExpression(String language,
+    public Object createObjectSetExpression(String language,
 							  String body) {
         MObjectSetExpression expression =
 	    new MObjectSetExpression(language, body);
@@ -191,7 +191,7 @@ public class DataTypesFactoryImpl
      * @param body the body for the expression
      * @return an initialized UML ProcedureExpression instance.
      */
-    public MProcedureExpression createProcedureExpression(String language,
+    public Object createProcedureExpression(String language,
 							  String body) {
         MProcedureExpression expression =
 	    new MProcedureExpression(language, body);
@@ -206,7 +206,7 @@ public class DataTypesFactoryImpl
      * @param body the body for the expression
      * @return an initialized UML TimeExpression instance.
      */
-    public MTimeExpression createTimeExpression(String language, String body) {
+    public Object createTimeExpression(String language, String body) {
         MTimeExpression expression = new MTimeExpression(language, body);
 	super.initialize(expression);
 	return expression;
@@ -219,7 +219,7 @@ public class DataTypesFactoryImpl
      * @param body the body for the expression
      * @return an initialized UML TypeExpression instance.
      */
-    public MTypeExpression createTypeExpression(String language, String body) {
+    public Object createTypeExpression(String language, String body) {
         MTypeExpression expression = new MTypeExpression(language, body);
 	super.initialize(expression);
 	return expression;
@@ -242,7 +242,7 @@ public class DataTypesFactoryImpl
      *        by the special value 'unlimited'."
      * @return an initialized UML Multiplicity instance.
      */
-    public MMultiplicity createMultiplicity(int lower, int upper) {
+    public Object createMultiplicity(int lower, int upper) {
         MMultiplicity multiplicity = new MMultiplicity(lower, upper);
 	super.initialize(multiplicity);
 	return multiplicity;
@@ -254,7 +254,7 @@ public class DataTypesFactoryImpl
      * @param range a List containing the range
      * @return an initialized UML Multiplicity instance.
      */
-    public MMultiplicity createMultiplicity(List range) {
+    public Object createMultiplicity(List range) {
         MMultiplicity multiplicity = new MMultiplicity(range);
 	super.initialize(multiplicity);
 	return multiplicity;
@@ -266,7 +266,7 @@ public class DataTypesFactoryImpl
      * @param str a String representing the multiplicity
      * @return an initialized UML Multiplicity instance.
      */
-    public MMultiplicity createMultiplicity(String str) {
+    public Object createMultiplicity(String str) {
         MMultiplicity multiplicity = new MMultiplicity(str);
 	super.initialize(multiplicity);
 	return multiplicity;
