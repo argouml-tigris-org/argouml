@@ -786,7 +786,7 @@ public class ProjectBrowser extends JFrame
         try {
             // when the user wants to force the system into using 
             // a native LAF do so here
-            if ("false".equals(System.getProperty("force.nativelaf","false")))
+            if ("true".equals(System.getProperty("force.nativelaf","false")))
                 UIManager.setLookAndFeel(UIManager.
                                          getSystemLookAndFeelClassName());
             // ... or stay with Metal for ever
