@@ -39,10 +39,13 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
+import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.base.Layer;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.generator.*;
+import org.argouml.uml.diagram.collaboration.ui.FigAssociationRole;
 
 /** Class to display graphics for a UML collaboration in a diagram. */
 
@@ -237,4 +240,26 @@ public class FigMessage extends FigNodeModelElement {
     super.dispose();
   }
 
+  /** add the FigMessage to the Path Items of its FigAssociationRole */
+  public void addPathItemToFigAssociationRole(Layer lay) {
+
+    MAssociationRole ar = ((MMessage) getOwner()).getCommunicationConnection();
+    if (ar != null && lay != null) {
+      FigAssociationRole figAssocRole = (FigAssociationRole) lay.presentationFor(ar);
+      if (figAssocRole != null) {
+        Collection messages = ar.getMessages();
+        int size=0;
+        if (messages != null) {
+          size = messages.size();
+        }
+        int percent = 15 + size*10;
+        if (percent > 100) percent = 100;
+        figAssocRole.addPathItem(this, new PathConvPercent(figAssocRole, percent, 10));
+        figAssocRole.updatePathItemLocations();
+        lay.bringToFront(this);
+      }
+    }
+  }
+
+ 
 } /* end class FigMessage */

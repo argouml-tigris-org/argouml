@@ -51,8 +51,10 @@ import org.argouml.uml.diagram.use_case.ui.*;
 import org.argouml.language.java.generator.*;
 import org.argouml.ui.*;
 import org.argouml.util.*;
-import org.argouml.xml.argo.*; 
+import org.argouml.xml.argo.*;
 import org.argouml.xml.pgml.*;
+import org.argouml.xml.xmi.XMIParser;
+
 
 /** A datastructure that represents the designer's current project.  A
  *  Project consists of diagrams and UML models. */
@@ -147,6 +149,42 @@ public class Project implements java.io.Serializable {
     org.argouml.application.Main.addPostLoadAction(resetStatsLater);
   }
 
+  /**   This method creates a project from the specified URL
+   *
+   *    Unlike the constructor which forces an .argo extension
+   *    This method will attempt to load a raw XMI file
+   */
+  public static Project loadProject(URL url) {
+        Project p = null;
+        String urlString = url.toString();
+        int lastDot = urlString.lastIndexOf(".");
+        String suffix = "";
+        if(lastDot >= 0) {
+            suffix = urlString.substring(lastDot).toLowerCase();
+        }
+        //
+        //    just read XMI file
+        //
+        if(suffix.equals(".xmi")) {
+            p = new Project();
+            XMIParser.SINGLETON.readModels(p,url);
+            MModel model = XMIParser.SINGLETON.getCurModel();
+            p._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
+            try {
+                p.addMember(model);
+                p.setNeedsSave(false);
+            }
+            catch (PropertyVetoException pve) { }
+            org.argouml.application.Main.addPostLoadAction(new ResetStatsLater());
+        }
+        else {
+            ArgoParser.SINGLETON.readProject(url);
+            p = ArgoParser.SINGLETON.getProject();
+            p.loadAllMembers();
+            p.postLoad();
+        }
+        return p;
+  }
 
   public static Project makeEmptyProject() {
     System.out.println("making empty project");
@@ -177,8 +215,8 @@ public class Project implements java.io.Serializable {
     p.defineType(JavaUML.HASHTABLE_CLASS); //J.302
     p.defineType(JavaUML.STACK_CLASS);     //J.303
 // 	try { p.addMember(JavaUML.javastandards); }
-// 	catch (PropertyVetoException pve) { } 
-	
+// 	catch (PropertyVetoException pve) { }
+
     p.addSearchPath("PROJECT_DIR");
 
 // 	try {
@@ -193,7 +231,7 @@ public class Project implements java.io.Serializable {
     MModel m1 = new MModelImpl();
     m1.setUUID(UUIDManager.SINGLETON.getNewUUID());
     m1.setName("untitledModel");
-    
+
     try {
       p.addMember(new UMLClassDiagram(m1));
       p.addMember(new UMLUseCaseDiagram(m1));
@@ -233,7 +271,7 @@ public class Project implements java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // accessors
-  // needs-more-work 
+  // needs-more-work
 
   public String getBaseName() {
     String n = getName();
@@ -366,11 +404,27 @@ public class Project implements java.io.Serializable {
   }
 
   public void addMember(MModel m) throws PropertyVetoException {
-    if (_models.contains(m)) return;
-    ProjectMember pm = new ProjectMemberModel(m, this);
-    addModel(m);
-    // got past the veto, add the member
-    _members.addElement(pm);
+    Iterator iter = _members.iterator();
+    Object currentMember = null;
+    boolean memberFound = false;
+    while(iter.hasNext()) {
+        currentMember = iter.next();
+        if(currentMember instanceof ProjectMemberModel) {
+            MModel currentModel = ((ProjectMemberModel) currentMember).getModel();
+            if(currentModel == m) {
+                memberFound = true;
+                break;
+            }
+        }
+    }
+    if(!memberFound) {
+        if(!_models.contains(m)) {
+            addModel(m);
+        }
+        // got past the veto, add the member
+        ProjectMember pm = new ProjectMemberModel(m, this);
+        _members.addElement(pm);
+    }
   }
 
   public void addModel(MNamespace m) throws PropertyVetoException {
@@ -475,7 +529,7 @@ public class Project implements java.io.Serializable {
         System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
             p.save(path,overwrite);
         }
-    } 
+    }
     for (int i = 0; i < size; i++) {
         ProjectMember p = (ProjectMember) _members.elementAt(i);
         if (!(p.getType().equalsIgnoreCase("xmi"))){
@@ -658,7 +712,7 @@ public class Project implements java.io.Serializable {
 	  }
 	*/
 
-	
+
   }
 
   // Attention: whole Trash mechanism should be rethought concerning nsuml
@@ -668,7 +722,7 @@ public class Project implements java.io.Serializable {
 		  MClassifier me = (MClassifier) obj;
 		  // me.remove();
 		  MMUtil.SINGLETON.remove(me);
-	  }  	
+	  }
 	  if (obj instanceof MStateVertex) {
 		  // System.out.println("trashInternal: "+obj);
 		  MStateVertex me = (MStateVertex) obj;
@@ -680,7 +734,7 @@ public class Project implements java.io.Serializable {
 		  MModelElement me = (MModelElement) obj;
 		  me.remove();
 	  }
-	  
+
 	  /* old version
 		 if (obj instanceof MModelElement) {
 		 MModelElement me = (MModelElement) obj;
@@ -693,15 +747,15 @@ public class Project implements java.io.Serializable {
 		 f.delete();
 		 if (!places.contains(f)) places.addElement(f);
 		 f = d.getLayer().presentationFor(me);
-		 } // end while 
-		 } // end while 
+		 } // end while
+		 } // end while
 		 Trash.SINGLETON.addItemFrom(obj, places);
 		 if (obj instanceof MNamespace) trashDiagramsOn((MNamespace)obj);
 		 }
 		 // needs-more-work: trash diagrams
-		 
+
 		 }
-		 
+
 		 protected void trashDiagramsOn(MNamespace ns) {
 		 //System.out.println("trashDiagramsOn: " + ns);
 		 int size = _diagrams.size();
@@ -720,10 +774,10 @@ public class Project implements java.io.Serializable {
 		 try { removeMember(d); }
 		 catch (PropertyVetoException pve) { }
 		 }
-		 
+
 	  */
   }
-	
+
   public void moveFromTrash(Object obj) {
     System.out.println("needs-more-work: not restoring " + obj);
   }
@@ -813,7 +867,7 @@ public class Project implements java.io.Serializable {
       ModeCreateEdgeAndNode.Drags_To_New = v;
     else if (n.equals("Drags_To_Existing"))
       ModeCreateEdgeAndNode.Drags_To_Existing = v;
-    
+
     else {
       System.out.println("unknown UsageStatistic: " + n);
     }

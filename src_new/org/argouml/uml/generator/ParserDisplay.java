@@ -27,6 +27,10 @@ import java.beans.*;
 import java.util.*;
 
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MActionExpression;
+import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
@@ -89,9 +93,9 @@ public class ParserDisplay extends Parser {
 	features.removeAll(MMUtil.SINGLETON.getAttributes(cls));
 	features.addAll(newAttrs);
 	cls.setFeatures(features);
-	
+
   }
-	
+
   /** Parse a line of the form:
    *  [visibility] [keywords] returntype name(params)[;] */
   public MOperation parseOperation(String s) {
@@ -197,7 +201,7 @@ public class ParserDisplay extends Parser {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     MClassifier rt = p.findType(rtStr);
-    
+
     //System.out.println("setting return type: " + rtStr +" "+rt);
     MParameter param = new MParameterImpl();
     param.setType(rt);
@@ -218,10 +222,10 @@ public class ParserDisplay extends Parser {
 				leftOver = s.substring(s.indexOf(token) + token.length());
 		}
 		// op.setParameters(params);
-		
+
 		return leftOver;
 	}
-	
+
   public String parseOutName(MModelElement me, String s) {
     s = s.trim();
     if (s.equals("") || s.charAt(0) == '=') return s;
@@ -307,7 +311,7 @@ public class ParserDisplay extends Parser {
   public MMultiplicity parseMultiplicity(String s) {
 	  return new MMultiplicity(s);
   }
-	
+
 
   public MState parseState(String s) {
     return null;
@@ -397,25 +401,35 @@ public class ParserDisplay extends Parser {
       s = s.substring(0, s.length() - 2);
 
     String name = "";
-    String base = "";
+    String basefirst = "";
+    String bases = "";
+    StringTokenizer baseTokens = null;
+
     if (s.indexOf(":", 0) > -1) {
       name = s.substring(0, s.indexOf(":")).trim();
-      base = s.substring(s.indexOf(":") + 1).trim();
+      bases = s.substring(s.indexOf(":") + 1).trim();
+      baseTokens = new StringTokenizer(bases,",");
     }
     else {
       name = s;
     }
 
-	Project p = ProjectBrowser.TheInstance.getProject();
-	MClassifier type = p.findType(base);
-	if (type != null) {
-		cls.setBases(new Vector());
-		cls.addBase(type);
-	}
-	else {
-		// generate critic here? (Toby)
-		cls.setBases(new Vector());
-	}
+    cls.setName(name);
+
+    Collection col = cls.getBases();
+    if ((col != null) && (col.size()>0)) {
+      Iterator itcol = col.iterator();
+      while (itcol.hasNext()) {
+        MClassifier bse = (MClassifier) itcol.next();
+        cls.removeBase(bse);
+      }
+    }
+
+    while(baseTokens.hasMoreElements()){
+	String typeString = baseTokens.nextToken();
+	MClassifier type = ProjectBrowser.TheInstance.getProject().findType(typeString);
+	cls.addBase(type);
+    }
 
     cls.setName(name);
 
@@ -438,10 +452,42 @@ public class ParserDisplay extends Parser {
     }
     else action = s;
 
-     MUninterpretedAction ua = (MUninterpretedAction) mes.getAction();
+     MAction ua = (MAction) mes.getAction();
      ua.setName(action);
      mes.setName(name);
 
+  }
+
+  /** Parse a line of the form: "name: action" */
+  public void parseStimulus(MStimulus sti, String s) {
+    // strip any trailing semi-colons
+    s = s.trim();
+    if (s.length() == 0) return;
+    if (s.charAt(s.length()-1) == ';')
+      s = s.substring(0, s.length() - 2);
+
+    //cut trailing string "new Action"
+    s = s.trim();
+    if (s.length() == 0) return;
+    if (s.endsWith("new Action"))
+      s = s.substring(0, s.length() - 10);
+
+    String name = "";
+    String action = "";
+    String actionfirst = "";
+    if (s.indexOf(":", 0) > -1) {
+      name = s.substring(0, s.indexOf(":")).trim();
+      actionfirst = s.substring(s.indexOf(":") + 1).trim();
+      if (actionfirst.indexOf(":", 0) > 1) {
+        action = actionfirst.substring(0, actionfirst.indexOf(":")).trim();
+      }
+      else action = actionfirst;
+    }
+    else name = s;
+
+     MAction act = (MAction) sti.getDispatchAction();
+     act.setName(action);
+     sti.setName(name);
   }
 
   public MAction parseAction(String s) {
@@ -465,6 +511,7 @@ public class ParserDisplay extends Parser {
   public MEvent parseEvent(String s) {
 	MSignalEvent se = new MSignalEventImpl();
 	se.setName(s);
+	se.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
     return se;
   }
 
@@ -472,207 +519,113 @@ public class ParserDisplay extends Parser {
   public void parseObject(MObject obj, String s) {
     // strip any trailing semi-colons
     s = s.trim();
+
     if (s.length() == 0) return;
     if (s.charAt(s.length()-1) == ';')
       s = s.substring(0, s.length() - 2);
 
     String name = "";
     String basefirst = "";
-    String base = "";
+    String bases = "";
+    StringTokenizer baseTokens = null;
+
     if (s.indexOf(":", 0) > -1) {
-      name = s.substring(0, s.indexOf(":")).trim();
-      basefirst = s.substring(s.indexOf(":") + 1).trim();
-      if (basefirst.indexOf(":", 0) > 1) {
-        base = basefirst.substring(0, basefirst.indexOf(":")).trim();
-      }
-      else base = basefirst;
+      name = s.substring(0, s.indexOf(":",0)).trim();
+      bases = s.substring(s.indexOf(":",0) + 1).trim();
+      baseTokens = new StringTokenizer(bases,",");
     }
     else {
       name = s;
     }
 
-    Collection col = obj.getClassifiers();
-    if ((col != null) && (col.size()>0)) { 
-      Iterator itcol = col.iterator(); 
-      while (itcol.hasNext()) { 
-        MClassifier cls = (MClassifier) itcol.next(); 
-        obj.removeClassifier(cls); 
-      } 
-    } 
+    obj.setName(name);
 
-    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams();
-    Vector v = new Vector();
-    MClass classifier = new MClassImpl();
-    GraphModel model = null;
-    int size = diagrams.size();
-    for (int i=0; i<size; i++) {
-      Object o = diagrams.elementAt(i);
-      if (!(o instanceof Diagram)) continue;
-      if (o instanceof MModel) continue;
-      Diagram d = (Diagram) o;
-      model = d.getGraphModel(); 
-      if (!(model instanceof ClassDiagramGraphModel || model instanceof DeploymentDiagramGraphModel)) continue;
-       
-      Vector nodes = model.getNodes();
-      int si = nodes.size();
-      for (int j=0; j<si; j++) {
-        MModelElement node = (MModelElement) nodes.elementAt(j);
-        if (node != null && (node instanceof MClassImpl)) {
-          MClass mclass = (MClass) node;
-          if (mclass.getNamespace() != obj.getNamespace()) continue;
-          String class_name = mclass.getName();
-          if (class_name != null && (class_name.equals(base))) {
-            v.addElement(mclass);
-            obj.setClassifiers(v);
-            obj.setName(new String(name)); 
-            return; 
-          }      
-        }
+    obj.setClassifiers(new Vector());
+    if (baseTokens != null) {
+      while(baseTokens.hasMoreElements()){
+  	String typeString = baseTokens.nextToken();
+	MClassifier type = ProjectBrowser.TheInstance.getProject().findType(typeString);
+	obj.addClassifier(type);
       }
     }
-    classifier.setName(base);
-    
-    v.addElement(classifier);
-    obj.setClassifiers(v);
-    obj.setName(new String(name));
+  }
+
+  /** Parse a line of the form: "name : base-node" */
+  public void parseNodeInstance(MNodeInstance noi, String s) {
+    // strip any trailing semi-colons
+    s = s.trim();
+    if (s.length() == 0) return;
+    if (s.charAt(s.length()-1) == ';')
+      s = s.substring(0, s.length() - 2);
+
+
+
+    String name = "";
+    String bases = "";
+    StringTokenizer tokenizer = null;
+
+    if (s.indexOf(":", 0) > -1) {
+      name = s.substring(0, s.indexOf(":")).trim();
+      bases = s.substring(s.indexOf(":") + 1).trim();
+    }
+    else {
+      name = s;
+    }
+
+    tokenizer = new StringTokenizer(bases,",");
+
+    Vector v = new Vector();
+    MNamespace ns = noi.getNamespace();
+    if (ns !=null) {
+	while (tokenizer.hasMoreElements()) {
+	    String newBase = tokenizer.nextToken();
+	    MClassifier cls = (MClassifier)ns.lookup(newBase.trim());
+	    if (cls != null)
+		v.add(cls);
+	}
+    }
+
+    noi.setClassifiers(v);
+    noi.setName(new String(name));
 
   }
 
-  /** Parse a line of the form: "name : base-node" */ 
-  public void parseNodeInstance(MNodeInstance noi, String s) { 
-    // strip any trailing semi-colons 
-    s = s.trim(); 
-    if (s.length() == 0) return; 
-    if (s.charAt(s.length()-1) == ';') 
-      s = s.substring(0, s.length() - 2); 
- 
+  /** Parse a line of the form: "name : base-component" */
+  public void parseComponentInstance(MComponentInstance coi, String s) {
+    // strip any trailing semi-colons
+    s = s.trim();
+    if (s.length() == 0) return;
+    if (s.charAt(s.length()-1) == ';')
+      s = s.substring(0, s.length() - 2);
 
-    String name = ""; 
-    String basefirst = "";
-    String base = ""; 
-    if (s.indexOf(":", 0) > -1) { 
-      name = s.substring(0, s.indexOf(":")).trim(); 
-      basefirst = s.substring(s.indexOf(":") + 1).trim();
-      if (basefirst.indexOf(":", 0) > 1) {
-        base = basefirst.substring(0, basefirst.indexOf(":")).trim();
-      }
-      else base = basefirst;
-    } 
-    else { 
-      name = s; 
-    } 
- 
-    Collection col = noi.getClassifiers(); 
-    if ((col != null) && (col.size()>0)) {  
-      Iterator itcol = col.iterator();  
-      while (itcol.hasNext()) {  
-        MClassifier cls = (MClassifier) itcol.next();  
-        noi.removeClassifier(cls);  
-      }  
-    }  
- 
-    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams(); 
-    Vector v = new Vector(); 
-    MNode no = new MNodeImpl(); 
-    GraphModel model = null; 
-    int size = diagrams.size(); 
-    for (int i=0; i<size; i++) { 
-      Object o = diagrams.elementAt(i); 
-      if (!(o instanceof Diagram)) continue; 
-      if (o instanceof MModel) continue; 
-      Diagram d = (Diagram) o; 
-      model = d.getGraphModel();  
-      if (!(model instanceof DeploymentDiagramGraphModel)) continue; 
-        
-      Vector nodes = model.getNodes(); 
-      int si = nodes.size(); 
-      for (int j=0; j<si; j++) { 
-        MModelElement node = (MModelElement) nodes.elementAt(j); 
-        if (node != null && (node instanceof MNodeImpl)) { 
-          MNode mnode = (MNode) node; 
-          if (mnode.getNamespace() != noi.getNamespace()) continue;
-          String node_name = mnode.getName(); 
-          if (node_name != null && (node_name.equals(base))) { 
-            v.addElement(mnode); 
-            noi.setClassifiers(v); 
-            return;  
-          }       
-        } 
-      } 
-    } 
-    no.setName(base);     
-    v.addElement(no); 
-    noi.setClassifiers(v);
-    noi.setName(new String(name)); 
- 
-  } 
+    String name = "";
+    String bases = "";
+    StringTokenizer tokenizer = null;
 
-  /** Parse a line of the form: "name : base-component" */ 
-  public void parseComponentInstance(MComponentInstance coi, String s) { 
-    // strip any trailing semi-colons 
-    s = s.trim(); 
-    if (s.length() == 0) return; 
-    if (s.charAt(s.length()-1) == ';') 
-      s = s.substring(0, s.length() - 2); 
- 
-    String name = ""; 
-    String basefirst = "";
-    String base = ""; 
-    if (s.indexOf(":", 0) > -1) { 
-      name = s.substring(0, s.indexOf(":")).trim(); 
-      basefirst = s.substring(s.indexOf(":") + 1).trim();
-      if (basefirst.indexOf(":", 0) > 1) {
-        base = basefirst.substring(0, basefirst.indexOf(":")).trim();
-      }
-      else base = basefirst;
-    } 
-    else { 
-      name = s; 
-    } 
- 
-    Collection col = coi.getClassifiers(); 
-    if ((col != null) && (col.size()>0)) {  
-      Iterator itcol = col.iterator();  
-      while (itcol.hasNext()) {  
-        MClassifier cls = (MClassifier) itcol.next();  
-        coi.removeClassifier(cls);  
-      }  
-    }  
- 
-    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams(); 
-    Vector v = new Vector(); 
-    MComponent co = new MComponentImpl(); 
-    GraphModel model = null; 
-    int size = diagrams.size(); 
-    for (int i=0; i<size; i++) { 
-      Object o = diagrams.elementAt(i); 
-      if (!(o instanceof Diagram)) continue; 
-      if (o instanceof MModel) continue; 
-      Diagram d = (Diagram) o; 
-      model = d.getGraphModel();  
-      if (!(model instanceof DeploymentDiagramGraphModel)) continue; 
-        
-      Vector nodes = model.getNodes(); 
-      int si = nodes.size(); 
-      for (int j=0; j<si; j++) { 
-        MModelElement node = (MModelElement) nodes.elementAt(j); 
-        if (node != null && (node instanceof MComponentImpl)) { 
-          MComponent mcomp = (MComponent) node; 
-          if (mcomp.getNamespace() != coi.getNamespace()) continue;
-          String comp_name = mcomp.getName(); 
-          if (comp_name != null && (comp_name.equals(base))) { 
-            v.addElement(mcomp); 
-            coi.setClassifiers(v); 
-            return;  
-          }       
-        } 
-      } 
-    } 
-    co.setName(base);     
-    v.addElement(co); 
+    if (s.indexOf(":", 0) > -1) {
+      name = s.substring(0, s.indexOf(":")).trim();
+      bases = s.substring(s.indexOf(":") + 1).trim();
+    }
+    else {
+      name = s;
+    }
+
+    tokenizer = new StringTokenizer(bases,",");
+
+    Vector v = new Vector();
+    MNamespace ns = coi.getNamespace();
+    if (ns !=null) {
+	while (tokenizer.hasMoreElements()) {
+	    String newBase = tokenizer.nextToken();
+	    MClassifier cls = (MClassifier)ns.lookup(newBase.trim());
+	    if (cls != null)
+		v.add(cls);
+	}
+    }
+
     coi.setClassifiers(v);
-    coi.setName(new String(name)); 
- 
-  } 
+    coi.setName(new String(name));
+
+  }
 
 } /* end class ParserDisplay */

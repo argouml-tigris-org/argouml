@@ -39,7 +39,7 @@ import org.argouml.xml.pgml.PGMLParser;
 import org.tigris.gef.base.*;
 import org.tigris.gef.util.*;
 
-import org.argouml.ocl.*;
+import org.tigris.gef.ocl.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 
@@ -86,7 +86,7 @@ public class ProjectMemberDiagram extends ProjectMember {
 
   public void load() {
     Dbg.log(getClass().getName(), "Reading " + getURL());
-    PGMLParser.SINGLETON.setUUIDRefs(getProject()._UUIDRefs);
+    PGMLParser.SINGLETON.setOwnerRegistry(getProject()._UUIDRefs);
     Diagram d = PGMLParser.SINGLETON.readDiagram(getURL());
     setDiagram(d);
     try { getProject().addDiagram(d); }

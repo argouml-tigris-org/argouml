@@ -26,6 +26,7 @@
 package org.argouml.xml;
 
 import org.xml.sax.*;
+import java.io.*;
 
 
 /**
@@ -64,7 +65,13 @@ public class DTDEntityResolver implements EntityResolver {
 	  i++;	// go past '/' if there, otherwise advance to 0
 	  java.io.InputStream is;
 	  is = getClass().getResourceAsStream(DTD_DIR + systemId.substring(i));
-	  if (is != null) return new InputSource(is);
+          if(is == null) {
+             try {
+              is = new FileInputStream(DTD_DIR.substring(1) + systemId.substring(i));
+             }
+             catch(Exception ex) {}
+          }
+          if (is != null) return new InputSource(is);
 	}
 	// if we failed to get an alternative, rethrow the original exception
 	throw e;

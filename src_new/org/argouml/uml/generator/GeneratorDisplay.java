@@ -32,6 +32,9 @@ import java.io.*;
 import java.util.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.data_types.MMultiplicityRange;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
@@ -73,7 +76,7 @@ public class GeneratorDisplay extends Generator {
 		if (returnType == null && !nameStr.equals(clsName)) s += "void?? ";
 		else if (returnType != null) s += generateClassifierRef(returnType) + " ";
 	} else s += "void?? ";
-		
+
 
     // name and params
     Vector params = new Vector(op.getParameters());
@@ -147,13 +150,13 @@ public class GeneratorDisplay extends Generator {
     }
     while(!stack.isEmpty())
       s += (String) stack.pop() + ".";
-    
+
     if (s.endsWith(".")) {
       int lastIndex = s.lastIndexOf(".");
       s = s.substring(0, lastIndex);
     }
     s += "." + packName + " {\n";
-      
+
 
     Collection ownedElements = p.getOwnedElements();
     if (ownedElements != null) {
@@ -174,7 +177,7 @@ public class GeneratorDisplay extends Generator {
   public String generateClassifier(MClassifier cls) {
     String generatedName = generateName(cls.getName());
     String classifierKeyword;
-    if (cls instanceof MClassImpl) classifierKeyword = "class"; 
+    if (cls instanceof MClassImpl) classifierKeyword = "class";
     else if (cls instanceof MInterface) classifierKeyword = "interface";
     else return ""; // actors and use cases
     String s = "";
@@ -184,7 +187,7 @@ public class GeneratorDisplay extends Generator {
     s += classifierKeyword + " " + generatedName + " ";
     String baseClass = generateGeneralization(cls.getGeneralizations(), false);
     if (!baseClass.equals("")) s += "extends " + baseClass + " ";
-    
+
     //nsuml: realizations!
 //     String interfaces = generateRealization(cls.getRealizations(), true);
 //     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
@@ -285,7 +288,7 @@ public class GeneratorDisplay extends Generator {
       s += "Vector "; //generateMultiplicity(m) + " ";
 
     s += " ";
-    
+
     String n = ae.getName();
     MAssociation asc = ae.getAssociation();
     String ascName = asc.getName();

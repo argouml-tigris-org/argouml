@@ -38,6 +38,8 @@ import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 import org.argouml.ocl.OCLEvaluator;
+import java.io.*;
+import java.util.*;
 
 /** "Abstract" Critic subclass that captures commonalities among all
  *  critics in the UML domain.  This class also defines and registers
@@ -126,9 +128,131 @@ public class CrUML extends Critic {
   // constructor
 
   public CrUML() {
-    //decisionCategory("UML Decisions");
-    // what do UML critics have in common? anything?
   }
+
+  private static Locale _locale;
+  private static ResourceBundle _bundle;
+  public static void setLocale(Locale locale) {
+     _locale = locale;
+  }
+  public static Locale getLocale() {
+    return _locale;
+  }
+
+  public void setResource(String key) {
+    if(_bundle == null) {
+        if(_locale == null) {
+            _locale = Locale.getDefault();
+        }
+        _bundle = ResourceBundle.getBundle(
+            "org.argouml.uml.cognitive.UMLCognitiveResourceBundle",_locale);
+    }
+    try {
+        String head = _bundle.getString(key + "_head");
+        super.setHeadline(head);
+    }
+    catch(MissingResourceException e) {
+        e.printStackTrace();
+    }
+    try {
+        String desc = _bundle.getString(key + "_desc");
+        super.setDescription(desc);
+    }
+    catch(MissingResourceException e) {
+        e.printStackTrace();
+    }
+  }
+
+/*
+   the following code was used to build UMLCognitiveResourceBundle
+       from calls made during the construction of critics
+
+
+  static public String makeKey(Class cls,String type) {
+    String className = cls.getName();
+    int lastDot = className.lastIndexOf('.');
+    if(lastDot >= 0) {
+        className = className.substring(lastDot+1);
+    }
+    return className + "_" + type;
+  }
+
+//  private final void log(String s) {}
+  private static boolean _logAppend = false;
+  static public final void log(String s) {
+    if(!_logAppend) {
+        System.out.println("Logging resources to UMLCognitiveResourceBundle.log");
+    }
+    try {
+        PrintWriter writer = new PrintWriter(
+            new FileOutputStream("UMLCognitiveResourceBundle.log",_logAppend));
+        writer.println(s);
+        writer.close();
+    }
+    catch(Exception e) {
+        if(!_logAppend) {
+            e.printStackTrace();
+        }
+    }
+    _logAppend = true;
+  }
+
+  static public String escape(String s,char special,String escape) {
+    int nextQuote = s.indexOf(special);
+    //
+    //   if there was a quote mark within the string
+    //     expand it to a \"
+    if(nextQuote >= 0) {
+        StringBuffer buf = new StringBuffer(s.length() + 20);
+        char[] chars = s.toCharArray();
+        int position = 0;
+        while(nextQuote >= 0) {
+            if(nextQuote > 0) {
+                buf.append(chars,position,nextQuote-position);
+            }
+            buf.append(escape);
+            position = nextQuote + 1;
+            if(position+1 == chars.length) break;
+            nextQuote = s.indexOf(special,position);
+        }
+        //
+        //  append text after last quote
+        //
+        if(position < chars.length) {
+            buf.append(chars,position,chars.length - position);
+        }
+        return buf.toString();
+    }
+    return s;
+  }
+
+*/
+
+  /**
+   *    To be deprecated
+   *
+   */
+  public final void setDescription(String s) {
+//       no-op since description is loaded from ResourceFile
+//
+//    super.setDescription(s);
+//    log("{ \"" + makeKey(getClass(),"desc") + "\" ,\n        \"" + escape(escape(s,'\"',"\\\""),'\n',"\\n") + "\" },");
+  }
+
+  /**
+   *   Will be deprecated in good time
+   */
+  public final void setHeadline(String s) {
+      //
+      //   current implementation ignores the argument
+      //     and triggers setResource()
+      String className = getClass().getName();
+      setResource(className.substring(className.lastIndexOf('.')+1));
+//    super.setHeadline(s);
+//    log("{ \"" + makeKey(getClass(),"head") + "\" ,\n        \"" + escape(escape(s,'\"',"\\\""),'\n',"\\n") + "\" },");
+  }
+
+
 
   public boolean predicate(Object dm, Designer dsgr) {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -152,14 +276,16 @@ public class CrUML extends Critic {
   ////////////////////////////////////////////////////////////////
   // coding shorthand
 
-  protected void sd(String s) { setDescription(s); }
+  protected void sd(String s) {
+    setDescription(s);
+  }
 
 
   ////////////////////////////////////////////////////////////////
   // display related methods
 
-  public static String OCL_START = "<ocl>";
-  public static String OCL_END = "</ocl>";
+  private static String OCL_START = "<ocl>";
+  private static String OCL_END = "</ocl>";
 
 
 
@@ -176,7 +302,7 @@ public class CrUML extends Critic {
     while (matchPos != -1) {
       int endExpr = res.indexOf(OCL_END, matchPos + 1);
       String expr = res.substring(matchPos + OCL_START.length(), endExpr);
-      String evalStr = OCLEvaluator.evalToString(off1, expr);
+      String evalStr = OCLEvaluator.SINGLETON.evalToString(off1, expr);
       //System.out.println("expr='" + expr + "' = '" + evalStr + "'");
       if (expr.endsWith("") && evalStr.equals(""))
 	evalStr = "(anon)";

@@ -24,35 +24,19 @@
 package org.argouml.ocl;
 
 import java.util.*;
-import java.util.Enumeration;
-//import java.util.*;
-import java.awt.*;
-import java.lang.reflect.*;
-import java.lang.*;
-
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 
 // stereotype <<utility>>
-public class OCLEvaluator {
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public static String OCL_START = "<ocl>";
-  public static String OCL_END = "</ocl>";
-  public static String GET_NAME_EXPR_1 = "self";
-  public static String GET_NAME_EXPR_2 = "self.name.body";
-  public static String GET_OWNER_EXPR = "self.owner";
+public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
 
-  ////////////////////////////////////////////////////////////////
-  // static variables
-  protected static Hashtable _scratchBindings = new Hashtable();
-  protected static StringBuffer _strBuf = new StringBuffer(100);
+  protected OCLEvaluator() {
+  }
 
-  ////////////////////////////////////////////////////////////////
-  // static methods
+  public static OCLEvaluator SINGLETON = new OCLEvaluator();
 
-  public static synchronized String evalToString(Object self, String expr) {
+  public synchronized String evalToString(Object self, String expr) {
     String res = null;
     if (GET_NAME_EXPR_1.equals(expr) && self instanceof MModelElement) {
       res = ((MModelElement)self).getName();
@@ -70,14 +54,14 @@ public class OCLEvaluator {
     return res;
   }
 
-  public static synchronized String evalToString(Object self,
+  public synchronized String evalToString(Object self,
 						 String expr, String sep) {
     _scratchBindings.put("self", self);
-    Vector values = eval(_scratchBindings, expr);
+    java.util.List values = eval(_scratchBindings, expr);
     _strBuf.setLength(0);
-    int size = values.size();
-    for (int i = 0; i < size; i++) {
-      Object v = values.elementAt(i);
+    Iterator iter = values.iterator();
+    while(iter.hasNext()) {
+      Object v = iter.next();
       if (v instanceof MModelElement) {
 	v = ((MModelElement)v).getName();
 	if ("".equals(v)) v = "(anon)";
@@ -88,164 +72,10 @@ public class OCLEvaluator {
       }
       if (! "".equals(v)) {
 	_strBuf.append(v);
-	if (i < size - 1) _strBuf.append(sep);
+	if (iter.hasNext()) _strBuf.append(sep);
       }
     }
     return _strBuf.toString();
-  }
-
-  public static Vector eval(Hashtable bindings, String expr) {
-    int firstPos = expr.indexOf(".");
-    Object target = bindings.get(expr.substring(0, firstPos));
-    Vector targets = null;
-
-    if (target instanceof Vector)  {
-      targets = (Vector) target;
-    } else {
-      targets = new Vector();
-      targets.addElement(target);
-    }
-    String prop = expr.substring(firstPos);
-    return eval(bindings, prop, targets);
-  } // end of eval()
-
-  public static Vector eval(Hashtable bindings, String expr, Vector targets) {
-    int firstPos, secPos, numElements;
-    String property;
-
-    while (expr.length() > 0) {
-      Vector v = new Vector();
-      firstPos = expr.indexOf(".");
-      secPos = expr.indexOf(".", firstPos + 1);
-
-      if (secPos == -1) { // <expr>::= ".<property>"
-	property = expr.substring(firstPos + 1);
-	expr = "";
-      } else {            // <expr>::= ".<property>.<expr>"
-	property = expr.substring(firstPos + 1, secPos);
-	expr = expr.substring(secPos); //+1
-      }
-      numElements = targets.size();
-      for (int i = 0; i < numElements; i++) {
-	v.addElement(evaluateProperty(targets.elementAt(i), property));
-      }
-      targets = flatten(v);
-      // the results of evaluating a property may result in a vector
-    }
-    return targets;
-  } // end of eval()
-
-  public static String toTitleCase(String s) {
-    if ( s.length() > 1 ) {
-      return s.substring(0, 1).toUpperCase()
-+ s.substring (1, s.length() );
-    } else {
-      return s.toUpperCase();
-    }
-  } // end of toTitleCase
-
-
-  public static Object evaluateProperty(Object target, String property) {
-    if (target == null) return null;
-    Method m = null;
-    Field  f = null;
-    Object o = null;
-
-    try {
-      m = target.getClass().getMethod("get" + toTitleCase(property), null);
-      o = m.invoke(target, null); // getter methods take no args =>  null
-      // System.out.println("Trying to get method " + toTitleCase(property));
-      return convertCollection(o);
-    }
-    catch ( NoSuchMethodException e ) {}
-    catch ( InvocationTargetException e ) {
-      if (m != null) {
-	System.out.println("On Class: " + target.getClass().getName());
-	System.out.println("error in evaluating " + "get" +
-			   toTitleCase(property) + "()");
-	e.getTargetException().printStackTrace();
-	return null;
-      }
-    }
-    catch ( Exception e ) { }
-
-    try {
-      m = target.getClass().getMethod( property, null);
-      o = m.invoke(target, null);
-      // System.out.println("Trying to get method " + toTitleCase(property));
-      return convertCollection(o);
-    }
-    catch ( NoSuchMethodException e ) {}
-    catch ( InvocationTargetException e ) {
-      if (m != null) {
-	System.out.println("On Class: " + target.getClass().getName());
-	System.out.println("error in evaluating " + property + "()");
-	e.getTargetException().printStackTrace();
-	return null;
-      }
-    }
-    catch ( Exception e ) { }
-
-
-    try {
-      m = target.getClass().getMethod( toTitleCase(property), null);
-      o = m.invoke(target, null);
-      // System.out.println("Trying to get method" + property);
-      return convertCollection(o);
-    } catch ( Exception e ) {}
-
-    try {
-      f = target.getClass().getField(property);
-      o = f.get(target);  // access the field f or object targe
-      return convertCollection(o);
-    }
-    catch (NoSuchFieldException e) {
-        System.out.println("On Class: " + target.getClass().getName());
-        System.out.println("Trying to get field " + property);
-        e.printStackTrace();
-        return null;
-    }
-    catch ( Exception e ) {
-      if (f != null) {
-	System.out.println("On Class: " + target.getClass().getName());
-	System.out.println("error in evaluating field " + property);
-	e.printStackTrace();
-	return null;
-      }
-    }
-
-    return null;
-  } // end of evaluateProperty
-
-
-  // added this method 02/08/00 (JH) - if an instance of Collection
-  // is encountered, convert it to a Vector so the rest of the
-  // OCL code still works; there may be a more efficient way,
-  // but this was the least intrusive fix
-  public static Object convertCollection(Object o) {
-      if (o instanceof Collection) {
-          return new Vector((Collection)o);
-      } else {
-          return o;
-      }
-  }
-
-  public static Vector flatten(Vector v) {
-    Vector accum = new Vector();
-    flattenInto(v, accum);
-    return accum;
-  }
-
-
-  public static void flattenInto(Object o, Vector accum) {
-    if ( !(o instanceof Vector) ) {
-      accum.addElement(o);
-    } else {
-      Enumeration e = ((Vector) o).elements();
-      while (e.hasMoreElements() ) {
-	flattenInto(e.nextElement(), accum);
-      }
-    }
   }
 
 }  // end of OCLEvaluator

@@ -21,10 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
 package org.argouml.ui;
 
 import java.awt.*;
@@ -33,11 +29,7 @@ import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
-// import javax.swing.text.*;
-// import javax.swing.border.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-
-
 
 public class AboutBox extends JFrame {
 
@@ -75,27 +67,84 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
 
-    _version.setText("ArgoUML Version 0.8.0\n"+
-		     "Built on August, , 2000\n"+
+    StringBuffer versionBuf = new StringBuffer(
+        "ArgoUML Version 0.9.1\n"+
+		     "Built on March 2nd of 2001\n"+
 		     "\n"+
-		     "Includes:\n"+
-		     "  GEF\n"+
-		     "  GIF generation code from www.acme.com\n"+
+		     "Needed:\n"+
+		     "  GEF (Graph Editing Framework)\n"+
+		     "  GIF generation code from www.acme.com (comes with GEF)\n"+
 		     "\n"+
 		     "Intended for use with:\n"+
 		     "  JDK 1.2 only plus\n"+
-		     "    IBM's XML4J 2.0.15 or higher\n"+
-		     "    Novosoft's NSUML 0.4.4 or higher (nsuml.sourceforge.net)\n"+
-		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"
-		     );
+		     "    A JAXP 1.0.1 compatible parser\n" +
+                     "       [Xerces-J 1.2.2 or later recommended, (xml.apache.org)]\n"+
+		     "    Novosoft's NSUML 0.4.19 or higher (nsuml.sourceforge.net)\n"+
+		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"+
+		     "\n");
+
+        try {
+            String factoryClass = javax.xml.parsers.SAXParserFactory.newInstance().getClass().getName();
+            if(factoryClass.indexOf("org.apache.") >= 0) {
+                versionBuf.append("This product includes software developed by the\n");
+                versionBuf.append("Apache Software Foundation (http://www.apache.org/).\n");
+            }
+        }
+        catch(Exception e) {}
+
+    versionBuf.append("\n--- Generated version information: ---\n");
+    versionBuf.append(getVersionInfo(packageList));
+
+      String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
+      if(saxFactory != null) {
+        versionBuf.append("SAX Parser Factory " + saxFactory+ " specified using system property\n");
+      }
+      try {
+        versionBuf.append("SAX Parser Factory " +
+            javax.xml.parsers.SAXParserFactory.newInstance().getClass().getName() + " will be used.\n");
+      }
+      catch(Exception ex) {
+        versionBuf.append("Error determining SAX Parser Factory\n.");
+      }
+
+    _version.setText(versionBuf.toString());
 
     _credits.setText("ArgoUML was developed by the following:\n"+
+		     "Project Lead:\n"+
+		     "  Jason Robbins (Collab.net)\n"+
+		     "  \n"+
+		     "Version 0.9 release managers:\n"+
+		     "  Toby Baier (University of Hamburg, Germany)\n"+
+		     "  Marko Boger (GentleWare)\n"+
+		     "  \n"+
+		     "Module Owners (contact these people for contributions):\n"+
+		     "  GEF: Edwin Park (esp@parkplace.dhs.org)\n"+
+		     "  UML Diagrams: Marko Boger (boger@informatik.uni-hamburg.de)\n"+
+		     "  UML Metamodel, XMI: Toby Baier (Toby.Baier@gmx.net)\n"+
+		     "  Plugin-support: Sean Chen (schen@bw.webex.net)\n"+
+		     "  Java RE: Andreas Rueckert (a_rueckert@gmx.net)\n"+
+		     "  Knowledge support: Jason Robbins (jrobbins@collab.net)\n"+
+		     "  User manual: Philippe Vanpeperstraete (Philippe.Vanpeperstraete@skynet.be)\n"+
+		     "  \n"+
+		     "Contributing Developers (in no special order):\n"+
+		     "  Jim Holt\n"+
+		     "  Thomas Schaumburg\n"+
+		     "  David Glaser\n"+
+		     "  Toby Baier\n"+
+		     "  Eugenio Alvarez\n"+
+		     "  Clemens Eichler\n"+
+		     "  Curt Arnold\n"+
+		     "  Andreas Rueckert\n"+
+		     "  Frank Finger\n"+
+		     "  Stuart Zakon\n"+
+		     "  Frank Wienberg\n"+
+
+		     "\n"+
+		     "Credits for previous versions:\n"+
 		     "\nResearchers:  \n"+
 		     "  Jason Robbins\n"+
 		     "  David Redmiles\n"+
 		     "  David Hilbert\n"+
-		     "\nProject Lead:  \n"+
-		     "  Jason Robbins\n"+
 		     "\nDevelopers and Testers:  \n"+
 		     "  Jason Robbins\n"+
 		     "  Adam Gauthier\n"+
@@ -118,6 +167,9 @@ public class AboutBox extends JFrame {
 		     "   http://www.ArgoUML.org\n"+
 		     " + Send email to Jason Robbins at:\n"+
 		     "   jrobbins@collab.net\n"+
+		     " + Send email to the developers mailing-list at:\n"+
+		     "   dev@argouml.tigris.org\n"+
+		     "   (subscribe by sending a message to dev-subscribe@argouml.tigris.org\n"+
 		     " + Read our conference and journal papers:\n"+
 		     "   (list of publications: KBSE'96, IUI'98, ICSE'98, etc.)"
 		     );
@@ -145,7 +197,6 @@ public class AboutBox extends JFrame {
     s+="PROVIDED HEREUNDER IS ON AN ''AS IS'' BASIS, AND THE UNIVERSITY OF\n";
     s+="CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,\n";
     s+="UPDATES, ENHANCEMENTS, OR MODIFICATIONS.\n";
-
     _legal.setText(s);
 
     _tabs.addTab("Splash", _splashButton);
@@ -163,6 +214,53 @@ public class AboutBox extends JFrame {
 
   ////////////////////////////////////////////////////////////////
   // static methods
+    static String packageList[] = new String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.xml.sax","java.lang"};
+    static String getVersionInfo(String packageList[])
+    {
+	String in = "";
+	StringBuffer sb = new StringBuffer();
+	for(int i=0;i<packageList.length;i++)
+	    {
+		sb.append("Package: ");
+		sb.append(packageList[i]);
+		sb.append('\n');
+		Package pkg = Package.getPackage(packageList[i]);
+		if(pkg == null)
+		    {
+			sb.append("-- No Versioning Information --\nMaybe you don't use the jar?\n\n");
+			continue;
+		    }
+		in = pkg.getImplementationTitle();
+		if(in!=null)
+		    {
+			sb.append("Component: ");
+			sb.append(in);
+		    }
+		in = pkg.getImplementationVendor();
+		if(in!=null)
+		    {
+			sb.append(", by: ");
+			sb.append(in);
+		    }
+		in = pkg.getImplementationVersion();
+		if(in!=null)
+		    {
+			sb.append(", version: ");
+			sb.append(in);
+			sb.append('\n');
+		    }
+		sb.append('\n');
+	    }
+
+	sb.append("Operation System is: ");
+	sb.append(System.getProperty("os.name", "unknown"));
+	sb.append('\n');
+	sb.append("Operation System Version: ");
+	sb.append(System.getProperty("os.version", "unknown"));
+	sb.append('\n');
+
+	return sb.toString();
+    }
 
   protected static ImageIcon loadIconResource(String imgName, String desc) {
     ImageIcon res = null;
@@ -181,8 +279,7 @@ public class AboutBox extends JFrame {
   }
 
   protected static String imageName(String name) {
-	return "/org/argouml/Images/" + stripJunk(name) + ".gif";
-    //return "/org/tigris/gef/Images/" + stripJunk(name) + ".gif";
+    return "/org/argouml/Images/" + stripJunk(name) + ".gif";
   }
 
 

@@ -2,6 +2,14 @@
 
 <!-- ===========================================================================
 
+!!!!!!!!!!!!!!!!  Now requires ANT 1.2   !!!!!!!!!!!!!!!!!!!!!
+if you get a message like:
+
+build.xml:162: Could not create task of type: copy because I can't find it in th
+e list of task class definitions
+
+You are running not running ANT 1.2
+
 
                            * ================== *
                            |  How to build Argo |
@@ -9,7 +17,7 @@
 
            Adaption from the FOP build.xml written by Stefano Mazzocchi
                 by Giacomo Pati with some addition by Fotis Jannidis
-	   Adapted by Andreas Rueckert
+           Adapted by Andreas Rueckert, Alejandro Ramirez and Andrew Smith
 
 
 Introduction
@@ -21,33 +29,72 @@ The homepage of Argo is http://argouml.tigris.org
 Installing the build tools
 ==========================
 
-Ant is a little but very handy tool that uses a build file written in XML
-(this file) as building instructions. For more information refer to
-"http://jakarta.apache.org/ant/".
+Building the latest versions of ArgoUML is automated using Ant which is a little but very handy tool that uses a build file written in XML (this file) as building instructions. For more information refer to "http://jakarta.apache.org/ant/". Essentially this is just setting ANT_HOME to the directory where you extracted the ant-distribution, and adding ANT_HOME/bin to your PATH.)
 
-Additionaly you have to make sure, that the "JAVA_HOME" environment
-property should be set to match the JVM you want to use. That's it.
+Additionally you have to make sure, that the "JAVA_HOME" environment property should be set to match the JVM you want to use. That's it.
 
 
-Building instructions
+Building instructions 
 =====================
 
-First, make sure your current working directory is where this very file is 
-located. Then type
+First, make sure your current working directory is where this very file is located. Then just type
 
-  ./build.sh (unix)
-  .\build.bat (win32)
+	ant
 
-if everything is right and all the required packages are visible, this action
-will generate a file called "argouml.jar" in the "./build" directory. Note, that
-if you do further development, compilation time is reduced since Ant is able
-to detect which files have changed an to recompile them at need.
+or, if it doesn't work
+
+	build
+
+to create the settings for an environment to suit Ant.
+
+After the above command you should see a help screen describing the usage of the Ant facility if everything is set up properly.
+
+
+Property Settings
+=================
+
+You may place a simple text file named ".ant.properties" in your home directory using which you can change certain properties. For example, by adding a line to .ant.properties you can change the compiler to be used
+
+build.compiler=jikes
+(without a blank after "jikes"!).
+
+This will force Ant to compile with jikes if you have it on your system. The other alternatives for this setting are;
+
+build.compiler=modern
+to use the most up-to-date version available to you which for Sun is currently javac from jdk1.3
+
+or the default if no explicit setting is made anywhere;
+
+build.compiler=classic
+to use a compiler/Virtual Machine combination compatible with jdk1.2.
+
+On machines using Windows the home directory is selected to be C:\ so the instructions in the build file will look there for .ant.properties.
+
+The filename is necessary for commonality with UNIX/LINUX systems but you will not be able to save or rename a file to this form of name using the Windows GUI directly. At least two workarounds are possible
+(i) use Notepad (NOT Wordpad) to create, edit, rename or save the file
+(ii) go into a DOS window and use the DOS command Edit to create, edit, rename or save the file.
+After these operations the file will still be visible in the GUI.
+
+
+Compilation instructions for ArgoUML
+====================================
+
+If you want to compile ArgoUML, you need to have following:
+- your compiler in your PATH
+- JAVA_HOME correctly set to where Java2 is installed
+- ANT_HOME correctly set to where ANT is installed
+- the additional libraries (nsuml.jar, ocl-argo.jar, xml4j.jar, gef.jar) in argouml/lib
+- the support file (uml13.dtd) is optional but desirable in argouml/lib
+
+when these are right the command 
+
+     build compile
+
+will do the job. With this arrangement problems with the set size of environment may arise for DOS command line windows, but a setting of 4096b should be ample on the Memory page of the Property dialogue box.
 
 If something went wrong, go to the FAQ section below.
 
-Also, you'll note that reusing a single JVM instance for each task, increases
-tremendously the performance of the whole build system, compared to other
-tools (i.e. make or shell scripts) where a new JVM is started for each task.
+Also, you'll note that reusing a single JVM instance for each task, increases tremendously the performance of the whole build system, compared to other tools (i.e. make or shell scripts) where a new JVM is started for each task.
 
 
 
@@ -56,12 +103,14 @@ Build targets
 
 These are the meaningful targets for this build file:
 
- - package [default] -> creates ./build/argouml.jar
- - usage -> shows a help screen
- - dist -> generates the ArgoUML distribution
- - clean -> restores the distribution to its original and clean state 
-            (excepting dist files)
- - distclean -> restores the distribution to its original and clean state
+-   compile      -> compiles your source code to ../build/classes
+-   run          -> runs ArgoUML from compiled source
+-   package      -> generates a jar file, ../build/argouml09.jar
+-   dist         -> generates distribution .tar.gz and .zip files in ../build/dist
+-   prepare-docs -> writes the documentation to ../build/doc
+-   clean        -> cleans up (deletes) the build directory
+-   distclean    -> cleans up the distribution directory
+-   usage        -> show this message (default)
 
 ====================================== FAQ =====================================
 
@@ -74,47 +123,60 @@ the built process is not stopped.
 2) I see a lot of warnings starting like this: "Warning: file modified in the future:"
 Sometimes ant gives out this warnings, but the build is finished without any problems
 
+3) "ant run" doesn't work, XML classes are not found, what's wrong?
+Maybe you have hard-coded your ANT_HOME variable in the ant start-script. This way it
+doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
+
 
 ============================================================================ -->
 
-<project default="package" basedir=".">
+<project default="usage" basedir=".">
 
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
-  <target name="init">
+
+ <target name="init">
+
     <tstamp/>
+
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="0.9alpha1"/>
+    <property name="version" value="0.9.1"/>
     <property name="year" value="2000"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
 
-    <property name="build.compiler" value="jikes"/>
     <property name="debug" value="off"/>
     <property name="optimize" value="on"/>
     <property name="deprecation" value="off"/>
 
     <property name="src.dir" value="../src_new"/>
-    <property name="src.codegen" value="../src_new/codegen"/>
-    <property name="docs.dir" value="../docs"/>
     <property name="lib.dir" value="../lib"/>
-    <property name="packages" value="org*"/>
+    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar"/> 
+    <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
+
+    <property name="packages" value="org.argouml.*"/>
+    <property name="manifest" value="${src.dir}/org/argouml.mf"/>
 
     <property name="build.dir" value="../build"/>
-    <property name="build.src" value="../build/src"/>
-    <property name="build.dest" value="../build/classes"/>
+    <property name="build.src" value="${src.dir}"/>
+    <property name="build.dest" value="${build.dir}/classes"/>
+    <property name="dist.dir" value="${build.dir}/dist"/>
+    <property name="docs.dir" value="${build.dir}/doc"/>
 
-    <property name="ignore_this" value="ignore_this.java"/>
+    <exec executable="set user.home=C:\" os="windows" />
+    <property file="${user.home}/.ant.properties"/>
 
-    <filter token="${replacestring}" value="${build.src}/${replacestring}"/>
   </target>
+
+  <!-- Note this file can only make Ant display values set in the file correctly, -->
+  <!-- but external values in the environment or properties file will be operational.  -->
 
   <!-- =================================================================== -->
   <!-- Help on usage                                                       -->
   <!-- =================================================================== -->
-  <target name="usage">
+  <target name="usage" depends="init">
     <echo message=""/>
     <echo message=""/>
     <echo message="${Name} Build file"/>
@@ -122,11 +184,14 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message=""/>
     <echo message=" available targets are:"/>
     <echo message=""/>
-    <echo message="   package   --> generates the ${name}.jar file (default)"/>
-    <echo message="   compile   --> compiles the source code"/>
-    <echo message="   dist      --> generates the ${Name} distribution as .tar.gz and .zip"/>
-    <echo message="   clean     --> cleans up the directory (except for the dist files)"/>
-    <echo message="   distclean --> cleans up the directory"/>
+    <echo message="   compile      --> compiles the source code to the tree under ${build.dir}"/>
+    <echo message="   run          --> runs ArgoUML from compiled source"/>
+    <echo message="   package      --> generates the ${name}.jar file"/>
+    <echo message="   dist         --> generates ${Name} .tar.gz and .zip files into ${dist.dir}"/>
+    <echo message="   prepare-docs --> writes the documentation to ${docs.dir}"/>
+    <echo message="   clean        --> cleans up the ${build.dir} directory"/>
+    <echo message="   distclean    --> cleans up the distribution directory, ${dist.dir}"/>
+    <echo message="   usage        --> show this message (default)"/>
     <echo message=""/>
     <echo message=" See the comments inside the build.xml file for more details."/>
     <echo message="-------------------------------------------------------------"/>
@@ -141,42 +206,46 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <!-- create directories -->
     <echo message="Preparing the build directories"/>
     <mkdir dir="${build.dir}"/>
-    <mkdir dir="${build.src}"/>
+    <copy todir="${build.dest}/org/argouml/Images">
+      <fileset dir="${build.src}/org/argouml/Images" includes="**/**" excludes="CVS/**" />
+    </copy>
+    <copy todir="${build.dest}/org/argouml/xml/dtd">
+      <fileset dir="${build.src}/org/argouml/xml/dtd" includes="**/**" excludes="CVS/**" />
+    </copy>
+    <copy file="${build.src}/org/argouml/argo.ini" tofile="${build.dest}/org/argouml/argo.ini" />
+    <copy file="${build.src}/org/argouml/default.xmi" tofile="${build.dest}/org/argouml/default.xmi" />
+	<copy file="${build.src}/org/argouml/registry.xml" tofile="${build.dest}/org/argouml/registry.xml"/>
   </target>
 
   <!-- =================================================================== -->
-  <!-- Prepares the build directory                                        -->
+  <!-- Update from CVS                                                     -->
   <!-- =================================================================== -->
-  <target name="prepare-xt" depends="prepare" if="xt.present">
-    <copydir src="${src.dir}"
-             dest="${build.src}"
-             includes="org/** **/*.dtd **/*.tee" />
-  </target>
 
-  <!-- =================================================================== -->
-  <!-- Prepares the source code                                            -->
-  <!-- =================================================================== -->
-  <target name="prepare-src" depends="prepare">
-    <!-- copy src files -->
-    <copydir src="${src.dir}"
-             dest="${build.src}"
-             excludes="**/Makefile* **/NMakefile **/Sources.list org/**/docs/** **/INSTALL.txt **/argouml.mf **/*.shared* **/*~ **/*% **/.sniffdir/** **/*.proj* **/*.ref.*"/>
+  <target name="update" depends="prepare">
+    <echo message="Updating from CVS "/>
+    <cvs dest="${src.dir}"
+	 command="update"
+    />
   </target>
 
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <target name="compile" depends="prepare-src">
-    <echo message="Compiling the sources "/>
+  <!-- <target name="compile" depends="prepare"> -->
+
+  <target name="compile" depends="prepare">
+    <echo message="Compiling the sources"/>
+
     <!-- create directories -->
     <mkdir dir="${build.dest}"/>
 
     <javac srcdir="${build.src}"
            destdir="${build.dest}"
+           classpath="${classpath}"
+           excludes="*.txt,*.bat,*.xml,*.sh"
            debug="${debug}"
            deprecation="${deprecation}"
-           optimize="${optimize}"
-           excludes="**/${ignore_this}"/>
+           optimize="${optimize}"/>
   </target>
 
   <!-- =================================================================== -->
@@ -184,16 +253,27 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <target name="package" depends="compile">
     <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
+    <filter token="version" value="${version}"/>
+    <copy file="${manifest}" tofile="${build.dest}/${manifest}" filtering="on" />
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
-         includes="org/**"/>
+         includes="org/argouml/**"
+         excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
+         manifest="${build.dest}/${manifest}"/>
+    <copy todir="${build.dir}">
+      <fileset dir="${lib.dir}" />
+    </copy>
   </target>
 
   <!-- =================================================================== -->
   <!-- Prepares the docs                                                   -->
   <!-- =================================================================== -->
   <target name="prepare-docs" depends="init">
-    <mkdir dir="${build.docs}"/>
+    <mkdir dir="${docs.dir}"/>
+    <javadoc sourcepath="${build.src}"
+             destdir="${docs.dir}"
+             classpath="${classpath}"
+             packagenames="${packages}"/>
   </target>
 
   <!-- =================================================================== -->
@@ -201,42 +281,66 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <mkdir dir="${dist.dir}"/>
-    <copyfile src="${basedir}/build.sh" dest="${dist.dir}/build.sh" />
-    <chmod src="${dist.dir}/build.sh" perm="ugo+rx" />
-    <copyfile src="${basedir}/build.bat" dest="${dist.dir}/build.bat" />
-    <copydir src="${build.dir}" dest="${dist.dir}" 
-        excludes="**/classes/**, **/${ignore_this}"/>
-    <zip zipfile="${Name}-${version}.zip" basedir="${dist.dir}" includes="**"/>
-    <tar tarfile="${Name}-${version}.tar" basedir="${dist.dir}" includes="**"/>
+
+    <copy todir="${build.dir}/">
+      <fileset dir="${src.dir}" includes="README*" />
+    </copy>
+    
+    <zip zipfile="${Name}-${version}.zip" basedir="${build.dir}" includes="*.jar,README*"/>
+    <tar tarfile="${Name}-${version}.tar" basedir="${build.dir}" includes="*.jar,README*"/>
     <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
     <delete file="${Name}-${version}.tar"/>
-    <deltree dir="${dist.dir}"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Creates the source distribution                                            -->
   <!-- =================================================================== -->
-  <target name="dist-src" depends="package">
+  <target name="dist-src" depends="init">
     <echo message="Building the source distribution files (zip,tar)"/>
-    <chmod src="${src.dir}/build.sh" perm="ugo+rx" />
-    <zip zipfile="${Name}-${version}.zip" basedir="${src.dir}" excludes="**/.sniffdir/** **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* .ProjectCache/** .RetrieverIndex/**"/>
-    <tar tarfile="${Name}-${version}.tar" basedir="${src.dir}" excludes="**/.sniffdir/** **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* .ProjectCache/** .RetrieverIndex/**"/>
-    <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
-    <delete file="${Name}-${version}.tar"/>
-  </target>
+    <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
+    <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}/.." includes="src_new/**" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak **/ArgoUML*"/>
+    <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}/.." includes="src_new/**" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak **/ArgoUML*"/>
+    <gzip zipfile="${Name}-${version}-src.tar.gz" src="${Name}-${version}-src.tar" />
+    <delete file="${Name}-${version}-src.tar"/>
+  </target>                                                                                                                                                                    
+
+  <!-- =================================================================== -->
+  <!-- Creates the lib distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist-lib" depends="init">
+    <echo message="Building the library distribution files (zip,tar)"/>
+    <zip zipfile="${Name}-${version}-libs.zip" basedir="${lib.dir}/.." includes="lib/**" />
+    <tar tarfile="${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/**" />
+    <gzip zipfile="${Name}-${version}-libs.tar.gz" src="${Name}-${version}-libs.tar" />
+    <delete file="${Name}-${version}-libs.tar"/>
+  </target>                                                                                                                   
 
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
   <target name="clean" depends="init">
-    <deltree dir="${build.dir}"/>
+    <delete dir="${build.dir}"/>
   </target>
 
   <target name="distclean" depends="clean">
-    <deltree dir="${dist.dir}"/>
+    <delete dir="${dist.dir}"/>
+    <delete file="${Name}-${version}.zip"/>    
+    <delete file="${Name}-${version}.tar.gz"/>    
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Run ArgoUML from compiled sources                                   -->
+  <!-- =================================================================== -->
+  <target name="run" depends="compile">
+    <echo message="--- Executing ${Name} ---"/>
+    <java classname="org.argouml.application.Main"
+          fork="yes"
+          classpath="${build.dest};${classpath};${ant.xml-libs}"/>
   </target>
 
 </project>
+
+
 
 <!-- End of file -->
