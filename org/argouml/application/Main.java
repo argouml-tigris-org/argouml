@@ -56,10 +56,65 @@ public class Main {
 
   private static Vector postLoadActions = new Vector();
 
+    // this is also in AboutBox, but should help getting feedback here as well...
+    static String packageList[] = new String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","java.lang"};
+    static String getVersionInfo(String packageList[]) throws ClassNotFoundException
+    {
+	// do some preloading...
+	Class cls = Class.forName("ru.novosoft.uml.MBase");
+	cls = Class.forName("org.tigris.gef.base.Editor");
+	cls = Class.forName("ru.novosoft.uml.MBase");
+
+
+	String in = "";
+	StringBuffer sb = new StringBuffer();
+	for(int i=0;i<packageList.length;i++)
+	    {
+		sb.append("Package: ");
+		sb.append(packageList[i]);
+		sb.append('\n');
+		Package pkg = Package.getPackage(packageList[i]);
+		if(pkg == null)
+		    {
+			sb.append("-- No Versioning Information --\nMaybe you don't use the jar?\n\n");
+			continue;
+		    }
+		in = pkg.getImplementationTitle();
+		if(in!=null)
+		    {
+			sb.append("Component: ");
+			sb.append(in);
+		    }
+		in = pkg.getImplementationVendor();
+		if(in!=null)
+		    {
+			sb.append(", by: ");
+			sb.append(in);
+		    }
+		in = pkg.getImplementationVersion();
+		if(in!=null)
+		    {
+			sb.append(", version: ");
+			sb.append(in);
+			sb.append('\n');
+		    }
+		sb.append('\n');
+	    }
+	return sb.toString();
+    }
+    
   ////////////////////////////////////////////////////////////////
   // main
 
   public static void main(String args[]) {
+
+      // first, print out some version info for debuggers...
+      try{
+	  System.out.println(getVersionInfo(packageList));
+      } catch (Exception e) { System.out.println("Couldn't generate version info, please check AboutBox!");}
+ 
+      
+
     boolean doSplash = true;
     boolean useEDEM = true;
     boolean preload = true;
@@ -136,7 +191,7 @@ public class Main {
 
 
     start = System.currentTimeMillis();
-    SplashScreen splash = new SplashScreen("Loading Argo/UML...", "Splash");
+    SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");
     splash.getStatusBar().showStatus("Making Project Browser");
     splash.getStatusBar().showProgress(10);
 
@@ -145,7 +200,7 @@ public class Main {
 
 
 	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-    ProjectBrowser pb = new ProjectBrowser("Argo/UML", splash.getStatusBar());
+    ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar());
     phase1 = System.currentTimeMillis();
 
     JOptionPane.setRootFrame(pb);
@@ -308,6 +363,7 @@ public class Main {
   public static void  addPostLoadAction(Runnable r) {
     postLoadActions.addElement(r);
   }
+
 
 } /* end Class Main */
 
