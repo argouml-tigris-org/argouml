@@ -188,7 +188,10 @@ public class ParserDisplay extends Parser {
 			public void found(Object element, String value)
 			{
 			    if (ModelFacade.isAStructuralFeature(element))
-				ModelFacade.setChangeable(element, (value != null && value.equalsIgnoreCase("false")));
+				if ("false".equalsIgnoreCase(value))
+				    ModelFacade.setChangeability(element, ModelFacade.CHANGEABLE_CHANGEABLEKIND);
+				else
+				    ModelFacade.setChangeability(element, ModelFacade.FROZEN_CHANGEABLEKIND);
 			}
 		    });
 	_attributeSpecialStrings[1] =
@@ -196,8 +199,12 @@ public class ParserDisplay extends Parser {
 		    new PropertyOperation() {
 			public void found(Object element, String value)
 			{
-			    if (ModelFacade.isAStructuralFeature(element))
-				ModelFacade.setChangeable(element, ("false".equalsIgnoreCase(value)));
+			    if (ModelFacade.isAStructuralFeature(element)) {
+				if ("false".equalsIgnoreCase(value))
+				    ModelFacade.setChangeability(element, ModelFacade.CHANGEABLE_CHANGEABLEKIND);
+				else
+				    ModelFacade.setChangeability(element, ModelFacade.ADD_ONLY_CHANGEABLEKIND);
+			    }
 			}
 		    });
 	_attributeCustomSep = new Vector();
