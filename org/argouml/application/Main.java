@@ -583,7 +583,6 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
 
         c = java.lang.ClassNotFoundException.class;
-        c = org.argouml.ui.UpdateTreeHack.class;
         c = org.argouml.kernel.DelayedChangeNotify.class;
         c = org.tigris.gef.graph.GraphEvent.class;
         c = org.tigris.gef.graph.presentation.NetEdge.class;
