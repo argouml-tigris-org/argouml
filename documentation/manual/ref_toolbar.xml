@@ -50,7 +50,7 @@ A description of all the toolbar entries
             <guiicon>
               <inlinemediaobject>
                 <imageobject>
-                  <imagedata format="GIF" align="center" fileref="images/icons/open_project.gif"/>
+                  <imagedata format="GIF" align="center" fileref="images/icons/save_project.gif"/>
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
@@ -179,7 +179,7 @@ A description of all the toolbar entries
       <title>Find operation</title>
 
       <para>This button has identical behaviour as its counterpart in the
-        <literal>Edit</literal> menu.
+        <literal>View</literal> menu.
       </para>
 
       <itemizedlist>
@@ -192,9 +192,70 @@ A description of all the toolbar entries
                 </imageobject>
               </inlinemediaobject>
             </guiicon>
-            <literal>Find</literal> See for a full description
+            <literal>Find...</literal> See for a full description
             <xref linkend="s2.ref.menu_find"/>.
           </para>
+        </listitem>
+
+        <listitem>
+          <para>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center" fileref="images/icons/zoom.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Zoom</literal> This is a different version 
+            of the menu-item for zooming, as described in 
+            <xref linkend="s2.ref.menu_zoom"/>.
+            Clicking with &button1; on the zoom-icon opens a panel 
+            as in the figure below. 
+            
+            <figure id="fig.ref.toolbar_zoom" float="1">
+              <title>The Zoom slider on the Toolbar</title>
+              <screenshot>
+                <mediaobject>
+                  <imageobject>
+                    <imagedata format="PNG" align="center"
+                      fileref="images/reference/toolbar_zoom_slider.png"/>
+                  </imageobject>
+                </mediaobject>
+              </screenshot>
+            </figure>
+            In the open panel, the following actions are possible:
+          </para>
+          <itemizedlist>
+            <listitem>
+              <para>
+                Clicking with &button1; on the "knob" followed by
+                &button1; movement will adjust the zoomfactor.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                Clicking with &button1; on the shown percentage 
+                allows editing the given zoomfactor (in percent) directly 
+                with the numeric digit keys.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                Clicking with &button1; below or above the knob 
+                increases or decreass the zoom factor with 1%. 
+                Use this function to easily fine-adjust the percentage.
+              </para>
+            </listitem>
+            <listitem>
+              <para>
+                Clicking with &button1; or &button2; anywhere outside the 
+                slider panel closes the panel.
+                <!-- TODO: Clicking on the icon does not close the panel. 
+                Should it? -->
+              </para>
+              <!-- TODO: Investigate and describe keyboard functionality -->
+            </listitem>
+          </itemizedlist>
         </listitem>
       </itemizedlist>
     </section>
