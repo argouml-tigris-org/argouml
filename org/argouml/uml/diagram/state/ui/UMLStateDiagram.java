@@ -43,7 +43,7 @@ import org.tigris.gef.ui.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.*;
-
+import org.argouml.application.api.*;
 // get the note from the class diagram
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.FigNote;
@@ -92,8 +92,10 @@ public class UMLStateDiagram extends UMLDiagram {
   // contructors
 
   protected static int _StateDiagramSerial = 1;
-
-
+/** 
+ *  this constructor is used to build a dummy state diagram so that a project
+ *  will load properly.
+ */
   public UMLStateDiagram() {
     String name = "state diagram " + _StateDiagramSerial;
     _StateDiagramSerial++;
@@ -104,6 +106,7 @@ public class UMLStateDiagram extends UMLDiagram {
     this();
 	if (m != null && m.getName() != null) {
 		String name = m.getName();
+                Argo.log.info("UMLStateDiagram constructor: String name = " + name);
 		// + " states "+ (m.getBehaviors().size());
 		try { setName(name); }
 		catch (PropertyVetoException pve) { }
@@ -114,8 +117,10 @@ public class UMLStateDiagram extends UMLDiagram {
 
 	public MModelElement getOwner() {
 		StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
-		MStateMachine sm = gm.getMachine();
+                Argo.log.info("UMLStateDiagram.getOwner()...GraphModel = " + gm);
+                MStateMachine sm = gm.getMachine();
 		if (sm != null) return sm;
+                Argo.log.info("UMLStateDiagram.getOwner()...NameSpace = " + gm.getNamespace());
 		return gm.getNamespace();
 	}
 
@@ -139,7 +144,8 @@ public class UMLStateDiagram extends UMLDiagram {
 	  gm.setNamespace(m);
 	  if (sm != null) gm.setMachine(sm);
 	  setGraphModel(gm);
-	  LayerPerspective lay = new LayerPerspective(m.getName(), gm);
+	  LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+//          LayerPerspective lay = new LayerPerspective(m.getName(), gm);
 	  setLayer(lay);
 	  StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
 	  lay.setGraphNodeRenderer(rend);

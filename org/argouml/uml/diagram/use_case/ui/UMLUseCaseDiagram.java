@@ -90,7 +90,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
     gm.setNamespace(m);
     setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName(), gm);
+    LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
     setLayer(lay);
     UseCaseDiagramRenderer rend = new UseCaseDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);
