@@ -85,7 +85,7 @@ public class UMLStateDiagram extends UMLDiagram {
     protected static Action _actionBranchPseudoState =
         new ActionCreatePseudostate(
             ModelFacade.BRANCH_PSEUDOSTATEKIND,
-            "Branch");
+            "Choice");
 
     protected static Action _actionForkPseudoState =
         new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, "Fork");
