@@ -24,7 +24,6 @@
 
 // File: FigMessage.java
 // Original Author: agauthie@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.diagram.ui;
 
@@ -48,7 +47,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /** Class to display graphics for a UML collaboration in a diagram. */
@@ -210,11 +208,11 @@ public class FigMessage extends FigNodeModelElement {
     }
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
-	MMessage mes = (MMessage) getOwner();
-	if (mes != null && ft == _name) {
+	Object message = getOwner();
+	if (message != null && ft == _name) {
 	    String s = ft.getText();
 	    try {
-		ParserDisplay.SINGLETON.parseMessage(mes, s);
+		ParserDisplay.SINGLETON.parseMessage((MMessage)message, s);
 		ProjectBrowser.getInstance().getStatusBar().showStatus("");
 	    } catch (ParseException pe) {
 		ProjectBrowser.getInstance().getStatusBar().showStatus("Error: "
@@ -232,10 +230,10 @@ public class FigMessage extends FigNodeModelElement {
      * type of arrow happens in modelchanged
      */
     protected void updateArrow() {
-  	MMessage mes = (MMessage) getOwner();
+  	Object mes = getOwner();// MMessage
 	if (mes == null || getLayer() == null) return;
-	MClassifierRole sender = mes.getSender();
-	MClassifierRole receiver = mes.getReceiver();
+	Object sender = ModelFacade.getSender(mes);// MClassifierRole
+	Object receiver = ModelFacade.getReceiver(mes);// MClassifierRole
 	Fig senderPort = getLayer().presentationFor(sender);
 	Fig receiverPort = getLayer().presentationFor(receiver);
 	if (senderPort == null || receiverPort == null) return;
@@ -290,9 +288,9 @@ public class FigMessage extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        MMessage mes = (MMessage) getOwner();
+        Object mes =  getOwner();
         if (mes == null) return;
-        _name.setText(Notation.generate(this, mes));
+        _name.setText(Notation.generate(this, (MMessage)mes));
     }
 
     /**

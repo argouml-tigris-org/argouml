@@ -30,13 +30,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractGoRule;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
-
-import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
  * @since Oct 7, 2002
@@ -49,8 +48,8 @@ public class GoOperationToCollaborationDiagram extends AbstractGoRule {
      */
     public Collection getChildren(Object parent) {
         if (org.argouml.model.ModelFacade.isAOperation(parent)) {
-            MOperation operation = (MOperation) parent;
-            Collection col = operation.getCollaborations();
+            Object operation = parent;//MOperation
+            Collection col = ModelFacade.getCollaborations(operation);
             Vector ret = new Vector();
             Project p = ProjectManager.getManager().getCurrentProject();
             Vector diagrams = p.getDiagrams();

@@ -27,10 +27,6 @@
 // Classes: CompartmentFigText
 // Original Author: thn
 
-// 8 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
-// the display of extension points within use cases.
-
-
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
@@ -39,9 +35,6 @@ import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
-
-
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * <p>A FigText class extension for FigClass/FigInterface/FigUseCase
@@ -76,14 +69,14 @@ public class CompartmentFigText extends FigText
      * <p>Record whether we are currently highlighted.</p>
      */
 
-    protected boolean       _isHighlighted = false;
+    protected boolean       _isHighlighted;
 
 
     /**
      * <p>The model element with which we are associated.</p>
      */
 
-    protected MModelElement _modelElement = null;
+    protected Object _modelElement;
 
 
     ///////////////////////////////////////////////////////////////////////////

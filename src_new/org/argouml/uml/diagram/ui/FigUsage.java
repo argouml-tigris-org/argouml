@@ -25,20 +25,14 @@
 // File: FigUsage.java
 // Classes: FigUsage
 // Original Author: Markus Klink
-// $Id$
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.beans.*;
+import org.argouml.language.helpers.NotationHelper;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.presentation.ArrowHeadGreater;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-
-import org.argouml.language.helpers.*;
 
 public class FigUsage extends FigDependency {
 

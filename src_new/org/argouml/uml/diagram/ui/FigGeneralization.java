@@ -26,9 +26,6 @@
 
 // File: FigGeneralization.java
 // Classes: FigGeneralization
-// Original Author: abonner@ics.uci.edu
-// Author discriminator: jaap.branderhorst@xs4all.nl
-// $Id$
 
 package org.argouml.uml.diagram.ui;
 
@@ -37,6 +34,8 @@ import java.awt.Graphics;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.ModelFacade;
+
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
@@ -45,9 +44,10 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
-import ru.novosoft.uml.foundation.core.MGeneralization;
 
+/**
+ * @author abonner@ics.uci.edu, jaap.branderhorst@xs4all.nl
+ */
 public class FigGeneralization extends FigEdgeModelElement {
 	
     /**
@@ -114,11 +114,11 @@ public class FigGeneralization extends FigEdgeModelElement {
      * and on construction time.
      */
     public void updateDiscriminatorText() {
-  	MGeneralization me = (MGeneralization) getOwner();
+  	Object me = getOwner();//MGeneralization
   	if (me == null) {
 	    return;
   	}
-  	String disc = me.getDiscriminator();
+  	String disc = (String)ModelFacade.getDiscriminator(me);
   	if (disc == null) {
 	    disc = "";
   	}
@@ -136,9 +136,9 @@ public class FigGeneralization extends FigEdgeModelElement {
     public void setOwner(Object own) {
 	super.setOwner(own);
 	if (org.argouml.model.ModelFacade.isAGeneralization(own)) {
-	    MGeneralization gen = (MGeneralization) own;
-	    MGeneralizableElement subType = gen.getChild();
-	    MGeneralizableElement superType = gen.getParent();
+	    Object gen = own;//MGeneralization
+	    Object subType = ModelFacade.getChild(gen);//MGeneralizableElement
+	    Object superType = ModelFacade.getParent(gen);//MGeneralizableElement
 	    // due to errors in earlier releases of argouml it can
 	    // happen that there is a generalization without a child
 	    // or parent.
@@ -181,8 +181,7 @@ public class FigGeneralization extends FigEdgeModelElement {
         if (org.argouml.model.ModelFacade.isAGeneralizableElement(source)
 	    && org.argouml.model.ModelFacade.isAGeneralizableElement(dest))
 	{
-            setOwner(CoreFactory.getFactory().buildGeneralization((MGeneralizableElement) source,
-								  (MGeneralizableElement) dest));
+            setOwner(CoreFactory.getFactory().buildGeneralization(source,dest));
         }
     }
 } /* end class FigGeneralization */

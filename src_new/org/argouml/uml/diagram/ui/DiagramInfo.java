@@ -28,26 +28,18 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.tigris.gef.base.*;
-
-import org.argouml.uml.diagram.activity.ui.*;
-import org.argouml.uml.diagram.collaboration.ui.*;
-import org.argouml.uml.diagram.state.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
-import org.argouml.uml.diagram.sequence.ui.*;
-import org.argouml.uml.diagram.deployment.ui.*;
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
+import org.tigris.gef.base.Diagram;
 
 public class DiagramInfo extends JComponent {
 

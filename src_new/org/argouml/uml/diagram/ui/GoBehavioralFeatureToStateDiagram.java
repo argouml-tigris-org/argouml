@@ -29,13 +29,12 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractGoRule;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 
 /**
  * 
@@ -50,8 +49,8 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractGoRule {
     public Collection getChildren(Object parent) {
         
         if (org.argouml.model.ModelFacade.isABehavioralFeature(parent)) {
-            MBehavioralFeature operation = (MBehavioralFeature) parent;
-            Collection col = operation.getBehaviors();
+            Object operation = parent;//MBehavioralFeature
+            Collection col = ModelFacade.getBehaviors(operation);
             Vector ret = new Vector();
             Project p = ProjectManager.getManager().getCurrentProject();
             Vector diagrams = p.getDiagrams();

@@ -24,16 +24,12 @@
 
 // File: FigTrace.java
 // Classes: FigTrace
-// Original Author: your email address here
-// $Id$
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.presentation.*;
+import java.awt.Color;
+import org.tigris.gef.presentation.ArrowHeadTriangle;
+import org.tigris.gef.presentation.FigEdgeLine;
 
 public class FigTrace extends FigEdgeLine {
 
@@ -56,4 +52,3 @@ public class FigTrace extends FigEdgeLine {
     static final long serialVersionUID = -2094146244090391544L;
 
 } /* end class FigTrace */
-

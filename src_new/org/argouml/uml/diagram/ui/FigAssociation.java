@@ -55,9 +55,7 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
+
 public class FigAssociation extends FigEdgeModelElement {
     
    
@@ -258,22 +256,22 @@ public class FigAssociation extends FigEdgeModelElement {
 
     protected void modelChanged(MElementEvent e) {
 	super.modelChanged(e);
-	MAssociation as = (MAssociation) getOwner();
-	if (as == null || getLayer() == null) return;
+	Object associationEnd = getOwner();//MAssociation
+	if (associationEnd == null || getLayer() == null) return;
     
-	MAssociationEnd ae0 =
-	    (MAssociationEnd) ((Object[]) (as.getConnections()).toArray())[0];
-	MAssociationEnd ae1 =
-	    (MAssociationEnd) ((Object[]) (as.getConnections()).toArray())[1];
+	Object ae0 =
+	    ((Object[]) (ModelFacade.getConnections(associationEnd)).toArray())[0];//MAssociationEnd
+	Object ae1 =
+	    ((Object[]) (ModelFacade.getConnections(associationEnd)).toArray())[1];//MAssociationEnd
 	updateEnd(_srcMult, _srcRole, _srcOrdering, ae0);
 	updateEnd(_destMult, _destRole, _destOrdering, ae1);
     
-	boolean srcNav = ae0.isNavigable();
-	boolean destNav = ae1.isNavigable();
+	boolean srcNav = ModelFacade.isNavigable(ae0);
+	boolean destNav = ModelFacade.isNavigable(ae1);
 	if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
 	    srcNav = destNav = false;
-	sourceArrowHead = chooseArrowHead(ae0.getAggregation(), srcNav);
-	destArrowHead = chooseArrowHead(ae1.getAggregation(), destNav);
+	sourceArrowHead = chooseArrowHead(ModelFacade.getAggregation(ae0), srcNav);
+	destArrowHead = chooseArrowHead(ModelFacade.getAggregation(ae1), destNav);
 	setSourceArrowHead(sourceArrowHead);
 	setDestArrowHead(destArrowHead);
 	_srcGroup.calcBounds();
@@ -290,25 +288,29 @@ public class FigAssociation extends FigEdgeModelElement {
 	new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
 			       ArrowHeadGreater.TheInstance);
 
-    protected ArrowHead chooseArrowHead(MAggregationKind ak, boolean nav) {
+    protected ArrowHead chooseArrowHead(Object ak, boolean nav) {
+        
+        if(!ModelFacade.isAAggregationKind(ak))
+            throw new IllegalArgumentException();
+        
 	ArrowHead arrow = ArrowHeadNone.TheInstance;
 
 	if (nav) {
-	    if (MAggregationKind.NONE.equals(ak) || (ak == null))
+	    if (ModelFacade.NONE_AGGREGATIONKIND.equals(ak) || (ak == null))
 		arrow = ArrowHeadGreater.TheInstance;
-	    else if (MAggregationKind.AGGREGATE.equals(ak))
+	    else if (ModelFacade.AGGREGATE_AGGREGATIONKIND.equals(ak))
 		arrow = _NAV_AGGREGATE;
-	    else if (MAggregationKind.COMPOSITE.equals(ak))
+	    else if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ak))
 		arrow = _NAV_COMP;
 	}
 	else {
-	    if (MAggregationKind.NONE.equals(ak) || (ak == null)) {
+	    if (ModelFacade.NONE_AGGREGATIONKIND.equals(ak) || (ak == null)) {
 		arrow = ArrowHeadNone.TheInstance;
 	    }
-	    else if (MAggregationKind.AGGREGATE.equals(ak)) {
+	    else if (ModelFacade.AGGREGATE_AGGREGATIONKIND.equals(ak)) {
 		arrow = ArrowHeadDiamond.WhiteDiamond;
 	    }
-	    else if (MAggregationKind.COMPOSITE.equals(ak)) {
+	    else if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ak)) {
 		arrow = ArrowHeadDiamond.BlackDiamond;
 	    }
 	}
@@ -370,7 +372,7 @@ public class FigAssociation extends FigEdgeModelElement {
 
 	// Options available when right click anywhere on line (added
 	// by BobTarling 7-Jan-2002)
-	MAssociation asc = (MAssociation) getOwner();
+	Object asc = getOwner();//MAssociation
 	if (asc != null) {
 	    // Navigability menu with suboptions built dynamically to
 	    // allow navigability from atart to end, from end to start
@@ -425,25 +427,6 @@ public class FigAssociation extends FigEdgeModelElement {
 	    destArrowHead.setLineColor(getLineColor());   
         }
         super.paint(g);
-    }
-
-	
-
-    /**
-     * @see org.tigris.gef.presentation.Fig#delete()
-     */
-    public void delete() {
-        // deleting the elementlisteners to this class too
-        Object own = getOwner();
-        if (org.argouml.model.ModelFacade.isAAssociation(own)) {
-            MAssociation assoc = (MAssociation) own;
-            assoc.removeMElementListener(this);
-            Iterator it = assoc.getConnections().iterator();
-            while (it.hasNext()) {
-                ((MAssociationEnd) it.next()).removeMElementListener(this);
-            }
-        }
-        super.delete();
     }
 
 } /* end class FigAssociation */
