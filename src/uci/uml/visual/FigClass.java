@@ -39,46 +39,69 @@ import uci.uml.*;
 
 public class FigClass extends FigNode {
 
+  FigText _class, _attrib, _oper;
+
   public FigClass()
   {
     super(new uci.gef.demo.SampleNode());
     setLocation(50,50);
     setSize(100,70);
-    FigText foo = new FigText(5,5,100,20, Color.blue, "Times", 10);
-    foo.setText("Class data");
-    FigText xyzzy = new FigText(5,25,100,20, Color.blue, "Times", 10);
-    xyzzy.setText("Attrib data");
-    FigText bar = new FigText(5,45,100,20, Color.blue, "Times", 10);
-    bar.setText("Function data");
-    addFig(foo);
-    addFig(xyzzy);
-    addFig(bar);
   }
 
   public FigClass(NetNode nn, Vector figs) {
     super(nn, figs);
-    FigText foo = new FigText(5,5,100,20, Color.blue, "Times", 10);
-    foo.setText("Class data");
-    FigText xyzzy = new FigText(5,25,100,20, Color.blue, "Times", 10);
-    xyzzy.setText("Attrib data");
-    FigText bar = new FigText(5,45,100,20, Color.blue, "Times", 10);
-    bar.setText("Function data");
-    addFig(foo);
-    addFig(xyzzy);
-    addFig(bar);
+    _class = new FigText(10,10,90,20, Color.blue, "Times", 10);
+    _class.setExpandOnly(true);
+    _class.setText("Class data");
+    _attrib = new FigText(10,30,90,20, Color.blue, "Times", 10);
+    _attrib.setExpandOnly(true);
+    _attrib.setText("Attrib data");
+    _attrib.setAlignment("Left");
+    _oper = new FigText(10,50,90,20, Color.blue, "Times", 10);
+    _oper.setExpandOnly(true);
+    _oper.setText("Function data");
+    _oper.setAlignment("Left");
+    addFig(_class);
+    addFig(_attrib);
+    addFig(_oper);
+    setBlinkPorts(true); 
   }
 
 
   /** Paints the FigClass to the given Graphics. */
   public void paint(Graphics g) {
     super.paint(g);
-    g.drawRect(10,10,10,10);
     if (_highlight) {
       g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
       g.drawRect(_x - 3, _y - 3, _w + 6 - 1, _h + 6 - 1);
       g.drawRect(_x - 2, _y - 2, _w + 4 - 1, _h + 4 - 1);
     }
   }
+
+  /* Override setBounds to keep shapes looking right */
+  public void setBounds(int x, int y, int w, int h) {
+    Fig bigPort = (Fig) getPortFigs().firstElement();
+
+    int leftSide = x+10;
+    int widthP = w-10;
+    int topSide = y+10;
+    int heightP = h-10;
+
+    _class.setBounds(leftSide, topSide, widthP, (heightP/3));
+    _attrib.setBounds(leftSide, topSide + (heightP/3), widthP, (heightP/3));
+    _oper.setBounds(leftSide, topSide + (heightP/3) * 2, widthP, (heightP/3));
+    bigPort.setBounds(x,y,w+10,h+10);
+
+    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+  }
+
+ 
+  /*
+  public NetPort hitPort(int x, int y) {
+    return (NetPort) getPortFigs().firstElement().getOwner();
+  }
+  */
+
 
   ////////////////////////////////////////////////////////////////
   // notifications and updates
