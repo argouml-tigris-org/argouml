@@ -232,11 +232,12 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return one end of an edge.
      */
     public Object getSourcePort(Object edge) {
-	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
-	}
-	LOG.error("TODO: getSourcePort");
-	return null;
+        // TODO This urgently needs completing
+        if (ModelFacade.isARelationship(edge)) {
+            return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
+        }
+        LOG.error("TODO: getSourcePort");
+        return null;
     }
 
     /**
@@ -245,11 +246,12 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return the other end of an edge.
      */
     public Object getDestPort(Object edge) {
-	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getDestination(edge);
-	}
-	LOG.error("TODO: getSourcePort");
-	return null;
+        // TODO This urgently needs completing
+        if (ModelFacade.isARelationship(edge)) {
+            return CoreHelper.getHelper().getDestination(edge);
+        }
+        LOG.error("TODO: getSourcePort");
+        return null;
     }
 
 
@@ -369,13 +371,29 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Add the given edge to the graph, if valid.
      */
     public void addEdge(Object edge) {
-        LOG.debug("adding class edge!!!!!!");
-        if (!canAddEdge(edge)) return;
+//        // TODO Here we should do
+//        if (getDestPort(edge) == null || getSourcePort(edge) == null) {
+//            throw new IllegalArgumentException("The source and dest port should be provided on an edge");
+//        }
+//        // but we need to complete implemenentation of getSourcePort and getDestPort first
+        
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Adding an edge of type "
+                   + edge.getClass().getName()
+                   + " to class diagram.");
+        }
+        
+        if (!canAddEdge(edge)) {
+            LOG.info("Attempt to add edge rejected");
+            return;
+        }
+        
         getEdges().addElement(edge);
+        
         // TODO: assumes public
         if (ModelFacade.isAModelElement(edge) 
                 && ModelFacade.getNamespace(edge) == null) {
-	    ModelFacade.addOwnedElement(model, edge);
+    	    ModelFacade.addOwnedElement(model, edge);
         }
         fireEdgeAdded(edge);
     }
@@ -387,50 +405,49 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(Object)
      */
     public void addNodeRelatedEdges(Object node) {
-	if (ModelFacade.isAClassifier(node) ) {
-	    Collection ends = ModelFacade.getAssociationEnds(node);
-	    Iterator iter = ends.iterator();
-	    while (iter.hasNext()) {
-		Object associationEnd = iter.next();
-		if (canAddEdge(ModelFacade.getAssociation(associationEnd))) {
-		    addEdge(ModelFacade.getAssociation(associationEnd));
-		    // return;
-		}
-	    }
-	}
-	if (ModelFacade.isAGeneralizableElement(node) ) {
-	    Collection generalizations = ModelFacade.getGeneralizations(node);
-	    Iterator iter = generalizations.iterator();
-	    while (iter.hasNext()) {
-		Object generalization = iter.next();
-		if (canAddEdge(generalization)) {
-		    addEdge(generalization);
-		    // return;
-		}
-	    }
-	    Collection specializations = ModelFacade.getSpecializations(node);
-	    iter = specializations.iterator();
-	    while (iter.hasNext()) {
-		Object specialization = iter.next();
-		if (canAddEdge(specialization)) {
-		    addEdge(specialization);
-		    // return;
-		}
-	    }
-	}
-	if (ModelFacade.isAModelElement(node) ) {
-	    Vector specs =
-		new Vector(ModelFacade.getClientDependencies(node));
-	    specs.addAll(ModelFacade.getSupplierDependencies(node));
-	    Iterator iter = specs.iterator();
-	    while (iter.hasNext()) {
-		Object dependency = iter.next();
-		if (canAddEdge(dependency)) {
-		    addEdge(dependency);
-		    // return;
-		}
-	    }
-	}
+        if (ModelFacade.isAClassifier(node) ) {
+            Collection ends = ModelFacade.getAssociationEnds(node);
+            Iterator iter = ends.iterator();
+            while (iter.hasNext()) {
+                Object associationEnd = iter.next();
+                if (canAddEdge(ModelFacade.getAssociation(associationEnd))) {
+                    addEdge(ModelFacade.getAssociation(associationEnd));
+                }
+            }
+        }
+        if (ModelFacade.isAGeneralizableElement(node) ) {
+            Collection generalizations = ModelFacade.getGeneralizations(node);
+            Iterator iter = generalizations.iterator();
+            while (iter.hasNext()) {
+        	Object generalization = iter.next();
+        	if (canAddEdge(generalization)) {
+        	    addEdge(generalization);
+        	    // return;
+        	}
+            }
+            Collection specializations = ModelFacade.getSpecializations(node);
+            iter = specializations.iterator();
+            while (iter.hasNext()) {
+        	Object specialization = iter.next();
+        	if (canAddEdge(specialization)) {
+        	    addEdge(specialization);
+        	    // return;
+        	}
+            }
+        }
+        if (ModelFacade.isAModelElement(node) ) {
+            Vector specs =
+        	new Vector(ModelFacade.getClientDependencies(node));
+            specs.addAll(ModelFacade.getSupplierDependencies(node));
+            Iterator iter = specs.iterator();
+            while (iter.hasNext()) {
+        	Object dependency = iter.next();
+        	if (canAddEdge(dependency)) {
+        	    addEdge(dependency);
+        	    // return;
+        	}
+            }
+        }
     }
 
     ////////////////////////////////////////////////////////////////
