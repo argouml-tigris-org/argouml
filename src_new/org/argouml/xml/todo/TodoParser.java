@@ -35,6 +35,7 @@ import org.tigris.gef.util.VectorSet;
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
 import org.xml.sax.*;
+import org.apache.log4j.Category;
 
 // Needs-more-work: Reuse the offender Vector.
 
@@ -46,6 +47,7 @@ import org.xml.sax.*;
  * @author	Michael Stockman
  */
 public class TodoParser extends SAXParserBase {
+	protected static Category cat = Category.getInstance(TodoParser.class);
 
 	/** The SINGLETON object of this class. */
 	public static TodoParser SINGLETON = new TodoParser();
@@ -109,7 +111,9 @@ public class TodoParser extends SAXParserBase {
 		}
 		catch (IOException e)
 		{
-			Argo.log.info("Couldn't open InputStream in TodoParser.load("+url+") "+e);
+			cat.warn("Couldn't open InputStream in " +
+				 "TodoParser.load(" + url + ") ",
+				 e);
 			e.printStackTrace();
 		}
 	}
@@ -134,17 +138,17 @@ public class TodoParser extends SAXParserBase {
 	 * @param	addMembers	Ignored.
 	 * @see	#setURL
 	 */
-	public synchronized void readTodoList(InputStream is, boolean addMembers)
+	public synchronized void readTodoList(InputStream is,
+						boolean addMembers)
 	{
+		String errmsg = "Exception reading todo list =============";
 		try {
-			Argo.log.info("=======================================");
-			Argo.log.info("== READING TODO LIST "+_url);
+			cat.debug("=======================================");
+			cat.debug("== READING TODO LIST "+_url);
 			parse(is);
 		}
 		catch(SAXException saxEx)
 		{
-			Argo.log.info("Exception reading project================");
-
 			/*
 			 * A SAX exception could have been generated
 			 * because of another exception.
@@ -154,17 +158,16 @@ public class TodoParser extends SAXParserBase {
 			Exception ex = saxEx.getException();
 			if(ex == null)
 			{
-				saxEx.printStackTrace();
+				cat.error(errmsg, saxEx);
 			}
 			else
 			{
-				ex.printStackTrace();
+				cat.error(errmsg, ex);
 			}
 		}
 		catch (Exception ex)
 		{
-			Argo.log.info("Exception reading todo list =============");
-			ex.printStackTrace();
+			cat.error(errmsg, ex);
 		}
 	}
 
@@ -176,8 +179,7 @@ public class TodoParser extends SAXParserBase {
 	 */
 	public void handleStartElement(XMLElement e)
 	{
-		if (_dbg)
-			System.out.println("NOTE: TodoParser handleStartTag:" + e.getName());
+		//cat.debug("NOTE: TodoParser handleStartTag:" + e.getName());
 
 		try
 		{
@@ -204,14 +206,13 @@ public class TodoParser extends SAXParserBase {
 				break;
 
 			default:
-				if (_dbg)
-					System.out.println("WARNING: unknown tag:" + e.getName());
+				cat.warn("WARNING: unknown tag:" + e.getName());
 				break;
 			}
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			cat.error("Exception in startelement", ex);
 		}
 	}
 
@@ -223,8 +224,7 @@ public class TodoParser extends SAXParserBase {
 	 */
 	public void handleEndElement(XMLElement e)
 	{
-		if (_dbg)
-			System.out.println("NOTE: TodoParser handleEndTag:" + e.getName()+".");
+		//cat.debug("NOTE: TodoParser handleEndTag:"+e.getName()+".");
 
 		try
 		{
@@ -263,14 +263,14 @@ public class TodoParser extends SAXParserBase {
 				break;
 
 			default:
-				if (_dbg)
-					System.out.println("WARNING: unknown end tag:" + e.getName());
+				cat.warn("WARNING: unknown end tag:"
+					+ e.getName());
 				break;
 			}
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			cat.error("Exception in endelement", ex);
 		}
 	}
 
@@ -322,7 +322,7 @@ public class TodoParser extends SAXParserBase {
 		dsgr = Designer.theDesigner();
 		item = new ToDoItem(dsgr, _headline, _priority, _description, _moreinfourl, new VectorSet());
 		dsgr.getToDoList().addElement(item);
-		System.out.println("Added ToDoItem: " + _headline);
+		//cat.debug("Added ToDoItem: " + _headline);
 	}
 
 	/**
@@ -399,7 +399,7 @@ public class TodoParser extends SAXParserBase {
 		item = new ResolvedCritic(_critic, _offenders);
 		dsgr = Designer.theDesigner();
 		dsgr.getToDoList().getResolvedItems().addElement(item);
-		System.out.println("Added ResolvedCritic: " + item);
+		// cat.debug("Added ResolvedCritic: " + item);
 	}
 
 	/**
@@ -475,7 +475,7 @@ public class TodoParser extends SAXParserBase {
 		}
 		if (i2 > i1)
 			sb.append(str.substring(i1, i2));
-		//System.out.println("decode:\n" + str + "\n -> " + sb.toString());
+		//cat.debug("decode:\n" + str + "\n -> " + sb.toString());
 		return sb.toString();
 	}
 
@@ -520,7 +520,7 @@ public class TodoParser extends SAXParserBase {
 		if (i2 > i1)
 			sb.append(str.substring(i1, i2));
 
-		//System.out.println("encode:\n" + str + "\n -> " + sb.toString());
+		//cat.debug("encode:\n" + str + "\n -> " + sb.toString());
 		return sb.toString();
 	}
 }
