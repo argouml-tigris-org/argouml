@@ -57,7 +57,8 @@ public class ActionAddAttribute extends UMLAction {
 	Object target = TargetManager.getInstance().getModelTarget();
 	Object/*MClassifier*/ cls = null;
 
-	if (ModelFacade.isAClassifier(target)) {
+	if (ModelFacade.isAClassifier(target)
+            || ModelFacade.isAAssociationEnd(target)) {
 	    cls = target;
 	} else if (ModelFacade.isAFeature(target)
 		 && ModelFacade.isAClass(ModelFacade.getOwner(target))) {
@@ -96,7 +97,8 @@ public class ActionAddAttribute extends UMLAction {
 	return super.shouldBeEnabled()
 	       && (ModelFacade.isAClass(target)
 		   || (ModelFacade.isAFeature(target)
-		       && ModelFacade.isAClass(ModelFacade.getOwner(target))));
+		       && ModelFacade.isAClass(ModelFacade.getOwner(target)))
+           || ModelFacade.isAAssociationEnd(target));
     }
     /**
      * @return Returns the singleton.

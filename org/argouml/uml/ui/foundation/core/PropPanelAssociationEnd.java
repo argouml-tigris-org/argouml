@@ -45,6 +45,7 @@ import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
+import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
@@ -127,6 +128,16 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     private JScrollPane specificationScroll;
 
     /**
+     * The list of qualifiers that owns this association end
+     */
+    private JScrollPane qualifiersScroll;
+
+    /**
+     * Button to add qualified attributes to this association end
+     */
+    private PropPanelButton2 qualifierButton;
+
+    /**
      * Constructs the proppanel including initializing all scrollpanes, panels
      * etc. but excluding placing them on the proppanel itself.
      *
@@ -182,6 +193,11 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
                 new UMLAssociationEndSpecificationListModel(),
                 ActionAddAssociationSpecification.getInstance(),
                 null, null, true));
+        qualifiersScroll = new JScrollPane(new UMLLinkedList(
+                new UMLAssociationEndQualifiersListModel()));
+        qualifierButton = new PropPanelButton2(new ActionAddAttribute());
+        qualifierButton.setToolTipText("new Qualifier");
+
     }
 
     /**
@@ -215,6 +231,9 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         add(panel);
         addField(Translator.localize("label.specification"),
                 specificationScroll);
+        addField(Translator.localize("label.qualifiers"),
+                qualifiersScroll);
+
 
         addSeperator();
 
@@ -224,6 +243,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(new ActionNavigateAssociation()));
         addButton(oppositeEndButton);
+        addButton(qualifierButton);
         addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(),
