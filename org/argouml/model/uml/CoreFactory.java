@@ -34,8 +34,6 @@ import java.util.Set;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
@@ -826,17 +824,18 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * Builds a default attribute.
      * @return MAttribute
      */
-    public Object buildAttribute() {
+    public Object buildAttribute(Object model, Object theIntType) {
         //build the default attribute
         // this should not be here via the ProjectBrowser but the CoreHelper
         // should provide this functionality
-        Project p = ProjectManager.getManager().getCurrentProject();
-        MClassifier intType = (MClassifier) p.findType("int");
-        if (p.getModel() != intType.getNamespace()
+        MClassifier intType = (MClassifier) theIntType;
+//        Project p = ProjectManager.getManager().getCurrentProject();
+//        MClassifier intType = (MClassifier) p.findType("int");
+        if (model != intType.getNamespace()
                 && !(ModelManagementHelper.getHelper()
-                    .getAllNamespaces(p.getModel())
+                    .getAllNamespaces(model)
         	        .contains(intType.getNamespace()))) {
-            intType.setNamespace((MModel) p.getModel());
+            intType.setNamespace((MModel) model);
         }
         MAttribute attr = createAttribute();
         attr.setName("newAttr");
@@ -864,17 +863,17 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param handle the given classifier
      * @return the newly build attribute
      */
-    public Object buildAttribute(Object handle) {
+    public Object buildAttribute(Object handle, Object model, Object intType, Collection propertyChangeListeners) {
         if (!ModelFacade.isAClassifier(handle)) {
             return null;
         }
         MClassifier cls = (MClassifier) handle;
-        MAttribute attr = (MAttribute) buildAttribute();
+        MAttribute attr = (MAttribute) buildAttribute(model, intType);
         cls.addFeature(attr);
         // we set the listeners to the figs here too
         // it would be better to do that in the figs themselves
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Iterator it = p.findFigsForMember(cls).iterator();
+        Iterator it = propertyChangeListeners.iterator();
+        
         while (it.hasNext()) {
             PropertyChangeListener listener = 
                 (PropertyChangeListener) it.next();
@@ -1212,49 +1211,48 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Builds an operation for a classifier.<p>
      *
-     * @param handle is the classifier.
+     * @param classifier is the classifier.
      * @return MOperation
      */
-    public MOperation buildOperation(Object handle) {
-        if (!(handle instanceof MClassifier)) {
+    public Object buildOperation(Object classifier, Object model, Object voidType, Collection propertyChangeListeners) {
+        if (!(classifier instanceof MClassifier)) {
             throw new IllegalArgumentException("Handle is not a classifier");
         }
-        MClassifier cls = (MClassifier) handle;
-	MOperation oper = createOperation();
-	oper.setName("newOperation");
-	oper.setStereotype(null);
-	oper.setOwner(cls);
-	oper.setVisibility(MVisibilityKind.PUBLIC);
-	oper.setAbstract(false);
-	oper.setLeaf(false);
-	oper.setRoot(false);
-	oper.setQuery(false);
-	oper.setOwnerScope(MScopeKind.INSTANCE);
+        MClassifier cls = (MClassifier) classifier;
+        MOperation oper = createOperation();
+        oper.setName("newOperation");
+        oper.setStereotype(null);
+        oper.setOwner(cls);
+        oper.setVisibility(MVisibilityKind.PUBLIC);
+        oper.setAbstract(false);
+        oper.setLeaf(false);
+        oper.setRoot(false);
+        oper.setQuery(false);
+        oper.setOwnerScope(MScopeKind.INSTANCE);
         // Jaap Branderhorst 6-4-2003 commented out next line since an
         // operation cannot have two owners.  the owner must be the
         // owning classifier which must be set via the setOwner
         // method, not via the namespace.
-	//
+        //
         // oper.setNamespace(cls);
-	oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
-
-	MParameter returnParameter = buildParameter(oper);
-	returnParameter.setKind(MParameterDirectionKind.RETURN);
-	returnParameter.setName("return");
-	// we set the listeners to the figs here too it would be
-	// better to do that in the figs themselves the
-	// elementlistener for the parameter is allready set in
-	// buildparameter(oper)
-	Project p = ProjectManager.getManager().getCurrentProject();
-	Iterator it = p.findFigsForMember(cls).iterator();
-	while (it.hasNext()) {
-	    PropertyChangeListener listener = 
-	        (PropertyChangeListener) it.next();
-	    // UmlModelEventPump.getPump().removeModelEventListener(listener,
-	    // oper);
-	    Model.getPump().addModelEventListener(listener, oper);
-	}
-	return oper;
+        oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
+        
+        MParameter returnParameter = buildParameter(oper, model, voidType, propertyChangeListeners);
+        returnParameter.setKind(MParameterDirectionKind.RETURN);
+        returnParameter.setName("return");
+        // we set the listeners to the figs here too it would be
+        // better to do that in the figs themselves the
+        // elementlistener for the parameter is allready set in
+        // buildparameter(oper)
+        Iterator it = propertyChangeListeners.iterator();
+        while (it.hasNext()) {
+            PropertyChangeListener listener = 
+                (PropertyChangeListener) it.next();
+            // UmlModelEventPump.getPump().removeModelEventListener(listener,
+            // oper);
+            Model.getPump().addModelEventListener(listener, oper);
+        }
+        return oper;
     }
 
     /**
@@ -1264,10 +1262,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param name is the given name.
      * @return MOperation
      */
-    public Object buildOperation(Object cls, String name) {
-        MOperation oper = buildOperation(cls);
+    public Object buildOperation(Object cls, Object model, Object voidType, String name, Collection propertyChangeListeners) {
+        Object oper = buildOperation(cls, model, voidType, propertyChangeListeners);
         if (oper != null)
-            oper.setName(name);
+            ((MOperation)oper).setName(name);
         return oper;
     }
 
@@ -1276,83 +1274,20 @@ public class CoreFactory extends AbstractUmlModelFactory {
      *
      * @return      The newly created parameter.
      */
-    public MParameter buildParameter() {
-	// this should not be here via the ProjectBrowser but the CoreHelper
-	// should provide this functionality
-	Project p = ProjectManager.getManager().getCurrentProject();
-	MClassifier voidType = (MClassifier) p.findType("void");
-	if (voidType.getModel() != p.getModel()) {
-	    voidType.setNamespace((MModel) p.getModel());
-	}
-	MParameter res = UmlFactory.getFactory().getCore().createParameter();
-	res.setName("");
-	res.setStereotype(null);
-	res.setType(voidType);
-	res.setKind(MParameterDirectionKind.IN);
-	res.setDefaultValue(null);
-
-	return res;
-    }
-
-    /**
-     * Constructs a default parameter and adds it to oper. The name is
-     * unique in the operation so no code generation problems will
-     * exist.
-     *
-     * @param oper  The operation where it is added to.
-     *          If null, it is not added.
-     * @return      The newly created parameter.
-     */
-    public MParameter buildParameter(MBehavioralFeature oper) {
-	if (oper == null || oper.getOwner() == null)
-	    throw new IllegalArgumentException("operation is null or does not "
-					       + "have an owner");
-	MParameter res = buildParameter();
-	String name = "arg";
-	int counter = 1;
-
-	oper.addParameter(res);
-	Iterator it = oper.getParameters().iterator();
-	while (it.hasNext()) {
-	    MParameter para = (MParameter) it.next();
-	    if ((name + counter).equals(para.getName())) {
-		counter++;
-	    }
-	}
-
-	res.setName(name + counter);
-
-	// we set the listeners to the figs here too
-	// it would be better to do that in the figs themselves
-	Project p = ProjectManager.getManager().getCurrentProject();
-	it = p.findFigsForMember(oper).iterator();
-	while (it.hasNext()) {
-	    PropertyChangeListener listener = 
-	        (PropertyChangeListener) it.next();
-	    // Model.getPump().removeModelEventListener(listener, res);
-	    Model.getPump().addModelEventListener(listener, res);
-	}
-
-	return res;
-    }
-
-    /**
-     * Constructs a default parameter, adds it to oper and sets its type
-     * (return etc.).<p>
-     *
-     * @param feature The operation where it is added to.
-     *          If null, it is not added.
-     * @param dk The directionkind. If null it is not set.
-     * @return      The newly created parameter.
-     */
-    public Object buildParameter(Object feature, Object dk) {
-        MBehavioralFeature oper = (MBehavioralFeature) feature;
-        MParameterDirectionKind directionKind = (MParameterDirectionKind) dk;
-	MParameter res = buildParameter(oper);
-	if (directionKind != null) {
-	    ModelFacade.setKind(res, directionKind);
-	}
-	return res;
+    private Object buildParameter(MModel model, MClassifier voidType) {
+        // this should not be here via the ProjectBrowser but the CoreHelper
+        // should provide this functionality
+        if (voidType.getModel() != model) {
+            voidType.setNamespace(model);
+        }
+        MParameter res = UmlFactory.getFactory().getCore().createParameter();
+        res.setName("");
+        res.setStereotype(null);
+        res.setType(voidType);
+        res.setKind(MParameterDirectionKind.IN);
+        res.setDefaultValue(null);
+        
+        return res;
     }
 
     /**
@@ -1361,32 +1296,67 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param o an event or behavioral feature
      * @return MParameter
      */
-    public MParameter buildParameter(Object o) {
-	if (o instanceof MEvent) {
-	    MEvent event = (MEvent) o;
-	    MParameter res = buildParameter();
-	    res.setKind(MParameterDirectionKind.IN);
-	    //    removing this next line solves issue 2209
-	    //res.setNamespace(event.getNamespace()); 
-            event.addParameter(res);
-	    return res;
-	} else if (o instanceof MBehavioralFeature) {
-	    return buildParameter((MBehavioralFeature) o);
-	} else
-	    return null;
+    public MParameter buildParameter(Object o, Object model, Object voidType, Collection propertyChangeListeners) {
+        if (o instanceof MEvent) {
+            MEvent event = (MEvent) o;
+            MParameter res = (MParameter)buildParameter((MModel)model, (MClassifier)voidType);
+            res.setKind(MParameterDirectionKind.IN);
+            //    removing this next line solves issue 2209
+            //res.setNamespace(event.getNamespace()); 
+                event.addParameter(res);
+            return res;
+        } else if (o instanceof MBehavioralFeature) {
+            MBehavioralFeature oper = (MBehavioralFeature) o;
+            if (oper == null || oper.getOwner() == null)
+                throw new IllegalArgumentException("operation is null or does not "
+                                   + "have an owner");
+            MParameter res = (MParameter)buildParameter((MModel)model, (MClassifier)voidType);
+            String name = "arg";
+            int counter = 1;
+        
+            oper.addParameter(res);
+            Iterator it = oper.getParameters().iterator();
+            while (it.hasNext()) {
+                MParameter para = (MParameter) it.next();
+                if ((name + counter).equals(para.getName())) {
+                counter++;
+                }
+            }
+        
+            res.setName(name + counter);
+        
+            // we set the listeners to the figs here too
+            // it would be better to do that in the figs themselves
+            it = propertyChangeListeners.iterator();
+            while (it.hasNext()) {
+                PropertyChangeListener listener = 
+                    (PropertyChangeListener) it.next();
+                // Model.getPump().removeModelEventListener(listener, res);
+                Model.getPump().addModelEventListener(listener, res);
+            }
+            return res;
+        } else {
+            return null;
+        }
     }
 
     /**
      * Builds a realization between some supplier (for example an
      * interface in Java) and a client who implements the realization.
      *
-     * @param client is the client
-     * @param supplier is the supplier
+     * @param clnt is the client
+     * @param spplr is the supplier
+     * @param model the namespace to use if client and
+     * supplier are of different namespace
      * @return Object the created abstraction
      */
-    public Object buildRealization(MModelElement client,
-				   MModelElement supplier)
+    public Object buildRealization(
+            Object clnt,
+            Object spplr,
+            Object model)
     {
+        MModelElement client = (MModelElement)clnt;
+        MModelElement supplier = (MModelElement)spplr;
 	if (client == null
 	    || supplier == null
 	    || client.getNamespace() == null
@@ -1399,12 +1369,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	MNamespace nsc = client.getNamespace();
 	MNamespace nss = supplier.getNamespace();
 	MNamespace ns = null;
-	if (nsc != null && nsc.equals(nss)) {
+	if (nsc.equals(nss)) {
 	    ns = nsc;
 	} else {
-	    ns =
-		(MModel) ProjectManager.getManager().getCurrentProject()
-		    .getModel();
+	    ns = (MModel) model;
 	}
 	ExtensionMechanismsFactory.getFactory().buildStereotype(realization,
 								"realize", ns);
@@ -1451,15 +1419,15 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param element is the model element
      * @return MComment
      */
-    public Object buildComment(Object element) {
+    public Object buildComment(Object element, Object model) {
         MModelElement elementToComment = (MModelElement) element;
 	MComment comment = createComment();
 	if (elementToComment != null) {
 	    comment.addAnnotatedElement(elementToComment);
 	    comment.setNamespace(elementToComment.getModel());
-	} else
-	    comment.setNamespace((MModel) ProjectManager.getManager()
-				 .getCurrentProject().getModel());
+	} else {
+	    comment.setNamespace((MNamespace)model);
+    }
 
 	return comment;
     }

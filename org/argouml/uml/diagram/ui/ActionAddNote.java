@@ -77,9 +77,10 @@ public class ActionAddNote extends UMLChangeAction {
 
         if (target == null || !(ModelFacade.isAModelElement(target))) {
             return;
-	}
-        Object/*MComment*/ comment =
-	    CoreFactory.getFactory().buildComment(target);
+        }
+        Object model = ProjectManager.getManager().getCurrentProject().getModel();
+        Object comment =
+            CoreFactory.getFactory().buildComment(target, model);
 
         // calculate the position of the comment
         ArgoDiagram diagram =

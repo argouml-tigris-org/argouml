@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlException;
 import org.argouml.model.uml.UmlFactory;
@@ -197,9 +198,11 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             // given model elements.
 	    // default aggregation (none)
             connection =
-		UmlFactory.getFactory().buildConnection(edgeClass, fromPort,
-							style, toPort,
-							null, unidirectional);
+		UmlFactory.getFactory().buildConnection(
+                edgeClass, fromPort,
+				style, toPort,
+				null, unidirectional,
+                ProjectManager.getManager().getCurrentProject().getModel());
         } catch (UmlException ex) {
             // fail silently as we expect users to accidentally drop
             // on to wrong component

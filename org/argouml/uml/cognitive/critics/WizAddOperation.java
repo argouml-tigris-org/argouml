@@ -24,10 +24,13 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.Collection;
+
 import javax.swing.JPanel;
 
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 
 /**
@@ -59,7 +62,10 @@ public class WizAddOperation extends UMLWizard {
 		newName = step1.getText();
 	    }
 	    Object me = getModelElement();
-	    UmlFactory.getFactory().getCore().buildOperation(me, newName);
+        Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(me);
+        Object model = ProjectManager.getManager().getCurrentProject().getModel();
+        Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
+	    UmlFactory.getFactory().getCore().buildOperation(me, model, voidType, newName, propertyChangeListeners);
         }
     }
     

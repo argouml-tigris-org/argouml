@@ -24,6 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.Collection;
+
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -31,6 +33,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
@@ -142,9 +145,12 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
     public void addOperation() {
         Object target = getTarget();
         if (ModelFacade.isAClassifier(target)) {
+            Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(target);
+            Object model = ProjectManager.getManager().getCurrentProject().getModel();
+            Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
             Object newOper =
                 UmlFactory.getFactory().getCore().buildOperation(
-                    /*(MClassifier)*/ target);
+                    /*(MClassifier)*/ target, model, voidType, propertyChangeListeners);
             TargetManager.getInstance().setTarget(newOper);
         }
     }       
@@ -156,8 +162,12 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
         Object target = getTarget();
         if (ModelFacade.isAClassifier(target)) {
             Object cls = /*(MClassifier)*/ target;
+            Collection propertyChangeListeners = 
+                ProjectManager.getManager().getCurrentProject().findFigsForMember(cls);
+            Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
+            Object model = ProjectManager.getManager().getCurrentProject().getModel();
             Object attr =
-                UmlFactory.getFactory().getCore().buildAttribute(cls);
+                UmlFactory.getFactory().getCore().buildAttribute(cls, model, intType, propertyChangeListeners);
             TargetManager.getInstance().setTarget(attr);
         }
     }
