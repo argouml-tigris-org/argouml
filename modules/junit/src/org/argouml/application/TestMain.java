@@ -26,10 +26,18 @@ package org.argouml.application;
 import junit.framework.*;
 
 public class TestMain extends TestCase {
+    /**
+     * The constructor.
+     * 
+     * @param name the test name
+     */
     public TestMain(String name) {
 	super(name);
     }
 
+    /**
+     * Test nothing.
+     */
     public void testNothing() {
 	/* Test nothing. */
     }

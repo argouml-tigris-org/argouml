@@ -28,6 +28,12 @@ import junit.framework.*;
 
 
 public class TestFigClonable extends TestCase {
+    
+    /**
+     * The constructor.
+     * 
+     * @param name the test name
+     */
     public TestFigClonable(String name) {
 	super(name);
     }

@@ -27,28 +27,48 @@ import junit.framework.*;
 
 public class TestUMLAction extends TestCase {
 
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
     protected void setUp() {
         org.workingfrog.i18n.util.Translator.init();
         org.workingfrog.i18n.util.Translator.setBundlesPath("org.argouml.i18n");
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param name the test name
+     */
     public TestUMLAction(String name) {
 	super(name);
     }
 
-    // Testing all three constructors.
+    /**
+     * Testing all three constructors.
+     * 
+     */
     public void testCreate1() {
 	UMLAction to = new UMLAction(new String("hejsan"));
 	assertTrue("Disabled", to.shouldBeEnabled());
     }
 
+    /**
+     * Testing all three constructors.
+     * 
+     */
     public void testCreate2() {
 	UMLAction to = new UMLAction(new String("hejsan"), true);
 	assertTrue("Disabled", to.shouldBeEnabled());
     }
-
+    
+    /**
+     * Testing all three constructors.
+     * 
+     */
     public void testCreate3() {
-	UMLAction to = new UMLAction(new String("hejsan"), true, UMLAction.NO_ICON);
+	UMLAction to = new UMLAction(new String("hejsan"), true, 
+            UMLAction.NO_ICON);
 	assertTrue("Disabled", to.shouldBeEnabled());
     }
 	

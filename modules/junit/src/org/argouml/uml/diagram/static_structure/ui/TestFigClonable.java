@@ -28,6 +28,12 @@ import junit.framework.*;
 
 /** Testcase to clone all Figs in static_structure.ui. */
 public class TestFigClonable extends TestCase {
+    
+    /**
+     * The constructor.
+     * 
+     * @param name the test name
+     */
     public TestFigClonable(String name) {
         super(name);
     }
