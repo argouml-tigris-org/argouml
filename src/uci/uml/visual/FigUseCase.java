@@ -100,7 +100,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     addFig(_useCase);
     addFig(_name);
 
-
     Object onlyPort = node;
     bindPort(onlyPort, _bigPort);
     setBlinkPorts(false); //make port invisble unless mouse enters
@@ -146,7 +145,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     endTrans();
   }
 
-  
 
   public void dispose() {
     if (!(getOwner() instanceof Element)) return;

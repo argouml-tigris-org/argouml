@@ -81,6 +81,8 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
       ((ElementImpl)node).addVetoableChangeListener(this);
 
     Color handleColor = Globals.getPrefs().getHandleColor();
+
+    // Put this rectangle behind the rest, so it goes first
     _bigPort = new FigRect(5, 5, 30, 85, handleColor, Color.gray);
     _head = new FigCircle(10, 10, 20, 30, handleColor, Color.white);
     _body = new FigLine(20, 40, 20, 60, handleColor);
@@ -88,6 +90,8 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     _leftLeg = new FigLine(20, 60, 15, 75, handleColor );
     _rightLeg = new FigLine(20, 60, 25, 75, handleColor );
     _name = new FigText(5, 75, 35, 20, Color.blue, "Times", 10);
+
+    // Why is it expandonly? Dunno.
     _name.setExpandOnly(true);
     _name.setText("Actor");
     _name.setTextFilled(false);
@@ -104,10 +108,9 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     addFig(_rightLeg);
     addFig(_name);
 
-
     Object onlyPort = node;
     bindPort(onlyPort, _bigPort);
-    setBlinkPorts(true); //make port invisble unless mouse enters*/
+    setBlinkPorts(true); // make port invisble unless mouse enters
     Rectangle r = getBounds();
   }
 
@@ -142,7 +145,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     }
   }
 
-
   /** Update the text labels */
   protected void updateText() {
     Element elmt = (Element) getOwner();
@@ -155,7 +157,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     endTrans();
   }
 
-
   public void dispose() {
     if (!(getOwner() instanceof Element)) return;
     Element elmt = (Element) getOwner();
@@ -163,6 +164,4 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     p.moveToTrash(elmt);
     super.dispose();
   }
-
-
 } /* end class FigActor */
