@@ -3172,13 +3172,13 @@ public class ModelFacade {
     }
 
     /**
-     * Returns the suppliers of an abstraction.
-     * @param abstraction
+     * Returns the suppliers of a dependency.
+     * @param dependency
      * @return a collection of the suppliers
      */
     public static Collection getSuppliers(Object handle) {
-        if (handle instanceof MAbstraction) {
-            return ((MAbstraction) handle).getSuppliers();
+        if (handle instanceof MDependency) {
+            return ((MDependency) handle).getSuppliers();
 		}
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
