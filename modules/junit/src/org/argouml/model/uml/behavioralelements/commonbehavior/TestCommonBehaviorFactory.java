@@ -56,7 +56,7 @@ import org.argouml.util.*;
 
 public class TestCommonBehaviorFactory extends TestCase {
     
-    private static String[] allModelElements = {
+    static String[] allModelElements = {
         "Action",
         "ActionSequence",
         "Argument",

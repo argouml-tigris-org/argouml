@@ -60,6 +60,7 @@ import junit.framework.*;
 
 import org.apache.log4j.spi.LoggingEvent;
 import org.argouml.model.uml.*;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -286,7 +287,26 @@ public class CheckUMLModelHelper {
             }
         }
     }
-                        
+    
+    public static void metaModelNameCorrect(TestCase tc, AbstractUmlModelFactory f, String[] names) {
+        try {
+            for (int i = 0; i < names.length; i++) {
+                try {
+                    Method m = f.getClass().getMethod("create"+names[i], new Class[] {});
+                    Object base = m.invoke(f, new Object[] {});
+                    if (base instanceof MModelElement) {
+                        tc.assert("not a valid metaModelName " + names[i], ExtensionMechanismsHelper.getHelper().getMetaModelName((MModelElement)base).equals(names[i]));
+                    }
+                }
+                catch (NoSuchMethodException ns) {}
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            tc.fail("Exception during test metaModelnameCorrect. Message: " + ex.getMessage());
+            
+        }
+    }        
 }
 
 

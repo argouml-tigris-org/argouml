@@ -67,7 +67,7 @@ import ru.novosoft.uml.model_management.MModel;
 
 public class TestCoreFactory extends TestCase {
     
-    private static String[] allModelElements = {
+    static String[] allModelElements = {
         "Abstraction",
         "Association",
         "AssociationClass",

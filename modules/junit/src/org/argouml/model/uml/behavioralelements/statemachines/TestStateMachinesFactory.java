@@ -56,7 +56,7 @@ import org.argouml.util.*;
 
 public class TestStateMachinesFactory extends TestCase {
     
-    private static String[] allModelElements = {
+    static String[] allModelElements = {
         "CallEvent",
         "ChangeEvent",
         "CompositeState",

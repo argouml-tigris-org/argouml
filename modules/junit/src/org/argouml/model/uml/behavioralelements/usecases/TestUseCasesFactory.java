@@ -61,7 +61,7 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 public class TestUseCasesFactory extends TestCase {
     
-    private static String[] allModelElements = {
+    static String[] allModelElements = {
         "Actor",
         "Extend",
         "ExtensionPoint",

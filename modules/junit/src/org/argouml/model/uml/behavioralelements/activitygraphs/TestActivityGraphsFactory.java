@@ -61,7 +61,7 @@ import org.argouml.util.*;
 
 public class TestActivityGraphsFactory extends TestCase {
     
-    private static String[] allModelElements = {
+    static String[] allModelElements = {
         "ActivityGraph",
         "ActionState",
         "CallState",
