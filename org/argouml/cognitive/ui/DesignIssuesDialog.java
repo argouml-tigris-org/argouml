@@ -24,85 +24,59 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.BorderLayout;
-import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
-import javax.swing.JButton;
-import javax.swing.JDialog;
+
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.DecisionModel;
 import org.argouml.cognitive.Designer;
+import org.argouml.i18n.Translator;
+import org.argouml.ui.ArgoDialog;
 
 
-/** A dialog to set the priorities for decisions. These will be evulated
+/** A dialog to set the priorities for decisions. These will be evaluated
  *  against the critics, so that the user will only see todo items which match
- *  the priorties for a certain decision.
+ *  the priorities for a certain decision.
  */
-public class DesignIssuesDialog extends JDialog
-    implements ActionListener, ChangeListener {
-    public static int _numDecisionModel = 0;
+public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
 
     ////////////////////////////////////////////////////////////////
     // constants
-    public final int WIDTH = 300;
-    public final int HEIGHT = 450;
+    private final int WIDTH = 320;
+    private final int HEIGHT = 400;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected JPanel  _mainPanel = new JPanel();
-    protected JButton _okButton = new JButton("OK");
-    protected Hashtable _slidersToDecisions = new Hashtable();
-    protected Hashtable _slidersToDigits = new Hashtable();
+    private JPanel  _mainPanel = new JPanel();
+    private Hashtable _slidersToDecisions = new Hashtable();
+    private Hashtable _slidersToDigits = new Hashtable();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     public DesignIssuesDialog(Frame parent) {
-        super(parent, "Design Issues", false);
+        super(parent, Translator.localize("dialog.title.design-issues"), false);
 
-        int x = parent.getLocation().x + (parent.getSize().width - WIDTH) / 2;
-        int y = parent.getLocation().y + (parent.getSize().height - HEIGHT) / 2;
-        setLocation(x, y);
-        setSize(WIDTH, HEIGHT);
-        Container content = getContentPane();
-        content.setLayout(new BorderLayout());
         initMainPanel();
-        JScrollPane scroll =
-            new JScrollPane(_mainPanel,
-                            ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-                            ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        content.add(scroll, BorderLayout.CENTER);
 
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        JPanel buttonInner = new JPanel(new GridLayout(1, 1));
-        buttonInner.add(_okButton);
-        buttonPanel.add(buttonInner);
-
-        content.add(buttonPanel, BorderLayout.SOUTH);
-        _okButton.addActionListener(this);
-
-        getRootPane().setDefaultButton(_okButton);
-
-        _numDecisionModel++;
+        JScrollPane scroll = new JScrollPane(_mainPanel);
+        scroll.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        
+        setContent(scroll);
     }
 
 
@@ -112,6 +86,7 @@ public class DesignIssuesDialog extends JDialog
 
         GridBagLayout gb = new GridBagLayout();
         _mainPanel.setLayout(gb);
+        _mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -123,42 +98,44 @@ public class DesignIssuesDialog extends JDialog
         c.gridy = 0;
         c.gridx = 0;
         c.gridwidth = 1;
-        JLabel decTitleLabel = new JLabel("Decision");
+        JLabel decTitleLabel = new JLabel(
+            Translator.localize("label.decision"));
         gb.setConstraints(decTitleLabel, c);
         _mainPanel.add(decTitleLabel);
 
         c.gridy = 0;
         c.gridx = 2;
         c.gridwidth = 8;
-        JLabel priLabel = new JLabel("Priority");
+        JLabel priLabel = new JLabel(
+            Translator.localize("label.decision-priority"));
         gb.setConstraints(priLabel, c);
         _mainPanel.add(priLabel);
 
         c.gridy = 1;
         c.gridx = 2;
         c.gridwidth = 2;
-        JLabel offLabel = new JLabel("Off");
+        JLabel offLabel = new JLabel(Translator.localize("label.off"));
         gb.setConstraints(offLabel, c);
         _mainPanel.add(offLabel);
 
         c.gridy = 1;
         c.gridx = 4;
         c.gridwidth = 2;
-        JLabel lowLabel = new JLabel("Low");
+        JLabel lowLabel = new JLabel(Translator.localize("label.low"));
         gb.setConstraints(lowLabel, c);
         _mainPanel.add(lowLabel);
 
         c.gridy = 1;
         c.gridx = 6;
         c.gridwidth = 2;
-        JLabel mediumLabel = new JLabel("Medium");
+        JLabel mediumLabel = new JLabel(Translator.localize("label.medium"));
         gb.setConstraints(mediumLabel, c);
         _mainPanel.add(mediumLabel);
 
         c.gridy = 1;
         c.gridx = 8;
         c.gridwidth = 2;
-        JLabel highLabel = new JLabel("High");
+        JLabel highLabel = new JLabel(Translator.localize("label.high"));
         gb.setConstraints(highLabel, c);
         _mainPanel.add(highLabel);
 
@@ -214,14 +191,6 @@ public class DesignIssuesDialog extends JDialog
   
     ////////////////////////////////////////////////////////////////
     // event handlers
-  
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == _okButton) {
-            setVisible(false);
-            dispose();
-        }
-    }
-
 
     public void stateChanged(ChangeEvent ce) {
         JSlider srcSlider = (JSlider) ce.getSource();
@@ -235,20 +204,18 @@ public class DesignIssuesDialog extends JDialog
     protected String getValueText(int priority) {
         String label = "";
         switch(priority) {
-        case 0:
-	    label = " off"; 
-	    break;
         case 1:
-	    label = "   1"; 
+	    label = "    1"; 
 	    break;
         case 2:
-	    label = "   2"; 
+	    label = "    2"; 
 	    break;
         case 3:
-	    label = "   3";
+	    label = "    3";
 	    break;
+        case 0:
         case 4: 
-	    label = " off"; 
+	    label = Translator.localize("label.off"); 
 	    break;
         }
         return label;
@@ -259,5 +226,3 @@ public class DesignIssuesDialog extends JDialog
 
 
 ////////////////////////////////////////////////////////////////
-
-
