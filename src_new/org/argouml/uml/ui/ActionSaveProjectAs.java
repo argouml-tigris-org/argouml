@@ -70,13 +70,6 @@ public class ActionSaveProjectAs extends ActionSaveProject {
   public boolean trySave(boolean overwrite) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     
-    JOptionPane.showMessageDialog (
-        pb,
-        Localizer.localize ("Actions", "text.save_as_project.unstable_release"),
-        Localizer.localize ("Actions", "text.save_as_project.unstable_release_title"),
-        JOptionPane.WARNING_MESSAGE
-      );
-    
     Project p =  pb.getProject();
     
     try {
