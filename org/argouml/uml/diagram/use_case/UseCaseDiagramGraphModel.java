@@ -403,7 +403,7 @@ public class UseCaseDiagramGraphModel
             end1 = ((MGeneralization) edge).getParent();
         }
         else if (org.argouml.model.ModelFacade.isAExtend(edge)) {
-            end0 = ((MExtend) edge).getBase();
+            end0 = ModelFacade.getBase(edge);
             end1 = ((MExtend) edge).getExtension();
         }
         else if (org.argouml.model.ModelFacade.isAInclude(edge)) {
@@ -413,7 +413,7 @@ public class UseCaseDiagramGraphModel
             // by reversing their accessors in the code
 
             end0 = ((MInclude) edge).getAddition();
-            end1 = ((MInclude) edge).getBase();
+            end1 = ModelFacade.getBase(edge);
         }
         else if (org.argouml.model.ModelFacade.isADependency(edge)) {
 

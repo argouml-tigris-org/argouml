@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -34,6 +31,7 @@ import org.argouml.application.api.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.*;
 
@@ -191,15 +189,15 @@ public class UMLInitialValueComboBox extends JComboBox
  */    
     private void update() {
         Object target = _container.getTarget();
-        if (org.argouml.model.ModelFacade.isAAttribute(target)) {
-            MClassifier classifier = (MClassifier) ((MAttribute) target).getOwner();
+        if (ModelFacade.isAAttribute(target)) {
+            Object classifier = ModelFacade.getOwner(target);
             if (classifier == null) {
                 return;
             }
-            classifier.setFeatures(classifier.getFeatures());
+            ModelFacade.setFeatures(classifier, ModelFacade.getFeatures(classifier));
         }
-        else if (org.argouml.model.ModelFacade.isAParameter(target)) {
-            if (org.argouml.model.ModelFacade.isACallEvent(target)) {
+        else if (ModelFacade.isAParameter(target)) {
+            if (ModelFacade.isACallEvent(target)) {
                 return;
             }
             MBehavioralFeature feature = ((MParameter) target).getBehavioralFeature();

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,6 +26,7 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import java.awt.event.ActionEvent;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
@@ -57,7 +57,7 @@ public class ActionNewExtendExtensionPoint
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (org.argouml.model.ModelFacade.isAExtend(getTarget())) {
-            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(((MExtend) getTarget()).getBase());
+            MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(ModelFacade.getBase(getTarget()));
             ((MExtend) getTarget()).addExtensionPoint(point);
         }
     }

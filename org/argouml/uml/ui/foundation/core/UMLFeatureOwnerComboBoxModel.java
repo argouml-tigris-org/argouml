@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,6 +25,7 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -69,7 +69,7 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        return ((MFeature) getTarget()).getOwner();
+        return ModelFacade.getOwner(getTarget());
     }
 
 }

@@ -70,7 +70,7 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MInclude) getTarget()).getBase();
+            return ModelFacade.getBase(getTarget());
         }
         return null;
     }

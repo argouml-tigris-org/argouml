@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -39,6 +36,7 @@ import javax.swing.Action;
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
@@ -127,23 +125,22 @@ public class UMLStateDiagram extends UMLDiagram {
         }
     }
 
-    public UMLStateDiagram(MNamespace m, MStateMachine sm) {
+    public UMLStateDiagram(Object namespace, MStateMachine sm) {
         this();
-        if (sm != null && m == null) {
+        if (sm != null && namespace == null) {
             MModelElement context = sm.getContext();
-            if (org.argouml.model.ModelFacade.isAClassifier(context)) {
-                m = (MNamespace) context;
-            } else if (org.argouml.model.ModelFacade.isABehavioralFeature(context)) {
-                m = ((MBehavioralFeature) context).getOwner();
+            if (ModelFacade.isAClassifier(context)) {
+                namespace = (MNamespace) context;
+            } else if (ModelFacade.isABehavioralFeature(context)) {
+                namespace = ModelFacade.getOwner(context);
             }
         }
-        if (m != null && m.getName() != null) {
-            String name = null, diag_name = m.getName();
-            Object[] args = {
-		name 
-	    };
-            int number =
-                ((m.getBehaviors()) == null ? 0 : m.getBehaviors().size());
+        if (namespace != null && ModelFacade.getName(namespace) != null) {
+            String name = null, diag_name = ModelFacade.getName(namespace);
+            Object[] args = {name};
+            int number = (((MNamespace)namespace).getBehaviors()) == null
+                ? 0 
+                : ((MNamespace)namespace).getBehaviors().size();
             name = diag_name + " " + (number++);
             Argo.log.info("UMLStateDiagram constructor: String name = " + name);
             try {
@@ -151,15 +148,15 @@ public class UMLStateDiagram extends UMLDiagram {
             } catch (PropertyVetoException pve) {
             }
         }
-        if (m != null)
-            setup(m, sm);
-
+        if (namespace != null) {
+            setup(namespace, sm);
+        }
     }
 
     /**
      * The owner of a statediagram is the statediagram it's showing.
      */
-    public MModelElement getOwner() {
+    public Object getOwner() {
         StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
         return gm.getMachine();
     }
@@ -171,23 +168,24 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.tigris.gef.base.Diagram#initialize(Object)
      */
     public void initialize(Object o) {
-        if (org.argouml.model.ModelFacade.isAStateMachine(o)) {
+        if (ModelFacade.isAStateMachine(o)) {
             MStateMachine sm = (MStateMachine) o;
             MModelElement context = sm.getContext();
-            MNamespace contextNamespace = null;
-            if (org.argouml.model.ModelFacade.isAClassifier(context)) {
-                contextNamespace = (MClassifier) context;
-            } else if (org.argouml.model.ModelFacade.isABehavioralFeature(context)) {
+            Object contextNamespace = null;
+            if (ModelFacade.isAClassifier(context)) {
+                contextNamespace = context;
+            } else if (ModelFacade.isABehavioralFeature(context)) {
                 contextNamespace =
-                    ((MBehavioralFeature) context).getOwner().getNamespace();
+                    ModelFacade.getNamespace(ModelFacade.getOwner(context));
             }
             if (contextNamespace != null) {
                 setup(contextNamespace, sm);
             }
-        } else
+        } else {
             throw new IllegalStateException("Cannot find context namespace "
 					    + "while initializing "
 					    + "statediagram");
+        }
     }
 
     /** method to perform a number of important initializations of a
@@ -207,8 +205,8 @@ public class UMLStateDiagram extends UMLDiagram {
      *
      * @author psager@tigris.org Jan. 24, 2oo2
      */
-    public void setup(MNamespace m, MStateMachine sm) {
-        setNamespace(m);
+    public void setup(Object namespace, MStateMachine sm) {
+        setNamespace(namespace);
 
         // add the diagram as a listener to the statemachine so
         // that when the statemachine is removed() the diagram is deleted also.
@@ -216,11 +214,11 @@ public class UMLStateDiagram extends UMLDiagram {
         theStateMachine = sm;
 
         StateDiagramGraphModel gm = new StateDiagramGraphModel();
-        gm.setNamespace(m);
+        gm.setNamespace(namespace);
         if (sm != null)
             gm.setMachine(sm);
         setGraphModel(gm);
-        LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+        LayerPerspective lay = new LayerPerspectiveMutable(ModelFacade.getName(namespace), gm);
         setLayer(lay);
         StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
         lay.setGraphNodeRenderer(rend);

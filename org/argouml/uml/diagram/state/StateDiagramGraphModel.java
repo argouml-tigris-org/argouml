@@ -66,7 +66,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
      *  Also, elements from other models will have their FigNodes add a
      *  line to say what their model is. */
 
-    protected MNamespace _namespace;
+    protected Object _namespace;
 
     /** The statemachine we are diagramming */
     protected MStateMachine _machine;
@@ -74,9 +74,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public MNamespace getNamespace() { return _namespace; }
-    public void setNamespace(MNamespace m) {
-	_namespace = m;
+    public Object getNamespace() { return _namespace; }
+    public void setNamespace(Object namespace) {
+	_namespace = namespace;
     }
 
     public MStateMachine getMachine() { return _machine; }

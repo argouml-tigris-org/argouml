@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -25,6 +24,7 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -68,7 +68,7 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ((MExtend) getTarget()).getBase();
+            return ModelFacade.getBase(getTarget());
         }
         return null;
     }

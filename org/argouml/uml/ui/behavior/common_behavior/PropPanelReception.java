@@ -94,10 +94,10 @@ public class PropPanelReception extends PropPanelModelElement {
      * Returns the owner of the reception. Necessary for the MClassifierComboBox.
      * @return MClassifier
      */
-    public MClassifier getOwner() {
+    public Object getOwner() {
         Object target = getTarget();
         if (ModelFacade.isAReception(target)) {
-            return ((MReception) target).getOwner();
+            return ModelFacade.getOwner(target);
         }
         return null;
     }

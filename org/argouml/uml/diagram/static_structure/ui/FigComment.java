@@ -54,6 +54,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import org.apache.log4j.Category;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
@@ -190,17 +191,17 @@ public class FigComment
     public FigComment(MModelElement element) {
         this(); // Construct the figure.
 	// Create a new Comment node.
-        MComment node =
+        Object comment =
 	    UmlFactory.getFactory().getCore().createComment();
-        setOwner(node); // Set it as the owner of the figure.
+        setOwner(comment); // Set it as the owner of the figure.
 	// Tell the annotated element, that it has a comment now.
-        element.addComment(node);
+        ModelFacade.addComment(element, comment);
 
         // Notes in state diagrams need a special treatment, cause
         // the nodes in them don't necessary have a namespace, where
         // we could add the note. So I added this hack... :-(
         // Andreas Rueckert <a_rueckert@gmx.net>
-        if (org.argouml.model.ModelFacade.isAStateVertex(element)) {
+        if (ModelFacade.isAStateVertex(element)) {
 
 	    // If the current target is a state diagram, we have to
 	    // check, if we are editing the diagram.
@@ -210,11 +211,11 @@ public class FigComment
 		    (StateDiagramGraphModel)
 		    (((UMLStateDiagram) pb.getTarget()).getGraphModel());
 		// We are editing, so we set the Namespace directly.
-                node.setNamespace(gm.getNamespace());
+                ModelFacade.setNamespace(comment, gm.getNamespace());
             }
         } else {
 	    // Add the comment to the same namespace as the annotated element.
-            node.setNamespace(element.getNamespace());
+            ModelFacade.setNamespace(comment, element.getNamespace());
         }
 
         storeNote(placeString()); // Set the default text for this figure type.
