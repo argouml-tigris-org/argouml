@@ -136,17 +136,30 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Global initialization                                               -->
   <!-- =================================================================== -->
 
-  <!-- These cannot be changed in .ant.properties -->
-  <target name="setversion">
-    <property name="thisversion" value="0.10"/>
-  </target>
+  <property file="build.properties"/>
+  <property file="argouml.build.properties"/>
+  <property file="default.properties"/>
+  
+  <path id="java.tools.classpath">
+    <pathelement path="${JAVA_HOME}/lib/tools.jar" />
+  </path>
+
+  <path id="argo.classpath">
+    <pathelement location="${xerces.jar}" />
+    <pathelement location="${nsuml.jar}" />
+    <pathelement location="${ocl-argo.jar}" />
+    <pathelement location="${gef.jar}" />
+    <pathelement location="${antlrall.jar}" />
+    <pathelement location="${log4j.jar}" />
+    <pathelement location="${jh.jar}" />
+  </path>
 
 
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
 
- <target name="init" depends="setversion">
+ <target name="init">
 
     <tstamp/>
 
@@ -158,9 +171,9 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
 
     <property name="src.dir" value="../src_new"/>
-    <property name="lib.dir" value="../lib"/>
-    <property name="gef.jar" value="gef-0.9.6.jar"/>
-    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/xerces.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/${gef.jar}:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/jh.jar"/>
+    <!--property name="lib.dir" value="../lib"/-->
+    <!--property name="gef.jar" value="gef-0.9.6.jar"/-->
+    <!--property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/xerces.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/${gef.jar}:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/jh.jar"/-->
 
     <property name="packages" value="org.argouml.*"/>
     <property name="manifest" value="${src.dir}/org/argouml.mf"/>
@@ -176,42 +189,17 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="argo.bin.src" value="${build.src}/bin"/>
 
     <available classname="org.tigris.gef.base.Globals"
-	       classpath="${classpath}"
+	       classpathref="argo.classpath"
                property="has.gef" />
     <available classname="org.tigris.gef.util.Localizer"
-	       classpath="${classpath}"
+	       classpathref="argo.classpath"
                property="has.gef.localizer" />
     <available classname="org.apache.log4j.Category"
-	       classpath="${classpath}"
+	       classpathref="argo.classpath"
                property="has.log4j" />
     <available classname="antlr.ANTLRException"
-	       classpath="${classpath}"
+	       classpathref="argo.classpath"
                property="has.antlr" />
-
-    <!-- ===============================================================  -->
-    <!-- Load user properties.                                            -->
-    <!--                                                                  -->
-    <!-- Any property set before this cannot be changed                   -->
-    <!-- Check for argo-specific properties before generic ant properties -->
-    <!-- Since .ant.properties is rather generic, we check for            -->
-    <!-- .argo.ant.properties first, to allow setting properties that     -->
-    <!-- we know will be argo-oriented, then the more generic             -->
-    <!-- .ant.properties, which could be used by other ant buildfiles.    -->
-    <!--                                                                  -->
-    <!-- Also allow the same two files in local directory which are used  -->
-    <!-- for properties not set in properties files found in user.home.   -->
-    <!-- ===============================================================  -->
-
-    <property file="${user.home}/.argo.ant.properties"/>
-    <property file="${user.home}/.ant.properties"/>
-    <property file=".argo.ant.properties"/>
-    <property file=".ant.properties"/>
-
-    <!-- The following can be set in .argo.ant.properties                 -->
-    <!--     or .ant.properties to some other value                       -->
-    <property name="debug" value="off"/>
-    <property name="optimize" value="on"/>
-    <property name="deprecation" value="off"/>
 
     <!-- developer.lib.dir is the developer snapshot directory.           -->
     <!-- If it is not set, it defaults to build.dir, and "build install"  -->
@@ -222,18 +210,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <!-- If it is not set, it defaults to argo.bin.dir, and               -->
     <!-- "build install"  will not do anything.                           -->
     <property name="developer.bin.dir" value="${argo.bin.dir}"/>
-
-    <property name="javadoc.use" value="true"/>
-    <!-- General javadocs probably should not show private -->
-    <property name="javadoc.private" value="false"/>
-    <property name="javadoc.splitindex" value="true"/>
-    <property name="javadoc.author" value="false"/>
-    <property name="xerces.javadoc.link"
-              value="http://xml.apache.org/xerces-j/apiDocs"/>
-    <property name="log4j.javadoc.link"
-              value="http://jakarta.apache.org/log4j/docs/api"/>
-    <property name="jdk.javadoc.link"
-              value="http://java.sun.com/products/jdk/1.2/docs/api"/>
 
   </target>
 
@@ -369,11 +345,15 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <javac srcdir="${build.src}"
            destdir="${build.dest}"
-           classpath="${classpath}"
            excludes="*.txt,*.bat,*.xml,*.sh"
            debug="${debug}"
            deprecation="${deprecation}"
-           optimize="${optimize}"/>
+           optimize="${optimize}">
+       <classpath>
+	  <path refid="argo.classpath"/>
+       </classpath>
+    </javac>
+
   </target>
 
   <!-- =================================================================== -->
@@ -388,6 +368,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
          excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
          manifest="${build.dest}/${manifest}"/>
     <copy todir="${build.dir}">
+      <!-- todo - do not copy lib dir, copy individual jars from wherever they are -->
       <fileset dir="${lib.dir}" />
     </copy>
     <copy file="${src.dir}/README.txt" tofile="${build.dir}/README.txt" />
@@ -430,13 +411,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	     overview="org/argouml/overview-argo.html"
              bottom="&lt;table width='100%'&gt;&lt;tr&gt;&lt;td width='20%'&gt;ArgoUML (c) 1996-2002&lt;/td&gt;&lt;td width='20%'&gt;&lt;center&gt;&lt;a href='http://argouml.tigris.org/' target='_blank'&gt;ArgoUML Project Home&lt;/a&gt;&lt;/center&gt;&lt;/td&gt;&lt;td width='20%'&gt;&lt;center&gt;&lt;a href='http://argouml.tigris.org/documentation/defaulthtml/cookbook/index.html' target='_blank'&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/center&gt;&lt;/td&gt;&lt;td width='20%'&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;">
       <classpath>
-          <pathelement path="${java.home}/../lib/tools.jar"/>
-          <pathelement path="${lib.dir}/nsuml.jar"/>
-          <pathelement path="${lib.dir}/ocl-argo.jar"/>
-          <pathelement path="${lib.dir}/${gef.jar}"/>
-          <pathelement path="${lib.dir}/antlrall.jar"/>
-          <pathelement path="${lib.dir}/log4j.jar"/>
-          <pathelement path="${lib.dir}/xerces.jar"/>
+	  <path refid="argo.classpath"/>
       </classpath>
       <link offline="true"
             href="${jdk.javadoc.link}"
@@ -513,7 +488,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <!-- Creates the whole distribution with adjusted version number         -->
   <!-- =================================================================== -->
-  <target name="dist-release" depends="setversion">
+  <target name="dist-release">
   	<property name="version" value="${thisversion}"/>
   	<antcall target="dist-all">
   	</antcall>
@@ -556,6 +531,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
           classpath="${build.dest};${classpath}">
       <!-- sysproperty key="log4j.configuration"
                    value="org/argouml/resource/configuration.lcf"/-->
+        <classpath>
+	  <pathelement location="${build.dest}"/>
+	  <path refid="argo.classpath"/>
+        </classpath>
     </java>
   </target>
 
