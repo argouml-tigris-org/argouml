@@ -481,7 +481,7 @@ public class Critic implements Poster, Serializable {
     Enumeration enum = getSupportedDecisions().elements();
     while (enum.hasMoreElements()) {
       Decision d = (Decision) enum.nextElement();
-      cat.info(d + " " + d.getPriority());
+      cat.debug(d + " " + d.getPriority());
       //if (dsgr.isConsidering(d)) return true;
       if (d.getPriority() > 0 && d.getPriority()<=getPriority()) return true;
     }
