@@ -30,6 +30,7 @@ package org.argouml.model.uml.foundation;
  * 
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @stereotype singleton
  */
 public class FoundationHelper {
 

@@ -50,6 +50,7 @@ import ru.novosoft.uml.model_management.MSubsystem;
  * 
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @stereotype singleton
  */
 public class UseCasesHelper {
 

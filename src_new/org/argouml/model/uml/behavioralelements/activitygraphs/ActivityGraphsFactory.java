@@ -48,6 +48,7 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @stereotype singleton
  */
 public class ActivityGraphsFactory extends AbstractUmlModelFactory {
 

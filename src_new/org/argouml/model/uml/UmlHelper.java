@@ -46,6 +46,7 @@ import ru.novosoft.uml.model_management.MModel;
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @stereotype singleton
  */
 public class UmlHelper {
 	

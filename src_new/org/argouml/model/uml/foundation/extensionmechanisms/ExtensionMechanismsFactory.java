@@ -38,6 +38,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @stereotype singleton
  */
 
 public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {

@@ -30,6 +30,7 @@ package org.argouml.model.uml.behavioralelements.activitygraphs;
  * 
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @stereotype singleton
  */
 public class ActivityGraphsHelper {
 

@@ -33,6 +33,7 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
  * 
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @stereotype singleton
  */
 public class StateMachinesHelper {
 

@@ -85,6 +85,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * @since ARGO0.11.2
  * @author Thierry Lach
  * @author Jaap Branderhorst
+ * @stereotype singleton
  */
 public class CoreHelper {
     protected static Category cat = Category.getInstance(CoreHelper.class);

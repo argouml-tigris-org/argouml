@@ -47,6 +47,7 @@ import ru.novosoft.uml.foundation.data_types.MTypeExpression;
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @stereotype singleton
  */
 
 public class DataTypesFactory extends AbstractUmlModelFactory {
