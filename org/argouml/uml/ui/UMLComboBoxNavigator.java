@@ -46,7 +46,7 @@ import org.argouml.ui.targetmanager.TargetManager;
 public class UMLComboBoxNavigator extends JPanel implements ActionListener {
 
     private static ImageIcon _icon =
-        ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
+        ResourceLoaderWrapper.lookupIconResource(
             "ComboNav");
     private UMLUserInterfaceContainer _container;
     private JComboBox _box;

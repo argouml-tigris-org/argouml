@@ -56,6 +56,7 @@ public class UMLAction extends AbstractAction {
     public UMLAction(String name) {
         this(name, true, HAS_ICON);
     }
+    
     public UMLAction(String name, boolean hasIcon) {
         this(name, true, hasIcon);
     }
