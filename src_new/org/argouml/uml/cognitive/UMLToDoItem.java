@@ -31,18 +31,25 @@
 
 package org.argouml.uml.cognitive;
 
-import org.argouml.cognitive.critics.Critic;
-import org.argouml.cognitive.Poster;
+import java.util.Enumeration;
+import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Poster;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
+
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.Highlightable;
 import org.tigris.gef.util.VectorSet;
-import java.util.Enumeration;
 
-/** UMLToDoItem is the preferred class for newly created ToDoItems within 
+
+/** UMLToDoItem is the preferred class for newly created ToDoItems within
  * ArgoUML. It knows more about possible designmaterial and can for example
  * highlight offenders when they are ModelElements by finding the according Fig
  * in the current diagram for them.
@@ -51,7 +58,7 @@ import java.util.Enumeration;
  * @since 0.15.3
  * @author  mkl
  */
-public class UMLToDoItem extends org.argouml.cognitive.ToDoItem {
+public class UMLToDoItem extends ToDoItem {
     
     public UMLToDoItem(Poster poster, String h, int p, String d, String m,
     VectorSet offs) {
@@ -74,19 +81,38 @@ public class UMLToDoItem extends org.argouml.cognitive.ToDoItem {
         super(c);
     }
     
+    /** Action jumps to the diagram containing all or most of the offenders.
+     * and calls deselect(), select() around the call to jumpToDiagramShowing(offenderList)
+     */
+    public void action() {
+        deselect();
+        // this also sets the target as a convenient side effect
+        ProjectBrowser.getInstance().jumpToDiagramShowing(getOffenders());
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p != null) {
+            Object f = TargetManager.getInstance().getFigTarget();
+            if (f instanceof Fig) {
+                Fig fig = (Fig) f;
+                Globals.curEditor().scrollToShow(fig.getX(), fig.getY());
+            }
+        }
+        select(); }
+    
     public void deselect() {
         Enumeration offs = getOffenders().elements();
         Project p = ProjectManager.getManager().getCurrentProject();
-        ArgoDiagram diag = null;
-        if (p != null) diag = p.getActiveDiagram();
+        
         while (offs.hasMoreElements()) {
-            Object dm =  offs.nextElement();    
+            Object dm =  offs.nextElement();
             if (dm instanceof Highlightable)
                 ((Highlightable) dm).setHighlight(false);
-            else if (diag != null) {
-                Fig f = diag.getLayer().presentationFor(dm);
-                if (f instanceof Highlightable) 
-                    ((Highlightable)f).setHighlight(false);
+            else if (p != null) {
+                Iterator iterFigs =p.findFigsForMember(dm).iterator();
+                while (iterFigs.hasNext()) {
+                    Object f = iterFigs.next();
+                    if (f instanceof Highlightable)
+                        ((Highlightable)f).setHighlight(false);
+                }
             }
         }
     }
@@ -94,16 +120,17 @@ public class UMLToDoItem extends org.argouml.cognitive.ToDoItem {
     public void select() {
         Enumeration offs = getOffenders().elements();
         Project p = ProjectManager.getManager().getCurrentProject();
-        ArgoDiagram diag = null;
-        if (p != null) diag = p.getActiveDiagram();
         while (offs.hasMoreElements()) {
             Object dm = offs.nextElement();
             if (dm instanceof Highlightable)
                 ((Highlightable) dm).setHighlight(true);
-            else if (diag != null) {
-                Fig f = diag.getLayer().presentationFor(dm);
-                if (f instanceof Highlightable) 
-                    ((Highlightable)f).setHighlight(true);
+            else if (p != null) {
+                Iterator iterFigs =p.findFigsForMember(dm).iterator();
+                while (iterFigs.hasNext()) {
+                    Object f = iterFigs.next();
+                    if (f instanceof Highlightable)
+                        ((Highlightable)f).setHighlight(true);
+                }
             }
         }
     }
