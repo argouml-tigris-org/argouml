@@ -29,45 +29,6 @@ import java.util.Collection;
 import org.argouml.application.api.NotationName;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationClass;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
-import ru.novosoft.uml.foundation.core.MBinding;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MComment;
-import ru.novosoft.uml.foundation.core.MComponent;
-import ru.novosoft.uml.foundation.core.MConstraint;
-import ru.novosoft.uml.foundation.core.MDataType;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MElement;
-import ru.novosoft.uml.foundation.core.MElementResidence;
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MFlow;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MMethod;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MNode;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.core.MPermission;
-import ru.novosoft.uml.foundation.core.MPresentationElement;
-import ru.novosoft.uml.foundation.core.MRelationship;
-import ru.novosoft.uml.foundation.core.MStructuralFeature;
-import ru.novosoft.uml.foundation.core.MTemplateParameter;
-import ru.novosoft.uml.foundation.core.MUsage;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-import ru.novosoft.uml.foundation.data_types.MChangeableKind;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-import ru.novosoft.uml.foundation.data_types.MOrderingKind;
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
  * The interface to the factory for the Core.<p>
@@ -98,175 +59,175 @@ public interface CoreFactory {
      *
      * @return an initialized UML Association instance.
      */
-    MAssociation createAssociation();
+    Object createAssociation();
 
     /**
      * Create an empty but initialized instance of a UML AssociationClass.
      *
      * @return an initialized UML AssociationClass instance.
      */
-    MAssociationClass createAssociationClass();
+    Object createAssociationClass();
 
     /**
      * Create an empty but initialized instance of a UML AssociationEnd.
      *
      * @return an initialized UML AssociationEnd instance.
      */
-    MAssociationEnd createAssociationEnd();
+    Object createAssociationEnd();
 
     /**
      * Create an empty but initialized instance of a UML Attribute.
      *
      * @return an initialized UML Attribute instance.
      */
-    MAttribute createAttribute();
+    Object createAttribute();
 
     /**
      * Create an empty but initialized instance of a UML Binding.
      *
      * @return an initialized UML Binding instance.
      */
-    MBinding createBinding();
+    Object createBinding();
 
     /**
      * Create an empty but initialized instance of a UML Class.
      *
      * @return an initialized UML Class instance.
      */
-    MClass createClass();
+    Object createClass();
 
     /**
      * Create an empty but initialized instance of a UML Classifier.
      *
      * @return an initialized UML Classifier instance.
      */
-    MClassifier createClassifier();
+    Object createClassifier();
 
     /**
      * Create an empty but initialized instance of a UML Comment.
      *
      * @return an initialized UML Comment instance.
      */
-    MComment createComment();
+    Object createComment();
 
     /**
      * Create an empty but initialized instance of a UML Component.
      *
      * @return an initialized UML Component instance.
      */
-    MComponent createComponent();
+    Object createComponent();
 
     /**
      * Create an empty but initialized instance of a UML Constraint.
      *
      * @return an initialized UML Constraint instance.
      */
-    MConstraint createConstraint();
+    Object createConstraint();
 
     /**
      * Create an empty but initialized instance of a UML DataType.
      *
      * @return an initialized UML DataType instance.
      */
-    MDataType createDataType();
+    Object createDataType();
 
     /**
      * Create an empty but initialized instance of a UML Dependency.
      *
      * @return an initialized UML Dependency instance.
      */
-    MDependency createDependency();
+    Object createDependency();
 
     /**
      * Create an empty but initialized instance of a UML ElementResidence.
      *
      * @return an initialized UML ElementResidence instance.
      */
-    MElementResidence createElementResidence();
+    Object createElementResidence();
 
     /**
      * Create an empty but initialized instance of a UML Flow.
      *
      * @return an initialized UML Flow instance.
      */
-    MFlow createFlow();
+    Object createFlow();
 
     /**
      * Create an empty but initialized instance of a UML Generalization.
      *
      * @return an initialized UML Generalization instance.
      */
-    MGeneralization createGeneralization();
+    Object createGeneralization();
 
     /**
      * Create an empty but initialized instance of a UML Interface.
      *
      * @return an initialized UML Interface instance.
      */
-    MInterface createInterface();
+    Object createInterface();
 
     /**
      * Create an empty but initialized instance of a UML Method.
      *
      * @return an initialized UML Method instance.
      */
-    MMethod createMethod();
+    Object createMethod();
 
     /**
      * Create an empty but initialized instance of a UML Namespace.
      *
      * @return an initialized UML Namespace instance.
      */
-    MNamespace createNamespace();
+    Object createNamespace();
 
     /**
      * Create an empty but initialized instance of a UML Node.
      *
      * @return an initialized UML Node instance.
      */
-    MNode createNode();
+    Object createNode();
 
     /**
      * Create an empty but initialized instance of a UML Operation.
      *
      * @return an initialized UML Operation instance.
      */
-    MOperation createOperation();
+    Object createOperation();
 
     /**
      * Create an empty but initialized instance of a UML Parameter.
      *
      * @return an initialized UML Parameter instance.
      */
-    MParameter createParameter();
+    Object createParameter();
 
     /**
      * Create an empty but initialized instance of a UML Permission.
      *
      * @return an initialized UML Permission instance.
      */
-    MPermission createPermission();
+    Object createPermission();
 
     /**
      * Create an empty but initialized instance of a UML Relationship.
      *
      * @return an initialized UML Relationship instance.
      */
-    MRelationship createRelationship();
+    Object createRelationship();
 
     /**
      * Create an empty but initialized instance of a UML TemplateParameter.
      *
      * @return an initialized UML TemplateParameter instance.
      */
-    MTemplateParameter createTemplateParameter();
+    Object createTemplateParameter();
 
     /**
      * Create an empty but initialized instance of a UML Usage.
      *
      * @return an initialized UML Usage instance.
      */
-    MUsage createUsage();
+    Object createUsage();
 
     /**
      * Builds a binary associationrole on basis of two classifierroles,
@@ -292,7 +253,7 @@ public interface CoreFactory {
      * @param classifier2 The second classifier to connect
      * @return MAssociation
      */
-    MAssociation buildAssociation(Object classifier1, Object classifier2);
+    Object buildAssociation(Object classifier1, Object classifier2);
 
     /**
      * Builds a binary association with a direction, aggregation
@@ -316,7 +277,7 @@ public interface CoreFactory {
      * @param end2 the second given classifier
      * @return MAssociationClass
      */
-    MAssociationClass buildAssociationClass(MClassifier end1, MClassifier end2);
+    Object buildAssociationClass(Object end1, Object end2);
 
     /**
      * Builds a fully configurable association end. All variables for
@@ -336,30 +297,29 @@ public interface CoreFactory {
      * @param visibility the visibilitykind
      * @return MAssociationEnd
      */
-    MAssociationEnd buildAssociationEnd(
-        MAssociation assoc,
+    Object buildAssociationEnd(
+        Object assoc,
         String name,
-        MClassifier type,
-        MMultiplicity multi,
-        MStereotype stereo,
+        Object type,
+        Object multi,
+        Object stereo,
         boolean navigable,
-        MOrderingKind order,
-        MAggregationKind aggregation,
-        MScopeKind scope,
-        MChangeableKind changeable,
-        MVisibilityKind visibility);
+        Object order,
+        Object aggregation,
+        Object scope,
+        Object changeable,
+        Object visibility);
 
     /**
-     * Builds a simply configured association end
+     * Builds a simply configured association end.
+     *
      * @param type the given classifier
      * @param assoc the given association
      * @return the newly build associationend
      */
-    MAssociationEnd buildAssociationEnd(
-        MClassifier type,
-        MAssociation assoc);
+    Object buildAssociationEnd(Object type, Object assoc);
 
-            /**
+    /**
      * Builds a default attribute.
      *
      * @param model The model the attribute belongs to.
@@ -480,7 +440,7 @@ public interface CoreFactory {
      * @param supplierObj is the supplier
      * @return MPermission
      */
-    MPermission buildPermission(Object clientObj, Object supplierObj);
+    Object buildPermission(Object clientObj, Object supplierObj);
 
     /**
      * Builds a generalization between a parent and a child with a given name.
@@ -500,7 +460,7 @@ public interface CoreFactory {
      * @param parent1 is the parent
      * @return MGeneralization
      */
-    MGeneralization buildGeneralization(Object child1, Object parent1);
+    Object buildGeneralization(Object child1, Object parent1);
 
     /**
      * Builds a default method belonging to a certain operation. The
@@ -510,7 +470,7 @@ public interface CoreFactory {
      * @param op is the operation
      * @return MMethod
      */
-    MMethod buildMethod(MOperation op);
+    Object buildMethod(Object op);
 
     /**
      * Builds a method belonging to a certain operation.
@@ -519,7 +479,7 @@ public interface CoreFactory {
      * @param body The actual body of the method
      * @return MMethod
      */
-    MMethod buildMethod(MOperation op, NotationName notation, String body);
+    Object buildMethod(Object op, NotationName notation, String body);
 
     /**
      * Builds a method with a given name.
@@ -527,7 +487,7 @@ public interface CoreFactory {
      * @param name is the given name
      * @return method
      */
-    MMethod buildMethod(String name);
+    Object buildMethod(String name);
 
     /**
      * Builds an operation for a classifier.
@@ -564,7 +524,7 @@ public interface CoreFactory {
      * @param propertyChangeListeners the listeners
      * @return the parameter
      */
-    MParameter buildParameter(Object o, Object model, Object voidType,
+    Object buildParameter(Object o, Object model, Object voidType,
             Collection propertyChangeListeners);
 
     /**
@@ -588,7 +548,7 @@ public interface CoreFactory {
      * @param supplier is the supplier
      * @return MUsage
      */
-    MUsage buildUsage(MModelElement client, MModelElement supplier);
+    Object buildUsage(Object client, Object supplier);
 
     /**
      * Builds a comment inluding a reference to the given modelelement
@@ -610,6 +570,9 @@ public interface CoreFactory {
      * @param to The comment or annotated element.
      * @return A commentEdge representing the model behind the connection
      *         between a comment and an annotated modelelement.
+     *
+     * TODO: What shall we do about this one? CommentEdge is not part
+     * of the Model subsystem. Should it be?
      */
     CommentEdge buildCommentConnection(Object from, Object to);
 
@@ -640,12 +603,12 @@ public interface CoreFactory {
     /**
      * @param elem the association to be deleted
      */
-    void deleteAssociation(MAssociation elem);
+    void deleteAssociation(Object elem);
 
     /**
      * @param elem the a. to be deleted
      */
-    void deleteAssociationClass(MAssociationClass elem);
+    void deleteAssociationClass(Object elem);
 
     /**
      * Does a 'cascading delete' to all modelelements that are associated
@@ -662,27 +625,27 @@ public interface CoreFactory {
      * @param elem
      * @see UmlFactory#delete(Object)
      */
-    void deleteAssociationEnd(MAssociationEnd elem);
+    void deleteAssociationEnd(Object elem);
 
     /**
      * @param elem the attribute to be deleted
      */
-    void deleteAttribute(MAttribute elem);
+    void deleteAttribute(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteBehavioralFeature(MBehavioralFeature elem);
+    void deleteBehavioralFeature(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteBinding(MBinding elem);
+    void deleteBinding(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteClass(MClass elem);
+    void deleteClass(Object elem);
 
     /**
      * Does a 'cascading delete' to all modelelements that are associated
@@ -703,67 +666,67 @@ public interface CoreFactory {
     /**
      * @param elem the element to be deleted
      */
-    void deleteComment(MComment elem);
+    void deleteComment(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteComponent(MComponent elem);
+    void deleteComponent(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteConstraint(MConstraint elem);
+    void deleteConstraint(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteDataType(MDataType elem);
+    void deleteDataType(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteDependency(MDependency elem);
+    void deleteDependency(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteElement(MElement elem);
+    void deleteElement(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteElementResidence(MElementResidence elem);
+    void deleteElementResidence(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteFeature(MFeature elem);
+    void deleteFeature(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteFlow(MFlow elem);
+    void deleteFlow(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteGeneralizableElement(MGeneralizableElement elem);
+    void deleteGeneralizableElement(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteGeneralization(MGeneralization elem);
+    void deleteGeneralization(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteInterface(MInterface elem);
+    void deleteInterface(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteMethod(MMethod elem);
+    void deleteMethod(Object elem);
 
     /**
      * Does a 'cascading delete' to all modelelements that are associated
@@ -780,59 +743,59 @@ public interface CoreFactory {
      * @param elem
      * @see UmlFactory#delete(Object)
      */
-    void deleteModelElement(MModelElement elem);
+    void deleteModelElement(Object elem);
 
     /**
      * A namespace deletes its owned elements.
      *
      * @param elem is the namespace.
      */
-    void deleteNamespace(MNamespace elem);
+    void deleteNamespace(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteNode(MNode elem);
+    void deleteNode(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteOperation(MOperation elem);
+    void deleteOperation(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteParameter(MParameter elem);
+    void deleteParameter(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deletePermission(MPermission elem);
+    void deletePermission(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deletePresentationElement(MPresentationElement elem);
+    void deletePresentationElement(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteRelationship(MRelationship elem);
+    void deleteRelationship(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteStructuralFeature(MStructuralFeature elem);
+    void deleteStructuralFeature(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteTemplateParameter(MTemplateParameter elem);
+    void deleteTemplateParameter(Object elem);
 
     /**
      * @param elem the element to be deleted
      */
-    void deleteUsage(MUsage elem);
+    void deleteUsage(Object elem);
 
     /**
      * Copies a class, and it's features. This may also require other
@@ -842,7 +805,7 @@ public interface CoreFactory {
      * @param ns is the namespace to put the copy in.
      * @return a newly created class.
      */
-    MClass copyClass(MClass source, MNamespace ns);
+    Object copyClass(Object source, Object ns);
 
     /**
      * Copies a datatype, and it's features. This may also require other
@@ -852,7 +815,7 @@ public interface CoreFactory {
      * @param ns is the namespace to put the copy in.
      * @return a newly created data type.
      */
-    MDataType copyDataType(MDataType source, MNamespace ns);
+    Object copyDataType(Object source, Object ns);
 
     /**
      * Copies an interface, and it's features. This may also require other
@@ -862,7 +825,7 @@ public interface CoreFactory {
      * @param ns is the namespace to put the copy in.
      * @return a newly created interface.
      */
-    MInterface copyInterface(MInterface source, MNamespace ns);
+    Object copyInterface(Object source, Object ns);
 
     /**
      * Used by the copy functions. Do not call this function directly.
@@ -870,7 +833,7 @@ public interface CoreFactory {
      * @param source the source class
      * @param target the target class
      */
-    void doCopyClass(MClass source, MClass target);
+    void doCopyClass(Object source, Object target);
 
     /**
      * Used by the copy functions. Do not call this function directly.
@@ -879,7 +842,7 @@ public interface CoreFactory {
      * @param source the source classifier
      * @param target the target classifier
      */
-    void doCopyClassifier(MClassifier source, MClassifier target);
+    void doCopyClassifier(Object source, Object target);
 
     /**
      * Used by the copy functions. Do not call this function directly.
@@ -887,7 +850,7 @@ public interface CoreFactory {
      * @param source the source datatype
      * @param target the target datatype
      */
-    void doCopyDataType(MDataType source, MDataType target);
+    void doCopyDataType(Object source, Object target);
 
     /**
      * Used by the copy functions. Do not call this function directly.
@@ -896,8 +859,7 @@ public interface CoreFactory {
      * @param source the source generalizable element
      * @param target the target generalizable element
      */
-    void doCopyGeneralizableElement(MGeneralizableElement source,
-            MGeneralizableElement target);
+    void doCopyGeneralizableElement(Object source, Object target);
 
     /**
      * Used by the copy functions. Do not call this function directly.
@@ -905,7 +867,7 @@ public interface CoreFactory {
      * @param source the source interface
      * @param target the target interface
      */
-    void doCopyInterface(MInterface source, MInterface target);
+    void doCopyInterface(Object source, Object target);
 
     /**
      * Used by the copy functions. Do not call this function directly.
@@ -917,7 +879,7 @@ public interface CoreFactory {
      * @param source the source me
      * @param target the target me
      */
-    void doCopyModelElement(MModelElement source, MModelElement target);
+    void doCopyModelElement(Object source, Object target);
 
     /**
      * Used by the copy functions. Do not call this function directly.
@@ -925,5 +887,5 @@ public interface CoreFactory {
      * @param source the source namespace
      * @param target the target namespace
      */
-    void doCopyNamespace(MNamespace source, MNamespace target);
+    void doCopyNamespace(Object source, Object target);
 }

@@ -162,6 +162,8 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      */
     private Map validConnectionMap = new HashMap();
 
+    // TODO: The purpose of the jmiProxy is not understood (Linus January
+    // 2005). Instead we go for two completely separate implementations.
     private boolean jmiProxyCreated = false;
 
     /**
@@ -256,8 +258,8 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
          ModelFacade.MODELELEMENT, },
         {ModelFacade.TRANSITION,       ModelFacade.STATEVERTEX, },
         {ModelFacade.ASSOCIATION_CLASS, ModelFacade.CLASS, },
-    {ModelFacade.ASSOCIATION_END, ModelFacade.CLASS,
-     ModelFacade.ASSOCIATION}
+        {ModelFacade.ASSOCIATION_END, ModelFacade.CLASS,
+         ModelFacade.ASSOCIATION, },
     };
 
     private static Map elements;
@@ -504,7 +506,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
             if (fromElement instanceof MAssociation) {
                 connection =
                         getCore().buildAssociationEnd(
-                                (MClassifier)toElement,
+                                (MClassifier) toElement,
                                 (MAssociation) fromElement);
             }
             else if (fromElement instanceof MClassifier) {
@@ -514,9 +516,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
             }
         } else if (connectionType == ModelFacade.ASSOCIATION_CLASS) {
             connection =
-                getCore().buildAssociationClass(
-                       (MClassifier) fromElement,
-                       (MClassifier) toElement);
+                getCore().buildAssociationClass(fromElement, toElement);
         } else if (connectionType == ModelFacade.ASSOCIATION_ROLE) {
             connection =
                 getCollaborations()
@@ -815,6 +815,8 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
         if (elem instanceof MBase) {
             ((MBase) elem).remove();
             // TODO: (MVW) How do we replace next statement? Model.getPump()...
+            // Answer (Linus): We don't need to replace it. This file is now
+            // in org.argouml.model.uml and is allowed to use NSUML API:s.
             UmlModelEventPump.getPump().cleanUp((MBase) elem);
             UmlModelListener.getInstance().deleteElement(elem);
         }

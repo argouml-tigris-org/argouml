@@ -179,10 +179,14 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
      * @param m the ModelElement
      * @return the meta name of the ModelElement
      */
-    public String getMetaModelName(MModelElement m) {
+    public String getMetaModelName(Object m) {
         if (m == null) {
             return null;
         }
+        if (!(m instanceof MModelElement)) {
+            throw new IllegalArgumentException();
+        }
+
         return getMetaModelName(m.getClass());
     }
 

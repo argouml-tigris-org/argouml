@@ -2636,10 +2636,10 @@ public class ModelFacade {
     }
 
     /**
-     * Get the classifier of an Association End
+     * Get the classifier of an Association End.
      *
-     * @param handle
-     * @return the classifier of the association end
+     * @param handle The Association End to get from.
+     * @return The classifier of the Association End.
      */
     public static Object getClassifier(Object handle) {
         if (isAAssociationEnd(handle)) {
@@ -5297,6 +5297,22 @@ public class ModelFacade {
     }
 
     /**
+     * Add a source flow to a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow.
+     */
+    public static void addSourceFlow(Object handle, Object flow) {
+        if (handle instanceof MModelElement
+                && flow instanceof MFlow) {
+            ((MModelElement) handle).addSourceFlow((MFlow) flow);
+            return;
+        }
+
+        illegalArgument(handle, flow);
+    }
+
+    /**
      * Adds a stimulus to a action or link.
      *
      * @param handle the action or link
@@ -5472,6 +5488,22 @@ public class ModelFacade {
     }
 
     /**
+     * Add a target flow to a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow to add.
+     */
+    public static void addTargetFlow(Object handle, Object flow) {
+        if (handle instanceof MModelElement
+                && flow instanceof MFlow) {
+            ((MModelElement) handle).addTargetFlow((MFlow) flow);
+            return;
+        }
+
+        illegalArgument(handle, flow);
+    }
+
+    /**
      * Removes the actual Argument from an Action.
      *
      * @param handle Action
@@ -5528,6 +5560,24 @@ public class ModelFacade {
             return;
         }
 	illegalArgument(handle, dep);
+    }
+
+    /**
+     * Remove a constraining element.
+     *
+     * @param handle The collaboration to remove a constraint to.
+     * @param constraint The constraint to remove.
+     */
+    public static void removeConstrainingElement(Object handle,
+            					 Object constraint) {
+        if (handle instanceof MCollaboration
+                && constraint instanceof MModelElement) {
+            ((MCollaboration) handle).removeConstrainingElement(
+                    (MModelElement) constraint);
+            return;
+        }
+
+        illegalArgument(handle, constraint);
     }
 
     /**
@@ -5656,16 +5706,32 @@ public class ModelFacade {
     /**
      * This method removes a parameter from an operation.
      *
-     * @param handle is the operation
-     * @param p is the parameter
+     * @param handle The operation.
+     * @param parameter The parameter.
      */
-    public static void removeParameter(Object handle, Object p) {
-        if (handle instanceof MOperation
-            && p instanceof MParameter) {
-            ((MOperation) handle).removeParameter((MParameter) p);
-            return;
+    public static void removeParameter(Object handle, Object parameter) {
+        if (parameter instanceof MParameter) {
+            if (handle instanceof MObjectFlowState) {
+                ((MObjectFlowState) handle).removeParameter(
+		         (MParameter) parameter);
+                return;
+            }
+            if (handle instanceof MEvent) {
+                ((MEvent) handle).removeParameter((MParameter) parameter);
+                return;
+            }
+            if (handle instanceof MBehavioralFeature) {
+                ((MBehavioralFeature) handle).removeParameter(
+                    (MParameter) parameter);
+                return;
+            }
+            if (handle instanceof MClassifier) {
+                ((MClassifier) handle).removeParameter((MParameter) parameter);
+                return;
+            }
         }
-	illegalArgument(handle, p);
+
+	illegalArgument(handle, parameter);
     }
 
     /**
@@ -5697,6 +5763,22 @@ public class ModelFacade {
     }
 
     /**
+     * Remove a source flow from a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow.
+     */
+    public static void removeSourceFlow(Object handle, Object flow) {
+        if (handle instanceof MModelElement
+                && flow instanceof MFlow) {
+            ((MModelElement) handle).removeSourceFlow((MFlow) flow);
+            return;
+        }
+
+        illegalArgument(handle, flow);
+    }
+
+    /**
      * Remove a given subvertex from a given composite state.
      *
      * @param handle the composite state
@@ -5710,6 +5792,23 @@ public class ModelFacade {
             return;
         }
 	illegalArgument(handle, subvertex);
+    }
+
+    /**
+     * Adds a supplier dependency to some modelelement.
+     *
+     * @param supplier the supplier
+     * @param dependency the dependency
+     */
+    public static void removeSupplierDependency(
+            Object supplier,
+            Object dependency) {
+        if (isAModelElement(supplier) && isADependency(dependency)) {
+            MModelElement me = (MModelElement) supplier;
+            me.removeSupplierDependency((MDependency) dependency);
+            return;
+        }
+        illegalArgument(supplier, dependency);
     }
 
     /**
@@ -5729,6 +5828,22 @@ public class ModelFacade {
 	}
 
 	illegalArgument(handle);
+    }
+
+    /**
+     * Add a target flow to a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow to add.
+     */
+    public static void removeTargetFlow(Object handle, Object flow) {
+        if (handle instanceof MModelElement
+                && flow instanceof MFlow) {
+            ((MModelElement) handle).removeTargetFlow((MFlow) flow);
+            return;
+        }
+
+        illegalArgument(handle, flow);
     }
 
     /**
@@ -6851,6 +6966,23 @@ public class ModelFacade {
     }
 
     /**
+     * Set the feature at the given position.
+     *
+     * @param elem The classifier to set.
+     * @param i The position. Start with 0.
+     * @param impl The feature to set.
+     */
+    public static void setFeature(Object elem, int i, Object impl) {
+        if (elem instanceof MClassifier
+                && impl instanceof MFeature) {
+            ((MClassifier) elem).setFeature(i, (MFeature) impl);
+            return;
+        }
+
+        illegalArgument(elem, impl);
+    }
+
+    /**
      * Sets the features of some model element.
      *
      * @param handle the model element to set features to
@@ -7470,11 +7602,14 @@ public class ModelFacade {
     }
 
     /**
+     * Set the PowerType of a Generalization.
      * @param handle Generalization
      * @param pt Classifier
      */
     public static void setPowertype(Object handle, Object pt) {
-        if (handle instanceof MGeneralization && pt instanceof MClassifier) {
+        if (handle instanceof MGeneralization
+                && (pt == null
+                        || pt instanceof MClassifier)) {
             ((MGeneralization) handle).setPowertype((MClassifier) pt);
             return;
         }
@@ -7705,6 +7840,24 @@ public class ModelFacade {
             return;
         }
 	illegalArgument(handle, connection);
+    }
+
+    /**
+     * Add a constraining element.
+     *
+     * @param handle The collaboration to add a constraint to.
+     * @param constraint The constraint to add.
+     */
+    public static void addConstrainingElement(Object handle,
+            				      Object constraint) {
+        if (handle instanceof MCollaboration
+                && constraint instanceof MModelElement) {
+            ((MCollaboration) handle).addConstrainingElement(
+                    (MModelElement) constraint);
+            return;
+        }
+
+        illegalArgument(handle, constraint);
     }
 
     /**
