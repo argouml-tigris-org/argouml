@@ -289,6 +289,16 @@ public class ModelFacade {
         return handle instanceof MActionState;
     }
 
+    /** Recognizer for Actor
+     *
+     * @param handle candidate
+     * @returns true if handle is an Actor
+     */
+    public static boolean isAActor(Object handle) {
+        return handle instanceof MActor;
+    }
+
+
     /** Recognizer for Association.
      *
      * @param handle candidate
@@ -370,6 +380,15 @@ public class ModelFacade {
         return handle instanceof MBehavioralFeature;
     }
 
+    /** Recognizer for CallAction
+     *
+     * @param handle candidate
+     * @returns true if handle is a CallAction
+     */
+    public static boolean isACallAction(Object handle) {
+        return handle instanceof MCallAction;
+    }
+
     /** Recognizer for Class
      *
      * @param handle candidate
@@ -386,6 +405,15 @@ public class ModelFacade {
      */
     public static boolean isAClassifier(Object handle) {
         return handle instanceof MClassifier;
+    }
+
+    /** Recognizer for ClassifierRole
+     *
+     * @param handle candidate
+     * @returns true if handle is a ClassifierRole
+     */
+    public static boolean isAClassifierRole(Object handle) {
+        return handle instanceof MClassifierRole;
     }
 
     /** Recognizer for Comment
@@ -478,6 +506,16 @@ public class ModelFacade {
         return handle instanceof MExpression;
     }
 
+    /** Recognizer for Extend
+     *
+     * @param handle candidate
+     * @returns true if handle is an Extend
+     */
+    public static boolean isAExtend(Object handle) {
+        return handle instanceof MExtend;
+    }
+
+
     /** Recognizer for ExtensionPoint
      *
      * @param handle candidate
@@ -523,6 +561,16 @@ public class ModelFacade {
     public static boolean isAGeneralization(Object handle) {
         return handle instanceof MGeneralization;
     }
+
+    /** Recognizer for Include
+     *
+     * @param handle candidate
+     * @returns true if handle is an Include
+     */
+    public static boolean isAInclude(Object handle) {
+        return handle instanceof MInclude;
+    }
+
 
     /** Recognizer for Instance
      *
@@ -776,6 +824,24 @@ public class ModelFacade {
         return handle instanceof MStructuralFeature;
     }
 
+    /** Recognizer for State
+     *
+     * @param handle candidate
+     * @returns true if handle is a State
+     */
+    public static boolean isAState(Object handle) {
+        return handle instanceof MState;
+    }
+
+    /** Recognizer for Subsystem
+     *
+     * @param handle candidate
+     * @returns true if handle is a Subsystem
+     */
+    public static boolean isASubsystem(Object handle) {
+        return handle instanceof MSubsystem;
+    }
+
     /** Recognizer for TaggedValue
      *
      * @param handle candidate
@@ -795,6 +861,15 @@ public class ModelFacade {
         return handle instanceof MTransition;
     }
 
+    /** Recognizer for Usage
+     *
+     * @param handle candidate
+     * @returns true if handle is a Usage
+     */
+    public static boolean isAUsage(Object handle) {
+        return handle instanceof MUsage;
+    }
+
     /** Recognizer for a Use Case
      *
      * @param handle candidate
@@ -802,6 +877,15 @@ public class ModelFacade {
      */
     public static boolean isAUseCase(Object handle) {
         return handle instanceof MUseCase;
+    }
+
+    /** Recognizer for VisibilityKind
+     *
+     * @param handle candidate
+     * @returns true if handle is a VisibilityKind
+     */
+    public static boolean isAVisibilityKind(Object handle) {
+        return handle instanceof MVisibilityKind;
     }
 
     /** Recognizer for attributes that are changeable
