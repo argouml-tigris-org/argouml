@@ -24,16 +24,13 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.*;
-import java.awt.*;
 import java.io.Serializable;
-import javax.swing.tree.*;
-import javax.swing.event.*;
-
-import org.argouml.ui.*;
-import org.argouml.cognitive.*;
-
+import java.util.Vector;
 import org.apache.log4j.Category;
+
+
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.ui.TreeModelComposite;
 
 /**
  *

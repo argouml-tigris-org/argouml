@@ -24,12 +24,15 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.*;
-
-import org.tigris.gef.util.*;
-
+import java.util.Enumeration;
+import java.util.Vector;
 import org.apache.log4j.Category;
-import org.argouml.cognitive.*;
+
+
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoListEvent;
+import org.tigris.gef.util.VectorSet;
 
 public class ToDoByOffender extends ToDoPerspective {
     protected static Category cat = 

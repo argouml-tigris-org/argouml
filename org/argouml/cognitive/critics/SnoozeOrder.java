@@ -29,7 +29,8 @@
 
 package org.argouml.cognitive.critics;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Date;
 
 /** A Critic can be disabled for a certain amount of time by giving it
  *  the snooze command.  Whereas most ControlMech's activate or deactivate
@@ -40,7 +41,7 @@ import java.util.*;
  *  Designer's have a lot of tacit knowledge about their own state of
  *  mind that is not worth making explicit. */
 
-public class SnoozeOrder implements java.io.Serializable {
+public class SnoozeOrder implements Serializable {
     ////////////////////////////////////////////////////////////////
     // constants
     /** The initial sleeping time. */

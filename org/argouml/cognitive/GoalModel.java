@@ -32,7 +32,10 @@
 
 package org.argouml.cognitive;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Observable;
+import java.util.Vector;
 
 /** Models the designers goals in making this design.  Provides useful
  *  control information to the Agency so that only critics relevant to
@@ -42,8 +45,7 @@ import java.util.*;
  *  and not the kernel.  I have not developed this part of Argo very
  *  much. */
 
-public class GoalModel extends Observable
-    implements java.io.Serializable 
+public class GoalModel extends Observable implements Serializable 
 {
     ////////////////////////////////////////////////////////////////
     // instance variables

@@ -24,7 +24,7 @@
 
 package org.argouml.cognitive.critics;
 
-import org.argouml.cognitive.*;
+import org.argouml.cognitive.Designer;
 
 class EnabledCM extends ControlMech {
     public boolean isRelevant(Critic c, Designer d) {

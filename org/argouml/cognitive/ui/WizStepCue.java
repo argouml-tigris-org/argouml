@@ -24,15 +24,14 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.border.*;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.JLabel;
+import javax.swing.JTextArea;
+import javax.swing.border.EtchedBorder;
+import org.argouml.kernel.Wizard;
+import org.argouml.ui.SpacerPanel;
 
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
 
 /** A simple non-modal wizard step that shows instructions and prompts
  *  the user to enter a string. 

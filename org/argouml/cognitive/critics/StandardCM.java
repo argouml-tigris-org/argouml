@@ -24,9 +24,10 @@
 
 package org.argouml.cognitive.critics;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
 
-import org.argouml.cognitive.*;
 
 public class StandardCM extends AndCM {
     public StandardCM() {

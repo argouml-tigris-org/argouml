@@ -24,14 +24,33 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.DecisionModel;
+import org.argouml.cognitive.Designer;
 
-import org.argouml.cognitive.*;
 
 /** A dialog to set the priorities for decisions. These will be evulated
  *  against the critics, so that the user will only see todo items which match
@@ -145,7 +164,7 @@ public class DesignIssuesDialog extends JDialog
 
 
         c.gridy = 2;
-        java.util.Enumeration enum = decs.elements();
+        Enumeration enum = decs.elements();
         while (enum.hasMoreElements()) {
             Decision d = (Decision) enum.nextElement();
             JLabel decLabel = new JLabel(d.getName());

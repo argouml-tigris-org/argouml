@@ -24,20 +24,23 @@
 
 package org.argouml.cognitive;
 
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Writer;
 import java.util.Hashtable;
 import java.util.Vector;
+import org.apache.log4j.Category;
 
-import org.tigris.gef.ocl.TemplateReader;
+import org.xml.sax.SAXException;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.ocl.OCLExpander;
-import org.argouml.xml.todo.*;
+import org.argouml.xml.todo.ResolvedCriticXMLHelper;
+import org.argouml.xml.todo.ToDoItemXMLHelper;
+import org.argouml.xml.todo.TodoParser;
+import org.tigris.gef.ocl.TemplateReader;
 
-import org.apache.log4j.Category;
 
 /**
  * Helper class to act as a project member on behalf of the todo list.
@@ -127,13 +130,12 @@ public class ProjectMemberTodoList extends ProjectMember
 	return out;
     }
 
-    public void load(InputStream is) 
-	throws IOException, org.xml.sax.SAXException
+    public void load(InputStream is) throws IOException, SAXException
     {
 	TodoParser.SINGLETON.readTodoList(is, true);
     }
 
-    public void load() throws IOException, org.xml.sax.SAXException
+    public void load() throws IOException, SAXException
     {
 	InputStream is = null;
 	if (getURL() != null)

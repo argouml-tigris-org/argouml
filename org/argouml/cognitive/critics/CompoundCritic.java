@@ -31,12 +31,15 @@
 
 package org.argouml.cognitive.critics;
 
-import java.util.*;
-import javax.swing.*;
+import java.util.Vector;
+import javax.swing.Icon;
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Goal;
+import org.argouml.cognitive.ToDoItem;
+import org.tigris.gef.util.VectorSet;
 
-import org.tigris.gef.util.*;
 
-import org.argouml.cognitive.*;
 
 /** A CompoundCritic acts like a regular critic in that it checks the
  *  design and produces design feedback.  However, a CompoundCritic is

@@ -24,15 +24,18 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Enumeration;
+import java.util.Vector;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Poster;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+import org.tigris.gef.util.VectorSet;
 
-import org.tigris.gef.util.*;
 
-import org.argouml.ui.*;
-import org.argouml.cognitive.*;
 
 public class GoListToPosterToItem implements TreeModel {
   
@@ -75,7 +78,7 @@ public class GoListToPosterToItem implements TreeModel {
 	if (allPosters.contains(parent)) {
 	    Vector res = new Vector();
 	    ToDoList list = Designer.TheDesigner.getToDoList();
-	    java.util.Enumeration enum = list.elements();
+	    Enumeration enum = list.elements();
 	    while (enum.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) enum.nextElement();
 		Poster post = item.getPoster();

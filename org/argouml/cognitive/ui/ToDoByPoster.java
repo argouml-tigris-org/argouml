@@ -24,12 +24,18 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.*;
-
-import org.tigris.gef.util.*;
-
+import java.util.Enumeration;
+import java.util.Vector;
 import org.apache.log4j.Category;
-import org.argouml.cognitive.*;
+
+
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Poster;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+import org.argouml.cognitive.ToDoListEvent;
+import org.argouml.cognitive.ToDoListListener;
+import org.tigris.gef.util.VectorSet;
 
 public class ToDoByPoster extends ToDoPerspective
     implements ToDoListListener 
@@ -53,7 +59,7 @@ public class ToDoByPoster extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 	VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
-	java.util.Enumeration enum = posters.elements();
+	Enumeration enum = posters.elements();
 	while (enum.hasMoreElements()) {
 	    Poster p = (Poster) enum.nextElement();
 	    path[1] = p;
@@ -88,7 +94,7 @@ public class ToDoByPoster extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 	VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
-	java.util.Enumeration enum = posters.elements();
+	Enumeration enum = posters.elements();
 	while (enum.hasMoreElements()) {
 	    Poster p = (Poster) enum.nextElement();
 	    path[1] = p;
@@ -124,7 +130,7 @@ public class ToDoByPoster extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 
-	java.util.Enumeration enum = list.getPosters().elements();
+	Enumeration enum = list.getPosters().elements();
 	while (enum.hasMoreElements()) {
 	    Poster p = (Poster) enum.nextElement();
 	    //       boolean anyInPoster = false;

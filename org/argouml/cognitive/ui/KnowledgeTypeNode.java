@@ -24,9 +24,9 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.*;
+import java.util.Vector;
+import org.argouml.cognitive.critics.Critic;
 
-import org.argouml.cognitive.critics.*;
 
 public class KnowledgeTypeNode {
 

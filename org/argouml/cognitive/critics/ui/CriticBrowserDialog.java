@@ -24,28 +24,51 @@
 
 package org.argouml.cognitive.critics.ui;
 
-import java.beans.*;
-import java.util.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
-import javax.swing.text.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.VetoableChangeListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.text.Document;
+import org.apache.log4j.Category;
 
-import org.argouml.kernel.*;
+
+import org.argouml.application.api.Argo;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.Agency;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.kernel.DelayedChangeNotify;
+import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
-
-import org.apache.log4j.Category;
-import org.argouml.application.api.*;
 
 /** Dialog box to list all critics and allow editing of some of their
  *  properties.  TODO: knowledge type, supported goals,
