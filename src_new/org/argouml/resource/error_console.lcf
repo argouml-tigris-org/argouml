@@ -2,7 +2,7 @@
 # add -Dlog4j.configuration=org/argouml/resource/full_console.lcf
 # to the command line to use this log4j configuration
 #
-log4j.rootCategory=DEBUG, FULL
+log4j.rootCategory=ERROR
 #
 log4j.category.org.argouml=ERROR
 # 
