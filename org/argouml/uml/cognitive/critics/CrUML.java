@@ -32,6 +32,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 import org.tigris.gef.util.*;
+import org.tigris.gef.base.Diagram;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.*;
@@ -157,10 +158,11 @@ public class CrUML extends Critic {
   public boolean predicate(Object dm, Designer dsgr) {
     Project p = ProjectManager.getManager().getCurrentProject();
     if (p.isInTrash(dm)) {
-      cat.debug("in trash:" + dm);
       return NO_PROBLEM;
     }
-    else return predicate2(dm, dsgr);
+    else {
+        return predicate2(dm, dsgr);
+    }
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
@@ -177,10 +179,11 @@ public class CrUML extends Critic {
      * No recursive expansion.
      */
   public String expand(String res, VectorSet offs) {
-      cat.debug("expanding: " + res);
+    cat.debug("expanding: " + res);
+
     if (offs.size() == 0) return res;
+
     Object off1 = offs.firstElement();
-    if (!(off1 instanceof MElement)) return res;
 
     StringBuffer beginning = new StringBuffer("");
     int matchPos = res.indexOf(OCL_START);
@@ -188,7 +191,8 @@ public class CrUML extends Critic {
     // replace all occurances of OFFENDER with the name of the first offender
     while (matchPos != -1) {
       int endExpr = res.indexOf(OCL_END, matchPos + 1);
-      //check if there is no OCL_END; if so, the critic expression s not correct and can not be expanded
+      // check if there is no OCL_END; if so, the critic expression 
+      // is not correct and can not be expanded
       if (endExpr == -1) break; 
       if (matchPos > 0) beginning.append(res.substring(0, matchPos));
       String expr = res.substring(matchPos + OCL_START.length(), endExpr);
