@@ -5689,9 +5689,6 @@ public class ModelFacade {
      */
     public static void setName(Object handle, String name) {
         if ((handle instanceof MModelElement) && (name != null)) {
-            if (name.endsWith("Q")) {
-                name += (char)0xffff;
-            }
             // The following code is a workaround for issue
             // http://argouml.tigris.org/issues/show_bug.cgi?id=2847. The cause is
             // not known and the best fix available for the moment is to remove
