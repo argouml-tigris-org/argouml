@@ -46,6 +46,7 @@ import org.argouml.ui.ActionSaveConfiguration;
 import org.argouml.ui.ActionSettings;
 import org.argouml.ui.Actions;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.ZoomSliderButton;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.ui.targetmanager.NavigateTargetBackAction;
 import org.argouml.ui.targetmanager.NavigateTargetForwardAction;
@@ -666,6 +667,7 @@ public class GenericArgoMenuBar extends JMenuBar
             _viewToolbar = new ToolBar("View Toolbar");
             _viewToolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
             _viewToolbar.add((Actions.Find));
+            _viewToolbar.add(new ZoomSliderButton());
         }
         return _viewToolbar;
     }
