@@ -245,7 +245,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	Object multi = ModelFacade.getMultiplicity(end);
 	String name = ModelFacade.getName(end);
 	Object order = ModelFacade.getOrdering(end);
-	MStereotype stereo = (MStereotype)ModelFacade.getStereotype(end);
+        Object stereo = null;
+        if (ModelFacade.getStereotypes(end).size() > 0) {
+            stereo = ModelFacade.getStereotypes(end).iterator().next();
+        }
     
 	multiToUpdate.setText(Notation.generate(this, multi));
 	orderingToUpdate.setText(getOrderingName(order));

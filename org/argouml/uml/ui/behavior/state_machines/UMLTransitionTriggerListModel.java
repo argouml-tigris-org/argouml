@@ -25,11 +25,10 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-
 /**
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -49,14 +48,14 @@ public class UMLTransitionTriggerListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MTransition) getTarget()).getTrigger());
+        addElement(ModelFacade.getTrigger(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return element == ((MTransition) getTarget()).getTrigger();
+        return element == ModelFacade.getTrigger(getTarget());
     }
 
 }

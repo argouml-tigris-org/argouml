@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,6 +25,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.ModelFacade;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -74,7 +74,7 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
     protected Collection getChoices() {
         if (org.argouml.model.ModelFacade.isAExtensionPoint(getTarget())) {
             Collection col = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MUseCase.class);
-            col.remove(((MExtensionPoint) getTarget()).getUseCase());
+            col.remove(ModelFacade.getUseCase(getTarget()));
             return col;
         } else
             throw new IllegalStateException("In getChoices of UMLExtendedUseCasesListModel: target is not an instance of MExtensionPoint");
@@ -84,8 +84,8 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
      */
     protected Collection getSelected() {
-        if (org.argouml.model.ModelFacade.isAExtensionPoint(getTarget())) {
-            MUseCase base = ((MExtensionPoint) getTarget()).getUseCase();
+        if (ModelFacade.isAExtensionPoint(getTarget())) {
+            Object base = ModelFacade.getUseCase(getTarget());
             return UseCasesHelper.getHelper().getExtendingUseCases(base);
         } else
             throw new IllegalStateException("In getSelected of UMLExtendedUseCasesListModel: target is not an instance of MExtensionPoint");
@@ -131,8 +131,8 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
     /**
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSource()
      */
-    protected MModelElement getSource() {
-        return ((MExtensionPoint) getTarget()).getUseCase();
+    protected Object getSource() {
+        return ModelFacade.getUseCase(getTarget());
     }
 
 }

@@ -163,12 +163,14 @@ class ArgoAny implements Any, Type2 {
 		{
 		    // to do: think about the condition of this if-statement
 		    // ordered association end -> Sequence; otherwise -> Set
-		    if (ModelFacade.getStereotype(ae) != null
-			&& ModelFacade.getStereotype(ae).toString() != null
-			&& "ordered".equals(ModelFacade.getStereotype(ae)
-                            .toString()) )
-		    {
-			isSequence = true;
+                    Object stereotype = null;
+                    if (ModelFacade.getStereotypes(ae).size() > 0) {
+                        stereotype = ModelFacade.getStereotypes(ae).iterator().next();
+                    }
+		    if (stereotype != null
+			&& stereotype.toString() != null
+			&& "ordered".equals(stereotype.toString()) ) {
+                            isSequence = true;
 		    } else {
 			isSet = true;
 		    }

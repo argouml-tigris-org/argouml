@@ -728,9 +728,11 @@ public abstract class FigNodeModelElement
      * FigInterface)
      */
     protected void updateStereotypeText() {
-        _stereo.setText(
-			Notation.generate(this,
-					  ModelFacade.getStereoType(getOwner())));
+        Object stereotype = null;
+        if (ModelFacade.getStereotypes(getOwner()).size() > 0) {
+            stereotype = ModelFacade.getStereotypes(getOwner()).iterator().next();
+        }
+        _stereo.setText(Notation.generate(this, stereotype));
     }
 
     /**

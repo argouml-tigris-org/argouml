@@ -471,18 +471,22 @@ public abstract class FigEdgeModelElement
     }
 
     protected void updateStereotypeText() {
-        if (getOwner() == null)
+        if (getOwner() == null) {
             return;
-        Object stereos = ModelFacade.getStereotype(getOwner());
-        if (stereos == null) {
+        }
+        Object stereotype = null;
+        if (ModelFacade.getStereotypes(getOwner()).size() > 0) {
+            stereotype = ModelFacade.getStereotypes(getOwner()).iterator().next();
+        }
+        if (stereotype == null) {
             _stereo.setText("");
             return;
         }
-        String stereoStr = ModelFacade.getName(stereos);
+        String stereoStr = ModelFacade.getName(stereotype);
         if (stereoStr.length() == 0)
             _stereo.setText("");
         else {
-            _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereos));
+            _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereotype));
         }
     }
 

@@ -34,6 +34,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -264,11 +265,12 @@ abstract public class UMLBinaryRelationListModel
      * </p>
      * @return MModelElement
      */
-    protected MModelElement getSource() {
-        if (org.argouml.model.ModelFacade.isAModelElement(getTarget())) {
-            return (MModelElement) getTarget();
-        } else
+    protected Object getSource() {
+        if (ModelFacade.isAModelElement(getTarget())) {
+            return getTarget();
+        } else {
             throw new IllegalStateException("In getSource: target is not a modelelement");
+        }
     }
 
 }

@@ -393,7 +393,10 @@ public class CoreHelper {
         Iterator depIterator = deps.iterator();
         while (depIterator.hasNext()) {
             Object dep = depIterator.next();
-            Object stereo = ModelFacade.getStereoType(dep);           
+            Object stereo = null;
+            if (ModelFacade.getStereotypes(dep).size() > 0) {
+                stereo = ModelFacade.getStereotypes(dep).iterator().next();
+            }
             if ((ModelFacade.isAAbstraction(dep))
                 && stereo != null
                 && ModelFacade.getName(stereo) != null
@@ -586,27 +589,30 @@ public class CoreHelper {
      * @param clazz
      * @return Collection
      */
-    public Collection getRealizedInterfaces(MClassifier clazz) {
-        if (clazz == null)
+    public Collection getRealizedInterfaces(MClassifier classifier) {
+        if (classifier == null)
             return new ArrayList();
-        Iterator it = clazz.getClientDependencies().iterator();
+        Iterator it = classifier.getClientDependencies().iterator();
         List list = new ArrayList();
         MNamespace model =
             (MModel)ProjectManager.getManager().getCurrentProject().getModel();
         while (it.hasNext()) {
-            Object o = it.next();
-            if (ModelFacade.isAAbstraction(o)) {
-                Object stereo = ModelFacade.getStereoType(o);
+            Object clientDependency = it.next();
+            if (ModelFacade.isAAbstraction(clientDependency)) {
+                Object stereo = null;
+                if (ModelFacade.getStereotypes(clientDependency).size() > 0) {
+                    stereo = ModelFacade.getStereotypes(clientDependency).iterator().next();
+                }
                 if (stereo != null
-                    && ModelFacade.getBaseClass(stereo) != null
-                    && ModelFacade.getName(stereo) != null
-                    && ModelFacade.getBaseClass(stereo).equals("Abstraction")
-                    && ModelFacade.getName(stereo).equals("realize")) {
-                    Iterator it2 = ModelFacade.getSuppliers(o).iterator();
+                        && ModelFacade.getBaseClass(stereo) != null
+                        && ModelFacade.getName(stereo) != null
+                        && ModelFacade.getBaseClass(stereo).equals("Abstraction")
+                        && ModelFacade.getName(stereo).equals("realize")) {
+                    Iterator it2 = ModelFacade.getSuppliers(clientDependency).iterator();
                     while (it2.hasNext()) {
-                        Object o2 = it2.next();
-                        if (o2 instanceof MInterface) {
-                            list.add(o2);
+                        Object supplier = it2.next();
+                        if (supplier instanceof MInterface) {
+                            list.add(supplier);
                         }
                     }
                 }

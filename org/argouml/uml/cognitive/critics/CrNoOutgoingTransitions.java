@@ -32,7 +32,6 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
 
@@ -52,7 +51,7 @@ public class CrNoOutgoingTransitions extends CrUML {
 	MStateVertex sv = (MStateVertex) dm;
 	if (ModelFacade.isAState(sv)) {
 	    Object sm = ModelFacade.getStateMachine(sv);
-	    if (sm != null && ((MStateMachine)sm).getTop() == sv) return NO_PROBLEM;
+	    if (sm != null && ModelFacade.getTop(sm) == sv) return NO_PROBLEM;
 	}
 	Collection outgoing = sv.getOutgoings();
 	boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
