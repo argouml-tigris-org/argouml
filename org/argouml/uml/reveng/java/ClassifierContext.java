@@ -45,12 +45,12 @@ class ClassifierContext extends Context
        Create a new context from a classifier.
 
        @param base Based on this context.
-       @param mClassifier Represents this classifier.
+       @param classifier Represents this classifier.
     */
-    public ClassifierContext(Context base, Object mClassifier)
+    public ClassifierContext(Context base, Object classifier)
     {
 	super(base);
-	this.mClassifier = mClassifier;
+	this.mClassifier = classifier;
     }
 
     public Object getInterface(String name)
@@ -64,8 +64,8 @@ class ClassifierContext extends Context
 	}
 	else {
 	    // Continue the search through the rest of the model
-	    if (context != null) {
-		return context.getInterface(name);
+	    if (getContext() != null) {
+		return getContext().getInterface(name);
 	    }
 	    else {
 		return null;
@@ -88,8 +88,8 @@ class ClassifierContext extends Context
 	}
 	else {
 	    // Continue the search through the rest of the model
-	    if (context != null) {
-		return context.get(classifierName);
+	    if (getContext() != null) {
+		return getContext().get(classifierName);
 	    }
 	    else {
 		return null;

@@ -50,23 +50,23 @@ class OuterClassifierContext extends Context
     private String packageJavaName;
 
     /**
-	Create a new context from a classifier.
-
-	@param base Based on this context.
-	@param mClassifier The classifier.
-	@param mPackage The package the classifier belongs to.
-	@param namePrefix Inner class prefix, like "OuterClassname$"
+     Create a new context from a classifier.
+     
+     @param base Based on this context.
+     @param theClassifier The classifier.
+     @param thePackage The package the classifier belongs to.
+     @param theNamePrefix Inner class prefix, like "OuterClassname$"
     */
     public OuterClassifierContext(Context base,
-				  Object mClassifier,
-				  Object mPackage,
-				  String namePrefix)
+				  Object theClassifier,
+				  Object thePackage,
+				  String theNamePrefix)
     {
 	super(base);
-	this.mClassifier = mClassifier;
-	this.mPackage = mPackage;
-	this.namePrefix = namePrefix;
-	packageJavaName = getJavaName(mPackage);
+	this.mClassifier = theClassifier;
+	this.mPackage = thePackage;
+	this.namePrefix = theNamePrefix;
+	packageJavaName = getJavaName(thePackage);
     }
 
     public Object getInterface(String name)
@@ -131,8 +131,8 @@ class OuterClassifierContext extends Context
                 }
                 catch (Exception e1) {
                     // Continue the search through the rest of the model
-                    if (context != null) {
-                        mInterface = context.getInterface(name);
+                    if (getContext() != null) {
+                        mInterface = getContext().getInterface(name);
                     }
                 }
 	    }
@@ -214,8 +214,8 @@ class OuterClassifierContext extends Context
                 catch (Exception e1) {
                     
                     // Continue the search through the rest of the model
-                    if (context != null) {
-                        iClassifier = context.get(name);
+                    if (getContext() != null) {
+                        iClassifier = getContext().get(name);
                     }
                 }
 	    }

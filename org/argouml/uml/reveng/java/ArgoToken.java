@@ -36,10 +36,10 @@ public class ArgoToken extends CommonToken {
     /**
      * Set the whitespaces for this token.
      * 
-     * @param ws The whitespaces for the buffer.
+     * @param whiteSpaces The whitespaces for the buffer.
      */
-    public void setWhitespace( String ws) {
-	this.ws = ws;
+    public void setWhitespace( String whiteSpaces) {
+	this.ws = whiteSpaces;
     }
 
     /**

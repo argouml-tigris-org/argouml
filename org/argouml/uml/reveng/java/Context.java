@@ -42,7 +42,7 @@ import org.argouml.model.ModelFacade;
 abstract class Context
 {
     /** The succeding context. May be null. */
-    protected Context context;
+    private Context context;
 
     /**
        Create a new context.
@@ -87,6 +87,20 @@ abstract class Context
 	else {
 	    return "";
 	}
+    }
+
+    /**
+     * @param c The context to set.
+     */
+    protected void setContext(Context c) {
+        this.context = c;
+    }
+
+    /**
+     * @return Returns the context.
+     */
+    protected Context getContext() {
+        return context;
     }
 }
 
