@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: NotationProviderFactory.java
-// Classes: NotationProviderFactory
-// Original Author: Thierry Lach
-
 package org.argouml.application.notation;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 import org.apache.log4j.Logger;
@@ -44,29 +41,35 @@ import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.uml.generator.GeneratorDisplay;
 
-/** Provides a factory for handling notation providers.
+/**
+ * Provides a factory for handling notation providers.
  *
- *  @author Thierry Lach
- *  @since 0.9.4
+ * @author Thierry Lach
+ * @since 0.9.4
  */
-public class NotationProviderFactory
-    implements ArgoModuleEventListener
-{
-	/** logger */
+public final class NotationProviderFactory
+    implements ArgoModuleEventListener {
+    /** Logger. */
     private static final Logger LOG =
-		Logger.getLogger(NotationProviderFactory.class);
+        Logger.getLogger(NotationProviderFactory.class);
 
-    private static NotationProviderFactory singleton = 
+    /**
+     * The singleton representing this class.
+     */
+    private static final NotationProviderFactory SINGLETON = 
         new NotationProviderFactory();
 
     /**
      * @return the singleton
      */
-    public static NotationProviderFactory getInstance() { return singleton; }
+    public static NotationProviderFactory getInstance() { return SINGLETON; }
 
-    private ArrayList providers = new ArrayList();
-    private NotationProvider2 defaultProvider = null;
+    private List providers = new ArrayList();
+    private NotationProvider2 defaultProvider;
 
+    /**
+     * Constructor to disallow other to create this.
+     */
     private NotationProviderFactory() {
 	providers = new ArrayList();
 	ListIterator iterator =
@@ -84,11 +87,15 @@ public class NotationProviderFactory
 	ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }
 
-    /** Remove the notation change listener.
-     *  <code>finalize</code> should never happen, but play it safe.
+    /** 
+     * Remove the notation change listener.
+     * <code>finalize</code> should never happen, but play it safe.
+     *
+     * @throws Throwable if something goes wrong in the super finalize.
      */
-    public void finalize() {
+    public void finalize() throws Throwable {
 	ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+	super.finalize();
     }
 
 
@@ -97,14 +104,17 @@ public class NotationProviderFactory
      * @return the notation provider class
      */
     public NotationProvider2 getProvider(NotationName nn) {
-        NotationName n = (nn == null) ? Notation.getDefaultNotation() : nn;
+        NotationName n = nn;
+        if (nn == null) {
+            n = Notation.getDefaultNotation();
+        }
 
 	LOG.debug ("looking for " + n);
         ListIterator iterator = providers.listIterator();
         while (iterator.hasNext()) {
             NotationProvider2 np = (NotationProvider2) iterator.next();
 	    LOG.debug ("Checking " + np + ", " + np.getNotation());
-	    if (np.getNotation().equals(n)) {
+	    if (np.getNotation().sameNotationAs(n)) {
 	        LOG.debug ("found provider " + np);
 	        return np;
 	    }
@@ -115,13 +125,13 @@ public class NotationProviderFactory
     /**
      * @return the list of all providers
      */
-    public ArrayList getProviders() { return providers; }
+    public List getProviders() { return providers; }
 
     /**
      * @return the list of all notations
      */
-    public ArrayList getNotations() {
-        ArrayList nots = new ArrayList();
+    public List getNotations() {
+        List nots = new ArrayList();
         ListIterator iterator = providers.listIterator();
         while (iterator.hasNext()) {
             NotationProvider2 np = (NotationProvider2) iterator.next();
@@ -135,8 +145,7 @@ public class NotationProviderFactory
      */
     public NotationProvider2 getDefaultProvider() {
 	if (defaultProvider == null) {
-	    defaultProvider =
-		(NotationProvider2) GeneratorDisplay.getInstance();
+	    defaultProvider = GeneratorDisplay.getInstance();
 	    // TODO:  This must be the provider pointed to by the configuration,
 	    // or UML 13 if none.
 	    //
@@ -175,6 +184,12 @@ public class NotationProviderFactory
     public void moduleDisabled(ArgoModuleEvent event) {
     }
 
+    /**
+     * Send an event to the {@link ArgoEventPump}.
+     *
+     * @param eventType The event type.
+     * @param provider The source of the event.
+     */
     private void fireEvent(int eventType,  NotationProvider2 provider) {
 	ArgoEventPump.fireEvent(new ArgoNotationEvent(eventType, provider));
     }

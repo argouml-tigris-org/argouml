@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,33 +24,46 @@
 
 package org.argouml.language.ui;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.util.List;
+import java.util.ListIterator;
 
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JMenu;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.event.MenuEvent;
+import javax.swing.event.MenuListener;
+
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.NotationName;
+import org.argouml.uml.ui.UMLAction;
 
 
-/** Allows selection of a default notation.
+/**
+ * Allows selection of a default notation.
  *
- *  @author Thierry Lach
- *  @since  ARGO0.9.4
+ * @author Thierry Lach
+ * @since  ARGO0.9.4
  */
 public class ActionNotation extends UMLAction
-    implements MenuListener
-{
+    implements MenuListener {
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The instance of this action.
+     */
     private static final ActionNotation SINGLETON = new ActionNotation();
 
-    private JMenu menu = null;
+    /**
+     * The popup menu with all notations. It gets filled the first time this
+     * action is performed (see {@link #actionPerformed(ActionEvent ae)}).
+     */
+    private JMenu menu;
 
     /**
-     * @return the singleton
+     * @return The instance.
      */
     public static final ActionNotation getInstance() { return SINGLETON; }
 
@@ -69,7 +82,7 @@ public class ActionNotation extends UMLAction
      */
     public void actionPerformed(ActionEvent ae) {
         String key = ae.getActionCommand();
-        ArrayList list = Notation.getAvailableNotations();
+        List list = Notation.getAvailableNotations();
         ListIterator iterator = list.listIterator();
         while (iterator.hasNext()) {
             Object o = iterator.next();
@@ -84,7 +97,7 @@ public class ActionNotation extends UMLAction
     }
 
     /**
-     * @return the menu for the natation
+     * @return The menu for the notation.
      */
     public JMenu getMenu() { return menu; }
 
@@ -94,7 +107,7 @@ public class ActionNotation extends UMLAction
     public void menuSelected(MenuEvent me) {
         NotationName dflt = Notation.getDefaultNotation();
         menu.removeAll();
-        ArrayList list = Notation.getAvailableNotations();
+        List list = Notation.getAvailableNotations();
         ListIterator iterator = list.listIterator();
         ButtonGroup b = new ButtonGroup();
         while (iterator.hasNext()) {
@@ -108,7 +121,7 @@ public class ActionNotation extends UMLAction
                 }
                 mi.addActionListener(this);
                 b.add(mi);
-                mi.setSelected(dflt.equals(nn));
+                mi.setSelected(dflt.sameNotationAs(nn));
                 menu.add(mi);
             }
         }
