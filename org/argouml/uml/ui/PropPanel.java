@@ -143,15 +143,14 @@ public abstract class PropPanel
         setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
 
         if (icon != null) {
-            _titleLabel =
-		new JLabel(localize(title), icon, SwingConstants.LEFT);
+            setTitleLabel(new JLabel(localize(title), icon, SwingConstants.LEFT));
         }
         else {
-            _titleLabel = new JLabel(localize(title));
+            setTitleLabel(new JLabel(localize(title)));
         }
         //buttonPanel = new JPanel(new SerialLayout());
-        _titleLabel.setLabelFor(buttonPanel);
-        add(_titleLabel);
+        getTitleLabel().setLabelFor(buttonPanel);
+        add(getTitleLabel());
         add(buttonPanel);
     }
 
@@ -346,11 +345,11 @@ public abstract class PropPanel
         SwingUtilities.invokeLater(dispatch);
 
         // update the titleLabel
-        if (_titleLabel != null) {
+        if (getTitleLabel() != null) {
             Icon icon =
 		ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(t);
             if (icon != null)
-                _titleLabel.setIcon(icon);
+                getTitleLabel().setIcon(icon);
         }
     }
 
@@ -851,5 +850,13 @@ public abstract class PropPanel
         component.setBackground(getBackground());
         component.setForeground(Color.blue);
         addField(component, row, panel, weighty);
+    }
+
+    protected void setTitleLabel(JLabel _titleLabel) {
+        this._titleLabel = _titleLabel;
+    }
+
+    protected JLabel getTitleLabel() {
+        return _titleLabel;
     }
 } /* end class PropPanel */
