@@ -46,28 +46,6 @@ import org.argouml.uml.cognitive.critics.*;
 public class CrConsiderSingleton extends CrUML {
 
   public CrConsiderSingleton() {
-    setHeadline("Consider using Singleton Pattern");
-    sd("This class has no attributes or associations that are "+
-       "navigable away from instances of this class.  This means that every "+
-       "instance of this class will be equal() to every other instance, "+
-       "since there will be no instance variables to differentiate them. "+
-       "If this not your intent, you should define some attributes or "+
-       "associations that will represent differences bewteen instances. "+
-       "If there are no attributes or associations that differentiate "+
-       "instances, the you shoudld consider having exatly one instance "+
-       "of this class, as in the Singleton Pattern.\n"+
-       "\n"+
-       "Defining the multiplicity of instances is needed to complete the "+
-       "information representation part of your design.  Using the Singleton "+
-       "Pattern can save time and memory space.\n"+
-       "\n"+
-       "To automatically apply the Singleton Pattern, press the \"Next>\" button; "+
-       "or manually (1) mark the class with the Singlton stereotype, (2) add "+
-       "a static variable that holds one instance of this class, (3) and "+
-       "make all constructors private.\n"+
-       "\n"+
-       "To learn more about the Singleton Pattern, press the MoreInfo icon.");
-
     addSupportedDecision(CrUML.decPATTERNS);
     setPriority(ToDoItem.LOW_PRIORITY);
     addTrigger("stereotype");
@@ -105,15 +83,17 @@ public class CrConsiderSingleton extends CrUML {
         while (endEnum.hasNext()) {
 	    MAssociationEnd ae = (MAssociationEnd) endEnum.next();
 	    MAssociation a = ae.getAssociation();
-            Collection connections = a.getConnections();
-            if(connections != null) {
-                Iterator iter = connections.iterator();
-                Object end = null;
-                while(iter.hasNext()) {
-                    end = iter.next();
-                    if(end == ae) continue;
-                    if(((MAssociationEnd) end).isNavigable()) return NO_PROBLEM;
-                }
+            if(a != null) {
+              Collection connections = a.getConnections();
+              if(connections != null) {
+                  Iterator iter = connections.iterator();
+                  Object end = null;
+                  while(iter.hasNext()) {
+                      end = iter.next();
+                      if(end == ae) continue;
+                      if(((MAssociationEnd) end).isNavigable()) return NO_PROBLEM;
+                  }
+              }
             }
         }
     }

@@ -119,13 +119,13 @@ public class Agency extends Observable { //implements java.io.Serialization
     else {
       Vector subs = ((CompoundCritic)cr).getCritics();
       Enumeration enum = subs.elements();
-      while (enum.hasMoreElements()) 
+      while (enum.hasMoreElements())
 	addCritic((Critic) enum.nextElement());
       return;
     }
   }
 
-  
+
   public static void register(String crClassName, String dmClassName) {
     Class dmClass;
     try { dmClass = Class.forName(dmClassName); }
@@ -216,10 +216,10 @@ public class Agency extends Observable { //implements java.io.Serialization
   // criticism control
 
   /** Apply all critics that can be applied to the given
-   * design material instance as appropriate for the given 
+   * design material instance as appropriate for the given
    * Designer. <p>
    *
-   * I would call this critique, but it causes a compilation error 
+   * I would call this critique, but it causes a compilation error
    * because it conflicts with the instance method critique! */
   public static void applyAllCritics(Object dm, Designer d, long reasonCode) {
     //System.out.println("applyAllCritics for reason:" + dm);
@@ -237,7 +237,7 @@ public class Agency extends Observable { //implements java.io.Serialization
     //System.out.println("critics=" + critics);
     applyCritics(dm, d, critics, -1L);
   }
-  
+
   public static void applyCritics(Object dm, Designer d, Vector
 				  critics, long reasonCode) {
     int size = critics.size();
@@ -256,11 +256,16 @@ public class Agency extends Observable { //implements java.io.Serialization
 	  c.critique(dm, d);
 	}
 	catch (Exception ex) {
-	  System.out.println("Exception raised in critique");
+	  System.out.println("Disabling critique due to exception");
 	  System.out.println(c.toString());
 	  System.out.println(dm.toString());
 	  ex.printStackTrace();
 	  System.out.println("----------");
+          //
+          //   if the critic is going to throw exceptions,
+          //       disable it
+          //
+          c.setEnabled(false);
 	}
       }
     }
@@ -313,7 +318,7 @@ public class Agency extends Observable { //implements java.io.Serialization
 
 //   /** Needs-More-Work */
 //   public static void fireTriggers() {
-//     while (getTriggers().size() > 0) 
+//     while (getTriggers().size() > 0)
 //       fireTrigger((Trigger)(getTriggers().firstElement()));
 //   }
 
