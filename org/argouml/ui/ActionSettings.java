@@ -103,6 +103,10 @@ implements ArgoModuleEventListener {
                     tabs = new JTabbedPane();
 
                     buttonApply = new JButton(localize("button.apply"));
+                    String mnemonic = localize("button.apply.mnemonic");
+                    if (mnemonic != null && mnemonic.length() > 0) {
+                        buttonApply.setMnemonic(mnemonic.charAt(0));
+                    }
                     buttonApply.addActionListener(new ActionListener() {
                         public void actionPerformed(ActionEvent e) {
                             handleSave();
