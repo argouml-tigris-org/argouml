@@ -63,36 +63,52 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAAttribute(dm))) return NO_PROBLEM;
-	Object attr = /*(MAttribute)*/ dm;
-	String myName = ModelFacade.getName(attr);
-	if (myName == null || myName.equals("")) return NO_PROBLEM;
-	String nameStr = myName;
-	if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
-	// remove trailing underscores, if
-	// remaining string is of zero length obviously this is a problem.
-	while (nameStr.startsWith("_")) nameStr = nameStr.substring(1);
-	if (nameStr.length() == 0) return PROBLEM_FOUND;
+	if (!ModelFacade.isAAttribute(dm)) {
+	    return NO_PROBLEM;
+	}
 
-	// check for all uppercase and/or mixed with underspores
-	char initalChar = nameStr.charAt(0);
+	Object attr = /*(MAttribute)*/ dm;
+	String nameStr = ModelFacade.getName(attr);
+	if (nameStr == null || nameStr.equals("")) {
+	    return NO_PROBLEM;
+	}
+
+	int pos = 0;
+	int length = nameStr.length();
+
+	for (; pos < length && nameStr.charAt(pos) == '_'; pos++) {
+	}
+
+	// If the name is only underscores
+	if (pos >= length) {
+	    return PROBLEM_FOUND;
+	}
+
+	// check for all uppercase and/or mixed with underscores
+	char initalChar = nameStr.charAt(pos);
 	boolean allCapitals = true;
-	for (int i = 0; i < nameStr.length() && allCapitals; i++) {
-	    if (!(Character.isUpperCase(nameStr.charAt(i)) 
-                || nameStr.charAt(i) == '_')) {
+	for (; pos < length; pos++) {
+	    if (!Character.isUpperCase(nameStr.charAt(pos))
+		&& nameStr.charAt(pos) != '_') {
 		allCapitals = false;
-		continue;
+		break;
 	    }
 	}
-	if (allCapitals) return NO_PROBLEM;
+	if (allCapitals) {
+	    return NO_PROBLEM;
+	}
 
 	// check whether constant, constants are often weird and thus not a
 	// problem
 	Object/*MChangeableKind*/ ck = ModelFacade.getChangeability(attr);
-        if (ModelFacade.isFrozen(ck)) return NO_PROBLEM;
+	if (ModelFacade.isFrozen(ck)) {
+	    return NO_PROBLEM;
+	}
+
 	if (!Character.isLowerCase(initalChar)) {
 	    return PROBLEM_FOUND;
 	}
+
 	return NO_PROBLEM;
     }
 
@@ -121,15 +137,34 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
      */
     public String computeSuggestion(String name) {
-        String sug = name;
-        if (sug == null) return "";
-        // next if is not very nice, improve this suggestion and related test.
-        if ("_".equals(sug)) return "_";
-        if (sug.startsWith("_"))
-            sug = "_" + sug.substring(1, 2).toLowerCase() + sug.substring(2);
-        else
-            sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
-        return sug;
+	String sug;
+	int nu;
+
+	if (name == null) {
+	    return "attr";
+	}
+
+	for (nu = 0; nu < name.length(); nu++) {
+	    if (name.charAt(nu) != '_') {
+		break;
+	    }
+	}
+
+	if (nu > 0) {
+	    sug = name.substring(0, nu);
+	} else {
+	    sug = "";
+	}
+
+	if (nu < name.length()) {
+	    sug += Character.toLowerCase(name.charAt(nu));
+	}
+
+	if (nu + 1 < name.length()) {
+	    sug += name.substring(nu + 1);
+	}
+
+	return sug;
     }
     /**
      * @see org.argouml.cognitive.Poster#getClarifier()
