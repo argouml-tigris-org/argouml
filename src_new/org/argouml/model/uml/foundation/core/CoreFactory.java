@@ -1276,6 +1276,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
 	/**
 	 * Adds a parameter initialized to default values to a given event
+         * or behevioral feature
 	 * @param oper
 	 * @return MParameter
 	 */
@@ -1287,6 +1288,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
 			res.setNamespace(event.getNamespace());
 			event.addParameter(res);
 			return res;
+                } else if (o instanceof MBehavioralFeature) {
+                        return buildParameter((MBehavioralFeature)o);
 		} else
 			return null;
 	}
