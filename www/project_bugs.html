@@ -1,41 +1,130 @@
-<TABLE BORDER="0" CELLPADDING="2" WIDTH="98%" BGCOLOR="white">
+<!-- $Id$ -->
+<!-- This is a page describing how to report bugs with quick links. -->
+<!-- Keep in sync with src_new/org/argouml/resource/bugreport.about. -->
 
-<TR>
-<TD WIDTH="100%" BGCOLOR="#CCCC99"><STRONG><font color="#000033"
-FACE="Arial, Helvetica, sans-serif">
-Project ArgoUML Bug Tracking
-</font></STRONG></TD>
-</TR>
+<div id="bodycol">
+<div id="apphead">
+<h2>How to report bugs or register enhancements</h2>
+</div>
 
+<div id="projectissues" class="app">
 
-<TR>
-<TD WIDTH="100%" HEIGHT="100" BGCOLOR="#f0f0f0">
+<h3>Project: <a href="http://argouml.tigris.org/servlets/ProjectHome">ArgoUML</a></h3>
 
-<P>ArgoUML has many reported bugs, but most of them have not been
-entered into this tracking system yet.</p>
+<div class="axial">
+<table border="0" cellspacing="2" cellpadding="3">
+  <tr>
+    <th>Search database</th>
+    <td>
+      <form method="get" action="http://argouml.tigris.org/issues/query.cgi">
+      <input type="submit" value="Query"/>
+      Search for issues and defects here. 
+      Don't forget to vote on those you find most important.
+      </form>
+    </td>
+  </tr>
+  <tr>
+    <th>Jump to issue</th>
+    <td>
+      <form method="get" action="http://argouml.tigris.org/issues/show_bug.cgi">
+      <input type="submit" value="Find" /> 
+      issue # <input name="id" size="6" />
+      Find a specific issue.
+      </form>
+    </td>
+  </tr>  
 
-      <UL>
+  <tr>
+    <th nowrap="nowrap">Enter an issue</th>
+    <td>
+To enter an issue, you must be a registered and logged in member
+on Tigris.
+To follow up issues it is required that you apply for an Observer role in
+the ArgoUML and get it granted.
+(<a href="http://www.tigris.org/servlets/Join">Register</a>, 
+<a href="http://www.tigris.org/servlets/TLogin">Log in</a>, and
+<a href="http://argouml.tigris.org/servlets/ProjectMembershipRequest">
+  Apply for Observer role
+</a>.)
 
-        <LI><A href="/bugs/enter_bug.cgi?product=argouml">Enter a new bug</A> 
+<p>
+Enter: 
+      <ul>
+      <li><a href="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=DEFECT&component=argouml">Report a bug in ArgoUML</a>.
+        <p>
+      Here is a step by step instruction on what to do:
+        <ol>
+         <li>Search for the problem among the problems in the database.
+         <li>If found, add yourself as CC to the Issue and vote for it.
+         You can then monitor its progress. You are done.
+         <li>If your problem is not found or some of your peculiarities
+         or details is not included in the description, go on.
+         <li>Enter a new issue or add information to an already existing issue.
+         Be sure to include 
+           what version of ArgoUML you are running, 
+           what version of jdk,
+           all the steps that lead up to this,
+           what happens,
+           what you expected to happen, and
+           what the problem is.
+         <li>If the problem is repeatable, rerun with debug logging enabled
+         (<tt>java -Dlog4j.configuration=org/argouml/resource/full.lcf -jar argouml.jar</tt>)
+         and add the log file <tt>argo_full.log</tt> from your home
+         directory to the issue.
+         <li>Add extra information that might be relevant for the issue 
+         as attachments.
+         These could be 
+           screen shots,
+           your project file,
+           log files...
+         <li>You will get updates via mail when someone comments or does
+         something with your issue.
+         <li>When it is resolved and verified, close the issue after you have 
+         accepted the solution.
+       <ol>
+      </li>
+      <li><a href="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=ENHANCEMENT&component=argouml">Suggest an enhancement of ArgoUML</a>
+      <p>
+      This is if you have suggestion on more things that you think ArgoUML
+      should do for you that it currently does not do.
+      Consider it our common wish list.
+      </li>
+      <li><a href="http://argouml.tigris.org/issues/enter_bug.cgi?issue_type=DEFECT&component=website">Report a bug on the web site</a>
+      <p>
+      This is when you find errors among the things present on the web site.
+      </li>
+      </ul>
+    </td>
+  </tr>  
 
-        <LI><A href="/bugs/query.cgi?product=argouml&bug_status=NEW&bug_status=ASSIGNED&bug_status=REOPENED">Query the bug database</A> 
+ 
 
-        <LI><A href="/bugs/reports.cgi?product=argouml&output=most_doomed&links=1&banner=1">View bug database metrics</A> </LI></UL>
+ <tr>
+   <th>More about Issuezilla</th>
+   <td>
+      <form method="get" action="http://argouml.tigris.org/servlets/ProjectIssues">
+      <input type="submit" value="Advanced"/>
+      If you need to do other things with Issuezilla.
+      </form>
+   </td>
+ </tr>
+</table>
+</div>
+</div>
 
+<h3>Why you should do this</h3>
+By reporting bugs you are contributing to the ArgoUML project and
+your help will lead to making ArgoUML a better product.
+<p>
+By voting you are showing your interest and help the active developers
+get a good idea of what is important and what is not.
+<p>
+By suggesting enhancements you are in fact helping with ideas for some
+future version of ArgoUML.
+<p>
+If you want to contribute even more to the project
+you should start with verifying, and resolving bugs.
+For details read through the <a href="/dev.html">Developer Zone</a> and
+especially the <a href="/documentation/defaulthtml/cookbook/">Cookbook</a>.
 
-<BR>
-</TD>
-</TR>
-</TABLE>
-<BR>
-<BR>
-<BR>
-<BR>
-<BR>
-<BR>
-<BR>
-<BR>
-<BR>
-<BR>
-
-<BR>
+</div>
