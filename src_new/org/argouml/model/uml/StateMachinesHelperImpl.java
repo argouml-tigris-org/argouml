@@ -29,7 +29,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.StateMachinesHelper;
 
@@ -53,9 +52,17 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 class StateMachinesHelperImpl implements StateMachinesHelper {
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    StateMachinesHelperImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    StateMachinesHelperImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -179,7 +186,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
     public Collection getAllPossibleStatemachines(Object oSubmachineState) {
         if (oSubmachineState instanceof MSubmachineState) {
             Collection statemachines =
-		Model.getModelManagementHelper()
+		nsmodel.getModelManagementHelper()
 		    .getAllModelElementsOfKind(MStateMachine.class);
             statemachines.remove(getStateMachine(oSubmachineState));
             return statemachines;

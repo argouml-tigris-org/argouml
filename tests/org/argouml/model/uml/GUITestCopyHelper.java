@@ -55,10 +55,16 @@ import ru.novosoft.uml.model_management.MPackage;
  */
 public class GUITestCopyHelper extends TestCase {
     /**
+     * The model implementation.
+     */
+    private NSUMLModelImplementation nsmodel;
+
+    /**
      * @see junit.framework.TestCase#TestCase(String)
      */
     public GUITestCopyHelper(String name) {
 	super(name);
+	nsmodel = new NSUMLModelImplementation();
     }
 
     /**
@@ -67,7 +73,7 @@ public class GUITestCopyHelper extends TestCase {
     public void testCopyClass() {
 	MModel m1 = Model.getModelManagementFactory().createModel();
 	MModel m2 = Model.getModelManagementFactory().createModel();
-	CopyHelper helper = CopyHelper.getHelper();
+	CopyHelper helper = nsmodel.getCopyHelper();
 
 	Object o;
 	MClass c;
@@ -130,7 +136,7 @@ public class GUITestCopyHelper extends TestCase {
     public void testCopyDataType() {
 	MModel m1 = Model.getModelManagementFactory().createModel();
 	MModel m2 = Model.getModelManagementFactory().createModel();
-	CopyHelper helper = CopyHelper.getHelper();
+	CopyHelper helper = nsmodel.getCopyHelper();
 
 	Object o;
 	MDataType c;
@@ -190,7 +196,7 @@ public class GUITestCopyHelper extends TestCase {
     public void testCopyInterface() {
 	MModel m1 = Model.getModelManagementFactory().createModel();
 	MModel m2 = Model.getModelManagementFactory().createModel();
-	CopyHelper helper = CopyHelper.getHelper();
+	CopyHelper helper = nsmodel.getCopyHelper();
 
 	Object o;
 	MInterface c;
@@ -250,7 +256,7 @@ public class GUITestCopyHelper extends TestCase {
     public void testCopyPackage() {
 	MModel m1 = Model.getModelManagementFactory().createModel();
 	MModel m2 = Model.getModelManagementFactory().createModel();
-	CopyHelper helper = CopyHelper.getHelper();
+	CopyHelper helper = nsmodel.getCopyHelper();
 
 	Object o;
 	MPackage c;
@@ -310,7 +316,7 @@ public class GUITestCopyHelper extends TestCase {
     public void testCopyStereotype() {
 	MModel m1 = Model.getModelManagementFactory().createModel();
 	MModel m2 = Model.getModelManagementFactory().createModel();
-	CopyHelper helper = CopyHelper.getHelper();
+	CopyHelper helper = nsmodel.getCopyHelper();
 
 	Object o;
 	MStereotype c;

@@ -40,9 +40,17 @@ import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    CommonBehaviorHelperImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    CommonBehaviorHelperImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**

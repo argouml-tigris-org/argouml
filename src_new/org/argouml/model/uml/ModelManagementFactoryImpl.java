@@ -24,7 +24,6 @@
 
 package org.argouml.model.uml;
 
-import org.argouml.model.Model;
 import org.argouml.model.ModelManagementFactory;
 
 import ru.novosoft.uml.MFactory;
@@ -48,9 +47,17 @@ public class ModelManagementFactoryImpl
 	implements ModelManagementFactory {
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    ModelManagementFactoryImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    ModelManagementFactoryImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -160,7 +167,7 @@ public class ModelManagementFactoryImpl
      * @param target The target package.
      */
     private void doCopyPackage(MPackage source, MPackage target) {
-	Model.getCoreFactory().doCopyNamespace(source, target);
+	nsmodel.getCoreFactory().doCopyNamespace(source, target);
     }
 }
 

@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.ExtensionMechanismsHelper;
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -49,9 +48,17 @@ import ru.novosoft.uml.model_management.MModel;
 class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    ExtensionMechanismsHelperImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    ExtensionMechanismsHelperImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -301,7 +308,7 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
     public void setStereoType(Object modelElement, Object stereotype) {
 	if (stereotype != null) {
 	    stereotype =
-		Model.getModelManagementHelper().getCorrespondingElement(
+		nsmodel.getModelManagementHelper().getCorrespondingElement(
 			stereotype,
 			ModelFacade.getModel(modelElement),
 			true);
@@ -352,7 +359,7 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
 	if (isStereotype(object, name, base)) {
 	    return true;
 	}
-	Iterator it = Model.getCoreHelper().getSupertypes(object).iterator();
+	Iterator it = nsmodel.getCoreHelper().getSupertypes(object).iterator();
 	while (it.hasNext()) {
 	    if (isStereotypeInh(it.next(), name, base)) {
 	        return true;

@@ -35,7 +35,6 @@ import java.util.Set;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
 import org.argouml.model.CoreFactory;
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
@@ -103,9 +102,17 @@ public class CoreFactoryImpl
 	implements CoreFactory {
 
     /**
-     * Don't allow instantiation.
+     * The model implementation.
      */
-    CoreFactoryImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    CoreFactoryImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -469,9 +476,10 @@ public class CoreFactoryImpl
 					       + "belong to a namespace");
         }
         MAssociation assoc =
-            (MAssociation) Model.getUmlFactory().getCore().createAssociation();
+            (MAssociation)
+            	nsmodel.getUmlFactory().getCore().createAssociation();
         assoc.setName("");
-        assoc.setNamespace(Model.getCoreHelper().getFirstSharedNamespace(ns1,
+        assoc.setNamespace(nsmodel.getCoreHelper().getFirstSharedNamespace(ns1,
         								  ns2));
         buildAssociationEnd(
 			    assoc,
@@ -535,10 +543,11 @@ public class CoreFactoryImpl
         				       + "belong to a namespace");
         }
         MAssociation assoc =
-            (MAssociation) Model.getUmlFactory().getCore().createAssociation();
+            (MAssociation)
+            	nsmodel.getUmlFactory().getCore().createAssociation();
         assoc.setName("");
         assoc.setNamespace(
-        		   Model.getCoreHelper().getFirstSharedNamespace(ns1,
+        		   nsmodel.getCoreHelper().getFirstSharedNamespace(ns1,
         								  ns2));
 
         boolean nav1 = true;
@@ -653,6 +662,7 @@ public class CoreFactoryImpl
     /**
      * Builds a fully configurable association end. All variables for
      * an associationend can be given as parameter.
+     *
      * @param assoc The associaton this end will be part of
      * @param name The name of the association end
      * @param type The type (classifier) the end will connect. The end
@@ -748,7 +758,7 @@ public class CoreFactoryImpl
 
         MAssociationEnd end =
             (MAssociationEnd)
-            	Model.getUmlFactory().getCore().createAssociationEnd();
+            	nsmodel.getUmlFactory().getCore().createAssociationEnd();
         end.setAssociation((MAssociation) assoc);
         end.setType((MClassifier) type);
         end.setName(name);
@@ -901,8 +911,8 @@ public class CoreFactoryImpl
     /**
      * Builds a default attribute.
      *
-     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object, 
-     * java.lang.Object)
+     * @see org.argouml.model.CoreFactory#buildAttribute(java.lang.Object,
+     *         java.lang.Object)
      */
     public Object buildAttribute(Object model, Object theIntType) {
         //build the default attribute
@@ -912,7 +922,7 @@ public class CoreFactoryImpl
 //        Project p = ProjectManager.getManager().getCurrentProject();
 //        MClassifier intType = (MClassifier) p.findType("int");
         if (model != intType.getNamespace()
-                && !(Model.getModelManagementHelper()
+                && !(nsmodel.getModelManagementHelper()
                     .getAllNamespaces(model)
         	        .contains(intType.getNamespace()))) {
             intType.setNamespace((MModel) model);
@@ -920,7 +930,7 @@ public class CoreFactoryImpl
         MAttribute attr = (MAttribute) createAttribute();
         attr.setName("newAttr");
         attr.setMultiplicity(
-            Model.getUmlFactory().getDataTypes().createMultiplicity(1, 1));
+            nsmodel.getUmlFactory().getDataTypes().createMultiplicity(1, 1));
         attr.setStereotype(null);
         attr.setOwner(null);
         attr.setType(intType);
@@ -958,8 +968,8 @@ public class CoreFactoryImpl
         while (it.hasNext()) {
             PropertyChangeListener listener =
                 (PropertyChangeListener) it.next();
-            // Model.getPump().removeModelEventListener(listener, attr);
-            Model.getPump().addModelEventListener(listener, attr);
+            // nsmodel.getPump().removeModelEventListener(listener, attr);
+            nsmodel.getModelEventPump().addModelEventListener(listener, attr);
         }
         return attr;
     }
@@ -1168,7 +1178,7 @@ public class CoreFactoryImpl
 	} else if (client.getNamespace() != null) {
 	    per.setNamespace(client.getNamespace());
 	}
-	Model.getExtensionMechanismsFactory()
+	nsmodel.getExtensionMechanismsFactory()
 	    .buildStereotype(per, "import", per.getNamespace());
 	return per;
     }
@@ -1280,7 +1290,7 @@ public class CoreFactoryImpl
 	    }
 	}
 	if (notation != null && notation.getName() != null) {
-	    method.setBody(Model.getUmlFactory().getDataTypes()
+	    method.setBody(nsmodel.getUmlFactory().getDataTypes()
 		.createProcedureExpression(notation.getName(), body));
 	}
 	return method;
@@ -1348,7 +1358,7 @@ public class CoreFactoryImpl
                 (PropertyChangeListener) it.next();
             // UmlModelEventPump.getPump().removeModelEventListener(listener,
             // oper);
-            Model.getPump().addModelEventListener(listener, oper);
+            nsmodel.getModelEventPump().addModelEventListener(listener, oper);
         }
         return oper;
     }
@@ -1365,8 +1375,8 @@ public class CoreFactoryImpl
      */
     public Object buildOperation(Object cls, Object model, Object voidType,
             String name, Collection propertyChangeListeners) {
-        Object oper = buildOperation(cls, model, voidType,
-                propertyChangeListeners);
+        Object oper =
+            buildOperation(cls, model, voidType, propertyChangeListeners);
         if (oper != null) {
             ((MOperation) oper).setName(name);
         }
@@ -1384,7 +1394,8 @@ public class CoreFactoryImpl
         if (voidType.getModel() != model) {
             voidType.setNamespace(model);
         }
-        MParameter res = (MParameter) Model.getUmlFactory().getCore().createParameter();
+        MParameter res =
+            (MParameter) nsmodel.getUmlFactory().getCore().createParameter();
         res.setName("");
         res.setStereotype(null);
         res.setType(voidType);
@@ -1408,8 +1419,9 @@ public class CoreFactoryImpl
             Collection propertyChangeListeners) {
         if (o instanceof MEvent) {
             MEvent event = (MEvent) o;
-            MParameter res = (MParameter) buildParameter((MModel) model,
-                    (MClassifier) voidType);
+            MParameter res =
+                (MParameter) buildParameter((MModel) model,
+                        (MClassifier) voidType);
             res.setKind(MParameterDirectionKind.IN);
             //    removing this next line solves issue 2209
             //res.setNamespace(event.getNamespace());
@@ -1421,8 +1433,9 @@ public class CoreFactoryImpl
                 throw new IllegalArgumentException(
                         "operation is null or does not have an owner");
             }
-            MParameter res = (MParameter) buildParameter((MModel) model,
-                    (MClassifier) voidType);
+            MParameter res =
+                (MParameter) buildParameter((MModel) model,
+                        (MClassifier) voidType);
             String name = "arg";
             int counter = 1;
 
@@ -1443,8 +1456,10 @@ public class CoreFactoryImpl
             while (it.hasNext()) {
                 PropertyChangeListener listener =
                     (PropertyChangeListener) it.next();
-                // Model.getPump().removeModelEventListener(listener, res);
-                Model.getPump().addModelEventListener(listener, res);
+                // nsmodel.getModelEventPump()
+                //	.removeModelEventListener(listener, res);
+                nsmodel.getModelEventPump()
+                	.addModelEventListener(listener, res);
             }
             return res;
         } else {
@@ -1475,7 +1490,7 @@ public class CoreFactoryImpl
 	    throw new IllegalArgumentException("faulty arguments.");
 	}
 	Object realization =
-	    Model.getUmlFactory().getCore().createAbstraction();
+	    nsmodel.getUmlFactory().getCore().createAbstraction();
 	MNamespace nsc = client.getNamespace();
 	MNamespace nss = supplier.getNamespace();
 	MNamespace ns = null;
@@ -1484,7 +1499,7 @@ public class CoreFactoryImpl
 	} else {
 	    ns = (MModel) model;
 	}
-	Model.getExtensionMechanismsFactory().buildStereotype(realization,
+	nsmodel.getExtensionMechanismsFactory().buildStereotype(realization,
 								"realize", ns);
 	ModelFacade.addClientDependency(client, realization);
 	ModelFacade.addSupplierDependency(supplier, realization);
@@ -1518,7 +1533,7 @@ public class CoreFactoryImpl
 					       + "must be part of the same "
 					       + "model.");
 	}
-	MUsage usage = (MUsage) Model.getUmlFactory().getCore().createUsage();
+	MUsage usage = (MUsage) nsmodel.getUmlFactory().getCore().createUsage();
 	usage.addSupplier((MModelElement) supplier);
 	usage.addClient((MModelElement) client);
 	if (((MModelElement) supplier).getNamespace() != null) {
@@ -1669,7 +1684,7 @@ public class CoreFactoryImpl
 	if (assoc != null
 	    && assoc.getConnections() != null
 	    && assoc.getConnections().size() == 2) { // binary association
-	    Model.getUmlFactory().delete(assoc);
+	    nsmodel.getUmlFactory().delete(assoc);
 	}
     }
 
@@ -1732,7 +1747,7 @@ public class CoreFactoryImpl
 	    Collection col = ((MClassifier) elem).getAssociationEnds();
 	    Iterator it = col.iterator();
 	    while (it.hasNext()) {
-		Model.getUmlFactory().delete(it.next());
+		nsmodel.getUmlFactory().delete(it.next());
 	    }
 	}
     }
@@ -1835,13 +1850,15 @@ public class CoreFactoryImpl
             throw new IllegalArgumentException();
         }
 
-	Iterator it = ((MGeneralizableElement) elem).getGeneralizations().iterator();
+	MGeneralizableElement generalizableElement =
+	    (MGeneralizableElement) elem;
+	Iterator it = generalizableElement.getGeneralizations().iterator();
 	while (it.hasNext()) {
-	    Model.getUmlFactory().delete(it.next());
+	    nsmodel.getUmlFactory().delete(it.next());
 	}
-	it = ((MGeneralizableElement) elem).getSpecializations().iterator();
+	it = generalizableElement.getSpecializations().iterator();
 	while (it.hasNext()) {
-	    Model.getUmlFactory().delete(it.next());
+	    nsmodel.getUmlFactory().delete(it.next());
 	}
     }
 
@@ -1895,8 +1912,10 @@ public class CoreFactoryImpl
             throw new IllegalArgumentException();
         }
 
-	Collection supplierDep = ((MModelElement) elem).getSupplierDependencies();
-	Collection clientDep = ((MModelElement) elem).getClientDependencies();
+	Collection supplierDep =
+	    ((MModelElement) elem).getSupplierDependencies();
+	Collection clientDep =
+	    ((MModelElement) elem).getClientDependencies();
 	Set deps = new HashSet();
 	deps.addAll(supplierDep);
 	deps.addAll(clientDep);
@@ -1906,7 +1925,7 @@ public class CoreFactoryImpl
 	    Collection clients = dep.getClients();
 	    Collection suppliers = dep.getSuppliers();
 	    if ((clients.size() + suppliers.size()) == 2) {
-		Model.getUmlFactory().delete(dep);
+		nsmodel.getUmlFactory().delete(dep);
 	    }
 	}
 
@@ -1914,7 +1933,7 @@ public class CoreFactoryImpl
         while (it.hasNext()) {
             MComment comment = (MComment) it.next();
             if (comment.getAnnotatedElements().size() == 1) {
-                Model.getUmlFactory().delete(comment);
+                nsmodel.getUmlFactory().delete(comment);
             }
         }
 
@@ -1922,7 +1941,7 @@ public class CoreFactoryImpl
         ownedBehaviors.addAll(((MModelElement) elem).getBehaviors());
         it = ownedBehaviors.iterator();
         while (it.hasNext()) {
-            Model.getUmlFactory().delete(it.next());
+            nsmodel.getUmlFactory().delete(it.next());
         }
     }
 
@@ -1940,7 +1959,7 @@ public class CoreFactoryImpl
 	ownedElements.addAll(((MNamespace) elem).getOwnedElements());
 	Iterator it = ownedElements.iterator();
 	while (it.hasNext()) {
-	    Model.getUmlFactory().delete(it.next());
+	    nsmodel.getUmlFactory().delete(it.next());
 	}
     }
 
@@ -2190,9 +2209,11 @@ public class CoreFactoryImpl
 
 	doCopyModelElement(source, target);
 
-	((MGeneralizableElement) target).setAbstract(((MGeneralizableElement) source).isAbstract());
-	((MGeneralizableElement) target).setLeaf(((MGeneralizableElement) source).isLeaf());
-	((MGeneralizableElement) target).setRoot(((MGeneralizableElement) source).isRoot());
+	MGeneralizableElement targetGE = ((MGeneralizableElement) target);
+	MGeneralizableElement sourceGE = ((MGeneralizableElement) source);
+	targetGE.setAbstract(sourceGE.isAbstract());
+	targetGE.setLeaf(sourceGE.isLeaf());
+	targetGE.setRoot(sourceGE.isRoot());
     }
 
     /**
@@ -2234,24 +2255,26 @@ public class CoreFactoryImpl
 
 	// Set the name so that superclasses can find the newly
 	// created element in the model, if necessary.
-	((MModelElement) target).setName(((MModelElement) source).getName());
+	MModelElement targetME = ((MModelElement) target);
+	MModelElement sourceME = ((MModelElement) source);
+	targetME.setName(sourceME.getName());
 	doCopyElement(source, target);
 
-	((MModelElement) target).setSpecification(((MModelElement) source).isSpecification());
-	((MModelElement) target).setVisibility(((MModelElement) source).getVisibility());
-	Model.getDataTypesHelper().copyTaggedValues(source, target);
+	targetME.setSpecification(sourceME.isSpecification());
+	targetME.setVisibility(sourceME.getVisibility());
+	nsmodel.getDataTypesHelper().copyTaggedValues(source, target);
 
-	if (((MModelElement) source).getStereotype() != null) {
+	if (sourceME.getStereotype() != null) {
 	    // Note that if we're copying this element then we
 	    // must also be allowed to copy other necessary
 	    // objects.
 	    MStereotype st =
-	        (MStereotype) Model.getModelManagementHelper()
+	        (MStereotype) nsmodel.getModelManagementHelper()
 		    .getCorrespondingElement(
-		            ((MModelElement) source).getStereotype(),
-		            ((MModelElement) target).getModel(),
+		            sourceME.getStereotype(),
+		            targetME.getModel(),
 		            true);
-	    ((MModelElement) target).setStereotype(st);
+	    targetME.setStereotype(st);
 	}
     }
 

@@ -37,7 +37,6 @@ import org.argouml.model.CommonBehaviorHelper;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.DataTypesHelper;
 import org.argouml.model.ExtensionMechanismsHelper;
-import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.ModelManagementHelper;
 import org.argouml.model.StateMachinesHelper;
@@ -62,9 +61,17 @@ class UmlHelperImpl implements UmlHelper {
     private static final Logger LOG = Logger.getLogger(UmlHelperImpl.class);
 
     /**
-     * TODO: Don't allow instantiation.
+     * The model implementation.
      */
-    public UmlHelperImpl() {
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * Don't allow instantiation.
+     *
+     * @param implementation To get other helpers and factories.
+     */
+    UmlHelperImpl(NSUMLModelImplementation implementation) {
+        nsmodel = implementation;
     }
 
     /**
@@ -93,7 +100,7 @@ class UmlHelperImpl implements UmlHelper {
         }
 
         // TODO: Decide how to handle this. The casting is not so beautiful.
-	((UmlFactoryImpl) Model.getUmlFactory())
+	((UmlFactoryImpl) nsmodel.getUmlFactory())
 		.addListenersToModelElement(mbase);
 	Collection elements = ((MBase) mbase).getModelElementContents();
 	if (elements != null) {
@@ -114,7 +121,7 @@ class UmlHelperImpl implements UmlHelper {
      * @return the ExtensionMechanisms helper instance.
      */
     public ExtensionMechanismsHelper getExtensionMechanisms() {
-        return Model.getExtensionMechanismsHelper();
+        return nsmodel.getExtensionMechanismsHelper();
     }
 
     /**
@@ -124,7 +131,7 @@ class UmlHelperImpl implements UmlHelper {
      * @return the DataTypes helper instance.
      */
     public DataTypesHelper getDataTypes() {
-        return Model.getDataTypesHelper();
+        return nsmodel.getDataTypesHelper();
     }
 
     /**
@@ -134,7 +141,7 @@ class UmlHelperImpl implements UmlHelper {
      * @return the Core helper instance.
      */
     public CoreHelper getCore() {
-        return Model.getCoreHelper();
+        return nsmodel.getCoreHelper();
     }
 
     /**
@@ -144,7 +151,7 @@ class UmlHelperImpl implements UmlHelper {
      * @return the CommonBehavior helper instance.
      */
     public CommonBehaviorHelper getCommonBehavior() {
-        return Model.getCommonBehaviorHelper();
+        return nsmodel.getCommonBehaviorHelper();
     }
 
     /**
@@ -154,7 +161,7 @@ class UmlHelperImpl implements UmlHelper {
      * @return the UseCases helper instance.
      */
     public UseCasesHelper getUseCases() {
-        return Model.getUseCasesHelper();
+        return nsmodel.getUseCasesHelper();
     }
 
     /**
@@ -164,7 +171,7 @@ class UmlHelperImpl implements UmlHelper {
      * @return the StateMachines helper instance.
      */
     public StateMachinesHelper getStateMachines() {
-        return Model.getStateMachinesHelper();
+        return nsmodel.getStateMachinesHelper();
     }
 
     /**
@@ -174,7 +181,7 @@ class UmlHelperImpl implements UmlHelper {
      * @return the Collaborations helper instance.
      */
     public CollaborationsHelper getCollaborations() {
-        return Model.getCollaborationsHelper();
+        return nsmodel.getCollaborationsHelper();
     }
 
     /**
@@ -184,7 +191,7 @@ class UmlHelperImpl implements UmlHelper {
      * @return the ActivityGraphs helper instance.
      */
     public ActivityGraphsHelper getActivityGraphs() {
-        return Model.getActivityGraphsHelper();
+        return nsmodel.getActivityGraphsHelper();
     }
 
     /**
@@ -194,7 +201,7 @@ class UmlHelperImpl implements UmlHelper {
      * @return the ModelManagement helper instance.
      */
     public ModelManagementHelper getModelManagement() {
-        return Model.getModelManagementHelper();
+        return nsmodel.getModelManagementHelper();
     }
 
     /**
@@ -249,7 +256,7 @@ class UmlHelperImpl implements UmlHelper {
     public void deleteCollection(Collection col) {
         Iterator it = col.iterator();
         while (it.hasNext()) {
-            Model.getUmlFactory().delete(it.next());
+            nsmodel.getUmlFactory().delete(it.next());
         }
     }
 
@@ -275,13 +282,13 @@ class UmlHelperImpl implements UmlHelper {
         if (ModelFacade.isARelationship(relationShip)) {
             // handles all children of relationship including extend and
             // include which are not members of core
-            return Model.getCoreHelper().getSource(relationShip);
+            return nsmodel.getCoreHelper().getSource(relationShip);
         }
         if (ModelFacade.isATransition(relationShip)) {
-            return Model.getStateMachinesHelper().getSource(relationShip);
+            return nsmodel.getStateMachinesHelper().getSource(relationShip);
         }
         if (ModelFacade.isAAssociationEnd(relationShip)) {
-            return Model.getCoreHelper().getSource(relationShip);
+            return nsmodel.getCoreHelper().getSource(relationShip);
         }
         return null;
     }
@@ -308,13 +315,15 @@ class UmlHelperImpl implements UmlHelper {
         if (ModelFacade.isARelationship(relationShip)) {
             // handles all children of relationship including extend and
             // include which are not members of core
-            return Model.getCoreHelper().getDestination(relationShip);
+            return nsmodel.getCoreHelper().getDestination(relationShip);
         }
         if (ModelFacade.isATransition(relationShip)) {
-            return Model.getStateMachinesHelper().getDestination(relationShip);
+            return
+            	nsmodel.getStateMachinesHelper()
+            		.getDestination(relationShip);
         }
         if (ModelFacade.isAAssociationEnd(relationShip)) {
-            return Model.getCoreHelper().getDestination(relationShip);
+            return nsmodel.getCoreHelper().getDestination(relationShip);
         }
         return null;
     }

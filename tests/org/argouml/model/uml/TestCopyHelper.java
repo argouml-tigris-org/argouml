@@ -25,32 +25,38 @@
 package org.argouml.model.uml;
 
 import junit.framework.TestCase;
-
-import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.core.MCommentImpl;
+import ru.novosoft.uml.foundation.core.MNamespaceImpl;
 
 /**
  * Non-gui tests of the CopyHelper class.
  */
 public class TestCopyHelper extends TestCase {
     /**
-     * @see junit.framework.TestCase#TestCase()
+     * The model implementation.
+     */
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * @see junit.framework.TestCase#TestCase(String)
      */
     public TestCopyHelper(String name) {
 	super(name);
+	nsmodel = new NSUMLModelImplementation();
     }
 
     /**
      * Testing the existance of public static members.
      */
     public void compileTestPublicStaticMembers() {
-	CopyHelper.getHelper();
+	nsmodel.getCopyHelper();
     }
 
     /**
      * Testing the existance of public members.
      */
     public void compileTestPublicMembers() {
-	CopyHelper h = CopyHelper.getHelper();
+	CopyHelper h = nsmodel.getCopyHelper();
 
 	h.copy(new MCommentImpl(), new MNamespaceImpl());
     }
