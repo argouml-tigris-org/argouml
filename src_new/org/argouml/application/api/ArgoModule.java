@@ -65,10 +65,12 @@ public interface ArgoModule {
     
     public boolean isModuleEnabled(); // determines if enabled-disabled
 
+    /** Display name of the module. */
     public String getModuleName();
 
+    /** Textual description of the module. */
     public String getModuleDescription(); 
-    
+
     public String getModuleVersion(); 
     
     public String getModuleAuthor(); 
