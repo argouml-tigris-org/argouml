@@ -38,17 +38,21 @@ import org.tigris.gef.presentation.*;
 
 public class FigPermission extends FigDependency {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
-  protected ArrowHeadGreater endArrow;
+    ////////////////////////////////////////////////////////////////
+    // constructors
+    protected ArrowHeadGreater endArrow;
 
-  public FigPermission() {
-      super();
-  }
+    public FigPermission() {
+        super();
+    }
 
-  public FigPermission(Object edge) {
-      super(edge);
-  }
+    public FigPermission(Object edge) {
+        super(edge);
+    }
 
-} /* end class FigDependency */
+    public FigPermission(Object edge, Layer lay) {
+        super(edge,lay);
+    }
+        
+} /* end class FigPermission */
 

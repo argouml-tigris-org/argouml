@@ -55,6 +55,12 @@ public class FigDependency extends FigEdgeModelElement {
     setOwner(edge);
   }
 
+    public FigDependency(Object edge, Layer lay) {
+        this();
+        setOwner(edge);
+        setLayer(lay);
+    }
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
