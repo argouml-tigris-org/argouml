@@ -263,7 +263,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     public Collection getGeneralizations() {
     	Object target = getTarget();
     	if (target instanceof MClassifier) {
-    		return CoreHelper.getHelper().getExtendedClasses((MClassifier)target);
+    		return CoreHelper.getHelper().getExtendedClassifiers((MClassifier)target);
     	}
     	return new Vector();
     }
@@ -281,7 +281,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	    	Vector selected = new Vector();
 	    	choices = getGeneralizationChoices();
 	    	choices.remove(clazz);
-	    	selected.addAll(CoreHelper.getHelper().getExtendedClasses(clazz));
+	    	selected.addAll(CoreHelper.getHelper().getExtendedClassifiers(clazz));
 	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-generalizations"), true, true);
 	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
 	    	if (returnValue == JOptionPane.OK_OPTION) {
@@ -327,7 +327,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     	Object target = getTarget();
     	if (target instanceof MClassifier) {
     		MClassifier clazz = (MClassifier)target;
-    		MClassifier eclass = (MClassifier)UMLModelElementListModel.elementAtUtil(CoreHelper.getHelper().getExtendedClasses(clazz), index.intValue(), null);
+    		MClassifier eclass = (MClassifier)UMLModelElementListModel.elementAtUtil(CoreHelper.getHelper().getExtendedClassifiers(clazz), index.intValue(), null);
     		MGeneralization gen = CoreHelper.getHelper().getGeneralization(clazz, eclass);
     		Object pt = ProjectBrowser.TheInstance.getTarget();
     		ProjectBrowser.TheInstance.setTarget(gen);
@@ -344,7 +344,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     public Collection getSpecializations() {
     	Object target = getTarget();
     	if (target instanceof MClassifier) {
-    		return CoreHelper.getHelper().getExtendingClasses((MClassifier)target);
+    		return CoreHelper.getHelper().getExtendingClassifiers((MClassifier)target);
     	}
     	return new Vector();
     }
