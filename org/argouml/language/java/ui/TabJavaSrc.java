@@ -41,7 +41,9 @@ import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 import org.argouml.language.java.generator.*;
 import org.argouml.language.java.*;
-
+/**
+ * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+ */
 public class TabJavaSrc  extends TabSpawnable
 implements TabModelTarget, DocumentListener {
 
@@ -56,6 +58,9 @@ implements TabModelTarget, DocumentListener {
   
   ////////////////////////////////////////////////////////////////
   // constructor
+  /**
+   * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+   */
   public TabJavaSrc() {
     super("Source");
 
@@ -97,6 +102,9 @@ implements TabModelTarget, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  /**
+   * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+   */
   protected String genText() {
     //System.out.println("TabJavaSrc getting src for " + _target);
     Object modelObject = _target;
@@ -109,6 +117,9 @@ implements TabModelTarget, DocumentListener {
     return GeneratorJava.Generate(modelObject);
   }
 
+  /**
+   * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+   */
   protected void parseText(String s) {
     //System.out.println("TabJavaSrc   setting src for "+ _target);
     Object modelObject = _target;
@@ -121,6 +132,9 @@ implements TabModelTarget, DocumentListener {
     //Parser.ParseAndUpdate(modelObject, s);
   }
 
+  /**
+   * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+   */
   public void setTarget(Object t) {
     _target = t;
     _parseChanges = false;
@@ -154,15 +168,27 @@ implements TabModelTarget, DocumentListener {
     _text.setSize(_size);
   }
 
+  /**
+   * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+   */
   public Object getTarget() { return _target; }
 
+  /**
+   * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+   */
   public void refresh() { setTarget(_target); }
 
+  /**
+   * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+   */
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }
 
   
   ////////////////////////////////////////////////////////////////
   // event handlers
+  /**
+   * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+   */
   public void insertUpdate(DocumentEvent e) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
@@ -170,6 +196,9 @@ implements TabModelTarget, DocumentListener {
     if (_parseChanges) parseText(_text.getText());
   }
 
+  /**
+   * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+   */
   public void removeUpdate(DocumentEvent e) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
@@ -177,6 +206,9 @@ implements TabModelTarget, DocumentListener {
     if (_parseChanges) parseText(_text.getText());
   }
 
+  /**
+   * @deprecated Unused in ARGO0.9.5 and considered obsolete, no replacement.
+   */
   public void changedUpdate(DocumentEvent e) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
