@@ -196,7 +196,8 @@ model factories,
 model helpers, and
 direct calls to NSUML
 but not the model event pump.
-In April 2004 a <classname>ModelEventPump</classname> was attempted to wrap
+In April 2004 a <classname>ModelEventPump</classname>-interface
+was introduced to wrap
 the <classname>UmlModelEventPump</classname>
 using <classname>PropertyChangeEvent</classname>s.
 </para>
