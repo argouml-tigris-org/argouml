@@ -42,23 +42,58 @@ import org.argouml.uml.ui.*;
 
 public class TabDiagram extends TabSpawnable
 implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
+    
     protected static Category cat = 
         Category.getInstance(TabDiagram.class);
+    
   ////////////////////////////////////////////////////////////////
   // instance variables
-  protected UMLDiagram _target; // the diagram object
-  protected JGraph _jgraph;  // the mapen that displays the diagram
+    
+  /**
+   * the diagram object
+   */
+  protected UMLDiagram _target;
+  
+  /**
+   * The GEF JPanel that draws the target
+   */
+  protected JGraph _jgraph;
+  
+  /**
+   * not used
+   * TODO - delete
+   */
   protected ButtonGroup _lineModeBG;
+  
+  /**
+   * used but there doesn't appear to be a purpose.
+   */
   protected boolean _shouldBeEnabled = true;
+  
+  /**
+   * the GEF toolbar that is positioned just above
+   * the diagram. is added to diagramPanel
+   */
   protected ToolBar _toolBar;
-
+  
+  /**
+   * the panel that holds the graph and the toolbar
+   */
+  //JPanel _diagramPanel;
 
   ////////////////////////////////////////////////////////////////
-  // constructor
+  // constructors
+  
+  /**
+   * calls the other constructor.
+   */
   public TabDiagram() {
         this("Diagram");
   }
 
+  /**
+   * 
+   */
   public TabDiagram(String tag) {
     super(tag);
     setLayout(new BorderLayout());
@@ -70,11 +105,11 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
     //_toolBar = d.getToolBar();
     //_jgraph.setToolBar(_toolBar); //I wish this had worked...
     //add(_toolBar, BorderLayout.NORTH);
-    JPanel p = new JPanel(); 
-    p.setLayout(new BorderLayout());
-    p.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-    p.add(_jgraph, BorderLayout.CENTER);
-    add(p, BorderLayout.CENTER);
+    JPanel _diagramPanel = new JPanel(); 
+    _diagramPanel.setLayout(new BorderLayout());
+    _diagramPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
+    _diagramPanel.add(_jgraph, BorderLayout.CENTER);
+    add(_diagramPanel, BorderLayout.CENTER);
     _jgraph.addGraphSelectionListener(this);
     _jgraph.addModeChangeListener(this);
   }
@@ -87,11 +122,22 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // accessors
+    
+  /**
+   * just calls setTarget(t, true);
+   */
   public void setTarget(Object t) {
   	setTarget(t, true);
   }
   
+  /**
+   * Sets the target of the JGraph to be t (a UMLDiagram).
+   * <p>this method can also be called when adding a class to a 
+   * class diagram for example; therfore fail silently if t is not
+   * a UMLDiagram.
+   */
   public void setTarget(Object t, boolean visible) {
+      
     if (t == null) _shouldBeEnabled = false;
     if (t instanceof UMLDiagram) {
       _target = (UMLDiagram) t;
@@ -107,18 +153,22 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
     // Cool now we assume that's an UMLDiagram
     UMLDiagram d = (UMLDiagram) _target;
     _jgraph.setDiagram(d);
+    
+    // set the toolbar
     if (_toolBar != null) {
       setVisible(false);
       remove(_toolBar);
     }
     _toolBar = d.getToolBar();
-    cat.debug("setting toolbar in NORTH panel");
     add(_toolBar, BorderLayout.NORTH);
+    
+    setTitle(d.getName());
+    
     setVisible(visible);
-    //layout();
-    //invalidate();
+    invalidate();
     validate();
   }
+  
   public Object getTarget() { return _target; }
 
   public void refresh() { setTarget(_target); }
@@ -131,7 +181,7 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
     super.setVisible(b);
     getJGraph().setVisible(b);
   }
-
+  
   ////////////////////////////////////////////////////////////////
   // events
 
