@@ -153,6 +153,9 @@ implements NotationName, ArgoModuleEventListener {
     }
 
     public boolean equals(NotationName nn) {
+        if (nn == null) {
+            return this.getConfigurationValue().equals(Notation.NOTATION_ARGO);
+	}
         return this.getConfigurationValue().equals(nn.getConfigurationValue());
     }
 
@@ -188,11 +191,4 @@ implements NotationName, ArgoModuleEventListener {
 
     public void moduleDisabled(ArgoModuleEvent event) {
     }
-
-    /** Pre-populate the notation list with the internal notations.
-     */
-    static {
-        makeNotation("Default", null, null);
-    }
 }
-
