@@ -85,7 +85,7 @@ public class PropPanelGuard extends PropPanelModelElement {
         //addField(Translator.localize("UMLMenu", "label.language"), 
         // new UMLExpressionLanguageField(expressionModel, true));
 
-	new PropPanelButton(this, getButtonPanel(), 
+	new PropPanelButton(this,
             ResourceLoaderWrapper.lookupIconResource("NavigateUp"), 
             Translator.localize("button.go-up"), "navigateUp", null);
 	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));

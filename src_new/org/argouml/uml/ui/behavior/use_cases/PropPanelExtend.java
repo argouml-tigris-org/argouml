@@ -120,7 +120,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        new PropPanelButton(this, getButtonPanel(), 
+        new PropPanelButton(this,
                 lookupIcon("ExtensionPoint"),
                 localize("New Extension Point"),
                 "newExtensionPoint",

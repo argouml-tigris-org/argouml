@@ -89,7 +89,7 @@ public class PropPanelParameter extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("Parameter"), 
+        new PropPanelButton(this, lookupIcon("Parameter"), 
                 Translator.localize("button.new-parameter"), 
                 "addParameter", null);
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));

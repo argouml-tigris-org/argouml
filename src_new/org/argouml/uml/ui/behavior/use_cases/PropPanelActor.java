@@ -87,10 +87,10 @@ public class PropPanelActor extends PropPanelClassifier {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("Actor"),
+        new PropPanelButton(this, lookupIcon("Actor"),
                 Translator.localize("button.new-actor"), "newActor",
                             null);
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("Reception"), 
+        new PropPanelButton(this, lookupIcon("Reception"), 
                 Translator.localize("button.new-reception"), 
                 getActionNewReception());
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));

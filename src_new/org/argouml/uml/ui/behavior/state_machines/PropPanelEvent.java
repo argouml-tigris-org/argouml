@@ -74,7 +74,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
 
-        new PropPanelButton(this, getButtonPanel(), lookupIcon("Parameter"), 
+        new PropPanelButton(this, lookupIcon("Parameter"), 
                 Translator.localize("button.new-parameter"),
                 "buttonAddParameter", null);
 
