@@ -63,9 +63,9 @@ public class ProjectMemberTodoList extends AbstractProjectMember {
     }
 
     /**
-     * @see org.argouml.kernel.AbstractProjectMember#getFileExtension()
+     * @see org.argouml.kernel.AbstractProjectMember#getZipFileExtension()
      */
-    public String getFileExtension() {
+    public String getZipFileExtension() {
         return TO_DO_EXT;
     }
 

@@ -434,17 +434,7 @@ public class Project implements java.io.Serializable, TargetListener {
         }
     }
 
-    /**
-     * @param name the name of the member to be found
-     * @return the member
-     */
-    public ProjectMember findMemberByName(String name) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("findMemberByName called for \"" + name + "\".");
-        }
-        return members.findDiagramMemberByName(name);
-    }
-
+    
     /**
      * Get the author name.
      * 

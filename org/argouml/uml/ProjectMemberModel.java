@@ -75,9 +75,9 @@ public class ProjectMemberModel extends AbstractProjectMember {
         return MEMBER_TYPE;
     }
     /**
-     * @see org.argouml.kernel.AbstractProjectMember#getFileExtension()
+     * @see org.argouml.kernel.AbstractProjectMember#getZipFileExtension()
      */
-    public String getFileExtension() {
+    public String getZipFileExtension() {
         return FILE_EXT;
     }
 } /* end class ProjectMemberModel */

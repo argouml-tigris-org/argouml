@@ -49,23 +49,13 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
     /**
      * The constructor.
      * 
-     * @param name the name
-     * @param p the project
-     */
-    public ProjectMemberDiagram(String name, Project p) {
-        super(name, p);
-    }
-
-    /**
-     * The constructor.
-     * 
      * @param d the diagram
      * @param p the project
      */
     public ProjectMemberDiagram(ArgoDiagram d, Project p) {
         super(null, p);
         String s = Util.stripJunk(d.getName());
-        setName(s);
+        makeUniqueName(s);
         setDiagram(d);
     }
 
@@ -85,9 +75,9 @@ public class ProjectMemberDiagram extends AbstractProjectMember {
         return MEMBER_TYPE;
     }
     /**
-     * @see org.argouml.kernel.AbstractProjectMember#getFileExtension()
+     * @see org.argouml.kernel.AbstractProjectMember#getZipFileExtension()
      */
-    public String getFileExtension() {
+    public String getZipFileExtension() {
         return FILE_EXT;
     }
 

@@ -33,6 +33,17 @@ package org.argouml.kernel;
 public interface ProjectMember {
     
     /**
+     * In contrast to {@link #getZipName} returns the member's
+     * name without the prepended name of the project. This is
+     * the name that {@link Project#findMemberByName} goes by.
+     *
+     * @author Steffen Zschaler
+     *
+     * @return the member's name without any prefix or suffix
+     */
+    public String getUniqueDiagramName();
+    
+    /**
      * Returns a unique member's name for storage in a zipfile.
      * The project's base name is prepended followed by an
      * underscore '_'.
@@ -50,5 +61,5 @@ public interface ProjectMember {
     /**
      * @return the file extension string
      */
-    public abstract String getFileExtension();
+    public abstract String getZipFileExtension();
 }
