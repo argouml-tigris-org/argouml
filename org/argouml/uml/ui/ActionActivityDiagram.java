@@ -27,11 +27,11 @@ import org.apache.log4j.Category;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import org.argouml.i18n.Translator;
 
 /** Action to trigger creation of a new activity diagram.
  *  @stereotype singleton

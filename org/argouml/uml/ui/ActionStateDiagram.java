@@ -26,9 +26,10 @@ package org.argouml.uml.ui;
 import org.apache.log4j.Category;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
-import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -67,7 +68,8 @@ public class ActionStateDiagram extends ActionAddDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */
-    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+    public UMLDiagram createDiagram(MNamespace ns) {
+        Object target = ProjectBrowser.TheInstance.getTarget();
         // TODO: get rid of the parameter ns
         MStateMachine machine = StateMachinesFactory.getFactory().buildStateMachine((MModelElement)target);        
         UMLStateDiagram d = new UMLStateDiagram(machine.getNamespace(), machine);

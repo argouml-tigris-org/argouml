@@ -23,10 +23,10 @@
 
 package org.argouml.model.uml.foundation.extensionmechanisms;
 
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;

@@ -27,6 +27,8 @@ package org.argouml.uml.ui;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
@@ -54,7 +56,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,Object)
      */
-    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+    public UMLDiagram createDiagram(MNamespace ns) {
         return new UMLClassDiagram(ns);
     }
 

@@ -24,16 +24,12 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
-import org.argouml.i18n.Translator;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-import java.awt.event.*;
-import java.beans.*;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** Action to create a new use case diagram.
  *  @stereotype singleton
@@ -49,7 +45,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,Object)
      */
-    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+    public UMLDiagram createDiagram(MNamespace ns) {
         return new UMLUseCaseDiagram(ns);
     }
 

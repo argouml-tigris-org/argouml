@@ -150,6 +150,10 @@ public class ProjectBrowser extends JFrame implements IStatusBar, NavigationList
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    public ProjectBrowser() {
+        this("ArgoUML", false);
+    }
+    
     public ProjectBrowser(String appName, boolean doSplash) {
         super(appName);
         TheInstance = this;
