@@ -287,7 +287,6 @@ public class FigClassifierRole extends FigNodeModelElement {
         // stereotype away). If the bounds aren't big enough when we've added a
         // stereotype, they'll get increased as needed.
 
-        System.out.println("stereo: " + bounds);
         setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
@@ -364,7 +363,6 @@ public class FigClassifierRole extends FigNodeModelElement {
                                  Math.max(coverMin.width,
                                           newMin.width + _PADDING * 2));
 
-        System.out.println("getMinimumSize: " + newMin);
         return newMin;
     }
 
@@ -397,9 +395,6 @@ public class FigClassifierRole extends FigNodeModelElement {
         if (_name == null) {
             return;
         }
-
-        System.out.println("Setting bounds: " + x + ", " + y + ", " + w +
-                           ", " + h);
 
         // Remember where we are at present, so we can tell GEF later. Then
         // check we are as big as the minimum size
