@@ -2371,6 +2371,10 @@ not on any diagram. See issue 2500. -->
         class diagram are
         rearranged according a certain layout algorithm.
       </para>
+      <para>
+        This function currently only works for classdiagrams. 
+        For all other types of diagrams, the menu-item is downlighted.
+      </para>
     </sect2>
   </sect1>
 
@@ -2383,11 +2387,13 @@ not on any diagram. See issue 2500. -->
       functionality is built around the structural information of class
       diagrams.</para>
 
-    <note><para>Without any plugins installed, &argouml; supports only code generation
-      of Java. &argouml; V0.14 supports the following languages by plugin: 
-      C#, C++, php.</para></note>
+    <note><para>Without any plugin modules
+      installed, &argouml; supports only code generation
+      of Java. &argouml; V0.18 supports the following languages by plugin: 
+      C#, C++, php4, php5.</para></note>
 
-    <warning><para>Code generation is still very much a work in progress. The current
+    <warning><para>Code generation is still very much a work in progress. 
+      The current
       version of &argouml; will generate a structural template for your code,
       but is not able to handle behavioral specifications to generate code for
       the dynamic behavior of the model.</para></warning>
@@ -2741,7 +2747,7 @@ Inconsistent! See issue ... -->
         critics according to the outcomes of &ooad; rather than grouping
         according to the structure of UML.</para></tip>
 
-      <warning><para>The V0.14 version of &argouml; provides a single design
+      <warning><para>The V0.18 version of &argouml; provides a single design
         goal, <literal>Unspecified</literal>, with its slider set by default to
         priority 1. However it contains no critics and so has no
         effect.
@@ -2796,399 +2802,10 @@ Inconsistent! See issue ... -->
         active by default. The one exception is
         <literal>Remove&nbsp;&lt;class&gt;'s&nbsp;Circular&nbsp;Inheritance</literal>.</para></note-->
 
-      <para>The V0.14 version of &argouml; has a total of 85 critics, 
+      <para>The V0.18 version of &argouml; has a total of 90 critics, 
         a few of which are incompletely implemented. They
         are described in detail by design issue category in the chapter on
         critics (see <xref linkend="ch.ref.critics"/>).</para>
-
-      <!-- Why repeat this whole list here? We just referred to the chapter 
-      where they are described... -->
-      <!--<itemizedlist>
-        <listitem><para><literal>Resolve Association Name
-          Conflict</literal>. See
-          <xref linkend="critics.CrAssocNameConflict"/>
-        </para></listitem>
-
-        <listitem><para><literal>Revise Attribute Names to Avoid
-          Conflict</literal>. See
-          <xref linkend="critics.CrAttrNameConflict"/>
-        </para></listitem>
-
-        <listitem><para><literal>Change Names or Signatures in
-          &lt;artifact&gt;</literal>. See
-          <xref linkend="critics.CrOperNameConflict"/>
-        </para></listitem>
-
-        <listitem><para><literal>Circular
-          Association</literal>. See
-          <xref linkend="critics.CrCircularAssocClass"/>
-        </para></listitem>
-
-        <listitem><para><literal>Remove &lt;artifact&gt;'s Circular
-          Inheritance</literal>. See
-          <xref linkend="critics.CrCircularInheritance"/>
-        </para></listitem>
-
-        <listitem><para><literal>Remove Circular
-          Composition</literal>. See
-          <xref linkend="critics.CrCircularComposition"/>
-        </para></listitem>
-
-        <listitem><para><literal>Class Must be
-          Abstract</literal>. See
-          <xref linkend="critics.CrClassMustBeAbstract"/>
-        </para></listitem>
-
-        <listitem><para><literal>Classifier not in Namespace of its
-          Association</literal>. See
-          <xref linkend="critics.CrCrossNamespaceAssoc"/>
-        </para></listitem>
-
-        <listitem><para><literal>Duplicate Parameter
-          Name</literal>. See
-          <xref linkend="critics.CrDupParamName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Duplicate end (role)
-          names for &lt;Association&gt;</literal>. See
-          <xref linkend="critics.CrDupRoleNames"/>
-        </para></listitem>
-
-        <listitem><para><literal>Remove final keyword or remove
-          subclasses</literal>. See
-          <xref linkend="critics.CrFinalSubclassed"/>
-        </para></listitem>
-
-        <listitem><para><literal>Illegal Generalization
-          </literal>. See
-          <xref linkend="critics.CrIllegalGeneralization"/>
-        </para></listitem>
-
-        <listitem><para><literal>Remove Unneeded Realizes from
-          &lt;class&gt;</literal>. See
-          <xref linkend="critics.CrAlreadyRealizes"/>
-        </para></listitem>
-
-        <listitem><para><literal>Operations in Interfaces must be
-          public</literal>. See
-          <xref linkend="critics.CrIntefaceAllPublic"/>
-        </para></listitem>
-
-        <listitem><para><literal>Interfaces may only have
-          operations</literal>. See
-          <xref linkend="critics.CrInterfaceOperOnly"/>
-        </para></listitem>
-
-        <listitem><para><literal>Two aggregate ends (roles) in binary
-          association</literal>. See
-          <xref linkend="critics.CrMultipleAgg"/>
-        </para></listitem>
-
-        <listitem><para><literal>Make &lt;association&gt;
-          Navigable</literal>. See
-          <xref linkend="critics.CrUnnavigableAssoc"/>
-        </para></listitem>
-
-        <listitem><para><literal>Aggregate end (role) in 3-way (or more)
-          Association</literal>. See
-          <xref linkend="critics.CrNWayAgg"/>
-        </para></listitem>
-
-        <listitem><para><literal>Remove Navigation from Interface
-          &lt;association&gt;</literal>. See
-          <xref linkend="critics.CrNavFromInterface"/>
-        </para></listitem>
-
-        <listitem><para><literal>Role name conflicts with
-          member</literal>. See
-          <xref linkend="critics.CrNameConflictAC"/>
-        </para></listitem>
-
-        <listitem><para><literal>Choose a Name</literal> (classes and
-          interfaces). See
-          <xref linkend="critics.CrMissingClassName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Choose a Unique Name for
-          &lt;artifact&gt;</literal> (classes and interfaces). See
-          <xref linkend="critics.CrDisambigClassName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Choose a name</literal> (attributes). See
-          <xref linkend="critics.CrMissingAttrName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Choose a name</literal> (operations). See
-          <xref linkend="critics.CrMissingOperName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Choose a Name</literal> (states). See
-          <xref linkend="critics.CrMissingStateName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Add Instance Variables to
-          &lt;class&gt;</literal>. See
-          <xref linkend="critics.CrNoInstanceVariables"/>
-        </para></listitem>
-
-        <listitem><para><literal>Add Associations to
-          &lt;artifact&gt;</literal>. See
-          <xref linkend="critics.CrNoAssociations"/>
-        </para></listitem>
-
-        <listitem><para><literal>Add Operations to
-          &lt;artifact&gt;</literal>. See
-          <xref linkend="critics.CrNoOperations"/>
-        </para></listitem>
-
-        <listitem><para><literal>Add Constructor to
-          &lt;class&gt;</literal>. See
-          <xref linkend="critics.CrConstructorNeeded"/>
-        </para></listitem>
-
-        <listitem><para><literal>Add Elements to Package
-          &lt;package&gt;</literal>. See
-          <xref linkend="critics.CrEmptyPackage"/>
-        </para></listitem>
-
-        <listitem><para><literal>Wrap DataType</literal>. See
-          <xref linkend="critics.CrNonAggDataType"/>
-        </para></listitem>
-
-        <listitem><para><literal>Import Parameter Type into
-          Class</literal>. See
-          <xref linkend="critics.CrParamTypeNotImported"/>
-        </para></listitem>
-
-        <listitem><para><literal>Define Concrete
-          (Sub)Class</literal>. See
-          <xref linkend="critics.CrUselessAbstract"/>
-        </para></listitem>
-
-        <listitem><para><literal>Define Class to Implement
-          &lt;interface&gt;</literal>. See
-          <xref linkend="critics.CrUselessInterface"/>
-        </para></listitem>
-
-        <listitem><para><literal>Choose a Unique Name for
-          &lt;state&gt;</literal> (states). See
-          <xref linkend="critics.CrDisambigStateName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Revise Name to Avoid
-          Confusion</literal>. See
-          <xref linkend="critics.CrNameConfusion"/>
-        </para></listitem>
-
-        <listitem><para><literal>Remove Reference to Specific
-          Subclass</literal>. See
-          <xref linkend="critics.CrSubclassReference"/>
-        </para></listitem>
-
-        <listitem><para><literal>Choose a Legal
-          Name</literal>. See
-          <xref linkend="critics.CrIllegalName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Change &lt;artifact&gt; to a Non-Reserved
-          Word</literal>. See
-          <xref linkend="critics.CrReservedName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Change Multiple Inheritance to
-          interfaces</literal>. See
-          <xref linkend="critics.CrMultipleInheritance"/>
-        </para></listitem>
-
-        <listitem><para><literal>Reduce Associations on
-          &lt;artifact&gt;</literal>. See
-          <xref linkend="critics.CrTooManyAssoc"/>
-        </para></listitem>
-
-        <listitem><para><literal>Reduce Attributes on
-          &lt;class&gt;</literal>. See
-          <xref linkend="critics.CrTooManyAttr"/>
-        </para></listitem>
-
-        <listitem><para><literal>Reduce Operations on
-          &lt;artifact&gt;</literal>. See
-          <xref linkend="critics.CrTooManyOper"/>
-        </para></listitem>
-
-        <listitem><para><literal>Reduce Transitions on
-          &lt;state&gt;</literal>. See
-          <xref linkend="critics.CrTooManyTransitions"/>
-        </para></listitem>
-
-        <listitem><para><literal>Reduce States in machine
-          &lt;diagram&gt;</literal>. See
-          <xref linkend="critics.CrTooManyStates"/>
-        </para></listitem>
-
-        <listitem><para><literal>Reduce Classes in diagram
-          &lt;diagram&gt;</literal>. See
-          <xref linkend="critics.CrTooManyClasses"/>
-        </para></listitem>
-
-        <listitem><para><literal>Add Transitions to
-          &lt;state&gt;</literal>. See
-          <xref linkend="critics.CrNoTransitions"/>
-        </para></listitem>
-
-        <listitem><para><literal>Add Incoming Transitions to
-          &lt;state&gt;</literal>. See
-          <xref linkend="critics.CrNoIncomingTransitions"/>
-        </para></listitem>
-
-        <listitem><para><literal>Add Outgoing Transitions from
-          &lt;state&gt;</literal>. See
-          <xref linkend="critics.CrNoOutgoingTransitions"/>
-        </para></listitem>
-
-        <listitem><para><literal>Remove Extra Initial
-          States</literal>. See
-          <xref linkend="critics.CrMultipleInitialStates"/>
-        </para></listitem>
-
-        <listitem><para><literal>Place an Initial
-          State</literal>. See
-          <xref linkend="critics.CrNoInitialState"/>
-        </para></listitem>
-
-        <listitem><para><literal>Add Trigger or Guard to
-          Transition</literal>. See
-          <xref linkend="critics.CrNoTriggerOrGuard"/>
-        </para></listitem>
-
-        <listitem><para><literal>Change Join
-          Transitions</literal>. See
-          <xref linkend="critics.CrInvalidJoin"/>
-        </para></listitem>
-
-        <listitem><para><literal>Change Fork
-          Transitions</literal>. See
-          <xref linkend="critics.CrInvalidFork"/>
-        </para></listitem>
-
-        <listitem><para><literal>Change Branch
-          Transitions</literal>. See
-          <xref linkend="critics.CrInvalidBranch"/>
-        </para></listitem>
-
-        <listitem><para><literal>Add Guard to
-          Transition</literal>. See
-          <xref linkend="critics.CrNoGuard"/>
-        </para></listitem>
-
-        <listitem><para><literal>Choose a Better Operation
-          Name</literal>. See
-          <xref linkend="critics.CrUnconventionalOperName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Choose a Better Attribute
-          Name</literal>. See
-          <xref linkend="critics.CrUnconventionalAttrName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Capitalise Class Name
-          &lt;class&gt;</literal>. See
-          <xref linkend="critics.CrUnconventionalClassName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Revise Package Name
-          &lt;package&gt;</literal>. See
-          <xref linkend="critics.CrUnconventionalPackName"/>
-        </para></listitem>
-
-        <listitem><para><literal>Consider using Singleton Pattern for
-          &lt;class&gt;</literal>. See
-          <xref linkend="critics.CrConsiderSingleton"/>
-        </para></listitem>
-
-        <listitem><para><literal>Singleton Stereotype Violated in
-          &lt;class&gt;</literal>. See
-          <xref linkend="critics.CrSingletonViolated"/>
-        </para></listitem>
-
-        <listitem><para><literal>Nodes normally have no
-          enclosers</literal>. See
-          <xref linkend="critics.CrNodeInsideElement"/>
-        </para></listitem>
-
-        <listitem><para><literal>NodeInstances normally have no
-          enclosers</literal>. See
-          <xref linkend="critics.CrNodeInstanceInsideElement"/>
-        </para></listitem>
-
-        <listitem><para><literal>Components normally are inside
-          nodes</literal>. See
-          <xref linkend="critics.CrComponentWithoutNode"/>
-        </para></listitem>
-
-        <listitem><para><literal>ComponentInstances normally are inside
-          nodes</literal>. See
-          <xref linkend="critics.CrCompInstanceWithoutNode"/>
-        </para></listitem>
-
-        <listitem><para><literal>Classes normally are inside
-          components</literal>. See
-          <xref linkend="critics.CrClassWithoutComponent"/>
-        </para></listitem>
-
-        <listitem><para><literal>Interfaces normally are inside
-          components</literal>. See
-          <xref linkend="critics.CrInterfaceWithoutComponent"/>
-        </para></listitem>
-
-        <listitem><para><literal>Objects normally are inside
-          components</literal>. See
-          <xref linkend="critics.CrObjectWithoutComponent"/>
-        </para></listitem>
-
-        <listitem><para><literal>LinkEnds have not the same
-          locations</literal>. See
-          <xref linkend="critics.CrWrongLinkEnds"/>
-        </para></listitem>
-
-        <listitem><para><literal>Set classifier</literal> (deployment
-          diagram). See
-          <xref linkend="critics.CrInstanceWithoutClassifier"/>
-        </para></listitem>
-
-        <listitem><para><literal>Missing
-          return-actions</literal>. See
-          <xref linkend="critics.CrCallWithoutReturn"/>
-        </para></listitem>
-
-        <listitem><para><literal>Missing
-          call(send)-action</literal>. See
-          <xref linkend="critics.CrReturnWithoutCall"/>
-        </para></listitem>
-
-        <listitem><para><literal>No Stimuli on these
-          links</literal>. See
-          <xref linkend="critics.CrLinkWithoutStimulus"/>
-        </para></listitem>
-
-        <listitem><para><literal>Set classifier</literal> (sequence
-          diagram). See
-          <xref linkend="critics.CrSeqInstanceWithoutClassifier"/>
-        </para></listitem>
-
-        <listitem><para><literal>Wrong position of these
-          stimuli</literal>. See
-          <xref linkend="critics.CrStimulusWithWrongPosition"/>
-        </para></listitem>
-
-        <listitem><para><literal>Clean Up Diagram</literal>. See
-          <xref linkend="critics.CrNodesOverlap"/>
-        </para></listitem>
-
-        <listitem><para><literal>Make Edge More
-          Visible</literal>. See
-          <xref linkend="critics.CrZeroLengthEdge"/>
-        </para></listitem>
-      </itemizedlist>-->
 
       <para>To the right of the list are a series of fields, 
         titled <literal>Critic Details</literal>, giving detailed
@@ -3197,7 +2814,7 @@ Inconsistent! See issue ... -->
 
       <para>The first field on the right is titled <literal>Critic Class:</literal>
         and then the full name of the class in &argouml; that implements the
-        critic. The last part of this name (after the last dot) can be used 
+        critic. This name can be used 
         as unique identifier of the critique, 
         e.g. in conversations about the critic.
       </para>
@@ -3206,7 +2823,8 @@ Inconsistent! See issue ... -->
         <literal>Headline:</literal> giving the complete headline of the critic
         (which may be truncated in the list on the left).</para>
 <!-- TODO: Widening the dialog box only widens the left part, hence the long
-names still are not readable in this field. Should be 50% division at all time. 
+names still are not readable in this field. Should be 50% division at all time,
+or better: a splitpane which you can adjust. 
 See issue ... -->
 
       <note><para>In the headline you may see the text
@@ -3218,15 +2836,18 @@ See issue ... -->
         <literal>Priority:</literal>. The three options available are
         <literal>High</literal>, <literal>Medium</literal> and
         <literal>Low</literal> and specify the priority category of any to-do
-        item generated by this critic.
-        <!-- TODO: Does it alter the already existing ones? -->
+        item generated by this critic. 
+        This does not alter the priority of the already existing todo items, 
+        only the newly generated ones.
+        Changing the priority of a critic is not saved persistently.
+        <!-- TODO: See issue ... -->
       </para>
 
       <para>The next field is labeled <literal>MoreInfo:</literal> and
         contains a URL pointing to further information with a button to the
         right labeled <literal>Go</literal> to navigate to that URL.</para>
 
-      <warning><para>In the V0.14 release of &argouml; there is no further
+      <warning><para>In the V0.18 release of &argouml; there is no further
         information available, 
         <!-- TODO: See issue ... --> 
         and the <literal>Go</literal> button is always
@@ -3261,8 +2882,8 @@ The original
         with their clarifier's disabled would still produce feedback that is
         listed in the to-do pane.</para>
 
-      <caution><para>In the V0.14 release of &argouml; this selector has no
-        function, beyond printing a message on the console. It is for future
+      <caution><para>In the V0.18 release of &argouml; this selector has no
+        function whatsoever. It is for future
         development.</para></caution>
 
       <para>Underneath the fields are three buttons in a horizontal row.</para>
@@ -3273,6 +2894,8 @@ The original
           which makes the critic inactive for a period. If the critic has been
           snoozed, this button is enabled and will wake the critic back up
           again. Otherwise it is grayed out.</para>
+          <!-- TODO: But a woken critic is not indicated with 
+          Snoozed=No in the table. See issue ... -->
 
         <tip><para>You can tell a snoozed critic, because in the list on the
           left it will be indicated
@@ -3281,7 +2904,7 @@ The original
         <listitem><para><literal>Configure</literal>. This button is for
           configuring the critic.</para>
 
-        <caution><para>In the V0.14 version of &argouml; this function is not
+        <caution><para>In the V0.18 version of &argouml; this function is not
           implemented, and this button is always grayed out. It is for future
           development.</para></caution></listitem>
 
@@ -3309,7 +2932,7 @@ The original
           conditions and steps would allow end-users to build new critics by
           combining those in novel ways.</para>
 
-        <caution><para>In the V0.14 version of &argouml; this function is not
+        <caution><para>In the V0.18 version of &argouml; this function is not
           implemented, and this button is always grayed out. It is for future
           development.</para></caution></listitem>
       </itemizedlist>
@@ -3320,7 +2943,7 @@ The original
     </sect2>
   </sect1>
 
-  <!-- The Tools menu entries (grayed out, used only with plug-ins) -->
+  <!-- The Tools menu entries (used only with plug-ins) -->
 
   <sect1>
     <title>The Tools Menu</title>
@@ -3357,12 +2980,6 @@ The original
         </mediaobject></screenshot>
       </figure>
 
-      <warning>
-        <para>The <quote>.xmi</quote> extension is not added automatically. 
-        You have to enter it with the  filename.
-        <!-- TODO: See issue ... -->
-        </para>
-      </warning>
     </sect2>
   </sect1>
 
@@ -3397,8 +3014,11 @@ The original
       
       <para>
         Use this menu to describe the system that runs &argouml; to the system
-        manager or developer. The <literal>Run GC</literal> refreshes 
-        the information shown. To facilitate copy and paste into (e.g.) an email, the
+        manager or developer. 
+        Pressing the button <literal>Run Garbage Collector</literal> 
+        not only runs the Java gargage collector, but also refreshes 
+        the information shown. 
+        To facilitate copy and paste into (e.g.) an email, the
         button <literal>Copy Information to System Clipboard</literal> is
         foreseen. The <literal>Cancel</literal> button dismisses the dialog box. 
       </para>
