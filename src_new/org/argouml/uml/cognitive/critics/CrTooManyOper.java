@@ -37,8 +37,9 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.argouml.cognitive.*;
 
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). */
+/** A critic to detect when a classifier has to many operations). 
+ *  @todo exclude getter and setter operations from count
+ */
 
 public class CrTooManyOper extends CrUML {
 
