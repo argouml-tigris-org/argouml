@@ -24,15 +24,16 @@
 package uci.gef;
 
 import java.awt.*;
+import uci.graph.*;
 
 /** Needs-More-Work: This is dead code and will be removed in the next
  *  release. */
 
 public class EditorFrame extends ForwardingFrame {
 
-  public EditorFrame(NetList n) {
+  public EditorFrame(GraphModel gm) {
     super(new Dimension(400, 300));
-    setEventHandler(new Editor(n, this));
+    setEventHandler(new Editor(gm, this));
     ((Editor)getEventHandler()).frame(this);
   }
 

@@ -26,6 +26,7 @@ package uci.gef;
 import java.awt.*;
 import java.util.*;
 import uci.util.*;
+import uci.graph.*;
 import uci.ui.*;
 
 /** This class provides an editor frame for manipulating graphical
@@ -133,7 +134,7 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
 
   private transient  Thread _eventHandler = null;
 
-  protected NetNode _curNode = null;
+  protected Object _curNode = null;
 
   protected Fig _curFig = null;     // _focusFig //?
 
@@ -226,9 +227,10 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
   public int gridSize() { return 16; } // Needs-More-Work: prefs
 
   /** Return the net under the diagram being edited. */
-  public NetList net() {
-    if (_layerManager.getActiveLayer() instanceof LayerPerspective)
-      return ((LayerPerspective)_layerManager.getActiveLayer()).net();
+  public GraphModel getGraphModel() {
+    Layer active = _layerManager.getActiveLayer();
+    if (active instanceof LayerPerspective)
+      return ((LayerPerspective)active).getGraphModel();
     else return null;
   }
 
@@ -271,17 +273,19 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
    *  if any */
   protected void setUnderMouse(Event e) {
     if (e.id != Event.MOUSE_MOVE && e.id != Event.MOUSE_DRAG) return;
-    NetNode node = null;
+    Object node = null;
     Fig f = hit(e.x, e.y);
     if (f != _curFig) {
       if (_curFig != null) _curFig.mouseExit(e, e.x, e.y);
       if (f != null) f.mouseEnter(e, e.x, e.y);
     }
     _curFig = f;
-    if (f instanceof FigNode) node = (NetNode)f.getOwner();
+    if (f instanceof FigNode) node = f.getOwner();
     if (node != _curNode) {
-      if (_curNode != null) _curNode.mouseExit(e, e.x, e.y);
-      if (node != null) node.mouseEnter(e, e.x, e.y);
+      if (_curNode != null && _curNode instanceof EventHandler)
+	((EventHandler)_curNode).mouseExit(e, e.x, e.y);
+      if (node != null && node instanceof EventHandler)
+	((EventHandler)node).mouseEnter(e, e.x, e.y);
     }
     _curNode = node;
   }
@@ -330,15 +334,22 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
   }
 
   /** Construct a new Editor to edit the given NetList */
-  public Editor(NetList net, Component awt_comp) { this(net, awt_comp, null); }
+  //public Editor(NetList net, Component awt_comp) { this(net, awt_comp, null); }
 
-  public Editor(NetList net) { this(net, null, null); }
+  public Editor(GraphModel gm, Component awt_comp) {
+    this(gm, awt_comp, null);
+    // needs-more-work: set graph model
+  }
+
+  //public Editor(NetList net) { this(net, null, null); }
+  public Editor(GraphModel gm) { this(gm, null, null); }
 
   public Editor() { this(null, null, null); }
 
-  public Editor(NetList net, Component awt_comp, Layer lay) {
+  //public Editor(NetList net, Component awt_comp, Layer lay) {
+  public Editor(GraphModel gm, Component awt_comp, Layer lay) {
     _awt_component = awt_comp;
-    defineLayers(net, lay);
+    defineLayers(gm, lay);
     _graphAttrs = new Hashtable();
 
     /* Now set up the menu items */
@@ -349,14 +360,15 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
     Globals.curEditor(this);
   }
 
-  protected void defineLayers(NetList net, Layer lay) {
+  //protected void defineLayers(NetList net, Layer lay) {
+  protected void defineLayers(GraphModel gm, Layer lay) {
     _layerManager.addLayer(new LayerGrid());
     _layerManager.addLayer(new LayerPageBreaks());
     // the following line is an example of another "grid"
     // _layerManager.addLayer(new LayerPolar());
     if (lay != null) _layerManager.addLayer(lay);
-    else if (net == null) _layerManager.addLayer(new LayerDiagram("Example"));
-    else _layerManager.addLayer(new LayerPerspective("untitled", net));
+    else if (gm == null) _layerManager.addLayer(new LayerDiagram("Example"));
+    else _layerManager.addLayer(new LayerPerspective("untitled", gm));
   }
 
   ////////////////////////////////////////////////////////////////
@@ -722,7 +734,8 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
     try {
       if (_selectionManager.handleEvent(e)) return true;
       if (_modeManager.handleEvent(e)) return true;
-      if (_curNode != null && _curNode.handleEvent(e)) return true;
+      if (_curNode != null && _curNode instanceof EventHandler)
+	if (((EventHandler)_curNode).handleEvent(e)) return true;
     }
     catch (java.lang.Throwable ex) {
       System.out.println("While processing event " + e.toString() +
@@ -795,7 +808,7 @@ implements Observer, Runnable, IStatusBar, java.io.Serializable {
     remove(f);
   }
 
-  public void notifyRemoved(NetPrimitive np) {
+  public void notifyRemoved(Object np) {
     Fig f = getLayerManager().presentationFor(np);
     if (f != null) remove(f);
   }

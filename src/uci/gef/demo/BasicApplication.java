@@ -26,6 +26,7 @@ package uci.gef.demo;
 import java.awt.*;
 import java.lang.*;
 import uci.gef.*;
+import uci.graph.*;
 
 /** A simple example of the minimum code needed to build an
  *  application using GEF. */
@@ -43,7 +44,7 @@ public class BasicApplication {
   // constructors
 
   public BasicApplication() {
-    _ed = new Editor(new NetList());
+    _ed = new Editor(new DefaultGraphModel());
     _ed.setTitle("Untitled");
     _ed.show();
     _palFrame = new Frame();

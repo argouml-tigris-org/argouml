@@ -62,10 +62,10 @@ public class NetList extends NetPrimitive {
   public String name() { return _name; }
 
   /** Reply the vector of nodes */
-  public Vector nodes() { return _nodes; }
+  public Vector getNodes() { return _nodes; }
 
   /** Reply the vector of edges */
-  public Vector edges() { return _edges; }
+  public Vector getEdges() { return _edges; }
 
   /** Add a node to this NetList. Needs-More-Work: should I send a
    *  notification? This is called from the Editor when a

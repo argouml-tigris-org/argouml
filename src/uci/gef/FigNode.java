@@ -196,7 +196,7 @@ public class FigNode extends FigGroup {
    *  <A HREF="../features.html#graph_visualization_ports">
    *  <TT>FEATURE: graph_visualization_ports</TT></A>
    */
-  public Fig getPortFig(NetPort np) {
+  public Fig getPortFig(Object np) {
     Enumeration figs = elements();
     while (figs.hasMoreElements()) {
       Fig f = (Fig) figs.nextElement();

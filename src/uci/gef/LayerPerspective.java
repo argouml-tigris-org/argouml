@@ -25,6 +25,7 @@ package uci.gef;
 
 import java.util.*;
 import java.awt.*;
+import uci.graph.*;
 
 /** A Layer like found in many drawing applications. It contains a
  *  collection of Fig's, ordered from back to front. Each
@@ -36,7 +37,7 @@ import java.awt.*;
  *  <TT>FEATURE: multiple_perspectives</TT></A>
  */
 
-public class LayerPerspective extends LayerDiagram {
+public class LayerPerspective extends LayerDiagram implements GraphListener {
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -47,7 +48,8 @@ public class LayerPerspective extends LayerDiagram {
   // instance variables
 
   /** The underlying connected graph to be visualized. */
-  protected NetList _net;
+  //protected NetList _net;
+  protected GraphModel _gm;
 
   /** Classes of NetNodes and NetEdges that are to be visualized in
    *  this perspective.
@@ -76,17 +78,19 @@ public class LayerPerspective extends LayerDiagram {
    *  the menu of layers. Needs-More-Work: I have not implemented a
    *  menu of layers yet. I don't know if that is really the right user
    *  interface */
-  public LayerPerspective(String name, NetList net) {
+  //public LayerPerspective(String name, NetList net) {
+  public LayerPerspective(String name, GraphModel gm) {
     super(name);
-    _net = net;
-    _net.addPersistantObserver(this);
+    _gm = gm;
+    _gm.addGraphEventListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
   /** Reply the NetList of the underlying connected graph. */
-  public NetList net() { return _net; }
+  //public NetList net() { return _net; }
+  public GraphModel getGraphModel() { return _gm; }
 
   /** Add a node class of NetNodes or NetEdges to what will be shown in
    *  this perspective.
@@ -101,17 +105,22 @@ public class LayerPerspective extends LayerDiagram {
   /** Add a Fig to the contents of this layer. Items are added on top
    *  of all other items. If a node is explicitly added then accept it
    *  regardless of the predicate, and add it to the net. */
+  // needs-more-work: what about Objects that are not NetPrimitives
   public void add(Fig f) {
     super.add(f);
-    if (f instanceof FigNode) _net.addNode((NetNode)f.getOwner());
-    else if (f instanceof FigEdge) _net.addEdge((NetEdge)f.getOwner());
+    if (f instanceof FigNode && _gm instanceof MutableGraphModel)
+      ((MutableGraphModel)_gm).addNode((NetNode)f.getOwner());
+    else if (f instanceof FigEdge && _gm instanceof MutableGraphModel)
+      ((MutableGraphModel)_gm).addEdge((NetEdge)f.getOwner());
   }
 
   /** Remove the given Fig from this layer. */
   public void remove(Fig f) {
     super.remove(f);
-    if (f instanceof FigNode) _net.removeNode((NetNode)f.getOwner());
-    else if (f instanceof FigEdge) _net.removeEdge((NetEdge)f.getOwner());
+    if (f instanceof FigNode && _gm instanceof MutableGraphModel)
+      ((MutableGraphModel)_gm).removeNode((NetNode)f.getOwner());
+    else if (f instanceof FigEdge && _gm instanceof MutableGraphModel)
+      ((MutableGraphModel)_gm).removeEdge((NetEdge)f.getOwner());
   }
 
   ////////////////////////////////////////////////////////////////
@@ -200,11 +209,15 @@ public class LayerPerspective extends LayerDiagram {
    *  <A HREF="../features.html#multiple_perspectives">
    *  <TT>FEATURE: multiple_perspectives</TT></A>
    */
-  public boolean shouldShow(NetNode n) {
+  public boolean shouldShow(Object obj) {
     if (_allowedNetClasses.size() > 0 &&
-	!_allowedNetClasses.contains(n.getClass()))
+	!_allowedNetClasses.contains(obj.getClass()))
       return false;
-
+    if (obj instanceof NetEdge) {
+      if (getPortFig(((NetEdge)obj).getSourcePort()) == null ||
+	  getPortFig(((NetEdge)obj).getDestPort()) == null)
+	return false;
+    }
     return true;
   }
 
@@ -215,14 +228,25 @@ public class LayerPerspective extends LayerDiagram {
    *  <A HREF="../features.html#multiple_perspectives">
    *  <TT>FEATURE: multiple_perspectives</TT></A>
    */
-  public boolean shouldShow(NetEdge a) {
-    if (_allowedNetClasses.size() > 0 &&
-	!_allowedNetClasses.contains(a.getClass()))
-      return false;
-    if (getPortFig(a.sourcePort()) == null ||
-	getPortFig(a.destPort()) == null)
-      return false;
-    return true;
-  }
+//   public boolean shouldShow(NetEdge a) {
+//     if (_allowedNetClasses.size() > 0 &&
+// 	!_allowedNetClasses.contains(a.getClass()))
+//       return false;
+//     if (getPortFig(a.getSourcePort()) == null ||
+// 	getPortFig(a.getDestPort()) == null)
+//       return false;
+//     return true;
+//   }
 
+  ////////////////////////////////////////////////////////////////
+  // GraphListener implementation
+
+  public void nodeAdded(GraphEvent e) { }
+  public void edgeAdded(GraphEvent e) { }
+  public void nodeRemoved(GraphEvent e) { }
+  public void edgeRemoved(GraphEvent e) { }
+  public void graphChanged(GraphEvent e) { }
+
+  
 } /* end class LayerPerspective */
+

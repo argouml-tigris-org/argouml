@@ -38,8 +38,9 @@ public abstract class NetEdge extends NetPrimitive {
   // instance variables
 
   /** The start and end ports of this edge. */
-  private NetPort _sourcePort;
-  private NetPort _destPort;
+  protected NetPort _sourcePort;
+  protected NetPort _destPort;
+  protected Vector _ports;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -50,17 +51,20 @@ public abstract class NetEdge extends NetPrimitive {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void sourcePort(NetPort s) { _sourcePort = s; }
-  public NetPort sourcePort() { return _sourcePort; }
-  public void destPort(NetPort d) { _destPort = d; }
-  public NetPort destPort() { return _destPort; }
+  public void setSourcePort(NetPort s) { _sourcePort = s; }
+  public NetPort getSourcePort() { return _sourcePort; }
+  public void setDestPort(NetPort d) { _destPort = d; }
+  public NetPort getDestPort() { return _destPort; }
 
   public NetPort otherEnd(NetPort oneEnd) {
-    NetPort sp = sourcePort();
-    if (sp == oneEnd) { return destPort(); }
+    NetPort sp = getSourcePort();
+    if (sp == oneEnd) { return getDestPort(); }
     else { return sp; }
   }
 
+  public Vector getPorts() { return _ports; }
+  public void setPorts(Vector v) { _ports = v; }
+  
   ////////////////////////////////////////////////////////////////
   // net-level hooks
 
@@ -72,7 +76,7 @@ public abstract class NetEdge extends NetPrimitive {
    * any arguments. */
   public boolean connect(NetPort s, NetPort d) {
     if (s.canConnectTo(d) && d.canConnectTo(s)) {
-      sourcePort(s);		destPort(d);
+      setSourcePort(s);		setDestPort(d);
       s.addEdge(this); 		d.addEdge(this);
       s.postConnect(d); 	d.postConnect(s);
       return true;
@@ -85,13 +89,12 @@ public abstract class NetEdge extends NetPrimitive {
 
   /** Remove this NetEdge from the underlying connected graph model. */
   public void dispose() {
-    System.out.println("disposing: " + toString());
-    if (sourcePort() != null && destPort() != null) {
+    if (getSourcePort() != null && getDestPort() != null) {
       _sourcePort.removeEdge(this);
       _destPort.removeEdge(this);
       // needs-more-work: assumes no parallel edges!
-      _sourcePort.postDisconnect(destPort());
-      _destPort.postDisconnect(sourcePort());
+      _sourcePort.postDisconnect(getDestPort());
+      _destPort.postDisconnect(getSourcePort());
       Vector v = new Vector(2);
       v.addElement(Globals.REMOVE);
       v.addElement(this);
@@ -108,8 +111,8 @@ public abstract class NetEdge extends NetPrimitive {
   public FigEdge presentationFor(Layer lay) {
     FigEdge fe = (FigEdge) lay.presentationFor(this);
     if (fe != null) return fe;
-    NetNode sourceNode = _sourcePort.parentNode();
-    NetNode destNode = _destPort.parentNode();
+    NetNode sourceNode = _sourcePort.getParentNode();
+    NetNode destNode = _destPort.getParentNode();
     FigNode sourceFigNode = sourceNode.presentationFor(lay);
     FigNode destFigNode = destNode.presentationFor(lay);
     Fig sourcePortFig = sourceFigNode.getPortFig(_sourcePort);

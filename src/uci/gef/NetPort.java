@@ -53,14 +53,14 @@ public class NetPort extends NetPrimitive {
   protected Vector _edges;
 
   /** The NetNode that this port is a part of. */
-  protected NetNode parentNode;
+  protected NetPrimitive _parent;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   /** Construct a new NetPort with the given parent node and no arcs. */
-  public NetPort(NetNode parent) {
-    parentNode = parent;
+  public NetPort(NetPrimitive parent) {
+    _parent = parent;
     _edges = new Vector();
   }
 
@@ -68,7 +68,9 @@ public class NetPort extends NetPrimitive {
   // accessors
 
   /** Reply the NetNode that owns this port. */
-  public NetNode parentNode() { return parentNode; }
+  public NetNode getParentNode() { return (NetNode) _parent; }
+  public NetEdge getParentEdge() { return (NetEdge) _parent; }
+  public NetPrimitive getParent() { return _parent; }
 
   /** Reply a vector of NetEdges that are connected here. */
   public Vector getEdges() { return _edges; }
@@ -105,14 +107,14 @@ public class NetPort extends NetPrimitive {
   /** Application specific hook that is called after a successful
    *  connection. */
   public void postConnect(NetPort anotherPort) {
-    parentNode.postConnect(anotherPort.parentNode(), this, anotherPort);
+    getParentNode().postConnect(anotherPort.getParentNode(), this, anotherPort);
   }
 
   /** Application specific hook that is called after a
    *  disconnection. (for now, all disconnections are assumed
    *  legal). */
   public void postDisconnect(NetPort anotherPort) {
-    parentNode.postDisconnect(anotherPort.parentNode(), this, anotherPort);
+    getParentNode().postDisconnect(anotherPort.getParentNode(), this, anotherPort);
   }
 
   /** reply the java Class to be used to make new arcs. This is a
@@ -129,8 +131,10 @@ public class NetPort extends NetPrimitive {
     edgeClass = defaultEdgeClass(otherPort);
     if (edgeClass == null) return null;
     try { edge = (NetEdge) edgeClass.newInstance(); }
-    catch (java.lang.IllegalAccessException ignore) { return null; }
-    catch (java.lang.InstantiationException ignore) { return null; }
+    catch (java.lang.IllegalAccessException ignore) {
+      System.out.println("asdasd"); return null; }
+    catch (java.lang.InstantiationException ignore) {
+      System.out.println("ASdasd"); return null; }
     return edge;
   }
 
@@ -145,9 +149,8 @@ public class NetPort extends NetPrimitive {
    *  return false (i.e., deeper subclasses get more constrained). I
    *  don't know if that is a good convention. */
   public boolean canConnectTo(NetPort anotherPort) {
-    return parentNode.canConnectTo(anotherPort.parentNode(),
-				   anotherPort,
-				   this);
+    return getParentNode().canConnectTo(anotherPort.getParentNode(),
+					anotherPort, this);
   }
 
   ////////////////////////////////////////////////////////////////

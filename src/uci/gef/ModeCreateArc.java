@@ -25,6 +25,7 @@ package uci.gef;
 
 import java.awt.*;
 import uci.util.*;
+import uci.graph.*;
 
 /** A Mode to interpret user input while creating an arc. Basically
  *  mouse down starts creating an arc from a source NetPort, mouse
@@ -37,7 +38,8 @@ public class ModeCreateArc extends ModeCreate {
   // instance variables
 
   /** The NetPort where the arc is paintn from */
-  private NetPort _startPort;
+  //private NetPort _startPort;
+  private Object _startPort;
 
   /** The Fig that presents the starting NetPort */
   private Fig _startPortFig;
@@ -46,7 +48,8 @@ public class ModeCreateArc extends ModeCreate {
   private FigNode _sourceFigNode;
 
   /** The new NetEdge that is being created */
-  private NetEdge _newEdge;
+  //private NetEdge _newEdge;
+  private Object _newEdge;
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -94,24 +97,25 @@ public class ModeCreateArc extends ModeCreate {
     Class arcClass;
 
     Fig f = _editor.hit(x, y);
+    GraphModel gm = _editor.getGraphModel();
+    if (!(gm instanceof MutableGraphModel)) f = null;
+    MutableGraphModel mgm = (MutableGraphModel) gm;
 
     if (f != null) {
       if (f instanceof FigNode) {
 	FigNode destFigNode = (FigNode) f;
 	/* If its a FigNode, then check within the  */
 	/* FigNode to see if a port exists */
-	NetPort foundPort = destFigNode.hitPort(x, y);
+	Object foundPort = destFigNode.hitPort(x, y);
 
 	if (foundPort != null && foundPort != _startPort) {
 	  Fig destPortFig = destFigNode.getPortFig(foundPort);
-	  _newEdge = _startPort.makeEdgeFor(foundPort);
-	  if (_newEdge == null) return true;
-	  if (_newEdge.connect(_startPort, foundPort)) {
- 	    _editor.net().addEdge(_newEdge);
+	  _newEdge = mgm.connect(_startPort, foundPort);
+	  if (null != _newEdge) {
 	    LayerManager lm = _editor.getLayerManager();
 // 	    FigEdge pers = (FigEdge) lm.presentationFor(_newEdge);
 // 	    if (pers == null)
-	    FigEdge pers = _newEdge.presentationFor(lm.getActiveLayer());
+	    FigEdge pers = ((NetEdge)_newEdge).presentationFor(lm.getActiveLayer());
 	    if (Dbg.on) Dbg.assert(pers != null, "FigEdge not found");
 	    _editor.add(pers); // adds it to the property sheet's universe
 	    _newItem.damagedIn(_editor);

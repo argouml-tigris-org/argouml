@@ -28,6 +28,7 @@ import java.awt.*;
 import java.util.*;
 import uci.util.*;
 import uci.gef.*;
+import uci.graph.*;
 
 /** An example application to show off <B>some</B> of the capabilities
  *  of the UCI Graph Editing Framework. This example is a basic drawing
@@ -72,7 +73,8 @@ public class FlexibleApplet extends Applet {
   private Editor ed;
 
   /** The net-level model to edit */
-  private NetList net;
+  //private NetList net;
+  private GraphModel gm;
 
   /** The example palette, shows SampleNode */
   Palette palette;
@@ -96,8 +98,8 @@ public class FlexibleApplet extends Applet {
   /** Construct a new FlexibleApplet */
   public FlexibleApplet() {
     System.out.println("making an example");
-    net = new NetList();
-    net.name("Sample Network");
+    gm = new DefaultGraphModel();
+    //net.name("Sample Network");
     palette = new SamplePalette();
     shapePalette = new PaletteFig();
     attrPalette = new PaletteAttr();
@@ -138,7 +140,7 @@ public class FlexibleApplet extends Applet {
     Component awt_comp;
     Dimension drawAreaSize = new Dimension(_drawAreaWidth, _drawAreaHeight);
     awt_comp = new ForwardingPanel(drawAreaSize);
-    ed = new Editor(net, awt_comp);
+    ed = new Editor(gm, awt_comp);
     ((ForwardingComponent)awt_comp).setEventHandler(ed);
     if (_spawnFrame) {
       System.out.println("spawning frame");
@@ -206,7 +208,7 @@ public class FlexibleApplet extends Applet {
     masterPalette = null;
     topPalette = null;
     ed = null;
-    net = null;
+    gm = null;
     palette = null;
     shapePalette = null;
     attrPalette = null;

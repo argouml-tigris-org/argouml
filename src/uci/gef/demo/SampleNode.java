@@ -47,10 +47,10 @@ public class SampleNode extends NetNode {
     */
 
   public void initialize(NetNode deft, Object model) {
-    addPort(east = new SamplePort(this));
-    addPort(west = new SamplePort(this));
-    addPort(north = new SamplePort2(this));
-    addPort(south = new SamplePort2(this));
+    addPort(east = new SamplePort2(this));
+    addPort(west = new SamplePort2(this));
+    addPort(north = new SamplePort(this));
+    addPort(south = new SamplePort(this));
    }
 
   public FigNode makePresentation(Layer lay) {
