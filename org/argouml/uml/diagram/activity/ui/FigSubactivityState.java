@@ -63,12 +63,21 @@ public class FigSubactivityState extends FigStateVertex {
     private static final int Y = 10;
     private static final int W = 90;
     private static final int H = 25;
+    
+    private static final int SX = 3;
+    private static final int SY = 3;
+    private static final int SW = 9;
+    private static final int SH = 5;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     private FigRRect cover;
     private FigGroup icon;
+    
+    private FigRRect s1;
+    private FigRRect s2;
+    private FigLine s3;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -77,7 +86,7 @@ public class FigSubactivityState extends FigStateVertex {
      * Main Constructor (called from file loading)
      */
     public FigSubactivityState() {
-        FigRRect bigPort = new FigRRect(X + 1, Y + 1, W - 2, H - 2, 
+        FigRRect bigPort = new FigRRect(X, Y, W, H, 
                 Color.cyan, Color.cyan);
         bigPort.setCornerRadius(bigPort.getHalfHeight());
         cover = new FigRRect(X, Y, W, H, Color.black, Color.white);
@@ -110,17 +119,17 @@ public class FigSubactivityState extends FigStateVertex {
      * @param y the y coordinate of the bottom corner
      */
     private void makeSubStatesIcon(int x, int y) {
-        FigRRect s1 = new FigRRect(x - 22, y + 3, 8, 6, 
+        s1 = new FigRRect(x - 22, y + 3, 8, 6, 
                 Color.black, Color.white);
-        FigRRect s2 = new FigRRect(x - 11, y + 9, 8, 6, 
+        s2 = new FigRRect(x - 11, y + 9, 8, 6, 
                 Color.black, Color.white);
         s1.setFilled(true);
         s2.setFilled(true);
         s1.setLineWidth(1);
         s2.setLineWidth(1);
-        s1.setCornerRadius(3);
-        s2.setCornerRadius(3);
-        FigLine s3 = new FigLine(x - 18, y + 6, x - 7, y + 12, Color.black);
+        s1.setCornerRadius(SH);
+        s2.setCornerRadius(SH);
+        s3 = new FigLine(x - 18, y + 6, x - 7, y + 12, Color.black);
         
         addFig(s3); // add them back to front
         addFig(s1);
@@ -167,7 +176,7 @@ public class FigSubactivityState extends FigStateVertex {
         Dimension nameDim = getNameFig().getMinimumSize();
         int w = nameDim.width + PADDING * 2;
         int h = nameDim.height + PADDING;
-        return new Dimension(w, h);
+        return new Dimension(Math.max(w, W / 2), Math.max(h, H / 2));
     }
 
     /**
@@ -179,10 +188,15 @@ public class FigSubactivityState extends FigStateVertex {
         Rectangle oldBounds = getBounds();
 
         getNameFig().setBounds(x + PADDING, y, w - PADDING * 2, h - PADDING);
-        getBigPort().setBounds(x + 1, y + 1, w - 2, h - 2);
+        getBigPort().setBounds(x, y, w, h);
         cover.setBounds(x, y, w, h);
         ((FigRRect) getBigPort()).setCornerRadius(h);
         cover.setCornerRadius(h);
+        
+        s1.setBounds(x + w - 2 * (SX + SW), y + h - 1 * (SY + SH), SW, SH);
+        s2.setBounds(x + w - 1 * (SX + SW), y + h - 2 * (SY + SH), SW, SH); 
+        s3.setShape(x + w - (SX * 2 + SW + SW / 2), y + h - (SY + SH / 2), 
+                x + w - (SX + SW / 2), y + h - (SY * 2 + SH + SH / 2));
 
         calcBounds(); 
         updateEdges();
@@ -273,8 +287,10 @@ public class FigSubactivityState extends FigStateVertex {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        if (getOwner() != null)
-            getNameFig().setText(Notation.generate(this, getOwner()));
+        if (getOwner() != null) {
+            String s = Notation.generate(this, getOwner());
+            if (s != null) getNameFig().setText(s);
+        }
     }
 
     /**
