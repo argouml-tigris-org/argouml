@@ -53,7 +53,7 @@ public class PropPanelCallEvent extends PropPanelEvent {
     public void initialize() {
         super.initialize();
        
-        // TODO: make the next list into a scrollbox
+        // TODO: make the next list into a scrollbox (issue 2288)
         JList operationList = new UMLLinkedList(new UMLCallEventOperationListModel());
         addField(Translator.localize("UMLMenu", "label.operations"), new JScrollPane(operationList));
     }
