@@ -36,6 +36,8 @@ import org.argouml.model.ModelFacade;
  * break when the trash is empty.  E.g., Class X's superclass is in
  * the trash, you must fix this before you empty the trash. 
  */
+// TODO: Move to the Model component.
+// Problem: there are public static attributes so it is hard to make a proxy
 public class Trash {
     protected static Logger cat = 
         Logger.getLogger(Trash.class);
