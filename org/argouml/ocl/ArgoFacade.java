@@ -77,15 +77,6 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
 	if (target != null && ModelFacade.getName(target).equals(name)) {
 	    return new ArgoAny(target);
 	} else {
-	    /*
-	     * Changed 2001-10-18 STEFFEN ZSCHALER
-	     *
-	     * Was:
-	     *
-	     MClassifier classifier = p.findTypeInModel(name,
-	     p.getCurrentNamespace());
-	     *
-	     */
 	    Object classifier = p.findTypeInModel(name, p.getModel());
 
 	    if (classifier == null) {
@@ -151,8 +142,8 @@ class ArgoAny implements Any, Type2 {
 	boolean isSet = false, isSequence = false; // cannot be Bag
 
 	// first search for appropriate attributes
-	java.util.Collection attributes =
-	    Model.getUmlHelper().getCore().getAttributesInh(classifier);
+	Collection attributes =
+	    Model.getCoreHelper().getAttributesInh(classifier);
 	Iterator iter = attributes.iterator();
 	while (iter.hasNext() && foundAttribType == null) {
 	    Object attr = iter.next();
@@ -162,8 +153,8 @@ class ArgoAny implements Any, Type2 {
 	}
 
 	// look for associations
-	java.util.Collection associationEnds =
-	    Model.getUmlHelper().getCore().getAssociateEndsInh(classifier);
+	Collection associationEnds =
+	    Model.getCoreHelper().getAssociateEndsInh(classifier);
 	Iterator asciter = associationEnds.iterator();
 	while (asciter.hasNext() && foundAssocType == null) {
 	    Object ae = asciter.next(); //MAssociationEnd
@@ -305,8 +296,7 @@ class ArgoAny implements Any, Type2 {
 	    }
 	}
 
-	Object rp =
-	    Model.getUmlHelper().getCore().getReturnParameter(foundOp);
+	Object rp = Model.getCoreHelper().getReturnParameter(foundOp);
 
 	if (rp == null || ModelFacade.getType(rp) == null) {
 	    LOG.warn("WARNING: supposing return type void!");
@@ -324,7 +314,7 @@ class ArgoAny implements Any, Type2 {
 	if (type instanceof ArgoAny) {
 	    ArgoAny other = (ArgoAny) type;
 	    return equals(type)
-		|| Model.getUmlHelper().getCore()
+		|| Model.getCoreHelper()
 		    .getAllSupertypes(classifier).contains(other.classifier);
 	} else {
 	    return false;
@@ -406,7 +396,7 @@ class ArgoAny implements Any, Type2 {
      * @param operation The operation.
      * @param callName The name that we are trying to match.
      * @param callParams The parameters that we are trying to match.
-     * @return <tt>true</tt> if the given Operation names and parameters
+     * @return <code>true</code> if the given Operation names and parameters
      *	       match the given name and parameters.
      */
     protected boolean operationMatchesCall(Object operation,

@@ -304,7 +304,7 @@ public class Modeller {
 
             // try find an existing permission
             Iterator dependenciesIt =
-                Model.getUmlHelper().getCore()
+                Model.getCoreHelper()
 		    .getDependencies(mPackage, parseState.getComponent())
 		        .iterator();
             while (dependenciesIt.hasNext()) {
@@ -340,7 +340,7 @@ public class Modeller {
 
                 // try find an existing permission
                 Iterator dependenciesIt =
-		    Model.getUmlHelper().getCore()
+		    Model.getCoreHelper()
                         .getDependencies(mClassifier,
 					 parseState.getComponent())
                             .iterator();
@@ -597,7 +597,7 @@ public class Modeller {
 
             // try find an existing residency
             Iterator dependenciesIt =
-		Model.getUmlHelper().getCore()
+		Model.getCoreHelper()
                     .getDependencies(mClassifier, parseState.getComponent())
 		        .iterator();
             while (dependenciesIt.hasNext()) {
@@ -1293,7 +1293,7 @@ public class Modeller {
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
         Collection stereos =
-            Model.getUmlHelper().getExtensionMechanisms()
+            Model.getExtensionMechanismsHelper()
 	        .getAllPossibleStereotypes(models, me);
         if (stereos != null && stereos.size() > 0) {
             Iterator iter = stereos.iterator();

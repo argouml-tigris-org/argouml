@@ -371,8 +371,8 @@ public class CollaborationsFactoryImpl
             throw new IllegalArgumentException("Argument is not a link");
         }
 
-        Object from = nsmodel.getUmlHelper().getCore().getSource(link);
-        Object to = nsmodel.getUmlHelper().getCore().getDestination(link);
+        Object from = nsmodel.getCoreHelper().getSource(link);
+        Object to = nsmodel.getCoreHelper().getDestination(link);
         Object classifierRoleFrom =
             ModelFacade.getClassifiers(from).iterator().next();
         Object classifierRoleTo =
