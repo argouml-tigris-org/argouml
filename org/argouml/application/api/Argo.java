@@ -32,7 +32,6 @@ import org.apache.log4j.*;
 import org.apache.log4j.spi.*;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.application.modules.ModuleLoader;
-import org.argouml.util.logging.ThrowableRenderer;
 
 import org.workingfrog.i18n.util.Translator;
 
@@ -293,25 +292,14 @@ public class Argo
     }
 
     static {
-	// Create a throwable renderer
-	ThrowableRenderer tr = new ThrowableRenderer();
 	// Create a separate hierarchy for the argo logger
 	Hierarchy hier = new Hierarchy(new RootCategory(Level.INFO));
-	// Add the ThrowableRenderer
-	hier.getRendererMap().put(Throwable.class, tr);
 	// Set up the argo console logger in its own hierarchy
 	Logger cat = hier.getLogger(CONSOLE_LOG);
 	cat.addAppender(new ConsoleAppender(
 	    new PatternLayout(System.getProperty(ARGO_CONSOLE_PREFIX, "")
 			      + "%m%n"),
 	    ConsoleAppender.SYSTEM_OUT));
-
-	// Add the throwable renderer
-	LoggerRepository lr = cat.getRootLogger().getLoggerRepository();
-	if (!(lr instanceof Hierarchy))
-	    throw new IllegalArgumentException("LoggerRepository "
-					       + "is not a Hierarchy");
-	((Hierarchy) lr).getRendererMap().put(Throwable.class, tr);
 
 	if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
 	    cat.getRoot().getLoggerRepository().setThreshold(Level.OFF);
