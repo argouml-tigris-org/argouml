@@ -21,6 +21,8 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+//$Id$
+
 package org.argouml.uml.reveng;
 
 import java.io.*;
@@ -40,6 +42,9 @@ import org.argouml.ui.*;
 import org.argouml.application.api.*;
 import org.argouml.util.logging.*;
 import org.argouml.cognitive.Designer;
+import org.argouml.util.osdep.OsUtil;
+import org.argouml.util.FileFilters;
+import org.argouml.util.SuffixFilter;
 
 import org.apache.log4j.Category;
 
@@ -77,6 +82,59 @@ public class Import {
     // log4j logging
     private static Category cat = Category.getInstance(org.argouml.uml.reveng.Import.class);
 
+	public static final String separator = "/"; //System.getProperty("file.separator");
+
+	public Import() {
+		ProjectBrowser pb = ProjectBrowser.TheInstance;
+		Project p = ProjectManager.getManager().getCurrentProject();
+
+		try {
+			String directory = Globals.getLastDirectory();
+			JFileChooser chooser = OsUtil.getFileChooser(directory);
+
+			if (chooser == null) chooser = OsUtil.getFileChooser();
+
+			chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+			chooser.setDialogTitle("Import sources");
+			SuffixFilter filter = FileFilters.JavaFilter;
+			chooser.addChoosableFileFilter(filter);
+			// chooser.setFileFilter(filter);
+	    
+		chooser.setAccessory(Import.getConfigPanel());
+
+			int retval = chooser.showOpenDialog(pb);
+
+			if (retval == 0) {
+				File theFile = chooser.getSelectedFile();
+				if (theFile != null) {
+					String path = chooser.getSelectedFile().getParent();
+					String filename = chooser.getSelectedFile().getName();
+					filename = path + separator + filename;
+					Globals.setLastDirectory(path);
+					if (filename != null) {
+						pb.showStatus("Parsing " + filename + "...");
+						Import.doFile(p, theFile);
+
+//						  p.postLoad();
+//
+//			// Check if any diagrams where modified and the project
+//			// should be saved before exiting.
+//			if(Import.needsSave()) {
+//				p.setNeedsSave(true);
+//			}
+//
+//						  ProjectManager.getManager().setCurrentProject(p);
+//						  pb.showStatus("Parsed " + filename);
+
+
+						return;
+					}
+				}
+			}
+		} catch (Exception exception) {
+			cat.error("got an Exception in ActionImportFromSources", exception);
+		}
+	}
     /**
      * Get the panel that lets the user set reverse engineering
      * parameters.
