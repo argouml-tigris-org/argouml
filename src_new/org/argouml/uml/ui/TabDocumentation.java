@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,8 @@ package org.argouml.uml.ui;
 
 import org.argouml.application.api.*;
 import org.argouml.ui.*;
+import org.argouml.util.ConfigLoader;
+import org.argouml.swingext.LabelledLayout;
 import ru.novosoft.uml.foundation.core.*;
 import javax.swing.*;
 
@@ -47,6 +49,13 @@ import javax.swing.*;
  * Note all fields in the TabDocumentation are
  * added automatically to the tagged value tab
  * view.
+ *
+ * refactored by: raphael-langerhorst@gmx.at; 5th April 03
+ *      changes: uses LabelledLayout instead of GridBagLayout
+ *              uses the new event pump introduced late 2002 by Jaap
+ *
+ * UMLModelElementTaggedValueDocument is used to access the tagged values 
+ * of an MModelElement
  */
 public class TabDocumentation extends PropPanel {
 
@@ -55,37 +64,48 @@ public class TabDocumentation extends PropPanel {
   
     /**
      * Construct new documentation tab
-     * @todo convert to use LabelledLayout(Bob Tarling)
      */
     public TabDocumentation() {
-        super("tab.documentation", null, 2); // Change this to call labelled layout constructor
-        addCaption(Argo.localize(BUNDLE, "docpane.label.author") + ":",1,0,0);
-        addField(new UMLTextField(this,new UMLTaggedTextProperty("author")),1,0,0);
+
+        //uses the new LabelledLayout;
+        //TODO: the title of the prop panel is localized using the localisation of documentation
+        //- should this change? (Raphael)
+        super(Argo.localize(BUNDLE,"docpane.label.documentation"),ConfigLoader.getTabPropsOrientation());
+//        super("tab.documentation", null, 2); // Change this to call labelled layout constructor
+
+        addField(Argo.localize(BUNDLE, "docpane.label.author") + ":",
+                 new UMLTextField2(new UMLModelElementTaggedValueDocument("author")));
+
         //unknown where this information is stored; it does not go to myproject.argo (xml file)
-        addCaption(Argo.localize(BUNDLE, "docpane.label.version") + ":",2,0,0);
-        addField(new UMLTextField(this,new UMLTaggedTextProperty("version")),2,0,0);
+        addField(Argo.localize(BUNDLE, "docpane.label.version") + ":",
+                 new UMLTextField2(new UMLModelElementTaggedValueDocument("version")));
 
-        addCaption(Argo.localize(BUNDLE, "docpane.label.since") + ":",3,0,0);
-        addField(new UMLTextField(this,new UMLTaggedTextProperty("since")),3,0,0);
+        addField(Argo.localize(BUNDLE, "docpane.label.since") + ":",
+                 new UMLTextField2(new UMLModelElementTaggedValueDocument("since")));
 
-        addCaption(Argo.localize(BUNDLE, "docpane.label.deprecated") + ":",4,0,0);
-        addField(new UMLCheckBox("",this,new UMLTaggedBooleanProperty("deprecated")),4,0,0);
+        //TODO: change UMLCheckBox to UMLCheckBox2 (Raphael)
+        addField(Argo.localize(BUNDLE, "docpane.label.deprecated") + ":",
+                 new UMLCheckBox("",this,new UMLTaggedBooleanProperty("deprecated")));
 
-        addCaption(Argo.localize(BUNDLE, "docpane.label.see") + ":",5,0,1);
-        UMLTextArea _see = new UMLTextArea(this,new UMLTaggedTextProperty("see"));
+        UMLTextArea2 _see = new UMLTextArea2(new UMLModelElementTaggedValueDocument("see"));
+        _see.setRows(2);
         _see.setLineWrap(true);
         _see.setWrapStyleWord(true);
         JScrollPane spSee = new JScrollPane();
         spSee.getViewport().add(_see);
-        addField(spSee,5,0,1);
+        addField(Argo.localize(BUNDLE, "docpane.label.see") + ":",spSee);
 
-        addCaption(Argo.localize(BUNDLE, "docpane.label.documentation") + ":",0,1,1);
-        UMLTextArea _doc = new UMLTextArea(this,new UMLTaggedTextProperty("documentation"));
+        //make new column with LabelledLayout
+        add(LabelledLayout.getSeperator());
+
+        UMLTextArea2 _doc = new UMLTextArea2(new UMLModelElementTaggedValueDocument("documentation"));
+
+        _doc.setRows(2);
         _doc.setLineWrap(true);
         _doc.setWrapStyleWord(true);
         JScrollPane spDocs = new JScrollPane();
         spDocs.getViewport().add(_doc);
-        addField(spDocs,0,1,1);
+        addField(Argo.localize(BUNDLE, "docpane.label.documentation") + ":",spDocs);
     }
 
     public boolean shouldBeEnabled() {
