@@ -225,8 +225,15 @@ public class ArgoParser extends SAXParserBase {
      * @throws SAXException on any error parsing the member XML.
      */
     protected void handleMember(XMLElement e) throws SAXException {
-        LOG.info("Handle member");
-        memberList.add(e.getAttribute("type"));
+        String type = e.getAttribute("type");
+        // The members list dictates the order in which the
+        // members are loaded. So make sure that XMI is at the top
+        // and others below.
+        if (type.equals("xmi")) {
+            memberList.add(0, type);
+        } else {
+            memberList.add(type);
+        }
     }
 
     /**
