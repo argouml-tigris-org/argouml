@@ -58,6 +58,7 @@ public class GoCollaborationInteraction extends AbstractGoRule {
   }
 
   public int getIndexOfChild(Object parent, Object child) {
+    if (!(parent instanceof MCollaboration)) return -1;
     Vector children = new Vector(getChildren(parent));
     if (children != null && children.contains(child))
       return children.indexOf(child);
