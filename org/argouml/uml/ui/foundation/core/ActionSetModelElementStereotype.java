@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
@@ -71,14 +72,18 @@ public class ActionSetModelElementStereotype extends UMLChangeAction {
                 target = (MModelElement) combo.getTarget();
                 oldStereo = target.getStereotype();
             }
-            if (newStereo != oldStereo && target != null && newStereo != null) {
-                ExtensionMechanismsHelper.getHelper().setStereoType(target, newStereo);
-            } else
-		if (combo.getSelectedItem() != null && combo.getSelectedItem().equals("") && oldStereo != null && target != null) {
-		    target.setStereotype(null);
-		}
+	    if ("".equals(combo.getSelectedItem()))
+		newStereo = null;
         }
-        
+        if (newStereo != oldStereo && target != null) {
+	    if (newStereo != null) {
+		newStereo = (MStereotype)
+			ModelManagementHelper.getHelper().getCorrespondingElement(
+				  newStereo,
+				  target.getModel());
+	    }
+            ExtensionMechanismsHelper.getHelper().setStereoType(target, newStereo);
+        }
     }
             
     

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,8 +25,17 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
+
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -58,11 +67,52 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
     }
 
     /**
+     * Helper method for buildModelList
+     *
+     * <p>Adds those elements from source that do not have the same path as
+     * any path in paths to elements, and its path to paths. Thus elements
+     * will never contain two objects with the same path, unless they are
+     * added by other means.
+     */
+    private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
+							Collection source) {
+        Iterator it2 = source.iterator();
+
+	while (it2.hasNext()) {
+	    Object obj = it2.next();
+	    Object path = ModelManagementHelper.getHelper().getPath(obj);
+	    if (!paths.contains(path)) {
+	        paths.add(path);
+	        elements.add(obj);
+	    }
+	}
+    }
+
+    /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
         MModelElement elem = (MModelElement) getTarget();
-        setElements(ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(elem));
+        Set paths = new HashSet();
+        Set elements = new TreeSet(new Comparator() {
+            public int compare(Object o1, Object o2) {
+                try {
+                    String name1 = o1 instanceof String ? (String) o1 : ModelFacade.getName(o1);
+                    String name2 = o2 instanceof String ? (String) o2 : ModelFacade.getName(o2);
+                    name1 = (name1 != null ? name1 : "");
+                    name2 = (name2 != null ? name2 : "");
+
+                    return name1.compareTo(name2);
+                } catch (Exception e) {
+                    throw new ClassCastException(e.getMessage());
+                }
+            }});
+	addAllUniqueModelElementsFrom(
+	    elements,
+	    paths,
+	    ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(elem)
+	    );
+        setElements(elements);
     }   
 
     /**
