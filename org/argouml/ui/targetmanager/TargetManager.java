@@ -160,7 +160,9 @@ public final class TargetManager {
                     _newTarget = null;
                 }
             } else {
-                _targets = new Object[0];
+                Object[] targets = new Object[] {null};
+                fireTargetSet(targets);
+                _targets = targets;
                 _modelTarget = null;
                 _figTarget = null;
             }

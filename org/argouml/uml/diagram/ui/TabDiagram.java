@@ -36,14 +36,17 @@ import org.apache.log4j.Category;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.event.GraphSelectionEvent;
 import org.tigris.gef.event.GraphSelectionListener;
 import org.tigris.gef.event.ModeChangeEvent;
 import org.tigris.gef.event.ModeChangeListener;
 import org.tigris.gef.graph.presentation.JGraph;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.ToolBar;
 
 /**
@@ -206,10 +209,7 @@ public class TabDiagram
         Vector sels = gse.getSelections();
         ProjectBrowser pb = ProjectBrowser.getInstance();
 
-        if (sels.size() == 1)
-            pb.setTarget(sels.elementAt(0));
-        else
-            pb.setTarget(null);
+        TargetManager.getInstance().setTargets(sels);
 
     }
 
@@ -277,10 +277,17 @@ public class TabDiagram
 
     private void select(Object[] targets) {
         _jgraph.deselectAll();
+        LayerManager manager = _jgraph.getEditor().getLayerManager();
+        Vector figList = new Vector();
         for (int i = 0; i < targets.length; i++) {
-           
-                _jgraph.selectByOwnerOrFig(targets[i]);
+           Object target = (targets[i] instanceof Fig && manager.getContents().contains(targets[i])) ? targets[i] : manager.presentationFor(targets[i]);
+           if (target != null ) {
+               figList.add(target);
+           }
         }
+        _jgraph.select(figList);
+                
+        
     }
 
 }

@@ -37,24 +37,23 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
-
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
-import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
-
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
-import ru.novosoft.uml.foundation.core.MComment;
 
 /**
  * This is the JTree that is the gui component view of the model navigation and
@@ -67,11 +66,10 @@ import ru.novosoft.uml.foundation.core.MComment;
  *
  * $Id$
  */
-public class DisplayTextTree 
-    extends JTree {
-    
+public class DisplayTextTree extends JTree implements TargetListener {
+
     protected static Category cat = Category.getInstance(DisplayTextTree.class);
-    
+
     /**
      * A Map helping the tree maintain a consistent expanded paths state.
      *
@@ -81,61 +79,62 @@ public class DisplayTextTree
      *</pre>
      */
     private Hashtable _expandedPathsInModel;
-    
+
     /** needs documenting */
     private boolean _reexpanding;
-    
+
     /** holds state info about whether to display stereotypes in the nav pane.*/
     private boolean showStereotype;
-    
+
     /** Runnable to help avoid too many tree updates. */
     private DisplayTextTreeRun _doit;
-    
+
     /** needs documenting */
     public DisplayTextTree() {
-        
+
         super();
-        
+
         setCellRenderer(new UMLTreeCellRenderer());
         putClientProperty("JTree.lineStyle", "Angled");
         setRootVisible(false);
         setShowsRootHandles(true);
-        
+
         // can save a significant amount of rendering time.
         this.setLargeModel(true); // works for now.
         //this.setRowHeight(18); // can't use this yet
-        
-        showStereotype = Configuration
-                            .getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+
+        showStereotype =
+            Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
         _expandedPathsInModel = new Hashtable();
         _reexpanding = false;
         _doit = new DisplayTextTreeRun(cat, this);
     }
-    
+
     // ------------ methods that override JTree methods ---------
-    
+
     /**
      * override default JTree implementation to display the
      * appropriate text for any object that will be displayed in
      * the Nav pane or todo list.
      */
     public String convertValueToText(
-                    Object value,
-                    boolean selected,
-                    boolean expanded,
-                    boolean leaf,
-                    int row,
-                    boolean hasFocus) {
-        
-                        //cat.debug("convertValueToText");
-                        
+        Object value,
+        boolean selected,
+        boolean expanded,
+        boolean leaf,
+        int row,
+        boolean hasFocus) {
+
+        //cat.debug("convertValueToText");
+
         // do model elements first
-        if (value instanceof MModelElement){
-            
-            String name=null;
-            
-             // Jeremy Bennett patch
-            if(value instanceof MTransition || value instanceof MExtensionPoint){
+        if (value instanceof MModelElement) {
+
+            String name = null;
+
+            // Jeremy Bennett patch
+            if (value instanceof MTransition
+                || value instanceof MExtensionPoint) {
                 name = GeneratorDisplay.Generate(value);
             }
             // changing the label in case of comments
@@ -143,21 +142,20 @@ public class DisplayTextTree
             // the content of the comment causing the total comment to be
             // displayed in the navperspective
             else if (value instanceof MComment) {
-                name = ((MComment)value).getName();
+                name = ((MComment) value).getName();
                 if (name != null && name.length() > 10) {
                     name = name.substring(0, 10) + "...";
                 }
-            }
-            else{
-                name = ((MModelElement)value).getName();
+            } else {
+                name = ((MModelElement) value).getName();
             }
 
-            
-            if (name == null || name.equals("")){
-                
-                name = "(anon " +((MModelElement)value).getUMLClassName() + ")";
+            if (name == null || name.equals("")) {
+
+                name =
+                    "(anon " + ((MModelElement) value).getUMLClassName() + ")";
             }
-            
+
             // Look for stereotype
             if (showStereotype) {
                 MStereotype st = ((MModelElement) value).getStereotype();
@@ -165,10 +163,10 @@ public class DisplayTextTree
                     name += " " + GeneratorDisplay.Generate(st);
                 }
             }
-            
+
             return name;
         }
-        
+
         if (value instanceof ToDoItem) {
             return ((ToDoItem) value).getHeadline();
         }
@@ -181,33 +179,33 @@ public class DisplayTextTree
                 tagName = "(anon)";
             return ("1-" + tagName);
         }
-        
+
         if (value instanceof Diagram) {
             return ((Diagram) value).getName();
         }
-        if(value != null)
+        if (value != null)
             return value.toString();
         else
             return "-";
     }
-    
+
     /** specific to the Navigator tree */
     public void fireTreeWillExpand(TreePath path) {
-        
-        showStereotype = Configuration
-        .getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+
+        showStereotype =
+            Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
     }
-    
+
     /**
      * Tree MModel Expansion notification.
      *
      * @param e  a Tree node insertion event
      */
     public void fireTreeExpanded(TreePath path) {
-        
+
         super.fireTreeExpanded(path);
-        
-         cat.debug("fireTreeExpanded");
+
+        cat.debug("fireTreeExpanded");
         if (_reexpanding)
             return;
         if (path == null || _expandedPathsInModel == null)
@@ -216,38 +214,37 @@ public class DisplayTextTree
         expanded.removeElement(path);
         expanded.addElement(path);
     }
-    
+
     /** needs documenting */
     public void fireTreeCollapsed(TreePath path) {
-        
+
         super.fireTreeCollapsed(path);
-        
+
         cat.debug("fireTreeCollapsed");
         if (path == null || _expandedPathsInModel == null)
             return;
         Vector expanded = getExpandedPaths();
         expanded.removeElement(path);
     }
-    
+
     /** needs documenting */
     public void setModel(TreeModel newModel) {
-        
-        
+
         cat.debug("setModel");
         Object r = newModel.getRoot();
         if (r != null)
             super.setModel(newModel);
         reexpand();
     }
-    
+
     // ------------- other methods ------------------
-    
+
     /** needs documenting
      *
      * called in reexpand()
      */
     protected Vector getExpandedPaths() {
-        
+
         cat.debug("getExpandedPaths");
         TreeModel tm = getModel();
         Vector res = (Vector) _expandedPathsInModel.get(tm);
@@ -257,7 +254,7 @@ public class DisplayTextTree
         }
         return res;
     }
-    
+
     /** Signals to the tree that something has changed and it is best
      * to update the tree.
      *
@@ -279,11 +276,11 @@ public class DisplayTextTree
      * @see org.argouml.uml.ui.UMLReflectionListModel
      */
     public void forceUpdate() {
-        
+
         cat.debug("forceUpdate");
         _doit.onceMore();
     }
-    
+
     /**
      * Countpart to forceUpdate() that only updates viewable
      * rows, instead of rebuilding the whole tree; a vast improvement
@@ -293,33 +290,33 @@ public class DisplayTextTree
      *
      * @see org.argouml.model.uml.UmlModelListener
      */
-    public void forceUpdate(Object changed){
-        
-        NavPerspective model = (NavPerspective)getModel();
+    public void forceUpdate(Object changed) {
+
+        NavPerspective model = (NavPerspective) getModel();
         if (model instanceof NavPerspective) {
-            
+
             //if the changed object is added to the model
             //in a path that was previously expanded, but is no longer
             // then we need to clear the cache to prevent a model corruption.
             this.clearToggledPaths();
-            
+
             // update any relevant rows
             int rows = this.getRowCount();
-            for(int row=0; row < rows; row++){
-                
+            for (int row = 0; row < rows; row++) {
+
                 TreePath path = this.getPathForRow(row);
                 Object rowItem = path.getLastPathComponent();
-                
-                if(rowItem == changed){
+
+                if (rowItem == changed) {
 
                     model.fireTreeStructureChanged(changed, path.getPath());
                 }
             }
-            
+
         }
         reexpand();
     }
-        
+
     /**
      * This is the real update function. It won't return until the tree
      * really is updated.
@@ -331,7 +328,7 @@ public class DisplayTextTree
      * @since 0.13.1
      */
     void doForceUpdate() {
-        
+
         cat.debug("doForceUpdate");
         Object rootArray[] = new Object[1];
         rootArray[0] = getModel().getRoot();
@@ -346,7 +343,7 @@ public class DisplayTextTree
         }
         reexpand();
     }
-    
+
     /** notifies the tree model that the structure has changed,
      * this causes the nodes to colapse, then we re-expand the ones
      * that were open before to maintain the same viewable tree.
@@ -354,13 +351,13 @@ public class DisplayTextTree
      * called by doForceUpdate(), setModel()
      */
     private void reexpand() {
-        
+
         cat.debug("reexpand");
         if (_expandedPathsInModel == null)
             return;
-        
+
         _reexpanding = true;
-        
+
         java.util.Enumeration enum = getExpandedPaths().elements();
         while (enum.hasMoreElements()) {
             TreePath path = (TreePath) enum.nextElement();
@@ -368,7 +365,7 @@ public class DisplayTextTree
         }
         _reexpanding = false;
     }
-    
+
     /**
      * This methods sets the target of the treemodel to the given object. It's
      * a means to set the target programmatically from within the setTarget
@@ -383,36 +380,79 @@ public class DisplayTextTree
      * @param target a selected Fig or Model element.
      */
     public void setTarget(Object target) {
-        
+
         cat.debug("setTarget");
         // specific to the Navigator tree
         if (getModel() instanceof NavPerspective) {
-            
-            if (target instanceof Fig) {
-                target = ((Fig)target).getOwner();
-            }
-            
-        }
-            
-            // clear the tree selection
-            this.clearSelection();
-            
-            // add the any relevant rows
-            int rows = this.getRowCount();
-            for(int row=0; row < rows; row++){
-                
-                TreePath path = this.getPathForRow(row);
-                Object rowItem = path.getLastPathComponent();
-                
-                if(rowItem == target){
-                    this.addSelectionRow(row);
-                    this.scrollRowToVisible(row);
-                }
-            }
-    }
-    
-} /* end class DisplayTextTree */
 
+            if (target instanceof Fig) {
+                target = ((Fig) target).getOwner();
+            }
+
+        }
+
+        // clear the tree selection
+        this.clearSelection();
+
+        // add the any relevant rows
+        int rows = this.getRowCount();
+        for (int row = 0; row < rows; row++) {
+
+            TreePath path = this.getPathForRow(row);
+            Object rowItem = path.getLastPathComponent();
+
+            if (rowItem == target) {
+                this.addSelectionRow(row);
+                this.scrollRowToVisible(row);
+            }
+        }
+    }
+    private void setTargets(Object[] targets) {
+        if (getModel() instanceof NavPerspective) {
+            clearSelection();
+            int rowToSelect = 0;
+            for (int i = 0; i < targets.length; i++) {
+                Object target = targets[i];
+                target =
+                    target instanceof Fig ? ((Fig) target).getOwner() : target;
+                int rows = getRowCount();
+                for (int j = 0; j < rows; j++) {
+                    Object rowItem = getPathForRow(j).getLastPathComponent();
+                    if (rowItem == target) {
+                        addSelectionRow(j);
+                        if (rowToSelect == 0) {
+                            rowToSelect = j;
+                        }
+                    }
+                }
+                scrollRowToVisible(rowToSelect);
+            }
+        }
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+        setTargets(e.getNewTargets());
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setTargets(e.getNewTargets());
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTargets(e.getNewTargets());
+
+    }
+
+} /* end class DisplayTextTree */
 
 /**
  * Because there <strong>may</strong> be many calls from Argo to update the tree view in
@@ -430,30 +470,31 @@ class DisplayTextTreeRun implements Runnable {
 
     /** needs documenting */
     //protected Category cat;
-    protected static Category cat = Category.getInstance(DisplayTextTreeRun.class);
-    
+    protected static Category cat =
+        Category.getInstance(DisplayTextTreeRun.class);
+
     /** needs documenting */
     private DisplayTextTree _tree;
-    
+
     /** needs documenting */
     int _timesToRun;
-    
+
     /** needs documenting */
     boolean _queued;
-    
+
     /** needs documenting */
     public DisplayTextTreeRun(Category c, DisplayTextTree t) {
-        
+
         cat.debug("DisplayTextTreeRun constructor");
         //cat = c;
         _tree = t;
         _timesToRun = 0;
         _queued = false;
     }
-    
+
     /** needs documenting */
     public synchronized void onceMore() {
-        
+
         cat.debug("onceMore");
         if (!_queued) {
             _queued = true;
@@ -461,14 +502,14 @@ class DisplayTextTreeRun implements Runnable {
         }
         _timesToRun++;
     }
-    
+
     /** needs documenting */
     public synchronized void run() {
-        
+
         cat.debug("run");
         if (_timesToRun > 100)
             cat.debug("" + _timesToRun + " forceUpdates encountered.");
-        
+
         if (_timesToRun > 0) {
             // another forceUpdate was seen, wait again
             _queued = true;
