@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -66,17 +66,16 @@ public class ActionSetElementOwnershipVisibility extends AbstractAction {
             if (org.argouml.model.ModelFacade.isAModelElement(target)) {
                 Object m = /*(MModelElement)*/ target;
                 String command = e.getActionCommand();
+
                 if (command.equals(PUBLIC_ACTION_COMMAND)) {
                     ModelFacade.setVisibility(m, ModelFacade.PUBLIC_VISIBILITYKIND);
-                    
-                } else
-		    if (command.equals(PRIVATE_ACTION_COMMAND)) {
-			ModelFacade.setVisibility(m, ModelFacade.PRIVATE_VISIBILITYKIND);
-		    } else
-			if (command.equals(PROTECTED_ACTION_COMMAND)) {
-			    ModelFacade.setVisibility(m, ModelFacade.PROTECTED_VISIBILITYKIND);
-			} else
-			    throw new IllegalArgumentException("Illegal action. Actioncommand was not correct. It was " + command);
+                } else if (command.equals(PRIVATE_ACTION_COMMAND)) {
+		    ModelFacade.setVisibility(m, ModelFacade.PRIVATE_VISIBILITYKIND);
+		} else if (command.equals(PROTECTED_ACTION_COMMAND)) {
+		    ModelFacade.setVisibility(m, ModelFacade.PROTECTED_VISIBILITYKIND);
+		} else {
+		    throw new IllegalArgumentException("Illegal action. Actioncommand was not correct. It was " + command);
+		}
             }
         }
     }
