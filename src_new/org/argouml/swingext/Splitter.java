@@ -104,12 +104,16 @@ public class Splitter extends JComponent {
      * The quick hide buttons
      */
     ArrowButton buttonNorth = null;
+    
+    /**
+     * The quick hide buttons
+     */
     ArrowButton buttonSouth = null;
     
     /**
      * Component which knows how to paint the split divider.
     **/
-    private BasicSplitPaneDivider _divider = null;
+    private BasicSplitPaneDivider divider = null;
     
     /**
      * Padding around the JSplitPane that is not included in the divider
@@ -125,19 +129,19 @@ public class Splitter extends JComponent {
     /**
      * The constructor
      *
-     * @param orientation A Horizontal or Vertical object to
+     * @param o A Horizontal or Vertical Orientation object to
      * indicate whether this splitter is designed to seperate
      * components laid out horizontally or vertically.
      */ 
-    public Splitter(Orientation orientation) {
+    public Splitter(Orientation o) {
         super();
         
-        this.orientation = orientation;
+        this.orientation = o;
 
         // Create a JSplitPane for the purpose of extracting the
         // divider UI and determining the splitter size.
         JSplitPane splitpane;
-        if (orientation == HORIZONTAL_SPLIT) {
+        if (o == HORIZONTAL_SPLIT) {
             splitpane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
             splitterSize =
 		Math.max(splitpane.getPreferredSize().width - DIVIDER_PADDING,
@@ -149,7 +153,7 @@ public class Splitter extends JComponent {
 			 MIN_SPLITTER_SIZE);
         }
 
-        setLayout(new SerialLayout(orientation.getPerpendicular()));
+        setLayout(new SerialLayout(o.getPerpendicular()));
         setSize(splitterSize, splitterSize);
         setPreferredSize(this.getSize());
 
@@ -158,11 +162,11 @@ public class Splitter extends JComponent {
         // will still work, but the divider area will appear empty. 
         SplitPaneUI ui = splitpane.getUI();
         if (ui instanceof BasicSplitPaneUI)	{
-            _divider = ((BasicSplitPaneUI) ui).createDefaultDivider();
-            _divider.setSize(getSize());
+            divider = ((BasicSplitPaneUI) ui).createDefaultDivider();
+            divider.setSize(getSize());
         }
 
-        setCursor(orientation.getCursor());
+        setCursor(o.getCursor());
         
         MyMouseListener myMouseListener = new MyMouseListener();
         addMouseListener(myMouseListener);
@@ -174,6 +178,8 @@ public class Splitter extends JComponent {
      *
      * @param side the side of the splitter to place the component
      * being one of the constants NORTH, SOUTH, EAST or WEST
+     *
+     * @param comp the component to be resized
      */
     public void registerComponent(int side, Component comp)
     {
@@ -243,7 +249,7 @@ public class Splitter extends JComponent {
         }
     }
 
-    /*
+    /**
      * Hide or restore the component currently selected as the quick
      * hide component.
      */
@@ -278,31 +284,37 @@ public class Splitter extends JComponent {
 
     /**
      * Resizes the divider delegate when this component is resized.
-    **/
+     *
+     * @see java.awt.Component#setSize(java.awt.Dimension)
+     */
     public void setSize(Dimension d) {
         super.setSize(d);
-        if (_divider != null) {
-            _divider.setSize(d);
+        if (divider != null) {
+            divider.setSize(d);
         }
     }
 
     /**
      * Resizes the divider delegate when this component is resized.
-    **/
+     *
+     * @see java.awt.Component#setSize(int, int)
+     */
     public void setSize(int width, int height) {
         super.setSize(width, height);
-        if (_divider != null) {
-            _divider.setSize(width, height);
+        if (divider != null) {
+            divider.setSize(width, height);
         }
     }
 
     /**
      * Delegates painting to the UI component responsible for the split pane
      * divider.
-    **/
+     *
+     * @see javax.swing.JComponent#paintComponent(java.awt.Graphics)
+     */
     public void paintComponent(Graphics g) {
-        if (_divider != null) {
-            _divider.paint(g);
+        if (divider != null) {
+            divider.paint(g);
         }
     }	
 	

@@ -68,8 +68,11 @@ import javax.swing.border.Border;
  */
 public class Vertical extends Orientation {
 
-    private static final Vertical vertical = new Vertical();
+    private static final Vertical VERTICAL = new Vertical();
 
+    /**
+     * The constructor.
+     */
     protected Vertical() {
     }
 
@@ -79,7 +82,7 @@ public class Vertical extends Orientation {
      * @return An instance of <code>Orientation</code>.
      */
     public static Orientation getInstance() {
-        return vertical;
+        return VERTICAL;
     }
 
     /**

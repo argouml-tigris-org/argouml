@@ -72,9 +72,9 @@ public class SerialLayout extends LineLayout {
     public static final int CENTER = 22;
     public static final int FILL = 23;
 
-    String position = WEST;
-    int direction = LEFTTORIGHT;
-    int alignment = TOP;
+    private String position = WEST;
+    private int direction = LEFTTORIGHT;
+    private int alignment = TOP;
 
     /**
      * The constructor.
@@ -82,33 +82,73 @@ public class SerialLayout extends LineLayout {
     public SerialLayout() {
         this(Horizontal.getInstance(), WEST, LEFTTORIGHT, TOP);
     }
+    
+    /**
+     * The constructor.
+     * 
+     * @param orientation the orientation
+     */
     public SerialLayout(Orientation orientation) {
         this(orientation, WEST, LEFTTORIGHT, TOP);
     }
-    public SerialLayout(Orientation orientation, String position) {
-        this(orientation, position, LEFTTORIGHT, TOP);
-    }
-    public SerialLayout(Orientation orientation, String position,
-			int direction) {
-        this(orientation, position, direction, TOP);
+    
+    /**
+     * The constructor.
+     * 
+     * @param o the orientation
+     * @param p the position
+     */
+    public SerialLayout(Orientation o, String p) {
+        this(o, p, LEFTTORIGHT, TOP);
     }
     
-    public SerialLayout(Orientation orientation, String position,
-			int direction, int alignment) {
-        super(orientation);
-        this.position = position;
-        this.direction = direction;
-        this.alignment = alignment;
+    /**
+     *  The constructor.
+     * 
+     * @param o the orientation
+     * @param p the position
+     * @param d the direction
+     */
+    public SerialLayout(Orientation o, String p,
+			int d) {
+        this(o, p, d, TOP);
+    }
+    
+    /**
+     *  The constructor.
+     * 
+     * @param o the orientation
+     * @param p the position
+     * @param d the direction
+     * @param a the alignment
+     */
+    public SerialLayout(Orientation o, String p, int d, int a) {
+        super(o);
+        this.position = p;
+        this.direction = d;
+        this.alignment = a;
     }
 
-    public SerialLayout(Orientation orientation, String position,
-			int direction, int alignment, int gap) {
-        super(orientation, gap);
-        this.position = position;
-        this.direction = direction;
-        this.alignment = alignment;
+    /**
+     * The constructor.
+     * 
+     * @param o the orientation
+     * @param p the position
+     * @param d the direction
+     * @param a the alignment
+     * @param gap the gap
+     */
+    public SerialLayout(Orientation o, String p,
+			int d, int a, int gap) {
+        super(o, gap);
+        this.position = p;
+        this.direction = d;
+        this.alignment = a;
     }
 
+    /**
+     * @see java.awt.LayoutManager#layoutContainer(java.awt.Container)
+     */
     public void layoutContainer(Container parent) {
         Insets insets = parent.getInsets();
 
