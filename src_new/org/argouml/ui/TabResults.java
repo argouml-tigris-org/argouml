@@ -68,7 +68,7 @@ public class TabResults extends TabSpawnable
     Vector _diagrams = new Vector();
     boolean _showRelated = false;
 
-    JLabel    _resultsLabel = new JLabel("Search Results:");
+    JLabel    _resultsLabel = new JLabel("Results:");
     JTable    _resultsTable = new JTable(10, 4);
     TMResults _resultsModel = new TMResults();
 
@@ -129,7 +129,7 @@ public class TabResults extends TabSpawnable
     public void setResults(Vector res, Vector dia) {
 	_results = res;
 	_diagrams = dia;
-	_resultsLabel.setText("Search Results: " + _results.size() + " items");
+	_resultsLabel.setText("Results: " + _results.size() + " items");
 	_resultsModel.setTarget(_results, _diagrams);
 	_relatedModel.setTarget(null, null);
 	_relatedLabel.setText("Related Elements: ");
@@ -208,7 +208,7 @@ public class TabResults extends TabSpawnable
 	_results.removeAllElements();
 	depthFirst(_root, null);
 	setResults(_results, _diagrams);
-	_resultsLabel.setText("Search Results: " + _results.size() + " items");
+	_resultsLabel.setText("Results: " + _results.size() + " items");
 	_resultsModel.setTarget(_results, _diagrams);
     }
 
