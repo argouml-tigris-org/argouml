@@ -51,7 +51,7 @@ import org.tigris.gef.base.ModeCreateFigText;
 import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBarFactory;
-import org.tigris.toolbutton.ToolButton;
+import org.tigris.toolbar.toolbutton.ToolButton;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;

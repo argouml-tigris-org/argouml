@@ -1,4 +1,4 @@
-ToolBar version 0.2
+ToolBar version 0.3
 
 Copyright (c) 2003, Regents of the University of California
 All rights reserved.

@@ -9,7 +9,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JPopupMenu;
 
-import org.tigris.toolbutton.ModalButton;
+import org.tigris.toolbar.toolbutton.ModalButton;
 
 /**
  * A button that displays a popup when pressed. The popup can contain
