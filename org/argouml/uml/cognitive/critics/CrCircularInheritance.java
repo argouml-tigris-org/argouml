@@ -39,6 +39,8 @@ import org.tigris.gef.util.*;
 import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.*;
 
 /** Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
@@ -57,11 +59,16 @@ public class CrCircularInheritance extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MGeneralizableElement)) return NO_PROBLEM;
-    MGeneralizableElement ge = (MGeneralizableElement) dm;
-    VectorSet reach = (new VectorSet(ge)).reachable(new SuperclassGen());
-    if (reach.contains(ge)) return PROBLEM_FOUND;
-    return NO_PROBLEM;
+      boolean problem = NO_PROBLEM;
+      if (ModelFacade.isAGeneralizableElement(dm)) {
+          try {
+              CoreHelper.getHelper().getChildren(dm);
+          }
+          catch (IllegalStateException ex) {
+              problem = PROBLEM_FOUND;
+          }
+      }
+      return problem;
   }
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {

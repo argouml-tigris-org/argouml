@@ -1468,5 +1468,39 @@ public class CoreHelper {
         }
         return col;
     }
+    
+    /**
+     * Returns all children from some given generalizableelement on all levels
+     * (the complete tree excluding the generalizable element itself). Throws
+     * an IllegalStateException if there is a circular reference.
+     * @param o
+     * @return Collection
+     */
+    public Collection getChildren(Object o) {
+        Collection col = new ArrayList();
+        if (ModelFacade.isAGeneralizableElement(o)) {
+            Iterator it = ((MGeneralizableElement)o).getSpecializations().iterator();
+            while (it.hasNext()) {
+                col.addAll(getChildren(col, it.next()));                                
+            }
+        }
+        return col;
+    }
+    
+    private Collection getChildren(Collection currentChildren, Object o) {
+        if (ModelFacade.isAGeneralization(o)) {
+            MGeneralization gen = (MGeneralization)o;
+            MGeneralizableElement child = gen.getChild();
+            if (currentChildren.contains(child)) throw new IllegalStateException("Circular inheritance occured.");
+            currentChildren.add(child);
+            Iterator it = child.getSpecializations().iterator();
+            while (it.hasNext()) {
+                currentChildren = getChildren(currentChildren, it.next());
+            }
+            return currentChildren;
+        }
+        throw new IllegalArgumentException("getChildren not called with generalization as argument");
+    }
+    
 
 }
