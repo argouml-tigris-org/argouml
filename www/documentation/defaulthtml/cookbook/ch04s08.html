@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>4.8. Internationalization</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter 4. Inside the components"><link rel="previous" href="ch04s07.html" title="4.7. Help System"><link rel="next" href="ch04s09.html" title="4.9. Modules and PlugIns"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.8. Internationalization</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 4. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s09.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="internationalization"></a>4.8. Internationalization</h2></div></div><p>
+   <title>4.8. Internationalization</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter 4. Inside the components"><link rel="previous" href="ch04s07.html" title="4.7. Help System"><link rel="next" href="ch04s09.html" title="4.9. Modules and PlugIns"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.8. Internationalization</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 4. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s09.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="internationalization"></a>4.8. Internationalization</h2></div></div><a class="indexterm" name="d0e3453"></a><a class="indexterm" name="d0e3456"></a><a class="indexterm" name="d0e3459"></a><a class="indexterm" name="d0e3462"></a><a class="indexterm" name="d0e3465"></a><p>
 In ArgoUML internationalization (sometimes called i18n) is done using
 the ListResourceBundle-classes and parts of it is handled by the 
 gef infrastructure.
@@ -24,18 +24,17 @@ Language: sv
 Country: unknown
 </tt>
 </p></li><li><p>
-Look at the files
-<tt>org/argouml/uml/ui/UMLResourceBundle.java</tt>,
-<tt>org/argouml/uml/cognitive/UMLCognitiveResourceBundle.java</tt>,
-<tt>org/argouml/ui/ActionResourceBundle.java</tt>,
-<tt>org/argouml/ui/SettingsResourceBundle.java</tt>,
-<tt>org/argouml/ui/MenuResourceBundle.java</tt>,
-<tt>org/argouml/ui/DiagramResourceBundle.java</tt>,
-<tt>org/argouml/ui/TreeResourceBundle.java</tt>, and
-<tt>org/argouml/language/NotationResourceBundle.java</tt>
+Examine GEF to see if GEF supports the language you want to add.
+If not then some of the things in the menues will not be localized.
+To get this done you need to contribute your localization to 
+the GEF project and make sure to get it included in an up-coming
+GEF release.
+</p></li><li><p>
+Look at the files in
+<tt>org/argouml/i18n</tt>,
 under <tt>argouml/src_new</tt>.
 </p></li><li><p>
-Translate all the texts in those files.
+Translate all the texts in each of these classes of files.
 </p><p>
 This is a lot of extremely qualified work including searching well-known
 litterature on UML and Software Engineering in order to get the correct
@@ -47,15 +46,17 @@ Put the list of persons involved in the work as a
 <i><tt>language</tt></i>-responsible group on the
 ArgoUML web site.
 </p></li><li><p>
-Create the files with the translations. They will have the names:
-<tt>org/argouml/uml/ui/UMLResourceBundle_<i><tt>language code</tt></i>.java</tt>,
-<tt>org/argouml/uml/cognitive/UMLCognitiveResourceBundle_<i><tt>language code</tt></i>.java</tt>,
-<tt>org/argouml/ui/ActionResourceBundle_<i><tt>language code</tt></i>.java</tt>,
-<tt>org/argouml/ui/SettingsResourceBundle_<i><tt>language code</tt></i>.java</tt>,
-<tt>org/argouml/ui/MenuResourceBundle_<i><tt>language code</tt></i>.java</tt>,
-<tt>org/argouml/ui/DiagramResourceBundle_<i><tt>language code</tt></i>.java</tt>,
-<tt>org/argouml/ui/TreeResourceBundle_<i><tt>language code</tt></i>.java</tt>, and
-<tt>org/argouml/language/NotationResourceBundle_<i><tt>language code</tt></i>.java</tt>.
+Create the files with the translations and store them in
+<tt>argouml/src_new/org/argouml/i18n</tt>.
+They will have the names:
+<tt>UMLResourceBundle_<i><tt>language code</tt></i>.java</tt>,
+<tt>UMLCognitiveResourceBundle_<i><tt>language code</tt></i>.java</tt>,
+<tt>ActionResourceBundle_<i><tt>language code</tt></i>.java</tt>,
+<tt>SettingsResourceBundle_<i><tt>language code</tt></i>.java</tt>,
+<tt>MenuResourceBundle_<i><tt>language code</tt></i>.java</tt>,
+<tt>DiagramResourceBundle_<i><tt>language code</tt></i>.java</tt>,
+<tt>TreeResourceBundle_<i><tt>language code</tt></i>.java</tt>, and
+<tt>NotationResourceBundle_<i><tt>language code</tt></i>.java</tt>.
 </p><p>
 State your name clearly as author of all these files and add a couple of
 other "natives" that could help in the maintenance.
@@ -77,9 +78,42 @@ Write your code using the same way of handling strings as the surrounding code.
 This means that strings are denoted by "labels" or "tags" and then
 the resolution of the "tag" is in a 
 <tt><i><tt>Domain</tt></i>ResourceBundle.java</tt>-file.
+</p><p>
+The name for the domain is most often specified in a variable like
+<pre class="programlisting">
+    protected static final String BUNDLE = <i><tt>Domain</tt></i>;
+</pre>
+or
+</p><div class="programlistingco">
+    protected static final String RESOURCE_BUNDLE = <i><tt>Domain</tt></i>;
+</div><p>
+in a base class to what you are doing and there is 
+a convenience method in the class
+<tt>org.argouml.application.api.Argo</tt>
+so normal strings are written
+<pre class="programlisting">
+import org.argouml.application.api.*;
+...
+    String localized = Argo.localize(BUNDLE, <i><tt>tag</tt></i>);
+</pre>
 </p></li><li><p>
 Add your "tag" and resolution in English in the non-localized 
 <tt><i><tt>Domain</tt></i>ResourceBundle.java</tt>-file.
+</p><p>
+How do I choose the tag?
+Jean-Hugues de Raigniac has made a small investigation as to how this
+is done in the java world and found that there is no real consensus on
+how to do this.
+He suggests a hierarchical choice of tags like this:
+<pre class="programlisting">
+   {"docpane.label.since", "Since"},
+   {"docpane.label.deprecated", "Deprecated"},
+   {"docpane.label.see", "See"},
+
+   {"stylepane.label.bounds", "Bounds"},
+   {"stylepane.label.fill", "Fill"},
+   {"stylepane.label.no-fill", "No Fill"},
+</pre>
 </p></li><li><p>
 Contact all the language-teams so that they can update their files.
 </p></li></ol></div><p>
@@ -90,7 +124,7 @@ This will make it easier for the translation team to
 spot the modification.
 </p><p>
 There eledgedly are tools in the java world to spot this kind of changes.
-Until we have the tools and processes in place to handle the
+Until we have the tools and processes in place to handle them
 it is better to rely on this simpler mechanism to guarantee correctness.
 </p></li></ul></div><p>
 </p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch04s07.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch04.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch04s09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">4.7. Help System&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;4.9. Modules and PlugIns</td></tr></table></div></body></html>

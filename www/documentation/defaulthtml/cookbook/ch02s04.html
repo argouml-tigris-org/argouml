@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>2.4. Making a release</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter 2. Building from source"><link rel="previous" href="ch02s03.html" title="2.3. Build Process"><link rel="next" href="ch02s05.html" title="2.5. Mailing Lists"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.4. Making a release</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 2. Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="release_process"></a>2.4. Making a release</h2></div></div><p>
+   <title>2.4. Making a release</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter 2. Building from source"><link rel="previous" href="ch02s03.html" title="2.3. Build Process"><link rel="next" href="ch02s05.html" title="2.5. Mailing Lists"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.4. Making a release</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 2. Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="release_process"></a>2.4. Making a release</h2></div></div><a class="indexterm" name="d0e737"></a><p>
 To simplify for the person that is actually doing the release work
 and to make sure that everything is done in the exact same way 
 every time and nothing is forgotten,
@@ -23,10 +23,10 @@ For release 0.9.8 it should look like this:
     &lt;property name="thisversion" value="0.9.8"/&gt;
   &lt;/target&gt;
 </pre>
-</p></li><li><p>Tag the whole cvs directory with the freeze tag!</p><p>
+</p></li><li><p>Tag the whole CVS repository with the freeze tag!</p><p>
 Normally this tag is "VERSION_<i><tt>X_Y_Z</tt></i>_F",
 e.g. VERSION_0_9_7_F.
-The according command line cvs command is 
+The according command line CVS command is 
 <b>cvs rtag VERSION_<i><tt>X_Y_Z</tt></i>_F argouml</b>.
 In case you make a mistake doing that (you shouldn't really), 
 you need to remove the tag you mistakenly put there and start over.
@@ -60,7 +60,7 @@ If the tests did not pass See <a href="ch02s04.html#release_process_test_failed"
 </p></li><li><p>Tag the whole repository with the release tag!</p><p>
 This tag is "VERSION_<i><tt>X_Y_Z</tt></i>",
 e.g. VERSION_0_9_7.
-The according command line cvs command is 
+The according command line CVS command is 
 <b>cvs tag VERSION_<i><tt>X_Y_Z</tt></i></b>
 when your are standing in the
 <tt>argouml</tt>-directory.
@@ -86,7 +86,7 @@ Announcer should make sure that he/she is already subscribed to all lists.
 Freshmeat: currently Thierry Lach does the freshmeat announcements
 which require a login so just inform him.
 </p></li></ol></div><p>
-</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="release_process_test_failed"></a>2.4.1. The release did not work</h3></div></div><p>
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="release_process_test_failed"></a>2.4.1. The release did not work</h3></div></div><a class="indexterm" name="d0e872"></a><p>
 This shouldn't happen! This really shouldn't happen!
 </p><p>
 The reason that this has happened is that one of the developers 
