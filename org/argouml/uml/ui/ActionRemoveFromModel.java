@@ -129,9 +129,10 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                     newTarget = ProjectManager.getManager().getCurrentProject().getRoot();
                 }
                 ProjectManager.getManager().getCurrentProject().moveToTrash(target); 
+                ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
                 if (newTarget != null) 
                     ProjectBrowser.TheInstance.setTarget(newTarget);
-                ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
+                
             } 
         }        
         super.actionPerformed(ae);
@@ -169,7 +170,10 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     		}
     	} else
     	if (target instanceof Fig) { // we can delete figs like figrects now too
-    		sure = true;
+            if (((Fig)target).getOwner() instanceof MModelElement) {
+    	       sure = sureRemove((MModelElement)((Fig)target).getOwner()); 
+            } else
+                sure = true;
     	}
     	return sure;
     }
