@@ -81,6 +81,7 @@ public class AboutBox extends JFrame {
                      "       [Xerces-J 1.2.2 or later recommended, (xml.apache.org)]\n"+
 		     "    Novosoft's NSUML 0.4.19 or higher (nsuml.sourceforge.net)\n"+
 		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"+
+		     "    ANTLR (www.antlr.org) version 2.7\n"+
 		     "\n");
 
         try {
@@ -91,6 +92,12 @@ public class AboutBox extends JFrame {
             }
         }
         catch(Exception e) {}
+
+	versionBuf.append("\n");
+	versionBuf.append("The ArgoUML developers would like to thank all those broad-minded people\n");
+	versionBuf.append("who spend their valuable time in contributing to the projects ArgoUML\n");
+	versionBuf.append("uses! We wouldn't be here without your work!\n");
+	versionBuf.append("\n");
 
     versionBuf.append("\n--- Generated version information: ---\n");
     versionBuf.append(getVersionInfo(packageList));
@@ -138,6 +145,7 @@ public class AboutBox extends JFrame {
 		     "  Frank Finger\n"+
 		     "  Stuart Zakon\n"+
 		     "  Frank Wienberg\n"+
+		     "  Marcus Andersson\n"+
 
 		     "\n"+
 		     "Credits for previous versions:\n"+

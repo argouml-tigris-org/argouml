@@ -10,7 +10,7 @@ Then, you need ANT 1.2 (http://jakarta.apache.org) installed. This includes
 
 Next, you need to have 
 
---- gef.jar, xerces.jar, nsuml.jar and ocl-argo.jar in argouml/lib
+--- gef.jar, xerces.jar, nsuml.jar, antlrall.jar and ocl-argo.jar in argouml/lib
 
 which must be next to argouml/src_new in your directory structure.
 

@@ -83,7 +83,7 @@ If you want to compile ArgoUML, you need to have following:
 - your compiler in your PATH
 - JAVA_HOME correctly set to where Java2 is installed
 - ANT_HOME correctly set to where ANT is installed
-- the additional libraries (nsuml.jar, ocl-argo.jar, xml4j.jar, gef.jar) in argouml/lib
+- the additional libraries (nsuml.jar, ocl-argo.jar, xml4j.jar, gef.jar, antlrall.jar) in argouml/lib
 - the support file (uml13.dtd) is optional but desirable in argouml/lib
 
 when these are right the command 
@@ -153,7 +153,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="src.dir" value="../src_new"/>
     <property name="lib.dir" value="../lib"/>
-    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar"/> 
+    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar:${lib.dir}/antlrall.jar"/> 
     <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
@@ -229,11 +229,25 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   </target>
 
   <!-- =================================================================== -->
+  <!-- Generates the parsers from the grammars by using Antlr              -->
+  <!-- =================================================================== -->
+
+  <target name="generateparser" depends="prepare">
+    <echo message="Generate parsers"/>
+    
+    <java fork="yes" classname="antlr.Tool" classpath="${classpath}"> 
+          <arg line="-o ${build.src}/org/argouml/uml/reveng/java  ${build.src}/org/argouml/uml/reveng/java/java.g"/>
+    </java>
+
+  </target>
+
+  <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <!-- <target name="compile" depends="prepare"> -->
+  <!-- <target name="compile" depends="generateparser,prepare"> -->
 
-  <target name="compile" depends="prepare">
+  <target name="compile" depends="prepare"> 
+
     <echo message="Compiling the sources"/>
 
     <!-- create directories -->
@@ -281,13 +295,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-
-    <copy todir="${build.dir}/">
-      <fileset dir="${src.dir}" includes="README*" />
-    </copy>
-    
-    <zip zipfile="${Name}-${version}.zip" basedir="${build.dir}" includes="*.jar,README*"/>
-    <tar tarfile="${Name}-${version}.tar" basedir="${build.dir}" includes="*.jar,README*"/>
+    <zip zipfile="${Name}-${version}.zip" basedir="${build.dir}" includes="*.jar"/>
+    <tar tarfile="${Name}-${version}.tar" basedir="${build.dir}" includes="*.jar"/>
     <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
     <delete file="${Name}-${version}.tar"/>
   </target>
@@ -298,22 +307,12 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="dist-src" depends="init">
     <echo message="Building the source distribution files (zip,tar)"/>
     <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
-    <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}/.." includes="src_new/**" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak **/ArgoUML*"/>
-    <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}/.." includes="src_new/**" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak **/ArgoUML*"/>
+    <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
+    <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
     <gzip zipfile="${Name}-${version}-src.tar.gz" src="${Name}-${version}-src.tar" />
     <delete file="${Name}-${version}-src.tar"/>
   </target>                                                                                                                                                                    
 
-  <!-- =================================================================== -->
-  <!-- Creates the lib distribution                                            -->
-  <!-- =================================================================== -->
-  <target name="dist-lib" depends="init">
-    <echo message="Building the library distribution files (zip,tar)"/>
-    <zip zipfile="${Name}-${version}-libs.zip" basedir="${lib.dir}/.." includes="lib/**" />
-    <tar tarfile="${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/**" />
-    <gzip zipfile="${Name}-${version}-libs.tar.gz" src="${Name}-${version}-libs.tar" />
-    <delete file="${Name}-${version}-libs.tar"/>
-  </target>                                                                                                                   
 
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
@@ -340,7 +339,5 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   </target>
 
 </project>
-
-
 
 <!-- End of file -->
