@@ -50,15 +50,6 @@ public class CrTooManyStates extends CrUML {
   // constructor
   public CrTooManyStates() {
     setHeadline("Reduce States in machine <ocl>self</ocl>");
-    sd("There are too many States in <ocl>self</ocl>.  If one state machine "+
-       "has too many states it may become very difficult for humans "+
-       "to understand. \n\n"+
-       "Defining an understandable set of states is an important "+
-       "part of your design. \n\n"+
-       "To fix this, press the \"Next>\" button, or remove states manually "+
-       "by clicking on a states in the navigator pane or "+
-       "diagram and presing the \"Del\" key.  Or you can nest states...");
-
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     setArg(THRESHOLD, new Integer(20));
     addTrigger("substate");

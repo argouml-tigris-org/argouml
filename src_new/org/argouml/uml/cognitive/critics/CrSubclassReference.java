@@ -45,16 +45,6 @@ public class CrSubclassReference extends CrUML {
 
   public CrSubclassReference() {
     setHeadline("Remove Reference to Specific Subclass");
-    sd("Class <ocl>self</ocl> has a reference to one of it's subclasses. "+
-       "Normally all subclasses should be treated \"equally\" by "+
-       "the superclass.  This allows for addition of new subclasses "+
-       "without modification to the superclass. \n\n"+
-       "Defining the associations between objects is an important "+
-       "part of your design.  Some patterns of associations are easier to "+
-       "maintain than others, depending on the natre of future changes. \n\n"+
-       "To fix this, press the \"Next>\" button, or remove the association "+
-       " manually by clicking on it in the diagram and pressing Delete. ");
-
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     addSupportedDecision(CrUML.decPLANNED_EXTENSIONS);
     setKnowledgeTypes(Critic.KT_SEMANTICS);

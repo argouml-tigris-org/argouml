@@ -44,13 +44,6 @@ public class CrInterfaceOperOnly extends CrUML {
 
   public CrInterfaceOperOnly() {
     setHeadline("Interfaces may only have operations");
-    sd("Interfaces are intended to specify the set of operations that \n"+
-       "other classes must implement.  They do not implement these \n"+
-       "operations themselves, and cannot have attribues. \n\n"+
-       "A well-designed set of interfaces is a good way to define the \n"+
-       "possible extensions of a class framework. \n\n"+
-       "To fix this, use the \"Next>\" button, or manually select the  \n"+
-       "interface and use the Properties tab remove all attributes.");
     addSupportedDecision(CrUML.decPLANNED_EXTENSIONS);
     setKnowledgeTypes(Critic.KT_SYNTAX);
     addTrigger("structuralFeature");

@@ -49,9 +49,6 @@ public class CrStimulusWithWrongPosition extends CrUML {
 
   public CrStimulusWithWrongPosition() {
     setHeadline("Wrong position of these stimuli");
-    sd("In sequence-diagrams the sender-side oh the communication-connections oh these\n"+
-          "stimuli are connected at the beginning of an activation. To be a sender an object must\n"+
-          "have a focus-of-control first.");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

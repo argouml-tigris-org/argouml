@@ -45,13 +45,6 @@ public class CrClassMustBeAbstract extends CrUML {
 
   public CrClassMustBeAbstract() {
     setHeadline("Class Must be Abstract");
-    sd("Classes that include or inherit abstract methods from base classes or "+
-       "interfaces must be marked Abstract.\n\n"+
-       "Deciding which classes are abstract or concrete is a key part of class "+
-       "hierarchy design.\n\n"+
-       "To fix this, use the \"Next>\" button, or manually select the class and use the "+
-       "properties tab to add the Abstract keyword, or manually override each abstract "+
-       "operation that is inherited from a base class or interface.");
 
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedDecision(CrUML.decMETHODS);

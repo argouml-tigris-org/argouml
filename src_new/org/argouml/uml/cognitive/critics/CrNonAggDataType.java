@@ -44,16 +44,6 @@ public class CrNonAggDataType extends CrUML {
 
   public CrNonAggDataType() {
     setHeadline("Wrap MDataType");
-    sd("DataTypes are not full classes and cannot be associated with "+
-       "classes, unless the MDataType is part of a composite (black diamond) "+
-       "aggregation. \n\n"+
-       "Good OO design depends on careful choices about which entities to "+
-       "represent as full objects and which to represent as attributes of "+
-       "objects.\n\n"+
-       "To fix this, use the \"Next>\" button, or manually replace the MDataType "+
-       "with a full class or change the association aggregation to containment"+
-       "by a full class.\n\n");
-
     addSupportedDecision(CrUML.decCONTAINMENT);
     addSupportedDecision(CrUML.decCLASS_SELECTION);
     setKnowledgeTypes(Critic.KT_SYNTAX);

@@ -46,14 +46,6 @@ public class CrUselessInterface extends CrUML {
 
   public CrUselessInterface() {
     setHeadline("Define Class to Implement <ocl>self</ocl>");
-    String s;
-    s = "<ocl>self</ocl> can never be used because "+
-      "no classes implement it.\n\n"+
-      "To fix this problem, press the \"Next>\" button or manually "+
-      "use the toolbar \"Class\" button to define classes and the "+
-      "\"Realizes\" button to make a relationship from the class to "+
-      "the highlighted interface.";
-    setDescription(s);
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedGoal(Goal.UNSPEC);
     setKnowledgeTypes(Critic.KT_COMPLETENESS);

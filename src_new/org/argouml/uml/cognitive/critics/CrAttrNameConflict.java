@@ -46,13 +46,6 @@ public class CrAttrNameConflict extends CrUML {
 
   public CrAttrNameConflict() {
     setHeadline("Revise MAttribute Names to Avoid Conflict");
-    sd("Attributes must have distinct names.  This may because of an inherited "+
-       "attribute. \n\n"+
-       "Clear and unambiguous names are key to code generation and producing an "+
-       "understandable and maintainable design.\n\n"+
-       "To fix this, use the \"Next>\" button, or manually select the one of the "+
-       "conflicting attributes of this class and change its name.");
-
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedDecision(CrUML.decSTORAGE);
     addSupportedDecision(CrUML.decNAMING);

@@ -46,9 +46,6 @@ public class CrComponentWithoutNode extends CrUML {
 
   public CrComponentWithoutNode() {
     setHeadline("Components normally are inside nodes");
-    sd("There are nodes in the diagram. So you have got a real\n"+
-         " deployment-diagram, and in deployment-diagrams components\n"+
-         " normally resides on nodes.");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

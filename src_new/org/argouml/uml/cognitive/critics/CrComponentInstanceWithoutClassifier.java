@@ -47,7 +47,6 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 
   public CrComponentInstanceWithoutClassifier() {
     setHeadline("Set ComponentInstance-classifier");
-    sd(" In Deployment-Diagrams component-instances normally have a base-component");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

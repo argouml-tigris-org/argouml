@@ -44,14 +44,6 @@ public class CrInvalidBranch extends CrUML {
 
   public CrInvalidBranch() {
     setHeadline("Change Branch Transitions");
-    sd("This branch state has an invalid number of transitions. Normally "+
-       "branch states have one incoming and two or more outgoing transitions. \n\n"+
-       "Defining correct state transitions is needed to complete the  "+
-       "behavioral specification part of your design.  \n\n"+
-       "To fix this, press the \"Next>\" button, or remove transitions  "+
-       "manually by clicking on transition in the diagram and pressing the "+
-       "Delete key, or add transitions using the transition tool. ");
-
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     addTrigger("incoming");
   }

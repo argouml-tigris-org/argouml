@@ -42,13 +42,6 @@ public class CrNoInitialState extends CrUML {
 
   public CrNoInitialState() {
     setHeadline("Place an Initial MState");
-    sd("There is no initial state in this machine or composite state. "+
-       "Normally each state machine or composite state has one initial state. \n\n"+
-       "Defining unabiguous states is needed to complete the behavioral "+
-       "specification part of your design.\n\n"+
-       "To fix this, press the \"Next>\" button, or add manually select "+
-       "initial state from the tool bar and place it in the diagram. ");
-
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     addTrigger("substate");
   }

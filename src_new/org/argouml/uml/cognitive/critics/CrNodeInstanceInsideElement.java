@@ -47,9 +47,6 @@ public class CrNodeInstanceInsideElement extends CrUML {
 
   public CrNodeInstanceInsideElement() {
     setHeadline("NodeInstances normally have no enclosers");
-    sd(" NodeInstances normally are not inside other Elements. They represent\n"+
-          " run-time physical objects with a processing resource, generally having\n"+
-          " at least a memory and often processing capability as well.");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

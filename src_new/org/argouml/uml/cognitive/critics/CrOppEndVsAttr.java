@@ -49,15 +49,6 @@ public class CrOppEndVsAttr extends CrUML {
 
   public CrOppEndVsAttr() {
     setHeadline("Rename Role or MAttribute");
-    sd("One of the attributes of <ocl>self</ocl> has the same name as "+
-       "<ocl>self</ocl>'s role in an association.  Attributes and roles "+
-       "should have distinct names.  "+
-       "This may because of an inherited attribute. \n\n"+
-       "Clear and unambiguous names are key to code generation and producing "+
-       "an understandable and maintainable design.\n\n"+
-       "To fix this, use the \"Next>\" button, or manually select the one of the "+
-       "conflicting roles or attributes of this class and change its name.");
-
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     addSupportedDecision(CrUML.decNAMING);

@@ -203,17 +203,6 @@ public class CrUML extends Critic {
 */
 
   /**
-   *    To be deprecated
-   *
-   */
-  public final void setDescription(String s) {
-//       no-op since description is loaded from ResourceFile
-//
-//    super.setDescription(s);
-//    log("{ \"" + makeKey(getClass(),"desc") + "\" ,\n        \"" + escape(escape(s,'\"',"\\\""),'\n',"\\n") + "\" },");
-  }
-
-  /**
    *   Will be deprecated in good time
    */
   public final void setHeadline(String s) {
@@ -222,8 +211,6 @@ public class CrUML extends Critic {
       //     and triggers setResource()
       String className = getClass().getName();
       setResource(className.substring(className.lastIndexOf('.')+1));
-//    super.setHeadline(s);
-//    log("{ \"" + makeKey(getClass(),"head") + "\" ,\n        \"" + escape(escape(s,'\"',"\\\""),'\n',"\\n") + "\" },");
   }
 
 
@@ -248,16 +235,7 @@ public class CrUML extends Critic {
   }
 
   ////////////////////////////////////////////////////////////////
-  // coding shorthand
-
-  protected void sd(String s) {
-    setDescription(s);
-  }
-
-
-  ////////////////////////////////////////////////////////////////
   // display related methods
-
   private static String OCL_START = "<ocl>";
   private static String OCL_END = "</ocl>";
 

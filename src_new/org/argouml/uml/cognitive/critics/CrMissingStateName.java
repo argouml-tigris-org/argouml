@@ -46,12 +46,6 @@ public class CrMissingStateName extends CrUML {
 
   public CrMissingStateName() {
     setHeadline("Choose a Name");
-    sd("Every state within a state machine should have a name. \n\n"+
-       "Clear and unambiguous naming is key to code generation and "+
-       "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the \"Next>\" button, or manually select the "+
-       "state and use the Properties tab to give it a name, or select "+
-       "the state and type a name.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_COMPLETENESS, Critic.KT_SYNTAX);
     addTrigger("name");

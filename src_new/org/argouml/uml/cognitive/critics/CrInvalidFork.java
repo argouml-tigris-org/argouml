@@ -44,13 +44,6 @@ public class CrInvalidFork extends CrUML {
 
   public CrInvalidFork() {
     setHeadline("Change Fork Transitions");
-    sd("This fork state has an invalid number of transitions. Normally "+
-       "fork states have one incoming and two or more outgoing transitions. \n\n"+
-       "Defining correct state transitions is needed to complete the  "+
-       "behavioral specification part of your design.  \n\n"+
-       "To fix this, press the \"Next>\" button, or remove transitions  "+
-       "manually by clicking on transition in the diagram and pressing the "+
-       "Delete key. ");
 
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     addTrigger("incoming");

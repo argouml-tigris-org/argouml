@@ -46,12 +46,6 @@ public class CrUnconventionalAttrName extends CrUML {
 
   public CrUnconventionalAttrName() {
     setHeadline("Choose a Better MAttribute Name");
-    sd("Normally attributes begin with a lowercase letter. "+
-       "The name '<ocl>self</ocl>' is unconventional because it does not.\n\n"+
-       "Following good naming conventions help to improve "+
-       "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the \"Next>\" button, or manually select <ocl>self</ocl> "+
-       "and use the Properties tab to give it a name.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
     addTrigger("feature_name");

@@ -46,12 +46,6 @@ public class CrNWayAgg extends CrUML {
 
   public CrNWayAgg() {
     setHeadline("Aggregate Role in N-way MAssociation");
-    sd("Three-way (or more) Associations can not have aggregate ends.\n\n" +
-       "A clear and consistent is-part-of hierarchy is a key to design clarity, \n"+
-       "managable object storage, and the implementation of recursive methods.\n"+
-       "To fix this, use the \"Next>\" button, or manually select the MAssociation \n"+
-       "and set all of its role aggregations to None.");
-
     addSupportedDecision(CrUML.decCONTAINMENT);
     setKnowledgeTypes(Critic.KT_SEMANTICS);
     addTrigger("connection");

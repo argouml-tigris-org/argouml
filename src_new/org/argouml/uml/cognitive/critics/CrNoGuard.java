@@ -41,16 +41,6 @@ public class CrNoGuard extends CrUML {
 
   public CrNoGuard() {
     setHeadline("Add MGuard to Transistion");
-    sd("The highlighted Transisition is incomplete because it has no "+
-       "guard condition.  MGuard conditions must be true for the "+
-       "transition to be taken.  If only a guard is used, the transition "+
-       "is taken when the condition becomes true.\n\n" +
-       "This problem must be resolved to complete the state machine.\n\n"+
-       "To fix this, select the MTransition and use the \"Properties\" "+
-       "tab, or select the MTransition and type some text of the form:\n"+
-       "[GUARD]\n"+
-       "Where GUARD is a boolean expression.");
-
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     setKnowledgeTypes(Critic.KT_COMPLETENESS);
     addTrigger("guard");

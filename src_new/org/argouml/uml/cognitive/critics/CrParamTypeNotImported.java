@@ -44,13 +44,6 @@ public class CrParamTypeNotImported extends CrUML {
 
   public CrParamTypeNotImported() {
     setHeadline("Import MParameter Type into Class");
-    sd("The type of each operation parameter must be visible and imported "+
-       "into the class that owns the operation.\n\n"+
-       "Importing classes is needed for code generation. Good modularization "+
-       "of classes into packages is key to an understandable design.\n\n"+
-       "To fix this, use the \"Next>\" button, or manually add in import to the "+
-       "class that owns this operation.");
-
     addSupportedDecision(CrUML.decCONTAINMENT);
     setKnowledgeTypes(Critic.KT_SYNTAX);
   }

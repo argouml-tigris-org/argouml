@@ -44,14 +44,6 @@ public class CrInvalidInitial extends CrUML {
 
   public CrInvalidInitial() {
     setHeadline("Remove Extra Outgoing Transitions");
-    sd("This initial state has more than one outgoing transitions. Normally "+
-       "initial states have exactly one outgoing transition. \n\n"+
-       "Defining correct state transitions is needed to complete the  "+
-       "behavioral specification part of your design.  \n\n"+
-       "To fix this, press the \"Next>\" button, or remove transitions  "+
-       "manually by clicking on transition in the diagram and pressing the "+
-       "Delete key. ");
-
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     addTrigger("outgoing");
   }

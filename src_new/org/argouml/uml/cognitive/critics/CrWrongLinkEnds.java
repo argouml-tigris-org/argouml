@@ -49,12 +49,6 @@ public class CrWrongLinkEnds extends CrUML {
 
   public CrWrongLinkEnds() {
     setHeadline("LinkEnds have not the same locations");
-    sd(" In deployment-diagrams objects can reside either on components\n"+
-          " or on component-instances. So it is not possible to have two objects\n"+
-          " connected with a Link, while one object resides on an component and\n"+
-          " an the other obejct on a component-instance.\n\n\n"+
-          " To fix this remove one object of the two connected objects from its location to an element that has the\n"+
-          " same type as the location of the other object");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

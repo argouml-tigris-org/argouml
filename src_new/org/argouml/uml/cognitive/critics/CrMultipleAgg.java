@@ -46,12 +46,6 @@ public class CrMultipleAgg extends CrUML {
 
   public CrMultipleAgg() {
     setHeadline("Multiple Aggregate Roles");
-    sd("Only one role of an MAssociation can be aggregate or composite.\n\n" +
-       "A clear and consistent is-part-of hierarchy is a key to design clarity, \n"+
-       "managable object storage, and the implementation of recursive methods.\n"+
-       "To fix this, select the MAssociation and set some of its role \n"+
-       "aggregations to None.");
-
     addSupportedDecision(CrUML.decCONTAINMENT);
     setKnowledgeTypes(Critic.KT_SEMANTICS);
     addTrigger("end_aggregation");

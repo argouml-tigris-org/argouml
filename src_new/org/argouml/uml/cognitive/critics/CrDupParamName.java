@@ -46,11 +46,6 @@ public class CrDupParamName extends CrUML {
 
   public CrDupParamName() {
     setHeadline("Duplicate Parameter Name");
-    sd("Each parameter of an operation must have a unique name. \n\n"+
-       "Clean and unambigous naming is needed for code generation and to "+
-       "achieve clear and maintainable designs.\n\n"+
-       "To fix this, use the \"Next>\" button, or manually rename one of the "+
-       "parameters to this operation.");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
     setKnowledgeTypes(Critic.KT_SYNTAX);

@@ -50,15 +50,6 @@ public class CrTooManyTransitions extends CrUML {
   // constructor
   public CrTooManyTransitions() {
     setHeadline("Reduce Transitions on <ocl>self</ocl>");
-    sd("There are too many Transitions on state <ocl>self</ocl>.  Whenever one state "+
-       "becomes too central to the machine it may become a maintenance "+
-       "bottleneck that must be updated frequently. \n\n"+
-       "Defining the transitions between states is an important "+
-       "part of your design. \n\n"+
-       "To fix this, press the \"Next>\" button, or remove transitions manually "+
-       "by clicking on a transition in the navigator pane or "+
-       "diagram and presing the \"Del\" key. ");
-
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     setArg(THRESHOLD, new Integer(10));
     addTrigger("incoming");
