@@ -28,6 +28,7 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,17 +52,14 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBar;
-
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 
 /**
  * Table view of a Model Element's Tagged Values.
@@ -249,10 +247,14 @@ public class TabTaggedValues extends TabSpawnable
 
 
 
+/**
+ * The model for the table with the tagged values.
+ *
+ */
 class TableModelTaggedValues extends AbstractTableModel
     implements VetoableChangeListener,
 	       DelayedVChangeListener,
-	       MElementListener
+	       PropertyChangeListener
 {
 
     ////////////////
@@ -262,41 +264,66 @@ class TableModelTaggedValues extends AbstractTableModel
 
     ////////////////
     // constructor
-    public TableModelTaggedValues(TabTaggedValues t) { tab = t; }
+    /**
+     * The constructor.
+     * 
+     * @param t the tab
+     */
+    public TableModelTaggedValues(TabTaggedValues t) { 
+        tab = t; 
+    }
 
     ////////////////
     // accessors
+    /**
+     * @param t the target modelelement
+     */
     public void setTarget(Object t) {
         
         if (!ModelFacade.isAModelElement(t))
             throw new IllegalArgumentException();
         
 	if (target != null)
-	    UmlModelEventPump.getPump().removeModelEventListener(this, target);
+	    Model.getPump().removeModelEventListener(this, target);
 	target = t;
-	UmlModelEventPump.getPump().addModelEventListener(this, t);
+	Model.getPump().addModelEventListener(this, t);
 	fireTableDataChanged();
 	tab.resizeColumns();
     }
 
     ////////////////
     // TableModel implemetation
+    /**
+     * @see javax.swing.table.TableModel#getColumnCount()
+     */
     public int getColumnCount() { return 2; }
 
+    /**
+     * @see javax.swing.table.TableModel#getColumnName(int)
+     */
     public String  getColumnName(int c) {
 	if (c == 0) return Translator.localize("label.taggedvaluespane.tag");
 	if (c == 1) return Translator.localize("label.taggedvaluespane.value");
 	return "XXX";
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getColumnClass(int)
+     */
     public Class getColumnClass(int c) {
 	return String.class;
     }
 
+    /**
+     * @see javax.swing.table.TableModel#isCellEditable(int, int)
+     */
     public boolean isCellEditable(int row, int col) {
 	return true;
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getRowCount()
+     */
     public int getRowCount() {
 	if (target == null) return 0;
 	Collection tvs = ModelFacade.getTaggedValuesCollection(target);
@@ -304,6 +331,9 @@ class TableModelTaggedValues extends AbstractTableModel
 	return tvs.size() + 1;
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getValueAt(int, int)
+     */
     public Object getValueAt(int row, int col) {
 	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(target));
 	//if (tvs == null) return "";
@@ -322,6 +352,9 @@ class TableModelTaggedValues extends AbstractTableModel
 	return "TV-" + row * 2 + col; // for debugging
     }
 
+    /**
+     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
+     */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 	TableModelEvent mEvent = null;
 
@@ -369,27 +402,27 @@ class TableModelTaggedValues extends AbstractTableModel
 
     ////////////////
     // event handlers
-    public void propertySet(MElementEvent mee) {
-    }
-    public void listRoleItemSet(MElementEvent mee) {
-    }
-    public void recovered(MElementEvent mee) {
-    }
-    public void removed(MElementEvent mee) {
-    }
-    public void roleAdded(MElementEvent mee) {
-	if ("taggedValue".equals(mee.getName()))
-	    fireTableChanged(new TableModelEvent(this));
-    }
-    public void roleRemoved(MElementEvent mee) {
-    }
 
-
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+//      TODO: How to implement this ("mee" was a MElementEvent)?
+        //if ("taggedValue".equals(mee.getName())) 
+        fireTableChanged(new TableModelEvent(this));
+    }
+    
+    /**
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void vetoableChange(PropertyChangeEvent pce) {
 	DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
 	SwingUtilities.invokeLater(delayedNotify);
     }
 
+    /**
+     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
 	fireTableDataChanged();
 	tab.resizeColumns();
