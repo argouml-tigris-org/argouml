@@ -190,7 +190,7 @@ public abstract class FileImportSupport implements PluggableImport {
 			    Globals.setLastDirectory(path);
 			    if (filename != null) {
 				_import.disposeDialog();
-				_import.doFile();
+				_import.getUserClasspath();
 				return;
 			    }
 			}

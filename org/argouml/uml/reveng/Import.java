@@ -35,9 +35,13 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.ListIterator;
+import java.util.List;
 import java.util.Vector;
+import java.util.StringTokenizer;
 import java.net.URLClassLoader;
 import java.net.URL;
+import java.net.MalformedURLException;
+import java.io.File;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -45,12 +49,15 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.SwingUtilities;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JProgressBar;
+import java.awt.EventQueue;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
@@ -66,6 +73,26 @@ import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.logging.SimpleTimer;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+
+import org.argouml.kernel.*;
+import org.argouml.application.api.*;
+import org.argouml.util.osdep.OsUtil;
+import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.util.SuffixFilter;
+import org.argouml.ui.ProjectBrowser;
+
+import org.tigris.gef.base.Globals;
+
+import java.io.*;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.util.Vector;
+
 import org.tigris.gef.base.Globals;
 
 /**
@@ -91,8 +118,8 @@ import org.tigris.gef.base.Globals;
  */
 public class Import {
     
-		/** logger */
-		private Logger cat = Logger.getLogger(Import.class);
+    /** logger */
+    private Logger cat = Logger.getLogger(Import.class);
                 
     /** Imported directory */
     private String src_path;
@@ -142,18 +169,6 @@ public class Import {
     private Hashtable attributes = new Hashtable();
     
     /**
-     * Unnecessary attribute
-     * @deprecated As of ArgoUml version 0.13.5, don't use this!
-     */
-    private ProjectBrowser pb = ProjectBrowser.getInstance();
-    
-    /**
-     * Unnecessary attribute
-     * @deprecated As of ArgoUml version 0.13.5, don't use this!
-     */
-    private Project p = ProjectManager.getManager().getCurrentProject();
-    
-    /**
      * Creates dialog window with chooser and configuration panel.
      */
     public Import() {
@@ -171,7 +186,7 @@ public class Import {
         if (module == null)
 	    throw new RuntimeException("Internal error. Default import module not found");
         JComponent chooser = module.getChooser(this);
-        dialog = new JDialog(pb, "Import sources");
+        dialog = new JDialog(ProjectBrowser.getInstance(), "Import sources");
         dialog.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 disposeDialog();
@@ -184,18 +199,12 @@ public class Import {
         dialog.getContentPane().add(chooser, BorderLayout.WEST);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
         dialog.pack();
-        int x = (pb.getSize().width - dialog.getSize().width) / 2;
-        int y = (pb.getSize().height - dialog.getSize().height) / 2;
+        int x = (ProjectBrowser.getInstance().getSize().width - 
+                        dialog.getSize().width) / 2;
+        int y = (ProjectBrowser.getInstance().getSize().height - 
+                        dialog.getSize().height) / 2;
         dialog.setLocation(x > 0 ? x : 0, y > 0 ? y : 0);
         dialog.setVisible(true);
-    }
-    
-    /**
-     * Unnecessary method
-     * @deprecated As of ArgoUml version 0.13.5, don't use this!
-     */
-    public Project getProject() {
-        return p;
     }
     
     public Object getAttribute(String key) {
@@ -206,13 +215,6 @@ public class Import {
         attributes.put(key, value);
     }
     
-    /**
-     * Unnecessary method
-     * @deprecated As of ArgoUml version 0.13.5, don't use this!
-     */
-    public ProjectBrowser getProjectBrowser() {
-        return pb;
-    }
     /**
      * Close dialog window.
      *
@@ -322,6 +324,9 @@ public class Import {
         return configPanel;
     }
     
+    public void getUserClasspath(){
+        new ImportClasspathDialog(this);
+    }
     
     /**
      *  <p> This method is called by ActionImportFromSources to
@@ -335,11 +340,6 @@ public class Import {
      * @param f The file or directory, we want to parse.
      */
     public void doFile() {
-        
-//        try{
-//        URL[] urls = {new URL("file://localhost/opt/hibernate/hibernate-2.1/lib/odmg.jar")};
-//        URLClassLoader loader = new URLClassLoader(urls);
-//        }catch(Exception e){cat.warn("error in class loader: "+e.toString());}
         
         // determine how many files to process
         Vector files = module.getList(this);
@@ -361,7 +361,8 @@ public class Import {
         
         _diagram = getCurrentDiagram();
         
-        pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        ProjectBrowser.getInstance().setCursor(
+                Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         
         //turn off critiquing for reverse engineering
         boolean b = Designer.TheDesigner.getAutoCritique();
@@ -394,12 +395,13 @@ public class Import {
      * @param f The file to parse.
      * @exception Parser exception.
      */
-    public void parseFile( Project p, Object f) throws Exception {
+    public void parseFile( Project project, Object f) throws Exception {
         
         // Is this file a Java source file?
         if ( module.isParseable(f)) {
-            pb.showStatus("Parsing " + f.toString() + "...");
-            module.parseFile( p, f, _diagram, this);
+            ProjectBrowser.getInstance()
+                .showStatus("Parsing " + f.toString() + "...");
+            module.parseFile( project, f, _diagram, this);
         }
     }
     
@@ -537,8 +539,10 @@ public class Import {
                 
                 try {
                     _st.mark(curFile.toString());
-                    pb.showStatus("Importing " + curFile.toString());
-                    parseFile(p, curFile); // Try to parse this file.
+                    ProjectBrowser.getInstance()
+                        .showStatus("Importing " + curFile.toString());
+                    parseFile(ProjectManager.getManager().getCurrentProject(),
+                        curFile); // Try to parse this file.
                     
                     int tot;
                     iss.setMaximum(tot = _countFiles
@@ -549,7 +553,8 @@ public class Import {
                     iss.setValue(act = _countFiles
                                  - _filesLeft.size()
                                  - _nextPassFiles.size());
-                    pb.getStatusBar().showProgress(100 * act / tot);
+                    ProjectBrowser.getInstance()
+                        .getStatusBar().showProgress(100 * act / tot);
                     
                     // flush model events after every 50 classes
                     // to avoid too many events in the event queue
@@ -597,10 +602,11 @@ public class Import {
             // Check if any diagrams where modified and the project
             // should be saved before exiting.
             if (_diagram != null && needsSave()) {
-                p.setNeedsSave(true);
+                ProjectManager.getManager().getCurrentProject()
+                    .setNeedsSave(true);
             }
             
-            pb.showStatus("Import done");
+            ProjectBrowser.getInstance().showStatus("Import done");
             
             // Layout the modified diagrams.
             if (doLayout) {
@@ -624,7 +630,8 @@ public class Import {
             }
             
             iss.done();
-            pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+            ProjectBrowser.getInstance()
+                .setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             
             // turn criticing on again
             if (criticThreadWasOn)  Designer.TheDesigner.setAutoCritique(true);
@@ -632,10 +639,10 @@ public class Import {
             UmlModelEventPump.getPump().startPumpingEvents();
             
             ExplorerEventAdaptor.getInstance().structureChanged();
-            pb.setEnabled(true);
+            ProjectBrowser.getInstance().setEnabled(true);
             
             cat.info(_st);
-            pb.getStatusBar().showProgress(0);
+            ProjectBrowser.getInstance().getStatusBar().showProgress(0);
             
         }
         
@@ -649,7 +656,7 @@ public class Import {
      * A window that shows the progress bar and a cancel button.
      */
     class ImportStatusScreen extends JDialog {
-        
+    
         private JButton cancelButton;
         
         private JLabel progressLabel;
@@ -714,3 +721,171 @@ public class Import {
         public void done() { hide(); dispose(); }
     }
 }
+
+/**
+ * dialog to setup the import classpath.
+ */
+class ImportClasspathDialog extends JDialog{
+    
+    /** logger */
+    private Logger cat = Logger.getLogger(ImportClasspathDialog.class);
+
+    private JList paths;
+    private DefaultListModel pathsModel;
+    
+    private JButton addFile;
+    
+    private JButton removeFile;
+    
+//    private JButton save;
+    
+    private JButton ok;
+    
+    private Import importProcess;
+    
+    public ImportClasspathDialog(Import importProcess1){
+        
+        super();
+        setName("Set up the import classpath");
+        importProcess = importProcess1;
+        
+        Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
+        getContentPane().setLayout(new BorderLayout(0, 0));
+        
+        // paths list
+        pathsModel = new DefaultListModel();
+        paths = new JList(pathsModel);
+        paths.setVisibleRowCount(5);
+        JScrollPane listScroller = new JScrollPane(paths);
+        listScroller.setPreferredSize(new Dimension(250, 80));
+        getContentPane().add(listScroller, BorderLayout.CENTER);
+        
+        initList();
+        
+        // controls
+        JPanel controlsPanel = new JPanel();
+        controlsPanel.setLayout(new GridLayout(0,3));
+        addFile = new JButton("Add");
+        removeFile = new JButton("Remove");
+//        save = new JButton("Save");
+        ok = new JButton("Ok");
+        controlsPanel.add(addFile);
+        controlsPanel.add(removeFile);
+//        controlsPanel.add(save);
+        controlsPanel.add(ok);
+        getContentPane().add(controlsPanel, BorderLayout.SOUTH);
+        
+        addFile.addActionListener(new AddListener());
+        removeFile.addActionListener(new RemoveListener());
+//        save.addActionListener(new SaveListener());
+        ok.addActionListener(new OkListener());
+        
+        //Display the window.
+        Dimension contentPaneSize = getContentPane().getPreferredSize();
+        setLocation(scrSize.width / 2 - contentPaneSize.width / 2,
+            scrSize.height / 2 - contentPaneSize.height / 2);
+        pack();
+        setVisible(true);
+    }
+    
+    private void initList(){
+        
+        URL[] urls = ImportClassLoader.getURLs(Configuration.getString(Argo.KEY_USER_IMPORT_CLASSPATH, ""));
+        
+        for(int i=0; i<urls.length;i++){
+            pathsModel.addElement(urls[i].getFile());
+        }
+        
+        paths.setSelectedIndex(0);
+    }
+    
+    
+    private void doFiles(){
+        importProcess.doFile();
+    }
+    
+//    class SaveListener implements ActionListener {
+//        public void actionPerformed(ActionEvent e) {
+//            
+//            try{
+//            ImportClassLoader.getInstance().setPath(pathsModel.toArray());
+//            ImportClassLoader.getInstance().saveUserPath();
+//        }catch(Exception e1){cat.warn("could not do save "+e1);}
+//        }
+//    }
+    
+    class OkListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            
+            URL urls[] = new URL[pathsModel.size()];
+            for(int i=0;i<urls.length;i++){
+                try{
+                    urls[i] = new File((String)pathsModel.get(i)).toURL();
+                }catch(Exception e1){cat.warn("could not do ok: could not make"+
+                "url "+pathsModel.get(i)+", "+e1);}
+            }
+            
+            try{
+                ImportClassLoader.getInstance(urls);
+                ImportClassLoader.getInstance().saveUserPath();
+            }catch(Exception e1){cat.warn("could not do ok "+e1);}
+            doFiles();
+            dispose();
+        }
+    }
+    
+    class RemoveListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            //This method can be called only if
+            //there's a valid selection
+            //so go ahead and remove whatever's selected.
+            int index = paths.getSelectedIndex();
+            pathsModel.remove(index);
+
+            int size = pathsModel.getSize();
+
+            if (size == 0) { //nothings left, disable firing.
+                removeFile.setEnabled(false);
+
+            } else { //Select an index.
+                if (index == pathsModel.getSize()) {
+                    //removed item in last position
+                    index--;
+                }
+
+                paths.setSelectedIndex(index);
+                paths.ensureIndexIsVisible(index);
+            }
+        }
+    }
+    
+    
+    class AddListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            
+    	String directory = Globals.getLastDirectory();
+	JFileChooser ch = OsUtil.getFileChooser(directory);
+	if (ch == null) ch = OsUtil.getFileChooser();
+
+	final JFileChooser chooser = ch;
+		
+	chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        
+	chooser.addActionListener(new ActionListener() 
+	    {
+		public void actionPerformed(ActionEvent e) {
+		    if (e.getActionCommand().equals(JFileChooser.APPROVE_SELECTION)) {
+			File theFile = chooser.getSelectedFile();
+			if (theFile != null) {
+                            pathsModel.addElement(theFile.toString());
+			}
+		    } else if (e.getActionCommand().equals(JFileChooser.CANCEL_SELECTION)) {
+		    }
+		}
+	    });
+        
+        int retval = chooser.showOpenDialog(ProjectBrowser.getInstance());
+        }
+    }
+}
+
