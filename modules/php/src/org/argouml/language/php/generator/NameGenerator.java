@@ -103,12 +103,46 @@ public final class NameGenerator {
             }
         }
 
+        String sPackageName = Model.getFacade().getName(modelElement);
+        while ((modelElement = Model.getFacade().getNamespace(modelElement))
+                != null) {
+            if (Model.getFacade().getNamespace(modelElement) != null) {
+                sPackageName = Model.getFacade().getName(modelElement) + '_'
+                        + sPackageName;
+            }
+        }
+
+        return sPackageName;
+    }
+
+    /**
+     * Generates the PHP package path for a given namespace, ignoring the root
+     * namespace (which is the model).
+     *
+     * @param modelElement The model element to generate the package name for.
+     *
+     * @return The PHP package path for the given model element
+     */
+    private static final String generatePackagePath(Object modelElement) {
+        if (modelElement == null
+                || !Model.getFacade().isANamespace(modelElement)
+                || Model.getFacade().getNamespace(modelElement) == null) {
+            return null;
+        }
+
+        if (!Model.getFacade().isAPackage(modelElement)) {
+            modelElement = Model.getFacade().getNamespace(modelElement);
+            if (Model.getFacade().getNamespace(modelElement) == null) {
+                return null;
+            }
+        }
+
         String sPackagePath = Model.getFacade().getName(modelElement);
         while ((modelElement = Model.getFacade().getNamespace(modelElement))
                 != null) {
             if (Model.getFacade().getNamespace(modelElement) != null) {
-                sPackagePath = Model.getFacade().getName(modelElement) + '_'
-                        + sPackagePath;
+                sPackagePath = Model.getFacade().getName(modelElement)
+                    + FILE_SEPARATOR + sPackagePath;
             }
         }
 
@@ -222,8 +256,6 @@ public final class NameGenerator {
                     + " has wrong object type, Classifier required");
         }
 
-        String sClassName = NameGenerator.generate(modelElement, iMajorVersion);
-
         if (sPath != null && sPath.trim().length() > 0) {
             if (!sPath.endsWith(FILE_SEPARATOR)) {
                 sPath += FILE_SEPARATOR;
@@ -232,21 +264,7 @@ public final class NameGenerator {
             sPath = "";
         }
 
-        String sPackagePath = null;
-        int iLastUnderscore = sClassName.lastIndexOf("_");
-        if (iLastUnderscore > -1) {
-            sPackagePath = sClassName.substring(0, iLastUnderscore);
-
-            int iFirstUnderscore = sPackagePath.indexOf("_");
-            while (iFirstUnderscore != -1) {
-                sPackagePath = sPackagePath.substring(0, iFirstUnderscore)
-                        + FILE_SEPARATOR
-                        + sPackagePath.substring(iFirstUnderscore + 1);
-                iFirstUnderscore =
-                        sPackagePath.indexOf("_", iFirstUnderscore + 1);
-            }
-        }
-
+        String sPackagePath = NameGenerator.generatePackagePath(modelElement);
         sPath += sPackagePath != null ? sPackagePath + FILE_SEPARATOR : "";
 
         String sFilename = sPath;
@@ -259,12 +277,9 @@ public final class NameGenerator {
                 sFilename += "unknown.";
             }
         }
-        if (iLastUnderscore > -1) {
-            sFilename += sClassName.substring(iLastUnderscore + 1);
-        } else {
-            sFilename += sClassName;
-        }
-        sFilename += ".php";
+
+        String sClassName = Model.getFacade().getName(modelElement);
+        sFilename += sClassName + ".php";
 
         return sFilename;
     }
