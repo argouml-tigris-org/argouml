@@ -30,6 +30,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.Polygon;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
@@ -54,6 +55,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.presentation.FigPoly;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -64,14 +66,25 @@ import ru.novosoft.uml.model_management.MPackage;
 /** Class to display graphics for a UML subsystem in a class diagram. */
 
 public class FigSubsystem extends FigPackage {
-    protected static Category cat = Category.getInstance(FigModel.class);
+    protected static Category cat = Category.getInstance(FigSubsystem.class);
 
+    protected FigPoly _figPoly;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     public FigSubsystem() {
         super();
+        _figPoly = new FigPoly(Color.black, Color.black);
+        int[] xpoints = { 125, 125, 130, 130, 130, 135, 135 };
+        int[] ypoints = {  45,  40,  40,  35,  40,  40,  45 };
+        Polygon polygon = new Polygon(xpoints, ypoints, 7);
+        _figPoly.setPolygon(polygon);
+        _figPoly.setFilled(false);
+        addFig(_figPoly);
+        Rectangle r = getBounds();
+        setBounds(r.x, r.y, r.width, r.height);
+        updateEdges();
     }
 
     public FigSubsystem(GraphModel gm, Object node) {
