@@ -68,8 +68,7 @@ public class UMLMutableLinkedList extends UMLLinkedList
 
     private AbstractActionNewModelElement newAction = null;
 
-    private AbstractActionRemoveElement deleteAction = 
-        ActionRemoveModelElement.SINGLETON;
+    private AbstractActionRemoveElement deleteAction = null;
 
     private class PopupMenu extends JPopupMenu {
         public PopupMenu() {
