@@ -311,7 +311,7 @@ public class TestAgainstUmlModel extends TestCase {
         assertEquals(refs.size(), list.getLength());
 
         for (int i = 0; i < list.getLength(); i++) {
-            suite.addTest(new TestModelFacade(list.item(i).getAttributes().getNamedItem("name").getNodeValue()));
+            suite.addTest(new TestAgainstUmlModel(list.item(i).getAttributes().getNamedItem("name").getNodeValue()));
         }
         return suite;
     }
@@ -320,8 +320,7 @@ public class TestAgainstUmlModel extends TestCase {
      *  @see junit.framework.TestCase#runTest()
      */
     protected void runTest() throws Throwable {
-        String umlclass =
-            getName();
+        String umlclass = getName();
         Object factory = refs.get(umlclass);
         assertNotNull("Unable to find factory '" + umlclass + "' in references",
                       factory);
