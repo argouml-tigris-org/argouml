@@ -1,17 +1,25 @@
 // $ANTLR 2.7.1: "../src_new/org/argouml/language/java/generator/java.g" -> "JavaRecognizer.java"$
 
-package org.argouml.language.java.generator;
+	package org.argouml.language.java.generator;
 
-import java.util.Vector;
+	import java.util.Vector;
 
-import antlr.NoViableAltException;
-import antlr.ParserSharedInputState;
-import antlr.RecognitionException;
-import antlr.Token;
 import antlr.TokenBuffer;
-import antlr.TokenStream;
 import antlr.TokenStreamException;
+import antlr.TokenStreamIOException;
+import antlr.ANTLRException;
+import antlr.LLkParser;
+import antlr.Token;
+import antlr.TokenStream;
+import antlr.RecognitionException;
+import antlr.NoViableAltException;
+import antlr.MismatchedTokenException;
+import antlr.SemanticException;
+import antlr.ParserSharedInputState;
 import antlr.collections.impl.BitSet;
+import antlr.collections.AST;
+import antlr.ASTPair;
+import antlr.collections.impl.ASTArray;
 
 /** Java 1.2 Recognizer
  *
