@@ -223,6 +223,6 @@ public class ActionAddNote extends UMLChangeAction {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
 	return super.shouldBeEnabled() && 
-        (target instanceof MClassifier || target instanceof MStateVertex);
+        (target instanceof MModelElement) && (pb.getActiveDiagram().presentationFor(target) instanceof FigNode);
     }
 } /* end class ActionAddNote */
