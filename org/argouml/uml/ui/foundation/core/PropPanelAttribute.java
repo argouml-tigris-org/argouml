@@ -69,7 +69,6 @@ public class PropPanelAttribute extends PropPanelModelElement {
         super("Attribute", ConfigLoader.getTabPropsOrientation());
         
         
-        /*
 
         Class mclass = MAttribute.class;
 
@@ -118,7 +117,6 @@ public class PropPanelAttribute extends PropPanelModelElement {
         new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
         new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-attribute"),"newAttribute",null);
         new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-attribute"),"removeElement",null);
-        */
     }
 
 
