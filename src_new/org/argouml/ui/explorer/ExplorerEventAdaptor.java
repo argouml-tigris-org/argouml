@@ -34,18 +34,27 @@ import org.argouml.model.uml.ExplorerNSUMLEventAdaptor;
 /**
  * All events going to the Explorer must pass through here first!<p>
  *
- * Most will come from the uml model via ExplorerNSUMLEventAdaptor.
+ * Most will come from the uml model via ExplorerNSUMLEventAdaptor.<p>
+ *
+ * TODO: In some cases (test cases) this object is created without setting
+ * the treeModel. I (Linus) will add tests for this now. It would be better
+ * if this is created only when the Explorer is created.
  *
  * @since 0.15.2, Created on 16 September 2003, 23:13
  * @author  alexb
  */
-public class ExplorerEventAdaptor
+public final class ExplorerEventAdaptor
     implements PropertyChangeListener {
-
+    /**
+     * The singleton instance.
+     *
+     * TODO: Why is this a singleton? Wouldn't it be better to have exactly
+     * one for every Explorer?
+     */
     private static ExplorerEventAdaptor instance;
 
     /**
-     * the tree model to update
+     * The tree model to update.
      */
     private TreeModelUMLEventListener treeModel;
 
@@ -59,7 +68,9 @@ public class ExplorerEventAdaptor
 	return instance;
     }
 
-    /** Creates a new instance of ExplorerUMLEventAdaptor */
+    /**
+     * Creates a new instance of ExplorerUMLEventAdaptor.
+     */
     private ExplorerEventAdaptor() {
 
         Configuration.addListener(Notation.KEY_USE_GUILLEMOTS, this);
@@ -72,6 +83,9 @@ public class ExplorerEventAdaptor
      * forwards this event to the tree model.
      */
     public void structureChanged() {
+        if (treeModel == null) {
+            return;
+        }
         treeModel.structureChanged();
     }
 
@@ -81,6 +95,9 @@ public class ExplorerEventAdaptor
      * @param source the modelelement to be removed
      */
     public void modelElementRemoved(Object source) {
+        if (treeModel == null) {
+            return;
+        }
         treeModel.modelElementRemoved(source);
     }
 
@@ -90,6 +107,9 @@ public class ExplorerEventAdaptor
      * @param source the modelelement to be added
      */
     public void modelElementAdded(Object source) {
+        if (treeModel == null) {
+            return;
+        }
         treeModel.modelElementAdded(source);
     }
 
@@ -99,6 +119,9 @@ public class ExplorerEventAdaptor
      * @param source the modelelement to be changed
      */
     public void modelElementChanged(Object source) {
+        if (treeModel == null) {
+            return;
+        }
         treeModel.modelElementChanged(source);
     }
 
@@ -121,6 +144,9 @@ public class ExplorerEventAdaptor
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(java.beans.PropertyChangeEvent pce) {
+        if (treeModel == null) {
+            return;
+        }
 
         // We don't care if the save state has changed
         if (pce.getPropertyName().equals(
@@ -164,5 +190,4 @@ public class ExplorerEventAdaptor
             treeModel.modelElementChanged(pce.getNewValue());
         }
     }
-
 }
