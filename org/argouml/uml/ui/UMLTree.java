@@ -39,6 +39,11 @@ import org.argouml.ui.targetmanager.TargetManager;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
+/**
+ * 
+ * @deprecated As of ArgoUml version 0.13.5, 
+ * This class is not used and probably shouldn't be in the future either.
+ */
 public class UMLTree extends JTree implements UMLUserInterfaceComponent, 
       MouseListener, TreeSelectionListener {
 
