@@ -40,7 +40,7 @@ public class ActionProperties extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionProperties() { super("Properties", NO_ICON); }
+    protected ActionProperties() { super("action.properties", NO_ICON); }
 
 
     ////////////////////////////////////////////////////////////////
@@ -49,11 +49,11 @@ public class ActionProperties extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	if (pb == null) return;
-	pb.selectTabNamed("Properties");
+	pb.selectTabNamed("action.properties");
     }
 
     public boolean shouldBeEnabled() { 
 	return true; 
     }
-} /* end class ActionShowProperties */
+} /* end class ActionProperties */
 

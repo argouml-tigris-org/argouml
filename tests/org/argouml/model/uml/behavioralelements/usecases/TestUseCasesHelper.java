@@ -24,9 +24,10 @@
 // $header$
 package org.argouml.model.uml.behavioralelements.usecases;
 
-import org.argouml.util.CheckUMLModelHelper;
-
 import junit.framework.TestCase;
+
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * @since Oct 10, 2002
@@ -34,22 +35,30 @@ import junit.framework.TestCase;
  */
 public class TestUseCasesHelper extends TestCase {
 
-    /**
-     * Constructor for TestUseCasesHelper.
-     * @param arg0
-     */
-    public TestUseCasesHelper(String arg0) {
-        super(arg0);
-    }
-    
-    public void testGetMetaModelName() {
-        CheckUMLModelHelper.metaModelNameCorrect(this, UseCasesFactory.getFactory(),
-            TestUseCasesFactory.allModelElements);
-    }
-    
-    public void testIsValidStereoType() {
-        CheckUMLModelHelper.isValidStereoType(this, UseCasesFactory.getFactory(),
-            TestUseCasesFactory.allModelElements);
-    }
+	/**
+	 * Constructor for TestUseCasesHelper.
+	 * @param arg0
+	 */
+	public TestUseCasesHelper(String arg0) {
+		super(arg0);
+	}
+
+	public void testGetMetaModelName() {
+		CheckUMLModelHelper.metaModelNameCorrect(
+			this,
+			UseCasesFactory.getFactory(),
+			TestUseCasesFactory.allModelElements);
+	}
+
+	public void testIsValidStereoType() {
+		CheckUMLModelHelper.isValidStereoType(
+			this,
+			UseCasesFactory.getFactory(),
+			TestUseCasesFactory.allModelElements);
+	}
+
+	protected void setUp() {
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 
 }

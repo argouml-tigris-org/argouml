@@ -70,11 +70,4 @@ public class GoModelToDiagram extends AbstractGoRule {
         return null;
     }
 
-    
-    public boolean isLeaf(Object node) {
-        return !(node instanceof MNamespace && getChildCount(node) > 0);
-    }
-
-    
-
 }

@@ -24,6 +24,8 @@
 // $header$
 package org.argouml.kernel;
 
+import org.argouml.application.security.ArgoSecurityManager;
+
 import junit.framework.TestCase;
 
 /**
@@ -54,6 +56,7 @@ public class TestProject extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ProjectManager.getManager().setCurrentProject(null);
+        ArgoSecurityManager.getInstance().setAllowExit(true);
     }
 
     /**

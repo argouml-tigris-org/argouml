@@ -88,7 +88,7 @@ public class ProjectBrowser
     ////////////////////////////////////////////////////////////////
     // class variables
 
-    public static ProjectBrowser TheInstance;
+    public static ProjectBrowser TheInstance = new ProjectBrowser();
 
     // ----- diagrams
 
@@ -736,6 +736,8 @@ public class ProjectBrowser
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
+        
+        // the project changed
         if (evt
             .getPropertyName()
             .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
@@ -747,6 +749,23 @@ public class ProjectBrowser
                 Designer.TheDesigner.setCritiquingRoot(p);
                 // update all panes
                 setTarget(p.getInitialTarget());
+            }
+        }
+        
+        // the save state changed
+        else if (evt.getPropertyName()
+                    .equals(ProjectManager.SAVE_STATE_PROPERTY_NAME)) {
+            
+            String oldTitle = super.getTitle();
+            if(((Boolean)evt.getNewValue()).booleanValue() == true &&
+               !oldTitle.endsWith("*")){
+                   
+                   super.setTitle(oldTitle+" *");
+            }
+            else if(((Boolean)evt.getNewValue()).booleanValue() == false &&
+                    oldTitle.endsWith("*")){
+                        
+                   super.setTitle(oldTitle.substring(0,oldTitle.length()-2));
             }
         }
     }

@@ -41,8 +41,8 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
 	}
 	
 	protected void setUp() {
+        ArgoSecurityManager.getInstance().setAllowExit(true); 
         if (ProjectBrowser.TheInstance == null) {
-            ArgoSecurityManager.getInstance().setAllowExit(true);
             new ProjectBrowser();        
         }    
 		_action = getAction();

@@ -41,8 +41,4 @@ public class GoClassToAssociatedClass extends AbstractGoRule {
       return null;
   }
 
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MClass && getChildCount(node) > 0);
-  }
-
 }

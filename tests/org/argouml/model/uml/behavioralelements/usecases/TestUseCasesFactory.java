@@ -47,11 +47,10 @@
 
 package org.argouml.model.uml.behavioralelements.usecases;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-
-
-import org.argouml.util.*;
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
@@ -131,6 +130,10 @@ public class TestUseCasesFactory extends TestCase {
         assertTrue("extend not added to correct extensionpoint", 
             extend.getExtensionPoints().contains(point) && 
                 extend.getExtensionPoints().size() == 1);
+    }
+    
+    protected void setUp() {
+        ArgoSecurityManager.getInstance().setAllowExit(true);
     }
        
 }

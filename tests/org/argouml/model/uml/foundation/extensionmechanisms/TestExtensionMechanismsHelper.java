@@ -80,5 +80,6 @@ public class TestExtensionMechanismsHelper extends TestCase {
         super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true);
     }
+    
 
 }

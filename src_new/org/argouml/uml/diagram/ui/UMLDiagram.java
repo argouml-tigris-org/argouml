@@ -24,19 +24,18 @@
 package org.argouml.uml.diagram.ui;
 
 import java.beans.PropertyVetoException;
+import java.util.Enumeration;
 
 import javax.swing.Action;
 import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
-
-import org.argouml.swingext.PopupToolBoxButton;
-import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
-
+import org.argouml.swingext.PopupToolBoxButton;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreateFigCircle;
@@ -48,12 +47,14 @@ import org.tigris.gef.base.ModeCreateFigRect;
 import org.tigris.gef.base.ModeCreateFigSpline;
 import org.tigris.gef.base.ModeCreateFigText;
 import org.tigris.gef.base.ModeSelect;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.ToolBar;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * This class provides support for writing a UML diagram for argo using
@@ -109,29 +110,27 @@ public abstract class UMLDiagram
   protected MNamespace  _namespace;
   protected DiagramInfo _diagramName = new DiagramInfo(this);
 
-
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public UMLDiagram() { 
+    public UMLDiagram() { 
   	super();
-    initToolBar();
-  }
+    }
 
   
-  public UMLDiagram(MNamespace ns) {
-  	this();
-    setNamespace(ns);
-  }
-  
-  
-  public UMLDiagram(String diagramName, MNamespace ns) {
-  	this(ns);
-    try { setName(diagramName); }
-    catch (PropertyVetoException pve) { 
-        cat.fatal("Name not allowed in construction of diagram");
+    public UMLDiagram(MNamespace ns) {
+        this();
+        setNamespace(ns);
     }
-  }
+  
+  
+    public UMLDiagram(String diagramName, MNamespace ns) {
+        this(ns);
+        try { setName(diagramName); }
+        catch (PropertyVetoException pve) { 
+            cat.fatal("Name not allowed in construction of diagram");
+        }
+    }
 
   public void initialize(Object owner) {
     super.initialize(owner);
@@ -185,6 +184,9 @@ public abstract class UMLDiagram
      * @return the diagram toolbar
      */
     public ToolBar getToolBar() {
+        if (_toolBar == null) {
+            initToolBar();
+        }
         return _toolBar;
     }
   
@@ -277,6 +279,49 @@ public abstract class UMLDiagram
   public void recovered(MElementEvent e){
       
   }
+  
+  /**
+   * Removes the UMLDiagram and all the figs on it as listener to 
+   * UmlModelEventPump. Is called by setTarget in TabDiagram to improve 
+   * performance. 
+   *
+   */
+  public void removeAsTarget() {
+      Enumeration enum = elements();
+      UmlModelEventPump pump = UmlModelEventPump.getPump();
+      while (enum.hasMoreElements()) {
+          Object o = enum.nextElement();
+          if (o instanceof MElementListener) {
+              MElementListener listener = (MElementListener)o;
+              Fig fig = (Fig)o;
+              pump.removeModelEventListener(listener, (MBase)fig.getOwner()); 
+          }
+      }
+      pump.removeModelEventListener(this, getNamespace());
+      
+  }
+  
+  /**
+   * Adds the UMLDiagram and all the figs on it as listener to UmlModelEventPump.
+   * Together with removeAsModelListener this is a performance improvement. 
+   *
+   */
+  public void setAsTarget() {
+      Enumeration enum = elements();
+      UmlModelEventPump pump = UmlModelEventPump.getPump();
+      while (enum.hasMoreElements()) {
+          Fig fig = (Fig)enum.nextElement();
+          if (fig instanceof MElementListener) {
+              Object owner = fig.getOwner();
+              // pump.addModelEventListener((MElementListener)fig, owner);
+              // this will make sure all the correct event listeners are set. 
+              fig.setOwner(null); 
+              fig.setOwner(owner);
+          }
+      }    
+  }
+
+
   
   
 } /* end class UMLDiagram */

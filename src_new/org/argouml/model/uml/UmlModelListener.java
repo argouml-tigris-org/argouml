@@ -120,8 +120,9 @@ public class UmlModelListener implements MElementListener {
 	//
 
 	if (mee.getAddedValue() != null || mee.getRemovedValue() != null || (mee.getNewValue() != null && !mee.getNewValue().equals(mee.getOldValue()))) {
-		if (ProjectBrowser.TheInstance != null && ProjectBrowser.TheInstance.getNavigatorPane() != null)
-			ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
+		if (ProjectBrowser.TheInstance != null && ProjectBrowser.TheInstance.getNavigatorPane() != null){
+			ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate(mee.getSource());
+                }
         if (ProjectManager.getManager().getCurrentProject() != null)
 			ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
 	}

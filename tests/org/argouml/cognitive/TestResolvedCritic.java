@@ -25,24 +25,21 @@ package org.argouml.cognitive;
 
 import java.util.Vector;
 
-import org.tigris.gef.util.VectorSet;
+import junit.framework.TestCase;
 
+import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.tigris.gef.util.VectorSet;
 
 import ru.novosoft.uml.foundation.core.MClass;
 
-import junit.framework.*;
-
-public class TestResolvedCritic extends TestCase
-{
-	public TestResolvedCritic(String name)
-	{
+public class TestResolvedCritic extends TestCase {
+	public TestResolvedCritic(String name) {
 		super(name);
 	}
 
-	public void testConstructors()
-	{
+	public void testConstructors() {
 		MClass testmc = CoreFactory.getFactory().buildClass();
 		Critic c = new Critic();
 		String crString = "class org.argouml.cognitive.critics.Critic";
@@ -54,14 +51,17 @@ public class TestResolvedCritic extends TestCase
 
 		rc = new ResolvedCritic("rc", null);
 		assertTrue("getCritic simple", "rc".equals(rc.getCritic()));
-		assertTrue("getOffenderList simple", rc.getOffenderList() == null ||
-			rc.getOffenderList().size() == 0);
+		assertTrue(
+			"getOffenderList simple",
+			rc.getOffenderList() == null || rc.getOffenderList().size() == 0);
 
 		vec.add("str1");
 		rc = new ResolvedCritic("rc2", vec);
 		assertTrue("getCritic 2nd", "rc2".equals(rc.getCritic()));
-		assertTrue("getOffenderList 2nd", rc.getOffenderList() != null &&
-			"str1".equals(rc.getOffenderList().get(0)));
+		assertTrue(
+			"getOffenderList 2nd",
+			rc.getOffenderList() != null
+				&& "str1".equals(rc.getOffenderList().get(0)));
 
 		/* ResolvedCritic(Critic, VectorSet) */
 
@@ -69,8 +69,10 @@ public class TestResolvedCritic extends TestCase
 			rc = new ResolvedCritic(c, null);
 			System.out.println(rc.getCritic());
 			assertTrue("getCritic 1", crString.equals(rc.getCritic()));
-			assertTrue("getOffenderList 1", rc.getOffenderList() == null ||
-				rc.getOffenderList().size() == 0);
+			assertTrue(
+				"getOffenderList 1",
+				rc.getOffenderList() == null
+					|| rc.getOffenderList().size() == 0);
 		} catch (UnresolvableException ure1) {
 			assertTrue("create 1 with MClass", false);
 		}
@@ -80,9 +82,14 @@ public class TestResolvedCritic extends TestCase
 			rc = new ResolvedCritic(c, set);
 
 			assertTrue("getCritic 2", crString.equals(rc.getCritic()));
-			assertTrue("assigns id 2", ItemUID.getIDOfObject(testmc, false) != null);
-			assertTrue("getOffenderList 2", rc.getOffenderList() != null &&
-				ItemUID.getIDOfObject(testmc, false).equals(rc.getOffenderList().get(0)));
+			assertTrue(
+				"assigns id 2",
+				ItemUID.getIDOfObject(testmc, false) != null);
+			assertTrue(
+				"getOffenderList 2",
+				rc.getOffenderList() != null
+					&& ItemUID.getIDOfObject(testmc, false).equals(
+						rc.getOffenderList().get(0)));
 		} catch (UnresolvableException ure1) {
 			assertTrue("create 2 with MClass", false);
 		}
@@ -95,17 +102,21 @@ public class TestResolvedCritic extends TestCase
 			rc = new ResolvedCritic(c, set, false);
 
 			assertTrue("getCritic 3", crString.equals(rc.getCritic()));
-			assertTrue("assigns id 3", ItemUID.getIDOfObject(testmc, false) != null);
-			assertTrue("getOffenderList 3", rc.getOffenderList() != null &&
-				ItemUID.getIDOfObject(testmc, false).equals(rc.getOffenderList().get(0)));
+			assertTrue(
+				"assigns id 3",
+				ItemUID.getIDOfObject(testmc, false) != null);
+			assertTrue(
+				"getOffenderList 3",
+				rc.getOffenderList() != null
+					&& ItemUID.getIDOfObject(testmc, false).equals(
+						rc.getOffenderList().get(0)));
 		} catch (UnresolvableException ure1) {
 			assertTrue("create 3 with MClass", false);
 		}
 		set.remove(testmc);
 	}
 
-	public void testEquals()
-	{
+	public void testEquals() {
 		Critic c = new Critic();
 		ResolvedCritic rc1, rc2;
 		Vector vec = new Vector();
@@ -135,7 +146,9 @@ public class TestResolvedCritic extends TestCase
 		try {
 			rc1 = new ResolvedCritic(c, null);
 			rc2 = new ResolvedCritic(c, null);
-			assertTrue("Same empty ctor (c)", rc1.equals(rc2) && rc2.equals(rc1));
+			assertTrue(
+				"Same empty ctor (c)",
+				rc1.equals(rc2) && rc2.equals(rc1));
 
 			rc2 = new ResolvedCritic(c, set);
 			assertTrue("Empty set ctor", rc1.equals(rc2) && rc2.equals(rc1));
@@ -143,5 +156,12 @@ public class TestResolvedCritic extends TestCase
 			assertTrue("Test error URE", false);
 		}
 	}
-}
 
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
+}

@@ -55,6 +55,11 @@ public class TestXMIReader extends TestCase {
     public TestXMIReader(String arg0) {
         super(arg0);
     }
+    
+    protected void setUp() {
+        
+           ArgoSecurityManager.getInstance().setAllowExit(true); 
+       }
 
     /**
      * This is a regression test for issue 1504. Unfortunately this test does

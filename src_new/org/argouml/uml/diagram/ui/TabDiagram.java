@@ -135,6 +135,7 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
      * @param t
      */
     public void setTarget(Object t) {
+        
         if (!(t instanceof UMLDiagram)) {
             _shouldBeEnabled = false;
 	    // This is perfectly normal and happens among other things
@@ -142,7 +143,13 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
             cat.debug("target is null in set target or not an instance of UMLDiagram");
             return;
         }
+        if (_target != null) {
+            _target.removeAsTarget();
+        }        
         UMLDiagram target = (UMLDiagram)t;
+        
+        target.setAsTarget();
+        
         _shouldBeEnabled = true;
         setToolBar(target.getToolBar());
         _jgraph.setDiagram(target);
@@ -195,6 +202,10 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
     ////////////////////////////////////////////////////////////////
     // events
 
+    /**
+     * In the selectionChanged method not only the selection of this
+     * diagram is set but also the selection in the projectbrowser.
+     */
     public void selectionChanged(GraphSelectionEvent gse) {
         Vector sels = gse.getSelections();
         ProjectBrowser pb = ProjectBrowser.TheInstance;

@@ -42,74 +42,56 @@
 
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.argouml.model.uml.modelmanagement;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-
-
-import org.argouml.util.*;
-
-
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.util.CheckUMLModelHelper;
 
 public class TestModelManagementFactory extends TestCase {
-    
-    static String[] allModelElements = {
-        "ElementImport",
-        "Model",
-        "Package",
-        "Subsystem"
-    };
 
-    public TestModelManagementFactory(String n) { super(n); }
+	static String[] allModelElements =
+		{ "ElementImport", "Model", "Package", "Subsystem" };
 
+	public TestModelManagementFactory(String n) {
+		super(n);
+	}
 
+	public void testSingleton() {
 
-    public void testSingleton() {
+		Object o1 = ModelManagementFactory.getFactory();
 
-	Object o1 = ModelManagementFactory.getFactory();
+		Object o2 = ModelManagementFactory.getFactory();
 
-	Object o2 = ModelManagementFactory.getFactory();
+		assertTrue("Different singletons", o1 == o2);
 
-	assertTrue("Different singletons", o1 == o2);
+	}
 
-    }
+	public void testCreates() {
 
+		String[] objs =
+			{ "ElementImport", "Model", "Package", "Subsystem", null };
 
+		CheckUMLModelHelper.createAndRelease(
+			this,
+			ModelManagementFactory.getFactory(),
+			objs);
 
-    public void testCreates() {
+	}
 
-	String [] objs = {
+	public void testDeleteComplete() {
+		CheckUMLModelHelper.deleteComplete(
+			this,
+			ModelManagementFactory.getFactory(),
+			allModelElements);
+	}
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 
-	    "ElementImport",
-
-	    "Model",
-
-	    "Package",
-
-	    "Subsystem",
-
-	    null
-
-	};
-
-
-
-	CheckUMLModelHelper.createAndRelease(this, 
-
-	    ModelManagementFactory.getFactory(),
-
-	    objs);
-
-    }
-    
-    public void testDeleteComplete() {
-        CheckUMLModelHelper.deleteComplete(this, 
-        ModelManagementFactory.getFactory(), 
-        allModelElements);
-    }
-    
 }
-

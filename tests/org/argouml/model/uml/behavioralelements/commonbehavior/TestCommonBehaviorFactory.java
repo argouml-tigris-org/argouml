@@ -42,127 +42,102 @@
 
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.argouml.model.uml.behavioralelements.commonbehavior;
 
 import junit.framework.*;
 
-
-
+import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.util.*;
 
-
-
 public class TestCommonBehaviorFactory extends TestCase {
-    
-    static String[] allModelElements = {
-        "Action",
-        "ActionSequence",
-        "Argument",
-        "AttributeLink",
-        "CallAction",
-        "ComponentInstance",
-        "CreateAction",
-        "DataValue",
-        "DestroyAction",
-        "Exception",
-        "Instance",
-        "Link",
-        "LinkEnd",
-        "LinkObject",
-        "NodeInstance",
-        "Object",
-        "Reception",
-        "ReturnAction",
-        "SendAction",
-        "Signal",
-        "Stimulus",
-        "TerminateAction",
-        "UninterpretedAction",
-    }; 
 
-    public TestCommonBehaviorFactory(String n) { super(n); }
+	static String[] allModelElements =
+		{
+			"Action",
+			"ActionSequence",
+			"Argument",
+			"AttributeLink",
+			"CallAction",
+			"ComponentInstance",
+			"CreateAction",
+			"DataValue",
+			"DestroyAction",
+			"Exception",
+			"Instance",
+			"Link",
+			"LinkEnd",
+			"LinkObject",
+			"NodeInstance",
+			"Object",
+			"Reception",
+			"ReturnAction",
+			"SendAction",
+			"Signal",
+			"Stimulus",
+			"TerminateAction",
+			"UninterpretedAction",
+			};
 
+	public TestCommonBehaviorFactory(String n) {
+		super(n);
+	}
 
+	public void testSingleton() {
 
-    public void testSingleton() {
+		Object o1 = CommonBehaviorFactory.getFactory();
 
-	Object o1 = CommonBehaviorFactory.getFactory();
+		Object o2 = CommonBehaviorFactory.getFactory();
 
-	Object o2 = CommonBehaviorFactory.getFactory();
+		assertTrue("Different singletons", o1 == o2);
 
-	assertTrue("Different singletons", o1 == o2);
+	}
 
-    }
+	public void testCreates() {
 
+		String[] objs =
+			{
+				"Action",
+				"ActionSequence",
+				"Argument",
+				"AttributeLink",
+				"CallAction",
+				"ComponentInstance",
+				"CreateAction",
+				"DataValue",
+				"DestroyAction",
+				"Exception",
+				"Instance",
+				"Link",
+				"LinkEnd",
+				"NodeInstance",
+				"Object",
+				"Reception",
+				"ReturnAction",
+				"SendAction",
+				"Signal",
+				"Stimulus",
+				"TerminateAction",
+				"UninterpretedAction",
+				null };
 
+		CheckUMLModelHelper.createAndRelease(
+			this,
+			CommonBehaviorFactory.getFactory(),
+			objs);
 
-    public void testCreates() {
+	}
 
-	String [] objs = {
-
-	    "Action",
-
-	    "ActionSequence",
-
-	    "Argument",
-
-	    "AttributeLink",
-
-	    "CallAction",
-
-	    "ComponentInstance",
-
-	    "CreateAction",
-
-	    "DataValue",
-
-	    "DestroyAction",
-
-	    "Exception",
-
-	    "Instance",
-
-	    "Link",
-
-	    "LinkEnd",
-
-	    "NodeInstance",
-
-	    "Object",
-
-	    "Reception",
-
-	    "ReturnAction",
-
-	    "SendAction",
-
-	    "Signal",
-
-	    "Stimulus",
-
-	    "TerminateAction",
-
-	    "UninterpretedAction",
-
-	    null
-
-	};
-
-
-
-	CheckUMLModelHelper.createAndRelease(this, 
-
-	    CommonBehaviorFactory.getFactory(), objs);
-
-    }
-    
-     public void testDeleteComplete() {
-        CheckUMLModelHelper.deleteComplete(this, 
-            CommonBehaviorFactory.getFactory(), 
-            allModelElements);
-    }
-    
+	public void testDeleteComplete() {
+		CheckUMLModelHelper.deleteComplete(
+			this,
+			CommonBehaviorFactory.getFactory(),
+			allModelElements);
+	}
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 }
-

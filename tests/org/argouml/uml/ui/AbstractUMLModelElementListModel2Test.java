@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 
 import junit.framework.TestCase;
 
+import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MBase;
@@ -56,6 +57,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
         buildElement();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);       

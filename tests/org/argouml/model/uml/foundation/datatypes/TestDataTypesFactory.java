@@ -42,125 +42,96 @@
 
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 package org.argouml.model.uml.foundation.datatypes;
 
 import junit.framework.*;
 
-
-
 import java.util.*;
 
-
-
+import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.util.*;
-
-
 
 public class TestDataTypesFactory extends TestCase {
 
-    public TestDataTypesFactory(String n) { super(n); }
+	public TestDataTypesFactory(String n) {
+		super(n);
+	}
 
+	public void testSingleton() {
 
+		Object o1 = DataTypesFactory.getFactory();
 
-    public void testSingleton() {
+		Object o2 = DataTypesFactory.getFactory();
 
-	Object o1 = DataTypesFactory.getFactory();
+		assertTrue("Different singletons", o1 == o2);
 
-	Object o2 = DataTypesFactory.getFactory();
+	}
 
-	assertTrue("Different singletons", o1 == o2);
+	public void testCreates() {
 
-    }
+		Object[] args = { "language", "body" };
 
+		String[] objs =
+			{
+				"ActionExpression",
+				"ArgListsExpression",
+				"BooleanExpression",
+				"Expression",
+				"IterationExpression",
+				"MappingExpression",
+				"ObjectSetExpression",
+				"ProcedureExpression",
+				"TimeExpression",
+				"TypeExpression",
+				null };
 
+		CheckUMLModelHelper.createAndRelease(
+			this,
+			DataTypesFactory.getFactory(),
+			objs,
+			args);
 
-    public void testCreates() {
+		// Multiplicity
 
-	Object [] args = { "language", "body" };
+		CheckUMLModelHelper.createAndRelease(
+			this,
+			DataTypesFactory.getFactory().createMultiplicity(1, 10));
 
+		CheckUMLModelHelper.createAndRelease(
+			this,
+			DataTypesFactory.getFactory().createMultiplicity(new LinkedList()));
 
+		CheckUMLModelHelper.createAndRelease(
+			this,
+			DataTypesFactory.getFactory().createMultiplicity("1..10"));
 
-	String [] objs = {
+		// Do we need to add tests for the following?
 
-	    "ActionExpression",
+		//
 
-	    "ArgListsExpression",
+		// AggregationKind
 
-	    "BooleanExpression",
+		// ChangeableKind
 
-	    "Expression",
+		// MessageDirectionKind
 
-	    "IterationExpression",
+		// OrderingKind
 
-	    "MappingExpression",
+		// ParameterDirectionKind
 
-	    "ObjectSetExpression",
+		// PseudostateKind
 
-	    "ProcedureExpression",
+		// ScopeKind
 
-	    "TimeExpression",
+		// VisibilityKind
 
-	    "TypeExpression",
+		//
 
-	    null
+	}
 
-	};
-
-
-
-	CheckUMLModelHelper.createAndRelease(this, 
-
-					     DataTypesFactory.getFactory(),
-
-					     objs,
-
-					     args);
-
-	
-
-	// Multiplicity
-
-	CheckUMLModelHelper.createAndRelease(this,
-
-					     DataTypesFactory.getFactory().createMultiplicity(1, 10));
-
-	CheckUMLModelHelper.createAndRelease(this,
-
-					     DataTypesFactory.getFactory().createMultiplicity(new LinkedList()));
-
-	CheckUMLModelHelper.createAndRelease(this,
-
-					     DataTypesFactory.getFactory().createMultiplicity("1..10"));
-
-        // Do we need to add tests for the following?
-
-        //
-
-        // AggregationKind
-
-        // ChangeableKind
-
-        // MessageDirectionKind
-
-        // OrderingKind
-
-        // ParameterDirectionKind
-
-        // PseudostateKind
-
-        // ScopeKind
-
-        // VisibilityKind
-
-        //
-
-    }
-    
-    /*
-    public void testRemoves() {
-    	String [] objs = {
+	/*
+	public void testRemoves() {
+		String [] objs = {
 	    "ActionExpression",
 	    "ArgListsExpression",
 	    "BooleanExpression",
@@ -172,11 +143,18 @@ public class TestDataTypesFactory extends TestCase {
 	    "TimeExpression",
 	    "TypeExpression"
 	};
-
+	
 	CheckUMLModelHelper.testRemove(this, 
 	    DataTypesFactory.getFactory(), objs);
-    }
-    */
+	}
+	*/
+
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 
 }
-

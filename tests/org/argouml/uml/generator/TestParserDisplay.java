@@ -29,11 +29,13 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
-import org.argouml.kernel.Project;
+import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.model.uml.foundation.extensionmechanisms.*;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
+
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -51,11 +53,13 @@ public class TestParserDisplay extends TestCase {
 	private final String attr03 = "-name : void";
 	private final String attr04 = "#name [1..1] : int {a=b}";
 	private final String attr05 = "public name {a=b, c = d } : [1..*] int = 0";
-	private final String attr06 = "private name {a=b, c = d } [*..*] : int = 15 {frozen}";
+	private final String attr06 =
+		"private name {a=b, c = d } [*..*] : int = 15 {frozen}";
 	private final String attr07 = "+name : String = \'val[15] \'";
 	private final String attr08 = "  + name : String = \"a <<string>>\"";
 	private final String attr09 = "+name : String = (a * (b+c) - d)";
-	private final String attr10 = "+name << attrstereo1 >> : String = 2 * (b+c) - 10";
+	private final String attr10 =
+		"+name << attrstereo1 >> : String = 2 * (b+c) - 10";
 	private final String attr11 = "<<attrstereo2>> +name : String = a[15]";
 	private final String attr12 = "+ name : String = a << 5";
 
@@ -74,8 +78,10 @@ public class TestParserDisplay extends TestCase {
 	private final String nattr13 = "vis name : (type)";
 
 	private final String oper01 = "name()";
-	private final String oper02 = "<<opstereo1>> -name(in foo: float = 0) {root, abstract = false} : int";
-	private final String oper03 = "<< opstereo2 >> protected name2(out foo: double = 0., inout bar = \"\"some\"\":String) {leaf,query} : String";
+	private final String oper02 =
+		"<<opstereo1>> -name(in foo: float = 0) {root, abstract = false} : int";
+	private final String oper03 =
+		"<< opstereo2 >> protected name2(out foo: double = 0., inout bar = \"\"some\"\":String) {leaf,query} : String";
 	private final String oper04 = "<<>> # name2()";
 
 	private final String noper01 = "name(";
@@ -106,27 +112,33 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr01, "name");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr02, "name");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr03, "name");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr04, "name");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr05, "name");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr06, "name");
 	}
 
@@ -134,19 +146,23 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkType(attr, attr03, "void");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkType(attr, attr04, "int");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkType(attr, attr05, "int");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkType(attr, attr06, "int");
 	}
 
@@ -154,52 +170,62 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr02, "public");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr03, "private");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr04, "protected");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr05, "public");
 		checkVisibility(attr, attr01, "public");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr06, "private");
 		checkVisibility(attr, attr01, "private");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr08, "public");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr11, "public");
 	}
 
 	public void testAttributeProperty() {
 		MAttribute attr;
-		String res1[] = {"a", "b"};
-		String res2[] = {"a", "b", "c", "d"};
-		String res3[] = {"a", "b", "c", "d", "frozen", null};
+		String res1[] = { "a", "b" };
+		String res2[] = { "a", "b", "c", "d" };
+		String res3[] = { "a", "b", "c", "d", "frozen", null };
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkProperties(attr, attr04, res1);
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkProperties(attr, attr05, res2);
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkProperties(attr, attr06, res3);
 	}
 
@@ -207,15 +233,18 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkMultiplicity(attr, attr04, new MMultiplicity("1..1"));
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkMultiplicity(attr, attr05, new MMultiplicity("1..*"));
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkMultiplicity(attr, attr06, new MMultiplicity("*..*"));
 	}
 
@@ -223,7 +252,8 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkThrows(attr, nattr01, true, false, false);
 		checkThrows(attr, nattr02, true, false, false);
 		checkThrows(attr, nattr03, true, false, false);
@@ -243,41 +273,50 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr05, "0");
 		checkValue(attr, attr01, "0");
 		checkValue(attr, attr06, "15");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr07, "\'val[15] \'");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr08, "\"a <<string>>\"");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr09, "(a * (b+c) - d)");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr10, "2 * (b+c) - 10");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr11, "a[15]");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr12, "a << 5");
 	}
 
 	private void softAddStereotype(String name, MModelElement elem) {
-		Iterator it = ExtensionMechanismsHelper.getHelper()
-			.getStereotypes(ProjectManager.getManager()
-					.getCurrentProject().getModel())
-			.iterator();
+		Iterator it =
+			ExtensionMechanismsHelper
+				.getHelper()
+				.getStereotypes(
+					ProjectManager.getManager().getCurrentProject().getModel())
+				.iterator();
 		while (it.hasNext()) {
 			MStereotype s = (MStereotype) it.next();
 			if (name.equals(s.getName()))
@@ -293,20 +332,24 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		softAddStereotype("attrstereo1", attr);
 		softAddStereotype("attrstereo2", attr);
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(attr, attr01, null);
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(attr, attr10, "attrstereo1");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		attr.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(attr, attr11, "attrstereo2");
 		checkStereotype(attr, attr01, "attrstereo2");
 	}
@@ -314,7 +357,8 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationName() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
-		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		cl.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkName(op, oper01, "name");
@@ -329,7 +373,8 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationType() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
-		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		cl.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkType(op, oper01, "void");
@@ -345,7 +390,8 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationVisibility() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
-		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		cl.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkVisibility(op, oper01, "public");
@@ -365,11 +411,22 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationParameters() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
-		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		cl.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 
-		String res1[] = {};
-		String res2[] = {"in", "foo", "float", "0"};
-		String res3[] = {"out", "foo", "double", "0.", "inout", "bar", "String", "\"\"some\"\""};
+		String res1[] = {
+		};
+		String res2[] = { "in", "foo", "float", "0" };
+		String res3[] =
+			{
+				"out",
+				"foo",
+				"double",
+				"0.",
+				"inout",
+				"bar",
+				"String",
+				"\"\"some\"\"" };
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkParameters(op, oper01, res1);
@@ -386,11 +443,27 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationProperties() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
-		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		cl.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 
-		String res1[] = {"abstract", null, "concurrency", null,
-			"concurrent", null, "guarded", null, "leaf", null,
-			"query", null, "root", null, "sequential", null};
+		String res1[] =
+			{
+				"abstract",
+				null,
+				"concurrency",
+				null,
+				"concurrent",
+				null,
+				"guarded",
+				null,
+				"leaf",
+				null,
+				"query",
+				null,
+				"root",
+				null,
+				"sequential",
+				null };
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkProperties(op, oper01, res1);
@@ -405,7 +478,8 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationStereotype() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
-		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		cl.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		softAddStereotype("opstereo1", op);
@@ -426,7 +500,8 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationParseExceptions() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
-		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		cl.setNamespace(
+			ProjectManager.getManager().getCurrentProject().getModel());
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkThrows(op, noper01, true, false, false);
@@ -448,38 +523,33 @@ public class TestParserDisplay extends TestCase {
 	public void TestClassifierRoleName() {
 		MClassifierRole cr;
 
-		cr = UmlFactory.getFactory().getCollaborations()
-			.createClassifierRole();
+		cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
 		checkName(cr, clro01, "roname");
 		checkName(cr, clro02, "roname2");
 
-		cr = UmlFactory.getFactory().getCollaborations()
-			.createClassifierRole();
+		cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
 		checkName(cr, clro03, "roname");
 	}
 
 	public void TestClassifierRoleBases() {
 		MClassifierRole cr;
-		String res1[] = {"int"};
-		String res2[] = {"int", "double"};
-		String res3[] = {"float", "long"};
+		String res1[] = { "int" };
+		String res2[] = { "int", "double" };
+		String res3[] = { "float", "long" };
 
-		cr = UmlFactory.getFactory().getCollaborations()
-			.createClassifierRole();
+		cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
 		checkBases(cr, clro01, res1);
 		checkBases(cr, clro02, res2);
 		checkBases(cr, clro03, res3);
 
-		cr = UmlFactory.getFactory().getCollaborations()
-			.createClassifierRole();
+		cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
 		checkBases(cr, clro03, res3);
 	}
 
 	public void TestClassifierRoleThrows() {
 		MClassifierRole cr;
 
-		cr = UmlFactory.getFactory().getCollaborations()
-			.createClassifierRole();
+		cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
 		checkThrows(cr, nclro01, true, false, false);
 		checkThrows(cr, nclro02, true, false, false);
 		checkThrows(cr, nclro03, true, false, false);
@@ -489,7 +559,8 @@ public class TestParserDisplay extends TestCase {
 	private void checkName(MAttribute attr, String text, String name) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assertTrue(text + " gave wrong name: " + attr.getName(),
+			assertTrue(
+				text + " gave wrong name: " + attr.getName(),
 				name.equals(attr.getName()));
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
@@ -499,7 +570,8 @@ public class TestParserDisplay extends TestCase {
 	private void checkName(MOperation op, String text, String name) {
 		try {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
-			assertTrue(text + " gave wrong name: " + op.getName() + " != " + name,
+			assertTrue(
+				text + " gave wrong name: " + op.getName() + " != " + name,
 				name.equals(op.getName()));
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
@@ -509,7 +581,8 @@ public class TestParserDisplay extends TestCase {
 	private void checkName(MClassifierRole ro, String text, String name) {
 		try {
 			ParserDisplay.SINGLETON.parseClassifierRole(ro, text);
-			assertTrue(text + " gave wrong name: " + ro.getName() + " != " + name,
+			assertTrue(
+				text + " gave wrong name: " + ro.getName() + " != " + name,
 				name.equals(ro.getName()));
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
@@ -519,8 +592,14 @@ public class TestParserDisplay extends TestCase {
 	private void checkType(MAttribute attr, String text, String type) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assertTrue(text + " gave wrong type: " + (attr.getType() == null ? "(null)" : attr.getType().getName()),
-				attr.getType() != null && type.equals(attr.getType().getName()));
+			assertTrue(
+				text
+					+ " gave wrong type: "
+					+ (attr.getType() == null
+						? "(null)"
+						: attr.getType().getName()),
+				attr.getType() != null
+					&& type.equals(attr.getType().getName()));
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
@@ -529,15 +608,21 @@ public class TestParserDisplay extends TestCase {
 	private void checkType(MOperation op, String text, String type) {
 		try {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
-			Collection ret = UmlHelper.getHelper().getCore().getReturnParameters(op);
+			Collection ret =
+				UmlHelper.getHelper().getCore().getReturnParameters(op);
 			Iterator it = ret.iterator();
-			assertTrue(text + " gave extra return value", !(type == null && it.hasNext()));
-			assertTrue(text + " lacks return value", !(type != null && !it.hasNext()));
+			assertTrue(
+				text + " gave extra return value",
+				!(type == null && it.hasNext()));
+			assertTrue(
+				text + " lacks return value",
+				!(type != null && !it.hasNext()));
 			if (it.hasNext()) {
 				MParameter p = (MParameter) it.next();
-				assertTrue(text + " gave wrong return",
-					(type == null && p.getType() == null) ||
-					(type != null && type.equals(p.getType().getName())));
+				assertTrue(
+					text + " gave wrong return",
+					(type == null && p.getType() == null)
+						|| (type != null && type.equals(p.getType().getName())));
 			}
 			assertTrue(text + " gave extra return value", !it.hasNext());
 		} catch (Exception e) {
@@ -552,27 +637,35 @@ public class TestParserDisplay extends TestCase {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
 			Collection prm = op.getParameters();
 			Iterator it = prm.iterator();
-			assertTrue(text + " lacks parameters", !(params.length > 0 && !it.hasNext()));
+			assertTrue(
+				text + " lacks parameters",
+				!(params.length > 0 && !it.hasNext()));
 			for (i = 0; i + 3 < params.length; i += 4) {
 				MParameter p;
 				do {
 					assertTrue(text + " lacks parameters", it.hasNext());
 					p = (MParameter) it.next();
 				} while (p.getKind().equals(MParameterDirectionKind.RETURN));
-				assertTrue(text + "gave wrong inout in parameter " + (i / 4),
+				assertTrue(
+					text + "gave wrong inout in parameter " + (i / 4),
 					params[i].equals(p.getKind().getName()));
-				assertTrue(text + "gave wrong name in parameter " + (i / 4),
-					params[i+1].equals(p.getName()));
-				assertTrue(text + "gave wrong type in parameter " + (i / 4),
-					params[i+2].equals(p.getType().getName()));
-				assertTrue(text + "gave wrong default value in parameter " + (i / 4),
-					(params[i+3] == null && p.getDefaultValue() == null) ||
-					(params[i+3] != null && p.getDefaultValue() != null) &&
-					 params[i+3].equals(p.getDefaultValue().getBody()));
+				assertTrue(
+					text + "gave wrong name in parameter " + (i / 4),
+					params[i + 1].equals(p.getName()));
+				assertTrue(
+					text + "gave wrong type in parameter " + (i / 4),
+					params[i + 2].equals(p.getType().getName()));
+				assertTrue(
+					text + "gave wrong default value in parameter " + (i / 4),
+					(params[i + 3] == null && p.getDefaultValue() == null)
+						|| (params[i + 3] != null && p.getDefaultValue() != null)
+						&& params[i + 3].equals(p.getDefaultValue().getBody()));
 			}
 			while (it.hasNext()) {
 				MParameter p = (MParameter) it.next();
-				assertTrue(text + " gave extra parameters", p.getKind().equals(MParameterDirectionKind.RETURN));
+				assertTrue(
+					text + " gave extra parameters",
+					p.getKind().equals(MParameterDirectionKind.RETURN));
 			}
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
@@ -582,8 +675,14 @@ public class TestParserDisplay extends TestCase {
 	private void checkVisibility(MAttribute attr, String text, String vis) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assertTrue(text + " gave wrong visibility: " + (attr.getVisibility() == null ? "(null)" : attr.getVisibility().getName()),
-				attr.getVisibility() != null && vis.equals(attr.getVisibility().getName()));
+			assertTrue(
+				text
+					+ " gave wrong visibility: "
+					+ (attr.getVisibility() == null
+						? "(null)"
+						: attr.getVisibility().getName()),
+				attr.getVisibility() != null
+					&& vis.equals(attr.getVisibility().getName()));
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
@@ -592,22 +691,35 @@ public class TestParserDisplay extends TestCase {
 	private void checkVisibility(MOperation op, String text, String vis) {
 		try {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
-			assertTrue(text + " gave wrong visibility: " + (op.getVisibility() == null ? "(null)" : op.getVisibility().getName()),
-				op.getVisibility() != null && vis.equals(op.getVisibility().getName()));
+			assertTrue(
+				text
+					+ " gave wrong visibility: "
+					+ (op.getVisibility() == null
+						? "(null)"
+						: op.getVisibility().getName()),
+				op.getVisibility() != null
+					&& vis.equals(op.getVisibility().getName()));
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
-	private void checkProperties(MAttribute attr, String text, String props[]) {
+	private void checkProperties(
+		MAttribute attr,
+		String text,
+		String props[]) {
 		int i;
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
 			for (i = 0; i + 1 < props.length; i += 2) {
-				if (props[i+1] == null)
-					assertTrue("TaggedValue " + props[i] + " exists!", attr.getTaggedValue(props[i]) == null);
+				if (props[i + 1] == null)
+					assertTrue(
+						"TaggedValue " + props[i] + " exists!",
+						attr.getTaggedValue(props[i]) == null);
 				else
-					assertTrue("TaggedValue " + props[i] + " wrong!", props[i+1].equals(attr.getTaggedValue(props[i])));
+					assertTrue(
+						"TaggedValue " + props[i] + " wrong!",
+						props[i + 1].equals(attr.getTaggedValue(props[i])));
 			}
 		} catch (Exception e) {
 			assertTrue(text + " threw Exception " + e, false);
@@ -619,29 +731,47 @@ public class TestParserDisplay extends TestCase {
 		try {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
 			for (i = 0; i + 1 < props.length; i += 2) {
-				if (props[i+1] == null)
-					assertTrue("TaggedValue " + props[i] + " exists!", op.getTaggedValue(props[i]) == null);
+				if (props[i + 1] == null)
+					assertTrue(
+						"TaggedValue " + props[i] + " exists!",
+						op.getTaggedValue(props[i]) == null);
 				else
-					assertTrue("TaggedValue " + props[i] + " wrong!", props[i+1].equals(op.getTaggedValue(props[i])));
+					assertTrue(
+						"TaggedValue " + props[i] + " wrong!",
+						props[i + 1].equals(op.getTaggedValue(props[i])));
 			}
 		} catch (Exception e) {
 			assertTrue(text + " threw Exception " + e, false);
 		}
 	}
 
-	private void checkMultiplicity(MAttribute attr, String text, MMultiplicity mult) {
+	private void checkMultiplicity(
+		MAttribute attr,
+		String text,
+		MMultiplicity mult) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assertTrue(text + " gave wrong multiplicity: " + (attr.getMultiplicity() == null ? "(null)" : attr.getMultiplicity().toString()),
-				mult == null && attr.getMultiplicity() == null ||
-				mult != null && mult.equals(attr.getMultiplicity()));
+			assertTrue(
+				text
+					+ " gave wrong multiplicity: "
+					+ (attr.getMultiplicity() == null
+						? "(null)"
+						: attr.getMultiplicity().toString()),
+				mult == null
+					&& attr.getMultiplicity() == null
+					|| mult != null
+					&& mult.equals(attr.getMultiplicity()));
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
-	private void checkThrows(MAttribute attr, String text, boolean prsEx,
-			boolean ex2, boolean ex3) {
+	private void checkThrows(
+		MAttribute attr,
+		String text,
+		boolean prsEx,
+		boolean ex2,
+		boolean ex3) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
 			assertTrue("didn't throw for " + text, false);
@@ -652,8 +782,12 @@ public class TestParserDisplay extends TestCase {
 		}
 	}
 
-	private void checkThrows(MOperation op, String text, boolean prsEx,
-			boolean ex2, boolean ex3) {
+	private void checkThrows(
+		MOperation op,
+		String text,
+		boolean prsEx,
+		boolean ex2,
+		boolean ex3) {
 		try {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
 			assertTrue("didn't throw for " + text, false);
@@ -664,8 +798,12 @@ public class TestParserDisplay extends TestCase {
 		}
 	}
 
-	private void checkThrows(MClassifierRole ro, String text,
-			boolean prsEx, boolean ex2, boolean ex3) {
+	private void checkThrows(
+		MClassifierRole ro,
+		String text,
+		boolean prsEx,
+		boolean ex2,
+		boolean ex3) {
 		try {
 			ParserDisplay.SINGLETON.parseClassifierRole(ro, text);
 			assertTrue("didn't throw for " + text, false);
@@ -679,48 +817,60 @@ public class TestParserDisplay extends TestCase {
 	private void checkValue(MAttribute attr, String text, String val) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assertTrue(text + " gave wrong visibility: " + (attr.getInitialValue() == null ? "(null)" : attr.getInitialValue().getBody()),
-				val == null && (attr.getInitialValue() == null || "".equals(attr.getInitialValue().getBody())) ||
-				val != null && attr.getInitialValue() != null && val.equals(attr.getInitialValue().getBody()));
+			assertTrue(
+				text
+					+ " gave wrong visibility: "
+					+ (attr.getInitialValue() == null
+						? "(null)"
+						: attr.getInitialValue().getBody()),
+				val == null
+					&& (attr.getInitialValue() == null
+						|| "".equals(attr.getInitialValue().getBody()))
+					|| val != null
+					&& attr.getInitialValue() != null
+					&& val.equals(attr.getInitialValue().getBody()));
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
-	private void checkStereotype(MAttribute attr, String text,
-			String val) {
+	private void checkStereotype(MAttribute attr, String text, String val) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assertTrue(text + " gave wrong stereotype " +
-				(attr.getStereotype() != null ?
-				 attr.getStereotype().getName() : "(null)"),
-				(val == null && attr.getStereotype() == null)||
-				(val != null &&
-				 attr.getStereotype() != null &&
-				 val.equals(attr.getStereotype().getName())));
+			assertTrue(
+				text
+					+ " gave wrong stereotype "
+					+ (attr.getStereotype() != null
+						? attr.getStereotype().getName()
+						: "(null)"),
+				(val == null && attr.getStereotype() == null)
+					|| (val != null
+						&& attr.getStereotype() != null
+						&& val.equals(attr.getStereotype().getName())));
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
-	private void checkStereotype(MOperation op, String text,
-			String val) {
+	private void checkStereotype(MOperation op, String text, String val) {
 		try {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
-			assertTrue(text + " gave wrong stereotype " +
-				(op.getStereotype() != null ?
-				 op.getStereotype().getName() : "(null)"),
-				(val == null && op.getStereotype() == null)||
-				(val != null &&
-				 op.getStereotype() != null &&
-				 val.equals(op.getStereotype().getName())));
+			assertTrue(
+				text
+					+ " gave wrong stereotype "
+					+ (op.getStereotype() != null
+						? op.getStereotype().getName()
+						: "(null)"),
+				(val == null && op.getStereotype() == null)
+					|| (val != null
+						&& op.getStereotype() != null
+						&& val.equals(op.getStereotype().getName())));
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
-	private void checkBases(MClassifierRole cr, String text,
-			String bases[]) {
+	private void checkBases(MClassifierRole cr, String text, String bases[]) {
 		int i;
 		Collection c;
 		Iterator it;
@@ -730,30 +880,40 @@ public class TestParserDisplay extends TestCase {
 			ParserDisplay.SINGLETON.parseClassifierRole(cr, text);
 			c = cr.getBases();
 			it = c.iterator();
-checkAllValid:
-			while (it.hasNext()) {
+			checkAllValid : while (it.hasNext()) {
 				cls = (MClassifier) it.next();
 				for (i = 0; i < bases.length; i++)
 					if (bases[i].equals(cls.getName()))
 						continue checkAllValid;
-				assertTrue("Base " + cls.getName() + " falsely " +
-					"generated by " + text, false);
+				assertTrue(
+					"Base "
+						+ cls.getName()
+						+ " falsely "
+						+ "generated by "
+						+ text,
+					false);
 			}
 
-checkAllExist:
-			for (i = 0; i < bases.length; i++) {
+			checkAllExist : for (i = 0; i < bases.length; i++) {
 				it = c.iterator();
 				while (it.hasNext()) {
 					cls = (MClassifier) it.next();
 					if (bases[i].equals(cls.getName()))
 						continue checkAllExist;
 				}
-				assertTrue("Base " + bases[i] + " was not " +
-					"generated by " + text, false);
+				assertTrue(
+					"Base " + bases[i] + " was not " + "generated by " + text,
+					false);
 			}
 		} catch (Exception e) {
 			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
+	/* (non-Javadoc)
+	     * @see junit.framework.TestCase#setUp()
+	     */
+	protected void setUp() throws Exception {
+		super.setUp();
+		ArgoSecurityManager.getInstance().setAllowExit(true);
+	}
 }
-

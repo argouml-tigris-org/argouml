@@ -32,211 +32,103 @@ import javax.swing.event.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 
+import org.apache.log4j.Category;
+
 /**
- * This class represents 3 concepts, although it should only represent
- * a todo perspective, TODO: separate.
  *
- * This class represents, at the same time:
- *   - a todo tree view / perspective (which is a collection of rules)
- *   - a tree model
- *   - a collection of perspectives.
+ *<pre>
+ * This class represents:
+ *   - a todo tree model / perspective (which is a collection of GoRules)
+ *</pre>
  *
  * $Id$
  */
 public abstract class ToDoPerspective extends TreeModelComposite
 implements Serializable {
-
-  protected static Vector _registeredPerspectives = new Vector();
-  protected static Vector _rules = new Vector();
-
-
-  static {
-    ToDoPerspective priority = new ToDoByPriority();
-    ToDoPerspective decision = new ToDoByDecision();
-    ToDoPerspective goal = new ToDoByGoal();
-    ToDoPerspective offender = new ToDoByOffender();
-    ToDoPerspective poster = new ToDoByPoster();
-    ToDoPerspective type = new ToDoByType();
-//     ToDoPerspective difficulty = new ToDoByDifficulty();
-//     ToDoPerspective skill = new ToDoBySkill();
-
-    registerPerspective(priority);
-    registerPerspective(decision);
-    registerPerspective(goal);
-    registerPerspective(offender);
-    registerPerspective(poster);
-    registerPerspective(type);
-//     registerPerspective(difficulty);
-//     registerPerspective(skill);
-
-    registerRule(new GoListToDecisionsToItems());
-    registerRule(new GoListToGoalsToItems());
-    registerRule(new GoListToPriorityToItem());
-    registerRule(new GoListToTypeToItem());
-    registerRule(new GoListToOffenderToItem());
-    registerRule(new GoListToPosterToItem());
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // static methods
-
-  public static void registerPerspective(ToDoPerspective np) {
-    _registeredPerspectives.addElement(np);
-  }
-
-  public static void unregisterPerspective(ToDoPerspective np) {
-    _registeredPerspectives.removeElement(np);
-  }
-
-  public static Vector getRegisteredPerspectives() {
-    return _registeredPerspectives;
-  }
-
-  public static void registerRule(TreeModel rule) {
-    _rules.addElement(rule);
-  }
-
-  public static Vector getRegisteredRules() { return _rules; }
-
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-
-  protected ToDoList _root;
-
-  /** re-factor up into a new events support class
-     * eg TreeSupport.
+    
+    private static Category cat = Category.getInstance(ToDoPerspective.class);
+    
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    
+    /** todoList specific */
+    protected boolean _flat;
+    
+    /** todoList specific */
+    protected Vector _flatChildren;
+    
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public ToDoPerspective(String name) {
+        
+        super(name);
+        _flatChildren = new Vector();
+    }
+    
+    ////////////////////////////////////////////////////////////////
+    // TreeModel implementation - todo specific stuff
+    
+    /**
+     * Finds the each of the children of a parent in the tree.
+     *
+     * @param parent in the tree
+     * @param index of child to find
+     * @return the child found at index. Null if index is out of bounds.
      */
-    protected EventListenerList _listenerList = new EventListenerList();
-
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public ToDoPerspective(String name) { super(name); }
-
-  //
-  //  Change Events
-  //
-
-  /** re-factor up into a new events support class
-     * eg TreeSupport.
-     *
-     * Notify all listeners that have registered interest for
-   * notification on this event type.  The event instance 
-   * is lazily created using the parameters passed into 
-   * the fire method.
-   * @see EventListenerList
-   */
-  protected void fireTreeNodesChanged(Object source, Object[] path, 
-				      int[] childIndices, 
-				      Object[] children) {
-    // Guaranteed to return a non-null array
-    Object[] listeners = _listenerList.getListenerList();
-    TreeModelEvent e = null;
-    // Process the listeners last to first, notifying
-    // those that are interested in this event
-    for (int i = listeners.length-2; i>=0; i-=2) {
-      if (listeners[i]==TreeModelListener.class) {
-	// Lazily create the event:
-	if (e == null)
-	  e = new TreeModelEvent(source, path,
-				 childIndices, children);
-	((TreeModelListener)listeners[i+1]).treeNodesChanged(e);
-      }
+    public Object getChild(Object parent, int index) {
+        if (_flat && parent == _root) {
+            return _flatChildren.elementAt(index);
+        }
+        return super.getChild( parent,  index);
     }
-  }
-
-  /** re-factor up into a new events support class
-     * eg TreeSupport.
-     *
-     * Notify all listeners that have registered interest for
-   * notification on this event type.  The event instance 
-   * is lazily created using the parameters passed into 
-   * the fire method.
-   * @see EventListenerList
-   */
-  protected void fireTreeNodesInserted(Object source, Object[] path, 
-				       int[] childIndices, 
-				       Object[] children) {
-    // Guaranteed to return a non-null array
-    Object[] listeners = _listenerList.getListenerList();
-    TreeModelEvent e = null;
-    // Process the listeners last to first, notifying
-    // those that are interested in this event
-    for (int i = listeners.length-2; i>=0; i-=2) {
-      if (listeners[i]==TreeModelListener.class) {
-	// Lazily create the event:
-	if (e == null)
-	  e = new TreeModelEvent(source, path, 
-				 childIndices, children);
-	((TreeModelListener)listeners[i+1]).treeNodesInserted(e);
-      }
+    
+    /** needs documenting */
+    public int getChildCount(Object parent) {
+        if (_flat && parent == _root) {
+            return _flatChildren.size();
+        }
+        return super.getChildCount( parent);
     }
-  }
-
-  /** re-factor up into a new events support class
-     * eg TreeSupport.
-     *
-     * Notify all listeners that have registered interest for
-   * notification on this event type.  The event instance 
-   * is lazily created using the parameters passed into 
-   * the fire method.
-   * @see EventListenerList
-   */
-  protected void fireTreeNodesRemoved(Object source, Object[] path, 
-				      int[] childIndices, 
-				      Object[] children) {
-    // Guaranteed to return a non-null array
-    Object[] listeners = _listenerList.getListenerList();
-    TreeModelEvent e = null;
-    // Process the listeners last to first, notifying
-    // those that are interested in this event
-    for (int i = listeners.length-2; i>=0; i-=2) {
-      if (listeners[i]==TreeModelListener.class) {
-	// Lazily create the event:
-	if (e == null)
-	  e = new TreeModelEvent(source, path, 
-				 childIndices, children);
-	((TreeModelListener)listeners[i+1]).treeNodesRemoved(e);
-      }
+    
+    /** needs documenting */
+    public int getIndexOfChild(Object parent, Object child) {
+        if (_flat && parent == _root) {
+            return _flatChildren.indexOf(child);
+        }
+        return super.getIndexOfChild(parent, child);
     }
-  }
-
-  /** re-factor up into a new events support class
-     * eg TreeSupport.
-     *
-     * Notify all listeners that have registered interest for
-   * notification on this event type.  The event instance 
-   * is lazily created using the parameters passed into 
-   * the fire method.
-   * @see EventListenerList
-   */
-  protected void fireTreeStructureChanged(Object[] path) {
-    // Guaranteed to return a non-null array
-    Object[] listeners = _listenerList.getListenerList();
-    TreeModelEvent e = null;
-    // Process the listeners last to first, notifying
-    // those that are interested in this event
-    for (int i = listeners.length-2; i>=0; i-=2) {
-      if (listeners[i]==TreeModelListener.class) {
-	// Lazily create the event: only the path matters
-	if (e == null) e = new TreeModelEvent(this, path, null, null);
-	((TreeModelListener)listeners[i+1]).treeStructureChanged(e);
-      }
+    
+    // ------------ other methods ------------
+    
+    /** todoList specific */
+    public void setFlat(boolean b) {
+        _flat = false;
+        if (b) calcFlatChildren();
+        _flat = b;
     }
-  }
-
-
-  /** re-factor up into a new events support class
-     * eg TreeSupport.
-     */
-    public void addTreeModelListener(TreeModelListener l) {
-    _listenerList.add(TreeModelListener.class, l);
-  }
-
-  /** re-factor up into a new events support class
-     * eg TreeSupport.
-     */
-    public void removeTreeModelListener(TreeModelListener l) {
-    _listenerList.remove(TreeModelListener.class, l);
-  }
-
+    
+    /** todoList specific */
+    public boolean getFlat() { return _flat; }
+    
+    /** todoList specific */
+    public void calcFlatChildren() {
+        _flatChildren.removeAllElements();
+        addFlatChildren(_root);
+    }
+    
+    /** todoList specific */
+    public void addFlatChildren(Object node) {
+        if (node == null) return;
+        cat.debug("addFlatChildren");
+        // hack for to do items only, should check isLeaf(node), but that
+        // includes empty folders. Really I need alwaysLeaf(node).
+        if ((node instanceof ToDoItem) && !_flatChildren.contains(node))
+            _flatChildren.addElement(node);
+        
+        int nKids = getChildCount(node);
+        for (int i = 0; i <nKids; i++) {
+            addFlatChildren(getChild(node, i));
+        }
+    }
+    
 } /* end class ToDoPerspective */

@@ -75,6 +75,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
             types[i] = CoreFactory.getFactory().createClassifier();
             m.addOwnedElement(types[i]);
         }      
+        elem.setType(types[0]);
     }
 
     /**

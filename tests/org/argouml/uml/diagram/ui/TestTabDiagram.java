@@ -24,12 +24,20 @@
 // $Id$
 package org.argouml.uml.diagram.ui;
 
+import java.util.Date;
+
+import junit.framework.TestCase;
+
+import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.graph.presentation.JGraph;
 
-import sun.rmi.runtime.GetThreadPoolAction;
-
-import junit.framework.TestCase;
+import ru.novosoft.uml.MFactoryImpl;
 
 /**
  * @author jaap.branderhorst@xs4all.nl
@@ -38,6 +46,7 @@ import junit.framework.TestCase;
 public class TestTabDiagram extends TestCase {
 
     private UMLDiagram _diagram;
+    private boolean PERFORMANCE = false;
     
     /**
      * Constructor for TestTabDiagram.
@@ -48,7 +57,8 @@ public class TestTabDiagram extends TestCase {
     }
     
     protected void setUp() {
-        _diagram = new UMLClassDiagram();   
+        _diagram = new UMLClassDiagram();  
+        ArgoSecurityManager.getInstance().setAllowExit(true); 
     }
     
     protected void tearDown() {
@@ -85,7 +95,9 @@ public class TestTabDiagram extends TestCase {
      *
      */
     public void testFireModelEventPerformance() {
+        if (PERFORMANCE) {        
     	// setup
+        int NUMBER_OF_DIAGRAMS = 100;
     	UMLDiagram[] diagrams = new UMLDiagram[NUMBER_OF_DIAGRAMS]; 
     	Project project = ProjectManager.getManager().getCurrentProject();
     	Object clazz = UmlFactory.getFactory().getCore().buildClass();
@@ -99,6 +111,7 @@ public class TestTabDiagram extends TestCase {
         long currentTime = (new Date()).getTime();
         UmlFactory.getFactory().getCore().buildOperation(clazz);
     	System.out.println("Time needed for adding operation: " + ((new Date()).getTime() - currentTime));
+        }
     }
 
 

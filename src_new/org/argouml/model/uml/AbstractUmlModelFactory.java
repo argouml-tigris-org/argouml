@@ -23,14 +23,10 @@
 
 package org.argouml.model.uml;
 
-import java.util.Iterator;
-import java.util.Set;
-
-import ru.novosoft.uml.MBase;
-
 import org.apache.log4j.Category;
 import org.argouml.uml.UUIDManager;
 
+import ru.novosoft.uml.MBase;
 
 /**
  * Abstract Class that every model package factory should implement
@@ -41,36 +37,39 @@ import org.argouml.uml.UUIDManager;
  */
 public abstract class AbstractUmlModelFactory {
 
-    /** Log4j logging category.
-     */
-    private static Category logger =
-                  Category.getInstance("org.argouml.model.uml");
+	/** Log4j logging category.
+	 */
+	private static Category logger =
+		Category.getInstance("org.argouml.model.uml");
 
-    /** Default constructor.
-     */
-    protected AbstractUmlModelFactory() {
-    }
+	/** Default constructor.
+	 */
+	protected AbstractUmlModelFactory() {
+	}
 
-    protected void initialize(Object o) {
-       logger.debug("initialize(" + o + ")");
-       if (o instanceof MBase) {
-            if (((MBase)o).getUUID() == null) {
-                ((MBase)o).setUUID(UUIDManager.SINGLETON.getNewUUID());
-            }
-            // next two objects are the ONLY two objects that need to listen
-            // to all modelevents.
-            ((MBase)o).addMElementListener(UmlModelEventPump.getPump());
-            ((MBase)o).addMElementListener(UmlModelListener.getInstance());
-            Set couples = UmlModelEventPump.getPump().getInterestedListeners(o.getClass());
-            Iterator it = couples.iterator();
-            while (it.hasNext()) {
-                UmlModelEventPump.ListenerEventName couple = (UmlModelEventPump.ListenerEventName)it.next();
-                UmlModelEventPump.getPump().removeModelEventListener(couple.getListener(), (MBase)o, couple.getEventName());
-                UmlModelEventPump.getPump().addModelEventListener(couple.getListener(), (MBase)o, couple.getEventName());
-            }
-            
-       }
-    }
+	protected void initialize(Object o) {
+		logger.debug("initialize(" + o + ")");
+		if (o instanceof MBase) {
+			if (((MBase) o).getUUID() == null) {
+				((MBase) o).setUUID(UUIDManager.SINGLETON.getNewUUID());
+			}
+			// next two objects are the ONLY two objects that need to listen
+			// to all modelevents.
+			UmlModelEventPump pump = UmlModelEventPump.getPump();
+			((MBase) o).addMElementListener(pump);
+			((MBase) o).addMElementListener(UmlModelListener.getInstance());
+			EventListenerList[] lists =
+				pump.getClassListenerMap().getListenerList(o.getClass());
+			for (int i = 0; i < lists.length; i++) {
+				Object[] listenerList = lists[i].listenerList;
+				for (int j = 0; j < listenerList.length; j += 3) {
+					pump.addModelEventListener(
+						listenerList[j + 2],
+						o,
+						(String) listenerList[j + 1]);
+				}
+			}
+		}
+	}
 
 }
-

@@ -76,12 +76,6 @@ public class GoClassToSummary extends AbstractGoRule {
       return null;
   }
 
-
-
-  public boolean isLeaf(Object node) {
-    return ( getChildCount(node) < 1);
-  }
-
   private boolean hasIncomingDependencies(Object parent){
       
             Iterator incomingIt = ModelFacade.getSupplierDependencies(parent);

@@ -33,13 +33,12 @@ import ru.novosoft.uml.behavior.common_behavior.MLink;
 
 
 public class GoLinkStimuli extends AbstractGoRule {
+    
   public Collection getChildren(Object parent) {
     if (!(parent instanceof MLink)) return null;
     return ((MLink)parent).getStimuli();
   }
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MLink && getChildCount(node) > 0);
-  }
+
     /**
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */

@@ -39,13 +39,6 @@ public class GoClassifierToStateMachine extends AbstractGoRule {
     public String getRuleName() { return "Classifier->State Machine";}
 
 	/**
-	 * @see javax.swing.tree.TreeModel#isLeaf(Object)
-	 */
-	public boolean isLeaf(Object arg0) {
-		return !(arg0 instanceof MClassifier && getChildCount(arg0) > 0);
-	}
-
-	/**
 	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
 	 */
 	public Collection getChildren(Object parent) {

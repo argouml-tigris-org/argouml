@@ -24,6 +24,9 @@
 package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
+
+import org.argouml.application.security.ArgoSecurityManager;
+
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClassImpl;
 import ru.novosoft.uml.foundation.core.MElementResidence;
@@ -52,6 +55,7 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         elem = new MClassImpl();     
         list = new UMLModelElementElementResidenceListModel();

@@ -76,11 +76,19 @@ import org.tigris.gef.util.VectorSet;
  * <p>This class is similar to the NavPane. it uses the same treemodel class and
  * JTree implementation.
  *
+ * <p>Perspectives are now built here.
+ *
  * <p>future plans may involve:
  * 1)DecisionModelListener implementation
  * 2)GoalListener implementation
  * ?
  *
+ *<pre>
+ * possible future additions:
+ *  ToDoPerspective difficulty = new ToDoByDifficulty();
+ *  ToDoPerspective skill = new ToDoBySkill();
+ *</pre>
+
  * $Id$
  */
 public class ToDoPane extends JPanel
@@ -202,7 +210,7 @@ public class ToDoPane extends JPanel
             splash.getStatusBar().showProgress(25);
         }
         
-        setPerspectives(ToDoPerspective.getRegisteredPerspectives());
+        setPerspectives(buildPerspectives());
         
         _oldSize = 0;
         _dir = ' ';
@@ -449,6 +457,39 @@ public class ToDoPane extends JPanel
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
         cat.debug("2: " + getSelectedObject().toString());
+    }
+    
+    /**
+     * the perspectives to be chosen in the combobox are built here.
+     */
+    private Vector buildPerspectives(){
+        
+        ToDoPerspective priority = new ToDoByPriority();
+        ToDoPerspective decision = new ToDoByDecision();
+        ToDoPerspective goal = new ToDoByGoal();
+        ToDoPerspective offender = new ToDoByOffender();
+        ToDoPerspective poster = new ToDoByPoster();
+        ToDoPerspective type = new ToDoByType();
+        
+        // add the perspetives to a vector for the combobox
+        Vector perspectives = new Vector();
+        
+        perspectives.add(priority);
+        perspectives.add(decision);
+        perspectives.add(goal);
+        perspectives.add(offender);
+        perspectives.add(poster);
+        perspectives.add(type);
+        
+        //
+        ToDoPerspective.registerRule(new GoListToDecisionsToItems());
+        ToDoPerspective.registerRule(new GoListToGoalsToItems());
+        ToDoPerspective.registerRule(new GoListToPriorityToItem());
+        ToDoPerspective.registerRule(new GoListToTypeToItem());
+        ToDoPerspective.registerRule(new GoListToOffenderToItem());
+        ToDoPerspective.registerRule(new GoListToPosterToItem());
+        
+        return perspectives;
     }
     
 } /* end class ToDoPane */
