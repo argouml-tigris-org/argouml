@@ -41,9 +41,13 @@ import org.argouml.uml.ui.*;
 import org.argouml.cognitive.ui.*;
 
 /** The lower-right pane of the main Argo/UML window.  This panel has
- *  several tabs that show details of the selected ToDoItem, or the
- *  selected model element in the NavigationPane, or the
- *  MultiEditorPane. */
+ * several tabs that show details of the selected ToDoItem, or the
+ * selected model element in the NavigationPane, or the
+ * MultiEditorPane.
+ *
+ * There are requests to have the cursor automatically
+ * be set to the primary field.
+ */
 
 public class DetailsPane extends JPanel
 implements ChangeListener, MouseListener, QuadrantPanel {
@@ -210,6 +214,10 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   public Object getTarget() { return _modelTarget; }
 
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
+  /** There is no way through the GUI to set any preferences
+   *
+   * @return
+   */  
   public Dimension getPreferredSize() { return new Dimension(400, 150); }
 
   ////////////////////////////////////////////////////////////////

@@ -50,6 +50,10 @@ implements PluggableResourceBundle {
         return "ArgoUML Core";
     }
 
+    /** This should call on the version number from a central xml file
+     * me thinks...
+     * @return
+     */    
     public String getModuleVersion() {
         return "0.9.4";
     }

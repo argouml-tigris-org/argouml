@@ -46,8 +46,16 @@ import org.argouml.uml.diagram.ui.*;
 
 
 /** The upper-left pane of the main Argo/UML window.  This shows the
- *  contents of the current project in one of several ways that are
- *  determined by NavPerspectives. */
+ * contents of the current project in one of several ways that are
+ * determined by NavPerspectives.
+ *
+ * This does not allow drag and drop as yet. This is considered
+ * a must have for as yet undetermined future.
+ *
+ * other feature enhancements include showing the presence of
+ * note connected to individual UML artifacts and to diagrams
+ * themselves.
+ */
 
 
 public class NavigatorPane extends JPanel

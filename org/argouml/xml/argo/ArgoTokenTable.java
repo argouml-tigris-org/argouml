@@ -25,7 +25,8 @@ package org.argouml.xml.argo;
 
 import org.argouml.xml.XMLTokenTableBase;
 
-/**
+/** this needs work,AFAIK none of these strings are
+ * saved in the final output in a zargo.
  * @author Jim Holt
  */
 
@@ -41,6 +42,8 @@ public class ArgoTokenTable extends XMLTokenTableBase {
   ////////////////////////////////////////////////////////////////
   // constants
   public static final String STRING_argo                   = "argo";
+  /** doesn't work
+   */  
   public static final String STRING_authorname             = "authorname";
   public static final String STRING_version                = "version";
   public static final String STRING_description            = "description";
@@ -56,6 +59,9 @@ public class ArgoTokenTable extends XMLTokenTableBase {
   public static final int    TOKEN_searchpath              = 5;
   public static final int    TOKEN_member                  = 6;
   public static final int    TOKEN_historyfile             = 7;
+  /** This can be saved successfully however there is no
+   * way to output this information.
+   */  
   public static final int    TOKEN_documentation           = 8;
   public static final int    TOKEN_undefined               = 9;
 

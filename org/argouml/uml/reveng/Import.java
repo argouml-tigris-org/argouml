@@ -38,6 +38,8 @@ import java.util.*;
 /**
  * This is the main class for all import classes.
  *
+ * Supports recursive search in folder for all .java classes.
+ *
  * $Revision$
  * $Date$
  *
