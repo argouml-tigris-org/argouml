@@ -35,6 +35,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.util.ConfigLoader;
@@ -87,8 +88,8 @@ public class PropPanelObject extends PropPanelInstance {
 
 	addButton(new PropPanelButton2(this, 
             new ActionNavigateNamespace()));	
-	addButton(new PropPanelButton2(this, 
-            new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
 	
     }
 

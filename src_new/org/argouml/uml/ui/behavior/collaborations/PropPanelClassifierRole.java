@@ -117,8 +117,8 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	new PropPanelButton(this, lookupIcon("Reception"), 
             Translator.localize("button.new-reception"), 
             getActionNewReception());
-	addButton(new PropPanelButton2(this, 
-            new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
     }
 
     /**

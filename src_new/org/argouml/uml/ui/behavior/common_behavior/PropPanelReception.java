@@ -31,6 +31,7 @@ import org.argouml.i18n.Translator;
 import org.tigris.swidgets.GridLayout2;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -89,6 +90,7 @@ public class PropPanelReception extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
     }
 }

@@ -90,7 +90,8 @@ public class PropPanelGuard extends PropPanelModelElement {
             Translator.localize("button.go-up"), 
             new ActionNavigateTransition());
     
-	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
     }
 
 } /* end class PropPanelState */

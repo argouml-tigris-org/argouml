@@ -109,7 +109,8 @@ public class PropPanelDataType extends PropPanelClassifier {
         new PropPanelButton(this, lookupIcon("NewOperation"), 
                 Translator.localize("button.new-operation"), 
                 new ActionAddQueryOperation());
-        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
     }
 
     private class ActionAddQueryOperation 
