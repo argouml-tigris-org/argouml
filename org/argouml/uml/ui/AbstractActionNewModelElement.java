@@ -37,10 +37,15 @@ public abstract class AbstractActionNewModelElement extends UMLChangeAction {
     
     /**
      *  The constructor.
+     * Defaults to name "action.new" and NO_ICON
      */
     protected AbstractActionNewModelElement() {
         super(Translator.localize("action.new"), true, NO_ICON);
     }  
+    
+    protected AbstractActionNewModelElement(String name) {
+        super(name);
+    }
     
      /**
      * Returns the target.

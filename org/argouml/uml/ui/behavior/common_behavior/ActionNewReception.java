@@ -52,7 +52,7 @@ public class ActionNewReception extends AbstractActionNewModelElement {
      * The constructor.
      */
     public ActionNewReception() { 
-        super();
+        super("button.new-reception");
         putValue(Action.NAME, Translator.localize("button.new-reception"));
     }
     
