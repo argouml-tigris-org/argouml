@@ -38,6 +38,8 @@ import org.argouml.cognitive.*;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 
+import org.argouml.swingext.Toolbar;
+
 public class TabToDo extends TabSpawnable implements TabToDoTarget {
   ////////////////////////////////////////////////////////////////
   // static variables
