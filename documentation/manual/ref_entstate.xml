@@ -319,9 +319,7 @@ default in the UML standard.
               fileref="images/icons/navigate_stereotype.gif"/>
               </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
-stereotype property panel (see <!-- MVW: this reference is wrong, 
-should not link to chapter 16.4, but 14.4:--> 
-<xref linkend="s1.ref.stereotype_class"/>).
+stereotype property panel (see <xref linkend="s1.ref.stereotype"/>).
             </para>
           </listitem>
         </varlistentry>
@@ -1081,8 +1079,7 @@ Transition has no stereotypes by default in the UML standard.
               </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see 
-<!-- MVW: This reference is wrong! It should refer to 14.4, not 16.4. -->
-              <xref linkend="s1.ref.stereotype_class"/>).
+              <xref linkend="s1.ref.stereotype"/>).
             </para>
           </listitem>
         </varlistentry>
@@ -1510,10 +1507,7 @@ For a Call Event, the following stereotypes are defined:
               icon. 
 If a stereotype has been selected, 
 this will navigate to the
-stereotype property panel (see 
-<!-- MVW: this reference is wrong, 
-should not link to chapter 16.4, but 14.4:--> 
-<xref linkend="s1.ref.stereotype_class"/>).
+stereotype property panel (see <xref linkend="s1.ref.stereotype"/>).
             </para>
           </listitem>
         </varlistentry>
@@ -1775,9 +1769,7 @@ default in the UML standard.
               fileref="images/icons/navigate_stereotype.gif"/>
               </imageobject></inlinemediaobject></guiicon> icon. 
 If a stereotype has been selected, this will navigate to the
-stereotype property panel (see <!-- MVW: this reference is wrong, 
-should not link to chapter 16.4, but 14.4:--> 
-<xref linkend="s1.ref.stereotype_class"/>).
+stereotype property panel (see <xref linkend="s1.ref.stereotype"/>).
             </para>
           </listitem>
         </varlistentry>
@@ -2071,9 +2063,7 @@ A Pseudostate has no stereotypes by default in the UML standard.
 If a stereotype has been selected, 
 this will navigate to the
 stereotype property panel (see 
-<!-- MVW: this reference is wrong, 
-should not link to chapter 16.4, but 14.4:--> 
-<xref linkend="s1.ref.stereotype_class"/>).
+<xref linkend="s1.ref.stereotype"/>).
             </para>
           </listitem>
         </varlistentry>
@@ -2407,9 +2397,8 @@ by default in the UML standard.
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
-<!-- MVW: this reference is wrong, should not link to chapter 16.4, but 14.4:--> 
               stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
+                linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
         <!-- Entry for Container -->

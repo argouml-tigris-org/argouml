@@ -9,10 +9,8 @@ within ArgoUML
 -->
 
 <chapter id="ch.ref.entbuiltin">
-  <title>&argouml; Built In DataTypes, Classes, Interfaces and
+  <title>Built In DataTypes, Classes, Interfaces and
     Stereotypes</title>
-
-  &notupdatedfor014disclaimer;
 
   <sect1>
     <title>Introduction</title>
@@ -29,12 +27,13 @@ use is for return type and parameter types in method signatures.
       <title>Package Structure</title>
 
       <para>&argouml; datatypes, classes and interfaces are effectively
-        organized as a hierarchy beneath the overall model itself. They are in
+        organized as a hierarchy beneath the overall model itself. They are 
+        grouped in
         four packages, <literal>lang</literal>, <literal>math</literal>,
         <literal>net</literal> and <literal>util</literal>, themselves
         subpackages of <literal>java</literal>, which is a subpackage of the
-        model itself. <xref linkend="fig.ref.entclasshier"/> shows this as a
-        UML package diagram.</para>
+        model itself. <xref linkend="fig.ref.entclasshier"/> shows this 
+        structure.</para>
 
       <!-- This diagram shows the package hierarchy. -->
 
@@ -50,6 +49,24 @@ use is for return type and parameter types in method signatures.
         </mediaobject></screenshot>
       </figure>
     </sect2>
+    
+    <sect2>
+    <title>Exposure in the model</title>
+    
+    <para>You will not find build-in DataTypes, Classes, and Interfaces
+      exposed within the model by default 
+      (i.e. they are not present in the explorer). 
+      However, once you select 
+      one of the built-in DataTypes, Classes, or Interfaces 
+      (in the "Type" combo-box 
+      on the property sheet of a parameter of an operation of a class), 
+      then it becomes visible:  
+      you will find that the DataType, Class, or Interface
+      has appeared in the model, 
+      in its correct package stucture for the latter 2.
+      </para>
+    </sect2>
+    
   </sect1>
 
   <!-- Built in datatypes. -->
@@ -58,17 +75,10 @@ use is for return type and parameter types in method signatures.
     <title>Built In Datatypes</title>
 
     <para>These are the built in atomic types. You can change them if you
-      wish. However this is not good practice</para>
+      wish. However this is not good practice.</para>
 
     <para>All these can be found in the <literal>java.lang</literal> subpackage
       of the main model.</para>
-
-    <note><para>You will not find these exposed within the top level package by
-      default. However if you select a datatype (say from within a class
-      parameter property sheet), and navigate up, you can navigate up to the
-      top package. Thereafter you will find that the package has appeared as a
-      subpackage of the model, and you can navigate back down (but only to the
-      type you came up from).</para></note>
 
     <caution><para>You should be aware that these are Java datatypes. They are
       not mandated by the UML standard.</para></caution>
@@ -112,13 +122,6 @@ use is for return type and parameter types in method signatures.
 
     <para>These are found in all four subpackages of the
       <literal>java</literal> subpackage.</para>
-
-    <note><para>As with datatypes, you will not find these exposed within the
-      top level package by default. However if you select a datatype (say from
-      within a class parameter property sheet), and navigate up, you can
-      navigate up to the top package. Thereafter you will find that the package
-      has appeared as a subpackage of the model, and you can navigate back down
-      (but only to the type you came up from).</para></note>
 
     <para>For a definition of these classes see the Java language and library
       definitions.</para>
@@ -216,13 +219,6 @@ use is for return type and parameter types in method signatures.
     <para>All these can be found in the <literal>java.util</literal> subpackage
       of the main model.</para>
 
-    <note><para>You will not find these exposed within the top level package by
-      default. However if you select a datatype (say from within a class
-      parameter property sheet), and navigate up, you can navigate up to the
-      top package. Thereafter you will find that the package has appeared as a
-      subpackage of the model, and you can navigate back down (but only to the
-      type you came up from).</para></note>
-
     <para>These are the interfaces defined within the
       <literal>java.util</literal> package. For their definition consult the
       Java language and library references.</para>
@@ -246,6 +242,8 @@ use is for return type and parameter types in method signatures.
   <sect1>
     <title>Built In Stereotypes</title>
 
+    &notupdatedfor014disclaimer;
+    
     <para>UML 1.3 defines a large number of stereotypes which are (mostly)
       supported by &argouml;. In addition &argouml; defines three additional
       stereotypes that may be of use.</para>

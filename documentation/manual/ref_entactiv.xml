@@ -11,27 +11,17 @@ Argo/UML.
 <chapter id="ch.ref.entactiv">
   <title>Activity Diagram Artifact Reference</title>
 
-  &notupdatedfor014disclaimer;
-
   <sect1>
     <title>Introduction</title>
 
     <para>This chapter describes each artifact that can be created within an
-      Activity diagram. Note that some sub-artifacts of artifacts on the
-      diagram may not actually themselves appear on the diagram.</para>
+      Activity diagram. Note that some sub-artifacts of artifacts 
+      may not actually themselves appear on the diagram.</para>
 
     <para>There is a close relationship between this material and the
       Properties Tab of the Details Pane (see <xref
       linkend="s1.ref.proptab"/>). That section covers Properties in general,
       in this chapter they are linked to specific artifacts.</para>
-
-    <caution><para>Activity diagrams are not fully developed yet in
-      &argouml;. Many aspects are not fully implemented, or may not behave as
-      expected. In particular swim lanes, action-object flows, control icons
-      (signals), sub-activities and interactions with other classifiers are not
-      provided. In practice there is little in the current implementation of
-      the activity diagram to distinguish it from the state diagram (see <xref
-      linkend="ch.ref.entstate"/>).</para></caution>
 
     <!-- A diagram to show all things visible on the diagram -->
 
@@ -56,12 +46,15 @@ Argo/UML.
     <sect2>
       <title>Limitations Concerning Activity Diagrams in &argouml;</title>
 
-      <para>The activity diagram is generally well drawn, but suffers from the
-        same limitations as the state diagram (see <xref
-        linkend="s2.ref.state_limitations"/>).</para>
+    <para>Activity diagrams are not fully developed yet in
+      &argouml;. Many aspects are not fully implemented, or may not behave as
+      expected. In particular swim lanes, action-object flows, control icons
+      (signals), sub-activities, object flows, control icons and interactions 
+      with other classifiers are not provided. 
+      In practice there is little in the current implementation of
+      the activity diagram to distinguish it from the state diagram (see <xref
+      linkend="ch.ref.entstate"/>).</para>
 
-      <para>A particular limitation is the lack of any support for
-        swimlanes.</para>
     </sect2>
   </sect1>
 
@@ -80,8 +73,16 @@ Argo/UML.
 
     <caution><para>As a consequence any outgoing transitions from an action
       state should not have explicit triggers defined (&argouml; will not
-      currently check for this). They may have guards to provide a choice where
-      there is more than one transition.</para></caution>
+      currently check for this). <!-- TODO: See issue ... --> 
+      They may have guards to provide a choice where
+      there is more than one transition. 
+      <!-- TODO: check if this is true! I doubt it. -->
+      </para></caution>
+
+    <note><para>
+Unlike an ordinary state, an internal transition, 
+an exit action and a Do activity are not permitted for action states.
+    </para></note>
 
     <para>An action state is represented on an activity diagram in &argouml; as
       a rectangle with rounded corners containing the name of the action
@@ -89,7 +90,9 @@ Argo/UML.
 
     <caution><para>The UML standard expects that the activity diagram should
       contain the expression associated with the entry action, rather than the
-      action state name.</para></caution>
+      action state name (which is shown by the current version on &argouml;).
+      <!-- TODO: See issue ...-->
+      </para></caution>
 
     <!-- Action state details tabs -->
 
@@ -136,11 +139,7 @@ Argo/UML.
           <listitem><para>Standard tab. The values for the bounds of the
             action state define the bounding box of the action
             state.</para>
-
-          <caution><para>The <literal>Shadow</literal> field has no
-            effect&mdash; in the current release of &argouml;. There are no
-            shadow effects provided for action states on the
-            diagram.</para></caution></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -148,8 +147,9 @@ Argo/UML.
         <varlistentry>
           <term><literal>Source</literal></term>
 
-          <listitem><para>Standard tab that is empty.</para>
-
+          <listitem><para>Standard tab that shows the name of the action state.
+          </para>
+          <!-- TODO: See issue ... -->
           <note><para>In the fullness of time this tab will contain code to
             implement the action state (code for actions will be associated
             with the particular actions). This is not implemented in the
@@ -180,8 +180,11 @@ Argo/UML.
                 superclass, <literal>ModelElement</literal>). Values
                 <literal>true</literal>, meaning the action state is
                 redundant&mdash;it can be formally derived from other
-                elements, or <literal>false</literal> meaning it
-                cannot.</para>
+                elements, or <literal>false</literal> meaning it cannot.
+                <!-- TODO: So, why isn't it listed? See issue ...-->
+                <!-- TODO: Shouldn't it be shown on the diagram with a '/'? 
+                See issue...-->
+                </para>
 
               <note><para>Derived action states still have their value in
                 analysis and design to introduce useful names or concepts,
@@ -233,7 +236,12 @@ Argo/UML.
             <emphasis>not</emphasis> just the diagram. To delete an
             action state from the diagram, but keep it within the model, use
             the main menu <literal>Remove From Diagram</literal>
-            (or press the Delete key).</para></warning></listitem>
+            (or press the Delete key).</para>
+            <para>But beware!. Currently, &argouml; does not show the 
+            <literal>Add to Diagram</literal> 
+            pop-up menu for action states.</para>
+            <!-- TODO: See issue ... -->
+            </warning></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -256,6 +264,7 @@ Argo/UML.
 
           <note><para>&argouml; does not enforce this naming
             convention.</para></note></listitem>
+            <!-- TODO: See enhancement issue ... -->
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -280,8 +289,8 @@ Argo/UML.
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see
-<!-- MVW: This reference is wrong! It should refer to 14.4, not 16.4. -->
-              <xref linkend="s1.ref.stereotype_class"/>).</para></listitem>
+<!-- MVW: Changed reference to 14.4 instead of 16.4. -->
+              <xref linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
         <!-- Entry for Namespace -->
@@ -302,10 +311,12 @@ The namespace in which the action state is defined.
           <term><literal>Entry-Action</literal></term>
 
           <listitem><para>Text box. 
-Shows the name of the action to be invoked on
-            entry to this action state.</para>
+Shows the name of the action to be invoked on entry to this action state.
+According the UML standard, an Action State is obliged to have an Entry-Action.
+<!-- TODO: See enhancement issue ... for a critic for this matter. -->
+            </para>
 
-            <para>&Button1; double-click navigates to the selected entry, 
+            <para>&Button1; double-click navigates to the shown entry, 
               &button2; gives a pop up menu with two entries.</para>
 
             <itemizedlist>
@@ -320,6 +331,7 @@ Uninterpreted Action.
               </listitem>
               <listitem><para><literal>Delete From Model</literal>. 
 Delete the Entry-Action.
+<!-- TODO: This is always downlighted currently. See issue ... -->
               </para></listitem>
             </itemizedlist>
 
@@ -328,15 +340,18 @@ Delete the Entry-Action.
 
         <!-- Entry for Exit Action -->
 <!-- MVW: This field is present in 0.14 ArgoUML, 
-but should not be according UML standard.-->
+but should not be according UML standard.
+TODO: See issue ...-->
 
         <!-- Entry for Do-Activity -->
 <!-- MVW: This field is present in 0.14 ArgoUML, 
-but should not be according UML standard.-->
+but should not be according UML standard.
+TODO: See issue ...-->
 
 
         <!-- Entry for Modifiers -->
-<!-- MVW: Missing in ArgoUML: a modifier checkbox field for "Dynamic" -->
+<!-- TODO: MVW: Missing in ArgoUML: a modifier checkbox field for "Dynamic". 
+See issue ... -->
         <!--varlistentry>
           <term><literal>Modifiers</literal></term>
 
@@ -355,19 +370,13 @@ but should not be according UML standard.-->
         <varlistentry>
           <term><literal>Incoming</literal></term>
 
-          <listitem><para>Text area. Lists the transitions that enter this
-            action state.</para>
+          <listitem>
+            <para>Text area. Lists the transitions that enter this action state.
+            </para>
 
-          <note><para>Unlike an ordinary state, internal transitions are
-            not permitted for action states.</para></note>
-
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with one entry.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected transition.</para></listitem>
-          </itemizedlist></listitem>
+            <para>&Button1; double-click navigates to the selected entry.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Outgoing -->
@@ -375,24 +384,18 @@ but should not be according UML standard.-->
         <varlistentry>
           <term><literal>Outgoing</literal></term>
 
-          <listitem><para>Text area. Lists the transitions that leave this
-            action state.</para>
+          <listitem>
+            <para>Text area. Lists the transitions that leave this action state.
+            </para>
 
-          <note><para>Unlike an ordinary state, internal transitions are
-            not permitted for action states.</para></note>
-
-          <para>&Button1; click navigates to the selected action, &button2;
-            gives a pop up menu with one entry.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected transition.</para></listitem>
-          </itemizedlist></listitem>
+            <para>&Button1; double-click navigates to the selected entry.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Internal Transitions -->
-<!-- MVW: This field is present in 0.14 ArgoUML, 
-but should not be according UML standard.-->
+<!-- TODO: MVW: This field is present in 0.14 ArgoUML, 
+but should not be according UML standard. See issue ... -->
 
       </variablelist>
     </sect2>
@@ -424,12 +427,14 @@ but should not be according UML standard.-->
 
     <para>The current release of &argouml; will not check that this constraint
       is met.</para></caution>
+<!-- TODO: See enhancement issue ... -->
   </sect1>
 
-  <!-- Call Event artifact (subsidiary of Transition) -->
-
+  <!-- Event artifacts (subsidiary of Transition) -->
+  <!-- TODO: Events are not to be used in an Activity diagram. See Issue ...-->
+<!--
   <sect1>
-    <title>Call Event</title>
+    <title>Event</title>
 
     <para>This artifact is described in the context of state diagrams (see
       <xref linkend="s1.ref.call_event_state"/>).</para>
@@ -443,6 +448,7 @@ but should not be according UML standard.-->
     <para>The current release of &argouml; will not check that this constraint
       is met.</para></caution>
   </sect1>
+-->
 
   <!-- Guard artifact (subsidiary of Transition) -->
 
@@ -490,6 +496,7 @@ but should not be according UML standard.-->
       pseudostate, rather than a <literal>choice</literal> pseudostate. The
       current release of &argouml; uses <literal>choice</literal> which is
       wrong.</para></caution>
+<!-- TODO: See issue ... -->
   </sect1>
 
   <!-- Fork. This is a pseudo state, which all have the same property
