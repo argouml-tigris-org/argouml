@@ -40,7 +40,7 @@ public class ConfigurationFactory
 
     /** The active configuration handler.
      */
-    private static ConfigurationHandler _handler = 
+    private static ConfigurationHandler handler = 
 	new ConfigurationProperties();
 
     /**
@@ -59,7 +59,7 @@ public class ConfigurationFactory
 	    catch (Exception e) {
 		Logger.getLogger(ConfigurationFactory.class).
 		    warn("Can't create configuration factory " 
-                    + name + ", using default factory");
+                        + name + ", using default factory");
             }
 	}
 	if (newFactory == null)
@@ -88,7 +88,7 @@ public class ConfigurationFactory
      */
     public ConfigurationHandler getConfigurationHandler() {
 	// TODO:  Allow other configuration handlers.
-	return _handler;
+	return handler;
     }
 
 } /* end class ConfigurationFactory */

@@ -68,7 +68,7 @@ public class Configuration {
 
     /** The only occurance of the configuration handler.
      */
-    private static ConfigurationHandler _config = null;
+    private static ConfigurationHandler config = null;
 
     private static Configuration SINGLETON = new Configuration();
 
@@ -76,7 +76,7 @@ public class Configuration {
      */
     private Configuration() {
 	ConfigurationFactory factory = ConfigurationFactory.getInstance();
-	_config = factory.getConfigurationHandler();
+	config = factory.getConfigurationHandler();
     }
 
     /** Returns the instance of the configuration singleton.
@@ -85,7 +85,7 @@ public class Configuration {
      */
     public static ConfigurationHandler getConfigurationHandler()
     {
-	return _config;
+	return config;
     }
 
     /** Returns the configuration factory instance.
@@ -118,7 +118,7 @@ public class Configuration {
      * @return true if the load is successful, otherwise false
      */
     public static final boolean load() {
-	return _config.loadDefault();
+	return config.loadDefault();
     }
 
     /** Load the configuration from a specified file
@@ -128,7 +128,7 @@ public class Configuration {
      * @return true if the load is successful, otherwise false
      */
     public static final boolean load(File file) {
-	return _config.load(file);
+	return config.load(file);
     }
 
     /** Load the configuration from a specified url
@@ -138,7 +138,7 @@ public class Configuration {
      * @return true if the load is successful, otherwise false
      */
     public static final boolean load(URL url) {
-	return _config.load(url);
+	return config.load(url);
     }
 
     /** Save the configuration to the default location.
@@ -165,7 +165,7 @@ public class Configuration {
      * @return true if the save is successful, otherwise false
      */
     public static final boolean save(boolean force) {
-	return _config.saveDefault(force);
+	return config.saveDefault(force);
     }
 
     /** Returns the string value of a configuration property.
@@ -190,7 +190,7 @@ public class Configuration {
     public static final String getString(ConfigurationKey key,
 					 String defaultValue) 
     {
-	return _config.getString(key, defaultValue);
+	return config.getString(key, defaultValue);
     }
 
     /** Returns the numeric value of a configuration property.
@@ -213,7 +213,7 @@ public class Configuration {
      */
     public static final double getDouble(ConfigurationKey key,
 					 double defaultValue) {
-	return _config.getDouble(key, defaultValue);
+	return config.getDouble(key, defaultValue);
     }
 
     /** Returns the numeric value of a configuration property.
@@ -235,7 +235,7 @@ public class Configuration {
      *  the default value
      */
     public static final int getInteger(ConfigurationKey key, int defaultValue) {
-	return _config.getInteger(key, defaultValue);
+	return config.getInteger(key, defaultValue);
     }
 
     /** Returns the boolean value of a configuration property.
@@ -259,7 +259,7 @@ public class Configuration {
     public static final boolean getBoolean(ConfigurationKey key, 
 					   boolean defaultValue) 
     {
-	return _config.getBoolean(key, defaultValue);
+	return config.getBoolean(key, defaultValue);
     }
 
     /** Sets the string value of a configuration property.
@@ -268,7 +268,7 @@ public class Configuration {
      * @param newValue the value to set the key to.
      */
     public static final void setString(ConfigurationKey key, String newValue) {
-	_config.setString(key, newValue);
+	config.setString(key, newValue);
     }
 
     /** Sets the numeric value of a configuration property.
@@ -277,7 +277,7 @@ public class Configuration {
      * @param newValue the value to set the key to.
      */
     public static final void setInteger(ConfigurationKey key, int newValue) {
-	_config.setInteger(key, newValue);
+	config.setInteger(key, newValue);
     }
 
     /** Sets the numeric value of a configuration property.
@@ -286,7 +286,7 @@ public class Configuration {
      * @param newValue the value to set the key to.
      */
     public static final void setDouble(ConfigurationKey key, double newValue) {
-	_config.setDouble(key, newValue);
+	config.setDouble(key, newValue);
     }
     /** Sets the boolean value of a configuration property.
      *
@@ -296,7 +296,7 @@ public class Configuration {
     public static final void setBoolean(ConfigurationKey key, 
 					boolean newValue) 
     {
-	_config.setBoolean(key, newValue);
+	config.setBoolean(key, newValue);
     }
 
     /** Adds a property change listener.
@@ -304,7 +304,7 @@ public class Configuration {
      * @param pcl The property change listener to add
      */
     public static final void addListener(PropertyChangeListener pcl) {
-	_config.addListener(pcl);
+	config.addListener(pcl);
     }
 
     /** Removes a property change listener.
@@ -312,7 +312,7 @@ public class Configuration {
      * @param pcl The property change listener to remove
      */
     public static final void removeListener(PropertyChangeListener pcl) {
-	_config.removeListener(pcl);
+	config.removeListener(pcl);
     }
 
     /** Adds a property change listener.Static for simplicity of use.
@@ -323,7 +323,7 @@ public class Configuration {
     public static final void addListener(ConfigurationKey key, 
 					 PropertyChangeListener pcl) 
     {
-	_config.addListener(key, pcl);
+	config.addListener(key, pcl);
     }
 
     /** Removes a property change listener.
@@ -334,7 +334,7 @@ public class Configuration {
     public static final void removeListener(ConfigurationKey key, 
 					    PropertyChangeListener pcl) 
     {
-	_config.removeListener(key, pcl);
+	config.removeListener(key, pcl);
     }
 
     /** Create a single component configuration key.
