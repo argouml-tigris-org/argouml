@@ -1036,7 +1036,115 @@ Every interface has a description at componentname-to-componentname
 	</tgroup>
       </table>
     </sect1>
+<!--
 
+Empty chapter that would be written for every component.
+
+In this template XXX need to be replaced by the generic name for the
+component, XXDESCXX, some beautiful version of the name and YYY with 
+something else.
+
+    <sect1 id="XXX">
+      <title>XXDESCXX</title>
+      <para id="comp-XXX-purpose">
+Purpose - to provide YYY
+</para>
+      <para>
+This module contains the following main class types:
+</para>
+      <itemizedlist>
+	<listitem>
+	<para>
+YYY
+</para>
+	</listitem>
+      </itemizedlist>
+      <sect2>
+	<title>Collaborations for XXDESCXX</title>
+	<para>
+YYY
+</para>
+	<sect3 id="comp-XXX-to-comp-diagrams">
+	  <title>XXDESCXX uses Diagrams</title>
+	  <para>
+YYY
+</para>
+	</sect3>
+	<sect3 id="comp-XXX-to-comp-model">
+	  <title>XXDESCXX uses the Model</title>
+	  <para>
+YYY
+</para>
+	</sect3>
+	<sect3 id="comp-XXX-to-comp-saveload">
+	  <title>XXDESCXX uses Saving/Loading</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-XXX-to-comp-notation">
+	  <title>XXDESCXX uses Notation</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-XXX-to-comp-codegenreveng">
+	  <title>XXDESCXX uses Code Generation and Reverse Engineering</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-XXX-to-comp-critics">
+	  <title>XXDESCXX uses the Cognitive stuff</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-XXX-to-comp-help">
+	  <title>XXDESCXX uses Help System</title>
+	  <para>
+YYY
+</para>
+	</sect3>
+	<sect3 id="comp-XXX-to-comp-internationalization">
+	  <title>XXDESCXX uses Internationalization</title>
+	</sect3>
+	<sect3 id="comp-XXX-to-comp-plugins">
+	  <title>XXDESCXX uses Plugin-Module API</title>
+	  <para>
+Currently not!
+</para>
+	</sect3>
+	<sect3 id="comp-XXX-to-comp-logging">
+	  <title>XXDESCXX uses Logging</title>
+	  <para>
+YYY
+</para>
+	</sect3>
+      </sect2>
+      <sect2>
+	<title>Main classes</title>
+	<para>
+XXDESCXX are currently located in:
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+YYY
+</para>
+	    </listitem>
+	  </itemizedlist>
+</para>
+      </sect2>
+
+      <sect2 id="howdoi_YYY">
+	<title>How do I YYY...?</title>
+	<itemizedlist>
+	  <listitem>
+	    <para>...YYY?</para>
+	    <para>
+YYY
+</para>
+	    </listitem>
+	</itemizedlist>
+      </sect2>
+    </sect1>
+
+
+
+
+-->
 
 </chapter>
 
@@ -1053,12 +1161,30 @@ programming in Argo/UML.
 <title>How do I ...?</title>
 <para>
 <itemizedlist>
-<listitem><para>...get the according NS-UML element for a given FigXXX class?</para>
-<para>each FigXXX implements the method getOwner() which returns the appropriate owner element which is responsible for this Fig element.
+	    <listitem>
+	      <para>
+...get the according NS-UML element for a given
+<classname>Fig<replaceable>XXX</replaceable></classname> class?
 </para>
-</listitem>
-<listitem><para>...get the according Fig element for a given MModelElement?</para>
-<para>for this one needs to iterate through all fig elements and invoke getOwner. Compare the result with the given MModelElement. Beware that there might be more than one Fig Element per MModelElement.</para>
+	      <para>
+Each <classname>Fig<replaceable>XXX</replaceable></classname>
+implements the method <methodname>getOwner()</methodname>
+which returns the appropriate owner element which is
+responsible for this Fig element.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+...get the according Fig element for a given 
+<classname>MModelElement</classname>?
+</para>
+	      <para>
+for this one needs to iterate through all fig elements and invoke
+<methodname>getOwner</methodname>.
+Compare the result with the given <classname>MModelElement</classname>.
+Beware that there might be more than one Fig Element per 
+<classname>MModelElement</classname>.
+</para>
 </listitem>
 </itemizedlist>
 </para> 
@@ -1111,14 +1237,14 @@ found by the Critics.
 The module communicates with/uses the other parts of ArgoUML like this:
 </para>
 	<sect3 id="comp-critics-to-comp-diagrams">
-	  <title>Diagrams</title>
+	  <title>Critics uses Diagrams</title>
 	  <para>
 Stepping through the model and examining it using get-calls.
 Wizard could modify the model the using set-calls to Fig-objects.
 </para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-model">
-	  <title>Model</title>
+	  <title>Critics uses the Model</title>
 	  <para>
 Stepping through the model and examining it using get-calls.
 Wizard could modify the model the using set-calls to the model and 
@@ -1126,29 +1252,37 @@ creating new model elements.
 </para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-saveload">
-	  <title>Saving/Loading - not at all</title>
+	  <title>Critics uses Saving/Loading</title>
+	  <para>
+Not at all!
+</para>
 	  <para>
 Eventually the user created To Do Items needs to be saved as well as
 information on what Critiques that have been snoozed.
 </para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-notation">
-	  <title>Notation</title>
-	  <para>Not at all</para>
+	  <title>Critics uses Notation</title>
+	  <para>Not at all!</para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-codegenreveng">
-	  <title>Code Generation and Reverse Engineering</title>
-	  <para>Not at all</para>
+	  <title>Critics uses Code Generation and Reverse Engineering</title>
+	  <para>Not at all!</para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-help">
-	  <title>Help System</title>
+	  <title>Critics uses Help System</title>
 	  <para>
 The help system is fired by the ToDoItems and Wizards when
 a longer explanation is required.
 </para>
+	  <para>
+Currently (February 2002) this is not actually the case.
+Clicking help fires an URL to a site that does not exist
+so in reality this is more of an ambition than a fact.
+</para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-internationalization">
-	  <title>Internationalization</title>
+	  <title>Critics uses Internationalization</title>
 	  <para>
 <classname>org.argouml.uml.cognitive.UMLCognitiveResourceBundle<replaceable>_ll_RR</replaceable></classname></para>
 	  <para>
@@ -1171,7 +1305,10 @@ with friends to be created futher down the road.
 </para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-plugins">
-	  <title>Plugin-Module API - currently not</title>
+	  <title>Critics uses Plugin-Module API</title>
+	  <para>
+Currently not!
+</para>
 	  <para>
 There is a <classname>PluggableCritic</classname> 
 the purpose of which is to add new Critics
@@ -1179,7 +1316,7 @@ but that is not yet used.
 </para>
 	</sect3>
 	<sect3 id="comp-critics-to-comp-logging">
-	  <title>Logging</title>
+	  <title>Critics uses Logging</title>
 	  <para>
 Logging is made using instance org.argouml.cognitive.critics
 </para>
@@ -1240,29 +1377,149 @@ is located in the package org.argouml.cognitive.ui.
 <title>How do I ...?</title>
 <para>
 <itemizedlist>
-<listitem><para>...add a critique?</para>
-<para>Your best bet is to look for a critique, which does something similiar and copy what it does. The locations of the critics are mentioned above.
+	    <listitem><para>...create a new critique?</para>
+	      <para>
+Currently the only way to add a new critique is to write a class that
+implements it so that is described here.
+There have however been ideas on a possibility to build critics in
+some other way in the future, as a set of rules instead of java code.
 </para>
-</listitem>
-<listitem><para>...fix a critique?</para>
-<para>Locate the critique and insert some logging code. You should make sure that you understand all the implications of changes, therefore it is a good idea to see what makes the critic nag in the first place. But rest assured: some of the critics haven't been updated to reflect the latest changes in ArgoUML, so this is a procedure which is well worth digging into, since it gives you also some exposure to related NSUML elements.</para>
-</listitem>
+	      <para>
+Create a new critic class, of the form 
+<classname>Cr<replaceable>XxxxYyyyZzzz</replaceable></classname>, 
+extending <classname>CrUML</classname>.
+Typically your new class will go in the package
+<classname>org.argouml.uml.cognitive.critics</classname>,
+but it could go in one of the other
+<classname>cognitive.critics</classname> packages.
+</para>
+	      <para>
+Write a constructor, which takes no argouments and calls the following
+methods of <classname>CrUML</classname>:
+</para>
+	      <itemizedlist>
+		<listitem>
+		  <para>
+<command>setResource("Cr<replaceable>XxxxYyyyZzzz</replaceable>");</command>
+to set up the locale specific text for 
+the critic headline (the one liner that appears in the to-do pane)
+and
+the critic description (the detailed explanation that appears in 
+the to-do tab of the details pane).
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+<command>addSupportedDecision(CrUML.dec<replaceable>AAAA</replaceable>);</command>
+where <replaceable>AAAA</replaceable> is the design issue category
+this critic falls into
+(examples include STORAGE, PATTERN METHODS).
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+<command>setPriority(ToDoItem.<replaceable>BBB</replaceable>_PRIORITY);</command>
+where <replaceable>BBB</replaceable> is one of
+<constant>LOW</constant>, <constant>MEDIUM</constant> or 
+<constant>HIGH</constant>, to set the priority for the critic 
+in the to-do pane.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+<command>addTrigger("<replaceable>UML MetaClass</replaceable>");</command>
+where <replaceable>UML MetaClass</replaceable> is a UML MetaClass,
+with initial lower capital, e.g. "associationEnd".
+The intention is that critics should only trigger for elements (or
+children) of particular UML metaclasses.
+I (Jeremy Bennett february 2002) believe this code is not yet working
+so you can probably leave it out.
+You can have multiple calls to this method for different metaclasses.
+</para>
+		</listitem>
+	      </itemizedlist>
+	      <para>
+After this add a method 
+<command>public boolean predicate2(Object dm, Designer dsgr);</command>.
+This is the decision routine for the critic.
+<parameter>dm</parameter> is the UML entity (an NSUML object)
+that is being checked.
+The second argument, <parameter>dsgr</parameter> is for future
+development and can be ignored.
+The <classname>Critic</classname> class conveniently defines
+two boolean constants 
+<constant>NO_PROBLEM</constant> and 
+<constant>PROBLEM_FOUND</constant> to be returned
+according to whether the object is OK, or triggers the critic.
+</para>
+	      <para>
+<parameter>dm</parameter> may be any UML object, 
+so the first action is to see if it is an
+artifact of interest and if not return 
+<constant>NO_PROBLEM</constant>.
+</para>
+	      <para>
+The remaining code should examine <parameter>dm</parameter> and
+return <constant>NO_PROBLEM</constant> or
+<constant>PROBLEM_FOUND</constant> as appropriate.
+</para>
+	      <para>
+Having written the code you need to add the text for the headline and
+description to the cognitive resource bundles. 
+These are in the package 
+<classname>org.argouml.uml.cognitive</classname> (for all critics,
+not just UML related ones), 
+in the files
+<filename>UMLCognitiveResourceBundle.java</filename>
+<filename>UMLCognitiveResourceBundle_en_GB.java</filename>,
+<filename>UMLCognitiveResourceBundle_es.java</filename>, ...
+for default,
+British English,
+Spanish, ...
+respectively.
+You need to add two keys for the head and description,
+which will be named respectively
+<constant>Cr<replaceable>XxxxYyyyZzzz</replaceable>_head</constant>
+and
+<constant>Cr<replaceable>XxxxYyyyZzzz</replaceable>_desc</constant>.
+There are plenty of examples to look at there.
+</para>
+	      <para>
+Finally you should get a new section added to the user manual reference
+section on critics.
+The purpose of this is to collect all the details and rationale around
+this critic to complement the short text in the description.
+Contact Jeremy Bennett for help with that.
+</para>
+	    </listitem>
 	    <listitem>
 	      <para>...write the test in a critique?</para>
-	      <para>
-This is an idea for refactoring!
-</para>
 	      <para>
 The critiques tests are essentially a combination of conditions 
 that are to be fulfilled.
 The conditions are often simple tests on simple model elements.
-Collect the simple tests as static methods in the class
-<classname>CriticsHelper</classname> inte the same package 
-as the critique.
-Do this moving to <classname>CriticsHelper</classname> at the latest
-when you have used the same test in two different Critics.
+</para>
+	      <para>
+The class
+<classname>org.argouml.cognitive.critics.CriticUtils</classname>
+contains static routines that are commonly needed when writing
+<methodname>predicate2</methodname>
+(for example to test if a class has a constructor).
+If you find you are writing code that may be of wider use than just
+your critic, you should add it to
+<classname>CriticUtils</classname>
+rather than putting it in your critic.
+</para>
+	      <para>
+For commented examples to copy, look at
+<classname>org.argouml.pattern.cognitive.critics.CrConsiderSingleton</classname>,
+<classname>org.argouml.pattern.cognitive.critics.CrSingletonViolated</classname> and
+<classname>org.argouml.uml.cognitive.critics.CrConstructorNeeded</classname>.
 </para>
 	    </listitem>
+<listitem><para>...fix a critique?</para>
+<para>Locate the critique and insert some logging code. You should make sure that you understand all the implications of changes, therefore it is a good idea to see what makes the critic nag in the first place. But rest assured: some of the critics haven't been updated to reflect the latest changes in ArgoUML, so this is a procedure which is well worth digging into, since it gives you also some exposure to related NSUML elements.</para>
+</listitem>
 <listitem><para>...change the text of a critique?</para>
 <para>
 The texts of the critics should be in the according localization files
@@ -1284,13 +1541,104 @@ have any effect.
       </sect2>
 </sect1>
 
-<sect1 id="notation">
-<title>Notation</title>
-<sect2 id="howdoi_notation">
-<title>How do I ...?</title>
-<para>...</para>
-</sect2>
-</sect1>
+    <sect1 id="notation">
+      <title>Notation</title>
+      <para id="comp-notation-purpose">
+Purpose - to provide the different possibilities on how
+classes, methods and attributes are to be shown in diagrams
+and property panels.
+</para>
+      <para>
+This module contains the following main class types:
+</para>
+      <itemizedlist>
+	<listitem>
+	<para>
+YYY
+</para>
+	</listitem>
+      </itemizedlist>
+      <sect2>
+	<title>Collaborations for XXDESCXX</title>
+	<para>
+YYY
+</para>
+	<sect3 id="comp-notation-to-comp-diagrams">
+	  <title>notation uses Diagrams</title>
+	  <para>
+YYY
+</para>
+	</sect3>
+	<sect3 id="comp-notation-to-comp-model">
+	  <title>notation uses the Model</title>
+	  <para>
+YYY
+</para>
+	</sect3>
+	<sect3 id="comp-notation-to-comp-saveload">
+	  <title>notation uses Saving/Loading</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-notation-to-comp-notation">
+	  <title>notation uses Notation</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-notation-to-comp-codegenreveng">
+	  <title>notation uses Code Generation and Reverse Engineering</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-notation-to-comp-critics">
+	  <title>notation uses the Cognitive stuff</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-notation-to-comp-help">
+	  <title>notation uses Help System</title>
+	  <para>
+YYY
+</para>
+	</sect3>
+	<sect3 id="comp-notation-to-comp-internationalization">
+	  <title>notation uses Internationalization</title>
+	</sect3>
+	<sect3 id="comp-notation-to-comp-plugins">
+	  <title>notation uses Plugin-Module API</title>
+	  <para>
+Currently not!
+</para>
+	</sect3>
+	<sect3 id="comp-notation-to-comp-logging">
+	  <title>Notation uses Logging</title>
+	  <para>
+YYY
+</para>
+	</sect3>
+      </sect2>
+      <sect2>
+	<title>Main classes</title>
+	<para>
+XXDESCXX are currently located in:
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+YYY
+</para>
+	    </listitem>
+	  </itemizedlist>
+</para>
+      </sect2>
+
+      <sect2 id="howdoi_YYY">
+	<title>How do I YYY...?</title>
+	<itemizedlist>
+	  <listitem>
+	    <para>...YYY?</para>
+	    <para>
+YYY
+</para>
+	    </listitem>
+	</itemizedlist>
+      </sect2>
+    </sect1>
 
 <sect1 id="diagrams">
 <title>Diagrams</title>
