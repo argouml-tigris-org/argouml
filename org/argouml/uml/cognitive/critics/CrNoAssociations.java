@@ -66,22 +66,23 @@ public class CrNoAssociations extends CrUML {
     //needs-more-work: different critic or special message for classes
     //that inherit all ops but define none of their own.
 
-    Collection asc = getInheritedAssociationEnds(cls);
+    Collection asc = getInheritedAssociationEnds(cls,0);
     if (asc == null || asc.size() == 0) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
-  private Collection getInheritedAssociationEnds(MClassifier cls)
+  private Collection getInheritedAssociationEnds(MClassifier cls,int depth)
   {
      Vector res = new Vector(cls.getAssociationEnds());
      Collection inh = cls.getGeneralizations();
      for (Iterator iter = inh.iterator(); iter.hasNext();) {
-       MGeneralization gen = (MGeneralization)iter.next();
-       if (gen.getParent() instanceof MClassifier) {
-         Collection superassocs = getInheritedAssociationEnds((MClassifier)gen.getParent());
-         res.addAll(superassocs);
-       };
-     };
+        MGeneralization gen = (MGeneralization) iter.next();
+	MGeneralizableElement parent = gen.getParent();
+        if (parent != cls && parent instanceof MClassifier && depth < 50) {
+            Collection superassocs = getInheritedAssociationEnds((MClassifier) parent,depth+1);
+            res.addAll(superassocs);
+        }
+     }
      return res;
   };
 } /* end class CrNoAssociations */
