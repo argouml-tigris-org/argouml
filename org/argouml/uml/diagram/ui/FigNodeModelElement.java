@@ -707,6 +707,7 @@ public abstract class FigNodeModelElement
             String nameStr =
                     Notation.generate(this, ((MModelElement) getOwner()).getName());
             _name.setText(nameStr);
+            updateBounds();
         }
     }
 
