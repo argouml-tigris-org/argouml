@@ -1,5 +1,7 @@
 package org.argouml.uml.diagram.deployment;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 
 import java.util.*;
 import java.beans.*;
@@ -315,85 +317,66 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
-
     try {
       if ((fromPort instanceof MNode) && (toPort instanceof MNode)) {
-	    MNode fromNo = (MNode) fromPort;
+	  	MNode fromNo = (MNode) fromPort;
 	    MNode toNo = (MNode) toPort;
-	      if (edgeClass == MAssociation.class) {
-		MAssociation asc = UmlFactory.getFactory().getCore().buildAssociation(fromNo, toNo);
+	    if (edgeClass == MAssociation.class) {
+			MAssociation asc = UmlFactory.getFactory().getCore().buildAssociation(fromNo, toNo);
  	        addEdge(asc);
 		    return asc;
-	      }
-
+	    }
       }
       else if ((fromPort instanceof MNodeInstance) && (toPort instanceof MNodeInstance)) {
-	MNodeInstance fromNoI = (MNodeInstance) fromPort;
-	MNodeInstance toNoI = (MNodeInstance) toPort; 
-   	
+		MNodeInstance fromNoI = (MNodeInstance) fromPort;
+		MNodeInstance toNoI = (MNodeInstance) toPort; 
     	if (edgeClass == MLink.class) {
-    	  MLink link = UmlFactory.getFactory().getCommonBehavior().createLink();
-		  MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-		  le0.setInstance(fromNoI);
-		  MLinkEnd le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-		  le1.setInstance(toNoI);
-		  link.addConnection(le0);
-		  link.addConnection(le1);
-    	  addEdge(link);
-    	  return link;
+    		MLink link = CommonBehaviorFactory.getFactory().buildLink(fromNoI, toNoI);
+    		addEdge(link);
+    		return link;
     	}
-
       }
       else if ((fromPort instanceof MComponent) && (toPort instanceof MComponent)) {
-	MComponent fromCom = (MComponent) fromPort;
-	MComponent toCom = (MComponent) toPort; 
-   	
-	  if (edgeClass == MDependency.class) {
-	    MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCom, toCom);
-	    addEdge(dep);
-	    return dep;
-	  }
-
+		MComponent fromCom = (MComponent) fromPort;
+		MComponent toCom = (MComponent) toPort; 
+	  	if (edgeClass == MDependency.class) {
+	    	MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCom, toCom);
+	    	addEdge(dep);
+	    	return dep;
+	  	}	
       }
       else if ((fromPort instanceof MComponentInstance) && (toPort instanceof MComponentInstance)) {
-	MComponentInstance fromComI = (MComponentInstance) fromPort;
-	MComponentInstance toComI = (MComponentInstance) toPort; 
-   	
-
-	  if (edgeClass == MDependency.class) {
-	    MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromComI, toComI);
-	    addEdge(dep);
-	    return dep;
-	  }
-
+		MComponentInstance fromComI = (MComponentInstance) fromPort;
+		MComponentInstance toComI = (MComponentInstance) toPort; 
+	  	if (edgeClass == MDependency.class) {
+	    	MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromComI, toComI);
+	    	addEdge(dep);
+	    	return dep;
+	  	}
       }
- 
       else if ((fromPort instanceof MClass) && (toPort instanceof MClass)) {
 	    MClass fromCls = (MClass) fromPort;
 	    MClass toCls = (MClass) toPort;
-
 	    if (edgeClass == MAssociation.class) {
-	      MAssociation asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
- 	      addEdge(asc);
-	      return asc;
+	    	MAssociation asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
+ 	      	addEdge(asc);
+	      	return asc;
 	    }
  	    else if (edgeClass == MDependency.class) {
-	      MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCls, toCls);
-	      addEdge(dep);
-	      return dep;
+	      	MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromCls, toCls);
+	      	addEdge(dep);
+	      	return dep;
 	    }
 	    else {
-	      System.out.println("Cannot make a "+ edgeClass.getName() +
+	      	System.out.println("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
-	      return null;
+	      	return null;
 	    }
       }
-
       else if ((fromPort instanceof MClass) && (toPort instanceof MInterface)) {
 	    MClass fromCls = (MClass) fromPort;
-	    MInterface toIntf = (MInterface) toPort;
-        
+	    MInterface toIntf = (MInterface) toPort;        
 	    if (edgeClass == MAssociation.class) {
 	      MAssociation asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toIntf);
  	      addEdge(asc);
@@ -411,12 +394,9 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	      return null;
 	    }
       }
-
       else if ((fromPort instanceof MInterface) && (toPort instanceof MClass)) {
-    	    MInterface fromIntf = (MInterface) fromPort;
+    	MInterface fromIntf = (MInterface) fromPort;
 	    MClass toCls = (MClass) toPort;
-
-
 	    if (edgeClass == MAssociation.class) {
 	      MAssociation asc = UmlFactory.getFactory().getCore().buildAssociation(fromIntf, toCls);
  	      addEdge(asc);
@@ -434,46 +414,53 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	      return null;
 	    }
       }
-
       else if ((fromPort instanceof MInterface) && (toPort instanceof MInterface)) {
-	MInterface fromIntf = (MInterface) fromPort;
-	MInterface toIntf = (MInterface) toPort;
-
- 	if (edgeClass == MDependency.class) {
-	  MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromIntf, toIntf);
-	  addEdge(dep);
-	  return dep;
-	}
-	else {
-	  System.out.println("Cannot make a "+ edgeClass.getName() +
+		MInterface fromIntf = (MInterface) fromPort;
+		MInterface toIntf = (MInterface) toPort;
+ 		if (edgeClass == MDependency.class) {
+	  		MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromIntf, toIntf);
+	  		addEdge(dep);
+	  		return dep;
+		}
+		else {
+	  		System.out.println("Cannot make a "+ edgeClass.getName() +
 			     " between a " + fromPort.getClass().getName() +
 			     " and a " + toPort.getClass().getName());
-	  return null;
-	}
+	  		return null;
+		}
       }
-
       else if ((fromPort instanceof MObject) && (toPort instanceof MObject)) {
-	MObject fromObj = (MObject) fromPort;
-	MObject toObj = (MObject) toPort; 
-
+		MObject fromObj = (MObject) fromPort;
+		MObject toObj = (MObject) toPort; 
     	if (edgeClass == MLink.class) {
-    	  MLink link = UmlFactory.getFactory().getCommonBehavior().createLink();
-		  MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-		  le0.setInstance(fromObj);
-		  MLinkEnd le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-		  le1.setInstance(toObj);
-		  link.addConnection(le0);
-		  link.addConnection(le1);
-    	  addEdge(link);
-    	  return link;
+    	  	MLink link = CommonBehaviorFactory.getFactory().buildLink(fromObj, toObj);
+    		addEdge(link);
+    		return link;
     	}
- 	else if (edgeClass == MDependency.class) {
-	  // nsuml: using Binding as default
-	  MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromObj, toObj);
-	  addEdge(dep);
-	  return dep;
-	}
-
+ 		else if (edgeClass == MDependency.class) {
+	  		// nsuml: using Binding as default
+	  		MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromObj, toObj);
+	  		addEdge(dep);
+	  		return dep;
+		}
+	
+      }
+      // according to the uml spec we can show if an component resides on some node via a dependency
+      // that has the support stereotype
+      else if ((fromPort instanceof MComponent) && (toPort instanceof MNode)) {
+      	MComponent fromObj = (MComponent)fromPort;
+      	MNode toObj = (MNode)toPort;
+      	if (edgeClass == MDependency.class) {
+    	  	MDependency dep = CoreHelper.getHelper().buildSupportDependency(fromObj, toObj);
+	  		addEdge(dep);
+	  		return dep;
+    	}
+    	else {
+	  		System.out.println("Cannot make a "+ edgeClass.getName() +
+			     " between a " + fromPort.getClass().getName() +
+			     " and a " + toPort.getClass().getName());
+	  		return null;
+		}
       }
 
       else {
@@ -481,14 +468,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	  return null;
       }
     }
-    catch (Exception ex) { }
+    catch (Exception ex) {
+    	ex.printStackTrace();
+    }
 
     throw new Error("should not enter here! connect3");
   }
-
-
-  ////////////////////////////////////////////////////////////////
-  // VetoableChangeListener implementation
 
   public void vetoableChange(PropertyChangeEvent pce) {
     //throws PropertyVetoException

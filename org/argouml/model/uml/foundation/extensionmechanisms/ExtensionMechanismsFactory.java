@@ -27,6 +27,7 @@ import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
@@ -75,6 +76,14 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
-
+    
+    /**
+     * Builds a stereotype for some kind of modelelement
+     */
+    public MStereotype buildStereotype(MModelElement m, String text) {
+    	MStereotype stereo = createStereotype();
+    	stereo.setName(text);
+    	return stereo;
+    }
 }
 

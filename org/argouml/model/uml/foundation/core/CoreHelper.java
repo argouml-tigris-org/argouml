@@ -23,15 +23,14 @@
 
 package org.argouml.model.uml.foundation.core;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import ru.novosoft.uml.foundation.core.MAbstraction;
-import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -40,11 +39,11 @@ import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
  * Helper class for UML Foundation::Core Package.
@@ -342,6 +341,16 @@ public class CoreHelper {
         newReturnParameter.setName(name);
 		newReturnParameter.setKind(MParameterDirectionKind.RETURN);
 		operation.addParameter(0, newReturnParameter);
+	}
+	
+	/**
+	 * Builds a dependency with stereotype support
+	 */
+	public MDependency buildSupportDependency(MModelElement from, MModelElement to) {
+		MDependency dep = CoreFactory.getFactory().buildDependency(from, to);
+		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(dep, "support");
+		dep.setStereotype(stereo);
+		return dep;
 	}
 	
 }

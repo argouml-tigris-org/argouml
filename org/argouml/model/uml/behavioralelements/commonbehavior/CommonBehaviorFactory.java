@@ -327,6 +327,20 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
         action.setOperation(oper); 
         return action;
     }
+    
+    /** 
+     * Builds a Link between two Instances
+     */
+    public MLink buildLink(MInstance fromInstance, MInstance toInstance) {
+     	  MLink link = UmlFactory.getFactory().getCommonBehavior().createLink();
+		  MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
+		  le0.setInstance(fromInstance);
+		  MLinkEnd le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
+		  le1.setInstance(toInstance);
+		  link.addConnection(le0);
+		  link.addConnection(le1);
+    	  return link;
+    }
         
 
 }
