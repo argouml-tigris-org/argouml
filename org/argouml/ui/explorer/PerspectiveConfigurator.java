@@ -291,6 +291,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         ruleLibraryList.addMouseListener(new RuleListMouseListener());
         
         removePerspectiveButton.setEnabled(false);
+        dupPersButton.setEnabled(false);
         addRuleButton.setEnabled(false);
         removeRuleButton.setEnabled(false);
     }
@@ -315,11 +316,11 @@ public class PerspectiveConfigurator extends ArgoDialog {
     
     class NewPerspectiveListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            
+            Object[] msgArgs = {
+                new Integer((perspectiveList.getModel().getSize() + 1)) };
 	    ExplorerPerspective newPers =
-		new ExplorerPerspective("Explorer Perspective "
-					+ (perspectiveList.getModel().getSize()
-					   + 1));
+		new ExplorerPerspective(Translator.messageFormat(
+                    "dialog.perspective.explorer-perspective", msgArgs));
 	    perspectiveListModel.insertElementAt(newPers, 0);
 	    perspectiveList.setSelectedValue(newPers, true);
 	    perspectiveRulesListModel.clear();
@@ -343,8 +344,10 @@ public class PerspectiveConfigurator extends ArgoDialog {
         public void actionPerformed(ActionEvent e) {
             Object sel = perspectiveList.getSelectedValue();
             if (sel != null) {
-                ExplorerPerspective newPers = ((ExplorerPerspective) sel)
-                    .makeNamedClone("Copy of " + sel.toString()); //TODO:i18n
+                Object[] msgArgs = {sel.toString() };
+                ExplorerPerspective newPers = 
+                    ((ExplorerPerspective) sel).makeNamedClone(Translator
+                        .messageFormat("dialog.perspective.copy-of", msgArgs));
                 perspectiveListModel.insertElementAt(newPers, 0);
                 perspectiveList.setSelectedValue(newPers, true);
             }
@@ -414,6 +417,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
             Object selPers = perspectiveList.getSelectedValue();
             Object selRule = ruleLibraryList.getSelectedValue();
             removePerspectiveButton.setEnabled(selPers != null);
+            dupPersButton.setEnabled(selPers != null);
             
             if (selPers == null) return;
             
@@ -448,182 +452,3 @@ public class PerspectiveConfigurator extends ArgoDialog {
         }
     }
 }
-
-
-// -------------------
-
-//    ////////////////////////////////////////////////////////////////
-//    // actions
-//
-//    /**
-//     * Create a new perspective, add to the list.
-//     *
-//     * TODO: Not a robust naming scheme since duplicates
-//     * are still possible; initPersPanel() mentions the need to allow editing.
-//     */
-//    public void doNewPers() {
-//	NavPerspective newPers =
-//	    new NavPerspective("New Perspective " +
-//			       (_navPane.buildPerspectives().size() + 1));
-//	_navPane.addPerspective(newPers);
-//	_persList.setListData(Converter.convert(_navPane.buildPerspectives()));
-//	_persList.setSelectedValue(newPers, true);
-//    }
-//
-//    /**
-//     * Remove selected perspective from the list.
-//     */
-//    public void doRemovePers() {
-//	Object sel = _persList.getSelectedValue();
-//	if (!(sel instanceof NavPerspective)) {
-//	    cat.warn("doRemovePers: unexepected non-NavPerspective");
-//	    return;
-//	}
-//	NavPerspective np = (NavPerspective) sel;
-//
-//	// are you sure?
-//	int response =
-//	    JOptionPane.showConfirmDialog(this,
-//					  "Remove Perspective, \""
-//					  + np.getName() + "\"?",
-//					  "Are you sure?",
-//					  JOptionPane.YES_NO_OPTION);
-//	if (response == JOptionPane.YES_OPTION) {
-////	    _navPane.removePerspective(np);
-////
-////	    // Remove it from the UI list
-////	    _persList
-////		.setListData(Converter.convert(_navPane.buildPerspectives()));
-//	}
-//    }
-//
-//    /**
-//     * not currently supported.
-//     */
-//    public void doDupPers() {
-//	Object sel = _persList.getSelectedValue();
-//	if (!(sel instanceof NavPerspective)) {
-//	    cat.warn("doDupPers: unexepected non-NavPerspective");
-//	    return;
-//	}
-//	//NavPerspective np = (NavPerspective) sel;
-//	//try {
-//	//  NavPerspective newNP = (NavPerspective) np.clone();
-//	//  NavPerspective.unregisterPerspective(newNP);
-//	//}
-//	//catch (CloneNotSupportedException cnse) {
-//	//    cat.error("exception while cloning NavPerspective", cnse);
-//	//}
-//    }
-//
-//    public void doAddRule() {
-//	Object sel = _persList.getSelectedValue();
-//	if (!(sel instanceof NavPerspective)) {
-//	    cat.warn("doAddRule: unexepected non-NavPerspective");
-//	    return;
-//	}
-//	NavPerspective np = (NavPerspective) sel;
-//	Object selRule = _ruleLibList.getSelectedValue();
-//	if (!(selRule instanceof TreeModel)) {
-//	    cat.warn("doAddRule: unexepected non-TreeModel");
-//	    return;
-//	}
-//	TreeModel tm = (TreeModel) selRule;
-//	np.addSubTreeModel(tm);
-//	_rulesList.clearSelection();
-//	_rulesList.setListData(Converter.convert(np.getSubTreeModels()));
-//    }
-//
-//    public void doRemoveRule() {
-//	Object sel = _persList.getSelectedValue();
-//	if (!(sel instanceof NavPerspective)) {
-//	    cat.warn("doRemoveRule: unexepected non-NavPerspective");
-//	    return;
-//	}
-//	NavPerspective np = (NavPerspective) sel;
-//	Object selRule = _rulesList.getSelectedValue();
-//	if (!(selRule instanceof TreeModel)) {
-//	    cat.warn("doRemoveRule: unexepected non-TreeModel");
-//	    return;
-//	}
-//	TreeModel tm = (TreeModel) selRule;
-//	np.removeSubTreeModel(tm);
-//	_rulesList.clearSelection();
-//	_rulesList.setListData(Converter.convert(np.getSubTreeModels()));
-//    }
-//
-//    public void doSelectPers() {
-//	Object selPers = _persList.getSelectedValue();
-//	Object selRule = _ruleLibList.getSelectedValue();
-//	_removePersButton.setEnabled(selPers != null);
-//	_dupPersButton.setEnabled(selPers != null);
-//	if (selPers == null) return;
-//	NavPerspective np = (NavPerspective) selPers;
-//	_rulesList.setListData(Converter.convert(np.getSubTreeModels()));
-//	_addRuleButton.setEnabled(selPers != null && selRule != null);
-//    }
-//
-//    public void doSelectLibRule() {
-//	Object selPers = _persList.getSelectedValue();
-//	Object selRule = _ruleLibList.getSelectedValue();
-//	_addRuleButton.setEnabled(selPers != null && selRule != null);
-//    }
-//
-//    public void doSelectRule() {
-//	Object selPers = _persList.getSelectedValue();
-//	Object selRule = _rulesList.getSelectedValue();
-//	_removeRuleButton.setEnabled(selPers != null && selRule != null);
-//    }
-//
-//    public void doOk() {
-//	NavigatorPane np = NavigatorPane.getInstance();
-//	//np.setPerspectives(NavPerspective.getRegisteredPerspectives());
-//	//np.updateTree();
-//	setVisible(false);
-//	dispose();
-//    }
-//
-//    ////////////////////////////////////////////////////////////////
-//    // event handlers
-//
-//    public void actionPerformed(ActionEvent e) {
-//	Object src = e.getSource();
-//	if (src == _okButton) doOk();
-//	else if (src == _newPersButton) doNewPers();
-//	else if (src == _removePersButton) doRemovePers();
-//	else if (src == _dupPersButton) doDupPers();
-//	else if (src == _addRuleButton) doAddRule();
-//	else if (src == _removeRuleButton) doRemoveRule();
-//	else if (src == _ruleLibList) doAddRule();
-//	else if (src == _rulesList) doRemoveRule();
-//    }
-//
-//
-//    public void stateChanged(ChangeEvent ce) {
-//	Object src = ce.getSource();
-//	cat.debug("stateChanged " + src);
-//    }
-//
-//
-//    /** Called when the user changes selections in a list. */
-//    public void valueChanged(ListSelectionEvent lse) {
-//	if (lse.getValueIsAdjusting()) return;
-//	Object src = lse.getSource();
-//	if (src == _persList) doSelectPers();
-//	else if (src == _ruleLibList) doSelectLibRule();
-//	else if (src == _rulesList) doSelectRule();
-//    }
-//
-//    public void mousePressed(MouseEvent me) { }
-//    public void mouseReleased(MouseEvent me) { }
-//    public void mouseEntered(MouseEvent me) { }
-//    public void mouseExited(MouseEvent me) { }
-//    public void mouseClicked(MouseEvent me) {
-//	Object src = me.getSource();
-//	if (me.getClickCount() != 2) return;
-//	if (src == _ruleLibList && _addRuleButton.isEnabled()) doAddRule();
-//	if (src == _rulesList && _removeRuleButton.isEnabled()) doRemoveRule();
-//    }
-//
-//}
-
