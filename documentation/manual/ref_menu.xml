@@ -816,11 +816,11 @@ Or should this be offered as a 3rd choice? -->
           concept of the ordering of artifacts on a diagram. 
           <!--visible in the "Package-centric" view in the explorer ??? -->. 
           This selects the item prior to the currently selected item in that
-          ordering.</para>
+          ordering.</para></listitem>
 
         <listitem><para><literal>Select Next</literal>. Similarly this
           selects the item following the currently selected item in that
-          ordering.</para>
+          ordering.</para></listitem>
 
         <listitem><para><literal>Invert Selection</literal>. This inverts the
           current selection. More exact: everything that was selected is de-selected
