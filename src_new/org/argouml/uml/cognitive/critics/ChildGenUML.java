@@ -55,16 +55,18 @@ import org.tigris.gef.util.EnumerationSingle;
 
 public class ChildGenUML implements ChildGenerator {
 
-    private static Logger cat = Logger.getLogger(ChildGenUML.class);
+    private static final Logger LOG = Logger.getLogger(ChildGenUML.class);
     
     /** Reply a java.util.Enumeration of the children of the given Object 
-     * TODO GEF has moved away from vectors to collections
+     * TODO: GEF has moved away from vectors to collections
      * returning an iterator would now seem better.
+     *
+     * @see org.tigris.gef.util.ChildGenerator#gen(java.lang.Object)
      */
     public Enumeration gen(Object o) {
         
-        if (o == null) cat.debug("Object is null");
-        else cat.debug("Findin g children for " + o.getClass());
+        if (o == null) LOG.debug("Object is null");
+        else LOG.debug("Findin g children for " + o.getClass());
         
 	if (o instanceof Project) {
 	    Project p = (Project) o;
@@ -137,7 +139,7 @@ public class ChildGenUML implements ChildGenerator {
 	}
 
 	// tons more cases
-        cat.debug("No children found for: " +o.getClass());
+        LOG.debug("No children found for: " + o.getClass());
 
 	return EnumerationEmpty.theInstance();
     }

@@ -48,6 +48,10 @@ import org.argouml.model.ModelFacade;
  */
 public class CrNoInstanceVariables extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrNoInstanceVariables() {
 	setHeadline("Add Instance Variables to <ocl>self</ocl>");
 	addSupportedDecision(CrUML.decSTORAGE);
@@ -55,6 +59,10 @@ public class CrNoInstanceVariables extends CrUML {
 	addTrigger("structuralFeature");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
 
@@ -81,8 +89,11 @@ public class CrNoInstanceVariables extends CrUML {
 	return PROBLEM_FOUND;
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
     public Icon getClarifier() {
-	return ClAttributeCompartment.TheInstance;
+	return ClAttributeCompartment.getTheInstance();
     }
 
     /**
@@ -129,6 +140,9 @@ public class CrNoInstanceVariables extends CrUML {
 	return false;
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     */
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddInstanceVariable) {
 	    ToDoItem item = w.getToDoItem();
@@ -140,6 +154,9 @@ public class CrNoInstanceVariables extends CrUML {
 	}
     }
     
+    /**
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
     public Class getWizardClass(ToDoItem item) {
 	return WizAddInstanceVariable.class;
     }

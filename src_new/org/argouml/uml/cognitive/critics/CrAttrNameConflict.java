@@ -56,6 +56,10 @@ import org.argouml.model.ModelFacade;
  */
 public class CrAttrNameConflict extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrAttrNameConflict() {
 	setHeadline("Revise MAttribute Names to Avoid Conflict");
 	addSupportedDecision(CrUML.decINHERITANCE);
@@ -90,8 +94,11 @@ public class CrAttrNameConflict extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#getClarifier()
+     */
     public Icon getClarifier() {
-	return ClAttributeCompartment.TheInstance;
+	return ClAttributeCompartment.getTheInstance();
     }
 
 } /* end class CrAttrNameConflict.java */
