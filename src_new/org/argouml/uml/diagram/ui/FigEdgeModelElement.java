@@ -618,24 +618,24 @@ public abstract class FigEdgeModelElement
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
      */
     public void setOwner(Object newOwner) {
+        Object oldOwner = getOwner();
         super.setOwner(newOwner);
-        if (newOwner != null) {
-            Object oldOwner = getOwner();
-
+        if (oldOwner != null) {
             if (Model.getFacade().isAModelElement(oldOwner)) {
                 Model.getPump().removeModelEventListener(this, oldOwner);
             }
+        }
+        if (newOwner != null) {
             if (Model.getFacade().isAModelElement(newOwner)) {
                 Model.getPump().addModelEventListener(this, oldOwner);
-
+                
                 if (UUIDHelper.getInstance().getUUID(newOwner) == null) {
                     Model.getCoreHelper().setUUID(newOwner,
-					UUIDHelper.getInstance().getNewUUID());
-		}
+                            UUIDHelper.getInstance().getNewUUID());
+                }
             }
-            modelChanged(null);
         }
-
+        modelChanged(null);
     }
 
     /**
