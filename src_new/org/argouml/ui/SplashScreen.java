@@ -40,6 +40,9 @@ implements IStatusBar {
   public SplashScreen(String title, String iconName) {
     super();
     ImageIcon splashImage = ResourceLoader.lookupIconResource(iconName);
+    ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
+    this.setIconImage(argoImage.getImage());
+    if (title != null) setTitle(title);
     JLabel splashButton = new JLabel("");
     if (splashImage != null) {
       int imgWidth = splashImage.getIconWidth();
