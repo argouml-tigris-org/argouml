@@ -186,8 +186,7 @@ public class NavigatorPane
         ProjectManager.getManager().addPropertyChangeListener(this);
 
         if (doSplash) {
-            SplashScreen splash =
-                ProjectBrowser.getInstance().getSplashScreen();
+            SplashScreen splash = SplashScreen.getInstance();
             splash.getStatusBar().showStatus("Making NavigatorPane: "
 					     + "Setting Perspectives");
             splash.getStatusBar().showProgress(25);

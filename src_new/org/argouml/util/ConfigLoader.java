@@ -38,6 +38,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.SplashScreen;
 
 public class ConfigLoader {
     private static Logger _Log = Logger.getLogger("org.argouml.util.ConfigLoader"); 
@@ -158,9 +159,9 @@ public class ConfigLoader {
 		    _Log.error(e);
 		}
 		if (res != null) {
-		    if (ProjectBrowser.getInstance().getSplashScreen() != null) {
-			ProjectBrowser.getInstance().getSplashScreen().getStatusBar().showStatus("Making Project Browser: " + tabName);
-			ProjectBrowser.getInstance().getSplashScreen().getStatusBar().incProgress(2);
+		    if (SplashScreen.getInstance() != null) {
+			SplashScreen.getInstance().getStatusBar().showStatus("Making Project Browser: " + tabName);
+			SplashScreen.getInstance().getStatusBar().incProgress(2);
 		    }
 		    return res;
 		}

@@ -179,7 +179,7 @@ public class ProjectBrowser
         super(appName);
         TheInstance = this;
         if (doSplash) {
-            _splash = new SplashScreen("Loading ArgoUML...", "Splash");
+            _splash = SplashScreen.getInstance();
             _splash.getStatusBar().showStatus("Making Project Browser");
             _splash.getStatusBar().showProgress(10);
             _splash.setVisible(true);
@@ -985,6 +985,8 @@ public class ProjectBrowser
     /**
      * Returns the splashscreen shown at startup. 
      * @return SplashScreen
+     * @deprecated 0.15 will be removed in 0.16 use 
+     * SplashScreen.getInstance() instead
      */
     public SplashScreen getSplashScreen() {
         return _splash;

@@ -207,8 +207,7 @@ public class ToDoPane extends JPanel
         Designer.TheDesigner.getToDoList().addToDoListListener(this);
         
         if (doSplash) {
-            SplashScreen splash =
-		ProjectBrowser.getInstance().getSplashScreen();
+            SplashScreen splash = SplashScreen.getInstance();
             splash.getStatusBar().showStatus("Making TodoPane: "
 					     + "Setting Perspectives");
             splash.getStatusBar().showProgress(25);
