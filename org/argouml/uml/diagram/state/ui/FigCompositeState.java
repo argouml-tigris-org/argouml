@@ -90,7 +90,7 @@ public class FigCompositeState extends FigState {
         addFig(cover);
         addFig(getNameFig());
         addFig(divider);
-        addFig(internal);
+        addFig(getInternal());
 
         //setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
@@ -124,7 +124,7 @@ public class FigCompositeState extends FigState {
         figClone.cover = (FigRect) it.next();
         figClone.setNameFig((FigText) it.next());
         figClone.divider = (FigLine) it.next();
-        figClone.internal = (FigText) it.next();
+        figClone.setInternal((FigText) it.next());
         return figClone;
     }
 
@@ -136,7 +136,7 @@ public class FigCompositeState extends FigState {
      */
     public Dimension getMinimumSize() {
         Dimension nameDim = getNameFig().getMinimumSize();
-        Dimension internalDim = internal.getMinimumSize();
+        Dimension internalDim = getInternal().getMinimumSize();
 
         int h = nameDim.height + 4 + internalDim.height;
         int w = Math.max(nameDim.width + 4, internalDim.width + 4);
@@ -166,7 +166,7 @@ public class FigCompositeState extends FigState {
         divider.setShape(x, y + nameDim.height + 1,
 			  x + w - 1, y + nameDim.height + 1);
 
-        internal.setBounds(x + 2, y + nameDim.height + 4,
+        getInternal().setBounds(x + 2, y + nameDim.height + 4,
 			    w - 4, h - nameDim.height - 6);
 
         bigPort.setBounds(x, y, w, h);
@@ -262,7 +262,7 @@ public class FigCompositeState extends FigState {
      */
     public void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
-        if (ft == internal) {
+        if (ft == getInternal()) {
             Object st = /*(MState)*/ getOwner();
             if (st == null)
                 return;

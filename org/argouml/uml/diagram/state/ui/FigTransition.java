@@ -43,11 +43,19 @@ import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
 
+/**
+ * This class represents the graphical representation of a transition 
+ * on a diagram.
+ *
+ */
 public class FigTransition extends FigEdgeModelElement {
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
 
     ////////////////////////////////////////////////////////////////
     // constructors
+    /**
+     * The main constructor
+     */
     public FigTransition() {
         super();
         addPathItem(getNameFig(), new PathConvPercent(this, 50, 10));
@@ -55,6 +63,11 @@ public class FigTransition extends FigEdgeModelElement {
         setDestArrowHead(endArrow);
     }
 
+    /**
+     * The constructor that hooks the Fig into an existing UML element
+     * @param edge the UML element
+     * @param lay the layer
+     */
     public FigTransition(Object edge, Layer lay) {
         this();
         if (org.argouml.model.ModelFacade.isATransition(edge)) {
@@ -70,9 +83,12 @@ public class FigTransition extends FigEdgeModelElement {
         }
         setLayer(lay);
         setOwner(edge);
-
     }
 
+    /**
+     * The constructor that hooks the Fig into an existing UML element
+     * @param edge the UML element
+     */
     public FigTransition(Object edge) {
         this(edge, ProjectManager.getManager().getCurrentProject()
                 .getActiveDiagram().getLayer());
@@ -86,6 +102,7 @@ public class FigTransition extends FigEdgeModelElement {
      * is in the FigEdgeModelElement. Determine which field and update the
      * model. This class handles the name, subclasses should override to handle
      * other text elements.
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) {
         Object t = /* (MTransition) */getOwner();
@@ -99,6 +116,7 @@ public class FigTransition extends FigEdgeModelElement {
      * This is called after any part of the UML MModelElement has changed. This
      * method automatically updates the name FigText. Subclasses should override
      * and update other parts.
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
      */
     protected void modelChanged(MElementEvent e) {
         super.modelChanged(e);
@@ -164,10 +182,18 @@ public class FigTransition extends FigEdgeModelElement {
         }
     }
 
-    protected int[] flip(int[] Ps) {
-        int[] r = new int[Ps.length];
-        for (int i = Ps.length; i == 0; i--) {
-            r[Ps.length - i] = Ps[i];
+    /**
+     * This function is not called anywhere. And it is not documented.
+     * Let's deprecate it, just in case.
+     * @deprecated  by mvw in V0.17.1. Use your own routine, 
+     *              or document this one and remove the deprecation.
+     * @param ps ?
+     * @return ?
+     */
+    protected int[] flip(int[] ps) {
+        int[] r = new int[ps.length];
+        for (int i = ps.length; i == 0; i--) {
+            r[ps.length - i] = ps[i];
         }
         return r;
     }
