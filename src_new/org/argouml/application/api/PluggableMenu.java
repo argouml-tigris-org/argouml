@@ -46,31 +46,31 @@ public interface PluggableMenu extends Pluggable {
 
     /** Key looked for in ProjectBrowser for File Import submenu.
      */
-    public static String KEY_FILE_IMPORT = "File:Import";
+    static String KEY_FILE_IMPORT = "File:Import";
 
     /** Key looked for in ProjectBrowser for View menu.
      */
-    public static String KEY_VIEW = "View";
+    static String KEY_VIEW = "View";
 
     /** Key looked for in ProjectBrowser for Create Diagram menu.
      */
-    public static String KEY_CREATE_DIAGRAMS = "Create Diagrams";
+    static String KEY_CREATE_DIAGRAMS = "Create Diagrams";
 
     /** Key looked for in ProjectBrowser for Arrange menu.
      */
-    public static String KEY_ARRANGE = "Arrange";
+    static String KEY_ARRANGE = "Arrange";
 
     /** Key looked for in ProjectBrowser for Generate menu.
      */
-    public static String KEY_GENERATE = "Generate";
+    static String KEY_GENERATE = "Generate";
 
     /** Key looked for in ProjectBrowser for Tools menu.
      */
-    public static String KEY_TOOLS = "Tools";
+    static String KEY_TOOLS = "Tools";
 
     /** Key looked for in ProjectBrowser for Help menu.
      */
-    public static String KEY_HELP = "Help";
+    static String KEY_HELP = "Help";
 
 
     /**
@@ -86,7 +86,7 @@ public interface PluggableMenu extends Pluggable {
      * @since ARGO0.11.3
      * @author Thierry Lach
      */
-    public JMenuItem getMenuItem(Object[] context);
+    JMenuItem getMenuItem(Object[] context);
 
     /**
      * Helper to create a context recognized by
@@ -96,7 +96,7 @@ public interface PluggableMenu extends Pluggable {
      * @param menuType menu name
      * @return the proper context array.
      */
-    public Object[] buildContext(JMenuItem parentMenuItem, String menuType);
+    Object[] buildContext(JMenuItem parentMenuItem, String menuType);
 
 } /* End interface PluggableMenu */
 

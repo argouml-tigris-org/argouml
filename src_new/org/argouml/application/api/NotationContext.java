@@ -36,5 +36,5 @@ public interface NotationContext {
      *
      *  @return null if the context does not wish to name a specific notation
      */
-    public NotationName getContextNotation();
+    NotationName getContextNotation();
 }

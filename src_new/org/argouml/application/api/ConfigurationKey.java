@@ -38,13 +38,13 @@ public interface ConfigurationKey {
     /** Return the actual key used to access the configuration.
      * @return the key.
      */ 
-    public String getKey();
+    String getKey();
 
     /** Tells if this configuration key is the one changed in the
      *  <code>PropertyChangeEvent</code>.
      * @param pce PropertyChangeEvent to check
      * @return true if the changed property is for the key.
      */
-    public boolean isChangedProperty(PropertyChangeEvent pce);
+    boolean isChangedProperty(PropertyChangeEvent pce);
 }
 

@@ -40,7 +40,7 @@ public interface PluggableAboutTab extends Pluggable {
      * Returns the about tab panel for the plugin.
      * @return the provided tab panel.
      */
-    public AboutTabPanel getAboutTabPanel();
+    AboutTabPanel getAboutTabPanel();
 
 } /* End interface PluggableAboutTab */
 

@@ -41,7 +41,7 @@ public interface ArgoSingletonModule extends ArgoModule {
      *  @return <code>true</code> if the singleton can be activated
      *          <code>false</code> otherwise.
      */
-    public boolean canActivateSingleton();
+    boolean canActivateSingleton();
 
     /** Allows verification that the current singleton can be
      *  deactivated.  This is useful for determining menu entry
@@ -49,7 +49,7 @@ public interface ArgoSingletonModule extends ArgoModule {
      *  @return <code>true</code> if the singleton can be deactivated
                 <code>false</code> otherwise.
      */
-    public boolean canDeactivateSingleton();
+    boolean canDeactivateSingleton();
 
     /** Callback by which the active singleton is notified that it
      *  is being deactivated.  This is called prior to calling
@@ -60,19 +60,19 @@ public interface ArgoSingletonModule extends ArgoModule {
      *  active singleton is considered to be the active singleton
      *  even though it is not marked as active.
      */
-    public void deactivateSingleton();
+    void deactivateSingleton();
 
     /** Callback by which the singleton being activated is notified that it
      *  is being activated.  This is called after calling
      *  deactivateSingleton() on the previous singleton.
      */
-    public void activateSingleton();
+    void activateSingleton();
 
     /**
      * TODO: Document this.
      * @return class which identifies the singleton
      */
-    public Class getSingletonType();
+    Class getSingletonType();
 
 } /* end interface ArgoSingletonModule */
 

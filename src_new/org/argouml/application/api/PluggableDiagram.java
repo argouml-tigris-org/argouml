@@ -35,7 +35,7 @@ public interface PluggableDiagram extends Pluggable {
     /** Returns the settings tab panel for the plugin.
      * @return the menu item.
      */
-    public JMenuItem getDiagramMenuItem();
+    JMenuItem getDiagramMenuItem();
 
 } /* End interface PluggableDiagram */
 

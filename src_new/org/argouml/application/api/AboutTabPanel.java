@@ -40,17 +40,17 @@ public interface AboutTabPanel {
     /** 
      * @return the unlocalized settings tab name.
      */
-    public String getTabKey();
+    String getTabKey();
 
     /**
      * @return the name of the resource bundle to use.
      */
-    public String getTabResourceBundleKey();
+    String getTabResourceBundleKey();
 
     /** 
      * @return the JPanel which implements the tab.
      */
-    public JPanel getTabPanel();
+    JPanel getTabPanel();
 
 } /* End interface AboutTabPanel */
 
