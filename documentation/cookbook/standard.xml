@@ -1002,20 +1002,24 @@ five hours on a 56K modem.
 	<para>
 Build using ant.
 </para>
-    <para>
+	<para>
+Browse to <filename>argouml/src_new/build.xml</filename>,
+select the <filename>build.xml</filename>-file,
+right-click on it, and do Run Ant...
+This pops up the External Tools... pop up
+with the Targets tab already selected.
+Select compile (default target in the Targets tab),
+deselect all other targets
+and finally press Run.
+</para>
+	<warning>
+	  <para>
 Remark from MVW: This did not work for me, 
 I first had to set the Java Build path as described below. 
 Please confirm or deny this statement, 
 so that I can adapt this explanation!
 </para>
-	<para>
-Browse to <filename>argouml/src_new/build.xml</filename>
-and do 
-<!-- Linus says: <command>Run ant</command> on it. 
-MVW: But I do not find such a command, so I presume: -->
-<command>Ant build</command> (without the ...) on it
-<!--Select compile (default target in the Targets tab) and Run.-->
-</para>
+	</warning>
 	<para>
 There are some files that are built using rules in the
 <filename>build.xml</filename> file.
@@ -1032,7 +1036,8 @@ This must be done after having built using ant to find the newly created
 java files.
 </para>
 	<para>
-Select the top resource of the project in the Explorer (on the left),
+Select the top resource of the argouml project
+in the Navigator (on the left),
 right click and select <command>Refresh</command>.
 </para>
       </listitem>
