@@ -27,18 +27,19 @@ package org.argouml.uml.cognitive.critics;
 
 
 /**
- * 
+ *
  * @author mkl
  *
  */
 public abstract class AbstractCrUnconventionalName extends CrUML {
 
-    /** based on the input of a model element name this method
+    /**
+     * Based on the input of a model element name this method
      * should compute a suggestion for the wizard to present
-     * to the user. Please write tests against this method for 
+     * to the user. Please write tests against this method for
      * concrete implementations.
-     * 
-     * @param name
+     *
+     * @param name The unconventional name.
      * @return a wizard suggestion
      */
     public abstract String computeSuggestion(String name);

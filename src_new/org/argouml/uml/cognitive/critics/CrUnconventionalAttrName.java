@@ -34,8 +34,8 @@ import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
 
 /**
- * Critic to detect whether an attribute name obeys to certain rules.
- * <p>
+ * Critic to detect whether an attribute name obeys to certain rules.<p>
+ *
  * Checks for:
  * <ul>
  * <li> all lower case or
@@ -48,7 +48,6 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 
     /**
      * The constructor.
-     * 
      */
     public CrUnconventionalAttrName() {
 	setHeadline("Choose a Better MAttribute Name");
@@ -133,7 +132,6 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
     }
 
     /**
-     * 
      * @see org.argouml.uml.cognitive.critics.AbstractCrUnconventionalName#computeSuggestion(java.lang.String)
      */
     public String computeSuggestion(String name) {
@@ -178,10 +176,14 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
-	if (!isActive()) return false;
+	if (!isActive()) {
+	    return false;
+	}
 	VectorSet offs = i.getOffenders();
 	Object f = /*(MFeature)*/ offs.firstElement();
-	if (!predicate(f, dsgr)) return false;
+	if (!predicate(f, dsgr)) {
+	    return false;
+	}
 	VectorSet newOffs = computeOffenders(f);
 	boolean res = offs.equals(newOffs);
 	return res;
@@ -198,13 +200,14 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 	    Object me =
 		/*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = computeSuggestion(ModelFacade.getName(me));
-	    String ins = "Change the attribute name to start with a " 
+	    String ins =
+	        "Change the attribute name to start with a "
 	        + "lowercase letter.";
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
      */
