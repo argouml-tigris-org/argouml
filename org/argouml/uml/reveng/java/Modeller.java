@@ -389,7 +389,7 @@ public class Modeller
 	}
 
 
-	for(Iterator i = mOperation.getParameters().iterator();
+	for(Iterator i = mOperation.getParameters().iterator(); 
 	    i.hasNext(); ) {
 	    mOperation.removeParameter((MParameter)i.next());
 	}
@@ -445,17 +445,22 @@ public class Modeller
     */
     public void addBodyToOperation(Object op, String body)
     {
-		if (op == null || !(op instanceof MOperation)) {
-			System.out.println("adding body failed: no operation!");
-		    return;
-		}
-		if (body == null || body.length() == 0)
-		    return;
-
-		MOperation operation = (MOperation)op;
-		MMethod method = new MMethodImpl();
-		method.setBody(new MProcedureExpression("Java",body));
-		operation.addMethod(method);
+	if (op == null || !(op instanceof MOperation)) {
+	    System.out.println("adding body failed: no operation!");
+	    return;
+	}
+	if (body == null || body.length() == 0)
+	    return;
+	
+	MOperation operation = (MOperation)op;
+	MMethod method = new MMethodImpl();
+	method.setBody(new MProcedureExpression("Java", body));
+	method.setSpecification(operation);
+	method.setName(operation.getName() + ".java");
+	method.setVisibility(operation.getVisibility());
+	method.setOwnerScope(operation.getOwnerScope());
+	method.setNamespace(parseState.getClassifier());
+	operation.addMethod(method);
     }
 
     /**
