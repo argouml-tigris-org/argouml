@@ -24,53 +24,44 @@
 
 
 
-
-package uci.uml.Behavioral_Elements.Common_Behavior;
-
-import java.util.*;
-import java.beans.*;
-
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Core.*; 
+// File: FigRealization.java
+// Classes: FigRealization
+// Original Author: agauthie@ics.uci.edu
+// $Id$
 
 
-// needs-more-work
+package uci.uml.visual;
 
-public class Instance extends ModelElementImpl {
-    
-  public Vector _linkEnd = new Vector();
-  public Classifier _classifier = null;
+import java.awt.*;
 
+import uci.gef.*;
+import uci.uml.ui.*;
+import uci.uml.Foundation.Core.*;
 
-  public Instance() { }
-  public Instance(Name name) { super(name); }
-  public Instance(String nameStr) { super(new Name(nameStr)); }
-  
-  public void addLinkEnd(LinkEnd x) throws PropertyVetoException {
-    if (_linkEnd == null) _linkEnd = new Vector();
-    fireVetoableChange("linkEnd", _linkEnd, x);
-    _linkEnd.addElement(x);
-    x.setInstance(this);
-  }
-  
-  public Vector getLinkEnd() { return _linkEnd; }
-  
-  public void removeLinkEnd(LinkEnd x) throws PropertyVetoException {
-    if (_linkEnd == null) return;
-    fireVetoableChange("linkEnd", _linkEnd, x);
-    _linkEnd.removeElement(x);
-  }
-  
-  public void setLinkEnd(Vector x) throws PropertyVetoException {
-    if (_linkEnd == null) _linkEnd = new Vector();
-    fireVetoableChange("linkEnd", _linkEnd, x);
-    _linkEnd = x;
+public class FigRealization extends FigEdgeLine {
+
+  public FigRealization(Object edge) {
+    super();
+    setOwner(edge);
+
+    ((FigLine)_fig).setDashed(true);
+
+    ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
+    endArrow.setFillColor(Color.white);
+
+    setDestArrowHead(endArrow);
+    setBetweenNearestPoints(true);
   }
 
-  public void setClassifier(Classifier x) throws PropertyVetoException {
-    fireVetoableChange("Classifier", _classifier, x);
-    _classifier = x;
+  public void dispose() {
+    if (!(getOwner() instanceof Realization)) return;
+    Realization gen = (Realization) getOwner();
+    if (gen == null) return;
+    Project p = ProjectBrowser.TheInstance.getProject();
+    p.moveToTrash(gen);
+    super.dispose();
   }
- 
 
-}
+
+} /* end class FigRealization */
+

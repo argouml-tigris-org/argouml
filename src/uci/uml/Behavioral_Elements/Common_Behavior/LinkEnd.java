@@ -29,11 +29,48 @@ package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;
 import java.beans.*;
+import uci.uml.Foundation.Core.*; 
+import uci.uml.Foundation.Data_Types.Name;
 
 // needs-more-work
 
-public class LinkEnd implements java.io.Serializable{
+public class LinkEnd extends ModelElementImpl {
 
-  public LinkEnd() { }
+  public Link _link;
+  public AssociationEnd _associationEnd = null;
+  public Instance _instance;
+  public Classifier _type;
   
+  public LinkEnd() { }
+  public LinkEnd(Name name) { super(name); }
+  public LinkEnd(String nameStr) { super(new Name(nameStr)); }
+  public LinkEnd(Instance i) {
+    super();
+    try { setInstance(i); }
+    catch (PropertyVetoException pce) { }
+  }
+  
+  
+  public Link getLink() { return _link; }
+  
+  public Instance getInstance() { return _instance; }
+  
+  public AssociationEnd getAssociationEnd() { return _associationEnd; }
+  
+  public void setLink(Link x) throws PropertyVetoException {
+    fireVetoableChange("link", _link, x);
+    _link = x;
+  }
+  
+  public void setInstance(Instance x) throws PropertyVetoException {
+    fireVetoableChange("instance", _instance, x);
+    _instance = x;
+  }
+  
+  public void setAssociationEnd(AssociationEnd x) throws PropertyVetoException {
+    fireVetoableChange("associationEnd", _associationEnd, x);
+    _associationEnd = x;
+  }
+  
+
 }

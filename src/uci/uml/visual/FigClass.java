@@ -130,10 +130,42 @@ public class FigClass extends FigNodeModelElement  {
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
-    //if (ft == _attr) { System.out.println("edited Attr"); }
-    //if (ft == _oper) { System.out.println("edited Oper"); }
+    if (ft == _attr) { 
+      System.out.println("edited Attr");
+      //Classifier cls = (Classifier) getOwner();
+      //if (cls == null) return;
+      //String currentText = ft.getText();
+//       StringTokenizer updateText = new StringTokenizer(ft.getText());
+//       Attribute tempAttr = new Attribute();
+//       String temp;
+//       while (updateText.hasMoreTokens()) {
+//          temp = updateText.nextToken();
+//          if (temp == "public" || temp == "private" || temp == "protected")
+//            tempAttr.visibility = temp;
+//          else if (temp == "boolean" || temp == "char" || temp == "byte" ||
+//                   temp == "short" || temp == "int" || temp == "long" ||
+//                   temp == "float" || temp == "double")
+//            tempAttr.type = temp;       
+//          else if (temp == "final" || temp == "static" || temp == "transient")
+//            tempAttr.key = temp;     
+//       }
+      /*Vector strs = cls.getStructuralFeature();
+      String attrStr = "";
+      if (strs != null) {
+        java.util.Enumeration enum = strs.elements();
+        while (enum.hasMoreElements()) {
+	      StructuralFeature sf = (StructuralFeature) enum.nextElement();
+	      attrStr += GeneratorDisplay.Generate(sf);
+	      if (enum.hasMoreElements())
+	        attrStr += "\n";
+        }
+      }*/
+    }
+    if (ft == _oper) { System.out.println("edited Oper"); }
   }
 
+  
+  
   protected void modelChanged() {
     super.modelChanged();
     Classifier cls = (Classifier) getOwner();
@@ -144,10 +176,10 @@ public class FigClass extends FigNodeModelElement  {
     if (strs != null) {
       java.util.Enumeration enum = strs.elements();
       while (enum.hasMoreElements()) {
-	StructuralFeature sf = (StructuralFeature) enum.nextElement();
-	attrStr += GeneratorDisplay.Generate(sf);
-	if (enum.hasMoreElements())
-	  attrStr += "\n";
+	    StructuralFeature sf = (StructuralFeature) enum.nextElement();
+	    attrStr += GeneratorDisplay.Generate(sf);
+	    if (enum.hasMoreElements())
+	      attrStr += "\n";
       }
     }
     Vector behs = cls.getBehavioralFeature();
@@ -155,10 +187,10 @@ public class FigClass extends FigNodeModelElement  {
     if (behs != null) {
       java.util.Enumeration enum = behs.elements();
       while (enum.hasMoreElements()) {
-	BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
-	operStr += GeneratorDisplay.Generate(bf);
-	if (enum.hasMoreElements())
-	  operStr += "\n";
+	    BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
+	    operStr += GeneratorDisplay.Generate(bf);
+	    if (enum.hasMoreElements())
+	      operStr += "\n";
       }
     }
 
@@ -187,3 +219,5 @@ public class FigClass extends FigNodeModelElement  {
 
   
 } /* end class FigClass */
+
+

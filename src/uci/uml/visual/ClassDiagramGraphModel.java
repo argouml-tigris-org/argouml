@@ -38,6 +38,7 @@ import java.beans.*;
 import uci.graph.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
 
 
 /** This class defines a bridge between the UML meta-model
@@ -83,6 +84,8 @@ implements MutableGraphModel, VetoableChangeListener {
     Vector res = new Vector();  //wasteful!
     if (nodeOrEdge instanceof MMClass) res.addElement(nodeOrEdge);
     if (nodeOrEdge instanceof Interface) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof Instance) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof Model) res.addElement(nodeOrEdge);
     return res;
   }
 
@@ -105,7 +108,34 @@ implements MutableGraphModel, VetoableChangeListener {
       }
     }
     if (port instanceof Interface) {
-      // needs-more-work
+      Interface Intf = (Interface) port;
+      Vector ends = Intf.getAssociationEnd();
+      if (ends == null) return res; // empty Vector 
+      java.util.Enumeration endEnum = ends.elements();
+      while (endEnum.hasMoreElements()) {
+	    AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
+	    res.addElement(ae.getAssociation());
+	  }
+    }
+    /*if (port instanceof MMPackage) {
+      MMPackage cls = (MMPackage) port;
+      Vector ends = cls.getAssociationEnd();
+      if (ends == null) return res; // empty Vector
+      java.util.Enumeration endEnum = ends.elements();
+      while (endEnum.hasMoreElements()) {
+	    AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
+	    res.addElement(ae.getAssociation());
+      }
+    }*/
+    if (port instanceof Instance) {
+      Instance inst = (Instance) port;
+      Vector ends = inst.getLinkEnd();
+      if (ends == null) return res; // empty Vector
+      java.util.Enumeration endEnum = ends.elements();
+      while (endEnum.hasMoreElements()) {
+	    LinkEnd le = (LinkEnd) endEnum.nextElement();
+	    res.addElement(le.getLink());
+      }
     }
     return res;
   }
@@ -143,12 +173,13 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
-    return (node instanceof MMClass) || (node instanceof Interface);
+    return (node instanceof MMClass) || (node instanceof Interface)
+    || (node instanceof Model) || (node instanceof Instance);
   }
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return (edge instanceof Association) || (edge instanceof Generalization);
+    return (edge instanceof Association) || (edge instanceof Generalization); 
   }
 
   /** Remove the given node from the graph. */
@@ -167,7 +198,7 @@ implements MutableGraphModel, VetoableChangeListener {
     try {
       if (node instanceof ModelElement &&
 	  ((ModelElement)node).getElementOwnership() == null) {
-	_model.addPublicOwnedElement((Classifier) node);
+	_model.addPublicOwnedElement((ModelElement) node);
       }
     }
     catch (PropertyVetoException pve) {
@@ -216,29 +247,66 @@ implements MutableGraphModel, VetoableChangeListener {
 			java.lang.Class edgeClass) {
     try {
       if ((fromPort instanceof MMClass) && (toPort instanceof MMClass)) {
-	MMClass fromCls = (MMClass) fromPort;
-	MMClass toCls = (MMClass) toPort;
+	    MMClass fromCls = (MMClass) fromPort;
+	    MMClass toCls = (MMClass) toPort;
 
-	if (edgeClass == Generalization.class) {
-	  Generalization gen = new Generalization(fromCls, toCls);
-	  addEdge(gen);
-	  return gen;
-	}
-	else if (edgeClass == Association.class) {
-	  Association asc = new Association(fromCls, toCls);
-	  addEdge(asc);
-	  return asc;
-	}
-	else if (edgeClass == Dependency.class) {
-	  Dependency dep = new Dependency(fromCls, toCls);
-	  addEdge(dep);
-	  return dep;
-	}
-	else {
-	  System.out.println("asdwwads");
-	  return null;
-	}
+	    if (edgeClass == Generalization.class) {
+	      Generalization gen = new Generalization(fromCls, toCls);
+	      addEdge(gen);
+	      return gen;
+	    }
+	    else if (edgeClass == Association.class) {
+	      Association asc = new Association(fromCls, toCls);
+	      addEdge(asc);
+	      return asc;
+	    }
+	    else if (edgeClass == Dependency.class) {
+	      Dependency dep = new Dependency(fromCls, toCls);
+	      addEdge(dep);
+	      return dep;
+	    }
+	    else {
+	      System.out.println("asdwwads");
+	      return null;
+	    }
       }
+      else if ((fromPort instanceof Model) && (toPort instanceof Model)) {
+    	Model fromPack = (Model) fromPort;
+    	Model toPack = (Model) toPort;
+        if (edgeClass == Dependency.class) {
+          Dependency dep = new Dependency(fromPack, toPack);
+          addEdge(dep);
+          return dep;
+        }
+      }
+
+      // break
+      else if ((fromPort instanceof MMClass) && (toPort instanceof Interface)) {
+	    MMClass fromCls = (MMClass) fromPort;
+	    Interface toIntf = (Interface) toPort;
+
+	    if (edgeClass == Realization.class) {
+	      Realization real = new Realization(fromCls, toIntf);
+	      addEdge(real);
+	      return real;
+	    }
+	    else {
+	      System.out.println("asdwwads");
+	      return null;
+	    }
+      }
+    
+      // break
+      else if ((fromPort instanceof Instance) && (toPort instanceof Instance)) {
+        Instance fromInst = (Instance) fromPort;
+        Instance toInst = (Instance) toPort;
+    	if (edgeClass == Link.class) {
+    	  Link link = new Link(fromInst, toInst);
+    	  addEdge(link);
+    	  return link;
+    	}
+      }
+    
     }
     catch (java.beans.PropertyVetoException ex) { }
     System.out.println("should not enter here! connect3");
@@ -258,7 +326,8 @@ implements MutableGraphModel, VetoableChangeListener {
       ModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
 	//System.out.println("model removed " + me);
-	if (me instanceof Classifier) removeNode(me);
+	if (me instanceof Classifier) removeNode(me);	
+	if (me instanceof Model) removeNode(me);
 	if (me instanceof Association) removeEdge(me);
 	if (me instanceof Dependency) removeEdge(me);
 	if (me instanceof Generalization) removeEdge(me);

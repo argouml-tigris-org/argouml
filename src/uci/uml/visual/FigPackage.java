@@ -52,12 +52,22 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   // constants
   
   public final int MARGIN = 2;
+  public int x = 10;
+  public int y = 10;
+  public int width = 150;
+  public int height = 60;
+  public int indentX = 20;
+  public int indentY = 20;
+  public int textH =15;
+  public Point pos;
+  public Dimension dim;
+  protected int _radius = 20;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
   
-  /** The main label on this icon. */
   FigText _name;
+  FigText _dashRect;
   
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
@@ -66,6 +76,8 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   
   // add other Figs here aes needed
 
+  FigRRect _rRect;
+  FigRect _firstRect;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -77,20 +89,30 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
       ((ElementImpl)node).addVetoableChangeListener(this);
 
     Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
-    _name = new FigText(10,10,90,20, Color.blue, "Times", 10);
+    _bigPort = new FigRect(x,y,width,height, handleColor, Color.lightGray);
+    _rRect = new FigRRect(x,y,width,height,null, null);
+    _dashRect = new FigText(x , y, width -indentX,textH);
+    _name = new FigText(x,y+textH,width,height-textH);
+    //_name = new FigText(10,10,90,20, Color.blue, "Times", 10);
     _name.setExpandOnly(true);
+    _name.setTextFilled(true);
     _name.setText("FigPackage");
+    
     // initialize any other Figs here
+    //_clss.setExpandOnly(true);
+    //_clss.setTextFilled(true);
+    //_clss.setText("FigPackage");
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
     addFig(_name);
+    //addFig(_clss);
+    addFig(_dashRect);
 
 
     Object onlyPort = node;
     bindPort(onlyPort, _bigPort);
-    setBlinkPorts(true); //make port invisble unless mouse enters
+    setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
   }
 
@@ -100,7 +122,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
    *  model changes complete before we update the screen. */
   public void vetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException 
-    //System.out.println("FigPackage got a change notification!");
+    System.out.println("FigPackage got a change notification!");
     Object src = pce.getSource();
     if (src == getOwner()) {
       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
@@ -112,7 +134,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
    *  its current  state. */
   public void delayedVetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException 
-    //System.out.println("FigPackage got a delayed change notification!");
+    System.out.println("FigPackage got a delayed change notification!");
     Object src = pce.getSource();
     if (src == getOwner()) {
       updateText();
@@ -123,7 +145,9 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
   /** Update the text labels */
   protected void updateText() {
-    Element elmt = (Element) getOwner();
+    ModelElement elmt = (ModelElement) getOwner();
+    //Vector strs = elmt.getStructuralFeature();
+
     String nameStr = GeneratorDisplay.Generate(elmt.getName());
 
     startTrans();
@@ -131,6 +155,20 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     Rectangle bbox = getBounds();
     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
     endTrans();
+    
+    /*String parStr = GeneratorDisplay.Generate(elmt.getAttributes());
+    if (strs != null) {
+      java.util.Enumeration enum = strs.elements();
+      while (enum.hasMoreElements()) {
+	    StructuralFeature sf = (StructuralFeature) enum.nextElement();
+	    parStr += GeneratorDisplay.Generate(sf);
+	    if (enum.hasMoreElements())
+	      parStr += "\n";
+      }
+    }
+
+    _dashRect.setText(parStr);*/
+
   }
 
   
@@ -143,6 +181,21 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     super.dispose();
   }
 
+  public void paint(Graphics g) {
+    pos = getLocation();
+    dim = getSize() ;
+    Point p = _dashRect.getLocation();
+    Dimension d = _dashRect.getSize() ;
+    int minW = Math.min(d.width, dim.width);
+    int minH = Math.max(textH, Math.min(d.height, 30));
+    int minW2 = Math.max((int)(0.75*dim.width),dim.width-minW/2);
+    _rRect.setBounds(pos.x, pos.y, dim.width, dim.height);
+    _name.setTopMargin((dim.height-minH/2)/2-1);
+    _name.setBounds(pos.x, pos.y+minH, dim.width, dim.height-minH);
+    _dashRect.setBounds(pos.x, pos.y, minW, minH);
+
+    super.paint(g);
+ }
 
 
 } /* end class FigPackage */

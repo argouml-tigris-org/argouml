@@ -30,10 +30,64 @@ package uci.uml.Behavioral_Elements.Common_Behavior;
 import java.util.*;
 import java.beans.*;
 
+import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.Name;
+
 // needs-more-work
 
-public class Link implements java.io.Serializable {
+public class Link extends ModelElementImpl {
 
+  public Vector _linkRole = new Vector();
+  public Association _association = null;
+  
   public Link() { }
+  public Link(Name name) { super(name); }
+  public Link(String nameStr) { super(new Name(nameStr)); }
+  public Link(String nameStr, LinkEnd from, LinkEnd to){
+    super(new Name(nameStr));
+    try {
+      addLinkRole(from);
+      addLinkRole(to);
+    }
+    catch (PropertyVetoException pce) { }
+  }
+  public Link(Instance  srcC, Instance dstC) {
+    super();
+    try {
+      LinkEnd src = new LinkEnd(srcC);
+      LinkEnd dst = new LinkEnd(dstC);
+      addLinkRole(src);
+      addLinkRole(dst);
+      //setNamespace(srcC.getNamespace());
+    }
+    catch (PropertyVetoException pce) { }
+  }
+ 
+  public void addLinkRole(LinkEnd x) throws PropertyVetoException {
+    if (_linkRole == null) _linkRole = new Vector();
+    fireVetoableChange("linkRole", _linkRole, x);
+    _linkRole.addElement(x);
+    x.setLink(this);
+  }
+  
+  public Vector getLinkRole() { return _linkRole; }
+  
+  public void removeLinkRole(LinkEnd x) throws PropertyVetoException {
+    if (_linkRole == null) return;
+    fireVetoableChange("linkRole", _linkRole, x);
+    _linkRole.removeElement(x);
+  }
+  
+  public void setLinkRole(Vector x) throws PropertyVetoException {
+    if (_linkRole == null) _linkRole = new Vector();
+    fireVetoableChange("linkRole", _linkRole, x);
+    _linkRole = x;
+    java.util.Enumeration enum = _linkRole.elements();
+    while (enum.hasMoreElements()) {
+      LinkEnd le = (LinkEnd) enum.nextElement();
+      le.setLink(this);
+    }
+  }
+  
   
 }

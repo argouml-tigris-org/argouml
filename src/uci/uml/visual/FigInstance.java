@@ -26,7 +26,7 @@
 
 // File: FigInstance.java
 // Classes: FigInstance
-// Original Author: your email address here
+// Original Author: agauthie@ics.uci.edu
 // $Id$
 
 package uci.uml.visual;
@@ -43,25 +43,16 @@ import uci.uml.generate.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 
-/** Class to display graphics for a UML State in a diagram. */
 
-public class FigInstance extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+/** Class to display graphics for a UML Instance in a diagram. */
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  
-  public final int MARGIN = 2;
+public class FigInstance extends FigNodeModelElement 
+/*implements VetoableChangeListener, DelayedVetoableChangeListener*/ {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  
-  /** The main label on this icon. */
-  FigText _name;
-  
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
   
+  FigText _attr;
   FigRect _bigPort;
   
   // add other Figs here aes needed
@@ -71,78 +62,53 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   // constructors
   
   public FigInstance(GraphModel gm, Object node) {
-    super(node);
+    super(gm, node);
     // if it is a UML meta-model object, register interest in any change events
     if (node instanceof ElementImpl)
       ((ElementImpl)node).addVetoableChangeListener(this);
 
     Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigRect(10, 10, 90, 20, handleColor, Color.lightGray);
-    _name = new FigText(10,10,90,20, Color.blue, "Times", 10);
-    _name.setExpandOnly(true);
-    _name.setText("FigInstance");
+   
+    _bigPort = new FigRect(8, 8, 92, 62, handleColor, Color.lightGray);
+    _name.setUnderline(true);
+    _name.setTextFilled(true);
+
     // initialize any other Figs here
+    _attr = new FigText(10,30,90,40, Color.black, "Times", 10);
+    _attr.setExpandOnly(true);
+    _attr.setJustification(FigText.JUSTIFY_LEFT);
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
     addFig(_name);
-
+    addFig(_attr);
 
     Object onlyPort = node;
     bindPort(onlyPort, _bigPort);
     setBlinkPorts(true); //make port invisble unless mouse enters
     Rectangle r = getBounds();
+    setBounds(r.x, r.y, r.width, r.height);
   }
 
+  /* Override setBounds to keep shapes looking right */
+  public void setBounds(int x, int y, int w, int h) {
+    if (_name == null) return;
+    int leftSide = x;
+    int widthP = w;
+    int topSide = y;
+    int heightP = h;
 
-  /** If the UML meta-model object changes state. Update the Fig.  But
-   *  we need to do it as a "DelayedVetoableChangeListener", so that
-   *  model changes complete before we update the screen. */
-  public void vetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    //System.out.println("FigInstance got a change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-      SwingUtilities.invokeLater(delayedNotify);
-    }
+    Rectangle _clss_pref = _name.getBounds();
+    Rectangle _attr_pref = _attr.getBounds();
+
+    int total_height = _clss_pref.height + _attr_pref.height;
+    int extra_each = (heightP - total_height);
+
+    _name.setBounds(leftSide, topSide, widthP, _clss_pref.height);
+    _attr.setBounds(leftSide, topSide + _name.getBounds().height, widthP, _attr_pref.height + extra_each);
+    _bigPort.setBounds(leftSide, topSide, widthP, heightP);
+
+    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
   }
-
-  /** The UML meta-model object changed. Now update the Fig to show
-   *  its current  state. */
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException 
-    //System.out.println("FigInstance got a delayed change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      updateText();
-      // you may have to update more than just the text
-    }
-  }
-
-
-  /** Update the text labels */
-  protected void updateText() {
-    Element elmt = (Element) getOwner();
-    String nameStr = GeneratorDisplay.Generate(elmt.getName());
-
-    startTrans();
-    _name.setText(nameStr);
-    Rectangle bbox = getBounds();
-    setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-    endTrans();
-  }
-
-  
-
-  public void dispose() {
-    if (!(getOwner() instanceof Element)) return;
-    Element elmt = (Element) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
-    super.dispose();
-  }
-
-
 
 } /* end class FigInstance */

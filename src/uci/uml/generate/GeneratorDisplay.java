@@ -312,10 +312,10 @@ public class GeneratorDisplay extends Generator {
     }
     return generateClassList(classes);
   }
-  public String generateRealization(Vector classifiers) {
+  public String generateRealization(Vector realizations) {
     // Realization is much simplier than Generalization.
     // There is no Realization class in UML metamodel
-    return generateClassList(classifiers);
+    return generateRealizationList(realizations);
   }
 
   public String generateClassList(Vector classifiers) {
@@ -324,6 +324,18 @@ public class GeneratorDisplay extends Generator {
     java.util.Enumeration clsEnum = classifiers.elements();
     while (clsEnum.hasMoreElements()) {
       s += generateClassifierRef((Classifier)clsEnum.nextElement());
+      if (clsEnum.hasMoreElements()) s += ", ";
+    }
+    return s;
+  }
+
+  public String generateRealizationList(Vector realizations) {
+    String s = "";
+    if (realizations == null) return "";
+    java.util.Enumeration clsEnum = realizations.elements();
+    while (clsEnum.hasMoreElements()) {
+      Realization r = (Realization)clsEnum.nextElement();
+      s += generateClassifierRef(r.getSupertype());
       if (clsEnum.hasMoreElements()) s += ", ";
     }
     return s;

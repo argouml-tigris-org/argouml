@@ -28,9 +28,26 @@
 package uci.uml.Foundation.Core;
 
 import java.util.*;
+import java.beans.*;
+
+import uci.uml.Foundation.Data_Types.*;
 
 public class Interface extends Classifier {
+//   public boolean _isActive;
 
   public Interface() { }
+  public Interface(Name name) { super(name); }
+  public Interface(String nameStr) { super(new Name(nameStr)); }
+
+//   public boolean getIsActive(){ return _isActive; }
+//   public void setIsActive(boolean x) throws PropertyVetoException {
+//     fireVetoableChange("isActive", _isActive, x);
+//     _isActive = x;
+//   }
+
+  public String getOCLTypeStr() {
+    return "Interface";
+  }
+
 
 }

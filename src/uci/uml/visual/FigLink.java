@@ -45,12 +45,9 @@ public class FigLink extends FigEdgeLine {
     setOwner(edge);
 
     // set whatever arrow heads and colors are appropriate
-    _fig.setLineColor(Color.red);
-
-    ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
-    endArrow.setFillColor(Color.red);
-    setDestArrowHead(endArrow);
+    _fig.setLineColor(Color.black);
     setBetweenNearestPoints(true);
+
   }
 
   public void dispose() {

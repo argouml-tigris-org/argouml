@@ -60,6 +60,7 @@ CLASSES2 = \
 	NamespaceImpl.class \
 	Operation.class \
 	Parameter.class \
+	Realization.class \
 	StructuralFeature.class 
 
 all: $(GEN) $(CLASSES1) $(CLASSES2)

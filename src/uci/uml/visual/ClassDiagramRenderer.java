@@ -36,6 +36,8 @@ import java.util.*;
 import uci.graph.*;
 import uci.gef.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Model_Management.*;
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
 
 // could be singleton
 
@@ -61,7 +63,9 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
     if (node instanceof MMClass) return new FigClass(gm, node);
-    else if (node instanceof Interface) return new FigClass(gm, node);
+    else if (node instanceof Interface) return new FigInterface(gm, node);
+    else if (node instanceof Instance) return new FigInstance(gm, node);
+    else if (node instanceof Model) return new FigPackage(gm, node);
     System.out.println("needs-more-work ClassDiagramRenderer getFigNodeFor");
     return null;
   }
@@ -86,6 +90,23 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       ascFig.destFigNode(toFN);
       return ascFig;
     }
+    if (edge instanceof Link) {
+      Link lnk = (Link) edge;
+      FigLink lnkFig = new FigLink(lnk);
+      Vector linkRoles = lnk.getLinkRole();
+      if (linkRoles == null) System.out.println("null linkRoles....");
+      LinkEnd fromEnd = (LinkEnd) linkRoles.elementAt(0);
+      Instance fromInst = fromEnd.getInstance();
+      LinkEnd toEnd = (LinkEnd) linkRoles.elementAt(1);
+      Instance toInst = toEnd.getInstance();
+      FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
+      FigNode toFN = (FigNode) lay.presentationFor(toInst);
+      lnkFig.sourcePortFig(fromFN);
+      lnkFig.sourceFigNode(fromFN);
+      lnkFig.destPortFig(toFN);
+      lnkFig.destFigNode(toFN);
+      return lnkFig;
+    }
     if (edge instanceof Generalization) {
       Generalization gen = (Generalization) edge;
       FigGeneralization genFig = new FigGeneralization(gen);
@@ -98,6 +119,19 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       genFig.destPortFig(superTypeFN);
       genFig.destFigNode(superTypeFN);
       return genFig;
+    }
+    if (edge instanceof Realization) {
+      Realization real = (Realization) edge;
+      FigRealization realFig = new FigRealization(real);
+      GeneralizableElement subType = real.getSubtype();
+      GeneralizableElement superType = real.getSupertype();
+      FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
+      FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
+      realFig.sourcePortFig(subTypeFN);
+      realFig.sourceFigNode(subTypeFN);
+      realFig.destPortFig(superTypeFN);
+      realFig.destFigNode(superTypeFN);
+      return realFig;
     }
     if (edge instanceof Dependency) {
       Dependency dep = (Dependency) edge;

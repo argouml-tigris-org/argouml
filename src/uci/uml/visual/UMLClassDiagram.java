@@ -42,7 +42,7 @@ import uci.ui.*;
 import uci.uml.ui.*;
 import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
-
+import uci.uml.Behavioral_Elements.Common_Behavior.*;
 
 public class UMLClassDiagram extends UMLDiagram {
 
@@ -57,6 +57,12 @@ public class UMLClassDiagram extends UMLDiagram {
   protected static Action _actionClass = 
   new CmdCreateNode(MMClass.class, "Class");
 
+  protected static Action _actionObject =
+  new CmdCreateNode(Instance.class, "Instance");
+  
+  protected static Action _actionInterface =
+  new CmdCreateNode(Interface.class, "Interface");
+  
 //   protected static Action _actionInterface =
 //   new CmdCreateNode(Interface.class, "Interface");
 
@@ -70,10 +76,20 @@ public class UMLClassDiagram extends UMLDiagram {
 		 "edgeClass", Association.class,
 		 "Association");
 
+  protected static Action _actionLink =
+  new CmdSetMode(ModeCreateEdge.class,
+		 "edgeClass", Link.class,
+		 "Link");
+
   protected static Action _actionGeneralize =
   new CmdSetMode(ModeCreateEdge.class,
 		 "edgeClass", Generalization.class,
 		 "Generalization");
+
+  protected static Action _actionRealize =
+  new CmdSetMode(ModeCreateEdge.class,
+		 "edgeClass", Realization.class,
+		 "Realization");
 
   protected static Action _actionRectangle =
   new CmdSetMode(ModeCreateFigRect.class, "Rectangle");
@@ -83,6 +99,9 @@ public class UMLClassDiagram extends UMLDiagram {
 
   protected static Action _actionCircle =
   new CmdSetMode(ModeCreateFigCircle.class, "Circle");
+
+  protected static Action _actionPackage =
+  new CmdCreateNode(Model.class, "Package");
 
   protected static Action _actionLine =
   new CmdSetMode(ModeCreateFigLine.class, "Line");
@@ -126,10 +145,19 @@ public class UMLClassDiagram extends UMLDiagram {
     _toolBar.add(_actionSelect);
     _toolBar.addSeparator();
 
+    _toolBar.add(_actionPackage);
     _toolBar.add(_actionClass);
     _toolBar.add(_actionAssoc);
     _toolBar.add(_actionDepend);
     _toolBar.add(_actionGeneralize);
+    _toolBar.addSeparator();
+
+    _toolBar.add(_actionObject);
+    _toolBar.add(_actionLink);
+    _toolBar.addSeparator();
+
+    _toolBar.add(_actionInterface);
+    _toolBar.add(_actionRealize);
     _toolBar.addSeparator();
 
     _toolBar.add(Actions.Attr);

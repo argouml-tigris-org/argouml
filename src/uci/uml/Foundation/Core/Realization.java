@@ -13,7 +13,7 @@
 // research purposes and is advised not to rely exclusively on the program for
 // any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
 // PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
-// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// INCLUDING LOST PROFITS,s ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
 // DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
 // POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
 // DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -25,52 +25,44 @@
 
 
 
-package uci.uml.Behavioral_Elements.Common_Behavior;
+package uci.uml.Foundation.Core;
 
 import java.util.*;
 import java.beans.*;
 
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Core.*; 
+import uci.uml.Foundation.Data_Types.Name;
 
+/** By default a Realization is in the Namespace of the sub class. */
+public class Realization extends ModelElementImpl {
+  public Classifier _subtype;
+  public Classifier _supertype;
 
-// needs-more-work
-
-public class Instance extends ModelElementImpl {
-    
-  public Vector _linkEnd = new Vector();
-  public Classifier _classifier = null;
-
-
-  public Instance() { }
-  public Instance(Name name) { super(name); }
-  public Instance(String nameStr) { super(new Name(nameStr)); }
-  
-  public void addLinkEnd(LinkEnd x) throws PropertyVetoException {
-    if (_linkEnd == null) _linkEnd = new Vector();
-    fireVetoableChange("linkEnd", _linkEnd, x);
-    _linkEnd.addElement(x);
-    x.setInstance(this);
-  }
-  
-  public Vector getLinkEnd() { return _linkEnd; }
-  
-  public void removeLinkEnd(LinkEnd x) throws PropertyVetoException {
-    if (_linkEnd == null) return;
-    fireVetoableChange("linkEnd", _linkEnd, x);
-    _linkEnd.removeElement(x);
-  }
-  
-  public void setLinkEnd(Vector x) throws PropertyVetoException {
-    if (_linkEnd == null) _linkEnd = new Vector();
-    fireVetoableChange("linkEnd", _linkEnd, x);
-    _linkEnd = x;
+  public Realization() { }
+  public Realization(Name name) { super(name); }
+  public Realization(String nameStr) { super(new Name(nameStr)); }
+  public Realization(Classifier sub, Classifier sup)
+  throws PropertyVetoException {
+    super();
+    setSubtype(sub);
+    setSupertype(sup);
+    System.out.println("ppp1");
+    sub.addRealization(this);
+    System.out.println("ppp2");
+    sup.addSpecialization(this);
+    System.out.println("ppp3");
   }
 
-  public void setClassifier(Classifier x) throws PropertyVetoException {
-    fireVetoableChange("Classifier", _classifier, x);
-    _classifier = x;
+  public Classifier getSubtype() { return _subtype; }
+  public void setSubtype(Classifier x) throws PropertyVetoException {
+    fireVetoableChange("subtype", _subtype, x);
+    _subtype = x;
+    //if (x != null) setNamespace(x.getNamespace());
   }
- 
+  public Classifier getSupertype() { return _supertype; }
+  public void setSupertype(Classifier x) throws PropertyVetoException {
+    fireVetoableChange("supertype", _supertype, x);
+    _supertype = x;
+  }
+
 
 }
