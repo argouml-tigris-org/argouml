@@ -179,23 +179,25 @@ public class WizStep extends JPanel
      * Enable/Disable the buttons.
      */
     public void enableButtons() {
-	if (target == null) {
-	    backButton.setEnabled(false);
-	    nextButton.setEnabled(false);
-	    finishButton.setEnabled(false);
-	    helpButton.setEnabled(false);
-	}
-	else if (target instanceof ToDoItem) {
-	    ToDoItem tdi = (ToDoItem) target;
-	    Wizard w = getWizard();
-	    backButton.setEnabled(w != null ? w.canGoBack() : false);
-	    nextButton.setEnabled(w != null ? w.canGoNext() : false);
-	    finishButton.setEnabled(w != null ? w.canFinish() : false);
-	    helpButton.setEnabled(true);
-	}
-	else {
-	    return;
-	}
+        if (target == null) {
+            backButton.setEnabled(false);
+            nextButton.setEnabled(false);
+            finishButton.setEnabled(false);
+            helpButton.setEnabled(false);
+        } else if (target instanceof ToDoItem) {
+            ToDoItem tdi = (ToDoItem) target;
+            Wizard w = getWizard();
+            backButton.setEnabled(w != null ? w.canGoBack() : false);
+            nextButton.setEnabled(w != null ? w.canGoNext() : false);
+            finishButton.setEnabled(w != null ? w.canFinish() : false);
+
+            if (tdi.getMoreInfoURL() == null || "".equals(tdi.getMoreInfoURL())) {
+                helpButton.setEnabled(false);
+            } else
+                helpButton.setEnabled(true);
+        } else {
+            return;
+        }
     }
 
     /**
