@@ -41,7 +41,10 @@ import java.util.zip.*;
 import java.beans.*;
 import java.net.*;
 
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -55,6 +58,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.util.*;
 import org.tigris.gef.ocl.*;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
@@ -121,7 +125,9 @@ public class Project implements java.io.Serializable {
     public HashMap _UUIDRefs = null;
     public GenerationPreferences _cgPrefs = new GenerationPreferences();
     public transient VetoableChangeSupport _vetoSupport = null;
-
+   
+    public static Category cat = 
+        Category.getInstance(org.argouml.kernel.Project.class);
     ////////////////////////////////////////////////////////////////
     // constructor
 
@@ -185,6 +191,7 @@ public class Project implements java.io.Serializable {
      *
      *    Unlike the constructor which forces an .argo extension
      *    This method will attempt to load a raw XMI file
+     * This method NEEDS a refactoring.
      */
     public static Project loadProject(URL url) throws IOException, Exception {
         Project p = null;
@@ -210,7 +217,7 @@ public class Project implements java.io.Serializable {
             org.argouml.application.Main.addPostLoadAction(new ResetStatsLater());
         }
 	
-        else if(suffix.equals(COMPRESSED_FILE_EXT)) {
+        else if(suffix.equals(COMPRESSED_FILE_EXT)) { // normal case
             try {
                 ZipInputStream zis = new ZipInputStream(url.openStream());
 		
@@ -227,26 +234,23 @@ public class Project implements java.io.Serializable {
                 p = ArgoParser.SINGLETON.getProject();
 		
                 zis.close();
-                // 2002-07-18
-            	// Jaap Branderhorst
-                // moved next two lines from outside try block to solve issue 913 
-                // and make things a bit more userfriendly
-	    
-                p.loadZippedProjectMembers(url);
-                p.postLoad();
+                
             } catch (Exception e) {
-                System.out.println("Oops, something went wrong in Project.loadProject "+e );
+                cat.error("Oops, something went wrong in Project.loadProject ");
+                cat.error(e);
                 // yeah and now we want to have the old state of the Project back but we dont know the old state
-                e.printStackTrace();
                 // so we propagate the error
                 throw e;
             }
-            // 2002-07-18
-            // Jaap Branderhorst
-            // moved next two lines inside upper try block to solve issue 913 and make things a bit more userfriendly
-	    
-            // p.loadZippedProjectMembers(url);
-            // p.postLoad();
+            try {
+                p.loadZippedProjectMembers(url);
+            }
+            catch (IOException e) {
+                cat.error("Project file corrupted");
+                cat.error(e);
+                throw e;
+            }
+            p.postLoad();
         }
 	
         else {
@@ -258,44 +262,67 @@ public class Project implements java.io.Serializable {
         return p;
     }
     
+    /**
+     * Loads a model (XMI only) from a .zargo file. BE ADVISED this method has a side
+     * effect. It sets _UUIDREFS to the model.
+     * @param url The url with the .zargo file
+     * @return MModel The model loaded
+     * @throws IOException Thrown if the model or the .zargo file itself is corrupted in any way.
+     */
+    public MModel loadModelFromXMI(URL url) throws IOException {
+        ZipInputStream zis = new ZipInputStream(url.openStream());
+        String name = zis.getNextEntry().getName();
+        while(!name.endsWith(".xmi")) {
+            name = zis.getNextEntry().getName();
+        }
+        Argo.log.info("Loading Model from "+url);
+        // 2002-07-18
+        // Jaap Branderhorst
+        // changed the loading of the projectfiles to solve hanging 
+        // of argouml if a project is corrupted. Issue 913
+        // Created xmireader with method getErrors to check if parsing went well
+        XMIReader xmiReader = null;
+        try {
+            xmiReader = new org.argouml.xml.xmi.XMIReader();
+        }
+        catch (SAXException se) {}
+        catch (ParserConfigurationException pc) {}
+        MModel mmodel = null;
+        
+        mmodel = xmiReader.parse(new InputSource(zis));
+        if (mmodel != null && !xmiReader.getErrors()) {
+            try {
+                addMember(mmodel);
+            }
+            catch (PropertyVetoException pv) {
+                throw new IOException("The model from XMI file" + 
+                    url.toString() +
+                    "could not be added to the project.");
+            }
+        }
+        else {
+            throw new IOException("XMI file " + url.toString() + 
+                " could not be parsed.");
+        }
+        _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
+        return mmodel;
+    }
+
+    
     public void loadZippedProjectMembers(URL url) throws Exception {
 
+     
+        loadModelFromXMI(url); // throws a IOException if things go wrong
+                               // user interface has to handle that one
         try {
-            ZipInputStream zis = new ZipInputStream(url.openStream());
-
-
-            // first load the Model
-            String name = zis.getNextEntry().getName();
-            while(!name.endsWith(".xmi")) {
-                name = zis.getNextEntry().getName();
-            }
-
-            Argo.log.info("Loading Model from "+url);
-
-			// 2002-07-18
-        	// Jaap Branderhorst
-        	// changed the loading of the projectfiles to solve hanging 
-        	// of argouml if a project is corrupted. Issue 913
-        	// Created xmireader with method getErrors to check if parsing went well
-            org.argouml.xml.xmi.XMIReader xmiReader = new org.argouml.xml.xmi.XMIReader();
-            MModel mmodel = null;
+        
             
-            mmodel = xmiReader.parse(new InputSource(zis));
-            if (mmodel != null && !xmiReader.getErrors()) {
-            addMember(mmodel);
-            }
-            else {
-            	throw new IOException("XMI file " + url.toString() + " could not be parsed.");
-            }
-
-            _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
-
             // now close again, reopen and read the Diagrams.
 
             PGMLParser.SINGLETON.setOwnerRegistry(_UUIDRefs);
 
             //zis.close();
-            zis = new ZipInputStream(url.openStream());
+            ZipInputStream zis = new ZipInputStream(url.openStream());
             SubInputStream sub = new SubInputStream(zis);
 
             ZipEntry currentEntry = null;
@@ -583,23 +610,30 @@ public class Project implements java.io.Serializable {
         setNeedsSave(true);
     }
 
-    //   public void removeMember(Diagram d) {
-    //     int size = _members.size();
-    //     for (int i = 0; i < size; i++) {
-    //       ProjectMember pm = (ProjectMember) _members.elementAt(i);
-    //       if (pm.member == d) {
-    // 	_members.removeElementAt(i);
-    // 	try { removeDiagram(d); }
-    // 	catch (PropertyVetoException pve) { }
-    // 	return;
-    //       }
-    //     }
-    //   }
+    /**
+     * Removes a project member diagram completely from the project.
+     * @param d
+     */
 
-
-    public void removeMember(ArgoDiagram d) throws PropertyVetoException {
-        removeDiagram(d);
-        _members.removeElement(d);
+    protected void removeProjectMemberDiagram(ArgoDiagram d) {
+    	try {
+        	removeDiagram(d);
+    	} catch (PropertyVetoException ve) {}
+        // should remove the corresponding ProjectMemberDiagram not the ArgoDiagram from the members
+        
+        // _members.removeElement(d);
+        // ehhh lets remove the diagram really and remove it from its corresponding projectmember too
+        Iterator it = _members.iterator();
+        while (it.hasNext()) {
+        	Object obj = it.next();
+        	if (obj instanceof ProjectMemberDiagram) {
+        		ProjectMemberDiagram pmd = (ProjectMemberDiagram)obj;
+        		if (pmd.getDiagram() == d) {
+        			_members.removeElement(pmd);
+        			break;
+        		}
+        	}
+        }
     }
 
     public ProjectMember findMemberByName(String name) {
@@ -860,7 +894,16 @@ public class Project implements java.io.Serializable {
         d.addChangeRegistryAsListener( _saveRegistry );
         setNeedsSave(true);
     }
-    public void removeDiagram(ArgoDiagram d) throws PropertyVetoException {
+    
+    /**
+     * Removes a diagram from the list with diagrams. 
+     * Removes (hopefully) the event listeners for this diagram.
+     * Does not remove the diagram from the project members. This should not be called
+     * directly. Use moveToTrash if you want to remove a diagram.
+     * @param d
+     * @throws PropertyVetoException
+     */
+    protected void removeDiagram(ArgoDiagram d) throws PropertyVetoException {
         getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
         _diagrams.removeElement(d);
         d.removeChangeRegistryAsListener( _saveRegistry );
@@ -925,6 +968,12 @@ public class Project implements java.io.Serializable {
         _UUIDRefs = null;
     }
 
+    /**
+     * Moves some object to trash. This mechanisme must be rethought since it only
+     * deletes an object completely from the project
+     * @param obj The object to be deleted
+     * @see org.argouml.kernel.Project#trashInternal
+     */
     ////////////////////////////////////////////////////////////////
     // trash related methos
 
@@ -949,6 +998,11 @@ public class Project implements java.io.Serializable {
 
     }
 
+    /**
+     * Removes some object from the project. Does not update GUI since this method only
+     * handles project management.
+     * @param obj
+     */
     // Attention: whole Trash mechanism should be rethought concerning nsuml
 
     // Jeremy Bennett. Note that at present these are all if, not
@@ -956,56 +1010,32 @@ public class Project implements java.io.Serializable {
     // the case where we have a use case that is not classifier.
 
     protected void trashInternal(Object obj) {
-    	// 2002-07-23
-    	// Jaap Branderhorst
-    	// we should remove the figs from all diagrams too
-    	// get all JGraphs from all diagrams containing the object to do that
-    	ProjectBrowser.TheInstance.getEditorPane().removePresentationFor(obj, getDiagrams());
-    	Iterator it = ProjectBrowser.TheInstance.getProject().getDiagrams().iterator();
+    	boolean needSave = false;
     	
+    	if (obj instanceof MModelElement) { // an object that can be represented
+    		ProjectBrowser.TheInstance.getEditorPane().removePresentationFor(obj, getDiagrams());
+    		MMUtil.SINGLETON.remove((MModelElement)obj); // let MMUtil do the job instead of this method
+    		if (_members.contains(obj)) {
+    			_members.remove(obj);
+    		}
+    		if (_models.contains(obj)) {
+    			_models.remove(obj);
+    		}
+    		needSave = true;
+    	} else {
+    		if (obj instanceof ArgoDiagram) {
+    			removeProjectMemberDiagram((ArgoDiagram)obj);
+    			needSave = true;
+    		}
+    	}
     	
-        if (obj instanceof MUseCase) {
-            // System.out.println("trashInternal: "+obj);
-            MUseCase me = (MUseCase) obj;
-            // me.remove();
-            MMUtil.SINGLETON.remove(me);
-        }
-        if ((obj instanceof MClassifier) &&
-            (!(obj instanceof MUseCase))) {
-            // System.out.println("trashInternal: "+obj);
-            MClassifier me = (MClassifier) obj;
-            // me.remove();
-            MMUtil.SINGLETON.remove(me);
-        }
-        if (obj instanceof MStateVertex) {
-            // System.out.println("trashInternal: "+obj);
-            MStateVertex me = (MStateVertex) obj;
-            // me.remove();
-            MMUtil.SINGLETON.remove(me);
-        }
-        if (obj instanceof MObject) {
-            // System.out.println("trashInternal: "+obj);
-            MObject me = (MObject) obj;
-            // me.remove();
-            MMUtil.SINGLETON.remove(me);
-        }
-        if (obj instanceof MStimulus) {
-            // System.out.println("trashInternal: "+obj);
-            MStimulus me = (MStimulus) obj;
-            // me.remove();
-            MMUtil.SINGLETON.remove(me);
-        }
-        else if (obj instanceof MModelElement) {
-            //System.out.println("trashInternal: "+obj);
-            MModelElement me = (MModelElement) obj;
-            me.remove();
-        }
-
+    	setNeedsSave(needSave);	
+    	
         // If we've trashed anything, we'll need to save the project.
-
+		/*
         Project p = ProjectBrowser.TheInstance.getProject();
-        p.setNeedsSave(true);
-
+        p.setNeedsSave(needSave);
+		*/
         /* old version
            if (obj instanceof MModelElement) {
            MModelElement me = (MModelElement) obj;
