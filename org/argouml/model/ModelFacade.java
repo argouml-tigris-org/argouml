@@ -5081,7 +5081,7 @@ public class ModelFacade {
             return;
         }
         if (handle instanceof MTransition
-            && element instanceof MClassifierRole) {
+            && element instanceof MStateVertex) {
             ((MTransition) handle).setTarget((MStateVertex) element);
             return;
         }
@@ -5740,10 +5740,10 @@ public class ModelFacade {
      * @param state the source state
      */
     public static void setSource(Object handle, Object state) {
-        if (handle instanceof MMessage && state instanceof MClassifierRole) {
-            ((MTransition) handle).setSource((MState) state);
-            return;
-        }
+	if (handle instanceof MTransition && state instanceof MStateVertex) {
+	    ((MTransition) handle).setSource((MStateVertex) state);
+	    return;
+	}
 	illegalArgument(handle, state);
     }
 
