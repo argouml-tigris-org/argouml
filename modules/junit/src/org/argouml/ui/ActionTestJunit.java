@@ -62,12 +62,8 @@ implements PluggableMenu {
     /**
      * Create a new ActionTestJunit instance (is not public, due to 
      * singleton pattern).
-     *
-     * needs-more-work:  Had to make it public because of dynamic loading.
-     *                   Should modify ModuleLoader to not require
-     *                   public anonymous constructor.
      */
-    public ActionTestJunit() {
+    protected ActionTestJunit() {
 	super(Argo.localize(Argo.MENU_BUNDLE,"Test Panel..."), false);
 	_failed = false;
     }
