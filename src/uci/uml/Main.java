@@ -43,7 +43,6 @@ import uci.uml.visual.*;
 import uci.uml.critics.*;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.*;
-import uci.uml.test.omg.*;
 
 import uci.argo.kernel.*;
 
