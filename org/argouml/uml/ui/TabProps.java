@@ -32,6 +32,7 @@
 package org.argouml.uml.ui;
 
 import java.awt.BorderLayout;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -263,12 +264,17 @@ public class TabProps
 
     public TabModelTarget findPanelFor(Class targetClass) {
         TabModelTarget p = (TabModelTarget) _panels.get(targetClass);
-        cat.info("Getting prop panel for:" + targetClass + ", found " + p);
+        cat.info("Getting prop panel for:" + targetClass + ", found (in cache?) " + p);
         if (p == null) {
             Class panelClass = panelClassFor(targetClass);
             if (panelClass == null)
                 return null;
+            cat.info("panelClass for found: " + panelClass);
             try {
+                // if a class is abstract we do not need to try
+                // to instantiate it.
+                if (Modifier.isAbstract(panelClass.getModifiers()))
+                    return null;
                 p = (TabModelTarget) panelClass.newInstance();
                 // moved next line inside try block to avoid filling the hashmap with
                 // bogus values. 
@@ -320,6 +326,7 @@ public class TabProps
         try {
             panelClassName =
                 pack + ".ui." + base + "PropPanel" + targetClassName;
+            cat.info("Looking for: " + panelClassName);
             return Class.forName(panelClassName);
         } catch (ClassNotFoundException ignore) {
             cat.error(
