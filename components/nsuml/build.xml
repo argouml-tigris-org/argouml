@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="argouml-api" default="usage" basedir=".">
+<project name="argouml-nsuml-jmi" default="usage" basedir=".">
 
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
