@@ -51,11 +51,16 @@ public interface NotationName {
     /** Returns the text string stored in the configuration
      *  for this notation.  This string is used to determine
      *  notation equality in {@link #equals(NotationName)}.
-     *  
+     *
      *  This should incorporate both the name and the version if one
      *  exists.
      */
     public String getConfigurationValue();
+
+    /** Ease-of-use helper for usage in swing.
+     *  Usually, it is equal to <code>getConfigurationValue()</code>.
+     */
+    public String toString();
 
     /** Ease-of-use helper to determine
      *  if this notation is the same as another.

@@ -58,18 +58,18 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
     // TODO:  Temporarily remove toolbar until src selection
     // is working better.
     //
-    //super("Source", true);
-    super("Source", false);
+    super("Source", true);
+    // super("Source", false);
     _notationName = null;
-    // _toolbar.add(NotationComboBox.getInstance());
+    _toolbar.add(NotationComboBox.getInstance());
     NotationComboBox.getInstance().addItemListener(this);
-    // _toolbar.addSeparator();
+    _toolbar.addSeparator();
     ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
   }
 
   public void finalize() {
     ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-    NotationComboBox.getInstance().removeItemListener(this); 
+    NotationComboBox.getInstance().removeItemListener(this);
   }
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -84,8 +84,14 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return null;
     cat.debug("TabSrc getting src for " + modelObject);
-    return Notation.generate(this, modelObject, true);
-    // return GeneratorJava.Generate(modelObject);
+    //return Notation.generate(this, modelObject, true);
+    Argo.log.info("TabSrc getting src for " + modelObject);
+    NotationName nn = (NotationName)(NotationComboBox.getInstance().getSelectedItem());
+    String fileName = getSourceFileFor(modelObject,nn);
+    if (fileName != null) {
+        // get file content, scroll to the line where modelObject begins, and set background color to white
+    }
+    return Notation.generate(nn,modelObject,true);
   }
 
   protected void parseText(String s) {
@@ -119,10 +125,11 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
     else {
         // TODO:  Get it from the combo box
 	cat.debug ("ComboBox.getSelectedItem() '" + NotationComboBox.getInstance().getSelectedItem() + "'");
-	_notationName = Notation.getDefaultNotation();
+	_notationName = (NotationName)(NotationComboBox.getInstance().getSelectedItem());
+	//_notationName = Notation.getDefaultNotation();
 	}
     cat.debug ("Going to set target(" + t + "), notation name:" +
-               _notationName); 
+               _notationName);
     super.setTarget(t);
   }
 
@@ -134,7 +141,7 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
   }
 
   /** Ignored. */
-  public void notationAdded(ArgoNotationEvent e) { 
+  public void notationAdded(ArgoNotationEvent e) {
   }
 
   /** Ignored. */
@@ -146,12 +153,12 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
   }
 
   /** Ignored. */
-  public void notationProviderRemoved(ArgoNotationEvent e) { 
-}
+  public void notationProviderRemoved(ArgoNotationEvent e) {
+  }
 
   public void itemStateChanged(ItemEvent event) {
       if (event.getStateChange() == ItemEvent.SELECTED) {
-	  refresh();
+          refresh();
       }
   }
 
@@ -159,6 +166,12 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
 
   public NotationName getContextNotation() {
       return _notationName;
+  }
+
+  private String getSourceFileFor(Object modelObject, NotationName nn) {
+    //Project p = ProjectManager.getManager().getCurrentProject();
+    //_outputDirectoryComboBox.getModel().setSelectedItem(p.getGenerationPrefs().getOutputDir());
+    return null;
   }
 
 } /* end class TabSrc */

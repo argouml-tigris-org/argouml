@@ -69,7 +69,7 @@ implements PropertyChangeListener {
     // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-  // public final static Category cat = Category.getInstance(NotationNameImpl.class.getPackage().getName()); 
+  // public final static Category cat = Category.getInstance(NotationNameImpl.class.getPackage().getName());
 
   /** The name of the default Argo notation.  This notation is
    *  part of Argo core distribution.
@@ -97,36 +97,36 @@ implements PropertyChangeListener {
    */
   public static final ConfigurationKey KEY_USE_GUILLEMOTS = Configuration.makeKey("notation", "guillemots");
 
-  /** 
+  /**
    * Indicates if the user only wants to see UML notation.
    */
   public static final ConfigurationKey KEY_UML_NOTATION_ONLY = Configuration.makeKey("notation", "only", "uml");
-  
-  /** 
+
+  /**
    * Indicates if the user wants to see visibility signs (public, private, protected or # + -)
    */
   public static final ConfigurationKey KEY_SHOW_VISIBILITY = Configuration.makeKey("notation", "show", "visibility");
-  
-  /** 
+
+  /**
    * Indicates if the user wants to see multiplicity in attributes and classes
    */
   public static final ConfigurationKey KEY_SHOW_MULTIPLICITY = Configuration.makeKey("notation", "show", "multiplicity");
-  
-  /** 
+
+  /**
    * Indicates if the user wants to see the initial value
    */
   public static final ConfigurationKey KEY_SHOW_INITIAL_VALUE = Configuration.makeKey("notation", "show", "initialvalue");
-  
-  /** 
+
+  /**
    * Indicates if the user wants to see the properties (everything between braces), that is for example the concurrency
    */
   public static final ConfigurationKey KEY_SHOW_PROPERTIES = Configuration.makeKey("notation", "show", "properties");
 
-    /** 
+    /**
      * Default value for the shadow size of classes, interfaces etc.
      */
     public static final ConfigurationKey KEY_DEFAULT_SHADOW_WIDTH = Configuration.makeKey("notation","default","shadow-width");
-  
+
   private static Notation SINGLETON = new Notation();
 
   // private ArrayList _providers = null;
@@ -170,7 +170,7 @@ implements PropertyChangeListener {
   public static NotationName getDefaultNotation() {
     NotationName n = NotationNameImpl.findNotation(Configuration.getString(KEY_DEFAULT_NOTATION, NOTATION_ARGO.getConfigurationValue()));
       // TODO:
-      // This is needed for the case when the default notation is 
+      // This is needed for the case when the default notation is
       // not loaded at this point.
       // We need then to refetch the default notation from the configuration
       // at a later stage.
@@ -254,8 +254,8 @@ implements PropertyChangeListener {
   }
   protected String generateClassifierRef(NotationName notation, MClassifier m) {
       return getProvider(notation).generateClassifierRef(m);
-  }  
-  protected String generateAssociationRole(NotationName notation, MAssociationRole m){            
+  }
+  protected String generateAssociationRole(NotationName notation, MAssociationRole m){
 	return getProvider(notation).generateAssociationRole(m);
   }
 
@@ -350,7 +350,7 @@ implements PropertyChangeListener {
   }
   public static String generateAssociationRole(NotationContext ctx, MAssociationRole m){
         return SINGLETON.generateAssociationRole(Notation.getNotation(ctx), m);
-  } 
+  }
 
     /**
      * <p>General purpose static generator for any object that wishes to set
@@ -370,84 +370,104 @@ implements PropertyChangeListener {
      *
      * @return            The generated string.
      */
-
   public static String generate(NotationContext ctx, Object o,
                                 boolean documented) {
     if (o == null)
       return "";
+    return generate(getNotation(ctx), o, documented);
+  }
+
+    /**
+     * <p>General purpose static generator for any object that wishes to set
+     *   the documented flag.</p>
+     *
+     * <p>Uses the class of the object to determine which method to
+     *   invoke. Only actually looks for MOperation and MAttribute. All others
+     *   invoke the simpler version with no documented flag, so taking the
+     *   default version.</p>
+     *
+     * @param ctx        The notation name.
+     *
+     * @param o          The object to generate.
+     *
+     * @param documented  A flag of unknown meaning. Only has any effect for
+     *                    {@link MOperation} and {@link MAttribute}.
+     *
+     * @return            The generated string.
+     */
+  public static String generate(NotationName nn, Object o,
+                                boolean documented) {
+    if (o == null)
+      return "";
     if (o instanceof MOperation)
-      return SINGLETON.generateOperation(Notation.getNotation(ctx),
-                                         (MOperation) o,
-					 documented);
+      return SINGLETON.generateOperation(nn, (MOperation) o, documented);
     if (o instanceof MAttribute)
-      return SINGLETON.generateAttribute(Notation.getNotation(ctx),
-                                         (MAttribute) o,
-					 documented);
-    return generate(ctx, o);
+      return SINGLETON.generateAttribute(nn, (MAttribute) o, documented);
+    return generate(nn, o);
   }
 
   public static String generate(NotationContext ctx, Object o) {
     if (o == null)
       return "";
+    return generate(getNotation(ctx), o);
+  }
+
+  public static String generate(NotationName nn, Object o) {
+    if (o == null)
+      return "";
 
     //added to support association roles
     if (o instanceof MAssociationRole){
-        return SINGLETON.generateAssociationRole(Notation.getNotation(ctx), (MAssociationRole)o);
+        return SINGLETON.generateAssociationRole(nn, (MAssociationRole)o);
     }
-    
-    // Added to support extension points   
+
+    // Added to support extension points
     if (o instanceof MExtensionPoint) {
-        return SINGLETON.generateExtensionPoint(Notation.getNotation(ctx),
+        return SINGLETON.generateExtensionPoint(nn,
                                                 (MExtensionPoint) o);
     }
 
     if (o instanceof MOperation)
-      return SINGLETON.generateOperation(Notation.getNotation(ctx),
-                                         (MOperation) o,
-					 false);
+      return SINGLETON.generateOperation(nn, (MOperation) o, false);
     if (o instanceof MAttribute)
-      return SINGLETON.generateAttribute(Notation.getNotation(ctx),
-                                         (MAttribute) o,
-					 false);
+      return SINGLETON.generateAttribute(nn, (MAttribute) o, false);
     if (o instanceof MParameter)
-      return SINGLETON.generateParameter(Notation.getNotation(ctx),(MParameter) o);
+      return SINGLETON.generateParameter(nn,(MParameter) o);
     if (o instanceof MPackage)
-      return SINGLETON.generatePackage(Notation.getNotation(ctx),(MPackage) o);
+      return SINGLETON.generatePackage(nn,(MPackage) o);
     if (o instanceof MClassifier)
-      return SINGLETON.generateClassifier(Notation.getNotation(ctx),(MClassifier) o);
+      return SINGLETON.generateClassifier(nn,(MClassifier) o);
     if (o instanceof MExpression)
-      return SINGLETON.generateExpression(Notation.getNotation(ctx),(MExpression) o);
+      return SINGLETON.generateExpression(nn,(MExpression) o);
     if (o instanceof String)
-      return SINGLETON.generateName(Notation.getNotation(ctx),(String) o);
+      return SINGLETON.generateName(nn,(String) o);
     // if (o instanceof String)
-    //   return SINGLETON.generateUninterpreted(Notation.getNotation(ctx),(String) o);
+    //   return SINGLETON.generateUninterpreted(nn,(String) o);
     if (o instanceof MStereotype)
-      return SINGLETON.generateStereotype(Notation.getNotation(ctx),(MStereotype) o);
+      return SINGLETON.generateStereotype(nn,(MStereotype) o);
     if (o instanceof MTaggedValue)
-      return SINGLETON.generateTaggedValue(Notation.getNotation(ctx),(MTaggedValue) o);
+      return SINGLETON.generateTaggedValue(nn,(MTaggedValue) o);
     if (o instanceof MAssociation)
-      return SINGLETON.generateAssociation(Notation.getNotation(ctx),(MAssociation)o);
+      return SINGLETON.generateAssociation(nn,(MAssociation)o);
     if (o instanceof MAssociationEnd)
-      return SINGLETON.generateAssociationEnd(Notation.getNotation(ctx),(MAssociationEnd)o);
+      return SINGLETON.generateAssociationEnd(nn,(MAssociationEnd)o);
     if (o instanceof MMultiplicity)
-      return SINGLETON.generateMultiplicity(Notation.getNotation(ctx),(MMultiplicity)o);
+      return SINGLETON.generateMultiplicity(nn,(MMultiplicity)o);
     if (o instanceof MState)
-      return SINGLETON.generateState(Notation.getNotation(ctx),(MState)o);
+      return SINGLETON.generateState(nn,(MState)o);
     if (o instanceof MTransition)
-      return SINGLETON.generateTransition(Notation.getNotation(ctx),(MTransition)o);
+      return SINGLETON.generateTransition(nn,(MTransition)o);
     if (o instanceof MAction)
-      return SINGLETON.generateAction(Notation.getNotation(ctx),(MAction)o);
+      return SINGLETON.generateAction(nn,(MAction)o);
     if (o instanceof MCallAction)
-      return SINGLETON.generateAction(Notation.getNotation(ctx),(MAction)o);
+      return SINGLETON.generateAction(nn,(MAction)o);
     if (o instanceof MGuard)
-      return SINGLETON.generateGuard(Notation.getNotation(ctx),(MGuard)o);
+      return SINGLETON.generateGuard(nn,(MGuard)o);
     if (o instanceof MMessage)
-      return SINGLETON.generateMessage(Notation.getNotation(ctx),(MMessage)o);
+      return SINGLETON.generateMessage(nn,(MMessage)o);
 
     if (o instanceof MModelElement)
-      return SINGLETON.generateName(Notation.getNotation(ctx),((MModelElement)o).getName());
-    
-    if (o == null) return "";
+      return SINGLETON.generateName(nn,((MModelElement)o).getName());
 
     return o.toString();
   }
@@ -475,7 +495,7 @@ implements PropertyChangeListener {
     public NotationProvider getDefaultProvider() {
        return NotationProviderFactory.getInstance().getDefaultProvider();
     }
- 
+
   ////////////////////////////////////////////////////////////////
   // TODO:  The following accessors are commented out
   //                   and should be uncommented by those initially

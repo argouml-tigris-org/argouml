@@ -35,7 +35,7 @@ import javax.swing.*;
  *   @author Thierry Lach
  *   @since 0.9.4
  */
-public class NotationComboBox extends JComboBox 
+public class NotationComboBox extends JComboBox
 implements ArgoNotationEventListener {
 
     private static NotationComboBox SINGLETON = null;
@@ -55,15 +55,19 @@ implements ArgoNotationEventListener {
 	d.width = 200;
 	setMaximumSize(d);
 
-        ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
+        ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
 	refresh();
     }
 
     public void notationChanged(ArgoNotationEvent event) {
-        Notation.cat.debug("NotationComboBox.notationChanged(" + event + ")");
+        //Notation.cat.debug("NotationComboBox.notationChanged(" + event + ")");
+        //Argo.log.info("NotationComboBox.notationChanged(" + event + ")");
         refresh();
     }
-    public void notationAdded(ArgoNotationEvent event) { }
+    public void notationAdded(ArgoNotationEvent event) {
+        //Argo.log.info("NotationComboBox.notationAdded(" + event + ")");
+        refresh();
+	}
     public void notationRemoved(ArgoNotationEvent event) { }
     public void notationProviderAdded(ArgoNotationEvent event) { }
     public void notationProviderRemoved(ArgoNotationEvent event) { }
@@ -78,7 +82,7 @@ implements ArgoNotationEventListener {
             while (iterator.hasNext()) {
 	        try {
                     NotationName nn = (NotationName)iterator.next();
-		    addItem(nn.getConfigurationValue());
+                    addItem(nn);
 	        }
 	        catch (Exception e) {
 	            Argo.log.error ("Unexpected exception", e);
