@@ -251,7 +251,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
-        return Translator.localize("label.colaboration-diagram");
+        return Translator.localize("label.collaboration-diagram");
     }
 
     /**
