@@ -145,6 +145,42 @@ public class ModelFacade {
 	return handle instanceof MPackage;
     }
 
+    /** Recognizer for attributes with classifier scope.
+     *
+     * @param handle candidate
+     * @returns true if handle has classifier scope.
+     */
+    public static boolean isClassifierScope(Object handle) {
+	if (handle instanceof MAttribute) {
+	    MAttribute a = (MAttribute)handle;
+	    return MScopeKind.CLASSIFIER.equals(a.getOwnerScope());
+	}
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Recognizer for constructor.
+     *
+     * @param handle candidate
+     * @returns true if handle is a constructor.
+     */
+    public static boolean isConstructor(Object handle) {
+	if (handle instanceof MModelElement) {
+	    MModelElement element = (MModelElement) handle;
+	    MStereotype meSt = element.getStereotype();
+
+	    if (meSt == null) return false;
+	    
+	    String name = meSt.getName();
+	    if (name == null) return false;
+
+	    return name.equalsIgnoreCase("create");
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /** Recognizer for attributes with instance scope.
      *
      * @param handle candidate
@@ -212,6 +248,20 @@ public class ModelFacade {
 	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Recognizer for attributes with private
+     *
+     * @param handle candidate
+     * @returns true if handle has private
+     */
+    public static boolean isPrivate(Object handle) {
+	if (handle instanceof MBehavioralFeature) {
+	    MBehavioralFeature bf = (MBehavioralFeature)handle;
+	    return MVisibilityKind.PRIVATE.equals(bf.getVisibility());
+	}
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /** Recognizer for singleton.
      *
      * @param handle candidate
@@ -227,7 +277,7 @@ public class ModelFacade {
 	    String name = meSt.getName();
 	    if (name == null) return false;
 
-	    return name.equals("singleton") || name.equals("Singleton");
+	    return name.equalsIgnoreCase("singleton");
 	}
 
 	// ...
@@ -275,9 +325,6 @@ public class ModelFacade {
 
     /** The list of Attributes.
      *
-     * Only Classifiers have attributes so if this is called with something
-     * else than a Classifier, an empty iterator is returned.
-     *
      * @param handle classifier to examine.
      * @return iterator with attributes.
      */
@@ -302,6 +349,24 @@ public class ModelFacade {
     public static Iterator getConnections(Object handle) {
 	if (handle instanceof MAssociation) {
 	    return ((MAssociation) handle).getConnections().iterator();
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** The list of operations
+     *
+     * @param handle classifier to examine.
+     * @return iterator with operations.
+     */
+    public static Iterator getOperations(Object handle) {
+	if (handle instanceof MClassifier) {
+	    MClassifier c = (MClassifier) handle;
+
+	    // TODO: We are converting back and forth between collections and
+	    // iterators. I (Linus) prefer iterators.
+	    return CoreHelper.getHelper().getOperations(c).iterator();
 	}
 
 	// ...
@@ -376,6 +441,21 @@ public class ModelFacade {
 	if (handle instanceof MGeneralizableElement) {
 	    MGeneralizableElement ge = (MGeneralizableElement)handle;
 	    return ge.getSpecializations().iterator();
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+
+    /** The type of an attribute
+     *
+     * @param handle the attribute
+     * @returns the type
+     */
+    public static Object getType(Object handle) {
+	if (handle instanceof MAttribute) {
+	    return ((MAttribute)handle).getType();
 	}
 
 	// ...

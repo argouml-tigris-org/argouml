@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,14 +28,12 @@ package org.argouml.pattern.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
-import org.argouml.uml.*;
 import org.argouml.uml.cognitive.critics.*;
+
+// Use Model through ModelFacade
+import org.argouml.model.ModelFacade;
 
 /**
  * A critic to detect whether a class violates the conditions required for
@@ -54,14 +52,9 @@ import org.argouml.uml.cognitive.critics.*;
  * </ol>
  *
  * <p>
- * The original version would always trigger for any class with stereotype
- * &laquo;Singleton&raquo;. This version includes an implementation for the
- * three tests above!
+ * This version includes an implementation for the first test above!
  *
  * <p>
- * Internally we use some of the static utility methods of the {@link
- * org.argouml.cognitive.critics.CriticUtils CriticUtils} class.
- *
  * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_singleton_violated">ArgoUML User Manual: Singleton Violated</a>
  */
 public class CrSingletonViolatedMissingStaticAttr extends CrUML {
@@ -114,21 +107,29 @@ public class CrSingletonViolatedMissingStaticAttr extends CrUML {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         // Only look at classes
-        if (!(dm instanceof MClass)) {
+        if (!(ModelFacade.isAClass(dm))) {
             return NO_PROBLEM;
         }
 
-        // Now we know it is a class, handle the object as a class
-        MClass cls = (MClass) dm;
-        if (!(CriticUtils.hasSingletonStereotype(cls))) {
+        // We only look at singletons
+        if (!(ModelFacade.isSingleton(dm))) {
             return NO_PROBLEM;
         }
 
-        if (!(CriticUtils.hasStaticAttrForClass(cls))) {
-            return PROBLEM_FOUND;
-        }
+	Iterator attrs = ModelFacade.getAttributes(dm);
 
-	return NO_PROBLEM;
+	while (attrs.hasNext()) {
+	    Object attr = attrs.next();
+
+	    if (!(ModelFacade.isClassifierScope(attr)))
+		continue;
+
+	    if (ModelFacade.getType(attr) == dm)
+		return NO_PROBLEM;
+	}
+
+	// Found no such attribute
+	return PROBLEM_FOUND;
     }
 
 } /* end class CrSingletonViolatedMissingStaticAttr */
