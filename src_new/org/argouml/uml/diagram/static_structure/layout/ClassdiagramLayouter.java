@@ -272,6 +272,33 @@ public class ClassdiagramLayouter implements Layouter {
 	// to be used later when the nodes are sorted within their row.
 	int xPos, yPos = getVGap() / 2;
 	int rows = getRows();
+
+	// Layout the packages above the classes and interfaces
+	for( int curRow=0; curRow < maxPackageRank; curRow++) {
+
+	    // The placement for the leftmost figure on the screen.
+	    xPos = getHGap() / 2;
+
+	    // Get all the objects for this row
+	    ClassdiagramNode [] rowObject = getObjectsInRow(curRow);
+	    
+	    // Go through this row.
+	    for(int i=0; i < rowObject.length; i++) {
+
+		rowObject[i].setColumn(i);  // Required to sort the next rows.
+		
+		// Now set the position within the diagram.
+		rowObject[i].setLocation(new Point(xPos, yPos));
+		
+		// Advance the horizontal position by the width of this figure.
+		xPos += rowObject[i].getSize().getWidth() + getHGap();
+	    }
+
+	    // Advance the vertical position by the height of that row 
+	    // (which is the max. height of the figures in that row).
+	    yPos += getRowHeight(curRow) + getVGap(); 
+	}
+
 	for( int curRow=maxPackageRank; curRow < rows; curRow++) {  // Do not include packages in this process
 
 	    // The placement for the leftmost figure on the screen.
