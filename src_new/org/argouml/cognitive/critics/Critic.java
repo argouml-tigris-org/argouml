@@ -150,7 +150,7 @@ public class Critic implements Poster, java.io.Serializable {
     _decisionCategory = "Checking";
     _emailAddr = "jrobbins@ics.uci.edu";
     _moreInfoURL = "http://ics.uci.edu/~jrobbins";
-    _description = "no description is availible";
+    _description = "no description is available";
     _headline = "default critic headline";
     _priority = ToDoItem.MED_PRIORITY;
   }
