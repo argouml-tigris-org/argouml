@@ -23,8 +23,6 @@
 
 package org.argouml.cognitive.critics;
 
-import java.util.*;
-
 import org.argouml.kernel.*;
 import org.argouml.cognitive.*;
 

@@ -32,8 +32,6 @@
 
 package org.argouml.cognitive.critics;
 
-import java.util.*;
-
 import org.argouml.cognitive.*;
 
 /** A ControlMech determines when a Critic should be active.  New

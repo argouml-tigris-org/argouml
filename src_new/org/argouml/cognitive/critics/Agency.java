@@ -25,10 +25,18 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 package org.argouml.cognitive.critics;
-import java.util.*;
-import org.tigris.gef.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Vector;
+
 import org.apache.log4j.Category;
-import org.argouml.cognitive.*;
+import org.argouml.cognitive.Designer;
 /** Agency manages Critics.  Since classes are not really first class
  *  objects in java, a singleton instance of Agency is made and passed
  *  around as needed.  The Agency keeps a registry of all Critics that
