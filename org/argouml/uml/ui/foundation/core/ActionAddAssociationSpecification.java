@@ -62,7 +62,7 @@ public class ActionAddAssociationSpecification
         Vector ret = new Vector();
         if (getTarget() != null) {
             ret.addAll(ModelManagementHelper.getHelper()
-                .getAllModelElementsOfKind((Class) ModelFacade.CLASSIFIER));
+                .getAllModelElementsOfKind(ModelFacade.CLASSIFIER));
         }
         return ret;
     }

@@ -50,7 +50,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
         super("stereotype", true);
         UmlModelEventPump.getPump()
 	    .addClassModelEventListener(this,
-					(Class) ModelFacade.NAMESPACE,
+					ModelFacade.NAMESPACE,
 					"ownedElement");
     }
 

@@ -204,6 +204,9 @@ public class ModelManagementHelper {
      * @return Collection
      */
     public Collection getAllModelElementsOfKind(Object nsa, Object type) {
+        if (type instanceof String) {
+            return getAllModelElementsOfKind(nsa, (String) type);
+        }
         Class kind = (Class) type;
         if (nsa == null || kind == null)
             return Collections.EMPTY_LIST;

@@ -257,16 +257,17 @@ public final class UmlModelEventPump implements MElementListener {
      * Removes a listener that listens to all modelevents fired by instances of
      * modelClass and that have the original name eventNames.
      * @param listener The listener to remove
-     * @param modelClass The class the listener does not want to listen to 
+     * @param metaType The class the listener does not want to listen to 
      * instances anymore
      * @param eventNames The eventnames the listener does not want to listen to
      * anymore
      */
     public void removeClassModelEventListener(
 					      MElementListener listener,
-					      Class modelClass,
+					      Object metaType,
 	
 					      String[] eventNames) {
+        Class modelClass = (Class) metaType;
         // we don't support eventlisteners other then NSUML ModelEventListener.
         // to be forward compatible with other ModelEventListeners, 
         // we do not throw an exception but
@@ -294,15 +295,16 @@ public final class UmlModelEventPump implements MElementListener {
      * Convinience method to remove a listener that listens to events named 
      * eventName that are fired by instances of modelClass.
      * @param listener The listener to remove
-     * @param modelClass The class the listener does not want to listen to 
+     * @param metaType The class the listener does not want to listen to 
      * instances anymore
      * @param eventName The eventname the listener does not want to listen to
      * anymore
      */
     public void removeClassModelEventListener(
 					      MElementListener listener,
-					      Class modelClass,
+					      Object metaType,
 					      String eventName) {
+        Class modelClass = (Class) metaType;
         // we don't support eventlisteners other then NSUML ModelEventListener.
         // to be forward compatible with other ModelEventListeners, 
         // we do not throw an exception but
@@ -325,11 +327,12 @@ public final class UmlModelEventPump implements MElementListener {
      * modelClass.
      *
      * @param listener The listener to remove
-     * @param modelClass The class the listener does not want to listen to 
+     * @param metaType The class the listener does not want to listen to 
      * instances anymore
      */
     public void removeClassModelEventListener(MElementListener listener,
-					      Class modelClass) {
+					      Object metaType) {
+        Class modelClass = (Class) metaType;
         // we don't support eventlisteners other then NSUML ModelEventListener.
         // to be forward compatible with other ModelEventListeners, 
         // we do not throw an exception but
