@@ -29,6 +29,7 @@ import org.argouml.ui.*;
 import org.argouml.xml.xmi.XMIParser;
 
 import java.net.URL;
+import java.util.Iterator;
 import java.io.*;
 import java.util.zip.*;
 import javax.swing.*;
@@ -112,18 +113,25 @@ public class ProjectMemberModel extends ProjectMember {
       //if (!path.endsWith("/")) path += "/";
       //String fullpath = path + getName();
 
+    XMIWriter xmiwriter = null;
+
     try {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       //System.out.println("Writing " + fullpath + "...");
       //pb.showStatus("Writing " + fullpath + "...");
 
-      XMIWriter xmiwriter = new XMIWriter(_model,writer);
+      xmiwriter = new XMIWriter(_model,writer);
       xmiwriter.gen();
 
       //System.out.println("Wrote " + fullpath);
       //pb.showStatus("Wrote " + fullpath);
     }
     catch (Exception ex) {
+      if (xmiwriter != null) {
+	Iterator it = xmiwriter.getNotContainedElements().iterator();
+	while (it.hasNext())
+	  System.out.println("Not contained in XMI: " + it.next());
+      }
       ex.printStackTrace();
     }
   }
