@@ -36,6 +36,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
+import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionAddNote;
@@ -65,54 +66,54 @@ public class UMLClassDiagram extends UMLDiagram {
     // actions for toolbar
     // TODO: should these be static?
 
-    protected static Action _actionClass =
-	new CmdCreateNode(MClass.class, "Class");
+    protected static Action _actionClass = new RadioAction(
+	new CmdCreateNode(MClass.class, "Class"));
 
-    protected static Action _actionObject =
-	new CmdCreateNode(MInstance.class, "Instance");
+    protected static Action _actionObject = new RadioAction(
+	new CmdCreateNode(MInstance.class, "Instance"));
 
-    protected static Action _actionInterface =
-	new CmdCreateNode(MInterface.class, "Interface");
+    protected static Action _actionInterface = new RadioAction(
+	new CmdCreateNode(MInterface.class, "Interface"));
 
-    protected static Action _actionDepend =
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MDependency.class, "Dependency");
+    protected static Action _actionDepend = new RadioAction(
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MDependency.class, "Dependency"));
 
-    protected static Action _actionPermission =
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MPermission.class, "Permission");
+    protected static Action _actionPermission = new RadioAction(
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MPermission.class, "Permission"));
 
-    protected static Action _actionUsage =
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MUsage.class, "Usage");
+    protected static Action _actionUsage = new RadioAction(
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MUsage.class, "Usage"));
 
-    protected static Action _actionLink =
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MLink.class, "Link");
+    protected static Action _actionLink = new RadioAction(
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MLink.class, "Link"));
 
-    protected static Action _actionGeneralize =
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization");
+    protected static Action _actionGeneralize = new RadioAction(
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization"));
 
-    protected static Action _actionRealize =
-	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", ModelFacade.ABSTRACTION, "Realization");
+    protected static Action _actionRealize = new RadioAction(
+	new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", ModelFacade.ABSTRACTION, "Realization"));
 
-    protected static Action _actionPackage =
-	new CmdCreateNode(MPackage.class, "Package");
+    protected static Action _actionPackage = new RadioAction(
+	new CmdCreateNode(MPackage.class, "Package"));
 
-    protected static Action _actionModel =
-	new CmdCreateNode(MModel.class, "Model");
+    protected static Action _actionModel = new RadioAction(
+	new CmdCreateNode(MModel.class, "Model"));
 
-    protected static Action _actionSubsystem =
-	new CmdCreateNode(MSubsystem.class, "Subsystem");
+    protected static Action _actionSubsystem = new RadioAction(
+	new CmdCreateNode(MSubsystem.class, "Subsystem"));
 
-    protected static Action _actionAssociation =
-	new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
-    protected static Action _actionAggregation =
-	new ActionAddAssociation(MAggregationKind.AGGREGATE, false, "Aggregation");
-    protected static Action _actionComposition =
-	new ActionAddAssociation(MAggregationKind.COMPOSITE, false, "Composition");
-    protected static Action _actionUniAssociation =
-	new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation");
-    protected static Action _actionUniAggregation =
-	new ActionAddAssociation(MAggregationKind.AGGREGATE, true, "UniAggregation");
-    protected static Action _actionUniComposition =
-	new ActionAddAssociation(MAggregationKind.COMPOSITE, true, "UniComposition");
+    protected static Action _actionAssociation = new RadioAction(
+	new ActionAddAssociation(MAggregationKind.NONE, false, "Association"));
+    protected static Action _actionAggregation = new RadioAction(
+	new ActionAddAssociation(MAggregationKind.AGGREGATE, false, "Aggregation"));
+    protected static Action _actionComposition = new RadioAction(
+	new ActionAddAssociation(MAggregationKind.COMPOSITE, false, "Composition"));
+    protected static Action _actionUniAssociation = new RadioAction(
+	new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation"));
+    protected static Action _actionUniAggregation = new RadioAction(
+	new ActionAddAssociation(MAggregationKind.AGGREGATE, true, "UniAggregation"));
+    protected static Action _actionUniComposition = new RadioAction(
+	new ActionAddAssociation(MAggregationKind.COMPOSITE, true, "UniComposition"));
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -186,11 +187,15 @@ public class UMLClassDiagram extends UMLDiagram {
         return actions;
     }
 
+    /**
+     * Return an array of association actions in the
+     * pattern of which to build a popup toolbutton
+     */
     private Object[] getAssociationActions() {
         Object actions[][] = {
-	{_actionAssociation, _actionUniAssociation},
-	{_actionAggregation, _actionUniAggregation},
-	{_actionComposition, _actionUniComposition}
+            {_actionAssociation, _actionUniAssociation},
+            {_actionAggregation, _actionUniAggregation},
+            {_actionComposition, _actionUniComposition}
         };
 
         return actions;

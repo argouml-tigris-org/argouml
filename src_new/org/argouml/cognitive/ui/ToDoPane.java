@@ -41,6 +41,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
+import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -61,8 +62,8 @@ import org.argouml.ui.Actions;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
-
 import org.tigris.gef.ui.ToolBar;
+
 import org.tigris.gef.util.VectorSet;
 
 /**
@@ -176,7 +177,9 @@ public class ToDoPane extends JPanel
         // This is the only reason GEF toolbar is used here.
         // Must find a way to implement the same.
         _flatButton = _toolbar.addToggle(_flatView,
-					 "Flat", "Hierarchical", "Flat");
+                                   "Flat",
+                                   "Hierarchical", 
+                                   "Flat");
         _toolbar.add(_countLabel);
         
         JPanel toolbarPanel = new JPanel(new BorderLayout());

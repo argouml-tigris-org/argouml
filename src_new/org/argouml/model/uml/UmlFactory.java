@@ -219,7 +219,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
     {ModelFacade.LINK,             ModelFacade.NODE_INSTANCE},
     {ModelFacade.LINK,             ModelFacade.OBJECT}
     };
-    
+
     /** Singleton instance.
      */
     private static final UmlFactory SINGLETON = new UmlFactory();

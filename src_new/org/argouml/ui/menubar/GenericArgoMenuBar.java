@@ -34,6 +34,7 @@ import java.util.ListIterator;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
 import org.argouml.application.api.Argo;
@@ -42,7 +43,6 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
-import org.argouml.swingext.Toolbar;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionSaveConfiguration;
 import org.argouml.ui.ActionSettings;
@@ -84,6 +84,7 @@ import org.tigris.gef.base.CmdSelectInvert;
 import org.tigris.gef.base.CmdSelectNext;
 import org.tigris.gef.base.CmdZoom;
 import org.tigris.gef.util.Localizer;
+import org.tigris.toolbar.ToolBar;
 
 /** GenericArgoMenuBar defines the menubar for all
  *  operating systems which do not explicitely ask
@@ -93,10 +94,10 @@ import org.tigris.gef.util.Localizer;
 public class GenericArgoMenuBar extends JMenuBar
     implements ArgoModuleEventListener {
 
-    private Toolbar _fileToolbar;
-    private Toolbar _editToolbar;
-    private Toolbar _viewToolbar;
-    private Toolbar _createDiagramToolbar;
+    private JToolBar _fileToolbar;
+    private JToolBar _editToolbar;
+    private JToolBar _viewToolbar;
+    private JToolBar _createDiagramToolbar;
     
     /** Edit menu
      */
@@ -296,7 +297,7 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenu _file = new JMenu(menuLocalize("File"));
         add(_file);
         setMnemonic(_file, "File", 'F');
-        _fileToolbar = new Toolbar("File Toolbar");
+        _fileToolbar = new ToolBar("File Toolbar");
         JMenuItem newItem = _file.add(ActionNew.SINGLETON);
         setMnemonic(newItem, "New", 'N');
         setAccelerator(newItem, ctrlN);
@@ -446,7 +447,7 @@ public class GenericArgoMenuBar extends JMenuBar
         _createDiagrams =
 	    (JMenu) add(new JMenu(menuLocalize("Create Diagram")));
         setMnemonic(_createDiagrams, "Create Diagram", 'C');
-        _createDiagramToolbar = new Toolbar("Create Diagram Toolbar");
+        _createDiagramToolbar = new ToolBar("Create Diagram Toolbar");
         _createDiagrams.add(ActionClassDiagram.SINGLETON);
         _createDiagramToolbar.add((ActionClassDiagram.SINGLETON));
         _createDiagrams.add(ActionUseCaseDiagram.SINGLETON);
@@ -534,19 +535,19 @@ public class GenericArgoMenuBar extends JMenuBar
         ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }
 
-    /** Getter for the create diagram toolbar.
+    /** Get the create diagram toolbar.
      * @return Value of property _createDiagramToolbar.
      */
-    public org.argouml.swingext.Toolbar getCreateDiagramToolbar() {
+    public JToolBar getCreateDiagramToolbar() {
         return _createDiagramToolbar;
     }
     
-    /** Getter for the edit toolbar.
+    /** Get the edit toolbar.
      * @return the edit toolbar.
      */
-    public org.argouml.swingext.Toolbar getEditToolbar() {
+    public JToolBar getEditToolbar() {
         if (_editToolbar == null) {
-            _editToolbar = new Toolbar("Edit Toolbar");
+            _editToolbar = new ToolBar("Edit Toolbar");
             _editToolbar.add(ActionCut.getInstance());
             _editToolbar.add(ActionCopy.getInstance());
             _editToolbar.add(ActionPaste.getInstance());
@@ -562,16 +563,16 @@ public class GenericArgoMenuBar extends JMenuBar
      * @return the file toolbar.
      *
      */
-    public org.argouml.swingext.Toolbar getFileToolbar() {
+    public JToolBar getFileToolbar() {
         return _fileToolbar;
     }
     
     /** Getter for the view toolbar.
      * @return the view toolbar.
      */
-    public Toolbar getViewToolbar() {
+    public JToolBar getViewToolbar() {
         if (_viewToolbar == null) {
-            _viewToolbar = new Toolbar("View Toolbar");
+            _viewToolbar = new ToolBar("View Toolbar");
             _viewToolbar.add((Actions.Find));
         }
         return _viewToolbar;

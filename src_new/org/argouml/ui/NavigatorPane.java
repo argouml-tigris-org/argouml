@@ -41,6 +41,7 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JToolBar;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
@@ -57,7 +58,6 @@ import org.argouml.kernel.PredOR;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
-import org.argouml.swingext.Toolbar;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.ui.GoAssocRoleMessages;
 import org.argouml.uml.diagram.collaboration.ui.GoClassifierToCollaboration;
@@ -86,6 +86,7 @@ import org.argouml.uml.ui.behavior.common_behavior.GoSignalToReception;
 import org.argouml.uml.ui.foundation.core.GoModelElementToComment;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.PopupGenerator;
+import org.tigris.toolbar.ToolBar;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -132,7 +133,7 @@ public class NavigatorPane
     protected DisplayTextTree _tree;
 
     /** toolbar for history navigation and perspectives config dialog*/
-    protected Toolbar _toolbar;
+    protected JToolBar _toolbar;
 
     /** selects the perspective */
     protected JComboBox _combo;
@@ -163,14 +164,12 @@ public class NavigatorPane
         _combo = new JComboBox();
         _tree = new DnDNavigatorTree();
         TargetManager.getInstance().addTargetListener(_tree);
-        _toolbar = new Toolbar();
-        JPanel toolbarPanel = new JPanel(new BorderLayout());
+        _toolbar = new ToolBar();
+        _toolbar.setFloatable(false);
 
         setLayout(new BorderLayout());
 
         _toolbar.add(_combo);
-        //_toolbar.add(Actions.NavBack);
-        //_toolbar.add(Actions.NavForw);
         _toolbar.add(Actions.NavConfig);
 
         _combo.addItemListener(this);
@@ -178,8 +177,7 @@ public class NavigatorPane
         _tree.addMouseListener(new NavigatorMouseListener());
         _tree.addTreeSelectionListener(new NavigationTreeSelectionListener());
 
-        toolbarPanel.add(_toolbar, BorderLayout.WEST);
-        add(toolbarPanel, BorderLayout.NORTH);
+        add(_toolbar, BorderLayout.NORTH);
         add(new JScrollPane(_tree), BorderLayout.CENTER);
 
         Configuration.addListener(Notation.KEY_USE_GUILLEMOTS, this);
