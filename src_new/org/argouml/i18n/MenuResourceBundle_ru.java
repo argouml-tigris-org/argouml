@@ -76,7 +76,7 @@ public class MenuResourceBundle_ru extends ListResourceBundle {
         {"DeploymentDiagram", "Диаграмма развертывания" },  
         {"SequenceDiagram", "Диаграмма последовательности" },  
         {"button.add-attribute", "Добавить атрибут" },  
-        {"Add Operation", "Добавить операцию" },  
+        {"button.add-operation", "Добавить операцию" },  
         {"Add Message", "Добавить сообщение" },  
         {"Add Internal Transition", "Добавить внутренний переход" },  
         {"Generate Selected Classes", "Сгенерировать выбранные классы..." },  

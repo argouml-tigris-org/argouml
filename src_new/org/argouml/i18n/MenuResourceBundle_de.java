@@ -78,7 +78,7 @@ public class MenuResourceBundle_de extends ListResourceBundle {
         {"DeploymentDiagram", "Verteilungsdiagramm" },
         {"SequenceDiagram", "Sequenzdiagram" },
         {"button.add-attribute", "Attribut hinzuf\u00fcgen" },
-        {"Add Operation", "Operation hinzuf\u00fcgen" },
+        {"button.add-operation", "Operation hinzuf\u00fcgen" },
         {"Add Message", "Nachricht hinzuf\u00fcgen" },
         {"Add Internal Transition", "Interne Transition hinzuf\u00fcgen" },
         {"Generate Selected Classes", "Erzeuge Code f\u00fcr selektierte Klassen..." },

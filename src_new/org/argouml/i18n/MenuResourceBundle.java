@@ -71,7 +71,7 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"DeploymentDiagram", "DeploymentDiagram" },  
         {"SequenceDiagram", "SequenceDiagram" },  
         {"button.add-attribute", "Add Attribute" },  
-        {"Add Operation", "Add Operation" },  
+        {"button.add-operation", "Add Operation" },  
         {"Add Message", "Add Message" },  
         {"Add Internal Transition", "Add Internal Transition" },  
         {"Generate Selected Classes", "Generate Selected Classes..." },  
