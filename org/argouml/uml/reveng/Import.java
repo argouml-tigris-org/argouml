@@ -540,6 +540,9 @@ class ImportStatusScreen extends JDialog {
     protected ImportStatusBar _statusBar = new ImportStatusBar();
     
     private JButton cancelButton;
+    private JLabel progressLabel;
+    
+    private int numberOfFiles;
 
     public ImportStatusScreen(String title, String iconName) {
 	super();
@@ -547,19 +550,33 @@ class ImportStatusScreen extends JDialog {
 	Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
 	getContentPane().setLayout(new BorderLayout(0, 0));
         
-        getContentPane().add(_statusBar, BorderLayout.NORTH);
-	getContentPane().add(cancelButton = new JButton("Stop"), BorderLayout.SOUTH);
+        // Parsing file x of z.
+        JPanel topPanel = new JPanel();
+        progressLabel = new JLabel();
+        topPanel.add(progressLabel);
+        getContentPane().add(topPanel, BorderLayout.NORTH);
+        
+        // progress bar
+        getContentPane().add(_statusBar, BorderLayout.CENTER);
+        
+        // stop button
+        cancelButton = new JButton("Stop");
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.add(cancelButton);
+	getContentPane().add(bottomPanel, BorderLayout.SOUTH);
         
         Dimension contentPaneSize = getContentPane().getPreferredSize();
 	setSize(contentPaneSize.width, contentPaneSize.height);
 	setLocation(scrSize.width/2 - contentPaneSize.width/2,
 		    scrSize.height/2 - contentPaneSize.height/2);
-	pack();
+        pack();
+        this.setResizable(false);
     }
 
-    public void setMaximum(int i) { _statusBar.setMaximum(i); }
+    public void setMaximum(int i) { _statusBar.setMaximum(i);numberOfFiles = i; }
     public void setValue(int i) {
 	_statusBar.setValue(i);
+        progressLabel.setText("Parsing file "+i+" of "+numberOfFiles+".");
 	repaint();
     }
     
