@@ -35,6 +35,10 @@ import javax.swing.event.*;
 import uci.util.*;
 import uci.argo.kernel.*;
 
+/** Does not work. quick save/close/reopen to dos are lost
+ * Does not appear to be able connect todos
+ * to classes either.
+ */
 public class AddToDoItemDialog extends JFrame implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
@@ -43,16 +47,32 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
+  /** headline default is blank: should be set to either
+   * project/diagram/ class
+   */  
   protected JTextField _headline = new JTextField();
+  /** This is the priority combo box.
+   */  
   protected JComboBox  _priority = new JComboBox(PRIORITIES);
+  /** This is where the users can add more info
+   * as it relates to URL. currently no browse to
+   * URL supported.
+   */  
   protected JTextField _moreinfo = new JTextField();
   protected JTextArea  _description = new JTextArea();
+  /** does not work
+   */  
   protected JButton _addButton = new JButton("Add");
   protected JButton _cancelButton = new JButton("Cancel");
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
+  /** This is the pop up window that comes up
+   * after clicking add to do item in details pane.
+   * Default set to high.
+   *
+   */  
   public AddToDoItemDialog() {
     super("Add a ToDoItem");
     JLabel headlineLabel = new JLabel("Headline:");
