@@ -260,6 +260,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
                 cat.error(e.toString() + ". " +
                                    this.getClass().toString() +
                                    ": invalid set method " + setMethod, e);
+		cat.error("Need to rethrow this exception as RuntimeException.");
+		throw new RuntimeException(e);
             }
         }
     }
