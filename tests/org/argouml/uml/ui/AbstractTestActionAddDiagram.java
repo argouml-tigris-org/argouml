@@ -42,17 +42,17 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
     /**
      * The action to be tested
      */
-    private ActionAddDiagram _action;
+    private ActionAddDiagram action;
     /**
      * The namespace a created diagram should have
      */
-    private MNamespace _ns;
+    private MNamespace ns;
 
     /**
      * A list with namespaces that should be valid for the diagram to be
      * created.
      */
-    private List _validNamespaces;
+    private List validNamespaces;
 
     /**
      * Constructor for AbstractTestActionAddDiagram.
@@ -66,19 +66,19 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      * Preparations for all test cases.
      */
     protected void setUp() {
-	_action = getAction();
+	action = getAction();
 
-	_ns = getNamespace();
-	_validNamespaces = getValidNamespaceClasses();
+	ns = getNamespace();
+	validNamespaces = getValidNamespaceClasses();
     }
 
     /**
      * Cleanup after all test cases.
      */
     protected void tearDown() {
-        _action = null;
-        _ns = null;
-        _validNamespaces = null;
+        action = null;
+        ns = null;
+        validNamespaces = null;
     }
 
     /**
@@ -110,13 +110,13 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      * - Has a proper name
      */
     public void testCreateDiagram() {
-	UMLDiagram diagram = _action.createDiagram(_ns);
+	UMLDiagram diagram = action.createDiagram(ns);
 	assertNotNull(
 		      "The diagram has no namespace",
 		      diagram.getNamespace());
 	assertTrue(
 		   "The diagram has a non-valid namespace",
-		   _action.isValidNamespace(diagram.getNamespace()));
+		   action.isValidNamespace(diagram.getNamespace()));
 	assertNotNull(
 		      "The diagram has no graphmodel",
 		      diagram.getGraphModel());
@@ -130,8 +130,8 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
      * Tests if two diagrams created have different names
      */
     public void testDifferentNames() {
-	UMLDiagram diagram1 = _action.createDiagram(_ns);
-	UMLDiagram diagram2 = _action.createDiagram(_ns);
+	UMLDiagram diagram1 = action.createDiagram(ns);
+	UMLDiagram diagram2 = action.createDiagram(ns);
 	assertTrue(
 		   "The created diagrams have the same name",
 		   !(diagram1.getName().equals(diagram2.getName())));
@@ -144,7 +144,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
     public void testValidTestNamespace() {
 	assertTrue(
 		   "The namespace with this testis not valid for this diagram",
-		   _action.isValidNamespace(_ns));
+		   action.isValidNamespace(ns));
     }
 
     /**
@@ -161,7 +161,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
     public void testValidNamespaces() 
 	throws InstantiationException, IllegalAccessException
     {
-	Iterator it = _validNamespaces.iterator();
+	Iterator it = validNamespaces.iterator();
 	while (it.hasNext()) {
 	    Class clazz = (Class) it.next();
 
@@ -169,7 +169,7 @@ public abstract class AbstractTestActionAddDiagram extends TestCase {
 	    assertTrue(
 		       clazz.getName()
 		       + " is no valid namespace for the diagram",
-		       _action.isValidNamespace((MNamespace) o));
+		       action.isValidNamespace((MNamespace) o));
 	}
     }
 

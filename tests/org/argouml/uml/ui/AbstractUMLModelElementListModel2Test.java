@@ -123,7 +123,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
      * this method That is: they should remove the upper 5 elements of
      * the attribute.
      *
-     * @param elements
+     * @param elements the element
      */
     protected abstract void removeHalfModel(MBase[] elements);
 

@@ -76,23 +76,23 @@ public class GUITestParseMessage extends TestCase {
         cl4.setNamespace(coll);
         cl5.setNamespace(coll);
 
-        MAssociationRole r1_2 =
+        MAssociationRole r1to2 =
             fact.getCollaborations().buildAssociationRole(cl1, cl2);
-        MAssociationRole r2_3 =
+        MAssociationRole r2to3 =
             fact.getCollaborations().buildAssociationRole(cl2, cl3);
-        MAssociationRole r3_4 =
+        MAssociationRole r3to4 =
             fact.getCollaborations().buildAssociationRole(cl3, cl4);
-        MAssociationRole r4_5 =
+        MAssociationRole r4to5 =
             fact.getCollaborations().buildAssociationRole(cl4, cl5);
-        MAssociationRole r3_1 =
+        MAssociationRole r3to1 =
             fact.getCollaborations().buildAssociationRole(cl3, cl1);
-        MAssociationRole r5_3 =
+        MAssociationRole r5to3 =
             fact.getCollaborations().buildAssociationRole(cl5, cl3);
 
         /* START TESTING STUFF */
 
         MMessage m1 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r1_2);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r1to2);
         assertTrue(m1.getSender() == cl1);
         assertTrue(m1.getReceiver() == cl2);
         assertTrue(m1.getInteraction() == inter);
@@ -103,7 +103,7 @@ public class GUITestParseMessage extends TestCase {
         m1.setName("m1");
 
         MMessage m2 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r2_3);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r2to3);
         assertTrue(m2.getSender() == cl2);
         assertTrue(m2.getReceiver() == cl3);
         assertTrue(m2.getActivator() == m1);
@@ -113,7 +113,7 @@ public class GUITestParseMessage extends TestCase {
         m2.setName("m2");
 
         MMessage m3 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r2_3);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r2to3);
         assertTrue(m3.getActivator() == m1);
         assertTrue(
             m3.getPredecessors().iterator().next() == m2
@@ -239,13 +239,13 @@ public class GUITestParseMessage extends TestCase {
         checkParseException(m3, "1.2.1 / 1.2 :");
 
         MMessage m4 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r3_4);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r3to4);
         MMessage m5 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r4_5);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r4to5);
         MMessage m6 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r5_3);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r5to3);
         MMessage m7 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r3_1);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r3to1);
 
         checkParseException(m6, "1.2.2 :");
 

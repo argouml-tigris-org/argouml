@@ -27,8 +27,6 @@ package org.argouml.uml.ui;
 import java.util.Iterator;
 
 import org.argouml.uml.Profile;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * @since Oct 12, 2002
@@ -37,7 +35,7 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 public class MockUMLUserInterfaceContainer
     implements UMLUserInterfaceContainer {
 
-    private Object _target;
+    private Object target;
 
     /**
      * Constructor for MockUMLUserInterfaceContainer.
@@ -50,7 +48,7 @@ public class MockUMLUserInterfaceContainer
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getTarget()
      */
     public Object getTarget() {
-        return _target;
+        return target;
     }
 
     /**
@@ -135,8 +133,11 @@ public class MockUMLUserInterfaceContainer
         return false;
     }
 
-    public void setTarget(Object target) {
-        _target = target;
+    /**
+     * @param t the target
+     */
+    public void setTarget(Object t) {
+        target = t;
     }
 
 }
