@@ -320,6 +320,9 @@ public class Main {
 
         st.mark("make empty project");
 
+        Designer.disableCritiquing();
+        Designer.clearCritiquing();
+
         Project p = null;
 
         if (urlToOpen != null) {
@@ -334,8 +337,6 @@ public class Main {
         // Touch the trash
         Trash.SINGLETON.getSize();
 
-        Designer.disableCritiquing();
-        Designer.clearCritiquing();
         ProjectManager.getManager().setCurrentProject(p);
         Designer.enableCritiquing();
 
