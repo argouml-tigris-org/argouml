@@ -37,6 +37,9 @@ import org.argouml.model.ModelFacade;
  */
 public class GoMessageAction extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
 	return "Message->Action";
     }
@@ -58,6 +61,9 @@ public class GoMessageAction extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAMessage(parent)) {
 	    Set set = new HashSet();

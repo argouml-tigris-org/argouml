@@ -36,6 +36,7 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
 /**
+ * The rule for Behavioral Feature->Statechart diagram.
  * 
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 30, 2002
@@ -48,7 +49,7 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
     public Collection getChildren(Object parent) {
         
         if (ModelFacade.isABehavioralFeature(parent)) {
-            Object operation = parent;//MBehavioralFeature
+            Object operation = parent; //MBehavioralFeature
             Collection col = ModelFacade.getBehaviors(operation);
             Vector ret = new Vector();
             Project p = ProjectManager.getManager().getCurrentProject();
@@ -56,8 +57,9 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
             Iterator it = diagrams.iterator();
             while (it.hasNext()) {
                 ArgoDiagram diagram = (ArgoDiagram) it.next();
-                if (diagram instanceof UMLStateDiagram &&
-                    col.contains(((UMLStateDiagram) diagram).getStateMachine())) {
+                if (diagram instanceof UMLStateDiagram 
+                    && col.contains(((UMLStateDiagram) diagram)
+                            .getStateMachine())) {
                     ret.add(diagram);
                 }
                 
@@ -67,6 +69,9 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
         return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         // TODO: what?
 	return null;

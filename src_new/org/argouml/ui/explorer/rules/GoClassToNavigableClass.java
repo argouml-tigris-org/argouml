@@ -33,12 +33,22 @@ import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
+/**
+ * Rule for Class->Navigable Class.
+ *
+ */
 public class GoClassToNavigableClass extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
         return "Class->Navigable Class";
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
         if (!ModelFacade.isAClass(parent))
             return null;
@@ -79,6 +89,9 @@ public class GoClassToNavigableClass extends AbstractPerspectiveRule {
         return childClasses;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAClass(parent)) {
 	    Set set = new HashSet();

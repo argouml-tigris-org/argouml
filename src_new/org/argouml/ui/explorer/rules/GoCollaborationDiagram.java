@@ -33,12 +33,22 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 
+/**
+ * Rule for Collaboration->Diagram.
+ *
+ */
 public class GoCollaborationDiagram extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
         return "Collaboration->Diagram";
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
         if (!ModelFacade.isACollaboration(parent))
             return null;
@@ -55,12 +65,15 @@ public class GoCollaborationDiagram extends AbstractPerspectiveRule {
         while (elems.hasMoreElements()) {
             Object d = elems.nextElement();
             if (d instanceof UMLCollaborationDiagram
-                && ((UMLCollaborationDiagram)d).getNamespace() == parent)
+                && ((UMLCollaborationDiagram) d).getNamespace() == parent)
                 res.addElement(d);
         }
         return res;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         // TODO: What?
 	return null;

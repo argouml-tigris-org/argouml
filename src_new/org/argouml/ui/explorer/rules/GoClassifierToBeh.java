@@ -33,7 +33,8 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
 /**
- * Go rule to navigate from a classifier to the behavioral features owned by that classifier
+ * Go rule to navigate from a classifier to the behavioral 
+ * features owned by that classifier
  * 
  *
  * @since Jul 13, 2004
@@ -41,10 +42,16 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
  */
 public class GoClassifierToBeh extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.class.operation");
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAClassifier(parent)) {	    
 	    return CoreHelper.getHelper().getBehavioralFeatures(parent);
@@ -52,6 +59,9 @@ public class GoClassifierToBeh extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isAClassifier(parent)) {
 	    Set set = new HashSet();

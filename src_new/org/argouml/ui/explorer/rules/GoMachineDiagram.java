@@ -34,12 +34,22 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
-public class GoMachineDiagram extends AbstractPerspectiveRule{
+/**
+ * Rule for Statemachine->Diagram.
+ *
+ */
+public class GoMachineDiagram extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() {
-        return "Machine->Diagram";
+        return "Statemachine->Diagram";
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
         if (!ModelFacade.isAStateMachine(parent))
             return null;
@@ -67,6 +77,9 @@ public class GoMachineDiagram extends AbstractPerspectiveRule{
         return res;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         // TODO: What?
 	return null;

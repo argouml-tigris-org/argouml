@@ -29,10 +29,20 @@ import java.util.Set;
 
 import org.tigris.gef.base.Diagram;
 
+/**
+ * Rule for Diagram->Node.
+ *
+ */
 public class GoDiagramToNode extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() { return "Diagram->Node"; }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) { 
 	if (parent instanceof Diagram) {
 	    return ((Diagram) parent).getNodes(null);
@@ -40,6 +50,9 @@ public class GoDiagramToNode extends AbstractPerspectiveRule {
 	return null;
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         // TODO: what?
 	return null;

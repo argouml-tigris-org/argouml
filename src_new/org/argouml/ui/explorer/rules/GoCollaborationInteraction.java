@@ -30,16 +30,29 @@ import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
+/**
+ * Rule for Collaboration->Interaction.
+ *
+ */
 public class GoCollaborationInteraction extends AbstractPerspectiveRule {
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
+     */
     public String getRuleName() { return "Collaboration->Interaction"; }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
 	if (!ModelFacade.isACollaboration(parent))
 	    return null;
 	return ModelFacade.getInteractions(parent);
     }
 
+    /**
+     * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
+     */
     public Set getDependencies(Object parent) {
         if (ModelFacade.isACollaboration(parent)) {
 	    Set set = new HashSet();
