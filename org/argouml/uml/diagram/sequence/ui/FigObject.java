@@ -374,7 +374,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 
     private void removeActivations() {
         for (int i = 0; i < _figActivations.size(); i++) {
-            getFigs().remove(_figActivations.get(i));
+            getFigs(null).remove(_figActivations.get(i));
         }
         _figActivations = new ArrayList();
         calcBounds();

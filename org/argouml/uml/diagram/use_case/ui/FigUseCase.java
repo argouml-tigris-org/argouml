@@ -41,7 +41,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -351,14 +350,14 @@ public class FigUseCase extends FigNodeModelElement {
 
     public Object clone() {
         FigUseCase figClone = (FigUseCase) super.clone();
-        Vector allFigs = figClone.getFigs();
+        Iterator it = figClone.getFigs(null).iterator();
 
-        figClone._bigPort = (FigMyCircle) allFigs.elementAt(0);
-        figClone._cover = (FigMyCircle) allFigs.elementAt(1);
-        figClone._name = (FigText) allFigs.elementAt(2);
-        figClone._stereo = (FigText) allFigs.elementAt(3);
-        figClone._epSep = (FigLine) allFigs.elementAt(4);
-        figClone._epVec = (FigGroup) allFigs.elementAt(5);
+        figClone._bigPort = (FigMyCircle) it.next();
+        figClone._cover = (FigMyCircle) it.next();
+        figClone._name = (FigText) it.next();
+        figClone._stereo = (FigText) it.next();
+        figClone._epSep = (FigLine) it.next();
+        figClone._epVec = (FigGroup) it.next();
 
         return figClone;
     }
@@ -480,12 +479,10 @@ public class FigUseCase extends FigNodeModelElement {
             // Tell GEF that we are starting to make a change. Loop through the
             // epVec marking each element as not visible.
 
-            startTrans();
+            Iterator it = _epVec.getFigs(null).iterator();
 
-            Enumeration enum = _epVec.getFigs().elements();
-
-            while (enum.hasMoreElements()) {
-                ((Fig) (enum.nextElement())).setDisplayed(false);
+            while (it.hasNext()) {
+                ((Fig) (it.next())).setDisplayed(false);
             }
 
             // Mark the vector itself and the separator as not displayed
@@ -509,12 +506,10 @@ public class FigUseCase extends FigNodeModelElement {
             // Tell GEF that we are starting to make a change. Loop through the
             // epVec marking each element as visible.
 
-            startTrans();
+            Iterator it = _epVec.getFigs(null).iterator();
 
-            Enumeration enum = _epVec.getFigs().elements();
-
-            while (enum.hasMoreElements()) {
-                ((Fig) (enum.nextElement())).setDisplayed(true);
+            while (it.hasNext()) {
+                ((Fig) (it.next())).setDisplayed(true);
             }
 
             // Mark the vector itself and the separator as displayed
@@ -600,12 +595,12 @@ public class FigUseCase extends FigNodeModelElement {
             // (remember the first fig is the box for the whole lot, so ignore
             // it).
 
-            Enumeration enum = _epVec.getFigs().elements();
-            enum.nextElement(); // ignore
+            Iterator it = _epVec.getFigs(null).iterator();
+            it.next(); // ignore
 
-            while (enum.hasMoreElements()) {
+            while (it.hasNext()) {
                 int elemWidth =
-		    ((FigText) enum.nextElement()).getMinimumSize().width;
+		    ((FigText) it.next()).getMinimumSize().width;
                 minSize.width = Math.max(minSize.width, elemWidth);
             }
 
@@ -614,7 +609,7 @@ public class FigUseCase extends FigNodeModelElement {
             // to there always being space for at least one extension point.
 
             minSize.height +=
-		ROWHEIGHT * Math.max(1, _epVec.getFigs().size() - 1);
+		ROWHEIGHT * Math.max(1, _epVec.getFigs(null).size() - 1);
         }
 
         return minSize;
@@ -977,7 +972,8 @@ public class FigUseCase extends FigNodeModelElement {
             // centre of the mouse (me.getY() - 1) and the top of the epVec
             // (f.getY()) and integer divide by ROWHEIGHT.
 
-            Vector v = _epVec.getFigs();
+            // TODO in future version of GEF call getFigs returning array
+            Vector v = new Vector(_epVec.getFigs(null));
             int i = (me.getY() - f.getY() - 1) / ROWHEIGHT;
 
             // If we are in the range of the EP list size (avoids any nasty
@@ -1035,7 +1031,8 @@ public class FigUseCase extends FigNodeModelElement {
             CompartmentFigText ft = unhighlight();
 
             if (ft != null) {
-                int i = _epVec.getFigs().indexOf(ft);
+                // TODO in future version of GEF call getFigs returning array
+                int i = new Vector(_epVec.getFigs(null)).indexOf(ft);
 
                 // If we found one of the current EP's move forward or
                 // backwards as appopriate, and set a newly selected EP as
@@ -1104,7 +1101,8 @@ public class FigUseCase extends FigNodeModelElement {
 
         // Give up if we are not one of the extension points
 
-        int i = _epVec.getFigs().indexOf(ft);
+        // TODO in future version of GEF call getFigs returning array
+        int i = new Vector(_epVec.getFigs(null)).indexOf(ft);
 
         if (i == -1) {
             return;
@@ -1152,7 +1150,8 @@ public class FigUseCase extends FigNodeModelElement {
         // Give up if we are off the top of the vector, or the indentified
         // element is not displayed
 
-        Vector v = fgVec.getFigs();
+        // TODO in future version of GEF call getFigs returning array
+        Vector v = new Vector(fgVec.getFigs(null));
 
         if ((i >= v.size()) || (!((FigText) v.elementAt(i)).isDisplayed())) {
             return null;
@@ -1198,7 +1197,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Give up if we are off the top of the vector, or the indentified
         // element is not displayed
 
-        Vector v = fgVec.getFigs();
+        Vector v = new Vector(fgVec.getFigs(null));
 
         if ((i >= v.size()) || (!((FigText) v.elementAt(i)).isDisplayed())) {
             return null;
@@ -1245,7 +1244,9 @@ public class FigUseCase extends FigNodeModelElement {
 
         ActionAddExtensionPoint.singleton().actionPerformed(null);
 
-        CompartmentFigText ft = (CompartmentFigText) fg.getFigs().lastElement();
+        // TODO in future version of GEF call getFigs returning array
+        CompartmentFigText ft = 
+            (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
 
         if (ft != null) {
             ft.startTextEditor(ie);
@@ -1267,7 +1268,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Loop through the vector of extension points, until we find a
         // highlighted one.
 
-        Vector v = _epVec.getFigs();
+        Vector v = new Vector(_epVec.getFigs(null));
         int i;
 
         for (i = 1; i < v.size(); i++) {
@@ -1340,7 +1341,7 @@ public class FigUseCase extends FigNodeModelElement {
             // Take each EP and its corresponding fig in turn
 
             Iterator iter = eps.iterator();
-            Vector figs = _epVec.getFigs();
+            Vector figs = new Vector(_epVec.getFigs(null));
 
             while (iter.hasNext()) {
                 CompartmentFigText epFig;

@@ -150,25 +150,34 @@ class FigMessageGroup extends FigGroup {
      */
     public void calcBounds() {
 	super.calcBounds();
-	Vector figs = getFigs();
+	Collection figs = getFigs(null);
 	if (!figs.isEmpty()) {
-	    Fig last = (Fig) figs.lastElement();
-	    Fig first = (Fig) figs.firstElement();
+	    Fig last = null;
+	    Fig first = null;
 	    // _x = first.getX();
 	    // _y = first.getY();
-	    _h = last.getY() + last.getHeight() - first.getY();
 	    _w = 0;
-	    for (int i = 0; i < figs.size(); i++) {
-		Fig fig = (Fig) figs.get(i);
+            Iterator it = figs.iterator();
+            int size = figs.size();
+	    for (int i = 0; i < size; i++) {
+                Fig fig = (Fig) it.next();
+                
+                if (i == 0) {
+                    first = fig;
+                }
+                if (i == size-1) {
+                    last = fig;
+                }
+                
 		if (fig.getWidth() > _w) { 
 		    _w = fig.getWidth();
 		}
 	    }
+            _h = last.getY() + last.getHeight() - first.getY();
 	} else {
 	    _w = 0;
 	    _h = 0;
 	}
-		
     }
 	
 	
@@ -187,7 +196,7 @@ class FigMessageGroup extends FigGroup {
      * @see org.tigris.gef.presentation.Fig#delete()
      */ 
     public void delete() { 
-        Vector figs = getFigs();
+        Collection figs = getFigs(null);
         if (figs != null) {
             Iterator it = figs.iterator();
             while (it.hasNext()) {
@@ -204,7 +213,7 @@ class FigMessageGroup extends FigGroup {
      * @see org.tigris.gef.presentation.Fig#dispose()
      */
     public void dispose() {
-    	Vector figs = getFigs();
+    	Collection figs = getFigs(null);
         if (figs != null) {
 	    Iterator it = figs.iterator();
 	    while (it.hasNext()) {

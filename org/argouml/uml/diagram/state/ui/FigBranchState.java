@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.ui.SelectionMoveClarifiers;
@@ -90,9 +91,9 @@ public class FigBranchState extends FigStateVertex {
 
     public Object clone() {
 	FigBranchState figClone = (FigBranchState) super.clone();
-	Vector v = figClone.getFigs();
-	figClone._bigPort = (FigPoly) v.elementAt(0);
-	figClone._head = (FigPoly) v.elementAt(1);
+	Iterator it = figClone.getFigs(null).iterator();
+	figClone._bigPort = (FigPoly) it.next();
+	figClone._head = (FigPoly) it.next();
 	return figClone;
     }
 

@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.ModelFacade;
@@ -88,10 +89,10 @@ public class FigObject extends FigNodeModelElement {
 
     public Object clone() {
 	FigObject figClone = (FigObject) super.clone();
-	Vector v = figClone.getFigs();
-	figClone._bigPort = (FigRect) v.elementAt(0);
-	figClone._cover = (FigRect) v.elementAt(1);
-	figClone._name = (FigText) v.elementAt(2);
+	Iterator it = figClone.getFigs(null).iterator();
+	figClone._bigPort = (FigRect) it.next();
+	figClone._cover = (FigRect) it.next();
+	figClone._name = (FigText) it.next();
 	return figClone;
     }
 

@@ -30,7 +30,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -38,14 +37,12 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Collection;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
@@ -289,13 +286,13 @@ public class FigClass extends FigNodeModelElement {
 
     public Object clone() {
         FigClass figClone = (FigClass) super.clone();
-        Vector v = figClone.getFigs();
-        figClone._bigPort = (FigRect) v.elementAt(0);
-        figClone._stereo = (FigText) v.elementAt(1);
-        figClone._name = (FigText) v.elementAt(2);
-        figClone._stereoLineBlinder = (FigRect) v.elementAt(3);
-        figClone._attrVec = (FigGroup) v.elementAt(4);
-        figClone._operVec = (FigGroup) v.elementAt(5);
+        Iterator it = figClone.getFigs(null).iterator();
+        figClone._bigPort = (FigRect) it.next();
+        figClone._stereo = (FigText) it.next();
+        figClone._name = (FigText) it.next();
+        figClone._stereoLineBlinder = (FigRect) it.next();
+        figClone._attrVec = (FigGroup) it.next();
+        figClone._operVec = (FigGroup) it.next();
         return figClone;
     }
 
@@ -405,16 +402,17 @@ public class FigClass extends FigNodeModelElement {
         Rectangle rect = getBounds();
         int h =
 	    checkSize
-	    ? ((ROWHEIGHT * Math.max(1, _attrVec.getFigs().size() - 1) + 2)
+	    ? ((ROWHEIGHT * Math.max(1, _attrVec.getFigs(null).size() - 1) + 2)
 	       * rect.height
 	       / getMinimumSize().height)
 	    : 0;
         if (_attrVec.isDisplayed()) {
             if (!isVisible) {  // hide compartment
                 damage();
-                Enumeration enum = _attrVec.getFigs().elements();
-                while (enum.hasMoreElements())
-		    ((Fig) (enum.nextElement())).setDisplayed(false);
+                Iterator it = _attrVec.getFigs(null).iterator();
+                while (it.hasNext()) {
+		    ((Fig) (it.next())).setDisplayed(false);
+                }
                 _attrVec.setDisplayed(false);
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
@@ -422,9 +420,10 @@ public class FigClass extends FigNodeModelElement {
             }
         } else {
             if (isVisible) { // show compartement
-                Enumeration enum = _attrVec.getFigs().elements();
-                while (enum.hasMoreElements())
-		    ((Fig) (enum.nextElement())).setDisplayed(true);
+                Iterator it = _attrVec.getFigs(null).iterator();
+                while (it.hasNext()) {
+		    ((Fig) (it.next())).setDisplayed(true);
+                }
                 _attrVec.setDisplayed(true);
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
@@ -438,16 +437,17 @@ public class FigClass extends FigNodeModelElement {
         Rectangle rect = getBounds();
         int h =
 	    checkSize
-	    ? ((ROWHEIGHT * Math.max(1, _operVec.getFigs().size() - 1) + 2)
+	    ? ((ROWHEIGHT * Math.max(1, _operVec.getFigs(null).size() - 1) + 2)
 	       * rect.height
 	       / getMinimumSize().height)
 	    : 0;
         if (_operVec.isDisplayed()) { // if displayed
             if (!isVisible) {
                 damage();
-                Enumeration enum = _operVec.getFigs().elements();
-                while (enum.hasMoreElements())
-		    ((Fig) (enum.nextElement())).setDisplayed(false);
+                Iterator it = _operVec.getFigs(null).iterator();
+                while (it.hasNext()) {
+		    ((Fig) (it.next())).setDisplayed(false);
+                }
                 _operVec.setDisplayed(false);
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
@@ -455,9 +455,10 @@ public class FigClass extends FigNodeModelElement {
             }
         } else {
             if (isVisible) {
-                Enumeration enum = _operVec.getFigs().elements();
-                while (enum.hasMoreElements())
-		    ((Fig) (enum.nextElement())).setDisplayed(true);
+                Iterator it = _operVec.getFigs(null).iterator();
+                while (it.hasNext()) {
+		    ((Fig) (it.next())).setDisplayed(true);
+                }
                 _operVec.setDisplayed(true);
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
@@ -506,12 +507,12 @@ public class FigClass extends FigNodeModelElement {
             // Loop through all the attributes, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
 
-            Enumeration enum = _attrVec.getFigs().elements();
-            enum.nextElement(); // ignore
+            Iterator it = _attrVec.getFigs(null).iterator();
+            it.next(); // Ignore first element
 
-            while (enum.hasMoreElements()) {
+            while (it.hasNext()) {
                 int elemWidth =
-		    ((FigText) enum.nextElement()).getMinimumSize().width + 2;
+		    ((FigText) it.next()).getMinimumSize().width + 2;
                 aSize.width = Math.max(aSize.width, elemWidth);
             }
 
@@ -519,7 +520,7 @@ public class FigClass extends FigNodeModelElement {
             // first element.
 
             aSize.height +=
-		ROWHEIGHT * Math.max(1, _attrVec.getFigs().size() - 1) + 1;
+		ROWHEIGHT * Math.max(1, _attrVec.getFigs(null).size() - 1) + 1;
         }
 
         // Allow space for each of the operations we have
@@ -529,17 +530,17 @@ public class FigClass extends FigNodeModelElement {
             // Loop through all the operations, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
 
-            Enumeration enum = _operVec.getFigs().elements();
-            enum.nextElement(); // ignore
+            Iterator it = _operVec.getFigs(null).iterator();
+            it.next(); // ignore
 
-            while (enum.hasMoreElements()) {
+            while (it.hasNext()) {
                 int elemWidth =
-		    ((FigText) enum.nextElement()).getMinimumSize().width + 2;
+		    ((FigText) it.next()).getMinimumSize().width + 2;
                 aSize.width = Math.max(aSize.width, elemWidth);
             }
 
             aSize.height +=
-		ROWHEIGHT * Math.max(1, _operVec.getFigs().size() - 1) + 1;
+		ROWHEIGHT * Math.max(1, _operVec.getFigs(null).size() - 1) + 1;
         }
 
         // we want to maintain a minimum width for the class
@@ -581,10 +582,10 @@ public class FigClass extends FigNodeModelElement {
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
             CompartmentFigText ft = unhighlight();
             if (ft != null) {
-                int i = _attrVec.getFigs().indexOf(ft);
+                int i = new Vector(_attrVec.getFigs(null)).indexOf(ft);
                 FigGroup fg = _attrVec;
                 if (i == -1) {
-                    i = _operVec.getFigs().indexOf(ft);
+                    i = new Vector(_operVec.getFigs(null)).indexOf(ft);
                     fg = _operVec;
                 }
                 if (i != -1) {
@@ -620,7 +621,7 @@ public class FigClass extends FigNodeModelElement {
         Object cls = /*(MClassifier)*/ getOwner();
         if (cls == null)
             return;
-        int i = _attrVec.getFigs().indexOf(ft);
+        int i = new Vector(_attrVec.getFigs(null)).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
@@ -637,7 +638,7 @@ public class FigClass extends FigNodeModelElement {
             }
             return;
         }
-        i = _operVec.getFigs().indexOf(ft);
+        i = new Vector(_operVec.getFigs(null)).indexOf(ft);
         if (i != -1) {
             highlightedFigText = (CompartmentFigText) ft;
             highlightedFigText.setHighlighted(true);
@@ -662,14 +663,15 @@ public class FigClass extends FigNodeModelElement {
         if (fgVec == null || i < 1)
             return null;
         FigText ft2 = null;
-        Vector v = fgVec.getFigs();
+        // TODO come GEF V 0.12 use getFigs returning an array
+        Vector v = new Vector(fgVec.getFigs(null));
         if (i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
             return null;
         do {
             i--;
             while (i < 1) {
                 fgVec = (fgVec == _attrVec) ? _operVec : _attrVec;
-                v = fgVec.getFigs();
+                v = new Vector(fgVec.getFigs(null));
                 i = v.size() - 1;
             }
             ft2 = (FigText) v.elementAt(i);
@@ -685,14 +687,15 @@ public class FigClass extends FigNodeModelElement {
         if (fgVec == null || i < 1)
             return null;
         FigText ft2 = null;
-        Vector v = fgVec.getFigs();
+        // TODO come GEF V 0.12 use getFigs returning an array
+        Vector v = new Vector(fgVec.getFigs(null));
         if (i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed())
             return null;
         do {
             i++;
             while (i >= v.size()) {
                 fgVec = (fgVec == _attrVec) ? _operVec : _attrVec;
-                v = fgVec.getFigs();
+                v = new Vector(fgVec.getFigs(null));
                 i = 1;
             }
             ft2 = (FigText) v.elementAt(i);
@@ -712,7 +715,8 @@ public class FigClass extends FigNodeModelElement {
             ActionAddAttribute.SINGLETON.actionPerformed(null);
         else
             ActionAddOperation.SINGLETON.actionPerformed(null);
-        ft = (CompartmentFigText) fg.getFigs().lastElement();
+        // TODO When available use getFigs() returning array
+        ft = (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
         if (ft != null) {
             ft.startTextEditor(ie);
             ft.setHighlighted(true);
@@ -722,7 +726,8 @@ public class FigClass extends FigNodeModelElement {
 
     protected CompartmentFigText unhighlight() {
         CompartmentFigText ft;
-        Vector v = _attrVec.getFigs();
+        // TODO in future version of GEF call getFigs returning array
+        Vector v = new Vector(_attrVec.getFigs(null));
         int i;
         for (i = 1; i < v.size(); i++) {
             ft = (CompartmentFigText) v.elementAt(i);
@@ -732,7 +737,8 @@ public class FigClass extends FigNodeModelElement {
                 return ft;
             }
         }
-        v = _operVec.getFigs();
+        // TODO in future version of GEF call getFigs returning array
+        v = new Vector(_operVec.getFigs(null));
         for (i = 1; i < v.size(); i++) {
             ft = (CompartmentFigText) v.elementAt(i);
             if (ft.isHighlighted()) {
@@ -953,11 +959,11 @@ public class FigClass extends FigNodeModelElement {
 
         int na =
 	    (_attrVec.isDisplayed())
-	    ? Math.max(1, _attrVec.getFigs().size() - 1)
+	    ? Math.max(1, _attrVec.getFigs(null).size() - 1)
 	    : 0;
         int no =
 	    (_operVec.isDisplayed())
-	    ? Math.max(1, _operVec.getFigs().size() - 1)
+	    ? Math.max(1, _operVec.getFigs(null).size() - 1)
 	    : 0;
         if (checkSize) {
             height = ROWHEIGHT * na + 2 + extra_each;
@@ -1014,7 +1020,8 @@ public class FigClass extends FigNodeModelElement {
         Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
         Fig f = hitFig(r);
         if (f == _attrVec && _attrVec.getHeight() > 0) {
-            Vector v = _attrVec.getFigs();
+            // TODO in future version of GEF call getFigs returning array
+            Vector v = new Vector(_attrVec.getFigs(null));
             i = (v.size() - 1)
 		* (me.getY() - f.getY() - 3)
 		/ _attrVec.getHeight();
@@ -1025,7 +1032,8 @@ public class FigClass extends FigNodeModelElement {
                 TargetManager.getInstance().setTarget(f);
             }
         } else if (f == _operVec && _operVec.getHeight() > 0) {
-            Vector v = _operVec.getFigs();
+            // TODO in future version of GEF call getFigs returning array
+            Vector v = new Vector(_operVec.getFigs(null));
             i = (v.size() - 1)
 		* (me.getY() - f.getY() - 3)
 		/ _operVec.getHeight();
@@ -1051,7 +1059,8 @@ public class FigClass extends FigNodeModelElement {
         Collection strs = ModelFacade.getStructuralFeatures(cls);
         if (strs != null) {
             Iterator iter = strs.iterator();
-            Vector figs = _attrVec.getFigs();
+            // TODO in future version of GEF call getFigs returning array
+            Vector figs = new Vector(_attrVec.getFigs(null));
             CompartmentFigText attr;
             while (iter.hasNext()) {
                 Object sf = /*(MStructuralFeature)*/ iter.next();
@@ -1110,7 +1119,8 @@ public class FigClass extends FigNodeModelElement {
         Collection behs = ModelFacade.getOperations(cls);
         if (behs != null) {
             Iterator iter = behs.iterator();
-            Vector figs = _operVec.getFigs();
+            // TODO in future version of GEF call getFigs returning array
+            Vector figs = new Vector(_operVec.getFigs(null));
             CompartmentFigText oper;
             while (iter.hasNext()) {
                 Object bf = /*(MBehavioralFeature)*/ iter.next();

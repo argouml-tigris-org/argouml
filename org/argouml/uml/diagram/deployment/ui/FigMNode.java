@@ -89,12 +89,12 @@ public class FigMNode extends FigNodeModelElement {
 
     public Object clone() {
 	FigMNode figClone = (FigMNode) super.clone();
-	Vector v = figClone.getFigs();
-	figClone._bigPort = (FigRect) v.elementAt(0);
-	figClone._cover = (FigCube) v.elementAt(1);
-	figClone._stereo = (FigText) v.elementAt(2);
-	figClone._name = (FigText) v.elementAt(3);
-	figClone._test = (FigRect) v.elementAt(4);
+	Iterator it = figClone.getFigs(null).iterator();
+	figClone._bigPort = (FigRect) it.next();
+	figClone._cover = (FigCube) it.next();
+	figClone._stereo = (FigText) it.next();
+	figClone._name = (FigText) it.next();
+	figClone._test = (FigRect) it.next();
 	return figClone;
     }
 

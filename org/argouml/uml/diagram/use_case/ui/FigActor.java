@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -102,14 +103,14 @@ public class FigActor extends FigNodeModelElement {
 
     public Object clone() {
         FigActor figClone = (FigActor) super.clone();
-        Vector v = figClone.getFigs();
-        figClone._bigPort = (FigCircle) v.elementAt(0);
-        figClone._head = (FigCircle) v.elementAt(1);
-        figClone._body = (FigLine) v.elementAt(2);
-        figClone._arms = (FigLine) v.elementAt(3);
-        figClone._leftLeg = (FigLine) v.elementAt(4);
-        figClone._rightLeg = (FigLine) v.elementAt(5);
-        figClone._name = (FigText) v.elementAt(6);
+        Iterator it = figClone.getFigs(null).iterator();
+        figClone._bigPort = (FigCircle) it.next();
+        figClone._head = (FigCircle) it.next();
+        figClone._body = (FigLine) it.next();
+        figClone._arms = (FigLine) it.next();
+        figClone._leftLeg = (FigLine) it.next();
+        figClone._rightLeg = (FigLine) it.next();
+        figClone._name = (FigText) it.next();
         return figClone;
     }
 

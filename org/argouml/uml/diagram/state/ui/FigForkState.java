@@ -33,6 +33,7 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.tigris.gef.graph.GraphModel;
@@ -77,9 +78,9 @@ public class FigForkState extends FigStateVertex {
 
     public Object clone() {
 	FigForkState figClone = (FigForkState) super.clone();
-	Vector v = figClone.getFigs();
-	figClone._bigPort = (FigRect) v.elementAt(0);
-	figClone._head = (FigRect) v.elementAt(1);
+	Iterator it = figClone.getFigs(null).iterator();
+	figClone._bigPort = (FigRect) it.next();
+	figClone._head = (FigRect) it.next();
 	return figClone;
     }
 
