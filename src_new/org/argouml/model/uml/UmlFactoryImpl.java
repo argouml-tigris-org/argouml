@@ -634,6 +634,8 @@ public class UmlFactoryImpl
             return getCommonBehavior().createNodeInstance();
         } else if (elementType == ModelFacade.OBJECT) {
             return getCommonBehavior().createObject();
+        } else if (elementType == ModelFacade.COMMENT) {
+            return getCore().createComment();
         }
         return modelElement;
     }
