@@ -25,10 +25,8 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
 /**
  * Model for namespace visibility.
@@ -51,16 +49,15 @@ public class UMLElementOwnershipVisibilityButtonGroup extends UMLVisibilityButto
      * @see org.argouml.uml.ui.UMLButtonGroup#buildModel()
      */
     public void buildModel() {
-        MVisibilityKind vis = ((MModelElement) getTarget()).getVisibility();
-        
-        if (vis == MVisibilityKind.PRIVATE) {
+        if (ModelFacade.isPrivate(getTarget())) {
             getPrivateButton().setSelected(true);
-        } else
-	    if (vis == MVisibilityKind.PROTECTED) {
+        } else {
+	    if (ModelFacade.isPrivate(getTarget())) {
 		getProtectedButton().setSelected(true);
-	    } else
+	    } else {
 		getPublicButton().setSelected(true);
-            
+            }
+        }
     }
 
     /**
