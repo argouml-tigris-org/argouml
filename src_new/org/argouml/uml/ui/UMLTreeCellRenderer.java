@@ -36,24 +36,42 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
-/** UMTreeCellRenderer determines how the entries in the Navigationpane will be
- *  represented graphically. In particular it makes decisions about the icons
+/**
+ * UMTreeCellRenderer determines how the entries in the Navigationpane
+ * and ToDoList will be represented graphically.
+ *
+ * <p>In particular it makes decisions about the icons
  *  to use in order to display a Navigationpane artifact depending on the kind
  *  of object to be displayed.
  */
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
-    protected static Category cat = Category.getInstance(UMLTreeCellRenderer.class);
-
+    
+    protected static Category cat =
+    Category.getInstance(UMLTreeCellRenderer.class);
+    
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
-
-    public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded, boolean leaf, int row, boolean hasFocus) {
-
-        Component r = super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-
+    
+    public Component getTreeCellRendererComponent(JTree tree,
+                                                  Object value,
+                                                  boolean sel, 
+                                                  boolean expanded, 
+                                                  boolean leaf, 
+                                                  int row, 
+                                                  boolean hasFocus) {
+        
+        Component r = super.getTreeCellRendererComponent(tree, 
+                                                         value, 
+                                                         sel, 
+                                                         expanded, 
+                                                         leaf, 
+                                                         row, 
+                                                         hasFocus);
+        
         if (r instanceof JLabel) {
             JLabel lab = (JLabel) r;
-            Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
+            Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper()
+                                             .lookupIcon(value);
             if (icon != null)
                 lab.setIcon(icon);
             else
@@ -62,26 +80,15 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
             // setting the tooltip
             String tip;
             if (value instanceof MModelElement)
-                tip = ((MModelElement) value).getUMLClassName() + ": " + ((MModelElement) value).getName() + " ";
+                tip = ((MModelElement) value).getUMLClassName() + ": " + 
+                            ((MModelElement) value).getName() + " ";
             else
                 tip = (value == null) ? "null " : value.toString() + " ";
-            lab.setToolTipText(tip);
-            tree.setToolTipText(tip);
-            
-            // changing the label in case of comments 
-            // this is necessary since the name of the comment is the same as
-            // the content of the comment causing the total comment to be 
-            // displayed in the navperspective
-            if (value instanceof MComment) {
-                String name = ((MComment)value).getName();
-                if (name != null && name.length() > 10) {
-                    name = name.substring(0, 10) + "...";
-                    lab.setText(name);
-                }                
-            }
-
+                
+                lab.setToolTipText(tip);
+                //tree.setToolTipText(tip);
         }
         return r;
     }
-
+    
 } /* end class UMLTreeCellRenderer */
