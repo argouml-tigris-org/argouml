@@ -103,6 +103,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
 			     .getModel())) {
             return false;
         }
+        if (ModelFacade.isAAssociationEnd(target)) {
+            return ModelFacade.getOtherAssociationEnds(target).size() > 1;
+        }
         if (StateMachinesHelper.getHelper().isTopState(target))
             /* we can not delete a "top" state, 
              * it comes and goes with the statemachine. Issue 2655.
