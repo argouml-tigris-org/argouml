@@ -71,7 +71,12 @@ public class UMLCheckBox extends JCheckBox implements ItemListener, UMLUserInter
     private void update() {
         boolean oldState = isSelected();
         boolean newState = _property.getProperty(_container.getTarget());
-        if(oldState != newState)
+        if(newState && oldState != newState){
             setSelected(newState);
+        }
+        // clear out the residual garbage.
+        if (!newState && oldState){
+            setSelected(false);
+        }
     }
 }
