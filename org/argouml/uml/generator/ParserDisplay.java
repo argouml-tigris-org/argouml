@@ -2260,12 +2260,30 @@ public class ParserDisplay extends Parser {
 	    }
 	}
 
+        /* handle the Effect (Action)
+        We can distinct between 4 cases:
+        1. An effect is given. None exists yet.
+        2. The expression of the effect was present, but is altered.
+        3. An effct is not given. None exists yet.
+        4. The expression of the effect was present, but is removed.
+        The reaction in these cases should be:
+        1. Create a new CallAction, set its name, language & expression, 
+       and hook it to the transition.
+        2. Change the effect's expression. Leave the actiontype, name & 
+	language untouched.
+        3. Nop.
+        4. Unhook and erase the existing effect.
+        */
+	/* TODO: If the effect is not a CallAction, then it is reset 
+	to a CallAction (case 2). */
+	/* TODO: The name and language are reset when the expression is 
+	altered (case 2). */
 	if (actions.length() > 0) {
 	    Object effect = /*(MCallAction)*/ parseAction(actions);
 	    ModelFacade.setName(effect, "anon");
 	    ModelFacade.setEffect(trans, effect);
 	}
-	else
+	else // case 3 & 4
 	    ModelFacade.setEffect(trans, null);
 
 	return trans;
