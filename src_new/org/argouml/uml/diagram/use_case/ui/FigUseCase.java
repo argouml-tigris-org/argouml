@@ -1091,6 +1091,7 @@ public class FigUseCase extends FigNodeModelElement {
      *
      * @param ft  The text that has been edited.
      * @throws PropertyVetoException
+     *
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
