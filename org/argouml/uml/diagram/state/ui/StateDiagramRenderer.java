@@ -32,6 +32,7 @@ import org.apache.log4j.Logger;
 
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
+import org.argouml.uml.diagram.activity.ui.FigSwimlane;
 
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
@@ -87,6 +88,9 @@ public class StateDiagramRenderer
         }
         else if (org.argouml.model.ModelFacade.isAState(node)) {
             return new FigSimpleState(gm, node);
+        }
+        else if (ModelFacade.isAPartition(node)) {
+            return new FigSwimlane(gm, node);
         }
         else if (org.argouml.model.ModelFacade.isAPseudostate(node)) {
             Object pState = node;

@@ -59,7 +59,8 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         setNameEventListening(namesToWatch);
 
         addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        //addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField("Discriminator:", new UMLTextField(this, new UMLTextProperty(mclass, "discriminator", "getDiscriminator", "setDiscriminator")));
         addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 

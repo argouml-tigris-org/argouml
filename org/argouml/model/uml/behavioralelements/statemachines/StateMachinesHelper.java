@@ -27,6 +27,7 @@ package org.argouml.model.uml.behavioralelements.statemachines;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -280,6 +281,27 @@ public class StateMachinesHelper {
             }
         }
         return null;
+    }
+    
+    /**
+     * Returns all substates some composite state contains.
+     * @param compState
+     * @return
+     */
+    public Collection getAllSubStates(Object compState) {
+        if (ModelFacade.isACompositeState(compState)) {
+            List retList = new ArrayList();
+            Iterator it = ModelFacade.getSubvertices(compState).iterator();
+            while (it.hasNext()) {
+                Object subState = it.next();
+                if (ModelFacade.isACompositeState(subState)) {
+                    retList.addAll(getAllSubStates(subState));
+                }
+                retList.add(subState);
+            }
+            return retList;
+        } else
+            throw new IllegalArgumentException("Argument is not a composite state");
     }
 
 }

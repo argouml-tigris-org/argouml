@@ -178,13 +178,10 @@ public class UseCaseDiagramRenderer
 
         else if (org.argouml.model.ModelFacade.isAInclude(edge)) {
             Object   inc    = /*(MInclude)*/ edge;
-            FigInclude incFig = new FigInclude(inc);
+            FigInclude incFig = new FigInclude(inc);          
 
-            // The nodes at the two ends. NSUML has a bug which gets base and
-            // additon reversed, so we must reverse their accessors here.
-
-            Object base     = ModelFacade.getAddition(inc);
-            Object addition = ModelFacade.getBase(inc);
+            Object base     = ModelFacade.getBase(inc);
+            Object addition = ModelFacade.getAddition(inc);
 
             // The figs for the two end nodes
 

@@ -51,7 +51,7 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
 		continue;
 	    }
 	    if (ModelFacade.isAStateMachine(o)
-		    && ModelFacade.getContext(o) != parent) {
+		 && ModelFacade.getContext(o) != parent) {
 		continue;
 	    }
 	    ret.add(o);

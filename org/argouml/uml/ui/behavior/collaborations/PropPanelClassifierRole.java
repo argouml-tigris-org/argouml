@@ -60,11 +60,12 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 
 	addField(Translator.localize("UMLMenu", "label.name"),
 		 getNameTextField());
-	addField(Translator.localize("UMLMenu", "label.stereotype"),
-		 new UMLComboBoxNavigator(this,
-					  Translator.localize("UMLMenu",
-							"tooltip.nav-stereo"),
-					  getStereotypeBox()));
+//	addField(Translator.localize("UMLMenu", "label.stereotype"),
+//		 new UMLComboBoxNavigator(this,
+//					  Translator.localize("UMLMenu",
+//							"tooltip.nav-stereo"),
+//					  getStereotypeBox()));
+	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 	addField(Translator.localize("UMLMenu", "label.namespace"),
 		 getNamespaceScroll());
 
@@ -116,6 +117,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 					  "button.go-up"),
 			    "navigateUp",
 			    null);
+	new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), getActionNewReception());
 	new PropPanelButton(this, buttonPanel, _deleteIcon,
 			    localize("Delete"),
 			    "removeElement",

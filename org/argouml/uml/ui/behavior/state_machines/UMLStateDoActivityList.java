@@ -44,7 +44,7 @@ public class UMLStateDoActivityList extends UMLMutableLinkedList {
      */
     public UMLStateDoActivityList(
         UMLModelElementListModel2 dataModel) {
-        super(dataModel, null);
+        super(dataModel);
     }
 
     /**

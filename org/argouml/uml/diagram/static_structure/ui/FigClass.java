@@ -767,6 +767,7 @@ public class FigClass extends FigNodeModelElement {
      * @see FigNodeModelElement#modelChanged(MElementEvent)
      */
     protected void modelChanged(MElementEvent mee) {
+        super.modelChanged(mee);
 
         if (getOwner() == null) {
             return;
@@ -797,6 +798,10 @@ public class FigClass extends FigNodeModelElement {
             updateStereotypeText();
             updateAttributes();
             updateOperations();
+            damage();
+        }
+        if (mee != null && mee.getSource().equals(ModelFacade.getStereoType(getOwner()))) {
+            updateStereotypeText();
             damage();
         }
         // name updating

@@ -242,8 +242,10 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoOperationToCollaborationDiagram());
         packagePerspective.addRule(new GoBehavioralFeatureToStateMachine());
         packagePerspective.addRule(new GoBehavioralFeatureToStateDiagram());
+        // works for both statediagram as activitygraph
+        packagePerspective.addRule(new GoStatemachineToDiagram()); 
         packagePerspective.addRule(new GoMachineToState());
-        packagePerspective.addRule(new GoCompositeStateToSubvertex());
+        packagePerspective.addRule(new GoCompositeStateToSubvertex());        
         packagePerspective.addRule(new GoStateToInternalTrans());
         packagePerspective.addRule(new GoStateToDoActivity());
         packagePerspective.addRule(new GoStateToEntry());

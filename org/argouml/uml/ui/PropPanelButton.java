@@ -44,7 +44,16 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
         Logger.getLogger(PropPanelButton.class);
 
     private PropPanel _propPanel;
+    /**
+     * The action method to be executed.
+     */
     private Method _actionMethod;
+    
+    /**
+     * The action to be exectuted.  Either action or action method must be set but not both.
+     */
+    private Action _action;
+    
     private Method _enabledMethod;
     private static Object[] _noArgs = {};
 
@@ -55,6 +64,7 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
      * @param toolTipText
      * @param actionMethod string name of the actionMethod, found by reflection
      * @param enabledMethod string name of the enableMethod, found by reflection
+     * @param action the action to be executed. Must be null if actionMethod is filled.
      */
     public PropPanelButton(
             PropPanel propPanel,
@@ -62,7 +72,8 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
             Icon icon,
             String toolTipText,
             String actionMethod,
-            String enabledMethod) {
+            String enabledMethod,
+            Action action) {
 
         super(icon);
 
@@ -76,6 +87,7 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
 
         Class propPanelClass = propPanel.getClass();
         Class[] noClass = {};
+        if (actionMethod != null) {
         try {
             _actionMethod = propPanelClass.getMethod(actionMethod, noClass);
             if (enabledMethod != null) {
@@ -84,17 +96,50 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
         } catch (Exception e) {
             cat.error(e.toString() + " in PropPanelButton(" +  toolTipText + ")", e);
         }
+        } else
+        if (action != null) {
+            _action = action;
+        } else
+            throw new IllegalArgumentException("Either action method or action must be indicated. They are both null now.");
 
         setEnabled(false);
 
         buttonPanel.add(this);
         addActionListener(this);
     }
+    
+    /**
+     * @deprecated as of 0.17.1 This constructor constructs a proppanel button using the old reflection method. 
+     * @param propPanel
+     * @param buttonPanel
+     * @param icon
+     * @param toolTipText
+     * @param actionMethod
+     * @param enabledMethod
+     */
+    public PropPanelButton( PropPanel propPanel,
+            JComponent buttonPanel,
+            Icon icon,
+            String toolTipText,
+            String actionMethod,
+            String enabledMethod) { 
+        this (propPanel, buttonPanel, icon, toolTipText, actionMethod, enabledMethod, null);
+        
+    }
+    
+    public PropPanelButton( PropPanel propPanel,
+            JComponent buttonPanel,
+            Icon icon,
+            String toolTipText,                        
+            Action action) { 
+        this (propPanel, buttonPanel, icon, toolTipText, null, null, action);
+        
+    }
 
     public void targetReasserted() {
         boolean enabled = false;
         Object target = _propPanel.getTarget();
-        if (target != null && _actionMethod != null && _propPanel != null) {
+        if (target != null && (_actionMethod != null || _action != null) && _propPanel != null) {
             enabled = true;
             if (_enabledMethod != null) {
                 try {
@@ -106,7 +151,11 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
                 } catch (Exception e) {
                     cat.error(e.toString() + " in PropPanelButton", e);
                 }
-            }
+            } else 
+            if (_action != null) {
+                enabled = _action.isEnabled();
+            } 
+            
         }
 
         setEnabled(enabled);
@@ -152,6 +201,10 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
                 cat.error("Container: " + _propPanel.getClass().getName());
                 cat.error("ActionMethod: " + _actionMethod.toString());
             }
-        }
+        } else
+        if (_action != null) {
+            _action.actionPerformed(event);
+        } else
+            throw new IllegalStateException("No action or action method indicated");
     }
 }

@@ -38,8 +38,9 @@ import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
 public abstract class PropPanelEvent extends PropPanelModelElement {
@@ -62,9 +63,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
     }
 
     public void initialize() {
-        paramListModel = new UMLEventParameterListModel();
-        JList paramList =
-            new UMLLinkedList(paramListModel);
+        
         paramScroll = getParameterScroll();
         new PropPanelButton(
             this,
@@ -82,7 +81,8 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
             null);
 
         addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
         addField(Translator.localize("UMLMenu", "label.parameters"), getParameterScroll());
 
@@ -102,7 +102,9 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
 
     protected JScrollPane getParameterScroll() {
         if (paramScroll == null) {
-            JList paramList = new UMLLinkedList(paramListModel);
+            paramListModel = new UMLEventParameterListModel();
+            JList paramList =
+                new UMLMutableLinkedList(paramListModel, ActionNewParameter.SINGLETON);            
             paramList.setVisibleRowCount(3);
             paramScroll = new JScrollPane(paramList);
         }

@@ -194,6 +194,14 @@ public interface NotationProvider2 {
      * @return The String representation of the object.
      */
     public String generateAction(Object m);
+    
+    /**
+     * Generate the String representation for an Action State.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
+    public String generateActionState(Object actionState);
 
     /**
      * Generate the String representation for a Guard.

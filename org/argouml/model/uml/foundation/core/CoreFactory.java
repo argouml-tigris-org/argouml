@@ -1436,7 +1436,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	if (o instanceof MEvent) {
 	    MEvent event = (MEvent) o;
 	    MParameter res = buildParameter();
-	    res.setKind(MParameterDirectionKind.INOUT);
+	    res.setKind(MParameterDirectionKind.IN);
 	    //    removing this next line solves issue 2209
 	    //res.setNamespace(event.getNamespace()); 
             event.addParameter(res);

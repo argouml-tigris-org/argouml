@@ -51,7 +51,8 @@ public class PropPanelTransition extends PropPanelModelElement {
         super("Transition", ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         JList statemachineList = new UMLLinkedList(new UMLTransitionStatemachineListModel());
         statemachineList.setVisibleRowCount(1);
         addField(Translator.localize("UMLMenu", "label.statemachine"), new JScrollPane(statemachineList));

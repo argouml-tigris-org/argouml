@@ -293,6 +293,10 @@ public final class Notation implements PropertyChangeListener {
     protected static String generateAction(NotationName notation, Object m) {
         return getProvider(notation).generateAction(m);
     }
+    
+    protected static String generateActionState(NotationName notation, Object m) {
+        return getProvider(notation).generateActionState(m);
+    }
 
     protected static String generateGuard(NotationName notation,
 					  Object/*MGuard*/ m) {
@@ -595,6 +599,9 @@ public final class Notation implements PropertyChangeListener {
         if (ModelFacade.isAMultiplicity(o)) {
             return SINGLETON.generateMultiplicity(nn, o);
 	}
+        if (ModelFacade.isAActionState(o)) {
+            return SINGLETON.generateActionState(nn, o);
+        }
         if (ModelFacade.isAState(o)) {
             return SINGLETON.generateState(nn, o);
 	}

@@ -495,6 +495,8 @@ public abstract class FigEdgeModelElement
         String nameStr =
 	    Notation.generate(this, ModelFacade.getName(getOwner()));
         _name.setText(nameStr);
+        calcBounds();
+        setBounds(getBounds());
     }
 
     protected void updateStereotypeText() {

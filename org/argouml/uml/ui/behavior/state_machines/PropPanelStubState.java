@@ -44,7 +44,8 @@ public class PropPanelStubState extends PropPanelStateVertex {
         super("Stub State", _stateIcon, ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.container"), containerScroll);
         // TODO: add the referenced state. This is a string which is IMHO not necessary.
 

@@ -1475,5 +1475,16 @@ public class FigUseCase extends FigNodeModelElement {
         }
         damage();
     }
+    
+    
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#postLoad()
+     */
+    public void postLoad() {       
+        super.postLoad();
+        if (_epVec != null && _epVec.isVisible()) {
+            setExtensionPointVisible(true);
+        }
+    }
 } /* end class FigUseCase */

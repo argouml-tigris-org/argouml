@@ -382,14 +382,10 @@ public class UseCaseDiagramGraphModel
             end0 = ModelFacade.getBase(edge);
             end1 = ModelFacade.getExtension(edge);
         }
-        else if (ModelFacade.isAInclude(edge)) {
+        else if (ModelFacade.isAInclude(edge)) {           
 
-            // There is a bug in NSUML which gets the addition and base
-            // relationships back to front for include relationships. Solve
-            // by reversing their accessors in the code
-
-            end0 = ModelFacade.getAddition(edge);
-            end1 = ModelFacade.getBase(edge);
+            end0 = ModelFacade.getBase(edge);
+            end1 = ModelFacade.getAddition(edge);
         }
         else if (ModelFacade.isADependency(edge)) {
 

@@ -3,14 +3,14 @@
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -24,23 +24,34 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Vector;
 
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
 
 import org.argouml.application.api.ArgoModule;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -121,7 +132,8 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     private JScrollPane namespaceScroll;
     private JComboBox namespaceComboBox;
-    private JComboBox stereotypeBox;
+    private JComboBox stereotypeComboBox;
+    private Box _stereotypeBox;
     private JScrollPane supplierDependencyScroll;
     private JScrollPane clientDependencyScroll;
     private JScrollPane targetFlowScroll;
@@ -179,7 +191,7 @@ public abstract class PropPanelModelElement extends PropPanel {
 		 new UMLComboBoxNavigator(this,
 		         Translator.localize("UMLMenu",
 					     "tooltip.nav-stereo"),
-					  getStereotypeBox()));
+					  getStereotypeComboBox()));
         addField(Translator.localize("UMLMenu", "label.namespace"),
 		 getNamespaceScroll());
 
@@ -300,14 +312,44 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     }
 
-    protected JComboBox getStereotypeBox() {
-        if (stereotypeBox == null) {
-            stereotypeBox =
+    protected JComboBox getStereotypeComboBox() {
+        if (stereotypeComboBox == null) {
+            stereotypeComboBox =
 		new UMLComboBox2(stereotypeComboBoxModel,
 				 ActionSetModelElementStereotype.SINGLETON);
         }
-        return stereotypeBox;
+        return stereotypeComboBox;
     }
+    
+    /**
+     * Returns the stereotype box. This is a box with a combobox to select the stereotype and a button to create a new one
+     * @return
+     */
+    protected Box getStereotypeBox() {
+        if (_stereotypeBox == null) {
+            _stereotypeBox = new Box(BoxLayout.X_AXIS);
+            _stereotypeBox.add(new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeComboBox()));           
+            JButton stereoTypeButton = new JButton(new AbstractAction(null, _stereotypeIcon) {
+
+                public void actionPerformed(ActionEvent e) {
+                    Object newTarget = ExtensionMechanismsFactory.getFactory()
+                            .buildStereotype(getTarget(), null);
+                    TargetManager.getInstance().setTarget(newTarget);
+                }
+
+            });
+            // we don't want to 'see' the button
+            // stereoTypeButton.setBorderPainted(false);
+            // stereoTypeButton.setContentAreaFilled(false);
+            stereoTypeButton.setSize(stereoTypeButton.getWidth()-10, stereoTypeButton.getHeight());
+            JToolBar toolbar = new JToolBar();
+            toolbar.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
+            toolbar.add(stereoTypeButton);
+            _stereotypeBox.add(toolbar);
+        }
+        return _stereotypeBox;
+    }
+
 
     protected JScrollPane getSupplierDependencyScroll() {
         if (supplierDependencyScroll == null) {

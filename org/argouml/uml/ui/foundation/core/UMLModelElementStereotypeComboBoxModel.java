@@ -115,7 +115,8 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
 	    paths,
 	    ExtensionMechanismsHelper.getHelper()
 	        .getAllPossibleStereotypes(elem));
-        setElements(elements);
+        setElements( ExtensionMechanismsHelper.getHelper()
+	        .getAllPossibleStereotypes(elem));
     }   
 
     /**

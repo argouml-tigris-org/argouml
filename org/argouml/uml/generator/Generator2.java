@@ -96,10 +96,13 @@ public abstract class Generator2
      * @param o the element to be generated
      * @return String the generated code
      */
-    public String generate(Object o) {
+    public String generate(Object o) {        
         if (o == null) {
             return "";
 	}
+        if (ModelFacade.isAActionState(o)) {
+            return generateActionState(o);
+        }
         if (ModelFacade.isAExtensionPoint(o)) {
             return generateExtensionPoint(o);
 	}
@@ -241,7 +244,7 @@ public abstract class Generator2
     /**
      * @see NotationProvider2#generateAction(Object)
      */
-    public abstract String generateAction(Object m);
+    public abstract String generateAction(Object m);     
 
     /**
      * @see NotationProvider2#generateGuard(Object)

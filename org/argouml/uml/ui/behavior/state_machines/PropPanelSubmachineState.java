@@ -48,7 +48,8 @@ public class PropPanelSubmachineState extends PropPanelCompositeState {
         // TODO: get the submachine state it's own icon
         super("Submachine State", _compositeStateIcon, ConfigLoader.getTabPropsOrientation());
         addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.container"), containerScroll);
         JComboBox submachineBox = new UMLComboBox2(new UMLSubmachineStateComboBoxModel(), ActionSetSubmachineStateSubmachine.SINGLETON);
         addField(Translator.localize("UMLMenu", "label.submachine"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-submachine"), submachineBox));

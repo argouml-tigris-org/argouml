@@ -30,7 +30,15 @@ import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 
+/**
+ * Go rule to navigate from a classifier to the behavioral features owned by that classifier
+ * 
+ *
+ * @since Jul 13, 2004
+ * @author jaap.branderhorst@xs4all.nl
+ */
 public class GoClassifierToBeh extends AbstractPerspectiveRule {
 
     public String getRuleName() {
@@ -38,8 +46,8 @@ public class GoClassifierToBeh extends AbstractPerspectiveRule {
     }
 
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAClassifier(parent)) {
-	    return ModelFacade.getOperations(parent);
+	if (ModelFacade.isAClassifier(parent)) {	    
+	    return CoreHelper.getHelper().getBehavioralFeatures(parent);
 	}
 	return null;
     }

@@ -50,7 +50,8 @@ public class PropPanelInterface extends PropPanelClassifier {
 	Class mclass = (Class)ModelFacade.INTERFACE;
 
 	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-	addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+	// addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 	/*
 	  JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
@@ -76,6 +77,7 @@ public class PropPanelInterface extends PropPanelClassifier {
 	new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize("UMLMenu", "button.new-operation"), "addOperation", null);
 	//new PropPanelButton(this,buttonPanel,_generalizationIcon, Translator.localize("UMLMenu", "button.new-generalization"),"addGeneralization",null);
 	//new PropPanelButton(this,buttonPanel,_realizationIcon, Translator.localize("UMLMenu", "button.new-realization"),"addRealization",null);
+	new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), getActionNewReception());
 	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-interface"), "removeElement", null);
 	//does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon, Translator.localize("UMLMenu", "button.new-interface"),"newInterface",null);
 

@@ -31,19 +31,21 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -54,6 +56,10 @@ public class PropPanelClass extends PropPanelClassifier {
 
     private JScrollPane _attributeScroll;
     private JScrollPane _operationScroll;
+    
+
+    
+    
 
     private static UMLClassAttributeListModel attributeListModel =
         new UMLClassAttributeListModel();
@@ -68,7 +74,8 @@ public class PropPanelClass extends PropPanelClassifier {
 	Class mclass = (Class)ModelFacade.CLASS;
 
 	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-	addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+	// addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 	_modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.active-uc"), this, new UMLReflectionBooleanProperty("isActive", mclass, "isActive", "setActive")));
 	addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
@@ -92,6 +99,7 @@ public class PropPanelClass extends PropPanelClassifier {
 	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
 	new PropPanelButton(this, buttonPanel, _addAttrIcon, Translator.localize("UMLMenu", "button.new-attribute"), "addAttribute", null);
 	new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize("UMLMenu", "button.new-operation"), "addOperation", null);
+        new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), getActionNewReception());
 	new PropPanelButton(this, buttonPanel, _innerClassIcon, Translator.localize("UMLMenu", "button.new-inner-class"), "addInnerClass", null);
 	new PropPanelButton(this, buttonPanel, _classIcon, Translator.localize("UMLMenu", "button.new-class"), "newClass", null);
 	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-class"), "removeElement", null);
@@ -143,6 +151,9 @@ public class PropPanelClass extends PropPanelClassifier {
         }
         return _attributeScroll;
     }
+    
+    
 
 
+    
 } /* end class PropPanelClass */

@@ -257,6 +257,7 @@ public class ModelFacade {
     public static final Object SCOPEKIND = MScopeKind.class;
     public static final Object SEND_ACTION = MSendAction.class;
     public static final Object STEREOTYPE = MStereotype.class;
+    public static final Object PARTITION = MPartition.class;
     public static final Object PARAMETER = MParameter.class;
     public static final Object PARAMETERDIRECTIONKIND =
         MParameterDirectionKind.class;
@@ -1091,6 +1092,16 @@ public class ModelFacade {
     public static boolean isAPackage(Object handle) {
         return handle instanceof MPackage;
     }
+    
+    /**
+     * Recognizer for Partition
+     *
+     * @param handle candidate
+     * @return true if handle is a Partition
+     */
+    public static boolean isAPartition(Object handle) {
+        return handle instanceof MPartition;
+    }
 
     /**
      * Recognizer for Pseudostate
@@ -1904,6 +1915,9 @@ public class ModelFacade {
 
     /**
      * The base of some model element
+     * There is a bug in NSUML which gets the addition and base 
+     * relationships back to front for include relationships. Solve
+     * by reversing their accessors in the code
      * @param handle the model element
      * @return the base
      */
@@ -1915,7 +1929,7 @@ public class ModelFacade {
         } else if (handle instanceof MExtend) {
             return ((MExtend) handle).getBase();
         } else if (handle instanceof MInclude) {
-            return ((MInclude) handle).getBase();
+            return ((MInclude) handle).getAddition();
         }
 	return illegalArgumentObject(handle);
     }
@@ -2238,7 +2252,7 @@ public class ModelFacade {
         }
         if (handle instanceof MTimeEvent) {
             return ((MTimeEvent) handle).getWhen();
-        }
+        }       
         return illegalArgumentObject(handle);
     }
 
@@ -3180,7 +3194,7 @@ public class ModelFacade {
     }
 
     /**
-     * Get the parameters of a behavioral feature.
+     * Get the parameters of a Object Flow State, Behavioral Feature, Classifier or Event.
      *
      * @param handle operation to retrieve from
      * @return Iterator with operations.
@@ -3452,13 +3466,26 @@ public class ModelFacade {
         }
 	return illegalArgumentObject(handle);
     }
+    
+    /**
+     * Returns the states from a deferable event
+     *
+     * @param handle is the event
+     * @return Object
+     */
+    public static Collection getStates(Object handle) {
+        if (handle instanceof MEvent) {
+            return ((MEvent) handle).getStates();
+        }
+	return illegalArgumentCollection(handle);
+    }
 
     /**
      * Returns the stereotype belonging to some given model element
      *
      * @param handle is a model element
      * @return Object
-     * @deprecated 0.15 in favor of getStereotypes
+     * @deprecated 0.15 in favor of getStereotypes since UML 1.5 supports multiple stereotypes
      */
     public static Object getStereoType(Object handle) {
         if (isAModelElement(handle)) {
@@ -3756,6 +3783,8 @@ public class ModelFacade {
             return ((MStateMachine) handle).getTransitions();
         } else if (isACompositeState(handle)) {
             return ((MCompositeState) handle).getInternalTransitions();
+        } else if (isAEvent(handle)) {
+            return ((MEvent) handle).getTransitions();
         }
 	return illegalArgumentCollection(handle);
     }
@@ -3883,13 +3912,16 @@ public class ModelFacade {
 
     /**
      * Returns an addition for a given inlcude.
+     * There is a bug in NSUML which gets the addition and base
+     * relationships back to front for include relationships. Solve
+     * reversing their accessors in the code
      *
      * @param handle is the include
      * @return the addition
      */
     public static Object getAddition(Object handle) {
         if (handle instanceof MInclude) {
-            return ((MInclude) handle).getAddition();
+            return ((MInclude) handle).getBase();
         }
 	return illegalArgumentObject(handle);
     }
@@ -4638,7 +4670,7 @@ public class ModelFacade {
             return;
         }
         if (handle instanceof MInclude && base instanceof MUseCase) {
-            ((MInclude) handle).setBase((MUseCase) base);
+            ((MInclude) handle).setAddition((MUseCase) base);
             return;
         }
 	illegalArgument(handle, base);
@@ -5683,9 +5715,15 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /**
+     * Sets the addition to an include.
+     * There is a bug in NSUML that reverses additions and bases for includes.
+     * @param handle
+     * @param useCase
+     */
     public static void setAddition(Object handle, Object useCase) {
         if (handle instanceof MInclude) {
-            ((MInclude) handle).setAddition((MUseCase) useCase);
+            ((MInclude) handle).setBase((MUseCase) useCase);
             return;
         }
 	illegalArgument(handle);

@@ -61,11 +61,12 @@ public class PropPanelDataType extends PropPanelClassifier {
 
         Class mclass = (Class) ModelFacade.DATATYPE;
 
-        addField(Translator.localize("UMLMenu", "label.name"),
-                getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
-                new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
-                        "tooltip.nav-stereo"), getStereotypeBox()));
+        //addField(Translator.localize("UMLMenu", "label.name"),
+        //        getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"),
+        //        new UMLComboBoxNavigator(this, Translator.localize("UMLMenu",
+        //                "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"),
                 getNamespaceComboBox());
         addField(Translator.localize("UMLMenu", "label.modifiers"),

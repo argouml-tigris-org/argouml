@@ -429,18 +429,14 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds a reception belonging to some signal
+     * Builds a reception belonging to some classifier
      */
-    public MReception buildReception(Object asignal) {
-        MSignal signal = (MSignal) asignal;
-        if (signal == null)
-            return null;
-        MReception reception = createReception();
-        reception.setSignal(signal);
-        if (signal.getNamespace() != null) {
-            reception.setNamespace(signal.getNamespace());
+    public Object buildReception(Object aClassifier) {
+        Object reception = createReception();
+        if (ModelFacade.isAClassifier(aClassifier)) {           
+            ModelFacade.setOwner(reception, aClassifier);
         }
-        return reception;
+        return reception;        
     }
 
     public void deleteAction(Object elem) {
