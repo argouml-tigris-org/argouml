@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -33,7 +34,7 @@ public class TestUmlActor extends GenericUmlObjectTestFixture
 {
 	/**
 	 * Constructor for FakeUmlModelFacadeTest.
-	 * @param arg0
+	 * @param arg0 test name
 	 */
 	public TestUmlActor(String arg0)
 	{
@@ -43,7 +44,7 @@ public class TestUmlActor extends GenericUmlObjectTestFixture
 
 	public void testActorLegacy() {
 		UmlFactory.getFactory().setJmiProxyCreated(false);
-		Object o = ModelFacade.getFacade().create(Uml.ACTOR);
+		Object o = ModelFacade.create(Uml.ACTOR);
 		assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a actor", ModelFacade.isAActor(o));
@@ -52,7 +53,7 @@ public class TestUmlActor extends GenericUmlObjectTestFixture
 
 	public void testActor() {
 		UmlFactory.getFactory().setJmiProxyCreated(true);
-		Object o = ModelFacade.getFacade().create(Uml.ACTOR);
+		Object o = ModelFacade.create(Uml.ACTOR);
 		assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a actor", ModelFacade.isAActor(o));

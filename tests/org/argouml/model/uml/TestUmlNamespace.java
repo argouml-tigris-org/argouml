@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,7 +44,7 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture
 
 	public void testNamespaceLegacy() {
 		UmlFactory.getFactory().setJmiProxyCreated(false);
-		Object o = ModelFacade.getFacade().create(Uml.NAMESPACE);
+		Object o = ModelFacade.create(Uml.NAMESPACE);
 		assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a namespace", ModelFacade.isANamespace(o));
@@ -52,7 +53,7 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture
 
 	public void testNamespace() {
 		UmlFactory.getFactory().setJmiProxyCreated(true);
-		Object o = ModelFacade.getFacade().create(Uml.NAMESPACE);
+		Object o = ModelFacade.create(Uml.NAMESPACE);
 		assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a namespace", ModelFacade.isANamespace(o));

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -23,8 +24,6 @@
 
 package org.argouml.model.uml;
 
-import javax.jmi.reflect.RefBaseObject;
-
 import org.argouml.model.ModelFacade;
 
 
@@ -35,7 +34,7 @@ public class TestUmlModelElement extends GenericUmlObjectTestFixture
 {
 	/**
 	 * Constructor for FakeUmlModelFacadeTest.
-	 * @param arg0
+	 * @param arg0 test name
 	 */
 	public TestUmlModelElement(String arg0)
 	{
@@ -45,7 +44,7 @@ public class TestUmlModelElement extends GenericUmlObjectTestFixture
 
 	public void testModelElementLegacy() {
 		UmlFactory.getFactory().setJmiProxyCreated(false);
-		Object me = ModelFacade.getFacade().create(Uml.OBJECT);
+		Object me = ModelFacade.create(Uml.OBJECT);
 		assertNotNull("Didn't create object", me);
 		assertTrue("Should be a base", ModelFacade.isABase(me));
 		assertTrue("Should be a model element", ModelFacade.isAModelElement(me));
@@ -54,7 +53,7 @@ public class TestUmlModelElement extends GenericUmlObjectTestFixture
 
 	public void testModelElement() {
 		UmlFactory.getFactory().setJmiProxyCreated(true);
-		Object me = ModelFacade.getFacade().create(Uml.OBJECT);
+		Object me = ModelFacade.create(Uml.OBJECT);
 		assertNotNull("Didn't create object", me);
 		assertTrue("Should be a base", ModelFacade.isABase(me));
 		assertTrue("Should be a model element", ModelFacade.isAModelElement(me));

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -43,7 +44,7 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture
 
 	public void testUseCaseLegacy() {
 		UmlFactory.getFactory().setJmiProxyCreated(false);
-		Object o = ModelFacade.getFacade().create(Uml.USE_CASE);
+		Object o = ModelFacade.create(Uml.USE_CASE);
 		assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a use case", ModelFacade.isAUseCase(o));
@@ -52,7 +53,7 @@ public class TestUmlUseCase extends GenericUmlObjectTestFixture
 
 	public void testUseCase() {
 		UmlFactory.getFactory().setJmiProxyCreated(true);
-		Object o = ModelFacade.getFacade().create(Uml.USE_CASE);
+		Object o = ModelFacade.create(Uml.USE_CASE);
 		assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a use case", ModelFacade.isAUseCase(o));

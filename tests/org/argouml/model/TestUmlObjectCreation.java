@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -99,7 +100,7 @@ public class TestUmlObjectCreation extends TestCase {
 				   c instanceof UmlModelEntity);
 		
 		Object o = null;
-		o = ModelFacade.getFacade().create(c);
+		o = ModelFacade.create(c);
 		assertNotNull("Could not create " + c.getClass().getName(), o);
 		
 		// Make sure that the new create() mechanism gives the same class as the legacy create
