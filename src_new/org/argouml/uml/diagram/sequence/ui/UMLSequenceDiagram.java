@@ -214,7 +214,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     public void cleanUp() {
         Object collab =
             ((SequenceDiagramGraphModel) getGraphModel()).getCollaboration();
-        Model.getUmlFactory().delete(collab);
+        ProjectManager.getManager().getCurrentProject().moveToTrash(collab);
     }
 
 } /* end class UMLSequenceDiagram */
