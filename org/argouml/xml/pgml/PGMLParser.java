@@ -219,12 +219,17 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     if (_elementState == 0 && elementName.equals("group") &&
         _previousNode != null && _nestedGroups > 0) { // DEFAULT_STATE is private :-(
       String descr = attrList.getValue("description").trim();
+      _elementState = NODE_STATE;
+      _currentNode = _previousNode;
       if (descr.endsWith("[0, 0, 0, 0]") || descr.endsWith("[0,0,0,0]")) {
-        ((FigNodeModelElement)_previousNode).enableSizeChecking(false);
+        
         if (_previousNode instanceof FigClass) {
+            ((FigNodeModelElement)_previousNode).enableSizeChecking(false);
         	((FigClass)_previousNode).setOperationVisible(false);
+            ((FigNodeModelElement)_previousNode).enableSizeChecking(true);
+            return;           
         } 
-        ((FigNodeModelElement)_previousNode).enableSizeChecking(true);
+        
       }
     }
 

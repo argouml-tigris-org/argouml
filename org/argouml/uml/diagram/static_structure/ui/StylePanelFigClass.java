@@ -23,19 +23,18 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ItemEvent;
+import java.beans.PropertyChangeEvent;
 
-import org.argouml.ui.*;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.event.DocumentEvent;
+
+import org.argouml.ui.StylePanelFig;
 
 public class StylePanelFigClass extends StylePanelFig {
 
@@ -48,6 +47,11 @@ public class StylePanelFigClass extends StylePanelFig {
   protected JCheckBox _attrCheckBox = new JCheckBox("Attributes");
   protected JCheckBox _operCheckBox = new JCheckBox("Operations");
   protected JLabel _displayLabel = new JLabel("Display: ");
+  
+  /**
+   * Flag to indicate that a refresh is going on.
+   */
+  private boolean _refreshTransaction = false;
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -84,14 +88,27 @@ public class StylePanelFigClass extends StylePanelFig {
   }
 
 
+    /**
+     * Only refresh the tab if the bounds propertyChange event arrives.
+     * @see org.argouml.ui.StylePanel#refresh(java.beans.PropertyChangeEvent)
+     */
+    public void refresh(PropertyChangeEvent e) {
+       String propertyName = e.getPropertyName();
+       if (propertyName.equals("bounds")) {
+           refresh();
+       }
+    }
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
   public void refresh() {
+      _refreshTransaction = true;
     super.refresh();
     org.argouml.uml.diagram.static_structure.ui.FigClass tc = (org.argouml.uml.diagram.static_structure.ui.FigClass)_target;
     _attrCheckBox.setSelected(tc.isAttributeVisible());
     _operCheckBox.setSelected(tc.isOperationVisible());
+    _refreshTransaction = false;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -106,6 +123,7 @@ public class StylePanelFigClass extends StylePanelFig {
 
 
   public void itemStateChanged(ItemEvent e) {
+      if (!_refreshTransaction) {
     Object src = e.getSource();
 
     if (src == _attrCheckBox) {
@@ -115,6 +133,7 @@ public class StylePanelFigClass extends StylePanelFig {
       ((org.argouml.uml.diagram.static_structure.ui.FigClass)_target).setOperationVisible(_operCheckBox.isSelected());
     }
     else super.itemStateChanged(e);
+      }
   }
 
 

@@ -49,7 +49,7 @@ public class ArgoDiagram extends Diagram {
   // constructors
 
   public ArgoDiagram() { 
-  	super();
+  	super();    
   }
 
   public ArgoDiagram(String diagramName ) {

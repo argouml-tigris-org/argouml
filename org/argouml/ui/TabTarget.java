@@ -23,6 +23,8 @@
 
 package org.argouml.ui;
 
+import java.beans.PropertyChangeEvent;
+
 import org.argouml.ui.targetmanager.TargetListener;
 
 /**
@@ -47,12 +49,13 @@ public interface TabTarget extends TargetListener {
   public Object getTarget();
   
   /**
-   *
+   * Refreshes the tab IN TOTAL
    */
   public void refresh();
+    
   
   /**
-   *
+   * Returns true if the tab should be enabled with the given target
    */
   public boolean shouldBeEnabled(Object target);
 }
