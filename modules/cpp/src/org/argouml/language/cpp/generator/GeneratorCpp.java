@@ -96,7 +96,7 @@ public class GeneratorCpp extends Generator2
      * System newline separator.
      */
     private static final String LINE_SEPARATOR =
-	System.getProperty("line.separator");
+        System.getProperty("line.separator");
 
 
     /**
@@ -120,7 +120,7 @@ public class GeneratorCpp extends Generator2
     };
 
     private static final String[] PART_NAME = {
-	"public", "protected", "private"
+        "public", "protected", "private"
     };
 
     /**
@@ -385,7 +385,7 @@ public class GeneratorCpp extends Generator2
             // output lost sections only in the second path
             // -> sections which are moved from header(inline) to source
             // file are prevented to be outputted in header pass
-            if (generatorPass == HEADER_PASS)	{
+            if (generatorPass == HEADER_PASS)   {
                 sect.write(pathname, INDENT, false);
             }
             else sect.write(pathname, INDENT, true);
@@ -409,8 +409,8 @@ public class GeneratorCpp extends Generator2
 
             LOG.info("----- end updating -----");
         }
-	// reset generator pass to NONE for the notation to be correct
-	generatorPass = NONE_PASS;
+        // reset generator pass to NONE for the notation to be correct
+        generatorPass = NONE_PASS;
         return pathname;
     }
 
@@ -564,7 +564,7 @@ public class GeneratorCpp extends Generator2
         StringTokenizer st = new StringTokenizer(packagePath, ", ");
         while (st.hasMoreTokens()) {
             sb.append("#include <").append(st.nextToken()).append(".h>")
-		.append(LINE_SEPARATOR);
+                .append(LINE_SEPARATOR);
         }
         return sb.toString();
     }
@@ -716,7 +716,7 @@ public class GeneratorCpp extends Generator2
                                 .append(generateHeaderPackageStart(
                                              Model.getFacade().getType(attr)))
                                 .append("class ").append(name).append(";")
-				    .append(LINE_SEPARATOR);
+                                    .append(LINE_SEPARATOR);
                         }
                     }
                 }
@@ -762,7 +762,7 @@ public class GeneratorCpp extends Generator2
 
         if (predeclare.toString().length() > 0) {
             sb.append(LINE_SEPARATOR).append(LINE_SEPARATOR)
-		.append(predeclare.toString());
+                .append(predeclare.toString());
         }
         return sb.toString();
     }
@@ -778,7 +778,7 @@ public class GeneratorCpp extends Generator2
             token = st.nextToken();
             // create line: namespace FOO {"
             sb.append("namespace ").append(token).append(" {")
-		.append(LINE_SEPARATOR);
+                .append(LINE_SEPARATOR);
         }
         return sb.toString();
     }
@@ -1017,16 +1017,27 @@ public class GeneratorCpp extends Generator2
      */
     private String generateOperationPrefix(Object op) {
         StringBuffer sb = new StringBuffer(80);
-        sb.append(generateConcurrency(op));
+        // c++ doesn't have any builtin construct for concurrency
+        //sb.append(generateConcurrency(op));
         if (generatorPass != SOURCE_PASS) {
             // make all operations to virtual - as long as they are not "leaf"
             Object scope = Model.getFacade().getOwnerScope(op);
+            if (Model.getFacade().isLeaf(op)
+		    && !Model.getFacade().isRoot(op)) {
+                // there's no way to make a leaf method that it's not root in
+                // c++, so warn the user and ignore the 'root' attribute
+                // (or it may be better to ignore the 'leaf' attribute?)
+                LOG.warn(op + " is leaf but not root: "
+			 + "C++ can't handle this properly");
+		LOG.warn("    Ignoring the 'root' attribute");
+            }
             // generate a function as virtual, if it can be overriden
             // or override another function AND if this function is
             // not marked as static, which disallows "virtual"
             // alternatively every abstract function is defined as
             // virtual
-            if ((!Model.getFacade().isLeaf(op) && !Model.getFacade().isRoot(op)
+            if ((!Model.getFacade().isLeaf(op)
+                    && !Model.getFacade().isConstructor(op)
                     && (!(Model.getScopeKind().getClassifier().equals(scope))))
                     || (Model.getFacade().isAbstract(op))) {
                 sb.append("virtual ");
@@ -1097,12 +1108,12 @@ public class GeneratorCpp extends Generator2
 
         // if generating a file always document
         if (documented || generatorPass != NONE_PASS) {
-	    // generate DocComment from tagged values
-	    String tv = generateTaggedValues (op, DOC_COMMENT_TAGS);
-	    if (tv != null && tv.length() > 0) {
-		sb.append (LINE_SEPARATOR).append(operationIndent).append (tv);
-	    }
-	}
+            // generate DocComment from tagged values
+            String tv = generateTaggedValues (op, DOC_COMMENT_TAGS);
+            if (tv != null && tv.length() > 0) {
+                sb.append (LINE_SEPARATOR).append(operationIndent).append (tv);
+            }
+        }
 
         sb.append(operationIndent)
             .append(generateOperationPrefix(op));
@@ -1145,11 +1156,11 @@ public class GeneratorCpp extends Generator2
             }
         }
 
-	String suffix = generateOperationSuffix(op);
-	if (suffix.equals(""))
-	    sb.append(")");
-	else
-	    sb.append(") ").append(suffix);
+        String suffix = generateOperationSuffix(op);
+        if (suffix.equals(""))
+            sb.append(")");
+        else
+            sb.append(") ").append(suffix);
 
         return sb.toString();
     }
@@ -1238,15 +1249,15 @@ public class GeneratorCpp extends Generator2
 
         // list tagged values for documentation
         if (documented || generatorPass != NONE_PASS) {
-	    String tv = generateTaggedValues (attr, DOC_COMMENT_TAGS);
-	    if (tv != null && tv.length() > 0) {
-		sb.append (LINE_SEPARATOR).append (INDENT).append (tv);
-	    }
-	}
+            String tv = generateTaggedValues (attr, DOC_COMMENT_TAGS);
+            if (tv != null && tv.length() > 0) {
+                sb.append (LINE_SEPARATOR).append (INDENT).append (tv);
+            }
+        }
         // cat.info("generate Visibility for Attribute");
         sb.append(generateVisibility(attr));
         sb.append(generateOwnerScope(attr));
-        sb.append(generateStructuralFeatureChangability(attr));
+        sb.append(generateStructuralFeatureChangeability(attr));
         sb.append(
                 generateMultiplicity(
                         attr,
@@ -1301,7 +1312,7 @@ public class GeneratorCpp extends Generator2
         StringBuffer sb = new StringBuffer();
         String packName = generateName(Model.getFacade().getLanguage(p));
         sb.append("// package ").append(packName).append(" {")
-	    .append(LINE_SEPARATOR);
+            .append(LINE_SEPARATOR);
         Collection ownedElements = Model.getFacade().getOwnedElements(p);
         if (ownedElements != null) {
             Iterator ownedEnum = ownedElements.iterator();
@@ -1406,13 +1417,13 @@ public class GeneratorCpp extends Generator2
                     classifierkeyword = "class";
                 }
                 sb.append(LINE_SEPARATOR)
-		    .append("//end of ")
-		        .append(classifierkeyword)
-		            .append(" ").append(Model.getFacade().getName(cls))
-		                .append(LINE_SEPARATOR);
+                    .append("//end of ")
+                        .append(classifierkeyword)
+                            .append(" ").append(Model.getFacade().getName(cls))
+                                .append(LINE_SEPARATOR);
             }
             if (generatorPass != SOURCE_PASS)
-		sb.append("};").append(LINE_SEPARATOR);
+                sb.append("};").append(LINE_SEPARATOR);
             sb.append(generateHeaderPackageEnd());
         }
         return sb;
@@ -1462,7 +1473,9 @@ public class GeneratorCpp extends Generator2
      * generated for classes and interfaces only at the moment.
      */
     public String generateClassifier(Object cls) {
-        if (generatorPass == NONE_PASS && Model.getFacade().isAClass(cls)) {
+        if (generatorPass == NONE_PASS
+                && (Model.getFacade().isAClass(cls)
+                    || Model.getFacade().isAInterface(cls))) {
             // we're probably in the notation pane, so do a special trick
             // to show both header and source
             StringBuffer sb = new StringBuffer();
@@ -1471,11 +1484,13 @@ public class GeneratorCpp extends Generator2
             sb.append(LINE_SEPARATOR);
             generatorPass = HEADER_PASS;
             sb.append(generateClassifier(cls));
-            sb.append(LINE_SEPARATOR);
-            sb.append("// ").append(name).append(".cpp");
-            sb.append(LINE_SEPARATOR);
-            generatorPass = SOURCE_PASS;
-            sb.append(generateClassifier(cls));
+            if (Model.getFacade().isAClass(cls)) {
+                sb.append(LINE_SEPARATOR);
+                sb.append("// ").append(name).append(".cpp");
+                sb.append(LINE_SEPARATOR);
+                generatorPass = SOURCE_PASS;
+                sb.append(generateClassifier(cls));
+            }
             generatorPass = NONE_PASS;
             return sb.toString();
         }
@@ -1578,7 +1593,7 @@ public class GeneratorCpp extends Generator2
                         && Model.getFacade().isPrivate(sf))) {
                     if (!isVisibilityLinePrinted) {
                         isVisibilityLinePrinted = true;
-			sb.append(LINE_SEPARATOR);
+                        sb.append(LINE_SEPARATOR);
                         if (publicProtectedPrivate == PUBLIC_PART) {
                             sb.append(" public:");
                         } else if (publicProtectedPrivate == PROTECTED_PART) {
@@ -1586,7 +1601,7 @@ public class GeneratorCpp extends Generator2
                         } else if (publicProtectedPrivate == PRIVATE_PART) {
                             sb.append(" private:");
                         }
-			sb.append(LINE_SEPARATOR);
+                        sb.append(LINE_SEPARATOR);
                     }
                     sb.append(INDENT).append(generate(sf));
 
@@ -1837,48 +1852,48 @@ public class GeneratorCpp extends Generator2
         }
 
         // generate tag controlled access functions for attributes
-	StringBuffer[] funcs = new StringBuffer[3]; 
+        StringBuffer[] funcs = new StringBuffer[3]; 
         funcs[0] = new StringBuffer(80);
         funcs[1] = new StringBuffer(80);
         funcs[2] = new StringBuffer(80);
         generateClassifierBodyTaggedAccess4Attributes(cls, funcs[PRIVATE_PART],
-				                      funcs[PROTECTED_PART],
-				                      funcs[PUBLIC_PART]);
+                                                      funcs[PROTECTED_PART],
+                                                      funcs[PUBLIC_PART]);
 
         Iterator behEnum = behs.iterator();
-	while (behEnum.hasNext()) {
-	    Object bf = behEnum.next();
-	    StringBuffer tb = null;
+        while (behEnum.hasNext()) {
+            Object bf = behEnum.next();
+            StringBuffer tb = null;
 
-	    int p = getVisibilityPart(bf);
-	    if (p < 0) continue;
-	    tb = funcs[p];
-	    tb.append(LINE_SEPARATOR).append(INDENT);
+            int p = getVisibilityPart(bf);
+            if (p < 0) continue;
+            tb = funcs[p];
+            tb.append(LINE_SEPARATOR).append(INDENT);
 
-	    boolean mustGenBody = checkGenerateOperationBody(bf);
-	    if (tb != null 
+            boolean mustGenBody = checkGenerateOperationBody(bf);
+            if (tb != null 
                 && ((generatorPass == HEADER_PASS) || mustGenBody))
-	    {
-		tb.append(generate(bf));
-		
-		// helper for tagged values
-		String tv = generateTaggedValues(bf, ALL_BUT_DOC_TAGS);
-		
-		if (mustGenBody && (Model.getFacade().isAClass(cls))
+            {
+                tb.append(generate(bf));
+                
+                // helper for tagged values
+                String tv = generateTaggedValues(bf, ALL_BUT_DOC_TAGS);
+                
+                if (mustGenBody && (Model.getFacade().isAClass(cls))
                         && (Model.getFacade().isAOperation(bf))
                         && (!Model.getFacade().isAbstract(bf))) {
                     // there is no ReturnType in behavioral feature (nsuml)
                     tb.append(LINE_SEPARATOR).append(generateMethodBody(bf));
                 } else {
-		    tb.append(";").append(LINE_SEPARATOR);
-		    if (tv.length() > 0) {
-			tb.append(INDENT).append(tv).append(LINE_SEPARATOR);
-		    }
-		}
-	    }
-	} // end loop through all operations
+                    tb.append(";").append(LINE_SEPARATOR);
+                    if (tv.length() > 0) {
+                        tb.append(INDENT).append(tv).append(LINE_SEPARATOR);
+                    }
+                }
+            }
+        } // end loop through all operations
 
-	sb.append(generateAllParts(funcs));
+        sb.append(generateAllParts(funcs));
     }
 
     /**
@@ -1896,7 +1911,7 @@ public class GeneratorCpp extends Generator2
                 findTagValues(cls, "typedef_private");
             if (!publicTypedefStatements.isEmpty()) {
                 sb.append(LINE_SEPARATOR).append(" public:")
-		    .append(LINE_SEPARATOR).append(INDENT);
+                    .append(LINE_SEPARATOR).append(INDENT);
                 sb.append("// public type definitions for header defined "
                       + "by Tag entries in ArgoUML").append(LINE_SEPARATOR);
                 sb.append(INDENT);
@@ -1912,7 +1927,7 @@ public class GeneratorCpp extends Generator2
             }
             if (!protectedTypedefStatements.isEmpty()) {
                 sb.append(LINE_SEPARATOR).append(" protected:")
-		    .append(LINE_SEPARATOR).append(INDENT);
+                    .append(LINE_SEPARATOR).append(INDENT);
                 sb.append("// protected type definitions for header defined "
                       + "by Tag entries in ArgoUML").append(LINE_SEPARATOR);
                 sb.append(INDENT);
@@ -1928,7 +1943,7 @@ public class GeneratorCpp extends Generator2
             }
             if (!privateTypedefStatements.isEmpty()) {
                 sb.append(LINE_SEPARATOR).append(" private:")
-		    .append(LINE_SEPARATOR).append(INDENT);
+                    .append(LINE_SEPARATOR).append(INDENT);
                 sb.append("// private type definitions for header defined "
                       + "by Tag entries in ArgoUML").append(LINE_SEPARATOR);
                 sb.append(INDENT);
@@ -1939,7 +1954,7 @@ public class GeneratorCpp extends Generator2
                 while (typedefEnum.hasNext()) {
                     sb.append(INDENT).append("typedef ");
                     sb.append(typedefEnum.next()).append(";")
-			.append(LINE_SEPARATOR);
+                        .append(LINE_SEPARATOR);
                 }
             }
         }
@@ -1955,10 +1970,10 @@ public class GeneratorCpp extends Generator2
                 && generatorPass == HEADER_PASS) {
             sb.append(LINE_SEPARATOR).append("public:").append(LINE_SEPARATOR);
             sb.append(INDENT).append("// virtual destructor for interface ")
-		.append(LINE_SEPARATOR);
+                .append(LINE_SEPARATOR);
             sb.append(INDENT).append("virtual ").append('~').append(
                 Model.getFacade().getName(cls)).append("() { }")
-		    .append(LINE_SEPARATOR);
+                    .append(LINE_SEPARATOR);
         }
     }
 
@@ -2074,7 +2089,7 @@ public class GeneratorCpp extends Generator2
         if (cls == null) return "";
 
         String clsName = Model.getFacade().getName(cls);
-	String res = null;
+        String res = null;
         if (clsName.equals("void")) res = "";
         else if (clsName.equals("char")) res = "return 'x';";
         else if (clsName.equals("int")) res = "return 0;";
@@ -2084,10 +2099,10 @@ public class GeneratorCpp extends Generator2
         else if (clsName.equals("float")) res = "return 0.0;";
         else if (clsName.equals("double")) res = "return 0.0;";
 
-	if (res == null)
-	    return INDENT + "return 0;" + LINE_SEPARATOR;
-	else
-	    return INDENT + res + LINE_SEPARATOR;
+        if (res == null)
+            return INDENT + "return 0;" + LINE_SEPARATOR;
+        else
+            return INDENT + res + LINE_SEPARATOR;
     }
 
     private String generateTaggedValues(Object e, int tagSelection) {
@@ -2159,7 +2174,7 @@ public class GeneratorCpp extends Generator2
         if (!first) {
             if (tagSelection == DOC_COMMENT_TAGS) {
                 buf.append(LINE_SEPARATOR).append(INDENT).append(" */")
-		    .append(LINE_SEPARATOR);
+                    .append(LINE_SEPARATOR);
             } else {
                 buf.append ("}*/").append(LINE_SEPARATOR);
             }
@@ -2331,7 +2346,7 @@ public class GeneratorCpp extends Generator2
                 sDocComment.append(Model.getFacade().getName(type));
             }
             sDocComment.append(LINE_SEPARATOR).append(INDENT)
-		.append(" */").append(LINE_SEPARATOR);
+                .append(" */").append(LINE_SEPARATOR);
             return sDocComment.toString();
         }
         else {
@@ -2395,7 +2410,7 @@ public class GeneratorCpp extends Generator2
      * @see org.argouml.application.api.NotationProvider2#generateAssociation(java.lang.Object)
      */
     public String generateAssociation(Object handle) {
-        return "";
+        return ""; // Maybe Model.getFacade().getName(handle) ???
     }
 
     /**
@@ -2611,13 +2626,12 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * Generate "final" keyword for final operations.
+     * Generate "const" keyword for query operations.
      */
     private String generateOperationChangeability(Object op) {
-        if (Model.getFacade().isLeaf(op) || Model.getFacade().isQuery(op)) {
+        if (Model.getFacade().isQuery(op)) {
             return "const ";
-        }
-        else {
+        } else {
             return "";
         }
     }
@@ -2636,26 +2650,23 @@ public class GeneratorCpp extends Generator2
         }
     }
 
-    private String generateStructuralFeatureChangability(Object sf) {
+    private String generateStructuralFeatureChangeability(Object sf) {
         Object changeableKind = Model.getFacade().getChangeability(sf);
         if (Model.getChangeableKind().getFrozen().equals(changeableKind)) {
-            return "final ";
+            return "const ";
         }
         return "";
     }
 
     /**
      * Generates "synchronized" keyword for guarded operations.
+     * FIXME: not needed for c++, it doesn't handle changeability
+     * directly. Maybe, implement this in the methods body using 
+     * some kind of API (posix, win32, ... as user wishes ...)?
      * @param op The operation
      * @return The synchronized keyword if the operation is guarded, else ""
      */
     private String generateConcurrency(Object op) {
-        Object concurrency = Model.getFacade().getConcurrency(op);
-        if (concurrency != null
-                && (Model.getFacade().getValue(concurrency)
-                    == Model.getConcurrencyKind().getGuarded())) {
-            return "synchronized ";
-        }
         return "";
     }
 
@@ -2874,9 +2885,9 @@ public class GeneratorCpp extends Generator2
      * @see org.argouml.application.api.NotationProvider2#generateMessage(java.lang.Object)
      */
     public String generateMessage(Object message) {
-    	if (message == null) {
-    	    return "";
-    	}
+        if (message == null) {
+            return "";
+        }
         return generateName(Model.getFacade().getName(message)) + "::"
             + generateAction(Model.getFacade().getAction(message));
     }
