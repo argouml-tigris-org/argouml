@@ -30,9 +30,9 @@ activity.
       <emphasis>Analysis Phase</emphasis> (see <xref
       linkend="ch.tut.analysis"/>). One of the steps of the Analysis Phase will
       be to take the output of the Requirements Phase and recast it in the
-      language of a putative solution.</para>
+      language of a deemed solution.</para>
 
-    <para>Remember we are using both a <emphasis>recursive</emphasis>, and an
+    <para>Remember we are using both a <emphasis>incremental</emphasis>, and an
       <emphasis>iterative</emphasis> process.</para>
 
     <para>We may well come back to the requirements process again as we break
@@ -191,8 +191,8 @@ From this top-level view we can extract the principle activities of
           specification</emphasis>.</para></listitem>
       </orderedlist>
 
-      <para>In any iterative development process, there will be an exercise of
-        prioritization, and early iterations will focus on capturing the key
+      <para>In any iterative development process, we will 
+        prioritize, and early iterations will focus on capturing the key
         behavior of the most important use cases.</para>
 
       <para>Most modern requirements capture processes agree that it is
@@ -1748,10 +1748,10 @@ the deposit receptacle is liable to be getting full.
         <para>
 An audit trail for all activities will be maintained and
 sent periodically to the bank's central computer.
-It will be possible for the maintenance engineer to make 
-a copy of the audit trail for sneaker net communications
-with the central computer.
-</para>
+It will be possible for the maintenance engineer to save 
+a copy of the audit trail to a diskette for transporting to
+the central computer.
+        </para>
 
         <para>
 Both dialup and leased line support will be provided.
@@ -1775,7 +1775,7 @@ development and the design, development and production of
 the hardware.
 Neither the hardware nor the software shall be considered
 the independent variable, but rather they shall be
-considered coequal.
+considered equal.
 </para>
       </sect3>
 
