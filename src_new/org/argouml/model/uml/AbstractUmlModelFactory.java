@@ -24,6 +24,7 @@
 
 package org.argouml.model.uml;
 
+import org.argouml.model.Model;
 import org.argouml.model.UUIDManager;
 
 import ru.novosoft.uml.MBase;
@@ -81,8 +82,7 @@ public abstract class AbstractUmlModelFactory {
             UmlModelEventPump pump = UmlModelEventPump.getPump();
 
             ((MBase) handle).addMElementListener(pump);
-            pump.addModelEventListener(ExplorerNSUMLEventAdaptor.getInstance(),
-                    handle);
+            pump.addModelEventListener(Model.getEventAdapter(), handle);
 
             UmlModelListener.getInstance().newElement(handle);
         }

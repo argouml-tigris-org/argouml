@@ -131,6 +131,13 @@ public interface ModelImplementation {
     ExtensionMechanismsHelper getExtensionMechanismsHelper();
 
     /**
+     * Getter for EventAdapter.
+     *
+     * @return the event adapter
+     */
+    EventAdapter getEventAdapter();
+
+    /**
      * Getter for ModelManagementFactory.
      *
      * @return the factory

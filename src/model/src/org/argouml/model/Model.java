@@ -228,6 +228,15 @@ public final class Model {
     }
 
     /**
+     * Getter for EventAdapter.
+     *
+     * @return the event adapter
+     */
+    public static EventAdapter getEventAdapter() {
+        return impl.getEventAdapter();
+    }
+
+    /**
      * Getter for ModelManagementFactory.
      *
      * @return the factory
