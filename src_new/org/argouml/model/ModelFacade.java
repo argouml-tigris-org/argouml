@@ -5303,7 +5303,8 @@ public class ModelFacade {
     }
 
     public static void setComponentInstance(Object handle, Object c) {
-        if (handle instanceof MInstance && c instanceof MComponentInstance) {
+        if (handle instanceof MInstance
+	    && (c == null || c instanceof MComponentInstance)) {
             ((MInstance) handle).setComponentInstance((MComponentInstance) c);
             return;
         }
