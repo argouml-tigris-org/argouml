@@ -204,7 +204,9 @@ public class FigCompositeState extends FigState {
         the bottom region has a minimum height*/
         if (getOwner() != null) {
             if (Model.getFacade().isConcurrent(getOwner())
-                    && !regionsVector.isEmpty()) {
+                    && !regionsVector.isEmpty()
+                    && regionsVector.lastElement() 
+                        instanceof FigConcurrentRegion) {
                 FigConcurrentRegion f = 
                     ((FigConcurrentRegion) regionsVector.lastElement());
                 Rectangle regionBounds = f.getBounds();
@@ -234,7 +236,9 @@ public class FigCompositeState extends FigState {
         the regions are resized*/
         if (getOwner() != null) {
             if (Model.getFacade().isConcurrent(getOwner())
-                    && !regionsVector.isEmpty()) {
+                    && !regionsVector.isEmpty()
+                    && regionsVector.lastElement() 
+                        instanceof FigConcurrentRegion) {
                 FigConcurrentRegion f = 
                     ((FigConcurrentRegion) regionsVector.lastElement());
                 for (int i = 0; i < regionsVector.size() - 1; i++) {
