@@ -31,7 +31,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.util.ConfigLoader;
 
 /**

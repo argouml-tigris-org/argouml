@@ -69,7 +69,7 @@ public class PropPanelCompositeState extends PropPanelState {
         addField(Translator.localize("label.container"), 
                 getContainerScroll());
         addField(Translator.localize("label.modifiers"), 
-                new UMLCompositeStateConcurentCheckBox());
+                new UMLCompositeStateConcurrentCheckBox());
         addField(Translator.localize("label.entry"), 
                 getEntryScroll());
         addField(Translator.localize("label.exit"), 
