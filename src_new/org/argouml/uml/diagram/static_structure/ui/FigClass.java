@@ -448,6 +448,17 @@ public class FigClass extends FigNodeModelElement
     }
 
     /**
+     * USED BY PGML.tee
+     * @return the class name and bounds together with compartment
+     * visibility.
+     */
+    public String classNameAndBounds() {
+        return super.classNameAndBounds()
+            + "operationsVisible=" + isOperationsVisible() + ";"
+            + "attributesVisible=" + isAttributesVisible();
+    }
+
+    /**
      * <p>Gets the minimum size permitted for a class on the diagram.</p>
      *
      * <p>Parts of this are hardcoded, notably the fact that the name
@@ -1002,16 +1013,16 @@ public class FigClass extends FigNodeModelElement
 
         currentY += height - 1; // -1 for 1 pixel overlap
 
-        int na = (isAttributesVisible())
+        int attributeCount = (isAttributesVisible())
     	    ? Math.max(1, getAttributesFig().getFigs().size() - 1)
     	    : 0;
-        int no = (isOperationsVisible())
+        int operationCount = (isOperationsVisible())
     	    ? Math.max(1, getOperationsFig().getFigs().size() - 1)
     	    : 0;
         if (isCheckSize()) {
-            height = ROWHEIGHT * na + 2 + extraEach;
-        } else if (newH > currentY - y && na + no > 0) {
-            height = (newH + y - currentY) * na / (na + no) + 1;
+            height = ROWHEIGHT * attributeCount + 2 + extraEach;
+        } else if (newH > currentY - y && attributeCount + operationCount > 0) {
+            height = (newH + y - currentY) * attributeCount / (attributeCount + operationCount) + 1;
         } else {
             height = 1;
         }

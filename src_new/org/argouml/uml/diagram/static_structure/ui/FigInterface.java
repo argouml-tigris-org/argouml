@@ -640,6 +640,16 @@ public class FigInterface extends FigNodeModelElement
 
         return ft2;
     }
+    
+    /**
+     * USED BY PGML.tee
+     * @return the class name and bounds together with compartment
+     * visibility.
+     */
+    public String classNameAndBounds() {
+        return super.classNameAndBounds()
+            + "operationsVisible=" + isOperationsVisible();
+    }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createFeatureIn(
