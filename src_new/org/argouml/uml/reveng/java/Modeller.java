@@ -685,9 +685,8 @@ public class Modeller
     {
         Object mAttribute = parseState.getFeature(name);
         if(mAttribute == null &&
-           (initializer != null ||
-            (noAssociations &&
-             getAssociationEnd(name, mClassifier) == null))) {
+           noAssociations &&
+           getAssociationEnd(name, mClassifier) == null) {
             mAttribute = UmlFactory.getFactory().getCore().buildAttribute(name);
             ModelFacade.addFeature(parseState.getClassifier(),mAttribute);
         }
