@@ -227,23 +227,35 @@ public class UmlFilePersister extends AbstractFilePersister {
                 if (instanceCount == null) {
                     instanceCount = new IntWrapper();
                 }
-                
+
+                // TODO this is currently slow, reoping the .uml file multiple
+                // times. Once the XmlInputStream has been amended to be
+                // "reopened" the commented lines should replace the
+                // instruction that preceeds them.
+                // reopen shall reopen the stream from where it was previously
+                // closed and search for the next named tag to start reading.
                 MemberFilePersister persister = null;
                 if (memberList.get(i).equals("pgml")) {
                     inputStream =
-                        new XmlInputStream(url.openStream(), "pgml", instanceCount.getIntValue());
+                        new XmlInputStream(url.openStream(),
+                                           "pgml",
+                                           instanceCount.getIntValue());
+                    //inputStream.reopen("pgml");
                     persister = new DiagramMemberFilePersister(p, inputStream);
                 } else if (memberList.get(i).equals("todo")) {
                     inputStream =
                         new XmlInputStream(url.openStream(), "todo");
+                    //inputStream.reopen("todo");
                     persister = new TodoListMemberFilePersister(p, inputStream);
                 } else if (memberList.get(i).equals("xmi")) {
                     inputStream =
                         new XmlInputStream(url.openStream(), "XMI");
+                    //inputStream.reopen("XMI");
                     persister = new ModelMemberFilePersister(p, inputStream);
                 }
                 persister.load();
                 inputStream.close();
+                //the above line will go when reopen is available
                 instanceCount.increment();
                 instanceCountByType.put(type, instanceCount);
             }
