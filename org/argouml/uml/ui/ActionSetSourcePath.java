@@ -34,6 +34,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.OsUtil;
+import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 
@@ -112,10 +113,10 @@ public class ActionSetSourcePath extends UMLAction {
 	    f = new File(path);
 	}
 	if ((f != null) && (f.getPath().length() > 0)) {
-	    chooser  = OsUtil.getFileChooser(f.getPath());
+	    chooser  = FileChooserFactory.getFileChooser(f.getPath());
 	}
 	if (chooser == null) {
-	    chooser  = OsUtil.getFileChooser();
+	    chooser  = FileChooserFactory.getFileChooser();
 	}
 	if (f != null) {
 	    chooser.setSelectedFile(f);

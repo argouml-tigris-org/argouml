@@ -39,6 +39,7 @@ import org.argouml.application.api.CommandLineInterface;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.OsUtil;
+import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
@@ -118,12 +119,12 @@ public class ActionSaveGraphics
 
 		String filename = p.getURL().getFile();
 		if (!filename.startsWith("/FILE1/+/")) {
-		    chooser = OsUtil.getFileChooser(p.getURL().getFile());
+		    chooser = FileChooserFactory.getFileChooser(p.getURL().getFile());
 		}
 	    }
 
 	    if (chooser == null) {
-		chooser = OsUtil.getFileChooser();
+		chooser = FileChooserFactory.getFileChooser();
 	    }
 
 	    chooser.setDialogTitle("Save Diagram as Graphics: "

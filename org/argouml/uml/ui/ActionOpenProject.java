@@ -41,6 +41,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.OsUtil;
 import org.argouml.persistence.PersistenceManager;
+import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.tigris.gef.base.Globals;
@@ -97,14 +98,14 @@ public class ActionOpenProject extends ActionFileOperations
             if (p != null && p.getURL() != null) {
                 File file = new File(p.getURL().getFile());
                 if (file.getParentFile() != null) {
-                    chooser = OsUtil.getFileChooser(file.getParent());
+                    chooser = FileChooserFactory.getFileChooser(file.getParent());
                 }
             } else {
-                chooser = OsUtil.getFileChooser();
+                chooser = FileChooserFactory.getFileChooser();
             }
 
             if (chooser == null) {
-                chooser = OsUtil.getFileChooser();
+                chooser = FileChooserFactory.getFileChooser();
             }
 
             chooser.setDialogTitle(

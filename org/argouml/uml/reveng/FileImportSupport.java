@@ -187,6 +187,7 @@ public abstract class FileImportSupport implements PluggableImport {
 	//JFileChooser ch = OsUtil.getFileChooser(directory);
 
 	JFileChooser ch;
+        // TODO: Remove test when JRE1.3 support dropped
         if (OsUtil.isWin32() && OsUtil.isSunJdk() && OsUtil.isJdk131()) {
             ch = new ImportFileChooser(
                 imp,

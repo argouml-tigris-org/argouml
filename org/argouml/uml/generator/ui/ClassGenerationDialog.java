@@ -62,6 +62,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.OsUtil;
 import org.argouml.ui.ArgoDialog;
+import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
@@ -366,13 +367,13 @@ public class ClassGenerationDialog
         try {
             // Show Filechooser to select OuputDirectory
             JFileChooser chooser =
-                OsUtil.getFileChooser(
+                FileChooserFactory.getFileChooser(
                     (String) outputDirectoryComboBox
                         .getModel()
                         .getSelectedItem());
 
             if (chooser == null) {
-                chooser = OsUtil.getFileChooser();
+                chooser = FileChooserFactory.getFileChooser();
             }
 
             chooser.setFileHidingEnabled(true);
