@@ -73,7 +73,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, 
                     int index, boolean isSelected, boolean cellHasFocus) {
         
-        if (org.argouml.model.ModelFacade.isABase(value)) {
+        if (ModelFacade.isABase(value) || ModelFacade.isAMultiplicity(value)) {
             
             String text = makeText(value);
             setText(text);
