@@ -586,6 +586,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     _readyToEdit = true;
     updateBounds();
     bindPort(own, _bigPort);
+   
   }
 
     // override this method in subclasses if you want to show stereotype information

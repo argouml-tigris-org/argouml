@@ -269,5 +269,26 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         }
         return null;
     }
+    /**
+     * @see org.xml.sax.DocumentHandler#endElement(java.lang.String)
+     */
+    public void endElement(String arg0)  {
+        switch (_elementState) {
+            case NODE_STATE: 
+                Object own = _currentNode.getOwner();
+                if (!_diagram.getNodes().contains(own)) {
+                    _diagram.getNodes().addElement(own);
+                }
+                break;
+            case EDGE_STATE:
+                own = _currentEdge.getOwner();
+                if (!_diagram.getEdges().contains(own)) {
+                    _diagram.getEdges().addElement(own);
+                }
+                break;
+        }
+        super.endElement(arg0);
+    }
+
 } /* end class PGMLParser */
 

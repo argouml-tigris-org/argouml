@@ -163,4 +163,24 @@ public class ArgoDiagram extends Diagram implements VetoablePropertyChange {
         }
     }
 
+    /**
+     * @see org.tigris.gef.base.Diagram#getEdges()
+     */
+    public Vector getEdges() {
+        if (getGraphModel() != null) {
+            return getGraphModel().getEdges();
+        }
+        return super.getEdges();
+    }
+
+    /**
+     * @see org.tigris.gef.base.Diagram#getNodes()
+     */
+    public Vector getNodes() {
+        if (getGraphModel() != null) {
+            return getGraphModel().getNodes();
+        }
+        return super.getNodes();
+    }
+
 } /* end class ArgoDiagram */
