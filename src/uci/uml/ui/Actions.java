@@ -199,14 +199,14 @@ public class Actions {
 
   // compartments
   public static UMLAction ShowAttrCompartment =
-  new ActionCompartmentDisplay(true, "Show MAttribute Compartment");
+  new ActionCompartmentDisplay(true, "Show Attribute Compartment");
   public static UMLAction HideAttrCompartment =
-  new ActionCompartmentDisplay(false, "Hide MAttribute Compartment");
+  new ActionCompartmentDisplay(false, "Hide Attribute Compartment");
 
   public static UMLAction ShowOperCompartment =
-  new ActionCompartmentDisplay(true, "Show MOperation Compartment");
+  new ActionCompartmentDisplay(true, "Show Operation Compartment");
   public static UMLAction HideOperCompartment =
-  new ActionCompartmentDisplay(false, "Hide MOperation Compartment");
+  new ActionCompartmentDisplay(false, "Hide Operation Compartment");
 
   public static UMLAction ShowAllCompartments =
   new ActionCompartmentDisplay(true, "Show All Compartments");
