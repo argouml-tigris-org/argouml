@@ -51,17 +51,17 @@ public class FigExtend extends FigEdgeModelElement {
     /**
      * The &laquo;extend&raquo; label.<p>
      */
-    protected FigText _label;
+    private FigText label;
 
     /**
      * The condition expression.<p>
      */
-    protected FigText _condition;
+    private FigText condition;
 
     /**
      * The group of label and condition.<p>
      */
-    protected FigGroup _fg;
+    private FigGroup fg;
 
 
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
@@ -85,51 +85,51 @@ public class FigExtend extends FigEdgeModelElement {
         // to give us the text. When its all done, use calcBounds() to shrink
         // to size.
 
-        _label = new FigText(10, 30, 90, 20);
+        label = new FigText(10, 30, 90, 20);
 
-        _label.setFont(LABEL_FONT);
-        _label.setTextColor(Color.black);
-        _label.setTextFilled(false);
-        _label.setFilled(false);
-        _label.setLineWidth(0);
-        _label.setExpandOnly(false);
-        _label.setMultiLine(false);
-        _label.setAllowsTab(false);
-        _label.setText("<<extend>>");
+        label.setFont(getLabelFont());
+        label.setTextColor(Color.black);
+        label.setTextFilled(false);
+        label.setFilled(false);
+        label.setLineWidth(0);
+        label.setExpandOnly(false);
+        label.setMultiLine(false);
+        label.setAllowsTab(false);
+        label.setText("<<extend>>");
         
 
-        _label.calcBounds();
+        label.calcBounds();
 
         // We need a FigText to hold the condition. At this stage we have
         // nothing to put in it (since we have no owner). Place it immediately
         // below the label, and with the same height and width.
 
-        _condition = new FigText(10, 30 + _label.getBounds().height,
-                                _label.getBounds().width,
-                                _label.getBounds().height);
+        condition = new FigText(10, 30 + label.getBounds().height,
+                                label.getBounds().width,
+                                label.getBounds().height);
 
-        _condition.setFont(LABEL_FONT);
-        _condition.setTextColor(Color.black);
-        _condition.setTextFilled(false);
-        _condition.setFilled(false);
-        _condition.setLineWidth(0);
-        _condition.setExpandOnly(false);
-        _condition.setMultiLine(false);
-        _condition.setAllowsTab(false);
+        condition.setFont(getLabelFont());
+        condition.setTextColor(Color.black);
+        condition.setTextFilled(false);
+        condition.setFilled(false);
+        condition.setLineWidth(0);
+        condition.setExpandOnly(false);
+        condition.setMultiLine(false);
+        condition.setAllowsTab(false);
 
         // Join the two into a group
 
-        _fg = new FigGroup();
+        fg = new FigGroup();
 
-        _fg.addFig(_label);
-        _fg.addFig(_condition);
+        fg.addFig(label);
+        fg.addFig(condition);
 
         // Place in the middle of the line and ensure the line is dashed.  Add
         // an arrow with an open arrow head. Remember that for an extends
         // relationship, the arrow points to the base use case, but because of
         // the way we draw it, that is still the destination end.
 
-        addPathItem(_fg, new PathConvPercent(this, 50, 10));
+        addPathItem(fg, new PathConvPercent(this, 50, 10));
 
         setDashed(true);
 
@@ -203,6 +203,8 @@ public class FigExtend extends FigEdgeModelElement {
      * We reset the condition text. We really ought to check that
      * there has actually been a change, but for now we do it every
      * time.<p>
+     *
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
      */
     protected void modelChanged(MElementEvent e) {
 
@@ -223,24 +225,27 @@ public class FigExtend extends FigEdgeModelElement {
         // condition set. We call the main generate method, which will realise
         // this is a MExpression (subclass) and invoke the correct method.
 
-        Object/*MBooleanExpression*/ condition =
+        Object/*MBooleanExpression*/ c =
 	    ModelFacade.getCondition(extend);
 
-        if (condition == null) {
-            _condition.setText("");
+        if (c == null) {
+            condition.setText("");
         }
         else {
-            _condition.setText(Notation.generate(this, condition));
+            condition.setText(Notation.generate(this, c));
         }
         
 
         // Let the group recalculate its bounds and then tell GEF we've
         // finished.
 
-        _fg.calcBounds();
+        fg.calcBounds();
         endTrans();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     */
     public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
