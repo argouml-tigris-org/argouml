@@ -851,8 +851,51 @@ There are some comments in key places, and it allows you to see what
 operations are available.
 </para>
       <para>
-Its not part of their standard distribution, so you have to write a small
-script to do it.
+Its not part of their standard distribution, so you have to generate
+it yourself. Jeremy Bennet has written the following script to do it:
+</para>
+      <para>
+makedoc.sh:
+<computeroutput>
+#!/bin/sh
+
+# A script to drive Javadoc for all this
+
+# Modifications
+# =============
+
+# 25 Jan 02:  Jeremy Bennett. First version
+
+###############################################################################
+
+# The source trees for ordinary source and generated source and where we put it
+# all.
+
+NSUML_HOME=$HOME/nsuml0_4_19/nsuml
+SRCDIR=${NSUML_HOME}/src
+GENDIR=${NSUML_HOME}/gen
+
+DESTDIR=${NSUML_HOME}/docs/javadocs
+
+# Run the javadoc command
+
+javadoc -d $DESTDIR -sourcepath $GENDIR:$SRCDIR @${NSUML_HOME}/package_list
+</computeroutput>
+Where package_list is:
+<computeroutput>
+ru.novosoft.uml
+ru.novosoft.uml.behavior.activity_graphs
+ru.novosoft.uml.behavior.collaborations
+ru.novosoft.uml.behavior.common_behavior
+ru.novosoft.uml.behavior.state_machines
+ru.novosoft.uml.behavior.use_cases
+ru.novosoft.uml.foundation.core
+ru.novosoft.uml.foundation.data_types
+ru.novosoft.uml.foundation.extension_mechanisms
+ru.novosoft.uml.model_management
+ru.novosoft.uml.undo
+ru.novosoft.uml.xmi
+</computeroutput>
 </para>
     </sect1>
 
@@ -3129,7 +3172,7 @@ Do the following:
 	  <para>
 Pick any Issue that is RESOLVED/FIXED or WORKSFORME and that you have
 not raised, nor solved.
-<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=FIXED&amp;resolution=WORKSFORME">The list to pick from</ulink>.
+<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=FIXED&amp;resolution=WORKSFORME">The list of all RESOLVED/FIXED and RESOLVED/WORKSFORME issues</ulink>.
 </para>
 	</listitem>
 	<listitem>
@@ -3183,7 +3226,6 @@ Do this as many times as you like until there are no Issues left.
 This can be performed by anyone.
 There might be special skills involved but it differs widely depending
 on the nature of the Issue.
-<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=VERIFIED">The list to pick from</ulink>.
 </para>
       <para>
 Do the following:
@@ -3193,7 +3235,7 @@ Do the following:
 	  <para>
 Pick any issued that is RESOLVED/(INVALID, WONTFIX, or DUPLICATE) that
 you have not raised nor solved.
-<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=INVALID&amp;resolution=WONTFIX&amp;resolution=DUPLICATE">The list to pick from</ulink>.
+<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=INVALID&amp;resolution=WONTFIX&amp;resolution=DUPLICATE">The list of all RESOLVED/INVALID, RESOLVED/WONTFIX and RESOLVED/DUPLICATED issues</ulink>.
 </para>
 	</listitem>
 	<listitem>
@@ -3240,7 +3282,8 @@ did not because it was already present in Issuesilla.
 	  <para>
 Pick any Issue that is Verified and that you have raised or that you
 have found and refrained from raising because somebody else already
-had written it.
+had written it. 
+<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=VERIFIED">The list of all VERIFIED issues.</ulink>.
 </para>
 	</listitem>
 	<listitem>
