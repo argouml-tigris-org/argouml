@@ -598,6 +598,24 @@ public class ModelFacade {
     ////////////////////////////////////////////////////////////////
     // Getters for the UML model (in alphabetic order)
 
+    /**
+     * Returns the association end between some classifier and some associaton.
+     * @param type
+     * @param assoc
+     * @return association end
+     */
+    public static Object getAssociationEnd(Object type, Object assoc) {
+        if (type == null || assoc == null || !(type instanceof MClassifier) || !(assoc instanceof MAssociation))
+            return null;
+        Iterator it = ((MClassifier)type).getAssociationEnds().iterator();
+        while (it.hasNext()) {
+            MAssociationEnd end = (MAssociationEnd)it.next();
+            if (((MAssociation)assoc).getConnections().contains(end))
+                return end;
+        }
+        return null;
+    }
+
     /** The list of Association Ends
      *
      * @param handle the object that we get the association ends from.
@@ -672,10 +690,27 @@ public class ModelFacade {
 
     /**
      * Get the children of some generalizable element
+     *
+     * @param handle to the generalizable element.
+     * @return a collection with all children.
      */
     public static Collection getChildren(Object handle) {
         if (isAGeneralizableElement(handle)) {
             return ((MGeneralizableElement)handle).getChildren();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Get the client dependencies of some classifier
+     *
+     * @param handle to the classifier.
+     * @return an iterator with all client dependencies.
+     */
+    public static Iterator getClientDependencies(Object handle) {
+        if (isAModelElement(handle)) {
+			Collection c = ((MModelElement)handle).getClientDependencies();
+            return (c != null) ? c.iterator() : null;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -703,6 +738,26 @@ public class ModelFacade {
         if (handle != null && handle instanceof MClassifier)
             return ((MClassifier)handle).getFeatures();
         return new ArrayList();
+    }
+
+    /**
+     * Gets the generalization between two generalizable elements.
+     * Returns null if there is none.
+     * @param child
+     * @param parent
+     * @return The generalization
+     */
+    public static Object getGeneralization(Object child, Object parent) {
+        if (child == null || parent == null || !(child instanceof MGeneralizableElement) || !(parent instanceof MGeneralizableElement))
+            return null;
+        Iterator it = getGeneralizations(child);
+        while (it.hasNext()) {
+            MGeneralization gen = (MGeneralization)it.next();
+            if (gen.getParent() == parent) {
+                return gen;
+            }
+        }
+        return null;
     }
 
     /** The list of Generalizations from a GeneralizableElement.
@@ -843,6 +898,18 @@ public class ModelFacade {
 
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Get a parameter of an operation.
+     *
+     * @param op operation to retrieve from
+     * @param n parameter number
+     * @return parameter.
+     */
+    public static Object getParameter(Object op, int n) {
+        if (op == null || !(op instanceof MOperation))
+            return null;
+        return ((MOperation)op).getParameter(n);
     }
 
     /** Get the parameters of an operation.
@@ -1069,6 +1136,17 @@ public class ModelFacade {
     }
 
     /**
+     * Returns the suppliers of an abstraction.
+     * @param abstraction
+     * @return a collection of the suppliers
+     */
+    public static Collection getSuppliers(Object handle) {
+        if (handle == null || !(handle instanceof MAbstraction))
+            return null;
+        return ((MAbstraction)handle).getSuppliers();
+    }
+
+    /**
      * Returns all associated classes for some given classifier. Returns an
      * empty collection if the given argument o is not a classifier. The given
      * parameter is included in the returned collection if it has a self-
@@ -1193,13 +1271,35 @@ public class ModelFacade {
     // Model modifying methods
 
     /**
+     * Adds a feature to some classifier.
+     * @param classifier
+     * @param feature
+     */
+    public static void addFeature(Object cls, Object f) {
+        if (cls != null && f != null && cls instanceof MClassifier && f instanceof MFeature) {
+            ((MClassifier)cls).addFeature((MFeature)f);
+        }
+    }
+
+    /**
      * Adds a model element to some namespace.
      * @param ns namespace
      * @param me model element
      */
     public static void addOwnedElement(Object ns, Object me) {
         if (ns != null && ns instanceof MNamespace && me != null && me instanceof MModelElement) {
-		    ((MNamespace)ns).addOwnedElement((MModelElement)me);
+            ((MNamespace)ns).addOwnedElement((MModelElement)me);
+        }
+    }
+
+    /** This method removes a dependency from a model element.
+     *
+     * @param model element
+     * @param dependency
+     */
+    public static void removeClientDependency(Object o, Object dep) {
+        if (o != null && dep != null && o instanceof MModelElement && dep instanceof MDependency) {
+            ((MModelElement)o).removeClientDependency((MDependency)dep);
         }
     }
 
