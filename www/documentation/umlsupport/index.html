@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type"
 content="text/html; charset=iso-8859-1">
 <meta name="keywords"
-content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gentleware, Poseidon, MDA, model-driven, software architecture, software methods, software engineering, CASE, consulting, seminar, seminars, coaching, Java, XML, OCL, object, technology">
+content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gentleware, Poseidon, MDA, model-driven, software architecture, software methods, software engineering, CASE, Java, XML, OCL, object, technology">
 <title>Argo/UML UML Specification Incompatibility list</title>
 </head>
 
@@ -15,32 +15,18 @@ content="ArgoUML, Argo, UML, Unified Modeling Language, modeling, modelling, Gen
 <h2>Class Diagram</h2>
 <ul>
 <li>Association classes are missing. Though ArgoUML can read association classes from XMI files, it cannot display them correctly. That is due to a flaw in GEF, which needs a major rework.
-<li>Paramterized clases are missing
+<li>Parameterized clases are missing
 <li>Packages can have stereotypes, but they are not displayed
 <li>Notes to <i>any</i> model element not implemented
-</ul>
-<h2>Usecase Diagrams</h2>
-<ul>
-<li>Extensionpoints are missing. (Included in 0.10)
-<li>Diagrams are not saved according to the UML specification,
-particularily when it comes to include and extend relation, which are
-saved as dependicies. (Included in 0.10)
 </ul>
 <h2>Object Diagrams</h2>
 <ul>
 <li>implemented as Deploymentdiagram
 <li>Attributes cannot have attribute values
 </ul>
-<h2>Sequence Diagrams</h2>
 <h2>Activity Diagrams</h2>
 <ul>
 <li>Swimlanes missing
-</ul>
-<h2>Deployment Diagrams</h2>
-<h2>Collaboration Diagrams</h2>
-<h2>State Diagrams</h2>
-<ul>
-<li>Concurrent states
 </ul>
 </body>
 </html>
