@@ -28,6 +28,14 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
+// 5 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Bug in detection of
+// matching signatures fixed (was checking for matching parameter names, not
+// just types). signaturesMatch() moved to CriticUtils.
+
+// 8 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Signature simplified to
+// ignore return types (like Java and C++). Javadoc notes this.
+
+
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
@@ -39,67 +47,152 @@ import ru.novosoft.uml.foundation.data_types.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+
+/**
+ * <p> A critic to detect when a class has operations with two matching
+ *   signatures.</p>
+ *
+ * <p>Takes each operation in turn and compares its signature with all earlier
+ *   operations. This version corrects and earlier bug, which checked for
+ *   matching names as well as types in the parameter list.</p>
+ *
+ * <p><em>Warning</em>. The algorithm in is quadratic in the
+ *   number of operations. It could be computationally demanding on a design
+ *   where classes have a lot of operations. See the {@link
+ *   #predicate2} method for possible solutions.</p>
+ *
+ * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.oper_name_conflict">ArgoUML User Manual: Change Names or Signatures in &lt;artifact&gt;</a>
+ */
+
 public class CrOperNameConflict extends CrUML {
 
+    /**
+     * <p>Constructor for the critic.</p>
+     *
+     * <p>Sets up the resource name, which will allow headline and description
+     *   to found for the current locale. Provides design issue categories
+     *   (METHODS, NAMING), sets a knowledge type (SYNTAX) and adds triggers
+     *   for metaclasses "behaviouralFeature" and feature_name".</p>
+     *
+     * @return  nothing returned since this is a constructor
+     */
     public CrOperNameConflict() {
-        setHeadline("Change Names or Signatures in <ocl>self</ocl>");
+
+        setResource("CrOperNameConflict");
+
         addSupportedDecision(CrUML.decMETHODS);
         addSupportedDecision(CrUML.decNAMING);
+
         setKnowledgeTypes(Critic.KT_SYNTAX);
+
+        // These may not actually make any difference at present (the code
+        // behind addTrigger needs more work).
+
         addTrigger("behavioralFeature");
         addTrigger("feature_name");
     }
 
+
+    /**
+     * <p>The trigger for the critic.</p>
+     *
+     * <p>Finds all the operations for the given classifier. Takes each
+     *   operation in turn and compares its signature with all earlier
+     *   operations. This version corrects an earlier bug, which checked for
+     *   matching names as well as types in the parameter list.</p>
+     *
+     * <p><em>Note</em>. The signature ignores any return parameters in looking
+     *   for a match. This is in line with Java/C++.</p>
+     *
+     * <p>We do not need to worry about signature clashes that are inherited
+     *   (overloading). This is something encouraged in many OO environments to
+     *   facilitate polymorphism.</p>
+     *
+     * <p>This algorithm is quadratic in the number of operations. If this
+     *   became a problem, we would have to consider sorting the operations
+     *   vector and comparing only adjacent pairs (potentially O(n log n)
+     *   performance).</p>
+     *
+     * @param  dm    the {@link java.lang.Object Object} to be checked against
+     *               the critic.
+     *
+     * @param  dsgr  the {@link org.argouml.cognitive.Designer Designer}
+     *               creating the model. Not used, this is for future
+     *               development of ArgoUML.
+     *
+     * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  */
+    
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(dm instanceof MClassifier)) return NO_PROBLEM;
-        MClassifier cls = (MClassifier) dm;
-        Collection str = cls.getFeatures();
-        if (str == null) return NO_PROBLEM;
-        Iterator enum = str.iterator();
-        Vector operSeen = new Vector();
-        // warn about inheritied name conflicts, different critic?
-        while (enum.hasNext()) {
-            MFeature f = (MFeature) enum.next();
-            if (!(f instanceof MOperation))
-                continue;
-            MBehavioralFeature bf = (MBehavioralFeature) f;
-            int size = operSeen.size();
-            for (int i = 0; i < size; i++) {
-                MBehavioralFeature otherBF = (MBehavioralFeature) operSeen.elementAt(i);
-                if (signaturesMatch(bf, otherBF)) return PROBLEM_FOUND;
-            }
-            operSeen.addElement(bf);
+
+        // Only do this for classifiers
+
+        if (!(dm instanceof MClassifier)) {
+            return NO_PROBLEM;
         }
+
+        MClassifier cls = (MClassifier) dm;
+
+        // Get all the features (giving up if there are none). Then loop
+        // through finding all operations. Each time we find one, we compare
+        // its signature with all previous (held in vector operSeen), and then
+        // if it doesn't match add it to the vector.
+
+        Collection str = cls.getFeatures();
+
+        if (str == null) {
+            return NO_PROBLEM;
+        }
+
+        Iterator enum   = str.iterator();
+        Vector operSeen = new Vector();
+
+        while (enum.hasNext()) {
+
+            // Skip on if its not an operation
+
+            MFeature f = (MFeature) enum.next();
+
+            if (!(f instanceof MOperation)) {
+                continue;
+            }
+
+            // Compare against all earlier operations. If there's a match we've
+            // found the problem
+
+            MOperation op   = (MOperation) f;
+            int        size = operSeen.size();
+
+            for (int i = 0; i < size; i++) {
+                MOperation otherOp = (MOperation) operSeen.elementAt(i);
+
+                if (CriticUtils.signaturesMatch(op, otherOp)) {
+                    return PROBLEM_FOUND;
+                }
+            }
+
+            // Add to the vector and round to look at the next one
+
+            operSeen.addElement(op);
+        }
+
+        // If we drop out here, there was no match and we have no problem
+
         return NO_PROBLEM;
     }
 
 
-    public boolean signaturesMatch(MBehavioralFeature bf1, MBehavioralFeature bf2) {
-        String name1 = bf1.getName();
-        String name2 = bf2.getName();
-        if (name1 == null || name2 == null) return false;
-        if (!name1.equals(name2)) return false;
-        List params1 = bf1.getParameters();
-        List params2 = bf2.getParameters();
-        int size1 = params1.size();
-        int size2 = params2.size();
-        if (size1 != size2) return false;
-        for (int i = 0; i < size1; i++) {
-            MParameter p1 = (MParameter) params1.get(i);
-            MParameter p2 = (MParameter) params2.get(i);
-            String p1Name = p1.getName();
-            String p2Name = p2.getName();
-            if (p1Name == null || p2Name == null) return false;
-            if (!p1Name.equals(p2Name)) return false;
-            MClassifier p1Type = p1.getType();
-            MClassifier p2Type = p2.getType();
-            if (p1Type == null || p2Type == null) return false;
-            if (!p1Type.equals(p2Type)) return false;
-        }
-
-        return true;
-    }
-
+    /**
+     * <p>Return the icon to be used for the clarifier for this critic.</p>
+     *
+     * <p>A clarifier is the graphical highlight used to show the presence of a
+     *   critique. For example wavy colored underlines beneath operations.</p>
+     *
+     * <p>In this case it will be a wavy line under the second of the clashing
+     *   operations.</p>
+     *
+     * @return       The {@link javax.swing.Icon Icon} to use.  */
+    
     public Icon getClarifier() {
         return ClOperationCompartment.TheInstance;
     }

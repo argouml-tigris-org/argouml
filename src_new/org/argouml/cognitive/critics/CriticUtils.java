@@ -28,6 +28,20 @@
 
 // 4 Feb 2002: Original version by Jeremy Bennett (mail@jeremybennett.com)
 
+// 14 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Added methods to test
+// for singleton stereotype (upper or lower case) and create stereotype (upper
+// or lower case).
+
+// 5 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Added method to check
+// for identical operation signatures.
+
+// 6 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Added method to check a
+// model element is in a namespace.
+
+// 8 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Signature simplified to
+// ignore return types (like Java and C++). Javadoc notes this.
+
+
 package org.argouml.cognitive.critics;
 
 import java.util.*;
@@ -659,7 +673,7 @@ public abstract class CriticUtils {
         // also accept <<Create>>, although its not strictly in the UML
         // standard.
 
-        if (hasStereotype(bf,"create") || hasStereotype(bf,"Create")) {
+        if (hasCreateStereotype(bf)) {
             return true;
         }
 
@@ -687,6 +701,92 @@ public abstract class CriticUtils {
         // don't
 
         return (getReturnParam(bf) == null);
+    }
+
+
+    /**
+     * <p>Tests if the given {@link
+     * ru.novosoft.uml.foundation.core.MModelElement MModelElement} (and hence
+     * any subclass) has the "create" or "Create" stereotype.</p>
+     *
+     * @param me  the {@link ru.novosoft.uml.foundation.core.MModelElement
+     *            MModelElement} whose stereotype we are testing.
+     *
+     * @return    <code>true</code> if the {@link
+     *            ru.novosoft.uml.foundation.core.MModelElement MModelElement}
+     *            (or subclass) has the stereotype "create" or "Create".
+     */
+
+    public static boolean hasCreateStereotype(MModelElement me)
+    {
+        // Fail if we have a null element
+
+        if (me == null) {
+            return false;
+        }
+
+        // Get the stereotype. Fail if there is no stereotype
+
+        MStereotype meSt = me.getStereotype();
+
+        if (meSt == null) {
+            return false;
+        }
+
+        // Now get the stereotype name. Fail if there is no name.
+
+        String meStn = meSt.getName() ;
+
+        if (meStn == null) {
+            return false ;
+        }
+
+        // Check for the names we want.
+
+        return meStn.equals("create") || meStn.equals("Create");
+    }
+
+
+    /**
+     * <p>Tests if the given {@link
+     * ru.novosoft.uml.foundation.core.MModelElement MModelElement} (and hence
+     * any subclass) has the "singleton" or "Singleton" stereotype.</p>
+     *
+     * @param me  the {@link ru.novosoft.uml.foundation.core.MModelElement
+     *            MModelElement} whose stereotype we are testing.
+     *
+     * @return    <code>true</code> if the {@link
+     *            ru.novosoft.uml.foundation.core.MModelElement MModelElement}
+     *            (or subclass) has the stereotype "singleton" or "Singleton".
+     */
+
+    public static boolean hasSingletonStereotype(MModelElement me)
+    {
+        // Fail if we have a null element
+
+        if (me == null) {
+            return false;
+        }
+
+        // Get the stereotype. Fail if there is no stereotype
+
+        MStereotype meSt = me.getStereotype();
+
+        if (meSt == null) {
+            return false;
+        }
+
+        // Now get the stereotype name. Fail if there is no name.
+
+        String meStn = meSt.getName() ;
+
+        if (meStn == null) {
+            return false;
+        }
+
+        // Check for the names we want.
+
+        return meStn.equals("singleton") || meStn.equals("Singleton");
     }
 
 
@@ -796,4 +896,192 @@ public abstract class CriticUtils {
         return null;
     }
 
+
+    /**
+     * <p>Sees if the signatures of two {@link
+     *   ru.novosoft.uml.foundation.core.MOperation MOperation} arguments are
+     *   the same.</p>
+     *
+     * <p>Extracted from {@link
+     *   org.argouml.uml.cognitive.critics.CrOperNameConflict
+     *   CrOperNameConflict} to be of general use.</p>
+     *
+     * <p>Checks for matching operation name, and list of parameter
+     *   types. Corrects an earlier bug, which also checked for identical
+     *   parameter names.</p>
+     *
+     * <p>This version also checks for the parameter kind, since otherwise,
+     *   "op(int a)" and "op():int" appear to have the same signature. Purists
+     *   would probably suggest that the kind should match exactly. However we
+     *   only differentiate the return parameter(s). It is unlikely that any
+     *   practical OO language would be able to distinguish instantiation of in
+     *   from out from inout parameters.</p>
+     *
+     * <p>We ignore return parameters completely. This is in line with Java/C++
+     *   which regard <code>int x(int, int)</code> and <code>double x(int,
+     *   int)</code> as having the same signature.</p>
+     *
+     * <p>If you need to modify this method, take care, since there are
+     *   numerous "telegraph pole" problems involved in working through pairs
+     *   of mixed lists.</p>
+     *
+     * @param op1 the first {@link
+     *            ru.novosoft.uml.foundation.core.MOperation
+     *            MOperation} whose signature is being compared.
+     *
+     * @param op2 the second {@link
+     *            ru.novosoft.uml.foundation.core.MOperation
+     *            MOperation} whose signature is being compared.
+     *
+     * @return    <code>true</code> if the signatures match, <code>false</code>
+     *            otherwise.
+     */
+
+    public static boolean signaturesMatch(MOperation op1,
+                                          MOperation op2) {
+
+        // Check for identical parameter names, watching out for the special
+        // case of a null name pointer (we would consider two null name
+        // pointers still a non-match, since it represents an undefined name).
+
+        String name1 = op1.getName();
+        String name2 = op2.getName();
+
+        if (name1 == null || name2 == null) {
+            return false;
+        }
+
+        if (!name1.equals(name2)) {
+            return false;
+        }
+
+        // Operation names match. Get the parameter lists, and from them the
+        // lists of non-return parameters. First check they are the same
+        // length.
+
+        List params1 = op1.getParameters();
+        List params2 = op2.getParameters();
+
+        Vector ordParams1 = getOrdinaryParams(params1);
+        Vector ordParams2 = getOrdinaryParams(params2);
+
+        int size1 = ordParams1.size();
+        int size2 = ordParams2.size();
+
+        if (size1 != size2) {
+            return false;
+        }
+
+        // Loop through the non-return parameters, checking for equality. We
+        // can't use a for loop here, because we must not go round the loop at
+        // all if the size is zero.
+
+        int offs = 0;
+
+        while (offs < size1) {
+            MParameter p1 = (MParameter) ordParams1.get(offs);
+            MParameter p2 = (MParameter) ordParams2.get(offs);
+
+            // Check for identical types, dealing with the special case where
+            // the type is not set. We treat two null types as non-match, since
+            // null represents undefined type.
+
+            MClassifier p1Type = p1.getType();
+            MClassifier p2Type = p2.getType();
+
+            if (p1Type == null || p2Type == null) {
+                return false;
+            }
+
+            if (!p1Type.equals(p2Type)) {
+                return false;
+            }
+
+            offs++;
+        }
+
+        // If we drop out here, the name and parameter list types matched, so
+        // we have a total match.
+
+        return true;
+    }
+
+
+    /**
+     * <p>Extracts all the non-return parameters from the given parameter list,
+     *   into a new {@link java.util.List}.</p>
+     *
+     * @param params A {@link java.util.List List} of {@link
+     *               ru.novosoft.uml.foundation.core.MParameter
+     *               MParameter}, from which the non-return parameters are to
+     *               be extracted.
+     *
+     * @return       A {@link java.util.Vector Vector} of non-return paramers,
+     *               possibly with no elements. Never <code>null</null>
+     */
+
+    private static Vector getOrdinaryParams(List params) {
+
+        // New empty vector for the result (capacity the same as the parameter
+        // list).
+
+        Vector res = new Vector(params.size());
+
+        // Find out how many paramters there are. If none, give up now.
+
+        int psize = params.size() ;
+
+        if (psize == 0) {
+            return res;
+        }
+
+        // Loop through all the parameters, looking for ones that are
+        // not return types and adding them to the new vector.
+
+        int    i ;
+
+        for (i = 0 ; i < psize ; i++) {
+            MParameter p = (MParameter) params.get(i);
+
+            if (!(MParameterDirectionKind.RETURN.equals(p.getKind()))) {
+                res.add(p);
+            }
+        }
+
+        // Return the resulting vector
+
+        return res;
+    }
+
+
+    /**
+     * <p>Checks if the given model element is in the given namespace.</p>
+     *
+     * @param me  A {@link ru.novosoft.foundation.core.MModelElement
+     *            MModelElement} to be looked for in the namespace.
+     *
+     * @param clf A {@link ru.novosoft.foundation.core.MNamespace MNamespace}
+     *            in which the model element should be looked up.
+     *
+     * @return    <code>true</code> if the model element is found,
+     *            <code>false</code> otherwise.
+     */
+
+    public static boolean inNamespace(MModelElement me, MNamespace ns) {
+
+        // I think we can just do this by a straight comparison of
+        // namespaces. We assume if either is null, then its a failure.
+
+        MNamespace meNs = me.getNamespace();
+
+        if ((ns == null) || (meNs == null)) {
+            return false;
+        }
+        else {
+            return ns.equals(meNs);
+        }
+    }
+
+
 } /* end class CriticUtils */
+
