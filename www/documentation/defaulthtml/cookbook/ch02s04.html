@@ -1,156 +1,146 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>2.4. The JUnit test cases</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter 2. Building from source"><link rel="previous" href="ch02s03.html" title="2.3. Build Process"><link rel="next" href="ch02s05.html" title="2.5. Making a release"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.4. The JUnit test cases</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 2. Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e1005"></a>2.4. The JUnit test cases</h2></div></div><a class="indexterm" name="d0e1008"></a><a class="indexterm" name="d0e1011"></a><a class="indexterm" name="d0e1014"></a><p>
+   <title>2.4.&nbsp;The JUnit test cases</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch02.html" title="Chapter&nbsp;2.&nbsp;Building from source"><link rel="previous" href="ch02s03.html" title="2.3.&nbsp;Build Process"><link rel="next" href="ch02s05.html" title="2.5.&nbsp;Making a release"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">2.4.&nbsp;The JUnit test cases</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;2.&nbsp;Building from source</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch02s05.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="junittests"></a>2.4.&nbsp;The JUnit test cases</h2></div></div><div></div></div><a class="indexterm" name="d0e1018"></a><a class="indexterm" name="d0e1021"></a><a class="indexterm" name="d0e1024"></a><p>
 ArgoUML has a set of automatic test cases using JUnit-framework
 for testing the insides of the code.
 The purpose of these are to help in pin-pointing problems with
-code changes already before even starting ArgoUML.
+code changes before even starting ArgoUML.
 </p><p>
-The JUnit test cases are residing at two different places in the
-source repository and run in two different ways.
+The JUnit test cases are residing in a separate directory and
+run from ant targets in the
+<tt class="filename">src_new/build.xml</tt>.
 They are never distributed with ArgoUML but merely a tool for
 developers.
-</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1021"></a>2.4.1. New style JUnit test cases</h3></div></div><p>
+</p><p>
 By running the command
-<b>build tests</b>
-from <tt>src_new</tt>
+<b class="command">build tests guitests</b>
+in <tt class="filename">src_new</tt>
 these test cases are started, each in their own jvm.
 </p><p>
 Each test case writes its result on the Ant log.
 </p><p>
 The result is also generated into a set of files that can be found at
-<tt>build/test/reports/junit/output/html/index.html</tt>.
+<tt class="filename">build/test/reports/junit/output/html/index.html</tt>.
 </p><p>
-Testcases shall be located under
-<tt>argouml/tests/org/argouml</tt>
-and the filenames shall be like
-<tt>Test<i><tt>*</tt></i>.java</tt>.
-</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1050"></a>2.4.2. Old style JUnit test cases</h3></div></div><p>
-This chapter describes the old way of doing JUnit test cases.
-</p><p>
-The JUnit module is an ArgoUML module that is used to contain all 
-Unit Test Cases.
-The reason for it being a module is that the classes contained need
-not be distributed with the ArgoUML distribution. 
-They have their use in the hands of the developers of ArgoUML.
-</p><p>
-The module is available from CVS under
-<tt>modules/junit</tt>
-and the used version of the JUnit framework is also available there
-(under <tt>modules/junit/lib</tt>).
-</p><p>
-This location will probably change in the future.
-</p><p>
-The Java package structure under 
-<tt>modules/junit/src</tt>
-in the module is a complete copy of the ArgoUML Java package
-structure.
-Ideally every class
-<tt>org.argouml.<i><tt>x.y</tt></i>.<i><tt>z</tt></i></tt>
-stored in the file
-<tt>src_new/org/argouml/<i><tt>x/y</tt></i>/<i><tt>z</tt></i>.java</tt>
-should have a JUnit test case called
-<tt>org.argouml.<i><tt>x.y</tt></i>.Test<i><tt>z</tt></i></tt>
-stored in the file
-<tt>modules/junit/src/org/argouml/<i><tt>x/y</tt></i>/Test<i><tt>z</tt></i>.java</tt>
-containing all the Unit Test Cases for that class.
-</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="run_junit_testcases"></a>2.4.2.1. How to run the old style test cases</h4></div></div><a class="indexterm" name="d0e1109"></a><p>
-This is a simple description on how to run the JUnit Test Cases.
-</p><div class="orderedlist"><ol type="1"><li><p>
-Check out all you need to build ArgoUML and the modules/junit
-directory.
-</p></li><li><p>
-Build ArgoUML as a package in src_new as described in the
-<a href="ch02s03.html">Build Process</a>
-</p></li><li><p>
-Change directory to
-<tt>../modules/junit</tt>
-</p></li><li><p>
-Run ant with the argument run.
-</p></li><li><p>
-ArgoUML starts up just with the splash screen and then the normal
-window.
-</p></li><li><p>
-Observe that the Tools menu now is enabled (i.e. not greyed out).
-</p></li><li><p>
-Under the Tools menu, select the item Test Panel....
-</p></li><li><p>
-The JUnit panel called Run Test Suite opens on top of ArgoUML.
-</p></li><li><p>
-Enter the word <tt>TestAll</tt> in the field 
-"Enter the name of the Test class:" to run all tests.
-</p></li><li><p>
-Uncheck the "Reload classes every run" checkbox.
-</p></li><li><p>
-Press the "Run"-button and watch the "Progess"-bar turn all green
-(hopefully).
-</p></li><li><p>
-Verify that all the tests are Run and that there are 
-no "Errors" and no "Failures".
-</p><p>
-If there are "Errors" or "Failures" they you can hopefully easily
-pinpoint the problem.
-</p></li></ol></div><p>
-If you only want to run one of your newly written test cases and not
-all the test cases, give the class name of your test case instead of
-"TestAll" like
-<tt>org.argouml.<i><tt>x.y</tt></i>.Test<i><tt>z</tt></i></tt>.
-</p><p>
-This will probably change in the future simplifying it to the 
-following even simpler description:
-</p><div class="orderedlist"><ol type="1"><li><p>Check out all you need to build ArgoUML</p></li><li><p>
-Build ArgoUML and run the JUnit test cases using
-<b>build run-all-junit-tests</b>
-</p></li><li><p>
-Verify that all the tests are Run and that there are 
-no "Errors" and no "Failures".
-</p><p>
-If there are "Errors" or "Failures" they you can hopefully easily
-pinpoint the problem.
-</p></li></ol></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e1188"></a>2.4.2.2. How to write a test case</h4></div></div><a class="indexterm" name="d0e1191"></a><a class="indexterm" name="d0e1194"></a><a class="indexterm" name="d0e1197"></a><p>
+The testcases java source code is located under
+<tt class="filename">argouml/tests/org/argouml</tt>.
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e1054"></a>2.4.1.&nbsp;How to write a test case</h3></div></div><div></div></div><a class="indexterm" name="d0e1057"></a><a class="indexterm" name="d0e1060"></a><a class="indexterm" name="d0e1063"></a><a class="indexterm" name="d0e1068"></a><p>
 Now this will make all you java-enthusiasts go nuts!
-We have both classnames and method names that need to have a special
-syntax.
+We have both classnames and method names with a special syntax.
 </p><p>
 The name of the test case starts with "Test" (i.e. Capital T, then
-small e, s and t). This is to help the TestAll class determine what is
-a Test Case and what is not without loading them. 
+small e, s and t) or 
+"GUITest" (i.e. Capital G, U, I, T then small e, s, t).
+The reason for this is that the special targets in
+<tt class="filename">src_new/build.xml</tt>
+searches for test cases with these names.
 If you write a test case that does not comply to this rule you still
-can run the test case but it wont be run by TestAll.
-This could prove useful sometimes but I (Linus) have yet to figure out
-when.
+can run the test case manually after having started with
+<b class="command">build run-with-test-panel</b>
+but it wont be known and run by other developers and automatic build
+mechanisms so don't do it.
+</p><p>
+Testcases that doesn't require GUI components in place
+have filenames like
+<tt class="filename">Test<i class="replaceable"><tt>*</tt></i>.java</tt>.
+They must be able to run on a headless system.
+To make sure that this works, always run your newly developed
+test case with <b class="command">build tests</b> using 
+jdk1.4 or later.
+</p><p>
+Testcases that do require GUI components in place
+have filenames like
+<tt class="filename">GUITest<i class="replaceable"><tt>*</tt></i>.java</tt>.
+</p><p>
+We should try to get as many tests from the GUITest* class to 
+the corresponding Test* class because the latter are run by automatic 
+builds regularly.
+</p><p>
+Every class
+<tt class="classname">org.argouml.<i class="replaceable"><tt>x.y</tt></i>.<i class="replaceable"><tt>z</tt></i></tt>
+stored in the file
+<tt class="filename">src_new/org/argouml/<i class="replaceable"><tt>x/y</tt></i>/<i class="replaceable"><tt>z</tt></i>.java</tt>
+should have a JUnit test case called
+<tt class="classname">org.argouml.<i class="replaceable"><tt>x.y</tt></i>.Test<i class="replaceable"><tt>z</tt></i></tt>
+stored in the file
+<tt class="filename">tests/org/argouml/<i class="replaceable"><tt>x/y</tt></i>/Test<i class="replaceable"><tt>z</tt></i>.java</tt>
+containing all the Unit Test Cases for that class
+that don't need the GUI components to run.
+Classes that have things that needs to be tested that 
+do need GUI components to run should also have a class named
+<tt class="classname">org.argouml.<i class="replaceable"><tt>x.y</tt></i>.GUITest<i class="replaceable"><tt>z</tt></i></tt>
+stored in the file
+<tt class="filename">tests/org/argouml/<i class="replaceable"><tt>x/y</tt></i>/GUITest<i class="replaceable"><tt>z</tt></i>.java</tt>
+</p><p>
+If you only want to run your newly written test cases and not
+all the test cases, you could start with the command
+<b class="command">build run-with-test-panel</b>
+and give the class name of your test case like
+<tt class="classname">org.argouml.<i class="replaceable"><tt>x.y</tt></i>.Test<i class="replaceable"><tt>z</tt></i></tt>
+or
+<tt class="classname">org.argouml.<i class="replaceable"><tt>x.y</tt></i>.GUITest<i class="replaceable"><tt>z</tt></i></tt>.
+You will then get the output in the window.
+You could run all tests in this way by specifying the special test suite
+<tt class="classname">org.argouml.util.DoAllTests</tt>
+in the same way.
 </p><p>
 The test case imports the JUnit framework: 
-</p><blockquote class="blockquote"><p>
+</p><div class="blockquote"><blockquote class="blockquote"><p>
 import junit.framework.*;
-</p></blockquote><p>
-and it inherits <tt>TestCase</tt>.
+</p></blockquote></div><p>
+and it inherits <tt class="classname">TestCase</tt>
+(i.e. <tt class="classname">junit.framework.TestCase</tt>).
 </p><p>
 Methods that are tests must have names that start with "test"
 (i.e. all small t, e, s, t). This is a requirement of the JUnit
 framework.
 </p><p>
+Try to keep the test cases as short as possible.
+There is no need in cluttering them up just to beautify the output.
+Prefer
+</p><pre class="programlisting">
+// Exampel from JUnit FAQ
+public void testIndexOutOfBoundsExceptionNotRaised()
+        throws IndexOutOfBoundsException {
+    ArrayList emptyList = new ArrayList();
+    Object o = emptyList.get(0);
+}
+</pre><p>
+over
+</p><pre class="programlisting">
+public void testIndexOutOfBoundsExceptionNotRaised() {
+    try {
+        ArrayList emptyList = new ArrayList();
+        Object o = emptyList.get(0);
+    } catch (IndexOutOfBoundsException iobe) {
+        fail("Index out of bounds exception was thrown.");
+    }
+}
+</pre><p>
+because the code is shorter, easier to maintain and you get a better
+error message from the JUnit framework.
+</p><p>
 A lot of times it is useful just to run the compiler to verify that
 the signatures are correct on the interfaces. Therefor Linus has
 thought it is a good idea to add methods called
-<tt>compileTestStatics</tt>,
-<tt>compileTestConstructors</tt>, and
-<tt>compileTestMethods</tt>
+<tt class="methodname">compileTestStatics</tt>,
+<tt class="methodname">compileTestConstructors</tt>, and
+<tt class="methodname">compileTestMethods</tt>
 that was thought to include correct calls to all static methods,
 all public constructors, and all other public methods that are not
 otherwise tested.
 These methods are never called.
 They serve as a guarantee that the public interface of a class will
-ever loose any of the functionality provided by its signature in an
+never lose any of the functionality provided by its signature in an
 uncontrolled way in just the same way as the test-methods serve as a
 guarantee that no features will ever be lost.
-</p><div class="example"><p><b>Example 2.1. A complete example</b></p><a class="indexterm" name="d0e1231"></a><p>
-<pre class="programlisting">
+</p><div class="example"><a name="d0e1212"></a><p class="title"><b>Example&nbsp;2.1.&nbsp;An example without javadoc comments</b></p><a class="indexterm" name="d0e1215"></a><p>
+</p><pre class="programlisting">
 package org.argouml.uml.ui;
 import junit.framework.*;
 
-public class TestUMLAction extends TestCase {
-    public TestUMLAction(String name) {
+public class GUITestUMLAction extends TestCase {
+    public GUITestUMLAction(String name) {
 	super(name);
     }
 
@@ -167,7 +157,17 @@ public class TestUMLAction extends TestCase {
 	UMLAction to = new UMLAction(new String("hejsan"), true, UMLAction.NO_ICON);
 	assert("Disabled", to.shouldBeEnabled());
     }
-	
+}
+</pre><p>
+and the corresponding no-gui-class:
+</p><pre class="programlisting">
+package org.argouml.uml.ui;
+import junit.framework.*;
+
+public class TestUMLAction extends TestCase {
+    public TestUMLAction(String name) {
+	super(name);
+    }
 
     // Functions never actually called. Provided in order to make
     // sure that the static interface has not changed.
@@ -192,24 +192,5 @@ public class TestUMLAction extends TestCase {
 	to.shouldBeEnabled();
     }
 }
-</pre>
-</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e1241"></a>2.4.2.3. The TestAll class</h4></div></div><a class="indexterm" name="d0e1244"></a><p>
-The TestAll class goes through all directories under 
-<tt>modules/junit/build/classes</tt>
-and finds all class-files beginning with "Test".
-They are all added to the test suite.
-</p><p>
-This means that the risk of forgetting to add a test case to the suite
-is reduced and there is no need to maintain such a suite.
-</p><p>
-On the other hand this only works in the build environment.
-If the jar-file is used somewhere else or the ArgoUML is started in
-some other place with respect to
-<tt>modules/junit/build/classes</tt>
-then this will fail and TestAll will probably not detect any test
-cases at all.
-</p><p>
-I hope and think that this will never be a problem since most of the
-times the test cases are run by a person with all the source available
-in just this way.
-</p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch02s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">2.3. Build Process&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;2.5. Making a release</td></tr></table></div></body></html>
+</pre><p>
+</p><p></p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch02s03.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch02s05.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">2.3.&nbsp;Build Process&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;2.5.&nbsp;Making a release</td></tr></table></div></body></html>

@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Chapter 4. ArgoUML Design, The Big Picture</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="previous" href="ch03s04.html" title="3.4. Requirements set up for the benefit of the development of ArgoUML"><link rel="next" href="ch04s02.html" title="4.2. Definition of layer"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 4. ArgoUML Design, The Big Picture</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s02.html">Next</a></td></tr></table><hr></div><div class="chapter"><div class="titlepage"><div><h2 class="title"><a name="components"></a>Chapter 4. ArgoUML Design, The Big Picture</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>4.1. <a href="ch04.html#d0e1680">Definition of component</a></dt><dt>4.2. <a href="ch04s02.html">Definition of layer</a></dt><dt>4.3. <a href="ch04s03.html">Layer 0 - Description of components</a></dt><dt>4.4. <a href="ch04s04.html">Layer 1 - Description of components</a></dt><dt>4.5. <a href="ch04s05.html">Layer 2 - Description of components</a></dt><dt>4.6. <a href="ch04s06.html">Layer 3 - Description of components</a></dt></dl></div><a class="indexterm" name="d0e1658"></a><p>
+   <title>Chapter&nbsp;4.&nbsp;ArgoUML Design, The Big Picture</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="previous" href="ch03s04.html" title="3.4.&nbsp;Requirements set up for the benefit of the development of ArgoUML"><link rel="next" href="ch04s02.html" title="4.2.&nbsp;Relationship of the components"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;4.&nbsp;ArgoUML Design, The Big Picture</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch03s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="components"></a>Chapter&nbsp;4.&nbsp;ArgoUML Design, The Big Picture</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>4.1. <a href="ch04.html#d0e1772">Definition of component</a></dt><dt>4.2. <a href="ch04s02.html">Relationship of the components</a></dt><dt>4.3. <a href="ch04s03.html">Definition of layer</a></dt><dt>4.4. <a href="ch04s04.html">Layer 0 - Description of components</a></dt><dt>4.5. <a href="ch04s05.html">Layer 1 - Description of components</a></dt><dt>4.6. <a href="ch04s06.html">Layer 2 - Description of components</a></dt><dt>4.7. <a href="ch04s07.html">Layer 3 - Description of components</a></dt></dl></div><a class="indexterm" name="d0e1752"></a><p>
 Currently this is more of a base for discussion and
 ambition but hopefully this will mature and 
 prove useful.
@@ -8,10 +8,10 @@ prove useful.
 The code within ArgoUML is separated in components 
 that each have a responsibility.
 </p><p>
-<a href="ch05.html" title="Chapter 5. Inside the components">Chapter 5</a>
+<a href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components">Chapter&nbsp;5, <i>Inside the components</i></a>
 explains each component in details.
 This chapter just gives an overall picture.
-</p><a class="indexterm" name="d0e1671"></a><p>
+</p><a class="indexterm" name="d0e1763"></a><p>
 The components are organized in layers.
 The purpose of the layers is to keep a clear view
 of what components provide services to others
@@ -23,7 +23,7 @@ TODO: Insert UML diagram describing the relation between components and layers.
 This chapter contains 
 a list of all components and what layer they are in
 and the definition of the responsibility of each component.
-</p><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e1680"></a>4.1. Definition of component</h2></div></div><p>
+</p><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e1772"></a>4.1.&nbsp;Definition of component</h2></div></div><div></div></div><p>
 All ArgoUML code is organized in components.
 </p><p>
 Each component has:
@@ -32,11 +32,14 @@ Subparts of the component can reside in subdirectories of this directory.
 Auxiliary parts of the components can reside somewhere else.
 </p></li></ul></div><p>
 </p><p>
-Each component has a single Facade object that is used by
-all other components when using this component.
-The Facade object is called
-<tt><i><tt>ComponentName</tt></i>Facade</tt>
+Each component has a single Facade class that can be used by
+all other components when using the component.
+The Facade class is called
+<tt class="classname"><i class="replaceable"><tt>ComponentName</tt></i>Facade</tt>
 and is located in the component package.
+How it is used is primarily documented in the class file itself 
+(as javadoc) but the more complex picture is documented in the
+Cookbook (in <a href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components">Chapter&nbsp;5, <i>Inside the components</i></a>).
 </p><p>
 Each component can also have one or several plug-in interfaces.
 That is Facade objects where modules or plug-ins can connect themselves
@@ -44,18 +47,18 @@ to modify or augment the behavior of that component.
 </p><p>
 The plug-in interfaces are also all located in the component package
 and called
-<tt><i><tt>ComponentName</tt></i>Plugin<i><tt>Plug-inType</tt></i></tt>.
+<tt class="classname"><i class="replaceable"><tt>ComponentName</tt></i>Plugin<i class="replaceable"><tt>Plug-inType</tt></i></tt>.
 Example: 
-<tt>ModelPluginDiagram</tt>, 
-<tt>ModelPluginType</tt>.
+<tt class="classname">ModelPluginDiagram</tt>, 
+<tt class="classname">ModelPluginType</tt>.
 </p><p>
 If the component uses a callback-technique
 the callback is always made to an interface.
-The interface is also in component package and it is called
-<tt><i><tt>ComponentName</tt></i><i><tt>Plug-inType</tt></i>Interface</tt>.
+The interface is also in the component package and it is called
+<tt class="classname"><i class="replaceable"><tt>ComponentName</tt></i><i class="replaceable"><tt>Plug-inType</tt></i>Interface</tt>.
 Example:
-<tt>ModelDiagramInterface</tt>,
-<tt>ModelTypeInterface</tt>.
+<tt class="classname">ModelDiagramInterface</tt>,
+<tt class="classname">ModelTypeInterface</tt>.
 </p><p>
         </p><div class="mediaobject"><img src="images/cookbook/ComponentDiagram.gif"></div><p>
-</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch04s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.4. Requirements set up for the benefit of the development of ArgoUML&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;4.2. Definition of layer</td></tr></table></div></body></html>
+</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch03s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="index.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch04s02.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">3.4.&nbsp;Requirements set up for the benefit of the development of ArgoUML&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;4.2.&nbsp;Relationship of the components</td></tr></table></div></body></html>

@@ -1,0 +1,37 @@
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   <title>5.16.&nbsp;Module loader</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s15.html" title="5.15.&nbsp;Explorer"><link rel="next" href="ch05s17.html" title="5.17.&nbsp;OCL"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.16.&nbsp;Module loader</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s15.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s17.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="moduleloader"></a>5.16.&nbsp;Module loader</h2></div></div><div></div></div><p>
+Purpose - to provide the mechanisms to load (and unload) the Layer 3
+and auxiliary modules.
+</p><p>
+The Module loader will be located in
+<tt class="classname">org.argouml.?</tt>.
+</p><p>
+The Module loader is a Layer 2 component. See <a href="ch04s06.html" title="4.6.&nbsp;Layer 2 - Description of components">Section&nbsp;4.6, &#8220;Layer 2 - Description of components&#8221;</a>.
+</p><p>
+Currently the module loader is located in
+<tt class="classname">org.argouml.application.modules.ModuleLoader</tt>
+with interfaces in
+<tt class="classname">org.argouml.application.api</tt>.
+</p><p>
+This handles the enabling and disabling of every module.
+</p><p>
+An idea on how it could work:
+It is then the modules responsibility to connect and register to
+the component or components it is going to work with using that
+components Facade or Plugin interface.
+</p><p>
+For details on how to build a module
+see <a href="ch06s02.html" title="6.2.&nbsp;Modules and PlugIns">Section&nbsp;6.2, &#8220;Modules and PlugIns&#8221;</a>.
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5778"></a>5.16.1.&nbsp;What the ModuleLoader does</h3></div></div><div></div></div><p>
+The ModuleLoader is looking for module jars.
+It actually scans through all jars available in the argo ext dir directory.
+See Edit Settings Environment tab.
+If you turn on logging on the debug level while running ArgoUML
+you should be able to see what jar files it finds and what it does with them.
+</p><p>
+A module jar contains the classes, resources and a manifest file.
+The manifest file points out the classes to be loaded.
+Also notice that the Specification-Title and Vendor must be specified
+correctly for this to work.
+</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s15.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s17.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.15.&nbsp;Explorer&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.17.&nbsp;OCL</td></tr></table></div></body></html>

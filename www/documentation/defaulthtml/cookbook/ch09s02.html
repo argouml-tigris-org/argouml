@@ -1,36 +1,36 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>9.2. Creating and using branches</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch09.html" title="Chapter 9. How to work with CVS"><link rel="previous" href="ch09.html" title="Chapter 9. How to work with CVS"><link rel="next" href="ch09s03.html" title="9.3. Other CVS comments"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">9.2. Creating and using branches</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch09.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 9. How to work with CVS</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s03.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="branches"></a>9.2. Creating and using branches</h2></div></div><a class="indexterm" name="d0e6195"></a><p>We use the following standards in ArgoUML:
-</p><div class="itemizedlist"><ul type="disc"><li><p>Released versions get the tag <span class="emphasis"><i>VERSION_X_X_X</i></span></p></li><li><p>
+   <title>9.2.&nbsp;Creating and using branches</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch09.html" title="Chapter&nbsp;9.&nbsp;How to work with CVS"><link rel="previous" href="ch09.html" title="Chapter&nbsp;9.&nbsp;How to work with CVS"><link rel="next" href="ch09s03.html" title="9.3.&nbsp;Other CVS comments"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">9.2.&nbsp;Creating and using branches</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch09.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;9.&nbsp;How to work with CVS</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="branches"></a>9.2.&nbsp;Creating and using branches</h2></div></div><div></div></div><a class="indexterm" name="d0e6915"></a><p>We use the following standards in ArgoUML:
+</p><div class="itemizedlist"><ul type="disc"><li><p>Released versions get the tag <span class="emphasis"><em>VERSION_X_X_X</em></span></p></li><li><p>
 Developers working on code, with an unspecified due date are requested
 to put the code into a branch if it is deemed useful that the code can
 be shared. Developer branches follow the scheme:
-<span class="emphasis"><i>work_<i><tt>explanation</tt></i>_<i><tt>owner</tt></i></i></span>, where
-            </p><div class="itemizedlist"><ul type="round"><li><p>work is a literal</p></li><li><p>
-<i><tt>explanation</tt></i> is something like javahelp,
+<span class="emphasis"><em>work_<i class="replaceable"><tt>explanation</tt></i>_<i class="replaceable"><tt>owner</tt></i></em></span>, where
+            </p><div class="itemizedlist"><ul type="circle"><li><p>work is a literal</p></li><li><p>
+<i class="replaceable"><tt>explanation</tt></i> is something like javahelp,
 propertypanel, cppcodegeneration
 </p></li><li><p>
-<i><tt>owner</tt></i> is a self explaining code for the
+<i class="replaceable"><tt>owner</tt></i> is a self explaining code for the
 owner of the branch, 
 e.g. tlach (Thierry Lach) or mklink (Markus Klink).
 </p></li></ul></div><p>
 </p></li></ul></div><p>
 </p><p>Merging branches together is causing some work. So please use them sparingly and announce your intentions before on the mailing list.
-</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_cvs"></a>9.2.1. How do I ...?</h3></div></div><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="howdoi_cvs"></a>9.2.1.&nbsp;How do I ...?</h3></div></div><div></div></div><p>
 	  </p><div class="itemizedlist"><ul type="disc"><li><p>
 ...commit stuff?
 </p><p>
 You have made, the change, tested it and are satisfied with it.
 </p><p>
-Do a <b>cvs update -d</b> and see that only the files 
+Do a <b class="command">cvs update -d</b> and see that only the files 
 you have changed are marked as modified.
 If files are updated or patched by this command, 
 please recompile and test again.
 </p><p>
-Do a <b>cvs diff</b> on each of the files and verify that
+Do a <b class="command">cvs diff</b> on each of the files and verify that
 only the lines you have changed are modified.
 </p><p>
-Do a single <b>cvs commit</b> for all the files included
+Do a single <b class="command">cvs commit</b> for all the files included
 in the change.
 This reduces the risk that someone else updates in the middle of your 
 work and also reduces the amount of notifications of commits sent out.
@@ -47,34 +47,34 @@ updates. They're very nice about it the first few times.
 Supposing that you have checked out CVS as guest, then after you have
 mailed a diff or file to an active developer, and he has entered it in CVS
 your checked out copy contains the change but is not in sync and
-the next <b>cvs update</b> will result in an merge error.
+the next <b class="command">cvs update</b> will result in an merge error.
 The simplest way to solve this is to do remove all files modified by you
-before doing the <b>cvs update</b>. 
-The <b>cvs update</b> will restore all the files from the 
+before doing the <b class="command">cvs update</b>. 
+The <b class="command">cvs update</b> will restore all the files from the 
 CVS repository and you can start with the next update.
 </p></li><li><p>...get a list of the currently active working branches?</p><p>
 You can't from CVS. You need to follow the announcements of created
 and discontinued branches on the mailing list to know what branches are
 interesting.
 	      </p></li><li><p>
-...create a branch for my work on <i><tt>xxxyyy</tt></i> 
+...create a branch for my work on <i class="replaceable"><tt>xxxyyy</tt></i> 
 and start work on that branch?</p><p>
 This assumes that you have a checked out copy of argouml
 	      </p><div class="orderedlist"><ol type="1"><li><p>Change directory to the directory where argouml is checked out.</p></li><li><p>
 Enter the argouml directory:
-<b>cd argouml</b> or <b>chdir argouml</b>
+<b class="command">cd argouml</b> or <b class="command">chdir argouml</b>
 		  </p></li><li><p>
 Create your branch: 
-<b>cvs tag -b <i><tt>work_xxxyyy_myname</tt></i></b>
+<b class="command">cvs tag -b <i class="replaceable"><tt>work_xxxyyy_myname</tt></i></b>
 		  </p><p>
-<i><tt>myname</tt></i> is is a self explaining code for you
+<i class="replaceable"><tt>myname</tt></i> is is a self explaining code for you
 (your Tigris login).
 		  </p></li><li><p>
 Change your checked out copy to be on the branch:
-<b>cvs update -r <i><tt>work_xxxyyy_myname</tt></i></b>
+<b class="command">cvs update -r <i class="replaceable"><tt>work_xxxyyy_myname</tt></i></b>
 		  </p></li><li><p>Do your work!</p></li><li><p>
 Check in your changes in the branch:
-<b>cvs commit -m'<i><tt>Blablabla</tt></i>' [file]</b>
+<b class="command">cvs commit -m'<i class="replaceable"><tt>Blablabla</tt></i>' [<span class="optional">file</span>]</b>
 		  </p></li><li><p>Continue working and checking in!</p></li></ol></div></li><li><p>...move my work from my working branch into the release?</p><p>
 This is done when your work with the feature xxxyyy is finished and you have
 decided/received clearance to enter it in the main branch.
@@ -86,21 +86,21 @@ have a checked out copy on the branch in question. If not, this could be any
 checked out copy of the source that does not contain any uncommited changes.
 		  </p></li><li><p>
 Enter the argouml directory:
-<b>cd argouml</b> or <b>chdir argouml</b>
+<b class="command">cd argouml</b> or <b class="command">chdir argouml</b>
 		  </p></li><li><p>
 Move the checked out copy that you are working on to the main branch:
-<b>cvs update -A</b>
+<b class="command">cvs update -A</b>
 		  </p></li><li><p>
-Merge the changes from the branch into you checked out copy:
-<b>cvs update -j <i><tt>work_xxxyyy_myname</tt></i></b>
+Merge the changes from the branch into your checked out copy:
+<b class="command">cvs update -j <i class="replaceable"><tt>work_xxxyyy_myname</tt></i></b>
 		  </p></li><li><p>
 Compile and run all your tests again.
 		  </p><p>
-This is to verify that the merge was all right, noone else had done any changes
+This is to verify that the merge was all right, no one else had done any changes
 that in the meantime that has in any way modified the work made in the branch.
 		  </p></li><li><p>
 Commit your changes in the main branch:
-<b>cvs commit -m'<i><tt>xxxyyy entered in the main branch</tt></i></b>
+<b class="command">cvs commit -m'<i class="replaceable"><tt>xxxyyy entered in the main branch</tt></i></b>
 		  </p></li><li><p>
 Discontinue your branch!
 		  </p><p>
@@ -110,20 +110,20 @@ in the branch. Make sure that all other developers that have been looking
 at your branch also knows that it is discontinued.
 		  </p></li></ol></div></li><li><p>...look at someone else's work in a branch?</p><p>
 You need the name of the branch, i.e. the 
-<i><tt>work_xxxyyy_hisname</tt></i>.
+<i class="replaceable"><tt>work_xxxyyy_hisname</tt></i>.
 	      </p><p>
 There are two alternatives:
-		</p><div class="itemizedlist"><ul type="round"><li><p>
+		</p><div class="itemizedlist"><ul type="circle"><li><p>
 Check out argouml or part of it on that branch:
-<b>cvs co -r <i><tt>work_xxxyyy_hisname</tt></i> argouml</b>
+<b class="command">cvs co -r <i class="replaceable"><tt>work_xxxyyy_hisname</tt></i> argouml</b>
 		    </p></li><li><p>
 Update your copy of argouml to be on that branch:
-<b>cvs update -r <i><tt>work_xxxyyy_hisname</tt></i></b>
+<b class="command">cvs update -r <i class="replaceable"><tt>work_xxxyyy_hisname</tt></i></b>
 		    </p><p>
 Make sure that your copy does not have any uncommited code or else your
-your uncommited code will be present in your checked out copy on the branch.
+uncommited code will be present in your checked out copy on the branch.
 This could, on the other hand, be useful if you want to test if your uncommited
 code works also with the additions on that branch.
 		    </p></li></ul></div><p>
 	      </p></li></ul></div><p>
-	</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch09.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch09s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 9. How to work with CVS&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;9.3. Other CVS comments</td></tr></table></div></body></html>
+	</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch09.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch09s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;9.&nbsp;How to work with CVS&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;9.3.&nbsp;Other CVS comments</td></tr></table></div></body></html>
