@@ -40,6 +40,56 @@ import org.argouml.util.*;
 public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
 
     private static final Object[][] _contents = {
+	// General stuff
+        {"decision.behavior", "Comportement"},
+        {"decision.class-selection", "S\u00e9lection de classe"},
+        {"decision.code-generation", "G\u00e9n\u00e9ration du code"},
+        {"decision.containment", "Conteneur"},
+        {"decision.design-patterns", "Mod\u00e8les de conception"},
+        {"decision.expected-usage", "Emploi attendu"},
+        {"decision.inheritance", "H\u00e9ritage"},
+        {"decision.instantiation", "Instanciation"},
+        {"decision.methods", "M\u00e9thodes"},
+        {"decision.modularity", "Modularit\u00e9"},
+        {"decision.mstate-machines", "Automates d'\u00e9tats finis"},
+        {"decision.naming", "Affectation de nom"},
+        {"decision.planned-extensions", "Extensions pr\u00e9vues"},
+        {"decision.relationships", "Relations"},
+        {"decision.stereotypes", "St\u00e9r\u00e9otypes"},
+        {"decision.storage", "Stockage"},
+        {"decision.uncategorized", "Non class\u00e9es"},
+
+        {"goal.unspecified", "ind\u00e9termin\u00e9"},
+
+        {"knowledge.completeness", "Compl\u00e9tude"},
+        {"knowledge.consistency", "Coh\u00e9rence"},
+        {"knowledge.correctness", "Justesse"},
+        {"knowledge.designers", "des concepteurs"},
+        {"knowledge.experiential", "Exp\u00e9rimental"},
+        {"knowledge.optimization", "Optimisation"},
+        {"knowledge.organizational", "d'organisation"},
+        {"knowledge.presentation", "Pr\u00e9sentation"},
+        {"knowledge.semantics", "S\u00e9mantique"},
+        {"knowledge.syntax", "Syntaxe"},
+        {"knowledge.tool", "Outil"},
+
+        {"todopane.label.no-items", " Pas d'\u00c9l\u00e9ments"},
+        {"todopane.label.item", " {0} \u00c9l\u00e9ment "},
+        {"todopane.label.items", " {0} \u00c9l\u00e9ments "},
+
+        {"button.ok", "OK"},
+        {"button.cancel", "Annuler"},
+        {"button.open", "Ouvrir"},
+        {"button.back", "Pr\u00e9c\u00e9dent"},
+        {"button.next", "Suivant"},
+        {"button.finish", "Fin"},
+        {"button.help", "Aide"},
+
+        {"level.low", "Basse"},
+        {"level.medium", "Moyenne"},
+        {"level.high", "\u00c9lev\u00e9e"},
+
+
         { "CrAssocNameConflict_head" ,
                 "Supprimez les conflits de noms d'associations" },
         { "CrAssocNameConflict_desc" ,

@@ -36,7 +36,7 @@ public class ToDoByPoster extends ToDoPerspective
 implements ToDoListListener {
 
   public ToDoByPoster() {
-    super("By Poster");
+    super("todo.perspective.poster");
     addSubTreeModel(new GoListToPosterToItem());
   }
 

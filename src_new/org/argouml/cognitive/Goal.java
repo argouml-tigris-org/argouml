@@ -23,13 +23,15 @@
 
 package org.argouml.cognitive;
 
+import org.tigris.gef.util.*;
+
 public class Goal {
 
   // needs-more-work: values
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final Goal UNSPEC = new Goal("Unspecified", 1);
+  public static final Goal UNSPEC = new Goal("goal.unspecified", 1);
   
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -39,7 +41,7 @@ public class Goal {
   ////////////////////////////////////////////////////////////////
   // constructor
   public Goal(String n, int p) {
-    setName(n);
+    setName(Localizer.localize("Cognitive", n));
     setPriority(p);
   }
 

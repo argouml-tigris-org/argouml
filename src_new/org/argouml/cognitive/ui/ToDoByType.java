@@ -34,7 +34,7 @@ public class ToDoByType extends ToDoPerspective
 implements ToDoListListener {
 
   public ToDoByType() {
-    super("By Knowledge Type");
+    super("todo.perspective.type");
     addSubTreeModel(new GoListToTypeToItem());
   }
 

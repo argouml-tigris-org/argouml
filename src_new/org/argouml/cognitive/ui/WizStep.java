@@ -52,29 +52,37 @@ implements TabToDoTarget, ActionListener, DocumentListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-
+  private static final String BUNDLE = "Cognitive";
   public static final ImageIcon WIZ_ICON = ResourceLoader.lookupIconResource("Wiz", "Wiz");
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
   JPanel  _mainPanel = new JPanel();
-  JButton _backButton = new JButton(" < Back ");
-  JButton _nextButton = new JButton(" Next > ");
-  JButton _finishButton = new JButton(" Finish ");
-  JButton _helpButton = new JButton(" Help ");
+  JButton _backButton = new JButton(Localizer.localize(BUNDLE, "button.back"));
+  JButton _nextButton = new JButton(Localizer.localize(BUNDLE, "button.next"));
+  JButton _finishButton = new JButton(Localizer.localize(BUNDLE, "button.finish"));
+  JButton _helpButton = new JButton(Localizer.localize(BUNDLE, "button.help"));
   JPanel  _buttonPanel = new JPanel();
 
   Object _target;
 
+    static final protected void setMnemonic(JButton b, String key) {
+	String m = Localizer.localize(BUNDLE, key);
+	if (m == null)
+	    return;
+	if (m.length() == 1) {
+	    b.setMnemonic(m.charAt(0));
+	}
+    }   
+
   ////////////////////////////////////////////////////////////////
   // constructor
-
   public WizStep() {
-    _backButton.setMnemonic('B');
-    _nextButton.setMnemonic('N');
-    _finishButton.setMnemonic('F');
-    _helpButton.setMnemonic('H');
+    setMnemonic(_backButton, "mnemonic.button.back");
+    setMnemonic(_nextButton, "mnemonic.button.next");
+    setMnemonic(_finishButton, "mnemonic.bundle.finish");
+    setMnemonic(_helpButton, "mnemonic.bundle.help");
     _buttonPanel.setLayout(new GridLayout(1, 5));
     _buttonPanel.add(_backButton);
     _buttonPanel.add(_nextButton);

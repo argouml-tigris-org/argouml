@@ -35,7 +35,7 @@ import org.argouml.cognitive.*;
 public class ToDoByOffender extends ToDoPerspective {
 
   public ToDoByOffender() {
-    super("By Offender");
+    super("todo.perspective.offender");
     addSubTreeModel(new GoListToOffenderToItem());
   }
 

@@ -81,7 +81,15 @@ public class TreeResourceBundle extends ListResourceBundle {
         { "Stimulus->Action", "Stimulus->Action" },
 	{ "Properties", "Properties" },
 	{ "Add to Diagram", "Add to Diagram"},
-	{ "Click on diagram to add ", "Click on diagram to add "}
+	{ "Click on diagram to add ", "Click on diagram to add "},
+
+	// For the ToDoItem tree
+	{ "todo.perspective.type", "By Knowledge Type" },
+	{ "todo.perspective.decision", "By Decision" },
+	{ "todo.perspective.offender", "By Offender" },
+	{ "todo.perspective.priority", "By Priority" },
+	{ "todo.perspective.goal", "By Goal" },
+	{ "todo.perspective.poster", "By Poster" }
    };
 
      public Object[][] getContents() {

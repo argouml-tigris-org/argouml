@@ -52,52 +52,52 @@ import java.util.*;
 
 public class CrUML extends Critic {
   public static final Decision decINHERITANCE = new
-  Decision("Inheritance", 5);
+  Decision("decision.inheritance", 5);
 
   public static final Decision decCONTAINMENT = new
-  Decision("Containment", 5);
+  Decision("decision.containment", 5);
 
   public static final Decision decPATTERNS = new
-  Decision("Design Patterns", 5); //??
+  Decision("decision.design-patterns", 5); //??
 
   public static final Decision decRELATIONSHIPS = new
-  Decision("Relationships", 5);
+  Decision("decision.relationships", 5);
 
   public static final Decision decSTORAGE = new
-  Decision("Storage", 5);
+  Decision("decision.storage", 5);
 
   public static final Decision decBEHAVIOR = new
-  Decision("Behavior", 5);
+  Decision("decision.behavior", 5);
 
   public static final Decision decINSTANCIATION = new
-  Decision("Instantiation", 5);
+  Decision("decision.instantiation", 5);
 
   public static final Decision decNAMING = new
-  Decision("Naming", 5);
+  Decision("decision.naming", 5);
 
   public static final Decision decMODULARITY = new
-  Decision("Modularity", 5);
+  Decision("decision.modularity", 5);
 
   public static final Decision decCLASS_SELECTION = new
-  Decision("Class Selection", 5);
+  Decision("decision.class-selection", 5);
 
   public static final Decision decEXPECTED_USAGE = new
-  Decision("Expected Usage", 5);
+  Decision("decision.expected-usage", 5);
 
   public static final Decision decMETHODS = new
-  Decision("Methods", 5); //??
+  Decision("decision.methods", 5); //??
 
   public static final Decision decCODE_GEN = new
-  Decision("Code Generation", 5); //??
+  Decision("decision.code-generation", 5); //??
 
   public static final Decision decPLANNED_EXTENSIONS = new
-  Decision("Planned Extensions", 5);
+  Decision("decision.planned-extensions", 5);
 
   public static final Decision decSTEREOTYPES = new
-  Decision("Stereotypes", 5);
+  Decision("decision.stereotypes", 5);
 
   public static final Decision decSTATE_MACHINES = new
-  Decision("MState Machines", 5);
+  Decision("decision.mstate-machines", 5);
 
   public static String CRITICS_SITE = "http://www.ics.uci.edu/pub/arch/uml/critics/";
 
