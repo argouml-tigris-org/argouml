@@ -36,26 +36,33 @@ public interface ArgoNotationEventListener extends ArgoEventListener {
 
     /**
      * Invoked when any aspect of the notation has been changed.
+     * @param e <code>ArgoNotationEvent</code> describing the change.
      */
     public void notationChanged(ArgoNotationEvent e);
 
     /**
      * Invoked when a notation has been added.
+     * @param e <code>ArgoNotationEvent</code> describing the added notation.
      */
     public void notationAdded(ArgoNotationEvent e);
 
     /**
      * Invoked when a notation has been removed.
+     * @param e <code>ArgoNotationEvent</code> describing the removed notation.
      */
     public void notationRemoved(ArgoNotationEvent e);
 
     /**
      * Invoked when a notation provider has been added.
+     * @param e <code>ArgoNotationEvent</code> describing
+     * the added notation provider.
      */
     public void notationProviderAdded(ArgoNotationEvent e);
 
     /**
      * Invoked when a notation provider has been removed.
+     * @param e <code>ArgoNotationEvent</code> describing
+     * the removed notation provider.
      */
     public void notationProviderRemoved(ArgoNotationEvent e);
 

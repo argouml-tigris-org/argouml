@@ -31,10 +31,17 @@ package org.argouml.application.events;
 
 public class ArgoNotationEvent extends ArgoEvent {
 
+    /**
+     * @param eventType reported by this event.
+     * @param src object that caused the event.
+     */
     public ArgoNotationEvent(int eventType, Object src) {
         super(eventType, src);
     }
 
+    /** Indicates the start of the 100-digit range for notation events.
+     * @return the first id reserved for events. 
+     */
     public int getEventStartRange() { return ANY_NOTATION_EVENT; }
 }
 
