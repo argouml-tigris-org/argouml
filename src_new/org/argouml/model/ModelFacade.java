@@ -1420,11 +1420,11 @@ public class ModelFacade {
         if (handle instanceof MAssociationEndRole) {
             return ((MAssociationEndRole) handle).getBase();
         } else if (handle instanceof MAssociationRole) {
-            return ((MAssociationEndRole) handle).getBase();
+            return ((MAssociationRole) handle).getBase();
         } else if (handle instanceof MExtend) {
-            return ((MAssociationEndRole) handle).getBase();
+            return ((MExtend) handle).getBase();
         } else if (handle instanceof MInclude) {
-            return ((MAssociationEndRole) handle).getBase();
+            return ((MInclude) handle).getBase();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
