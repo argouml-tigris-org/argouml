@@ -165,5 +165,9 @@ public class ArgoDiagram extends Diagram {
         return super.getNodes();
     }
     
+    public String toString() {
+        return "Diagram: " + _name;
+    }
+    
 
 } /* end class ArgoDiagram */
