@@ -60,10 +60,13 @@ public class UUIDManager {
         try {
             address = InetAddress.getLocalHost();
         } catch (UnknownHostException e) {
-            // We can ignore this as the application should
-            // have checked for availability at startup.
-            // For tests we would expect unix developers
-            // to be correctly configured.
+            // The application should have checked for availability at
+            // startup.
+            // For tests we would expect unix developers to be correctly
+            // configured.
+            // Replace with an assert when we are JRE1.4+
+            throw new IllegalStateException(
+                    "UnknownHostException caught - set up your /etc/hosts");
         }
     }
     
