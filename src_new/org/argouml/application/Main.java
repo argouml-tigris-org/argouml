@@ -180,6 +180,7 @@ public class Main {
 	Localizer.addResource("UMLMenu","org.argouml.uml.ui.UMLResourceBundle");
 	Localizer.addResource("Cognitive","org.argouml.uml.cognitive.UMLCognitiveResourceBundle");
 	Localizer.addResource("Tree","org.argouml.ui.TreeResourceBundle");
+  Localizer.addResource ("Actions","org.argouml.ui.ActionResourceBundle");
 
     start = System.currentTimeMillis();
     SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");
