@@ -62,6 +62,11 @@ public abstract class UMLPlainTextDocument extends PlainDocument
     private boolean _firing = true;
     
     /**
+     * True if an user edits the document directly (by typing in text)
+     */
+    private boolean _editing = false;
+    
+    /**
      * The target of the propertypanel that's behind this property.
      */    
     private Object _target = null;
@@ -154,11 +159,14 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      */
     public void insertString(int offset, String str, AttributeSet a)
         throws BadLocationException {
-         super.insertString(offset, str, a);
-        if (isFiring()) {
-            setProperty(getText(0, getLength()));
+        super.insertString(offset, str, a);
+        if (!isFiring()) {
+            setEditing(true); 
         }
-       
+        setProperty(getText(0, getLength()));     
+        if (!isFiring()) {
+            setEditing(false);
+        }
     }
 
     /**
@@ -166,9 +174,13 @@ public abstract class UMLPlainTextDocument extends PlainDocument
      */
     public void remove(int offs, int len) throws BadLocationException {
         super.remove(offs, len);
-        if (isFiring()) {
-            setProperty(getText(0, getLength()));
-        }      
+        if (!isFiring()) {
+            setEditing(true); 
+        }
+        setProperty(getText(0, getLength()));     
+        if (!isFiring()) {
+            setEditing(false);
+        }
     }
     
     protected abstract void setProperty(String text);
@@ -186,8 +198,10 @@ public abstract class UMLPlainTextDocument extends PlainDocument
     private final void handleEvent() {
         try {
             setFiring(false);
-            remove(0, getLength());
-            insertString(0, getProperty(), null);
+            if (!isEditing()) {
+                remove(0, getLength());
+                insertString(0, getProperty(), null);
+            }
         } catch (BadLocationException b) {
             cat.error("A BadLocationException happened\n" +
                 "The string to set was: " +
@@ -199,5 +213,21 @@ public abstract class UMLPlainTextDocument extends PlainDocument
     }
     
     
+
+    /**
+     * Returns the editing.
+     * @return boolean
+     */
+    public boolean isEditing() {
+        return _editing;
+    }
+
+    /**
+     * Sets the editing.
+     * @param editing The editing to set
+     */
+    public void setEditing(boolean editing) {
+        _editing = editing;
+    }
 
 }

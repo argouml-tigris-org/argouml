@@ -65,7 +65,7 @@ public class UMLTextField2
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        ((UMLPlainTextDocument)getDocument()).propertySet(e);
+        // ((UMLPlainTextDocument)getDocument()).propertySet(e);
     }
 
     /**
