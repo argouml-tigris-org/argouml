@@ -114,14 +114,7 @@ abstract public class PropPanelModelElement extends PropPanel {
         stereotypeBox = new UMLComboBox2(this, new UMLModelElementStereotypeComboBoxModel(this), ActionSetModelElementStereotype.SINGLETON);
         namespaceComboBox = new UMLComboBox2(this, new UMLModelElementNamespaceComboBoxModel(this), ActionSetModelElementNamespace.SINGLETON);
         namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel(this));
- /*
-        namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-        namespaceList.setBackground(getBackground());
-        namespaceList.setForeground(Color.blue);
-        */
         namespaceList.setVisibleRowCount(1);
-        
-
 	namespaceScroll = new JScrollPane(namespaceList);
     
     }

@@ -60,7 +60,6 @@ public class PropPanelLink extends PropPanelModelElement {
 
 
     addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,2,0,0);
 
 
