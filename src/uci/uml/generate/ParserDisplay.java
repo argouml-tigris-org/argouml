@@ -306,33 +306,7 @@ public class ParserDisplay extends Parser {
   /** Parse a string of the form: "range, ...", where range is of the
    *  form "lower..upper", or "integer" */
   public MMultiplicity parseMultiplicity(String s) {
-	  int low = 0;
-	  int high = 0;
-	  s = s.trim();
-	  if (s.length() == 0) return MMultiplicity.M1_1;
-	  java.util.StringTokenizer st1 = new java.util.StringTokenizer(s, ",");
-	  while (st1.hasMoreElements()) {
-		  String range = st1.nextToken().trim();
-		  String lowStr = "", highStr = "";
-		  int dotdot = range.indexOf("..");
-		  if (dotdot == -1) {
-			  lowStr = range;
-			  highStr = range;
-		  }
-		  else {
-			  lowStr = range.substring(0, dotdot);
-			  highStr = range.substring(dotdot + 2);
-		  }
-		  try {
-			  if (lowStr.indexOf("*") == -1) low = Integer.valueOf(lowStr).intValue();
-			  if (highStr.indexOf("*") == -1) high = Integer.valueOf(highStr).intValue();
-		  }
-		  catch (NumberFormatException nfe) { }
-	  }
-	  //	MMultiplicity res =new MMultiplicityImpl();
-	  //res.setUpper(high);
-	  //res.setLower(low);
-	  return new MMultiplicity(low, high);
+	  return new MMultiplicity(s);
   }
 	
 

@@ -97,7 +97,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     String name = null;
     if (sm.getContext() != null && sm.getContext().getName() != null &&
 	sm.getContext().getName().length() > 0) {
-      name = sm.getContext().getName() + " states";
+      name = sm.getContext().getName();
       try { setName(name); }
       catch (PropertyVetoException pve) { }
     }
@@ -171,8 +171,8 @@ public class UMLActivityDiagram extends UMLDiagram {
     _toolBar.add(_actionJoinPseudoState);
     _toolBar.addSeparator();
 
-    _toolBar.add(Actions.AddInternalTrans);
-    _toolBar.addSeparator();
+    //_toolBar.add(Actions.AddInternalTrans);
+    //_toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);
     _toolBar.add(_actionRRectangle);

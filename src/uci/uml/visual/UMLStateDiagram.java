@@ -102,7 +102,8 @@ public class UMLStateDiagram extends UMLDiagram {
   public UMLStateDiagram(MClass m, MStateMachine sm) {
     this();
 	if (m != null && m.getName() != null) {
-		String name = m.getName() + " states "+ (m.getBehaviors().size());
+		String name = m.getName();
+		// + " states "+ (m.getBehaviors().size());
 		try { setName(name); }
 		catch (PropertyVetoException pve) { }
     }
