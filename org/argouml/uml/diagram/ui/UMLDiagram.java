@@ -82,9 +82,17 @@ import org.tigris.toolbar.toolbutton.ToolButton;
  * and for a collaboration diagram is that the Collaboration UML object. 
  * Override the getOwner method to return the owner. <p>
  * 
+ * TODO: MVW: I am not sure of the following: <br>
  * The "namespace" of the diagram is e.g. used when creating new elements
  * that are shown on the diagram; they will have their namespace set
- * according this. It is NOT necessarily equal to the "owner". 
+ * according this. It is NOT necessarily equal to the "owner". <p>
+ * 
+ * MVW: I am sure about the following: <br>
+ * The "namespace" of the diagram is e.g. used to register a listener 
+ * to the UML model, to be notified if this element is removed; 
+ * which will imply that this diagram has to be deleted, too.
+ * Hence the namespace of e.g. a collaboration diagram should be the 
+ * represented classifier or, in case of a represented operation, its owner.
  */
 public abstract class UMLDiagram
     extends ArgoDiagram
@@ -216,8 +224,6 @@ public abstract class UMLDiagram
     // accessors
 
     /**
-     * The namespace that is used when new elements are drawn on the diagram.
-     * 
      * @return the namespace for the diagram
      */
     public Object getNamespace() {
