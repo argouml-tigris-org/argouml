@@ -77,6 +77,9 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
                 }
             }
         }
+        if (ns == null) {
+            ns = p.getRoot();
+        }
         if (ns != null && isValidNamespace(ns)) {
             UMLDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
