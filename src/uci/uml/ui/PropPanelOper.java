@@ -151,7 +151,7 @@ implements ItemListener {
     ScopeKind sk = oper.getOwnerScope();
     // needs-more-work: concurrency
     // needs-more-work: final methods?
-    if (sk == ScopeKind.CLASSIFIER)
+    if (ScopeKind.CLASSIFIER.equals(sk))
       _keywordsField.setSelectedItem("static");
     else
       _keywordsField.setSelectedItem("None");
@@ -181,6 +181,9 @@ implements ItemListener {
     catch (PropertyVetoException ignore) { }
   }
 
+  // needs-more-work: how to model abstract methods?
+  // needs-more-work: how to model final methods?
+  
   public void setTargetKeywords() {
     if (_target == null) return;
     String keys = (String) _keywordsField.getSelectedItem();
@@ -190,33 +193,38 @@ implements ItemListener {
     }
     Operation oper = (Operation) _target;
     try {
-    if (keys.equals("None")) {
-      try {
-        oper.setOwnerScope(ScopeKind.INSTANCE);
+      if (keys.equals("None")) {
+	oper.setOwnerScope(ScopeKind.INSTANCE);
+	oper.setConcurrency(CallConcurrencyKind.CONCURRENT);
       }
-      catch (PropertyVetoException ignore) { }
-    }
-    else if (keys.equals("static")) {
-      oper.setOwnerScope(ScopeKind.CLASSIFIER);
-    }
-    else if (keys.equals("final")) {
-      oper.setOwnerScope(ScopeKind.INSTANCE);
-    }
-    else if (keys.equals("static final")) {
-      oper.setOwnerScope(ScopeKind.INSTANCE);
-    }
-    else if (keys.equals("synchronized")) {
-      oper.setOwnerScope(ScopeKind.INSTANCE);
-    }
-    else if (keys.equals("static synchronized")) {
-      oper.setOwnerScope(ScopeKind.CLASSIFIER);
-    }
-    else if (keys.equals("final synchronized")) {
-      oper.setOwnerScope(ScopeKind.INSTANCE);
-    }
-    else if (keys.equals("static final synchronized")) {
-      oper.setOwnerScope(ScopeKind.CLASSIFIER);
-    }
+      else if (keys.equals("static")) {
+	oper.setOwnerScope(ScopeKind.CLASSIFIER);
+	oper.setConcurrency(CallConcurrencyKind.CONCURRENT);
+      }
+      else if (keys.equals("final")) {
+	oper.setOwnerScope(ScopeKind.INSTANCE);
+	oper.setConcurrency(CallConcurrencyKind.CONCURRENT);
+      }
+      else if (keys.equals("static final")) {
+	oper.setOwnerScope(ScopeKind.INSTANCE);
+	oper.setConcurrency(CallConcurrencyKind.CONCURRENT);
+      }
+      else if (keys.equals("synchronized")) {
+	oper.setOwnerScope(ScopeKind.INSTANCE);
+	oper.setConcurrency(CallConcurrencyKind.GUARDED);
+      }
+      else if (keys.equals("static synchronized")) {
+	oper.setOwnerScope(ScopeKind.CLASSIFIER);
+	oper.setConcurrency(CallConcurrencyKind.GUARDED);
+      }
+      else if (keys.equals("final synchronized")) {
+	oper.setOwnerScope(ScopeKind.INSTANCE);
+	oper.setConcurrency(CallConcurrencyKind.GUARDED);
+      }
+      else if (keys.equals("static final synchronized")) {
+	oper.setOwnerScope(ScopeKind.CLASSIFIER);
+	oper.setConcurrency(CallConcurrencyKind.GUARDED);
+      }
     }
     catch (PropertyVetoException pve) {
       System.out.println("could not set keywords!");

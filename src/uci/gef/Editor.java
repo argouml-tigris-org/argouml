@@ -416,7 +416,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   public void setAwtComponent(Component c) { _awt_component = c; }
 
   public void setCursor(Cursor c) {
-    if (getAwtComponent() != null) getAwtComponent().setCursor(c);
+    if (getAwtComponent() != null) {
+      getAwtComponent().setCursor(c);
+      java.awt.Toolkit.getDefaultToolkit().sync();
+    }
   }
 
   /** Get the graphics context object that this editor should draw on. */
@@ -480,6 +483,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     RedrawManager.lock();
     Globals.curEditor(this);
     //setUnderMouse(me);
+    if (_curFig instanceof MouseListener)
+      ((MouseListener)_curFig).mouseClicked(me);
     _selectionManager.mouseClicked(me);
     _modeManager.mouseClicked(me);  
     RedrawManager.unlock();
@@ -488,9 +493,12 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Invoked when a mouse button has been pressed. */
   public void mousePressed(MouseEvent me) {
+    if (getAwtComponent() != null) getAwtComponent().requestFocus();
     RedrawManager.lock();
     Globals.curEditor(this);
     //setUnderMouse(me);
+    if (_curFig instanceof MouseListener)
+      ((MouseListener)_curFig).mousePressed(me);
     _selectionManager.mousePressed(me);
     _modeManager.mousePressed(me);  
     RedrawManager.unlock();
@@ -502,6 +510,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     RedrawManager.lock();
     Globals.curEditor(this);
     //setUnderMouse(me);
+    if (_curFig instanceof MouseListener)
+      ((MouseListener)_curFig).mouseReleased(me);
     _selectionManager.mouseReleased(me);
     _modeManager.mouseReleased(me);  
     RedrawManager.unlock();

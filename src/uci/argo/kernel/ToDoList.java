@@ -26,6 +26,8 @@ package uci.argo.kernel;
 import java.util.*;
 import com.sun.java.swing.event.EventListenerList;
 
+import uci.util.*;
+
 /** This class implments a list of ToDoItem's.  If desired it can also
  *  spwan a "sweeper" thread that periodically goes through the list
  *  and elimiates ToDoItem's that are no longer valid.
@@ -41,12 +43,16 @@ implements Runnable, java.io.Serializable {
   // instance variables
 
   /** Pending ToDoItems for the designer to consider. */
-  private Vector _items = new Vector(100);
+  protected Vector _items = new Vector(100);
 
+  protected Set _allOffenders = new Set(100);
+  protected Set _allKnowledgeTypes = new Set();
+  protected Set _allPosters = new Set();
+  
   /** ToDoItems that the designer has explicitly indicated that (s)he
    * considers resolved.  Needs-More-Work: generalize into a design
    * rationale logging facility. */
-  private Vector _resolvedItems = new Vector(100);
+  protected Vector _resolvedItems = new Vector(100);
 
   /** A Thread that keeps checking if the items on the list are still valid. */
   protected Thread _validityChecker;
@@ -130,11 +136,11 @@ implements Runnable, java.io.Serializable {
   public Vector getToDoItems() { return _items; }
 
   // needs-more-work: not implemented
-  public Vector getOffenders() { return new Vector(); }
+  public Set getOffenders() { return _allOffenders; }
   public Vector getDecisions() { return new Vector(); }
   public Vector getGoals() { return new Vector(); }
-  public Vector getKnowledgeTypes() { return new Vector(); }
-  public Vector getPosters() { return new Vector(); }
+  public Set getKnowledgeTypes() { return _allKnowledgeTypes; }
+  public Set getPosters() { return _allPosters; }
 
   
   
@@ -146,6 +152,9 @@ implements Runnable, java.io.Serializable {
       return;
     }
     _items.addElement(item);
+    _allOffenders.addAllElements(item.getOffenders());
+    _allKnowledgeTypes.addAllElements(item.getPoster().getKnowledgeTypes());
+    _allPosters.addElement(item.getPoster());
     if (item.getPoster() instanceof Designer)
       History.TheHistory.addItem(item, "note: ");
     else
@@ -178,6 +187,7 @@ implements Runnable, java.io.Serializable {
 
   private synchronized boolean removeE(ToDoItem item) {
     boolean res = _items.removeElement(item);
+    recomputeAllOffenders();
     notifyObservers("removeElement", item);
     fireToDoItemRemoved(item);
     return res;
@@ -215,6 +225,33 @@ implements Runnable, java.io.Serializable {
     return (ToDoItem)_items.elementAt(index);
   }
 
+  protected void recomputeAllOffenders() {
+    _allOffenders = new Set(_items.size()*2);
+    Enumeration enum = _items.elements();
+    while (enum.hasMoreElements()) {
+      ToDoItem item = (ToDoItem) enum.nextElement();
+      _allOffenders.addAllElements(item.getOffenders());
+    }
+  }
+  
+  protected void recomputeAllKnowledgeTypes() {
+    _allKnowledgeTypes = new Set();
+    Enumeration enum = _items.elements();
+    while (enum.hasMoreElements()) {
+      ToDoItem item = (ToDoItem) enum.nextElement();
+      _allKnowledgeTypes.addAllElements(item.getPoster().getKnowledgeTypes());
+    }
+  }
+  
+  protected void recomputeAllPosters() {
+    _allPosters = new Set();
+    Enumeration enum = _items.elements();
+    while (enum.hasMoreElements()) {
+      ToDoItem item = (ToDoItem) enum.nextElement();
+      _allPosters.addElement(item.getPoster());
+    }
+  }
+  
 
   ////////////////////////////////////////////////////////////////
   // event related stuff

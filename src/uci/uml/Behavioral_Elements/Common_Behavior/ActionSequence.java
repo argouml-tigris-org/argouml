@@ -39,6 +39,9 @@ import uci.uml.Model_Management.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Collaborations.*;
 
+/** By default ActionSequences are in the same Namespace as the
+ *  Transition or State that they are attached to.  And Actions in an
+ *  ActionSequence are in the same Namespace as the ActionSequence. */
 
 public class ActionSequence extends ModelElementImpl {
   //public MMAction _action[];
@@ -61,16 +64,25 @@ public class ActionSequence extends ModelElementImpl {
     if (_action == null) _action = new Vector();
     fireVetoableChange("action", _action, x);
     _action = x;
+    java.util.Enumeration enum = _action.elements();
+    while (enum.hasMoreElements()) {
+      MMAction a = (MMAction) enum.nextElement();
+      a.setActionSequence(this);
+      a.setNamespace(getNamespace());
+    }
   }
   public void addAction(MMAction x) throws PropertyVetoException {
     if (_action == null) _action = new Vector();
     fireVetoableChange("action", _action, x);
     _action.addElement(x);
+    x.setActionSequence(this);
+    x.setNamespace(getNamespace());
   }
   public void removeAction(MMAction x) throws PropertyVetoException {
     if (_action == null) return;
     fireVetoableChange("action", _action, x);
     _action.removeElement(x);
+    x.setActionSequence(null);
   }
 
 //   public State getState() { return _state; }

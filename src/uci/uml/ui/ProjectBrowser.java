@@ -85,12 +85,13 @@ implements IStatusBar {
   // view menu
   protected static Action _actionNavUp = Actions.NavUp;
   protected static Action _actionNavDown = Actions.NavDown;
-  protected static Action _actionNextTab = Actions.NextTab;
-  protected static Action _actionPrevTab = Actions.PrevTab;
+  protected static Action _actionNextEditTab = Actions.NextEditTab;
+  protected static Action _actionPrevEditTab = Actions.PrevEditTab;
   protected static Action _actionShowDiagramTab = Actions.ShowDiagramTab;
   protected static Action _actionShowTableTab = Actions.ShowTableTab;
   protected static Action _actionShowTextTab = Actions.ShowTextTab;
   protected static Action _actionAddToFavs = Actions.AddToFavs;
+  protected static Action _actionNextDetailsTab = Actions.NextDetailsTab;
 
   // create menu
   protected static Action _actionCreateMultiple = Actions.CreateMultiple;
@@ -185,7 +186,19 @@ implements IStatusBar {
     KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK);
     KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK);
     KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK);
+    KeyStroke F5 = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
     KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
+
+    KeyStroke alt1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
+    KeyStroke alt2 = KeyStroke.getKeyStroke(KeyEvent.VK_2, KeyEvent.ALT_MASK);
+    KeyStroke alt3 = KeyStroke.getKeyStroke(KeyEvent.VK_3, KeyEvent.ALT_MASK);
+    KeyStroke alt4 = KeyStroke.getKeyStroke(KeyEvent.VK_4, KeyEvent.ALT_MASK);
+    KeyStroke alt5 = KeyStroke.getKeyStroke(KeyEvent.VK_5, KeyEvent.ALT_MASK);
+    KeyStroke alt6 = KeyStroke.getKeyStroke(KeyEvent.VK_6, KeyEvent.ALT_MASK);
+    KeyStroke alt7 = KeyStroke.getKeyStroke(KeyEvent.VK_7, KeyEvent.ALT_MASK);
+    KeyStroke alt8 = KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
+    KeyStroke alt9 = KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
+    KeyStroke alt0 = KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
 
     JMenuItem mi;
     // File Menu
@@ -230,14 +243,41 @@ implements IStatusBar {
     view.add(_actionNavDown);
     view.add(_actionNavUp);
     view.addSeparator();
-    view.add(_actionNextTab);
-    view.add(_actionPrevTab);
+    view.add(_actionNextEditTab);
+    view.add(_actionPrevEditTab);
     view.addSeparator();
     view.add(_actionShowDiagramTab);
     view.add(_actionShowTableTab);
     view.add(_actionShowTextTab);
+    
     //view.addSeparator();
     //view.add(_actionAddToFavorites);
+    JMenu detailsTabs = (JMenu) view.add(new JMenu("Details Tabs"));
+    JMenuItem nextDetailsItem = detailsTabs.add(_actionNextDetailsTab);
+    nextDetailsItem.setAccelerator(F5);
+    detailsTabs.addSeparator();
+    
+    JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("ToDoItem"));
+    tab1Item.setAccelerator(alt1);
+    JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("Javadocs"));
+    tab2Item.setAccelerator(alt2);
+    JMenuItem tab3Item = detailsTabs.add(new ActionGoToDetails("Properties"));
+    tab3Item.setAccelerator(alt3);
+    JMenuItem tab4Item = detailsTabs.add(new ActionGoToDetails("Source"));
+    tab4Item.setAccelerator(alt4);
+    JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("Constraints"));
+    tab5Item.setAccelerator(alt5);
+    JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("TaggedValues"));
+    tab6Item.setAccelerator(alt6);
+    JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("Checklist"));
+    tab7Item.setAccelerator(alt7);
+    JMenuItem tab8Item = detailsTabs.add(new ActionGoToDetails("History"));
+    tab8Item.setAccelerator(alt8);
+//     JMenuItem tab9Item = detailsTabs.add(new ActionGoToDetails(""));
+//     tab9Item.setAccelerator(alt9);
+//     JMenuItem tab0Item = detailsTabs.add(new ActionGoToDetails(""));
+//     tab0Item.setAccelerator(alt0);
+    
 
     JMenu create = (JMenu) _menuBar.add(new JMenu("Create"));
     create.setMnemonic('C');
@@ -375,6 +415,8 @@ implements IStatusBar {
 
   public ToDoPane getToDoPane() { return _toDoPane; }
   public NavigatorPane getNavPane() { return _navPane; }
+  public MultiEditorPane getEditorPane() { return _multiPane; }
+  public DetailsPane getDetailsPane() { return _detailsPane; }
 
 
 //   ////////////////////////////////////////////////////////////////

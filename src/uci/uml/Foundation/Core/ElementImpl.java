@@ -31,19 +31,29 @@ package uci.uml.Foundation.Core;
 
 import java.util.*;
 import java.beans.*;
+
 import uci.uml.Foundation.Extension_Mechanisms.TaggedValue;
 import uci.uml.Foundation.Extension_Mechanisms.Stereotype;
 import uci.uml.Foundation.Data_Types.Name;
+import uci.ui.Highlightable;
 
+/** Highlight is an added attribute that is not in the UML spec.  It
+ *  is used in Argo/UML to visually identify the offending elements
+ *  reported by a design critic. Most operations report state changes
+ *  via the _vetoListeners, but setHighlight sends notifications to
+ *  _propertyListeners. */
 
-public class ElementImpl implements Element {
+  
+public class ElementImpl implements Element, Highlightable {
   public Name _name = Name.UNSPEC;
   //% public TaggedValue _characteristic[];
   public Vector _characteristic;
   public Stereotype _classification;
   //% public TaggedValue _taggedValue[];
   public Vector _taggedValue;
-  public transient Vector vetoListeners;
+  public transient Vector _vetoListeners;
+  public transient Vector _propertyListeners;
+  public boolean _highlight;
   
   public ElementImpl() { }
   public ElementImpl(Name name) {
@@ -56,74 +66,74 @@ public class ElementImpl implements Element {
   }
 
   public Vector getCharacteristic() { return _characteristic; }
-  public void setCharacteristic(Vector x)
-  throws PropertyVetoException {
+  public void setCharacteristic(Vector x) throws PropertyVetoException {
     if (_characteristic == null) _characteristic = new Vector();
     fireVetoableChange("characteristic", _characteristic, x);
     _characteristic = x;
   }
-  public void addCharacteristic(TaggedValue x)
-  throws PropertyVetoException {
+  public void addCharacteristic(TaggedValue x) throws PropertyVetoException {
     if (_characteristic == null) _characteristic = new Vector();
     fireVetoableChange("characteristic", _characteristic, x);
     _characteristic.addElement(x);
   }
-  public void removeCharacteristic(TaggedValue x)
-  throws PropertyVetoException {
+  public void removeCharacteristic(TaggedValue x)throws PropertyVetoException {
     if (_characteristic == null) return;
     fireVetoableChange("characteristic", _characteristic, x);
     _characteristic.removeElement(x);
   }
 
   public Stereotype getClassification() { return _classification; }
-  public void setClassification(Stereotype x)
-  throws PropertyVetoException {
+  public void setClassification(Stereotype x) throws PropertyVetoException {
     fireVetoableChange("classification", _classification, x);
     _classification = x;
   }
 
   public Name getName() { return _name; }
-  public void setName(Name x)
-  throws PropertyVetoException {
+  public void setName(Name x) throws PropertyVetoException {
     fireVetoableChange("name", _name, x);
     _name = x;
   }
 
   public Vector getTaggedValue() { return _taggedValue; }
-  public void setTaggedValue(Vector x)
-  throws PropertyVetoException {
+  public void setTaggedValue(Vector x) throws PropertyVetoException {
     if (_taggedValue == null) _taggedValue = new Vector();
     fireVetoableChange("taggedValue", _taggedValue, x);
     _taggedValue = x;
   }
-  public void addTaggedValue(TaggedValue x)
-  throws PropertyVetoException {
+  public void addTaggedValue(TaggedValue x) throws PropertyVetoException {
     if (_taggedValue == null) _taggedValue = new Vector();
     fireVetoableChange("taggedValue", _taggedValue, x);
     _taggedValue.addElement(x);
   }
-  public void removeTaggedValue(TaggedValue x)
-  throws PropertyVetoException {
+  public void removeTaggedValue(TaggedValue x) throws PropertyVetoException {
     if (_taggedValue == null) return;
     fireVetoableChange("taggedValue", _taggedValue, x);
     _taggedValue.removeElement(x);
   }
+
+  public boolean getHighlight() { return _highlight; }
+  public void setHighlight(boolean x) {
+    boolean old = _highlight;
+    _highlight = x;
+    firePropertyChange("highlight", old, _highlight);
+  }
+
 
   ////////////////////////////////////////////////////////////////
   // VetoableChangeSupport
 
   public synchronized void
   addVetoableChangeListener(VetoableChangeListener listener) {
-    if (vetoListeners == null)
-      vetoListeners = new Vector();
-    vetoListeners.removeElement(listener);
-    vetoListeners.addElement(listener);
+    if (_vetoListeners == null)
+      _vetoListeners = new Vector();
+    _vetoListeners.removeElement(listener);
+    _vetoListeners.addElement(listener);
   }
 
   public synchronized void
   removeVetoableChangeListener(VetoableChangeListener listener) {
-    if (vetoListeners == null) return;
-    vetoListeners.removeElement(listener);
+    if (_vetoListeners == null) return;
+    _vetoListeners.removeElement(listener);
   }
 
   public void fireVetoableChange(String propertyName, 
@@ -147,24 +157,24 @@ public class ElementImpl implements Element {
   public void fireVetoableChange(String propertyName, 
 				 Object oldValue, Object newValue) 
        throws PropertyVetoException {
-	 if (vetoListeners == null) return;
+	 if (_vetoListeners == null) return;
     if (oldValue != null && oldValue.equals(newValue)) return;
     PropertyChangeEvent evt =
       new PropertyChangeEvent(this,
 			      propertyName, oldValue, newValue);
     try {
-      for (int i = 0; i < vetoListeners.size(); i++) {
+      for (int i = 0; i < _vetoListeners.size(); i++) {
 	VetoableChangeListener target = 
-	  (VetoableChangeListener) vetoListeners.elementAt(i);
+	  (VetoableChangeListener) _vetoListeners.elementAt(i);
 	target.vetoableChange(evt);
       }
     } catch (PropertyVetoException veto) {
       // Create an event to revert everyone to the old value.
       evt = new PropertyChangeEvent(this, propertyName, newValue, oldValue);
-      for (int i = 0; i < vetoListeners.size(); i++) {
+      for (int i = 0; i < _vetoListeners.size(); i++) {
 	try {
 	  VetoableChangeListener target =
-	    (VetoableChangeListener) vetoListeners.elementAt(i);
+	    (VetoableChangeListener) _vetoListeners.elementAt(i);
 	  target.vetoableChange(evt);
 	} catch (PropertyVetoException ex) {
 	  // We just ignore exceptions that occur during reversions.
@@ -175,6 +185,51 @@ public class ElementImpl implements Element {
     }    
   }
   
+  ////////////////////////////////////////////////////////////////
+  // property change events
+  
+  public synchronized void
+  addPropertyChangeListener(PropertyChangeListener listener) {
+    if (_propertyListeners == null) _propertyListeners = new Vector();
+    _propertyListeners.removeElement(listener);
+    _propertyListeners.addElement(listener);
+  }
+
+  public synchronized void
+  removePropertyChangeListener(PropertyChangeListener listener) {
+    if (_propertyListeners == null) return;
+    _propertyListeners.removeElement(listener);
+  }
+
+  public void firePropertyChange(String propertyName, 
+				 boolean oldValue, boolean newValue) {
+	 firePropertyChange(propertyName,
+			    new Boolean(oldValue),
+			    new Boolean(newValue));
+  }
+
+  public void firePropertyChange(String propertyName, 
+				 int oldValue, int newValue) {
+	 firePropertyChange(propertyName,
+			    new Integer(oldValue),
+			    new Integer(newValue));
+  }
+
+
+
+  public void firePropertyChange(String propertyName, 
+				 Object oldValue, Object newValue) {
+    if (_propertyListeners == null) return;
+    if (oldValue != null && oldValue.equals(newValue)) return;
+    PropertyChangeEvent evt =
+      new PropertyChangeEvent(this, propertyName, oldValue, newValue);
+    for (int i = 0; i < _propertyListeners.size(); i++) {
+      PropertyChangeListener target = 
+	(PropertyChangeListener) _propertyListeners.elementAt(i);
+      target.propertyChange(evt);
+    }    
+  }
+
   ////////////////////////////////////////////////////////////////
   // OCL support
   

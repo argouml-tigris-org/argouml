@@ -34,12 +34,13 @@ import uci.uml.Model_Management.*;
 public class CrUnconventionalAttrName extends CrUML {
 
   public CrUnconventionalAttrName() {
-    setHeadline("Choose a better name");
-    sd("Normally attributes begin with a lowercase letter. \n\n"+
-       "Following good naming conventions help to improve \n"+
+    setHeadline("Choose a Better Attribute Name");
+    sd("Normally attributes begin with a lowercase letter. "+
+       "The name '{name}' is unconventional because it does not.\n\n"+
+       "Following good naming conventions help to improve "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select the \n"+
-       "attribute and use the Properties tab to give it a name.");
+       "To fix this, use the FixIt button, or manually select {name} "+
+       "and use the Properties tab to give it a name.");
     addSupportedDecision(CrUML.decNAMING);
   }
 

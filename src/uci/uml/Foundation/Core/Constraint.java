@@ -37,7 +37,8 @@ import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 //import uci.uml.Behavioral_Elements.Collaborations.*;
 
-
+/** By default, Constraints are in the Namespace of their constrained
+ *  ModelElement or constrained Stereotype */
 
 public class Constraint extends ModelElementImpl {
   public BooleanExpression _body;

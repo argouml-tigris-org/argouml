@@ -109,11 +109,17 @@ public class Operation extends BehavioralFeature {
     if (_method == null) _method = new Vector();
     fireVetoableChange("method", _method, x);
     _method = x;
+    java.util.Enumeration enum = _method.elements();
+    while (enum.hasMoreElements()) {
+      Method m = (Method) enum.nextElement();
+      m.setNamespace(getNamespace());
+    }
   }
   public void addMethod(Method x) throws PropertyVetoException {
     if (_method == null) _method = new Vector();
     fireVetoableChange("method", _method, x);
     _method.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeMethod(Method x) throws PropertyVetoException {
     if (_method == null) return;

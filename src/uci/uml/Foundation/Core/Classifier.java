@@ -31,6 +31,7 @@ package uci.uml.Foundation.Core;
 
 import java.util.*;
 import java.beans.PropertyVetoException;
+
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Data_Types.Name;
 import uci.uml.Foundation.Extension_Mechanisms.*;
@@ -68,6 +69,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     while (enum.hasMoreElements()) {
       BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
       bf.setOwner(this);
+      bf.setNamespace(getNamespace());
     }
   }
   public void addBehavioralFeature(Feature x)
@@ -76,6 +78,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     fireVetoableChange("behavioralFeature", _behavioralFeature, x);
     _behavioralFeature.addElement(x);
     x.setOwner(this);
+    x.setNamespace(getNamespace());
   }
   public void removeBehavioralFeature(Feature x)
   throws PropertyVetoException {
@@ -96,6 +99,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     while (enum.hasMoreElements()) {
       StructuralFeature sf = (StructuralFeature) enum.nextElement();
       sf.setOwner(this);
+      sf.setNamespace(getNamespace());
     }
   }
   public void addStructuralFeature(StructuralFeature x)
@@ -104,6 +108,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     fireVetoableChange("structuralFeature", _structuralFeature, x);
     _structuralFeature.addElement(x);
     x.setOwner(this);
+    x.setNamespace(getNamespace());
   }
   public void removeStructuralFeature(StructuralFeature x)
   throws PropertyVetoException {
@@ -160,12 +165,18 @@ public abstract class Classifier extends GeneralizableElementImpl {
     if (_associationEnd == null) _associationEnd = new Vector();
     fireVetoableChange("associationEnd", _associationEnd, x);
     _associationEnd = x;
+    java.util.Enumeration enum = _associationEnd.elements();
+    while (enum.hasMoreElements()) {
+      AssociationEnd ae = (AssociationEnd) enum.nextElement();
+      ae.setNamespace(getNamespace());
+    }
   }
   public void addAssociationEnd(AssociationEnd x)
   throws PropertyVetoException {
     if (_associationEnd == null) _associationEnd = new Vector();
     fireVetoableChange("associationEnd", _associationEnd, x);
     _associationEnd.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeAssociationEnd(AssociationEnd x)
   throws PropertyVetoException {
@@ -174,18 +185,25 @@ public abstract class Classifier extends GeneralizableElementImpl {
     _associationEnd.removeElement(x);
   }
 
+  // needs-more-work: what are paricipants?
   public Vector getParticipant() { return _participant; }
   public void setParticipant(Vector x)
   throws PropertyVetoException {
     if (_participant == null) _participant = new Vector();
     fireVetoableChange("participant", _participant, x);
     _participant = x;
+    java.util.Enumeration enum = _associationEnd.elements();
+    while (enum.hasMoreElements()) {
+      AssociationEnd ae = (AssociationEnd) enum.nextElement();
+      ae.setNamespace(getNamespace());
+    }
   }
   public void addParticipant(AssociationEnd x)
   throws PropertyVetoException {
     if (_participant == null) _participant = new Vector();
     fireVetoableChange("participant", _participant, x);
     _participant.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeParticipant(AssociationEnd x)
   throws PropertyVetoException {
@@ -200,6 +218,85 @@ public abstract class Classifier extends GeneralizableElementImpl {
     else if (f instanceof BehavioralFeature)
       addBehavioralFeature((BehavioralFeature)f);
     else System.out.println("should never get here");
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // transitive accessors
+
+  public Vector getInheritedBehavioralFeatures() {
+    Vector res = getBehavioralFeature();
+    if (res == null) res = new Vector();
+    Vector supers = getGeneralization();
+    if (supers == null || supers.size() == 0) return res;
+
+    java.util.Enumeration superEnum = supers.elements();
+    while (superEnum.hasMoreElements()) {
+      Generalization g = (Generalization) superEnum.nextElement();
+      Classifier c = (Classifier) g.getSupertype();
+      Vector beh = c.getInheritedBehavioralFeatures();
+      java.util.Enumeration enum = beh.elements();
+      while (enum.hasMoreElements()) {
+	res.addElement(enum.nextElement());
+      }
+    }
+    return res;
+  }
+
+  public Vector getInheritedStructuralFeatures() {
+    Vector res = getStructuralFeature();
+    if (res == null) res = new Vector();
+    Vector supers = getGeneralization();
+    if (supers == null || supers.size() == 0) return res;
+
+    java.util.Enumeration superEnum = supers.elements();
+    while (superEnum.hasMoreElements()) {
+      Generalization g = (Generalization) superEnum.nextElement();
+      Classifier c = (Classifier) g.getSupertype();
+      Vector str = c.getInheritedStructuralFeatures();
+      java.util.Enumeration enum = str.elements();
+      while (enum.hasMoreElements()) {
+	res.addElement(enum.nextElement());
+      }
+    }
+    return res;
+  }
+
+  public Vector getInheritedAssociationEnds() {
+    Vector res = getAssociationEnd();
+    if (res == null) res = new Vector();
+    Vector supers = getGeneralization();
+    if (supers == null || supers.size() == 0) return res;
+
+    java.util.Enumeration superEnum = supers.elements();
+    while (superEnum.hasMoreElements()) {
+      Generalization g = (Generalization) superEnum.nextElement();
+      Classifier c = (Classifier) g.getSupertype();
+      Vector ends = c.getInheritedAssociationEnds();
+      java.util.Enumeration enum = ends.elements();
+      while (enum.hasMoreElements()) {
+	res.addElement(enum.nextElement());
+      }
+    }
+    return res;
+  }
+
+  public Vector getInheritedRealizations() {
+    Vector res = getRealization();
+    if (res == null) res = new Vector();
+    Vector supers = getGeneralization();
+    if (supers == null || supers.size() == 0) return res;
+
+    java.util.Enumeration superEnum = supers.elements();
+    while (superEnum.hasMoreElements()) {
+      Generalization g = (Generalization) superEnum.nextElement();
+      Classifier c = (Classifier) g.getSupertype();
+      Vector reals = c.getInheritedRealizations();
+      java.util.Enumeration enum = reals.elements();
+      while (enum.hasMoreElements()) {
+	res.addElement(enum.nextElement());
+      }
+    }
+    return res;
   }
 
 

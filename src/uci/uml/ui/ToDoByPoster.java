@@ -35,25 +35,57 @@ import uci.util.*;
 import uci.argo.kernel.*;
 
 
-public class ToDoByPoster extends ToDoPerspective {
+public class ToDoByPoster extends ToDoPerspective
+implements ToDoListListener {
 
-  public ToDoByPoster() { super("By Poster"); }
+  public ToDoByPoster() {
+    super("By Poster");
+    addSubTreeModel(new GoListToPosterToItem());
+  }
   
-//   protected void computePseudoNodes() {
-//     super.computePseudoNodes();
-//     ToDoList list = Designer.TheDesigner.getToDoList();
-//     Vector goals = list.getPosters(); 
-//     _pseudoNodes = new Vector(goals.size());
-//     java.util.Enumeration enum = goals.elements();
-//     while (enum.hasMoreElements()) {
-//       Predicate pred = new PredicatePoster((Poster)enum.nextElement());
-//       _pseudoNodes.addElement(new ToDoPseudoNode(list, pred));
-//     }
-//   }
+  ////////////////////////////////////////////////////////////////
+  // ToDoListListener implementation
 
-  //public String toString() { return "Poster"; }
+  public void toDoItemAdded(ToDoListEvent tde) {
+    //System.out.println("toDoItemAdded");
+    ToDoItem item = tde.getToDoItem();
+    Object path[] = new Object[2];
+    path[0] = Designer.TheDesigner.getToDoList();
+    int childIndices[] = new int[1];
+    Object children[] = new Object[1];
 
+    Poster post = item.getPoster();
+    java.util.Enumeration enum = Designer.theDesigner().getToDoList().getPosters().elements();
+    while (enum.hasMoreElements()) {
+      Poster p = (Poster) enum.nextElement();
+      if (post != p) continue;
+      path[1] = post;
+      //System.out.println("toDoItemAdded firing new item!");
+      childIndices[0] = getIndexOfChild(p, item);
+      children[0] = item;
+      fireTreeNodesInserted(this, path, childIndices, children);
+    }
+  }
 
+  public void toDoItemRemoved(ToDoListEvent tde) {
+    //System.out.println("toDoItemRemoved");
+    ToDoList list = Designer.TheDesigner.getToDoList(); //source?
+    ToDoItem item = tde.getToDoItem();
+    Object path[] = new Object[2];
+    path[0] = Designer.TheDesigner.getToDoList();
+
+    Poster post = item.getPoster();
+    java.util.Enumeration enum = Designer.theDesigner().getToDoList().getPosters().elements();
+    while (enum.hasMoreElements()) {
+      Poster p = (Poster) enum.nextElement();
+      if (post != p) continue;
+      path[1] = post;
+      fireTreeStructureChanged(path);
+    }
+  }
+
+  public void toDoListChanged(ToDoListEvent tde) { }
+  
 
 } /* end class ToDoByPoster */
 

@@ -39,7 +39,7 @@ public class PredIsStartState implements Predicate {
 
   public boolean predicate(Object obj) {
     return (obj instanceof Pseudostate) &&
-      (((Pseudostate)obj).getKind() == PseudostateKind.INITIAL);
+      (PseudostateKind.INITIAL.equals(((Pseudostate)obj).getKind()));
   }
   
 } /* end class PredIsStartState */

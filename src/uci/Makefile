@@ -53,6 +53,7 @@ umlClasses:
 	cd Behavioral_Elements/State_Machines; make classes; cd ../.. ; \
 	cd Behavioral_Elements/Use_Cases; make classes; cd ../.. ; \
 	cd Behavioral_Elements/Collaborations; make classes; cd ../.. ; \
+	cd util; make classes; cd .. ; \
 	cd test/omg; make classes; cd ../.. ; \
 	cd generate; make classes; cd .. ; \
 	make classes; \
@@ -62,7 +63,7 @@ umlClasses:
 argoumlClasses:
 	@if [ -d uml/ui ] ; \
 	then echo "\n\nCOMPILING ARGO/UML ================" ; \
-	cd uml; make classes; \
+	cd uml ; \
 	cd ui; make classes; cd .. ; \
 	cd visual; make classes; cd .. ; \
 	cd .. ; \
@@ -72,6 +73,7 @@ criticsClasses:
 	@if [ -d uml/critics ] ; \
 	then echo "\n\nCOMPILING UML CRITICS ================" ; \
 	cd uml ; \
+	cd checklist; make classes; cd .. ; \
 	cd critics; make classes; cd .. ; \
 	cd critics/patterns; make classes; cd ../.. ; \
 	cd .. ; \

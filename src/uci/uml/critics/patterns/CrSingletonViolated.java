@@ -57,7 +57,8 @@ public class CrSingletonViolated extends CrUML {
        "\n"+
        "To learn more about the Singleton Pattern, press the MoreInfo icon.");
        
-    addSupportedDecision(CrUML.decINHERITANCE);
+    addSupportedDecision(CrUML.decPATTERNS);
+    setPriority(ToDoItem.LOW_PRIORITY);
   }
 
   protected void sd(String s) { setDescription(s); }

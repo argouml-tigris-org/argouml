@@ -35,6 +35,9 @@ import java.beans.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
+/** By default, a StateVertex is in the same Namespace as it's
+ *  CompositeState. */
+
 public abstract class StateVertex extends ModelElementImpl {
   public CompositeState _parent;
   //% public Transition _outgoing[];
@@ -47,8 +50,12 @@ public abstract class StateVertex extends ModelElementImpl {
   public StateVertex(String nameStr) { super(new Name(nameStr)); }
 
   public CompositeState getParent() { return _parent; }
-  public void setParent(CompositeState x) {
+  public void setParent(CompositeState x) throws PropertyVetoException {
+    if (_parent == x) return;
+    fireVetoableChange("parent", _parent, x);
+    if (_parent != null) _parent.removeSubstate(this);
     _parent = x;
+    if (_parent != null) _parent.addSubstate(this);
   }
 
   public Vector getOutgoing() { return _outgoing; }

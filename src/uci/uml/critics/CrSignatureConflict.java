@@ -34,10 +34,16 @@ import uci.uml.Foundation.Core.*;
 public class CrSignatureConflict extends CrUML {
 
   public CrSignatureConflict() {
-    setHeadline("Two Operations have same Signature");
-    sd("Operations must have distinct signatures.\n\n");
+    setHeadline("Resolve Signature Conflict");
+    sd("Two operations of {name} have same signature.  A signature "+
+       "consists of the operation's name and the number and types of "+
+       "its parameters.\n\n"+
+       "Operations must have distinct signatures for code generation to "+
+       "produce code that will compile.\n\n" +
+       "To fix this, use the FixIt button, or manually double click on one "+
+       "of the conflicting operations in the navigator pane and use the "+
+       "Properties tab to change this name or parameters.");
 
-    addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedDecision(CrUML.decMETHODS);
   }
 
@@ -45,7 +51,17 @@ public class CrSignatureConflict extends CrUML {
   
   public boolean predicate(Object dm, Designer dsgr) {
     if (!(dm instanceof uci.uml.Foundation.Core.Classifier)) return NO_PROBLEM;
-    // needs-more-work 
+    Classifier cls = (Classifier) dm;
+    Vector str = cls.getBehavioralFeature();
+    if (str == null) return NO_PROBLEM;
+    int size = str.size();
+    for (int i = 0; i < size; i++) {
+      BehavioralFeature bf_i = (BehavioralFeature) str.elementAt(i);
+      for (int j = i+1; j < size; j++) {
+	BehavioralFeature bf_j = (BehavioralFeature) str.elementAt(j);
+	if (bf_i.equals(bf_j)) return PROBLEM_FOUND;
+      }
+    }
     return NO_PROBLEM;
   }
 

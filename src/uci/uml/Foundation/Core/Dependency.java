@@ -33,6 +33,8 @@ import java.util.*;
 import java.beans.*;
 import uci.uml.Foundation.Data_Types.*;
 
+/** By default a Dependency is in the Namespace of its Supplier. */
+
 public class Dependency extends ModelElementImpl {
   public String _description;
   //% public ModelElement _supplier[];
@@ -71,6 +73,7 @@ public class Dependency extends ModelElementImpl {
   public void addSupplier(ModelElement x) {
     if (_supplier == null) _supplier = new Vector();
     _supplier.addElement(x);
+    //setNamespace(x.getNamespace());
   }
   public void removeSupplier(ModelElement x) {
     _supplier.removeElement(x);

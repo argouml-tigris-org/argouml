@@ -69,13 +69,15 @@ public class Actions {
   public static UMLAction NavForw = new ActionNavForw();
   public static UMLAction NavFavs = new ActionNavFavs();
   public static UMLAction NavConfig = new ActionNavConfig();
-  public static UMLAction NextTab = new ActionNextTab();
-  public static UMLAction PrevTab = new ActionPrevTab();
+  public static UMLAction NextEditTab = new ActionNextEditTab();
+  public static UMLAction PrevEditTab = new ActionPrevEditTab();
   public static UMLAction ShowDiagramTab = new ActionShowDiagramTab();
   public static UMLAction ShowTableTab = new ActionShowTableTab();
   public static UMLAction ShowTextTab = new ActionShowTextTab();
   public static UMLAction AddToFavs = new ActionAddToFavs();
-  //public static UMLAction DefinePerspective = new ActionDefinePerspective();
+  public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
+  public static UMLAction PrevDetailsTab = new ActionPrevDetailsTab();
+
 
   
   public static UMLAction CreateMultiple = new ActionCreateMultiple();
@@ -263,21 +265,21 @@ class ActionNavConfig extends UMLAction {
   }
 } /* end class ActionNavConfig */
 
-class ActionPrevTab extends UMLAction {
-  public ActionPrevTab() { super("Previous Tab"); }
+class ActionNextEditTab extends UMLAction {
+  public ActionNextEditTab() { super("Next Editing Tab"); }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
-} /* end class ActionPrevTab */
+} /* end class ActionNextEditTab */
 
-class ActionNextTab extends UMLAction {
-  public ActionNextTab() { super("Next Tab"); }
+class ActionPrevEditTab extends UMLAction {
+  public ActionPrevEditTab() { super("Previous Editing Tab"); }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
-} /* end class ActionNextTab */
+} /* end class ActionPrevEditTab */
 
 class ActionShowDiagramTab extends UMLAction {
   public ActionShowDiagramTab() { super("Show Diagram Tab"); }
@@ -311,6 +313,28 @@ class ActionAddToFavs extends UMLAction {
   }
 } /* end class ActionAddToFavs */
 
+class ActionNextDetailsTab extends UMLAction {
+  public ActionNextDetailsTab() { super("Next Details Tab"); }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+  public void actionPerformed(ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    DetailsPane dp = pb.getDetailsPane();
+    dp.selectNextTab();
+  }
+} /* end class ActionNextDetailsTab */
+
+class ActionPrevDetailsTab extends UMLAction {
+  public ActionPrevDetailsTab() { super("Previous Details Tab"); }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionPrevDetailsTab */
+
+////////////////////////////////////////////////////////////////
 
 class ActionCreateMultiple extends UMLAction {
   public ActionCreateMultiple() { super("Create Multiple..."); }
@@ -602,8 +626,8 @@ class ActionAboutArgoUML extends UMLAction {
   public ActionAboutArgoUML() { super("About Argo/UML"); }
 
   public void actionPerformed(ActionEvent e) {
-    System.out.println("opening about box...");
-    Project p = ProjectBrowser.TheInstance.getProject();
+    AboutBox box = new AboutBox();
+    box.show();
   }
   public boolean shouldBeEnabled() { return true; }
 } /* end class ActionAboutArgoUML */

@@ -41,7 +41,7 @@ implements IStatusBar {
 
 
   public SplashScreen(String title, String iconName) {
-    //super(title);
+    super(title);
     ImageIcon splashImage = loadIconResource(iconName, iconName);
     int imgWidth = splashImage.getIconWidth();
     int imgHeight = splashImage.getIconHeight();

@@ -75,12 +75,18 @@ implements GeneralizableElement {
     if (_generalization == null) _generalization = new Vector();
     fireVetoableChange("generalization", _generalization, x);
     _generalization = x;
+    java.util.Enumeration enum = _generalization.elements();
+    while (enum.hasMoreElements()) {
+      Generalization g = (Generalization) enum.nextElement();
+      g.setNamespace(getNamespace());
+    }
   }
   public void addGeneralization(Generalization x) throws PropertyVetoException {
     if (_generalization == null) _generalization = new Vector();
     if (_generalization.contains(x)) return;
     fireVetoableChange("generalization", _generalization, x);
     _generalization.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeGeneralization(Generalization x) throws PropertyVetoException {
     if (_generalization == null || !_generalization.contains(x)) return;
@@ -95,12 +101,18 @@ implements GeneralizableElement {
     if (_specialization == null) _specialization = new Vector();
     fireVetoableChange("specalization", _specialization, x);
     _specialization = x;
+    java.util.Enumeration enum = _specialization.elements();
+    while (enum.hasMoreElements()) {
+      Generalization g = (Generalization) enum.nextElement();
+      g.setNamespace(getNamespace());
+    }
   }
   public void addSpecialization(Generalization x) throws PropertyVetoException {
     if (_specialization == null) _specialization = new Vector();
     if (_specialization.contains(x)) return;
     fireVetoableChange("specalization", _specialization, x);
      _specialization.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeSpecialization(Generalization x)
        throws PropertyVetoException

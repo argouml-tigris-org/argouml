@@ -63,12 +63,12 @@ public class NetPrimitive implements java.io.Serializable {
 
   /** Draw the user's attention to any and all visualizations of this
    *  net-level object. */
-  public boolean setHighlight() { return _highlight; }
+  public boolean getHighlight() { return _highlight; }
   
   public void setHighlight(boolean b) {
     boolean old = _highlight;
     _highlight = b;
-    firePropertyChange("Highlight", old, _highlight);
+    firePropertyChange("highlight", old, _highlight);
   }
 
 

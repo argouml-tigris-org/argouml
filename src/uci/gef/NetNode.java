@@ -101,7 +101,7 @@ implements GraphNodeHooks, java.io.Serializable  {
     while (ps.hasMoreElements()) {
       ((NetPort)ps.nextElement()).dispose();
     }
-    firePropertyChange("Disposed", false, true);
+    firePropertyChange("disposed", false, true);
   }
 
   ////////////////////////////////////////////////////////////////

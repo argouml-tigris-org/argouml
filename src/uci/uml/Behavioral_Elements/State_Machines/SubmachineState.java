@@ -34,6 +34,9 @@ import java.beans.*;
 
 import uci.uml.Foundation.Data_Types.*;
 
+/** By default, any submachine is in the same namespace as this
+ *  state. */
+
 public class SubmachineState extends State {
   public StateMachine _submachine;
     
@@ -50,6 +53,7 @@ public class SubmachineState extends State {
   public void setSubmachine(StateMachine x) throws PropertyVetoException {
     fireVetoableChange("submachine", _submachine, x);
     _submachine = x;
+    _submachine.setNamespace(getNamespace());
   }
   
 }

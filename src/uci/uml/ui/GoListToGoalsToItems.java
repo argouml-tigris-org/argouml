@@ -34,8 +34,7 @@ import com.sun.java.swing.tree.*;
 
 import uci.argo.kernel.*;
 
-public class GoListToGoalsToItems
-implements TreeModel {
+public class GoListToGoalsToItems implements TreeModelPrereqs {
   
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
@@ -123,7 +122,20 @@ implements TreeModel {
     return Designer.TheDesigner.getGoalModel().getGoals();
   }
   
-//     Vector removes = new Vector();
+  public Vector getPrereqs() {
+    Vector res = new Vector();
+    res.addElement(ToDoList.class);
+    return res;
+  }
+
+  public Vector getProvidedTypes() {
+    Vector pros = new Vector();
+    pros.addElement(Goal.class);
+    pros.addElement(ToDoItem.class);
+    return pros;
+  }
+
+  //     Vector removes = new Vector();
 //     java.util.Enumeration enum = _pseudoNodes.elements();
 //     while (enum.hasMoreElements()) {
 //       ToDoPseudoNode node = (ToDoPseudoNode) enum.nextElement();

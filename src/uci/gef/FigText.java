@@ -32,9 +32,11 @@
 package uci.gef;
 
 import java.awt.*;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.*;
+import java.beans.*;
+import com.sun.java.swing.*;
+import com.sun.java.swing.event.*;
 
 import uci.ui.*;
 import uci.util.*;
@@ -43,7 +45,7 @@ import uci.util.*;
  *  LayerDiagram. Needs-More-Work: should eventually allow styled text
  *  editing, ... someday... */
 
-public class FigText extends Fig implements KeyListener {
+public class FigText extends Fig implements KeyListener, MouseListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -78,6 +80,10 @@ public class FigText extends Fig implements KeyListener {
 
   /** True if the text should be underlined. needs-more-work. */
   protected boolean _underline = false;
+
+  /** True if more than one line of text is allow. If false, newline
+   *  characters will be ignored. True by default. */
+  protected boolean _multiLine = true;
 
   /** Spacing between lines. Default is -4 pixels. */
   protected int _lineSpacing = -4;
@@ -272,6 +278,9 @@ public class FigText extends Fig implements KeyListener {
     setFont(new Font(_font.getFamily(), style, _font.getSize()));
   }
 
+  public void setMultiLine(boolean b) { _multiLine = b; }
+  public boolean getMultiLine() { return _multiLine; }
+  
   /** Remove the last char from the current string line and return the
    *  new string.  Called whenever the user hits the backspace key.
    *  Needs-More-Work: Very slow.  This will eventually be replaced by
@@ -362,7 +371,7 @@ public class FigText extends Fig implements KeyListener {
 
 
   ////////////////////////////////////////////////////////////////
-  // event handlers
+  // event handlers: KeyListener implemtation
 
   /** When the user presses a key when a FigText is selected, that key
    *  should be added to the current string, or if the key was
@@ -370,7 +379,8 @@ public class FigText extends Fig implements KeyListener {
    *  also catch arrow keys and mouse clicks for full text
    *  editing... someday... */
   public void keyTyped(KeyEvent ke) {
-    if (ke.getModifiers() != 0) return;
+    int mods = ke.getModifiers();
+    if (mods != 0 && mods != KeyEvent.SHIFT_MASK) return;
     char c = ke.getKeyChar();
     if (!Character.isISOControl(c)) {
       startTrans();
@@ -388,7 +398,11 @@ public class FigText extends Fig implements KeyListener {
       endTrans();
       ke.consume();
     }
-    if (ke.getKeyCode() == KeyEvent.VK_ENTER) {
+    else if (ke.getKeyCode() == KeyEvent.VK_F2) {
+      startTextEditor();
+      ke.consume();
+    }
+    else if (ke.getKeyCode() == KeyEvent.VK_ENTER && _multiLine) {
       startTrans();
       append('\n');
       endTrans();
@@ -400,6 +414,26 @@ public class FigText extends Fig implements KeyListener {
   public void keyReleased(KeyEvent ke) { }
 
   
+  ////////////////////////////////////////////////////////////////
+  // event handlers: KeyListener implemtation
+
+  public void mouseClicked(MouseEvent me) {
+    if (me.getClickCount() >= 2) startTextEditor();
+  }
+  
+  public void mousePressed(MouseEvent me) { }
+  
+  public void mouseReleased(MouseEvent me) { }
+  
+  public void mouseEntered(MouseEvent me) { }
+  
+  public void mouseExited(MouseEvent me) { }
+  
+  public void startTextEditor() {
+    FigTextEditor ta = new FigTextEditor(this);
+  }
+
+
   ////////////////////////////////////////////////////////////////
   // internal utility functions
 
@@ -434,3 +468,141 @@ public class FigText extends Fig implements KeyListener {
   }
 
 } /* end class FigText */
+
+
+////////////////////////////////////////////////////////////////
+
+
+// needs-more-work: could this be a singleton?
+
+class FigTextEditor extends JTextArea
+implements PropertyChangeListener, FocusListener, DocumentListener, KeyListener {
+
+  FigText _target;
+  JPanel drawingPanel;
+  
+  public static int EXTRA = 10;
+  
+  public FigTextEditor(FigText ft) {
+    _target = ft;
+    Editor ce = Globals.curEditor();
+    if (!(ce.getAwtComponent() instanceof JComponent)) {
+      System.out.println("not a JComponent");
+      return;
+    }
+    drawingPanel = (JPanel) ce.getAwtComponent();
+    _target.firePropChange("editing", false, true);
+    _target.addPropertyChangeListener(this);
+    // walk up and add to glass pane
+    Component awtComp = drawingPanel;
+    while (!(awtComp instanceof JFrame) && awtComp != null) {
+      awtComp = awtComp.getParent();
+    }
+    if (!(awtComp instanceof JFrame)) { System.out.println("no JFrame"); return; }
+    JPanel glass = (JPanel) ((JFrame)awtComp).getGlassPane();
+    ft.calcBounds();
+    Rectangle bbox = ft.getBounds();
+    bbox = SwingUtilities.convertRectangle(drawingPanel, bbox, glass);
+    setBounds(bbox.x - EXTRA, bbox.y - EXTRA,
+	      bbox.width + EXTRA*2, bbox.height + EXTRA*2 );
+    glass.setVisible(true);
+    glass.setLayout(null);
+    glass.add(this);
+    String text = ft.getText();
+    if (!text.endsWith("\n")) setText(text + "\n");
+    setText(text);
+    setFont(ft.getFont());
+    addFocusListener(this);
+    addKeyListener(this);
+    requestFocus();
+    getDocument().addDocumentListener(this);
+  }
+
+  public void propertyChange(PropertyChangeEvent pve) { updateFigText(); }
+
+  public void focusLost(FocusEvent fe) {
+    System.out.println("FigTextEditor lostFocus");
+    endEditing();
+  }
+
+  public void focusGained(FocusEvent e) {
+    System.out.println("focusGained");
+  }
+
+
+  public void endEditing() {
+    _target.startTrans();
+    updateFigText();
+    _target.endTrans();
+    hide();
+    Container parent = getParent();
+    if (parent!= null) parent.remove(this);
+    _target.removePropertyChangeListener(this);
+    _target.firePropChange("editing", true, false);
+    //drawingPanel.requestFocus();
+    removeFocusListener(this);
+    removeKeyListener(this);
+  }
+  
+  ////////////////////////////////////////////////////////////////
+  // event handlers for KeyListener implementaion
+
+  
+  public void keyTyped(KeyEvent ke) {
+    if (ke.getKeyChar() == KeyEvent.VK_ENTER &&
+	 !_target.getMultiLine()) {
+      ke.consume();
+    }
+    //else super.keyTyped(ke);
+  }
+
+  public void keyReleased(KeyEvent ke) {
+  }
+
+  public void keyPressed(KeyEvent ke) {
+    if (ke.getKeyCode() == KeyEvent.VK_F2) {
+      endEditing();
+      ke.consume();
+    }
+    else if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+      endEditing();
+      ke.consume();
+    }
+    //else super.keyPressed(ke);
+  }
+
+
+  ////////////////////////////////////////////////////////////////
+  // event handlers for DocumentListener implementaion
+
+  public void insertUpdate(DocumentEvent e) { updateFigText(); }
+  
+  public void removeUpdate(DocumentEvent e) { updateFigText(); }
+  
+  public void changedUpdate(DocumentEvent e) { updateFigText(); }
+
+
+  ////////////////////////////////////////////////////////////////
+  // internal utility methods
+
+  protected void updateFigText() {
+    if (_target == null) return;
+    String text = getText();
+    //_target.startTrans();
+    _target.setText(text);
+    //_target.endTrans();
+    Component awtComp = drawingPanel;
+    while (!(awtComp instanceof JFrame) && awtComp != null) {
+      awtComp = awtComp.getParent();
+    }
+    if (!(awtComp instanceof JFrame)) { System.out.println("no JFrame"); return; }
+    JPanel glass = (JPanel) ((JFrame)awtComp).getGlassPane();
+    _target.calcBounds();
+    Rectangle bbox = _target.getBounds();
+    bbox = SwingUtilities.convertRectangle(drawingPanel, bbox, glass);
+    setBounds(bbox.x - EXTRA, bbox.y - EXTRA,
+	      bbox.width + EXTRA*2, bbox.height + EXTRA*2 );
+    setFont(_target.getFont());
+  }
+  
+} /* end class FigTextEditor */

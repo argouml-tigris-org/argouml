@@ -31,8 +31,10 @@ package uci.uml.Foundation.Core;
 
 import java.util.*;
 import java.beans.*;
+
 import uci.uml.Foundation.Data_Types.Name;
 
+/** By default a Generalization is in the Namespace of the sub class. */
 public class Generalization extends ModelElementImpl {
   private Name _discriminator;
   public GeneralizableElement _subtype;
@@ -46,20 +48,27 @@ public class Generalization extends ModelElementImpl {
     super();
     setSubtype(sub);
     setSupertype(sup);
+    System.out.println("ppp1");
     sub.addGeneralization(this);
+    System.out.println("ppp2");
     sup.addSpecialization(this);
+    System.out.println("ppp3");
   }
 
   public Name getDiscriminator() { return _discriminator; }
-  public void setDiscriminator(Name x) {
+  public void setDiscriminator(Name x) throws PropertyVetoException {
+    fireVetoableChange("discriminator", _discriminator, x);
     _discriminator = x;
   }
   public GeneralizableElement getSubtype() { return _subtype; }
-  public void setSubtype(GeneralizableElement x) {
+  public void setSubtype(GeneralizableElement x) throws PropertyVetoException {
+    fireVetoableChange("subtype", _subtype, x);
     _subtype = x;
+    //if (x != null) setNamespace(x.getNamespace());
   }
   public GeneralizableElement getSupertype() { return _supertype; }
-  public void setSupertype(GeneralizableElement x) {
+  public void setSupertype(GeneralizableElement x) throws PropertyVetoException {
+    fireVetoableChange("supertype", _supertype, x);
     _supertype = x;
   }
 

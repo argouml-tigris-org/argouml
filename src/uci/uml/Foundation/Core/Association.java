@@ -37,6 +37,8 @@ import uci.uml.Foundation.Data_Types.Name;
 import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.Link;
 
+/** By default, Associations are in the same Namespace as their source
+ *  Classifier */
 
 public class Association extends GeneralizableElementImpl
 implements IAssociation {
@@ -80,6 +82,7 @@ implements IAssociation {
       //srcC.addAssociationEnd(src);
       addConnection(dst);
       //dstC.addAssociationEnd(dst);
+      setNamespace(srcC.getNamespace());
     }
     catch (PropertyVetoException pce) { }
   }
@@ -129,6 +132,31 @@ implements IAssociation {
     if (_link == null) return;
     fireVetoableChange("link", _link, x);
     _link.removeElement(x);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // utility methods
+
+  public boolean hasCompositeEnd() {
+    if (_connection == null) return false;
+    java.util.Enumeration enum = _connection.elements();
+    while (enum.hasMoreElements()) { 
+      AssociationEnd ae = (AssociationEnd) enum.nextElement();
+      if (AggregationKind.COMPOSITE.equals(ae.getAggregation()))
+	return true;
+    }
+    return false;
+  }
+  
+  public boolean hasAggregateEnd() {
+    if (_connection == null) return false;
+    java.util.Enumeration enum = _connection.elements();
+    while (enum.hasMoreElements()) { 
+      AssociationEnd ae = (AssociationEnd) enum.nextElement();
+      if (AggregationKind.AGG.equals(ae.getAggregation()))
+	return true;
+    }
+    return false;
   }
 
   ////////////////////////////////////////////////////////////////

@@ -35,6 +35,10 @@ import java.beans.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
+/** By default, Statemachines are in the same Namespace as their
+ *  context ModelElement, and Transitions and States and
+ *  substatemachines within a StateMachine are in the same
+ *  Namespace. */
 
 public class StateMachine extends ModelElementImpl {
   public ModelElement _context;
@@ -62,18 +66,19 @@ public class StateMachine extends ModelElementImpl {
     fireVetoableChange("context", _context, x);
     if (_context != null) _context.removeBehavior(this);
     _context = x;
-    if (_context != null) _context.addBehavior(this);
+    if (_context != null) {
+      _context.addBehavior(this);
+      //setNamespace(_context.getNamespace());
+    }
   }
 
   public State getTop() { return _top; }
   public void setTop(State x) throws PropertyVetoException {
     if (_top == x) return;
     fireVetoableChange("top", _top, x);
-    State oldTop = _top;
     _top = x;
-    if (oldTop != null && oldTop.getStateMachine() == this) {
-      oldTop.setStateMachine(null);
-    }
+    _top.setStateMachine(this);
+    _top.setNamespace(getNamespace());
   }
 
   public Vector getTransitions() { return _transitions; }
@@ -81,11 +86,17 @@ public class StateMachine extends ModelElementImpl {
     if (_transitions == null) _transitions = new Vector();
     fireVetoableChange("transitions", _transitions, x);
     _transitions = x;
+    java.util.Enumeration enum = _transitions.elements();
+    while (enum.hasMoreElements()) {
+      Transition t = (Transition) enum.nextElement();
+      t.setNamespace(getNamespace());
+    }
   }
   public void addTransition(Transition x) throws PropertyVetoException {
     if (_transitions == null) _transitions = new Vector();
     fireVetoableChange("transitions", _transitions, x);
     _transitions.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeTransition(Transition x) throws PropertyVetoException {
     if (_transitions == null) return;
@@ -98,11 +109,17 @@ public class StateMachine extends ModelElementImpl {
     if (_submachineState == null) _submachineState = new Vector();
     fireVetoableChange("submachineState", _submachineState, x);
     _submachineState = x;
+    java.util.Enumeration enum = _submachineState.elements();
+    while (enum.hasMoreElements()) {
+      StateMachine sm = (StateMachine) enum.nextElement();
+      sm.setNamespace(getNamespace());
+    }
   }
   public void addSubmachineState(SubmachineState x) throws PropertyVetoException {
     if (_submachineState == null) _submachineState = new Vector();
     fireVetoableChange("submachineState", _submachineState, x);
     _submachineState.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeSubmachineState(SubmachineState x)
        throws PropertyVetoException {

@@ -36,6 +36,9 @@ import uci.uml.Model_Management.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 
+/** Parameters are in the same Namespace as the BehavioralFeature that
+ *  they are part of. */
+
 public class Parameter extends ModelElementImpl {
   public static final Name RETURN_NAME = new Name("return");
   

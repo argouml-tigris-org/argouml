@@ -38,6 +38,63 @@ import uci.argo.kernel.*;
 public abstract class ToDoPerspective extends TreeModelComposite
 implements Serializable {
 
+  protected static Vector _registeredPerspectives = new Vector();
+  protected static Vector _rules = new Vector();
+
+
+  static {
+    // this are meant for pane-1 of NavigatorPane, they all have
+    // Project as their only prerequiste.  Thesee trees tend to be 3
+    // to 5 levels deep and sometimes have recursion.
+    ToDoPerspective priority = new ToDoByPriority();
+    ToDoPerspective decision = new ToDoByDecision();
+    ToDoPerspective goal = new ToDoByGoal();
+    ToDoPerspective offender = new ToDoByOffender();
+    ToDoPerspective poster = new ToDoByPoster();
+    ToDoPerspective type = new ToDoByType();
+//     ToDoPerspective difficulty = new ToDoByDifficulty();
+//     ToDoPerspective skill = new ToDoBySkill();
+
+
+    registerPerspective(priority);
+    registerPerspective(decision);
+    registerPerspective(goal);
+    registerPerspective(offender);
+    registerPerspective(poster);
+    registerPerspective(type);
+//     registerPerspective(difficulty);
+//     registerPerspective(skill);
+
+    registerRule(new GoListToDecisionsToItems());
+    registerRule(new GoListToGoalsToItems());
+    registerRule(new GoListToPriorityToItem());
+    registerRule(new GoListToTypeToItem());
+    registerRule(new GoListToOffenderToItem());
+    registerRule(new GoListToPosterToItem());
+
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // static methods
+
+  public static void registerPerspective(ToDoPerspective np) {
+    _registeredPerspectives.addElement(np);
+  }
+
+  public static void unregisterPerspective(ToDoPerspective np) {
+    _registeredPerspectives.removeElement(np);
+  }
+
+  public static Vector getRegisteredPerspectives() {
+    return _registeredPerspectives;
+  }
+
+  public static void registerRule(TreeModelPrereqs rule) {
+    _rules.addElement(rule);
+  }
+
+  public static Vector getRegisteredRules() { return _rules; }
+
   ////////////////////////////////////////////////////////////////
   // instance variables
 

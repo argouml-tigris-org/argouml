@@ -34,7 +34,7 @@ import com.sun.java.swing.tree.*;
 
 import uci.argo.kernel.*;
 
-public class GoListToPriorityToItem implements TreeModel {
+public class GoListToPriorityToItem implements TreeModelPrereqs {
   
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
@@ -113,30 +113,18 @@ public class GoListToPriorityToItem implements TreeModel {
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
 
-  
-//     Vector removes = new Vector();
-//     java.util.Enumeration enum = _pseudoNodes.elements();
-//     while (enum.hasMoreElements()) {
-//       ToDoPseudoNode node = (ToDoPseudoNode) enum.nextElement();
-//       if (!isNeeded(node)) removes.addElement(node);
-//     }
-//     enum = removes.elements();
-//     while (enum.hasMoreElements())
-//       _pseudoNodes.removeElement(enum.nextElement());
-//     enum = _root.elements();
-//     while (enum.hasMoreElements()) {
-//       ToDoItem item = (ToDoItem) enum.nextElement();
-//       addNewPseudoNodes(item);
-//     }
-    
-//     Object path[] = new Object[2];
-//     path[0] = _root;
-//     enum = _pseudoNodes.elements();
-//     while (enum.hasMoreElements()) {
-//       ToDoPseudoNode node = (ToDoPseudoNode) enum.nextElement();
-//       path[1] = node;
-//       fireTreeStructureChanged(path);
-//     }
+  public Vector getPrereqs() {
+    Vector res = new Vector();
+    res.addElement(ToDoList.class);
+    return res;
+  }
+
+  public Vector getProvidedTypes() {
+    Vector pros = new Vector();
+    pros.addElement(PriorityNode.class);
+    pros.addElement(ToDoItem.class);
+    return pros;
+  }
 
   
-} /* end class GoListToDecisionsToItems */
+} /* end class GoListToPriorityToItem */

@@ -36,7 +36,7 @@ import uci.uml.Model_Management.*;
 public class CrNameConflict extends CrUML {
 
   public CrNameConflict() {
-    setHeadline("Name conflict");
+    setHeadline("Revise Name to Avoid Conflict");
     sd("Every element of a namespace must have a unique name. \n\n"+
        "Clear and unambiguous naming is key to code generation and \n"+
        "the understandability and maintainability of the design. \n\n"+

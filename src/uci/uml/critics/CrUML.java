@@ -23,8 +23,11 @@
 
 package uci.uml.critics;
 
+import uci.util.*;
 import uci.argo.kernel.*;
+import uci.uml.util.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
 
 /** "Abstract" Critic subclass that captures commonalities among all
  *  critics in the UML domain. */
@@ -37,7 +40,7 @@ public class CrUML extends Critic {
   Decision("Containment", 5);
 
   public static final Decision decPATTERNS = new
-  Decision("Design Paterns", 5); //??
+  Decision("Design Patterns", 5); //??
 
   public static final Decision decRELATIONSHIPS = new
   Decision("Relationships", 5);
@@ -46,7 +49,7 @@ public class CrUML extends Critic {
   Decision("Storage", 5);
 
   public static final Decision decINSTANCIATION = new
-  Decision("Instanciation", 5);
+  Decision("Instantiation", 5);
 
   public static final Decision decNAMING = new
   Decision("Naming", 5);
@@ -58,7 +61,7 @@ public class CrUML extends Critic {
   Decision("Class Selection", 5);
 
   public static final Decision decMETHODS = new
-  Decision("methods", 5); //??
+  Decision("Methods", 5); //??
 
   public static final Decision decCODE_GEN = new
   Decision("Code Generation", 5); //??
@@ -66,12 +69,11 @@ public class CrUML extends Critic {
   public static final Decision decPLANNED_EXTENSIONS = new
   Decision("Planned Extensions", 5);
 
-    
-  public CrUML() {
-    //decisionCategory("UML Decisions");
-    // what do UML critics have in common? anything?
-  }
+  public static final Decision decSTEREOTYPES = new
+  Decision("Stereotypes", 5);
 
+
+  
   /** Static initializer for this class. Called when the class is
    *  loaded (which is before any subclass instances are instanciated). */
   static {
@@ -88,6 +90,29 @@ public class CrUML extends Critic {
     d.startConsidering(decMETHODS);
     d.startConsidering(decCODE_GEN);
     d.startConsidering(decPLANNED_EXTENSIONS);
+    d.startConsidering(decSTEREOTYPES);
   }
 
+  
+
+  ////////////////////////////////////////////////////////////////
+  // constructor
+  
+  public CrUML() {
+    //decisionCategory("UML Decisions");
+    // what do UML critics have in common? anything?
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // display related methods
+
+  
+  public String expand(String res, Set offs) {
+    //System.out.println("expanding: " + res);
+    if (offs.size() == 0) return res;
+    Object off1 = offs.firstElement();
+    if (!(off1 instanceof Element)) return res;
+    return UMLDescription.expand(res, off1);
+  }
+  
 } /* end class CrUML */

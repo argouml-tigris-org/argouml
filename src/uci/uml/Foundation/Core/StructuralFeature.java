@@ -37,8 +37,8 @@ import uci.uml.Foundation.Data_Types.*;
 
 public abstract class StructuralFeature extends Feature {
   public Multiplicity _multiplicity = Multiplicity.ONE;
-  public ChangeableKind _changeable;
-  public ScopeKind _targetScope;
+  public ChangeableKind _changeable = ChangeableKind.NONE;
+  public ScopeKind _targetScope = ScopeKind.INSTANCE;
   public Classifier _type;
   
   public StructuralFeature() { }

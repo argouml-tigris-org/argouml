@@ -27,6 +27,9 @@
 
 // Source file: Foundation/Core/AssociationEnd.java
 
+/** AssociationEnd's are in the Namespace of the Classifier that they
+ *  attach to. */
+
 package uci.uml.Foundation.Core;
 
 //nmw: import uci.uml.Behavioral_Elements.Collaborations.AssociationEndRole;

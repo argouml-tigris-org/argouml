@@ -27,6 +27,9 @@
 
 // Source file: f:/jr/projects/uml/Behavioral_Elements/Common_Behavior/SendAction.java
 
+
+// needs-more-work: what is the difference between raises and raised?
+
 package uci.uml.Behavioral_Elements.Common_Behavior;
 
 import java.util.*;

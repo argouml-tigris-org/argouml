@@ -25,6 +25,8 @@ package uci.argo.kernel;
 
 import java.util.*;
 
+import uci.util.*;
+
 /** Interface that defines methods required on any object that can
  *  post a ToDoItem to the Designer's ToDoList. Basically requires that
  *  the poster (1) have contact information, (2) be able to hush
@@ -55,7 +57,12 @@ public interface Poster {
   Vector getSupportedDecisions();
   boolean supports(Goal g);
   Vector getSupportedGoals();
-  boolean includesKnowledgeType(int knowledgeType);
+  boolean containsKnowledgeType(String knowledgeType);
+  Set getKnowledgeTypes();
+
+  /** Customize the description string just before it is displayed. */
+  String expand(String desc, Set offs);
+
   
   ////////////////////////////////////////////////////////////////
   // criticism control

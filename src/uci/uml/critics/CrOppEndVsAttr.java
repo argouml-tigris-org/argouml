@@ -32,15 +32,20 @@ import uci.uml.Foundation.Data_Types.*;
 /** Well-formedness rule [2] for Classifier. See page 29 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
+//needs-more-work: split into one critic for inherited problems and
+//one for pproblems directly in this class.
+
 public class CrOppEndVsAttr extends CrUML {
 
   public CrOppEndVsAttr() {
-    setHeadline("An Association role and an Attribute have the same name");
-    sd("Attributes and roles must have distinct names.  This may because of an inherited \n"+
-       "attribute. \n\n"+
-       "Clear and unambiguous names are key to code generation and producing an \n"+
-       "understandable and maintainable design.\n\n"+
-       "To fix this, use the FixIt button, or manually select the one of the \n"+
+    setHeadline("Rename Role or Attribute");
+    sd("One of the attributes of {name} has the same name as "+
+       "{name}'s role in an association.  Attributes and roles "+
+       "should have distinct names.  "+
+       "This may because of an inherited attribute. \n\n"+
+       "Clear and unambiguous names are key to code generation and producing "+
+       "an understandable and maintainable design.\n\n"+
+       "To fix this, use the FixIt button, or manually select the one of the "+
        "conflicting roles or attributes of this class and change its name.");
 
     addSupportedDecision(CrUML.decINHERITANCE);

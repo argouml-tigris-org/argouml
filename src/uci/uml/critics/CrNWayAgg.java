@@ -51,6 +51,7 @@ public class CrNWayAgg extends CrUML {
     if (!(dm instanceof IAssociation)) return NO_PROBLEM;
     IAssociation asc = (IAssociation) dm;
     Vector conns = asc.getConnection();
+    if (conns == null || conns.size() <= 2) return NO_PROBLEM;
     int aggCount = 0;
     java.util.Enumeration enum = conns.elements();
     while (enum.hasMoreElements()) {

@@ -33,6 +33,7 @@ import java.util.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
+import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.ui.ToolBar;
 import uci.util.*;
@@ -114,6 +115,10 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     //     //_description.setFont(new Font("Dialog", Font.PLAIN, 9));
     add(toolBar, BorderLayout.WEST);
     _description.setLineWrap(true);
+    _description.setWrapStyleWord(true);
+
+    //Font userFont = MetalLookAndFeel.getUserTextFont();
+    //_description.setFont(userFont);
     add(new JScrollPane(_description), BorderLayout.CENTER);
     setTarget(null);
   }
@@ -144,7 +149,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     else if (_target instanceof ToDoItem) {
       ToDoItem tdi = (ToDoItem) _target;
       _description.setEnabled(true);
-      _description.setText(tdi.getDescription()); // getDescription()
+      _description.setText(tdi.getDescription());
+      _description.setCaretPosition(0);
     }
     else {
       _description.setText("needs-more-work");

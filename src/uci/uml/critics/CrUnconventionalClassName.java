@@ -34,12 +34,13 @@ import uci.uml.Model_Management.*;
 public class CrUnconventionalClassName extends CrUML {
 
   public CrUnconventionalClassName() {
-    setHeadline("Choose a better name");
-    sd("Normally classes begin with a capital letter. \n\n"+
-       "Following good naming conventions help to improve \n"+
+    setHeadline("Capitalize Class Name");
+    sd("Normally classes begin with a capital letter. The name '{name}' "+
+       "is unconventional because it does not begin with a capital.\n\n"+
+       "Following good naming conventions help to improve "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select the \n"+
-       "attribute and use the Properties tab to give it a different name.");
+       "To fix this, use the FixIt button, or manually select {name} "+
+       "and use the Properties tab to give it a different name.");
     addSupportedDecision(CrUML.decNAMING);
   }
 

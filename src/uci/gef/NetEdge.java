@@ -125,7 +125,7 @@ implements GraphEdgeHooks, java.io.Serializable {
       // needs-more-work: these nulls should be GraphModels
       _sourcePort.postDisconnect(null, getDestPort());
       _destPort.postDisconnect(null, getSourcePort());
-      firePropertyChange("Disposed", false, true);
+      firePropertyChange("disposed", false, true);
     }
   }
 

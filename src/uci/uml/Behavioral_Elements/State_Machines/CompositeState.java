@@ -56,11 +56,17 @@ public class CompositeState extends State {
     if (_substate == null) _substate = new Vector();
     fireVetoableChange("substate", _substate, x);
     _substate = x;
+    java.util.Enumeration enum = _substate.elements();
+    while (enum.hasMoreElements()) {
+      StateVertex sv = (StateVertex) enum.nextElement();
+      sv.setNamespace(getNamespace());
+    }
   }
   public void addSubstate(StateVertex x) throws PropertyVetoException {
     if (_substate == null) _substate = new Vector();
     fireVetoableChange("substate", _substate, x);
     _substate.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeSubstate(StateVertex x) throws PropertyVetoException {
     if (_substate == null) return;

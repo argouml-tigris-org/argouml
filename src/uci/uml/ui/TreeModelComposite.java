@@ -106,7 +106,7 @@ implements TreeModel, Cloneable {
 
   public void addFlatChildren(Object node) {
     if (node == null) return;
-    System.out.println("addFlatChildren");
+    //System.out.println("addFlatChildren");
     // hack for to do items only, should check isLeaf(node), but that
     // includes empty folders. Really I need alwaysLeaf(node).
     if ((node instanceof ToDoItem) && !_flatChildren.contains(node)) 

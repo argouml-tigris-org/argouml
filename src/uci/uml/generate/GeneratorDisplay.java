@@ -55,7 +55,7 @@ public class GeneratorDisplay extends Generator {
       java.util.Enumeration enum = params.elements();
       while (enum.hasMoreElements()) {
 	Parameter p = (Parameter) enum.nextElement();
-	if (p.getName() == Parameter.RETURN_NAME) {
+	if (Parameter.RETURN_NAME.equals(p.getName())) {
 	  returnType = p.getType();
 	  break;
 	}
@@ -73,7 +73,7 @@ public class GeneratorDisplay extends Generator {
       boolean first = true;
       while (enum.hasMoreElements()) {
 	Parameter p = (Parameter) enum.nextElement();
-	if (p.getName() == Parameter.RETURN_NAME) continue;
+	if (Parameter.RETURN_NAME.equals(p.getName())) continue;
 	if (!first) s += ", ";
 	s += generateParameter(p);
 	first = false;
@@ -303,40 +303,40 @@ public class GeneratorDisplay extends Generator {
   public String generateVisibility(ElementOwnership eo) {
     if (eo == null) return "";
     VisibilityKind vis = eo.getVisibility();
-    if (vis == null) return "";
-    if (vis == VisibilityKind.PUBLIC) return "public ";
-    if (vis == VisibilityKind.PRIVATE) return "private ";
-    if (vis == VisibilityKind.PROTECTED) return "protected ";
+    //if (vis == null) return "";
+    if (VisibilityKind.PUBLIC.equals(vis)) return "public ";
+    if (VisibilityKind.PRIVATE.equals(vis)) return "private ";
+    if (VisibilityKind.PROTECTED.equals(vis)) return "protected ";
     return "";
   }
 
   public String generateVisibility(Feature f) {
     VisibilityKind vis = f.getVisibility();
-    if (vis == null) return "";
-    if (vis == VisibilityKind.PUBLIC) return "public ";
-    if (vis == VisibilityKind.PRIVATE) return "private ";
-    if (vis == VisibilityKind.PROTECTED) return "protected ";
+    //if (vis == null) return "";
+    if (VisibilityKind.PUBLIC.equals(vis)) return "public ";
+    if (VisibilityKind.PRIVATE.equals(vis)) return "private ";
+    if (VisibilityKind.PROTECTED.equals(vis)) return "protected ";
     return "";
   }
 
   public String generateScope(Feature f) {
     ScopeKind scope = f.getOwnerScope();
-    if (scope == null) return "";
-    if (scope == ScopeKind.CLASSIFIER) return "static ";
+    //if (scope == null) return "";
+    if (ScopeKind.CLASSIFIER.equals(scope)) return "static ";
     return "";
   }
 
   public String generateChangability(StructuralFeature sf) {
     ChangeableKind ck = sf.getChangeable();
-    if (ck == null) return "";
-    if (ck == ChangeableKind.FROZEN) return "final ";
-    //if (ck == ChangeableKind.ADDONLY) return "final ";
+    //if (ck == null) return "";
+    if (ChangeableKind.FROZEN.equals(ck)) return "final ";
+    //if (ChangeableKind.ADDONLY.equals(ck)) return "final ";
     return "";
   }
 
   public String generateMultiplicity(Multiplicity m) {
     if (m == null) { System.out.println("null Multiplicity"); return ""; }
-    if (m == Multiplicity.ZERO_OR_MORE) return ANY_RANGE;
+    if (Multiplicity.ZERO_OR_MORE.equals(m)) return ANY_RANGE;
     String s = "";
     Vector v = m.getRange();
     if (v == null) return s;

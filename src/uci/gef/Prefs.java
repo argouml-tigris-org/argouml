@@ -70,7 +70,7 @@ public class Prefs {
   public Color getLockedHandleColor() { return _lockedHandleColor; }
 
   /** The color of the highlight shown to draw the users attention */
-  Color _highlightColor = new Color(0x99, 0x33, 0x33);
+  Color _highlightColor = new Color(0xAA, 0x55, 0x55);
   /** The color of the highlight shown to draw the users attention */
   public Color getHighlightColor() { return _highlightColor; }
   /** The color of the highlight shown to draw the users attention */

@@ -58,6 +58,8 @@ public class Subsystem extends Classifier implements Package {
 
   ////////////////////////////////////////////////////////////////
   // Package implementation
+
+  // needs-more-work: these should use ElementReferences
   
   public Vector _referencedElement;
 

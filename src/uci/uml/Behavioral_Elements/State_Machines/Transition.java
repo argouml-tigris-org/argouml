@@ -36,6 +36,9 @@ import uci.uml.Foundation.Core.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Foundation.Data_Types.*;
 
+/** By default a Transition is in the same Namespace as its
+ *  StateMachine */
+
 public class Transition extends ModelElementImpl {
   public Guard _guard;
   public ActionSequence _effect;
@@ -71,8 +74,10 @@ public class Transition extends ModelElementImpl {
     fireVetoableChange("guard", _guard, x);
     //if (_guard != null) _guard.setGuard(null);
     _guard = x;
-    //if (_guard != null) _guard.setGuard(this);    
+    //if (_guard != null) _guard.setGuard(this);
+    x.setNamespace(getNamespace());    
   }
+
   public ActionSequence getEffect() { return _effect; }
   public void setEffect(ActionSequence x) throws PropertyVetoException {
     if (_effect == x) return;
@@ -80,7 +85,9 @@ public class Transition extends ModelElementImpl {
     //if (_effect != null) _effect.setTransition(null);
     _effect = x;
     //if (_effect != null) _effect.setTransition(this);
+    x.setNamespace(getNamespace());    
   }
+
   public State getState() { return _state; }
   public void setState(State x) throws PropertyVetoException {
     if (_state == x) return;
@@ -90,16 +97,22 @@ public class Transition extends ModelElementImpl {
     _state = x;
     if (_state != null) _state.addInternalTransition(this);
   }
+
   public Event getTrigger() { return _trigger; }
   public void setTrigger(Event x) throws PropertyVetoException {
     fireVetoableChange("trigger", _trigger, x);
     _trigger = x;
   }
+
   public StateMachine getStateMachine() { return _stateMachine; }
   public void setStateMachine(StateMachine x) throws PropertyVetoException {
+    if (_stateMachine == x) return;
     fireVetoableChange("stateMachine", _stateMachine, x);
+    if (_stateMachine != null) _stateMachine.removeTransition(this);
     _stateMachine = x;
+    if (_stateMachine != null) _stateMachine.addTransition(this);
   }
+
   public StateVertex getSource() { return _source; }
   public void setSource(StateVertex x) throws PropertyVetoException {
     if (_source == x) return;
@@ -109,6 +122,7 @@ public class Transition extends ModelElementImpl {
     _source = x;
     if (_source != null) _source.addOutgoing(this);    
   }
+
   public StateVertex getTarget() { return _target; }
   public void setTarget(StateVertex x) throws PropertyVetoException {
     if (_target == x) return;

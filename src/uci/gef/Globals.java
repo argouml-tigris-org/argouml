@@ -48,9 +48,9 @@ public class Globals {
   ////////////////////////////////////////////////////////////////
   // constants
 
-  public static final String REMOVE = "Remove";
-  public static final String HIGHLIGHT = "Highlight";
-  public static final String UNHIGHLIGHT = "Unhighlight";
+  public static final String REMOVE = "remove";
+//   public static final String HIGHLIGHT = "highlight";
+//   public static final String UNHIGHLIGHT = "unhighlight";
 
   ////////////////////////////////////////////////////////////////
   // applet related methods

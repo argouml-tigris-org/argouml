@@ -24,6 +24,7 @@
 package uci.argo.kernel;
 
 import java.util.*;
+
 import uci.util.*;
 
 /** "Abstract" base class for design critics.  Each subclass should define
@@ -100,7 +101,7 @@ public class Critic implements Poster, java.io.Serializable {
    *  active. */
   private Hashtable _controlRecs = new Hashtable();
 
-  protected int _knowledgeTypeMask = 0xFFFF; //needs-more-work
+  protected Set _knowledgeTypes = new Set();
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -114,6 +115,7 @@ public class Critic implements Poster, java.io.Serializable {
     addControlRec(ENABLED, Boolean.TRUE);
     addControlRec(HUSH_ORDER, new HushOrder());
     _criticType = "correctness";
+    _knowledgeTypes.addElement("Correctness");
     _decisionCategory = "Checking";
     _emailAddr = "jrobbins@ics.uci.edu";
     _moreInfoURL = "http://ics.uci.edu/~jrobbins";
@@ -222,11 +224,16 @@ public class Critic implements Poster, java.io.Serializable {
   }
 
 
-  public boolean includesKnowledgeType(int knowledgeType) {
-    return (knowledgeType & _knowledgeTypeMask) != 0;
+  public boolean containsKnowledgeType(String type) {
+    return _knowledgeTypes.contains(type);
   }
+  public void addKnowledgeType(String type) {
+    _knowledgeTypes.addElement(type);
+  }
+  public Set getKnowledgeTypes() { return _knowledgeTypes; }
   
-  
+  public String expand(String desc, Set offs) { return desc; }
+
   ////////////////////////////////////////////////////////////////
   // criticism control
 

@@ -52,6 +52,8 @@ public class ToDoTreeRenderer extends BasicTreeCellRenderer {
   protected ImageIcon _MultiPostIt = loadIconResource("MultiPostIt");
   
 
+  protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
+  
   ////////////////////////////////////////////////////////////////
   // TreeCellRenderer implementation
   
@@ -75,23 +77,36 @@ public class ToDoTreeRenderer extends BasicTreeCellRenderer {
 	else if (item.getProgress() <= 75) lab.setIcon(_PostIt75);
 	else if (item.getProgress() <= 100) lab.setIcon(_PostIt99);
       }
-      if (value instanceof Decision) {
+      else if (value instanceof Decision) {
 	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
       }
-      if (value instanceof Goal) {
+      else if (value instanceof Goal) {
 	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
       }
-      if (value instanceof Poster) {
+      else if (value instanceof Poster) {
 	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
       }
-      if (value instanceof PriorityNode) {
+      else if (value instanceof PriorityNode) {
 	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
       }
-      //       if (value instanceof PriorityNode) {
-      //       }
-      //       if (value instanceof KnowledgeType) {
-      //       }
+      else if (value instanceof KnowledgeTypeNode) {
+	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
+      }
+      else if (value instanceof ModelElement) {
+	return _navRenderer.getTreeCellRendererComponent(tree, value, sel,
+					      expanded, leaf, row, hasFocus);
+      }
+      
+
       lab.setToolTipText(value.toString());
+
+      if (sel) {
+	Color high = uci.gef.Globals.getPrefs().getHighlightColor();
+	high = high.brighter().brighter();
+	lab.setBackground(high);
+      }
+      lab.setOpaque(sel);
+
     }
     return r;
   }

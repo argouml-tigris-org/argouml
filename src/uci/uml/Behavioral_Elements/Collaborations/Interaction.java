@@ -39,7 +39,6 @@ import uci.uml.Model_Management.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 
-//needs-more-work: switch to Vector 
 public class Interaction extends ModelElementImpl {
   public Vector _message;
   public Collaboration _context;

@@ -70,8 +70,12 @@ public class MMAction extends ModelElementImpl {
 
   public ActionSequence getActionSequence() { return _actionSequence; }
   public void setActionSequence(ActionSequence x) throws PropertyVetoException {
+    if (_actionSequence == x) return;
     fireVetoableChange("actionSequence", _actionSequence, x);
+    if (_actionSequence != null) _actionSequence.removeAction(this);
     _actionSequence = x;
+    if (_actionSequence != null) _actionSequence.addAction(this);
+    setNamespace(x.getNamespace());    
   }
 
   public Vector getMessage() { return _message; }

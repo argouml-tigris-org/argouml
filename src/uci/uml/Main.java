@@ -50,28 +50,6 @@ public class Main {
 
   public static int WIDTH = 800;
   public static int HEIGHT = 600;
-  public static int SPLASH_WIDTH = 400;
-  public static int SPLASH_HEIGHT = 200;
-
-  ////////////////////////////////////////////////////////////////
-  // static variables
-
-  //public static Vector UMLPerspectives = new Vector();
-  public static Vector ToDoPerspectives = new Vector();
-
-  // static initializer
-  static {
-    //UMLPerspectives.addElement(NavPackageCentric.TheInstance);
-    //UMLPerspectives.addElement(NavDiagramCentric.TheInstance);
-    //UMLPerspectives.addElement(NavInheritance.TheInstance);
-
-    ToDoPerspectives.addElement(new ToDoByPriority());
-    ToDoPerspectives.addElement(new ToDoByDecision());
-    ToDoPerspectives.addElement(new ToDoByGoal());
-    ToDoPerspectives.addElement(new ToDoByOffender());
-    ToDoPerspectives.addElement(new ToDoByType());
-    ToDoPerspectives.addElement(new ToDoByPoster());
-  }
 
   ////////////////////////////////////////////////////////////////
   // main
@@ -116,7 +94,7 @@ public class Main {
       splash.getStatusBar().showStatus("Making Mock Project");
       splash.getStatusBar().showProgress(20);
     }
-    pb.setProject(new MockProject());
+    pb.setProject(new EmptyProject());
 
     if (splash != null) {
       splash.getStatusBar().showStatus("Setting Perspectives");
@@ -124,7 +102,7 @@ public class Main {
     }
     
     pb.setPerspectives(NavPerspective.getRegisteredPerspectives());
-    pb.setToDoPerspectives(ToDoPerspectives);
+    pb.setToDoPerspectives(ToDoPerspective.getRegisteredPerspectives());
 
     pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
     //pb.validate();
@@ -138,6 +116,7 @@ public class Main {
     
     Designer dsgr = Designer.theDesigner();
     uci.uml.critics.Init.init();
+    uci.uml.checklist.Init.init();
 
     if (splash != null) {
       splash.getStatusBar().showStatus("Opening Project Browser");
@@ -214,3 +193,22 @@ class MockProject extends Project {
   }
 
 } /* end class MockProject */
+
+class EmptyProject extends Project {
+
+  public EmptyProject() {
+    super("Untitiled");
+    Model m1 = new Model("Untitled package");
+    try {
+      addDiagram(makeDiagram(m1));
+      addModel(m1);
+    }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public UMLDiagram makeDiagram(Model m) {
+    return new UMLClassDiagram(m);
+  }
+
+
+} /* end class EmptyProject */

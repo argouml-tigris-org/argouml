@@ -280,8 +280,8 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
     System.out.println("FigEdge got a PropertyChangeEvent");
     String pName = pce.getPropertyName();
     Object src = pce.getSource();
-    if (pName.equals("Dispose") && src == getOwner()) { delete(); }
-    if (pName.equals("Highlight") && src == getOwner()) {
+    if (pName.equals("dispose") && src == getOwner()) { delete(); }
+    if (pName.equals("highlight") && src == getOwner()) {
       _highlight = ((Boolean)pce.getNewValue()).booleanValue();
       damage();
     }

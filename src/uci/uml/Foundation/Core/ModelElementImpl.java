@@ -73,20 +73,31 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public ModelElementImpl() { }
   public ModelElementImpl(Name name) { super(name); }
   public ModelElementImpl(String nameStr) { super(new Name(nameStr)); }
-  
-  //-   public Namespace getNamespace() { return _namespace; }
-  //-   public void setNamespace(Namespace x) {
-  //-     _namespace = x;
-  //-   }
+
+  // needs-more-work: is there a different name space? Or is it only
+  // transitive via ElementOwnership? check spec.
+
+  public Namespace getNamespace() {
+    if (_elementOwnership == null) return null;
+    return _elementOwnership.getNamespace();
+  }
+  public void setNamespace(Namespace x) {
+    VisibilityKind vk = (_elementOwnership == null) ?
+      VisibilityKind.PUBLIC : _elementOwnership.getVisibility();
+    try { setElementOwnership(new ElementOwnership(x, vk, this)); }
+    catch (PropertyVetoException pve) { }
+  }
+
   public ElementOwnership getElementOwnership() { return _elementOwnership; }
   public void setElementOwnership(ElementOwnership x)
   throws PropertyVetoException {
     fireVetoableChange("elementOwnership", _elementOwnership, x);
     ElementOwnership old = _elementOwnership;
     _elementOwnership = x;
-    
+
     if (old != null && (x == null || old.getNamespace() != x.getNamespace())) {
-      old.getNamespace().removeOwnedElement(old);
+      if (old.getNamespace() != null)
+	old.getNamespace().removeOwnedElement(old);
     }
   }
 
@@ -95,6 +106,11 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   throws PropertyVetoException {
     if (_constraint == null) _constraint = new Vector();
     fireVetoableChange("constraint", _constraint, x);
+    java.util.Enumeration enum = _constraint.elements();
+    while (enum.hasMoreElements()) {
+      Constraint c = (Constraint) enum.nextElement();
+      c.setNamespace(getNamespace());
+    }
     _constraint = x;
   }
   public void addConstraint(Constraint x)
@@ -102,6 +118,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     if (_constraint == null) _constraint = new Vector();
     fireVetoableChange("constraint", _constraint, x);
     _constraint.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeConstraint(Constraint x)
   throws PropertyVetoException {
@@ -153,19 +170,19 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   public Vector getTemplateParameter() {
     return _templateParameter;
   }
-  public void setTemplateparameter(Vector x)
+  public void setTemplateParameter(Vector x)
   throws PropertyVetoException {
     if (_templateParameter == null) _templateParameter = new Vector();
     fireVetoableChange("templateParameter", _templateParameter, x);
     _templateParameter = x;
   }
-  public void addTemplateparameter(ModelElement x)
+  public void addTemplateParameter(ModelElement x)
   throws PropertyVetoException {
     if (_templateParameter == null) _templateParameter = new Vector();
     fireVetoableChange("templateParameter", _templateParameter, x);
     _templateParameter.addElement(x);
   }
-  public void removeTemplateparameter(ModelElement x)
+  public void removeTemplateParameter(ModelElement x)
   throws PropertyVetoException {
     if (_templateParameter == null) return;
     fireVetoableChange("templateParameter", _templateParameter, x);
@@ -240,12 +257,18 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     if (_behavior == null) _behavior = new Vector();
     fireVetoableChange("behavior", _behavior, x);
     _behavior = x;
+    java.util.Enumeration enum = _behavior.elements();
+    while (enum.hasMoreElements()) {
+      StateMachine sm = (StateMachine) enum.nextElement();
+      sm.setNamespace(getNamespace());
+    }    
   }
   public void addBehavior(StateMachine x)
   throws PropertyVetoException {
     if (_behavior == null) _behavior = new Vector();
     fireVetoableChange("behavior", _behavior, x);
     _behavior.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeBehavior(StateMachine x)
   throws PropertyVetoException {

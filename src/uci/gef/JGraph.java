@@ -88,9 +88,9 @@ public class JGraph extends JPanel implements Cloneable {
 
     initKeys();
 
-    invalidate();
+    //invalidate();
     validate();
-    revalidate();
+    //revalidate();
   }
 
   /** Make a copy of this JGraph so that it can be shown in another window.*/
@@ -134,9 +134,9 @@ public class JGraph extends JPanel implements Cloneable {
   /** Utility function to bind a keystroke to a Swing Action.  Note
    *  that GEF Cmds are subclasses of Swing's Actions. */
   public void bindKey(ActionListener action, int keyCode, int modifiers) {
-    registerKeyboardAction(action,
-			   KeyStroke.getKeyStroke(keyCode, modifiers),
-			   WHEN_FOCUSED);
+    _drawingPane.registerKeyboardAction(action,
+					KeyStroke.getKeyStroke(keyCode, modifiers),
+					WHEN_FOCUSED);
   }
   
   ////////////////////////////////////////////////////////////////
@@ -294,4 +294,11 @@ class JGraphInternalPane extends JPanel {
     }
     return res;
   }
+
+  /** Tell Swing/AWT that JGraph handles tab-order itself. */
+  public boolean isManagingFocus() { return true; }
+
+  /** Tell Swing/AWT that JGraph can be tabbed into. */
+  public boolean isFocusTraversable() { return true; }
+  
 }

@@ -74,11 +74,17 @@ public class Signal extends GeneralizableElementImpl implements Request {
     if (_parameter == null) _parameter = new Vector();
     fireVetoableChange("parameter", _parameter, x);
     _parameter = x;
+    java.util.Enumeration enum = _parameter.elements();
+    while (enum.hasMoreElements()) {
+      Parameter p = (Parameter) enum.nextElement();
+      p.setNamespace(getNamespace());
+    }
   }
   public void addParameter(Parameter x) throws PropertyVetoException {
     if (_parameter == null) _parameter = new Vector();
     fireVetoableChange("parameter", _parameter, x);
     _parameter.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeParameter(Parameter x) throws PropertyVetoException {
     if (_parameter == null) return;
@@ -109,10 +115,13 @@ public class Signal extends GeneralizableElementImpl implements Request {
     fireVetoableChange("raises", _raises, x);
     _raises = x;
   }
+
+  // needs-more-work: maintain 2-way connection
   public void addRaises(SendAction x) throws PropertyVetoException {
     if (_raises == null) _raises = new Vector();
     fireVetoableChange("raises", _raises, x);
     _raises.addElement(x);
+    //x.setSignal(this);
   }
   public void removeRaises(SendAction x) throws PropertyVetoException {
     if (_raises == null) return;

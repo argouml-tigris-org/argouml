@@ -25,6 +25,7 @@ package uci.argo.kernel;
 
 import java.util.*;
 import java.awt.*;
+
 import uci.util.*;
 
 /** This class models the designer who is building a complex design in
@@ -214,11 +215,10 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   public boolean supports(Goal g) { return true; }
   public Vector getSupportedGoals() { return UNSPEC_GOAL_VECTOR; }
 
-  public boolean includesKnowledgeType(int knowledgeType) { return true; }
-  public Vector getSupportedKnowledgeType() {
-    //needs-more-work
-    return null;
-  }
+  public boolean containsKnowledgeType(String type) { return true; }
+  public Set getKnowledgeTypes() { return new Set("Designer's"); }
+
+  public String expand(String desc, Set offs) { return desc; }
 
 
   /** Reply this Designer's ToDoList, a list of pending problems and

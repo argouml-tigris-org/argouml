@@ -35,6 +35,8 @@ import java.beans.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
+/** By defualt a Guard is in the same Namespace as its Transition */
+
 public class Guard extends ModelElementImpl {
   public BooleanExpression _expression;
   //  public Transition _guard;

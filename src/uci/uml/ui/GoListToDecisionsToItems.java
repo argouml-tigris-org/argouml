@@ -34,8 +34,7 @@ import com.sun.java.swing.tree.*;
 
 import uci.argo.kernel.*;
 
-public class GoListToDecisionsToItems
-implements TreeModel {
+public class GoListToDecisionsToItems implements TreeModelPrereqs {
   
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
@@ -115,6 +114,19 @@ implements TreeModel {
   public void removeTreeModelListener(TreeModelListener l) { }
 
 
+  public Vector getPrereqs() {
+    Vector res = new Vector();
+    res.addElement(ToDoList.class);
+    return res;
+  }
+
+  public Vector getProvidedTypes() {
+    Vector pros = new Vector();
+    pros.addElement(Decision.class);
+    pros.addElement(ToDoItem.class);
+    return pros;
+  }
+
 
   ////////////////////////////////////////////////////////////////
   // utility methods
@@ -123,29 +135,7 @@ implements TreeModel {
     return Designer.TheDesigner.getDecisionModel().getDecisions();
   }
   
-//     Vector removes = new Vector();
-//     java.util.Enumeration enum = _pseudoNodes.elements();
-//     while (enum.hasMoreElements()) {
-//       ToDoPseudoNode node = (ToDoPseudoNode) enum.nextElement();
-//       if (!isNeeded(node)) removes.addElement(node);
-//     }
-//     enum = removes.elements();
-//     while (enum.hasMoreElements())
-//       _pseudoNodes.removeElement(enum.nextElement());
-//     enum = _root.elements();
-//     while (enum.hasMoreElements()) {
-//       ToDoItem item = (ToDoItem) enum.nextElement();
-//       addNewPseudoNodes(item);
-//     }
-    
-//     Object path[] = new Object[2];
-//     path[0] = _root;
-//     enum = _pseudoNodes.elements();
-//     while (enum.hasMoreElements()) {
-//       ToDoPseudoNode node = (ToDoPseudoNode) enum.nextElement();
-//       path[1] = node;
-//       fireTreeStructureChanged(path);
-//     }
+
 
   
 } /* end class GoListToDecisionsToItems */

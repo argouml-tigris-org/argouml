@@ -76,8 +76,8 @@ implements MouseListener, PropertyChangeListener, Serializable {
   /** Constructs a new FigNode on the given node with the given owner. */
   public FigNode(Object node) {
     setOwner(node);
-    if (node instanceof GraphNodeHooks)
-      ((GraphNodeHooks)node).addPropertyChangeListener(this);
+    // if (node instanceof GraphNodeHooks)
+    // ((GraphNodeHooks)node).addPropertyChangeListener(this);
   }
 
   /** Constructs a new FigNode on the given node with the given owner
@@ -115,8 +115,14 @@ implements MouseListener, PropertyChangeListener, Serializable {
     if (oldOwner != null && oldOwner instanceof GraphNodeHooks) {
       ((GraphNodeHooks)oldOwner).removePropertyChangeListener(this);
     }
+    if (oldOwner != null && oldOwner instanceof Highlightable) {
+      ((Highlightable)oldOwner).removePropertyChangeListener(this);
+    }
     if (node instanceof GraphNodeHooks) {
       ((GraphNodeHooks)node).addPropertyChangeListener(this);
+    }
+    else if (node instanceof Highlightable) {
+      ((Highlightable)node).addPropertyChangeListener(this);
     }
     super.setOwner(node);
   }
@@ -286,8 +292,9 @@ implements MouseListener, PropertyChangeListener, Serializable {
     super.paint(g);
     if (_highlight) {
       g.setColor(Globals.getPrefs().getHighlightColor()); /* needs-more-work */
-      g.drawRect(_x - 3, _y - 3, _w + 6 - 1, _h + 6 - 1);
-      g.drawRect(_x - 2, _y - 2, _w + 4 - 1, _h + 4 - 1);
+      g.drawRect(_x - 5, _y - 5, _w + 9, _h + 8);
+      g.drawRect(_x - 4, _y - 4, _w + 7, _h + 6);
+      g.drawRect(_x - 3, _y - 3, _w + 5, _h + 4);
     }
   }
 
@@ -297,11 +304,11 @@ implements MouseListener, PropertyChangeListener, Serializable {
   /** The node object that this FigNode is presenting has changed
    *  state, or been disposed or highlighted. */
   public void propertyChange(PropertyChangeEvent pce) {
-    System.out.println("FigNode got a PropertyChangeEvent");
+    //System.out.println("FigNode got a PropertyChangeEvent");
     String pName = pce.getPropertyName();
     Object src = pce.getSource();
-    if (pName.equals("Dispose") && src == getOwner()) { delete(); }
-    if (pName.equals("Highlight") && src == getOwner()) {
+    if (pName.equals("dispose") && src == getOwner()) { delete(); }
+    if (pName.equals("highlight") && src == getOwner()) {
       _highlight = ((Boolean)pce.getNewValue()).booleanValue();
       damage();
     }

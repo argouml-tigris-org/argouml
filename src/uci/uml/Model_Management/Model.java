@@ -43,6 +43,8 @@ public class Model extends GeneralizableElementImpl implements Package {
 
   ////////////////////////////////////////////////////////////////
   // Package implementation
+
+  // needs-more-work: create ElementReferences
   
   //% public ModelElement _referencedElement[];
   public Vector _referencedElement;

@@ -35,25 +35,62 @@ import uci.util.*;
 import uci.argo.kernel.*;
 
 
-public class ToDoByType extends ToDoPerspective {
+public class ToDoByType extends ToDoPerspective
+implements ToDoListListener {
 
-  public ToDoByType() { super("By Type"); }
+  public ToDoByType() {
+    super("By Knowledge Type");
+    addSubTreeModel(new GoListToTypeToItem());
+  }
   
-//   protected void computePseudoNodes() {
-//     super.computePseudoNodes();
-//     ToDoList list = Designer.TheDesigner.getToDoList();
-//     Vector goals = list.getKnowledgeTypes();     // should be from decision model
-//     _pseudoNodes = new Vector(goals.size());
-//     java.util.Enumeration enum = goals.elements();
-//     while (enum.hasMoreElements()) {
-//       Predicate pred = new PredicateType((Integer)enum.nextElement());
-//       _pseudoNodes.addElement(new ToDoPseudoNode(list, pred));
-//     }
-//   }
 
-  //public String toString() { return "Type"; }
+  ////////////////////////////////////////////////////////////////
+  // ToDoListListener implementation
+
+  public void toDoItemAdded(ToDoListEvent tde) {
+    //System.out.println("toDoItemAdded");
+    ToDoItem item = tde.getToDoItem();
+    Object path[] = new Object[2];
+    path[0] = Designer.TheDesigner.getToDoList();
+    int childIndices[] = new int[1];
+    Object children[] = new Object[1];
+
+    java.util.Enumeration enum = KnowledgeTypeNode.getTypes().elements();
+    while (enum.hasMoreElements()) {
+      KnowledgeTypeNode ktn = (KnowledgeTypeNode) enum.nextElement();
+      if (!item.containsKnowledgeType(ktn.getName())) continue;
+      path[1] = ktn;
+      //System.out.println("toDoItemAdded firing new item!");
+      childIndices[0] = getIndexOfChild(ktn, item);
+      children[0] = item;
+      fireTreeNodesInserted(this, path, childIndices, children);
+    }
+  }
+
+  public void toDoItemRemoved(ToDoListEvent tde) {
+    //System.out.println("toDoItemRemoved");
+    ToDoList list = Designer.TheDesigner.getToDoList(); //source?
+    ToDoItem item = tde.getToDoItem();
+    Object path[] = new Object[2];
+    path[0] = Designer.TheDesigner.getToDoList();
+
+    java.util.Enumeration enum = KnowledgeTypeNode.getTypes().elements();
+    while (enum.hasMoreElements()) {
+      KnowledgeTypeNode ktn = (KnowledgeTypeNode) enum.nextElement();
+      if (!item.containsKnowledgeType(ktn.getName())) continue;
+      //System.out.println("toDoItemRemoved updating PriorityNode");
+      path[1] = ktn;
+      //fireTreeNodesChanged(this, path, childIndices, children);
+      fireTreeStructureChanged(path);
+    }
+  }
+
+  public void toDoListChanged(ToDoListEvent tde) { }
+
 
   
+  
+
 } /* end class ToDoByType */
 
 

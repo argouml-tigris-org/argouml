@@ -48,19 +48,17 @@ public class CrClassMustBeAbstract extends CrUML {
   }
 
   protected void sd(String s) { setDescription(s); }
-  
+
   public boolean predicate(Object dm, Designer dsgr) {
     if (!(dm instanceof MMClass)) return NO_PROBLEM;
     MMClass cls = (MMClass) dm;
     if (!cls.getIsAbstract()) return NO_PROBLEM;
-    // needs-more-work: check inheritied methods and interfaces
-    Vector beh = cls.getBehavioralFeature();
-    if (beh == null) return NO_PROBLEM;
+    Vector beh = cls.getInheritedBehavioralFeatures();
     java.util.Enumeration enum = beh.elements();
     while (enum.hasMoreElements()) {
       BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
-      // needs-more-work
-      //if (bf.getIsAbstract().booleanValue()) return PROBLEM_FOUND;
+      //needs-more-work: abstract methods are not part of UML, only java
+      //if (bf.getIsAbstract()) return PROBLEM_FOUND;
     }
     return NO_PROBLEM;
   }

@@ -34,16 +34,16 @@ import uci.uml.Foundation.Core.*;
 public class CrNonAggDataType extends CrUML {
 
   public CrNonAggDataType() {
-    setHeadline("Free Standing DataType");
-    sd("DataTypes are not full classes and cannot be associated with \n"+
-       "classes, unless the DataType is part of a composite (black diamond) \n"+
+    setHeadline("Wrap DataType");
+    sd("DataTypes are not full classes and cannot be associated with "+
+       "classes, unless the DataType is part of a composite (black diamond) "+
        "aggregation. \n\n"+
-       "Good OO design depends on careful choices about which entities to \n"+
-       "represent as full objects and which to represent as attributes of \n"+
+       "Good OO design depends on careful choices about which entities to "+
+       "represent as full objects and which to represent as attributes of "+
        "objects.\n\n"+
-       "To fix this, use the FixIt button, or manually replace the DataType \n"+
-       "with a full class or change the association aggregation to containment\n"+
-       "by a full class.");
+       "To fix this, use the FixIt button, or manually replace the DataType "+
+       "with a full class or change the association aggregation to containment"+
+       "by a full class.\n\n");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
     addSupportedDecision(CrUML.decCLASS_SELECTION);

@@ -107,25 +107,26 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
       else if (value instanceof Pseudostate) {
 	Pseudostate ps = (Pseudostate) value;
 	PseudostateKind kind = ps.getKind();
-	if (kind == PseudostateKind.INITIAL) lab.setIcon(_StartStateIcon);
-	if (kind == PseudostateKind.DEEP_HISTORY) lab.setIcon(_DeepIcon);
-	if (kind == PseudostateKind.SHALLOW_HISTORY) lab.setIcon(_ShallowIcon);
-	if (kind == PseudostateKind.FORK) lab.setIcon(_ForkIcon);
-	if (kind == PseudostateKind.JOIN) lab.setIcon(_JoinIcon);
-	if (kind == PseudostateKind.BRANCH) lab.setIcon(_BranchIcon);
-	if (kind == PseudostateKind.FINAL) lab.setIcon(_FinalStateIcon);
+	if (PseudostateKind.INITIAL.equals(kind)) lab.setIcon(_StartStateIcon);
+	if (PseudostateKind.DEEP_HISTORY.equals(kind)) lab.setIcon(_DeepIcon);
+	if (PseudostateKind.SHALLOW_HISTORY.equals(kind))
+	  lab.setIcon(_ShallowIcon);
+	if (PseudostateKind.FORK.equals(kind)) lab.setIcon(_ForkIcon);
+	if (PseudostateKind.JOIN.equals(kind)) lab.setIcon(_JoinIcon);
+	if (PseudostateKind.BRANCH.equals(kind)) lab.setIcon(_BranchIcon);
+	if (PseudostateKind.FINAL.equals(kind)) lab.setIcon(_FinalStateIcon);
       }
       else if (value instanceof State) lab.setIcon(_StateIcon);
 
       String tip = (value == null) ? "null" : value.toString();
       lab.setToolTipText(tip);
 
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
-      if (pb != null) {
-	Object mainTarget = pb.getTarget();
-	if (value != mainTarget) lab.setBorder(new LineBorder(Color.white, 1));
-	else lab.setBorder(new LineBorder(Color.gray, 1));
-      }
+//       ProjectBrowser pb = ProjectBrowser.TheInstance;
+//       if (pb != null) {
+// 	Object mainTarget = pb.getTarget();
+// 	if (value != mainTarget) lab.setBorder(new LineBorder(Color.white, 1));
+// 	else lab.setBorder(new LineBorder(Color.gray, 1));
+//       }
     }
     return r;
   }

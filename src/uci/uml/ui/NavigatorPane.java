@@ -75,6 +75,8 @@ implements ItemListener, TreeSelectionListener {
     _tree.setShowsRootHandles(true);
     _tree.addTreeSelectionListener(this);
     _tree.addMouseListener(new NavigatorMouseListener());
+    _tree.addKeyListener(new NavigatorKeyListener());
+    //_tree.addActionListener(new NavigatorActionListener());
   }
 
   ////////////////////////////////////////////////////////////////
@@ -132,6 +134,7 @@ implements ItemListener, TreeSelectionListener {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
+    //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
   }
 
 
@@ -141,7 +144,8 @@ implements ItemListener, TreeSelectionListener {
     //should register a listener
     if (getSelectedObject() == null) return;
     //System.out.println("single: " + getSelectedObject().toString());
-    ProjectBrowser.TheInstance.select(getSelectedObject());
+    ProjectBrowser.TheInstance.setTarget(getSelectedObject());
+    //ProjectBrowser.TheInstance.select(getSelectedObject());
   }
 
   /** called when the user clicks twice on an item in the tree. */ 
@@ -190,5 +194,18 @@ implements ItemListener, TreeSelectionListener {
     }
   }
 
-  
+  class NavigatorKeyListener extends KeyAdapter {
+    // maybe use keyTyped?
+    public void keyPressed(KeyEvent e) {
+      //System.out.println("got key: " + e.getKeyCode());
+      int code = e.getKeyCode();
+      if (code == KeyEvent.VK_ENTER || code  == KeyEvent.VK_SPACE) {
+	Object newTarget = getSelectedObject();
+	if (newTarget != null)
+	  ProjectBrowser.TheInstance.setTarget(newTarget);
+      }
+    }
+  }
+
+
 } /* end class NavigatorPane */

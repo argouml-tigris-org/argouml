@@ -162,11 +162,11 @@ implements DocumentListener, ItemListener {
     ScopeKind sk = attr.getOwnerScope();
     ChangeableKind ck = attr.getChangeable();
     
-    if (sk == ScopeKind.CLASSIFIER && ck == ChangeableKind.FROZEN)
+    if (ScopeKind.CLASSIFIER.equals(sk) && ChangeableKind.FROZEN.equals(ck))
       _keywordsField.setSelectedItem("static final");
-    else if (sk == ScopeKind.CLASSIFIER)
+    else if (ScopeKind.CLASSIFIER.equals(sk))
       _keywordsField.setSelectedItem("static");
-    else if (ck == ChangeableKind.FROZEN)
+    else if (ChangeableKind.FROZEN.equals(ck))
       _keywordsField.setSelectedItem("final");
     else
       _keywordsField.setSelectedItem("None");
@@ -238,7 +238,10 @@ implements DocumentListener, ItemListener {
     if (_target == null) return;
     String initStr = _initText.getText();
     Attribute attr = (Attribute) _target;
-    attr.setInitialValue(new Expression(initStr));
+    try {
+        attr.setInitialValue(new Expression(initStr));
+    }
+    catch (PropertyVetoException pve) { }
   }
 
 

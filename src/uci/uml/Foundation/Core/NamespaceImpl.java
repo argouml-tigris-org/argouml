@@ -87,7 +87,7 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
     while (eoEnum.hasMoreElements()) {
       ElementOwnership eo = (ElementOwnership) eoEnum.nextElement();
       if (eo.getModelElement() == me &&
-	  (vk == null || vk == eo.getVisibility()))
+	  (vk == null || vk.equals(eo.getVisibility())))
 	return eo;
     }
     return null;

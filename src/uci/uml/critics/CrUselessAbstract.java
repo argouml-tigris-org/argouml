@@ -37,13 +37,15 @@ import uci.util.*;
 public class CrUselessAbstract extends CrUML {
 
   public CrUselessAbstract() {
-    setHeadline("Useless Abstract");
-    setDescription("This class can never influence the running system because\n"+
-		"it can never have any instances, and none of its\n"+
-		"subclasses can have instances either.\n\n"+
-		"To fix this problem: (1) define concrete subclasses that\n"+
-		"implement the interface of this class; or (2) make this\n"+
-		"class or one of its existing subclasses concrete");
+    setHeadline("Define Concrete (Sub)Class");
+    String s;
+    s = "{name} can never influence the running system because "+
+      "it can never have any instances, and none of its "+
+      "subclasses can have instances either. \n\n"+
+      "To fix this problem: (1) define concrete subclasses that "+
+      "implement the interface of this class; or (2) make "+
+      "{name} or one of its existing subclasses concrete.";
+    setDescription(s);
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedGoal(Goal.UNSPEC);
   }

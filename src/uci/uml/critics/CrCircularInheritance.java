@@ -24,9 +24,11 @@
 package uci.uml.critics;
 
 import java.util.*;
-import uci.argo.kernel.*;
+
 import uci.util.*;
+import uci.argo.kernel.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.util.*;
 
 /** Well-formedness rule [2] for GeneralizableElement. See page 31 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -34,7 +36,7 @@ import uci.uml.Foundation.Core.*;
 public class CrCircularInheritance extends CrUML {
 
   public CrCircularInheritance() {
-    setHeadline("Circular Inheritance Detected ");
+    setHeadline("Remove Circular Inheritance");
     sd("Inheritances relationships cannot have cycles. \n\n"+
        "A legal class inheritance hierarchy is needed for code generation \n"+
        "and the correctness of the design. \n\n"+
@@ -49,9 +51,41 @@ public class CrCircularInheritance extends CrUML {
   public boolean predicate(Object dm, Designer dsgr) {
     if (!(dm instanceof GeneralizableElement)) return NO_PROBLEM;
     GeneralizableElement ge = (GeneralizableElement) dm;
-    // needs-more-work: not implemented
+    Set reach = (new Set(ge)).reachable(new SuperclassGen());
+    if (reach.contains(ge)) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
+  public ToDoItem toDoItem(Object dm, Designer dsgr) {
+    GeneralizableElement ge = (GeneralizableElement) dm;
+    Set offs = computeOffenders(ge);
+    return new ToDoItem(this, offs, dsgr);
+  }
+
+  protected Set computeOffenders(GeneralizableElement dm) {
+    Set offs = new Set(dm);
+    Set above = offs.reachable(new SuperclassGen());
+    Enumeration enum = above.elements();
+    while (enum.hasMoreElements()) {
+      GeneralizableElement ge2 = (GeneralizableElement) enum.nextElement();
+      Set trans = (new Set(ge2)).reachable(new SuperclassGen());
+      if (trans.contains(dm)) offs.addElement(ge2);
+    }
+    return offs;
+  }
+
+  public boolean stillValid(ToDoItem i, Designer dsgr) {
+    if (!isActive()) return false;
+    Set offs = i.getOffenders();
+    GeneralizableElement dm = (GeneralizableElement) offs.firstElement();
+    if (!predicate(dm, dsgr)) return false;
+    Set newOffs = computeOffenders(dm);
+    boolean res = offs.equals(newOffs);
+//      System.out.println("offs="+ offs.toString() +
+//  		       " newOffs="+ newOffs.toString() +
+//  		       " res = " + res);
+    return res;
+  }
+  
 } /* end class CrCircularInheritance.java */
 

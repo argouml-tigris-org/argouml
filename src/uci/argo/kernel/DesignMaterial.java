@@ -24,6 +24,8 @@
 package uci.argo.kernel;
 
 import java.util.*;
+import java.beans.*;
+
 import uci.ui.*;
 import uci.util.*;
 
@@ -57,32 +59,33 @@ import uci.util.*;
  * @see jargo.ui.UiPropertyBrowser */
 
 public abstract class DesignMaterial extends Observable
-implements java.io.Serializable {
-
-  ////////////////////////////////////////////////////////////////
-  // constants
-
-  public static final String HIGHLIGHT = "Highlight";
-  public static final String UNHIGHLIGHT = "Unhighlight";
+implements Highlightable, java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
   /** Observers of this object that should be saved and loaded with
    *  this object. */
-  private Vector _persistObservers = null;
+  protected Vector _persistObservers = null;
 
+  protected transient Vector _propertyListeners = null;
+  
   /** ToDoList items that are on the designers ToDoList because
    *  of this material. */
-  private ToDoList _pendingItems = new ToDoList();
+  protected ToDoList _pendingItems = new ToDoList();
 
   /** Other DesignMaterial's that contain this one. */
-  private Vector _parents = new Vector();
+  protected Vector _parents = new Vector();
 
   /** "Soft" Properties that this DesignMaterial may have, but we do
    *  not want to allocate an instance variable to them. */
-  public Hashtable _props = new Hashtable();
+  protected Hashtable _props = new Hashtable();
 
+
+  protected boolean _highlight;
+
+  
+  
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -264,29 +267,14 @@ implements java.io.Serializable {
    * Needs-More-Work: do I need a Clarifier object in the framework? */
   public void inform(ToDoItem item) { _pendingItems.addElement(item); }
 
-  /** This DesignMaterial has been selected in some editor.
-   * @see jargo.ui.UiToDoList */
-  public void select() { highlight(); }
-
-  /** This DesignMaterial has been deselected in some editor.
-   * @see jargo.ui.UiToDoList */
-  public void deselect() { unhighlight(); }
-
   /** Draw the Designer's attention to this DesignMaterial in all
    * views. */
-  public void highlight() {
+  public void setHighlight(boolean h) {
+    _highlight = h;
     setChanged();
-    notifyObservers(HIGHLIGHT);
+    notifyObservers("HIGHLIGHT");    
   }
-  public void highlight(ToDoItem item) { highlight(); }
-
-  /** Stop drawing the Designer's attention to this DesignMaterial. */
-  public void unhighlight() {
-    setChanged();
-    notifyObservers(UNHIGHLIGHT);
-  }
-
-  public void unhighlight(ToDoItem item) { unhighlight(); }
+  public boolean getHighlight() { return _highlight; }
 
 
   ////////////////////////////////////////////////////////////////
@@ -321,4 +309,51 @@ implements java.io.Serializable {
     notifyPersistantObservers(arg);
   }
 
+
+  ////////////////////////////////////////////////////////////////
+  // property change events
+  
+  public synchronized void
+  addPropertyChangeListener(PropertyChangeListener listener) {
+    if (_propertyListeners == null) _propertyListeners = new Vector();
+    _propertyListeners.removeElement(listener);
+    _propertyListeners.addElement(listener);
+  }
+
+  public synchronized void
+  removePropertyChangeListener(PropertyChangeListener listener) {
+    if (_propertyListeners == null) return;
+    _propertyListeners.removeElement(listener);
+  }
+
+  public void firePropertyChange(String propertyName, 
+				 boolean oldValue, boolean newValue) {
+	 firePropertyChange(propertyName,
+			    new Boolean(oldValue),
+			    new Boolean(newValue));
+  }
+
+  public void firePropertyChange(String propertyName, 
+				 int oldValue, int newValue) {
+	 firePropertyChange(propertyName,
+			    new Integer(oldValue),
+			    new Integer(newValue));
+  }
+
+
+
+  public void firePropertyChange(String propertyName, 
+				 Object oldValue, Object newValue) {
+    if (_propertyListeners == null) return;
+    if (oldValue != null && oldValue.equals(newValue)) return;
+    PropertyChangeEvent evt =
+      new PropertyChangeEvent(this, propertyName, oldValue, newValue);
+    for (int i = 0; i < _propertyListeners.size(); i++) {
+      PropertyChangeListener target = 
+	(PropertyChangeListener) _propertyListeners.elementAt(i);
+      target.propertyChange(evt);
+    }    
+  }
+
+  
 } /* end class DesignMaterial */

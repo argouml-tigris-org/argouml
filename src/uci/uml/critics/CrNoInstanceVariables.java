@@ -37,6 +37,8 @@ import java.util.*;
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Foundation.Extension_Mechanisms.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -44,17 +46,18 @@ import uci.uml.Foundation.Core.*;
 public class CrNoInstanceVariables extends CrUML {
 
   public CrNoInstanceVariables() {
-    setHeadline("Add Instance Variables");
-    sd("You have not yet specified instance variables for this class. \n"+
-       "Normally classes have intstance variables that store state \n"+
-       "information for each instance. \n\n"+
-       "Defining instance variables needed to complete the information \n"+
-       "representation part of your design \n\n"+
-       "To fix this, press the FixIt icon (to left), or add instance \n"+
-       "variables by selecting the class and typing them into the the \n"+
-       "Src tab, Props tab, or Attrs tab");
+    setHeadline("Add Instance Variables to {name}");
+    sd("You have not yet specified instance variables for {name}. "+
+       "Normally classes have instance variables that store state "+
+       "information for each instance. Classes that provide only "+
+       "static attributes and methods should be stereotyped <<utility>>.\n\n"+
+       "Defining instance variables needed to complete the information "+
+       "representation part of your design. \n\n"+
+       "To fix this, press the FixIt icon (to left), or add instance "+
+       "variables by dobule clicking on {name} in the navigator pane and "+
+       "using the Create menu to make a new attribute. ");
        
-    addSupportedDecision(CrUML.decINHERITANCE);
+    addSupportedDecision(CrUML.decSTORAGE);
   }
 
   protected void sd(String s) { setDescription(s); }
@@ -62,9 +65,19 @@ public class CrNoInstanceVariables extends CrUML {
   public boolean predicate(Object dm, Designer dsgr) {
     if (!(dm instanceof MMClass)) return NO_PROBLEM;
     MMClass cls = (MMClass) dm;
-    Vector str = cls.getStructuralFeature();
-    if (str == null || str.size() == 0) return PROBLEM_FOUND;
-    else return NO_PROBLEM;
+    if (cls.containsStereotype(Stereotype.UTILITY)) return NO_PROBLEM;
+    Vector str = cls.getInheritedStructuralFeatures();
+    if (str == null) return PROBLEM_FOUND;
+    java.util.Enumeration enum = str.elements();
+    while (enum.hasMoreElements()) {
+      StructuralFeature sf = (StructuralFeature) enum.nextElement();
+      ChangeableKind ck = sf.getChangeable();
+      ScopeKind sk = sf.getOwnerScope();
+      if (ChangeableKind.NONE.equals(ck) || ScopeKind.INSTANCE.equals(sk))
+	return NO_PROBLEM;
+    }
+    //needs-more-work?: don't count static or constants?
+    return PROBLEM_FOUND;
   }
 
 } /* end class CrNoInstanceVariables */

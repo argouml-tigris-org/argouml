@@ -16,12 +16,12 @@ public class Init {
   public static Critic crAttrNameConflict = new CrAttrNameConflict();
   public static Critic crCircularAssocClass = new CrCircularAssocClass();
   public static Critic crCircularInheritance = new CrCircularInheritance();
-  public static Critic crClassMustBeAbstract = new CrClassMustBeAbstract();
+  public static Critic crCircularComposition = new CrCircularComposition();
   public static Critic crCrossNamespaceAssoc = new CrCrossNamespaceAssoc();
   public static Critic crDupParamName = new CrDupParamName();
   public static Critic crDupRoleNames = new CrDupRoleNames();
   public static Critic crFinalSubclassed = new CrFinalSubclassed();
-  public static Critic crIlleagleGeneralization = new CrIlleagleGeneralization();
+  public static Critic crIllegalGeneralization = new CrIllegalGeneralization();
   public static Critic crInterfaceAllPublic = new CrInterfaceAllPublic();
   public static Critic crInterfaceOperOnly = new CrInterfaceOperOnly();
   public static Critic crMultiComposite = new CrMultiComposite();
@@ -36,12 +36,33 @@ public class Init {
   public static Critic crSignatureConflict = new CrSignatureConflict();
   public static Critic crUselessAbstract = new CrUselessAbstract();
   public static Critic crDisambigClassName = new CrDisambigClassName();
+  public static Critic crConflictingComposites = new CrConflictingComposites();
+
+  public static Critic crEmptyPackage = new CrEmptyPackage();
+  public static Critic crNoOperations = new CrNoOperations();
+  public static Critic crConstructorNeeded = new CrConstructorNeeded();
+
+  public static Critic crNameConfusion = new CrNameConfusion();
+  public static Critic crMergeClasses = new CrMergeClasses();
+
+  // from UML 1.1 Semantics spec
+
+  // common coding conventions
+  public static Critic
+  crUnconventionalOperName = new CrUnconventionalOperName();
+
+  public static Critic
+  crUnconventionalAttrName = new CrUnconventionalAttrName(); 
+
+  public static Critic
+  crUnconventionalClassName = new CrUnconventionalClassName(); 
 
   // Java specific
-  public static Critic crUnconventionalOperName = new CrUnconventionalOperName();
-  public static Critic crUnconventionalAttrName = new CrUnconventionalAttrName();
-  public static Critic crUnconventionalClassName =
-  new CrUnconventionalClassName();
+  public static Critic crClassMustBeAbstract = new CrClassMustBeAbstract();
+  public static Critic crReservedName = new CrReservedName();
+
+  // code generation
+  public static Critic crIllegalName = new CrIllegalName();
 
   // Pattern specific
   public static Critic crConsiderSingleton = new CrConsiderSingleton();
@@ -52,6 +73,7 @@ public class Init {
   public static void init() {
 //     try {
       java.lang.Class modelCls = Model.class;
+      java.lang.Class modelElementCls = ModelElementImpl.class;
       java.lang.Class classCls = MMClass.class;
       java.lang.Class classifierCls = Classifier.class;
       java.lang.Class interfaceCls = Interface.class;
@@ -60,35 +82,47 @@ public class Init {
       java.lang.Class iassocCls = IAssociation.class;
       java.lang.Class assocCls = Association.class;
       java.lang.Class assocClassCls = AssociationClass.class;
-      java.lang.Class namespaceClass = Namespace.class;
-      java.lang.Class genElementCls = GeneralizableElement.class;
+      java.lang.Class namespaceCls = NamespaceImpl.class;
+      java.lang.Class genElementCls = GeneralizableElementImpl.class;
       java.lang.Class genCls = Generalization.class;
       java.lang.Class datatypeCls = DataType.class;
 
-      Agency.register(crAssocNameConflict, namespaceClass);
+      // needs-more-work: Agency should allow registration by interface
+      // useful for IAssociation.
+      
+      Agency.register(crAssocNameConflict, namespaceCls);
       Agency.register(crAttrNameConflict, classifierCls);
       Agency.register(crCircularAssocClass, assocClassCls);
       Agency.register(crCircularInheritance, genElementCls);
-      Agency.register(crClassMustBeAbstract, classCls);
+      Agency.register(crCircularComposition, classCls);
+      Agency.register(crClassMustBeAbstract, classCls); //needs-more-work
       Agency.register(crCrossNamespaceAssoc, assocClassCls);
       Agency.register(crDupParamName, operCls);
-      Agency.register(crDupRoleNames, iassocCls);
+      Agency.register(crDupRoleNames, assocCls);
       Agency.register(crFinalSubclassed, classCls);
-      Agency.register(crIlleagleGeneralization, genCls);
+      Agency.register(crIllegalGeneralization, genCls);
       Agency.register(crInterfaceAllPublic, interfaceCls);
       Agency.register(crInterfaceOperOnly, interfaceCls);
-      Agency.register(crMultiComposite, iassocCls);
-      Agency.register(crMultipleAgg, iassocCls);
-      Agency.register(crNWayAgg, iassocCls);
-      Agency.register(crNameConflict, classCls);
+      Agency.register(crMultiComposite, assocCls);
+      Agency.register(crMultipleAgg, assocCls);
+      Agency.register(crNWayAgg, assocCls);
+      Agency.register(crNameConflict, namespaceCls);
       Agency.register(crNameConflictAC, assocClassCls);
       Agency.register(crNoInstanceVariables, classCls);
+      Agency.register(crNoOperations, classCls);
+      Agency.register(crConstructorNeeded, classCls); //needs-more-work
+      Agency.register(crEmptyPackage, classCls);
       Agency.register(crNonAggDataType, datatypeCls);
       Agency.register(crOppEndConflict, classifierCls);
       Agency.register(crParamTypeNotImported, operCls);
       Agency.register(crSignatureConflict, classifierCls);
       Agency.register(crUselessAbstract, classCls);
       Agency.register(crDisambigClassName, classifierCls);
+      Agency.register(crNameConfusion, classifierCls);
+      Agency.register(crMergeClasses, classCls);
+      Agency.register(crIllegalName, classifierCls);
+      Agency.register(crReservedName, modelElementCls);
+      Agency.register(crConflictingComposites, classifierCls);
 
       Agency.register(crUnconventionalOperName, operCls);
       Agency.register(crUnconventionalAttrName, attrCls);

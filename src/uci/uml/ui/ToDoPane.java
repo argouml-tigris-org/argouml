@@ -68,6 +68,8 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   protected ToDoPerspective _curPerspective = null;
   protected JTree _tree = new DisplayTextTree();
   protected boolean _flat = false;
+  protected Object _lastSel;
+
   
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -156,7 +158,12 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     //System.out.println("ToDoPane valueChanged");
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    ProjectBrowser.TheInstance.setToDoItem(getSelectedObject());
+    Object sel = getSelectedObject();
+    ProjectBrowser.TheInstance.setToDoItem(sel);
+
+    if (_lastSel instanceof ToDoItem) ((ToDoItem)_lastSel).deselect();
+    if (sel instanceof ToDoItem) ((ToDoItem)sel).select();
+    _lastSel = sel;
   }
 
 
@@ -190,6 +197,10 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   /** called when the user clicks once on an item in the tree. */ 
   public void myDoubleClick(int row, TreePath path) {
     if (getSelectedObject() == null) return;
+    Object sel = getSelectedObject();
+    if (sel instanceof ToDoItem)
+      ((ToDoItem)sel).action();
+    
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
     //System.out.println("2: " + getSelectedObject().toString());

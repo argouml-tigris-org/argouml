@@ -79,6 +79,31 @@ implements IAssociation {
   }
 
   ////////////////////////////////////////////////////////////////
+  // utility methods
+
+  public boolean hasCompositeEnd() {
+    if (_connection == null) return false;
+    java.util.Enumeration enum = _connection.elements();
+    while (enum.hasMoreElements()) { 
+      AssociationEnd ae = (AssociationEnd) enum.nextElement();
+      if (AggregationKind.COMPOSITE.equals(ae.getAggregation()))
+	return true;
+    }
+    return false;
+  }
+  
+  public boolean hasAggregateEnd() {
+    if (_connection == null) return false;
+    java.util.Enumeration enum = _connection.elements();
+    while (enum.hasMoreElements()) { 
+      AssociationEnd ae = (AssociationEnd) enum.nextElement();
+      if (AggregationKind.AGG.equals(ae.getAggregation()))
+	return true;
+    }
+    return false;
+  }
+
+  ////////////////////////////////////////////////////////////////
   // debugging
 
   

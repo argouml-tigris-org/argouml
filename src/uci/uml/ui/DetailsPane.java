@@ -58,6 +58,7 @@ implements ChangeListener, MouseListener {
    *  usually selected from a Fig in the diagram or from the
    *  navigation panel. */
   protected Object _target = "this is set to null in contructor";
+  protected Object _item = "this is set to null in contructor";
 
   // vector of TreeModels
   protected JTabbedPane _tabs = new JTabbedPane();
@@ -75,6 +76,7 @@ implements ChangeListener, MouseListener {
     _tabPanels.addElement(new TabSrc());
     _tabPanels.addElement(new TabConstraints());
     _tabPanels.addElement(new TabTaggedValues());
+    _tabPanels.addElement(new TabChecklist());
     _tabPanels.addElement(new TabHistory());
 
     setLayout(new BorderLayout());
@@ -97,7 +99,9 @@ implements ChangeListener, MouseListener {
 	_tabs.addTab(title, t);
       }
     } /* end for */
+
     setTarget(null);
+    _item = null;
     _tabs.addMouseListener(this);
   }
     
@@ -106,12 +110,15 @@ implements ChangeListener, MouseListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  public JTabbedPane getTabs() { return _tabs; }
+  
   // needs-more-work: ToDoItem
   public void setToDoItem(Object item) {
+    _item = item;
     for (int i = 0; i < _tabPanels.size(); i++) {
       JPanel t = (JPanel) _tabPanels.elementAt(i);
       if (t instanceof TabToDoTarget) {
-	((TabToDoTarget)t).setTarget(item);
+	((TabToDoTarget)t).setTarget(_item);
 	_tabs.setSelectedComponent(t);
       }
     }
@@ -150,6 +157,32 @@ implements ChangeListener, MouseListener {
 
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
   public Dimension getPreferredSize() { return new Dimension(400, 150); }
+
+  ////////////////////////////////////////////////////////////////
+  // actions
+
+  public void selectTabNamed(String tabName) {
+    for (int i = 0; i < _tabPanels.size(); i++) {
+      String title = _tabs.getTitleAt(i);
+      if (title != null && title.equals(tabName)) {
+	_tabs.setSelectedIndex(i);
+	return;
+      }
+    }        
+  }
+
+  public void selectNextTab() {
+    int size = _tabPanels.size();
+    int currentTab = _tabs.getSelectedIndex();
+    
+    for (int i = 1; i < _tabPanels.size(); i++) {
+      int newTab = (currentTab + i) % size;
+      if (_tabs.isEnabledAt(newTab)) {
+	_tabs.setSelectedIndex(newTab);
+	return;
+      }
+    }    
+  }
   
   ////////////////////////////////////////////////////////////////
   // event handlers
@@ -157,9 +190,16 @@ implements ChangeListener, MouseListener {
   /** called when the user selects an item in the tree, by clicking or
    *  otherwise. */
   public void stateChanged(ChangeEvent e) {
-    //needs-more-work: should fire its own event and ProjectBrowser
-    //should register a listener
-    //System.out.println("DetailsPane state changed");
+    System.out.println("DetailsPane state changed");
+    Component sel = _tabs.getSelectedComponent();
+    if (sel instanceof TabToDoTarget) {
+      ((TabToDoTarget)sel).setTarget(null);
+      ((TabToDoTarget)sel).setTarget(_item);
+    }
+    else if (sel instanceof TabToDoTarget) {
+      ((TabModelTarget)sel).setTarget(null);
+      ((TabModelTarget)sel).setTarget(_target);
+    }
   }
 
   /** called when the user clicks once on a tab. */ 

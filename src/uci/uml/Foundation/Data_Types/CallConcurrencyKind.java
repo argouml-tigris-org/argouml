@@ -33,5 +33,28 @@ import java.util.*;
 
 public class CallConcurrencyKind {
     
-    public CallConcurrencyKind() { }
+  public static final CallConcurrencyKind SEQUENTIAL =
+  new CallConcurrencyKind("sequential"); 
+  public static final CallConcurrencyKind GUARDED =
+  new CallConcurrencyKind("guarded"); 
+  public static final CallConcurrencyKind CONCURRENT =
+  new CallConcurrencyKind("concurrent");
+
+  public static final CallConcurrencyKind[] POSSIBLE_CONCURRENCIES = {
+    SEQUENTIAL, GUARDED, CONCURRENT };
+
+  protected String _label = null;
+  
+  public CallConcurrencyKind(String label) { _label = label; }
+  
+  public boolean equals(Object o) {
+    if (!(o instanceof CallConcurrencyKind)) return false;
+    String oLabel = ((CallConcurrencyKind)o)._label;
+    return _label.equals(oLabel);
+  }
+
+  public int hashCode() { return _label.hashCode(); }
+  
+  public String toString() { return _label.toString(); }
+
 }

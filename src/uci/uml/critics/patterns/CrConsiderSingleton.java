@@ -60,7 +60,8 @@ public class CrConsiderSingleton extends CrUML {
        "\n"+
        "To learn more about the Singleton Pattern, press the MoreInfo icon.");
        
-    addSupportedDecision(CrUML.decINHERITANCE);
+    addSupportedDecision(CrUML.decPATTERNS);
+    setPriority(ToDoItem.LOW_PRIORITY);
   }
 
   protected void sd(String s) { setDescription(s); }
@@ -87,7 +88,7 @@ public class CrConsiderSingleton extends CrUML {
       java.util.Enumeration strEnum = str.elements();
       while (strEnum.hasMoreElements()) {
 	StructuralFeature sf = (StructuralFeature) strEnum.nextElement();
-	if (sf.getTargetScope() == ScopeKind.INSTANCE) return NO_PROBLEM;
+	if (ScopeKind.INSTANCE.equals(sf.getTargetScope())) return NO_PROBLEM;
       }
     }
     

@@ -60,6 +60,8 @@ public interface ModelElement extends Element {
   
   public ElementOwnership getElementOwnership();
   public void setElementOwnership(ElementOwnership x) throws PropertyVetoException;
+  public Namespace getNamespace();
+  public void setNamespace(Namespace x) throws PropertyVetoException;
   
   public Vector getConstraint();
   public void setConstraint(Vector x) throws PropertyVetoException;
@@ -71,7 +73,7 @@ public interface ModelElement extends Element {
   public void setRequirement(Vector x) throws PropertyVetoException;
   
   public Vector getTemplateParameter();
-  public void setTemplateparameter(Vector x) throws PropertyVetoException;
+  public void setTemplateParameter(Vector x) throws PropertyVetoException;
 
   public ModelElement getTemplate();
   public void setTemplate(ModelElement x) throws PropertyVetoException;

@@ -36,6 +36,9 @@ import uci.uml.Behavioral_Elements.Common_Behavior.ActionSequence;
 import uci.uml.Foundation.Core.Attribute;
 import uci.uml.Foundation.Data_Types.Name;
 
+/** The actions associated with a state are in the same Namespace as
+ *  the State. */
+
 public class State extends StateVertex {
   public ActionSequence _entry;
   public ActionSequence _exit;
@@ -57,12 +60,14 @@ public class State extends StateVertex {
   public void setEntry(ActionSequence x) throws PropertyVetoException {
     fireVetoableChange("entry", _entry, x);
     _entry = x;
+    _entry.setNamespace(getNamespace());
   }
   
   public ActionSequence getExit() { return _exit; }
   public void setExit(ActionSequence x) throws PropertyVetoException {
     fireVetoableChange("exit", _exit, x);
     _exit = x;
+    _exit.setNamespace(getNamespace());
   }
 
   public Vector getDeferredEvent() { return _deferredEvent; }
@@ -70,11 +75,17 @@ public class State extends StateVertex {
     if (_deferredEvent == null) _deferredEvent = new Vector();
     fireVetoableChange("deferredEvent", _deferredEvent, x);
     _deferredEvent = x;
+    java.util.Enumeration enum = _deferredEvent.elements();
+    while (enum.hasMoreElements()) {
+      Event e = (Event) enum.nextElement();
+      e.setNamespace(getNamespace());
+    }
   }
   public void addDeferredEvent(Event x) throws PropertyVetoException {
     if (_deferredEvent == null) _deferredEvent = new Vector();
     fireVetoableChange("deferredEvent", _deferredEvent, x);
     _deferredEvent.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeDeferredEvent(Event x) throws PropertyVetoException {
     if (_deferredEvent == null) return;
@@ -98,11 +109,17 @@ public class State extends StateVertex {
     if (_stateVariable == null) _stateVariable = new Vector();
     fireVetoableChange("stateVariable", _stateVariable, x);
     _stateVariable = x;
+    java.util.Enumeration enum = _stateVariable.elements();
+    while (enum.hasMoreElements()) {
+      Attribute a = (Attribute) enum.nextElement();
+      a.setNamespace(getNamespace());
+    }
   }
   public void addStateVariable(Attribute x) throws PropertyVetoException {
     if (_stateVariable == null) _stateVariable = new Vector();
     fireVetoableChange("stateVariable", _stateVariable, x);
     _stateVariable.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeStateVariable(Attribute x) throws PropertyVetoException {
     if (_stateVariable == null) return;
@@ -134,11 +151,17 @@ public class State extends StateVertex {
     if (_internalTransition == null) _internalTransition = new Vector();
     fireVetoableChange("internalTransition", _internalTransition, x);
     _internalTransition = x;
+    java.util.Enumeration enum = _internalTransition.elements();
+    while (enum.hasMoreElements()) {
+      Transition t = (Transition) enum.nextElement();
+      t.setNamespace(getNamespace());
+    }
   }
   public void addInternalTransition(Transition x) throws PropertyVetoException {
     if (_internalTransition == null) _internalTransition = new Vector();
     fireVetoableChange("internalTransition", _internalTransition, x);
     _internalTransition.addElement(x);
+    x.setNamespace(getNamespace());
   }
   public void removeInternalTransition(Transition x) throws PropertyVetoException {
     if (_internalTransition == null) return;

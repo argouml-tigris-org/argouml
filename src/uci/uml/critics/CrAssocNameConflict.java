@@ -29,17 +29,17 @@ import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
 
-/** Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
+/** Well-formedness rule [2] for Namespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrAssocNameConflict extends CrUML {
 
   public CrAssocNameConflict() {
-    setHeadline("Name conflict");
+    setHeadline("Resolve Assocaiation Name Conflict");
     sd("Every element of a namespace must have a unique name. \n\n"+
-       "Clear and unambiguous naming is key to code generation and \n"+
+       "Clear and unambiguous naming is key to code generation and "+
        "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the FixIt button, or manually select the elements \n"+
+       "To fix this, use the FixIt button, or manually select the elements "+
        "and use the Properties tab to change their names.");
     addSupportedDecision(CrUML.decNAMING);
   }

@@ -32,6 +32,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
 import com.sun.java.swing.*;
@@ -46,7 +47,8 @@ import uci.uml.Foundation.Core.*;
 /** Class to display graphics for a UML Class in a diagram. */
 
 public class FigClass extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+implements VetoableChangeListener, DelayedVetoableChangeListener,
+  MouseListener, PropertyChangeListener  {
 
   public final int MARGIN = 2;
   
@@ -68,6 +70,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     _clss.setFont(labelFont);
     _clss.setTextColor(Color.black);
     _clss.setExpandOnly(true);
+    _clss.setMultiLine(false);
     //_clss.setText((new GeneratorDisplay()).generateClassifierRef((Classifier)node));
 
     _attr = new FigText(10, 30, 90, 20);
@@ -92,6 +95,10 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     setBlinkPorts(true); 
     Rectangle r = getBounds();  
     setBounds(r.x, r.y, r.width, r.height);
+
+    _clss.addPropertyChangeListener(this);
+    _attr.addPropertyChangeListener(this);
+    _oper.addPropertyChangeListener(this);
   }
 
   /* Override setBounds to keep shapes looking right */
@@ -138,8 +145,34 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     Object src = pce.getSource();
     updateText();
   }
+    
+  public void propertyChange(PropertyChangeEvent pve) {
+    Object src = pve.getSource();
+    String pName = pve.getPropertyName();
+    if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue()))
+      System.out.println("finished editing");
+    if (src == _clss) { System.out.println("class changed " + pName);}
+    if (src == _attr) { System.out.println("attr changed " + pName);}
+    if (src == _oper) { System.out.println("oper changed " + pName);}
+  }
 
+  ////////////////////////////////////////////////////////////////
+  // event handlers - MouseListener implementation
 
+  public void mouseClicked(MouseEvent me) {
+    if (me.isConsumed()) return;
+    if (me.getClickCount() >= 2) {
+      System.out.println("starting editor!");
+      if (_clss.contains(me.getX(), me.getY())) _clss.mouseClicked(me);
+      if (_attr.contains(me.getX(), me.getY())) _attr.mouseClicked(me);
+      if (_oper.contains(me.getX(), me.getY())) _oper.mouseClicked(me);
+    }
+    me.consume();
+  }
+  
+  ////////////////////////////////////////////////////////////////
+  // internal methods
+  
   protected void updateText() {
     Classifier cls = (Classifier) getOwner();
     String clsNameStr = GeneratorDisplay.Generate(cls.getName());

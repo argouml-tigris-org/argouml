@@ -36,7 +36,7 @@ import java.beans.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
 import com.sun.java.swing.table.*;
-//import com.sun.java.swing.border.*;
+import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
@@ -90,6 +90,8 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
     _table.setRowSelectionAllowed(false);
     _table.getSelectionModel().addListSelectionListener(this);
     JScrollPane sp = JTable.createScrollPaneForTable(_table);
+    Font labelFont = MetalLookAndFeel.getSubTextFont();
+    _table.setFont(labelFont);
     
     setLayout(new BorderLayout());
     add(tableButtons, BorderLayout.SOUTH);

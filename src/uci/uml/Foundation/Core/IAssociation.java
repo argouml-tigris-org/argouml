@@ -38,14 +38,19 @@ import uci.uml.Behavioral_Elements.Common_Behavior.Link;
 
 public interface IAssociation extends ModelElement {
 
-  public Vector getConnection();
-  public void setConnection(Vector x) throws PropertyVetoException;
-  public void addConnection(AssociationEnd x) throws PropertyVetoException;
-  public void removeConnection(AssociationEnd x) throws PropertyVetoException;
-  public Vector getLink() throws PropertyVetoException;
-  public void setLink(Vector x) throws PropertyVetoException;
-  public void addLink(Link x) throws PropertyVetoException;
-  public void removeLink(Link x) throws PropertyVetoException;
-  
+  Vector getConnection();
+  void setConnection(Vector x) throws PropertyVetoException;
+  void addConnection(AssociationEnd x) throws PropertyVetoException;
+  void removeConnection(AssociationEnd x) throws PropertyVetoException;
+  Vector getLink() throws PropertyVetoException;
+  void setLink(Vector x) throws PropertyVetoException;
+  void addLink(Link x) throws PropertyVetoException;
+  void removeLink(Link x) throws PropertyVetoException;
+
+
+  ////////////////////////////////////////////////////////////////
+  // utility methods
+  boolean hasCompositeEnd();
+  boolean hasAggregateEnd();
 }
 

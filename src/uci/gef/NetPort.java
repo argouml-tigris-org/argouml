@@ -105,7 +105,7 @@ implements GraphPortHooks, java.io.Serializable {
       NetEdge e = (NetEdge) edges.nextElement();
       e.dispose();
     }
-    firePropertyChange("Disposed", false, true);
+    firePropertyChange("disposed", false, true);
   }
 
   ////////////////////////////////////////////////////////////////

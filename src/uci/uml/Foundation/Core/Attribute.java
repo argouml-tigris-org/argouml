@@ -30,9 +30,14 @@
 package uci.uml.Foundation.Core;
 
 import java.util.*;
+import java.beans.*;
+
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Data_Types.Name;
 import uci.uml.generate.*;
+
+/** By default, StructuralFeatures are in the same Namespace as the
+ *  Classifier that owns them. */
 
 public class Attribute extends StructuralFeature {
   public Expression _initialValue;
@@ -46,20 +51,26 @@ public class Attribute extends StructuralFeature {
   }
   public Attribute(Name name, Classifier type, Expression init) {
     super(name, type);
-    setInitialValue(init);
+    try { setInitialValue(init); }
+    catch (PropertyVetoException pve) { }
+
   }
   public Attribute(String nameStr, Classifier type, Expression init) {
     super(new Name(nameStr), type);
-    setInitialValue(init);
+    try { setInitialValue(init); }
+    catch (PropertyVetoException pve) { }
+
   }
   public Attribute(String nameStr, Classifier type, String initStr) {
     super(new Name(nameStr), type);
-    setInitialValue(new Expression(initStr));
+    try { setInitialValue(new Expression(initStr)); }
+    catch (PropertyVetoException pve) { }
   }
 
   
   public Expression getInitialValue() { return _initialValue; }
-  public void setInitialValue(Expression x) {
+  public void setInitialValue(Expression x) throws PropertyVetoException {
+    fireVetoableChange("initialValue", _initialValue, x);
     _initialValue = x;
   }
   

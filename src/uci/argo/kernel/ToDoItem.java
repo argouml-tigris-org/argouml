@@ -23,9 +23,11 @@
 
 package uci.argo.kernel;
 
-//import jargo.util.*;
-import uci.util.*;
 import java.util.*;
+
+import uci.util.*;
+import uci.ui.Highlightable;
+
 
 /** This class defines the feedback items that can be placed on the
  *  Designer's ToDoList.  The main point of a ToDoItem is to inform
@@ -114,10 +116,14 @@ public class ToDoItem implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public String getHeadline() { return _headline; }
+  public String getHeadline() {
+    return _poster.expand(_headline, _offenders);
+  }
   public void setHeadline(String h) { _headline = h; }
 
-  public String getDescription() { return _description; }
+  public String getDescription() {
+    return _poster.expand(_description, _offenders);
+  }
   public void setDescription(String d) { _description = d; }
 
   public String getMoreInfoURL() { return _moreInfoURL; }
@@ -139,6 +145,11 @@ public class ToDoItem implements java.io.Serializable {
   /** Find the email address of the poster. */
   public String getExpertEmail() { return _poster.getExpertEmail(); }
 
+
+  public boolean containsKnowledgeType(String type) {
+    return getPoster().containsKnowledgeType(type);
+  }
+
   /** Is this item already on the list? */
   public boolean equals(Object o) {
     if (!(o instanceof ToDoItem)) return false;
@@ -158,8 +169,8 @@ public class ToDoItem implements java.io.Serializable {
     Enumeration offs = getOffenders().elements();
     while (offs.hasMoreElements()) {
       Object dm = offs.nextElement();
-       if (dm instanceof DesignMaterial)
-	 ((DesignMaterial)dm).highlight(this);
+       if (dm instanceof Highlightable)
+	 ((Highlightable)dm).setHighlight(true);
     }
   }
 
@@ -169,8 +180,8 @@ public class ToDoItem implements java.io.Serializable {
     Enumeration offs = getOffenders().elements();
     while (offs.hasMoreElements()) {
       Object dm =  offs.nextElement();
-       if (dm instanceof DesignMaterial)
-	 ((DesignMaterial)dm).unhighlight(this);
+       if (dm instanceof Highlightable)
+	 ((Highlightable)dm).setHighlight(false);
     }
   }
 
