@@ -3,7 +3,7 @@
 <head>
 <title>org.argouml.language package</title>
 <!--
-   Copyright (c) 1996-2001 The Regents of the University of California. All
+   Copyright (c) 1996-2004 The Regents of the University of California. All
    Rights Reserved. Permission to use, copy, modify, and distribute this
    software and its documentation without fee, and without a written
    agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,7 @@ Support for multiple notations and languages.
 
  <h3>Definitions</h3> 
 
-   <dfn>Language</dfn> in the context of Argo 
+   <dfn>Language</dfn> in the context of ArgoUML 
    is the representation of a model fragment, 
    either as visible <code>notation</code> or as <code>code</code>. 
 
@@ -62,14 +62,14 @@ Support for multiple notations and languages.
    <p> 
    A <dfn>parser</dfn> processes textual notation or code 
    to generate or update model elements to reflect the code. 
-   Argo supports two types of parsers, one for notation and one for code. 
-   Argo does not require parsers for any language, 
+   ArgoUML supports two types of parsers, one for notation and one for code. 
+   ArgoUML does not require parsers for any language, 
    and recognizes that are languages (UML) that are not represented in code. 
    A language which provides a notational parser <strong>must</strong> 
    provide a notational generator. 
 
    <p> 
-   Argo recognizes that a language may have 
+   ArgoUML recognizes that a language may have 
    different though basically equivalent 
    representations when displayed 
    in the context of a diagram 
@@ -79,8 +79,8 @@ Support for multiple notations and languages.
    Thus both code and notation are subsets of language. 
   
    <p> 
-   <ul> 
    Examples for notation: 
+   <ul> 
    <li>UML</li> 
    <li>Java-like</li> 
    </ul> 
@@ -92,20 +92,18 @@ Support for multiple notations and languages.
    <li>IDL</li> 
    </ul> 
    <p> 
-   Argo will refer to a notation which is similar to code with the same 
+   ArgoUML will refer to a notation which is similar to code with the same 
    name that is used to refer to the code itself.  So a notation which 
    is Java-like will be called Java notation. 
 
- <h3>Package Structure</h3> 
+ <h3>Package Structure up until March 2004</h3> 
     The different languages or notations 
-    supplied with Argo are found 
+    supplied with ArgoUML are found 
     in subpackages of {@link org.argouml.language}. 
-    Any definition or foundation interfaces are found in the Argo API 
+    Any definition or foundation interfaces are found in the ArgoUML API 
     directory {@link org.argouml.application.api}. 
     Any helper classes such as abstract implementation classes 
     are found in  {@link org.argouml.language.helpers}. 
-
-    <p> 
 
 <h2>Related Documentation </h2> 
 
