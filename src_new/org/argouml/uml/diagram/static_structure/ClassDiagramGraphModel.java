@@ -377,7 +377,7 @@ implements VetoableChangeListener  {
               MAssociation asc;
               if (aggregation != null) {
                   boolean unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
-                  asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, false, aggregation, toCls, unidirectional, MAggregationKind.NONE);
+                  asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, !unidirectional, aggregation, toCls, true, MAggregationKind.NONE);
               } else {
                   asc = UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
               }
