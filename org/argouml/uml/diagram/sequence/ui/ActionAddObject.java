@@ -24,6 +24,14 @@
 // $Id$
 package org.argouml.uml.diagram.sequence.ui;
 
+import org.argouml.model.ModelFacade;
+import org
+    .argouml
+    .model
+    .uml
+    .behavioralelements
+    .collaborations
+    .CollaborationsFactory;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.tigris.gef.base.Editor;
@@ -39,27 +47,27 @@ import ru.novosoft.uml.behavior.common_behavior.MObject;
  */
 public class ActionAddObject extends CmdCreateNode {
 
-      
     public ActionAddObject() {
-        super(MObject.class, "Object");   
+        super(MObject.class, false, "Object");
     }
-       
 
     /**
      * @see org.tigris.gef.graph.GraphFactory#makeNode()
      */
-    public Object makeNode() {        
-        Object o = super.makeNode();
+    public Object makeNode() {
+        Object node = super.makeNode();
         Editor ce = Globals.curEditor();
         GraphModel gm = ce.getGraphModel();
         if (gm instanceof SequenceDiagramGraphModel) {
-            SequenceDiagramGraphModel sgm = (SequenceDiagramGraphModel) gm;
-            // first, lets get the nodes so we can determine where to place this one
-            // sgm.get
+            SequenceDiagramGraphModel sgm = (SequenceDiagramGraphModel)gm;
+            Object clasrole =
+                CollaborationsFactory.getFactory().buildClassifierRole(
+                    sgm.getCollaboration());
+            ModelFacade.addInstance(clasrole, node);            
         } else {
             throw new IllegalStateException("Graphmodel is not a sequence diagram graph model");
         }
-        return o;
+        return node;
     }
 
 }

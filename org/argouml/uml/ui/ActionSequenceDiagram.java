@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 
@@ -72,6 +73,7 @@ public class ActionSequenceDiagram extends UMLChangeAction {
         UMLSequenceDiagram diagram = new UMLSequenceDiagram(collaboration);
         ProjectManager.getManager().getCurrentProject().addMember(diagram);
         TargetManager.getInstance().setTarget(diagram);
+		ExplorerEventAdaptor.getInstance().modelElementChanged(owner);
     }
 
     /**

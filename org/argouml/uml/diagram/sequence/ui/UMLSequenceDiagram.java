@@ -35,13 +35,7 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org
-    .argouml
-    .model
-    .uml
-    .behavioralelements
-    .collaborations
-    .CollaborationsFactory;
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
