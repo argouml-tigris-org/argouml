@@ -1,0 +1,13 @@
+The directory argouml/tools/dummy provides the same functionality
+as is intended by CVSROOT/Emptydir.
+
+The use of CVSROOT/Emptydir can be found at
+http://www.cvshome.org/docs/manual/cvs_2.html#SEC19
+in the description of 'Repository'.
+
+Helm on Tigris does not allow the use of CVSROOT/Emptydir in this way
+unless the user has update access to CVSROOT.  This provides a workaround.
+
+This approach was borrowed with thanks from the fine group
+at www.netbeans.org.
+
