@@ -3,27 +3,25 @@
  */
 package org.argouml.swingext;
 
-import java.io.Serializable;
-
-import java.util.Vector;
-import java.util.Enumeration;
-
-import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.*;
 
-import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.border.Border;
-
 /**
- * Acts as a seperator between components which will automatically resize those components when
- * the splitter is moved.. 
+ * Acts as a seperator between components and will automatically resize those components
+ * when the splitter is moved by dragging the mouse across it.
+ *
+ * @author Bob Tarling
+ *
+ * @todo Bring splitter to top when not dynamic resize
+ * @todo Add constructor and getter/setter for dynamic resize
+ * @todo Implement plafs other than metal plaf
+ * @todo Implement the setLocation method, anything currently calling setLocation
+ * should then call super.setLocation.
  */
-public class Splitter extends JComponent {
+public class Splitter extends MetalBumpComponent {
 
-    final static public int HORIZONTAL_SPLIT = Orientation.HORIZONTAL;
-    final static public int VERTICAL_SPLIT = Orientation.VERTICAL;
+    final static public Orientation HORIZONTAL_SPLIT = Horizontal.getInstance();
+    final static public Orientation VERTICAL_SPLIT = Vertical.getInstance();
 
     final static public int NONE = -1;
     final static public int WEST = 0;
@@ -31,50 +29,65 @@ public class Splitter extends JComponent {
     final static public int NORTH = 0;
     final static public int SOUTH = 1;
 
+    /**
+     * The orientation of this splitter. Orientation does not represent the shape of the
+     * splitter but rather the layout of the objects being seperated by the splitter.
+     * In other words a horizontal splitter seperates components layed out in a horizontal
+     * row.
+     */
     private Orientation orientation;
 
     private int lastPosition;
     private int lastLength;
+    
+    /**
+     * Is quick hide available and if so which component ahould it hide
+     */
     private int quickHide = NONE;
+    
+    /**
+     * True if a component has been hidden by using the quick hide process of the Splitter
+     */ 
     private boolean panelHidden = false;
 
+    /**
+     * True if components are resized dymically when the plitter is dragged. If false
+     * then components are only resized when the splitter is dropped by releasing the 
+     * mouse.
+     */ 
     private boolean dynamicResize = true;
 
+    /**
+     * The 2 components which the splitter is designed to seperate
+     */
     private Component sideComponent[] = new Component[2];
 
-    private static final int ONE_TOUCH_SIZE = 6;
-    private static final int ONE_TOUCH_OFFSET = 2;
-
-    private Color controlColor = MetalLookAndFeel.getControl();
-    private Color primaryControlColor = MetalLookAndFeel.getPrimaryControl();
-
-    private int inset = 2;
-    private MetalBumps bumps = new MetalBumps(10, 10,
-                                MetalLookAndFeel.getControlHighlight(),
-                                MetalLookAndFeel.getControlDarkShadow(),
-                                MetalLookAndFeel.getControl() );
-
-    private MetalBumps focusBumps = new MetalBumps(10, 10,
-                                MetalLookAndFeel.getPrimaryControlHighlight(),
-                                MetalLookAndFeel.getPrimaryControlDarkShadow(),
-                                MetalLookAndFeel.getPrimaryControl() );
-
+    /**
+     * The standard width of a splitter
+     */
     private int splitterSize = 10;
 
+    /**
+     * The quick hide buttons
+     */
     ArrowButton buttonNorth = null;
     ArrowButton buttonSouth = null;
 
-    public Splitter(int orientation) {
-        this(Orientation.getOrientation(orientation));
-    }
-
+    /**
+     * The constructor
+     *
+     * @parameter orientation A Horizontal or Vertical object to indicate whether this
+     *                        splitter is designed to seperate components laid out
+     *                        horizontally or vertically.
+     */ 
     public Splitter(Orientation orientation) {
+        super();
+        
         this.orientation = orientation;
 
-        if (orientation.isVertical()) setCursor(new Cursor(Cursor.N_RESIZE_CURSOR));
-        else                          setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
-
-        setLayout(new SerialLayout(orientation.getPerpendicular()));//, SerialLayout.EAST, SerialLayout.RIGHTTOLEFT));
+        setCursor(orientation.getCursor());
+        
+        setLayout(new SerialLayout(orientation.getPerpendicular()));
         setSize(splitterSize, splitterSize);
         setPreferredSize(this.getSize());
 
@@ -83,28 +96,46 @@ public class Splitter extends JComponent {
         addMouseMotionListener(myMouseListener);
     }
 
+    /**
+     * Register a component to be resized by this splitter.
+     *
+     * @parameter side the side of the splitter to place the component being one of the
+     *                 constants NORTH, SOUTH, EAST or WEST
+     */
     public void registerComponent(int side, Component comp)
     {
-      this.sideComponent[side] = comp;
-      setVisible(this.sideComponent[WEST] != null && this.sideComponent[EAST] != null);
+        this.sideComponent[side] = comp;
+        setVisible(this.sideComponent[WEST] != null && this.sideComponent[EAST] != null);
     }
 
+    /**
+     * Get a registered component.
+     *
+     * @parameter side the side of the splitter of the component to return, being one of the
+     *                 constants NORTH, SOUTH, EAST or WEST
+     * @return the registered component
+     */
     public Component getRegisteredComponent(int side)
     {
-      return sideComponent[side];
+        return sideComponent[side];
     }
 
+    /**
+     * Change the quick hide action. If quick hide is turned on then an arrow button
+     * appears on the splitter to allow the user to instantly reposition the splitter to
+     * hide one of the components.
+     *
+     * @parameter side the side of the splitter of the component to be hidden on a quick
+     *                 hide action. This being one of the constants NORTH, SOUTH, EAST, 
+     *                 WEST or NONE.
+     */
     public void setQuickHide(int side) {
         quickHide = side;
-        if (buttonNorth == null) {
-            if (orientation.isVertical()) {
-                buttonNorth = new ArrowButton(ArrowButton.NORTH);
-                buttonSouth = new ArrowButton(ArrowButton.SOUTH);
-            }
-            else {
-                buttonNorth = new ArrowButton(ArrowButton.WEST);
-                buttonSouth = new ArrowButton(ArrowButton.EAST);
-            }
+        // Only create the arrow buttons the first time they are required.
+        if (side != NONE && buttonNorth == null) {
+            buttonNorth = orientation.getStartArrowButton();
+            buttonSouth = orientation.getEndArrowButton();
+            
             ActionListener al = new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     toggleHide();
@@ -115,510 +146,224 @@ public class Splitter extends JComponent {
             add(buttonNorth);
             add(buttonSouth);
         }
-        showButton();
+        showButtons();
     }
 
-    private void showButton() {
-        if (panelHidden) {
-            buttonNorth.setVisible(quickHide != this.NORTH);
-            buttonSouth.setVisible(quickHide != this.SOUTH);
+    /*
+     * Show the correct button symbol. The arrow button should point in the direction that
+     * the splitter will move on the button press. This will be towards the component to
+     * hide or if already hidden it should point away from the hidden component.
+     */
+    private void showButtons() {
+        if (buttonNorth != null) {
+            if (panelHidden) {
+                buttonNorth.setVisible(quickHide == this.SOUTH);
+                buttonSouth.setVisible(quickHide == this.NORTH);
+            }
+            else {
+                buttonNorth.setVisible(quickHide == this.NORTH);
+                buttonSouth.setVisible(quickHide == this.SOUTH);
+            }
         }
-        else {
-            buttonNorth.setVisible(quickHide == this.NORTH);
-            buttonSouth.setVisible(quickHide == this.SOUTH);
-        }
     }
 
-    public void paint(Graphics g) {
-	MetalBumps usedBumps;
-	if (hasFocus()) {
-	    usedBumps = focusBumps;
-	    g.setColor(primaryControlColor);
-	}
-	else {
-	    usedBumps = bumps;
-	    g.setColor(controlColor);
-	}
-	Rectangle clip = g.getClipBounds();
-	Insets insets = getInsets();
-	g.fillRect(clip.x, clip.y, clip.width, clip.height);
-        Dimension  size = getSize();
-        size.width -= inset * 2;
-        size.height -= inset * 2;
-	int drawX = inset;
-	int drawY = inset;
-	if (insets != null) {
-	    size.width -= (insets.left + insets.right);
-	    size.height -= (insets.top + insets.bottom);
-	    drawX += insets.left;
-	    drawY += insets.top;
-	}
-        usedBumps.setBumpArea(size);
-        usedBumps.paintIcon(this, g, drawX, drawY);
-        super.paint(g);
-    }
-
-    // Get either x or y depending on orientation
-    private int getPosition() {
-        return orientation.getPosition(this);
-    }
-
+    /*
+     * Hide or restore the component currently selected as the quick hide component.
+     */
     public void toggleHide()
     {
+        if (quickHide == NONE) return;
+        
         int position = 0;
 
         if (panelHidden) {
             position = lastPosition;
             if (quickHide == EAST) {
-                position = getPosition() - lastLength;
+                position = orientation.getPosition(this) - lastLength;
             }
         }
-        else {
-            if (quickHide == EAST) position = getPosition() + orientation.getLength(sideComponent[EAST]);
+        else if (quickHide == EAST) {
+            position = orientation.getPosition(this) + orientation.getLength(sideComponent[EAST]);
         }
 
         lastLength = orientation.getLength(sideComponent[quickHide]);
-        lastPosition = getPosition();
+        lastPosition = orientation.getPosition(this);
 
-        if (orientation.isVertical()) {
-            setLocation(getX(), position);
-        }
-        else {
-            setLocation(position, getY());
-        }
+        setLocation(orientation.setPosition(getLocation(), position));
 
-        int movement = position - lastPosition;
-
-        if (orientation.isVertical()) {
-            sideComponent[NORTH].setSize(sideComponent[NORTH].getWidth(), sideComponent[NORTH].getHeight() + movement);
-            sideComponent[SOUTH].setSize(sideComponent[SOUTH].getWidth(), sideComponent[SOUTH].getHeight() - movement);
-            sideComponent[SOUTH].setLocation(sideComponent[SOUTH].getX(), sideComponent[SOUTH].getY() + movement);
-        }
-        else {
-            sideComponent[WEST].setSize(sideComponent[WEST].getWidth() + movement, sideComponent[WEST].getHeight());
-            sideComponent[EAST].setSize(sideComponent[EAST].getWidth() - movement, sideComponent[EAST].getHeight());
-            sideComponent[EAST].setLocation(sideComponent[EAST].getX() + movement, sideComponent[EAST].getY());
-        }
-        sideComponent[WEST].validate();
-        sideComponent[EAST].validate();
+        resizeComponents(position - lastPosition);
 
         panelHidden = !panelHidden;
-        showButton();
+        showButtons();
     }
 
-    private class MyMouseListener implements MouseMotionListener, MouseListener {
-        private int mousePositionOnSplitterWhenPressed;
-        private int positionOfSplitterWhenPressed;
+    /*
+     * Attempt to move the splitter by a given amount. It may not be possible to move
+     * the splitter as far as requested because it may result in one of the components
+     * having a negative size or breaking it min/max size.
+     *
+     * @parameter movement the distance in pixels to move the splitter from its current
+     *                     position.
+     *
+     * @return the actual number of pixels the splitter was moved.
+     */
+    private int moveSplitter(int movement)
+    {
+        if (sideComponent[WEST] != null && sideComponent[EAST] != null) {
 
-        public void mousePressed(MouseEvent me)
-        {
-            mousePositionOnSplitterWhenPressed = orientation.getPosition(me);
-            positionOfSplitterWhenPressed = getPosition();
+            int restrictedMovement = 0;
+            
+            if (movement >= 0) {
+                restrictedMovement = restrictMovement(sideComponent[WEST], sideComponent[EAST], movement, -1);
+            }
+            else {
+                restrictedMovement = restrictMovement(sideComponent[EAST], sideComponent[WEST], movement, 1);
+            }
+
+            setLocation(orientation.addToPosition(getLocation(), restrictedMovement));
+
+            return restrictedMovement;
+        }
+        return 0;
+    }
+
+    /**
+     * Resize and reposition the components according to the movement of the splitter
+     *
+     * @parameter movement the distance the splitter has moved.
+     */
+    private void resizeComponents(int movement) {
+        sideComponent[NORTH].setSize(orientation.addLength(sideComponent[NORTH].getSize(), movement));
+        sideComponent[SOUTH].setSize(orientation.subtractLength(sideComponent[SOUTH].getSize(), movement));
+        sideComponent[SOUTH].setLocation(orientation.addToPosition(sideComponent[SOUTH].getLocation(), movement));
+        sideComponent[NORTH].validate();
+        sideComponent[SOUTH].validate();
+    }
+    
+    /**
+     * calculates any restriction of movement based on the min/max values of the
+     * registered components.
+     *
+     * @parameter growingComponent   The component that is expanding as the result of a
+     *                               splitter move.
+     * @parameter shrinkingComponent The component that is shrinking as the result of a
+     *                               splitter move.
+     * @parameter movement           The number of pixels of the attempted move
+     * @parameter sign               The direction of the move -ve or +ve (-1 or +1)
+     */
+    private int restrictMovement(Component growingComponent, Component shrinkingComponent, int movement, int sign) {
+
+        Dimension maxSize = growingComponent.getMaximumSize();
+        int maxLength = orientation.getLength(maxSize);
+        int currentLength = orientation.getLength(growingComponent);
+
+        if (currentLength + movement*sign > maxLength) {
+            movement = (currentLength - maxLength) * sign;
         }
 
+        Dimension minSize = shrinkingComponent.getMinimumSize();
+        int minLength = orientation.getLength(minSize);
+        currentLength = orientation.getLength(shrinkingComponent);
+
+        if (currentLength + movement*sign < minLength) {
+            movement = (minLength - currentLength) * sign;
+        }
+
+        return movement;
+    }
+
+    /**
+     * The mouse listener to detect mouse interaction with this splitter
+     */
+    private class MyMouseListener implements MouseMotionListener, MouseListener {
+        /**
+         * When the mouse is pressed the splitter position is recorded so that the
+         * the difference in position can be calculated when the mouse is released.
+         */
+        private int positionOfSplitterWhenPressed;
+        
+        /**
+         * A value is recorded here when the mouse is pressed on the splitter. This allows
+         * the position of the mouse on the splitter to remain consistent when the splitter
+         * is moved.
+         */
+        private int mousePositionOnSplitterWhenPressed;
+
+        /**
+         * On a mouse release make sure that components are repositioned.
+         */
         public void mouseReleased(MouseEvent me)
         {
-            if (!dynamicResize && sideComponent[WEST] != null && sideComponent[EAST] != null) {
-                int movement = orientation.getPosition(me) - mousePositionOnSplitterWhenPressed;
+            if (!dynamicResize) {
+                moveSplitter(orientation.getPosition(me) - mousePositionOnSplitterWhenPressed);
+                resizeComponents(orientation.getPosition(getLocation()) - positionOfSplitterWhenPressed);
+            }
+            mousePositionOnSplitterWhenPressed = 0;
+            positionOfSplitterWhenPressed = 0;
+        }
 
-                if (movement >= 0) {
-                    movement = restrictMovement(sideComponent[WEST], sideComponent[EAST], movement, -1);
-                }
-                else {
-                    movement = restrictMovement(sideComponent[EAST], sideComponent[WEST], movement, 1);
-                }
-
-                int position = getPosition() + movement;
-
-                if (orientation.isVertical()) setLocation(getX(), position);
-                else                          setLocation(position, getY());
-
-                movement = position - positionOfSplitterWhenPressed;
-
-                if (orientation.isVertical()) {
-                    sideComponent[NORTH].setSize(sideComponent[NORTH].getWidth(), sideComponent[NORTH].getHeight() + movement);
-                    sideComponent[SOUTH].setSize(sideComponent[SOUTH].getWidth(), sideComponent[SOUTH].getHeight() - movement);
-                    sideComponent[SOUTH].setLocation(sideComponent[SOUTH].getX(), sideComponent[SOUTH].getY() + movement);
-                }
-                else {
-                    sideComponent[WEST].setSize(sideComponent[WEST].getWidth() + movement, sideComponent[WEST].getHeight());
-                    sideComponent[EAST].setSize(sideComponent[EAST].getWidth() - movement, sideComponent[EAST].getHeight());
-                    sideComponent[EAST].setLocation(sideComponent[EAST].getX() + movement, sideComponent[EAST].getY());
-                }
-                sideComponent[WEST].validate();
-                sideComponent[EAST].validate();
+        /**
+         * On a mouse drag attempt to reposition splitter.
+         */
+        public void mouseDragged(MouseEvent me)
+        {
+            int mouseMovement = orientation.getPosition(me) - mousePositionOnSplitterWhenPressed;
+            int restrictedMovement = moveSplitter(mouseMovement);
+            if (restrictedMovement == 0) return;
+            
+            if (dynamicResize) {
+                resizeComponents(restrictedMovement);
+            }
+            if (panelHidden) {
+                panelHidden = false;
+                showButtons();
             }
         }
 
+        /**
+         * On a mouse press record the position of the splitter and the position of the
+         * mouse on the splitter.
+         *
+         */
+        public void mousePressed(MouseEvent me)
+        {
+            mousePositionOnSplitterWhenPressed = orientation.getPosition(me);
+            positionOfSplitterWhenPressed = orientation.getPosition(getLocation());
+        }
+
+        /**
+         * On a double click either hide or show the component selected for quick hide.
+         *
+         */
         public void mouseClicked(MouseEvent me)
         {
-            if (me.getClickCount() == 2 && quickHide != NONE && sideComponent[WEST] != null && sideComponent[EAST] != null) {
+            if (me.getClickCount() == 2 && sideComponent[WEST] != null && sideComponent[EAST] != null) {
                 toggleHide();
             }
         }
 
-        public void mouseDragged(MouseEvent me)
-        {
-            if (sideComponent[WEST] != null && sideComponent[EAST] != null) {
-                int movement = orientation.getPosition(me) - mousePositionOnSplitterWhenPressed;
-
-                if (movement >= 0) {
-                    movement = restrictMovement(sideComponent[WEST], sideComponent[EAST], movement, -1);
-                }
-                else {
-                    movement = restrictMovement(sideComponent[EAST], sideComponent[WEST], movement, 1);
-                }
-
-                int position = getPosition() + movement;
-
-                if (orientation.isVertical()) {
-                    setLocation(getX(), position);
-                }
-                else {
-                    setLocation(position, getY());
-                }
-
-                if (dynamicResize) {
-                    if (orientation.isVertical()) {
-                        sideComponent[NORTH].setSize(sideComponent[NORTH].getWidth(), sideComponent[NORTH].getHeight() + movement);
-                        sideComponent[SOUTH].setSize(sideComponent[SOUTH].getWidth(), sideComponent[SOUTH].getHeight() - movement);
-                        sideComponent[SOUTH].setLocation(sideComponent[SOUTH].getX(), sideComponent[SOUTH].getY() + movement);
-                    }
-                    else {
-                        sideComponent[WEST].setSize(sideComponent[WEST].getWidth() + movement, sideComponent[WEST].getHeight());
-                        sideComponent[EAST].setSize(sideComponent[EAST].getWidth() - movement, sideComponent[EAST].getHeight());
-                        sideComponent[EAST].setLocation(sideComponent[EAST].getX() + movement, sideComponent[EAST].getY());
-                    }
-                    sideComponent[WEST].validate();
-                    sideComponent[EAST].validate();
-                }
-                panelHidden = false;
-                showButton();
-            }
-        }
-
-        // Restrict movement depending on max or min size of components
-        private int restrictMovement(Component growingComponent, Component shrinkingComponent, int movement, int sign) {
-
-            Dimension maxSize = growingComponent.getMaximumSize();
-            int maxLength = orientation.getLength(maxSize);
-            int currentLength = orientation.getLength(growingComponent);
-
-            if (currentLength + movement*sign > maxLength) {
-                movement = (currentLength - maxLength) * sign;
-            }
-
-            Dimension minSize = shrinkingComponent.getMinimumSize();
-            int minLength = orientation.getLength(minSize);
-            currentLength = orientation.getLength(shrinkingComponent);
-
-            if (currentLength + movement*sign < minLength) {
-                movement = (minLength - currentLength) * sign;
-            }
-
-            return movement;
-        }
-
+        /**
+         * Empty method to satisy interface only, there is
+         * no action when mouse enters splitter area
+         */
         public void mouseEntered(MouseEvent me)
         {
         }
 
+        /**
+         * Empty method to satisy interface only, there is
+         * no action when mouse leaves splitter area
+         */
         public void mouseExited(MouseEvent me)
         {
         }
 
+        /**
+         * Empty method to satisy interface only, there is
+         * no action when mouse moves through splitter area
+         */
         public void mouseMoved(MouseEvent me)
         {
         }
-    }
-
-    private class ArrowButton extends javax.swing.JButton {
-
-        private static final int SIZE = 10;
-        private static final int ONE_TOUCH_SIZE = 6;
-        private static final int ONE_TOUCH_OFFSET = 2;
-
-        public ArrowButton(int direction) {
-            super();
-            setIcon(new ArrowIcon(direction));
-            super.setFocusPainted(false);
-            setPreferredSize(new Dimension(SIZE, SIZE));
-            setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        }
-
-        public void setBorder(Border b) {
-        }
-
-        public void setFocusPainted(boolean b) {
-        }
-
-        // Don't want the button to participate in focus traversable.
-        public boolean isFocusTraversable() {
-            return false;
-        }
-
-        private class ArrowIcon implements Icon, Serializable, SwingConstants {
-
-            // Sprite buffer for the arrow image of the left button
-            int[][] buffer;
-
-            int[][] northWestBuffer = {{0, 0, 0, 2, 2, 0, 0, 0, 0},
-                                       {0, 0, 2, 1, 1, 1, 0, 0, 0},
-                                       {0, 2, 1, 1, 1, 1, 1, 0, 0},
-                                       {2, 1, 1, 1, 1, 1, 1, 1, 0},
-                                       {0, 3, 3, 3, 3, 3, 3, 3, 3}};
-
-            int[][] southEastBuffer = {{2, 2, 2, 2, 2, 2, 2, 2, 0},
-                                       {0, 1, 1, 1, 1, 1, 1, 3, 3},
-                                       {0, 0, 1, 1, 1, 1, 3, 3, 0},
-                                       {0, 0, 0, 1, 1, 3, 3, 0, 0},
-                                       {0, 0, 0, 0, 3, 3, 0, 0, 0}};
-
-            int direction;
-
-            public ArrowIcon(int direction) {
-                this.direction = direction;
-            }
-
-            protected int getControlSize() { return 0; }
-
-            public void paintIcon(Component c, Graphics g, int x, int y) {
-                int blockSize = Math.min(SIZE, ONE_TOUCH_SIZE);
-
-                ArrowButton button = (ArrowButton)c;
-                ButtonModel model = button.getModel();
-
-                // Initialize the color array
-                Color[] colors = {
-                        c.getBackground(),
-                        MetalLookAndFeel.getPrimaryControlDarkShadow(),
-                        MetalLookAndFeel.getPrimaryControlInfo(),
-                        MetalLookAndFeel.getPrimaryControlHighlight()};
-
-                // Fill the background first ...
-                g.setColor(c.getBackground());
-                g.fillRect(0, 0, c.getWidth(), c.getHeight());
-
-                // ... then draw the arrow.
-                if (model.isPressed()) {
-                    // Adjust color mapping for pressed button state
-                    colors[1] = colors[2];
-                }
-                if (this.direction == this.NORTH || this.direction == this.SOUTH) {
-                    if (this.direction == this.NORTH) buffer=northWestBuffer;
-                    else buffer=southEastBuffer;
-                    for (int i=1; i<=buffer[0].length; i++) {
-                        for (int j=1; j<blockSize; j++) {
-                            if (buffer[j-1][i-1] != 0) {
-                                g.setColor(colors[buffer[j-1][i-1]]);
-                                g.drawLine(i, j, i, j);
-                            }
-                        }
-                    }
-                }
-                else {
-                    if (this.direction == this.WEST) buffer=northWestBuffer;
-                    else buffer=southEastBuffer;
-                    for (int i=1; i<=buffer[0].length; i++) {
-                        for (int j=1; j<blockSize; j++) {
-                            if (buffer[j-1][i-1] != 0) {
-                                g.setColor(colors[buffer[j-1][i-1]]);
-                                g.drawLine(j, i, j, i);
-                            }
-                        }
-                    }
-                }
-            }
-
-            public int getIconWidth() {
-                return getControlSize();
-            }
-
-            public int getIconHeight() {
-                return getControlSize();
-            }
-        }
-    }
-}
-
-class MetalBumps implements Icon {
-
-    protected int xBumps;
-    protected int yBumps;
-    protected Color topColor = MetalLookAndFeel.getPrimaryControlHighlight();
-    protected Color shadowColor = MetalLookAndFeel.getPrimaryControlDarkShadow();
-    protected Color backColor = MetalLookAndFeel.getPrimaryControlShadow();
-
-    protected static Vector buffers = new Vector();
-    protected BumpBuffer buffer;
-
-    public MetalBumps( Dimension bumpArea ) {
-        this( bumpArea.width, bumpArea.height );
-    }
-
-    public MetalBumps( int width, int height ) {
-        setBumpArea( width, height );
-        buffer = getBuffer( topColor, shadowColor, backColor );
-        if ( buffer == null ) {
-            createBuffer();
-        }
-    }
-
-    public MetalBumps(int width, int height, Color newTopColor, Color newShadowColor, Color newBackColor ) {
-        setBumpArea( width, height );
-        setBumpColors( newTopColor, newShadowColor, newBackColor );
-        buffer = getBuffer( topColor, shadowColor, backColor );
-        if ( buffer == null ) {
-            createBuffer();
-        }
-    }
-
-    protected void createBuffer() {
-        buffer = new BumpBuffer( topColor, shadowColor, backColor );
-        buffers.addElement( buffer );
-    }
-
-    protected BumpBuffer getBuffer( Color aTopColor, Color aShadowColor, Color aBackColor ) {
-        BumpBuffer result = null;
-
-        Enumeration elements = buffers.elements();
-
-        while ( elements.hasMoreElements() ) {
-            BumpBuffer aBuffer = (BumpBuffer)elements.nextElement();
-            if ( aBuffer.hasSameColors( aTopColor, aShadowColor, aBackColor ) ) {
-                result = aBuffer;
-                break;
-            }
-        }
-
-        return result;
-    }
-
-    public void setBumpArea( Dimension bumpArea ) {
-        setBumpArea( bumpArea.width, bumpArea.height );
-    }
-
-    public void setBumpArea( int width, int height ) {
-        xBumps = width / 2;
-        yBumps = height / 2;
-    }
-
-    public void setBumpColors( Color newTopColor, Color newShadowColor, Color newBackColor ) {
-        topColor = newTopColor;
-        shadowColor = newShadowColor;
-        backColor = newBackColor;
-        buffer = getBuffer( topColor, shadowColor, backColor );
-        if ( buffer == null ) {
-            createBuffer();
-        }
-    }
-
-    public void paintIcon( Component c, Graphics g, int x, int y ) {
-        int bufferWidth = buffer.getImageSize().width;
-        int bufferHeight = buffer.getImageSize().height;
-        int iconWidth = getIconWidth();
-        int iconHeight = getIconHeight();
-
-        int x2 = x + iconWidth;
-        int y2 = y + iconHeight;
-
-        int savex = x;
-        while (y < y2) {
-            int h = Math.min(y2 - y, bufferHeight);
-            for (x = savex; x < x2; x += bufferWidth) {
-                int w = Math.min(x2 - x, bufferWidth);
-                g.drawImage(buffer.getImage(),
-                            x, y, x+w, y+h,
-                            0, 0, w, h,
-                            null);
-            }
-            y += bufferHeight;
-        }
-    }
-
-    public int getIconWidth() {
-        return xBumps * 2;
-    }
-
-    public int getIconHeight() {
-        return yBumps * 2;
-    }
-}
-
-class BumpBuffer {
-
-    static Frame frame;
-    static Component component;
-
-    static final int IMAGE_SIZE = 64;
-    static Dimension imageSize = new Dimension( IMAGE_SIZE, IMAGE_SIZE );
-
-    transient Image image;
-    Color topColor;
-    Color shadowColor;
-    Color backColor;
-
-    public BumpBuffer( Color aTopColor, Color aShadowColor, Color aBackColor ) {
-        createComponent();
-        image = getComponent().createImage( IMAGE_SIZE, IMAGE_SIZE );
-        topColor = aTopColor;
-        shadowColor = aShadowColor;
-        backColor = aBackColor;
-        fillBumpBuffer();
-    }
-
-    public boolean hasSameColors( Color aTopColor, Color aShadowColor, Color aBackColor ) {
-        return topColor.equals(aTopColor) && shadowColor.equals( aShadowColor ) && backColor.equals( aBackColor );
-    }
-
-    public Image getImage() {
-        if (image == null) {
-            image = getComponent().createImage( IMAGE_SIZE, IMAGE_SIZE );
-            fillBumpBuffer();
-        }
-        return image;
-    }
-
-    public Dimension getImageSize() {
-        return imageSize;
-    }
-
-    protected void fillBumpBuffer() {
-        Graphics g = image.getGraphics();
-
-        g.setColor( backColor );
-        g.fillRect( 0, 0, IMAGE_SIZE, IMAGE_SIZE );
-
-        g.setColor(topColor);
-        for (int x = 0; x < IMAGE_SIZE; x+=4) {
-            for (int y = 0; y < IMAGE_SIZE; y+=4) {
-                g.drawLine( x, y, x, y );
-                g.drawLine( x+2, y+2, x+2, y+2);
-            }
-        }
-
-        g.setColor(shadowColor);
-        for (int x = 0; x < IMAGE_SIZE; x+=4) {
-            for (int y = 0; y < IMAGE_SIZE; y+=4) {
-                g.drawLine( x+1, y+1, x+1, y+1 );
-                g.drawLine( x+3, y+3, x+3, y+3);
-            }
-        }
-        g.dispose();
-    }
-
-    protected Component getComponent() {return component;}
-
-    protected void createComponent() {
-        if (frame == null) {
-            frame = new Frame( "bufferCreator" );
-        }
-
-        if (component == null ) {
-            component = new Canvas();
-            frame.add( component, BorderLayout.CENTER );
-        }
-        // fix for 4185993 (moved this outside if block)
-        frame.addNotify();
     }
 }

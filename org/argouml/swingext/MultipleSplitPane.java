@@ -9,10 +9,12 @@ import java.awt.*;
 /**
  * Similar to the standard java class <code>JSplitPane</code> but allows the number of panes to 
  * be set in the constructor.
+ *
+ * @author Bob Tarling
  */
 public class MultipleSplitPane extends JComponent {
-    final static public int HORIZONTAL_SPLIT = Orientation.HORIZONTAL;
-    final static public int VERTICAL_SPLIT = Orientation.VERTICAL;
+    final static public Orientation HORIZONTAL_SPLIT = Horizontal.getInstance();
+    final static public Orientation VERTICAL_SPLIT = Vertical.getInstance();
 
     private Splitter[] splitterArray;
 
@@ -20,7 +22,7 @@ public class MultipleSplitPane extends JComponent {
         this(componentArray.length);
     }
 
-    public MultipleSplitPane(Component componentArray[], int orientation) {
+    public MultipleSplitPane(Component componentArray[], Orientation orientation) {
         this(componentArray.length, orientation);
     }
 
@@ -28,7 +30,7 @@ public class MultipleSplitPane extends JComponent {
         this(paneCount, HORIZONTAL_SPLIT);
     }
 
-    public MultipleSplitPane(int paneCount, int orientation) {
+    public MultipleSplitPane(int paneCount, Orientation orientation) {
         this.setLayout(new SplitterLayout(orientation));
         int splitterCount = paneCount-1;
         if (splitterCount >= 0) {
