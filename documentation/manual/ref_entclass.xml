@@ -4,14 +4,14 @@
 <!--
 
 Description of all the artifacts associated with Class Diagrams within
-ArgoUML.
+&argouml;.
 
 -->
 
 <chapter id="ch.ref.entclass">
   <title>Class Diagram Artifact Reference</title>
   <indexterm>
-    <primary>Class Diagram Reference</primary>
+    <primary>Class Diagram</primary>
   </indexterm>
   <indexterm>
     <primary>Object Diagrams</primary>
@@ -74,7 +74,7 @@ ArgoUML.
       </mediaobject></screenshot>
     </figure>
 
-    <!-- Limitations in Argo/UML relating to datatypes, objects and links -->
+    <!-- Limitations in &argouml; relating to datatypes, objects and links -->
 
     <sect2>
       <title>Limitations Concerning Class Diagrams in &argouml;</title>
@@ -124,8 +124,7 @@ and can be used to draw object diagrams.
     <sect2>
       <title>Package Details Tabs</title>
       <indexterm>
-        <primary>Package</primary>
-        <secondary>Details Tabs</secondary>
+        <primary>Package Details Tabs</primary>
       </indexterm>
       <indexterm>
         <primary>Details Tabs</primary>
@@ -194,7 +193,10 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -311,20 +313,26 @@ See <xref linkend="s2.ref.documentation_tab"/>.
 
 	    <para>Text box.
 The name of the package.
-The name of a
-            package, like all packages, is by convention all lower
-            case,<!-- with periods seperating the components of the package
-            hierarchy--> not containing any periods.
-            <!-- TODO: Why allowing periods here? 
-            It would be a bad idea to name a package with a name 
-            that contains a period, isn't it? -->
-      </para>
 
-          <note><para>By default a new package has no name defined. 
-            The package will
-            appear with the name <literal>(anon Package)</literal> 
-            in the exporer.
-          </para></note></listitem>
+The name of a package, like all packages, is by convention all lower
+case,
+<!-- with periods separating the components of the package
+hierarchy--> 
+not containing any periods.
+
+<!-- TODO: Why allowing periods here?  It would be a bad idea to name
+a package with a name that contains a period, isn't it? -->
+</para>
+
+            <note>
+              <para>
+By default a new package has no name defined. 
+
+ The package will appear with the name <literal>(anon
+ Package)</literal> in the explorer.
+ </para>
+            </note>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -372,7 +380,7 @@ Package is provided by default
 	  </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -587,6 +595,9 @@ Lists any specialized package (i.e. for
 
   <sect1 id="s1.ref.class_class">
     <title>Class</title>
+    <indexterm>
+      <primary>Class</primary>
+    </indexterm>
 
     <para>The class is the dominant artifact on a class diagram. In
       the UML metamodel it is a sub-class of <literal>Classifier</literal>
@@ -601,6 +612,14 @@ Lists any specialized package (i.e. for
 
     <sect2>
       <title>Class Details Tabs</title>
+      <indexterm>
+        <primary>Class Details Tabs</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Class</secondary>
+      </indexterm>
+
 
       <para>The details tabs that are active for classes are as
         follows.</para>
@@ -631,7 +650,10 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem><para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -674,9 +696,19 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Tagged Values</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>Class</literal> has the following standard tagged
-            values defined.</para>
+          <listitem>
+            <indexterm>
+              <primary>Class Tagged Values</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Tagged Values</primary>
+              <secondary>of Class</secondary>
+            </indexterm>
+
+            <para>Standard tab.
+In the UML metamodel, <literal>Class</literal> has the following
+standard tagged values defined.
+</para>
 
             <itemizedlist>
               <listitem><para><literal>persistence</literal> (from the
@@ -716,6 +748,13 @@ Lists any specialized package (i.e. for
 
     <sect2 id="s2.ref.class_property_toolbar">
       <title>Class Property Toolbar</title>
+      <indexterm>
+        <primary>Class Property Toolbar</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Toolbar</primary>
+        <secondary>for Class</secondary>
+      </indexterm>
 
       <variablelist>
 
@@ -829,6 +868,14 @@ Lists any specialized package (i.e. for
     <sect2 id="s2.ref.class_property_fields">
       <title>Property Fields For Class</title>
 
+      <indexterm>
+        <primary>Class Property Fields</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Fields</primary>
+        <secondary>for Class</secondary>
+      </indexterm>
+
       <variablelist>
 
         <!-- Entry for Name -->
@@ -836,9 +883,20 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the class. The name of a class
-            has a leading capital letter, with words separated by
-            <quote>bumpy caps</quote>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Class Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Class</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the class.
+The name of a class has a leading capital letter, with words separated
+by <quote>bumpy caps</quote>.
+</para>
 
           <note><para>The &argouml; critics will complain about class names
             that do not have an initial capital.</para></note></listitem>
@@ -849,29 +907,39 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Class is provided by default with
-            the UML standard stereotypes for <literal>Class</literal>
-            (<literal>implementationClass</literal> and
-            <literal>type</literal>) and for <literal>Classifier</literal>
-            (<literal>metaclass</literal>, <literal>powerType</literal>,
-            <literal>process</literal>, <literal>thread</literal> and
-            <literal>utility</literal>)<!--,
-            as well as the stereotypes for classes
-            in the UML standard profiles for <emphasis>software development
-            process</emphasis> (<literal>boundary</literal>,
-            <literal>entity</literal> and <literal>control</literal>) and
-            <emphasis>business modeling</emphasis> (<literal>worker</literal>,
-            <literal>case&nbsp;worker</literal>,
-            <literal>internal&nbsp;worker</literal> and
-            <literal>entity</literal> (again)).  &argouml; also provides the
-            additional stereotypes, <literal>machine</literal>,
-            <literal>organization</literal>, <literal>person</literal> and
-            <literal>singleton</literal>, and rather strangely
-            <literal>realize</literal> (a stereotype of
-            <literal>Abstraction</literal>)-->.
-            
-            <!-- TODO: See issue ... -->
-            </para>
+          <listitem>
+            <indexterm>
+              <primary>Class Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Class</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+
+Class is provided by default with the UML standard stereotypes for
+<literal>Class</literal> (<literal>implementationClass</literal> and
+<literal>type</literal>) and for <literal>Classifier</literal>
+(<literal>metaclass</literal>, <literal>powerType</literal>,
+<literal>process</literal>, <literal>thread</literal> and
+<literal>utility</literal>)<!--, as well as the stereotypes for
+classes in the UML standard profiles for <emphasis>software
+development process</emphasis> (<literal>boundary</literal>,
+<literal>entity</literal> and <literal>control</literal>) and
+<emphasis>business modeling</emphasis> (<literal>worker</literal>,
+<literal>case&nbsp;worker</literal>,
+<literal>internal&nbsp;worker</literal> and <literal>entity</literal>
+(again)).
+ 
+&argouml; also provides the additional stereotypes,
+<literal>machine</literal>, <literal>organization</literal>,
+<literal>person</literal> and <literal>singleton</literal>, and rather
+strangely <literal>realize</literal> (a stereotype of
+<literal>Abstraction</literal>)-->.
+
+<!-- TODO: See issue ... -->
+</para>
 
           <tip><para>One stereotype that is not part of the UML standard,
             but is widely used is <literal>Singleton</literal>, used to
@@ -882,7 +950,7 @@ Lists any specialized package (i.e. for
               linkend="s1.ref.stereotype"/>).</para></tip></listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -918,10 +986,21 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Modifiers</literal></term>
 
-          <listitem><para>Check box, with entries
-            <literal>Abstract</literal>, 
-            <literal>Leaf</literal>, <literal>Root</literal> and
-            <literal>Active</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Class Modifiers</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Modifiers</primary>
+              <secondary>of Class</secondary>
+            </indexterm>
+
+            <para>Check box, with entries
+<literal>Abstract</literal>, 
+<literal>Leaf</literal>,
+<literal>Root</literal>, and
+<literal>Active</literal>.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>Abstract</literal> is used to declare
@@ -1105,6 +1184,9 @@ Lists any specialized package (i.e. for
 
   <sect1 id="s1.ref.attribute">
     <title>Attribute</title>
+    <indexterm>
+      <primary>Attribute</primary>
+    </indexterm>
 
     <para>Attribute is a named slot within a class (or other
       <literal>Classifier</literal>) describing a range of values that may be
@@ -1147,6 +1229,14 @@ Lists any specialized package (i.e. for
     <sect2 id="s2.ref.attribute_details_tabs">
       <title>Attribute Details Tabs</title>
 
+      <indexterm>
+        <primary>Attribute Details Tabs</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Attribute</secondary>
+      </indexterm>
+
       <para>The details tabs that are active for attributes are as
         follows.</para>
 
@@ -1176,7 +1266,10 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem><para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -1212,9 +1305,20 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Tagged Values</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>Attribute</literal> has the following standard tagged
-            values defined.</para>
+          <listitem>
+            <indexterm>
+              <primary>Attribute Tagged Values</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Tagged Values</primary>
+              <secondary>of Attribute</secondary>
+            </indexterm>
+
+            <para>Standard tab.
+In the UML metamodel,
+<literal>Attribute</literal> has the following standard tagged
+values defined.
+</para>
             
             <!-- TODO: Explain the presence of "transient" and "volatile". 
             The standard only describes "persistence" -->
@@ -1261,6 +1365,14 @@ Lists any specialized package (i.e. for
 
     <sect2 id="s2.ref.attribute_property_toolbar">
       <title>Attribute Property Toolbar</title>
+
+      <indexterm>
+        <primary>Attribute Property Toolbar</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Toolbar</primary>
+        <secondary>for Attribute</secondary>
+      </indexterm>
 
       <variablelist>
 
@@ -1323,6 +1435,14 @@ Lists any specialized package (i.e. for
     <sect2 id="s2.ref.attribute_property_fields">
       <title>Property Fields For Attribute</title>
 
+      <indexterm>
+        <primary>Attribute Property Fields</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Fields</primary>
+        <secondary>for Attribute</secondary>
+      </indexterm>
+
       <variablelist>
 
         <!-- Entry for Name -->
@@ -1330,9 +1450,20 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the attribute. The name of a
-            attribute has a leading lower case letter, with words separated
-            by <quote>bumpy caps</quote>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Attribute Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Attribute</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the attribute.
+The name of a attribute has a leading lower case letter, with words
+separated by <quote>bumpy caps</quote>.
+</para>
 
           <note><para>The &argouml; critics will complain about attribute
             names that do not have an initial
@@ -1351,7 +1482,7 @@ Lists any specialized package (i.e. for
           </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -1384,10 +1515,23 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Multiplicity</literal></term>
 
-          <listitem><para>Drop down selector. The default (empty) value is
-            that there is one instance of this attribute for each instance
-            of the class, i.e. it is a scalar. The drop down provides a
-            number of specifications for non-scalar attributes.</para>
+          <listitem>
+            <indexterm>
+              <primary>Attribute Multiplicity</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Multiplicity</primary>
+              <secondary>of Attribute</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+
+The default (empty) value is that there is one instance of this
+attribute for each instance of the class, i.e. it is a scalar.
+
+The drop down provides a number of specifications for non-scalar
+attributes.
+</para>
 
           <note><para>The selection <literal>1..1</literal> is equivalent
             to the default (exactly one scalar instance). The selection
@@ -1406,18 +1550,32 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Type</literal></term>
 
-          <listitem><para>Drop down selector. The type of this attribute. This
-            can be any UML <literal>Classifier</literal>, although in
-            practice only <literal>Class</literal>,
-            <literal>DataType</literal> or <literal>Interface</literal>
-            make any sense.</para>
+          <listitem>
+            <indexterm>
+              <primary>Attribute Type</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Type</primary>
+              <secondary>of Attribute</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+The type of this attribute.
+
+This can be any UML <literal>Classifier</literal>, although in
+practice only
+<literal>Class</literal>,
+<literal>DataType</literal>, or
+<literal>Interface</literal>
+make any sense.
+</para>
 
           <note><para>A type must be declared (it can be
             <literal>void</literal>). By default &argouml; supplies
             <literal>int</literal> as the type.</para></note></listitem>
         </varlistentry>
 
-        <!-- Entry for NavClass -->
+        <!-- Entry for Navigate Type -->
 
         <varlistentry>
           <term><literal>Navigate Type</literal></term>
@@ -1437,11 +1595,26 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Initial Value</literal></term>
 
-          <listitem><para>Text box with drop down. This allows you to set an
-            initial value for the attribute if desired (this is
-            optional). The drop down menu provides access to the common
-            values <literal>0</literal>, <literal>1</literal>,
-            <literal>2</literal> and <literal>null</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Attribute Initial Value</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Initial Value</primary>
+              <secondary>of Attribute</secondary>
+            </indexterm>
+
+            <para>Text box with drop down.
+
+This allows you to set an initial value for the attribute if desired
+(this is optional).
+
+The drop down menu provides access to the common values
+<literal>0</literal>,
+<literal>1</literal>,
+<literal>2</literal>, and
+<literal>null</literal>.
+</para>
 
             <caution><para>Any constructor operation may ignore this initial
               value.</para></caution>
@@ -1465,9 +1638,21 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Visibility</literal></term>
 
-          <listitem><para>Radio box, with entries <literal>public</literal>,
-            <literal>protected</literal> and
-            <literal>private</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Attribute Visibility</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Visibility</primary>
+              <secondary>of Attribute</secondary>
+            </indexterm>
+
+            <para>
+Radio box, with entries
+<literal>public</literal>,
+<literal>protected</literal>, and
+<literal>private</literal>.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>public</literal>. The attribute is
@@ -1485,14 +1670,25 @@ Lists any specialized package (i.e. for
           </itemizedlist></listitem>
         </varlistentry>
 
-        <!-- Entry for Changability -->
+        <!-- Entry for Changeability -->
 
         <varlistentry>
-          <term><literal>Changability</literal></term>
+          <term><literal>Changeability</literal></term>
 
-          <listitem><para>Radio box, with entries <literal>changeable</literal>,
-            <literal>add only</literal> and
-            <literal>frozen</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Attribute Changeability</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Changeability</primary>
+              <secondary>of Attribute</secondary>
+            </indexterm>
+
+            <para>Radio box, with entries
+<literal>changeable</literal>,
+<literal>add only</literal>, and
+<literal>frozen</literal>.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>changeable</literal>. 
@@ -1541,6 +1737,10 @@ Lists any specialized package (i.e. for
 
   <sect1 id="s1.ref.operation">
     <title>Operation</title>
+    <indexterm>
+      <primary>Operation</primary>
+    </indexterm>
+
 
     <para>An operation is a service that can be requested from an object to effect
       behavior. In the UML metamodel it is a sub-class of
@@ -1548,7 +1748,7 @@ Lists any specialized package (i.e. for
       <literal>Feature</literal>.</para>
 
     <!-- TODO: This whole description of editing on the diagram should be more
-      visible. Maybe in a seperate chapter? 
+      visible. Maybe in a separate chapter? 
       This applies to other editable elements, too.
       For info, see the javadocs of "Parser" and "ParserDisplay" classes.-->
 
@@ -1603,6 +1803,14 @@ Lists any specialized package (i.e. for
     <sect2>
       <title>Operation Details Tabs</title>
 
+      <indexterm>
+        <primary>Operation Details Tabs</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Operation</secondary>
+      </indexterm>
+
       <para>The details tabs that are active for operations are as
         follows.</para>
 
@@ -1632,7 +1840,10 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem><para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -1672,9 +1883,20 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Tagged Values</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>Operation</literal> has the following standard tagged
-            values defined.</para>
+          <listitem>
+            <indexterm>
+              <primary>Operation Tagged Values</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Tagged Values</primary>
+              <secondary>of Operation</secondary>
+            </indexterm>
+
+            <para>Standard tab.
+In the UML metamodel,
+<literal>Operation</literal> has the following standard tagged
+values defined.
+</para>
 
             <itemizedlist>
               <listitem><para><literal>semantics</literal>. The value is a
@@ -1706,6 +1928,14 @@ Lists any specialized package (i.e. for
 
     <sect2 id="s2.ref.operation_property_toolbar">
       <title>Operation Property Toolbar</title>
+
+      <indexterm>
+        <primary>Operation Property Toolbar</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Toolbar</primary>
+        <secondary>for Operation</secondary>
+      </indexterm>
 
       <variablelist>
 
@@ -1796,6 +2026,14 @@ Lists any specialized package (i.e. for
     <sect2 id="s2.ref.operation_property_fields">
       <title>Property Fields For Operation</title>
 
+      <indexterm>
+        <primary>Operation Property Fields</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Fields</primary>
+        <secondary>for Operation</secondary>
+      </indexterm>
+
       <variablelist>
 
         <!-- Entry for Name -->
@@ -1803,9 +2041,20 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the operation. The name of an
-            operation has a leading lower case letter, with words separated
-            by <quote>bumpy caps</quote>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Operation Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Operation</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the operation.
+The name of an operation has a leading lower case letter, with words
+separated by <quote>bumpy caps</quote>.
+</para>
 
           <note><para>The &argouml; critics will complain about operation
             names that do not have an initial
@@ -1823,17 +2072,28 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. There are two UML standard
-            stereotypes for <literal>Operation</literal> (from the parent
-            metaclass, <literal>BehavioralFeature</literal>),
-            <literal>create</literal> and
-            <literal>destroy</literal>. 
-            <!--&argouml; provides the additional
-            stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and <literal>person</literal>,
-            and rather strangely <literal>realize</literal> (a stereotype
-            of <literal>Abstraction</literal>).-->
-            </para>
+          <listitem>
+            <indexterm>
+              <primary>Operation Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Operation</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+
+There are two UML standard stereotypes for
+<literal>Operation</literal> (from the parent metaclass,
+<literal>BehavioralFeature</literal>), <literal>create</literal> and
+<literal>destroy</literal>.
+
+<!--&argouml; provides the additional
+stereotypes, <literal>machine</literal>,
+<literal>organization</literal> and <literal>person</literal>,
+and rather strangely <literal>realize</literal> (a stereotype
+of <literal>Abstraction</literal>).-->
+</para>
 
             <tip><para>You should use <literal>create</literal> as the
               stereotype for constructors, and <literal>destroy</literal> for
@@ -1844,7 +2104,7 @@ Lists any specialized package (i.e. for
           </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -1878,9 +2138,20 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Visibility</literal></term>
 
-          <listitem><para>Radio box, with entries <literal>public</literal>,
-            <literal>protected</literal> and
-            <literal>private</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Operation Visibility</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Visibility</primary>
+              <secondary>of Operation</secondary>
+            </indexterm>
+
+            <para>Radio box, with entries
+<literal>public</literal>,
+<literal>protected</literal>, and
+<literal>private</literal>.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>public</literal>. The operation is
@@ -1902,9 +2173,22 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Modifiers</literal></term>
 
-          <listitem><para>Check box, with entries <literal>abstract</literal>,
-            <literal>leaf</literal>, <literal>root</literal>,
-            <literal>query</literal> and <literal>static</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Operation Modifiers</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Modifiers</primary>
+              <secondary>of Operation</secondary>
+            </indexterm>
+
+            <para>Check box, with entries
+<literal>abstract</literal>,
+<literal>leaf</literal>,
+<literal>root</literal>,
+<literal>query</literal>, and
+<literal>static</literal>.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>abstract</literal>. This operation has
@@ -1945,9 +2229,20 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Concurrency</literal></term>
 
-          <listitem><para>Radio box, with entries
-            <literal>sequential</literal>, <literal>synchronized</literal>
-            and <literal>concurrent</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Operation Concurrency</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Concurrency</primary>
+              <secondary>of Operation</secondary>
+            </indexterm>
+
+            <para>Radio box, with entries
+<literal>sequential</literal>,
+<literal>synchronized</literal>, and
+<literal>concurrent</literal>.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>sequential</literal>. Only one call to
@@ -1957,13 +2252,15 @@ Lists any specialized package (i.e. for
               rule.</para></listitem>
 
             <listitem>
-              <para><literal>guarded</literal>. Multiple calls
-                from concurrent threads may occur simultanously
-                to one instance (on any guarded operation), but only one 
-                is alloed to commence.
-                The others are blocked until the performance of the first 
-                operation is comlete. 
-              </para>
+              <para><literal>guarded</literal>.
+
+Multiple calls from concurrent threads may occur simultaneously to one
+instance (on any guarded operation), but only one is allowed to
+commence.
+
+The others are blocked until the performance of the first
+operation is complete.
+</para>
 
               <caution>
                 <para>
@@ -1988,11 +2285,23 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Parameter</literal></term>
 
-          <listitem><para>Text area, with entries for all the parameters of
-            the operation (see <xref linkend="s1.ref.parameter"/>). A new
-            operation is always created with one new parameter,
-            <literal>return</literal> to define the return type of the
-            operation.</para>
+          <listitem>
+            <indexterm>
+              <primary>Operation Parameter</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Parameter</primary>
+              <secondary>of Operation</secondary>
+            </indexterm>
+
+            <para>Text area,
+with entries for all the parameters of the operation (see <xref
+linkend="s1.ref.parameter"/>).
+
+A new operation is always created with one new parameter,
+<literal>return</literal> to define the return type of the
+operation.
+</para>
 
           <para>&Button1; double click on any of the parameters
             <!-- TODO: Sometimes it is a single click... See issue ... -->
@@ -2028,9 +2337,19 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Raised Signals</literal></term>
 
-          <listitem><para>Text area, with entries for all the signals (see
-            <xref linkend="s1.ref.signal"/>) that can be raised by the
-            operation.</para>
+          <listitem>
+            <indexterm>
+              <primary>Operation Raised Signals</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Raised Signals</primary>
+              <secondary>of Operation</secondary>
+            </indexterm>
+
+            <para>Text area,
+with entries for all the signals (see <xref linkend="s1.ref.signal"/>)
+that can be raised by the operation.
+</para>
 
           <caution><para>&argouml; at present (V0.14) has limited support for
             signals. In particular they are not linked to signal events
@@ -2073,6 +2392,9 @@ Lists any specialized package (i.e. for
 
   <sect1 id="s1.ref.parameter">
     <title>Parameter</title>
+    <indexterm>
+      <primary>Parameter</primary>
+    </indexterm>
 
     <para>A parameter is a variable that can be passed. In the UML metamodel it
       is a sub-class of <literal>ModelElement</literal>.</para>
@@ -2095,6 +2417,14 @@ Lists any specialized package (i.e. for
 
     <sect2>
       <title>Parameter Details Tabs</title>
+
+      <indexterm>
+        <primary>Parameter Details Tabs</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Parameter</secondary>
+      </indexterm>
 
       <para>The details tabs that are active for parameters are as
         follows.</para>
@@ -2125,7 +2455,10 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem><para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -2152,7 +2485,7 @@ Lists any specialized package (i.e. for
         <!-- Entry for Constraints tab -->
         <varlistentry>
           <term><literal>Constraints</literal></term>
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem><para>&constraintssupport;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2160,9 +2493,19 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Tagged Values</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>Parameter</literal> has the following standard tagged
-            values defined.</para>
+          <listitem>
+            <indexterm>
+              <primary>Parameter Tagged Values</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Tagged Values</primary>
+              <secondary>of Parameter</secondary>
+            </indexterm>
+
+            <para>Standard tab.
+In the UML metamodel, <literal>Parameter</literal> has the following
+standard tagged values defined.
+</para>
 
             <itemizedlist>
               <listitem><para><literal>derived</literal> (from the
@@ -2189,6 +2532,14 @@ Lists any specialized package (i.e. for
 
     <sect2 id="s2.ref.parameter_property_toolbar">
       <title>Parameter Property Toolbar</title>
+
+      <indexterm>
+        <primary>Parameter Property Toolbar</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Toolbar</primary>
+        <secondary>for Parameter</secondary>
+      </indexterm>
 
       <variablelist>
 
@@ -2249,6 +2600,14 @@ Lists any specialized package (i.e. for
     <sect2 id="s2.ref.parameter_property_fields">
       <title>Property Fields For Parameter</title>
 
+      <indexterm>
+        <primary>Parameter Property Fields</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Fields</primary>
+        <secondary>for Parameter</secondary>
+      </indexterm>
+
       <variablelist>
 
         <!-- Entry for Name -->
@@ -2256,9 +2615,20 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the parameter. By convention,
-            the name of a parameter has a leading lower case letter, with
-            words separated by <quote>bumpy caps</quote>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Parameter Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Parameter</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the parameter.
+By convention, the name of a parameter has a leading lower case
+letter, with words separated by <quote>bumpy caps</quote>.
+</para>
 
           <note><para>The &argouml; critics do not complain about parameter
             names that do not have an initial lower case
@@ -2271,13 +2641,21 @@ Lists any specialized package (i.e. for
           <term><literal>Stereotype</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Parameter Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Parameter</secondary>
+            </indexterm>
+
             <para>Drop down selector. There are no UML standard
               stereotypes for <literal>Parameter</literal>. 
             </para>
           </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -2313,11 +2691,25 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Type</literal></term>
 
-          <listitem><para>Drop down selector. The type of this parameter. This
-            can be any UML <literal>Classifier</literal>, although in
-            practice only <literal>Class</literal>,
-            <literal>DataType</literal> or <literal>Interface</literal>
-            make any sense.</para>
+          <listitem>
+            <indexterm>
+              <primary>Parameter Type</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Type</primary>
+              <secondary>of Parameter</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+The type of this parameter.
+
+This can be any UML <literal>Classifier</literal>, although in
+practice only
+<literal>Class</literal>,
+<literal>DataType</literal>, or
+<literal>Interface</literal>
+make any sense.
+</para>
 
           <note><para>A type must be declared (it can be
             <literal>void</literal>, but this only makes sense for a return
@@ -2327,7 +2719,7 @@ Lists any specialized package (i.e. for
             created parameter.</para></note></listitem>
         </varlistentry>
 
-        <!-- Entry for NavClass -->
+        <!-- Entry for Navigate Type -->
         <!--varlistentry>
           <term><literal>Navigate Type</literal></term>
           <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
@@ -2345,11 +2737,27 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Initial Value</literal></term>
 
-          <listitem><para>Text box with drop down. This allows you to set an
-            initial value for the parameter if desired (this is
-            optional). The drop down menu provides access to the common
-            values <literal>0</literal>, <literal>1</literal>,
-            <literal>2</literal> and <literal>null</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Parameter Initial Value</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Initial Value</primary>
+              <secondary>of Parameter</secondary>
+            </indexterm>
+
+            <para>Text box with drop down.
+
+This allows you to set an initial value for the parameter if desired
+(this is optional).
+
+The drop down menu provides access to the common
+values
+<literal>0</literal>,
+<literal>1</literal>,
+<literal>2</literal>, and
+<literal>null</literal>.
+</para>
 
           <caution><para>This only makes sense for <literal>out</literal>
             or <literal>return</literal>
@@ -2361,9 +2769,22 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Kind</literal></term>
 
-          <listitem><para>Radio box, with entries <literal>in/out</literal>,
-            <literal>in</literal>, <literal>out</literal> and
-            <literal>return</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Parameter Kind</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Kind</primary>
+              <secondary>of Parameter</secondary>
+            </indexterm>
+
+            <para>Radio box,
+with entries
+<literal>in/out</literal>,
+<literal>in</literal>,
+<literal>out</literal>, and
+<literal>return</literal>.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>in/out</literal>. The parameter is
@@ -2407,6 +2828,10 @@ Lists any specialized package (i.e. for
   <sect1 id="s1.ref.signal">
     <title>Signal</title>
 
+    <indexterm>
+      <primary>Signal</primary>
+    </indexterm>
+
     <para>A signal is a specification of an asynchronous stimulus communicated
       between instances. In the UML metamodel it is a sub-class of
       <literal>Classifier</literal>.</para>
@@ -2428,6 +2853,14 @@ Lists any specialized package (i.e. for
 
     <sect2>
       <title>Signal Details Tabs</title>
+
+      <indexterm>
+        <primary>Signal Details Tabs</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Signal</secondary>
+      </indexterm>
 
       <para>The details tabs that are active for signals are as
         follows.</para>
@@ -2458,7 +2891,10 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem><para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -2475,7 +2911,10 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2483,9 +2922,20 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Tagged Values</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>Signal</literal> has the following standard tagged
-            values defined.</para>
+          <listitem>
+            <indexterm>
+              <primary>Signal Tagged Values</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Tagged Values</primary>
+              <secondary>of Signal</secondary>
+            </indexterm>
+
+            <para>Standard tab.
+
+In the UML metamodel, <literal>Signal</literal> has the following
+standard tagged values defined.
+</para>
 
             <itemizedlist>
               <listitem><para><literal>persistence</literal> (from the
@@ -2526,6 +2976,14 @@ Lists any specialized package (i.e. for
     <sect2 id="s2.ref.signal_property_toolbar">
       <title>Signal Property Toolbar</title>
 
+      <indexterm>
+        <primary>Signal Property Toolbar</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Toolbar</primary>
+        <secondary>for Signal</secondary>
+      </indexterm>
+
       <variablelist>
 
         <!-- Entry for Go up button -->
@@ -2563,11 +3021,17 @@ Lists any specialized package (i.e. for
         <!-- Entry for Add reception -->
 
         <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/reception.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>
-            Add recepption</literal></term>
+          <term>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center"
+                             fileref="images/icons/reception.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>Add reception</literal>
+          </term>
 
           <listitem>
             <para>This creates a new reception, navigating immediately to
@@ -2599,6 +3063,14 @@ Lists any specialized package (i.e. for
     <sect2 id="s2.ref.signal_property_fields">
       <title>Property Fields For Signal</title>
 
+      <indexterm>
+        <primary>Signal Property Fields</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Fields</primary>
+        <secondary>for Signal</secondary>
+      </indexterm>
+
       <variablelist>
 
         <!-- Entry for Name -->
@@ -2606,10 +3078,21 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the signal. From their
-            similarity to classes, by convention,
-            the name of a signal has a leading upper case letter, with
-            words separated by <quote>bumpy caps</quote>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Signal Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Signal</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the signal.
+From their similarity to classes, by convention, the name of a signal
+has a leading upper case letter, with words separated by <quote>bumpy
+caps</quote>.
+</para>
 
           <note><para>The &argouml; critics do not complain about signal
             names that do not have an initial upper case
@@ -2621,17 +3104,30 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Signal is provided by default
-            with the UML standard stereotypes for its parent in the
-            UML meta-model, <literal>Classifier</literal>
-            (<literal>metaclass</literal>, <literal>powerType</literal>,
-            <literal>process</literal>, <literal>thread</literal> and
-            <literal>utility</literal>).
-            </para>
+          <listitem>
+            <indexterm>
+              <primary>Signal Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Signal</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+
+Signal is provided by default with the UML standard stereotypes for
+its parent in the UML meta-model,
+<literal>Classifier</literal>
+(<literal>metaclass</literal>,
+ <literal>powerType</literal>,
+ <literal>process</literal>,
+ <literal>thread</literal>, and
+ <literal>utility</literal>).
+</para>
           </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
         <!-- TODO: This one is missing here. Strange, it is present everywhere
         else! See issue ... -->
         <!--varlistentry>
@@ -2763,9 +3259,21 @@ Lists any specialized package (i.e. for
         <!--varlistentry>
           <term><literal>Modifiers</literal></term>
 
-          <listitem><para>Check box, with entries <literal>public</literal>,
-            <literal>abstract</literal>, 
-            <literal>final</literal> and <literal>root</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Signal Modifiers</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Modifiers</primary>
+              <secondary>of Signal</secondary>
+            </indexterm>
+
+            <para>Check box, with entries
+<literal>public</literal>,
+<literal>abstract</literal>, 
+<literal>final</literal>, and
+<literal>root</literal>.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>public</literal> has identical meaning
@@ -2829,11 +3337,23 @@ Lists any specialized package (i.e. for
         <!--varlistentry>
           <term><literal>Operations</literal></term>
 
-          <listitem><para>Text area. Lists all the operations (see <xref
-              linkend="s1.ref.operation"/>) defined on this
-              signal. &Button1; click navigates to the selected operation,
-              &button2; click brings up a pop up menu with five
-              entries.</para>
+          <listitem>
+            <indexterm>
+              <primary>Signal Operations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Operations</primary>
+              <secondary>of Signal</secondary>
+            </indexterm>
+
+            <para>Text area.
+
+Lists all the operations (see <xref linkend="s1.ref.operation"/>)
+defined on this signal.
+
+&Button1; click navigates to the selected operation, &button2; click
+brings up a pop up menu with five entries.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
@@ -2864,11 +3384,25 @@ Lists any specialized package (i.e. for
         <!--varlistentry>
           <term><literal>Attributes</literal></term>
 
-          <listitem><para>Text area. Lists all the attributes (see <xref
-              linkend="s1.ref.attribute"/>) defined for this class. These
-            are effectively the parameters to the signal. &Button1; click
-            navigates to the selected attribute, &button2; click brings
-            up a pop up menu with five entries.</para>
+          <listitem>
+            <indexterm>
+              <primary>Signal Attributes</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Attributes</primary>
+              <secondary>of Signal</secondary>
+            </indexterm>
+
+            <para>Text area.
+
+Lists all the attributes (see <xref linkend="s1.ref.attribute"/>)
+defined for this class.
+
+These are effectively the parameters to the signal.
+
+&Button1; click navigates to the selected attribute,
+&button2; click brings up a pop up menu with five entries.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
@@ -2895,11 +3429,23 @@ Lists any specialized package (i.e. for
         <!--varlistentry>
           <term><literal>Associations</literal></term>
 
-          <listitem><para>Text area. Lists all the associations (see <xref
-              linkend="s1.ref.association_class"/>) defined on this
-              signal. &Button1; click navigates to the selected
-              association, &button2; click brings up a pop up menu with
-              five entries.</para>
+          <listitem>
+            <indexterm>
+              <primary>Signal Associations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Associations</primary>
+              <secondary>of Signal</secondary>
+            </indexterm>
+
+            <para>Text area.
+
+Lists all the associations (see <xref linkend="s1.ref.association_class"/>)
+defined on this signal.
+
+&Button1; click navigates to the selected association,
+&button2; click brings up a pop up menu with five entries.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
@@ -2931,11 +3477,22 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Contexts</literal></term>
 
-          <listitem><para>Text area. Lists all the contexts defined for this
-              signal. &Button1; click navigates to the selected context,
-              <!-- TODO: Should be a double click! See issue ... -->
-              &button2; click brings up a pop up menu with
-              three entries.</para>
+          <listitem>
+            <indexterm>
+              <primary>Signal Contexts</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Contexts</primary>
+              <secondary>of Signal</secondary>
+            </indexterm>
+
+            <para>Text area.
+Lists all the contexts defined for this signal.
+
+&Button1; click navigates to the selected context,
+<!-- TODO: Should be a double click! See issue ... -->
+&button2; click brings up a pop up menu with three entries.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
@@ -2944,12 +3501,14 @@ Lists any specialized package (i.e. for
             <listitem><para><literal>Delete</literal>. Removes the selected
               context from the signal.</para></listitem>
               
-            <listitem><para><literal>Add</literal>. Add a new
-              context. This opens the <emphasis>Add context</emphasis>
-              dialog box (see figure below), 
-              which allows chosing between all possible operations,
-              and adding them to the selected list.
-              </para>
+            <listitem>
+              <para>
+<literal>Add</literal>.
+Add a new context.
+This opens the <emphasis>Add context</emphasis> dialog box (see figure
+below), which allows choosing between all possible operations, and
+adding them to the selected list.
+</para>
 
               <figure id="fig.ref.signal_add_context" float="1">
                 <title>The <quote>add context</quote> dialog box</title>
@@ -2971,11 +3530,23 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Receptions</literal></term>
 
-          <listitem><para>Text area. Lists all the receptions defined for this
-              signal. &Button1; click navigates to the selected reception,
-              <!-- TODO: Should be a double click!  See issue ... -->
-              &button2; click brings up a pop up menu with
-              three entries.</para>
+          <listitem>
+            <indexterm>
+              <primary>Signal Receptions</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Receptions</primary>
+              <secondary>of Signal</secondary>
+            </indexterm>
+
+            <para>Text area.
+
+Lists all the receptions defined for this signal.
+
+&Button1; click navigates to the selected reception,
+<!-- TODO: Should be a double click!  See issue ... -->
+&button2; click brings up a pop up menu with three entries.
+</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
@@ -3016,6 +3587,10 @@ Lists any specialized package (i.e. for
   <sect1 id="s1.ref.association_class">
     <title>Association</title>
 
+    <indexterm>
+      <primary>Association</primary>
+    </indexterm>
+
     <para>An association on a class diagram represents a relationship between
       classes, or between a class and an interface.</para>
 
@@ -3041,12 +3616,14 @@ Lists any specialized package (i.e. for
     <para>Associations are often not named, since their meaning is obvious from
       the context.</para>
 
-    <note><para>&argouml; provides no specific way of showing the direction of
-      the association as described in the UML 1.3 standard. The naming should
-      attempt to make this clear.
-      <!-- TODO: We would be better than RRose if we would have this!
-      See enhancement issue ... -->
-      </para>
+    <note>
+      <para>&argouml; provides no specific way of showing the direction of
+the association as described in the UML 1.3 standard.
+
+The naming should attempt to make this clear.
+<!-- TODO: We would be better than Rose if we would have this!
+See enhancement issue ... -->
+</para>
     </note>
 
     <para>The association contains two ends, which may be navigated to via the
@@ -3077,6 +3654,14 @@ Lists any specialized package (i.e. for
       <para>The details tabs that are active for associations are as
         follows.</para>
 
+      <indexterm>
+        <primary>Association Details Tabs</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Association</secondary>
+      </indexterm>
+
       <variablelist>
 
         <!-- Entry for ToDoItem tab -->
@@ -3103,7 +3688,10 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem><para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -3140,7 +3728,9 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para>
+          <listitem>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -3149,9 +3739,19 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Tagged Values</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>Association</literal> has the following standard
-            tagged values defined.</para>
+          <listitem>
+            <indexterm>
+              <primary>Association Tagged Values</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Tagged Values</primary>
+              <secondary>of Association</secondary>
+            </indexterm>
+
+            <para>Standard tab.
+In the UML metamodel, <literal>Association</literal> has the following
+standard tagged values defined.
+</para>
 
             <itemizedlist>
               <listitem><para><literal>persistence</literal>. Values
@@ -3185,6 +3785,14 @@ Lists any specialized package (i.e. for
 
     <sect2 id="s2.ref.association_property_toolbar">
       <title>Association Property Toolbar</title>
+
+      <indexterm>
+        <primary>Association Property Toolbar</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Toolbar</primary>
+        <secondary>for Association</secondary>
+      </indexterm>
 
       <variablelist>
 
@@ -3231,6 +3839,14 @@ Lists any specialized package (i.e. for
     <sect2 id="s2.ref.association_property_fields">
       <title>Property Fields For Association</title>
 
+      <indexterm>
+        <primary>Association Property Fields</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Fields</primary>
+        <secondary>for Association</secondary>
+      </indexterm>
+
       <variablelist>
 
         <!-- Entry for Name -->
@@ -3238,10 +3854,22 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the association. By convention
-            association names start with a lower case letter, with
-            <quote>bumpy caps</quote> used to indicate words within the
-            name, thus: <literal>salesHandling</literal>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Association Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Association</secondary>
+            </indexterm>
+
+            <para>Text box.
+The name of the association.
+
+By convention association names start with a lower case letter, with
+<quote>bumpy caps</quote> used to indicate words within the name,
+thus: <literal>salesHandling</literal>.
+</para>
 
           <note><para>&argouml; does not enforce any naming convention for
             associations.</para></note>
@@ -3257,19 +3885,30 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Association is provided by
-            default with the UML standard stereotype for Association
-            ((<literal>implicit)</literal>)<!-- and the additional Association
-            stereotypes for the Software Engineering Process and Business
-            Modeling in the UML standard (<literal>communicate</literal>
-            and <literal>subscribe</literal>). &argouml; also provides the
-            additional stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and <literal>person</literal>
-            and four additional stereotypes suggested by some writers using
-            patterns (<literal>offstage actor</literal>, <literal>primary
-            actor</literal>, <literal>stakeholder</literal> and
-            <literal>supporting actor</literal>)-->.
-            </para>
+          <listitem>
+            <indexterm>
+              <primary>Association Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Association</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+
+Association is provided by default with the UML standard stereotype
+for Association ((<literal>implicit)</literal>)
+<!-- and the additional Association stereotypes for the Software
+Engineering Process and Business Modeling in the UML standard
+(<literal>communicate</literal> and
+<literal>subscribe</literal>). &argouml; also provides the additional
+stereotypes, <literal>machine</literal>,
+<literal>organization</literal> and <literal>person</literal> and four
+additional stereotypes suggested by some writers using patterns
+(<literal>offstage actor</literal>, <literal>primary actor</literal>,
+<literal>stakeholder</literal> and <literal>supporting
+actor</literal>)-->.
+</para>
 
             <para>Stereotyping can be useful when creating associations in the
               problem domain (requirements capture) and solution domain
@@ -3283,7 +3922,7 @@ Lists any specialized package (i.e. for
           </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -3314,12 +3953,22 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Association Ends</literal></term>
 
-          <listitem><para>Text area. Lists the ends of this association. An
-            association can have any number of ends, but in &argouml; two
-            is the only useful number (associative classes can lead to a
-            third end on class diagrams, but this is not supported by
-            &argouml;). For more on association ends see <xref
-            linkend="s1.ref.association_end_class"/>.</para>
+          <listitem>
+            <indexterm>
+              <primary>Association Ends</primary>
+              <secondary>of Association</secondary>
+            </indexterm>
+
+            <para>Text area.
+Lists the ends of this association.
+
+An association can have any number of ends, but in &argouml; two is
+the only useful number (associative classes can lead to a third end on
+class diagrams, but this is not supported by &argouml;).
+
+For more on association ends see
+<xref linkend="s1.ref.association_end_class"/>.
+</para>
 
           <para>The names of the association ends are listed, 
             unless the association end has no
@@ -3346,8 +3995,20 @@ Lists any specialized package (i.e. for
         <!--varlistentry>
           <term><literal>Generalizations</literal></term>
 
-          <listitem><para>Text area. Lists any association that
-            <emphasis>generalizes</emphasis> this association.</para>
+          <listitem>
+            <indexterm>
+              <primary>Association Generalization</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Generalization</primary>
+              <secondary>of Association</secondary>
+            </indexterm>
+
+            <para>Text area.
+
+Lists any association that <emphasis>generalizes</emphasis> this
+association.
+</para>
 
           <caution><para>It is possible to create generalizations using the
             pop-up menu from here, but there is no way within &argouml; to give
@@ -3398,8 +4059,19 @@ Lists any specialized package (i.e. for
         <!--varlistentry>
           <term><literal>Specializations</literal></term>
 
-          <listitem><para>Text box. Lists any specialized association (i.e. for
-            which this association is a generalization.</para>
+          <listitem>
+            <indexterm>
+              <primary>Association Specializations</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Specialization</primary>
+              <secondary>of Association</secondary>
+            </indexterm>
+
+            <para>Text box.
+Lists any specialized association (i.e. for which this association is
+a generalization.
+</para>
 
           <caution><para>It is possible to create generalizations using the
             pop-up menu from here, but there is no way within &argouml; to give
@@ -3460,6 +4132,10 @@ Lists any specialized package (i.e. for
   <sect1 id="s1.ref.association_end_class">
     <title>Association End</title>
 
+    <indexterm>
+      <primary>Association End</primary>
+    </indexterm>
+
     <para>Two or more association ends are associated with each association
       (see <xref linkend="s1.ref.association_use_case"/>), although for
       &argouml;, the number of ends can only be two.</para>
@@ -3495,6 +4171,14 @@ Lists any specialized package (i.e. for
       <para>The details tabs that are active for associations are as
         follows.</para>
 
+      <indexterm>
+        <primary>Association End Details Tabs</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Details Tabs</primary>
+        <secondary>for Association End</secondary>
+      </indexterm>
+
       <variablelist>
 
         <!-- Entry for ToDoItem tab -->
@@ -3521,7 +4205,10 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem><para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -3541,7 +4228,10 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -3549,9 +4239,19 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Tagged Values</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>AssociationEnd</literal> has the following standard
-            tagged values defined.</para>
+          <listitem>
+            <indexterm>
+              <primary>Association End Tagged Values</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Tagged Values</primary>
+              <secondary>of Association End</secondary>
+            </indexterm>
+
+            <para>Standard tab.
+In the UML metamodel, <literal>AssociationEnd</literal> has the
+following standard tagged values defined.
+</para>
 
             <itemizedlist>
               <listitem><para><literal>derived</literal> (from the
@@ -3581,6 +4281,14 @@ Lists any specialized package (i.e. for
 
     <sect2 id="s2.ref.association_end_property_toolbar">
       <title>Association End Property Toolbar</title>
+
+      <indexterm>
+        <primary>Association End Property Toolbar</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Toolbar</primary>
+        <secondary>for Association End</secondary>
+      </indexterm>
 
       <variablelist>
 
@@ -3620,6 +4328,14 @@ Lists any specialized package (i.e. for
     <sect2 id="s2.ref.association_end_property_fields">
       <title>Property Fields For Association End</title>
 
+      <indexterm>
+        <primary>Association End Property Fields</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Property Fields</primary>
+        <secondary>for Association End</secondary>
+      </indexterm>
+
       <variablelist>
 
         <!-- Entry for Name -->
@@ -3627,14 +4343,27 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Name</literal></term>
 
-          <listitem><para>Text box. The name of the association end, which
-            provides a <emphasis>role name</emphasis> for this end of the
-            association. This role name can be used for navigation, and in an
-            implementation context, provides a name by which the source end of
-            an association can reference the target end.</para>
+          <listitem>
+            <indexterm>
+              <primary>Association End Name</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Name</primary>
+              <secondary>of Association End</secondary>
+            </indexterm>
+
+            <para>Text box.
+
+The name of the association end, which provides a <emphasis>role
+name</emphasis> for this end of the association.
+
+This role name can be used for navigation, and in an implementation
+context, provides a name by which the source end of an association can
+reference the target end.
+</para>
 
           <!-- TODO: This thing doesn't work in the vPRE-0.15.2 version. 
-          It is the association that gets named, not the associationend.
+          It is the association that gets named, not the AssociationEnd.
           Test this when V0.15.2 will be released. See issue ... -->
 
           <note><para>&argouml; does not enforce any naming convention for
@@ -3646,19 +4375,34 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Association end is provided by
-            default with the UML standard stereotypes for AssociationEnd
-            (<literal>association</literal>, <literal>global</literal>,
-            <literal>local</literal>, <literal>parameter</literal>,
-            <literal>self</literal>). 
-            However &argouml; does not provide any of these by default. 
-            Only the stereotype <literal>implicit</literal> is present.
-            <!-- TODO: See enhancement issue ... -->
-            </para>
+          <listitem>
+            <indexterm>
+              <primary>Association End Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Stereotype</primary>
+              <secondary>of Association End</secondary>
+            </indexterm>
+
+            <para>Drop down selector.
+
+Association end is provided by default with the UML standard
+stereotypes for AssociationEnd 
+(<literal>association</literal>,
+ <literal>global</literal>,
+ <literal>local</literal>,
+ <literal>parameter</literal>,
+ <literal>self</literal>).
+
+However &argouml; does not provide any of these by default.
+
+Only the stereotype <literal>implicit</literal> is present.
+<!-- TODO: See enhancement issue ... -->
+</para>
           </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -3689,9 +4433,19 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Type</literal></term>
 
-          <listitem><para>Drop down selector providing access to all standard
-            UML types provided by &argouml; and all new classes created
-            within the current model.</para>
+          <listitem>
+            <indexterm>
+              <primary>Association End Type</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Type</primary>
+              <secondary>of Association End</secondary>
+            </indexterm>
+
+            <para>Drop down selector providing access to all standard
+UML types provided by &argouml; and all new classes created within the
+current model.
+</para>
 
             <para>This is the type of the entity attached to this end of the
               association.</para>
@@ -3714,14 +4468,26 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Multiplicity</literal></term>
 
-          <listitem><para>Drop down menu with edit box. 
-            The value can be chosen from the drop down box, or a new one can be 
-            edited in the text box.
-            Records the multiplicity of this
-            association end (with respect to the other end), i.e. how many
-            instances of this end may be associated with an instance of the
-            other end. The multiplicity is shown on the diagram at that end of
-            the association.</para>
+          <listitem>
+            <indexterm>
+              <primary>Association End Multiplicity</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Multiplicity</primary>
+              <secondary>of Association End</secondary>
+            </indexterm>
+
+            <para>Drop down menu with edit box. 
+The value can be chosen from the drop down box, or a new one can be 
+edited in the text box.
+
+Records the multiplicity of this association end (with respect to the
+other end), i.e. how many instances of this end may be associated with
+an instance of the other end.
+
+The multiplicity is shown on the diagram at that end of the
+association.
+</para>
           </listitem>
         </varlistentry>
 
@@ -3731,6 +4497,14 @@ Lists any specialized package (i.e. for
           <term><literal>Modifiers</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Association End Modifiers</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Modifiers</primary>
+              <secondary>of Association End</secondary>
+            </indexterm>
+
             <para>
               There are 3 modifiers: <literal>navigable</literal>,
               <literal>ordered</literal> and <literal>static</literal>. All 3 are
@@ -3746,15 +4520,17 @@ Lists any specialized package (i.e. for
 
                 <note>
                   <para>
-                    The UML 1.3 standard provides a number of options for
-                    how navigation is displayed on an association end. ArgoUML uses
-                    <!-- TODO: Check if this is true, and if it is good. -->
-                    option 3, which means that arrow heads are shown at the end of
-                    an association, when navigation is enabled at only one end, to
-                    indicate the direction in which navigation is possible. This
-                    means that the default, with both ends navigable has no
-                    arrows. 
-                  </para>
+The UML 1.3 standard provides a number of options for
+how navigation is displayed on an association end.
+
+&argouml; uses
+<!-- TODO: Check if this is true, and if it is good. -->
+option 3, which means that arrow heads are shown at the end of
+an association, when navigation is enabled at only one end, to
+indicate the direction in which navigation is possible.
+
+This means that the default, with both ends navigable has no arrows.
+</para>
                 </note>
               </listitem>
 
@@ -3805,14 +4581,13 @@ Lists any specialized package (i.e. for
               <listitem>
                 <para>
                   <literal>Add</literal>. 
-                  <!-- TODO: This would better be named Add/Remove. See issue ... -->
-                  Add a new
-                  specification classifier. 
-                  This opens the <emphasis>Add/Remove Specifications</emphasis>
-                  dialog box (see figure below), 
-                  which allows chosing between all possible classifiers,
-                  and adding or removing them to the selected list.
-                </para>
+<!-- TODO: This would better be named Add/Remove. See issue ... -->
+Add a new specification classifier. 
+This opens the <emphasis>Add/Remove Specifications</emphasis>
+dialog box (see figure below), 
+which allows choosing between all possible classifiers,
+and adding or removing them to the selected list.
+</para>
 
                 <figure id="fig.ref.signal_add_specification" float="1">
                   <title>The <quote>Add/Remove Specifications</quote> dialog box</title>
@@ -3833,6 +4608,14 @@ Lists any specialized package (i.e. for
           <term><literal>Aggregation</literal></term>
 
           <listitem>
+            <indexterm>
+              <primary>Association End Aggregation</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Aggregation</primary>
+              <secondary>of Association End</secondary>
+            </indexterm>
+
             <para>Radio box, with three entries
               <literal>composite</literal>, <literal>none</literal> and
               <literal>aggregate</literal>. Indicates whether the
@@ -3864,16 +4647,27 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Changeability</literal></term>
 
-          <listitem><para>Radio box, with three entries
-            <literal>changeable</literal>, <literal>add only</literal> and
-            <literal>frozen</literal>. Indicates whether instances of
-            this end of the attributed may be: i) created and deleted by
-            the source after the target instance is created; 
-            ii) created but not deleted after the target
-            instance is created; or iii) not
-            created or deleted by the source after the target instance is
-            created.
-            </para>
+          <listitem>
+            <indexterm>
+              <primary>Association End Changeability</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Changeability</primary>
+              <secondary>of Association End</secondary>
+            </indexterm>
+
+            <para>Radio box, with three entries
+<literal>changeable</literal>,
+<literal>add only</literal> and
+<literal>frozen</literal>.
+
+Indicates whether instances of this end of the attributed may be:
+i) created and deleted by the source after the target instance is
+created;
+ii) created but not deleted after the target instance is created; or
+iii) not created or deleted by the source after the target instance is
+created.
+</para>
           </listitem>
         </varlistentry>
 
@@ -3882,12 +4676,26 @@ Lists any specialized package (i.e. for
         <varlistentry>
           <term><literal>Visibility</literal></term>
 
-          <listitem><para>Radio box, with three entries
-            <literal>public</literal>, <literal>private</literal> and
-            <literal>protected</literal>. Indicates whether navigation to
-            this end may be by: i) any classifier; ii) only by the source
-            classifier; or iii) only the source
-            classifier and its children.</para></listitem>
+          <listitem>
+            <indexterm>
+              <primary>Association End Visibility</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Visibility</primary>
+              <secondary>of Association End</secondary>
+            </indexterm>
+
+            <para>Radio box, with three entries
+<literal>public</literal>,
+<literal>private</literal> and
+<literal>protected</literal>.
+
+Indicates whether navigation to this end may be by:
+i) any classifier;
+ii) only by the source classifier; or
+iii) only the source classifier and its children.
+</para>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -3917,8 +4725,7 @@ from the depending artifact to that which it is dependent upon
     <sect2>
       <title>Dependency Details Tabs</title>
       <indexterm>
-        <primary>Dependency</primary>
-        <secondary>Details Tabs</secondary>
+        <primary>Dependency Details Tabs</primary>
       </indexterm>
       <indexterm>
         <primary>Details Tabs</primary>
@@ -3982,7 +4789,9 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para>
+          <listitem>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -4116,7 +4925,7 @@ The stereotype is shown between
             generalization.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -4274,7 +5083,10 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem><para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -4306,7 +5118,9 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem><para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -4454,7 +5268,7 @@ In the UML metamodel it is a sub-class of
           </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -4556,10 +5370,11 @@ In the UML metamodel it is a sub-class of
           <term><literal>AssociationEnds</literal></term>
 
           <listitem>
-            <para>Text box. Lists any associationends (see <xref
-              linkend="s1.ref.association_end_class"/>) connected to this
-              interface.
-            </para>
+            <para>Text box.
+
+Lists any AssociationEnds (see <xref linkend="s1.ref.association_end_class"/>)
+connected to this interface.
+</para>
 
             <note><para>Associations between classes and interfaces
               <emphasis>must</emphasis> be navigable
@@ -4660,7 +5475,10 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem><para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -4694,7 +5512,10 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -4809,7 +5630,7 @@ In the UML metamodel it is a sub-class of
           </para></caution></listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -4834,7 +5655,7 @@ In the UML metamodel it is a sub-class of
               the namespace for the
               abstraction. This is the package hierarchy.
             </para>
-            <!-- TODO: Yes, you can alter the namespace. Is that usefull? Why do
+            <!-- TODO: Yes, you can alter the namespace. Is that useful? Why do
             we have this feature? Investigate. -->
           </listitem>
         </varlistentry>

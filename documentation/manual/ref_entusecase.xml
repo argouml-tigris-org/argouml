@@ -3,7 +3,7 @@
 <!--
 
 Description of all the artifacts associated with use case diagrams within
-ArgoUML.
+&argouml;.
 
 -->
 
@@ -45,13 +45,10 @@ ArgoUML.
       </mediaobject></screenshot>
     </figure>
 
-    <!-- Limitations in ArgoUML relating to display of extension points. -->
+    <!-- Limitations in &argouml; relating to display of extension points. -->
 
     <sect2>
       <title>&argouml; Limitations Concerning Use Case Diagrams</title>
-      <indexterm>
-        <primary>Use Case Diagram Limitations</primary>
-      </indexterm>
 
       <para>
 Use case diagrams are now well supported within &argouml;. 
@@ -97,8 +94,7 @@ Earlier versions of &argouml; (0.9 and earlier) implemented extend and
     <sect2>
       <title>Actor Details Tabs</title>
       <indexterm>
-        <primary>Actor</primary>
-        <secondary>Details Tabs</secondary>
+        <primary>Actor Details Tabs</primary>
       </indexterm>
       <indexterm>
         <primary>Details Tabs</primary>
@@ -167,7 +163,9 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para>
+          <listitem>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -255,7 +253,8 @@ See <xref linkend="s2.ref.documentation_tab"/>.
               <primary>New Actor</primary>
             </indexterm>
             <indexterm>
-              <primary>Create a new Actor</primary>
+              <primary>Create New</primary>
+              <secondary>Actor</secondary>
             </indexterm>
 
             <para>
@@ -350,13 +349,13 @@ The stereotypes
 <literal>organization</literal>,
 <literal>person</literal> and
 <literal>singleton</literal>
-are probebly of most use.
+are probably of most use.
 However, they are not provided by default with &argouml;.
 </para>
           </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -488,20 +487,20 @@ Lists any specialized actor (i.e. for which
         <!-- Entry for AssociationEnds -->
 
         <varlistentry>
-          <term><literal>AssociationEnds</literal></term>
+          <term><literal>Association Ends</literal></term>
 
           <listitem>
             <indexterm>
-              <primary>Actor AssociationEnds</primary>
+              <primary>Actor Association Ends</primary>
             </indexterm>
             <indexterm>
-              <primary>AssociationEnds</primary>
+              <primary>Association Ends</primary>
               <secondary>of Actor</secondary>
             </indexterm>
 
             <para>Text area. 
-              Lists any associationends of associations connected to this actor.
-            </para>
+Lists any association ends of associations connected to this actor.
+</para>
             <para>
               &Button1; Double Click navigates to the selected entry.
             </para>
@@ -552,8 +551,7 @@ On reload, no compartments will be visible.
     <sect2>
       <title>Use Case Details Tabs</title>
       <indexterm>
-        <primary>Use Case</primary>
-        <secondary>Details Tabs</secondary>
+        <primary>Use Case Details Tabs</primary>
       </indexterm>
       <indexterm>
         <primary>Details Tabs</primary>
@@ -628,7 +626,10 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -713,7 +714,8 @@ See <xref linkend="s2.ref.documentation_tab"/>.
               <primary>New Use Case</primary>
             </indexterm>
             <indexterm>
-              <primary>Create a new Use Case</primary>
+              <primary>Create New</primary>
+              <secondary>Use Case</secondary>
             </indexterm>
 
             <para>
@@ -743,7 +745,8 @@ This creates a new use case within the model, (but
               <primary>New Extension Point</primary>
             </indexterm>
             <indexterm>
-              <primary>Create a new Extension Point</primary>
+              <primary>Create New</primary>
+              <secondary>Extension Point</secondary>
             </indexterm>
 
             <para>
@@ -824,20 +827,23 @@ Since a use case
             </indexterm>
 
             <para>Drop down selector.
-Use case is provided by default
-            with the UML standard stereotypes (<literal>metaclass</literal>,
-            <literal>powertype</literal>, <literal>process</literal>,
-            <literal>thread</literal>, <literal>utility</literal>) for
-classifiers.
-Stereotyping can be useful when
-            creating use cases in the problem domain (requirements capture) and
-            solution domain (analysis), but none of the pre-defined stereotypes
-            are well suited to this.</para>
+Use case is provided by default with the UML standard stereotypes
+(<literal>metaclass</literal>,
+ <literal>powertype</literal>,
+ <literal>process</literal>,
+ <literal>thread</literal>,
+ <literal>utility</literal>)
+for classifiers.
+
+Stereotyping can be useful when creating use cases in the problem
+domain (requirements capture) and solution domain (analysis), but none
+of the predefined stereotypes are well suited to this.
+</para>
 
           </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -914,7 +920,7 @@ use case with no parent.
               <primary>Use Case Extension Points</primary>
             </indexterm>
             <indexterm>
-              <primary>Extension Points</primary>
+              <primary>Extension Point</primary>
               <secondary>of Use Case</secondary>
             </indexterm>
 
@@ -976,7 +982,7 @@ one.
 
           <listitem>
             <indexterm>
-              <primary>Use Case Generalizations</primary>
+              <primary>Use Case Generalization</primary>
             </indexterm>
             <indexterm>
               <primary>Generalizations</primary>
@@ -1001,7 +1007,7 @@ navigate to that generalization.
 
           <listitem>
             <indexterm>
-              <primary>Use Case Specializations</primary>
+              <primary>Use Case Specialization</primary>
             </indexterm>
             <indexterm>
               <primary>Specializations</primary>
@@ -1202,7 +1208,7 @@ Listing the attributes that are available
         <primary>Extension Point Details Tabs</primary>
       </indexterm>
       <indexterm>
-        <primary>Details Tab</primary>
+        <primary>Details Tabs</primary>
         <secondary>for Extension Point</secondary>
       </indexterm>
 
@@ -1283,7 +1289,9 @@ The source tab content can be changed, but this has no effect.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para>
+          <listitem>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -1403,7 +1411,7 @@ The name of the extension point.
             point.</para></tip></listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -1572,8 +1580,7 @@ An association on a use case diagram represents a relationship
     <sect2>
       <title>Generalization Details Tabs</title>
       <indexterm>
-        <primary>Generalization</primary>
-        <secondary>Details Tabs</secondary>
+        <primary>Generalization Details Tabs</primary>
       </indexterm>
       <indexterm>
         <primary>Details Tabs</primary>
@@ -1647,8 +1654,8 @@ code for an association end so this is empty.
           <term><literal>Constraints</literal></term>
 
           <listitem>
-            <para>&constraints_support;
-            </para>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -1790,7 +1797,7 @@ The stereotype is shown between
             class diagrams.</para></tip></listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -1993,8 +2000,7 @@ Drop down selector providing access to all standard
     <sect2>
       <title>Extend Details Tabs</title>
       <indexterm>
-        <primary>Extend Relationship</primary>
-        <secondary>Details Tabs</secondary>
+        <primary>Extend Relationship Details Tabs</primary>
       </indexterm>
       <indexterm>
         <primary>Details Tabs</primary>
@@ -2060,8 +2066,8 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           <term><literal>Constraints</literal></term>
 
           <listitem>
-            <para>&constraints_support;
-            </para>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -2129,7 +2135,8 @@ See <xref linkend="s2.ref.documentation_tab"/>.
               <primary>New Extend Relationship</primary>
             </indexterm>
             <indexterm>
-              <primary>Create a new Extend Relationship</primary>
+              <primary>Create New</primary>
+              <secondary>Extend Relationship</secondary>
             </indexterm>
 
             <para>
@@ -2234,7 +2241,7 @@ The name of the extend relationship.
             extend relationship on the diagram.</para></note></listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -2278,14 +2285,14 @@ This is the package hierarchy.
         <!-- Entry for Base -->
 
         <varlistentry>
-          <term><literal>Base Usecase</literal></term>
+          <term><literal>Base Use Case</literal></term>
 
           <listitem>
             <indexterm>
-              <primary>Extend Relationship Base Usecase</primary>
+              <primary>Extend Relationship Base Use Case</primary>
             </indexterm>
             <indexterm>
-              <primary>Base Usecase</primary>
+              <primary>Base Use Case</primary>
               <secondary>of Extend Relationship</secondary>
             </indexterm>
 
@@ -2328,10 +2335,10 @@ Show the use case that is
 
           <listitem>
             <indexterm>
-              <primary>Extend Relationship Extension Points</primary>
+              <primary>Extend Relationship Extension Point</primary>
             </indexterm>
             <indexterm>
-              <primary>Extension Points</primary>
+              <primary>Extension Point</primary>
               <secondary>of Extend Relationship</secondary>
             </indexterm>
 
@@ -2417,8 +2424,7 @@ attached to the extend relationship.
     <sect2>
       <title>Include Details Tabs</title>
       <indexterm>
-        <primary>Include Relationship</primary>
-        <secondary>Details Tabs</secondary>
+        <primary>Include Relationship Details Tabs</primary>
       </indexterm>
       <indexterm>
         <primary>Details Tabs</primary>
@@ -2483,7 +2489,10 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2543,8 +2552,10 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </imageobject></inlinemediaobject></guiicon>
             <literal>Delete</literal></term>
 
-          <listitem><para>This deletes the selected include relationshp from
-            the model.</para>
+          <listitem>
+            <para>This deletes the selected include relationship from
+the model.
+</para>
 
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete a
@@ -2617,7 +2628,7 @@ The name of the include
           </listitem>
         </varlistentry>
 
-        <!-- Entry for NavStereo -->
+        <!-- Entry for Navigate Stereotype -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
@@ -2689,14 +2700,14 @@ In the current version of &argouml; if you change the
         <!-- Entry for Included Usecase -->
 
         <varlistentry>
-          <term><literal>Included Usecase</literal></term>
+          <term><literal>Included Use Case</literal></term>
 
           <listitem>
             <indexterm>
-              <primary>Include Relationship Included Usecase</primary>
+              <primary>Include Relationship Included Use Case</primary>
             </indexterm>
             <indexterm>
-              <primary>Included Usecase</primary>
+              <primary>Included Use Case</primary>
               <secondary>of Include Relationship</secondary>
             </indexterm>
 

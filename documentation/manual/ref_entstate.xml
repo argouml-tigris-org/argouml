@@ -177,7 +177,8 @@ some external event to occur, or some dynamic activity
           <term><literal>Constraints</literal></term>
 
           <listitem>
-            <para>&constraints_support;</para>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -611,7 +612,10 @@ An action is represented on the diagram by the text of its expression.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -943,7 +947,10 @@ followed by the expression of the action.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1357,7 +1364,10 @@ This is not implemented in the V0.14 release of &argouml;.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>S&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1637,7 +1647,10 @@ brackets (<literal>[]</literal>).
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1928,7 +1941,10 @@ below (see
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2266,7 +2282,10 @@ Standard tab, containing just the name of the final state.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->

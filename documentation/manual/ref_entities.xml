@@ -56,8 +56,7 @@ but are added to the model when used.
       <title>Model Details Tabs</title>
 
       <indexterm>
-        <primary>Model</primary>
-        <secondary>Details Tabs</secondary>
+        <primary>Model Details Tabs</primary>
       </indexterm>
       <indexterm>
         <primary>Details Tabs</primary>
@@ -115,7 +114,10 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -194,7 +196,8 @@ Since the model is the top package nothing will happen.
               <primary>New Package</primary>
             </indexterm>
             <indexterm>
-              <primary>Create a new Package</primary>
+              <primary>Create New</primary>
+              <secondary>Package</secondary>
             </indexterm>
 
             <para>
@@ -522,7 +525,7 @@ navigating to that artifact.
     <title>Datatype</title>
 
     <indexterm>
-      <primary>Datatypes</primary>
+      <primary>Datatype</primary>
     </indexterm>
 
     <para>Datatypes can be thought of as simple classes. They have no
@@ -615,7 +618,7 @@ class diagrams. This is not permitted in &argouml;.
             </indexterm>
             <indexterm>
               <primary>Properties</primary>
-              <secondary>for Datatype</secondary>
+              <secondary>of Datatype</secondary>
             </indexterm>
 
           <para>See <xref
@@ -664,7 +667,10 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -678,7 +684,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             </indexterm>
             <indexterm>
               <primary>Tagged Values</primary>
-              <secondary>for Datatype</secondary>
+              <secondary>of Datatype</secondary>
             </indexterm>
 
             <para>Standard tab.
@@ -836,7 +842,7 @@ or a critic will fire.
             </indexterm>
             <indexterm>
               <primary>Name</primary>
-              <secondary>for Datatype</secondary>
+              <secondary>of Datatype</secondary>
             </indexterm>
 
             <para>Text box.
@@ -868,7 +874,7 @@ in the explorer.
             </indexterm>
             <indexterm>
               <primary>Stereotype</primary>
-              <secondary>for Datatype</secondary>
+              <secondary>of Datatype</secondary>
             </indexterm>
 
             <para>Drop down selector.
@@ -938,7 +944,7 @@ This is the package hierarchy.
             </indexterm>
             <indexterm>
               <primary>Modifiers</primary>
-              <secondary>for Datatype</secondary>
+              <secondary>of Datatype</secondary>
             </indexterm>
 
             <para>Check box, with entries 
@@ -1236,7 +1242,7 @@ datatype.
             </indexterm>
             <indexterm>
               <primary>Literals</primary>
-              <secondary>for Datatype</secondary>
+              <secondary>of Datatype</secondary>
             </indexterm>
 
             <para>Text area.
@@ -1288,7 +1294,7 @@ Add a new literal and navigate to it.
     <title>Stereotype</title>
 
     <indexterm>
-      <primary>Stereotypes</primary>
+      <primary>Stereotype</primary>
     </indexterm>
 
     <para>Stereotypes are the main extension mechanism of UML, providing a way
@@ -1384,7 +1390,9 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para>
+          <listitem>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -1503,7 +1511,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             </indexterm>
             <indexterm>
               <primary>Name</primary>
-              <secondary>for Stereotype</secondary>
+              <secondary>of Stereotype</secondary>
             </indexterm>
 
             <para>
@@ -1531,7 +1539,7 @@ There is no
             </indexterm>
             <indexterm>
               <primary>Base Class</primary>
-              <secondary>for Stereotype</secondary>
+              <secondary>of Stereotype</secondary>
             </indexterm>
 
             <para>
@@ -1572,7 +1580,7 @@ E.g. Link is not listed here, but implemented. -->
             </indexterm>
             <indexterm>
               <primary>Namespace</primary>
-              <secondary>for Stereotype</secondary>
+              <secondary>of Stereotype</secondary>
             </indexterm>
 
             <para>
@@ -1594,7 +1602,7 @@ Records the namespace for the
             </indexterm>
             <indexterm>
               <primary>Modifiers</primary>
-              <secondary>for Stereotype</secondary>
+              <secondary>of Stereotype</secondary>
             </indexterm>
 
             <para>Check box, with entries
@@ -1714,7 +1722,7 @@ Records the namespace for the
     <title>Diagram</title>
 
     <indexterm>
-      <primary>Diagrams</primary>
+      <primary>Diagram</primary>
     </indexterm>
 
     <para>The UML standard specifies eight principle diagrams, all of which are
@@ -1891,7 +1899,7 @@ Records the namespace for the
             </indexterm>
             <indexterm>
               <primary>Name</primary>
-              <secondary>for Diagrams</secondary>
+              <secondary>of Diagrams</secondary>
             </indexterm>
 
             <para>

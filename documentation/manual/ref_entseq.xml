@@ -171,7 +171,9 @@ need it because they are still working with &argouml; 0.10.1.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para>
+          <listitem>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -590,7 +592,10 @@ need it because they are still working with &argouml; 0.10.1.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -980,7 +985,9 @@ need it because they are still working with &argouml; 0.10.1.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para>
+          <listitem>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 

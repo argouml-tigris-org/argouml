@@ -2,7 +2,7 @@
 <!-- $Id$ -->
 <!--
 
-This section covers requirements capture and how ArgoUML supports such
+This section covers requirements capture and how &argouml; supports such
 activity.
 
 -->
@@ -129,7 +129,7 @@ From this top-level view we can extract the principle activities of
       scenario</emphasis>.</para>
 
     <indexterm>
-      <primary>Supplementary requirement specification</primary>
+      <primary>Supplementary Requirement Specification</primary>
     </indexterm>
 
     <para>Finally, since use cases are functional in nature, we need a document
@@ -146,47 +146,48 @@ From this top-level view we can extract the principle activities of
 
       <orderedlist>
         <listitem>
-	  <indexterm>
-	    <primary>Vision Document</primary>
-	  </indexterm>
+          <indexterm>
+            <primary>Vision Document</primary>
+          </indexterm>
 
-	  <para>Capture an overall view of the problem, and the desired
-          characteristics of its solution in the <emphasis>vision
-          document</emphasis>.</para></listitem>
+          <para>Capture an overall view of the problem, and the
+desired characteristics of its solution in the <emphasis>vision
+document</emphasis>.
+</para>
+        </listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Use Case</primary>
-	  </indexterm>
+          <indexterm>
+            <primary>Use Case</primary>
+          </indexterm>
 
-	  <para>Identify the <emphasis>use case</emphasis> and
+          <para>Identify the <emphasis>use case</emphasis> and
           <emphasis>actors</emphasis> from the vision document and show their
           relationships on one or more <emphasis>use case
           diagrams</emphasis>.</para></listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Use Case</primary>
-	    <secondary>Specification</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Specification</primary>
-	    <secondary>of a Use Case</secondary>
-	  </indexterm>
+          <indexterm>
+            <primary>Use Case Specification</primary>
+          </indexterm>
+          <indexterm>
+            <primary>Specification</primary>
+            <secondary>of Use Case</secondary>
+          </indexterm>
 
-	  <para>Give detailed <emphasis>use case
+          <para>Give detailed <emphasis>use case
           specifications</emphasis> for each use case, covering normal and
           alternate behavior, pre- and post-conditions.</para></listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Non-functional requirements</primary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Supplementary requirement specification</primary>
-	  </indexterm>
+          <indexterm>
+            <primary>Non-functional requirements</primary>
+          </indexterm>
+          <indexterm>
+            <primary>Supplementary Requirement Specification</primary>
+          </indexterm>
 
-	  <para>Capture all non-functional requirements in a
+          <para>Capture all non-functional requirements in a
           <emphasis>supplementary requirements
           specification</emphasis>.</para></listitem>
       </orderedlist>
@@ -212,7 +213,7 @@ From this top-level view we can extract the principle activities of
       <title>Vision Document</title>
 
       <indexterm>
-	<primary>Vision Document</primary>
+        <primary>Vision Document</primary>
       </indexterm>
 
       <para>Typical sections of this document would be as follows.</para>
@@ -222,69 +223,82 @@ From this top-level view we can extract the principle activities of
           context, problem and solution goals.</para></listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Goals</primary>
-	    <secondary>in the Vision document</secondary>
-	  </indexterm>
+          <indexterm>
+            <primary>Goals</primary>
+            <secondary>in the Vision document</secondary>
+          </indexterm>
 
-	  <para><emphasis>Goals</emphasis>. 
+          <para><emphasis>Goals</emphasis>. 
 What are we trying to
-          achieve (and how do we wish to achieve it).</para></listitem>
+achieve (and how do we wish to achieve it).
+</para>
+        </listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Market Context</primary>
-	    <secondary>in the Vision document</secondary>
-	  </indexterm>
+          <indexterm>
+            <primary>Market Context</primary>
+            <secondary>in the Vision document</secondary>
+          </indexterm>
 
-	  <para><emphasis>Market Context</emphasis>
-or
-          <emphasis>Contractual Arrangements</emphasis>. For a market led
-          development, this should indicate target markets, competitive
-          differentiators, compelling events and so forth. For a contractual
-          development this should explain the key contractual
-          drivers.</para></listitem>
+          <para><emphasis>Market Context</emphasis>
+or <emphasis>Contractual Arrangements</emphasis>.
 
-        <listitem>
-	  <indexterm>
-	    <primary>Stakeholders</primary>
-	    <secondary>in the Vision document</secondary>
-	  </indexterm>
+For a market led development, this should indicate target markets,
+competitive differentiators, compelling events and so forth.
 
-	  <para><emphasis>Stakeholders</emphasis>. 
-The users
-          (in the widest sense) of the system. Many of these will map in to
-          actors, or control equipment that maps into
-          actors.</para></listitem>
+For a contractual development this should explain the key contractual
+drivers.
+</para>
+        </listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Key features</primary>
-	    <secondary>in the Vision document</secondary>
-	  </indexterm>
+          <indexterm>
+            <primary>Stakeholders</primary>
+            <secondary>in the Vision document</secondary>
+          </indexterm>
 
-	  <para><emphasis>Key Features</emphasis>.
-At the very
-          highest level what are they key functional aspects of the
-          problem/desired solution. These will largely map down to the use
-          cases. It is helpful to give some prioritization
-          here.</para></listitem>
+          <para><emphasis>Stakeholders</emphasis>. 
+The users (in the widest sense) of the system.
+
+Many of these will map in to actors, or control equipment that maps
+into actors.
+</para>
+        </listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Constraints</primary>
-	    <secondary>in the Vision document</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Non-functional parameters</primary>
-	    <secondary>in the Vision document</secondary>
-	  </indexterm>
+          <indexterm>
+            <primary>Key features</primary>
+            <secondary>in the Vision document</secondary>
+          </indexterm>
 
-	  <para><emphasis>Constraints</emphasis>.
-A high level view
-          of the non-functional parameters of the system. These will be
-          worked out in detail in the supplementary requirements
-          specification.</para></listitem>
+          <para><emphasis>Key Features</emphasis>.
+
+At the very highest level what are they key functional aspects of the
+problem/desired solution.
+
+These will largely map down to the use cases.
+
+It is helpful to give some prioritization here.
+</para>
+        </listitem>
+
+        <listitem>
+          <indexterm>
+            <primary>Constraints</primary>
+            <secondary>in the Vision document</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>Non-functional parameters</primary>
+            <secondary>in the Vision document</secondary>
+          </indexterm>
+
+          <para><emphasis>Constraints</emphasis>.
+A high level view of the non-functional parameters of the system.
+
+These will be worked out in detail in the supplementary requirements
+specification.
+</para>
+        </listitem>
 
         <listitem><para><emphasis>Appendix</emphasis>. A listing of the
           actors and use cases that will be needed to meet this vision. It is
@@ -297,12 +311,11 @@ A high level view
       <title>Use Case Diagram</title>
 
       <indexterm>
-	<primary>Use Case</primary>
-	<secondary>Diagram</secondary>
+        <primary>Use Case Diagram</primary>
       </indexterm>
       <indexterm>
-	<primary>Diagram</primary>
-	<secondary>Use Case</secondary>
+        <primary>Diagram</primary>
+        <secondary>Use Case</secondary>
       </indexterm>
 
       <para>The vision document has identified the use cases and actors. The
@@ -346,18 +359,18 @@ A high level view
       <sect3>
         <title>Active and Passive Actors</title>
 
-	<indexterm>
-	  <primary>Active Actor</primary>
-	</indexterm>
+        <indexterm>
+          <primary>Active Actor</primary>
+        </indexterm>
 
         <para><emphasis>Active</emphasis> actors initiate interaction with
           the system. This can be shown by placing an arrow on the
           association from the actor pointing toward the use case. In the
           ATM example, the customer is an active actor.</para>
 
-	<indexterm>
-	  <primary>Passive Actor</primary>
-	</indexterm>
+        <indexterm>
+          <primary>Passive Actor</primary>
+        </indexterm>
 
         <para>Interaction with <emphasis>passive</emphasis> actors is
           initiated by the system. This can be shown by placing an arrow on
@@ -403,10 +416,10 @@ A high level view
       <sect3>
         <title>Multiplicity</title>
 
-	<indexterm>
-	  <primary>Multiplicity</primary>
-	  <secondary>in a Use Case Diagram</secondary>
-	</indexterm>
+        <indexterm>
+          <primary>Multiplicity</primary>
+          <secondary>in a Use Case Diagram</secondary>
+        </indexterm>
 
         <para>It can be useful to show the <emphasis>multiplicity</emphasis> of
           associations between actors and use cases. By this we mean how many
@@ -464,13 +477,13 @@ A high level view
       <sect3>
         <title>Hierarchies of Use Cases</title>
 
-	<indexterm>
-	  <primary>Hierarchy of Use Cases</primary>
-	</indexterm>
-	<indexterm>
-	  <primary>Use Case</primary>
-	  <secondary>Hierarchy</secondary>
-	</indexterm>
+        <indexterm>
+          <primary>Hierarchy of Use Cases</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Use Case</primary>
+          <secondary>Hierarchy</secondary>
+        </indexterm>
 
         <para>In our ATM example so far we have just three use cases to
           describe all the behavior of the system. While use cases should
@@ -491,13 +504,13 @@ A high level view
           the two subsidiary use cases and this can be shown on the
           diagram.</para>
 
-	<indexterm>
-	  <primary>Include Relationship</primary>
-	</indexterm>
-	<indexterm>
-	  <primary>Relationship</primary>
-	  <secondary>Include</secondary>
-	</indexterm>
+        <indexterm>
+          <primary>Include Relationship</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Relationship</primary>
+          <secondary>Include</secondary>
+        </indexterm>
 
         <para>The decomposition of a use case into simpler sub-use cases is
           shown in UML by using an <emphasis>include relationship</emphasis>,
@@ -528,13 +541,13 @@ A high level view
           want to cover the special case of an unscheduled repair caused by
           the ATM detecting an internal fault.</para>
 
-	<indexterm>
-	  <primary>Extend Relationship</primary>
-	</indexterm>
-	<indexterm>
-	  <primary>Relationship</primary>
-	  <secondary>Extend</secondary>
-	</indexterm>
+        <indexterm>
+          <primary>Extend Relationship</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Relationship</primary>
+          <secondary>Extend</secondary>
+        </indexterm>
 
         <para>This is shown in UML by the <emphasis>extend</emphasis>
           relationship. In the main use case, we specify a name for a
@@ -571,20 +584,19 @@ A high level view
             </mediaobject></screenshot>
         </figure>
 
-	<indexterm>
-	  <primary>Use Case</primary>
-	  <secondary>Generalization</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Use Case</primary>
-	  <secondary>Specialization</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Generalize a Use Case</primary>
-	</indexterm>
-	<indexterm>
-	  <primary>Specialize a Use Case</primary>
-	</indexterm>
+        <indexterm>
+          <primary>Use Case Generalization</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Use Case Specialization</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Generalize a Use Case</primary>
+        </indexterm>
+        <indexterm>
+          <primary>Specializations</primary>
+          <secondary>of Use Case</secondary>
+        </indexterm>
 
         <para>Use cases may be linked together in one other way. One use case
           may be a <emphasis>generalization</emphasis> of a subsidiary use
@@ -614,16 +626,14 @@ A high level view
       <title>The Use Case Specification</title>
 
       <indexterm>
-	<primary>Use Case</primary>
-	<secondary>Specification</secondary>
+        <primary>Use Case Specification</primary>
       </indexterm>
       <indexterm>
-	<primary>Specification</primary>
-	<secondary>of a Use Case</secondary>
+        <primary>Specification</primary>
+        <secondary>of Use Case</secondary>
       </indexterm>
       <indexterm>
-	<primary>Use Case</primary>
-	<secondary>Scenario</secondary>
+        <primary>Use Case Scenario</primary>
       </indexterm>
 
       <para>Each use case must be documented to explain in detail the
@@ -636,32 +646,34 @@ A high level view
 
       <itemizedlist>
         <listitem>
-	  <indexterm>
-	    <primary>Name</primary>
-	    <secondary>of a Use Case</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Use Case</primary>
-	    <secondary>Name</secondary>
-	  </indexterm>
+          <indexterm>
+            <primary>Name</primary>
+            <secondary>of Use Case</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>Use Case Name</primary>
+          </indexterm>
 
-	  <para><emphasis>Name</emphasis>. 
-The name of the use case
-          to which this relates.</para></listitem>
+          <para><emphasis>Name</emphasis>. 
+
+The name of the use case to which this relates.
+</para>
+        </listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Goal</primary>
-	    <secondary>of a Use Case</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Use Case</primary>
-	    <secondary>Goal</secondary>
-	  </indexterm>
-	  <para><emphasis>Goal</emphasis>.
-A one or two line summary
-          of what this use case achieves <emphasis>for its
-          actors</emphasis>.</para></listitem>
+          <indexterm>
+            <primary>Goal</primary>
+            <secondary>of Use Case</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>Use Case Goal</primary>
+          </indexterm>
+          <para><emphasis>Goal</emphasis>.
+
+A one or two line summary of what this use case achieves <emphasis>for
+its actors</emphasis>.
+</para>
+        </listitem>
 
         <listitem><para><emphasis>Actors</emphasis>. The actors involved in
           this use case, and any context regarding their involvement.</para>
@@ -671,25 +683,26 @@ A one or two line summary
           diagram.</para></note></listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Pre-condition</primary>
-	    <secondary>of a Use Case</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Pre-assumptions</primary>
-	    <secondary>of a Use Case</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Use Case</primary>
-	    <secondary>Pre-condition</secondary>
-	  </indexterm>
+          <indexterm>
+            <primary>Pre-condition</primary>
+            <secondary>of Use Case</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>Pre-assumptions</primary>
+            <secondary>of Use Case</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>Use Case Pre-condition</primary>
+          </indexterm>
 
-	  <para><emphasis>Pre-condition</emphasis>.
-These would be
-          better named <quote>pre-assumptions</quote>, but the term used
-          everywhere is pre-conditions. This is a statement of any
-          simplifying assumptions we can make at the start of the use
-          case.</para>
+          <para><emphasis>Pre-condition</emphasis>.
+
+These would be better named <quote>pre-assumptions</quote>, but the
+term used everywhere is pre-conditions.
+
+This is a statement of any simplifying assumptions we can make at the
+start of the use case.
+</para>
 
         <para>In the ATM example we might make the assumption for the<quote>
           Maintain Equipment</quote> use case that an engineer is always
@@ -708,65 +721,75 @@ In the first case, pre-conditions are a source of
           work.</para></caution></listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Basic Flow</primary>
-	    <secondary>of a Use Case</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Use Case</primary>
-	    <secondary>Basic Flow</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Scenario</primary>
-	  </indexterm>
+          <indexterm>
+            <primary>Basic Flow</primary>
+            <secondary>of Use Case</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>Use Case</primary>
+            <secondary>Basic Flow</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>Scenario</primary>
+          </indexterm>
 
-	  <para><emphasis>Basic Flow</emphasis>.
-The linear sequence
-          of steps that describe the behavior of the use case in the
-          <quote>normal</quote> scenario. Where a use case has a number of
-          scenarios that could be normal, one is arbitrarily
-          selected. Specifying the basic flow is described in more detail in
-          <xref linkend="s3.tut.basic_flow"/> below.</para></listitem> 
+          <para><emphasis>Basic Flow</emphasis>.
 
-        <listitem>
-	  <indexterm>
-	    <primary>Alternate Flows</primary>
-	    <secondary>of a Use Case</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Use Case</primary>
-	    <secondary>Alternate Flows</secondary>
-	  </indexterm>
+The linear sequence of steps that describe the behavior of the use
+case in the <quote>normal</quote> scenario.
 
-	  <para><emphasis>Alternate Flows</emphasis>.
-A series of
-          linear sequences describing each of the alternative behaviors to
-          the basic flow. Specifying alternate flows is described in more
-          detail in <xref linkend="s3.tut.alternate_flows"/>.
-          </para></listitem>
+Where a use case has a number of scenarios that could be normal, one
+is arbitrarily selected.
+
+Specifying the basic flow is described in more detail in
+<xref linkend="s3.tut.basic_flow"/> below.
+</para>
+        </listitem>
 
         <listitem>
-	  <indexterm>
-	    <primary>Post-conditions</primary>
-	    <secondary>of a Use Case</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Post-assumptions</primary>
-	    <secondary>of a Use Case</secondary>
-	  </indexterm>
-	  <indexterm>
-	    <primary>Use Case</primary>
-	    <secondary>Post-conditions</secondary>
-	  </indexterm>
+          <indexterm>
+            <primary>Alternate Flows</primary>
+            <secondary>of Use Case</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>Use Case</primary>
+            <secondary>Alternate Flows</secondary>
+          </indexterm>
 
-	  <para><emphasis>Post-conditions</emphasis>. 
-These would be
-          better named <quote>post-assumptions</quote>. This is a statement
-          of any assumptions that we can make at the end of the use
-          case. Most useful where the use case is one of a series of
-          subsidiary use cases that are included in a main use case, where
-          they can form the pre-conditions of the next use case to be
-          included.</para>
+          <para><emphasis>Alternate Flows</emphasis>.
+
+A series of linear sequences describing each of the alternative
+behaviors to the basic flow.
+
+Specifying alternate flows is described in more detail in
+<xref linkend="s3.tut.alternate_flows"/>.
+</para>
+        </listitem>
+
+        <listitem>
+          <indexterm>
+            <primary>Post-conditions</primary>
+            <secondary>of Use Case</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>Post-assumptions</primary>
+            <secondary>of Use Case</secondary>
+          </indexterm>
+          <indexterm>
+            <primary>Use Case Post-conditions</primary>
+          </indexterm>
+
+          <para><emphasis>Post-conditions</emphasis>. 
+
+These would be better named <quote>post-assumptions</quote>.
+
+This is a statement of any assumptions that we can make at the end of
+the use case.
+
+Most useful where the use case is one of a series of subsidiary use
+cases that are included in a main use case, where they can form the
+pre-conditions of the next use case to be included.
+</para>
 
         <caution><para>Like pre-conditions, post-conditions are best
           avoided. They place a burden on the specification of the use case
@@ -809,14 +832,14 @@ These would be
       <sect3 id="s3.tut.basic_flow">
         <title>Specifying the Basic Flow</title>
 
-	<indexterm>
-	  <primary>Basic Flow</primary>
-	  <secondary>of a Use Case</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Use Case</primary>
-	  <secondary>Basic Flow</secondary>
-	</indexterm>
+        <indexterm>
+          <primary>Basic Flow</primary>
+          <secondary>of Use Case</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Use Case</primary>
+          <secondary>Basic Flow</secondary>
+        </indexterm>
 
         <para>All flows in a use case specification are linear&mdash;that is
           there is no conditional branching. Any choices in flows are handled
@@ -865,17 +888,17 @@ These would be
       <sect3 id="s3.tut.alternate_flows">
         <title>Specifying the Alternate Flows</title>
 
-	<indexterm>
-	  <primary>Alternate Flows</primary>
-	  <secondary>of a Use Case</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Use Case</primary>
-	  <secondary>Alternate Flows</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Alternative scenarios</primary>
-	</indexterm>
+        <indexterm>
+          <primary>Alternate Flows</primary>
+          <secondary>of Use Case</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Use Case</primary>
+          <secondary>Alternate Flows</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Alternative scenarios</primary>
+        </indexterm>
 
         <para>This captures the alternative scenarios, as linear flows, by
           reference to the basic flow. Initially we just build a list of the
@@ -945,13 +968,13 @@ These would be
       <title>Supplementary Requirement Specification</title>
 
       <indexterm>
-	<primary>Supplementary Requirement Specification</primary>
+        <primary>Supplementary Requirement Specification</primary>
       </indexterm>
       <indexterm>
-	<primary>Non-functional requirements</primary>
+        <primary>Non-functional requirements</primary>
       </indexterm>
       <indexterm>
-	<primary>Non-functional constraints</primary>
+        <primary>Non-functional constraints</primary>
       </indexterm>
 
       <para>This captures the non-functional requirements or constraints placed
@@ -1025,11 +1048,11 @@ They are edited
       <title>Actors</title>
 
       <indexterm>
-	<primary>Create New</primary>
-	<secondary>Actor</secondary>
+        <primary>Create New</primary>
+        <secondary>Actor</secondary>
       </indexterm>
       <indexterm>
-	<primary>Actor</primary>
+        <primary>Actor</primary>
       </indexterm>
 
       <para>To add an actor to the diagram use &button1; click on the actor
@@ -1049,12 +1072,12 @@ actor on the diagram.
 A &button1; click on the select icon
 (<guiicon>
           <inlinemediaobject>
-	    <imageobject>
-	      <imagedata format="GIF" 
-		align="center" 
-		fileref="images/icons/select.gif"/>
-	    </imageobject>
-	  </inlinemediaobject>
+            <imageobject>
+              <imagedata format="GIF" 
+                align="center" 
+                fileref="images/icons/select.gif"/>
+            </imageobject>
+          </inlinemediaobject>
 </guiicon>)
 will stop adding actors.
 </para>
@@ -1083,11 +1106,11 @@ will stop adding actors.
       <title>Use Cases</title>
 
       <indexterm>
-	<primary>Create New</primary>
-	<secondary>Use Case</secondary>
+        <primary>Create New</primary>
+        <secondary>Use Case</secondary>
       </indexterm>
       <indexterm>
-	<primary>Use Case</primary>
+        <primary>Use Case</primary>
       </indexterm>
 
       <para>The procedure for adding use cases is the same as that for adding
@@ -1118,13 +1141,13 @@ pane to display a context-sensitive pop-up menu and from that choose
       <sect3>
         <title>Adding an Extension Point to a Use Case</title>
 
-	<indexterm>
-	  <primary>Create New</primary>
-	  <secondary>Extension Point</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Extension Point</primary>
-	</indexterm>
+        <indexterm>
+          <primary>Create New</primary>
+          <secondary>Extension Point</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Extension Point</primary>
+        </indexterm>
 
         <para>There are two ways to add an extension point to a use
           case.</para>
@@ -1206,11 +1229,12 @@ using the &button2; pop-up menu over the
       <title>Associations</title>
 
       <indexterm>
-	<primary>Create New</primary>
-	<secondary>Association in a Use Case Diagram</secondary>
+        <primary>Create New</primary>
+        <secondary>Association in a Use Case Diagram</secondary>
       </indexterm>
       <indexterm>
-	<primary>Association in a Use Case Diagram</primary>
+        <primary>Association</primary>
+        <secondary>in a Use Case Diagram</secondary>
       </indexterm>
 
       <para>To join a use case to an actor on the diagram use &button1; click
@@ -1259,14 +1283,14 @@ Hold &button1; down
       <sect3 id="s3.tut.req_argo_navigation">
         <title>Setting Navigation</title>
         
-	<indexterm>
-	  <primary>Setting Navigation</primary>
-	  <secondary>to an association in a Use Case Diagram</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Navigation</primary>
-	  <secondary>Setting</secondary>
-	</indexterm>
+        <indexterm>
+          <primary>Setting Navigation</primary>
+          <secondary>to an association in a Use Case Diagram</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Navigation</primary>
+          <secondary>Setting</secondary>
+        </indexterm>
 
         <para>There are two ways of setting the navigation of an
           association.</para>
@@ -1278,7 +1302,7 @@ sub-menu has options for bi-directional navigation
 (the default, with no arrows) and
 for navigability Actor&rarr;Use Case and Use Case&rarr;Actor.
 </para>
-	  </listitem>
+          </listitem>
 
           <listitem><para>Use &button1; to select the association and select
             its property tab in the details pane. This shows a field named
@@ -1313,14 +1337,14 @@ for navigability Actor&rarr;Use Case and Use Case&rarr;Actor.
       <sect3>
         <title>Setting Multiplicity</title>
 
-	<indexterm>
-	  <primary>Setting Multiplicity</primary>
-	  <secondary>to an association in a Use Case Diagram</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Multiplicity</primary>
-	  <secondary>Setting</secondary>
-	</indexterm>
+        <indexterm>
+          <primary>Setting Multiplicity</primary>
+          <secondary>to an association in a Use Case Diagram</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Multiplicity</primary>
+          <secondary>Setting</secondary>
+        </indexterm>
 
         <para>There are two ways of setting multiplicity at the end of an
           association.</para>
@@ -1350,28 +1374,27 @@ cause a context-sensitive pop-up menu to appear with a sub-menu
       <title>Hierarchical Use Cases</title>
 
       <indexterm>
-	<primary>Hierarchical Use Cases</primary>
+        <primary>Hierarchical Use Cases</primary>
       </indexterm>
       <indexterm>
-	<primary>Use Case</primary>
-	<secondary>Hierarchical</secondary>
+        <primary>Use Case, Hierarchical</primary>
       </indexterm>
 
       <sect3>
         <title>Includes</title>
 
-	<indexterm>
-	  <primary>Create New</primary>
-	  <secondary>Include Relationship in a Use Case Diagram</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Include Relationship</primary>
-	  <secondary>in a Use Case Diagram</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Relationship</primary>
-	  <secondary>Include</secondary>
-	</indexterm>
+        <indexterm>
+          <primary>Create New</primary>
+          <secondary>Include Relationship in a Use Case Diagram</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Include Relationship</primary>
+          <secondary>in a Use Case Diagram</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Relationship</primary>
+          <secondary>Include</secondary>
+        </indexterm>
 
         <para>The procedure for adding an include relationship is the same as
           that for adding an association, but using the include icon from the
@@ -1395,18 +1418,18 @@ cause a context-sensitive pop-up menu to appear with a sub-menu
       <sect3>
         <title>Extends</title>
 
-	<indexterm>
-	  <primary>Create New</primary>
-	  <secondary>Extend Relationship in a Use Case Diagram</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Extend Relationship</primary>
-	  <secondary>in a Use Case Diagram</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Relationship</primary>
-	  <secondary>Extend</secondary>
-	</indexterm>
+        <indexterm>
+          <primary>Create New</primary>
+          <secondary>Extend Relationship in a Use Case Diagram</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Extend Relationship</primary>
+          <secondary>in a Use Case Diagram</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Relationship</primary>
+          <secondary>Extend</secondary>
+        </indexterm>
 
         <para>The procedure for adding an extend relationship is the same as
           that for adding an include relationship, but using the extend icon
@@ -1443,20 +1466,20 @@ cause a context-sensitive pop-up menu to appear with a sub-menu
       <sect3>
         <title>Generalization</title>
 
-	<indexterm>
-	  <primary>Create New</primary>
-	  <secondary>
+        <indexterm>
+          <primary>Create New</primary>
+          <secondary>
 Generalization relationship in a Use Case Diagram
 </secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Generalization Relationship</primary>
-	  <secondary>in a Use Case Diagram</secondary>
-	</indexterm>
-	<indexterm>
-	  <primary>Relationship</primary>
-	  <secondary>Generalization</secondary>
-	</indexterm>
+        </indexterm>
+        <indexterm>
+          <primary>Generalization Relationship</primary>
+          <secondary>in a Use Case Diagram</secondary>
+        </indexterm>
+        <indexterm>
+          <primary>Relationship</primary>
+          <secondary>Generalization</secondary>
+        </indexterm>
 
         <para>
 The procedure for adding generalizations, is the same as for
@@ -1499,8 +1522,8 @@ It is possible to name generalization relationships using the property
       <title>Stereotypes</title>
 
       <indexterm>
-	<primary>Stereotypes</primary>
-	<secondary>in Use Case Diagrams</secondary>
+        <primary>Stereotype</primary>
+        <secondary>in Use Case Diagrams</secondary>
       </indexterm>
 
       <para>UML has the concept of <emphasis>stereotyping</emphasis> as a way
@@ -1540,7 +1563,7 @@ The details of stereotyping are beyond the scope of this
       <title>Documentation</title>
 
       <indexterm>
-	<primary>Documentation in Use Case Diagrams</primary>
+        <primary>Documentation in Use Case Diagrams</primary>
       </indexterm>
 
       <para>&argouml; has some simple documentation facilities associated with
@@ -1587,7 +1610,7 @@ The state of this flag is not
       <title>System Boundary Box</title>
 
       <indexterm>
-	<primary>System Boundary Box in Use Case Diagram</primary>
+        <primary>System Boundary Box in Use Case Diagram</primary>
       </indexterm>
 
       <para>&argouml; provides a series of tools to provide arbitrary graphical
@@ -1621,8 +1644,8 @@ The state of this flag is not
       <title>Vision Document</title>
 
       <indexterm>
-	<primary>Vision Document</primary>
-	<secondary>Case Study</secondary>
+        <primary>Vision Document</primary>
+        <secondary>Case Study</secondary>
       </indexterm>
 
       <para>

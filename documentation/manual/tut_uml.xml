@@ -1066,7 +1066,7 @@ As is conventional, menu options and toolbar options that are not available
         <itemizedlist>
           <listitem>
 	    <indexterm>
-	      <primary>File menu</primary>
+	      <primary>File Menu</primary>
 	    </indexterm>
 	    <para>
 <emphasis>File</emphasis> menu. 
@@ -1078,7 +1078,7 @@ This allows you to
 
           <listitem>
 	    <indexterm>
-	      <primary>Edit menu</primary>
+	      <primary>Edit Menu</primary>
 	    </indexterm>
 	    <para>
 <emphasis>Edit</emphasis> menu. 
@@ -1089,7 +1089,7 @@ This allows you to
 
           <listitem>
 	    <indexterm>
-	      <primary>View menu</primary>
+	      <primary>View Menu</primary>
 	    </indexterm>
 	    <para>
 <emphasis>View</emphasis> menu. 
@@ -1102,7 +1102,7 @@ This allows you to
 
           <listitem>
 	    <indexterm>
-	      <primary>Create Diagram menu</primary>
+	      <primary>Create Diagram Menu</primary>
 	    </indexterm>
 	    <para>
 <emphasis>Create Diagram</emphasis> menu. 
@@ -1122,7 +1122,7 @@ circumstance).
 
           <listitem>
 	    <indexterm>
-	      <primary>Arrange menu</primary>
+	      <primary>Arrange Menu</primary>
 	    </indexterm>
 	    <para>
 <emphasis>Arrange</emphasis> menu.
@@ -1132,7 +1132,7 @@ This allows you to
 
           <listitem>
 	    <indexterm>
-	      <primary>Generation menu</primary>
+	      <primary>Generation Menu</primary>
 	    </indexterm>
 	    <para>
 <emphasis>Generation</emphasis> menu. 
@@ -1142,7 +1142,7 @@ This allows you
 
           <listitem>
 	    <indexterm>
-	      <primary>Critique menu</primary>
+	      <primary>Critique Menu</primary>
 	    </indexterm>
 	    <para>
 <emphasis>Critique</emphasis> menu. 
@@ -1153,7 +1153,7 @@ This allows you
 
           <listitem>
 	    <indexterm>
-	      <primary>Tools menu</primary>
+	      <primary>Tools Menu</primary>
 	    </indexterm>
 	    <para>
 <emphasis>Tools</emphasis> menu. 
@@ -1164,7 +1164,7 @@ in your version of &argouml;.
 
           <listitem>
 	    <indexterm>
-	      <primary>Help menu</primary>
+	      <primary>Help Menu</primary>
 	    </indexterm>
 	    <para>
 <emphasis>Help</emphasis> menu. 

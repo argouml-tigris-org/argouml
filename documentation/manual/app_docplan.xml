@@ -167,11 +167,23 @@ TODO: Remove this from the user manual.
 
         <listitem><para>Design</para>
           <orderedlist>
-            <listitem><para>Class Diagrams for Realisation</para></listitem>
-            <listitem><para>Sequence Charts and Collaboration Diagrams for
-              Realisation</para></listitem>
-            <listitem><para>Statechart Diagrams for realisation</para></listitem>
-            <listitem><para>Package Diagrams</para></listitem>
+            <listitem>
+              <para>Class Diagrams for Realization
+</para>
+            </listitem>
+            <listitem>
+              <para>Sequence Charts and Collaboration Diagrams for
+Realization
+</para>
+            </listitem>
+            <listitem>
+              <para>Statechart Diagrams for realization
+</para>
+            </listitem>
+            <listitem>
+              <para>Package Diagrams
+</para>
+            </listitem>
           </orderedlist>
         </listitem>
 

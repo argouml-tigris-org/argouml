@@ -78,7 +78,7 @@ This is the Analysis tutorial chapter of the User Manual.
       <!-- Use Cases and their specifications recast in solution language. -->
 
       <sect3>
-        <title>Realisation Use Case Diagram (To be written)</title>
+        <title>Realization Use Case Diagram (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -400,11 +400,11 @@ This is the Analysis tutorial chapter of the User Manual.
     </sect2>
   </sect1>
 
-  <!-- Realisation Use Cases. Note that this doesn't require anything new - its
+  <!-- Realization Use Cases. Note that this doesn't require anything new - its
        just what has to be done with what we have already. -->
 
   <sect1>
-    <title>Realisation Use Cases (To be written)</title>
+    <title>Realization Use Cases (To be written)</title>
 
     <remark>To be written&hellip;</remark>
   </sect1>
@@ -412,7 +412,7 @@ This is the Analysis tutorial chapter of the User Manual.
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating Realisation Use Cases in &argouml; (To be written)</title>
+    <title>Creating Realization Use Cases in &argouml; (To be written)</title>
 
     <remark>To be written&hellip;</remark>
   </sect1>
@@ -460,7 +460,7 @@ This is the Analysis tutorial chapter of the User Manual.
     </sect2>
 
     <sect2>
-      <title>Realisation Use Cases (To be written)</title>
+      <title>Realization Use Cases (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>

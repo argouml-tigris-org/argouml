@@ -17,11 +17,18 @@ This is the Design tutorial chapter of the User Manual.
       language of a putative solution. In the Design Phase, we construct all
       the details of that solution.</para>
 
-    <para>The blurred boundary between Analysis and Design is reflected in
-      their use of many of the same UML tools. In this chapter we will mostly
-      be reusing UML technology we have already met once. The big step is
-      casting everything into concrete terms. We move from the abstract
-      concepts of analysis to their concrete realisation.</para>
+    <para>
+The blurred boundary between Analysis and Design is reflected in their
+use of many of the same UML tools.
+
+In this chapter we will mostly be reusing UML technology we have
+already met once.
+
+The big step is casting everything into concrete terms.
+
+We move from the abstract concepts of analysis to their concrete
+realization.
+</para>
 
     <para>Once again the <emphasis>recursive</emphasis>, and
       <emphasis>iterative</emphasis> nature of our process means we will come
@@ -68,7 +75,7 @@ Sequence Diagrams and Collaboration Diagrams (To be written)
         <remark>To be written&hellip;</remark>
       </sect3>
 
-      <!-- Statechart Diagrams are the detailed realisation of classes that link
+      <!-- Statechart Diagrams are the detailed realization of classes that link
            them to sequence and collaboration diagrams. Activity Diagrams are a
            variant-->
 

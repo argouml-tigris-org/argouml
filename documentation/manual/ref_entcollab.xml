@@ -172,7 +172,9 @@ Argo/UML.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para>
+          <listitem>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -580,7 +582,9 @@ Argo/UML.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para>
+          <listitem>
+            <para>&constraintssupport;
+</para>
           </listitem>
         </varlistentry>
 
@@ -882,7 +886,9 @@ Argo/UML.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem><para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1221,7 +1227,10 @@ Argo/UML.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>&constraints_support;</para></listitem>
+          <listitem>
+            <para>&constraintssupport;
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->

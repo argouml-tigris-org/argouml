@@ -9,7 +9,7 @@ present. Look for comments with "Fix when ready" in them.
 
 MVW: I commented out all the "glossseealso" references, 
 because they do not generate well, and currently 
-only pollute the manual with garbled hyperlinks.
+only pollute the manual with garbled hyper-links.
 TODO: restore them if/when the generation problem is resolved.  
 -->
 
@@ -112,8 +112,10 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
         <primary>Association Class</primary>
       </indexterm>
 
-        <para>A class that characterises the association between two other
-          clases.</para>
+        <para>
+A class that characterizes the association between two other
+classes.
+</para>
 
         <!--glossseealso otherterm="gl.class"/-->
       </glossdef>
@@ -181,7 +183,9 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
         <primary>CASE</primary>
       </indexterm>
 
-        <para>Computer Aided Sofware Engineering.</para>
+        <para>
+Computer Aided Software Engineering.
+</para>
       </glossdef>
     </glossentry>
 
@@ -255,14 +259,16 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
 	<secondary>Collaboration</secondary>
       </indexterm>
 
-        <para>A UML Diagram showing the dyanamic behavior as messages are
-          passed between objects. Equivalent to a <emphasis>Sequence
-          Diagram</emphasis>. Which representation is appropriate depends on
-          the problem under consideration. See
-
-          <!-- Fix when ready <xref linkend="s1.umlcollabdiags"/> -->
-
-          for more information.</para>
+        <para>
+A UML Diagram showing the dynamic behavior as messages are passed
+between objects.
+Equivalent to a <emphasis>Sequence Diagram</emphasis>. 
+Which representation is appropriate depends on the problem under
+consideration.
+<!-- TODO:
+See <xref linkend="s1.umlcollabdiags"/> for more information.
+ -->
+</para>
 
         <!--glossseealso otherterm="gl.seqdiag"/-->
       </glossdef>
@@ -312,14 +318,6 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
       <glossdef>
       <indexterm>
         <primary>Concept Class Diagram</primary>
-      </indexterm>
-      <indexterm>
-        <primary>Class Diagram</primary>
-	<secondary>Concept</secondary>
-      </indexterm>
-      <indexterm>
-        <primary>Diagram</primary>
-	<secondary>Concept Class</secondary>
       </indexterm>
 
         <para>A Class Diagram constructed during the Analysis Phase to show the
@@ -408,35 +406,16 @@ See <xref linkend="s1.umlactivitydiags"/> for more information.
 	<secondary>Generalization</secondary>
       </indexterm>
 
-        <para>A relationship between one <emphasis>generalising</emphasis>
-          Use Cases and one or more <emphasis>generalised</emphasis> Use
-          Cases, where the <emphasis>generalised</emphasis> Use Cases are
-          particular examples of the <emphasis>generalising</emphasis> Use
-          Case.</para>
+        <para>
+A relationship between one <emphasis>generalizing</emphasis> Use Cases
+and one or more <emphasis>generalized</emphasis> Use Cases, where the
+<emphasis>generalized</emphasis> Use Cases are particular examples of
+the <emphasis>generalizing</emphasis> Use Case.
+</para>
 
         <!--glossseealso otherterm="gl.extends"/-->
         <!--glossseealso otherterm="gl.includes"/-->
         <!--glossseealso otherterm="gl.usecase"/-->
-      </glossdef>
-    </glossentry>
-
-    <!-- GNU -->
-
-    <glossentry id="gl.gnu">
-      <glossterm>GNU</glossterm>
-
-      <glossdef>
-      <indexterm>
-        <primary>GNU</primary>
-      </indexterm>
-
-        <para>"GNU's Not Unix". One of the first open/free source
-projects.
-Originally best known for its GNU version of the Emacs
-          editor, it now has many other projects, usually closely allied to
-          Linux.</para>
-
-        <!--glossseealso otherterm="gl.linux"/-->
       </glossdef>
     </glossentry>
 
@@ -471,12 +450,7 @@ Originally best known for its GNU version of the Emacs
         <primary>Hierarchical Statechart Diagram</primary>
       </indexterm>
       <indexterm>
-        <primary>Statechart Diagram</primary>
-	<secondary>Hierarchical</secondary>
-      </indexterm>
-      <indexterm>
-        <primary>Diagram</primary>
-	<secondary>Hierarchical State</secondary>
+        <primary>Statechart Diagram, Hierarchical</primary>
       </indexterm>
 
         <para>A <emphasis>Statechart Diagram</emphasis> that contains subsidiary
@@ -576,26 +550,6 @@ Originally best known for its GNU version of the Emacs
   <!-- K -->
 
   <!-- L -->
-
-  <glossdiv>
-    <title>L</title>
-
-    <!-- Linux -->
-
-    <glossentry id="gl.linux">
-      <glossterm>Linux</glossterm>
-
-      <glossdef>
-      <indexterm>
-        <primary>Linux</primary>
-      </indexterm>
-
-        <para>An open source version of the Unix operating system.</para>
-
-        <!--glossseealso otherterm="gl.gnu"/-->
-      </glossdef>
-    </glossentry>
-  </glossdiv>
 
   <!-- M -->
 
@@ -740,8 +694,11 @@ Originally best known for its GNU version of the Emacs
 	<primary>Object Management Group</primary>
       </indexterm>
 
-        <para>The Object Management Group. An international industry
-          standardisation body. Best known for CORBA and UML.</para>
+        <para>
+The Object Management Group.
+An international industry standardization body.
+Best known for CORBA and UML.
+</para>
 
         <!--glossseealso otherterm="gl.uml"/-->
       </glossdef>
@@ -817,8 +774,9 @@ Originally best known for its GNU version of the Emacs
         <primary>Pane</primary>
       </indexterm>
 
-        <para>A subwindow within the main window of the &argouml; user
-          interface.</para>
+        <para>
+A sub-window within the main window of the &argouml; user interface.
+</para>
       </glossdef>
     </glossentry>
   </glossdiv>
@@ -830,18 +788,17 @@ Originally best known for its GNU version of the Emacs
   <glossdiv>
     <title>R</title>
 
-    <!-- Realisation Use Case -->
+    <!-- Realization Use Case -->
 
     <glossentry id="gl.relusecase">
-      <glossterm>Realisation Use Case</glossterm>
+      <glossterm>Realization Use Case</glossterm>
 
       <glossdef>
       <indexterm>
-        <primary>Realisation Use Case</primary>
+        <primary>Realization Use Case</primary>
       </indexterm>
       <indexterm>
-        <primary>Use Case</primary>
-	<secondary>Realisation</secondary>
+        <primary>Use Case Realization</primary>
       </indexterm>
 
         <para>A <emphasis>Use Case</emphasis> where the <emphasis>Use Case
@@ -875,19 +832,21 @@ Originally best known for its GNU version of the Emacs
       </glossdef>
     </glossentry>
 
-    <!-- Requirements Capture -->
+    <!-- Requirement Capturing -->
 
     <glossentry id="gl.requirements">
-      <glossterm>Requirements Capture</glossterm>
+      <glossterm>Requirement Capturing</glossterm>
 
       <glossdef>
       <indexterm>
-        <primary>Requirements Capture</primary>
+        <primary>Requirement Capturing</primary>
       </indexterm>
 
-        <para>Requirements capture is the process of identifying what the
-          <quote>customer</quote> wants from the proposed system. See
-          <xref linkend="ch.tut.reqs"/> for a fuller description.</para>
+        <para>
+Requirement capturing is the process of identifying what the
+<quote>customer</quote> wants from the proposed system.
+See <xref linkend="ch.tut.reqs"/> for a fuller description.
+</para>
 
         <!--glossseealso otherterm="gl.usecase"/-->
       </glossdef>
@@ -914,11 +873,14 @@ Originally best known for its GNU version of the Emacs
 	<secondary>Sequence</secondary>
       </indexterm>
 
-        <para>A UML Diagram showing the dyanamic behavior as messages are
-          passed between objects. Equivalent to a <emphasis>Collaboration
-          Diagram</emphasis>. Which representation is appropriate depends on
-          the problem under consideration. See 
-          <xref linkend="s1.umlseqdiags"/> for more information.</para>
+        <para>
+A UML Diagram showing the dynamic behavior as messages are passed
+between objects.
+Equivalent to a <emphasis>Collaboration Diagram</emphasis>.
+Which representation is appropriate depends on the problem under
+consideration.
+See <xref linkend="s1.umlseqdiags"/> for more information.
+</para>
 
         <!--glossseealso otherterm="gl.collabdiag"/-->
       </glossdef>
@@ -984,17 +946,21 @@ Originally best known for its GNU version of the Emacs
 
       <glossdef>
       <indexterm>
-        <primary>State</primary>
-	<secondary>Diagram</secondary>
+        <primary>State Diagram</primary>
+      </indexterm>
+      <indexterm>
+        <primary>Statechart Diagram</primary>
       </indexterm>
       <indexterm>
         <primary>Diagram</primary>
 	<secondary>State</secondary>
       </indexterm>
 
-        <para>A UML Diagram showing the dyanamic behavior of an active
-          <emphasis>Object</emphasis>. See <xref linkend="s1.umlstatediags"/>
-          for more information.</para>
+        <para>
+A UML Diagram showing the dynamic behavior of an active
+<emphasis>Object</emphasis>.
+See <xref linkend="s1.umlstatediags"/> for more information.
+</para>
 
         <!--glossseealso otherterm="gl.object"/-->
       </glossdef>
@@ -1007,7 +973,7 @@ Originally best known for its GNU version of the Emacs
 
       <glossdef>
       <indexterm>
-        <primary>Stereotypes</primary>
+        <primary>Stereotype</primary>
       </indexterm>
       <indexterm>
 	<primary>Stereotyping</primary>
@@ -1019,12 +985,15 @@ Originally best known for its GNU version of the Emacs
           is generally indicated with the notation
           <literal>&lt;&lt;spqr&gt;&gt;</literal>.</para>
 
-        <para>A stereotype defines a namespace within the design. Examples of
-          stereotypes are <literal>&lt;&lt;business&gt;&gt;</literal> and
-          <literal>&lt;&lt;realisation&gt;&gt;</literal> for Use Cases, used to
-          distinguish between Use Cases at the requirements phase defined in
-          terms of the problem domain, and Use Cases at the analysis phase
-          defined in terms of the solution domain.</para>
+        <para>
+A stereotype defines a Namespace within the design.
+Examples of stereotypes are
+<literal>&lt;&lt;business&gt;&gt;</literal> and
+<literal>&lt;&lt;realization&gt;&gt;</literal> for Use Cases, used to
+distinguish between Use Cases at the requirements phase defined in
+terms of the problem domain, and Use Cases at the analysis phase
+defined in terms of the solution domain.
+</para>
 
         <!--glossseealso otherterm="gl.uml"/-->
       </glossdef>
@@ -1033,11 +1002,11 @@ Originally best known for its GNU version of the Emacs
     <!-- Supplementary Specification -->
 
     <glossentry id="gl.supspec">
-      <glossterm>Supplementary Specification</glossterm>
+      <glossterm>Supplementary Requirement Specification</glossterm>
 
       <glossdef>
       <indexterm>
-        <primary>Supplementary Specification</primary>
+        <primary>Supplementary Requirement Specification</primary>
       </indexterm>
 
         <para>The document capturing non-functional requirements that cannot be
@@ -1057,9 +1026,10 @@ Originally best known for its GNU version of the Emacs
         <primary>SVG</primary>
       </indexterm>
 
-        <para>Scalable Vector Graphics format. A standard representation of
-          graphics diagrams that use vectors.
-ArgoUML can export diagrams in SVG.
+        <para>
+Scalable Vector Graphics format.
+A standard representation of graphics diagrams that use vectors.
+&argouml; can export diagrams in SVG.
 </para>
       </glossdef>
     </glossentry>
@@ -1078,10 +1048,12 @@ ArgoUML can export diagrams in SVG.
 	<secondary>System Sequence</secondary>
       </indexterm>
 
-        <para>A <emphasis>Sequence Diagram</emphasis> used in the
-          <emphasis>Analysis</emphasis> Phase showing the dyanamic behavior of
-          the overall system. See
-          <xref linkend="ch.tut.analysis"/> for more information.</para>
+        <para>
+A <emphasis>Sequence Diagram</emphasis> used in the
+<emphasis>Analysis</emphasis> Phase showing the dynamic behavior of
+the overall system.
+See <xref linkend="ch.tut.analysis"/> for more information.
+</para>
 
         <!--glossseealso otherterm="gl.seqdiag"/-->
       </glossdef>
@@ -1101,10 +1073,12 @@ ArgoUML can export diagrams in SVG.
 	<secondary>System State</secondary>
       </indexterm>
 
-        <para>A <emphasis>Statechart Diagram</emphasis> used in the
-          <emphasis>Analysis</emphasis> Phase showing the dyanamic behavior of
-          an active top level system objects. See
-          <xref linkend="ch.tut.analysis"/> for more information.</para>
+        <para>
+A <emphasis>Statechart Diagram</emphasis> used in the
+<emphasis>Analysis</emphasis> Phase showing the dynamic behavior of an
+active top level system objects.
+See <xref linkend="ch.tut.analysis"/> for more information.
+</para>
 
         <!--glossseealso otherterm="gl.statediag"/-->
       </glossdef>
@@ -1165,10 +1139,12 @@ ArgoUML can export diagrams in SVG.
         <primary>UML</primary>
       </indexterm>
 
-        <para>Universal Modelling Language. A graphical notation for &ooad;
-          processes, standardised by the OMG. &argouml; follows UML
-          v1.3. Version 1.4 was released during 2001, with v2.0 planned for
-          2002.</para>
+        <para>
+Universal Modeling Language.
+A graphical notation for &ooad; processes, standardized by the
+OMG. &argouml; follows UML v1.3. Version 1.4 was released during 2001,
+with v2.0 planned for 2002.
+</para>
 
         <!--glossseealso otherterm="gl.omg"/-->
       </glossdef>
@@ -1200,8 +1176,7 @@ ArgoUML can export diagrams in SVG.
 
       <glossdef>
       <indexterm>
-        <primary>Use Case</primary>
-	<secondary>Diagram</secondary>
+        <primary>Use Case Diagram</primary>
       </indexterm>
       <indexterm>
         <primary>Diagram</primary>
@@ -1224,8 +1199,7 @@ ArgoUML can export diagrams in SVG.
 
       <glossdef>
       <indexterm>
-        <primary>Use Case</primary>
-	<secondary>Specification</secondary>
+        <primary>Use Case Specification</primary>
       </indexterm>
 
         <para>The document capturing the detailed requirements behind a Use
@@ -1272,10 +1246,12 @@ ArgoUML can export diagrams in SVG.
         <primary>W3C</primary>
       </indexterm>
 
-        <para>The World Wide Web Consortium,
-          <ulink url="http://www.w3c.org">www.w3c.org</ulink>. An
-          international standardisation body for all things to do with the
-          World Wide Web.</para>
+        <para>
+The World Wide Web Consortium,
+<ulink url="http://www.w3c.org">www.w3c.org</ulink>.
+An international standardization body for all things to do with the
+World Wide Web.
+</para>
       </glossdef>
     </glossentry>
 
