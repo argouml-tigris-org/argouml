@@ -188,7 +188,6 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
    * Called by the XML framework when an entity starts.
    */
   public void startElement(String elementName,AttributeList attrList) {
-    System.out.println("startElement("+elementName+",AttributeList)"+_elementState+";"+_nestedGroups);
     if (_elementState == NODE_STATE && elementName.equals("group") &&
         _currentNode != null && attrList != null &&
         (_currentNode instanceof FigClass  || _currentNode instanceof FigInterface)) {
