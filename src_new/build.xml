@@ -594,7 +594,7 @@ Most useful targets are:
   <!-- =================================================================== -->
   <!-- Initialize for the junit tests.                                     -->
   <!-- =================================================================== -->
-  <target depends="init, ant.optional.init" name="junit-init">
+  <target depends="init" name="junit-fetch-init">
 
      <property name="011202.xml" value="tests/testmodels/01-12-02.xml"/>
      <property name="991015.dtd" value="tests/testmodels/Model.dtd"/>
@@ -607,11 +607,11 @@ Most useful targets are:
   <!-- Get the uml 1.3 dtd if necessary                                    -->
   <!-- =================================================================== -->
   <target name="junit-get-991015-dtd" 
-          depends="junit-init" unless="991015.dtd.available">
+          depends="junit-fetch-init" unless="991015.dtd.available">
 
     <get dest="${991015.dtd}"
          ignoreerrors="true"
-         src="http://cgi.omg.org/docs/ad/99-10-15.dtd"
+         src="http://www.omg.org/cgi-bin/apps/doc?ad/99-10-15.dtd"
          usetimestamp="true"
          verbose="false"/>
 
@@ -623,12 +623,12 @@ Most useful targets are:
   <!-- Get the uml 1.3 model if necessary                                  -->
   <!-- =================================================================== -->
   <target name="junit-get-011202-xml"
-          depends="junit-init"
+          depends="junit-fetch-init"
           unless="011202.xml.available">
 
     <get dest="${011202.xml}"
          ignoreerrors="true"
-         src="http://cgi.omg.org/docs/ad/01-12-02.xml"
+         src="http://www.omg.org/cgi-bin/apps/doc?ad/01-12-02.xml"
          usetimestamp="true"
          verbose="false"/>
 
@@ -707,7 +707,7 @@ Most useful targets are:
   <!-- Run the junit tests.                                                -->
   <!-- =================================================================== -->
   <target name="tests"
-          depends="compile,junit-setup,junit-report-clean,ant.optional.init">
+          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
     <!-- This should never be committed as "withOutAndErr", but    -->
@@ -730,15 +730,9 @@ Most useful targets are:
         <formatter type="xml"/>
       <batchtest todir="${argo.tests.reports}/junit/output">
         <fileset dir="${argo.tests.src}">
-          <include name="org/argouml/**/Test*.java"/>
+          <include name="org/argouml/**/TestAgainst*.java"/>
         </fileset>
       </batchtest>
-<!--
-      <test name="org.argouml.model.uml.OptionalTestAgainstUmlModel"
-            todir="${argo.tests.reports}/junit/output"
-            if="011202.xml.available">
-      </test>
--->
     </junit>
     <antcall target="junit-report-create"/>
 
@@ -748,7 +742,7 @@ Most useful targets are:
   <!-- Run the junit tests, the ones that include GUI stuff.               -->
   <!-- =================================================================== -->
   <target name="guitests"
-          depends="compile,junit-setup,junit-report-clean,ant.optional.init">
+          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
     <!-- This should never be committed as "withOutAndErr", but    -->
