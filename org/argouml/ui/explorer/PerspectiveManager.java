@@ -130,68 +130,69 @@ public class PerspectiveManager {
      */
     public void loadDefaultPerspectives(){
         
-        String userPerspectives = 
-            Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, "");
-        
-        StringTokenizer perspectives =new StringTokenizer(userPerspectives,";");
-        
-        if(perspectives.hasMoreTokens()){
-            
-            // load user perspectives
-            while(perspectives.hasMoreTokens()){
-                String perspective = perspectives.nextToken();
-                StringTokenizer perspectiveDetails =
-                    new StringTokenizer(perspective,",");
-                
-                //get the perspective name
-                String perspectiveName = perspectiveDetails.nextToken();
-                
-                ExplorerPerspective userDefinedPerspective =
-                    new ExplorerPerspective(perspectiveName);
-                
-                // make sure there are some rules...
-                if(perspectiveDetails.hasMoreTokens()){
-                    
-                    //get the rules
-                    while(perspectiveDetails.hasMoreTokens()){
-                        
-                        //get the rule name
-                        String ruleName = perspectiveDetails.nextToken();
-                        
-                        // create the rule:
-                        try{
-                            Class ruleClass = 
-                                Class.forName(RULES_PACKAGE+ruleName);
-                            
-                            PerspectiveRule rule =
-                                (PerspectiveRule)ruleClass.newInstance();
-                            
-                            userDefinedPerspective.addRule(rule);
-                            
-                        }catch(Exception ex){
-                            cat.error("could not create rule "+ex);
-                        }
-                    }
-                    
-                }
-                // rule name but no rules
-                else{
-                    continue;
-                }
-                
-                // add the perspective
-                addPerspective(userDefinedPerspective);
-            }
-        }
-        // no user defined perspectives, so load defaults.
-        else{
-            oldLoadDefaultPerspectives();
-        }
-        
-        // one last check that some loaded.
-        if(getPerspectives().size() ==0){
-            oldLoadDefaultPerspectives();
-        }
+        oldLoadDefaultPerspectives();
+//        String userPerspectives = 
+//            Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, "");
+//        
+//        StringTokenizer perspectives =new StringTokenizer(userPerspectives,";");
+//        
+//        if(perspectives.hasMoreTokens()){
+//            
+//            // load user perspectives
+//            while(perspectives.hasMoreTokens()){
+//                String perspective = perspectives.nextToken();
+//                StringTokenizer perspectiveDetails =
+//                    new StringTokenizer(perspective,",");
+//                
+//                //get the perspective name
+//                String perspectiveName = perspectiveDetails.nextToken();
+//                
+//                ExplorerPerspective userDefinedPerspective =
+//                    new ExplorerPerspective(perspectiveName);
+//                
+//                // make sure there are some rules...
+//                if(perspectiveDetails.hasMoreTokens()){
+//                    
+//                    //get the rules
+//                    while(perspectiveDetails.hasMoreTokens()){
+//                        
+//                        //get the rule name
+//                        String ruleName = perspectiveDetails.nextToken();
+//                        
+//                        // create the rule:
+//                        try{
+//                            Class ruleClass = 
+//                                Class.forName(RULES_PACKAGE+ruleName);
+//                            
+//                            PerspectiveRule rule =
+//                                (PerspectiveRule)ruleClass.newInstance();
+//                            
+//                            userDefinedPerspective.addRule(rule);
+//                            
+//                        }catch(Exception ex){
+//                            cat.error("could not create rule "+ex);
+//                        }
+//                    }
+//                    
+//                }
+//                // rule name but no rules
+//                else{
+//                    continue;
+//                }
+//                
+//                // add the perspective
+//                addPerspective(userDefinedPerspective);
+//            }
+//        }
+//        // no user defined perspectives, so load defaults.
+//        else{
+//            oldLoadDefaultPerspectives();
+//        }
+//        
+//        // one last check that some loaded.
+//        if(getPerspectives().size() ==0){
+//            oldLoadDefaultPerspectives();
+//        }
     }
         
     /**
