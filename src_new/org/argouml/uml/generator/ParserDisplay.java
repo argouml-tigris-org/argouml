@@ -1380,10 +1380,11 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     // Should we be getting this from the GUI? BT 11 aug 2002
     type = p.findType(name);
     if (type == null) { // no type defined yet
-	type = UmlFactory.getFactory().getCore().buildClass(name);
+	type = UmlFactory.getFactory().getCore().buildClass(name, defaultSpace);
     }
     if (type.getModel() != p.getModel() && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(type.getNamespace())) {
-    	type.setNamespace(p.getModel());
+	ModelManagementHelper.getHelper().importElement(type, type, defaultSpace.getModel());
+    	// type.setNamespace(p.getModel());
     }
     return type;
   }

@@ -106,21 +106,27 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr01, "name");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr02, "name");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr03, "name");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr04, "name");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr05, "name");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkName(attr, attr06, "name");
 	}
 
@@ -128,15 +134,19 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkType(attr, attr03, "void");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkType(attr, attr04, "int");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkType(attr, attr05, "int");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkType(attr, attr06, "int");
 	}
 
@@ -144,26 +154,33 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr02, "public");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr03, "private");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr04, "protected");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr05, "public");
 		checkVisibility(attr, attr01, "public");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr06, "private");
 		checkVisibility(attr, attr01, "private");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr08, "public");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkVisibility(attr, attr11, "public");
 	}
 
@@ -174,12 +191,15 @@ public class TestParserDisplay extends TestCase {
 		String res3[] = {"a", "b", "c", "d", "frozen", null};
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkProperties(attr, attr04, res1);
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkProperties(attr, attr05, res2);
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkProperties(attr, attr06, res3);
 	}
 
@@ -187,12 +207,15 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkMultiplicity(attr, attr04, new MMultiplicity("1..1"));
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkMultiplicity(attr, attr05, new MMultiplicity("1..*"));
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkMultiplicity(attr, attr06, new MMultiplicity("*..*"));
 	}
 
@@ -200,6 +223,7 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkThrows(attr, nattr01, true, false, false);
 		checkThrows(attr, nattr02, true, false, false);
 		checkThrows(attr, nattr03, true, false, false);
@@ -219,26 +243,33 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr05, "0");
 		checkValue(attr, attr01, "0");
 		checkValue(attr, attr06, "15");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr07, "\'val[15] \'");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr08, "\"a <<string>>\"");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr09, "(a * (b+c) - d)");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr10, "2 * (b+c) - 10");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr11, "a[15]");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkValue(attr, attr12, "a << 5");
 	}
 
@@ -283,6 +314,7 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationName() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
+		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkName(op, oper01, "name");
@@ -297,6 +329,7 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationType() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
+		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkType(op, oper01, "void");
@@ -312,6 +345,7 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationVisibility() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
+		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkVisibility(op, oper01, "public");
@@ -331,6 +365,7 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationParameters() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
+		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 
 		String res1[] = {};
 		String res2[] = {"in", "foo", "float", "0"};
@@ -351,6 +386,7 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationProperties() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
+		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 
 		String res1[] = {"abstract", null, "concurrency", null,
 			"concurrent", null, "guarded", null, "leaf", null,
@@ -390,6 +426,7 @@ public class TestParserDisplay extends TestCase {
 	public void testOperationParseExceptions() {
 		MOperation op;
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
+		cl.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkThrows(op, noper01, true, false, false);
