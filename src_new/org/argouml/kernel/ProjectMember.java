@@ -60,8 +60,17 @@ public abstract class ProjectMember {
 
   public void updateProjectName() {
     if (_name == null) return;
-    if (_name.indexOf("_") >= 0)
-      _name = _name.substring(_name.indexOf("_")+1);
+    
+    // Check if the name of this file has a extension, that indicates the
+    // type of the diagram (i.e. 'myproject_classdiagram1.pgml' for a
+    // project named 'myproject'. Try to preserve that extension, even
+    // if the projectname contains a underscore (see issue 221 for more
+    // info).
+    if( _name.startsWith(_project.getBaseName()) &&
+	(_name.lastIndexOf("_") > _project.getBaseName().lastIndexOf("_"))) {
+      _name = _name.substring(_name.lastIndexOf("_")+1);
+    }
+
     _name = _project.getBaseName() + "_" + _name;
   }
 
