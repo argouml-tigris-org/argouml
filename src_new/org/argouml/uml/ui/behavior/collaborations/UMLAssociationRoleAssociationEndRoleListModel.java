@@ -33,6 +33,8 @@ import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * List model that shows the AssociationEndRoles belonging to some 
+ * AssociationRole. 
  * @since Oct 4, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
