@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,57 +33,57 @@ import org.tigris.gef.presentation.*;
  *  @since 0.11.1
  */
 public abstract class ClassdiagramEdge implements LayoutedEdge {
-
+    
     /** the layout is oriented on a grid. These are our grid spaces.
      */
     private static int vGap;
     private static int hGap;
-
-
+    
+    
     private FigEdge currentEdge = null;
     /** the underlying fig of the edge we want to layout */
     private FigPoly underlyingFig = null;
-
+    
     /** each fig has a source and a destination port
      */
     private Fig destFigNode;
     private Fig sourceFigNode;
-
-
-    /** Constructor.
+    
+   
+    /** Constructor. 
      * @param edge the Edge to layout
      */
     public ClassdiagramEdge(FigEdge edge) {
         currentEdge = edge;
         underlyingFig = new FigPoly();
         underlyingFig.setLineColor(edge.getFig().getLineColor());
-
+       
         destFigNode = edge.getDestFigNode();
         sourceFigNode = edge.getSourceFigNode();
     }
-
-    /**
+    
+    /** 
      * Abstract method to layout the edge.
      *
      * @see org.argouml.uml.diagram.layout.LayoutedEdge#layout()
      */
-    public abstract void layout();
-
+    public abstract void layout();  
+ 
     /**
      * @param h the horizontal gap
      */
     public static void setHGap(int h) { hGap = h; }
-
+    
     /**
      * @param v the vertical gap
      */
     public static void setVGap(int v) { vGap = v; }
-
+    
     /**
      * @return the horizontal gap
      */
     public static int getHGap() { return hGap; }
-
+    
     /**
      * @return the vertical gap
      */
@@ -115,7 +115,6 @@ public abstract class ClassdiagramEdge implements LayoutedEdge {
      */
     protected FigPoly getUnderlyingFig() {
         return underlyingFig;
-    }
-
+    }    
 }
-
+      

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,9 +24,15 @@
 
 package org.argouml.uml.diagram.static_structure.layout;
 
-import org.tigris.gef.presentation.*;
 import org.apache.log4j.Logger;
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.diagram.layout.LayoutedObject;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
+import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigGeneralization;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigRealization;
+import org.tigris.gef.presentation.FigNode;
 
 /** a class to get the proper layouter for a Fig.
  * Currently this deals only with Generalizations and Realizations.
@@ -34,7 +40,8 @@ import org.argouml.uml.diagram.ui.*;
  * @author Markus Klink
  * @stereotype singleton
 */
-public class ClassdiagramModelElementFactory {
+public class ClassdiagramModelElementFactory 
+{
     private static final Logger LOG =
 	Logger.getLogger(ClassdiagramModelElementFactory.class);
 
@@ -43,27 +50,29 @@ public class ClassdiagramModelElementFactory {
      */
     public static final ClassdiagramModelElementFactory SINGLETON =
 	new ClassdiagramModelElementFactory();
-
+    
     private ClassdiagramModelElementFactory() { }
-
+    
     /** create layouter object from a Fig.*
      *
      * @param f Object which contains the Fig
-     * @return Layouter for the Edge or null if none exists.
+     * @return Layouter for the Edge or Classnode or null if none exists.
      */
-    public ClassdiagramEdge getInstance(Object f) {
-        if (f instanceof FigEdge) {
-	    if (f instanceof FigGeneralization)
-		return new ClassdiagramGeneralizationEdge(
-		        (FigGeneralization) f);
-	    if (f instanceof FigRealization)
-		return (new ClassdiagramRealizationEdge((FigRealization) f));
-	    if (f instanceof FigAssociation)
-		return (new ClassdiagramAssociationEdge((FigAssociation) f));
-	    LOG.debug("Do not know how to deal with: "
-		      + f.getClass().getName()
-		      + "\nUsing standard layout");
-        }
+    public LayoutedObject getInstance(Object f) {
+        if (f instanceof FigComment)
+            return (new ClassdiagramNote((FigComment) f));
+        if (f instanceof FigNodeModelElement)
+            return (new ClassdiagramNode((FigNode) f));
+        if (f instanceof FigGeneralization)
+            return new ClassdiagramGeneralizationEdge((FigGeneralization) f);
+        if (f instanceof FigRealization)
+            return (new ClassdiagramRealizationEdge((FigRealization) f));
+        if (f instanceof FigAssociation)
+            return (new ClassdiagramAssociationEdge((FigAssociation) f));
+        if (f instanceof FigEdgeNote)
+            return (new ClassdiagramNoteEdge((FigEdgeNote) f));
+        LOG.debug("Do not know how to deal with: " + f.getClass().getName()
+                + "\nUsing standard layout");
         return null;
     }
 }
