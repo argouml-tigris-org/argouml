@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2001-2003 The Regents of the University of California. All
+// Copyright (c) 2001-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -108,9 +108,10 @@ public class GeneratorDummy extends Generator2 implements PluggableNotation {
 	return "Transition(" + ModelFacade.getName(handle) + ")";
     }
     public String generateAction(/*MAction*/Object handle) {
-		if (ModelFacade.isAAction(handle))
-		    return "Action(" + ModelFacade.getName(handle) + ")";
-		return "Action(" + handle.toString() + ")";
+	if (ModelFacade.isAAction(handle)) {
+	    return "Action(" + ModelFacade.getName(handle) + ")";
+	}
+	return "Action(" + handle.toString() + ")";
     }
     public String generateGuard(/*MGuard*/Object handle) {
 	return "Guard(" + ModelFacade.getName(handle) + ")";

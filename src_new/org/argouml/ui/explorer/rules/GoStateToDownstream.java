@@ -31,7 +31,7 @@ import java.util.Set;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 
-public class GoStateToDownstream extends AbstractPerspectiveRule{
+public class GoStateToDownstream extends AbstractPerspectiveRule {
 
     public String getRuleName() { return "State->Outgoing States"; }
   

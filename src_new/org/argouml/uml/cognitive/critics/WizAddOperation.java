@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
- * WizAddOperation.java
- *
- * Created on December 4, 2003, 1:55 PM
- */
-
 package org.argouml.uml.cognitive.critics;
 
 import org.tigris.gef.util.VectorSet;
@@ -37,16 +31,20 @@ import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-/** A wizard to add operations to a classifier
+import org.argouml.kernel.Wizard;
+
+/**
+ * A wizard to add operations to a classifier.
  *
  * @author  mkl
+ * @since Created on December 4, 2003, 1:55 PM
  */
-public class WizAddOperation extends org.argouml.kernel.Wizard {
+public class WizAddOperation extends Wizard {
     
     protected WizStepTextField _step1 = null;
     protected String _label = Translator.localize("UMLMenu", "label.name");
     protected String _instructions =
-    "Please change the name of the offending model element.";
+	"Please change the name of the offending model element.";
     protected String _suggestion = "suggestion";
     protected String _origSuggest = "suggestion";
     protected boolean _mustEdit = false;
@@ -58,12 +56,13 @@ public class WizAddOperation extends org.argouml.kernel.Wizard {
     
     public void doAction(int oldStep) {
         switch (oldStep) {
-            case 1:
-                String newName = _suggestion;
-                if (_step1 != null)
-                    newName = _step1.getText();
-                Object me = getModelElement();
-                UmlFactory.getFactory().getCore().buildOperation(me, newName);
+	case 1:
+	    String newName = _suggestion;
+	    if (_step1 != null) {
+		newName = _step1.getText();
+	    }
+	    Object me = getModelElement();
+	    UmlFactory.getFactory().getCore().buildOperation(me, newName);
         }
     }
     
@@ -91,7 +90,10 @@ public class WizAddOperation extends org.argouml.kernel.Wizard {
         }
         return "";
     }
-    public void setSuggestion(String s) { _origSuggest = _suggestion = s; }
+    public void setSuggestion(String s) {
+	_suggestion = s;
+	_origSuggest = s;
+    }
     
     public void setInstructions(String s) { _instructions = s; }
     
@@ -100,12 +102,12 @@ public class WizAddOperation extends org.argouml.kernel.Wizard {
     /** Create a new panel for the given step.  */
     public JPanel makePanel(int newStep) {
         switch (newStep) {
-            case 1:
-                if (_step1 == null) {
-                    _step1 = new WizStepTextField(this, _instructions,
-                    _label, getSuggestion());
-                }
-                return _step1;
+	case 1:
+	    if (_step1 == null) {
+		_step1 = new WizStepTextField(this, _instructions,
+					      _label, getSuggestion());
+	    }
+	    return _step1;
         }
         return null;
     }

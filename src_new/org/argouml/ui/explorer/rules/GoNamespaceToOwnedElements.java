@@ -32,7 +32,7 @@ import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
-public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule{
+public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule {
 
     public String getRuleName() {
         return "Namespace->Owned Elements";
@@ -47,10 +47,13 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule{
         Collection ret = new ArrayList();
         while (it.hasNext()) {
 	    Object o = it.next();
-	    if (ModelFacade.isACollaboration(o))
+	    if (ModelFacade.isACollaboration(o)) {
 		continue;
-	    if (ModelFacade.isAStateMachine(o) && ModelFacade.getContext(o) != parent)
+	    }
+	    if (ModelFacade.isAStateMachine(o)
+		    && ModelFacade.getContext(o) != parent) {
 		continue;
+	    }
 	    ret.add(o);
         }
         return ret;

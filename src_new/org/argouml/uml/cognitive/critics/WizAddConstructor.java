@@ -22,12 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
- * WizAddConstructor.java
- *
- * Created on Fabruary 7, 2004, 12:35 AM
- */
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -43,18 +37,20 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsH
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ProfileJava;
+import org.argouml.kernel.Wizard;
 
 /**
  * A wizard to add a constructor to a classifier
  *
  * @author  d00mst (copied from WizAddOperation by mkl)
+ * @since February 7, 2004, 12:35 AM
  */
-public class WizAddConstructor extends org.argouml.kernel.Wizard {
+public class WizAddConstructor extends Wizard {
     
     protected WizStepTextField _step1 = null;
     protected String _label = Translator.localize("UMLMenu", "label.name");
     protected String _instructions =
-    "Please change the name of the offending model element.";
+	"Please change the name of the offending model element.";
     protected String _suggestion = "suggestion";
     protected String _origSuggest = "suggestion";
     protected boolean _mustEdit = false;
@@ -77,7 +73,8 @@ public class WizAddConstructor extends org.argouml.kernel.Wizard {
 		newName = _step1.getText();
 	    Object me = getModelElement();
 	    savedTargets = TargetManager.getInstance().getTargets();
-	    oper = UmlFactory.getFactory().getCore().buildOperation(me, newName);
+	    oper =
+		UmlFactory.getFactory().getCore().buildOperation(me, newName);
 	    ModelFacade.setStereotype(oper, getCreateStereotype(oper));
 	    TargetManager.getInstance().setTargets(savedTargets);
 	}
@@ -103,9 +100,11 @@ public class WizAddConstructor extends org.argouml.kernel.Wizard {
 		continue;
 
 	    if (ExtensionMechanismsHelper.getHelper()
-			.isValidStereoType(obj, stereo))
+		    .isValidStereoType(obj, stereo)) {
 		return ModelManagementHelper.getHelper()
-			.getCorrespondingElement(stereo, ModelFacade.getModel(obj));
+		    .getCorrespondingElement(stereo,
+					     ModelFacade.getModel(obj));
+	    }
 	}
 
 	return null;
@@ -137,7 +136,8 @@ public class WizAddConstructor extends org.argouml.kernel.Wizard {
     }
 
     public void setSuggestion(String s) {
-	_origSuggest = _suggestion = s;
+	_suggestion = s;
+	_origSuggest = s;
     }
     
     public void setInstructions(String s) {
@@ -150,15 +150,18 @@ public class WizAddConstructor extends org.argouml.kernel.Wizard {
     
     /**
      * Create a new panel for the given step.
+     *
+     * @param newStep The step.
+     * @return The panel.
      */
     public JPanel makePanel(int newStep) {
         switch (newStep) {
-            case 1:
-                if (_step1 == null) {
-                    _step1 = new WizStepTextField(this, _instructions,
-                    _label, getSuggestion());
-                }
-                return _step1;
+	case 1:
+	    if (_step1 == null) {
+		_step1 = new WizStepTextField(this, _instructions,
+					      _label, getSuggestion());
+	    }
+	    return _step1;
         }
         return null;
     }

@@ -37,13 +37,14 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
+
 /**
  * Shows the diagrams as children of their namespace. 
  * 
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 30, 2002
  */
-public class GoNamespaceToDiagram extends AbstractPerspectiveRule{
+public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
 
     public String getRuleName() {
         return Translator.localize("Tree", "misc.package.diagram");
@@ -52,22 +53,22 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule{
     public Collection getChildren(Object parent) {
         if (ModelFacade.isANamespace(parent)) {
             List returnList = new ArrayList();
-            Object namespace = parent;//MNamespace
+            Object namespace = parent; //MNamespace
             Project proj = ProjectManager.getManager().getCurrentProject();
             Iterator it = proj.getDiagrams().iterator();
             while (it.hasNext()) {
                 UMLDiagram diagram = (UMLDiagram) it.next();
                 if (diagram instanceof UMLStateDiagram) {
-                    UMLStateDiagram stateDiagram = (UMLStateDiagram)diagram;
+                    UMLStateDiagram stateDiagram = (UMLStateDiagram) diagram;
                     Object stateMachine = stateDiagram.getStateMachine();
                     Object context = ModelFacade.getContext(stateMachine);
                     if (ModelFacade.isABehavioralFeature(context)) {
                     	continue;
                     }
                 }       
-                // sequence diagrams are not shown as children of the collaboration that
-                // they show but as children of the classifier/operation the
-                // collaboration represents
+                // sequence diagrams are not shown as children of the
+                // collaboration that they show but as children of the
+                // classifier/operation the collaboration represents
                 if (diagram instanceof UMLSequenceDiagram) {
                 	continue;
                 }         

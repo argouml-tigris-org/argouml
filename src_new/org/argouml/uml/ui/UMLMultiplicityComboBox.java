@@ -45,6 +45,9 @@ public class UMLMultiplicityComboBox
     extends JComboBox
     implements ItemListener, UMLUserInterfaceComponent 
 {
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat = Logger.getLogger(UMLMultiplicityComboBox.class);
 
     private UMLUserInterfaceContainer _container;
@@ -62,7 +65,8 @@ public class UMLMultiplicityComboBox
 
     private static final Object[] _noArg = {};
     
-    public UMLMultiplicityComboBox(UMLUserInterfaceContainer container, Class elementClass) {
+    public UMLMultiplicityComboBox(UMLUserInterfaceContainer container,
+				   Class elementClass) {
 
         super();
 
@@ -75,7 +79,7 @@ public class UMLMultiplicityComboBox
 
         Class[] getArgs = {};
         Class[] setArgs = {
-	    (Class)ModelFacade.MULTIPLICITY
+	    (Class) ModelFacade.MULTIPLICITY
 	};
 
         try {
@@ -148,8 +152,8 @@ public class UMLMultiplicityComboBox
 
 		try {
 		    _setMethod.invoke(_container.getTarget(), new Object[] {
-			    mult
-			});
+			mult
+		    });
 		} catch (Exception e) {
 		    cat.error(e.toString()
 			+ " in UMLMultiplicityComboBox.itemStateChanged()", e);

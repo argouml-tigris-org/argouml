@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -84,25 +84,24 @@ import org.argouml.application.api.Configuration;
  *
  * @author alexb
  */
-public class ImportClassLoader extends URLClassLoader{
+public class ImportClassLoader extends URLClassLoader {
     
     /** logger */
     private Logger cat = Logger.getLogger(ImportClassLoader.class);
     
-    static private ImportClassLoader instance;
+    private static ImportClassLoader instance;
     
-    private ImportClassLoader(URL urls[]){
+    private ImportClassLoader(URL urls[]) {
         super(urls);
     }
     
     /**
-     * try and return the existing instance if one exists.
+     * Try and return the existing instance if one exists.
      */
     public static ImportClassLoader getInstance()
-    throws MalformedURLException{
+	throws MalformedURLException {
         
-        if(instance ==null){
-            
+        if (instance == null) {
             String path = 
                 Configuration.getString(Argo.KEY_USER_IMPORT_CLASSPATH,
                     System.getProperty("user.dir"));
@@ -119,113 +118,125 @@ public class ImportClassLoader extends URLClassLoader{
      * we crate a new instance in this method.
      */
     public static ImportClassLoader getInstance(URL[] urls)
-    throws MalformedURLException{
+	throws MalformedURLException {
 //        if(instance ==null){
 //            
-            instance = new ImportClassLoader(urls);
-            return instance;
+	instance = new ImportClassLoader(urls);
+	return instance;
 //        }
 //        else
 //            return instance;
     }
     
-    public void addFile(File f) throws MalformedURLException{
-        try{
+    public void addFile(File f) throws MalformedURLException {
+        try {
             this.addURL(f.toURL());
-        }catch(Exception e){cat.warn("could not add file "+e);}
+        } catch (Exception e) {
+	    cat.warn("could not add file ", e);
+	}
     }
     
     /**
      * can't remove the last file.
      */
-    public void removeFile(File f){
+    public void removeFile(File f) {
         
-        URL url=null;
-        try{
+        URL url = null;
+        try {
             url = f.toURL();
-        }catch(Exception e){cat.warn("could not remove file "+e);}
+        } catch (Exception e) {
+	    cat.warn("could not remove file ", e);
+	}
 
-        List urls = new ArrayList();//getURLs();
-        for(int i=0; i<this.getURLs().length;i++){
+        List urls = new ArrayList(); //getURLs();
+        for (int i = 0; i < this.getURLs().length; i++) {
             
-            if(!url.equals(getURLs()[i]))
+            if (!url.equals(getURLs()[i]))
                 urls.add(getURLs()[i]);
         }
         
         // can't remove the last file
-        if(urls.size() ==0)
+        if (urls.size() == 0) {
             return;
+	}
         
         // can't remove from existing one so create new one.
-        instance = new ImportClassLoader((URL[])urls.toArray());
+        instance = new ImportClassLoader((URL[]) urls.toArray());
     }
     
-    public void setPath(String path){
+    public void setPath(String path) {
         
-        StringTokenizer st = new StringTokenizer(path,";");
+        StringTokenizer st = new StringTokenizer(path, ";");
         st.countTokens();
-        while(st.hasMoreTokens()){
+        while (st.hasMoreTokens()) {
             
             String token = st.nextToken();
             
-            try{
-            this.addFile(new File(token));
-            }catch(Exception e){cat.warn("could not set path "+e);}
+            try {
+		this.addFile(new File(token));
+            } catch (Exception e) {
+		cat.warn("could not set path ", e);
+	    }
         }
     }
     
-    public static URL[] getURLs(String path){
+    public static URL[] getURLs(String path) {
     
         java.util.List urlList = new ArrayList();
         
-        StringTokenizer st = new StringTokenizer(path,";");
-        while(st.hasMoreTokens()){
+        StringTokenizer st = new StringTokenizer(path, ";");
+        while (st.hasMoreTokens()) {
             
             String token = st.nextToken();
             
-            try{
-            urlList.add(new File(token).toURL());
-            }catch(Exception e){e.printStackTrace();}
+            try {
+		urlList.add(new File(token).toURL());
+            } catch (Exception e) {
+		e.printStackTrace();
+	    }
         }
         
 //        Object urls[] = urlList.toArray();
         
         URL urls[] = new URL[urlList.size()];
-        for(int i=0;i<urls.length;i++){
-            urls[i] = (URL)urlList.get(i);
+        for (int i = 0; i < urls.length; i++) {
+            urls[i] = (URL) urlList.get(i);
         }
         
         return urls;
     }
     
-    public void setPath(Object[] paths){
+    public void setPath(Object[] paths) {
         
-        for(int i=0;i<paths.length;i++){
+        for (int i = 0; i < paths.length; i++) {
             
-            try{
-            this.addFile(new File(paths[i].toString()));
-            }catch(Exception e){cat.warn("could not set path "+e);}
+            try {
+		this.addFile(new File(paths[i].toString()));
+            } catch (Exception e) {
+		cat.warn("could not set path ", e);
+	    }
         }
     }
     
-    public void loadUserPath(){
+    public void loadUserPath() {
         setPath(Configuration.getString(Argo.KEY_USER_IMPORT_CLASSPATH, ""));
     }
     
-    public void saveUserPath(){
-       Configuration.setString(Argo.KEY_USER_IMPORT_CLASSPATH, this.toString());
+    public void saveUserPath() {
+	Configuration.setString(Argo.KEY_USER_IMPORT_CLASSPATH,
+				this.toString());
     }
     
-    public String toString(){
+    public String toString() {
         
         URL urls[] = this.getURLs();
-        String path="";
+        String path = "";
         
-        for(int i=0;i<urls.length;i++){
-            
-            path = path+urls[i].getFile();
-            if(i<urls.length-1)
-                path+=";";
+        for (int i = 0; i < urls.length; i++) {
+            path = path + urls[i].getFile();
+            if (i < urls.length - 1) {
+                path += ";";
+	    }
         }
         
         return path;

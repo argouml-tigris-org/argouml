@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -81,8 +81,11 @@ public class UMLToDoItem extends ToDoItem {
         super(c);
     }
     
-    /** Action jumps to the diagram containing all or most of the offenders.
-     * and calls deselect(), select() around the call to jumpToDiagramShowing(offenderList)
+    /** 
+     * Action jumps to the diagram containing all or most of the
+     * offenders and calls {@link #deselect()}, {@link #select()}
+     * around the call to
+     * {@link ProjectManager#jumpToDiagramShowing(VectorSet)}.
      */
     public void action() {
         deselect();
@@ -96,7 +99,8 @@ public class UMLToDoItem extends ToDoItem {
                 Globals.curEditor().scrollToShow(fig.getX(), fig.getY());
             }
         }
-        select(); }
+        select();
+    }
     
     public void deselect() {
         Enumeration offs = getOffenders().elements();
@@ -107,11 +111,11 @@ public class UMLToDoItem extends ToDoItem {
             if (dm instanceof Highlightable)
                 ((Highlightable) dm).setHighlight(false);
             else if (p != null) {
-                Iterator iterFigs =p.findFigsForMember(dm).iterator();
+                Iterator iterFigs = p.findFigsForMember(dm).iterator();
                 while (iterFigs.hasNext()) {
                     Object f = iterFigs.next();
                     if (f instanceof Highlightable)
-                        ((Highlightable)f).setHighlight(false);
+                        ((Highlightable) f).setHighlight(false);
                 }
             }
         }
@@ -125,11 +129,11 @@ public class UMLToDoItem extends ToDoItem {
             if (dm instanceof Highlightable)
                 ((Highlightable) dm).setHighlight(true);
             else if (p != null) {
-                Iterator iterFigs =p.findFigsForMember(dm).iterator();
+                Iterator iterFigs = p.findFigsForMember(dm).iterator();
                 while (iterFigs.hasNext()) {
                     Object f = iterFigs.next();
                     if (f instanceof Highlightable)
-                        ((Highlightable)f).setHighlight(true);
+                        ((Highlightable) f).setHighlight(true);
                 }
             }
         }

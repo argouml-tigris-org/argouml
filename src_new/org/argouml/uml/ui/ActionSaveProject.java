@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,8 +49,8 @@ import org.argouml.ui.menubar.GenericArgoMenuBar;
  * @stereotype singleton
  */
 public class ActionSaveProject extends UMLAction {
-	/** logger */
-	private static Logger cat = Logger.getLogger(ActionSaveProject.class);
+    /** logger */
+    private static Logger cat = Logger.getLogger(ActionSaveProject.class);
   
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -73,8 +73,9 @@ public class ActionSaveProject extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent e) {
-	URL url = ProjectManager.getManager().getCurrentProject() != null ?
-	    ProjectManager.getManager().getCurrentProject().getURL() : null;
+	URL url =
+	    ProjectManager.getManager().getCurrentProject() != null
+	    ? ProjectManager.getManager().getCurrentProject().getURL() : null;
 	if (url == null) { 
 	    ActionSaveProjectAs.SINGLETON.actionPerformed(e);
 	} else {
@@ -100,15 +101,14 @@ public class ActionSaveProject extends UMLAction {
 		//+ fullpath + "?");
 		String sConfirm = 
 		    MessageFormat.format(Translator.localize("Actions",
-						       "optionpane.save-project-confirm-overwrite"),
+			    "optionpane.save-project-confirm-overwrite"),
 					 new Object[] {file} );
 		int nResult = 
 		    JOptionPane.showConfirmDialog(pb, sConfirm,
 		            Translator.localize("Actions", 
-								"optionpane.save-project-confirm-overwrite-title"),
+				    "optionpane.save-project-confirm-overwrite-title"),
 						  JOptionPane.YES_NO_OPTION,
-						  JOptionPane.QUESTION_MESSAGE
-						  );
+						  JOptionPane.QUESTION_MESSAGE);
         
 		if (nResult != JOptionPane.YES_OPTION) {
 		    return false;
@@ -117,7 +117,7 @@ public class ActionSaveProject extends UMLAction {
       
 	    String sStatus =
 		MessageFormat.format(Translator.localize("Actions",
-						   "label.save-project-status-writing"),
+			"label.save-project-status-writing"),
 				     new Object[] {file} );
 	    pb.showStatus (sStatus);
 		
@@ -125,12 +125,13 @@ public class ActionSaveProject extends UMLAction {
 	    p.save(overwrite, file);
       	
 
-	    sStatus = MessageFormat.format(Translator.localize("Actions", 
-							 "label.save-project-status-wrote"),
-					   new Object[] {p.getURL()} );
-	    pb.showStatus (sStatus);
-	    cat.debug ("setting most recent project file to " +
-			    file.getCanonicalPath());
+	    sStatus =
+		MessageFormat.format(Translator.localize("Actions", 
+			"label.save-project-status-wrote"),
+				     new Object[] {p.getURL()} );
+	    pb.showStatus(sStatus);
+	    cat.debug ("setting most recent project file to "
+		       + file.getCanonicalPath());
             
             /* 
              * notification of menu bar
@@ -138,19 +139,20 @@ public class ActionSaveProject extends UMLAction {
             GenericArgoMenuBar menuBar = (GenericArgoMenuBar) pb.getJMenuBar();
             menuBar.addFileSaved( file.getCanonicalPath());
             
-	    Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, file.getCanonicalPath());
+	    Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE,
+				    file.getCanonicalPath());
       
 	    return true;
 	}
 	catch (FileNotFoundException fnfe) {
 	    String sMessage = 
 		MessageFormat.format(Translator.localize("Actions",
-						   "optionpane.save-project-file-not-found"),
+		        "optionpane.save-project-file-not-found"),
 				     new Object[] {fnfe.getMessage()} );
       
 	    JOptionPane.showMessageDialog(pb, sMessage,
 	            Translator.localize("Actions",
-							"optionpane.save-project-file-not-found-title"),
+			    "optionpane.save-project-file-not-found-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
 	    cat.error(sMessage, fnfe);
@@ -158,12 +160,12 @@ public class ActionSaveProject extends UMLAction {
 	catch (IOException ioe) {
 	    String sMessage = 
 		MessageFormat.format(Translator.localize("Actions",
-						   "optionpane.save-project-io-exception"),
+			"optionpane.save-project-io-exception"),
 				     new Object[] {ioe.getMessage()} );
       
 	    JOptionPane.showMessageDialog(pb, sMessage,
 	            Translator.localize("Actions", 
-							"optionpane.save-project-io-exception-title"),
+			    "optionpane.save-project-io-exception-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
 	    cat.error(sMessage, ioe);
@@ -171,12 +173,12 @@ public class ActionSaveProject extends UMLAction {
 	catch (Exception ex) {
 	    String sMessage = 
 		MessageFormat.format(Translator.localize("Actions",
-						   "optionpane.save-project-general-exception"),
+			"optionpane.save-project-general-exception"),
 				     new Object[] {ex.getMessage()} );
       
 	    JOptionPane.showMessageDialog(pb, sMessage,
-	            Translator.localize ("Actions",
-							 "optionpane.save-project-general-exception-title"),
+	            Translator.localize("Actions",
+			    "optionpane.save-project-general-exception-title"),
 					  JOptionPane.ERROR_MESSAGE);
       
 	    cat.error(sMessage, ex);

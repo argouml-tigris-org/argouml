@@ -36,13 +36,14 @@ import org.argouml.model.ModelFacade;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 25, 2002
  */
-public class GoStateToEntry extends AbstractPerspectiveRule{
+public class GoStateToEntry extends AbstractPerspectiveRule {
     
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (ModelFacade.isAState(parent) && ModelFacade.getEntry(parent) != null) {
+        if (ModelFacade.isAState(parent)
+	        && ModelFacade.getEntry(parent) != null) {
             Vector children = new Vector();
             children.add(ModelFacade.getEntry(parent));
             return children;

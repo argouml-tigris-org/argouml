@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -72,11 +72,10 @@ public class ActionPaste
     private ActionPaste() {
         super(Translator.localize(LOCALIZE_KEY));
         Icon icon =
-            ResourceLoaderWrapper
-	    .getResourceLoaderWrapper()
-	    .lookupIconResource(
-				Translator.getImageBinding(LOCALIZE_KEY),
-				Translator.localize(LOCALIZE_KEY));
+            ResourceLoaderWrapper.getResourceLoaderWrapper()
+	        .lookupIconResource(
+				    Translator.getImageBinding(LOCALIZE_KEY),
+				    Translator.localize(LOCALIZE_KEY));
         if (icon != null)
             putValue(Action.SMALL_ICON, icon);
         putValue(
@@ -102,12 +101,12 @@ public class ActionPaste
     private JTextComponent _textSource;
 
     /**
-     * Flag to indicate that the mouse is hovering over the JGraph
+     * Flag to indicate that the mouse is hovering over the JGraph.
      */
     private boolean _inJGraph;
 
     /**
-     * Copies some text or a fig
+     * Copies some text or a fig.
      */
     public void actionPerformed(ActionEvent ae) {
         if (Globals.clipBoard != null && !Globals.clipBoard.isEmpty()) {
@@ -128,11 +127,8 @@ public class ActionPaste
 	boolean hasContents = false;
 	try {
 	    Object text =
-		Toolkit
-		.getDefaultToolkit()
-		.getSystemClipboard()
-		.getContents(null)
-		.getTransferData(DataFlavor.stringFlavor);
+		Toolkit.getDefaultToolkit().getSystemClipboard()
+		    .getContents(null).getTransferData(DataFlavor.stringFlavor);
 	    return text == null;
 	} catch (IOException ignorable) {
 	} catch (UnsupportedFlavorException ignorable) {

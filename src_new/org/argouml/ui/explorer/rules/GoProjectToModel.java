@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
-
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
@@ -32,7 +30,7 @@ import java.util.Set;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 
-public class GoProjectToModel extends AbstractPerspectiveRule{
+public class GoProjectToModel extends AbstractPerspectiveRule {
 
     public String getRuleName() {
 	return Translator.localize ("Tree", "misc.project.package");

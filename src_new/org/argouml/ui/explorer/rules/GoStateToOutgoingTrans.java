@@ -30,7 +30,7 @@ import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
-public class GoStateToOutgoingTrans extends AbstractPerspectiveRule{
+public class GoStateToOutgoingTrans extends AbstractPerspectiveRule {
 
     public String getRuleName() { return "State->Outgoing Transitions"; }
 

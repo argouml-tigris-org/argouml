@@ -37,6 +37,9 @@ import org.argouml.ui.explorer.WeakExplorerNode;
  */
 public class OperationsNode implements WeakExplorerNode {
     
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     Object parent;
     
     /** Creates a new instance of OperationsNode */

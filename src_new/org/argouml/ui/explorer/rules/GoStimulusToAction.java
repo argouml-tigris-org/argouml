@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
-
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
@@ -34,7 +32,7 @@ import java.util.Vector;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
-public class GoStimulusToAction extends AbstractPerspectiveRule{
+public class GoStimulusToAction extends AbstractPerspectiveRule {
 
     public Collection getChildren(Object parent) {
         if (!ModelFacade.isAStimulus(parent))

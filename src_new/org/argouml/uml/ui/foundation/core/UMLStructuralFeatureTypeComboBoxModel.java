@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,10 +50,10 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLStructuralFeatureTypeComboBoxModel() {
         super("type", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(
-							       this,
-							       (Class)ModelFacade.NAMESPACE,
-							       "ownedElement");
+        UmlModelEventPump.getPump()
+	    .addClassModelEventListener(this,
+					(Class) ModelFacade.NAMESPACE,
+					"ownedElement");
     }
 
     /**
@@ -102,7 +102,8 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
                 } catch (Exception e) {
                     throw new ClassCastException(e.getMessage());
                 }
-            }});
+            }
+	});
         Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.getUserDefinedModels().iterator();
 
@@ -113,18 +114,16 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 		elements,
 		paths,
 		ModelManagementHelper.getHelper().getAllModelElementsOfKind(
-									    model,
-									    (Class)ModelFacade.CLASSIFIER)
-		);
+			model,
+			(Class) ModelFacade.CLASSIFIER));
         }
 
 	addAllUniqueModelElementsFrom(
 	    elements,
 	    paths,
 	    ModelManagementHelper.getHelper().getAllModelElementsOfKind(
-									p.getDefaultModel(),
-									(Class)ModelFacade.CLASSIFIER)
-	    );
+		    p.getDefaultModel(),
+		    (Class) ModelFacade.CLASSIFIER));
 
         setElements(elements);
     }

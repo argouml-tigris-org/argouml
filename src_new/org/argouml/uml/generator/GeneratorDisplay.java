@@ -143,7 +143,8 @@ public class GeneratorDisplay extends Generator2 {
             Object parameter = it.next();
             if (!ModelFacade.hasReturnParameterDirectionKind(parameter)) {
                 counter++;
-                parameterListBuffer.append(generateParameter(parameter)).append(",");
+                parameterListBuffer.append(generateParameter(parameter));
+		parameterListBuffer.append(",");
             }
         }
         if (counter > 0) {
@@ -185,7 +186,9 @@ public class GeneratorDisplay extends Generator2 {
             propertySb.append("leaf,");
         }
         if (ModelFacade.getConcurrency(op) != null) {
-            propertySb.append(ModelFacade.getName(ModelFacade.getConcurrency(op))).append(',');
+            propertySb.append(ModelFacade.getName(
+		    ModelFacade.getConcurrency(op)));
+	    propertySb.append(',');
         }
         Iterator it3 = ModelFacade.getTaggedValues(op);
         StringBuffer taggedValuesSb = new StringBuffer();
@@ -249,21 +252,27 @@ public class GeneratorDisplay extends Generator2 {
         String stereo = generateStereotype(ModelFacade.getStereotypes(attr));
         //cat.debug("Stereotype: " + stereo);
         String name = ModelFacade.getName(attr);
-        String multiplicity = generateMultiplicity(ModelFacade.getMultiplicity(attr));
+        String multiplicity =
+	    generateMultiplicity(ModelFacade.getMultiplicity(attr));
         String type = ""; // fix for loading bad projects
         if (ModelFacade.getType(attr) != null) {
             type = ModelFacade.getName(ModelFacade.getType(attr));
         }
         String initialValue = "";
         if (ModelFacade.getInitialValue(attr) != null) {
-            initialValue = (String)ModelFacade.getBody(ModelFacade.getInitialValue(attr));
+            initialValue =
+		(String) ModelFacade.getBody(
+			ModelFacade.getInitialValue(attr));
         }
         String changeableKind = "";
         if (ModelFacade.getChangeability(attr) != null) {
-            if (ModelFacade.FROZEN_CHANGEABLEKIND.equals(ModelFacade.getChangeability(attr)))
+            if (ModelFacade.FROZEN_CHANGEABLEKIND.equals(
+	            ModelFacade.getChangeability(attr))) {
                 changeableKind = "frozen";
-            else if (ModelFacade.ADD_ONLY_CHANGEABLEKIND.equals(ModelFacade.getChangeability(attr)))
+	    } else if (ModelFacade.ADD_ONLY_CHANGEABLEKIND.equals(
+		    ModelFacade.getChangeability(attr))) {
                 changeableKind = "addOnly";
+	    }
         }
         String properties = "";
         if (changeableKind.length() > 0) {
@@ -428,7 +437,7 @@ public class GeneratorDisplay extends Generator2 {
      * <p>If you plan to modify this number, make sure that
      * ParserDisplay.parseMessage is adapted to the change.
      *
-     * @param message A MMessage to generate the number for.
+     * @param m A Message to generate the number for.
      * @return A String with the message number of m.
      */
     public String generateMessageNumber(Object/*MMessage*/ m) {
@@ -640,17 +649,22 @@ public class GeneratorDisplay extends Generator2 {
         if (!ModelFacade.isNavigable(ae))
             return "";
         String s = "protected ";
-        if (ModelFacade.CLASSIFIER_SCOPEKIND.equals(ModelFacade.getTargetScope(ae)))
+        if (ModelFacade.CLASSIFIER_SCOPEKIND.equals(
+		ModelFacade.getTargetScope(ae))) {
             s += "static ";
+	}
+
         //     String n = ae.getName(); if (n != null &&
         //     !String.UNSPEC.equals(n)) s += generateName(n) + " ";
         //     if (ModelFacade.isNavigable(ae)) s += "navigable "; if
         //     (ae.getIsOrdered()) s += "ordered ";
         Object m = ModelFacade.getMultiplicity(ae);
-        if (ModelFacade.M1_1_MULTIPLICITY.equals(m) || ModelFacade.M0_1_MULTIPLICITY.equals(m))
+        if (ModelFacade.M1_1_MULTIPLICITY.equals(m)
+	        || ModelFacade.M0_1_MULTIPLICITY.equals(m)) {
             s += generateClassifierRef(ModelFacade.getType(ae));
-        else
+	} else {
             s += "Vector "; //generateMultiplicity(m) + " ";
+	}
 
         s += " ";
 
@@ -692,7 +706,7 @@ public class GeneratorDisplay extends Generator2 {
      * generate the name of an association role of the form:
      *  / name : name of the base association
      * @return the generated name
-     **/
+     */
     public String generateAssociationRole(Object assocRole) {
         //get the associationRole name
         String text = "/" + ModelFacade.getName(assocRole) + ":";
@@ -804,7 +818,10 @@ public class GeneratorDisplay extends Generator2 {
         boolean first = true;
         while (rangeIter.hasNext()) {
             Object mr = rangeIter.next();
-            if (!(ModelFacade.getLower(mr) == 1 && ModelFacade.getUpper(mr) == 1 && first && !rangeIter.hasNext())) {
+            if (!(ModelFacade.getLower(mr) == 1
+		  && ModelFacade.getUpper(mr) == 1
+		  && first
+		  && !rangeIter.hasNext())) {
                 s += generateMultiplicityRange(mr);
                 s += ",";
             }
@@ -925,9 +942,8 @@ public class GeneratorDisplay extends Generator2 {
                     p += ", ";
 
                 if (ModelFacade.getValue(arg) != null) {
-                    p +=
-    		    generateExpression(ModelFacade.getValue(arg));
-    	    }
+                    p += generateExpression(ModelFacade.getValue(arg));
+		}
                 first = false;
             }
         }

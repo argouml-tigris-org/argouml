@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,10 +64,8 @@ public class ActionLayout extends UMLAction {
     public boolean shouldBeEnabled() {
         return (
 		super.shouldBeEnabled()
-                && (ProjectManager
-                    .getManager()
-                    .getCurrentProject()
-                    .getActiveDiagram()
+                && (ProjectManager.getManager().getCurrentProject()
+                        .getActiveDiagram()
                     instanceof UMLClassDiagram)
                 && "action.layout-automatic".equals(_tabName));
     }
@@ -78,10 +76,9 @@ public class ActionLayout extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
         ClassdiagramLayouter layouter =
             new ClassdiagramLayouter(
-				     (UMLDiagram) ProjectManager
-				     .getManager()
-				     .getCurrentProject()
-				     .getActiveDiagram());
+				     (UMLDiagram) ProjectManager.getManager()
+				         .getCurrentProject()
+				             .getActiveDiagram());
 
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
@@ -89,7 +86,7 @@ public class ActionLayout extends UMLAction {
         // Get all the figures from the diagram.
         Collection nodes =
             ((UMLClassDiagram) ProjectManager.getManager().getCurrentProject()
-	         .getActiveDiagram())
+	             .getActiveDiagram())
 	        .getLayer().getContents(null);
         Iterator it = nodes.iterator();
         while (it.hasNext()) {

@@ -30,13 +30,14 @@ import org.argouml.ui.explorer.WeakExplorerNode;
  * This class is a support class for The Navigation panel Go Rules.
  * Don't confuse it with anything to do with GEF nodes or the like.
  *
- * $Revision$
- *
- * @author  alexb, $Author$
+ * @author  alexb, d00mst
  * @since argo 0.13.4, Created on 21 March 2003, 23:18
  */
 public class OutgoingDependencyNode implements WeakExplorerNode {
 
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     Object parent;
 
     /** Creates a new instance of AssociationsNode */

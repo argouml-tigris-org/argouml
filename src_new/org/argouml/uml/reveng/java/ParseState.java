@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -200,30 +200,32 @@ class ParseState
     }
 
     /**
-       Remove features no longer in the source from the current
-       classifier in the model.
-    */
-    public void removeObsoleteFeatures()
-	{
-    	if (obsoleteFeatures == null) return;
+     * Remove features no longer in the source from the current
+     * classifier in the model.
+     */
+    public void removeObsoleteFeatures() {
+    	if (obsoleteFeatures == null) {
+	    return;
+	}
     	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
-    		ModelFacade.removeFeature(classifier, i.next());
+	    ModelFacade.removeFeature(classifier, i.next());
     	}
     }
 
     /**
-       Remove inner classes no longer in the source from the current
-       classifier in the model.
-    */
-    public void removeObsoleteInnerClasses()
-	{
-    	if ( obsoleteInnerClasses == null) return;
-		for (Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
-			Object element = i.next();
-			if (ModelFacade.isAClassifier(element)) {
-				CoreFactory.getFactory().deleteClassifier(element);
-			}
-		}
+     * Remove inner classes no longer in the source from the current
+     * classifier in the model.
+     */
+    public void removeObsoleteInnerClasses() {
+    	if (obsoleteInnerClasses == null) {
+	    return;
+	}
+	for (Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
+	    Object element = i.next();
+	    if (ModelFacade.isAClassifier(element)) {
+		CoreFactory.getFactory().deleteClassifier(element);
+	    }
+	}
     }
 
     /**

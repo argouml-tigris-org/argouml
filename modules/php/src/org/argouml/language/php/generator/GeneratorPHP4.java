@@ -1123,13 +1123,13 @@ public class GeneratorPHP4
             if (sDefault != null) {
             	sDefault = sDefault.trim();
                 if (sDefault.length() > 0) {
-                	if (sDefault == "0") {
-                		return sReturn + "false";
-                	} else if (sDefault == "false") {
-                		return sReturn + "false";
-                	} else {
-                		return sReturn + "true";
-                	}
+		    if (sDefault == "0") {
+			return sReturn + "false";
+		    } else if (sDefault == "false") {
+			return sReturn + "false";
+		    } else {
+			return sReturn + "true";
+		    }
                 } else {
                 	return sReturn + "false";
                 }

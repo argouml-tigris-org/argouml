@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,11 +36,12 @@ import org.argouml.model.ModelFacade;
 
 // Uses Model through ModelFacade
 
-/** A critic to detect when a classifier might require associations. It checks for
- * inherited associations as well and keeps silent if it finds any.
- * For usecases it checks the extend/include relationships as well.
+/**
+ * A critic to detect when a classifier might require
+ * associations. It checks for inherited associations as well and
+ * keeps silent if it finds any.  For usecases it checks the
+ * extend/include relationships as well.
  */
-
 public class CrNoAssociations extends CrUML {
     
     /** */
@@ -51,7 +52,9 @@ public class CrNoAssociations extends CrUML {
         addTrigger("associationEnd");
     }
     
-    /** decide whether the given design material causes a problem
+    /**
+     * Decide whether the given design material causes a problem.
+     *
      * @param dm the object to criticize
      * the designer who decides the design process
      * @param dsgr the designer
@@ -66,12 +69,13 @@ public class CrNoAssociations extends CrUML {
         // if the object does not have a name,
         // than no problem
         if ((ModelFacade.getName(dm) == null)
-        || ("".equals(ModelFacade.getName(dm))))
+	    || ("".equals(ModelFacade.getName(dm)))) {
             return NO_PROBLEM;
+	}
         
         // abstract elements do not necessarily require associations
-        if (ModelFacade.isAGeneralizableElement(dm) &&
-        ModelFacade.isAbstract(dm)) {
+        if (ModelFacade.isAGeneralizableElement(dm)
+	    && ModelFacade.isAbstract(dm)) {
             return NO_PROBLEM;
         }
         

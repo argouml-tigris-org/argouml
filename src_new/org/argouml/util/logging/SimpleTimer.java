@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,44 +56,44 @@ public class SimpleTimer {
      */
     public Enumeration result() {
 	mark();
-	return new Enumeration() 
-	    {
-		int count = 1;
+	return new Enumeration() {
+	    int count = 1;
 
-		public boolean hasMoreElements() {
-		    return count <= _points.size();
-		}
+	    public boolean hasMoreElements() {
+		return count <= _points.size();
+	    }
 
-		public Object nextElement() {
-		    StringBuffer res = new StringBuffer();
-		    synchronized (_points) {
-			if (count < _points.size()) {
-			    if (_labels.get(count - 1) == null)
-				res.append("phase ").append(count);
-			    else
-				res.append(_labels.get(count - 1));
-			    res.append("                            ");
-			    res.append("                            ");
-			    res.setLength(60);
-			    res.append((((Long) _points.elementAt(count)).
-					longValue()
-					- ((Long) _points.elementAt(count - 1))
-					.longValue()));
+	    public Object nextElement() {
+		StringBuffer res = new StringBuffer();
+		synchronized (_points) {
+		    if (count < _points.size()) {
+			if (_labels.get(count - 1) == null) {
+			    res.append("phase ").append(count);
+			} else {
+			    res.append(_labels.get(count - 1));
 			}
-			else if (count == _points.size()) {
-			    res.append("Total                      ");
-			    res.setLength(18);
-			    res.append((((Long) _points.
-					 elementAt(_points.size() - 1))
-					.longValue()
-					- ((Long) _points.
-					   elementAt(0)).longValue()));
-			}
+			res.append("                            ");
+			res.append("                            ");
+			res.setLength(60);
+			res.append((((Long) _points.elementAt(count)).
+				    longValue()
+				    - ((Long) _points.elementAt(count - 1))
+				    .longValue()));
 		    }
-		    count++;
-		    return res.toString();
+		    else if (count == _points.size()) {
+			res.append("Total                      ");
+			res.setLength(18);
+			res.append((((Long) _points.
+				     elementAt(_points.size() - 1))
+				    .longValue()
+				    - ((Long) _points.
+				       elementAt(0)).longValue()));
+		    }
 		}
-	    };
+		count++;
+		return res.toString();
+	    }
+	};
     }
 
     public String toString() {

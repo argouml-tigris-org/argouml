@@ -121,7 +121,9 @@ public abstract class FigNodeModelElement
         NotationContext,
         ArgoNotationEventListener {            
 
-    private final static Logger LOG = Logger.getLogger(FigNodeModelElement.class);
+    private static final Logger LOG =
+	Logger.getLogger(FigNodeModelElement.class);
+
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -681,7 +683,7 @@ public abstract class FigNodeModelElement
         String pName = pve.getPropertyName();
         if (pName.equals("editing")
                 && Boolean.FALSE.equals(pve.getNewValue())) {
-                    LOG.debug("finished editing");
+	    LOG.debug("finished editing");
             try {
                 //parse the text that was edited
                 textEdited((FigText) src);
@@ -702,10 +704,12 @@ public abstract class FigNodeModelElement
         }
     }
 
-    /** This method is called after the user finishes editing a text
-     *  field that is in the FigNodeModelElement.  Determine which field
-     *  and update the model.  This class handles the name, subclasses
-     *  should override to handle other text elements. */
+    /**
+     * This method is called after the user finishes editing a text
+     * field that is in the FigNodeModelElement.  Determine which
+     * field and update the model.  This class handles the name,
+     * subclasses should override to handle other text elements.
+     */
     protected void textEdited(FigText ft) throws PropertyVetoException {
         if (ft == _name) {
             if (getOwner() == null) {
@@ -734,9 +738,11 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // event handlers - MouseListener implementation
 
-    /** If the user double clicks on any part of this FigNode, pass it
-     *  down to one of the internal Figs. This allows the user to
-     *  initiate direct text editing. */
+    /**
+     * If the user double clicks on any part of this FigNode, pass it
+     * down to one of the internal Figs. This allows the user to
+     * initiate direct text editing.
+     */
     public void mouseClicked(MouseEvent me) {
         if (!_readyToEdit) {
             if (ModelFacade.isAModelElement(getOwner())) {
@@ -1031,10 +1037,11 @@ public abstract class FigNodeModelElement
         checkSize = flag;
     }
 
-    /** returns the new size of the FigGroup (either attributes or
+    /**
+     * Returns the new size of the FigGroup (either attributes or
      * operations) after calculation new bounds for all sub-figs,
      * considering their minimal sizes; FigGroup need not be
-     * displayed; no update event is fired
+     * displayed; no update event is fired.
      */
     protected Dimension getUpdatedSize(
 				       FigGroup fg,

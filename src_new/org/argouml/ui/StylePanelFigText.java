@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,18 +42,26 @@ import org.tigris.gef.ui.ColorRenderer;
  */
 public class StylePanelFigText extends StylePanelFig {
 
-    protected static String FONT_NAMES[] = { "dialog", "serif", "sanserif",
-            "monospaced"};
+    protected static String FONT_NAMES[] = {
+	"dialog", "serif", "sanserif",
+	"monospaced",
+    };
 
-    protected static Integer COMMON_SIZES[] = { new Integer(8), new Integer(9),
-            new Integer(10), new Integer(12), new Integer(16), new Integer(18),
-            new Integer(24), new Integer(36), new Integer(48), new Integer(72),
-            new Integer(96)};
+    protected static Integer COMMON_SIZES[] = {
+	new Integer(8), new Integer(9),
+	new Integer(10), new Integer(12), new Integer(16), new Integer(18),
+	new Integer(24), new Integer(36), new Integer(48), new Integer(72),
+	new Integer(96),
+    };
 
-    protected static String STYLES[] = { "Plain", "Bold", "Italic",
-            "Bold-Italic"};
+    protected static String STYLES[] = {
+	"Plain", "Bold", "Italic",
+	"Bold-Italic",
+    };
 
-    protected static String JUSTIFIES[] = { "Left", "Right", "Center"};
+    protected static String JUSTIFIES[] = {
+	"Left", "Right", "Center",
+    };
 
     protected JLabel _fontLabel = new JLabel("Font: ");
 

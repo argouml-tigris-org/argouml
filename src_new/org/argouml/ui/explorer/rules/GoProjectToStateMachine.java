@@ -33,7 +33,7 @@ import org.argouml.kernel.Project;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.model.ModelFacade;
 
-public class GoProjectToStateMachine extends AbstractPerspectiveRule{
+public class GoProjectToStateMachine extends AbstractPerspectiveRule {
 
     public String getRuleName() { return "Project->Statemachine"; }
 
@@ -44,7 +44,7 @@ public class GoProjectToStateMachine extends AbstractPerspectiveRule{
 	    while (it.hasNext()) {
 		col.addAll(ModelManagementHelper.getHelper()
 			   .getAllModelElementsOfKind(it.next(),
-					(Class)ModelFacade.STATEMACHINE));
+					(Class) ModelFacade.STATEMACHINE));
 	    }
 	}
 	return col;

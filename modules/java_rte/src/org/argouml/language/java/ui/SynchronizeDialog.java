@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2002, 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,8 @@
 package org.argouml.language.java.ui;
 
 import java.awt.Cursor;
+import java.awt.event.WindowAdapter;
+import java.awt.GridBagLayout;
 
 /**
  * This dialog offers the controls to synchronize model and code.
@@ -65,15 +67,14 @@ public class SynchronizeDialog extends javax.swing.JDialog {
         buttonPause = new javax.swing.JButton();
         buttonClose = new javax.swing.JButton();
 
-        getContentPane().setLayout(new java.awt.GridBagLayout());
+        getContentPane().setLayout(new GridBagLayout());
 
         setTitle("Synchronize Model/Code Dialog");
-        addWindowListener(new java.awt.event.WindowAdapter() 
-	    {
-		public void windowClosing(java.awt.event.WindowEvent evt) {
-		    closeDialog(evt);
-		}
-	    });
+        addWindowListener(new WindowAdapter() {
+	    public void windowClosing(java.awt.event.WindowEvent evt) {
+		closeDialog(evt);
+	    }
+	});
 
         labelModel.setText("found in model only:");
         gridBagConstraints = new java.awt.GridBagConstraints();

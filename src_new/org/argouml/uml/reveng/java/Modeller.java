@@ -213,7 +213,7 @@ public class Modeller
 	// the class diagrams up to the top level, since I need
 	// diagrams for all the packages.
 	String ownerPackageName, currentName = name;
-	while ( !"".equals((ownerPackageName = getPackageName(currentName)))) {
+	while (!"".equals((ownerPackageName = getPackageName(currentName)))) {
 	    if (getDiagram() != null
 		&& _import.isCreateDiagramsChecked()
 		&& getDiagram().isDiagramInProject(ownerPackageName)) {
@@ -420,43 +420,43 @@ public class Modeller
 	}
 
 	if (interfaces != null) {
-		for (Iterator i = interfaces.iterator(); i.hasNext(); ) {
-			String interfaceName = (String) i.next();
-			try {
-				Object mInterface =
-					getContext(interfaceName)
-					.getInterface(getClassifierName(interfaceName));
-				Object mAbstraction =
-					getAbstraction(currentPackage, mInterface, mClass);
-				if (ModelFacade.getSuppliers(mAbstraction).size() == 0) {
-					ModelFacade.addSupplier(mAbstraction, mInterface);
-					ModelFacade.addClient(mAbstraction, mClass);
-				}
-				ModelFacade.setNamespace(mAbstraction, currentPackage);
-				ModelFacade.setStereotype(mAbstraction,
-						getStereotype("realize"));
-			}
-			catch (ClassifierNotFoundException e) {
-				// Currently if a classifier cannot be found in the
-				// model/classpath then information will be lost from
-				// source files, because the classifier cannot be
-				// created on the fly.
-				LOG.warn("Modeller.java: a classifier that was in the source"
-						+ " file could not be generated in the model "
-						+ "(to generate a abstraction)- information lost",
-						e);
-			}
+	    for (Iterator i = interfaces.iterator(); i.hasNext(); ) {
+		String interfaceName = (String) i.next();
+		try {
+		    Object mInterface =
+			getContext(interfaceName)
+			    .getInterface(getClassifierName(interfaceName));
+		    Object mAbstraction =
+			getAbstraction(currentPackage, mInterface, mClass);
+		    if (ModelFacade.getSuppliers(mAbstraction).size() == 0) {
+			ModelFacade.addSupplier(mAbstraction, mInterface);
+			ModelFacade.addClient(mAbstraction, mClass);
+		    }
+		    ModelFacade.setNamespace(mAbstraction, currentPackage);
+		    ModelFacade.setStereotype(mAbstraction,
+					      getStereotype("realize"));
 		}
+		catch (ClassifierNotFoundException e) {
+		    // Currently if a classifier cannot be found in the
+		    // model/classpath then information will be lost from
+		    // source files, because the classifier cannot be
+		    // created on the fly.
+		    LOG.warn("Modeller.java: a classifier that was in "
+			     + "the source file could not be generated "
+			     + "in the model "
+			     + "(to generate a abstraction)- information lost",
+			     e);
+		}
+	    }
 	}
     }
 
     /**
-       Called from the parser when an anonymous inner class is found.
-
-       @param type The type of this anonymous class.
-    */
-    public void addAnonymousClass(String type)
-    {
+     * Called from the parser when an anonymous inner class is found.
+     *
+     * @param type The type of this anonymous class.
+     */
+    public void addAnonymousClass(String type) {
         String name = parseState.anonymousClass();
         try {
             Object mClassifier = getContext(type).get(getClassifierName(type));
@@ -1494,8 +1494,8 @@ public class Modeller
      * @param sJavaDocs the documentation comment to add ("" or null
      * if no java docs)
      */
-    private void addDocumentationTag (Object modelElement,
-				      String sJavaDocs) {
+    private void addDocumentationTag(Object modelElement,
+				     String sJavaDocs) {
 	if ((sJavaDocs != null)
 	    && (sJavaDocs.trim().length() >= 5 )) {
 //	    LOG.debug ("Modeller.addDocumentationTag: sJavaDocs = \""

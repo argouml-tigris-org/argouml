@@ -37,7 +37,7 @@ import org.argouml.model.ModelFacade;
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
-public class GoSignalToReception extends AbstractPerspectiveRule{
+public class GoSignalToReception extends AbstractPerspectiveRule {
 	
     public String getRuleName() {
     	return Translator.localize ("Tree", "Signal->Reception");

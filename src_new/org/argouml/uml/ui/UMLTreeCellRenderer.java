@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -59,13 +59,20 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
     private static final String BUNDLE = "UMLMenu";
 
     // get localised strings once only
-    private static String activity = Translator.localize(BUNDLE, "label.activity-diagram");
-    private static String sequence = Translator.localize(BUNDLE, "label.sequence-diagram");
-    private static String collaboration = Translator.localize(BUNDLE, "label.collaboration-diagram");
-    private static String deployment = Translator.localize(BUNDLE, "label.deployment-diagram");
-    private static String state = Translator.localize(BUNDLE, "label.state-chart-diagram");
-    private static String usecase = Translator.localize(BUNDLE, "label.usecase-diagram");
-    private static String classDiag = Translator.localize(BUNDLE, "label.class-diagram");
+    private static String activity =
+	Translator.localize(BUNDLE, "label.activity-diagram");
+    private static String sequence =
+	Translator.localize(BUNDLE, "label.sequence-diagram");
+    private static String collaboration =
+	Translator.localize(BUNDLE, "label.collaboration-diagram");
+    private static String deployment =
+	Translator.localize(BUNDLE, "label.deployment-diagram");
+    private static String state =
+	Translator.localize(BUNDLE, "label.state-chart-diagram");
+    private static String usecase =
+	Translator.localize(BUNDLE, "label.usecase-diagram");
+    private static String classDiag =
+	Translator.localize(BUNDLE, "label.class-diagram");
     private static String name = Translator.localize(BUNDLE, "label.name");
     private static String typeName = Translator.localize(BUNDLE, "label.type");
     
@@ -81,9 +88,9 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
         int row,
         boolean _hasFocus) {
             
-            if(value instanceof DefaultMutableTreeNode){
-                value = ((DefaultMutableTreeNode)value).getUserObject();
-            }
+	if (value instanceof DefaultMutableTreeNode) {
+	    value = ((DefaultMutableTreeNode) value).getUserObject();
+	}
         
         Component r =
             super.getTreeCellRendererComponent(

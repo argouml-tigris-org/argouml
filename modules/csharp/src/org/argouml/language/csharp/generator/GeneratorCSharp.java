@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2002, 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -76,6 +76,7 @@ import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MMultiplicityRange;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
 
@@ -452,10 +453,8 @@ public class GeneratorCSharp extends Generator2
 	// TODO: qualifiers (e.g., const)
 	// TODO: stereotypes...
 	s +=  generateClassifierRef(param.getType()) + " ";
-	if (
-	    (param.getKind().getValue() == ru.novosoft.uml.foundation.data_types.MParameterDirectionKind._INOUT) ||
-	    (param.getKind().getValue() == ru.novosoft.uml.foundation.data_types.MParameterDirectionKind._OUT)
-	    ) {
+	if ((param.getKind().getValue() == MParameterDirectionKind._INOUT)
+	    || (param.getKind().getValue() == MParameterDirectionKind._OUT)) {
 	    // if OUT or INOUT, then pass by Reference
 	    s += "ByRef ";
 	}
@@ -473,7 +472,7 @@ public class GeneratorCSharp extends Generator2
 
 
     public String generatePackage(Object handle) {
-	MPackage p = (MPackage)handle;
+	MPackage p = (MPackage) handle;
 	String s = "";
 	String packName = generateName(p.getName());
 	s += "namespace " + packName + " {\n";
@@ -495,7 +494,7 @@ public class GeneratorCSharp extends Generator2
 
 
     public String generateClassifier(Object handle) {
-	MClassifier cls = (MClassifier)handle;
+	MClassifier cls = (MClassifier) handle;
 	String generatedName = generateName(cls.getName());
 	String classifierKeyword;
 	if (cls instanceof MClass) classifierKeyword = "class";

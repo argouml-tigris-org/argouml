@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -75,18 +75,16 @@ public class SystemInfoDialog extends ArgoDialog {
 
 	_info.setEditable(false);
     
-	_runGCButton.addActionListener(new ActionListener() 
-	    {
-		public void actionPerformed(ActionEvent e) {
-		    runGC_actionPerformed(e);
-		}
-	    });
-	_copyButton.addActionListener(new ActionListener() 
-	    {
-		public void actionPerformed(ActionEvent e) {
-		    copy_actionPerformed(e);
-		}
-	    });
+	_runGCButton.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		runGC_actionPerformed(e);
+	    }
+	});
+	_copyButton.addActionListener(new ActionListener() {
+	    public void actionPerformed(ActionEvent e) {
+		copy_actionPerformed(e);
+	    }
+	});
     
 	nameButton(_copyButton, "button.copy-to-clipboard");    
 	nameButton(_runGCButton, "button.run-gc");    
@@ -94,12 +92,11 @@ public class SystemInfoDialog extends ArgoDialog {
 	addButton(_runGCButton, 0);
 	setContent(new JScrollPane(_info));
 	updateInfo();
-	addWindowListener(new WindowAdapter() 
-	    {
-		public void windowActivated(WindowEvent e) {
-		    updateInfo();
-		} // end windowActivated()
-	    });
+	addWindowListener(new WindowAdapter() {
+	    public void windowActivated(WindowEvent e) {
+		updateInfo();
+	    } // end windowActivated()
+	});
         pack();
     } // end SystemInfoDialog()
 

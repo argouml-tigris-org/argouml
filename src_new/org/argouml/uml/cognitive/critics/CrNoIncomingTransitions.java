@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,8 +56,8 @@ public class CrNoIncomingTransitions extends CrUML {
 	boolean needsIncoming = incoming == null || incoming.size() == 0;
 	if (ModelFacade.isAPseudostate(sv)) {
 	    if (ModelFacade.getKind(sv)
-                    .equals(ModelFacade.INITIAL_PSEUDOSTATEKIND)){
-                        needsIncoming = false;
+                    .equals(ModelFacade.INITIAL_PSEUDOSTATEKIND)) {
+		needsIncoming = false;
             }
 	}
 

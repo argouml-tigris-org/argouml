@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// Original author: jaap.branderhorst@xs4all.nl
-
 package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
@@ -43,7 +41,7 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
  * Go rule from represented operation to sequence diagram representing it
  * @author : jaap.branderhorst@xs4all.nl
  */
-public class GoOperationToSequenceDiagram extends AbstractPerspectiveRule{
+public class GoOperationToSequenceDiagram extends AbstractPerspectiveRule {
 
     /** 
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
@@ -62,12 +60,12 @@ public class GoOperationToSequenceDiagram extends AbstractPerspectiveRule{
             Project p = ProjectManager.getManager().getCurrentProject();
             Iterator it = p.getDiagrams().iterator();
             while (it.hasNext()) {
-                ArgoDiagram diagram = (ArgoDiagram)it.next();
+                ArgoDiagram diagram = (ArgoDiagram) it.next();
                 if (diagram instanceof UMLSequenceDiagram
                     && col.contains(
                         (
                             (SequenceDiagramGraphModel)
-                                ((UMLSequenceDiagram)diagram)
+                                ((UMLSequenceDiagram) diagram)
                             .getGraphModel())
                             .getCollaboration())) {
                     ret.add(diagram);

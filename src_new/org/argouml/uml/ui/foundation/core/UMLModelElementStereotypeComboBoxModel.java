@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,7 +48,10 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLModelElementStereotypeComboBoxModel() {
         super("stereotype", true);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
+        UmlModelEventPump.getPump()
+	    .addClassModelEventListener(this,
+					(Class) ModelFacade.NAMESPACE,
+					"ownedElement");
     }
 
     
@@ -57,7 +60,8 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     protected boolean isValidElement(Object o) {
         return org.argouml.model.ModelFacade.isAStereotype(o) 
-            && ExtensionMechanismsHelper.getHelper().isValidStereoType(/*(MModelElement)*/ getTarget(), /*(MStereotype)*/ o);
+            && ExtensionMechanismsHelper.getHelper().isValidStereoType(
+		   /*(MModelElement)*/ getTarget(), /*(MStereotype)*/ o);
     }
 
     /**
@@ -91,8 +95,12 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
         Set elements = new TreeSet(new Comparator() {
             public int compare(Object o1, Object o2) {
                 try {
-                    String name1 = o1 instanceof String ? (String) o1 : ModelFacade.getName(o1);
-                    String name2 = o2 instanceof String ? (String) o2 : ModelFacade.getName(o2);
+                    String name1 =
+			o1 instanceof String
+			? (String) o1 : ModelFacade.getName(o1);
+                    String name2 =
+			o2 instanceof String
+			? (String) o2 : ModelFacade.getName(o2);
                     name1 = (name1 != null ? name1 : "");
                     name2 = (name2 != null ? name2 : "");
 
@@ -100,12 +108,13 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
                 } catch (Exception e) {
                     throw new ClassCastException(e.getMessage());
                 }
-            }});
+	    }
+	});
 	addAllUniqueModelElementsFrom(
 	    elements,
 	    paths,
-	    ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(elem)
-	    );
+	    ExtensionMechanismsHelper.getHelper()
+	        .getAllPossibleStereotypes(elem));
         setElements(elements);
     }   
 
@@ -116,7 +125,8 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
         if (getTarget() != null) {
             Object stereo = null;
             if (ModelFacade.getStereotypes(getTarget()).size() > 0) {
-                stereo = ModelFacade.getStereotypes(getTarget()).iterator().next();
+                stereo =
+		    ModelFacade.getStereotypes(getTarget()).iterator().next();
             }
             return stereo;
         }

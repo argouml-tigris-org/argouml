@@ -47,7 +47,7 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
         if (ModelFacade.isAOperation(parent)) {
-            Object operation = parent;//MOperation
+            Object operation = parent; //MOperation
             Collection col = ModelFacade.getCollaborations(operation);
             Vector ret = new Vector();
             Project p = ProjectManager.getManager().getCurrentProject();
@@ -55,8 +55,9 @@ public class GoOperationToCollaborationDiagram extends AbstractPerspectiveRule {
             Iterator it = diagrams.iterator();
             while (it.hasNext()) {
                 ArgoDiagram diagram = (ArgoDiagram) it.next();
-                if (diagram instanceof UMLCollaborationDiagram &&
-                    col.contains(((UMLCollaborationDiagram) diagram).getNamespace())) {
+                if (diagram instanceof UMLCollaborationDiagram
+		    && col.contains(((UMLCollaborationDiagram) diagram)
+				    .getNamespace())) {
                     ret.add(diagram);
                 }
                 
