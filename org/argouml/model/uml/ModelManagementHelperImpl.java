@@ -298,15 +298,6 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
     }
 
     /**
-     * @return a collection of all behavioralfeatures in the current project
-     */
-    public Collection getAllBehavioralFeatures() {
-        Object model =
-            ProjectManager.getManager().getCurrentProject().getModel();
-        return getAllBehavioralFeatures(model);
-    }
-
-    /**
      * @param ns the given namespace
      * @return a collection of all behavioralfeatures in the given namespace
      */

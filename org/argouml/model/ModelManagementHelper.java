@@ -93,11 +93,6 @@ public interface ModelManagementHelper {
     Collection getAllSurroundingNamespaces(Object ns);
 
     /**
-     * @return a collection of all behavioralfeatures in the current project
-     */
-    Collection getAllBehavioralFeatures();
-
-    /**
      * @param ns the given namespace
      * @return a collection of all behavioralfeatures in the given namespace
      */
