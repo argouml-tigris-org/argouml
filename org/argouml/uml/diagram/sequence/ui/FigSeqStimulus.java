@@ -52,6 +52,7 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.base.Selection;
 
+import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.generator.*;
@@ -172,11 +173,11 @@ public class FigSeqStimulus extends FigNodeModelElement {
     MStimulus sti = (MStimulus) getOwner();
     if (sti == null) return;
 
-    String nameStr = GeneratorDisplay.Generate(sti.getName()).trim();
+    String nameStr = Notation.generate(this, sti.getName()).trim();
 	String actionString = "new Action";
 
 	if (sti.getDispatchAction() != null && sti.getDispatchAction().getName() != null)
-		actionString = GeneratorDisplay.Generate(((MAction)sti.getDispatchAction()).getName()).trim();
+		actionString = Notation.generate(this, ((MAction)sti.getDispatchAction()).getName()).trim();
 
     if( nameStr.equals("") && actionString.equals("") )
       _name.setText("");

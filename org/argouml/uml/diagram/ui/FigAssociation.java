@@ -35,6 +35,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.generator.*;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
@@ -141,7 +142,7 @@ public class FigAssociation extends FigEdgeModelElement {
   protected void modelChanged() {
     MAssociation as = (MAssociation) getOwner();
     if (as == null) return;
-    String asNameStr = GeneratorDisplay.Generate(as.getName());
+    String asNameStr = Notation.generate(this, as.getName());
 
     super.modelChanged();
 
@@ -150,13 +151,13 @@ public class FigAssociation extends FigEdgeModelElement {
 
     MMultiplicity mult0 = ae0.getMultiplicity();
     MMultiplicity mult1 = ae1.getMultiplicity();
-    _srcMult.setText(GeneratorDisplay.Generate(mult0));
+    _srcMult.setText(Notation.generate(this, mult0));
     if ((mult0 == null) || (MMultiplicity.M1_1).equals(mult0)) _srcMult.setText("");
-    _destMult.setText(GeneratorDisplay.Generate(mult1));
+    _destMult.setText(Notation.generate(this, mult1));
     if ((mult1 == null) ||(MMultiplicity.M1_1).equals(mult1)) _destMult.setText("");
 
-    _srcRole.setText(GeneratorDisplay.Generate(ae0.getName()));
-    _destRole.setText(GeneratorDisplay.Generate(ae1.getName()));
+    _srcRole.setText(Notation.generate(this, ae0.getName()));
+    _destRole.setText(Notation.generate(this, ae1.getName()));
 
     boolean srcNav = ae0.isNavigable();
     boolean destNav = ae1.isNavigable();

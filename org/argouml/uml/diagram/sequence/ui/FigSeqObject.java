@@ -54,6 +54,7 @@ import org.tigris.gef.base.SelectionManager;
 
 import org.tigris.gef.base.ModeSelect;
 
+import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.generator.*;
@@ -513,7 +514,7 @@ public class FigSeqObject extends FigNodeModelElement
     super.modelChanged();
     MObject obj = (MObject) getOwner();
     if (obj == null) return;
-    String nameStr = GeneratorDisplay.Generate(obj.getName()).trim();
+    String nameStr = Notation.generate(this, obj.getName()).trim();
 	String baseString = "";
 	Vector bases = new Vector(obj.getClassifiers());
 	if (bases.size() == 1)

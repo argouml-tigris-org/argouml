@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,6 +45,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.argouml.application.api.*;
+import org.argouml.application.events.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
@@ -59,7 +61,7 @@ import org.argouml.util.*;
  *  look like arcs and that have editiable names. */
 
 public abstract class FigEdgeModelElement extends FigEdgePoly
-implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener  {
+implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener, NotationContext, ArgoNotationEventListener  {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -109,6 +111,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
     setBetweenNearestPoints(true);
     ((FigPoly)_fig).setRectilinear(false);
+    ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
   }
 
   public FigEdgeModelElement(Object edge) {
@@ -116,8 +119,12 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     setOwner(edge);
     //MModelElement me = (MModelElement) edge;
     //me.addVetoableChangeListener(this);
+    ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
   }
 
+  public void finalize() {
+    ArgoEventPump.removeListener(ArgoEvent.ANY_NOTATION_EVENT, this);
+  }
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -363,21 +370,22 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   public void updateNameText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
-    String nameStr = GeneratorDisplay.Generate(me.getName());
+    String nameStr = Notation.generate(this, me.getName());
     _name.setText(nameStr);
   }
 
   public void updateStereotypeText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
-    MStereotype stereos = me.getStereotype();
-    if (stereos == null) {
-      _stereo.setText("");
-      return;
-    }
-    String stereoStr = stereos.getName();
-    if (stereoStr.length() == 0) _stereo.setText("");
-    else _stereo.setText("<<" + stereoStr + ">>");
+    // MStereotype stereos = me.getStereotype();
+    // if (stereos == null) {
+      // _stereo.setText("");
+      // return;
+    // }
+    // String stereoStr = stereos.getName();
+    // if (stereoStr.length() == 0) _stereo.setText("");
+    // else _stereo.setText("<<" + stereoStr + ">>");
+    _stereo.setText(Notation.generateStereotype(this, me.getStereotype()));
   }
 
   public void setOwner(Object own) {
@@ -434,5 +442,18 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	}
 	super.delete();
     }
+
+ /** This default implementation simply requests the default notation.
+  */
+    public NotationName getContextNotation() { return null; }
+
+    public void notationChanged(ArgoNotationEvent event) {
+	renderingChanged();
+        damage();
+    }
+
+    public void renderingChanged() {
+    }
+
 } /* end class FigEdgeModelElement */
 

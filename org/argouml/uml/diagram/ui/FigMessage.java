@@ -42,6 +42,7 @@ import org.tigris.gef.graph.*;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.Layer;
 
+import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.generator.*;
@@ -217,7 +218,7 @@ public class FigMessage extends FigNodeModelElement {
     super.modelChanged();
     MMessage mes = (MMessage) getOwner();
     if (mes == null) return;
-    String nameStr = GeneratorDisplay.Generate(mes.getName()).trim();
+    String nameStr = Notation.generate(this, mes.getName()).trim();
 	String actionString = "new Action";
 	if (mes.getAction() != null && mes.getAction().getScript() != null 
 		&&  mes.getAction().getScript().getBody() != null)

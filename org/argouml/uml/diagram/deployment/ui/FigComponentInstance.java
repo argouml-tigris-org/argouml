@@ -45,6 +45,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.generator.*;
 
@@ -270,13 +271,15 @@ public class FigComponentInstance extends FigNodeModelElement {
   protected void updateStereotypeText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
-    MStereotype stereo = me.getStereotype();
-    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
-	_stereo.setText("");
-    else {
-	String stereoStr = stereo.getName();
-	_stereo.setText("<<" + stereoStr + ">>");
-    }
+    // MStereotype stereo = me.getStereotype();
+    // if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
+    //    _stereo.setText("");
+    // else {
+    //    String stereoStr = stereo.getName();
+    //    _stereo.setText("<<" + stereoStr + ">>");
+    // }
+    _stereo.setText(Notation.generateStereotype(this, me.getStereotype()));
+
     Rectangle oldBounds = getBounds();
     _stereo.calcBounds();
     calcBounds();

@@ -40,6 +40,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.generator.*;
 
 /** Class to display graphics for a UML MCompositeState in a diagram. */
@@ -215,7 +216,7 @@ public class FigCompositeState extends FigStateVertex {
     //System.out.println("FigCompositeState modelChanged");
     MState s = (MState) getOwner();
     if (s == null) return;
-    String newText = GeneratorDisplay.SINGLETON.generateStateBody(s);
+    String newText = Notation.generateStateBody(this, s);
     _internal.setText(newText);
 
     calcBounds();

@@ -40,6 +40,8 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.argouml.application.api.*;
+import org.argouml.language.helpers.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.generator.*;
@@ -110,13 +112,7 @@ public class FigClassifierRole extends FigNodeModelElement {
   protected void updateStereotypeText() {
     MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
-    MStereotype stereo = me.getStereotype();
-    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
-	_stereo.setText("");
-    else {
-	String stereoStr = stereo.getName();
-	_stereo.setText("<<" + stereoStr + ">>");
-    }
+    _stereo.setText(Notation.generateStereotype(this, me.getStereotype()));
     Rectangle oldBounds = getBounds();
     _stereo.calcBounds();
     calcBounds();
@@ -195,7 +191,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     super.modelChanged();
     MClassifierRole cr = (MClassifierRole) getOwner();
     if (cr == null) return;
-    String nameStr = GeneratorDisplay.Generate(cr.getName()).trim();
+    String nameStr = Notation.generate(this, cr.getName()).trim();
     String baseString = "";
     if (cr.getBases() != null && cr.getBases().size()>0) {
 	Vector bases = new Vector(cr.getBases());
