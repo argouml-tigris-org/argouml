@@ -5108,6 +5108,21 @@ public class ModelFacade {
     }
 
     /**
+     * Add a message to an interaction.
+     *
+     * @param handle The interaction.
+     * @param elem The message.
+     */
+    public static void addMessage(Object handle, Object elem) {
+        if (handle instanceof MInteraction
+                && elem instanceof MMessage) {
+            ((MInteraction) handle).addMessage((MMessage) elem);
+            return;
+        }
+        illegalArgument(handle, elem);
+    }
+
+    /**
      * Add Message to a predecessor Message.
      *
      * @param handle predecessor Message
@@ -6601,6 +6616,22 @@ public class ModelFacade {
             return;
         }
 	illegalArgument(handle, compositeState);
+    }
+
+    /**
+     * Set the context of an interaction.
+     *
+     * @param handle The element.
+     * @param col The context to set.
+     */
+    public static void setContext(Object handle, Object col) {
+        if (handle instanceof MInteraction
+                && (col instanceof MCollaboration
+                        || col == null)) {
+            ((MInteraction) handle).setContext((MCollaboration) col);
+            return;
+        }
+        illegalArgument(handle, col);
     }
 
     /**
