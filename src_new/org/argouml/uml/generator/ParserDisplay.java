@@ -719,7 +719,13 @@ public class ParserDisplay extends Parser {
 	op.setName("anonymous");
 
     if (type != null) {
-	MClassifier mtype = getType(type.trim(), op.getNamespace());
+	MClassifier ow = op.getOwner();
+	MNamespace ns = null;
+	if (ow != null && ow.getNamespace() != null)
+	    ns = ow.getNamespace();
+	else
+	    ns = op.getModel();
+	MClassifier mtype = getType(type.trim(), ns);
 	MParameter param = UmlFactory.getFactory().getCore().buildParameter();
 	param.setType(mtype);
 	UmlHelper.getHelper().getCore().setReturnParameter(op,param);
@@ -768,6 +774,12 @@ public class ParserDisplay extends Parser {
 		throws ParseException {
     MyTokenizer st = new MyTokenizer(param, " ,\t,:,=,\\,", _parameterCustomSep);
     List origParam = op.getParameters();
+    MClassifier ow = op.getOwner();
+    MNamespace ns = null;
+    if (ow != null && ow.getNamespace() != null)
+	ns = ow.getNamespace();
+    else
+	ns = op.getModel();
 
     Iterator it = origParam.iterator();
     while (st.hasMoreTokens()) {
@@ -850,7 +862,7 @@ public class ParserDisplay extends Parser {
 	    p.setKind(getParamKind(kind.trim()));
 
 	if (type != null)
-	    p.setType(getType(type.trim(), op.getNamespace()));
+	    p.setType(getType(type.trim(), ns));
 
 	if (value != null) {
 	    MExpression initExpr =
@@ -1118,8 +1130,15 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     else if (attr.getName() == null || "".equals(attr.getName()))
 	attr.setName("anonymous");
 
-    if (type != null)
-	attr.setType(getType(type.trim(), attr.getNamespace()));
+    if (type != null) {
+	MClassifier ow = attr.getOwner();
+	MNamespace ns = null;
+	if (ow != null && ow.getNamespace() != null)
+	    ns = ow.getNamespace();
+	else
+	    ns = attr.getModel();
+	attr.setType(getType(type.trim(), ns));
+    }
 
     if (value != null) {
 	MExpression initExpr =
@@ -1997,6 +2016,11 @@ nextProp:
 	Collection b = cls.getBases();
 	Iterator it = b.iterator();
 	MClassifier c;
+	MNamespace ns = cls.getNamespace();
+	if (ns != null && ns.getNamespace() != null)
+	    ns = ns.getNamespace();
+	else
+	    ns = cls.getModel();
 
 	while (it.hasNext()) {
 	    c = (MClassifier) it.next();
@@ -2015,7 +2039,9 @@ addBases:
 		if (d.equals(c.getName()))
 		    continue addBases;
 	    }
-	    c = getType(d, cls.getNamespace());
+	    c = getType(d, ns);
+	    if (c.getNamespace() instanceof MCollaboration)
+		c.setNamespace(ns);
 	    cls.addBase(c);
 	}
     }
