@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
-<!ENTITY cookbook_modules SYSTEM "cookbook_modules.xml">
-<!ENTITY cookbook_logging SYSTEM "cookbook_logging.xml">
+<!ENTITY cookbookmodules SYSTEM "cookbook_modules.xml">
+<!ENTITY cookbooklogging SYSTEM "cookbook_logging.xml">
 ]>
 
 <!-- THIS IS THE ARGO/UML DEVELOPER COOKBOOK 
@@ -241,8 +241,8 @@ programming in Argo/UML.
 <para>...</para></sect2>
 </sect1>
 
-&cookbook_modules;
-&cookbook_logging;
+&cookbookmodules;
+&cookbooklogging;
 </chapter>
 
 <chapter id="cvs">
@@ -263,8 +263,164 @@ programming in Argo/UML.
           </listitem>
 </itemizedlist>
 </para>
-<para>Merging branches together is causing some work. So please use them sparingly and announce your attention before on the mailinglist.
+      <para>Merging branches together is causing some work. So please use them sparingly and announce your attention before on the mailinglist.
 </para>
+      <sect2 id="howdoi_cvs">
+	<title>How do I ...?</title>
+	<para>
+	  <itemizedlist>
+	    <listitem>
+	      <para>...get a list of the currently active working branches?</para>
+	      <para>
+You can't from cvs. You need to follow the announcements of created
+and discontinued branches on the mailing list to know what branches are
+interesting.
+	      </para>
+	    </listitem>
+	    <listitem>
+	      <para>
+...create a branch for my work on <replaceable>xxxyyy</replaceable> 
+and start work on that branch?</para>
+	      <para>
+This assumes that you have a checked out copy of argouml
+	      </para>
+	      <orderedlist>
+		<listitem>
+		  <para>Change directory to the directory where argouml is checked out.</para>
+		</listitem>
+		<listitem>
+		  <para>
+Enter the argouml directory:
+<command>cd argouml</command> or <command>chdir argouml</command>
+		  </para>
+		</listitem>
+		<listitem>
+		  <para>
+Create your branch: 
+<command>cvs tag -b <replaceable>work_xxxyyy_myname</replaceable></command>
+		  </para>
+		  <para>
+<replaceable>myname</replaceable> is is a self explaining code for you
+(your Tigris login).
+		  </para>
+		</listitem>
+		<listitem>
+		  <para>
+Change your checked out copy to be on the branch:
+<command>cvs update -r <replaceable>work_xxxyyy_myname</replaceable></command>
+		  </para>
+		</listitem>
+		<listitem>
+		  <para>Do your work!</para>
+		</listitem>
+		<listitem>
+		  <para>
+Check in your changes in the branch:
+<command>cvs commit -m'<replaceable>Blablabla</replaceable>' <optional>file</optional></command>
+		  </para>
+		</listitem>
+		<listitem>
+		  <para>Continue working and checking in!</para>
+		</listitem>
+	      </orderedlist>
+	    </listitem>
+	    <listitem>
+	      <para>...move my work from my working branch into the release?</para>
+	      <para>
+This is done when your work with the feature xxxyyy is finished and you have
+decided/received clearance to enter it in the main branch.
+	      </para>
+	      <orderedlist>
+		<listitem>
+		  <para>
+Change directory to the directory where argouml is checked out.
+		  </para>
+		  <para>
+If you are just working on one feature at a time this is the place where you
+have a checked out copy on the branch in question. If not, this could be any
+checked out copy of the source that does not contain any uncommited changes.
+		  </para>
+		</listitem>
+		<listitem>
+		  <para>
+Enter the argouml directory:
+<command>cd argouml</command> or <command>chdir argouml</command>
+		  </para>
+		</listitem>
+		<listitem>
+		  <para>
+Move the checked out copy that you are working on to the main branch:
+<command>cvs update -A</command>
+		  </para>
+		</listitem>
+		<listitem>
+		  <para>
+Merge the changes from the branch into you checked out copy:
+<command>cvs update -j <replaceable>work_xxxyyy_myname</replaceable></command>
+		  </para>
+		</listitem>
+		<listitem>
+		  <para>
+Compile and run all your tests again.
+		  </para>
+		  <para>
+This is to verify that the merge was all right, noone else had done any changes
+that in the meantime that has in any way modified the work made in the branch.
+		  </para>
+		</listitem>
+		<listitem>
+		  <para>
+Commit your changes in the main branch:
+<command>cvs commit -m'<replaceable>xxxyyy entered in the main branch</replaceable></command>
+		  </para>
+		</listitem>
+		<listitem>
+		  <para>
+Discontinue your branch!
+		  </para>
+		  <para>
+From this point on it is important that you do not reuse your branch for 
+any work. Only check it out for the purpose of examining how things were
+in the branch. Make sure that all other developers that have been looking
+at your branch also knows that it is discontinued.
+		  </para>
+		</listitem>
+	      </orderedlist>
+	    </listitem>
+	    <listitem>
+	      <para>...look at someone else's work in a branch?</para>
+	      <para>
+You need the name of the branch, i.e. the 
+<replaceable>work_xxxyyy_hisname</replaceable>.
+	      </para>
+	      <para>
+There are two alternatives:
+		<itemizedlist>
+		  <listitem>
+		    <para>
+Check out argouml or part of it on that branch:
+<command>cvs co -r <replaceable>work_xxxyyy_hisname</replaceable> argouml</command>
+		    </para>
+		  </listitem>
+		  <listitem>
+		    <para>
+Update your copy of argouml to be on that branch:
+<command>cvs update -r <replaceable>work_xxxyyy_hisname</replaceable></command>
+		    </para>
+		    <para>
+Make sure that your copy does not have any uncommited code or else your
+your uncommited code will be present in your checked out copy on the branch.
+This could, on the other hand, be useful if you want to test if your uncommited
+code works also with the additions on that branch.
+		    </para>
+		  </listitem>
+		</itemizedlist>
+	      </para>
+	    </listitem>
+	  </itemizedlist>
+	</para>
+      </sect2>
+
 </sect1>
 </chapter>
 
