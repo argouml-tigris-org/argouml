@@ -3041,14 +3041,18 @@ Lists any specialized package (i.e. for
       information.
     </para>
 
-    <!-- A bit about multiway associations -->
+    <!-- A bit about multiway associations & association classes-->
 
     <sect2 id="s2.ref.association_multiway">
-      <title>Three-way and Greater Associations</title>
+      <title>Three-way and Greater Associations and Association Classes</title>
 
-      <para>UML&nbsp;1.3 provides for associations that are governed by a third
-        <emphasis>associative class</emphasis>. &argouml; provides no support
-        for multi-way associations or associative classes at this stage.</para>
+      <para>UML&nbsp;1.3 provides for N-ary associations and
+        associations that are governed by a third
+        <emphasis>associative class</emphasis>. 
+        However, &argouml; provides no support
+        for neither at this stage.
+        <!-- The association classes are requested by issue 393. -->
+      </para>
     </sect2>
 
     <!-- The details tabs -->
