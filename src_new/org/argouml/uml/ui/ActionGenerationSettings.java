@@ -39,7 +39,7 @@ public class ActionGenerationSettings extends UMLAction {
   // constructors
 
   protected ActionGenerationSettings() {
-    super("Settings for Generate for Project", NO_ICON);
+    super("action.settings-for-project-code-generation", NO_ICON);
   }
 
   ////////////////////////////////////////////////////////////////
