@@ -93,7 +93,7 @@ public class Project implements java.io.Serializable, TargetListener {
     /** TODO: should just be the directory to write
      */
     private URL url;
-    private ChangeRegistry saveRegistry;
+//    private ChangeRegistry saveRegistry;
 
     private String authorname;
     private String description;
@@ -167,7 +167,7 @@ public class Project implements java.io.Serializable, TargetListener {
         cgPrefs = new GenerationPreferences();
         defaultModelCache = new HashMap();
         
-        saveRegistry = new ChangeRegistry();
+//        saveRegistry = new ChangeRegistry();
         LOG.info("making empty project with empty model");
         // Jaap Branderhorst 2002-12-09
         // load the default model
@@ -750,7 +750,7 @@ public class Project implements java.io.Serializable, TargetListener {
     public void addDiagram(ArgoDiagram d) {
         // send indeterminate new value instead of making copy of vector
         diagrams.addElement(d);
-        d.addChangeRegistryAsListener(saveRegistry);
+//        d.addChangeRegistryAsListener(saveRegistry);
         setNeedsSave(true);
     }
 
@@ -777,7 +777,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 this.moveToTrash(statediagram.getStateMachine());
             }
         }
-        d.removeChangeRegistryAsListener(saveRegistry);
+//        d.removeChangeRegistryAsListener(saveRegistry);
     }
 
     /**
@@ -1252,7 +1252,7 @@ public class Project implements java.io.Serializable, TargetListener {
         defaultModelCache = null;
         
         url = null;
-        saveRegistry = null;
+//        saveRegistry = null;
         authorname = null;
         description = null;
         version = null;

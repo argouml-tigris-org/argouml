@@ -34,6 +34,8 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.uml.UmlModelListener;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.ui.ActionSaveProject;
+import org.tigris.gef.graph.MutableGraphSupport;
 
 /**
  * This class manages the projects loaded in argouml.
@@ -119,6 +121,7 @@ public final class ProjectManager implements PropertyChangeListener {
         // so that any changes to the model will enable the
         // save button/menu item etc.
         UmlModelListener.getInstance().addPropertyChangeListener(this);
+        MutableGraphSupport.setSaveAction(ActionSaveProject.getInstance());
     }
 
     /**
