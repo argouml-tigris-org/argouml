@@ -214,8 +214,8 @@ public class CoreHelper {
     /**
      * This method removes a feature from a classifier.
      *
-     * @param cls
-     * @param feature
+     * @param cls the classifier
+     * @param feature the feature to be removed
      */
     public void removeFeature(Object cls, Object feature) {
         if (cls != null
@@ -525,7 +525,7 @@ public class CoreHelper {
     /**
      * Returns all behavioral features of some classifier.
      * @param clazz The classifier
-     * @return
+     * @return the collection with all behavioral features of some classifier
      */
     public Collection getBehavioralFeatures(Object clazz) {
         if (ModelFacade.isAClassifier(clazz)) {
@@ -584,7 +584,8 @@ public class CoreHelper {
 
     /**
      * Returns all interfaces found in this namespace and in its children
-     * @return Collection
+     * @param ns the given namespace
+     * @return Collection with all interfaces found 
      */
     public Collection getAllInterfaces(MNamespace ns) {
         if (ns == null)
@@ -947,7 +948,9 @@ public class CoreHelper {
     }
     /**
      * Returns all classifiers found in this namespace and in its children
-     * @return Collection
+     * @param ns the given namespace
+     * @return Collection the collection of all classifiers 
+     *                    found in the namespace
      */
     public Collection getAllClassifiers(MNamespace ns) {
         if (ns == null)
@@ -969,8 +972,8 @@ public class CoreHelper {
     /**
      * Returns all associations for some classifier.<p>
      *
-     * @param oclassifier
-     * @return Collection
+     * @param oclassifier the given classifier
+     * @return Collection all associations for the given classifier
      */
     public Collection getAssociations(Object oclassifier) {
         Collection col = new ArrayList();
@@ -1616,6 +1619,11 @@ public class CoreHelper {
         return col;
     }
     
+    /**
+     * @param  association the association to be investigated
+     * @return true if one of the association ends of the given association 
+     *         is of the composite kind
+     */
     public final boolean hasCompositeEnd(Object association)
     {
         if (!(association instanceof MAssociation)) {
