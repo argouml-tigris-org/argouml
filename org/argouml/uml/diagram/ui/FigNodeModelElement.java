@@ -1124,7 +1124,7 @@ public abstract class FigNodeModelElement
         while (it.hasNext()) {
             ((Fig) it.next()).deleteFromModel();
         }
-        super.dispose();
+        super.deleteFromModel();
     }
 
     /**
