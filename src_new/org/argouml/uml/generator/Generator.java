@@ -29,6 +29,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 import java.util.*;
@@ -79,12 +80,18 @@ public abstract class Generator {
       return generateTransition((MTransition)o);
     if (o instanceof MAction)
       return generateAction((MAction)o);
+    if (o instanceof MCallAction)
+      return generateAction((MAction)o);
     if (o instanceof MGuard)
       return generateGuard((MGuard)o);
+    if (o instanceof MMessage)
+      return generateMessage((MMessage)o);
 
     if (o instanceof MModelElement)
       return generateName(((MModelElement)o).getName());
+
     if (o == null) return "";
+
     return o.toString();
   }
 
@@ -102,7 +109,7 @@ public abstract class Generator {
   public abstract String generateTransition(MTransition m);
   public abstract String generateAction(MAction m);
   public abstract String generateGuard(MGuard m);
-
+  public abstract String generateMessage(MMessage m);
 
   public String generateExpression(MExpression expr) {
     if (expr == null) return "";

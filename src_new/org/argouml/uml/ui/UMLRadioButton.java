@@ -43,6 +43,7 @@ public class UMLRadioButton extends JRadioButton implements ItemListener, UMLUse
     }
 
     public void itemStateChanged(final ItemEvent event) {
+	//	System.out.println(getAccessibleContext().getAccessibleName()+" itemStateChanged "+event.getStateChange());
         _property.setProperty(_container.getTarget(),event.getStateChange() == ItemEvent.SELECTED);
     }
 
@@ -64,14 +65,16 @@ public class UMLRadioButton extends JRadioButton implements ItemListener, UMLUse
     public void removed(final MElementEvent p1) {
     }
     public void propertySet(final MElementEvent event) {
-        if(_property.isAffected(event))
-            update();
+        /*if(_property.isAffected(event))
+	  update();*/
     }
     
     private void update() {
-        boolean oldState = isSelected();
+        //boolean oldState = isSelected();
+	//if (_container.getTarget()!=null)
+	    //    System.out.println("Name: "+((ru.novosoft.uml.foundation.core.MModelElement)_container.getTarget()).getName());
         boolean newState = _property.getProperty(_container.getTarget());
-        if(oldState != newState)
+        //if(oldState ^ newState)
             setSelected(newState);
     }
 }

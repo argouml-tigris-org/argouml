@@ -33,25 +33,16 @@ import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import java.util.*;
 
-import org.tigris.gef.util.Util;
-
 public class PropPanelAssociation extends PropPanelModelElement {
-
-  ////////////////////////////////////////////////////////////////
-  // constants
-  private static ImageIcon _associationIcon = Util.loadIconResource("Association");
-  private static ImageIcon _assocEndIcon = Util.loadIconResource("AssociationEnd");
-  private static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
-  private static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
-
 
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelAssociation() {
-    super("Association Properties",2);
+    super("Association",_associationIcon,2);
 
     Class mclass = MAssociation.class;
+
     //
     //   this will cause the components on this page to be notified
     //      anytime a stereotype, namespace, operation, etc
@@ -59,59 +50,50 @@ public class PropPanelAssociation extends PropPanelModelElement {
     Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };
     setNameEventListening(namesToWatch);
 
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Stereotype:",2,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-    addCaption("Stereotype:",1,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
+    addCaption("Namespace:",3,0,0);
+    addLinkField(new JScrollPane(new UMLList(new UMLNamespaceListModel(this),true)),3,0,0);
 
-    addCaption("Namespace:",2,0,0);
-    addLinkField(new UMLList(new UMLNamespaceListModel(this),true),2,0,0);
-
-
-    addCaption("Modifiers:",3,0,1);
+    addCaption("Modifiers:",4,0,1);
 
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
     modifiersPanel.add(new UMLCheckBox(localize("Abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
     modifiersPanel.add(new UMLCheckBox(localize("Final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,3,0,0);
+    addField(modifiersPanel,4,0,0);
 
 
-
-    addCaption("Association Ends:",0,1,0);
+    addCaption("Association Ends:",0,1,0.25);
     JList assocEndList = new UMLList(new UMLAssociationEndListModel(this,"connection",true),true);
     assocEndList.setBackground(getBackground());
     assocEndList.setForeground(Color.blue);
-    addField(assocEndList,0,1,0);
+    addField(new JScrollPane(assocEndList),0,1,0.25);
 
     addCaption("Extends:",1,1,0);
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-    addLinkField(extendsList,1,1,0);
+    JScrollPane extendsScroll=new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    addLinkField(extendsScroll,1,1,0);
 
     addCaption("Derived:",2,1,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-    //derivedList.setBackground(getBackground());
     derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
-    addField(new JScrollPane(derivedList),2,1,1);
+    derivedList.setFont(smallFont);
+    JScrollPane derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    addField(derivedScroll,2,1,0);
 
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-
-
-    new PropPanelButton(this,buttonPanel,_assocEndIcon,localize("Add association end"),"addAssociationEnd",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete association"),"removeElement",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
-    new PropPanelButton(this,buttonPanel,_associationIcon,localize("New association"),"newAssociation",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete association"),"removeElement",null);
+    //does this make sense??new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
+    //does this make sense??new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
+    //does this make sense??new PropPanelButton(this,buttonPanel,_associationIcon,localize("New association"),"newAssociation",null);
 
   }
 

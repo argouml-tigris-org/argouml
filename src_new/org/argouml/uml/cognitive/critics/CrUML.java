@@ -290,7 +290,7 @@ public class CrUML extends Critic {
 
 
   public String expand(String res, VectorSet offs) {
-    //System.out.println("expanding: " + res);
+      //System.out.println("expanding: " + res);
     if (offs.size() == 0) return res;
     Object off1 = offs.firstElement();
     if (!(off1 instanceof MElement)) return res;
@@ -301,6 +301,8 @@ public class CrUML extends Critic {
     // replace all occurances of OFFENDER with the name of the first offender
     while (matchPos != -1) {
       int endExpr = res.indexOf(OCL_END, matchPos + 1);
+      //check if there is no OCL_END; if so, the critic expression s not correct and can not be expanded
+      if (endExpr == -1) return res; 
       String expr = res.substring(matchPos + OCL_START.length(), endExpr);
       String evalStr = OCLEvaluator.SINGLETON.evalToString(off1, expr);
       //System.out.println("expr='" + expr + "' = '" + evalStr + "'");

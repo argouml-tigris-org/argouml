@@ -27,96 +27,80 @@
 // $Id$
 
 package org.argouml.uml.ui.behavior.collaborations;
+
 import java.awt.*;
+import java.util.*;
 import javax.swing.*;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import org.argouml.uml.ui.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 
-public class PropPanelClassifierRole extends PropPanel {
+import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
+
+
+public class PropPanelClassifierRole extends PropPanelClassifier {
 
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelClassifierRole() {
-    super("ClassifierRole Properties",2);
+    super("ClassifierRole",_classifierRoleIcon, 2);
 
     Class mclass = MClassifierRole.class;
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
 
+    addCaption("Base:",2,0,0);   	
+    UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleBase","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
+    UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
+    addField(new UMLComboBoxNavigator(this,"NavClass",clsComboBox),2,0,0);
 
-    addCaption("Stereotype:",1,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
+    addCaption("Stereotype:",3,0,0);
+    addField(stereotypeBox,3,0,0);
 
-    addCaption("Extends:",2,0,0);
+    addCaption("Namespace:",4,0,1);
+    addField(namespaceScroll,4,0,0);
 
-    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-    extendsList.setBackground(getBackground());
-    extendsList.setForeground(Color.blue);
-    addField(extendsList,2,0,0);
+    addCaption("Association Roles:",0,1,0);
+    addField(connectScroll,0,1,1);
 
-    addCaption("Implements:",3,0,0);
-    JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
-    implementsList.setBackground(getBackground());
-    implementsList.setForeground(Color.blue);
-    addField(implementsList,3,0,0);
-
-    addCaption("Modifiers:",4,0,0);
-
-    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox(localize("public"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-    modifiersPanel.add(new UMLCheckBox(localize("abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,4,0,0);
-
-    addCaption("Namespace:",5,0,0);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,5,0,0);
-
-    addCaption("Derived:",6,0,1);
-    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-    //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);
-    derivedList.setVisibleRowCount(1);
-    JScrollPane derivedScroll = new JScrollPane(derivedList);
-    addField(derivedScroll,6,0,1);
-
-    addCaption("Operations:",0,1,0.25);
-    JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
-    opsList.setForeground(Color.blue);
-    opsList.setVisibleRowCount(1);
-    JScrollPane opsScroll = new JScrollPane(opsList);
-    addField(opsScroll,0,1,0.25);
-
-    addCaption("Attributes:",1,1,0.25);
-    JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
-    attrList.setForeground(Color.blue);
-    attrList.setVisibleRowCount(1);
-    JScrollPane attrScroll= new JScrollPane(attrList);
-    addField(attrScroll,1,1,0.25);
-
-    addCaption("Associations:",2,1,0.25);
-    JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
-    connectList.setForeground(Color.blue);
-    connectList.setVisibleRowCount(1);
-    addField(new JScrollPane(connectList),2,1,0.25);
-
-
-
-    addCaption("Owned Elements:",3,1,0.25);
-    JList innerList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
-    innerList.setForeground(Color.blue);
-    innerList.setVisibleRowCount(1);
-    addField(new JScrollPane(innerList),3,1,0.25);
-
+    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
   }
+
+
+    public boolean isAcceptibleBase(MModelElement classifier) {
+        return classifier instanceof MClassifier;
+    }
+
+     public MClassifier getClassifier() {
+        MClassifier classifier = null;
+        Object target = getTarget();
+        if(target instanceof MClassifierRole) {
+	    //    UML 1.3 apparently has this a 0..n multiplicity
+	    Collection bases=((MClassifierRole)target).getBases();
+	    Iterator it=bases.iterator();
+	    if (it.hasNext())
+		classifier=(MClassifier)it.next();
+        }
+        return classifier;
+    }
+
+    public void setClassifier(MClassifier element) {
+	MClassifier classifier = null;
+        Object target = getTarget();
+        if(target instanceof MClassifierRole) {
+	    Vector bases=new Vector();
+	    bases.addElement(element);
+	    ((MClassifierRole)target).setBases(bases);	    
+	}
+    }
+
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("ClassifierRole");

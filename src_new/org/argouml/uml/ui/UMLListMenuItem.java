@@ -80,6 +80,9 @@ public class UMLListMenuItem extends JMenuItem implements ActionListener {
              Object[] argValue = { new Integer(_index) };
             _action.invoke(_actionObj,argValue);
         }
+        catch(InvocationTargetException ex) {
+            System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLListMenuItem.actionPerformed()");
+        }
         catch(Exception e) {
             System.out.println(e.toString() + " in UMLListMenuItem.actionPerformed()");
         }

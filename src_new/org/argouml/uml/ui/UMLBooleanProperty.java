@@ -65,6 +65,7 @@ abstract public class UMLBooleanProperty  {
      */
     public boolean isAffected(MElementEvent event) {
         String propName = event.getName();
+	//System.out.println("eventName: "+propName);
         if(_propertyName == null || propName == null || propName.equals(_propertyName)) 
             return true;
         return false;

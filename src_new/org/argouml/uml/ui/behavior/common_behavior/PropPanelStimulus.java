@@ -34,56 +34,114 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.MElementEvent;
 
 import javax.swing.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.util.*;
 import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.uml.*;
 
-public class PropPanelStimulus extends PropPanel {
+import org.tigris.gef.util.Util;
+
+public class PropPanelStimulus extends PropPanelModelElement {
+
+   protected static ImageIcon _stimulusIcon = Util.loadIconResource("Stimulus");
 
   public PropPanelStimulus() {
-    super("Stimulus Properties",2);
+    super("Stimulus Properties",_stimulusIcon, 2);
+
+    Class[] namesToWatch = { MAction.class};
+    setNameEventListening(namesToWatch);
 
     Class mclass = MStimulus.class;
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
+    
+    addCaption("Action:",2,0,0);
+    addField(new UMLStimulusActionTextField(this,new UMLStimulusActionTextProperty("name")),2,0,0);
 
-    addCaption("Stereotype:",2,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,2,0,0);
 
-    addCaption("Sender:",3,0,0);
-    UMLComboBoxModel senderModel = new UMLComboBoxModel(this,"isAcceptibleSender",
-        "sender","getSender","setSender",false,MInstance.class,true);
-    addField(new UMLComboBox(senderModel),3,0,0);
+    addCaption("Stereotype:",3,0,0);
+    addField(stereotypeBox,3,0,0);
 
-    addCaption("Receiver:",4,0,1);
-    UMLComboBoxModel receiverModel = new UMLComboBoxModel(this,"isAcceptibleReceiver",
-        "receiver","getReceiver","setReceiver",false,MInstance.class,true);
-    addField(new UMLComboBox(receiverModel),4,0,1);
+   
+    addCaption("Sender:",4,0,0);
+    UMLList senderList = new UMLList(new UMLReflectionListModel(this,"sender",true,"getSender",null,null,null),true);
+    senderList.setForeground(Color.blue);
+    senderList.setVisibleRowCount(1);
+    senderList.setFont(smallFont);
+    JScrollPane senderScroll = new JScrollPane(senderList);
+    addField(senderScroll,4,0,0.5);
+
+    addCaption("Receiver:",5,0,0);
+    UMLList receiverList = new UMLList(new UMLReflectionListModel(this,"receiver",true,"getReceiver",null,null,null),true);
+    receiverList.setForeground(Color.blue);
+    receiverList.setVisibleRowCount(1);
+    receiverList.setFont(smallFont);
+    JScrollPane receiverScroll = new JScrollPane(receiverList);
+    addField(receiverScroll,5,0,0.5);
+
+     addCaption("Namespace:",6,0,1);
+     addLinkField(namespaceScroll,6,0,0);
+
+    
+
+    /*
+    UMLActionModel actionModel = new UMLActionModel(this,mclass,"name",
+            MAction.class,"getDispatchAction","setDispatchAction");
+
+        addCaption("Action:",5,0,0);
+        addField(new UMLActionNameField(actionModel,true),5,0,0);
+    */
+
+    
+   
+    
 
     //
     //   this is really a property of the link
     //      but since the link has so few properties of its own
     //      more convienient to have it here
-    addCaption("Association:",5,0,0);
-    UMLComboBoxModel assocModel = new UMLComboBoxModel(this,"isAcceptibleAssociation",
-        "association","getAssociation","setAssociation",false,MAssociation.class,true);
-    addField(new UMLComboBox(assocModel),5,0,0);
+    /*
+      addCaption("Association:",5,0,0);
+      UML ComboBoxModel assocModel = new UMLComboBoxModel(this,"isAcceptibleAssociation",
+      "association","getAssociation","setAssociation",false,MAssociation.class,true);
+      addField(new UMLComboBox(assocModel),5,0,0);
+    */
 
-    addCaption("Namespace:",6,0,1);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,6,0,0);
+     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
+     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
+     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
 
-    addCaption("Connections:",0,1,1);
-    addField(new JList(),0,1,1);
-
+    
+     
   }
+
+     public void navigateNamespace() {
+        Object target = getTarget();
+        if(target instanceof MModelElement) {
+            MModelElement elem = (MModelElement) target;
+            MNamespace ns = elem.getNamespace();
+            if(ns != null) {
+                navigateTo(ns);
+            }
+        }
+    }
+
+    public void removed(MElementEvent mee) {
+	/*
+	System.out.println("PropPanel.removed: event.name:" + mee.getName() + " event.type: " + mee.getType());
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        dispatch.removed(mee);
+        SwingUtilities.invokeLater(dispatch);
+	*/
+    }
+
 
     public boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Stimulus");
@@ -168,6 +226,15 @@ public class PropPanelStimulus extends PropPanel {
                 //
             }
         }
+    }
+
+    public void removeElement() {
+	System.out.println("PropPanelStimulus.removeElement");
+        MStimulus target = (MStimulus) getTarget();        
+	MModelElement newTarget = (MModelElement) target.getNamespace();
+                
+        MMUtil.SINGLETON.remove(target);
+	if(newTarget != null) navigateTo(newTarget);
     }
 
 }

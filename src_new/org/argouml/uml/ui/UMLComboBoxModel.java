@@ -32,7 +32,7 @@ import java.util.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
-
+import ru.novosoft.uml.foundation.core.*;
 
 public class UMLComboBoxModel extends AbstractListModel implements
     ComboBoxModel, UMLUserInterfaceComponent, ActionListener {
@@ -48,12 +48,11 @@ public class UMLComboBoxModel extends AbstractListModel implements
     private TreeSet _set;
     private Object _selectedItem;
     private MModel _model;
-    private boolean _allowVoid;
-    private Object[] _noArgs = {};
+    private boolean _allowVoid;    
     private boolean _shouldBeEnabled;
     private boolean _addElementsFromProfileModel;
 
-
+    protected Object[] _noArgs = {};
     /**
      *   This method creates a UMLComboBoxModel
      *
@@ -108,6 +107,39 @@ public class UMLComboBoxModel extends AbstractListModel implements
         }
     }
 
+ // get & set methods for private atttributes
+
+    protected TreeSet getSet() {
+	return _set;
+    }
+
+    protected boolean addElementsFromProfileModel() {
+	return _addElementsFromProfileModel;
+    }
+
+    protected UMLUserInterfaceContainer getContainer() {
+	return _container;
+    }
+
+    protected MModel getModel() {
+	return _model;
+    }
+
+    protected void setModel(MModel model) {
+	_model = model;
+    }
+
+    protected boolean allowVoid() {
+	return _allowVoid;
+    }
+
+    protected Method getGetMethod() {
+	return _getMethod;
+    }
+    protected Method getSetMethod() {
+	return _setMethod;
+    }
+
 
     public void collectElements(MNamespace ns,Profile profile,boolean isPhantom) {
         Collection collection = ns.getOwnedElements();
@@ -154,8 +186,12 @@ public class UMLComboBoxModel extends AbstractListModel implements
             //
             //   should not need to do this
             //
+	    
+	    //System.out.println("UMLComboBoxModel: "+element+" "+model);
+
             if(model == null) {
                 System.out.println("Error: getModel() == null for " + target.getClass().toString() + " in UMLComboBoxModel");
+                return;
             }
 
             if(model != _model) {

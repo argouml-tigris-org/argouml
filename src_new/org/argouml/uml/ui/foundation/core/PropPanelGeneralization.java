@@ -27,78 +27,56 @@ import org.argouml.uml.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import javax.swing.*;
 import java.awt.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import org.tigris.gef.util.Util;
-
-public class PropPanelGeneralization extends PropPanel {
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
-  private static ImageIcon _classIcon = Util.loadIconResource("Class");
-  private static ImageIcon _interfaceIcon = Util.loadIconResource("Interface");
-  private static ImageIcon _associationIcon = Util.loadIconResource("Association");
-  private static ImageIcon _packageIcon = Util.loadIconResource("Package");
+public class PropPanelGeneralization extends PropPanelModelElement {
 
   private PropPanelButton _newButton;
 
   public PropPanelGeneralization() {
-    super("Generalization",2);
+    super("Generalization",_generalizationIcon,2);
 
     Class mclass = MGeneralization.class;
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    Class[] namesToWatch = {MStereotype.class,MNamespace.class,MClassifier.class };
+    setNameEventListening(namesToWatch);
 
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
 
-    addCaption("Stereotype:",1,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
+    addCaption("Stereotype:",2,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-    addCaption("Discriminator:",2,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")),2,0,0);
+    addCaption("Discriminator:",3,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")),3,0,0);
 
-    addCaption("Namespace:",3,0,1);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,3,0,0);
-
-
+    addCaption("Namespace:",4,0,1);
+    addField(namespaceScroll,4,0,0);
 
     addCaption("Parent:",0,1,0);
-    //
-    //   misuse of classifier, but only temporary
-    //
-    UMLComboBoxModel parentModel = new UMLComboBoxModel(this,"isAcceptibleParent",
-        "parent","getParentElement","setParentElement",false,MGeneralizableElement.class,true);
-    addField(new UMLComboBoxNavigator(this,"NavClass",new UMLComboBox(parentModel)),0,1,0);
+    UMLModelElementListModel parentModel = new UMLReflectionListModel(this,"parent",true,"getParentElement",null,null,null);
+    parentModel.setUpperBound(1);
+    addLinkField(new JScrollPane(new UMLList(parentModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),0,1,0);
 
     addCaption("Child:",1,1,0);
-    UMLComboBoxModel childModel = new UMLComboBoxModel(this,"isAcceptibleChild",
-        "child","getChild","setChild",false,MGeneralizableElement.class,false);
-    addField(new UMLComboBoxNavigator(this,"NavClass",new UMLComboBox(childModel)),1,1,0);
+    UMLModelElementListModel childModel = new UMLReflectionListModel(this,"child",true,"getChild",null,null,null);
+    childModel.setUpperBound(1);
+    addLinkField(new JScrollPane(new UMLList(childModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),1,1,0);
 
     addCaption("Powertype:",2,1,1);
     UMLComboBoxModel powerModel = new UMLComboBoxModel(this,"isAcceptiblePowertype",
         "powertype","getPowertype","setPowertype",false,MClassifier.class,true);
     addField(new UMLComboBoxNavigator(this,"NavClass",new UMLComboBox(powerModel)),2,1,0);
 
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-
-
-    new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("Delete generalization"),"removeElement",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-    _newButton = new PropPanelButton(this,buttonPanel,_classIcon,localize("New class"),"newModelElement",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    buttonPanel.add(new JPanel());
     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete generalization"),"removeElement",null);
     }
 
 
@@ -289,6 +267,7 @@ public class PropPanelGeneralization extends PropPanel {
 
     public boolean isAcceptibleChild(MModelElement element) {
         boolean isAcceptible = false;
+	System.out.println("PropPanelGeneralization: testing isAcceptibleChild");
         Object target = getTarget();
         if(target instanceof MGeneralization) {
             MGeneralizableElement parent = ((MGeneralization) target).getParent();
@@ -299,6 +278,7 @@ public class PropPanelGeneralization extends PropPanel {
               isAcceptible = isAcceptible(parent,element);
             }
         }
+	System.out.println("isAcceptible: "+isAcceptible);
         return isAcceptible;
     }
 

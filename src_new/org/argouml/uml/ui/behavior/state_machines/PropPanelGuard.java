@@ -31,41 +31,43 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.*;
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import org.argouml.uml.ui.*;
 import java.util.*;
+
+import javax.swing.*;
+
+import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
-public class PropPanelGuard extends PropPanel {
+import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
+public class PropPanelGuard extends PropPanelModelElement {
+
+    ////////////////////////////////////////////////////////////////
+    // contructors
     public PropPanelGuard() {
-        super("State Properties",2);
+        super("Guard", _guardIcon, 2);
 
         Class mclass = MGuard.class;
 
-        addCaption("Name:",0,0,0);
-        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
-
-        addCaption("Stereotype:",1,0,0);
-        JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-        addField(stereotypeBox,1,0,0);
-
-        addCaption("Transition:",2,0,1);
-        JList transitionList = new UMLList(new UMLReflectionListModel(this,"transition",false,"getTransition",null,null,null),true);
-        addLinkField(transitionList,2,0,0);
-
         UMLExpressionModel expressionModel = new UMLExpressionModel(this,MGuard.class,"expression",
-            MBooleanExpression.class,"getExpression","setExpression");
+		    MBooleanExpression.class,"getExpression","setExpression");
 
-        addCaption("Expression:",0,1,1);
-        addField(new UMLExpressionBodyField(expressionModel,true),0,1,1);
+        addCaption("Expression:",1,0,0);
+        addField(new JScrollPane(new UMLExpressionBodyField(expressionModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),1,0,0);
 
-        addCaption("Language:",1,1,0);
-        addField(new UMLExpressionLanguageField(expressionModel,false),1,1,0);
+        addCaption("Language:",2,0,0);
+        addField(new UMLExpressionLanguageField(expressionModel,true),2,0,0);
+
+        addCaption("Transition:",3,0,1);
+        JList transitionList = new UMLList(new UMLReflectionListModel(this,"transition",false,"getTransition",null,null,null),true);
+        addLinkField(new JScrollPane(transitionList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),3,0,0);
+
+	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	//new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
 
   }
 

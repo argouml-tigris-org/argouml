@@ -37,7 +37,8 @@ public class UMLInitialValueComboBox extends JComboBox implements ActionListener
         super();
         _container = container;
         addActionListener(this);
-        addItem("null");
+        addItem("");
+	setEditable(true);
     }
 
     public void targetChanged() {

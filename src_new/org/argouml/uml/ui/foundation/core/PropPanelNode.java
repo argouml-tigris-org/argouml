@@ -35,43 +35,33 @@ import ru.novosoft.uml.foundation.core.*;
 import org.argouml.uml.ui.*;
 import java.util.*;
 
-public class PropPanelNode extends PropPanel {
+public class PropPanelNode extends PropPanelClassifier {
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelNode() {
-    super("Node Properties",2);
+    super("Node",_nodeIcon,2);
 
     Class mclass = MNode.class;
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
 
-    addCaption("Extends:",1,0,0);
+    addCaption("Extends:",2,0,0);
+    addField(extendsScroll,2,0,0);
 
-    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-    extendsList.setBackground(getBackground());
-    extendsList.setForeground(Color.blue);
-    addField(extendsList,1,0,0);
-
-    addCaption("Modifiers:",2,0,0);
+    addCaption("Modifiers:",3,0,0);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
     modifiersPanel.add(new UMLCheckBox(localize("abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
     modifiersPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,2,0,0);
+    addField(modifiersPanel,3,0,0);
 
-    addCaption("Namespace:",3,0,0);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,3,0,0);
+    addCaption("Namespace:",4,0,0);
+   addField(namespaceScroll,4,0,0);
 
-    addCaption("Derived:",4,0,1);
-    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-    derivedList.setForeground(Color.blue);
-    derivedList.setVisibleRowCount(1);
-    addField(new JScrollPane(derivedList),4,0,1);
+    addCaption("Derived:",5,0,1);
+    addField(derivedScroll,5,0,1);
 
     addCaption("Components:",0,1,1);
     JList compList = new UMLList(new UMLReflectionListModel(this,"component",true,"getResidents","setResidents",null,null),true);
@@ -79,7 +69,10 @@ public class PropPanelNode extends PropPanel {
     compList.setVisibleRowCount(1);
     addField(new JScrollPane(compList),0,1,1);
 
-
+    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete node"),"removeElement",null);
 
   }
 

@@ -30,6 +30,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 import org.argouml.uml.MMUtil;
@@ -183,7 +184,7 @@ public class GeneratorJava extends Generator {
     s += generateScope(attr);
     s += generateChangability(attr);
     if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
-      s += generateMultiplicity(attr.getMultiplicity()) + " ";
+	s += generateMultiplicity(attr.getMultiplicity()) + " ";
 
     MClassifier type = attr.getType();
     if (type != null) s += generateClassifierRef(type) + " ";
@@ -561,7 +562,7 @@ public class GeneratorJava extends Generator {
   }
 
   public String generateMultiplicity(MMultiplicity m) {
-    if (m == null) { System.out.println("null Multiplicity"); return ""; }
+    if (m == null) { return ""; }
     if (MMultiplicity.M0_N.equals(m)) return ANY_RANGE;
     String s = "";
     Collection v = m.getRanges();
@@ -596,6 +597,7 @@ public class GeneratorJava extends Generator {
   }
 
   public String generateStateBody(MState m) {
+      System.out.println("GeneratorJava: generating state body");
     String s = "";
     MAction entry = m.getEntry();
     MAction exit = m.getExit();
@@ -610,18 +612,37 @@ public class GeneratorJava extends Generator {
     }
     Collection trans = m.getInternalTransitions();
     if (trans != null) {
+	  Iterator iter = trans.iterator();
+	  while(iter.hasNext())
+	      {
+		  if (s.length() > 0) s += "\n";
+		  s += generateTransition((MTransition)iter.next());
+	      }
+      }
+
+  /*   if (trans != null) {
       int size = trans.size();
 	  MTransition[] transarray = (MTransition[])trans.toArray();
       for (int i = 0; i < size; i++) {
 		if (s.length() > 0) s += "\n";
 		s += Generate(transarray[i]);
       }
-    }
+      }*/
     return s;
   }
 
   public String generateTransition(MTransition m) {
-    String s = m.getName();
+    String s = generate(m.getName());
+    String t = generate(m.getTrigger());
+    String g = generate(m.getGuard());
+    String e = generate(m.getEffect());
+    if (s.length() > 0) s += ": ";
+    s += t;
+    if (g.length() > 0) s += " [" + g + "]";
+    if (e.length() > 0) s += " / " + e;
+    return s;
+
+    /*  String s = m.getName();
     String t = generate(m.getTrigger());
     String g = generate(m.getGuard());
     String e = generate(m.getEffect());
@@ -635,15 +656,27 @@ public class GeneratorJava extends Generator {
     s += t;
     if (g != null && g.length() > 0) s += " [" + g + "]";
     if (e != null && e.length() > 0) s += " / " + e;
-    return s;
+    return s;*/
   }
 
   public String generateAction(MAction m) {
-    return m.getName();
+      // return m.getName();
+      if ((m.getScript() != null) && (m.getScript().getBody() != null))
+	  return m.getScript().getBody();
+      return "";
   }
 
   public String generateGuard(MGuard m) {
-    return generateExpression(m.getExpression());
+      //return generateExpression(m.getExpression());
+      if (m.getExpression() != null)
+	  return generateExpression(m.getExpression());
+      return "";
   }
+
+    public String generateMessage(MMessage m) {
+    	if (m == null) return "";
+	return generateName(m.getName()) + "::" +
+	    generateAction(m.getAction());
+    }
 
 } /* end class GeneratorJava */

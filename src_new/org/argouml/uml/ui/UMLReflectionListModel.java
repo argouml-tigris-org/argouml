@@ -41,7 +41,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
     private Method _addMethod = null;
     private Method _deleteMethod = null;
     private static final Object[] _noArgs = {};
-    
+
     /**
      *   Creates a new list model
      *   @param container the container (typically a PropPanelClass or PropPanelInterface)
@@ -50,8 +50,15 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
      *                       of the list model.  A null value will cause all events to trigger a refresh.
      *   @param showNone  if true, an element labelled "none" will be shown where there are
      *                        no actual entries in the list.
-     */    
-    public UMLReflectionListModel(UMLUserInterfaceContainer container,String property,boolean showNone,String getMethod,String setMethod,String addMethod,String deleteMethod) {
+     */
+    public UMLReflectionListModel(UMLUserInterfaceContainer container,
+				  String property,
+				  boolean showNone,
+				  String getMethod,
+				  String setMethod,
+				  String addMethod,
+				  String deleteMethod) {
+
         super(container,property,showNone);
         Class[] noArgs = {};
         try {
@@ -75,10 +82,10 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
 
 
     /**
-     *  This method is called from getModelElementSize 
+     *  This method is called from getModelElementSize
      *    when the list size has been marked as invalid.
      *  @returns number of "actual" list entries.
-     *    
+     *
      */
     protected int recalcModelElementSize() {
         int size = 0;
@@ -94,13 +101,16 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                     }
                 }
             }
+	    catch(InvocationTargetException ex) {
+                System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.recalcModelElementSize.");
+            }
             catch(Exception e) {
                 System.out.println(e.toString() + " in UMLReflectionListModel.recalcModelElementSize.");
             }
         }
         return size;
     }
-            
+
     /**
      *  This method returns the model element that corresponds to
      *  to the specific index.  Called from getElementAt which handles
@@ -139,8 +149,8 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
         }
         return element;
     }
-    
-    
+
+
     /**
      *  This method builds a context (pop-up) menu for the list.  This method
      *  may be overriden for lists that have additional menu items or when
@@ -158,7 +168,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
             open.setEnabled(false);
         }
         popup.add(open);
-        
+
         if(_deleteMethod != null) {
             UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
             if(size <= 0) {
@@ -166,13 +176,18 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
             }
             popup.add(delete);
         }
-        
+
         if(_addMethod != null) {
             UMLListMenuItem add = new UMLListMenuItem(container.localize("Add"),this,"add",index);
             int upper = getUpperBound();
-            if(upper >= 0 && size >= upper) {
+	    
+	    // System.out.println("upper "+upper);
+	    // System.out.println("size "+size);
+
+            if(upper > 0 && size >= upper) {
                 add.setEnabled(false);
             }
+	    else
             popup.add(add);
         }
 
@@ -186,22 +201,37 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
         }
         return true;
     }
-    
-    
+
+
     public void add(int index) {
         try {
             Object[] indexArg = { new Integer(index) };
             Object newTarget = _addMethod.invoke(getContainer(),indexArg);
             if(newTarget != null) {
+		int oldSize = getModelElementSize();
+		//add(newTarget);
+		/* if(newOps == null)
+		     fireIntervalAdded(this,oldSize,oldSize);
+		    else */
+		//		if (_upper==1)
+		//fireIntervalAdded(this,0,size());
+		    //else
+		    //fireIntervalAdded(this,index+1,index+1);
+
                 getContainer().navigateTo(newTarget);
             }
+        }
+	catch(InvocationTargetException ex) {
+            System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.add() ");
         }
         catch(Exception e) {
             System.out.println(e.toString() + " in UMLReflectionListModel.add()");
         }
+
+
     }
-    
-    
+
+
     public void moveUp(int index) {
         if(_getMethod != null && _setMethod != null) {
             try {
@@ -209,12 +239,15 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 Collection newCollection = moveUpUtil(oldCollection,index);
                 _setMethod.invoke(getContainer(),new Object[] { newCollection });
             }
+	    catch(InvocationTargetException ex) {
+		System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveUp()");
+	    }
             catch(Exception e) {
                 System.out.println(e.toString() + " in UMLReflectionListModel.moveUp()");
             }
         }
     }
-    
+
     public void moveDown(int index) {
         if(_getMethod != null && _setMethod != null) {
             try {
@@ -222,24 +255,30 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 Collection newCollection = moveDownUtil(oldCollection,index);
                 _setMethod.invoke(getContainer(), new Object[] { newCollection });
             }
+	    catch(InvocationTargetException ex) {
+		System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveDown() ");
+	    }
             catch(Exception e) {
-                System.out.println(e.toString() + " in UMLReflectionListModel.moveUp()");
+                System.out.println(e.toString() + " in UMLReflectionListModel.moveDown()");
             }
         }
     }
-    
-    
+
+
     public void delete(int index) {
         if(_deleteMethod != null) {
             try {
                 _deleteMethod.invoke(getContainer(),new Object[] { new Integer(index) });
             }
-            catch(Exception e) {
+	    catch(InvocationTargetException ex) {
+		System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.delete()");
+	    }
+	    catch(Exception e) {
                 System.out.println(e.toString() + " in UMLReflectionListModel.delete()");
             }
         }
     }
-    
+
 }
 
 

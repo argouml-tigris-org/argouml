@@ -38,73 +38,73 @@ import java.util.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
-public class PropPanelPseudostate extends PropPanel {
+public class PropPanelPseudostate extends PropPanelStateVertex {
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelPseudostate() {
-    super("Pseudostate Properties",2);
+    super("Pseudostate", null,2);
 
     Class mclass = MPseudostate.class;
-    
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    addCaption("Kind:",1,0,0);
-    
+    addCaption("Name:",1,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
+
+    addCaption("Kind:",2,0,1);
+
     JPanel kindPanel = new JPanel(new GridLayout(0,2));
     ButtonGroup kindGroup = new ButtonGroup();
     UMLRadioButton junctionButton = new UMLRadioButton("junction",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.JUNCTION,null));
+    junctionButton.setEnabled(false);
     kindPanel.add(junctionButton);
     kindGroup.add(junctionButton);
-    
+
     UMLRadioButton branchButton = new UMLRadioButton("branch",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.BRANCH,null));
+    branchButton.setEnabled(false);
     kindPanel.add(branchButton);
     kindGroup.add(branchButton);
-    
+
     UMLRadioButton forkButton = new UMLRadioButton("fork",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.FORK,null));
+    forkButton.setEnabled(false);
     kindPanel.add(forkButton);
     kindGroup.add(forkButton);
-    
+
     UMLRadioButton joinButton = new UMLRadioButton("join",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.JOIN,null));
+    joinButton.setEnabled(false);
     kindPanel.add(joinButton);
     kindGroup.add(joinButton);
 
     UMLRadioButton deepButton = new UMLRadioButton("deep history",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.DEEP_HISTORY,null));
+    deepButton.setEnabled(false);
     kindPanel.add(deepButton);
     kindGroup.add(deepButton);
-    
+
     UMLRadioButton shallowButton = new UMLRadioButton("shallow history",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.SHALLOW_HISTORY,null));
+    shallowButton.setEnabled(false);
     kindPanel.add(shallowButton);
     kindGroup.add(shallowButton);
-    
+
     UMLRadioButton initialButton = new UMLRadioButton("initial",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.INITIAL,null));
+    initialButton.setEnabled(false);
     kindPanel.add(initialButton);
     kindGroup.add(initialButton);
-    
-    UMLRadioButton finalButton = new UMLRadioButton("final",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MPseudostateKind.class,MPseudostateKind.FINAL,null));
-    kindPanel.add(finalButton);
-    kindGroup.add(finalButton);
-    addField(kindPanel,1,0,0);
-    
 
-    addCaption("Namespace:",2,0,1);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,2,0,0);
-    
-    addCaption("Incoming:",0,1,0);
-    addCaption("Outgoing:",1,1,1);
-    
-    
+    addField(kindPanel,2,0,0); 
+
+
+    addCaption("Incoming:",0,1,0.5);
+    addField(incomingScroll,0,1,0.5);
+
+    addCaption("Outgoing:",1,1,0.5);
+    addField(outgoingScroll,1,1,0.5);
+
   }
 
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Pseudostate");
     }
-  
+
 
 
 } /* end class PropPanelPseudostate */

@@ -69,7 +69,7 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     }
     
     public void roleRemoved(final MElementEvent event) {
-        Object eventProperty = event.getName();
+	Object eventProperty = event.getName();
         Object listProperty = getProperty();
         if(listProperty == null || eventProperty == null || 
             listProperty.equals(eventProperty)) {
@@ -87,11 +87,13 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     }
     
     public void roleAdded(final MElementEvent event) {
-        Object eventProperty = event.getName();
+	Object eventProperty = event.getName();
         Object listProperty = getProperty();
+
         if(listProperty == null || eventProperty == null || 
             listProperty.equals(eventProperty)) {
             Object added = event.getAddedValue();
+
             if(isProperClass(added)) {
                 int upper = getUpperBound();
                 resetSize();
@@ -118,15 +120,20 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     //   this needs to be overriden if the derived class
     //      wants to resort based on the name change
     public void propertySet(final MElementEvent event) {
-        Object source = event.getSource();
+        //needs-more-work: update of listmodel is not correct!!
+	//example: propertySet-event of classifier.setFeature(features)
+
+	Object source = event.getSource();
         int index = getCache().indexOf(source);
         //
         //   we should only see promiscuous name changes 
         //      so checking that the property is named 'name'
         //      is unnecessary
-        if(index >= 0) {
+
+
+        if(index >= 0) 
             fireContentsChanged(this,index,index);
-        }
+	
     }
     
     protected java.util.List swap(Collection source,int lowIndex,Object before,Object after) {

@@ -27,23 +27,22 @@ import ru.novosoft.uml.foundation.core.*;
 import javax.swing.*;
 
 
-public class PropPanelModelElementImpl extends PropPanel {
+public class PropPanelModelElementImpl extends PropPanelModelElement {
   ////////////////////////////////////////////////////////////////
   // instance vars
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelModelElementImpl() {
-    super("ModelElement Properties",2);
+    super("ModelElement",null,2);
 
     Class mclass = MModelElement.class;
 
     addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addField(nameField,0,0,0);
 
 
     addCaption("Stereotype:",1,0,1);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
 
   }

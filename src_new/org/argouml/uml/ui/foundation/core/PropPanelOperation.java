@@ -34,40 +34,43 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import org.argouml.uml.ui.*;
+import org.argouml.uml.MMUtil;
 
-import org.tigris.gef.util.Util;
+public class PropPanelOperation extends PropPanelModelElement {
 
-public class PropPanelOperation extends PropPanel {
-
-    private static ImageIcon _parameterIcon = Util.loadIconResource("Parameter");
-    private static ImageIcon _operationIcon = Util.loadIconResource("Operation");
-    private static ImageIcon _signalIcon = Util.loadIconResource("SignalSending");
-
+    ////////////////////////////////////////////////////////////////
+    // contructors
     public PropPanelOperation() {
-        super("Operation Properties",2);
+        super("Operation", _operationIcon,3);
 
         Class mclass = MOperation.class;
 
-        addCaption("Name:",0,0,0);
-        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+        addCaption("Name:",1,0,0);
+        addField(nameField,1,0,0);
 
-        addCaption("Stereotype:",1,0,0);
-        JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
+        addCaption("Stereotype:",2,0,0);
+        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-        addCaption("Visibility:",2,0,0);
-        addField(new UMLVisibilityPanel(this,mclass,3,false),2,0,0);
+        addCaption("Owner:",3,0,0);
+        JList ownerList = new UMLList(new UMLReflectionListModel(this,"owner",false,"getOwner",null,null,null),true);
+        ownerList.setBackground(getBackground());
+        ownerList.setForeground(Color.blue);
+        JScrollPane ownerScroll=new JScrollPane(ownerList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        addField(ownerScroll,3,0,0);
 
-        addCaption("Modifiers:",3,0,0);
-        JPanel modPanel = new JPanel(new GridLayout(0,3));
+        addCaption("Visibility:",4,0,1);
+        addField(new UMLVisibilityPanel(this,mclass,2,false),4,0,0);
+
+        addCaption("Modifiers:",0,1,0);
+        JPanel modPanel = new JPanel(new GridLayout(0,2));
         modPanel.add(new UMLCheckBox(localize("abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
         modPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
         modPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
         modPanel.add(new UMLCheckBox(localize("query"),this,new UMLReflectionBooleanProperty("isQuery",mclass,"isQuery","setQuery")));
         modPanel.add(new UMLCheckBox(localize("static"),this,new UMLEnumerationBooleanProperty("ownerscope",mclass,"getOwnerScope","setOwnerScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)));
-        addField(modPanel,3,0,0);
+        addField(modPanel,0,1,0);
 
-        addCaption("Concurrency:",4,0,0);
+        addCaption("Concurrency:",1,1,1);
         JPanel concurPanel = new JPanel(new GridLayout(0,2));
         ButtonGroup group = new ButtonGroup();
         UMLRadioButton sequential = new UMLRadioButton("sequential",this,new UMLEnumerationBooleanProperty("concurrency",mclass,"getConcurrency","setConcurrency",MCallConcurrencyKind.class,MCallConcurrencyKind.SEQUENTIAL,null));
@@ -81,39 +84,29 @@ public class PropPanelOperation extends PropPanel {
         UMLRadioButton concur = new UMLRadioButton("concurrent",this,new UMLEnumerationBooleanProperty("concurrency",mclass,"getConcurrency","setConcurrency",MCallConcurrencyKind.class,MCallConcurrencyKind.CONCURRENT,null));
         group.add(concur);
         concurPanel.add(concur);
-        addField(concurPanel,4,0,0);
+        addField(concurPanel,1,1,0);
 
-
-        addCaption("Owner:",5,0,1);
-        JList namespaceList = new UMLList(new UMLReflectionListModel(this,"owner",false,"getOwner",null,null,null),true);
-        namespaceList.setBackground(getBackground());
-        namespaceList.setForeground(Color.blue);
-        addField(namespaceList,5,0,0);
-
-        addCaption("Parameters:",0,1,.5);
+        addCaption("Parameters:",0,2,.5);
         JList paramList = new UMLList(new UMLReflectionListModel(this,"parameter",true,"getParameters","setParameters","addParameter",null),true);
         paramList.setForeground(Color.blue);
         paramList.setVisibleRowCount(1);
-        addField(new JScrollPane(paramList),0,1,0.5);
+	paramList.setFont(smallFont);
+	addField(new JScrollPane(paramList),0,2,0.5);
 
-        addCaption("Exceptions:",1,1,.5);
+        addCaption("Raised Signals:",1,2,0.5);
         JList exceptList = new UMLList(new UMLReflectionListModel(this,"signal",true,"getRaisedSignals","setRaisedSignals","addRaisedSignal",null),true);
         exceptList.setForeground(Color.blue);
         exceptList.setVisibleRowCount(1);
-        addField(new JScrollPane(exceptList),1,1,0.5);
+	exceptList.setFont(smallFont);
+        addField(new JScrollPane(exceptList),1,2,0.5);
 
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-
-    new PropPanelButton(this,buttonPanel,_parameterIcon,localize("Add parameter"),"buttonAddParameter",null);
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_signalIcon,localize("Add raised signal"),"buttonAddRaisedSignal",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete operation"),"removeElement",null);
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_operationIcon,localize("New operation"),"buttonAddOperation",null);
+	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_operationIcon,localize("New operation"),"buttonAddOperation",null);
+	//new PropPanelButton(this,buttonPanel,_parameterIcon,localize("Add parameter"),"buttonAddParameter",null);
+	//new PropPanelButton(this,buttonPanel,_signalIcon,localize("Add raised signal"),"buttonAddRaisedSignal",null);
+	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete operation"),"removeElement",null);
     }
 
     public MClassifier getReturnType() {
@@ -202,45 +195,7 @@ public class PropPanelOperation extends PropPanel {
     }
 
     public void addParameter(Integer indexObj) {
-        int index = indexObj.intValue();
-        java.util.List oldParams = getParameters();
-        java.util.List newParams = null;
-        MParameter newParam = new MParameterImpl();
-        //
-        //  if you don't set one, you get an exception in the critics
-        //
-        newParam.setKind(MParameterDirectionKind.INOUT);
-        newParam.setName("param" + index);
-        if(oldParams == null || oldParams.size() == 0) {
-            newParams = new LinkedList();
-            newParams.add(newParam);
-        }
-        else {
-            newParams = new ArrayList(oldParams.size()+1);
-            MParameter returnParam = null;
-            boolean added = false;
-            Iterator iter = oldParams.iterator();
-            for(int i = 0; iter.hasNext(); i++) {
-                MParameter param = (MParameter) iter.next();
-                if(param.getKind() == MParameterDirectionKind.RETURN) {
-                    returnParam = param;
-                }
-                else {
-                    newParams.add(param);
-                    if(index == i) {
-                        newParams.add(newParam);
-                        added = true;
-                    }
-                }
-                if(!added) {
-                    newParams.add(newParam);
-                }
-                if(returnParam != null) {
-                    newParams.add(returnParam);
-                }
-            }
-        }
-        setParameters(newParams);
+	buttonAddParameter();
     }
 
     public Object getOwner() {
@@ -269,11 +224,14 @@ public class PropPanelOperation extends PropPanel {
     }
 
     public void addRaisedSignal(Integer index) {
-        MSignal newSignal = new MSignalImpl();
         Object target = getTarget();
         if(target instanceof MOperation) {
-            ((MOperation) target).addRaisedSignal(newSignal);
-        }
+	    MOperation oper = (MOperation) target;
+            MSignal newSignal = oper.getFactory().createSignal();
+	    oper.getOwner().getNamespace().addOwnedElement(newSignal);
+	    oper.addRaisedSignal(newSignal);
+            navigateTo(newSignal);
+	}
     }
 
     public void buttonAddParameter() {
@@ -293,8 +251,7 @@ public class PropPanelOperation extends PropPanel {
             MOperation oper = (MOperation) target;
             MClassifier owner = oper.getOwner();
             if(owner != null) {
-                MOperation newOper = owner.getFactory().createOperation();
-                owner.addFeature(newOper);
+		MOperation newOper = MMUtil.SINGLETON.buildOperation(owner);
                 navigateTo(newOper);
             }
         }
@@ -305,6 +262,7 @@ public class PropPanelOperation extends PropPanel {
         if(target instanceof MOperation) {
             MOperation oper = (MOperation) target;
             MSignal newSignal = oper.getFactory().createSignal();
+	    oper.getNamespace().addOwnedElement(newSignal);
             oper.addRaisedSignal(newSignal);
             navigateTo(newSignal);
         }

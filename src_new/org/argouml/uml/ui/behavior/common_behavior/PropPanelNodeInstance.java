@@ -28,10 +28,40 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
+import java.awt.*;
+import javax.swing.*;
 
-public class PropPanelNodeInstance extends PropPanelInstance {
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+
+import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+
+public class PropPanelNodeInstance extends PropPanelModelElement {
     public PropPanelNodeInstance() {
-        super();
+        super("Node Instance", _nodeInstanceIcon,2);
+
+	Class mclass = MNodeInstance.class;
+	
+	addCaption("Name:",1,0,0);
+	addField(nameField,1,0,0);
+
+
+	addCaption("Stereotype:",2,0,0);
+	addField(stereotypeBox,2,0,0);
+
+
+	addCaption("Namespace:",3,0,1);
+	addField(namespaceScroll,3,0,0);
+
+
+	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
+
+
     }
 
     public boolean isAcceptibleBaseMetaClass(String baseClass) {

@@ -23,12 +23,18 @@
 
 
 package org.argouml.uml.ui;
+
 import ru.novosoft.uml.*;
+
 import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
+
 import java.util.*;
 import java.awt.*;
 import java.lang.reflect.*;
+
+import ru.novosoft.uml.foundation.core.*;
+
+import org.argouml.uml.MMUtil;
 
 /**
  *   This class implements a list model for the attributes of a classifier.
@@ -111,17 +117,14 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
-            MAttribute newAttr = new MAttributeImpl();
+            MAttribute newAttr = MMUtil.SINGLETON.buildAttribute(classifier);
             int oldSize = getModelElementSize();
             java.util.List newAttrs = addElement(classifier.getFeatures(),index,newAttr);
-            if(newAttrs == null) {
-                classifier.addFeature(newAttr);
-                fireIntervalAdded(this,oldSize,oldSize);
-            }
-            else {
-                classifier.setFeatures(newAttrs);
-                fireIntervalAdded(this,index+1,index+1);
-            }
+            if(newAttrs == null) 
+		fireIntervalAdded(this,oldSize,oldSize);
+	    else 
+		fireIntervalAdded(this,index+1,index+1);
+	    
             navigateTo(newAttr);
         }
     }

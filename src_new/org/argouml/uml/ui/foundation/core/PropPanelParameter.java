@@ -30,35 +30,34 @@ import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
-import org.tigris.gef.util.Util;
 
-public class PropPanelParameter extends PropPanel {
-
-    private static ImageIcon _parameterIcon = Util.loadIconResource("Parameter");
+public class PropPanelParameter extends PropPanelModelElement {
 
     public PropPanelParameter() {
-        super("Parameter Properties",2);
+        super("Parameter", _parameterIcon,2);
 
         Class mclass = MParameter.class;
 
-        addCaption("Name:",0,0,0);
-        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+        addCaption("Name:",1,0,0);
+        addField(nameField,1,0,0);
 
-        addCaption("Stereotype:",1,0,0);
-        JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
+        addCaption("Stereotype:",2,0,0);
+        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-        addCaption("Owner:",2,0,1);
+        addCaption("Owner:",3,0,1);
         JList namespaceList = new UMLList(new UMLReflectionListModel(this,"behaviorialfeature",false,"getBehavioralFeature",null,null,null),true);
-        addLinkField(namespaceList,2,0,0);
+        addLinkField(new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),3,0,0);
 
         addCaption("Type:",0,1,0);
         UMLComboBoxModel typeModel = new UMLComboBoxModel(this,"isAcceptibleType",
             "type","getType","setType",false,MClassifier.class,true);
-        addField(new UMLComboBoxNavigator(this,"NavClass",new UMLComboBox(typeModel)),0,1,0);
+	UMLComboBox typeComboBox=new UMLComboBox(typeModel);
+        addField(new UMLComboBoxNavigator(this,"NavClass",typeComboBox),0,1,0);
 
+        addCaption("Initial Value:",1,1,0);
+        addField(new UMLInitialValueComboBox(this),1,1,0);
 
-        addCaption("Kind:",1,1,0);
+	addCaption("Kind:",2,1,1);
         JPanel kindPanel = new JPanel(new GridLayout(0,2));
         ButtonGroup kindGroup = new ButtonGroup();
 
@@ -78,23 +77,14 @@ public class PropPanelParameter extends PropPanel {
         kindGroup.add(ret);
         kindPanel.add(ret);
 
-        addField(kindPanel,1,1,0);
+        addField(kindPanel,2,1,0);
 
-
-        addCaption("Initial Value:",2,1,1);
-        addField(new UMLInitialValueComboBox(this),2,1,0);
-
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-
-    new PropPanelButton(this,buttonPanel,_parameterIcon,localize("Add parameter"),"addParameter",null);
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete parameter"),"removeElement",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    buttonPanel.add(new JPanel());
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_parameterIcon,localize("Add parameter"),"addParameter",null);
+	//	new PropPanelButton(this,buttonPanel,_dataTypeIcon,localize("Add datatype"),"addDataType",null);
+	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete parameter"),"removeElement",null);
     }
 
     public MClassifier getType() {
@@ -145,6 +135,10 @@ public class PropPanelParameter extends PropPanel {
                 navigateTo(newParam);
             }
         }
+    }
+
+   public void addDataType(MModelElement element) {
+        addDataType();
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {

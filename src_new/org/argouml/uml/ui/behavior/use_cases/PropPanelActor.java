@@ -29,15 +29,17 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.*;
+
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.model_management.*;
-import org.argouml.uml.ui.foundation.core.*;
 
 public class PropPanelActor extends PropPanelClassifier {
 
@@ -45,72 +47,43 @@ public class PropPanelActor extends PropPanelClassifier {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelActor() {
-    super("Actor Properties",2);
+    super("Actor", _actorIcon, 2);
 
     Class mclass = MActor.class;
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
 
+    addCaption("Stereotype:",2,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-    addCaption("Stereotype:",1,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
+    addCaption("Namespace:",3,0,0);
+    addLinkField(namespaceScroll,3,0,0);
 
-    addCaption("Extends:",2,0,0);
-
-    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-    addLinkField(extendsList,2,0,0);
-
-    addCaption("Modifiers:",3,0,0);
-
+    addCaption("Modifiers:",4,0,1);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
     modifiersPanel.add(new UMLCheckBox(localize("Abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
     modifiersPanel.add(new UMLCheckBox(localize("Final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,3,0,0);
+    addField(modifiersPanel,4,0,0);
 
-    addCaption("Namespace:",4,0,0);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    addLinkField(namespaceList,4,0,0);
+    addCaption("Derived:",0,1,0);
+    addField(derivedScroll,0,1,0);
 
-    addCaption("Derived:",5,0,1);
-    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-    //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);
-    derivedList.setVisibleRowCount(1);
-    addField(new JScrollPane(derivedList),5,0,1);
+    addCaption("Extends:",1,1,0);
+    addLinkField(extendsScroll,1,1,0);
 
-    addCaption("Associations:",0,1,0.5);
-    JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
-    connectList.setForeground(Color.blue);
-    connectList.setVisibleRowCount(1);
-    addField(new JScrollPane(connectList),0,1,0.5);
+    addCaption("Associations:",2,1,0.5);
+    addField(connectScroll,2,1,0.5);
 
-    addCaption("Implements:",1,1,0.5);
-    JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
-    implementsList.setBackground(getBackground());
-    implementsList.setForeground(Color.blue);
-    addField(implementsList,1,1,0.5);
+    addCaption("Implements:",3,1,0.5);
+    addField(implementsScroll,3,1,0.5);
 
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-
-    new PropPanelButton(this,buttonPanel,_addOpIcon,localize("Add operation"),"addOperation",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("Add attribute"),"addAttribute",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_addAssocIcon,localize("Add association"),"addAssociation",null);
     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete actor"),"removeElement",null);
-    new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
-    new PropPanelButton(this,buttonPanel,_classIcon,localize("New actor"),"newActor",null);
-
-
-
+    new PropPanelButton(this,buttonPanel,_actorIcon,localize("New actor"),"newActor",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
 
   }
 

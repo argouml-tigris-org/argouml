@@ -28,14 +28,146 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-public class PropPanelObject extends PropPanelInstance {
-    public PropPanelObject() {
-        super();
+import javax.swing.*;
+import java.awt.*;
+import java.util.*;
+
+import org.argouml.uml.ui.*;
+import org.argouml.ui.*;
+import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.uml.*;
+
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+
+
+public class PropPanelObject extends PropPanelModelElement {
+
+    public  PropPanelObject() {
+	super("Object",_objectIcon,2);
+
+	Class mclass = MObject.class;
+
+	addCaption("Name:",1,0,0);
+	addField(nameField,1,0,0);
+	
+	addCaption("Classifier:",2,0,0);   	
+	UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
+	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
+	addField(new UMLComboBoxNavigator(this,"NavClass",clsComboBox),2,0,0);
+	
+	addCaption("Stereotype:",3,0,0);
+	addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),3,0,0);
+   
+	addCaption("Namespace:",4,0,1);
+	addLinkField(namespaceScroll,4,0,0);
+
+	addCaption("Stimuli sent:",1,1,0.25);
+	JList sentList = new UMLList(new UMLStimulusListModel(this,null,true,"sent"),true);
+	sentList.setForeground(Color.blue);
+	sentList.setVisibleRowCount(1);
+	JScrollPane sentScroll = new JScrollPane(sentList);
+	addField(sentScroll,1,1,0.25);
+
+	addCaption("Stimuli received:",2,1,0.25);
+	JList receivedList = new UMLList(new UMLStimulusListModel(this,null,true,"received"),true);
+	receivedList.setForeground(Color.blue);
+	receivedList.setVisibleRowCount(1);
+	JScrollPane receivedScroll= new JScrollPane(receivedList);
+	addField(receivedScroll,2,1,0.25);
+	
+	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	
+	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
+     
+    }
+    
+
+    public void navigateNamespace() {
+        Object target = getTarget();
+        if(target instanceof MModelElement) {
+            MModelElement elem = (MModelElement) target;
+            MNamespace ns = elem.getNamespace();
+            if(ns != null) {
+                navigateTo(ns);
+            }
+        }
     }
 
+
+    
+    public boolean isAcceptibleClassifier(MModelElement classifier) {
+        return classifier instanceof MClassifier;
+    }
+
+     public MClassifier getClassifier() {
+        MClassifier classifier = null;
+        Object target = getTarget();
+        if(target instanceof MInstance) {
+        //    UML 1.3 apparently has this a 0..n multiplicity
+        //    I'll have to figure out what that means
+        //            classifier = ((MInstance) target).getClassifier();
+
+	    // at the moment , we only deal with one classifier
+	    Collection col = ((MInstance)target).getClassifiers();
+	    if (col != null) {
+		Iterator iter = col.iterator();
+		if (iter != null && iter.hasNext()) {
+		    classifier = (MClassifier)iter.next();
+		}
+	    }
+		    
+        }
+        return classifier;
+    }
+
+    public void setClassifier(MClassifier element) {
+        Object target = getTarget();
+	
+        if(target instanceof MInstance) {
+	    MInstance inst = (MInstance)target;
+//            ((MInstance) target).setClassifier((MClassifier) element);
+
+	    // delete all classifiers
+	    Collection col = inst.getClassifiers();
+	    if (col != null) {
+		Iterator iter = col.iterator();
+		if (iter != null && iter.hasNext()) {
+		    MClassifier classifier = (MClassifier)iter.next();
+		    inst.removeClassifier(classifier);
+		}
+	    }
+	    // add classifier
+	    inst.addClassifier( element);
+
+        }
+    }
+    
+     
     public boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Object");
     }
+    
+    public void removeElement() {
+
+        MObject target = (MObject) getTarget();        
+	MModelElement newTarget = (MModelElement) target.getNamespace();
+                
+        MMUtil.SINGLETON.remove(target);
+	if(newTarget != null) navigateTo(newTarget);
+    }
+
+
+
+            
+
+   
+  
 
 
 }

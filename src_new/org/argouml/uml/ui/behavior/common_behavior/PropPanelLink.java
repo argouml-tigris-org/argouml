@@ -36,38 +36,63 @@ import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import org.argouml.uml.ui.*;
+import org.argouml.uml.*;
+import org.argouml.uml.ui.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
 
-public class PropPanelLink extends PropPanel {
+public class PropPanelLink extends PropPanelModelElement {
 
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelLink() {
-    super("Link Properties",2);
+    
+    super("Link Properties",_linkIcon, 2);
 
     Class mclass = MLink.class;
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
 
 
-    addCaption("Stereotype:",1,0,0);
+    addCaption("Stereotype:",2,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
+    addField(stereotypeBox,2,0,0);
 
 
-    addCaption("Namespace:",2,0,1);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,5,0,0);
+    addCaption("Namespace:",3,0,1);
+    addLinkField(namespaceScroll,3,0,1);
 
-    addCaption("Link Ends:",0,1,1);
+
+    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
+
+  
   }
+
+     public void navigateNamespace() {
+        Object target = getTarget();
+        if(target instanceof MModelElement) {
+            MModelElement elem = (MModelElement) target;
+            MNamespace ns = elem.getNamespace();
+            if(ns != null) {
+                navigateTo(ns);
+            }
+        }
+    }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Link");
+    }
+
+    public void removeElement() {
+	MLink target = (MLink) getTarget();        
+	MModelElement newTarget = (MModelElement) target.getNamespace();
+                
+        MMUtil.SINGLETON.remove(target);
+	if(newTarget != null) navigateTo(newTarget);
     }
 
 

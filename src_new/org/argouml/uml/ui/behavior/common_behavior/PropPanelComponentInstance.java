@@ -30,42 +30,38 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.*;
 import javax.swing.*;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import org.argouml.uml.ui.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
+import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
-public class PropPanelComponentInstance extends PropPanel {
+public class PropPanelComponentInstance extends PropPanelModelElement {
 
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelComponentInstance() {
-    super("ComponentInstance Properties",2);
+    super("Component Instance", _componentInstanceIcon,2);
 
     Class mclass = MComponentInstance.class;
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
 
+    addCaption("Stereotype:",2,0,0);
+    addField(stereotypeBox,2,0,0);
 
-    addCaption("Stereotype:",1,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
+    addCaption("Namespace:",3,0,1);
+    addField(namespaceScroll,3,0,0);
 
+    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
 
-    addCaption("Namespace:",2,0,1);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,5,0,0);
-
-    addCaption("Arguments:",0,1,0);
-    addCaption("Receives:",1,1,0);
-    addCaption("Sends:",2,1,0);
-    addCaption("Classifiers:",3,1,0);
-    addCaption("Links:",4,1,1);
   }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
