@@ -155,6 +155,17 @@ public class ActionOpenProject extends UMLAction {
                // restore old state of the project browser
                pb.setProject(oldProject);
             }
+            catch (IOException io) {
+                // now we have to handle the case of a corrupted XMI file
+                JOptionPane.showMessageDialog(pb,
+                    "Could not load the project " + url.toString() + "\n" +
+                    "Project file probably corrupted.\n" +
+                    "Please file a bug report at argouml.tigris.org including" +
+                    " the corrupted project file.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+                pb.setProject(oldProject);
+            }
             catch (Exception ex) {
             	// now show some errorpane
             	JOptionPane.showMessageDialog(pb,
