@@ -62,6 +62,7 @@ import org.argouml.uml.ui.ActionGenerateOne;
 import org.argouml.uml.ui.ActionGenerateProjectCode;
 import org.argouml.uml.ui.ActionGenerationSettings;
 import org.argouml.uml.ui.ActionImportFromSources;
+import org.argouml.uml.ui.ActionLayout;
 import org.argouml.uml.ui.ActionNew;
 import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.uml.ui.ActionPaste;
@@ -465,14 +466,7 @@ public class GenericArgoMenuBar extends JMenuBar
 	setMnemonic(forwardItem, "Navigate Forward");
         //setAccelerator(forwardItem,altRight);
         select.addSeparator();
-        /* MVW: The following 2 are replaced by the "Navigate Back" and
-           "Navigate Forward". */
-        // JMenuItem selectPrevItem = _select.add(new CmdSelectNext(false));
-        // setMnemonic(selectPrevItem, "Select Previous");
-        //tab
-        // JMenuItem selectNextItem = _select.add(new CmdSelectNext(true));
-        // setMnemonic(selectNextItem, "Select Next");
-        // shift tab
+
         JMenuItem selectInvert = select.add(new CmdSelectInvert());
         setMnemonic(selectInvert, "Invert Selection");
 
@@ -558,14 +552,6 @@ public class GenericArgoMenuBar extends JMenuBar
 	setMnemonic(zoomIn, "Zoom In");
         zoomIn.setAccelerator(ctrlEquals);
 
-        //_view.addSeparator();    //MVW   Issue 2321 and 2322
-
-        //JMenu editTabs =  //MVW
-	//    (JMenu) _view.add(new JMenu(menuLocalize("Editor Tabs"))); //MVW
-	//setMnemonic(editTabs, "Editor Tabs");  //MVW
-        // JMenu detailsTabs = (JMenu) _view.add(new
-        // JMenu(menuLocalize("Details Tabs")));
-
         view.addSeparator();
         JMenuItem adjustGrid = view.add(new CmdAdjustGrid());
         setMnemonic(adjustGrid, "Adjust Grid");
@@ -576,9 +562,6 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem buttonsOnSelection = 
             view.addCheckItem(new ActionShowRapidButtons());
         setMnemonic(buttonsOnSelection, "Buttons On Selection");
-        //_view.addCheckItem(Actions.ShowDiagramList);
-        //_view.addCheckItem(Actions.ShowToDoList);
-        //_showDetailsMenuItem = _view.addCheckItem(Actions.ShowDetails);
 
         view.addSeparator();
         JMenu notation = (JMenu) view.add(
@@ -669,14 +652,13 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem autoResize = 
 	    arrange.addCheckItem(new ActionAutoResize());
 	setMnemonic(autoResize, "Toggle Auto Resize");
-		
-        JMenu layout = (JMenu) arrange.add(new JMenu(menuLocalize("Layout")));
-        setMnemonic(layout, "Layout");
+	
+	JMenuItem newLayout = arrange.add(new ActionLayout()); 
+	
         appendPluggableMenus(arrange, PluggableMenu.KEY_ARRANGE);
 
         Runnable initLater = new InitMenusLater(align, distribute,
-                                                reorder, nudge,
-                                                layout);  
+                                                reorder, nudge);  
 
         org.argouml.application.Main.addPostLoadAction(initLater);
     }

@@ -31,7 +31,6 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import org.argouml.uml.ui.ActionLayout;
 import org.tigris.gef.base.CmdAlign;
 import org.tigris.gef.base.CmdDistribute;
 import org.tigris.gef.base.CmdNudge;
@@ -59,8 +58,7 @@ import org.tigris.gef.base.CmdReorder;
  *   e.g:                    menu.item.new.mnemonic
  */
 class InitMenusLater implements Runnable {
-    private JMenu align, distribute, reorder, nudge, layout;
-    // private JMenu editTabs; 
+    private JMenu align, distribute, reorder, nudge;
 
     /**
      * Constructs this new runnable to initialize the submenus.
@@ -68,19 +66,14 @@ class InitMenusLater implements Runnable {
      * @param d the distribution submenu
      * @param r the reorder submenu
      * @param n the nudge submenu
-     * @param l the layout submenu
      */
     public InitMenusLater(JMenu a, JMenu d,
-			  JMenu r, JMenu n,
-			  JMenu l
-                          //, JMenu editTabs  // Issue 2321 and 2322
+			  JMenu r, JMenu n
                           ) {
 	this.align = a;
 	this.distribute = d;
 	this.reorder = r;
 	this.nudge = n;
-	this.layout = l;
-	//this.editTabs = editTabs;  
     }
 
     /**
@@ -214,14 +207,5 @@ class InitMenusLater implements Runnable {
 
         JMenuItem nudgeDown = nudge.add(new CmdNudge(CmdNudge.DOWN));
 	GenericArgoMenuBar.setMnemonic(nudgeDown, "nudge down");
-
-        JMenuItem autoLayout =
-	    layout.add(new ActionLayout("action.layout-automatic"));
-	GenericArgoMenuBar.setMnemonic(autoLayout, "layout automatic");
-        JMenuItem incrLayout =
-	    layout.add(new ActionLayout("action.layout-incremental"));
-	GenericArgoMenuBar.setMnemonic(incrLayout, "layout incremental");
-        /** incremental layout is currently not implemented */
-        incrLayout.setEnabled(false);
     }
 } /* end class InitMenusLater */
