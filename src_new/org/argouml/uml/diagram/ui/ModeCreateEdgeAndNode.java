@@ -293,6 +293,11 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 					done();
 					//me.consume();
 					_newItem = null;
+
+                                        // set the new edge in place
+                                        if (_sourceFigNode != null) _sourceFigNode.updateEdges();
+                                        if (destFigNode != null) destFigNode.updateEdges();
+
 					return;
 				}
 				else
