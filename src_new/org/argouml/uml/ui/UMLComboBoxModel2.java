@@ -96,15 +96,20 @@ public abstract class UMLComboBoxModel2
     public void propertySet(MElementEvent e) {
         if (isValidPropertySet(e)  && getChangedElement(e) != getSelectedItem()) {
             Object o = getChangedElement(e);
+            if (getIndexOf(o) < 0) {
+                if (o instanceof Collection) {
+                    addAll((Collection)o);
+                } else {
+                    addElement(o);
+                }
+            }
             if (o instanceof Collection) {     
                 if (((Collection)o).size() == 1) {
                     Iterator it = ((Collection)o).iterator();
                     o = it.next();
                 }
             }
-            if (getIndexOf(o) < 0) {
-                addElement(o);
-            }
+            
             setSelectedItem(o);    
         }   
     }
