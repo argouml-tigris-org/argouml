@@ -43,7 +43,7 @@ public class PropPanelNode extends PropPanel {
     super("Node Properties",2);
 
     Class mclass = MNode.class;
-    
+
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
@@ -53,7 +53,7 @@ public class PropPanelNode extends PropPanel {
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
     addField(extendsList,1,0,0);
-    
+
     addCaption(new JLabel("Modifiers:"),2,0,0);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
     modifiersPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
@@ -66,21 +66,21 @@ public class PropPanelNode extends PropPanel {
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,3,0,0);
-    
+
     addCaption(new JLabel("Derived:"),4,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-    derivedList.setForeground(Color.blue);    
+    derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     addField(new JScrollPane(derivedList),4,0,1);
-    
+
     addCaption(new JLabel("Components:"),0,1,1);
     JList compList = new UMLList(new UMLReflectionListModel(this,"component",true,"getResidents","setResidents",null,null),true);
     compList.setForeground(Color.blue);
     compList.setVisibleRowCount(1);
     addField(new JScrollPane(compList),0,1,1);
-        
-    
-    
+
+
+
   }
 
   public Collection getResidents() {
@@ -98,7 +98,12 @@ public class PropPanelNode extends PropPanel {
             ((MNode) target).setResidents(components);
         }
     }
-        
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Node");
+    }
+
+
 
 } /* end class PropPanelNode */
 

@@ -27,6 +27,7 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 import java.util.Stack;
 import java.net.URL;
+import java.io.*;
 
 /**
  * @author Jim Holt
@@ -161,13 +162,20 @@ public abstract class SAXParserBase extends HandlerBase {
       InputSource s = new InputSource(testIt.openStream());
       return s;
     } catch (Exception e) {
-      if (_dbg || _verbose)
+      if (_dbg || _verbose) {
 	System.out.println("NOTE: Could not open DTD " + systemId);
+      }
       String dtdName = systemId.substring(systemId.lastIndexOf('/')+1);
-      URL url = SAXParserBase.class.getResource("/org/argouml/xml/dtd/" + dtdName);
-      if (_dbg || _verbose)
-	System.out.println("NOTE: Using DTD " + url.toString());
-      return new InputSource(url.toString());
+      String dtdPath = "/org/argouml/xml/dtd/" + dtdName;
+      InputStream is = SAXParserBase.class.getResourceAsStream(dtdPath);
+      if(is == null) {
+        try {
+            is = new FileInputStream(dtdPath.substring(1));
+        }
+        catch(Exception ex) {
+        }
+      }
+      return new InputSource(is);
     }
   }
 

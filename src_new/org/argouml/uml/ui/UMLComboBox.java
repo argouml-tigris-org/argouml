@@ -22,31 +22,37 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import org.argouml.uml.*;
 import javax.swing.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 import java.awt.event.*;
-import java.util.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import java.awt.*;
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
 
-public class UMLClassifierComboBox extends JComboBox implements UMLUserInterfaceComponent, ItemListener {
+public class UMLComboBox extends JComboBox implements UMLUserInterfaceComponent {
 
-    private UMLUserInterfaceContainer _container;
-    private UMLClassifierComboBoxModel _model;
-    
-    /** Creates new BooleanChangeListener */
-    public UMLClassifierComboBox(UMLUserInterfaceContainer container,Class itemClass,Class excludeClass,
-        String property,String getMethod,String setMethod,boolean showVoid) {
-        super();
-        _model = new UMLClassifierComboBoxModel(container,itemClass,excludeClass,
-            property,getMethod,setMethod,showVoid);
-        setModel(_model);
-        addItemListener(this);
+    private UMLComboBoxModel _model;
+
+    public UMLComboBox(UMLComboBoxModel model) {
+        super(model);
+        _model = model;
+         addActionListener(_model);
     }
+
+    public void setModel(ComboBoxModel newModel) {
+        ComboBoxModel oldModel = getModel();
+        if(oldModel != null) {
+            if(oldModel instanceof ActionListener) {
+                removeActionListener((ActionListener) oldModel);
+            }
+        }
+        if(newModel instanceof ActionListener) {
+            addActionListener((ActionListener) newModel);
+        }
+        super.setModel(newModel);
+    }
+
 
     public void targetChanged() {
         _model.targetChanged();
@@ -54,33 +60,29 @@ public class UMLClassifierComboBox extends JComboBox implements UMLUserInterface
 
     public void targetReasserted() {
     }
-    
+
     public void roleAdded(final MElementEvent event) {
         _model.roleAdded(event);
     }
-    
+
     public void recovered(final MElementEvent event) {
         _model.recovered(event);
     }
-    
+
     public void roleRemoved(final MElementEvent event) {
         _model.roleRemoved(event);
     }
-    
+
     public void listRoleItemSet(final MElementEvent event) {
         _model.listRoleItemSet(event);
     }
-    
+
     public void removed(final MElementEvent event) {
         _model.removed(event);
     }
-    
     public void propertySet(final MElementEvent event) {
         _model.propertySet(event);
     }
-    
 
-    public void itemStateChanged(final java.awt.event.ItemEvent event) {
-        
-    }
+
 }

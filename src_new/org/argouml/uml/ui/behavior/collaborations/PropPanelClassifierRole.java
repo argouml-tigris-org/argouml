@@ -43,26 +43,26 @@ public class PropPanelClassifierRole extends PropPanel {
     super("ClassifierRole Properties",2);
 
     Class mclass = MClassifierRole.class;
-    
+
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    
+
     addCaption(new JLabel("Stereotype:"),1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
-    
+
     addCaption(new JLabel("Extends:"),2,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
     addField(extendsList,2,0,0);
-    
+
     addCaption(new JLabel("Implements:"),3,0,0);
     JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
     implementsList.setBackground(getBackground());
-    implementsList.setForeground(Color.blue);    
+    implementsList.setForeground(Color.blue);
     addField(implementsList,3,0,0);
 
     addCaption(new JLabel("Modifiers:"),4,0,0);
@@ -79,45 +79,49 @@ public class PropPanelClassifierRole extends PropPanel {
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,5,0,0);
-    
+
     addCaption(new JLabel("Derived:"),6,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);    
+    derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     JScrollPane derivedScroll = new JScrollPane(derivedList);
     addField(derivedScroll,6,0,1);
-    
+
     addCaption(new JLabel("Operations:"),0,1,0.25);
     JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
     opsList.setForeground(Color.blue);
     opsList.setVisibleRowCount(1);
     JScrollPane opsScroll = new JScrollPane(opsList);
     addField(opsScroll,0,1,0.25);
-    
+
     addCaption(new JLabel("Attributes:"),1,1,0.25);
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
     attrList.setForeground(Color.blue);
     attrList.setVisibleRowCount(1);
     JScrollPane attrScroll= new JScrollPane(attrList);
     addField(attrScroll,1,1,0.25);
-    
+
     addCaption(new JLabel("Associations:"),2,1,0.25);
     JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
     connectList.setForeground(Color.blue);
     connectList.setVisibleRowCount(1);
     addField(new JScrollPane(connectList),2,1,0.25);
-    
-    
-    
+
+
+
     addCaption(new JLabel("Owned Elements:"),3,1,0.25);
     JList innerList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
     innerList.setForeground(Color.blue);
     innerList.setVisibleRowCount(1);
     addField(new JScrollPane(innerList),3,1,0.25);
-    
+
   }
 
-  
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("ClassifierRole");
+    }
+
+
 } /* end class PropPanelClassifierRole */
 

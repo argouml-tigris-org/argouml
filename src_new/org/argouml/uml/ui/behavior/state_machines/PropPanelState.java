@@ -78,6 +78,11 @@ public class PropPanelState extends PropPanel {
         return machine;
     }
 
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("State");
+    }
+  
+
 
 } /* end class PropPanelState */
 

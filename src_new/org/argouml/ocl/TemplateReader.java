@@ -52,9 +52,21 @@ public class TemplateReader implements com.ibm.xml.parser.ElementHandler {
   // reading methods
   public Hashtable read(String fileName) {
     InputStream in = null;
-    try { in = TemplateReader.class.getResourceAsStream(fileName); }
-    catch (Exception ex) { return null; }
-    if (in == null) return null;
+    try {
+        in = TemplateReader.class.getResourceAsStream(fileName);
+    }
+    catch (Exception ex) {}
+    if (in == null) {
+      String relativePath = fileName;
+      if(relativePath.startsWith("/")) {
+        relativePath = relativePath.substring(1);
+      }
+      try {
+        in = new FileInputStream(relativePath);
+      }
+      catch(Exception ex) {}
+    }
+    if(in == null) return null;
 
     _templates = new Hashtable();
     _macros = new Vector();

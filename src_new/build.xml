@@ -199,6 +199,8 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
              excludes="CVS/**"/>
     <copyfile src="${build.src}/org/argouml/argo.ini"
               dest="${build.dest}/org/argouml/argo.ini"/>
+    <copyfile src="${build.src}/org/argouml/default.xmi"
+              dest="${build.dest}/org/argouml/default.xmi"/>
   </target>
 
   <!-- =================================================================== -->

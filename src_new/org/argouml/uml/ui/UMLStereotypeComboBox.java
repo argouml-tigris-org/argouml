@@ -36,55 +36,16 @@ import java.util.*;
  *   This class implements a combo box for stereotypes.
  *   The class polls the model and profile for appropriate
  *   stereotypes for the target object.  A context popup menu
- *   allows for new stereotypes to be created and existing 
+ *   allows for new stereotypes to be created and existing
  *   stereotypes to be deleted.
  *
  *   @author Curt Arnold
  */
-public class UMLStereotypeComboBox extends JComboBox implements UMLUserInterfaceComponent {
+public class UMLStereotypeComboBox extends UMLComboBox {
 
-    private UMLUserInterfaceContainer _container;
-    private UMLStereotypeComboBoxListModel _model;
-    
     public UMLStereotypeComboBox(UMLUserInterfaceContainer container) {
-        super();
-        _container = container;
-        _model = new UMLStereotypeComboBoxListModel(container);
-        setModel(_model);
+        super(new UMLComboBoxModel(container,"isAcceptibleStereotype",
+            "stereotype","getStereotype","setStereotype",true,MStereotype.class,true));
     }
 
-    public Object getTarget() {
-        return _container.getTarget();
-    }
-        
-    public void targetChanged() {
-        _model.targetChanged();
-    }
-
-    public void targetReasserted() {
-    }                    
-    
-    public void roleAdded(final MElementEvent event) {
-        _model.roleAdded(event);
-    }
-    
-    public void recovered(final MElementEvent event) {
-        _model.recovered(event);
-    }
-    
-    public void roleRemoved(final MElementEvent event) {
-        _model.roleRemoved(event);
-    }
-    
-    public void listRoleItemSet(final MElementEvent event) {
-        _model.listRoleItemSet(event);
-    }
-    
-    public void removed(final MElementEvent event) {
-        _model.removed(event);
-    }
-
-    public void propertySet(final MElementEvent event) {
-        _model.propertySet(event);
-    }
 }

@@ -35,32 +35,36 @@ public class TabDocumentation extends PropPanel {
     super("Documentation",2);
         addCaption(new JLabel("Author:"),0,0,0);
         addField(new UMLTextField(this,new UMLTaggedTextProperty("author")),0,0,0);
-        
+
         addCaption(new JLabel("Version:"),1,0,0);
         addField(new UMLTextField(this,new UMLTaggedTextProperty("version")),1,0,0);
-        
+
         addCaption(new JLabel("Since:"),2,0,0);
         addField(new UMLTextField(this,new UMLTaggedTextProperty("since")),2,0,0);
-        
+
         addCaption(new JLabel("Deprecated:"),3,0,0);
         addField(new UMLCheckBox("",this,new UMLTaggedBooleanProperty("deprecated")),3,0,0);
-        
+
         addCaption(new JLabel("See:"),4,0,1);
         addField(new UMLTextArea(this,new UMLTaggedTextProperty("see")),4,0,1);
-        
+
         addCaption(new JLabel("Documentation:"),0,1,1);
         UMLTextArea _doc = new UMLTextArea(this,new UMLTaggedTextProperty("documentation"));
         _doc.setLineWrap(true);
         _doc.setWrapStyleWord(true);
         addField(_doc,0,1,1);
-        
-        
+
+
   }
 
-    public boolean shouldBeEnabled() { 
+    public boolean shouldBeEnabled() {
         Object target = getTarget();
-        return target instanceof MModelElement; 
+        return target instanceof MModelElement;
     }
 
-    
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return false;
+    }
+
+
 } /* end class TabDocumentation */

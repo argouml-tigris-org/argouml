@@ -156,6 +156,12 @@ public class PropPanelTransition extends PropPanel {
             ((MTransition) target).setEffect(null);
         }
     }
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Transition");
+    }
+  
+
     
     
 } /* end class PropPanelTransition */

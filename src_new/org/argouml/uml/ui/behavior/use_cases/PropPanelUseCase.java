@@ -129,4 +129,13 @@ public class PropPanelUseCase extends PropPanel {
     
   }
   
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("UseCase") ||
+            baseClass.equals("Classifier") ||
+            baseClass.equals("GeneralizableElement") ||
+            baseClass.equals("Namespace");
+    }
+  
+
 } /* end class PropPanelUseCase */

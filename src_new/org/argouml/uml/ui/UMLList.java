@@ -39,6 +39,7 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
         super(listModel);
         _umlListModel = listModel;
         _navigate = navigate;
+
         if(navigate) {
             addMouseListener(this);
         }

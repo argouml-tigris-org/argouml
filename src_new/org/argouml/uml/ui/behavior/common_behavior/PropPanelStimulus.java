@@ -66,4 +66,10 @@ public class PropPanelStimulus extends PropPanel {
     addField(new JComboBox(),0,1,0);
 
   }
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Stimulus");
+    }
+  
+
 }

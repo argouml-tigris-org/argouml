@@ -46,42 +46,42 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
   protected JPanel _modifiersPanel;
     protected static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
   protected static ImageIcon _innerClassIcon = Util.loadIconResource("InnerClass");
-    
 
-  
+
+
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelClassifier(String name,int columns) {
     super(name,columns);
 
     Class mclass = MClassifier.class;
-    
+
     //
     //   this will cause the components on this page to be notified
     //      anytime a stereotype, namespace, operation, etc
     //      has its name changed or is removed anywhere in the model
     Class[] namesToWatch = { MStereotype.class,MNamespace.class,MOperation.class,
-        MParameter.class,MAttribute.class,MAssociation.class,MClassifier.class };        
+        MParameter.class,MAttribute.class,MAssociation.class,MClassifier.class };
     setNameEventListening(namesToWatch);
-    
+
 //    addCaption(new JLabel("Name:"),0,0,0);
 //    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    
+
 //    addCaption(new JLabel("Stereotype:"),1,0,0);
 //    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
 //    addField(stereotypeBox,1,0,0);
-    
+
 //    addCaption(new JLabel("Extends:"),2,0,0);
 //    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
 //    extendsList.setBackground(getBackground());
 //    extendsList.setForeground(Color.blue);
 //    addField(extendsList,2,0,0);
-    
+
 //    addCaption(new JLabel("Implements:"),3,0,0);
 //    JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
 //    implementsList.setBackground(getBackground());
-//    implementsList.setForeground(Color.blue);    
+//    implementsList.setForeground(Color.blue);
 //    addField(implementsList,3,0,0);
 
 //    addCaption(new JLabel("Modifiers:"),4,0,0);
@@ -94,48 +94,48 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 
 //    addCaption(new JLabel("Namespace:"),5,0,0);
 //    addLinkField(new UMLList(new UMLNamespaceListModel(this),true),5,0,0);
-    
+
 //    addCaption(new JLabel("Derived:"),6,0,1);
 //    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
-//    derivedList.setForeground(Color.blue);    
+//    derivedList.setForeground(Color.blue);
 //    derivedList.setVisibleRowCount(1);
 //    JScrollPane derivedScroll = new JScrollPane(derivedList);
 //    addField(derivedScroll,6,0,1);
-    
+
 //    addCaption(new JLabel("Operations:"),0,1,0.25);
 //    JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
 //    opsList.setForeground(Color.blue);
 //    opsList.setVisibleRowCount(1);
 //    JScrollPane opsScroll = new JScrollPane(opsList);
 //    addField(opsScroll,0,1,0.25);
-    
+
 //    addCaption(new JLabel("Attributes:"),1,1,0.25);
 //    JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
 //    attrList.setForeground(Color.blue);
 //    attrList.setVisibleRowCount(1);
 //    JScrollPane attrScroll= new JScrollPane(attrList);
 //    addField(attrScroll,1,1,0.25);
-    
+
 //    addCaption(new JLabel("Associations:"),2,1,0.25);
 //    JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
 //    connectList.setForeground(Color.blue);
 //    connectList.setVisibleRowCount(1);
 //    addField(new JScrollPane(connectList),2,1,0.25);
-    
-    
-    
+
+
+
 //    addCaption(new JLabel("Owned Elements:"),3,1,0.25);
 //    JList innerList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
 //    innerList.setForeground(Color.blue);
 //    innerList.setVisibleRowCount(1);
 //    addField(new JScrollPane(innerList),3,1,0.25);
-    
+
 //    JPanel buttonBorder = new JPanel(new BorderLayout());
 //    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
 //    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
 //    add(buttonBorder,BorderLayout.EAST);
-    
+
 //    new PropPanelButton(this,buttonPanel,_classIcon,"Add new class","addClass",null);
 //    new PropPanelButton(this,buttonPanel,_packageIcon,"Go to package","navigateOwner",null);
 //    new PropPanelButton(this,buttonPanel,_addOpIcon,"Add operation","addOperation",null);
@@ -159,7 +159,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             navigateTo(oper);
         }
     }
-    
+
     public void addAttribute() {
         Object target = getTarget();
         if(target instanceof MClassifier) {
@@ -169,7 +169,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             navigateTo(attr);
         }
     }
-    
+
     public void addAssociation() {
         Object target = getTarget();
         if(target instanceof MClassifier) {
@@ -190,7 +190,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             }
         }
     }
-    
+
     public void addGeneralization() {
         Object target = getTarget();
         if(target instanceof MGeneralizableElement) {
@@ -206,6 +206,11 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             }
         }
     }
-    
-    
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Classifier") ||
+            baseClass.equals("GeneralizableElement");
+    }
+
+
 } /* end class PropPanelClassifier */

@@ -43,22 +43,22 @@ public class PropPanelComponent extends PropPanel {
     super("Component Properties",2);
 
     Class mclass = MComponent.class;
-    
+
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    
+
     addCaption(new JLabel("Stereotype:"),1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
-    
+
     addCaption(new JLabel("Extends:"),2,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
     addField(extendsList,2,0,0);
-    
+
     addCaption(new JLabel("Modifiers:"),3,0,0);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
     modifiersPanel.add(new UMLCheckBox("abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
@@ -71,14 +71,18 @@ public class PropPanelComponent extends PropPanel {
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,4,0,0);
-    
+
     addCaption(new JLabel("Derived:"),0,1,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-    derivedList.setForeground(Color.blue);    
+    derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     addField(new JScrollPane(derivedList),0,1,1);
-    
+
   }
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Component");
+    }
 
 
 } /* end class PropPanelComponent */

@@ -43,21 +43,21 @@ public class PropPanelAssociation extends PropPanelModelElement {
   private static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
   private static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
 
-  
+
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelAssociation() {
     super("Association Properties",2);
-    
+
     Class mclass = MAssociation.class;
     //
     //   this will cause the components on this page to be notified
     //      anytime a stereotype, namespace, operation, etc
     //      has its name changed or is removed anywhere in the model
-    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };        
+    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };
     setNameEventListening(namesToWatch);
-    
+
 
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
@@ -68,32 +68,32 @@ public class PropPanelAssociation extends PropPanelModelElement {
 
     addCaption(new JLabel("Namespace:"),2,0,0);
     addLinkField(new UMLList(new UMLNamespaceListModel(this),true),2,0,0);
-    
-        
+
+
     addCaption(new JLabel("Modifiers:"),3,0,1);
-    
+
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
     modifiersPanel.add(new UMLCheckBox("Abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
     modifiersPanel.add(new UMLCheckBox("Final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox("Root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,3,0,0);
-        
-    
-    
+
+
+
     addCaption(new JLabel("Association Ends:"),0,1,0);
     JList assocEndList = new UMLList(new UMLAssociationEndListModel(this,"connection",true),true);
     assocEndList.setBackground(getBackground());
     assocEndList.setForeground(Color.blue);
     addField(assocEndList,0,1,0);
-        
+
     addCaption(new JLabel("Extends:"),1,1,0);
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     addLinkField(extendsList,1,1,0);
-    
+
     addCaption(new JLabel("Derived:"),2,1,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);    
+    derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     addField(new JScrollPane(derivedList),2,1,1);
 
@@ -101,8 +101,8 @@ public class PropPanelAssociation extends PropPanelModelElement {
     JPanel buttonPanel = new JPanel(new GridLayout(0,2));
     buttonBorder.add(buttonPanel,BorderLayout.NORTH);
     add(buttonBorder,BorderLayout.EAST);
-    
-    
+
+
     new PropPanelButton(this,buttonPanel,_assocEndIcon,"Add association end","addAssociationEnd",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete association","removeElement",null);
@@ -111,7 +111,7 @@ public class PropPanelAssociation extends PropPanelModelElement {
     new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
     new PropPanelButton(this,buttonPanel,_associationIcon,"New association","newAssociation",null);
-    
+
   }
 
    public void addAssociationEnd() {
@@ -123,7 +123,7 @@ public class PropPanelAssociation extends PropPanelModelElement {
             navigateTo(assocEnd);
         }
     }
-    
+
     public void newAssociation() {
         Object target = getTarget();
         if(target instanceof MAssociation) {
@@ -138,8 +138,8 @@ public class PropPanelAssociation extends PropPanelModelElement {
                 navigateTo(newAssoc);
             }
         }
-    }   
-    
+    }
+
     public void addGeneralization() {
         Object target = getTarget();
         if(target instanceof MGeneralizableElement) {
@@ -155,7 +155,10 @@ public class PropPanelAssociation extends PropPanelModelElement {
             }
         }
     }
-    
-        
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Association");
+    }
+
 
 } /* end class PropPanelAssociation */

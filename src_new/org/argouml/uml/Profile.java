@@ -51,48 +51,5 @@ abstract public class Profile {
      *   @return a string representing the collection
      */
     abstract public String formatCollection(Iterator iter,MNamespace namespace);
-    /**
-     *   This method adds common types (int, boolean, etc) to a set of classifiers.
-     *   This allows the use of built-in types before an explicit model element
-     *   has been added. 
-     *
-     *   @param model, classifiers already present in model will not be added.
-     *   @param classifierType use MClassifier.class for all built-in classifiers, 
-     *            MDataType.class for just built-in primitive types, etc.
-     *   @param excludeType if non-null, typically MDataType.class to not add datatypes
-     *   @param classifierSet  set of classifiers
-     */
-    abstract public void addBuiltinClassifiers(MModel model,
-        Class classifierType,Class excludeType,Set classifierSet,boolean addVoid);
-    
-    /**
-     *   This method gets the default classifier name for a profile.  For example,
-     *     Object for Java, IUnknown for COM, or int for C++.
-     */
-    abstract public ProfileClassifier getDefaultClassifier();
-    
-    /**
-     *   This method gets the "void" classifier for a profile.
-     *
-     */
-    abstract public ProfileClassifier getVoidClassifier();
-    
-    /**
-     *   This method produces a vector of appropriate initial values for the
-     *   specified type.  For example, if type.getName() == 'boolean', the vector
-     *   might contain "true" and "false".
-     *   @param type type under consideration
-     *   @return vector containing common default values.
-     */
-    abstract public Vector getInitialValues(MClassifier type);
-    
-    
-    /**
-     *   This method is used to populate stereotype combo boxes with
-     *   well-known stereotypes that have not been explicitly added to the model.
-     *   @param targetClass class of model element, for example, MAttribute.class.
-     *   @param stereotypes set of stereotypes to display.
-     */
-    abstract public void addWellKnownStereotypes(Class targetClass,Set stereotypes); 
-    
+    abstract public MModel getProfileModel();
 }

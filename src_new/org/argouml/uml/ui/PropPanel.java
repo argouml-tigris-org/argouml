@@ -1,6 +1,6 @@
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
-// software and its documentation without fee, and without a written
+// software and its documentation without fee, and without ga written
 // agreement is hereby granted, provided that the above copyright notice
 // and this paragraph appear in all copies.  This software program and
 // documentation are copyrighted by The Regents of the University of
@@ -37,8 +37,8 @@ import org.tigris.gef.util.*;
 /**
  *   This abstract class provides the basic layout and event dispatching
  *   support for all Property Panels.  The property panel is layed out
- *   as a number (specified in the constructor) of equally sized panels 
- *   that split the available space.  Each panel has a column of 
+ *   as a number (specified in the constructor) of equally sized panels
+ *   that split the available space.  Each panel has a column of
  *   "captions" and matching column of "fields" which are laid out
  *   indepently from the other panels.
  */
@@ -48,7 +48,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
   // instance vars
   private Object _target;
   private MModelElement _modelElement;
-  private Profile _profile;
+  private static Profile _profile;
   private LinkedList _navListeners = new LinkedList();
 
   private Vector _panels = new Vector();
@@ -82,7 +82,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         }
         add(center,BorderLayout.CENTER);
     }
-    
+
     /**
      *   Adds a component to the captions of the specified panel.
      *   @param component Component to be added (typically a JLabel)
@@ -102,13 +102,13 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         gbc.gridx = 0;
         gbc.weightx = 0;
         gbc.fill = GridBagConstraints.NONE;
-        
+
         JPanel pane = (JPanel) _panels.elementAt(panel);
         GridBagLayout layout = (GridBagLayout) pane.getLayout();
         layout.setConstraints(component,gbc);
         pane.add(component);
-    }    
-    
+    }
+
     /**
      *   Adds a component to the fields of the specified panel.
      *   @param component Component to be added
@@ -131,13 +131,13 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
             gbc.fill = GridBagConstraints.HORIZONTAL;
         else
             gbc.fill = GridBagConstraints.BOTH;
-        
+
         JPanel pane = (JPanel) _panels.elementAt(panel);
         GridBagLayout layout = (GridBagLayout) pane.getLayout();
         layout.setConstraints(component,gbc);
         pane.add(component);
-    }    
-     
+    }
+
     /**
      *   Adds a component to the fields of the specified panel
      *     and sets the background and color to indicate
@@ -154,7 +154,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         component.setForeground(Color.blue);
         addField(component,row,panel,weighty);
     }
-    
+
 
 
     public Profile getProfile() {
@@ -165,36 +165,36 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     }
 
     /**
-        This method (and addMElementListener) can be overriden if the 
+        This method (and addMElementListener) can be overriden if the
         prop panel wants to monitor additional objects.
-    
+
         @param target target of prop panel
-    
+
     */
     protected void removeMElementListener(MBase target) {
         target.removeMElementListener(this);
     }
-    
+
     /**
-        This method (and removeMElementListener) can be overriden if the 
+        This method (and removeMElementListener) can be overriden if the
         prop panel wants to monitor additional objects.  This method
         is public only since it is called from a Runnable object.
-    
+
         @param target target of prop panel
     */
     public void addMElementListener(MBase target) {
         target.addMElementListener(this);
     }
-    
-    
+
+
     public void setTarget(Object t) {
-        if(t != _target) {            
+        if(t != _target) {
             boolean removeOldPromiscuousListener = (_nameListener != null);
             if(t instanceof MBase && _nameListener != null) {
-//XXX                removeOldPromiscuousListener = 
+//XXX                removeOldPromiscuousListener =
 //XXX                    ((MBase) t).addPromiscuousListener(_nameListener);
             }
-            
+
             //
             //   if the previous target was a MBase (99.999% of the time)
             //      remove the listener from it
@@ -207,15 +207,15 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 //XXX                    ((MBase) _target).removePromiscuousListener(_nameListener);
                 }
             }
-            
+
             _target = t;
             _modelElement = null;
-            
-            
+
+
             if(_target instanceof MModelElement) {
                 _modelElement = (MModelElement) _target;
             }
-            
+
             //
             //   this will add listener after update is complete
             //
@@ -229,12 +229,12 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     }
 
     public Object getTarget() { return _target; }
-    
+
     public MModelElement getModelElement() {
         return _modelElement;
     }
 
-    public void refresh() { 
+    public void refresh() {
         SwingUtilities.invokeLater(new UMLChangeDispatch(this,0));
     }
 
@@ -252,32 +252,32 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         dispatch.listRoleItemSet(mee);
         SwingUtilities.invokeLater(dispatch);
     }
-    
+
     public void recovered(MElementEvent mee) {
         UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
         dispatch.recovered(mee);
         SwingUtilities.invokeLater(dispatch);
     }
-    
+
     public void removed(MElementEvent mee) {
         UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
         dispatch.removed(mee);
         SwingUtilities.invokeLater(dispatch);
     }
-    
+
     public void roleAdded(MElementEvent mee) {
         UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
         dispatch.roleAdded(mee);
         SwingUtilities.invokeLater(dispatch);
     }
-    
+
     public void roleRemoved(MElementEvent mee) {
         UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
         dispatch.roleRemoved(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
-        
+
     public String formatElement(MModelElement element) {
         MNamespace ns = null;
         if(_modelElement != null) {
@@ -285,13 +285,13 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         }
         return getProfile().formatElement(element,ns);
     }
-    
+
     public String formatNamespace(MNamespace ns) {
         return getProfile().formatElement(ns,null);
     }
-    
-    
-    
+
+
+
     public String formatCollection(Iterator iter) {
         MNamespace ns = null;
         if(_modelElement != null) {
@@ -299,7 +299,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         }
         return getProfile().formatCollection(iter,ns);
     }
-    
+
     public void navigateTo(Object element) {
         Iterator iter = _navListeners.iterator();
         while(iter.hasNext()) {
@@ -313,7 +313,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         }
     }
 
-    
+
     public boolean navigateBack(boolean attempt) {
         boolean navigated = false;
         Iterator iter = _navListeners.iterator();
@@ -328,7 +328,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         boolean attempt = true;
         navigateBack(attempt);
     }
-        
+
     public boolean navigateForward(boolean attempt) {
         boolean navigated = false;
         Iterator iter = _navListeners.iterator();
@@ -338,7 +338,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 	    }
         return navigated;
     }
-    
+
     public void navigateForwardAction() {
         boolean attempt = true;
         navigateForward(attempt);
@@ -362,20 +362,20 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         return enabled;
     }
 
-    
-    
+
+
     /**    Registers a listener for navigation events.
      */
     public void addNavigationListener(NavigationListener navListener) {
         _navListeners.add(navListener);
     }
-        
+
     public void removeNavigationListener(NavigationListener navListener) {
         _navListeners.remove(navListener);
     }
 
     /**
-        Calling this method with an array of metaclasses 
+        Calling this method with an array of metaclasses
         (for example, MClassifier.class) will result in the prop panel
         propagating any name changes or removals on any object that
         on the same event queue as the target that is assignable to one
@@ -395,7 +395,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
             _nameListener = new UMLNameEventListener(this,metaclasses);
         }
     }
-    
+
     public void removeElement() {
         Object target = getTarget();
         if(target instanceof MBase) {
@@ -415,7 +415,35 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
             }
         }
     }
-    
-        
-    
+
+    public boolean isAcceptibleStereotype(MModelElement element) {
+        boolean isAcceptible = false;
+        if(element instanceof MStereotype) {
+            String baseClass = ((MStereotype) element).getBaseClass();
+            isAcceptible = true;
+            if(baseClass != null && !baseClass.equals("ModelElement")) {
+                isAcceptible = isAcceptibleBaseMetaClass(baseClass);
+            }
+        }
+        return isAcceptible;
+    }
+
+    abstract protected boolean isAcceptibleBaseMetaClass(String baseClass);
+
+    public void setStereotype(MStereotype stereotype) {
+        Object target = getTarget();
+        if(target instanceof MModelElement) {
+            ((MModelElement) target).setStereotype(stereotype);
+        }
+    }
+
+    public MStereotype getStereotype() {
+        MStereotype stereotype = null;
+        Object target = getTarget();
+        if(target instanceof MModelElement) {
+            stereotype = ((MModelElement) target).getStereotype();
+        }
+        return stereotype;
+    }
+
 } /* end class PropPanel */

@@ -42,13 +42,13 @@ public class PropPanelMessage extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelMessage() {
     super("Message Properties",2);
-    
+
     Class mclass = MMessage.class;
 
     addCaption(new JLabel("Name:"),0,0,0);
@@ -63,18 +63,23 @@ public class PropPanelMessage extends PropPanel {
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,2,0,0);
-        
-    
+
+
     addCaption(new JLabel("Predecessor:"),0,1,0);
     addField(new JComboBox(),0,1,0);
-    
+
     addCaption(new JLabel("Activator:"),1,1,0);
     addField(new JComboBox(),1,1,0);
-    
+
     addCaption(new JLabel("Action:"),2,1,1);
     addField(new JComboBox(),2,1,0);
 
   }
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Message");
+    }
+
 
 
 } /* end class PropPanelMessage */

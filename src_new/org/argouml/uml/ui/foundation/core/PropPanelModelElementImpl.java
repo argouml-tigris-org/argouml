@@ -35,17 +35,23 @@ public class PropPanelModelElementImpl extends PropPanel {
   // contructors
   public PropPanelModelElementImpl() {
     super("ModelElement Properties",2);
-    
+
     Class mclass = MModelElement.class;
-    
+
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    
+
     addCaption(new JLabel("Stereotype:"),1,0,1);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
-    
+
   }
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("ModelElementImpl");
+    }
+
+
 
 } /* end class PropPanelModelElementImpl */

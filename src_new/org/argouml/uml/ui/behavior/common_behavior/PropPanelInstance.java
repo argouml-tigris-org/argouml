@@ -46,22 +46,22 @@ public class PropPanelInstance extends PropPanel {
     super("Instance Properties",2);
 
     Class mclass = MInstance.class;
-    
+
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    
+
     addCaption(new JLabel("Stereotype:"),1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
-    
+
 
     addCaption(new JLabel("Namespace:"),2,0,1);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,5,0,0);
-    
+
     addCaption(new JLabel("Arguments:"),0,1,0);
     addCaption(new JLabel("Receives:"),1,1,0);
     addCaption(new JLabel("Sends:"),2,1,0);
@@ -69,9 +69,12 @@ public class PropPanelInstance extends PropPanel {
     addCaption(new JLabel("Links:"),4,1,1);
   }
 
-  
-  
-} /* end class PropPanelComponentInstance */
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Instance");
+    }
+
+
+} /* end class PropPanelInstance */
 
 
 

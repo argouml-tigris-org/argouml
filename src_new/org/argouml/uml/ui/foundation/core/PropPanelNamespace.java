@@ -54,7 +54,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
     public PropPanelNamespace(String panelName,int columns) {
         super(panelName,columns);
     }
-    
+
     public void addClass() {
         Object target = getTarget();
         if(target instanceof MNamespace) {
@@ -64,7 +64,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
             navigateTo(ownedElem);
         }
     }
-    
+
     public void addInterface() {
         Object target = getTarget();
         if(target instanceof MNamespace) {
@@ -74,7 +74,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
             navigateTo(ownedElem);
         }
     }
-    
+
     public void addDataType() {
         Object target = getTarget();
         if(target instanceof MNamespace) {
@@ -84,7 +84,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
             navigateTo(ownedElem);
         }
     }
-    
+
     public void addPackage() {
         Object target = getTarget();
         if(target instanceof MNamespace) {
@@ -94,7 +94,11 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
             navigateTo(ownedElem);
         }
     }
-    
-    
-  
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Namespace");
+    }
+
+
+
 } /* end class PropPanelClass */

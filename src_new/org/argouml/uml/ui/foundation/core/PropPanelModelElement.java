@@ -40,7 +40,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     public PropPanelModelElement(String name,int columns) {
         super(name,columns);
     }
-    
+
     public void addRealization() {
         Object target = getTarget();
         if(target instanceof MModelElement) {
@@ -56,7 +56,7 @@ abstract public class PropPanelModelElement extends PropPanel {
             }
         }
     }
-    
+
     public void navigateNamespace() {
         Object target = getTarget();
         if(target instanceof MModelElement) {
@@ -67,5 +67,6 @@ abstract public class PropPanelModelElement extends PropPanel {
             }
         }
     }
-    
-}    
+
+
+}
