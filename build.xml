@@ -538,13 +538,24 @@ ${Name} Build file
          includes="org/argouml/**"
          excludes="*.txt,*.bat,*.xml,*.sh"
          manifest="${argo.build.manifest}"/>
+
+    <!-- 
+	Keep names here in synch with copied-to names in build 
+	and manifest.mf!
+     -->
+    <property name="names.of.all.included.libs"
+              value="antlrall.jar gef.jar log4j.jar nsuml.jar ocl-argo.jar xerces.jar"
+     />
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar" />
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar" />
-    <copy file="${jh.jar.path}" tofile="${argo.build.dir}/jh.jar" />
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar" />
     <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar" />
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar" />
     <copy file="${xerces.jar.path}" tofile="${argo.build.dir}/xerces.jar" />
+    <!-- End of name synch area in this file. -->
+
+    <copy file="${jh.jar.path}" tofile="${argo.build.dir}/jh.jar" />
+
     <copy file="${argo.src.dir}/README.txt" tofile="${argo.build.dir}/README.txt" />
     <copy file="${argo.src.dir}/bin/argouml.sh" todir="${argo.build.dir}" />
   </target>
@@ -622,16 +633,23 @@ ${Name} Build file
   <!-- Creates the distribution                                            -->
   <!-- =================================================================== -->
   <target name="dist" depends="package">
-    <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.zip" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
-    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.tar" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
+    <echo message="Building the distribution files (zip, tar)"/>
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.zip" 
+         basedir="${argo.build.dir}" 
+         includes="${names.of.all.included.libs} argouml.jar README.txt"
+     />
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.tar"
+	 basedir="${argo.build.dir}" 
+	 includes="${names.of.all.included.libs} argouml.jar README.txt">
     <!--
       <tarfileset mode="555">
 	<include name="argouml.sh">
       </tarfileset>
     -->
     </tar>
-    <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.tar.gz" src="${argo.root.dir}/${Name}-${argo.build.version}.tar" />
+    <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.tar.gz"
+	  src="${argo.root.dir}/${Name}-${argo.build.version}.tar"
+     />
     <delete file="${argo.root.dir}/${Name}-${argo.build.version}.tar"/>
   </target>
 
@@ -652,8 +670,14 @@ ${Name} Build file
   <!-- =================================================================== -->
   <target name="dist-lib" depends="init">
     <echo message="Building the library distribution files (zip,tar)"/>
-    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.zip" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
-    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.zip"
+         basedir="${argo.build.dir}"
+         includes="${names.of.all.included.libs}"
+     />
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar"
+         basedir="${argo.build.dir}" 
+         includes="${names.of.all.included.libs}"
+     />
     <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar.gz" src="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" />
     <delete file="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar"/>
   </target>
@@ -666,6 +690,12 @@ ${Name} Build file
   <!-- Creates the whole distribution with adjusted version number         -->
   <!-- =================================================================== -->
   <target name="dist-release">
+
+	<!-- Things that are needed to get this through. -->
+	<property name="argo.root.dir" value=".."/>
+	<property name="Name" value="ArgoUML"/>
+	<property name="name" value="argouml"/>
+
         <!-- ====================================================== -->
         <!-- Load all default information here so that no overrides -->
         <!-- can be done either intentionally or accidentally.      -->
