@@ -47,7 +47,6 @@ import ru.novosoft.uml.behavior.state_machines.MSynchState;
 import ru.novosoft.uml.behavior.state_machines.MTimeEvent;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
@@ -250,9 +249,10 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * @param context
      * @return MActivityGraph
      */
-    public MStateMachine buildStateMachine(MModelElement context) {
-    	if (context != null && (context instanceof MBehavioralFeature || context instanceof MClassifier)) {
+    public MStateMachine buildStateMachine(Object oContext) {
+    	if (oContext != null && StateMachinesHelper.getHelper().isAddingStatemachineAllowed(oContext)) {
     		MStateMachine graph = createStateMachine();
+            MModelElement context = (MModelElement)oContext;
     		graph.setContext(context);
     		if (context instanceof MNamespace) {
     			graph.setNamespace((MNamespace)context);

@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PropPanelState.java
 // Classes: PropPanelState
 // Original Author: your email address here
@@ -30,21 +28,11 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.activity_graphs.*;
-
-import org.argouml.application.api.*;
-import org.argouml.ui.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.behavior.state_machines.*;
-
-import javax.swing.*;
-import java.awt.*;
+import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelState;
+import org.argouml.util.ConfigLoader;
 
 /** User interface panel shown at the bottom of the screen that allows
  *  the user to edit the properties of the selected UML model
@@ -52,38 +40,26 @@ import java.awt.*;
 
 public class PropPanelActionState extends PropPanelState {
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelActionState() {
-    super("Action State",_actionStateIcon, 2);
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public PropPanelActionState() {
 
-    Class mclass = MActionState.class;
+        super("Action State", _actionStateIcon, ConfigLoader.getTabPropsOrientation());
 
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(nameField,1,0,0);
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
 
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
+        addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
+        addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);
+        addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
 
-    addCaption("Entry-Action:",3,0,0);
-    addField(entryScroll,3,0,0);
+        add(LabelledLayout.getSeperator());
 
-    addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
-    JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
-    modifiersPanel.add(new UMLCheckBox(localize("dynamic"),this,new UMLReflectionBooleanProperty("isDynamic",mclass,"isDynamic","setDynamic")));
-    addField(modifiersPanel,4,0,0);
+        addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
+        addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
+        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
 
-    addCaption(Argo.localize("UMLMenu", "label.incoming"),0,1,0.5);
-    addField(incomingScroll,0,1,0.5);
-    
-    addCaption(Argo.localize("UMLMenu", "label.outgoing"),1,1,0.5);
-    addField(outgoingScroll,1,1,0.5);
-
-  }
-
-  protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-    return baseClass.equals("ActionState");
-  }
+    }
 
 } /* end class PropPanelActionState */
-

@@ -42,7 +42,7 @@ public class PropPanelSimpleState extends PropPanelState {
 
         addField(Argo.localize("UMLMenu", "label.name"), nameField);
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        addField(Argo.localize("UMLMenu", "label.container"), containerScroll);
         addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
         addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);;
         addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);

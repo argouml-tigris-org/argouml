@@ -26,15 +26,11 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import java.beans.PropertyVetoException;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
-import org.tigris.gef.base.Diagram;
-
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**

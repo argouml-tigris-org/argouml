@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PropPanelTransition.java
 // Classes: PropPanelTransition
 // Original Author: jrobbins@ics.uci.edu
@@ -44,26 +42,30 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelTransition extends PropPanelModelElement {
-         protected static Category cat = 
-        Category.getInstance(PropPanelTransition.class);
+    protected static Category cat = Category.getInstance(PropPanelTransition.class);
 
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelTransition() {
-        super("Transition",_transitionIcon, ConfigLoader.getTabPropsOrientation());
+        super("Transition", _transitionIcon, ConfigLoader.getTabPropsOrientation());
 
         addField(Argo.localize("UMLMenu", "label.name"), nameField);
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), stereotypeBox));
+        JList statemachineList = new UMLLinkedList(this, new UMLTransitionStatemachineListModel(this));
+        statemachineList.setVisibleRowCount(1);
+        addField(Argo.localize("UMLMenu", "label.statemachine"), new JScrollPane(statemachineList));
+        JList stateList = new UMLLinkedList(this, new UMLTransitionStateListModel(this));
+        stateList.setVisibleRowCount(1);
+        addField(Argo.localize("UMLMenu", "label.state"), new JScrollPane(stateList));
+
+        add(LabelledLayout.getSeperator());
+
         JList sourceList = new UMLLinkedList(this, new UMLTransitionSourceListModel(this));
         sourceList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.source"), new JScrollPane(sourceList));
         JList targetList = new UMLLinkedList(this, new UMLTransitionTargetListModel(this));
         targetList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.target"), new JScrollPane(targetList));	
-        
-        add(LabelledLayout.getSeperator());
-        
+        addField(Argo.localize("UMLMenu", "label.target"), new JScrollPane(targetList));
         JList triggerList = new UMLTransitionTriggerList(this, new UMLTransitionTriggerListModel(this));
         triggerList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.trigger"), new JScrollPane(triggerList));
@@ -74,15 +76,10 @@ public class PropPanelTransition extends PropPanelModelElement {
         effectList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.effect"), new JScrollPane(effectList));
 
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+        new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
+        new PropPanelButton(this, buttonPanel, _navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
+        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
+    }
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
-  }
-
-    
-
-    
 } /* end class PropPanelTransition */
-

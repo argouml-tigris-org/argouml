@@ -24,22 +24,15 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Category;
-import org.argouml.kernel.*;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
-import org.argouml.ui.*;
-import org.argouml.uml.*;
-import org.argouml.uml.diagram.state.ui.*;
-import org.argouml.i18n.Translator;
-
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-
-import java.awt.event.*;
-import java.beans.*;
-
-import javax.swing.JOptionPane;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /** Action to create a new state diagram.
  * @stereotype singleton
@@ -68,26 +61,16 @@ public class ActionStateDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-    	ProjectBrowser pb = ProjectBrowser.TheInstance;
-        if (pb != null) {
-    	   Object target = pb.getDetailsTarget();
-    	   if (target == null) {
-    		target = pb.getTarget();
-    	   }
-    	   return target instanceof MBehavioralFeature || target instanceof MClassifier;
-        } else
-            return false;
+        return StateMachinesHelper.getHelper().isAddingStatemachineAllowed(ProjectBrowser.TheInstance.getTarget());    	
     }
 
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */
     public ArgoDiagram createDiagram(MNamespace ns, Object target) {
-        MStateMachine machine = StateMachinesFactory.getFactory().buildStateMachine((MModelElement)target);
-        if (target instanceof MBehavioralFeature) {
-            ns = ((MBehavioralFeature)target).getNamespace();
-        }
-        UMLStateDiagram d = new UMLStateDiagram(ns, machine);
+        // TODO: get rid of the parameter ns
+        MStateMachine machine = StateMachinesFactory.getFactory().buildStateMachine((MModelElement)target);        
+        UMLStateDiagram d = new UMLStateDiagram(machine.getNamespace(), machine);
         return d;
     }
 
