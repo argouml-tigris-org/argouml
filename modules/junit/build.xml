@@ -164,6 +164,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="module.build.dir" value="${module.root}/build"/>
     <property name="module.build.src" value="${module.src.dir}"/>
     <property name="module.build.dest" value="${module.build.dir}/classes"/>
+    <property name="module.reports" value="${module.build.dir}/reports"/>
     <property name="argo.build.dest" value="${argo.build.dir}/classes"/>
 
     <property name="argo.jarfile"
@@ -316,6 +317,42 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
       <fileset dir="${module.lib.dir}" includes="junit.jar"/>
       <fileset dir="${module.build.dir}" includes="${module.jarfile.name}"/>
     </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run the junit tests.                                                -->
+  <!-- =================================================================== -->
+  <target name="test-model" depends="compile">
+    <mkdir dir="${module.reports}/junit/output"/>
+    <delete>
+        <fileset dir="${module.reports}/junit/output">
+           <include name="TEST-*.xml"/>
+           <include name="TEST-*.txt"/>
+        </fileset>
+    </delete>
+
+    <junit printsummary="true"
+           haltonfailure="false"
+           errorproperty="junit.failure"
+           fork="yes">
+        <classpath>
+            <pathelement location="${module.build.dest}"/>
+            <fileset dir="${argo.build.dir}">
+                <include name="argouml.jar" />
+                <include name="nsuml.jar" />
+                <include name="ocl-argo.jar" />
+                <include name="antlrall.jar" />
+                <include name="log4j.jar" />
+                <include name="gef-0.9.6.jar" />
+            </fileset>
+        </classpath>
+      <batchtest todir="${module.reports}/junit/output">
+        <formatter type="plain"/>
+        <fileset dir="${module.build.src}">
+          <include name="org/argouml/model/**/Test*.java" />
+        </fileset>
+      </batchtest>
+    </junit>
   </target>
 
 </project>
