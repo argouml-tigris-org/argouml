@@ -369,7 +369,7 @@ public abstract class PropPanel
         // update the titleLabel
         if (getTitleLabel() != null) {
             Icon icon =
-		ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(t);
+		ResourceLoaderWrapper.getInstance().lookupIcon(t);
             if (icon != null)
                 getTitleLabel().setIcon(icon);
         }

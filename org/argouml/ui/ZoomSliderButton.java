@@ -106,7 +106,7 @@ public class ZoomSliderButton extends PopupButton {
     public ZoomSliderButton() {
         super();
 
-        Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().
+        Icon icon = ResourceLoaderWrapper.
             lookupIconResource(Translator.getImageBinding(RESOURCE_NAME),
 			       Translator.localize(RESOURCE_NAME));
                 

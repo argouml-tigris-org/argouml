@@ -49,7 +49,7 @@ public class StartCritics implements Runnable {
         org.argouml.uml.cognitive.checklist.Init.init();
         Project p = ProjectManager.getManager().getCurrentProject();
         // set the icon for this poster
-        dsgr.setClarifier(ResourceLoaderWrapper.getResourceLoaderWrapper().
+        dsgr.setClarifier(ResourceLoaderWrapper.
             lookupIconResource("PostItD0"));
         dsgr.spawnCritiquer(p);
         dsgr.setChildGenerator(new ChildGenUML());
