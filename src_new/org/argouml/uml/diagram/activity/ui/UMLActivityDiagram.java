@@ -39,6 +39,7 @@ import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.ActionCreatePseudostate;
+import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 import org.tigris.gef.base.LayerPerspective;
@@ -63,26 +64,18 @@ public class UMLActivityDiagram extends UMLDiagram {
     ////////////////
     // actions for toolbar
 
-    private static Action actionState =
-        new CmdCreateNode(ModelFacade.ACTION_STATE, "ActionState");
-
+    private static Action actionState;
     private static Action actionStartPseudoState;
     private static Action actionFinalPseudoState;
     private static Action actionJunctionPseudoState;
     private static Action actionBranchPseudoState;
     private static Action actionForkPseudoState;
     private static Action actionJoinPseudoState;
+    private static Action actionTransition;
     // private static Action actionNewSwimlane;
     private static Action actionCallState;
     private static Action actionObjectFlowState;
     private static Action actionSubactivityState;
-
-    private static Action actionTransition =
-        new CmdSetMode(
-            ModeCreatePolyEdge.class,
-            "edgeClass",
-            ModelFacade.TRANSITION,
-            "Transition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -102,37 +95,50 @@ public class UMLActivityDiagram extends UMLDiagram {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
 
+        actionState = new RadioAction(
+                new CmdCreateNode(ModelFacade.ACTION_STATE, "ActionState"));
+        
 	// start state, end state, forks, joins, etc.
-	actionStartPseudoState =
+	actionStartPseudoState =  new RadioAction(
 	    new ActionCreatePseudostate(ModelFacade.INITIAL_PSEUDOSTATEKIND, 
-					"Initial");
+					"Initial"));
 
-	actionFinalPseudoState =
-            new CmdCreateNode(ModelFacade.FINALSTATE, "FinalState");
+	actionFinalPseudoState = new RadioAction(
+            new CmdCreateNode(ModelFacade.FINALSTATE, 
+                                        "FinalState"));
 
-	actionJunctionPseudoState =
+	actionJunctionPseudoState = new RadioAction(
 	    new ActionCreatePseudostate(ModelFacade.JUNCTION_PSEUDOSTATEKIND,
-					"Junction");
+					"Junction"));
 
-	actionForkPseudoState =
+	actionForkPseudoState = new RadioAction(
 	    new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, 
-					"Fork");
+					"Fork"));
 
-	actionJoinPseudoState =
+	actionJoinPseudoState = new RadioAction(
 	    new ActionCreatePseudostate(ModelFacade.JOIN_PSEUDOSTATEKIND,
-					"Join");
-	
+					"Join"));
+
+	actionTransition = new RadioAction(
+            new CmdSetMode(
+                    ModeCreatePolyEdge.class,
+                    "edgeClass",
+                    ModelFacade.TRANSITION,
+                    "Transition"));
+
+
 	//_actionNewSwimlane = new CmdCreateNode(ModelFacade.PARTITION, 
 	// "Create a new swimlane");
 
-        actionCallState =
-            new CmdCreateNode(ModelFacade.CALLSTATE, "CallState");
+        actionCallState = new RadioAction(
+            new CmdCreateNode(ModelFacade.CALLSTATE, "CallState"));
 
-        actionObjectFlowState =
-            new CmdCreateNode(ModelFacade.OBJECTFLOWSTATE, "ObjectFlowState");
+        actionObjectFlowState = new RadioAction(
+            new CmdCreateNode(ModelFacade.OBJECTFLOWSTATE, "ObjectFlowState"));
 
-        actionSubactivityState =
-            new CmdCreateNode(ModelFacade.SUBACTIVITYSTATE, "SubactivityState");
+        actionSubactivityState = new RadioAction(
+            new CmdCreateNode(ModelFacade.SUBACTIVITYSTATE, 
+                                        "SubactivityState"));
 
     }
 
@@ -286,7 +292,8 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    null,
 	    /*actionCallState, // uncomment these ...
             actionObjectFlowState,
-            actionSubactivityState,
+            actionSubactivityState,*/
+	    /*getExtendedActions(),
             null, */
 	    _actionComment,
             _actionCommentLink
@@ -294,6 +301,17 @@ public class UMLActivityDiagram extends UMLDiagram {
         return actions;
     }
 
+    private Object[] getExtendedActions() {
+        Object actions[] =
+        {
+            actionCallState, 
+            actionObjectFlowState,
+            actionSubactivityState };
+        return actions;
+
+    }
+
+    
     /**
      * Creates a new diagram name.<p>
      *

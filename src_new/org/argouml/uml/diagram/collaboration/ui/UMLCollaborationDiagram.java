@@ -42,6 +42,7 @@ import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociationRole;
 import org.argouml.uml.diagram.ui.FigMessage;
+import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.ActionAddMessage;
 import org.tigris.gef.base.Layer;
@@ -67,60 +68,60 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     ////////////////
     // actions for toolbar
 
-    protected static Action _actionClassifierRole =
-        new CmdCreateNode(ModelFacade.CLASSIFIER_ROLE, "ClassifierRole");
+    protected static Action _actionClassifierRole = new RadioAction(
+        new CmdCreateNode(ModelFacade.CLASSIFIER_ROLE, "ClassifierRole"));
 
-    protected static Action _actionAssoc =
+    protected static Action _actionAssoc = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
             ModelFacade.ASSOCIATION_ROLE,
-            "AssociationRole");
+            "AssociationRole"));
 
-    protected static Action _actionGeneralize =
+    protected static Action _actionGeneralize = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
             ModelFacade.GENERALIZATION,
-            "Generalization");
+            "Generalization"));
 
-    protected static Action _actionAssociation =
+    protected static Action _actionAssociation = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.NONE_AGGREGATIONKIND,
             false,
-            "Association");
-    protected static Action _actionAggregation =
+            "Association"));
+    protected static Action _actionAggregation = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.AGGREGATE_AGGREGATIONKIND,
             false,
-            "Aggregation");
-    protected static Action _actionComposition =
+            "Aggregation"));
+    protected static Action _actionComposition = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.COMPOSITE_AGGREGATIONKIND,
             false,
-            "Composition");
-    protected static Action _actionUniAssociation =
+            "Composition"));
+    protected static Action _actionUniAssociation = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.NONE_AGGREGATIONKIND,
             true,
-            "UniAssociation");
-    protected static Action _actionUniAggregation =
+            "UniAssociation"));
+    protected static Action _actionUniAggregation = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.AGGREGATE_AGGREGATIONKIND,
             true,
-            "UniAggregation");
-    protected static Action _actionUniComposition =
+            "UniAggregation"));
+    protected static Action _actionUniComposition = new RadioAction(
         new ActionAddAssociationRole(
             ModelFacade.COMPOSITE_AGGREGATIONKIND,
             true,
-            "UniComposition");
+            "UniComposition"));
 
-    protected static Action _actionDepend =
+    protected static Action _actionDepend = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,
             "edgeClass",
             ModelFacade.DEPENDENCY,
-            "Dependency");
+            "Dependency"));
 
     ////////////////////////////////////////////////////////////////
     // contructors
