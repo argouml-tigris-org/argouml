@@ -22,6 +22,19 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
+// 4 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed description of
+// CrConstructorNeeded, CrConsiderSingleton and CrSingletonViolated.
+
+// 15 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed headline and
+// description of CrNavFromInterface.
+
+// 6 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed description for
+// CrOperNameConflict.
+
+// 8 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Further fix to
+// CrOperNameConflict to make clear return parameters are ignored.
+
+
 package org.argouml.uml.cognitive;
 import java.util.*;
 import org.argouml.util.*;
@@ -48,10 +61,25 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
                 "Revise Attribute Names to Avoid Conflict" },
         { "CrAttrNameConflict_desc" ,
                 "Attributes must have distinct names.  This may be because of an inherited attribute. \n\nClear and unambiguous names are key to code generation and producing an understandable and maintainable design.\n\nTo fix this, use the \"Next>\" button, or manually select the one of the conflicting attributes of this class and change its name." },
-        { "CrOperNameConflict_head" ,
-                "Change Names or Signatures in <ocl>self</ocl>" },
-        { "CrOperNameConflict_desc" ,
-                "Two operations have the exact same signature.  Operations must have distinct signatures.  A signature is the combination of the operation's name, and parameter types. \n\nAvoiding conflicting signatures is key to code generation and producing an understandable and maintainable design.\n\nTo fix this, use the \"Next>\" button, or manually select the one of the conflicting operations of this class and change its name or parameters." },
+
+        // Updated following bug fix
+
+        { "CrOperNameConflict_head",
+          "Change Operation Names or Signatures in <ocl>self</ocl>" },
+
+        { "CrOperNameConflict_desc",
+          "Two operations in <ocl>self</ocl> have the exact same " +
+          "signature.  Operations must have distinct signatures.  A " +
+          "signature is the combination of the operation's name, and " +
+          "parameter types (excluding return parameters).\n" +
+          "\n" +
+          "Where there are conflicting signatures, correct code cannot be " +
+          "generated for mainstream OO languages. It also leads to very " +
+          "unclear semantics of the design.\n" +
+          "\n" +
+          "To fix this, select the one of the conflicting operations of " +
+          "this class and change its name or parameters." },
+
         { "CrCircularAssocClass_head" ,
                 "Circular Association" },
         { "CrCircularAssocClass_desc" ,
@@ -65,7 +93,7 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
         { "CrCircularComposition_desc" ,
                 "Composition relationships (black diamonds) cannot have cycles. \n\nA legal aggregation hierarchy is needed for code generation and the correctness of the design. \n\nTo fix this, use the \"Next>\" button, or manually select one of the  associations in the cycle and remove it or change its aggregation to something other than composite." },
         { "CrCrossNamespaceAssoc_head" ,
-                "Aggregate Role in N-way Association" },
+                "Classifier not in Namespace of its Association" },
         { "CrCrossNamespaceAssoc_desc" ,
                 "Each Class or Interface involved in an Association should be in the Namespace of the Association." },
         { "CrDupParamName_head" ,
@@ -104,10 +132,43 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
                 "Aggregate Role in N-way Association" },
         { "CrNWayAgg_desc" ,
                 "Three-way (or more) Associations can not have aggregate ends.\n\nA clear and consistent is-part-of hierarchy is a key to design clarity, \nmanagable object storage, and the implementation of recursive methods.\nTo fix this, use the \"Next>\" button, or manually select the Association \nand set all of its role aggregations to None." },
+
+        // Updated to ensure reference is to the Associaton between Class and
+        // Interface.
+
         { "CrNavFromInterface_head" ,
-                "Remove Navigation from Interface <ocl>self</ocl>" },
+          "Remove Navigation from Interface via Association <ocl>self</ocl>" },
+
         { "CrNavFromInterface_desc" ,
-                "Associations involving an Interface can be not be navigable in the direction from the Interface.  This is because interfaces do contain only operation declarations and cannot hold pointers to other objects.\n\nThis part of the design should be changed before you can generate code from this design.  If you do generate code before fixing this problem, the code will not match the design.\n\nTo fix this, select the Association and use the \"Properties\" tab to uncheck Navigable for the end touching the Interface.  The Association should then appear with a stick arrowhead pointed towards the Interface." },
+          "Associations involving an interface can be not be navigable in " +
+          "the direction from the interface.  This is because interfaces " +
+          "contain only operation declarations and cannot hold pointers to " +
+          "other objects.\n" +
+          "\n" +
+          "This part of the design should be changed before you can " +
+          "generate code from this design.  If you do generate code before " +
+          "fixing this problem, the code will not match the design.\n" +
+          "\n" +
+          "To fix this, select the association and use the \"Properties\" " +
+          "tab to select in turn each association end that is NOT " +
+          "connected to the interface. Uncheck \"Navigable\" for each of " +
+          "these ends.\n" +
+          "\n" +
+          "The association should then appear with a stick arrowhead " +
+          "pointed towards the interface\n" +
+          "\n" +
+          "NOTE. In an ideal world, ArgoUML would not permit associations " +
+          "to be created that were navigable from interfaces.\n" +
+          "\n" +
+          "WARNING. The current version of ArgoUML has a known defect " +
+          "where it creates an association between a class and interface " +
+          "that is either navigable in both directions, or navigable only " +
+          "from the interface to the class. The fix is to remove the " +
+          "navigation from the class end of the association and if " +
+          "necessary add navigation to the interface end (navigation " +
+          "refers to navigability TOWARDS the end) if this critic is " +
+          "triggered." },
+
         { "CrUnnavigableAssoc_head" ,
                 "Make <ocl>self</ocl> Navigable" },
         { "CrUnnavigableAssoc_desc" ,
