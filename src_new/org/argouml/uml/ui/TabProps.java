@@ -147,13 +147,13 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 
     // Note that state digrams do actually have a diagram property panel!
 
-    _panels.put(UMLActivityDiagram.class, new PropPanelDiagram());
-    _panels.put(UMLClassDiagram.class, new PropPanelDiagram());
-    _panels.put(UMLCollaborationDiagram.class, new PropPanelDiagram());
-    _panels.put(UMLDeploymentDiagram.class, new PropPanelDiagram());
-    _panels.put(UMLSequenceDiagram.class, new PropPanelDiagram());
+    _panels.put(UMLActivityDiagram.class, new PropPanelUMLActivityDiagram());
+    _panels.put(UMLClassDiagram.class, new PropPanelUMLClassDiagram());
+    _panels.put(UMLCollaborationDiagram.class, new PropPanelUMLCollaborationDiagram());
+    _panels.put(UMLDeploymentDiagram.class, new PropPanelUMLDeploymentDiagram());
+    _panels.put(UMLSequenceDiagram.class, new PropPanelUMLSequenceDiagram());
     _panels.put(UMLStateDiagram.class, new PropPanelUMLStateDiagram());
-    _panels.put(UMLUseCaseDiagram.class, new PropPanelDiagram());
+    _panels.put(UMLUseCaseDiagram.class, new PropPanelUMLUseCaseDiagram());
     
 
     // FigText has no owner, so we do it directly
