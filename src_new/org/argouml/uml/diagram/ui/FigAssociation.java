@@ -72,6 +72,8 @@ public class FigAssociation extends FigEdgeModelElement {
   // constructors
 
   public FigAssociation() {
+   
+    
     // lets use groups to construct the different text sections at the association
     _middleGroup.addFig(_name);
     _middleGroup.addFig(_stereo);
@@ -133,7 +135,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _destGroup.addFig(_destRole);
     _destGroup.addFig(_destMult);
     _destGroup.addFig(_destOrdering);
-      addPathItem(_srcGroup, new PathConvPercent(this, 85, 0));
+      addPathItem(_destGroup, new PathConvPercent(this, 85, 0));
     
     setBetweenNearestPoints(true);
   }
@@ -167,7 +169,20 @@ public class FigAssociation extends FigEdgeModelElement {
 	    ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).addMElementListener(this);
 
       newAsc.addMElementListener(this);
+      MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[0];
+      MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(newAsc.getConnections()).toArray())[1];
+      FigNode destNode = (FigNode)getLayer().presentationFor(ae0.getType());
+      FigNode srcNode = (FigNode)getLayer().presentationFor(ae1.getType());
+      if (destNode != null) {
+        setDestFigNode((FigNode)getLayer().presentationFor(ae0.getType()));
+        setDestPortFig(getLayer().presentationFor(ae0.getType()));
+      }
+      if (srcNode != null) {
+        setSourceFigNode((FigNode)getLayer().presentationFor(ae1.getType())); 
+        setSourcePortFig(getLayer().presentationFor(ae1.getType()));  
+      }
     }
+   
     modelChanged();
   }
 
@@ -204,14 +219,41 @@ public class FigAssociation extends FigEdgeModelElement {
     MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
     MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
     
-    Fig oldDest = getDestFigNode();
-    Fig oldSource = getSourceFigNode();
+    FigNode oldDest = (FigNode)getDestFigNode();
+    FigNode oldSource = (FigNode)getSourceFigNode();
     
-    setDestFigNode((FigNode)getLayer().presentationFor(ae0.getType()));
-    setDestPortFig(getLayer().presentationFor(ae0.getType()));
-    setSourceFigNode((FigNode)getLayer().presentationFor(ae1.getType())); 
-    setSourcePortFig(getLayer().presentationFor(ae1.getType()));  
+    FigNode dest = (FigNode)getLayer().presentationFor(ae0.getType());
+    FigNode src = (FigNode)getLayer().presentationFor(ae1.getType());
+    boolean dontSetFigs = false;
+    if (oldDest != null && oldDest.equals(dest)) {
+        if (oldSource != null && oldSource.equals(src)) {
+            dontSetFigs = true;
+        } 
+    } else {
+        if (oldDest != null && oldDest.equals(src)) {
+            if (oldSource != null && oldSource.equals(dest)) {
+                FigNode tempDest = dest;
+                dest = src;
+                src = tempDest;
+                dontSetFigs = true;
+            } else {
+                FigNode tempSrc = src;
+                src = dest;
+                dest = tempSrc;
+            }
+        }
+    }
     
+    if (!dontSetFigs) {
+        if (dest != null) {
+            setDestFigNode((FigNode)getLayer().presentationFor(ae0.getType()));
+            setDestPortFig(getLayer().presentationFor(ae0.getType()));
+        }
+        if (src != null) {
+            setSourceFigNode((FigNode)getLayer().presentationFor(ae1.getType())); 
+            setSourcePortFig(getLayer().presentationFor(ae1.getType()));  
+        }
+    }
     MMultiplicity mult0 = ae0.getMultiplicity();
     MMultiplicity mult1 = ae1.getMultiplicity();
     _srcMult.setText(Notation.generate(this, mult0));
@@ -220,14 +262,14 @@ public class FigAssociation extends FigEdgeModelElement {
     // changed next line to show 1..1 multiplicity. Old code
     // if ((mult0 == null) || (MMultiplicity.M1_1).equals(mult0)) _srcMult.setText("");
     // new code
-    if (mult0 == null) _srcMult.setText("");
+    // if (mult0 == null) _srcMult.setText("");
     _destMult.setText(Notation.generate(this, mult1));
    // 2002-07-22
     // Jaap Branderhorst
     // changed next line to show 1..1 multiplicity. Old code
     // if ((mult1 == null) || (MMultiplicity.M1_1).equals(mult1)) _srcMult.setText("");
     // new code
-    if (mult1 == null) _srcMult.setText("");
+    // if (mult1 == null) _srcMult.setText("");
 
     _srcRole.setText(Notation.generate(this, ae0.getName()));
     _destRole.setText(Notation.generate(this, ae1.getName()));
@@ -267,9 +309,11 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcGroup.calcBounds();
     _destGroup.calcBounds();
     _middleGroup.calcBounds();
-    Object oldOwner = ProjectBrowser.TheInstance.getTarget();
+    //Object oldOwner = ProjectBrowser.TheInstance.getTarget();
+    /*
     ProjectBrowser.TheInstance.setTarget(getOwner());
     ProjectBrowser.TheInstance.setTarget(oldOwner);
+    */
     
   }
 
