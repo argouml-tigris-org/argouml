@@ -53,8 +53,10 @@ public class GeneratorPHP extends Generator {
     public static String INDENT = "    ";
 
     /** The default copyright for the fileheaders */
-    public static String DEFAULT_FILEHEADER = "(c) <your name>\n"
-	                                      + "<your disclaimer>\n";
+    public static String DEFAULT_FILEHEADER = "/**\n"
+	                                      + " * (c) <your name>\n"
+	                                      + " * <your disclaimer>\n"
+	                                      + " **/\n";
 
     public static String Generate(Object o) {
 	return SINGLETON.generate(o);
@@ -297,7 +299,8 @@ public class GeneratorPHP extends Generator {
 	    sb.append('\n');
 	    sb.append(INDENT).append("// Operations\n");
 	    Iterator behEnum = behs.iterator();
-	    String terminator1 = "\n" + INDENT + "{";
+	    // String terminator1 = "\n" + INDENT + "{";
+	    String terminator1 = " {" + "\n" + INDENT;
 	    String terminator2 = INDENT + "}";
 	    if (cls instanceof MInterface) { terminator1 = ";\n"; terminator2 = ""; }
 	    while (behEnum.hasNext()) {
@@ -650,7 +653,7 @@ public class GeneratorPHP extends Generator {
     }
 
     public String generateStateBody(MState m) {
-	System.out.println("GeneratorPHP: generating state body");
+	// System.out.println("GeneratorPHP: generating state body");
 	String s = "";
 	MAction entry = m.getEntry();
 	MAction exit = m.getExit();
