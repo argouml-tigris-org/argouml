@@ -176,7 +176,9 @@ public class ActionSaveProject extends UMLAction {
     }
 
     public boolean shouldBeEnabled() {
-    
-	return super.shouldBeEnabled();
+        super.shouldBeEnabled();
+        ProjectBrowser pb = ProjectBrowser.getInstance();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        return (p != null && p.needsSave());
     }
 } /* end class ActionSaveProject */
