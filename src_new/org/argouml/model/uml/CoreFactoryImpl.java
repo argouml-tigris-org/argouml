@@ -479,8 +479,9 @@ public class CoreFactoryImpl
             (MAssociation)
             	nsmodel.getUmlFactory().getCore().createAssociation();
         assoc.setName("");
-        assoc.setNamespace(nsmodel.getCoreHelper().getFirstSharedNamespace(ns1,
-        								  ns2));
+        assoc.setNamespace(
+                (MNamespace) nsmodel.getCoreHelper()
+                	.getFirstSharedNamespace(ns1, ns2));
         buildAssociationEnd(
 			    assoc,
 			    null,
@@ -546,7 +547,7 @@ public class CoreFactoryImpl
             (MAssociation)
             	nsmodel.getUmlFactory().getCore().createAssociation();
         assoc.setName("");
-        assoc.setNamespace(
+        assoc.setNamespace((MNamespace)
         		   nsmodel.getCoreHelper().getFirstSharedNamespace(ns1,
         								  ns2));
 

@@ -26,14 +26,7 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
+
 
 /**
  * The interface for the helper for Core.<p>
@@ -77,7 +70,7 @@ public interface CoreHelper {
      * association ends for
      * @return a collection of the opposite associationends
      */
-    Collection getAssociateEnds(MClassifier classifier);
+    Collection getAssociateEnds(Object classifier);
 
     /**
      * This method returns all opposite AssociationEnds of a given
@@ -144,7 +137,7 @@ public interface CoreHelper {
      * @param classifier the classifier you want to have the attributes for
      * @return a collection of the attributes
      */
-    Collection getAttributes(MClassifier classifier);
+    Collection getAttributes(Object classifier);
 
     /**
      * This method replaces all attributes of the given classifier
@@ -170,7 +163,7 @@ public interface CoreHelper {
      * @param classifier the classifier you want to have the operations for
      * @return a collection of the operations
      */
-    Collection getOperationsInh(MClassifier classifier);
+    Collection getOperationsInh(Object classifier);
 
     /**
      * This method finds all paramters of the given operation which
@@ -184,7 +177,7 @@ public interface CoreHelper {
      * @return If this operation has only one paramter with Kind: RETURN,
      *         this is it, otherwise null
      */
-    MParameter getReturnParameter(Object operation1);
+    Object getReturnParameter(Object operation1);
 
     /**
      * Returns all return parameters for an operation.
@@ -202,7 +195,7 @@ public interface CoreHelper {
      * @param object  the method you want the realized operation of.
      * @return an operation, or null.
      */
-    MOperation getSpecification(Object object);
+    Object getSpecification(Object object);
 
     /**
      * Returns all Interfaces of which this class is a realization.<p>
@@ -220,7 +213,7 @@ public interface CoreHelper {
      * @return a collection of the children, each of which is a
      *         GeneralizableElement.
      */
-    Collection getSubtypes(MClassifier cls);
+    Collection getSubtypes(Object cls);
 
     /**
      * Returns all behavioralfeatures found in this element and its
@@ -229,7 +222,7 @@ public interface CoreHelper {
      * @param element is the element
      * @return Collection
      */
-    Collection getAllBehavioralFeatures(MModelElement element);
+    Collection getAllBehavioralFeatures(Object element);
 
     /**
      * Returns all behavioral features of some classifier.
@@ -239,21 +232,12 @@ public interface CoreHelper {
     Collection getBehavioralFeatures(Object clazz);
 
     /**
-     * Returns all behavioralfeatures found in this classifier and its
-     * children.<p>
-     *
-     * @param clazz is the classifier.
-     * @return Collection
-     */
-    Collection getAllBehavioralFeatures(MClassifier clazz);
-
-    /**
      * Returns all interfaces found in this namespace and in its children.
      *
      * @param ns the given namespace
      * @return Collection with all interfaces found
      */
-    Collection getAllInterfaces(MNamespace ns);
+    Collection getAllInterfaces(Object ns);
 
     /**
      * Returns all classes found in this namespace and in its children.<p>
@@ -261,7 +245,7 @@ public interface CoreHelper {
      * @param ns is the namespace.
      * @return Collection
      */
-    Collection getAllClasses(MNamespace ns);
+    Collection getAllClasses(Object ns);
 
     /**
      * Return all interfaces the given class realizes.<p>
@@ -287,7 +271,7 @@ public interface CoreHelper {
      * @param aparent is the parent generalizable element.
      * @return MGeneralization
      */
-    MGeneralization getGeneralization(Object achild, Object aparent);
+    Object getGeneralization(Object achild, Object aparent);
 
     /**
      * Returns all flows from some source modelelement to a target
@@ -297,7 +281,7 @@ public interface CoreHelper {
      * @param target is the target model element.
      * @return Collection
      */
-    Collection getFlows(MModelElement source, MModelElement target);
+    Collection getFlows(Object source, Object target);
 
     /**
      * Returns all elements that extend some class.
@@ -313,7 +297,7 @@ public interface CoreHelper {
      * @param clazz is the classifier.
      * @return Collection
      */
-    Collection getExtendingClassifiers(MClassifier clazz);
+    Collection getExtendingClassifiers(Object clazz);
 
     /**
      * Returns all components found in this namespace and in its children.
@@ -321,7 +305,7 @@ public interface CoreHelper {
      * @param ns is the namespace.
      * @return Collection
      */
-    Collection getAllComponents(MNamespace ns);
+    Collection getAllComponents(Object ns);
 
     /**
      * Returns all components found in this namespace and in its children.
@@ -329,7 +313,7 @@ public interface CoreHelper {
      * @param ns is the namespace
      * @return Collection
      */
-    Collection getAllDataTypes(MNamespace ns);
+    Collection getAllDataTypes(Object ns);
 
     /**
      * Returns all components found in this namespace and in its children.<p>
@@ -337,7 +321,7 @@ public interface CoreHelper {
      * @param ns is the namespace
      * @return Collection
      */
-    Collection getAllNodes(MNamespace ns);
+    Collection getAllNodes(Object ns);
 
     /**
      * Gets all classifiers that are associated to the given
@@ -355,7 +339,7 @@ public interface CoreHelper {
      *
      * @param from a classifier
      * @param to a classifier
-     * @return MAssociation
+     * @return a Collection with Associations
      */
     Collection getAssociations(Object from, Object to);
 
@@ -382,9 +366,9 @@ public interface CoreHelper {
      *
      * @param type is the classifier
      * @param assoc is the association
-     * @return MAssociationEnd
+     * @return An AssociationEnd.
      */
-    MAssociationEnd getAssociationEnd(MClassifier type, MAssociation assoc);
+    Object getAssociationEnd(Object type, Object assoc);
 
     /**
      * Returns the contents (owned elements) of this classifier and
@@ -394,7 +378,7 @@ public interface CoreHelper {
      * @param clazz is the classifier
      * @return Collection
      */
-    Collection getAllContents(MClassifier clazz);
+    Collection getAllContents(Object clazz);
 
     /**
      * Returns all attributes of some classifier and of its parents.
@@ -402,7 +386,7 @@ public interface CoreHelper {
      * @param clazz is the classifier
      * @return Collection
      */
-    Collection getAllAttributes(MClassifier clazz);
+    Collection getAllAttributes(Object clazz);
 
     /**
      * Returns the source of a relation. The source of a relation is
@@ -466,7 +450,7 @@ public interface CoreHelper {
      * @param dest is the destination model element
      * @return Collection
      */
-    Collection getRelationships(MModelElement source, MModelElement dest);
+    Collection getRelationships(Object source, Object dest);
 
     /**
      * Returns true if some modelelement may be owned by the given
@@ -485,9 +469,9 @@ public interface CoreHelper {
      *
      * @param ns1 is the first name space
      * @param ns2 is the second name space
-     * @return MNamespace
+     * @return The Namespace.
      */
-    MNamespace getFirstSharedNamespace(MNamespace ns1, MNamespace ns2);
+    Object getFirstSharedNamespace(Object ns1, Object ns2);
 
     /**
      * Returns all possible namespaces that may be selected by some given
