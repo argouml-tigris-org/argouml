@@ -46,6 +46,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 import org.argouml.uml.diagram.static_structure.*;
 import org.argouml.uml.diagram.deployment.*;
+import org.argouml.application.api.*;
 
 public class ParserDisplay extends Parser {
 
@@ -96,8 +97,7 @@ public class ParserDisplay extends Parser {
 	features.removeAll(oldAttrs);
 
 	// don't forget to remove old Attrbutes!
-	for (int i = 0; i < oldAttrs.size(); i++)
-		((MAttribute)oldAttrs.elementAt(i)).remove();
+        oldAttrs.clear();
 
 	// now re-set the operations
 	cls.setFeatures(features);
@@ -131,27 +131,27 @@ public class ParserDisplay extends Parser {
   }
 
 
-  /** Parse a line of the form:
-   *  [visibility] [keywords] name ": " type [= init] [;] */
+   /** Parse a line of the form:
+    *  [visibility] [keywords] name ": " type [= init] [;] */
    /* (formerly: [visibility] [keywords] type name [= init] [;] ) */
   public MAttribute parseAttribute(String s) {
-    s = s.trim();
-    if (s.endsWith(";")) s = s.substring(0, s.length()-1);
-    MAttribute newAttribute = new MAttributeImpl();
-    s = parseOutVisibility(newAttribute, s);
-    s = parseOutKeywords(newAttribute, s);
-    s = parseOutName(newAttribute, s);
-    s = parseOutColon(s);
-    s = parseOutType(newAttribute, s);
-//     if (newAttribute.getName() == null && newAttribute.getType() != null) {
-// 		newAttribute.setName(newAttribute.getType().getName());
-// 		Project p = ProjectBrowser.TheInstance.getProject();
-// 		newAttribute.setType(p.findType("int"));
-//    }
-    s = parseOutInitValue(newAttribute, s);
-    if (s.length() > 2)
-      System.out.println("leftover in parseAttribute=|" + s + "|");
-    return newAttribute;
+      s = s.trim();
+
+      if (s.endsWith(";")) {
+          s = s.substring(0, s.length()-1);
+      }
+      MAttribute newAttribute = new MAttributeImpl();
+      s = parseOutVisibility(newAttribute, s);
+      s = parseOutKeywords(newAttribute, s);
+      s = parseOutName(newAttribute, s);
+      s = parseOutInitValue(newAttribute, s);
+      s = parseOutColon(s);
+      s = parseOutType(newAttribute, s);
+      
+      if (s.length() > 2){
+          System.out.println("leftover in parseAttribute=|" + s + "|");
+      }
+      return newAttribute;
   }
 
 
@@ -291,20 +291,22 @@ public class ParserDisplay extends Parser {
 		attr.setType(type);
 
 		return retStr;
-		//return s.substring(firstSpace+1);
 	}
 
   public String parseOutInitValue(MAttribute attr, String s) {
     s = s.trim();
     int equalsIndex = s.indexOf("=");
+    int colonIndex  = s.indexOf(":");
+    
     if (equalsIndex != 0) return s;
-    String initStr = s.substring(1).trim(); //move past "="
-    if (initStr.length() == 0) return "";
+    String initStr = s.substring(1, colonIndex); //move past "=" to end of "initvalue"--pjs--
+    if (initStr.trim().length() == 0) return ""; // trim it here...pjs
     MExpression initExpr = new MExpression("Java", initStr);
 
       //System.out.println("setting return type: " + rtStr);
       attr.setInitialValue(initExpr);
-    return "";
+      String retStr = s.substring(colonIndex,s.length()); //return whats left --pjs-- 
+    return retStr;
   }
 
   private String parseOutColon(String s) {
