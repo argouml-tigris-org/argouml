@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.model_management;
 
+import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.Orientation;
 import org.argouml.i18n.Translator;
 import org.argouml.model.uml.*;
@@ -35,6 +36,8 @@ import org.argouml.util.ConfigLoader;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.border.TitledBorder;
+
 import org.argouml.model.ModelFacade;
 
 
@@ -78,9 +81,14 @@ public class PropPanelPackage extends PropPanelNamespace  {
         addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        addField(Translator.localize("UMLMenu", "label.visibility"), getNamespaceVisibilityPanel());
+        add(getNamespaceVisibilityPanel());
 
         // TODO: facilitate importedElements.
+        
+        _modifiersPanel =
+            new JPanel(new GridLayout2()); 
+        _modifiersPanel.setBorder(
+                new TitledBorder(Translator.localize("UMLMenu", "label.modifiers")));
         
         _modifiersPanel.add(
                             new UMLGeneralizableElementAbstractCheckBox());
@@ -89,7 +97,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
         _modifiersPanel.add(
                             new UMLGeneralizableElementRootCheckBox());
         
-        addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+        add(_modifiersPanel);
         addSeperator();
         addField(Translator.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
         addField(Translator.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
