@@ -77,7 +77,7 @@ public class Main {
     // needs-more-work:  This is a temporary hack.  The real change must
     //                   be to never refer to Globals.getLastDirectory
     //                   or Globals.setLastDirectory within Argo, but
-    //                   use Argo.getDirectory and Argo.setDirectory.  
+    //                   use Argo.getDirectory and Argo.setDirectory.
     String directory = Argo.getDirectory();
     org.tigris.gef.base.Globals.setLastDirectory(directory);
 
@@ -172,6 +172,7 @@ public class Main {
 	Localizer.addResource("GefPres","org.tigris.gef.presentation.PresentationResourceBundle");
 	Localizer.addResource("CoreMenu","org.argouml.ui.MenuResourceBundle");
 	Localizer.addResource("CoreSettings","org.argouml.ui.SettingsResourceBundle");
+	Localizer.addResource("DiagramType","org.argouml.ui.DiagramResourceBundle");
 	Localizer.addResource("UMLMenu","org.argouml.uml.ui.UMLResourceBundle");
 	Localizer.addResource("Cognitive","org.argouml.uml.cognitive.UMLCognitiveResourceBundle");
 	Localizer.addResource("Tree","org.argouml.ui.TreeResourceBundle");
@@ -357,7 +358,7 @@ public class Main {
     postLoadActions.addElement(r);
   }
 
-   /** Install our security handlers, 
+   /** Install our security handlers,
     *  and do basic initialization of log4j.
     *
     *  Log4j initialization must be done as
@@ -369,7 +370,7 @@ public class Main {
     *  Refer to {@link java.awt.EventDispatchThread} for details.
     */
    static {
- 
+
        /*  Install the trap to "eat" SecurityExceptions.
         */
        System.setProperty("sun.awt.exception.handler",
