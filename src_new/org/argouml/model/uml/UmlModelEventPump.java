@@ -52,6 +52,8 @@ import ru.novosoft.uml.MElementListener;
  */
 public final class UmlModelEventPump implements MElementListener {
     
+    public final static String REMOVE = "remove";
+    
     private static UmlModelEventPump _instance = null;
     
     private Map _listenerClassModelEventsMap = Collections.synchronizedMap(new HashMap());
@@ -103,7 +105,7 @@ public final class UmlModelEventPump implements MElementListener {
      *  the modelClass is not a subclass of MBase.
      * @throws IllegalStateException if the listener is allready registred
      */
-    public void addClassModelEventsListener(MElementListener listener, Class modelClass, String[] eventNames) {
+    public void addClassModelEventListener(MElementListener listener, Class modelClass, String[] eventNames) {
         if (listener == null || modelClass == null || eventNames == null) 
             throw new IllegalArgumentException("Tried to add null listener to null class");
         if (!MBase.class.isAssignableFrom(modelClass)) 
@@ -111,15 +113,41 @@ public final class UmlModelEventPump implements MElementListener {
         if (eventNames.length == 0)
             throw new IllegalArgumentException("Tried to add an empty eventName list");
         for (int i = 0; i < eventNames.length; i++) {
-            List listenerList = (List)_listenerClassModelEventsMap.get(getKey(modelClass, eventNames[i]));
-            if (listenerList == null) {
-                listenerList = new ArrayList();
-                _listenerClassModelEventsMap.put(getKey(modelClass, eventNames[i]), listenerList);
-            } else
-            if (listenerList.contains(listener))
-                throw new IllegalStateException("Tried to add a listener twice");
-            listenerList.add(listener);
+            executeAddClassModelEventListener(listener, modelClass, eventNames[i]);
         }
+    }
+    
+    /**
+     * Convinience method to add a listener that only listens to one specific event
+     * @param listener
+     * @param modelClass
+     * @param eventName
+     */
+    public void addClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
+        if (listener == null || modelClass == null || eventName == null) 
+            throw new IllegalArgumentException("Tried to add null listener to null class");
+        if (!MBase.class.isAssignableFrom(modelClass)) 
+            throw new IllegalArgumentException("Tried to add illegal class modeleventlistener.");
+        if (eventName.equals("")) 
+            throw new IllegalArgumentException("Tried to add an empty eventname");
+        executeAddClassModelEventListener(listener, modelClass, eventName);
+    }
+    
+    /**
+     * Does the actual adding
+     * @param listener
+     * @param modelClass
+     * @param eventName
+     */
+    private void executeAddClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
+        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(modelClass, eventName));
+        if (listenerList == null) {
+            listenerList = new ArrayList();
+            _listenerClassModelEventsMap.put(getKey(modelClass, eventName), listenerList);
+        } else
+        if (listenerList.contains(listener))
+            throw new IllegalStateException("Tried to add a listener twice");
+        listenerList.add(listener);
     }
     
     /**
@@ -129,7 +157,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @param modelClass
      * @param eventNames
      */
-    public void removeClassModelEventsListener(MElementListener listener, Class modelClass, String[] eventNames) {
+    public void removeClassModelEventListener(MElementListener listener, Class modelClass, String[] eventNames) {
         if (listener == null || modelClass == null || eventNames == null) 
             throw new IllegalArgumentException("Tried to remove null listener from null class");
         if (!MBase.class.isAssignableFrom(modelClass)) 
@@ -141,6 +169,8 @@ public final class UmlModelEventPump implements MElementListener {
             if (listenerList == null) 
                 throw new IllegalStateException("No class listener for this class registred");
             listenerList.remove(listener);
+            if (listenerList.isEmpty()) 
+                _listenerClassModelEventsMap.remove(getKey(modelClass, eventNames[i]));
         }
     }
     
@@ -167,22 +197,60 @@ public final class UmlModelEventPump implements MElementListener {
      * @param modelelement
      * @param eventNames
      */
-    public void addModelEventsListener(MElementListener listener, MBase modelelement, String[] eventNames) {
+    public void addModelEventListener(MElementListener listener, MBase modelelement, String[] eventNames) {
         if (listener == null || modelelement == null || eventNames == null || eventNames.length == 0) 
             throw new IllegalArgumentException("Null or empty arguments while adding a modelelement listener");
         for (int i = 0; i < eventNames.length; i++) {
-            List listenerList = (List)_listenerModelEventsMap.get(getKey(modelelement, eventNames[i]));
-            if (listenerList == null) {
-                listenerList = new ArrayList();
-                _listenerModelEventsMap.put(getKey(modelelement, eventNames[i]), listenerList);
-            } else
-            if (listenerList.contains(listener)) 
-                throw new IllegalStateException("Tried to add listener twice");
-            listenerList.add(listener);
+            executeAddModelEventListener(listener, modelelement, eventNames[i]);
         }
     }
-        
     
+    /**
+     * Convinience method to add a listener that only listens to one specific event
+     * @param listener
+     * @param modelClass
+     * @param eventName
+     */
+    public void addModelEventListener(MElementListener listener, MBase modelelement, String eventName) {
+        if (listener == null || modelelement == null || eventName == null) 
+            throw new IllegalArgumentException("Tried to add null listener to null class");
+        if (eventName.equals("")) 
+            throw new IllegalArgumentException("Tried to add an empty eventname");
+        executeAddModelEventListener(listener, modelelement, eventName);
+    }
+    
+    private void executeAddModelEventListener(MElementListener listener, MBase modelelement, String eventName) {
+        List listenerList = (List)_listenerModelEventsMap.get(getKey(modelelement, eventName));
+        if (listenerList == null) {
+            listenerList = new ArrayList();
+            _listenerModelEventsMap.put(getKey(modelelement, eventName), listenerList);
+        } else
+        if (listenerList.contains(listener)) 
+            throw new IllegalStateException("Tried to add listener twice");
+        listenerList.add(listener);
+    }
+        
+    /**
+     * Removes a listener that listens to modelevents with name eventNames that
+     * are fired by the given modelelement. 
+     * @param listener The listener to remove
+     * @param modelElement The modelelement that fires the events the listener is listening to
+     * @param eventNames The list of event names the listener is interested in
+     */
+    public void removeModelEventListener(MElementListener listener, MBase modelElement, String[] eventNames) {
+        if (listener == null || modelElement == null || eventNames == null) 
+            throw new IllegalArgumentException("Tried to remove null listener from null modelelement");
+        if (eventNames.length == 0)
+            throw new IllegalArgumentException("Tried to remove an empty eventName list");
+        for (int i = 0; i < eventNames.length; i++) {
+            List listenerList = (List)_listenerModelEventsMap.get(getKey(modelElement, eventNames[i]));
+            if (listenerList == null) 
+                throw new IllegalStateException("No listener registred");
+            listenerList.remove(listener);
+            if (listenerList.isEmpty())
+                _listenerModelEventsMap.remove(getKey(modelElement, eventNames[i]));
+        }
+    }
     
     
     /**
@@ -282,7 +350,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireClassRemoved(MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(e.getSource().getClass(), "remove"));
+        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(e.getSource().getClass(), REMOVE));
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
         while(it.hasNext()) {
@@ -291,7 +359,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireObjectRemoved(MElementEvent e) {
-        List listenerList = (List)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), "remove"));
+        List listenerList = (List)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), REMOVE));
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
         while(it.hasNext()) {

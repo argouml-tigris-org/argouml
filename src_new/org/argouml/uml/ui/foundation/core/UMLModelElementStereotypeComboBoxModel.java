@@ -46,7 +46,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLModelElementStereotypeComboBoxModel(UMLUserInterfaceContainer container) {
         super(container, true);
-        UmlModelEventPump.getPump().addClassModelEventsListener(this, MNamespace.class, new String[] {"ownedElement"});
+        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, new String[] {"ownedElement"});
     }
 
     /**
