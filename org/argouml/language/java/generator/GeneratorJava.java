@@ -410,10 +410,6 @@ implements PluggableNotation {
     return INDENT + "return null;\n";
   }
 
-  public String generateStereotype(MStereotype s) {
-    return "<<" + generateName(s.getName()) + ">>";
-  }
-
   public String generateTaggedValues(MModelElement e) {
     Collection tvs = e.getTaggedValues();
     if (tvs == null || tvs.size() == 0) return "";
