@@ -27,8 +27,6 @@ package org.argouml.uml;
 import java.util.*;
 import java.beans.*;
 
-import ru.novosoft.uml.foundation.core.*;
-
 import org.argouml.model.ModelFacade;
 
 /**

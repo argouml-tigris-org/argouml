@@ -32,9 +32,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
 import org.tigris.gef.ui.*;
 
 import org.argouml.ui.*;

@@ -34,8 +34,6 @@ import java.util.*;
 import java.beans.*;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.*;
-
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 

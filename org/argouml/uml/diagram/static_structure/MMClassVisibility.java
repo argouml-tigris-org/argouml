@@ -28,10 +28,6 @@ import java.util.*;
 import java.beans.*;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-
 public class MMClassVisibility implements java.io.Serializable {
     public static final MMClassVisibility PUBLIC =
 	new MMClassVisibility("public"); 
@@ -66,7 +62,7 @@ public class MMClassVisibility implements java.io.Serializable {
     public void set(Object/*MClassifier*/ target) {
 	if (target == null) return;
 	if (this == PUBLIC) {
-	    ModelFacade.setVisibility(target, MVisibilityKind.PUBLIC);
+	    ModelFacade.setVisibility(target, ModelFacade.PUBLIC_VISIBILITYKIND);
         }
     }
 } /* end class MMClassVisibility */

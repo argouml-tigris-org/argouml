@@ -26,8 +26,9 @@
 package org.argouml.uml.ui;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
-import ru.novosoft.uml.foundation.core.*;
 import java.util.*;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  *    Interface supported by any container of UML user interface components.

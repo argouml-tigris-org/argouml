@@ -33,10 +33,6 @@ package org.argouml.uml.diagram.sequence.ui;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
@@ -71,10 +67,10 @@ public class SequenceDiagramRenderer
 		cat.debug("null connections....");
 		return null;
 	    }
-	    MLinkEnd fromEnd = (MLinkEnd) ((Object[]) connections.toArray())[0];
-	    Object fromInst = /*(MInstance)*/ fromEnd.getInstance();
-	    MLinkEnd toEnd = (MLinkEnd) ((Object[]) connections.toArray())[1];
-	    Object toInst = /*(MInstance)*/ toEnd.getInstance();
+	    Object/*MLinkEnd*/ fromEnd = ((Object[]) connections.toArray())[0];
+	    Object fromInst = /*(MInstance)*/ ModelFacade.getInstance(fromEnd);
+	    Object/*MLinkEnd*/ toEnd = ((Object[]) connections.toArray())[1];
+	    Object toInst = /*(MInstance)*/ ModelFacade.getInstance(toEnd);
 	    FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
 	    FigNode toFN = (FigNode) lay.presentationFor(toInst);
 	    mlFig.setSourcePortFig(fromFN);
