@@ -669,7 +669,7 @@ class PreloadClasses implements Runnable {
         c = org.argouml.kernel.DelayedChangeNotify.class;
         c = org.argouml.kernel.Wizard.class;
         c = org.argouml.ui.Clarifier.class;
-        c = org.argouml.ui.StylePanelFig.class;
+        c = org.argouml.ui.StylePanelFigNodeModelElement.class;
         c = org.argouml.uml.GenCompositeClasses.class;
         c = org.argouml.uml.cognitive.critics.ClAttributeCompartment.class;
         c = org.argouml.uml.cognitive.critics.ClClassName.class;
