@@ -36,10 +36,12 @@ import junit.framework.*;
 public class TestParserDisplay extends TestCase {
 	private final String attr01 = "name";
 	private final String attr02 = "+name";
-	private final String attr03 = "-name : int";
+	private final String attr03 = "-name : void";
 	private final String attr04 = "#name [1..1] : int {a=b}";
 	private final String attr05 = "public name {a=b, c = d } : [1..*] int = 0";
-	private final String attr06 = "private name {a=b, c = d } [*..*] : int = 0 {frozen}";
+	private final String attr06 = "private name {a=b, c = d } [*..*] : int = 15 {frozen}";
+	private final String attr07 = "+name : String = \'val[15] \'";
+	private final String attr08 = "  +name : String = \"a <<string>>\"";
 
 	private final String nattr01 = "too many string in an attribute";
 	private final String nattr02 = "+vis name";
@@ -89,7 +91,7 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		checkType(attr, attr03, "int");
+		checkType(attr, attr03, "void");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
 		checkType(attr, attr04, "int");
@@ -130,6 +132,9 @@ public class TestParserDisplay extends TestCase {
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
 		checkVisibility(attr, attr06, "private");
 		checkVisibility(attr, attr01, "private");
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkVisibility(attr, attr08, "public");
 	}
 
 	private void checkVisibility(MAttribute attr, String text, String vis) {
@@ -219,6 +224,32 @@ public class TestParserDisplay extends TestCase {
 			assert(text + " threw ParseException " + pe, prsEx);
 		} catch (Exception e) {
 			assert(text + " threw Exception " + e, !prsEx);
+		}
+	}
+
+	public void testAttributeValue() {
+		MAttribute attr;
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkValue(attr, attr05, "0");
+		checkValue(attr, attr01, "0");
+		checkValue(attr, attr06, "15");
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkValue(attr, attr07, "\'val[15] \'");
+
+		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		checkValue(attr, attr08, "\"a <<string>>\"");
+	}
+
+	private void checkValue(MAttribute attr, String text, String val) {
+		try {
+			ParserDisplay.SINGLETON.parseAttribute(text, attr);
+			assert(text + " gave wrong visibility: " + (attr.getInitialValue() == null ? "(null)" : attr.getInitialValue().getBody()),
+				val == null && (attr.getInitialValue() == null || "".equals(attr.getInitialValue().getBody())) ||
+				val != null && attr.getInitialValue() != null && val.equals(attr.getInitialValue().getBody()));
+		} catch (Exception e) {
+			assert(text + " threw unexpectedly: " + e, false);
 		}
 	}
 }
