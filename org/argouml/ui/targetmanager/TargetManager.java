@@ -614,7 +614,7 @@ public final class TargetManager {
 		        .targetAdded(targetEvent);
 		}
 	    } catch (RuntimeException e) {
-		LOG.warn("While calling targetAdded for "
+		LOG.error("While calling targetAdded for "
 			  + targetEvent
 			  + " in "
 			  + listeners[i + 1]
