@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,9 +45,6 @@ public class TestModel extends TestCase {
      * NSUML in any of their signatures.
      */
     public void testInterfaces() {
-        if (true) { // This test is disabled for the 0.17.4 release.
-            return;
-        }
         Method[] modelMethods = Model.class.getDeclaredMethods();
         
         for (int i = 0; i < modelMethods.length; i++) {
@@ -62,6 +59,11 @@ public class TestModel extends TestCase {
                        Modifier.isStatic(modelMethod.getModifiers()));
             
             Class factoryIF = modelMethod.getReturnType();
+            
+            // Handling methods that doesn't return
+            if (factoryIF.isPrimitive() && factoryIF.getName().equals("void")) {
+                continue;
+            }
             
             assertTrue("The return type from " + modelMethod
                        + " must be an interface.",
