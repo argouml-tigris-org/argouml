@@ -132,7 +132,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
      */
     public Object getSourcePort(Object edge) {
-	if (ModelFacade.isARelationship(edge)) {
+        if (edge instanceof CommentEdge) {
+            return ((CommentEdge) edge).getSource();
+        } else if (ModelFacade.isARelationship(edge)) {
 	    return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	}
 	LOG.debug("TODO: getSourcePort");
@@ -144,7 +146,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
      */
     public Object getDestPort(Object edge) {
-	if (ModelFacade.isARelationship(edge)) {
+        if (edge instanceof CommentEdge) {
+            return ((CommentEdge) edge).getDestination();
+        } else if (ModelFacade.isARelationship(edge)) {
 	    return Model.getCoreHelper().getDestination(edge);
 	}
 	LOG.debug("TODO: getDestPort");
