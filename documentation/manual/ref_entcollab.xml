@@ -495,14 +495,12 @@ Argo/UML.
   <sect1 id="s1.ref.association_role">
     <title>Association Role</title>
 
-  &notupdatedfor014disclaimer;
-
     <para>An association role is a specialization of an association, used to
       describe an associations behavior in a particular context. In the UML
       metamodel <literal>Association Role</literal> is a sub-class of
       <literal>Association</literal>.</para>
 
-    <para>An association role is represented on a sequence diagram in &argouml;
+    <para>An association role is represented on a collaboration diagram in &argouml;
       as a line connecting the instances concerned. However on a sequence
       diagram the representation is modified to reflect the type of action
       associated with the stimulus carried on the link (see <xref
@@ -511,16 +509,17 @@ Argo/UML.
     <para>The association role is labeled with the association role name (if
       any).</para>
 
-    <caution><para>An association role should properly show link name (if any)
-      preceding the association role name and separated from it by a slash
-      (<literal>/</literal>) and be followed by the association name and
-      separated from it by a colon (<literal>:</literal>) in the same manner as
-      a classifier role. This allows association roles in a specification
-      level diagram to be distinguished from links in an instance level
-      diagram.</para>
+    <para>An association role shows its name and the association name 
+      according the following syntax:
+      <blockquote><para>/ AssociationRoleName : AssociationName</para></blockquote>
+      in the same manner as
+      a classifier role. The more generic syntax is:
+      <blockquote><para>O / R : C</para></blockquote>
+      which stands for an Instance named O 
+      originating from the Classifier C
+      playing the role R.
+    </para>
 
-    <para>This distinction is not implemented in the current release of
-      &argouml;.</para></caution>
 
     <!-- Association Role details tabs -->
 
@@ -579,7 +578,9 @@ Argo/UML.
 
           <caution><para>An association role should not generate any code,
             so having this tab active is probably a
-            mistake.</para></caution></listitem>
+            mistake.
+            <!-- TODO: get rid of it. See issue ... -->
+          </para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -587,17 +588,11 @@ Argo/UML.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
-            <literal>AssociationEnd</literal> has the following standard
+          <listitem><para>Standard tab. In the &argouml; metamodel,
+            <literal>AssociationEnd</literal> does not have any
             constraints defined.</para>
 
-            <itemizedlist>
-              <listitem><para><literal>xor</literal> (from the superclass
-                <literal>Association</literal>). Applied to a set of
-                association roles, indicating that over that set, exactly
-                one association role is manifest for any particular
-                association instance.</para></listitem>
-                </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -707,36 +702,33 @@ Argo/UML.
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector.  Association role should be
+          <listitem><para>Drop down selector.  Association role is
             provided by default with the UML standard stereotype from the
-            superclass, <literal>Association</literal>
-            ((<literal>implicit)</literal>) and the additional Association
-            stereotypes for the Software Engineering Process and Business
-            Modeling in the UML standard (<literal>communicate</literal>
-            and <literal>subscribe</literal>). &argouml; also provides the
-            stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-            <literal>person</literal>.</para>
-
-          <caution><para>&argouml; also provides the stereotype
-            <literal>realize</literal> for association roles. This appears
-            to be an error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution></listitem>
+            superclass Association: <literal>implicit</literal>.
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
 
         <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
-
+          
+          <!-- TODO: Weird enough, this is missing! See issue ... --> 
           <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
+                linkend="s1.ref.stereotype_class"/>).
+            </para>
+            <caution>
+              <para>
+                This button is missing from the V0.14 implementation.
+              </para>
+            </caution>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Namespace -->
@@ -746,36 +738,29 @@ Argo/UML.
 
           <listitem><para>Text box. Records the namespace for the
             association role. This is the package hierarchy.</para>
-
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+            <!-- TODO: This is always the collaboration itself, isn't it? 
+            Then why do we show it?  -->
+          <para>&Button1; double click on the entry will navigate to the 
+            item showm.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Messages -->
+        <!-- Entry for Base -->
 
         <varlistentry>
-          <term><literal>Messages</literal></term>
+          <term><literal>Base</literal></term>
 
-          <listitem><para>Text area. Lists the messages that are associated
-            with this association role.</para>
-
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with three entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected message.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more messages, and the message selected is not
-              at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more messages listed, and the message selected
-              is not at the bottom. It is moved down one.</para></listitem>
-              </itemizedlist></listitem>
+          <listitem>
+            <para>Drop down selector. Records the association that is the
+              base for the association role. 
+            </para>
+            
+            <para>The drop down selector shows all associations that exist 
+              between the classifiers that correspond with the connected 
+              classifier roles.
+            </para>
+          </listitem>
         </varlistentry>
+
 
         <!-- Entry for Association End Roles -->
 
@@ -789,27 +774,30 @@ Argo/UML.
             by &argouml;). For more on association end roles see <xref
             linkend="s1.ref.association_end_role"/>.</para>
 
-          <para>The names are listed, unless the association end role has
-            no name, when it is shown as <literal>anon</literal>.</para>
+            <para>The names are listed, unless the association end role has
+              no name, then it is shown as 
+              <literal>(anon AssociationEndRole)</literal>.
+            </para>
 
-          <para>&Button1; click on an association end role will navigate to
-            that end. &Button2; click gives a pop up menu with three
-            options.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Where an association
-              end exists, navigate to it.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more association end roles, and the association
-              end role selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more association end roles listed, and the
-              association end role selected is not at the bottom. It is moved
-              down one.</para></listitem> </itemizedlist></listitem>
+            <para>&Button1; double click on an association end role will navigate to
+              that end. 
+            </para>
+          </listitem>
         </varlistentry>
+
+        <!-- Entry for Messages -->
+
+        <varlistentry>
+          <term><literal>Messages</literal></term>
+
+          <listitem><para>Text area. Lists the messages that are associated
+            with this association role.</para>
+
+          <para>&Button1; double click navigates to the selected entry
+          </para>
+          </listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
   </sect1>
@@ -819,8 +807,6 @@ Argo/UML.
   <sect1 id="s1.ref.association_end_role">
     <title>Association End Role</title>
 
-  &notupdatedfor014disclaimer;
-
     <para>An association end role is a specialization of an association end,
       used to describe an association end's behavior in a particular
       context. In the UML metamodel <literal>AssociationEndRole</literal> is a
@@ -829,20 +815,24 @@ Argo/UML.
     <para>Two or more association end roles are associated with each
       association role
       (see <xref linkend="s1.ref.association_role"/>), although for
-      &argouml;, the number of ends can only usefully be two.</para>
+      &argouml;, the number of ends can only be two.</para>
 
     <para>The association end role has no direct access on any diagram,
       although its stereotype, name and multiplicity is shown at the relevant
       end of the parent association role (see <xref
-      linkend="fig.ref.collaboration_diagram"/>).  Where shared or composite
+      linkend="fig.ref.collaboration_diagram"/>), and some of its properties can
+      be directly adjusted with &button2; click.
+      Where shared or composite
       aggregation is selected for one association end role, the opposite end is
       shown as a solid diamond (composite aggregation) or hollow diamond
       (shared aggregation).</para>
 
-    <note><para>&argouml; does not currently support qualifiers, as described
-      in the UML&nbsp;1.3 standard.</para></note>
+    <note><para>&argouml; does not currently (V0.14) support qualifiers, as described
+      in the UML&nbsp;1.3 standard.
+      <!-- TODO: See enhancement issue ... -->
+    </para></note>
 
-    <caution><para>An association end role should be have the same, or
+    <caution><para>An association end role should  have the same, or
       <quote>stricter</quote> attribute values than its base association
       end. In particular its navigability should be no more general. There is
       as yet no critic in &argouml; to offer advice on this
@@ -885,28 +875,17 @@ Argo/UML.
           <listitem><para>Standard tab.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
-
-        <varlistentry>
-          <term><literal>Style</literal></term>
-
-          <listitem><para>Standard tab, but with no meaning, since the only
-            representation is via the parent association role.</para></listitem>
-        </varlistentry>
-
         <!-- Entry for Source tab -->
 
         <varlistentry>
           <term><literal>Source</literal></term>
 
-          <listitem><para>Standard tab. You would not expect to generate any
-            code for an association end role, but this tab contains a
-            declaration for the association end role as an instance of the
-            classifier artifact to which it is connected.</para>
-
-          <note><para>This is probably not the correct thing to do for good
-            code generation, and will need to be changed in future versions
-            of &argouml;.</para></note></listitem>
+          <listitem>
+            <para>Standard tab. There is no code generated 
+              for an association end role.
+              <!-- TODO: So, let's get rid of it. See issue ... -->
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -956,7 +935,9 @@ Argo/UML.
 
     <sect2 id="s2.ref.association_end_role_property_toolbar">
       <title>Association End Role Property Toolbar</title>
-
+      
+      <!-- TODO: The prop pane says: AssociationEndRoleRole (sic). See issue ...
+      -->
       <variablelist>
 
         <!-- Entry for Go up button -->
@@ -1018,10 +999,8 @@ Argo/UML.
             default with the UML standard stereotypes for AssociationEndRole
             (<literal>association</literal>, <literal>global</literal>,
             <literal>local</literal>, <literal>parameter</literal>,
-            <literal>self</literal>). &argouml; also provides the
-            additional stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-            <literal>person</literal>.</para></listitem>
+            <literal>self</literal>).
+          </para></listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -1038,6 +1017,32 @@ Argo/UML.
                 linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
+        <!-- Entry for Base -->
+
+        <varlistentry>
+          <term><literal>Base</literal></term>
+
+          <listitem>
+            <para>Text field that shows the name of the 
+              corresponding association end.
+              &Button1; double click navigates to the association end.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for AssociationRole -->
+
+        <varlistentry>
+          <term><literal>AssociationRole</literal></term>
+
+          <listitem>
+            <para>Text box. Records the parent association role for this
+              association end role.
+              &Button1; double click navigates to the association role.
+            </para>
+          </listitem>
+        </varlistentry>
+
         <!-- Entry for Type -->
 
         <varlistentry>
@@ -1046,26 +1051,11 @@ Argo/UML.
           <listitem><para>Drop down selector providing access to all standard
             UML types provided by &argouml; and all new classes created
             within the current model.</para>
+            <!-- TODO: Do we need this? Is the choice not really be far more
+            limited? -->
 
           <para>This is the type of the entity attached to this end of the
             association role.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for NavClass (note the icon is identical to
-             Navstereo) -->
-
-        <varlistentry>
-          <term><literal>Navigate Class</literal></term>
-
-          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-              format="GIF" align="center"
-              fileref="images/icons/navigate_stereotype.gif"/>
-              </imageobject></inlinemediaobject></guiicon> icon. If a
-              datatype, interface or class has been selected, this will
-              navigate to its property sheet, (see <xref
-                linkend="s1.ref.datatype"/>, <xref
-                linkend="s1.ref.interface_class"/> and <xref
-               linkend="s1.ref.class_class"/>) .</para></listitem>
         </varlistentry>
 
         <!-- Entry for Multiplicity -->
@@ -1073,24 +1063,11 @@ Argo/UML.
         <varlistentry>
           <term><literal>Multiplicity</literal></term>
 
-          <listitem><para>Drop down menu. Records the multiplicity of this
+          <listitem><para>Drop down text entry. Allows to alter the multiplicity of this
             association end role (with respect to the other end), i.e. how many
             instances of this end may be associated with an instance of the
             other end. The multiplicity is shown on the diagram at that end of
             the association role.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Association Role -->
-
-        <varlistentry>
-          <term><literal>Association Role</literal></term>
-
-          <listitem><para>Text box. Records the parent association role for this
-            association end role. &Button1; click on
-            this entry will navigate to that association role. &Button2; click
-            will invoke a pop-up menu, with a single entry,
-            <literal>Open</literal> that will also navigate to that
-            association role.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Navigable -->
@@ -1112,79 +1089,15 @@ Argo/UML.
             cases.</para></note></listitem>
         </varlistentry>
 
-        <!-- Entry for Ordering -->
+        <!-- All remaining Entries -->
 
         <varlistentry>
-          <term><literal>Ordering</literal></term>
+          <term><literal>All remaining properties</literal></term>
 
-          <listitem><para>Radio box, with three entries
-            <literal>unordered</literal>, <literal>ordered</literal> and
-            <literal>sorted</literal>. Where there are multiple instances
-            indicates the nature of any ordering.</para>
-
-          <note><para><literal>sorted</literal> represents an extension to
-            UML&nbsp;1.3.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Aggregation -->
-
-        <varlistentry>
-          <term><literal>Aggregation</literal></term>
-
-          <listitem><para>Radio box, with three entries
-            <literal>none</literal>, <literal>aggregation</literal> and
-            <literal>composite</literal>. Indicates whether the
-            relationship with the far end represents some type of loose
-            whole-part relationship (<literal>aggregation</literal>) or tight
-            whole-part relationship (<literal>composite</literal>.</para> 
-
-          <para>Shared aggregation is shown by a hollow diamond at the
-            <quote>whole</quote> end of the association role. Composite aggregation
-            is shown by a solid diamond.</para>
-
-          <note><para>You may not have aggregation at both ends of an
-            association role. The <quote>whole</quote> end of a composite
-            aggregation should have a multiplicity of
-            one.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Classifier -->
-
-        <varlistentry>
-          <term><literal>Scope</literal></term>
-
-          <listitem><para>Check box, with a single entry,
-            <literal>classifier</literal>. Indicates that this end relates
-            to a class rather than an instance of a class (the
-            default).</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Changeability -->
-
-        <varlistentry>
-          <term><literal>Changeability</literal></term>
-
-          <listitem><para>Radio box, with three entries
-            <literal>changeable</literal>, <literal>frozen</literal> and
-            <literal>add only</literal>. Indicates whether instances of
-            this end of the attributed may be: i) created and deleted by
-            the source after the target instance is created; ii) not
-            created or deleted by the source after the target instance is
-            created; or iii) created but not deleted after the target
-            instance is created.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Visibility -->
-
-        <varlistentry>
-          <term><literal>Visibility</literal></term>
-
-          <listitem><para>Radio box, with three entries
-            <literal>public</literal>, <literal>protected</literal> and
-            <literal>private</literal>. Indicates whether navigation to
-            this end may be by: i) any classifier; ii) only the source
-            classifier and its children; or iii) only by the source
-            classifier.</para></listitem>
+          <listitem><para>See 
+              <xref linkend="s2.ref.association_end_property_fields"/>
+            </para>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
