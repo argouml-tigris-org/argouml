@@ -40,6 +40,10 @@ import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.SplashScreen;
 
+/**
+ * This class loads panel classes according a certain configuration file.
+ *
+ */
 public class ConfigLoader {
 	
     private static final String BUNDLE = "statusmsg";
@@ -60,6 +64,13 @@ public class ConfigLoader {
         return tabPropsOrientation;
     }
 
+    /**
+     * Load the tab panels as defined in the configuration file.
+     * 
+     * @param tabs the list of tabs in the panel
+     * @param panelName the panel name
+     * @param orientation the orientation
+     */
     public static void loadTabs(Vector tabs, String panelName, 
             Orientation orientation) {
         String position = null;
@@ -146,6 +157,16 @@ public class ConfigLoader {
         }
     }
 
+    /**
+     * Parse a line in the text file containing 
+     * the configuration of ArgoUML, "/org/argouml/argo.ini".
+     * 
+     * @param line the given line
+     * @param panelName the name of the panel
+     * @param lineNum the number of the current line
+     * @param configFile the configuration file name
+     * @return the resulting class of the tabpanel
+     */
     public static Class parseConfigLine(String line, String panelName,
 					int lineNum, String configFile) {
 	if (line.startsWith("tabpath")) {
