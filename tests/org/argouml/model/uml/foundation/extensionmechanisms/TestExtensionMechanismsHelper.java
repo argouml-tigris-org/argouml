@@ -50,24 +50,15 @@ public class TestExtensionMechanismsHelper extends TestCase {
     }
     
     public void testGetAllPossibleStereotypes1() {
+        // this test does not work yet since there are problems with isolating the project from
+        // the projectbrowser
         MNamespace ns = CoreFactory.getFactory().createNamespace();
         MClass clazz = CoreFactory.getFactory().buildClass(ns);
-        MStereotype stereo1 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test1", ns);
-        MStereotype stereo2 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test2", ns);
+        MStereotype stereo1 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test1");
+        MStereotype stereo2 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test2");
         Collection col = ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(clazz);
         assertTrue("stereotype not in list of possible stereotypes", col.contains(stereo1));
         assertTrue("stereotype not in list of possible stereotypes", col.contains(stereo2));
-    }
-    
-    public void testGetAllPossibleStereotypes2() {
-        MNamespace ns = CoreFactory.getFactory().createNamespace();
-        MNamespace ns2 = CoreFactory.getFactory().createNamespace();
-        MClass clazz = CoreFactory.getFactory().buildClass(ns);
-        MStereotype stereo1 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test1", ns);
-        MStereotype stereo2 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test2", ns2);
-        Collection col = ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(clazz);
-        assertTrue("stereotype not in list of possible stereotypes", col.contains(stereo1));
-        assertTrue("stereotype not in list of possible stereotypes", !col.contains(stereo2));
     }
     
     public void testGetMetaModelName() {

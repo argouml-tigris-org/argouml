@@ -146,7 +146,7 @@ public class TestUmlModelEventPump extends TestCase {
         assert(!UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
         assert(!UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
         assert(UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name") instanceof Collection);
-        assert(((Collection)UmlModelEventPump.getPump().getListenerClassModelEventsMap().get(elem.getClass().getName() + "name")).contains(listener));
+        assert(((Collection)UmlModelEventPump.getPump().getListenerClassModelEventsMap().get(UmlModelEventPump.getPump().getKey(elem.getClass(), "name"))).contains(listener));
         assert(((Collection)UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name")).contains(listener));
     }
    
