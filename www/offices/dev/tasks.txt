@@ -1,0 +1,8 @@
+# taskid & progress image & headline & people & password
+
+# basic tasks
+t1&PostIt0.gif&Complete table views feature&jrobbins&xxx
+
+
+t2&PostIt25.gif&Implement more model-based layout&  # missing people and password
+

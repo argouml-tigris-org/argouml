@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<script src="DynEl.js"></script>
+	<script language="javascript">
+		/* 
+			DynEl.js requires a ver 4.x browser and will cause errors if loaded by a 3.x browser.
+			If the browser ver is not high enough the following function issues a warning and supresses
+			any errors that may occur.
+		*/
+		function suppressErrors() { return true; }
+		
+		if (parseInt(navigator.appVersion) < 4) {
+			alert("This page offers extended navigation functionality for version 4 browsers.  This page may not work properly with your browser.");
+			onerror = suppressErrors;
+		}
+		
+		// must be created in the head of the document
+		var dynPopup = new DynEl(window, "argoDocPopup", "&nbsp;", 0,0,300);
+	</script>
+	
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html;CHARSET=iso-8859-1">
+	<META NAME="GENERATOR" Content="Visual Page 1.1a for Windows">
+	<TITLE>Argo/UML Code Organization [UML Meta-Model: Foundation/Core Backbone]</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF">
+<script language="javascript">
+	// must output the object (render it to html) before
+	// we may call any attributes/operations of it 	
+	dynPopup.output();
+	
+	// add an event handler for when the user mouses out of the dynamic popup
+	dynPopup.addEventHandler("onmouseout", 
+		function() { 
+			dynPopup.hide();
+		});
+	
+	// create an array html strings for the model popups.
+	var modelElements = new Array();
+	// create the string that begins the table, tr, and td 
+	// (to be prepended to each string in the modelElements array
+	var sPreModelElementPopupHTML = "<P><TABLE BORDER=\"0\" CELLPADDING=\"3\" CELLSPACING=\"0\"><TR><TD BGCOLOR=\#F0A000\"><TABLE BORDER=\"0\" CELLPADDING=\"6\" CELLSPACING=\"0\"><TR><TD BGCOLOR=\"#FFFFFF\">";
+	// create the string that ends the table, tr, and td 
+	// (to be appended to each string in the modelElements array
+	var sPostModelElementPopupHTML = "</TD></TR></TABLE></TD></TR></TABLE>";
+	
+	var sLastClass = ""
+	
+	modelElements['_popup1'] = "<TT><B> Name of Class </B><BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; JavaDocs &#124; Code</TT>";
+	modelElements['_ModelElement'] = "<TT>public interface <B> ModelElement </B><BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/ModelElement.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/ModelElement.java\">Code</A></TT>";
+	modelElements['_ModelElementImpl'] = "<TT>public class <B> ModelElementImpl </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/ModelElementImpl.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/ModelElementImpl.java\">Code</A></TT>";
+	modelElements['_Element'] = "<TT>public interface <B> Element </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Element.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Element.java\">Code</A></TT>";
+	modelElements['_ElementImpl'] = "<TT>public class <B> ElementImpl </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/ElementImpl.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/ElementImpl.java\">Code</A></TT>";
+	modelElements['_Association'] = "<TT>public class <B> Association </B><BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Association.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Association.java\">Code</A></TT>";
+	/* the line below has to be broken up this way.. i have no idea why but Netscape 4 would generate "Unterminated String Literal" errors if the string was built like the commented version below. */
+	modelElements['_Namespace']= "<tt>public interface <b> Namespace </b><br>See <a href=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">" + "UML Spec" + "</a> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Namespace.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Namespace.java\">Code</A></TT>";
+	/* modelElements['_Namespace']= "<TT>public interface <B> Namespace </B><BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Namespace.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Namespace.java\">Code</A></TT>"; */
+	modelElements['_NamespaceImpl'] = "<TT>public interface <B> NamespaceImpl </B><BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/NamespaceImpl.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/NamespaceImpl.java\">Code</A></TT>";
+	modelElements['_Classifier'] = "<TT>public class <B> Classifier </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Classifier.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Classifier.java\">Code</A></TT>";
+	modelElements['_AssociationEnd'] = "<TT>public class <B> AssociationEnd </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/AssociationEnd.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/AssociationEnd.java\">Code</A></TT>";
+	modelElements['_Parameter'] = "<TT>public class <B> Parameter </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Parameter.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Parameter.java\">Code</A></TT>";
+	modelElements['_Constraint'] = "<TT>public class <B> Constraint </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Constraint.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Constraint.java\">Code</A></TT>";
+	modelElements['_Feature'] = "<TT>public class <B> Feature </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Feature.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Feature.java\">Code</A></TT>";
+	modelElements['_StructuralFeature'] = "<TT>public class <B> StructuralFeature </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/StructuralFeature.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/StructuralFeature.java\">Code</A></TT>";
+	modelElements['_BehavioralFeature'] = "<TT>public class <B> BehavioralFeature </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/BehavioralFeature.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/BehavioralFeature.java\">Code</A></TT>";
+	modelElements['_Operation'] = "<TT>public class <B> Operation </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Operation.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Operation.java\">Code</A></TT>";
+	modelElements['_Attribute'] = "<TT>public class <B> Attribute </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Attribute.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Attribute.java\">Code</A></TT>" ;
+	modelElements['_MMClass'] = "<TT>public class <B> MMClass </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/MMClass.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/MMClass.java\">Code</A></TT>";
+	modelElements['_Interface'] = "<TT>public class <B> Interface </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Interface.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Interface.java\">Code</A></TT>";
+	modelElements['_Generalization'] = "<TT>public class <B> Generalization </B> <BR>See <A HREF=\"http://www.rational.com/uml/resources/documentation/semantics/semant4a.jtmpl\">UML Spec</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Generalization.html\">JavaDocs</A> &#124; <A HREF=\"../../api/uci/uml/Foundation/Core/Generalization.java\">Code</A></TT>";
+	
+	function showPopup(event, clsName) {
+			// hide the popup box
+			dynPopup.hide();
+	    
+			// change the html of the popup.. underscore keeps the array keys from interfering with keywords
+			dynPopup.setBody(sPreModelElementPopupHTML + modelElements["_" + clsName] + sPostModelElementPopupHTML);
+	    
+			// move the popup to the new coordinates
+			dynPopup.moveTo(event.x, event.y);
+
+			// show the popup
+			dynPopup.show();
+   
+	    return true;
+	}
+</script>
+
+<P><FONT SIZE="5" COLOR="#008080" FACE="Tahoma"><B>Argo/UML Code Organization</B></FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma">Click on a class to see javadocs for tha class.</FONT></P>
+<P><FONT COLOR="#660000" FACE="Tahoma"><B>UML Meta-Model: Foundation/Core Backbone</B></FONT></P>
+<P><IMG SRC="corea.gif" WIDTH="954" HEIGHT="760" ALIGN="BOTTOM" 
+BORDER="0" USEMAP="#Core_a2"></P>
+<P><FONT SIZE="1" FACE="Tahoma">Classes shown above</FONT> 
+<TABLE BORDER="1" CELLPADDING="2" CELLSPACING="0" WIDTH="720">
+	<TR>
+		<TD WIDTH="25%"></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Element.html"><FONT SIZE="2" FACE="Tahoma">Element</FONT></A><FONT SIZE="2"
+			FACE="Tahoma">, </FONT><A HREF="../../api/uci/uml/Foundation/Core/ElementImpl.html"><FONT SIZE="2" FACE="Tahoma">ElementImpl</FONT></A></TD>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Namespace.html"><FONT SIZE="2" FACE="Tahoma">Namespace</FONT></A><FONT
+			SIZE="2" FACE="Tahoma">, </FONT><A HREF="../../api/uci/uml/Foundation/Core/NamespaceImpl.html"><FONT SIZE="2" FACE="Tahoma">NamespaceImpl</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/ModelElement.html"><FONT SIZE="2" FACE="Tahoma">ModelElement</FONT></A><FONT
+			SIZE="2" FACE="Tahoma">, </FONT><A HREF="../../api/uci/uml/Foundation/Core/ModelElementImpl.html"><FONT SIZE="2"
+			FACE="Tahoma">ModelElementImpl</FONT></A></TD>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/GeneralizableElement.html"><FONT SIZE="2" FACE="Tahoma">GeneralizableElement</FONT></A><FONT
+			SIZE="2" FACE="Tahoma">, </FONT><A HREF="../../api/uci/uml/Foundation/Core/GeneralizableElementImpl.html"><FONT
+			SIZE="2" FACE="Tahoma">GeneralizableElementImpl</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Model_Management/ElementOwnership.html"><FONT SIZE="2" FACE="Tahoma">ElementOwnership</FONT></A><FONT
+			SIZE="2" FACE="Tahoma">, </FONT><A HREF="../../api/uci/uml/Foundation/Core/Feature.html"><FONT SIZE="2" FACE="Tahoma">Feature</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Parameter.html"><FONT SIZE="2" FACE="Tahoma">Parameter</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Constraint.html"><FONT SIZE="2" FACE="Tahoma">Constraint</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Classifier.html"><FONT SIZE="2" FACE="Tahoma">Classifier</FONT></A><FONT
+			SIZE="2" FACE="Tahoma">, </FONT><A HREF="../../api/uci/uml/Foundation/Core/Realization.html"><FONT SIZE="2" FACE="Tahoma">Realization</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/StructuralFeature.html"><FONT SIZE="2" FACE="Tahoma">StructuralFeature</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/BehavioralFeature.html"><FONT SIZE="2" FACE="Tahoma">BehavioralFeature</FONT></A></TD>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Interface.html"><FONT SIZE="2" FACE="Tahoma">Interface</FONT></A><FONT
+			SIZE="2" FACE="Tahoma">, </FONT><A HREF="../../api/uci/uml/Foundation/Core/MMClass.html"><FONT SIZE="2" FACE="Tahoma">MMClass</FONT></A><FONT
+			SIZE="2" FACE="Tahoma">, </FONT><A HREF="../../api/uci/uml/Foundation/Core/DataType.html"><FONT SIZE="2" FACE="Tahoma">DataType</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Attribute.html"><FONT SIZE="2" FACE="Tahoma">Attribute</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Operation.html"><FONT SIZE="2" FACE="Tahoma">Operation</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Method.html"><FONT SIZE="2" FACE="Tahoma">Method</FONT></A></TD>
+	</TR>
+</TABLE>
+</P>
+<P>
+<P><FONT COLOR="#660000" FACE="Tahoma"><B>UML Meta-Model: Foundation/Core Relationships</B></FONT></P>
+<P><IMG SRC="coreb.gif" WIDTH="834" HEIGHT="549" ALIGN="BOTTOM" BORDER="0" USEMAP="#Core_b2"></P>
+<P><FONT SIZE="1" FACE="Tahoma">Classes shown above</FONT> 
+<TABLE BORDER="1" CELLPADDING="2" CELLSPACING="0" WIDTH="660">
+	<TR>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/ModelElement.html"><FONT SIZE="2" FACE="Tahoma">ModelElement</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Namespace.html"><FONT SIZE="2" FACE="Tahoma">Namespace</FONT></A></TD>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Dependency.html"><FONT SIZE="2" FACE="Tahoma">Dependency</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Generalization.html"><FONT SIZE="2" FACE="Tahoma">Generaliation</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/GeneralizableElementImpl.html"><FONT SIZE="2" FACE="Tahoma">GeneralizableElement</FONT></A></TD>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Classifier.html"><FONT SIZE="2" FACE="Tahoma">Classifier</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/AssociationEnd.html"><FONT SIZE="2" FACE="Tahoma">AssociationEnd</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/Association.html"><FONT SIZE="2" FACE="Tahoma">Association</FONT></A></TD>
+	</TR>
+	<TR>
+		<TD WIDTH="25%"><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/MMClass.html"><FONT SIZE="2" FACE="Tahoma">Class</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/AssociationClass.html"><FONT SIZE="2" FACE="Tahoma">AssociationClass</FONT></A></TD>
+		<TD WIDTH="25%"><A HREF="../../api/uci/uml/Foundation/Core/IAssociation.html"><FONT SIZE="2" FACE="Tahoma">IAssociation</FONT></A></TD>
+	</TR>
+</TABLE>
+</P>
+<P>
+<HR ALIGN="CENTER">
+<FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="../../index.html"><FONT SIZE="2" FACE="Tahoma">Argo/UML Release
+Page</FONT></A></P>
+<P><FONT SIZE="2" FACE="Tahoma">Back to </FONT><A HREF="../../../index.html"><FONT SIZE="2" FACE="Tahoma">Argo/UML
+Home</FONT></A></P>
+<P><FONT SIZE="2" FACE="Tahoma"><BR>
+&nbsp;</FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma">&nbsp;</FONT></P>
+<P><FONT SIZE="2" FACE="Tahoma">&nbsp;&nbsp;</FONT>
+
+<MAP Name="Core_a2">
+<AREA Shape="Rect" coords = "6,341,138,433"  HREF="../../api/uci/uml/Foundation/Core/GeneralizableElementImpl.html"
+onmouseover="return showPopup(event, 'popup1');">
+<AREA Shape="Rect" coords = "389,-6,516,71"  HREF="../../api/uci/uml/Foundation/Core/Element.html"  
+onmouseover="return showPopup(event, 'Element');">
+<AREA Shape="Rect" coords = "308,93,448,163"  HREF="../../api/uci/uml/Foundation/Core/ModelElement.html" 
+onmouseover="return showPopup(event, 'ModelElement');">
+<AREA Shape="Rect" coords = "158,219,290,279"  HREF="../../api/uci/uml/Foundation/Core/NamespaceImpl.html"  
+onmouseover="return showPopup(event, 'NamespaceImpl');">
+<AREA Shape="Rect" coords = "201,332,373,406"  HREF="../../api/uci/uml/Model_Management/ElementOwnership.html"
+onmouseover="return showPopup(event, 'popup1');">
+<AREA Shape="Rect" coords = "165,98,297,158"  HREF="../../api/uci/uml/Foundation/Core/Namespace.html" 
+onmouseover="return showPopup(event, 'Namespace');">
+<AREA Shape="Rect" coords = "7,200,139,292"  HREF="../../api/uci/uml/Foundation/Core/GeneralizableElement.html"  
+onmouseover="return showPopup(event, 'popup1');">
+<AREA Shape="Rect" coords = "308,512,474,606"  HREF="../../api/uci/uml/Foundation/Core/StructuralFeature.html"
+onmouseover="return showPopup(event, 'StructuralFeature');">
+<AREA Shape="Rect" coords = "290,613,454,683"  HREF="../../api/uci/uml/Foundation/Core/Attribute.html" 
+onmouseover="return showPopup(event, 'Attribute');">
+<AREA Shape="Rect" coords = "515,603,723,724"  HREF="../../api/uci/uml/Foundation/Core/Operation.html" 
+onmouseover="return showPopup(event, 'Operation');">
+<AREA Shape="Rect" coords = "783,606,943,679"  HREF="../../api/uci/uml/Foundation/Core/Method.html" 
+onmouseover="return showPopup(event, 'popup1');">
+<AREA Shape="Rect" coords = "631,499,744,576"  HREF="../../api/uci/uml/Foundation/Core/BehavioralFeature.html"
+onmouseover="return showPopup(event, 'BehavioralFeature');">
+<AREA Shape="Rect" coords = "604,333,792,437"  HREF="../../api/uci/uml/Foundation/Core/Parameter.html" 
+onmouseover="return showPopup(event, 'Parameter');">
+<AREA Shape="Rect" coords = "454,101,581,178"  HREF="../../api/uci/uml/Foundation/Core/ElementImpl.html" 
+onmouseover="return showPopup(event, 'ElementImpl');">
+<AREA Shape="Rect" coords = "389,340,548,428"  HREF="../../api/uci/uml/Foundation/Core/Feature.html" 
+onmouseover="return showPopup(event, 'Feature');">
+<AREA Shape="Rect" coords = "374,205,540,286"  HREF="../../api/uci/uml/Foundation/Core/ModelElementImpl.html"  
+onmouseover="return showPopup(event, 'ModelElementImpl');">
+<AREA Shape="Rect" coords = "63,498,183,576"  HREF="../../api/uci/uml/Foundation/Core/Classifier.html" 
+onmouseover="return showPopup(event, 'Classifier');">
+<AREA Shape="Rect" coords = "32,661,152,734"  HREF="../../api/uci/uml/Foundation/Core/DataType.html" 
+onmouseover="return showPopup(event, 'popup1');">
+<AREA Shape="Rect" coords = "802,342,954,423"  HREF="../../api/uci/uml/Foundation/Core/Constraint.html" 
+onmouseover="return showPopup(event, 'Constraint');">
+<AREA Shape="Rect" coords = "147,616,273,689"  HREF="../../api/uci/uml/Foundation/Core/MMClass.html" 
+onmouseover="return showPopup(event, 'MMClass');">
+<AREA Shape="Rect" coords = "1,591,106,662"  HREF="../../api/uci/uml/Foundation/Core/Interface.html" 
+onmouseover="return showPopup(event, 'Interface');">
+</MAP>
+
+<MAP Name="Core_b2" id=Core_b2>
+<AREA Shape="Rect" coords = "334,107,466,167"  HREF="../../api/uci/uml/Foundation/Core/NamespaceImpl.html"  
+onmouseover="return showPopup(event, 'NamespaceImpl');">
+<AREA Shape="Rect" coords = "344,188,476,280"  HREF="../../api/uci/uml/Foundation/Core/GeneralizableElementImpl.html"
+onmouseover="return showPopup(event, 'popup1');">
+<AREA Shape="Rect" coords = "705,464,848,551"  HREF="../../api/uci/uml/Foundation/Core/IAssociation.html"  
+onmouseover="return showPopup(event, 'popup1');">
+<AREA Shape="Rect" coords = "398,471,526,543"  HREF="../../api/uci/uml/Foundation/Core/AssociationClass.html" 
+onmouseover="return showPopup(event, 'popup1');">
+<AREA Shape="Rect" coords = "482,298,650,434"  HREF="../../api/uci/uml/Foundation/Core/AssociationEnd.html" 
+onmouseover="return showPopup(event, 'AssociationEnd');">
+<AREA Shape="Rect" coords = "-15,179,132,255"  HREF="../../api/uci/uml/Foundation/Core/Dependency.html" 
+onmouseover="return showPopup(event, 'popup1');">
+<AREA Shape="Rect" coords = "136,181,273,268"  HREF="../../api/uci/uml/Foundation/Core/Generalization.html" 
+onmouseover="return showPopup(event, 'popup1');">
+<AREA Shape="Rect" coords = "254,-1,381,67"  HREF="../../api/uci/uml/Foundation/Core/ModelElementImpl.html"  
+onmouseover="return showPopup(event, 'ModelElementImpl');">
+<AREA Shape="Rect" coords = "212,326,350,418"  HREF="../../api/uci/uml/Foundation/Core/Classifier.html" 
+onmouseover="return showPopup(event, 'Classifier');">
+<AREA Shape="Rect" coords = "718,189,831,266"  HREF="../../api/uci/uml/Foundation/Core/Association.html" 
+onmouseover="return showPopup(event, 'Association');">
+<AREA Shape="Rect" coords = "202,455,328,544"  HREF="../../api/uci/uml/Foundation/Core/MMClass.html" 
+onmouseover="return showPopup(event, 'MMClass');">
+</MAP>
+
+</BODY>
+
+</HTML>
