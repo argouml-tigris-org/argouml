@@ -31,7 +31,7 @@ import java.awt.event.ItemListener;
 import javax.swing.text.Document;
 
 import org.apache.log4j.Logger;
-import org.argouml.ui.SpacerPanel;
+import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.StylePanelFig;
 import org.tigris.gef.ui.ColorRenderer;
 

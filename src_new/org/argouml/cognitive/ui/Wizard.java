@@ -28,7 +28,7 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
-package org.argouml.kernel;
+package org.argouml.cognitive.ui;
 
 import java.util.Vector;
 

@@ -26,7 +26,7 @@ package org.argouml.cognitive.ui;
 
 import java.util.Vector;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.i18n.Translator;
+import org.argouml.cognitive.Translator;
 
 /**
  * This class represents a "priority". Which is a classification for critics.

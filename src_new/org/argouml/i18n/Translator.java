@@ -31,6 +31,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.tigris.gef.util.Localizer;
 
 /**
@@ -39,7 +40,7 @@ import org.tigris.gef.util.Localizer;
  *
  * @author Jean-Hugues de Raigniac
  */
-public class Translator {
+public class Translator extends AbstractCognitiveTranslator {
     /** logger */
     private static final Logger LOG = Logger.getLogger(Translator.class);
 
@@ -174,7 +175,11 @@ public class Translator {
     public static String localize(String key) {
         return org.workingfrog.i18n.util.Translator.localize(key, key);
     }
-
+    
+    public String i18nlocalize(String key) {
+        return localize(key,key);
+    }
+    
     /**
      * Generates an localized String with arguments.<p>
      *
@@ -193,6 +198,10 @@ public class Translator {
     {
     	MessageFormat msgFmt = new MessageFormat(localize(bundle, key));
 	return msgFmt.format(args);
+    }
+    
+    public String i18nmessageFormat(String key, Object[] args) {
+        return messageFormat(key, args);
     }
 
     /**

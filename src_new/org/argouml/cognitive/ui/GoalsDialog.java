@@ -44,7 +44,7 @@ import javax.swing.event.ChangeListener;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.GoalModel;
-import org.argouml.i18n.Translator;
+import org.argouml.cognitive.Translator;
 import org.argouml.ui.ArgoDialog;
 
 

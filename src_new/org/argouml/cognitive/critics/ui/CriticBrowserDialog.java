@@ -40,6 +40,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -58,15 +59,13 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.text.Document;
+
 import org.apache.log4j.Logger;
-
-
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
-import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 
@@ -463,7 +462,7 @@ public class CriticBrowserDialog extends ArgoDialog
 
 
 class TableModelCritics extends AbstractTableModel
-    implements VetoableChangeListener, DelayedVChangeListener 
+    implements VetoableChangeListener
 {
     private static final Logger LOG =
 	Logger.getLogger(TableModelCritics.class);
@@ -559,16 +558,10 @@ class TableModelCritics extends AbstractTableModel
      * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
      */
     public void vetoableChange(PropertyChangeEvent pce) {
-	DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-	SwingUtilities.invokeLater(delayedNotify);
+        SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+            fireTableStructureChanged();
+        }
+	    });
     }
-
-    /**
-     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
-     */
-    public void delayedVetoableChange(PropertyChangeEvent pce) {
-	fireTableStructureChanged();
-    }
-
-
 } /* end class TableModelCritics */

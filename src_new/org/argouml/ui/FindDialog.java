@@ -51,6 +51,7 @@ import javax.swing.border.EmptyBorder;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.swingext.SpacerPanel;
 import org.argouml.uml.PredicateFind;
 import org.argouml.uml.cognitive.ChildGenFind;
 import org.tigris.gef.util.Predicate;

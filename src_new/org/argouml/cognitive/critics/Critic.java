@@ -47,8 +47,8 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.i18n.Translator;
-import org.argouml.kernel.Wizard;
+import org.argouml.cognitive.Translator;
+import org.argouml.cognitive.ui.Wizard;
 import org.tigris.gef.util.VectorSet;
 
 /** "Abstract" base class for design critics.  Each subclass should define

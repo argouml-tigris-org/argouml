@@ -26,6 +26,7 @@ package org.argouml.cognitive;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.Vector;
@@ -36,7 +37,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.i18n.Translator;
 import org.tigris.gef.util.ChildGenerator;
 import org.tigris.gef.util.EnumerationEmpty;
 import org.tigris.gef.util.VectorSet;
@@ -166,6 +166,13 @@ public class Designer
     private int critiqueLock;
     
     private long lastCritique;
+    
+    private static PropertyChangeSupport pcs;
+    
+    // Property Names
+    public static final String MODEL_TODOITEM_ADDED ="MODEL_TODOITEM_ADDED";
+    
+    public static final String MODEL_TODOITEM_DISMISSED = "MODEL_TODOITEM_DISMISSED";
     
     ////////////////////////////////////////////////////////////////
     // constructor and singeton methods
@@ -369,6 +376,39 @@ public class Designer
      * @param des the design to be checked
      */
     public void critique(Design des) { des.critique(this); }
+    
+    /**
+     * Adds a property change listener.
+     * 
+     * @param pcl
+     *            The property change listener to add
+     */
+    public static final void addListener(PropertyChangeListener pcl) {
+        if (pcs == null) {
+            pcs = new PropertyChangeSupport(theDesigner());
+        }
+        LOG.debug("addPropertyChangeListener(" + pcl + ")");
+        pcs.addPropertyChangeListener(pcl);
+    }
+    
+    /**
+     * Removes a property change listener.
+     * 
+     * @param p
+     *            The class to remove as a property change listener.
+     */
+    public static final void removeListener(PropertyChangeListener p) {
+        if (pcs != null) {
+            LOG.debug("removePropertyChangeListener()");
+            pcs.removePropertyChangeListener(p);
+        }
+    }
+    
+    public static final void firePropertyChange(String property, Object oldValue, Object newValue) {
+        if (pcs != null) {
+            pcs.firePropertyChange(property, oldValue, newValue);
+        }
+    }
     
     /** 
      * Performs critique asap.
@@ -871,8 +911,7 @@ public class Designer
     public String toString() {
         //TODO: This should be the name of the designer that created 
         //      the todoitem, not the current username!
-        Object[] msgArgs = {getDesignerName() };
-        return Translator.messageFormat("misc.designer.name", msgArgs);
+        return getDesignerName();
     }
     
     ////////////////////////////////////////////////////////////////
@@ -908,6 +947,8 @@ public class Designer
     public static boolean isUserWorking() {
         return userWorking;
     }
+    
+    
 
     class ChildGenDMElements implements ChildGenerator {
         /** Reply a Enumeration of the children of the given Object */

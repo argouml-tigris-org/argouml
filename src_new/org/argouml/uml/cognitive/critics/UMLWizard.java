@@ -26,7 +26,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.kernel.Wizard;
+import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
 
@@ -35,7 +35,7 @@ import org.tigris.gef.util.VectorSet;
  * UMLWizard is an abstract convenience implementation for UML Wizards,
  * which provides common methods to all its subclasses.
  * @author mkl
- * @see org.argouml.kernel.Wizard
+ * @see org.argouml.cognitive.ui.Wizard
  */
 public abstract class UMLWizard extends Wizard {
     
@@ -54,7 +54,7 @@ public abstract class UMLWizard extends Wizard {
      * method, in case your Wizard requires a different number of steps.
      * This method is a convenience implementation.
      * 
-     * @see org.argouml.kernel.Wizard#getNumSteps()
+     * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
      */
     public int getNumSteps() { return 1; }
 

@@ -27,10 +27,10 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
-package org.argouml.cognitive.critics;
+package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.uml.cognitive.critics.CrUML;
+import org.argouml.cognitive.critics.Critic;
 import org.tigris.gef.presentation.FigEdge;
 
 /** A critic to detect when an edge is very short in order to suggest to

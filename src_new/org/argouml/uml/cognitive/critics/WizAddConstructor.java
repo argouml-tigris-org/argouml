@@ -59,7 +59,7 @@ public class WizAddConstructor extends UMLWizard {
     }
     
     /**
-     * @see org.argouml.kernel.Wizard#doAction(int)
+     * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
 	Object oper;

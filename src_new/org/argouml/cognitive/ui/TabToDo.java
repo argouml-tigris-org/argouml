@@ -31,7 +31,6 @@ import javax.swing.JToolBar;
 
 import org.argouml.application.api.Configuration;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.kernel.Wizard;
 import org.argouml.swingext.BorderSplitPane;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.Vertical;

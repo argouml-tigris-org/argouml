@@ -35,7 +35,7 @@ import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.i18n.Translator;
+import org.argouml.cognitive.Translator;
 
 
 

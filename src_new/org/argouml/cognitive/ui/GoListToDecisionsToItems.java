@@ -39,23 +39,12 @@ import org.argouml.cognitive.ToDoList;
  * Rule for sorting the ToDo list: Decision -> Item.
  *
  */
-public class GoListToDecisionsToItems implements TreeModel {
+public class GoListToDecisionsToItems extends AbstractGoList {
   
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
   
-    /**
-     * @see javax.swing.tree.TreeModel#getRoot()
-     */
-    public Object getRoot() {
-	throw new UnsupportedOperationException();
-    } 
-    
-    /**
-     * @param r ignored
-     */
-    public void setRoot(Object r) { }
-
+ 
     /**
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
      */

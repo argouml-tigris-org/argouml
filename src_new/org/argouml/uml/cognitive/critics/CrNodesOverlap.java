@@ -27,13 +27,13 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
-package org.argouml.cognitive.critics;
+package org.argouml.uml.cognitive.critics;
 
 import java.awt.Rectangle;
 import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.critics.CrUML;
+import org.argouml.cognitive.critics.Critic;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;

@@ -53,7 +53,7 @@ public class WizCueCards extends UMLWizard {
     public WizCueCards() { }
 
     /**
-     * @see org.argouml.kernel.Wizard#getNumSteps()
+     * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
      */
     public int getNumSteps() { return cues.size(); }
 
@@ -66,7 +66,7 @@ public class WizCueCards extends UMLWizard {
      * Create a new panel for the given step.
      * Returns a newly created panel or null if there isn't that many steps.
      *
-     * @see org.argouml.kernel.Wizard#makePanel(int)
+     * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
 	if (newStep <= getNumSteps()) {
@@ -80,7 +80,7 @@ public class WizCueCards extends UMLWizard {
      * This wizard never takes action, it just displays step by step
      * instructions.
      * 
-     * @see org.argouml.kernel.Wizard#doAction(int)
+     * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {  }
 
@@ -88,7 +88,7 @@ public class WizCueCards extends UMLWizard {
      * This wizard cannot automatically finish the task. It can only be
      * finished when the user is on the last step. 
      * 
-     * @see org.argouml.kernel.Wizard#canFinish()
+     * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
     public boolean canFinish() {
 	return getStep() == getNumSteps();
