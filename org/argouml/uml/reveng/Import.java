@@ -446,6 +446,13 @@ class ImportRun implements Runnable {
 class ImportStatusBar extends StatusBar {
     public void setMaximum(int i) { _progress.setMaximum(i); }
     public void setValue(int i) { _progress.setValue(i); }
+    
+    public ImportStatusBar() {
+        
+        super();
+        _progress.setPreferredSize(new Dimension(150, 30));
+    }
+
 }
 
 /**
@@ -481,7 +488,6 @@ class ImportStatusScreen extends JDialog {
 	getContentPane().add(bottomPanel, BorderLayout.SOUTH);
         
         Dimension contentPaneSize = getContentPane().getPreferredSize();
-	setSize(contentPaneSize.width, contentPaneSize.height);
 	setLocation(scrSize.width/2 - contentPaneSize.width/2,
 		    scrSize.height/2 - contentPaneSize.height/2);
         pack();
@@ -490,7 +496,8 @@ class ImportStatusScreen extends JDialog {
 
     public void setMaximum(int i) { _statusBar.setMaximum(i);numberOfFiles = i; }
     public void setValue(int i) {
-	_statusBar.setValue(i);
+        
+        _statusBar.setValue(i);
         progressLabel.setText("Parsing file "+i+" of "+numberOfFiles+".");
 	repaint();
     }
