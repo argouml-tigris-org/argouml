@@ -31,6 +31,8 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import org.argouml.model.ModelFacade;
 import org.argouml.model.UmlModelEntity;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
@@ -150,6 +152,9 @@ import ru.novosoft.uml.model_management.MSubsystem;
  */
 public class UmlFactory extends AbstractUmlModelFactory {
 
+    protected static Logger cat =
+        Logger.getLogger(UmlFactory.class);
+    
     /**
      * A map of valid connections keyed by the connection type.
      * The constructor builds this from the data in the VALID_CONNECTIONS array
@@ -1077,6 +1082,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
                                                           new Class[] {} );
         }
         catch (Exception e) {
+            cat.error("Failed to invoke create method on factory.");
             return null;
             // TODO decide if we want to throw an exception instead
             // throw new InvalidObjectRequestException
@@ -1091,6 +1097,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
             // TODO decide if we want to throw an exception instead
             // throw new InvalidObjectRequestException
             //("Cannot execute creator method", entity, e);
+            cat.error("Failed to invoke create method on factory.");
             return null;
         }
         UmlFactory.getFactory().initialize(obj);

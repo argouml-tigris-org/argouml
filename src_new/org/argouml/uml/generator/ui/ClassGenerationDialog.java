@@ -351,6 +351,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
             } // else ignore
         }
         catch (Exception userPressedCancel) {
+            cat.info("user pressed cancel");
         }
     }
     

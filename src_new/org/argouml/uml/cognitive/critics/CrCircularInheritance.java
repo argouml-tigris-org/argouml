@@ -65,6 +65,7 @@ public class CrCircularInheritance extends CrUML {
 	    }
 	    catch (IllegalStateException ex) {
 		problem = PROBLEM_FOUND;
+                cat.info("problem found for: "+this);
 	    }
 	}
 	return problem;

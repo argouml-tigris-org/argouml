@@ -85,6 +85,7 @@ public class StartBrowser {
 	}
 	catch (IOException ioe) {
 	    // Didn't work.
+            cat.error(ioe);
 	}	    
 
 	cat.error("Could not open url: " + url);

@@ -29,6 +29,8 @@ import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+
 import javax.swing.JOptionPane;
 
 import org.argouml.i18n.Translator;
@@ -63,6 +65,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
 
     public static ActionRemoveFromModel SINGLETON = new ActionRemoveFromModel();
 
+    protected static Logger cat =
+        Logger.getLogger(ActionRemoveFromModel.class);
+    
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -87,7 +92,8 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             Editor ce = Globals.curEditor();
             Vector figs = ce.getSelectionManager().getFigs();
             size = figs.size();
-        } catch (Exception e) { }
+        } catch (Exception e) { //cat.error("Error getting number of figs.");
+        }
         if (size > 0)
             return true;
         Object target = TargetManager.getInstance().getTarget();

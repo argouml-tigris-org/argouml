@@ -211,8 +211,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 newNode = nodeClass.newInstance();
                 
             } catch (java.lang.IllegalAccessException ignore) {
+                cat.error(ignore);
                 return;
             } catch (java.lang.InstantiationException ignore) {
+                cat.error(ignore);
                 return;
             }
 
