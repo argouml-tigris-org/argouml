@@ -25,9 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -80,22 +77,12 @@ public class PropPanelInterface extends PropPanelClassifier {
 	new PropPanelButton(this, lookupIcon("Reception"), 
             Translator.localize("button.new-reception"), 
             getActionNewReception());
-	//TODO: Add button for a new Interface (analog to Class)
+
+	new PropPanelButton(this, lookupIcon("Interface"), 
+	        Translator.localize("button.new-interface"), 
+	        new ActionNewInterface());
+    
 	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
-
-    /**
-     * Create a new interface.
-     */
-    public void newInterface() {
-	Object target = getTarget();
-	if (org.argouml.model.ModelFacade.isAInterface(target)) {
-	    Object iface = /*(MInterface)*/ target;
-	    Object newInterface = CoreFactory.getFactory().createInterface();
-	    ModelFacade.addOwnedElement(ModelFacade.getNamespace(iface), 
-                newInterface);
-	    TargetManager.getInstance().setTarget(newInterface);
-	}
-    }
-
+    
 } /* end class PropPanelInterface */
