@@ -58,6 +58,8 @@ public class CrMissingStateName extends CrUML {
             return NO_PROBLEM;
         if (ModelFacade.isAFinalState(dm))
             return NO_PROBLEM;
+        if (ModelFacade.isAPseudostate(dm))
+            return NO_PROBLEM;
         
 	String myName = ModelFacade.getName(dm);
 	if (myName == null || myName.equals("") || myName.length()==0)
