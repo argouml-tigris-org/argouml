@@ -1981,11 +1981,7 @@ public class NSUMLModelFacade implements Facade {
     }
 
     /**
-     * Get the body of an method/constraint/expression.
-     *
-     *
-     * @param handle expression.
-     * @return the body.
+     * @see org.argouml.model.Facade#getBody(java.lang.Object)
      */
     public Object getBody(Object handle) {
         if (handle instanceof MMethod) {

@@ -40,6 +40,9 @@ public class UMLExpressionBodyField
     extends JTextArea
     implements DocumentListener, UMLUserInterfaceComponent {
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(UMLExpressionBodyField.class);
 
@@ -66,7 +69,9 @@ public class UMLExpressionBodyField
      */
     public void targetChanged() {
 	LOG.debug("UMLExpressionBodyField: targetChanged");
-	if (notifyModel) model.targetChanged();
+	if (notifyModel) {
+	    model.targetChanged();
+	}
         update();
     }
 
@@ -111,17 +116,18 @@ public class UMLExpressionBodyField
      */
     public void propertySet(final MElementEvent event) {
        	LOG.debug("UMLExpressionBodyField: propertySet" + event);
+       	update();
     }
 
     private void update() {
         String oldText = getText();
-        Object newText = model.getBody();
+        String newText = model.getBody();
 	LOG.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
 
 	if (oldText == null || newText == null || !oldText.equals(newText)) {
             if (oldText != newText) {
 		LOG.debug("setNewText!!");
-                setText((String) newText);
+                setText(newText);
             }
         }
     }
