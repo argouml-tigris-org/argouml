@@ -52,5 +52,7 @@ public class CmdSelectAll extends Cmd {
     System.out.println("Undo does not make sense for CmdSelectAll");
   }
 
+  static final long serialVersionUID = 8901850469634304803L;
+
 } /* end class CmdSelectAll */
 

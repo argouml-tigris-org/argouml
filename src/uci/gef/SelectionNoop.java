@@ -73,5 +73,6 @@ public class SelectionNoop extends Selection {
   public int hitHandle(Rectangle r) { return -2; }
 
 
+  static final long serialVersionUID = 5762844795338457292L;
 } /* end class SelectionNoop */
 

@@ -195,6 +195,7 @@ public class FigClass extends FigNodeModelElement  {
 
 
   
+
 } /* end class FigClass */
 
 

@@ -43,157 +43,118 @@ import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
+import uci.uml.ui.props.*;
 
 public class TabProps extends TabSpawnable
 implements TabModelTarget {
   ////////////////////////////////////////////////////////////////
   // instance variables
-  Object _target;
-  boolean _shouldBeEnabled = false;
-  JPanel blankPane = new JPanel();
-  PropPanelDiagram diagramPane = new PropPanelDiagram();
-  PropPanelModel modelPane = new PropPanelModel();
-  PropPanelClass classPane = new PropPanelClass();
-  PropPanelInterface interfacePane = new PropPanelInterface();
-  PropPanelAttr attrPane = new PropPanelAttr();
-  PropPanelOper operPane = new PropPanelOper();
-  PropPanelAssoc assocPane = new PropPanelAssoc();
-  PropPanelState statePane = new PropPanelState();
-  PropPanelTransition transitionPane = new PropPanelTransition();
-  PropPanelPseudostate pseudostatePane = new PropPanelPseudostate();
-  PropPanelUseCase useCasePane = new PropPanelUseCase();
-  PropPanelActor actorPane = new PropPanelActor();
-  PropPanelInstance instancePane = new PropPanelInstance();
-  PropPanelLink linkPane = new PropPanelLink();
-  PropPanelGeneralization generalizationPane = new PropPanelGeneralization();
-  PropPanelRealization realizationPane = new PropPanelRealization();
-  PropPanelDependency dependencyPane = new PropPanelDependency();
-  // more: packages, ...
-  JPanel _lastPanel = null;
+  protected Object    _target;
+  protected boolean   _shouldBeEnabled    = false;
+  protected JPanel    _blankPanel         = new JPanel();
+  protected Hashtable _panels             = new Hashtable();
+  protected JPanel    _lastPanel          = null;
+  protected String    _panelClassBaseName = "";
 
   ////////////////////////////////////////////////////////////////
   // constructor
-  public TabProps() {
-    super("Properties");
+  public TabProps(String tabName, String panelClassBase) {
+    super(tabName);
+    _panelClassBaseName = panelClassBase;
     setLayout(new BorderLayout());
     //setFont(new Font("Dialog", Font.PLAIN, 10));
+    initPanels();
   }
 
+  public TabProps() {
+    this("Properties", "props.PropPanel");
+  }
+  
+  protected void initPanels() {
+    //_panels.put(Diagram.class, new PropPanelDiagram());
+    //_panels.put(Model.class, new PropPanelModel());
+    //_panels.put(MMClass.class, new PropPanelClass());
+    //_panels.put(Interface.class, new PropPanelInterface());
+    //_panels.put(Attribute.class, new PropPanelAttr());
+    //_panels.put(Operation.class, new PropPanelOper());
+    //_panels.put(Association.class, new PropPanelAssoc());
+    //_panels.put(State.class, new PropPanelState());
+    //_panels.put(Transition.class, new PropPanelTransition());
+    //_panels.put(Pseudostate.class, new PropPanelPseudostate());
+    //_panels.put(UseCase.class, new PropPanelUseCase());
+    //_panels.put(Actor.class, new PropPanelActor());
+    //_panels.put(Instance.class, new PropPanelInstance());
+    //_panels.put(Link.class, new PropPanelLink());
+    //_panels.put(Generalization.class, new PropPanelGeneralization());
+    //_panels.put(Realization.class, new PropPanelRealization());
+  }
+  
   ////////////////////////////////////////////////////////////////
   // accessors
   public void setTarget(Object t) {
     _target = t;
     if (_lastPanel != null) remove(_lastPanel);
-    if (_target instanceof Diagram) {
-      _shouldBeEnabled = true;
-      diagramPane.setTarget(_target);
-      add(diagramPane, BorderLayout.NORTH);
-      _lastPanel = diagramPane;
-    }
-    else if (_target instanceof Model) {
-      _shouldBeEnabled = true;
-      modelPane.setTarget(_target);
-      add(modelPane, BorderLayout.NORTH);
-      _lastPanel = modelPane;
-    }
-    else if (_target instanceof MMClass) {
-      _shouldBeEnabled = true;
-      classPane.setTarget(_target);
-      add(classPane, BorderLayout.NORTH);
-      _lastPanel = classPane;
-    }
-    else if (_target instanceof Interface) {
-      _shouldBeEnabled = true;
-      interfacePane.setTarget(_target);
-      add(interfacePane, BorderLayout.NORTH);
-      _lastPanel = interfacePane;
-    }
-    else if (_target instanceof Attribute) {
-      _shouldBeEnabled = true;
-      attrPane.setTarget(_target);
-      add(attrPane, BorderLayout.NORTH);
-      _lastPanel = attrPane;
-    }
-    else if (_target instanceof Operation) {
-      _shouldBeEnabled = true;
-      operPane.setTarget(_target);
-      add(operPane, BorderLayout.NORTH);
-      _lastPanel = operPane;
-    }
-    else if (_target instanceof Association) {
-      _shouldBeEnabled = true;
-      assocPane.setTarget(_target);
-      add(assocPane, BorderLayout.NORTH);
-      _lastPanel = assocPane;
-    }
-    else if (_target instanceof State) {
-      _shouldBeEnabled = true;
-      statePane.setTarget(_target);
-      add(statePane, BorderLayout.NORTH);
-      _lastPanel = statePane;
-    }
-    else if (_target instanceof Transition) {
-      _shouldBeEnabled = true;
-      transitionPane.setTarget(_target);
-      add(transitionPane, BorderLayout.NORTH);
-      _lastPanel = transitionPane;
-    }
-    else if (_target instanceof Pseudostate) {
-      _shouldBeEnabled = true;
-      pseudostatePane.setTarget(_target);
-      add(pseudostatePane, BorderLayout.NORTH);
-      _lastPanel = pseudostatePane;
-    }
-    else if (_target instanceof UseCase) {
-      _shouldBeEnabled = true;
-      useCasePane.setTarget(_target);
-      add(useCasePane, BorderLayout.NORTH);
-      _lastPanel = useCasePane;
-    }
-    else if (_target instanceof Actor) {
-      _shouldBeEnabled = true;
-      actorPane.setTarget(_target);
-      add(actorPane, BorderLayout.NORTH);
-      _lastPanel = actorPane;
-    }
-    else if (_target instanceof Instance) {
-      _shouldBeEnabled = true;
-      instancePane.setTarget(_target);
-      add(instancePane, BorderLayout.NORTH);
-      _lastPanel = instancePane;
-    }
-    else if (_target instanceof Link) {
-      _shouldBeEnabled = true;
-      linkPane.setTarget(_target);
-      add(linkPane, BorderLayout.NORTH);
-      _lastPanel = linkPane;
-    }
-    else if (_target instanceof Generalization) {
-      _shouldBeEnabled = true;
-      generalizationPane.setTarget(_target);
-      add(generalizationPane, BorderLayout.NORTH);
-      _lastPanel = generalizationPane;
-    }
-    else if (_target instanceof Realization) {
-      _shouldBeEnabled = true;
-      realizationPane.setTarget(_target);
-      add(realizationPane, BorderLayout.NORTH);
-      _lastPanel = realizationPane;
-    }
-    else if (_target instanceof Dependency) {
-      _shouldBeEnabled = true;
-      dependencyPane.setTarget(_target);
-      add(dependencyPane, BorderLayout.NORTH);
-      _lastPanel = dependencyPane;
-    }
-    //else if ...
-    else {
+    if (t == null) {
+      add(_blankPanel, BorderLayout.NORTH);      
       _shouldBeEnabled = false;
-      add(blankPane, BorderLayout.NORTH);
-      _lastPanel = blankPane;
+      _lastPanel = _blankPanel;
+      return;
+    }
+    _shouldBeEnabled = true;
+    TabModelTarget newPanel = null;
+    Class targetClass = t.getClass();
+    while (targetClass != null && newPanel == null) {
+      newPanel = findPanelFor(targetClass);
+      targetClass = targetClass.getSuperclass();
+    }
+    if (newPanel instanceof JPanel) {
+      newPanel.setTarget(_target);
+      add((JPanel) newPanel, BorderLayout.NORTH);
+      _shouldBeEnabled = true;
+      _lastPanel = (JPanel) newPanel;
+    }
+    else {
+      add(_blankPanel, BorderLayout.NORTH);      
+      _shouldBeEnabled = false;
+      _lastPanel = _blankPanel;
     }
     validate();
   }
+
+  public void refresh() { setTarget(_target); }
+  
+  public TabModelTarget findPanelFor(Class targetClass) {
+    TabModelTarget p = (TabModelTarget) _panels.get(targetClass);
+    if (p == null) {
+      Class panelClass = panelClassFor(targetClass);
+      if (panelClass == null) return null;
+      try { p = (TabModelTarget) panelClass.newInstance(); }
+      catch (IllegalAccessException ignore) { return null; }
+      catch (InstantiationException ignore) { return null; }
+      _panels.put(targetClass, p);
+    }
+    return p;
+  }
+
+  
+  public Class panelClassFor(Class targetClass) {
+    String pack = "uci.uml.ui";
+    String base = getClassBaseName();
+    String targetClassName = targetClass.getName();
+    int lastDot = targetClassName.lastIndexOf(".");
+    if (lastDot > 0) targetClassName = targetClassName.substring(lastDot+1);
+    if (targetClassName.startsWith("MM"))
+      targetClassName = targetClassName.substring(2);
+    try {
+      String panelClassName = pack + "." + base + targetClassName;
+      return Class.forName(panelClassName);
+    }
+    catch (ClassNotFoundException ignore) { }
+    return null;
+  }
+
+  protected String getClassBaseName() { return _panelClassBaseName; }
+  
   public Object getTarget() { return _target; }
 
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }

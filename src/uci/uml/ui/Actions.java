@@ -76,17 +76,14 @@ public class Actions {
   public static UMLAction NavForw = new ActionNavForw();
   public static UMLAction NavFavs = new ActionNavFavs();
   public static UMLAction NavConfig = new ActionNavConfig();
+
+  public static UMLAction Find = new ActionFind();
+  public static UMLAction GotoDiagram = new ActionGotoDiagram();
+
   public static UMLAction NextEditTab = new ActionNextEditTab();
-  public static UMLAction PrevEditTab = new ActionPrevEditTab();
-  public static UMLAction ShowDiagramTab = new ActionShowDiagramTab();
-  public static UMLAction ShowTableTab = new ActionShowTableTab();
-  public static UMLAction ShowTextTab = new ActionShowTextTab();
   public static UMLAction AddToFavs = new ActionAddToFavs();
   public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
-  public static UMLAction PrevDetailsTab = new ActionPrevDetailsTab();
 
-
-  
   public static UMLAction CreateMultiple = new ActionCreateMultiple();
   public static UMLAction ClassWizard = new ActionClassWizard();
 
@@ -344,6 +341,22 @@ class ActionNavDown extends UMLAction {
   }
 } /* end class ActionNavDown */
 
+class ActionFind extends UMLAction {
+  public ActionFind() { super("Find..."); }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionFind */
+
+class ActionGotoDiagram extends UMLAction {
+  public ActionGotoDiagram() { super("Goto Diagram..."); }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionGotoDiagram */
+
 class ActionNavBack extends UMLAction {
   public ActionNavBack() { super("Navigate Back"); }
   public boolean shouldBeEnabled() {
@@ -384,39 +397,12 @@ class ActionNextEditTab extends UMLAction {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
+  public void actionPerformed(ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    MultiEditorPane mep = pb.getEditorPane();
+    mep.selectNextTab();
+  }
 } /* end class ActionNextEditTab */
-
-class ActionPrevEditTab extends UMLAction {
-  public ActionPrevEditTab() { super("Previous Editing Tab"); }
-  public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
-  }
-} /* end class ActionPrevEditTab */
-
-class ActionShowDiagramTab extends UMLAction {
-  public ActionShowDiagramTab() { super("Show Diagram Tab"); }
-  public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
-  }
-} /* end class ActionShowDiagramTab */
-
-class ActionShowTableTab extends UMLAction {
-  public ActionShowTableTab() { super("Show Table Tab"); }
-  public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
-  }
-} /* end class ActionShowTableTab */
-
-class ActionShowTextTab extends UMLAction {
-  public ActionShowTextTab() { super("Show Text Tab"); }
-  public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
-  }
-} /* end class ActionShowTextTab */
 
 class ActionAddToFavs extends UMLAction {
   public ActionAddToFavs() { super("Add To Favorites"); }

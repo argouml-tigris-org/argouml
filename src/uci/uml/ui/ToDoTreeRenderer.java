@@ -40,6 +40,8 @@ import com.sun.java.swing.plaf.metal.*;
 import uci.argo.kernel.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
+import uci.uml.ui.todo.PriorityNode;
+import uci.uml.ui.todo.KnowledgeTypeNode;
 
 public class ToDoTreeRenderer extends BasicTreeCellRenderer {
   ////////////////////////////////////////////////////////////////

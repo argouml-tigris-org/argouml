@@ -89,4 +89,6 @@ public class PortPower extends NetPort implements Serializable {
     // really a java.lang.Class method that is missing: isSubclass()
   }
 
+  static final long serialVersionUID = 3420759475537576464L;
+
 } /* end class PortPower */

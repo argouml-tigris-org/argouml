@@ -225,4 +225,5 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
       ((ModelElement)own).addVetoableChangeListener(this);
   }
 
+
 } /* end class FigNodeModelElement */

@@ -146,4 +146,5 @@ public class PrefsEditor extends Frame {
     return false;
   }
 
+  static final long serialVersionUID = -4806975320706481196L;
 } /* end class PrefsEditor */

@@ -156,5 +156,6 @@ public class SelectionResize extends Selection {
     _content.setBounds(newX, newY, newW, newH);
   }
 
+  static final long serialVersionUID = 474488384900031706L;
 } /* end class SelectionResize */
 

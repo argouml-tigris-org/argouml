@@ -38,6 +38,7 @@ import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 import uci.ui.ToolBar;
 import uci.util.*;
 import uci.argo.kernel.*;
+import uci.uml.ui.todo.*;
 
 
 public class TabToDo extends TabSpawnable implements TabToDoTarget {
@@ -162,6 +163,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
 
   }
   public Object getTarget() { return _target; }
+
+  public void refresh() { setTarget(_target); }
 
   protected void updateActionsEnabled() {
     _actionResolve.updateEnabled(_target);

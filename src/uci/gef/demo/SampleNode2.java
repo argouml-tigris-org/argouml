@@ -66,4 +66,6 @@ public class SampleNode2 extends SampleNode implements Serializable {
     return fn;
   }
 
+  static final long serialVersionUID = 6298627794743859836L;
+
 } /* end class SampleNode2 */

@@ -195,4 +195,6 @@ public class Set implements java.io.Serializable  {
     return touched;
   }
 
+  static final long serialVersionUID = 2576846502555732231L;
+
 } /* end class Set */

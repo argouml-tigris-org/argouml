@@ -74,4 +74,6 @@ public class SamplePort extends NetPort implements Serializable{
     // really a java.lang.Class method that is missing: isSubclass()
   }
 
+  static final long serialVersionUID = 8149499028941447392L;
+
 } /* end class SamplePort */

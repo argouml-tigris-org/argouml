@@ -675,5 +675,6 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     remove(f);
   }
 
+  static final long serialVersionUID = -3313673451324513650L;
 
 } /* end class Editor */

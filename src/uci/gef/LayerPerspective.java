@@ -240,6 +240,7 @@ public class LayerPerspective extends LayerDiagram implements GraphListener {
 //   }
 
 
-  
+
+  static final long serialVersionUID = -4474641874921584572L;
 } /* end class LayerPerspective */
 

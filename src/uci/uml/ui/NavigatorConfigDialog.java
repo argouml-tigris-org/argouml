@@ -43,6 +43,7 @@ import uci.gef.*;
 import uci.argo.kernel.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
+import uci.uml.ui.nav.*;
 
 
 public class NavigatorConfigDialog extends JDialog
@@ -413,9 +414,9 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
 
   public void doOk() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    NavigatorPane nav = pb.getNavPane();
-    nav.setPerspectives(NavPerspective.getRegisteredPerspectives());
-    nav.updateTree();
+    NavigatorPane np = pb.getNavPane();
+    np.setPerspectives(NavPerspective.getRegisteredPerspectives());
+    np.updateTree();
     setVisible(false);
     dispose();
   }

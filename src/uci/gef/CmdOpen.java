@@ -112,5 +112,7 @@ public class CmdOpen extends Cmd implements FilenameFilter {
     System.out.println("Undo does not make sense for CmdOpen");
   }
 
+  static final long serialVersionUID = 2041332028613457262L;
+
 } /* end class CmdOpen */
 

@@ -38,6 +38,7 @@ import com.sun.java.swing.tree.*;
 
 import uci.ui.ToolBar;
 import uci.util.*;
+import uci.uml.ui.nav.*;
 
 /** The upper-left pane of the main Argo/UML window.  This shows the
  *  contents of the current project in one of several ways that are

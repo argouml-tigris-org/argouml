@@ -145,4 +145,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     super.dispose();
   }
 
+  static final long serialVersionUID = 6572261327347541373L;
+
 } /* end class FigInitialState */

@@ -226,4 +226,5 @@ implements java.io.Serializable {
   }
 
 
+  static final long serialVersionUID = -2451989834037886234L;
 } /* end class DefaultGraphModel */

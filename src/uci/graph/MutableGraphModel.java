@@ -78,4 +78,5 @@ public interface MutableGraphModel extends GraphModel {
   /** Contruct and add a new edge of the given kind. Sends a notification. */
   Object connect(Object fromPort, Object toPort, Class edgeClass);
 
+  static final long serialVersionUID = -752649940921643399L;
 } /* end interface MutableGraphModel */

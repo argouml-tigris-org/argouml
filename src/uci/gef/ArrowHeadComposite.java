@@ -77,4 +77,6 @@ public class ArrowHeadComposite extends ArrowHead {
   }
 
 
+  static final long serialVersionUID = 1408058795883023563L;
+
 } /* end class ArrowHeadComposite */

@@ -42,4 +42,6 @@ import java.util.*;
 
 public interface Functor extends java.io.Serializable  {
   public Object apply(Object x);
+  
+  static final long serialVersionUID = -8357537933535035881L;
 } /* end interface Functor */

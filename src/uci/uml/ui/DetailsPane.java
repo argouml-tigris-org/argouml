@@ -67,7 +67,7 @@ implements ChangeListener, MouseListener {
   // vector of TreeModels
   protected JTabbedPane _tabs = new JTabbedPane();
   protected Vector _tabPanels = new Vector();
-  
+  protected int _lastNonNullTab = 0;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -118,6 +118,7 @@ implements ChangeListener, MouseListener {
     setTarget(null);
     _item = null;
     _tabs.addMouseListener(this);
+    _tabs.addChangeListener(this);
   }
 
 
@@ -145,6 +146,7 @@ implements ChangeListener, MouseListener {
       target = ((Fig)target).getOwner();
     int firstEnabled = -1;
     boolean jumpToFirstEnabledTab = false;
+    boolean jumpToPrevEnabled = false;
     int currentTab = _tabs.getSelectedIndex();
     if (_target == target) return;
     _target = target;
@@ -156,16 +158,23 @@ implements ChangeListener, MouseListener {
 	boolean shouldEnable = tabMT.shouldBeEnabled();
 	_tabs.setEnabledAt(i, shouldEnable);
 	if (shouldEnable && firstEnabled == -1) firstEnabled = i;
+	if (_lastNonNullTab == i && shouldEnable && target != null) {
+	  jumpToPrevEnabled = true;
+	}
 	if (currentTab == i && !shouldEnable) {
 	  jumpToFirstEnabledTab = true;
 	}
       }
     }
+    if (jumpToPrevEnabled) {
+      _tabs.setSelectedIndex(_lastNonNullTab);
+      return;
+    }
     if (jumpToFirstEnabledTab && firstEnabled != -1)
       _tabs.setSelectedIndex(firstEnabled);
-
     if (jumpToFirstEnabledTab && firstEnabled == -1)
       _tabs.setSelectedIndex(0);
+    if (target != null) _lastNonNullTab = _tabs.getSelectedIndex();
   }
 
   public Object getTarget() { return _target; }
@@ -201,19 +210,17 @@ implements ChangeListener, MouseListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  /** called when the user selects an item in the tree, by clicking or
+  /** called when the user selects a new tab, by clicking or
    *  otherwise. */
   public void stateChanged(ChangeEvent e) {
     //System.out.println("DetailsPane state changed");
     Component sel = _tabs.getSelectedComponent();
-    if (sel instanceof TabToDoTarget) {
-      ((TabToDoTarget)sel).setTarget(null);
-      ((TabToDoTarget)sel).setTarget(_item);
-    }
-    else if (sel instanceof TabToDoTarget) {
-      ((TabModelTarget)sel).setTarget(null);
-      ((TabModelTarget)sel).setTarget(_target);
-    }
+    //System.out.println(sel.getClass().getName());
+    if (sel instanceof TabToDoTarget)
+      ((TabToDoTarget)sel).refresh();
+    else if (sel instanceof TabModelTarget)
+      ((TabModelTarget)sel).refresh();
+    if (_target != null) _lastNonNullTab = _tabs.getSelectedIndex();
   }
 
   /** called when the user clicks once on a tab. */ 

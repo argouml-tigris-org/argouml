@@ -90,4 +90,6 @@ public class CmdScroll extends Cmd {
     System.out.println("Cannot undo CmdScroll, yet.");
   }
 
+  static final long serialVersionUID = 1541329454323562639L;
+
 } /* end class CmdScroll */

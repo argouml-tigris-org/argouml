@@ -215,5 +215,7 @@ implements java.io.Serializable {
     return (Cmd) _registeredCmds.elementAt(i);
   }
 
+  static final long serialVersionUID = -7733814100559726063L;
+
 } /* end class Cmd */
 

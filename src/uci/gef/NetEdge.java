@@ -165,5 +165,6 @@ implements GraphEdgeHooks, java.io.Serializable {
 
 
 
+  static final long serialVersionUID = -1750647124723651686L;
 } /* end class NetEdge */
 

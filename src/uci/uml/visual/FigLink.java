@@ -67,5 +67,6 @@ public class FigLink extends FigEdgeModelElement {
   }
   
 
+
 } /* end class FigLink */
 

@@ -141,4 +141,5 @@ public class FigActor extends FigNodeModelElement {
 //     p.moveToTrash(elmt);
 //     super.dispose();
 //   }
+
 } /* end class FigActor */

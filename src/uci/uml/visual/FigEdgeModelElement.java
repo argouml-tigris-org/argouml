@@ -245,4 +245,5 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
   }
 
 
+
 } /* end class FigEdgeModelElement */

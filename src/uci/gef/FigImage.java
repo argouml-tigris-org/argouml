@@ -121,6 +121,7 @@ public class FigImage extends Fig implements ImageObserver {
     setLocation(snapX, snapY);
   }
 
+static final long serialVersionUID = 3355684374450331076L;
 
 } /* end of FigImage class */
 

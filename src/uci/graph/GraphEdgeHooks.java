@@ -40,4 +40,5 @@ public interface GraphEdgeHooks extends java.io.Serializable {
   void removePropertyChangeListener(PropertyChangeListener l);
   void setHighlight(boolean b);
   void dispose();
+  static final long serialVersionUID = -9006851083028016429L;
 } /* end interface GraphEdgeHooks */

@@ -174,4 +174,6 @@ public class UMLClassDiagram extends UMLDiagram {
     _toolBar.add(_actionInk);
   }
   
+  static final long serialVersionUID = -3425290329620076830L;
+
 } /* end class UMLClassDiagram */

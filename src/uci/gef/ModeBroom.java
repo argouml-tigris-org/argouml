@@ -406,5 +406,6 @@ public class ModeBroom extends Mode {
 
   }
 
+  static final long serialVersionUID = 8477764856706223037L;
 } /* end class ModeBroom */
 

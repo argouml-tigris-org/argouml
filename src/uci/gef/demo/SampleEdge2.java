@@ -44,4 +44,6 @@ public class SampleEdge2 extends NetEdge {
     return new FigEdgeRectiline();
   }
 
+  static final long serialVersionUID = 6622246206628841051L;
+
 } /* end class SampleEdge2 */

@@ -209,5 +209,7 @@ public class CmdDistribute extends Cmd {
 
   public Rectangle getLastBBox() { return _bbox; }
 
+    static final long serialVersionUID = 1344866391413571335L;
+
 } /* end class CmdDistribute */
 

@@ -148,4 +148,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
 
 
+  static final long serialVersionUID = -9014856528084865206L;
+
 } /* end class FigPseudostate */

@@ -66,6 +66,6 @@ public class SelectionRotate extends Selection {
    *  or the body of the Fig. Needs-more-work. */
   public int hitHandle(Rectangle r) { return -2; }
 
-
+  static final long serialVersionUID = -1661014460931572067L;
 } /* end class SelectionRotate */
 

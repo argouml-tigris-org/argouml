@@ -162,4 +162,6 @@ public class UMLStateDiagram extends UMLDiagram {
     _toolBar.add(_actionInk);
   }
 
+  static final long serialVersionUID = -7053852720393032172L;
+
 } /* end class UMLStateDiagram */

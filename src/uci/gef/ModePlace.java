@@ -158,4 +158,5 @@ public class ModePlace extends Mode {
   /** Paint the FigNode being dragged around. */
   public void paint(Graphics g) { if (_pers != null) _pers.paint(g); }
 
+  static final long serialVersionUID = -6165862797493969514L;
 } /* end class ModePlace */

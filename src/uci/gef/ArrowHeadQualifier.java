@@ -96,4 +96,6 @@ public class ArrowHeadQualifier extends ArrowHead {
     temp.setText("qualifier");
   }
 
+  static final long serialVersionUID = 4785521344140183388L;
+
 } /* end class ArrowHeadQualifier */

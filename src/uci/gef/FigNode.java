@@ -477,5 +477,6 @@ implements MouseListener, PropertyChangeListener, Serializable {
       fe.cleanUp();
     }
   }
-
+  static final long serialVersionUID = -6733563667370736365L;
+  
 } /* end class FigNode */

@@ -89,6 +89,7 @@ public class FigCircle extends Fig {
     return distSquared <= 1.01;
   }
 
+  static final long serialVersionUID = 4192370690690777913L;
 
 } /* end class FigCircle */
 

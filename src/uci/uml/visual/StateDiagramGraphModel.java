@@ -311,5 +311,7 @@ implements MutableGraphModel, VetoableChangeListener {
     }
   }
 
+  static final long serialVersionUID = -8056507319026044174L;
+
 } /* end class StateDiagramGraphModel */
 

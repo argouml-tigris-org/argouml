@@ -67,5 +67,7 @@ public class CmdShowURL extends Cmd {
 
   public void undoIt() { System.out.println("Needs-More-Work"); }
 
+  static final long serialVersionUID = 6935852249858580737L;
+
 } /* end class CmdShowURL */
 

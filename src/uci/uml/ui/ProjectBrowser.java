@@ -43,6 +43,7 @@ import uci.ui.*;
 import uci.gef.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
+import uci.uml.ui.nav.NavPerspective;
 
 
 /** The main window of the Argo/UML application. */
@@ -88,11 +89,9 @@ implements IStatusBar {
   // view menu
   protected static Action _actionNavUp = Actions.NavUp;
   protected static Action _actionNavDown = Actions.NavDown;
+  protected static Action _actionFind = Actions.Find;
+  protected static Action _actionGotoDiagram = Actions.GotoDiagram;
   protected static Action _actionNextEditTab = Actions.NextEditTab;
-  protected static Action _actionPrevEditTab = Actions.PrevEditTab;
-  protected static Action _actionShowDiagramTab = Actions.ShowDiagramTab;
-  protected static Action _actionShowTableTab = Actions.ShowTableTab;
-  protected static Action _actionShowTextTab = Actions.ShowTextTab;
   protected static Action _actionAddToFavs = Actions.AddToFavs;
   protected static Action _actionNextDetailsTab = Actions.NextDetailsTab;
 
@@ -197,7 +196,16 @@ implements IStatusBar {
     KeyStroke ctrlO = KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_MASK);
     KeyStroke ctrlS = KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_MASK);
     KeyStroke ctrlP = KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_MASK);
+    KeyStroke F1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
+    KeyStroke F2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
+    KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
+    KeyStroke F4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0);
     KeyStroke F5 = KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0);
+    KeyStroke F6 = KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0);
+    KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
+    KeyStroke F8 = KeyStroke.getKeyStroke(KeyEvent.VK_F8, 0);
+    KeyStroke F9 = KeyStroke.getKeyStroke(KeyEvent.VK_F9, 0);
+    KeyStroke F10 = KeyStroke.getKeyStroke(KeyEvent.VK_F10, 0);
     KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
 
     KeyStroke alt1 = KeyStroke.getKeyStroke(KeyEvent.VK_1, KeyEvent.ALT_MASK);
@@ -210,6 +218,16 @@ implements IStatusBar {
     KeyStroke alt8 = KeyStroke.getKeyStroke(KeyEvent.VK_8, KeyEvent.ALT_MASK);
     KeyStroke alt9 = KeyStroke.getKeyStroke(KeyEvent.VK_9, KeyEvent.ALT_MASK);
     KeyStroke alt0 = KeyStroke.getKeyStroke(KeyEvent.VK_0, KeyEvent.ALT_MASK);
+
+    KeyStroke altshift1 =
+      KeyStroke.getKeyStroke(KeyEvent.VK_1,
+			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+    KeyStroke altshift2 =
+      KeyStroke.getKeyStroke(KeyEvent.VK_2,
+			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
+    KeyStroke altshift3 =
+      KeyStroke.getKeyStroke(KeyEvent.VK_3,
+			     KeyEvent.ALT_MASK | KeyEvent.SHIFT_MASK);
 
     JMenuItem mi;
     // File Menu
@@ -255,14 +273,22 @@ implements IStatusBar {
     view.add(_actionNavDown);
     view.add(_actionNavUp);
     view.addSeparator();
-    view.add(_actionNextEditTab);
-    view.add(_actionPrevEditTab);
+    view.add(_actionGotoDiagram);
+    view.add(_actionFind);
     view.addSeparator();
-    view.add(_actionShowDiagramTab);
-    view.add(_actionShowTableTab);
-    view.add(_actionShowTextTab);
 
-    
+    JMenu editTabs = (JMenu) view.add(new JMenu("Edit Tabs"));
+    JMenuItem nextEditItem = editTabs.add(_actionNextEditTab);
+    nextEditItem.setAccelerator(F6);
+    editTabs.addSeparator();
+
+    JMenuItem tabe1Item = editTabs.add(new ActionGoToEdit("As Diagram"));
+    tabe1Item.setAccelerator(altshift1);
+    JMenuItem tabe2Item = editTabs.add(new ActionGoToEdit("As Table"));
+    tabe2Item.setAccelerator(altshift2);
+    JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("As Metrics"));
+    tabe3Item.setAccelerator(altshift3);
+
     //view.addSeparator();
     //view.add(_actionAddToFavorites);
     JMenu detailsTabs = (JMenu) view.add(new JMenu("Details Tabs"));

@@ -84,4 +84,5 @@ public class GuideGrid extends Guide {
     else _gridSize *= 2;
   }
 
+  static final long serialVersionUID = -7881039726350677403L;
 } /* end class GuideGrid */

@@ -468,4 +468,5 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
     else return new SelectionNoop(f);
   }
 
+  static final long serialVersionUID = 2368764390192079273L;
 } /* end class SelectionManager */

@@ -55,4 +55,5 @@ public class MutableGraphEvent extends EventObject {
 
   public Object getArg() { return _arg; }
 
+  static final long serialVersionUID = 6208274975962684251L;
 } /* end class MutableGraphEvent */

@@ -724,4 +724,6 @@ public class Fig implements java.io.Serializable, PropertyChangeListener  {
 
   public void cleanUp() { }
 
+  static final long serialVersionUID = 8658160363557344358L;
+
 } /* end class Fig */

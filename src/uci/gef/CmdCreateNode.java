@@ -120,4 +120,6 @@ public class CmdCreateNode extends Cmd implements GraphFactory {
     return newNode;
   }
 
+  static final long serialVersionUID = 6058024926862904714L;
+
 } /* end class CmdCreateNode */

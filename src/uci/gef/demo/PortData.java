@@ -67,4 +67,6 @@ public class PortData extends NetPort implements Serializable {
     catch (java.lang.ClassNotFoundException ignore) { return null; }
   }
 
+  static final long serialVersionUID = 7364448827419124632L;
+
 } /* end class PortData */

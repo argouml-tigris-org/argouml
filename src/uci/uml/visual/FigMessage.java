@@ -62,5 +62,7 @@ public class FigMessage extends FigEdgeLine {
   }
   
 
+  static final long serialVersionUID = -5076205612412365929L;
+
 } /* end class FigMessage */
 

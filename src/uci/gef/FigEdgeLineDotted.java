@@ -49,5 +49,7 @@ public class FigEdgeLineDotted extends FigEdgeLine {
     return returned;
   }
 
+  static final long serialVersionUID = 6555264606667346084L;
+
 } /* end class FigEdgeLineDotted */
 

@@ -114,4 +114,5 @@ public class FigNote extends FigNodeModelElement {
 
 
 
+
 } /* end class FigNote */

@@ -97,5 +97,6 @@ public class ModeCreateFigInk extends ModeCreate {
       y < _lastY + MIN_DELTA;
   }
 
+  static final long serialVersionUID = -6846010734902778871L;
 } /* end class ModeCreateFigInk */
 

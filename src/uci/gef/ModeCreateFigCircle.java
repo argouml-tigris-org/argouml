@@ -55,5 +55,6 @@ public class ModeCreateFigCircle extends ModeCreate {
     return new FigCircle(snapX, snapY, 0, 0);
   }
 
+  static final long serialVersionUID = -3516866789951523716L;
 } /* end class ModeCreateFigCircle */
 

@@ -147,6 +147,8 @@ public class FigInterface extends FigNodeModelElement {
     _oper.setText(operStr);
   }
 
+  static final long serialVersionUID = 4928213949795787107L;
+
 } /* end class FigInterface */
 
 

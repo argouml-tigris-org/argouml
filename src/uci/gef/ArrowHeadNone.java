@@ -43,4 +43,6 @@ public class ArrowHeadNone extends ArrowHead {
 
   public void paint(Graphics g, Point start, Point end) { }
 
+  static final long serialVersionUID = -9166691134489182687L;
+
 } /* end class ArrowHeadNone */

@@ -116,6 +116,7 @@ implements ChangeListener, MouseListener {
     }
     if (jumpToFirstEnabledTab && firstEnabled != -1 )
       _tabs.setSelectedIndex(firstEnabled);
+    setVisible(firstEnabled != -1);
   }
 
 
@@ -124,6 +125,28 @@ implements ChangeListener, MouseListener {
 
   ////////////////////////////////////////////////////////////////
   // actions
+
+  public void selectTabNamed(String tabName) {
+    for (int i = 0; i < _tabPanels.size(); i++) {
+      String title = _tabs.getTitleAt(i);
+      if (title != null && title.equals(tabName)) {
+	_tabs.setSelectedIndex(i);
+	return;
+      }
+    }
+  }
+
+  public void selectNextTab() {
+    int size = _tabPanels.size();
+    int currentTab = _tabs.getSelectedIndex();
+    for (int i = 1; i < _tabPanels.size(); i++) {
+      int newTab = (currentTab + i) % size;
+      if (_tabs.isEnabledAt(newTab)) {
+	_tabs.setSelectedIndex(newTab);
+	return;
+      }
+    }
+  }
 
   public void select(Object o) {
     Component curTab = _tabs.getSelectedComponent();
@@ -146,6 +169,8 @@ implements ChangeListener, MouseListener {
     //System.out.println("MultiEditorPane state changed");
     _lastTab = _tabs.getSelectedComponent();
     _lastTab.setVisible(true);
+    if (_lastTab instanceof TabModelTarget)
+      ((TabModelTarget)_lastTab).refresh();
   }
 
   public void mousePressed(MouseEvent me) { }

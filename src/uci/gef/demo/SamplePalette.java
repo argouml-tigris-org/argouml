@@ -73,4 +73,6 @@ public class SamplePalette extends PaletteFig {
     }
   }
 
+  static final long serialVersionUID = -2808153269152965859L;
+
 } /* end class SamplePalette */

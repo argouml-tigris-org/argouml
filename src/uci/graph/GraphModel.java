@@ -84,4 +84,5 @@ public interface GraphModel extends java.io.Serializable {
   void addGraphEventListener(GraphListener listener);
   void removeGraphEventListener(GraphListener listener);
 
+  static final long serialVersionUID = -110420686972437523L;
 } /* end interface GraphModel */

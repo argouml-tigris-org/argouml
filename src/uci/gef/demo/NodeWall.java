@@ -69,4 +69,6 @@ public class NodeWall extends NetNode implements Serializable {
     return fn;
   }
 
+  static final long serialVersionUID = -6306614428888650160L;
+
 } /* end class NodeWall */

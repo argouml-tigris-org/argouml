@@ -71,4 +71,5 @@ public class PathConvPercent extends PathConv {
 
   public void setClosestPoint(Point newPoint) { }
 
+  static final long serialVersionUID = -4842616124882977313L;
 }/* end class PathConvPercent */

@@ -99,6 +99,8 @@ implements TabModelTarget {
   }
   public Object getTarget() { return _target; }
 
+  public void refresh() { setTarget(_target); }
+
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }
 
 } /* end class TabTaggedValues */

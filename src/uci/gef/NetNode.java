@@ -165,6 +165,7 @@ implements GraphNodeHooks, java.io.Serializable  {
   public void postPlacement(Editor ed) { }
 
 
-  
+
+  static final long serialVersionUID = 6562548365621157454L;
 } /* end class NetNode */
 

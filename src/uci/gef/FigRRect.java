@@ -90,5 +90,7 @@ public class FigRRect extends FigRect {
     }
   }
 
+  static final long serialVersionUID = 5242299525923672421L;
+
 } /* end class FigRRect */
 

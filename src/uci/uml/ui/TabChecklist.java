@@ -50,6 +50,9 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
   
   ////////////////////////////////////////////////////////////////
   // instance variables
+  protected uci.argo.checklist.CheckManager SINGLTON =
+  new uci.argo.checklist.CheckManager();
+
   Object _target;
   TableModelChecklist _tableModel = new TableModelChecklist();
   boolean _shouldBeEnabled = false;
@@ -96,7 +99,6 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
     }
     _target = t;
     _shouldBeEnabled = true;
-
     ModelElement me = (ModelElement) _target;
     Checklist cl = CheckManager.getChecklistFor(me);
     if (cl == null) {
@@ -117,10 +119,11 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
   }
   public Object getTarget() { return _target; }
 
+  public void refresh() { setTarget(_target); }
+
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }
 
 
-  
   ////////////////////////////////////////////////////////////////
   // event handling
 

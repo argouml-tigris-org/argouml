@@ -49,80 +49,21 @@ CLASSES = \
 	DocumentationManager.class \
 	EmailExpertDialog.class \
 	EmptyProject.class \
-	GoAssocToSource.class \
-	GoAssocToTarget.class \
-	GoClassToAggrClass.class \
-	GoClassToAssocdClass.class \
-	GoClassToNavigableClass.class \
-	GoClassToCompositeClass.class \
-	GoClassifierToBeh.class \
-	GoClassifierToStr.class \
-	GoDiagramToEdge.class \
-	GoDiagramToNode.class \
-	GoElementToMachine.class \
-	GoElementToReqElement.class \
-	GoElementToDependentElement.class \
-	GoFilteredChildren.class \
-	GoGenElementToDerived.class \
-	GoListToDecisionsToItems.class \
-	GoListToGoalsToItems.class \
-	GoListToPriorityToItem.class \
-	GoMachineToStartState.class \
-	GoMachineToState.class \
-	GoMachineToTrans.class \
-	GoModelToActor.class \
-	GoModelToAssociation.class \
-	GoModelToBaseElements.class \
-	GoModelToClass.class \
-	GoModelToDiagram.class \
-	GoModelToElements.class \
-	GoModelToUseCase.class \
-	GoProjectDiagram.class \
-	GoProjectModel.class \
-	GoStateToIncomingTrans.class \
-	GoStateToOutgoingTrans.class \
-	GoStateToUpstream.class \
-	GoStateToDownstream.class \
-	GoStateToSubstate.class \
-	GoTransToSourceState.class \
-	GoTransToTargetState.class \
 	GoalsDialog.class \
 	JasonsTheme.class \
 	JasonsBigTheme.class \
 	JasonsHugeTheme.class \
 	JavaDocument.class \
 	JavaEditorKit.class \
-	KnowledgeTypeNode.class \
 	Menu.class \
 	ModelElementRenderer.class \
 	MultiEditorPane.class \
 	NavigatorConfigDialog.class \
-	NavPerspective.class \
 	NavigatorPane.class \
 	PredIsFinalState.class \
 	PredIsStartState.class \
-	PriorityNode.class \
 	Project.class \
 	ProjectBrowser.class \
-	PropPanel.class \
-	PropPanelAssoc.class \
-	PropPanelAttr.class \
-	PropPanelOper.class \
-	PropPanelClass.class \
-	PropPanelDependency.class \
-	PropPanelDiagram.class \
-	PropPanelInterface.class \
-	PropPanelGeneralization.class \
-	PropPanelModel.class \
-	PropPanelActor.class \
-	PropPanelUseCase.class \
-	PropPanelNote.class \
-	PropPanelRealization.class \
-	PropPanelState.class \
-	PropPanelTransition.class \
-	PropPanelPseudostate.class \
-	PropPanelInstance.class \
-	PropPanelLink.class \
 	SpacerPanel.class \
 	SplashScreen.class \
 	StatusBar.class \
@@ -143,23 +84,11 @@ CLASSES = \
 	TabToDo.class \
 	TabToDoTarget.class \
 	TabUMLDisplay.class \
-	ToDoByDecision.class \
-	ToDoByGoal.class \
-	ToDoByOffender.class \
-	ToDoByPoster.class \
-	ToDoByPriority.class \
-	ToDoByType.class \
-	ToDoPane.class \
-	ToDoPerspective.class \
 	ToDoTreeRenderer.class \
 	Token.class \
 	Trash.class \
-	TreeModelComposite.class \
-	TreeModelPrereqs.class \
 	UMLListCellRenderer.class \
-	UMLTreeCellRenderer.class \
-	WizStep.class \
-	WizDescription.class 
+	UMLTreeCellRenderer.class
 
 
 all: $(GEN) $(CLASSES)

@@ -238,4 +238,5 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
       ((MouseListener)_content).mouseExited(me);
   }
 
+  static final long serialVersionUID = -8987901537232412200L;
 } /* end class Selection */

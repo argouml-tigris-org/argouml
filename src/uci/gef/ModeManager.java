@@ -234,4 +234,5 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
+  static final long serialVersionUID = -8650764865339534461L;
 } /* end class ModeManager */

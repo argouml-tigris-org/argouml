@@ -131,5 +131,6 @@ public class CmdSave extends Cmd implements FilenameFilter {
     System.out.println("Undo does not make sense for CmdSave");
   }
 
+  static final long serialVersionUID = 8022413001067764087L;
 } /* end class CmdSave */
 

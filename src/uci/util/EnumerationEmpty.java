@@ -53,4 +53,6 @@ implements Enumeration, java.io.Serializable {
   protected static EnumerationEmpty _theInstance = new EnumerationEmpty();
   public static EnumerationEmpty theInstance() { return _theInstance; }
 
+  
+  static final long serialVersionUID = -4072852623703469113L;
 } /* end class EnumerationEmpty */

@@ -281,4 +281,5 @@ public abstract class Layer implements java.io.Serializable {
    * @see LayerGrid */
   public void adjust() { }
 
+  static final long serialVersionUID = 8654800923889173867L;
 } /* end class Layer */

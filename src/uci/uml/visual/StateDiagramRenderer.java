@@ -103,4 +103,6 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
   }
 
 
+  static final long serialVersionUID = 8448809085349795886L;
+
 } /* end class StateDiagramRenderer */

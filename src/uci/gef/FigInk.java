@@ -72,5 +72,7 @@ public class FigInk extends FigPoly {
     return super.findHandle(x, y) != -1;
   }
 
+  static final long serialVersionUID = 660593786382654496L;
+
 } /* end class FigInk */
 

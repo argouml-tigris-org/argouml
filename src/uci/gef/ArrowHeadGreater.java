@@ -75,4 +75,6 @@ public class ArrowHeadGreater extends ArrowHead {
     g.drawLine(x2, y2, xTo, yTo);
   }
 
+  static final long serialVersionUID = -2068339065042672894L;
+
 }

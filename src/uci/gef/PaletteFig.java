@@ -83,7 +83,8 @@ public class PaletteFig extends uci.ui.ToolBar {
 //     image2Button.canStick(true);
   }
 
-  
+
+  static final long serialVersionUID = 3484460904733989358L;
 } /* end class PaletteFig */
 
 

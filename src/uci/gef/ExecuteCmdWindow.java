@@ -148,4 +148,6 @@ public class ExecuteCmdWindow extends Frame {
     ce.executeCmd(showIt, null);
   }
 
+  static final long serialVersionUID = 7244235935139519043L;
+
 } /* end class ExecuteCmdWindow */

@@ -56,4 +56,6 @@ public class CmdShowProperties extends Cmd {
     System.out.println("undo CmdShowProperties is not supported");
   }
 
+  static final long serialVersionUID = 3037486521222920373L;
+
 } /* end class CmdShowProperties */

@@ -81,5 +81,6 @@ public class FigDependency extends FigEdgeModelElement {
   }
 
 
+
 } /* end class FigDependency */
 

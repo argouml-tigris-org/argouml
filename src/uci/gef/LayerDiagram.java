@@ -265,5 +265,6 @@ public class LayerDiagram extends Layer {
   }
 
 
+  static final long serialVersionUID = 8414225047168410183L;
 } /* end class LayerDiagram */
 

@@ -103,4 +103,6 @@ implements Enumeration, java.io.Serializable {
       _nextElement = ((Enumeration)_subs.firstElement()).nextElement();
   }
 
+  
+  static final long serialVersionUID = -1970828633671289903L;
 } /* end class EnumerationComposite */

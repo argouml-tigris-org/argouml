@@ -92,5 +92,6 @@ public class NetList extends NetPrimitive implements java.io.Serializable {
     if (a != null && _edges.contains(a)) _edges.removeElement(a);
   }
 
+  static final long serialVersionUID = -238774170084340147L;
 } /* end class NetList */
 

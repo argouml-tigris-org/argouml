@@ -50,4 +50,6 @@ public class CmdExit extends Cmd {
     System.out.println("Undo does not make sense for CmdExit");
   }
 
+  static final long serialVersionUID = -4375051821931525151L;
+
 } /* end class CmdExit */

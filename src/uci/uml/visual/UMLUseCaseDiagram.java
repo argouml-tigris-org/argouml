@@ -143,4 +143,6 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     _toolBar.add(_actionInk);
   }
   
+  static final long serialVersionUID = 9120268784682936786L;
+
 } /* end class UMLUseCaseDiagram */

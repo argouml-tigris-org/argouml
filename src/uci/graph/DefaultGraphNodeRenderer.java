@@ -51,4 +51,5 @@ implements GraphNodeRenderer, java.io.Serializable {
     return null;
   }
 
+  static final long serialVersionUID = -5636144866601300460L;
 } /* end class DefaultGraphNodeRenderer */

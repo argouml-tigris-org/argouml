@@ -62,4 +62,5 @@ public interface GraphPortHooks extends java.io.Serializable {
   void dispose();
 
 
+  static final long serialVersionUID = -1522217911769251409L;
 } /* end interface GraphPortHooks */

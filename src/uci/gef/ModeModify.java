@@ -233,5 +233,6 @@ public class ModeModify extends Mode {
     return _minDeltaAchieved;
   }
 
+  static final long serialVersionUID = -5048296582544436022L;
 } /* end class ModeModify */
 

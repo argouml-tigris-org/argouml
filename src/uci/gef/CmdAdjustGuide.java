@@ -51,4 +51,6 @@ public class CmdAdjustGuide extends Cmd {
 
   public void undoIt() { }
 
+  static final long serialVersionUID = -8804405544872141957L;
+
 } /* end class CmdAdjustGuide */

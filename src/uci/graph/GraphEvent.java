@@ -55,4 +55,5 @@ public class GraphEvent extends EventObject implements java.io.Serializable {
 
   public Object getArg() { return _arg; }
 
+  static final long serialVersionUID = 3781526441836741632L;
 } /* end class GraphEvent */

@@ -95,5 +95,7 @@ public class CmdSelectNext extends Cmd {
     System.out.println("Undo does not make sense for CmdSelectNext");
   }
 
+  static final long serialVersionUID = 2762650383329916281L;
+
 } /* end class CmdSelectNext */
 

@@ -102,5 +102,7 @@ public class CmdNudge extends Cmd {
 
   public void undoIt() { System.out.println("Cannot undo CmdNudge, yet."); }
 
+  static final long serialVersionUID = 2758012588187712689L;
+
 } /* end class CmdNudge */
 

@@ -422,4 +422,6 @@ implements PropertyChangeListener {
     Fig getFig() { return _fig; }
   }
 
+  static final long serialVersionUID = 5276706932173784022L;
+
 } /* end class FigEdge */

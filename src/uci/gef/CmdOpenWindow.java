@@ -71,4 +71,6 @@ public class CmdOpenWindow extends Cmd {
     System.out.println("undo CmdOpenWindow is not supported");
   }
 
+  static final long serialVersionUID = -4053109533615914080L;
+
 } /* end class CmdOpenWindow */

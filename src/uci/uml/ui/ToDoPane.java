@@ -39,6 +39,7 @@ import com.sun.java.swing.tree.*;
 import uci.util.*;
 import uci.ui.*;
 import uci.argo.kernel.*;
+import uci.uml.ui.todo.*;
 
 /** The lower-left pane of the main Argo/UML window. This ane shows
  *  a list or tree of all the "to do" items that the designer should

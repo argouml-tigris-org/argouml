@@ -48,5 +48,5 @@ implements GraphEdgeRenderer, java.io.Serializable {
     if (!(edge instanceof NetEdge))  return null;
     return ((NetEdge)edge).presentationFor(lay);
   }
-
+  static final long serialVersionUID = 1489442708189176127L;
 } /* end class DefaultGraphEdgeRenderer */

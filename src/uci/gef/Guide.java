@@ -63,5 +63,8 @@ public abstract class Guide implements java.io.Serializable {
 
   /** Bring up a dialog box to set the parameters for this
    *  guide. E.g., set the size of a grid. */
-  public void adjust() { };
-}
+   public void adjust() { };
+
+  static final long serialVersionUID = -3263257514204584581L;
+} /* end class Guide */
+

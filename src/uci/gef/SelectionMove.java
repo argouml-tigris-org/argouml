@@ -76,5 +76,6 @@ public class SelectionMove extends Selection {
   public int hitHandle(Rectangle r) { return -1; }
 
 
+  static final long serialVersionUID = -3988412251995936654L;
 } /* end class SelectionMove */
 

@@ -539,10 +539,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
     }
     _w = _expandOnly ? Math.max(_w, overallW) : overallW;
     _h = _expandOnly ? Math.max(_h, overallH) : overallH;
-  }  
+  }
+
+  static final long serialVersionUID = 468901636070058091L;
+
+
 } /* end class FigText */
-
-
-////////////////////////////////////////////////////////////////
-
 

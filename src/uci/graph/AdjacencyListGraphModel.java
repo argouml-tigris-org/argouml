@@ -169,4 +169,6 @@ implements java.io.Serializable {
     return res;
   }
 
+  
+  static final long serialVersionUID = -4115949451676076220L;
 } /* end class AdjacencyListGraphModel */

@@ -68,7 +68,13 @@ argoumlClasses:
 	cd checklist; make classes; cd .. ; \
 	cd .. ; \
 	cd uml ; \
-	cd ui; make classes; cd .. ; \
+	cd ui; \
+	make classes; \
+	cd nav; make classes; cd .. ; \
+	cd todo; make classes; cd .. ; \
+	cd props; make classes; cd .. ; \
+	cd table; make classes; cd .. ; \
+	cd .. ; \
 	cd visual; make classes; cd .. ; \
 	cd .. ; \
 	fi
@@ -97,61 +103,6 @@ swingClasses:
 	fi
 
 
-fresh: gefFresh umlFresh argoumlFresh criticsFresh
-
-
-gefFresh: 
-	@if [ -d gef ] ; \
-	then echo "\n\nJAVAC *.java GEF ================" ; \
-	cd util; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd gef; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd gef/event; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd graph; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd beans/editors; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd ui; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd gef/demo; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	fi
-
-umlFresh:
-	@if [ -d uml ] ; \
-	then echo "\n\nJAVAC *.java UML META-MODEL ================" ; \
-	cd uml ;\
-	cd Foundation/Core; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd Foundation/Data_Types; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd Foundation/Extension_Mechanisms; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd Model_Management; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd Behavioral_Elements/Common_Behavior; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd Behavioral_Elements/State_Machines; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd Behavioral_Elements/Use_Cases; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd Behavioral_Elements/Collaborations; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd util; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd test/omg; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd generate; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	$(JAVAC) $(JFLAGS) *.java; \
-	cd .. ; \
-	fi
-
-argoumlFresh:
-	@if [ -d uml/ui ] ; \
-	then echo "\n\nJAVAC *.java ARGO/UML ================" ; \
-	cd argo ; \
-	cd kernel; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd checklist; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd .. ; \
-	cd uml ; \
-	cd ui; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd visual; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd .. ; \
-	fi
-
-criticsFresh:
-	@if [ -d uml/critics ] ; \
-	then echo "\n\nJAVAC *.java UML CRITICS ================" ; \
-	cd uml ; \
-	cd critics; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
-	cd critics/patterns; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
-	cd .. ; \
-	fi
 
 clean: gefClean umlClean argoumlClean criticsClean swingClean
 
@@ -195,7 +146,13 @@ argoumlClean:
 	cd checklist; make clean; cd .. ; \
 	cd .. ; \
 	cd uml ; \
-	cd ui; make clean; cd .. ; \
+	cd ui; \
+	make clean; \
+	cd nav; make clean; cd .. ; \
+	cd todo; make clean; cd .. ; \
+	cd props; make clean; cd .. ; \
+	cd table; make clean; cd .. ; \
+	cd .. ; \
 	cd visual; make clean; cd .. ; \
 	cd .. ; \
 	fi
@@ -239,7 +196,12 @@ UMLPACKS = \
 	uci.uml.util
 
 ARGOUMLPACKS = \
-	uci.uml.ui uci.uml.visual
+	uci.uml.ui \
+	uci.uml.ui.todo \
+	uci.uml.ui.nav \
+	uci.uml.ui.props \
+	uci.uml.ui.table \
+	uci.uml.visual
 
 CRITICPACKS = \
 	uci.uml.critics uci.uml.critics.patterns uci.uml.critics.java \
@@ -262,45 +224,3 @@ javadocs:
 
 
 
-# gen is not used now that GEF does not use a preprocessor
-#gen:
-#	if [ -d gef ] ; \
-#	then echo "\n\nGENERATING GEF ================" ; \
-#	cd util; make gen; cd .. ; \
-#	cd gef; make gen; cd .. ; \
-#	cd gef/event; make gen; cd ../.. ; \
-#	cd graph; make gen; cd .. ; \
-#	cd beans/editors; make gen; cd ../.. ; \
-#	cd ui; make gen; cd .. \ ;
-#	cd gef/demo; make gen; cd ../.. ; \
-#	fi ; \
-#	if [ -d uml ] ; \
-#	then echo "\n\nGENERATING UML META-MODEL ================" ; \
-#	cd uml ; \
-#	cd Foundation/Core; make gen; cd ../.. ; \
-#	cd Foundation/Data_Types; make gen; cd ../.. ; \
-#	cd Foundation/Extension_Mechanisms; make gen; cd ../.. ; \
-#	cd Model_Management; make gen; cd .. ; \
-#	cd Behavioral_Elements/Common_Behavior; make gen; cd ../.. ; \
-#	cd Behavioral_Elements/State_Machines; make gen; cd ../.. ; \
-#	cd Behavioral_Elements/Use_Cases; make gen; cd ../.. ; \
-#	cd Behavioral_Elements/Collaborations; make gen; cd ../.. ; \
-#	cd util; make gen; cd .. ; \
-#	cd test/omg; make gen; cd ../.. ; \
-#	cd generate; make gen; cd .. ; \
-#	cd .. ; \
-#	fi ; \
-#	if [ -d uml/ui ] ; \
-#	then echo "\n\nGENERATING ARGO/UML ================" ; \
-#	cd uml;\
-#	cd ui; make gen; cd .. ; \
-#	cd visual; make gen; cd .. ; \
-#	cd .. ; \
-#	fi ; \
-#	if [ -d uml/critics ] ; \
-#	then echo "\n\nGENERATING UML CRITICS ================" ; \
-#	cd uml ; \
-#	cd critics; make gen; cd .. ; \
-#	cd critics/patterns; make gen; cd ../.. ; \
-#	cd .. ; \
-#	fi

@@ -71,5 +71,7 @@ public class CmdPrint extends Cmd {
     System.out.println("Undo does not make sense for CmdPrint");
   }
 
+  static final long serialVersionUID = -2426429729992407570L;
+
 } /* end class CmdPrint */
 

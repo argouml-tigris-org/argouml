@@ -58,4 +58,6 @@ public class UMLDiagram extends Diagram {
 
   public Model getModel() { return _model; }
   
+  static final long serialVersionUID = -401219134410459387L;
+
 } /* end class UMLDiagram */

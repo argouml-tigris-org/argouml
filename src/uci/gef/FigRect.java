@@ -71,5 +71,7 @@ public class FigRect extends Fig implements Serializable {
     }
   }
 
+  static final long serialVersionUID = 769067862802923166L;
+
 } /* end class FigRect */
 

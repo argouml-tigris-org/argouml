@@ -174,4 +174,5 @@ public class ModeCreateArc extends ModeCreate {
     me.consume();
   }
 
+  static final long serialVersionUID = 1205146280196230051L;
 } /* end class ModeCreateArc */

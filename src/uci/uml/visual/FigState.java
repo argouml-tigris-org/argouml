@@ -174,4 +174,5 @@ public class FigState extends FigNodeModelElement {
 
 
 
+
 } /* end class FigState */

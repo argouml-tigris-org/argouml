@@ -110,5 +110,6 @@ public class FigTransition extends FigEdgeModelElement {
   }
 
 
+
 } /* end class FigTransition */
 

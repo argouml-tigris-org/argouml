@@ -58,4 +58,5 @@ public class PredFigInRect implements Predicate {
     return ((Fig)o).intersects(_r);
   }
 
+  static final long serialVersionUID = -4214393174685581373L;
 } /* end class PredFigInRect */

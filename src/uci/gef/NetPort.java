@@ -169,5 +169,6 @@ implements GraphPortHooks, java.io.Serializable {
   }
 
 
+  static final long serialVersionUID = 6658397967869283099L;
 } /* end class NetPort */
 

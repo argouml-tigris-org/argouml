@@ -127,5 +127,6 @@ public class ModeCreateFigImage extends ModeCreate {
     mouseMoved(me);
   }
 
+  static final long serialVersionUID = 8852868877960387013L;
 } /* end class ModeCreateFigImage */
 

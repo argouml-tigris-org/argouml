@@ -36,6 +36,8 @@ import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.uml.ui.*;
+import uci.uml.ui.nav.*;
+import uci.uml.ui.todo.*;
 import uci.uml.visual.*;
 import uci.uml.critics.*;
 import uci.uml.Model_Management.Model;

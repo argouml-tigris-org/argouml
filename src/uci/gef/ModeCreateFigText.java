@@ -50,5 +50,7 @@ public class ModeCreateFigText extends ModeCreate {
     return new FigText(snapX, snapY, 0, 0);
   }
 
+  static final long serialVersionUID = 8022413001067764087L;
+  
 } /* end class ModeCreateFigText */
 

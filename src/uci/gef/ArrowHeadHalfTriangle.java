@@ -44,4 +44,6 @@ public class ArrowHeadHalfTriangle extends ArrowHead {
     g.drawPolygon(triangle);
   }
 
+  static final long serialVersionUID = -7257932581787201038L;
+
 } /* end class ArrowHeadHalfTriangle */

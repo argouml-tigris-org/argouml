@@ -212,5 +212,7 @@ implements PropertyChangeListener, DocumentListener, KeyListener {
 	      bbox.width + EXTRA*2, bbox.height + EXTRA*2 );
     setFont(_target.getFont());
   }
-  
+
+  static final long serialVersionUID = 5253658760578153001L;
+
 } /* end class FigTextEditor */

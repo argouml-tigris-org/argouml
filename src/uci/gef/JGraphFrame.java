@@ -313,5 +313,6 @@ implements IStatusBar, Cloneable {
     if (_statusbar != null) _statusbar.setText(msg);
   }
 
-  
+
+  static final long serialVersionUID = 7412677544814835664L;
 } /* end class JGraphFrame */

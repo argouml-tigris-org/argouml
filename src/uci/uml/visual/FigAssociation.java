@@ -189,5 +189,7 @@ public class FigAssociation extends FigEdgeModelElement {
     return ArrowHeadNone.TheInstance;
   }
 
+  static final long serialVersionUID = 9100125695919853919L;
+
 } /* end class FigAssociation */
 

@@ -41,5 +41,6 @@ import java.util.*;
 public interface ChildGenerator extends java.io.Serializable {
   /** Reply a Enumeration of the children of the given Object */
   public Enumeration gen(Object o);
+  static final long serialVersionUID = -6461174793151552095L;
 } /* end interface ChildGenerator */
 

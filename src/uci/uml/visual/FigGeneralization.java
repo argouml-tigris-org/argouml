@@ -81,5 +81,6 @@ public class FigGeneralization extends FigEdgeModelElement {
   }
 
 
+
 } /* end class FigGeneralization */
 

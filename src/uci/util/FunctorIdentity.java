@@ -41,4 +41,6 @@ import java.util.*;
 
 public class FunctorIdentity implements Functor {
   public Object apply(Object x) { return x; }
+  
+  static final long serialVersionUID = 7427499478247001211L;
 } /* end class FunctorIdentity */

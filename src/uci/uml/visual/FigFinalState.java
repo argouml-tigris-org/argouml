@@ -151,6 +151,8 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     catch (PropertyVetoException pve) { }
     super.dispose();
   }
+  static final long serialVersionUID = -3506578343969467480L;
+
 } /* end class FigFinalState */
 
 

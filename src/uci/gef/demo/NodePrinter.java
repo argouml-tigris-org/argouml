@@ -83,4 +83,6 @@ public class NodePrinter extends NetNode implements Serializable {
     return fn;
   }
 
+  static final long serialVersionUID = -1991803325169884172L;
+
 } /* end class NodePrinter */

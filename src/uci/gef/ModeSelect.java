@@ -205,5 +205,6 @@ public class ModeSelect extends Mode {
     nextMode.mousePressed(me);
   }
 
+  static final long serialVersionUID = -8847591655429149135L;
 } /* end class ModeSelect */
 

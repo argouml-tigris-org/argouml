@@ -185,5 +185,6 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   /** Just calls paint(g) bt default. */
   public void print(Graphics g) { paint(g); }
 
+  static final long serialVersionUID = 7960954871341784898L;
 } /* end class Mode */
 

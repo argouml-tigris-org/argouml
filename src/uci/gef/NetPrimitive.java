@@ -96,5 +96,6 @@ public class NetPrimitive implements java.io.Serializable {
   public void firePropertyChange(String pName, int oldV, int newV) {
     _changeSup.firePropertyChange(pName, new Integer(oldV), new Integer(newV));
   }
-  
+
+  static final long serialVersionUID = 2197255223665843110L;
 } /* end class NetPrimitive */

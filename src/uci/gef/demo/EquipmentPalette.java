@@ -56,4 +56,6 @@ public class EquipmentPalette extends uci.ui.ToolBar {
   }
 
 
+  static final long serialVersionUID = 5835769152970981878L;
+
 } /* end class EquipmentPalette */

@@ -58,4 +58,6 @@ public class CmdSpawn extends Cmd {
 
   public void undoIt() { System.out.println("Cannot undo CmdSpawn"); }
 
+  static final long serialVersionUID = 4713965679378778473L;
+
 } /* end class CmdSpawn */

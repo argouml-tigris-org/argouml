@@ -342,5 +342,6 @@ public class FigEdgePoly extends FigEdge {
     }
   }
 
+  static final long serialVersionUID = -8604764896732440025L;
 
 } /* end class FigEdgePoly */

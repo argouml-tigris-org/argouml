@@ -131,5 +131,6 @@ public class ModeCreateFigPoly extends ModeCreate {
       y < _lastY + Editor.GRIP_SIZE;
   }
 
+  static final long serialVersionUID = 6071576667504398840L;
 } /* end class ModeCreateFigPoly */
 

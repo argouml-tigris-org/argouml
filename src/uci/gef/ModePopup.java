@@ -79,4 +79,5 @@ public class ModePopup extends Mode {
     }
   }
 
+  static final long serialVersionUID = -7730689944964381534L;
 } /* end class ModePopup */

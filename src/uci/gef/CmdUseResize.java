@@ -68,5 +68,7 @@ public class CmdUseResize extends Cmd {
 
   public void undoIt() { System.out.println("not done yet"); }
 
+  static final long serialVersionUID = 4571074979949637214L;
+
 } /* end class CmdUseResize */
 

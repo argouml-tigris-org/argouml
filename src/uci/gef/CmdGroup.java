@@ -72,5 +72,7 @@ public class CmdGroup extends Cmd {
 
   public void undoIt() { System.out.println("not done yet"); }
 
+  static final long serialVersionUID = -348801435790084205L;
+
 } /* end class CmdGroup */
 

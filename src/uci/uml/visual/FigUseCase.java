@@ -128,4 +128,5 @@ public class FigUseCase extends FigNodeModelElement {
 
 
 
+
 } /* end class FigUseCase */

@@ -128,4 +128,5 @@ public class FigInstance extends FigNodeModelElement {
     updateEdges();
   }
 
+
 } /* end class FigInstance */

@@ -172,4 +172,5 @@ public class LayerPolar extends Layer {
     }
   }
 
+  static final long serialVersionUID = 3779653161933865683L;
 } /* end class LayerPolar */

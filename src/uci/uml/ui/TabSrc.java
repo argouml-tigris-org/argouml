@@ -89,4 +89,6 @@ public class TabSrc extends TabText {
     }
   }
 
+  public void refresh() { setTarget(_target); }
+
 } /* end class TabSrc */

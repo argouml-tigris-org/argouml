@@ -250,4 +250,6 @@ public class FigEdgeRectiline extends FigEdge {
     return true;
   }
 
+  static final long serialVersionUID = -1248646557077429084L;
+
 } /* end class FigEdgeRectiline */
