@@ -27,7 +27,8 @@ package org.argouml.cognitive.ui;
 
 
 /**
- * A WizardItem is a type wizards know how to deal with. It only requires that it
+ * A WizardItem is a type wizards know how to deal with. 
+ * It only requires that it
  * is notified to have been changed.
  * @author mkl
  * @see org.argouml.cognitive.ui.Wizard

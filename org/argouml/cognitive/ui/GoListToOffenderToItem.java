@@ -43,6 +43,9 @@ import org.tigris.gef.util.VectorSet;
  */
 public class GoListToOffenderToItem extends AbstractGoList {
   
+    /**
+     * The constructor.
+     */
     public GoListToOffenderToItem() {
         setListPredicate(new PredicateNotInTrash());
     }

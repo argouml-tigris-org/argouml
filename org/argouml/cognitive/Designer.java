@@ -169,10 +169,12 @@ public class Designer
     
     private static PropertyChangeSupport pcs;
     
-    // Property Names
-    public static final String MODEL_TODOITEM_ADDED ="MODEL_TODOITEM_ADDED";
-    
-    public static final String MODEL_TODOITEM_DISMISSED = "MODEL_TODOITEM_DISMISSED";
+    /** Property Names */
+    public static final String MODEL_TODOITEM_ADDED = 
+        "MODEL_TODOITEM_ADDED";
+    /** Property Names */
+    public static final String MODEL_TODOITEM_DISMISSED = 
+        "MODEL_TODOITEM_DISMISSED";
     
     ////////////////////////////////////////////////////////////////
     // constructor and singeton methods
@@ -404,7 +406,13 @@ public class Designer
         }
     }
     
-    public static final void firePropertyChange(String property, Object oldValue, Object newValue) {
+    /**
+     * @param property the property name
+     * @param oldValue the old value
+     * @param newValue the new value
+     */
+    public static final void firePropertyChange(String property, 
+            Object oldValue, Object newValue) {
         if (pcs != null) {
             pcs.firePropertyChange(property, oldValue, newValue);
         }

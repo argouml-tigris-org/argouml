@@ -24,7 +24,6 @@
 
 package org.argouml.cognitive;
 
-import org.argouml.cognitive.Translator;
 
 /**
  * This is where the class makes the decision

@@ -65,7 +65,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.Translator;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 
@@ -559,9 +558,9 @@ class TableModelCritics extends AbstractTableModel
      */
     public void vetoableChange(PropertyChangeEvent pce) {
         SwingUtilities.invokeLater(new Runnable() {
-        public void run() {
-            fireTableStructureChanged();
-        }
-	    });
+            public void run() {
+                fireTableStructureChanged();
+            }
+        });
     }
 } /* end class TableModelCritics */
