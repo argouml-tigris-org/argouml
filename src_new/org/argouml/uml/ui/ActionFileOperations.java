@@ -51,8 +51,6 @@ import org.argouml.ui.ProjectBrowser;
 public abstract class ActionFileOperations extends UMLAction {
     private static final Logger LOG =
         Logger.getLogger(ActionFileOperations.class);
-    
-    private ProjectBrowser pb = ProjectBrowser.getInstance();
 
     /**
      * The constructor.
@@ -93,6 +91,7 @@ public abstract class ActionFileOperations extends UMLAction {
      * @return true if we can continue with opening
      */
     protected boolean askConfirmationAndSave() {
+        ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
 
 
@@ -165,7 +164,8 @@ public abstract class ActionFileOperations extends UMLAction {
                 }
                 p = persister.doLoad(url);
                 
-                pb.showStatus(MessageFormat.format(Translator.localize(
+                ProjectBrowser.getInstance().showStatus(
+                        MessageFormat.format(Translator.localize(
                         "label.open-project-status-read"),
                         new Object[] {
                                 url.toString()
