@@ -66,12 +66,12 @@ public class XmiReader {
 	return nsumlXmiReader.parseToModel(pIs);
     }
 
-    /**
-     * @return true if there were errors
-     */
-    public boolean getErrors() {
-        return nsumlXmiReader.getErrors();
-    }
+//    /**
+//     * @return true if there were errors
+//     */
+//    public boolean getErrors() {
+//        return nsumlXmiReader.getErrors();
+//    }
 
     /**
      * @return the map

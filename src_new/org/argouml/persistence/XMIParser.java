@@ -105,9 +105,9 @@ public class XMIParser {
      *
      * @param p the project
      * @param url the URL
-     * @throws IOException when there is an IO error
+     * @throws OpenException when there is an IO error
      */
-    public synchronized void readModels(Project p, URL url) throws IOException {
+    public synchronized void readModels(Project p, URL url) throws OpenException {
 
         proj = p;
 
@@ -118,35 +118,13 @@ public class XMIParser {
             InputSource source = new InputSource(url.openStream());
             source.setSystemId(url.toString());
             curModel = reader.parseToModel(source);
-            if (reader.getErrors()) {
-            	throw new IOException("XMI file " + url.toString()
-                        + " could not be parsed.");
-            }
             uUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
-
-        }
-        catch (SAXException saxEx) {
-            //
-            //  a SAX exception could have been generated
-            //    because of another exception.
-            //    Get the initial exception to display the
-            //    location of the true error
-            Exception ex = saxEx.getException();
-            if (ex == null) {
-                saxEx.printStackTrace();
-            }
-            else {
-                ex.printStackTrace();
-            }
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ex) {
+            throw new OpenException(ex);
         }
         LOG.info("=======================================");
 
-
-	proj.addModel(curModel);
-
+        proj.addModel(curModel);
 
         Collection ownedElements = Model.getFacade().getOwnedElements(curModel);
         Iterator oeIterator = ownedElements.iterator();
