@@ -242,6 +242,7 @@ public class Init {
       Agency.register(crDupParamName, operCls);
       Agency.register(crDupRoleNames, assocCls);  // Jeremy Bennett fix
       Agency.register(crFinalSubclassed, classCls);
+      Agency.register(crFinalSubclassed, interfaceCls);
       Agency.register(crIllegalGeneralization, genCls);
       Agency.register(crAlreadyRealizes, classCls);
       Agency.register(crInterfaceAllPublic, interfaceCls);
@@ -299,7 +300,7 @@ public class Init {
       Agency.register(crReservedName, assocCls);
       Agency.register(crMultiInherit, classCls);
       Agency.register(crMultiRealization, interfaceCls);
-//      Agency.register(crConflictingComposites, classifierCls);
+      // Agency.register(crConflictingComposites, classifierCls);
       Agency.register(crTooManyAssoc, classCls);
       Agency.register(crTooManyAttr, classCls);
       Agency.register(crTooManyOper, classCls);
