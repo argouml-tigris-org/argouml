@@ -428,69 +428,9 @@ class ActionNewToDoItem extends UMLAction {
         super("action.new-todo-item");
     }
     
-    public void actionPerformed(ActionEvent ae) {
-        String BUNDLE = "Cognitive";
-    
-        String PRIORITIES[] = {
-            Argo.localize(BUNDLE, "level.high"),
-            Argo.localize(BUNDLE, "level.medium"),
-            Argo.localize(BUNDLE, "level.low")
-        };
-
-        ////////////////////////////////////////////////////////////////
-        // instance variables
-        
-        JTextField headline = new JTextField(30);
-        JComboBox priority = new JComboBox(PRIORITIES);
-        JTextField moreinfo = new JTextField(30);
-        JTextArea description = new JTextArea(10, 30);
-    
-        JLabel headlineLabel = new JLabel(Argo.localize(BUNDLE, "label.headline"));
-        JLabel priorityLabel = new JLabel(Argo.localize(BUNDLE, "label.priority"));
-        JLabel moreInfoLabel = new JLabel(Argo.localize(BUNDLE, "label.more-info-url"));
-
-        int labelGap = 10;
-        int componentGap = 10;
-        JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
-
-        priority.setSelectedItem(PRIORITIES[0]);
-    
-        headlineLabel.setLabelFor(headline);
-        panel.add(headlineLabel);
-        panel.add(headline);
-
-        priorityLabel.setLabelFor(priority);
-        panel.add(priorityLabel);
-        panel.add(priority);
-
-        moreInfoLabel.setLabelFor(moreinfo);
-        panel.add(moreInfoLabel);
-        panel.add(moreinfo);
-    
-        description.setText(Argo.localize(BUNDLE, "label.enter-todo-item") + "\n");
-        JScrollPane descriptionScroller = new JScrollPane(description);
-        descriptionScroller.setPreferredSize(description.getPreferredSize());
-        panel.add(descriptionScroller);
-        
-        int response =
-            JOptionPane.showConfirmDialog(
-                ProjectBrowser.getInstance(),
-                panel, 
-                Argo.localize(BUNDLE, "dialog.title.add-todo-item"),
-                JOptionPane.OK_CANCEL_OPTION,
-                JOptionPane.PLAIN_MESSAGE);
-        
-        if (response == JOptionPane.OK_OPTION) {
-            Designer designer = Designer.TheDesigner;
-            int priorityLevel = ToDoItem.HIGH_PRIORITY;
-            switch (priority.getSelectedIndex()) {
-                case 0: priorityLevel = ToDoItem.HIGH_PRIORITY; break;
-                case 1: priorityLevel = ToDoItem.MED_PRIORITY; break;
-                case 2: priorityLevel = ToDoItem.LOW_PRIORITY; break;
-            }
-            ToDoItem item = new ToDoItem(designer, headline.getText(), priorityLevel, description.getText(), moreinfo.getText());
-            designer.getToDoList().addElement(item); //? inform()
-        }
+    public void actionPerformed(ActionEvent ae) {       
+        AddToDoItemDialog dialog = new AddToDoItemDialog();
+        dialog.show();
     }
 } /* end class ActionNewToDoItem */
 
