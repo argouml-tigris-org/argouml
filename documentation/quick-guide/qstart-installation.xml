@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "docbookx/docbookx.dtd"> -->
 <!-- 
-
+Part of the QuickGuide: Installation.
 -->
 <chapter id="installation">
 	<title>Installing ArgoUML</title>
@@ -12,21 +11,21 @@ Minimum system requirements:
 				<itemizedlist>
 					<listitem>
 						<para>
-Any OS that supports Java2
-</para>
+              Any Operating System that supports Java2
+            </para>
 					</listitem>
-					<listitem>
+					<!--listitem>
 						<para>200MHz Intel Pentium, AMD K6 or similar processor</para>
 					</listitem>
 					<listitem>
 						<para>64MB (128MB for Windows 2000) RAM</para>
 					</listitem>
-					<listitem>
+					<listitem-->
 						<para>10MB of free disk storage space on your hard disk</para>
 					</listitem>
-					<listitem>
+					<!--listitem>
 						<para>SVGA video output and monitor</para>
-					</listitem>
+					</listitem-->
 					<listitem>
 						<para>Mouse (or other pointing device) and a Keyboard</para>
 					</listitem>
@@ -76,7 +75,9 @@ ArgoUML will be downloaded, cached locally and started.
 						<listitem>
 							<para>
 On subsequent starts, the ArgoUML is available also from the
-Java Web Start console and at each start the version is checked
+Java Web Start console 
+(even without being connected to the internet)
+and (if connected) at each start the version is checked
 against that on the web server and updates are automatically
 downloaded.
 </para>
@@ -136,6 +137,7 @@ or by executing the following command:
 								<computeroutput>
 java -jar argouml.jar
 								</computeroutput>
+                at the command line, or via a batch-file.
 </para>
 						</listitem>
 					</orderedlist>
@@ -180,12 +182,13 @@ then get a dialog that has a line for entering in the application action
 which will have a line for using Notepad to open the file. Replace that line
 with:
 <command>
-"C:\Program Files\Java\j2re1.4.0_01\bin\javaw.exe" -jar "c:\ArgoUML-0.10\argouml.jar" "%L"
+"C:\Program Files\Java\j2re1.4.0_01\bin\javaw.exe" -jar "c:\ArgoUML\argouml.jar" "%L"
 </command>
 </para>
     <para>
-Substitute your path to your JavaW.exe and ArgoUML.jar files if they aren't
-where I have them.
+Substitute your path to your <filename>javaw.exe</filename> and 
+<filename>argouml.jar</filename> files if they are 
+in a different location.
 Click OK, then click OK, then click OK (three buttons on
 three different levels of the dialog).
 </para>
