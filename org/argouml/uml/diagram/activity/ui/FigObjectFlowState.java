@@ -136,7 +136,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     protected void modelChanged(MElementEvent mee) {        
         super.modelChanged(mee);
-        if (mee.getSource() == getOwner()) {
+        if ((mee.getSource() == getOwner()) 
+            || (mee.getSource() == ModelFacade.getType(getOwner()))) {
             renderingChanged();
         }
     }
