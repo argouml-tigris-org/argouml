@@ -161,7 +161,8 @@ Property files to be searched:
     </path>
 
     <path id="argo.compile.classpath">
-      <pathelement location="${xerces.jar.path}"/>
+      <pathelement location="${xercesImpl.jar.path}"/>
+      <pathelement location="${xml-apis.jar.path}"/>
       <pathelement location="${nsuml.jar.path}"/>
       <pathelement location="${jmi.jar.path}"/>
       <pathelement location="${ocl-argo.jar.path}"/>
@@ -174,7 +175,8 @@ Property files to be searched:
     </path>
 
     <path id="argo.compile.classpath.without.nsuml">
-      <pathelement location="${xerces.jar.path}"/>
+      <pathelement location="${xercesImpl.jar.path}"/>
+      <pathelement location="${xml-apis.jar.path}"/>
       <pathelement location="${jmi.jar.path}"/>
       <pathelement location="${ocl-argo.jar.path}"/>
       <pathelement location="${gef.jar.path}"/>
@@ -579,7 +581,7 @@ Property files to be searched:
   <!-- =================================================================== -->
   <target name="package" depends="jar"
           description="Prepare all jar files, both built and just delivered.">
-    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xerces.jar jmi.jar commons-logging.jar"/>
+    <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar xml-apis.jar xercesImpl.jar jmi.jar commons-logging.jar"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
     <copy file="${i18n.jar.path}" tofile="${argo.build.dir}/i18n.jar"/>
@@ -589,7 +591,8 @@ Property files to be searched:
     <copy file="${jmi.jar.path}" tofile="${argo.build.dir}/jmi.jar"/>
     <copy file="${toolbar.jar.path}" tofile="${argo.build.dir}/toolbar.jar"/>
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar"/>
-    <copy file="${xerces.jar.path}" tofile="${argo.build.dir}/xerces.jar"/>
+    <copy file="${xercesImpl.jar.path}" tofile="${argo.build.dir}/xercesImpl.jar"/>
+    <copy file="${xml-apis.jar.path}" tofile="${argo.build.dir}/xml-apis.jar"/>
     <!-- End of name synch area in this file. -->
 
     <copy file="${argo.src.dir}/README.txt" tofile="${argo.build.dir}/README.txt"/>
@@ -1108,7 +1111,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
     <java classname="com.puppycrawl.tools.checkstyle.Main" failonerror="false" fork="true" maxmemory="32M">
       <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
       <classpath>
-	<pathelement location="${checkstyle.jar.path}"/>
+        <pathelement location="${checkstyle.jar.path}"/>
         <pathelement location="${xerces.jar.path}"/>
       </classpath>
       <arg value="-c"/>
@@ -1126,7 +1129,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
     <java classname="com.puppycrawl.tools.checkstyle.Main" failonerror="false" fork="true" maxmemory="32M">
       <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
       <classpath>
-	<pathelement location="${checkstyle.jar.path}"/>
+        <pathelement location="${checkstyle.jar.path}"/>
         <pathelement location="${xerces.jar.path}"/>
       </classpath>
       <arg value="-c"/>
@@ -1373,7 +1376,8 @@ you will have to resurrect them using cvs update.
     <signjar jar="${jwsdir}/nsuml.jar"           alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/ocl-argo.jar"        alias="argouml" storepass="secret"/>
     <signjar jar="${jwsdir}/toolbar.jar"         alias="argouml" storepass="secret"/>
-    <signjar jar="${jwsdir}/xerces.jar"          alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/xercesImpl.jar"      alias="argouml" storepass="secret"/>
+    <signjar jar="${jwsdir}/xml-apis.jar"        alias="argouml" storepass="secret"/>
 
     <copy todir="${argo.dist.dir}/jws/">
       <fileset dir="${argo.src.dir}/templates/jnlp"/>

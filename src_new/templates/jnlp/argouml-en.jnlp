@@ -22,7 +22,8 @@
     <j2se version="1.4 1.4.0-beta3 1.4.0-beta2 1.4.1 1.4.2 1.3"/>
     <jar href="argouml.jar" main="true" download="eager"/>
     <jar href="antlrall.jar"/>
-    <jar href="xerces.jar"/>
+    <jar href="xercesImpl.jar"/>
+    <jar href="xml-apis.jar"/>
     <jar href="gef.jar"/>
     <jar href="ocl-argo.jar"/>
     <jar href="nsuml.jar"/>

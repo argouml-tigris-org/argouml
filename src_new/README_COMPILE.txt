@@ -32,7 +32,7 @@ Most problems with building Argo will stem from not having set
 the Java environment correctly.
 
 Next, you need to have 
-gef.jar, xerces.jar, nsuml.jar, antlrall.jar and ocl-argo.jar in argouml/lib
+gef.jar, xercesImpl.jar, xml-apis.jar, nsuml.jar, antlrall.jar and ocl-argo.jar in argouml/lib
 which must be next to argouml/src_new in your directory structure.
 If you've downloaded the CVS then everything is set to run:
 type "build" to test the Ant environment.  You should see a
@@ -52,6 +52,7 @@ W3C xml etc
 nsuml
 ocl-argo (Object constraint language)
 xerces
+xml-apis
 tools (from the jdk library, without this you will probably get SAX errors)
 
 Be sure to set the main class under the Project and then compile. 
