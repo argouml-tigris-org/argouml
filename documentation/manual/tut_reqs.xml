@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
+<!-- $Id$ -->
 <!--
 
-This section covers requirements capture and how Argo/UML supports such
+This section covers requirements capture and how ArgoUML supports such
 activity.
-
-
-Modifications
-=============
-
- 4 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
-              original manual by Alejandro, Phillipe and Andreas.
-
- 3 May 2002:  Jeremy Bennett. Chapter written.
 
 -->
 
@@ -501,11 +492,11 @@ A high level view
           diagram.</para>
 
 	<indexterm>
-	  <primary>Includes Relationship</primary>
+	  <primary>Include Relationship</primary>
 	</indexterm>
 	<indexterm>
 	  <primary>Relationship</primary>
-	  <secondary>Includes</secondary>
+	  <secondary>Include</secondary>
 	</indexterm>
 
         <para>The decomposition of a use case into simpler sub-use cases is
@@ -538,11 +529,11 @@ A high level view
           the ATM detecting an internal fault.</para>
 
 	<indexterm>
-	  <primary>Extends Relationship</primary>
+	  <primary>Extend Relationship</primary>
 	</indexterm>
 	<indexterm>
 	  <primary>Relationship</primary>
-	  <secondary>Extends</secondary>
+	  <secondary>Extend</secondary>
 	</indexterm>
 
         <para>This is shown in UML by the <emphasis>extend</emphasis>
@@ -1371,15 +1362,15 @@ cause a context-sensitive pop-up menu to appear with a sub-menu
 
 	<indexterm>
 	  <primary>Create New</primary>
-	  <secondary>Includes relationship in a Use Case Diagram</secondary>
+	  <secondary>Include Relationship in a Use Case Diagram</secondary>
 	</indexterm>
 	<indexterm>
-	  <primary>Includes Relationship</primary>
+	  <primary>Include Relationship</primary>
 	  <secondary>in a Use Case Diagram</secondary>
 	</indexterm>
 	<indexterm>
 	  <primary>Relationship</primary>
-	  <secondary>Includes</secondary>
+	  <secondary>Include</secondary>
 	</indexterm>
 
         <para>The procedure for adding an include relationship is the same as
@@ -1406,15 +1397,15 @@ cause a context-sensitive pop-up menu to appear with a sub-menu
 
 	<indexterm>
 	  <primary>Create New</primary>
-	  <secondary>Extends relationship in a Use Case Diagram</secondary>
+	  <secondary>Extend Relationship in a Use Case Diagram</secondary>
 	</indexterm>
 	<indexterm>
-	  <primary>Extends Relationship</primary>
+	  <primary>Extend Relationship</primary>
 	  <secondary>in a Use Case Diagram</secondary>
 	</indexterm>
 	<indexterm>
 	  <primary>Relationship</primary>
-	  <secondary>Extends</secondary>
+	  <secondary>Extend</secondary>
 	</indexterm>
 
         <para>The procedure for adding an extend relationship is the same as
@@ -1868,6 +1859,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->
