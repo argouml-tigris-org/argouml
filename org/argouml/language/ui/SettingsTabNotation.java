@@ -35,7 +35,6 @@ import java.awt.Insets;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Configuration;
@@ -43,6 +42,7 @@ import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
+import org.argouml.ui.ShadowComboBox;
 
 /** Action object for handling Argo settings
  *
@@ -61,7 +61,7 @@ public class SettingsTabNotation extends SettingsTabHelper
     JCheckBox _showInitialValue = null;
     JCheckBox _showProperties = null;
     JCheckBox _showStereotypes = null;
-    JTextField _defaultShadowWidth = null;
+    ShadowComboBox _defaultShadowWidth = null;
 
     public SettingsTabNotation() {
 	super();
@@ -118,7 +118,7 @@ public class SettingsTabNotation extends SettingsTabHelper
 	    new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
 	JLabel defaultShadowWidthLabel =
 	    createLabel("label.default-shadow-width");
-	_defaultShadowWidth = new JTextField(5);
+	_defaultShadowWidth = new ShadowComboBox();
 	defaultShadowWidthLabel.setLabelFor(_defaultShadowWidth);
 	defaultShadowWidthPanel.add(defaultShadowWidthLabel);
 	defaultShadowWidthPanel.add(_defaultShadowWidth);
@@ -137,9 +137,8 @@ public class SettingsTabNotation extends SettingsTabHelper
         _showMultiplicity.setSelected(
 	        getBoolean(Notation.KEY_SHOW_MULTIPLICITY));
         _showStereotypes.setSelected(getBoolean(Notation.KEY_SHOW_STEREOTYPES));
-        _defaultShadowWidth.setText(
-                Configuration.getString(Notation.KEY_DEFAULT_SHADOW_WIDTH, 
-					"1"));
+        _defaultShadowWidth.setSelectedIndex(
+                Configuration.getInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH, 1));
     }
 
     /** Get a boolean from the configuration.
@@ -165,8 +164,8 @@ public class SettingsTabNotation extends SettingsTabHelper
 				 _showInitialValue.isSelected());
         Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES,
 				 _showStereotypes.isSelected());
-	Configuration.setString(Notation.KEY_DEFAULT_SHADOW_WIDTH,
-				_defaultShadowWidth.getText());
+        Configuration.setInteger(Notation.KEY_DEFAULT_SHADOW_WIDTH,
+                _defaultShadowWidth.getSelectedIndex());
     }
 
     public void handleSettingsTabCancel() {
