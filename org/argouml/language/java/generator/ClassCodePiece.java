@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,21 +22,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
-  JavaRE - Code generation and reverse engineering for UML and Java
-  Author: Marcus Andersson andersson@users.sourceforge.net
-*/
-
-
 package org.argouml.language.java.generator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Stack;
 
 /**
-   This code piece represents a class declaration.
-*/
+ * This code piece represents a class declaration.
+ * 
+ * JavaRE - Code generation and reverse engineering for UML and Java
+ *
+ * @author Marcus Andersson andersson@users.sourceforge.net
+ */
 public class ClassCodePiece extends NamedCodePiece
 {
     /** The code piece this class represents. */
@@ -48,63 +47,74 @@ public class ClassCodePiece extends NamedCodePiece
     /**
        Constructor.
 
-       @param classDef The code piece this class represents.
-       @param name The name of the class.
+       @param def The code piece this class represents.
+       @param n The name of the class.
     */
-    public ClassCodePiece(CodePiece classDef,
-                          String name)
-    {
-	this.classDef = classDef;
-	this.name = name;
+    public ClassCodePiece(CodePiece def,
+                          String n) {
+	classDef = def;
+	name = n;
     }
 
     /**
-       Return the string representation for this piece of code.
-    */
+     * @see org.argouml.language.java.generator.CodePiece#getText()
+     * 
+     * Return the string representation for this piece of code.
+     */
     public StringBuffer getText()
     {
 	return classDef.getText();
     }
 
     /**
-       Return the start position.
-    */
+     * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
+     * 
+     * Return the start position.
+     */
     public int getStartPosition()
     {
 	return classDef.getStartPosition();
     }
 
     /**
-       Return the end position.
-    */
+     * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
+     *
+     * Return the end position.
+     */
     public int getEndPosition()
     {
 	return classDef.getEndPosition();
     }
 
     /**
-       Return the start line
-    */
+     * @see org.argouml.language.java.generator.CodePiece#getStartLine()
+     * Return the start line
+     */
     public int getStartLine()
     {
 	return classDef.getStartLine();
     }
 
     /**
-       Return the end line
-    */
+     * @see org.argouml.language.java.generator.CodePiece#getEndLine()
+     *
+     * Return the end line
+     */
     public int getEndLine()
     {
 	return classDef.getEndLine();
     }
 
     /**
-       Write the code this piece represents to file. This adds a new
-       level to the stack if the class is in the model.
-    */
+     * @see org.argouml.language.java.generator.NamedCodePiece#write(
+     *         java.io.BufferedReader, java.io.BufferedWriter, java.util.Stack)
+     *
+     * Write the code this piece represents to file. This adds a new
+     * level to the stack if the class is in the model.
+     */
     public void write(BufferedReader reader,
                       BufferedWriter writer,
-                      Stack parseStateStack) throws Exception
+                      Stack parseStateStack) throws IOException
     {
 	ParseState parseState = (ParseState) parseStateStack.peek();
 	Object mClass = /*(MClass)*/ parseState.newClassifier(name);

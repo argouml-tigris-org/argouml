@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,23 +22,23 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
-  JavaRE - Code generation and reverse engineering for UML and Java
-  Author: Marcus Andersson andersson@users.sourceforge.net
-*/
-
-
 package org.argouml.language.java.generator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
+
 /**
-   This code piece represents the end of a class or an interface.
-*/
+ * This code piece represents the end of a class or an interface.
+ *
+ * JavaRE - Code generation and reverse engineering for UML and Java´
+ *
+ * @author Marcus Andersson andersson@users.sourceforge.net
+ */
 public class ClassifierEndCodePiece extends NamedCodePiece
 {
     /** The curly bracket at the end. */
@@ -47,61 +47,73 @@ public class ClassifierEndCodePiece extends NamedCodePiece
     /**
        Constructor.
 
-       @param bracket The curly bracket at the end.
+       @param br The curly bracket at the end.
     */
-    public ClassifierEndCodePiece(CodePiece bracket)
-    {
-	this.bracket = bracket;
+    public ClassifierEndCodePiece(CodePiece br) {
+	bracket = br;
     }
 
     /**
-       Return the string representation for this piece of code.
-    */
+     * @see org.argouml.language.java.generator.CodePiece#getText()
+     * 
+     * Return the string representation for this piece of code.
+     */
     public StringBuffer getText()
     {
 	return bracket.getText();
     }
 
     /**
-       Return the start position.
-    */
+     * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
+     * 
+     * Return the start position.
+     */
     public int getStartPosition()
     {
 	return bracket.getStartPosition();
     }
 
     /**
-       Return the end position.
-    */
+     * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
+     * 
+     * Return the end position.
+     */
     public int getEndPosition()
     {
 	return bracket.getEndPosition();
     }
 
     /**
-       Return the start line
-    */
+     * @see org.argouml.language.java.generator.CodePiece#getStartLine()
+     * 
+     * Return the start line
+     */
     public int getStartLine()
     {
 	return bracket.getStartLine();
     }
 
     /**
-       Return the end line
-    */
+     * @see org.argouml.language.java.generator.CodePiece#getEndLine()
+     * 
+     * Return the end line
+     */
     public int getEndLine()
     {
 	return bracket.getEndLine();
     }
 
     /**
-       Write the code this piece represents to file. This removes one
-       layer from the stack and adds new inner classes and features
-       to the class or interface.
-    */
-    public void write (BufferedReader reader,
-                       BufferedWriter writer,
-                       Stack parseStateStack) throws Exception {
+     * @see org.argouml.language.java.generator.NamedCodePiece#write(
+     *         java.io.BufferedReader, java.io.BufferedWriter, java.util.Stack)
+     *
+     * Write the code this piece represents to file. This removes one
+     * layer from the stack and adds new inner classes and features
+     * to the class or interface.
+     */
+    public void write(BufferedReader reader,
+                      BufferedWriter writer,
+                      Stack parseStateStack) throws IOException {
         ParseState parseState = (ParseState) parseStateStack.pop();
         Object mClassifier = parseState.getClassifier();
         Vector newFeatures = parseState.getNewFeatures();
@@ -130,8 +142,9 @@ public class ClassifierEndCodePiece extends NamedCodePiece
             }
         }
 
-	StringBuffer sb = GeneratorJava.getInstance()
-	    .appendClassifierEnd (new StringBuffer (2), mClassifier, true);
+	StringBuffer sb = 
+	    GeneratorJava.getInstance()
+	        .appendClassifierEnd(new StringBuffer(2), mClassifier);
 	writer.write (sb.toString());
 	// fast forward original code (overwriting)
 	ffCodePiece(reader, null);

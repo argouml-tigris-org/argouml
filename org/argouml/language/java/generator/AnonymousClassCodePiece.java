@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,21 +22,19 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
-  JavaRE - Code generation and reverse engineering for UML and Java
-  Author: Marcus Andersson andersson@users.sourceforge.net
-*/
-
-
 package org.argouml.language.java.generator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Stack;
 
 /**
-   This code piece represents an anonymous class.
-*/
+ * This code piece represents an anonymous class.
+ * 
+ * JavaRE - Code generation and reverse engineering for UML and Java
+ * @author Marcus Andersson andersson@users.sourceforge.net
+ */
 public class AnonymousClassCodePiece extends NamedCodePiece
 {
     /** The code piece this class represents. */
@@ -48,64 +46,60 @@ public class AnonymousClassCodePiece extends NamedCodePiece
     /**
        Constructor.
 
-       @param classDef The code piece to represent.
-       @param number The sequence number of this anonymous class.
+       @param def The code piece to represent.
+       @param seqNumber The sequence number of this anonymous class.
     */
-    public AnonymousClassCodePiece(CodePiece classDef,
-                                   int number)
-    {
-	this.classDef = classDef;
-	this.number = number;
+    public AnonymousClassCodePiece(CodePiece def,
+                                   int seqNumber) {
+	classDef = def;
+	number = seqNumber;
     }
 
     /**
-       Return the string representation for this piece of code.
-    */
-    public StringBuffer getText()
-    {
+     * @return the string representation for this piece of code.
+     */
+    public StringBuffer getText() {
 	return classDef.getText();
     }
 
     /**
-       Return the start position.
-    */
-    public int getStartPosition()
-    {
+     * @return the start position.
+     */
+    public int getStartPosition() {
 	return classDef.getStartPosition();
     }
 
     /**
-       Return the end position.
-    */
-    public int getEndPosition()
-    {
+     * @return the end position.
+     */
+    public int getEndPosition() {
 	return classDef.getEndPosition();
     }
 
     /**
-	Return the start line
-    */
-    public int getStartLine()
-    {
+     * @return the start line
+     */
+    public int getStartLine() {
 	return classDef.getStartLine();
     }
 
     /**
-	Return the end line
-    */
-    public int getEndLine()
-    {
+     * @return the end line
+     */
+    public int getEndLine() {
 	return classDef.getEndLine();
     }
 
     /**
-       Write the code this piece represents to file. This will add a
-       new level to the tree stacks.
-    */
+     * @see org.argouml.language.java.generator.NamedCodePiece#write(
+     *         java.io.BufferedReader, java.io.BufferedWriter, java.util.Stack)
+     *
+     * Write the code this piece represents to file. This will add a
+     * new level to the tree stacks.
+     */
     public void write(BufferedReader reader,
                       BufferedWriter writer,
-                      Stack parseStateStack) throws Exception
-    {
+                      Stack parseStateStack) throws IOException {
         ParseState parseState = (ParseState) parseStateStack.peek();
         Object mClass = /*(MClass)*/
             parseState.newClassifier((new Integer(number)).toString());

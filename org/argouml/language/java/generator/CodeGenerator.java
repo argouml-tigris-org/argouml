@@ -22,15 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
-  JavaRE - Code generation and reverse engineering for UML and Java
-  Author: Marcus Andersson andersson@users.sourceforge.net
-*/
-
 package org.argouml.language.java.generator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Stack;
 import java.util.Collection;
 import java.util.Iterator;
@@ -41,6 +37,10 @@ import org.argouml.model.ModelFacade;
  * This helper class generates CodePiece based code.
  * It needs some work. See issue
  * http://argouml.tigris.org/issues/show_bug.cgi?id=435
+ * 
+ * JavaRE - Code generation and reverse engineering for UML and Java.
+ *
+ * @author Marcus Andersson andersson@users.sourceforge.net
  */
 class CodeGenerator {
     /**
@@ -52,7 +52,7 @@ class CodeGenerator {
     public static void generateClass(Object/*MClass*/ mClass,
 				     BufferedReader reader,
 				     BufferedWriter writer)
-	throws Exception {
+	throws IOException {
 
 	ClassCodePiece ccp =
 	    new ClassCodePiece(null, ModelFacade.getName(mClass));
@@ -99,12 +99,12 @@ class CodeGenerator {
     public static void generateInterface(Object mInterface,
 					 BufferedReader reader,
 					 BufferedWriter writer)
-	throws Exception
-    {
+	throws IOException {
 	InterfaceCodePiece icp =
 	    new InterfaceCodePiece(null, ModelFacade.getName(mInterface));
 	Stack parseStateStack = new Stack();
-	parseStateStack.push(new ParseState(ModelFacade.getNamespace(mInterface)));
+	parseStateStack.push(
+	        new ParseState(ModelFacade.getNamespace(mInterface)));
 	icp.write(reader, writer, parseStateStack);
 
 	writer.write("{\n");
@@ -149,7 +149,7 @@ class CodeGenerator {
 					 Object mClassifier,
 					 BufferedReader reader,
 					 BufferedWriter writer)
-	throws Exception {
+	throws IOException {
 
 	OperationCodePiece ocp =
 	    new OperationCodePiece(new SimpleCodePiece(new StringBuffer(),
@@ -181,7 +181,7 @@ class CodeGenerator {
 					 Object mClassifier,
 					 BufferedReader reader,
 					 BufferedWriter writer)
-	throws Exception {
+	throws IOException {
 
 	Vector names = new Vector();
 	StringBuffer sbName = new StringBuffer(ModelFacade.getName(mAttribute));

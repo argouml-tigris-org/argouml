@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,29 +22,26 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
-
-/*
-  JavaRE - Code generation and reverse engineering for UML and Java
-  Author: Marcus Andersson andersson@users.sourceforge.net
-*/
-
-
 package org.argouml.language.java.generator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.util.Stack;
 import java.util.Vector;
 import java.util.Iterator;
 import org.argouml.model.ModelFacade;
 
 /**
-   This code piece represents an attribute. Even though the code can
-   handle several attributes in the same statement, the code generated
-   will be separate statements and initialization code for all but the
-   last will be removed.
-*/
+ * This code piece represents an attribute. Even though the code can
+ * handle several attributes in the same statement, the code generated
+ * will be separate statements and initialization code for all but the
+ * last will be removed.
+ *
+ * JavaRE - Code generation and reverse engineering for UML and Java
+ *
+ * @author Marcus Andersson andersson@users.sourceforge.net
+ */
 public class AttributeCodePiece extends NamedCodePiece
 {
     /** The code piece this attribute represents. */
@@ -52,10 +49,6 @@ public class AttributeCodePiece extends NamedCodePiece
 
     /** The names of declared attributes. */
     private Vector attributeNames;
-
-    /** Indicating that the type name is fully qualified in the
-        original source code. */
-    private boolean typeFullyQualified;
 
     /**
        Constructor.
@@ -85,58 +78,63 @@ public class AttributeCodePiece extends NamedCodePiece
 		attributeNames.add(cpText);
 	    }
 	}
-	typeFullyQualified = (type.getText().toString().indexOf('.') != -1);
     }
 
     /**
-       Return the string representation for this piece of code.
-    */
-    public StringBuffer getText()
-    {
+     * @see org.argouml.language.java.generator.CodePiece#getText()
+     *
+     * Return the string representation for this piece of code.
+     */
+    public StringBuffer getText() {
 	return attributeDef.getText();
     }
 
     /**
-       Return the start position.
-    */
-    public int getStartPosition()
-    {
+     * @see org.argouml.language.java.generator.CodePiece#getStartPosition()
+     *
+     * Return the start position.
+     */
+    public int getStartPosition() {
 	return attributeDef.getStartPosition();
     }
 
     /**
-       Return the end position.
-    */
-    public int getEndPosition()
-    {
+     * @see org.argouml.language.java.generator.CodePiece#getEndPosition()
+     * 
+     * Return the end position.
+     */
+    public int getEndPosition() {
 	return attributeDef.getEndPosition();
     }
 
     /**
-       Return the start line
-    */
-    public int getStartLine()
-    {
+     * @see org.argouml.language.java.generator.CodePiece#getStartLine()
+     * 
+     * Return the start line
+     */
+    public int getStartLine() {
 	return attributeDef.getStartLine();
     }
 
     /**
-       Return the end line
-    */
-    public int getEndLine()
-    {
+     * @see org.argouml.language.java.generator.CodePiece#getEndLine()
+     * 
+     * Return the end line
+     */
+    public int getEndLine() {
 	return attributeDef.getEndLine();
     }
 
     /**
-       Write the code this piece represents to file.
-       (Does not check for uniqueness of names.)
-    */
+     * @see org.argouml.language.java.generator.NamedCodePiece#write(
+     *         java.io.BufferedReader, java.io.BufferedWriter, java.util.Stack)
+     *
+     * Write the code this piece represents to file.
+     * (Does not check for uniqueness of names.)
+     */
     public void write(BufferedReader reader,
                       BufferedWriter writer,
-                      Stack parseStateStack)
-	throws Exception
-    {
+                      Stack parseStateStack) throws IOException {
 	ParseState parseState = (ParseState) parseStateStack.peek();
 	Vector features = parseState.getNewFeatures();
 	int k = 1, count = attributeNames.size();
@@ -149,7 +147,8 @@ public class AttributeCodePiece extends NamedCodePiece
 	    // now find the matching feature
 	    for (j = features.iterator(); j.hasNext();) {
 		Object mFeature = /*(MFeature)*/ j.next();
-		if (ModelFacade.isAAttribute(mFeature) && ModelFacade.getName(mFeature).equals(name)) {
+		if (ModelFacade.isAAttribute(mFeature) 
+		        && ModelFacade.getName(mFeature).equals(name)) {
 		    // feature found, so it's an attribute (and no
 		    // association end)
 		    found = true;
@@ -175,19 +174,27 @@ public class AttributeCodePiece extends NamedCodePiece
 		    // now find the first matching association end
 		    for (j = ends.iterator(); j.hasNext(); ) {
 			Object associationEnd = /*(MAssociationEnd)*/ j.next();
-			Object association = ModelFacade.getAssociation(associationEnd);
-			Iterator connEnum = ModelFacade.getConnections(association).iterator();
+			Object association = 
+			    ModelFacade.getAssociation(associationEnd);
+			Iterator connEnum = 
+			    ModelFacade.getConnections(association).iterator();
 			while (connEnum.hasNext()) {
 			    Object associationEnd2 =
 				/*(MAssociationEnd)*/ connEnum.next();
 			    if (associationEnd2 != associationEnd
 				&& ModelFacade.isNavigable(associationEnd2)
-				&& !ModelFacade.isAbstract(ModelFacade.getAssociation(associationEnd2))
-				&& generator().generateAscEndName(associationEnd2).equals(name))
+				&& !ModelFacade.isAbstract(
+				        ModelFacade.getAssociation(
+				                associationEnd2))
+				&& generator().generateAscEndName(
+				        associationEnd2)
+				        .equals(name))
 			    {
 				// association end found
 				found = true;
-				writer.write(generator().generateCoreAssociationEnd(associationEnd2));
+				writer.write(
+				        generator().generateCoreAssociationEnd(
+				                associationEnd2));
 				break;
 			    }
 			}

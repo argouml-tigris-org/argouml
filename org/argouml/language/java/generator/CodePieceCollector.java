@@ -22,19 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
-  taken from:
-  JavaRE - Code generation and reverse engineering for UML and Java
-  Author: Marcus Andersson andersson@users.sourceforge.net
-*/
-
-
 package org.argouml.language.java.generator;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
@@ -46,9 +40,15 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 
 /**
-   This class collects pieces of code when a source file is parsed,
-   and then updates the file with new code from the model.
-*/
+ * This class collects pieces of code when a source file is parsed,
+ * and then updates the file with new code from the model.
+ *
+ * taken from:
+ * 
+ * JavaRE - Code generation and reverse engineering for UML and Java.
+ *
+ * @author Marcus Andersson andersson@users.sourceforge.net
+ */
 public class CodePieceCollector {
     /** Code pieces the parser found. */
     private Vector codePieces;
@@ -89,13 +89,15 @@ public class CodePieceCollector {
      * @param source The source file.
      * @param destination The destination file.
      * @param mNamespace The package the source belongs to.
+     * @throws IOException if we cannot write or read from the files.
      */
     public void filter(File source,
                        File destination,
-                       Object/*MNamespace*/ mNamespace) throws Exception {
+                       Object/*MNamespace*/ mNamespace) throws IOException {
 	String encoding = null;
 	if (Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null 
-	    || Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals("")) {
+	    || Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING)
+	    	.trim().equals("")) {
 	    encoding = System.getProperty("file.encoding");
 	} else {
 	    encoding = Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
