@@ -45,7 +45,7 @@ public class Configuration {
     // Instance variables
 
     /** Define a static log4j category variable for ArgoUML configuration.
-     * @deprecated in favor of {@link #getLogger() }
+     * @deprecated  public access - will become private
      */
     public static final Logger cat = 
 	Logger.getLogger("org.argouml.application.configuration");
@@ -407,11 +407,5 @@ public class Configuration {
 	return new ConfigurationKeyImpl(k1, k2, k3, k4, k5);
     }
 
-    /** Returns the logger.
-     * @return the logger.
-     */
-    public final static Logger getLogger() {
-        return cat;
-    }
 }
 
