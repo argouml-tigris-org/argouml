@@ -80,7 +80,7 @@ public class ActionAddExistingEdge extends UMLAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        Object target = TargetManager.getInstance().getTarget();
+        Object target = TargetManager.getInstance().getModelTarget();
         ArgoDiagram dia = ProjectManager.getManager().getCurrentProject().
             getActiveDiagram();
         if (dia == null) return false;
