@@ -24,29 +24,42 @@
 
 package org.argouml.language.php.generator;
 
-import org.argouml.uml.generator.AbstractSection;
+import org.apache.log4j.Logger;
 
 /**
- * Code section handling for PHP
- *
- * @author  Kai Schröder, k.schroeder@php.net
- * @since   ArgoUML 0.15.5
+ * Generator class for PHP 5.x source code
+ * 
+ * @author Kai Schröder
+ * @since  ArgoUML 0.15.5
  */
-public class Section extends AbstractSection {
+public final class GeneratorPHP5 extends GeneratorPHP4 {
     /**
-     * Generates section
-     *
-     * @param sId     section identifier
-     * @param sIndent indention string
-     *
-     * @return section
+     * The log4j logger to log messages to
      */
-    public static String generate(String sId, String sIndent) {
-        String sSection = "";
-
-        sSection += sIndent + sIndent + "// section " + sId + " begin\n";
-        sSection += sIndent + sIndent + "// section " + sId + " end\n";
-
-        return sSection;
+    private static final Logger LOG = Logger.getLogger(GeneratorPHP5.class);
+    
+    /**
+     * The major version of the language this module generates source code for
+     */
+    private static final int LANGUAGE_MAJOR_VERSION = 5;
+    
+    // ----- class constructor -------------------------------------------------
+        
+    /**
+     * Zero-argument class constructor
+     */
+    private GeneratorPHP5() {
+        super(LANGUAGE_MAJOR_VERSION);
+    }
+    
+    // ----- org.argouml.application.api.ArgoModule ----------------------------
+    
+    /**
+     * Gets version of this module
+     * 
+     * @see org.argouml.application.api.ArgoModule#getModuleVersion()
+     */
+    public String getModuleVersion() {
+        return "0.0.1";
     }
 }
