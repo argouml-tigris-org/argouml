@@ -375,6 +375,7 @@ public class FigInterface extends FigNodeModelElement {
 	    f = (Fig)v.elementAt(i+1);
 		((CompartmentFigText)f).setHighlighted(true);
 		highlightedFigText = (CompartmentFigText)f;
+		ProjectBrowser.TheInstance.setTarget(f);
 	  }
 	}
 	if (targetIsSet == false)
@@ -461,7 +462,7 @@ public class FigInterface extends FigNodeModelElement {
 	if (i != -1) {
 	  highlightedFigText = (CompartmentFigText)ft;
 	  highlightedFigText.setHighlighted(true);
-	  ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)highlightedFigText.getFeature(),highlightedFigText.getText().trim());
+	  ParserDisplay.SINGLETON.parseOperationFig(cls,(MOperation)highlightedFigText.getOwner(),highlightedFigText.getText().trim());
 	  return;
 	}
   }
@@ -556,7 +557,7 @@ public class FigInterface extends FigNodeModelElement {
 		  oper = (CompartmentFigText)figs.elementAt(ocounter);
 	    }
 	    oper.setText(Notation.generate(this,bf));
-	    oper.setFeature(bf);
+	    oper.setOwner(bf);
 	    // underline, if static
 	    oper.setUnderline(MScopeKind.CLASSIFIER.equals(bf.getOwnerScope()));
 	    // italics, if abstract

@@ -234,7 +234,7 @@ public class CompartmentFigText extends FigText
      */
 
     public void setFeature(MFeature feature) {
-        setModelElement(feature);
+        setOwner(feature);
     }
 
 
@@ -248,14 +248,14 @@ public class CompartmentFigText extends FigText
      * @return  The feature associated with this compartment or 
      * 		null if none can be found.
      *
-     * @deprecated  Use the more general {@link #getModelElement()} instead.
+     * @deprecated  Use the more general {@link #getOwner()} instead.
      */
 
     public MFeature getFeature() {
-        MModelElement modelElement = getModelElement();
+        MModelElement modelElement = (MModelElement)getOwner();
 
         if (modelElement instanceof MFeature) {
-            return (MFeature) modelElement;
+            return (MFeature) getOwner();
         }
         else {
             return null;
@@ -267,11 +267,13 @@ public class CompartmentFigText extends FigText
      * <p>Set the NSUML model element associated with this compartment.</p>
      *
      * @param modelElement  The model element to set.
+     * 
+     * @deprecated use the more general setOwner
      */
 
     public void setModelElement(MModelElement modelElement) {
 
-        _modelElement = modelElement;
+        setOwner(modelElement);
     }
 
 
@@ -279,11 +281,13 @@ public class CompartmentFigText extends FigText
      * <p>Get the NSUML modelElement associated with this compartment.</p>
      *
      * @return  The modelElement associated with this compartment.
+     * 
+     * @deprecated use getOwner()
      */
 
     public MModelElement getModelElement() {
 
-        return _modelElement;
+        return (MModelElement)getOwner();
     }
 
 } /* End of class CompartmentFigText */
