@@ -257,8 +257,8 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     public int getQuadrant() { return Q_TOP_RIGHT; }
     
     /**
-     * Removes all figs from all diagrams for some object obj including the obj itself if it is the
-     * owner of some fig.
+     * Removes all figs from all diagrams for some object obj. Does not remove 
+     * the owner of the objects (does not do a call to dispose).
      * @param obj
      */
     public void removePresentationFor(Object obj, Vector diagrams) {
@@ -273,11 +273,14 @@ implements ChangeListener, MouseListener, QuadrantPanel {
                     Diagram diagram = (Diagram)it.next();
                     Fig aFig = diagram.presentationFor(obj);
                     if (aFig != null) {
-                        figsToRemove.add(new DiagramFigDeleter(aFig, diagram));
-                        // tabDia.getJGraph().setDiagram(diagram);
-                        // aFig.delete();
+                        // figsToRemove.add(new DiagramFigDeleter(aFig, diagram));
+                        tabDia.getJGraph().setDiagram(diagram);
+                        if (aFig.getOwner() == obj) {
+                            aFig.delete();
+                        }
                     }
     	       }
+               /*
                if (figsToRemove.size() >= 1) {
                     for (int j = 0; j < figsToRemove.size()-1 ; j++) {
                         Fig aFig = ((DiagramFigDeleter)figsToRemove.get(j)).fig;
@@ -288,7 +291,8 @@ implements ChangeListener, MouseListener, QuadrantPanel {
                     ((DiagramFigDeleter)figsToRemove.get(figsToRemove.size()-1)).fig.dispose();
                     tabDia.getJGraph().setDiagram((Diagram)oldDia);
                     break;
-    	       }     	
+    	       }  
+               */   	
     	   }
        }
     }

@@ -170,7 +170,7 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
     
     public void deletePartition(MPartition elem) {}
     
-    public void deleteSubActivityState(MSubactivityState elem) {}
+    public void deleteSubactivityState(MSubactivityState elem) {}
 
 }
 

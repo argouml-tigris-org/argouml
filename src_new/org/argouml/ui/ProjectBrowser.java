@@ -188,7 +188,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-    public ProjectBrowser() {new ProjectBrowser("Test",null,0);}
+   
 
     public ProjectBrowser(String appName, StatusBar sb, int theme) {
 	super(appName);

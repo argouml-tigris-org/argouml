@@ -99,9 +99,13 @@ public class ModelManagementFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
     
+    public void deleteElementImport(MElementImport elem) {}
+        
     public void deleteModel(MModel elem) {}
     
     public void deletePackage(MPackage elem) {}
     
-    public void deleteSubSystem(MSubsystem elem) {}
+    public void deleteSubsystem(MSubsystem elem) {}
+    
+    
 }

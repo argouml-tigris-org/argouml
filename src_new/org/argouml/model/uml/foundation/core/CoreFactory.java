@@ -96,6 +96,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @author Jaap Branderhorst
  */
 
 public class CoreFactory extends AbstractUmlModelFactory {
@@ -971,9 +972,32 @@ public class CoreFactory extends AbstractUmlModelFactory {
     
     public void deleteAssociation(MAssociation elem) {}
     
-    public void deleteAssociationClass(MAssociationClass elem) {}
+    public void deleteAssociationClass(MAssociationClass elem) {}       
     
-    public void deleteAssociationEnd(MAssociationEnd elem) {}
+    /**
+     * <p>
+     * Does a 'cascading delete' to all modelelements that are associated
+     * with this element that would be in an illegal state after deletion
+     * of the element. Does not do an cascading delete for elements that
+     * are deleted by the NSUML method remove. This method should not be called
+     * directly.
+     * </p>
+     * <p>
+     * In the case of an associationend these are the following elements:
+     * </p>
+     * <p>
+     * - Binary Associations that 'loose' one of the associationends by this
+     * deletion.
+     * </p>
+     * @param elem
+     * @see UmlFactory#delete(MBase)
+     */
+    public void deleteAssociationEnd(MAssociationEnd elem) {
+        MAssociation assoc = elem.getAssociation();
+        if (assoc.getConnections().size() == 2) { // binary association
+            UmlFactory.getFactory().delete(assoc);
+        }
+    }
     
     public void deleteAttribute(MAttribute elem) {}
     
@@ -983,7 +1007,30 @@ public class CoreFactory extends AbstractUmlModelFactory {
     
     public void deleteClass(MClass elem) {}
     
-    public void deleteClassifier(MClassifier elem) {}
+    /**
+     * <p>
+     * Does a 'cascading delete' to all modelelements that are associated
+     * with this element that would be in an illegal state after deletion
+     * of the element. Does not do an cascading delete for elements that
+     * are deleted by the NSUML method remove. This method should not be called
+     * directly.
+     * </p>
+     * <p>
+     * In the case of a classifier these are the following elements:
+     * </p>
+     * <p>
+     * - AssociationEnds that have this classifier as type
+     * </p>
+     * @param elem
+     * @see UmlFactory#delete(MBase)
+     */
+    public void deleteClassifier(MClassifier elem) {
+        Collection col = elem.getAssociationEnds();
+        Iterator it = col.iterator();
+        while (it.hasNext()) {
+            UmlFactory.getFactory().delete((MAssociationEnd)it.next());
+        }
+    }
     
     public void deleteComment(MComment elem) {}
     

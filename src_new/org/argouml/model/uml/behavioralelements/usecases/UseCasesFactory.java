@@ -269,9 +269,9 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      
      public void deleteInclude(MInclude elem) {}
      
-     public void deleteUsecase(MUseCase elem) {}
+     public void deleteUseCase(MUseCase elem) {}
      
-     public void deleteUsecaseInstance(MUseCaseInstance elem) {}
+     public void deleteUseCaseInstance(MUseCaseInstance elem) {}
 
 
 

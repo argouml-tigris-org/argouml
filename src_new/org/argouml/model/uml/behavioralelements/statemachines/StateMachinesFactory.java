@@ -315,7 +315,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     
     public void deleteGuard(MGuard elem) {}
     
-    public void deletePseudoState(MPseudostate elem) {}
+    public void deletePseudostate(MPseudostate elem) {}
     
     public void deleteSignalEvent(MSignalEvent elem) {}
     
@@ -329,7 +329,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     
     public void deleteStubState(MStubState elem) {}
     
-    public void deleteSubMachineState(MSubmachineState elem) {}
+    public void deleteSubmachineState(MSubmachineState elem) {}
     
     public void deleteSynchState(MSynchState elem) {}
     

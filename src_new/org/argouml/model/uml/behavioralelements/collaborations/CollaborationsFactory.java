@@ -309,9 +309,9 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     	return activator;
     }
     
-    public void deleteAssocationEndRole(MAssociationEndRole elem) {}
+    public void deleteAssociationEndRole(MAssociationEndRole elem) {}
     
-    public void deleteAssocationRole(MAssociationRole elem) {}
+    public void deleteAssociationRole(MAssociationRole elem) {}
     
     public void deleteClassifierRole(MClassifierRole elem) {}
     

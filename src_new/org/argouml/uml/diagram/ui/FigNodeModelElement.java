@@ -488,11 +488,38 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	    //if (_group != null) _group.recovered(mee);
 	}
 	public void removed(MElementEvent mee) {
-		cat.debug("deleting: "+this + mee);
-	    //if (_group != null) _group.removed(mee);
-	    // this.delete();
-	    this.delete();
+	   cat.debug("deleting: "+this + mee);
+	   Object o = mee.getSource(); 
+           if (isPartlyOwner(o)) {
+               updateBounds();
+                damage();
+                return;
+           } 
 	}
+    
+        protected boolean isPartlyOwner(Object o) {
+            if (o == null) return false;
+            if (o == getOwner()) return true;
+            Iterator it = getFigs().iterator();
+            while (it.hasNext()) {
+                Fig fig = (Fig)it.next();
+                if (isPartlyOwner(fig, o)) return true;
+            }
+            return false;
+        }
+        
+        protected boolean isPartlyOwner(Fig fig, Object o) {
+            if (o == null) return false;
+            if (o == fig.getOwner()) return true;
+            if (fig instanceof FigGroup) {
+                Iterator it = ((FigGroup)fig).getFigs().iterator();
+                while (it.hasNext()) {
+                    Fig fig2 = (Fig)it.next();
+                    if (isPartlyOwner(fig2, o)) return true;
+                }
+            }
+            return false;
+        }
 	public void roleAdded(MElementEvent mee) {
 	    //if (_group != null) _group.roleAdded(mee);
 	    modelChanged();

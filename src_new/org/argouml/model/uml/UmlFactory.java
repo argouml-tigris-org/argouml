@@ -125,6 +125,7 @@ import ru.novosoft.uml.foundation.core.MTemplateParameter;
 import ru.novosoft.uml.foundation.core.MUsage;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MElementImport;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MSubsystem;
@@ -278,6 +279,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * @param elem The element to be deleted
      */
     public void delete(MBase elem) {
+        if (elem == null) throw new IllegalArgumentException("Element may not be null in delete");
         if (elem instanceof MElement) {
             getCore().deleteElement((MElement)elem);
             if (elem instanceof MModelElement) {
@@ -307,7 +309,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
                 if (elem instanceof MAssociationEnd) {
                     getCore().deleteAssociationEnd((MAssociationEnd)elem);
                     if (elem instanceof MAssociationEndRole) {
-                        getCollaborations().deleteAssocationEndRole((MAssociationEndRole)elem);
+                        getCollaborations().deleteAssociationEndRole((MAssociationEndRole)elem);
                     }
                 } else
                 if (elem instanceof MComment) {
@@ -368,7 +370,10 @@ public class UmlFactory extends AbstractUmlModelFactory {
         } 
         if (elem instanceof MPartition) {
             getActivityGraphs().deletePartition((MPartition)elem);
-        }        
+        } else
+        if (elem instanceof MElementImport) {
+            getModelManagement().deleteElementImport((MElementImport)elem);
+        }       
        elem.remove();
     }
      
@@ -436,7 +441,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
                 getCollaborations().deleteClassifierRole((MClassifierRole)elem);
             } else  
             if (elem instanceof MUseCase) {
-                getUseCases().deleteUsecase((MUseCase)elem);
+                getUseCases().deleteUseCase((MUseCase)elem);
             } else
             if (elem instanceof MActor) {
                 getUseCases().deleteActor((MActor)elem);
@@ -454,8 +459,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
                 getModelManagement().deleteModel((MModel)elem);
             } else
             if (elem instanceof MSubsystem) {
-                getModelManagement().deleteSubSystem((MSubsystem)elem);
-            }
+                getModelManagement().deleteSubsystem((MSubsystem)elem);
+            }  
         }   
     }       
     
@@ -475,7 +480,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         if (elem instanceof MAssociation) {
             getCore().deleteAssociation((MAssociation)elem);
             if (elem instanceof MAssociationRole) {
-                getCollaborations().deleteAssocationRole((MAssociationRole)elem);
+                getCollaborations().deleteAssociationRole((MAssociationRole)elem);
             }
         } else
         if (elem instanceof MDependency) {
@@ -557,7 +562,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
             }
         } 
         if (elem instanceof MUseCaseInstance) {
-            getUseCases().deleteUsecaseInstance((MUseCaseInstance)elem);
+            getUseCases().deleteUseCaseInstance((MUseCaseInstance)elem);
         }
     }
     
@@ -569,7 +574,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
     private void deleteStateVertex(MStateVertex elem) {
         getStateMachines().deleteStateVertex(elem);
         if (elem instanceof MPseudostate) {
-            getStateMachines().deletePseudoState((MPseudostate)elem);
+            getStateMachines().deletePseudostate((MPseudostate)elem);
         } else
         if (elem instanceof MSynchState) {
             getStateMachines().deleteSynchState((MSynchState)elem);
@@ -582,9 +587,9 @@ public class UmlFactory extends AbstractUmlModelFactory {
             if (elem instanceof MCompositeState) {
                 getStateMachines().deleteCompositeState((MCompositeState)elem);
                 if (elem instanceof MSubmachineState) {
-                    getStateMachines().deleteSubMachineState((MSubmachineState)elem);
+                    getStateMachines().deleteSubmachineState((MSubmachineState)elem);
                     if (elem instanceof MSubactivityState) {
-                        getActivityGraphs().deleteSubActivityState((MSubactivityState)elem);
+                        getActivityGraphs().deleteSubactivityState((MSubactivityState)elem);
                     }
                 }                            
             } else
