@@ -95,7 +95,10 @@ implements ItemListener, DocumentListener {
     c.gridy = 3;
     gb.setConstraints(_lineLabel, c);
     add(_lineLabel);
-    //c.gridy = 4;
+    c.gridy = 4;
+    gb.setConstraints(_shadowLabel, c);
+    add(_shadowLabel);
+    //c.gridy = 5;
     //gb.setConstraints(_dashedLabel, c);
     //add(_dashedLabel);
 
