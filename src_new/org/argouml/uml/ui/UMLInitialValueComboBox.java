@@ -154,13 +154,14 @@ public class UMLInitialValueComboBox extends JComboBox
         if(eventProp.equals("owner")) return;
         
         if(eventProp.equals("type")) {
-            updateDefaults();
+            update();
         }
         // update for the name field is handled in UMLTextField.java
         else if(!eventProp.equals("name")){
             update();
         }
     } 
+    
 /** updates the diagram. It first has to locate it's target element and then
  *  causes the update to take place so that the diagram stays in synch with
  *  the model. needs-more-work method Parameters are not updated yet
@@ -177,18 +178,7 @@ public class UMLInitialValueComboBox extends JComboBox
             MClassifier classifier = (MClassifier) feature.getOwner();
             classifier.setFeatures(classifier.getFeatures());
         }
-    }
+    }   // ...end of update() method...
     
-// needs-more-work does not handle parameters yet.
-    private void updateDefaults() {
-        Object target = _container.getTarget();
-        if(target instanceof MAttribute) {
-//            Profile profile = _container.getProfile();
-            update();
-        }
-        if(target instanceof MParameter){
-            update();
-        }
-    }
 
 } //...end of class...
