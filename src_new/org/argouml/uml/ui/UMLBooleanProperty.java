@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+import java.beans.PropertyVetoException;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 
@@ -47,7 +48,7 @@ abstract public class UMLBooleanProperty  {
      *   @param element Element whose property will be changed.
      *   @param newState new state of property.
      */
-    abstract public void setProperty(Object element,boolean newState);
+    abstract public void setProperty(Object element,boolean newState) throws PropertyVetoException;
     
     /**
      *   Retreives current state of property.

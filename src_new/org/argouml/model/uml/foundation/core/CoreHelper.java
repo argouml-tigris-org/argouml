@@ -23,6 +23,7 @@
 
 package org.argouml.model.uml.foundation.core;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -52,6 +53,7 @@ import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
  * 
  * @since ARGO0.11.2
  * @author Thierry Lach
+ * @author Jaap Branderhorst
  */
 public class CoreHelper {
 
@@ -341,62 +343,6 @@ public class CoreHelper {
 		newReturnParameter.setKind(MParameterDirectionKind.RETURN);
 		operation.addParameter(0, newReturnParameter);
 	}
-	
-	/**
-	 * Checks for welformdness of a given name for an associationend
-	 */
-	public boolean welformedAssociationEndName(MAssociationEnd modelelement, Object name) {
-		Iterator it = modelelement.getAssociation().getConnections().iterator();
-        while (it.hasNext()) {
-        	MAssociationEnd otherend = ((MAssociationEnd)it.next());
-        	if (otherend.getName() != null && otherend.getName().equals(name)) {
-        		return false;
-        	}
-        }
-        return true;
-	}
-	
-	/**
-	 * Checks for welformdness of a given aggregation for an associationend
-	 */
-	public boolean welformedAssociationEndAggregation(MAssociationEnd modelelement, Object aggregation) {
-		if (aggregation.equals(MAggregationKind.NONE)) return true;
-		Collection ends = modelelement.getAssociation().getConnections();
-		if (ends.size() > 2) return false;
-		Iterator it = ends.iterator();
-		int counter = 0;
-		while (it.hasNext()) {
-			MAssociationEnd end = (MAssociationEnd)it.next();
-			if (!modelelement.equals(end) && !(end.getAggregation().equals(MAggregationKind.NONE))) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	/**
-	 * Checks for welformdness of the namespace for an associationend
-	 */
-	public boolean welformedAssociationEndNamespace(MAssociationEnd modelelement, Object namespace) {
-		if (namespace instanceof MNamespace) {
-		MAssociation assoc = modelelement.getAssociation();
-		if (assoc != null && assoc.getNamespace().equals(namespace)) {
-			return true;
-		}
-		}
-		return false;
-	}
-	
-	/**
-	 * Checks for welformdness of the namespace for an association
-	 */
-	public boolean welformedAssociationNamespace(MAssociation assoc, MClassifier type) {
-		if (assoc.getNamespace().equals(type.getNamespace())) {
-			return true;
-		}
-		return false;
-	}
-	
 	
 }
 

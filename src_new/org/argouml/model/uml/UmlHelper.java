@@ -23,6 +23,8 @@
 
 package org.argouml.model.uml;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -169,6 +171,31 @@ public class UmlHelper {
      */
     public ModelManagementHelper getModelManagement() {
         return ModelManagementHelper.getHelper();
+    }
+    
+	/**
+	 * Returns the correct helper on basis of the package of base
+	 * @param base
+	 * @return Object the helper
+	 */
+    public Object getHelper(Object base) {
+    	if (base instanceof MBase) {
+	    	String name = base.getClass().getName();
+	    	name = name.substring(0, name.lastIndexOf('.'));
+	    	name = name.substring(name.lastIndexOf('.')+1, name.length());
+	    	Method[] methods = this.getClass().getMethods();
+	    	for (int i = 0; i < methods.length; i++) {
+	    		String methodname = methods[i].getName();
+	    		if (methodname.toLowerCase().indexOf(name)>=0) {
+	    			try {
+						return methods[i].invoke(this, new Object[] {});
+					} catch (IllegalAccessException e) {
+					} catch (InvocationTargetException e) {
+					}
+	    		}
+	    	}
+    	}
+    	return null;
     }
     
 }
