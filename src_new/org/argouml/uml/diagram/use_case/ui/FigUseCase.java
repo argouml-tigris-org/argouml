@@ -919,8 +919,8 @@ public class FigUseCase extends FigNodeModelElement {
         public Point connectionPoint(Point anotherPt) {
             double rx = _w / 2;
             double ry = _h / 2;
-            double dx = anotherPt.x - _x;
-            double dy = anotherPt.y - _y;
+            double dx = anotherPt.x - (_x + rx);
+            double dy = anotherPt.y - (_y + ry);
             double dd = ry * ry * dx * dx + rx * rx * dy * dy;
             double mu = rx * ry / Math.sqrt(dd);
 
