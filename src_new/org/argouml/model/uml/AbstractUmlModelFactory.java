@@ -26,7 +26,7 @@ package org.argouml.model.uml;
 
 import org.apache.log4j.Category;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.uml.UUIDManager;
 
 import ru.novosoft.uml.MBase;
@@ -111,8 +111,9 @@ public abstract class AbstractUmlModelFactory {
             UmlModelEventPump pump = UmlModelEventPump.getPump();
             ((MBase)base).addMElementListener(pump);
             if (guiEnabled) {
-                ((MBase)base).addMElementListener(ProjectBrowser.getInstance()
-					 .getNavigatorPane());
+                // TODO - we have the business layer with knowledge of GUI here
+                // must resolve this.
+                ((MBase)base).addMElementListener(NavigatorPane.getInstance());
             }
             ((MBase)base).addMElementListener(UmlModelListener.getInstance());
         }

@@ -150,6 +150,12 @@ public class NavigatorPane
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    private static NavigatorPane INSTANCE = new NavigatorPane();
+    
+    public static NavigatorPane getInstance() {
+        return INSTANCE;
+    }
+    
     /**
      * Constructs a new navigator panel.
      * 
@@ -159,8 +165,22 @@ public class NavigatorPane
      * and a configuration dialog to tailor the perspectives (but this
      * is not saved).
      */
+    private NavigatorPane() {
+        this(SplashScreen.getDoSplash());
+    }
+    
+    /**
+     * Constructs a new navigator panel.
+     * 
+     * <p>This panel consists of a Combobox to select a navigation
+     * perspective, a JTree to display the UML model, some history
+     * (back and forward arrows) buttons that are currently disabled,
+     * and a configuration dialog to tailor the perspectives (but this
+     * is not saved).
+     * @deprecated 0.15 delete in 0.16 use NavigatorPane.getInstance()
+     * instead.
+     */
     public NavigatorPane(boolean doSplash) {
-
         _combo = new JComboBox();
         _tree = new DnDNavigatorTree();
         TargetManager.getInstance().addTargetListener(_tree);

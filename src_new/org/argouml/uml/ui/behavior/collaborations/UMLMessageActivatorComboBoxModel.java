@@ -29,7 +29,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /**

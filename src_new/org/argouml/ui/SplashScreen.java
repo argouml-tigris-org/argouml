@@ -32,20 +32,16 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.border.EtchedBorder;
-import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.ui.IStatusBar;
 
-// import org.tigris.gef.util.*;
-
 // JWindow? I don't want a frame or close widgets
-public class SplashScreen extends JWindow
-    implements IStatusBar 
-{
+public class SplashScreen extends JWindow implements IStatusBar {
 
     protected StatusBar _statusBar = new StatusBar();
 
     static private SplashScreen INSTANCE = new SplashScreen("Loading ArgoUML...", "Splash");
 
+    static private boolean _doSplash;
     static public SplashScreen getInstance() {
         return INSTANCE;
     }
@@ -59,7 +55,6 @@ public class SplashScreen extends JWindow
 
 	setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	getContentPane().setLayout(new BorderLayout(0, 0));
-	//splashButton.setMargin(new Insets(0, 0, 0, 0));
 
 	SplashPanel panel = new SplashPanel(iconName);
 	if (panel.getImage() != null) {
@@ -78,10 +73,8 @@ public class SplashScreen extends JWindow
 	// add preloading progress bar?
 	Dimension contentPaneSize = getContentPane().getPreferredSize();
 	setSize(contentPaneSize.width, contentPaneSize.height);
-	//setResizable(false);
 	pack();
     }
-
 
     public void preload(Vector classnames) {
 	//preload classes?
@@ -97,5 +90,12 @@ public class SplashScreen extends JWindow
     public void setVisible(boolean b) {
 	super.setVisible(b);
     }
-
+    
+    public static void setDoSplash(boolean doSplash) {
+        _doSplash = doSplash;
+    }
+    
+    public static boolean getDoSplash() {
+        return _doSplash;
+    }
 } /* end class SplashScreen */

@@ -445,8 +445,7 @@ public class NavigatorConfigDialog extends JDialog
     }
 
     public void doOk() {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	NavigatorPane np = ProjectBrowser.getInstance().getNavigatorPane();
+	NavigatorPane np = NavigatorPane.getInstance();
 	//np.setPerspectives(NavPerspective.getRegisteredPerspectives());
 	np.updateTree();
 	setVisible(false);

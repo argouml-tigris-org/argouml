@@ -37,7 +37,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.swingext.Orientation;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 
 public class ConfigLoader {

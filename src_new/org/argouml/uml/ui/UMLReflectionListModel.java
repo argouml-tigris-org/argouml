@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -32,7 +31,7 @@ import java.util.Iterator;
 import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Category;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -249,7 +248,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 _setMethod.invoke(getContainer(), new Object[] {
 		    newCollection 
 		});
-                ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
+                NavigatorPane.getInstance().forceUpdate();
             }
 	    catch (InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveUp()", ex);
@@ -268,7 +267,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 _setMethod.invoke(getContainer(), new Object[] {
 		    newCollection 
 		});
-                ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
+                NavigatorPane.getInstance().forceUpdate();
             }
 	    catch (InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveDown() ", ex.getTargetException());
@@ -286,7 +285,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 _deleteMethod.invoke(getContainer(), new Object[] {
 		    new Integer(index) 
 		});
-                ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
+                NavigatorPane.getInstance().forceUpdate();
             }
 	    catch (InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.delete()", ex);
@@ -298,6 +297,5 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
     }
 
 }
-
 
 

@@ -178,6 +178,7 @@ public class ProjectBrowser
     private ProjectBrowser(String appName, boolean doSplash) {
         super(appName);
         TheInstance = this;
+        SplashScreen.setDoSplash(doSplash);
         if (doSplash) {
             _splash = SplashScreen.getInstance();
             _splash.getStatusBar().showStatus("Making Project Browser");
@@ -252,7 +253,8 @@ public class ProjectBrowser
 					      + "Explorer");
             _splash.getStatusBar().incProgress(5);
         }
-        _navPane = new NavigatorPane(doSplash);
+        //_navPane = new NavigatorPane(doSplash);
+        _navPane = NavigatorPane.getInstance();
         /* Work in progress here to allow multiple details panes with 
         ** different contents - Bob Tarling
         */
@@ -977,6 +979,8 @@ public class ProjectBrowser
     /**
      * Returns the navigatorpane. 
      * @return NavigatorPane The navigatorpane
+     * @deprecated 0.15 will be removed in 0.16 use 
+     * NavigatorPane.getInstance() instead
      */
     public NavigatorPane getNavigatorPane() {
         return _navPane;
