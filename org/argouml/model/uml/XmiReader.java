@@ -32,6 +32,8 @@ import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import ru.novosoft.uml.xmi.NsumlXmiReader;
+
 /**
  * A wrapper around the genuine XmiReader that provides public
  * access with no knowledge of actual UML implementation.

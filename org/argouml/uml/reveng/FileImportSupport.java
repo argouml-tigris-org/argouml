@@ -40,10 +40,10 @@ import javax.swing.filechooser.FileSystemView;
 
 import org.argouml.application.api.PluggableImport;
 import org.argouml.kernel.Project;
-import org.argouml.model.OsUtil;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.SuffixFilter;
+import org.argouml.util.osdep.OsUtil;
 import org.argouml.util.osdep.win32.Win32FileSystemView;
 import org.tigris.gef.base.Globals;
 

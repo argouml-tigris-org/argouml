@@ -30,7 +30,9 @@ import java.awt.Toolkit;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.InetAddress;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Iterator;
@@ -49,12 +51,13 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
+import org.argouml.application.security.ExitSecurityManager;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ExitSecurityManager;
+import org.argouml.model.UUIDManager;
 import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.Actions;
@@ -102,6 +105,7 @@ public class Main {
     public static void main(String args[]) {        
 
         checkJVMVersion();
+        checkHostsFile();
         
         // Force the configuration to load
         Configuration.load();
@@ -435,6 +439,24 @@ public class Main {
 	    System.exit(0);
         }
     }
+    
+    /**
+     * Check that we can get the InetAddress for localhost.
+     * This can fail on Unix if /etc/hosts is not correctly set up.
+     */
+    private static void checkHostsFile() {
+        try {
+            InetAddress address = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            System.err.println("ERROR: unable to get localhost information.");
+            e.printStackTrace(System.err);
+            System.err.println("On Unix systems this usually indicates that"
+                + "your /etc/hosts file is incorrectly setup.");
+            System.err.println("Stopping execution of ArgoUML.");
+            System.exit(0);
+        }
+    }
+    
 
     /** Add an element to the PostLoadActions list.
      * @param r a "Runnable" action

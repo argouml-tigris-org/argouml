@@ -31,10 +31,10 @@ import javax.swing.JOptionPane;
 
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
+import org.argouml.application.security.ExitSecurityManager;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ExitSecurityManager;
 import org.argouml.ui.ProjectBrowser;
 
 /**

@@ -24,7 +24,6 @@
 
 package org.argouml.application.security;
 
-import org.argouml.model.ExitSecurityException;
 
 /** 
  * Argo Awt Exception handler.
