@@ -85,6 +85,7 @@ import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerDiagram;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -1527,7 +1528,8 @@ public abstract class FigNodeModelElement
         shadowSize = 0;
         
         // This partly solves issue 3042.
-        this.getLayer().remove(this);
+        Layer l = this.getLayer();
+        if (l != null) l.remove(this);
         
         super.removeFromDiagram();
     }
