@@ -36,7 +36,7 @@ import java.awt.event.*;
  */
 public class ActionAutoResize extends UMLAction {
 
-    private static boolean _autoResize = true;
+    private static boolean _autoResize = false;
   
     public ActionAutoResize() {
         super(Argo.localize(Argo.MENU_BUNDLE,"Toggle Auto Resizing"), 
