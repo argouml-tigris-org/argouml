@@ -26,6 +26,10 @@
 // Original Author: abonner
 // $Id$
 
+// 21 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Fix for ever
+// increasing vertical size of classes with stereotypes (issue 745).
+
+
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.*;
@@ -51,88 +55,240 @@ import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.ui.*;
 
-/** Class to display graphics for a UML Class in a diagram. */
+/**
+ * <p>Class to display graphics for a UML Class in a diagram.</p>
+ */
 
 public class FigClass extends FigNodeModelElement {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
+    ////////////////////////////////////////////////////////////////
+    // constants
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected FigGroup _attrVec;
-  protected FigGroup _operVec;
-  protected FigRect _attrBigPort;
-  protected FigRect _operBigPort;
-  protected FigRect _stereoLineBlinder;
-  public MElementResidence resident = new MElementResidenceImpl();
+    /**
+     * <p>The vector of graphics for attributes (if any). First one is the
+     *   rectangle for the entire attributes box.</p>
+     */
 
-  protected CompartmentFigText highlightedFigText = null;
+    protected FigGroup _attrVec;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
 
-  public FigClass() {
-    _name.setLineWidth(1);
-    _name.setFilled(true);
+    /**
+     * <p>The vector of graphics for operations (if any). First one is the
+     *   rectangle for the entire operations box.</p>
+     */
 
-    // this rectangle marks the attribute section; all attributes are inside it:
-    _attrBigPort = new FigRect(10, 30, 60, ROWHEIGHT+2, Color.black, Color.white);
-    _attrBigPort.setFilled(true);
-    _attrBigPort.setLineWidth(1);
+    protected FigGroup _operVec;
 
-    _attrVec = new FigGroup();
-    _attrVec.setFilled(true);
-    _attrVec.setLineWidth(1);
-    _attrVec.addFig(_attrBigPort);
 
-    // this rectangle marks the operation section; all operations are inside it:
-    _operBigPort = new FigRect(10, 31+ROWHEIGHT, 60, ROWHEIGHT+2, Color.black, Color.white);
-    _operBigPort.setFilled(true);
-    _operBigPort.setLineWidth(1);
+    /**
+     * <p>The rectangle for the entire attribute box.</p>
+     */
 
-    _operVec = new FigGroup();
-    _operVec.setFilled(true);
-    _operVec.setLineWidth(1);
-    _operVec.addFig(_operBigPort);
+    protected FigRect _attrBigPort;
 
-    _stereo.setExpandOnly(true);
-    _stereo.setFilled(true);
-    _stereo.setLineWidth(1);
-    _stereo.setEditable(false);
-    _stereo.setHeight(STEREOHEIGHT+1); // +1 to have 1 pixel overlap with _name
-    _stereo.setDisplayed(false);
 
-    _stereoLineBlinder = new FigRect(11, 10+STEREOHEIGHT, 58, 2, Color.white, Color.white);
-    _stereoLineBlinder.setLineWidth(1);
-    //_stereoLineBlinder.setFilled(true);
-    _stereoLineBlinder.setDisplayed(false);
+    /**
+     * <p>The rectangle for the entire operations box.</p>
+     */
 
-    suppressCalcBounds = true;
-    addFig(_bigPort);
-    addFig(_stereo);
-    addFig(_name);
-    addFig(_stereoLineBlinder);
-    addFig(_attrVec);
-    addFig(_operVec);
-    suppressCalcBounds = false;
+    protected FigRect _operBigPort;
 
-    setBounds(10, 10, 60, 22+2*ROWHEIGHT);
-  }
 
-  public FigClass(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-    // If this figure is created for an existing class node in the
-    // metamodel, set the figure's name according to this node. This is
-    // used when the user click's on 'add to diagram' in the navpane.
-    // Don't know if this should rather be done in one of the super
-    // classes, since similar code is used in FigInterface.java etc.
-    // Andreas Rueckert <a_rueckert@gmx.net>
-    if (node instanceof MClassifier && (((MClassifier)node).getName() != null))
+    /**
+     * <p>A rectangle to blank out the line that would otherwise appear at the
+     *   bottom of the stereotype text box.</p>
+     */
+
+    protected FigRect _stereoLineBlinder;
+
+
+    /**
+     * <p>Manages residency of a class within a component on a deployment
+     *   diagram. Not clear why it is public, or even why it is an instance
+     *   variable (rather than local to the method).</p>
+     */
+
+    public MElementResidence resident = new MElementResidenceImpl();
+
+
+    /**
+     * <p>Text highlighted by mouse actions on the diagram.</p>
+     */
+
+    protected CompartmentFigText highlightedFigText = null;
+
+
+    /**
+     * <p>Flag to indicate that we have just been created. This is to fix the
+     *   problem with loading classes that have stereotypes already
+     *   defined.</p>
+     */
+
+    private boolean _newlyCreated = false;
+
+
+    ////////////////////////////////////////////////////////////////
+    // constructors
+
+    /**
+     * <p>Main constructor for a {@link FigClass}.</p>
+     *
+     * <p>Parent {@link FigNodeModelElement} will have created the main box
+     *   {@link #_bigPort} and its name {@link #_name} and stereotype (@link
+     *   #_stereo}. This constructor creates a box for the attributes and
+     *   operations.</p>
+     *
+     * <p>The properties of all these graphic elements are adjusted
+     *   appropriately. The main boxes are all filled and have outlines.</p>
+     *
+     * <p>For reasons I don't understand the stereotype is created in a box
+     *   with lines. So we have to created a blanking rectangle to overlay the
+     *   bottom line, and avoid four compartments showing.</p>
+     *
+     * <p>There is some complex logic to allow for the possibility that
+     *   stereotypes may not be displayed (unlike operations and attributes
+     *   this is not a standard thing for UML). Some care is needed to ensure
+     *   that additional space is not added, each time a stereotyped class is
+     *   loaded.</p>
+     *
+     * <p>There is a particular problem when loading diagrams with stereotyped
+     *   classes. Because we create a FigClass indicating the stereotype is not
+     *   displayed, we then add extra space for such classes when they are
+     *   first rendered. This ought to be fixed by correctly saving the class
+     *   dimensions, but that needs more work. The solution here is to use a
+     *   simple flag to indicate the FigClass has just been created.</p>
+     *
+     * <p><em>Warning</em>. Much of the graphics positioning is hard coded. The
+     *   overall figure is placed at location (10,10). The name compartment (in
+     *   the parent {@link FigNodeModelElement} is 21 pixels high. The
+     *   stereotype compartment is created 15 pixels high in the parent, but we
+     *   change it to 19 pixels, 1 more than ({@link #STEREOHEIGHT} here. The
+     *   attribute and operations boxes are created at 19 pixels, 2 more than
+     *   {@link #ROWHEIGHT}.</p>
+     */
+    
+    public FigClass() {
+
+        // Set name box. Note the upper line will be blanked out if there is
+        // eventually a stereotype above.
+
+        _name.setLineWidth(1);
+        _name.setFilled(true);
+
+        // this rectangle marks the attribute section; all attributes are
+        // inside it
+
+        _attrBigPort = new FigRect(10, 30, 60, ROWHEIGHT+2,
+                                   Color.black, Color.white);
+
+        _attrBigPort.setFilled(true);
+        _attrBigPort.setLineWidth(1);
+
+        // Attributes inside. First one is the attribute box itself.
+
+        _attrVec = new FigGroup();
+
+        _attrVec.setFilled(true);
+        _attrVec.setLineWidth(1);
+        _attrVec.addFig(_attrBigPort);
+
+        // this rectangle marks the operation section; all operations are
+        // inside it
+
+        _operBigPort = new FigRect(10, 31+ROWHEIGHT, 60, ROWHEIGHT+2,
+                                   Color.black, Color.white);
+
+        _operBigPort.setFilled(true);
+        _operBigPort.setLineWidth(1);
+
+        _operVec = new FigGroup();
+
+        _operVec.setFilled(true);
+        _operVec.setLineWidth(1);
+        _operVec.addFig(_operBigPort);
+
+        // Set properties of the stereotype box. Make it 1 pixel higher than
+        // before, so it overlaps the name box, and the blanking takes out both
+        // lines. Initially not set to be displayed, but this will be changed
+        // when we try to render it, if we find we have a stereotype.
+
+        _stereo.setExpandOnly(true);
+        _stereo.setFilled(true);
+        _stereo.setLineWidth(1);
+        _stereo.setEditable(false);
+        _stereo.setHeight(STEREOHEIGHT+1);
+        _stereo.setDisplayed(false);
+
+        // A thin rectangle to overlap the boundary line between stereotype
+        // and name. This is just 2 pixels high, and we rely on the line
+        // thickness, so the rectangle does not need to be filled. Whether to
+        // display is linked to whether to display the stereotype.
+
+        _stereoLineBlinder = new FigRect(11, 10+STEREOHEIGHT, 58, 2,
+                                         Color.white, Color.white);
+        _stereoLineBlinder.setLineWidth(1);
+        _stereoLineBlinder.setDisplayed(false);
+
+
+        // Mark this as newly created. This is to get round the problem with
+        // creating figs for loaded classes that had stereotypes. They are
+        // saved with their dimensions INCLUDING the stereotype, but since we
+        // pretend the stereotype is not visible, we add height the first time
+        // we render such a class. This is a complete fudge, and really we
+        // ought to address how class objects with stereotypes are saved. But
+        // that will be hard work.
+
+        _newlyCreated = true;
+
+        // Put all the bits together, suppressing bounds calculations until
+        // we're all done for efficiency.
+
+        suppressCalcBounds = true;
+
+        addFig(_bigPort);
+        addFig(_stereo);
+        addFig(_name);
+        addFig(_stereoLineBlinder);
+        addFig(_attrVec);
+        addFig(_operVec);
+        
+        suppressCalcBounds = false;
+
+        // Set the bounds of the figure to the total of the above (hardcoded)
+
+        setBounds(10, 10, 60, 22+2*ROWHEIGHT);
+    }
+
+
+    /**
+     * <p>Constructor for use if this figure is created for an existing class
+     *   node in the metamodel.</p>
+     *
+     * <p>Set the figure's name according to this node. This is used when the
+     *   user click's on 'add to diagram' in the navpane.  Don't know if this
+     *   should rather be done in one of the super classes, since similar code
+     *   is used in FigInterface.java etc.  Andreas Rueckert
+     *   &lt;a_rueckert@gmx.net&gt;</p>
+     *
+     * @param gm   Not actually used in the current implementation
+     *
+     * @param node The UML object being placed.
+     */
+
+    public FigClass(GraphModel gm, Object node) {
+
+        this();
+        setOwner(node);
+
+        if ((node instanceof MClassifier) &&
+            (((MClassifier)node).getName() != null)) {
+
 	    _name.setText(((MModelElement)node).getName());
-  }
+        }
+    }
 
   public String placeString() { return "new Class"; }
 
@@ -160,8 +316,7 @@ public class FigClass extends FigNodeModelElement {
    * Build a collection of menu items relevant for a right-click popup menu on a Package.
    *
    * @param     me     a mouse event
-   * @return           a collection of menu items
-   */
+   * @return a collection of menu items */
   public Vector getPopUpActions(MouseEvent me) {
     Vector popUpActions = super.getPopUpActions(me);
     JMenu addMenu = new JMenu("Add");
@@ -268,34 +423,90 @@ public class FigClass extends FigNodeModelElement {
     }
   }
 
-  public Dimension getMinimumSize() {
-    Dimension aSize = _name.getMinimumSize();
-    int h = aSize.height;
-    int w = aSize.width;
-    if (aSize.height < 21)
-        aSize.height = 21;
-    if (_stereo.isDisplayed()) {
-      aSize.width = Math.max(aSize.width, _stereo.getMinimumSize().width);
-      aSize.height += STEREOHEIGHT;
+
+    /**
+     * <p>Gets the minimum size permitted for a class on the diagram.</p>
+     *
+     * <p>Parts of this are hardcoded, notably the fact that the name
+     *   compartment has a minimum height of 21 pixels.</p>
+     *
+     * @return  the size of the minimum bounding box.
+     */
+
+    public Dimension getMinimumSize() {
+
+        // Use "aSize" to build up the minimum size. Start with the size of the
+        // name compartment and build up.
+
+        Dimension aSize = _name.getMinimumSize();
+
+        int h = aSize.height;
+        int w = aSize.width;
+
+        // Ensure that the minimum height of the name compartment is at least
+        // 21 pixels (hardcoded).
+
+        if (aSize.height < 21) {
+            aSize.height = 21;
+        }
+
+        // If we have a stereotype displayed, then allow some space for that
+        // (width and height)
+
+        if (_stereo.isDisplayed()) {
+            aSize.width = Math.max(aSize.width,
+                                   _stereo.getMinimumSize().width);
+            aSize.height += STEREOHEIGHT;
+        }
+
+        // Allow space for each of the attributes we have
+
+        if (_attrVec.isDisplayed()) {
+
+            // Loop through all the attributes, to find the widest (remember
+            // the first fig is the box for the whole lot, so ignore it).
+
+            Enumeration enum = _attrVec.getFigs().elements();
+            enum.nextElement();  // ignore
+
+            while (enum.hasMoreElements()) {
+                int elemWidth =
+                    ((FigText)enum.nextElement()).getMinimumSize().width + 2;
+                aSize.width = Math.max(aSize.width, elemWidth);
+            }
+
+            // Height allows one row for each attribute (remember to ignore the
+            // first element.
+                                       
+            aSize.height += ROWHEIGHT * 
+                            Math.max(1, _attrVec.getFigs().size() -1 ) + 1;
+        }
+
+        // Allow space for each of the operations we have
+
+        if (_operVec.isDisplayed()) {
+
+            // Loop through all the operations, to find the widest (remember
+            // the first fig is the box for the whole lot, so ignore it).
+
+            Enumeration enum = _operVec.getFigs().elements();
+            enum.nextElement();  // ignore
+
+            while (enum.hasMoreElements()) {
+                int elemWidth =
+                    ((FigText)enum.nextElement()).getMinimumSize().width + 2;
+                
+                    aSize.width = Math.max(aSize.width, elemWidth);
+            }
+
+            aSize.height += ROWHEIGHT *
+                            Math.max(1, _operVec.getFigs().size() - 1) + 1;
+        }
+
+        // And now aSize has the answer
+
+        return aSize;
     }
-    if (_attrVec.isDisplayed()) {
-      // get minimum size of the attribute section
-      Enumeration enum = _attrVec.getFigs().elements();
-      enum.nextElement(); // _attrBigPort
-      while (enum.hasMoreElements())
-        aSize.width = Math.max(aSize.width,((FigText)enum.nextElement()).getMinimumSize().width+2);
-      aSize.height += ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+1;
-    }
-    if (_operVec.isDisplayed()) {
-      // get minimum size of the operation section
-      Enumeration enum = _operVec.getFigs().elements();
-      enum.nextElement(); // _operBigPort
-      while (enum.hasMoreElements())
-        aSize.width = Math.max(aSize.width,((FigText)enum.nextElement()).getMinimumSize().width+2);
-      aSize.height += ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1)+1;
-    }
-    return aSize;
-  }
 
   public void setFillColor(Color lColor) {
     super.setFillColor(lColor);
@@ -624,82 +835,186 @@ public class FigClass extends FigNodeModelElement {
     modelChanged();
   }
 
-  protected void updateStereotypeText() {
-    MModelElement me = (MModelElement) getOwner();
-    if (me == null)
-      return;
-	Rectangle rect = getBounds();
-    MStereotype stereo = me.getStereotype();
-    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) {
-	  if (! _stereo.isDisplayed())
-	    return;
-	  _stereoLineBlinder.setDisplayed(false);
-	  _stereo.setDisplayed(false);
-	  rect.y += STEREOHEIGHT;
-	  rect.height -= STEREOHEIGHT;
-    }
-    else {
-	  _stereo.setText(Notation.generateStereotype(this,stereo));
-	  if (!_stereo.isDisplayed()) {
-	    _stereoLineBlinder.setDisplayed(true);
-	    _stereo.setDisplayed(true);
-	    rect.y -= STEREOHEIGHT;
-	    rect.height += STEREOHEIGHT;
-	  }
-    }
-	setBounds(rect.x, rect.y, rect.width, rect.height);
-  }
+    protected void updateStereotypeText() {
 
-  /** sets the bounds, but the size will be at least the
-      one returned by getMinimunSize(); if the required
-      height is bigger, then the additional height is equally
-      distributed among all figs, such that the cumulated
-      height of all visible figs equals the demanded height
-  */
-  public void setBounds(int x, int y, int w, int h) {
+        MModelElement me = (MModelElement) getOwner();
+
+        if (me == null) {
+            return;
+        }
+
+	Rectangle   rect   = getBounds();
+        MStereotype stereo = me.getStereotype();
+
+        if ((stereo == null) ||
+            (stereo.getName() == null) ||
+            (stereo.getName().length() == 0)) {
+
+            if (_stereo.isDisplayed()) {
+                _stereoLineBlinder.setDisplayed(false);
+                _stereo.setDisplayed(false);
+                rect.y      += STEREOHEIGHT;
+                rect.height -= STEREOHEIGHT;
+            }
+        }
+        else {
+            _stereo.setText(Notation.generateStereotype(this,stereo));
+
+            if (!_stereo.isDisplayed()) {
+                _stereoLineBlinder.setDisplayed(true);
+                _stereo.setDisplayed(true);
+
+                // Only adjust the stereotype height if we are not newly
+                // created. This gets round the problem of loading classes with
+                // stereotypes defined, which have the height already including
+                // the stereotype.
+
+                if( !_newlyCreated ) {
+                    rect.y      -= STEREOHEIGHT;
+                    rect.height += STEREOHEIGHT;
+                }
+            }
+        }
+
+        // Whatever happened we are no longer newly created, so clear the
+        // flag. Then set the bounds for the rectangle we have defined.
+
+        _newlyCreated = false;
+	setBounds(rect.x, rect.y, rect.width, rect.height);
+    }
+
+
+    /** 
+     * <p>Sets the bounds, but the size will be at least the one returned by
+     *   {@link #getMinimunSize()}.</p> 
+     *
+     * <p>If the required height is bigger, then the additional height is
+     *   equally distributed among all figs (i.e. compartments), such that the
+     *   cumulated height of all visible figs equals the demanded height<p>.
+     *
+     * <p>Some of this has "magic numbers" hardcoded in. In particular there is
+     *   a knowledge that the minimum height of a name compartment is 21
+     *   pixels.</p> 
+     *
+     * @param x  Desired X coordinate of upper left corner
+     *
+     * @param y  Desired Y coordinate of upper left corner
+     *
+     * @param w  Desired width of the FigClass
+     *
+     * @param h  Desired height of the FigClass
+     */
+
+    public void setBounds(int x, int y, int w, int h) {
+
+        // Save our old boundaries (needed later), and get minimum size
+        // info. "aSize will be used to maintain a running calculation of our
+        // size at various points.
+
+        // "extra_each" is the extra height per displayed fig if requested
+        // height is greater than minimal. "height_correction" is the height
+        // correction due to rounded division result, will be added to the name
+        // compartment
+
 	Rectangle oldBounds = getBounds();
 	Dimension aSize = getMinimumSize();
+
 	int newW = Math.max(w,aSize.width);
 	int newH = h;
-	int extra_each = 0; // extra height per displayed fig if requested height is greater than minimal
-	int height_correction = 0; // height correction due to rounded division result, will be added to _name
 
-	//first compute all nessessary height data
-	if (newH < aSize.height) {
-		newH = aSize.height;
-	} else if (newH > aSize.height) {
-	    extra_each = newH - aSize.height;
+	int extra_each = 0;
+	int height_correction = 0;
+
+	// First compute all nessessary height data. Easy if we want less than
+        // the minimum
+
+	if (newH <= aSize.height) {
+
+            // Just use the mimimum
+
+            newH = aSize.height;
+
+	} else  {
+
+            // Split the extra amongst the number of displayed compartments
+
 	    int displayedFigs = 1; //this is for _name
-        if (_attrVec.isDisplayed())
+
+            if (_attrVec.isDisplayed()) {
 	        displayedFigs++;
-        if (_operVec.isDisplayed())
+            }
+
+            if (_operVec.isDisplayed()) {
 	        displayedFigs++;
-	    extra_each = extra_each / displayedFigs; // result might be rounded, so:
-	    height_correction = (newH - aSize.height) - (extra_each * displayedFigs); // will be added to _name only
+            }
+
+            // Calculate how much each, plus a correction to put in the name
+            // comparment if the result is rounded
+
+	    extra_each        = (newH - aSize.height) / displayedFigs;
+	    height_correction = (newH - aSize.height) -
+                                (extra_each * displayedFigs);
 	}
 
-	//now resize all sub-figs, including not displayed figs
-    int height = _name.getMinimumSize().height;
-    if (height < 21)
-        height = 21;
-    height += extra_each+height_correction;
-    int currentY = y;
-    if (_stereo.isDisplayed())
-        currentY += STEREOHEIGHT;
-    _name.setBounds(x,currentY,newW,height);
-	_stereo.setBounds(x,y,newW,STEREOHEIGHT+1);
-    _stereoLineBlinder.setBounds(x+1,y+STEREOHEIGHT,newW-2,2);
-    currentY += height-1; // -1 for 1 pixel overlap
-   	aSize = getUpdatedSize(_attrVec,x,currentY,newW,ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+2+extra_each);
-   	if (_attrVec.isDisplayed())
-        currentY += aSize.height-1; // -1 for 1 pixel overlap
-   	aSize = getUpdatedSize(_operVec,x,currentY,newW,newH+y-currentY);
+	// Now resize all sub-figs, including not displayed figs. Start by the
+        // name. We override the getMinimumSize if it is less than our view (21
+        // pixels hardcoded!). Add in the shared extra, plus in this case the
+        // correction.
+
+        int height = _name.getMinimumSize().height;
+
+        if (height < 21) {
+            height = 21;
+        }
+
+        height += extra_each + height_correction;
+
+        // Now sort out the stereotype display. If the stereotype is displayed,
+        // move the upper boundary of the name compartment up and set new
+        // bounds for the name and the stereotype compatments and the
+        // stereoLineBlinder that blanks out the line between the two
+
+        int currentY = y;
+
+        if (_stereo.isDisplayed()) {
+            currentY += STEREOHEIGHT;
+        }
+
+        _name.setBounds(x,currentY,newW,height);
+	_stereo.setBounds(x,y,newW,STEREOHEIGHT + 1);
+        _stereoLineBlinder.setBounds(x + 1,y + STEREOHEIGHT,newW - 2,2);
+
+        // Advance currentY to where the start of the attribute box is,
+        // remembering that it overlaps the next box by 1 pixel. Calculate the
+        // size of the attribute box, and update the Y pointer past it if it is
+        // displayed.
+
+        currentY += height-1;  // -1 for 1 pixel overlap
+   	aSize     = getUpdatedSize(_attrVec, x, currentY, newW,
+                                   ROWHEIGHT *
+                                   Math.max(1, _attrVec.getFigs().size() - 1) +
+                                   2 + extra_each);
+
+   	if (_attrVec.isDisplayed()) {
+            currentY += aSize.height - 1;  // -1 for 1 pixel overlap
+        }
+
+        // Finally update the bounds of the operations box
+
+   	aSize = getUpdatedSize(_operVec, x, currentY, newW,
+                               newH + y - currentY);
 
 	// set bounds of big box
-    _bigPort.setBounds(x,y,newW,newH);
 
-	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-	updateEdges();
-	firePropChange("bounds", oldBounds, getBounds());
-  }
+        _bigPort.setBounds(x,y,newW,newH);
+
+        // Now force calculation of the bounds of the figure, update the edges
+        // and trigger anyone who's listening to see if the "bounds" property
+        // has changed.
+
+ 	calcBounds();
+        updateEdges();
+        firePropChange("bounds", oldBounds, getBounds());
+    }
+    
 } /* end class FigClass */
