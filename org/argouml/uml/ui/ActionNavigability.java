@@ -82,7 +82,7 @@ public class ActionNavigability extends UMLAction {
     }
 
     protected ActionNavigability(String label, MAssociationEnd start, MAssociationEnd end, int nav) {
-        super(label);
+        super(label, NO_ICON);
 
         this.nav = nav;
         this.start = start;
