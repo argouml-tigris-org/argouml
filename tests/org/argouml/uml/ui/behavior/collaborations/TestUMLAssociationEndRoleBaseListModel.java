@@ -67,6 +67,7 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true); 
+        UmlFactory.getFactory().setGuiEnabled(false);
         elem = CollaborationsFactory.getFactory().createAssociationEndRole();
         baseEnd = CoreFactory.getFactory().createAssociationEnd();
         assocRole = CollaborationsFactory.getFactory().createAssociationRole();

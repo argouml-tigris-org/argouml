@@ -25,6 +25,12 @@
 package org.argouml.ui;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+
+import ru.novosoft.uml.MFactoryImpl;
 
 import junit.framework.TestCase;
 
@@ -47,9 +53,8 @@ public class TestProjectBrowser extends TestCase {
      */
     public void testConstruction() {
         ProjectBrowser pb;
-        try {
-            pb = new ProjectBrowser("test", false);
-            assertNotNull(ProjectBrowser.TheInstance);
+        try {          
+            assertNotNull(ProjectBrowser.getInstance());
         } catch (java.lang.InternalError e) {
             // This is when we cannot connect to the display system.
             // The test is inconclusive
@@ -62,8 +67,9 @@ public class TestProjectBrowser extends TestCase {
     public void testSplashScreen() {
         ProjectBrowser pb;
         try {
-            pb = new ProjectBrowser("test", true);
-            assertNotNull(ProjectBrowser.TheInstance.getSplashScreen());
+            ProjectBrowser.TheInstance = null;
+            ProjectBrowser.setSplash(true);
+            assertNotNull(ProjectBrowser.getInstance().getSplashScreen());
         } catch (java.lang.NoClassDefFoundError e) {
             // Some problem caused by the lack of display system.
             // The test is inconclusive
@@ -77,6 +83,29 @@ public class TestProjectBrowser extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true);
+    }
+    
+    public void testSetTarget() {
+        ProjectBrowser pb;
+        try {
+            pb = ProjectBrowser.getInstance();
+            MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+            Object package1 = ModelManagementFactory.getFactory().buildPackage("test1", null);
+            Object package2 = ModelManagementFactory.getFactory().buildPackage("test2", null);
+            UMLClassDiagram diagram1 = new UMLClassDiagram(package1);
+            UMLClassDiagram diagram2 = new UMLClassDiagram(package2);
+            pb.setTarget(diagram1);
+            assertEquals(diagram1, pb.getTarget());
+            pb.setTarget(diagram2);
+            assertEquals(diagram2, pb.getTarget());
+            UmlFactory.getFactory().delete(package2);
+            assertEquals(ProjectManager.getManager().getCurrentProject().getDiagrams().get(0), pb.getTarget());
+            
+        }
+        catch (java.lang.NoClassDefFoundError e) {
+                    // Some problem caused by the lack of display system.
+                    // The test is inconclusive
+                }
     }
 
 }

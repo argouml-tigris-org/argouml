@@ -115,7 +115,7 @@ public class PropPanelSignal extends PropPanelModelElement {
     	if (target instanceof MSignal) {
     		MSignal signal = (MSignal)target;
     		MReception reception = CommonBehaviorFactory.getFactory().buildReception(signal);
-    		ProjectBrowser.TheInstance.setTarget(reception);
+    		ProjectBrowser.getInstance().setTarget(reception);
     	}
     }
 
@@ -147,7 +147,7 @@ public class PropPanelSignal extends PropPanelModelElement {
 	    	choices.addAll(CoreHelper.getHelper().getAllBehavioralFeatures());
 	    	selected.addAll(signal.getContexts());
 	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-contexts"), true, true);
-	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+	    	int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
 	    	if (returnValue == JOptionPane.OK_OPTION) {
 	    		signal.setContexts(dialog.getSelected());
 	    	}

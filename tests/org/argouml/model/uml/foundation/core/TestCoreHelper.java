@@ -24,12 +24,16 @@
 // $header$
 package org.argouml.model.uml.foundation.core;
 
+import junit.framework.TestCase;
+
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
-import ru.novosoft.uml.foundation.core.*;
-
-import junit.framework.TestCase;
+import ru.novosoft.uml.foundation.core.MClassifierImpl;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MGeneralizationImpl;
 
 /**
  * @since Oct 10, 2002
@@ -94,5 +98,6 @@ public class TestCoreHelper extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
 	}
 }

@@ -37,7 +37,7 @@ import java.util.Collection;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Diagram;
@@ -48,6 +48,7 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
+
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
@@ -202,7 +203,7 @@ public class FigSeqStimulus extends FigNodeModelElement {
     if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
     	((SequenceDiagramLayout)getLayer()).placeAllFigures();
     } else {
-    	Diagram diagram = ProjectBrowser.TheInstance.getActiveDiagram();
+    	Diagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
     	Layer lay = null;
     	if (diagram != null) {
     		lay = diagram.getLayer();
@@ -267,7 +268,7 @@ public class FigSeqStimulus extends FigNodeModelElement {
     if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
     	((SequenceDiagramLayout)getLayer()).placeAllFigures();
     } else {
-    	Diagram diagram = ProjectBrowser.TheInstance.getActiveDiagram();
+    	Diagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
     	Layer lay = null;
     	if (diagram != null) {
     		lay = diagram.getLayer();

@@ -24,6 +24,7 @@
 package org.argouml.model.uml;
 
 import org.apache.log4j.Category;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDManager;
 
 import ru.novosoft.uml.MBase;
@@ -37,39 +38,82 @@ import ru.novosoft.uml.MBase;
  */
 public abstract class AbstractUmlModelFactory {
 
-	/** Log4j logging category.
-	 */
-	private static Category logger =
-		Category.getInstance("org.argouml.model.uml");
+    /**
+     * Flag to indicate if the gui is enabled. If the gui is
+     * enabled modelelements that are added should also be added to the
+     * navigatorpane.
+     */
+    private static boolean GuiEnabled = true;
 
-	/** Default constructor.
-	 */
-	protected AbstractUmlModelFactory() {
-	}
+    /** Log4j logging category.
+     */
+    private static Category logger =
+        Category.getInstance("org.argouml.model.uml");
 
-	protected void initialize(Object o) {
-		logger.debug("initialize(" + o + ")");
-		if (o instanceof MBase) {
-			if (((MBase) o).getUUID() == null) {
-				((MBase) o).setUUID(UUIDManager.SINGLETON.getNewUUID());
-			}
-			// next two objects are the ONLY two objects that need to listen
-			// to all modelevents.
-			UmlModelEventPump pump = UmlModelEventPump.getPump();
-			((MBase) o).addMElementListener(pump);
-			((MBase) o).addMElementListener(UmlModelListener.getInstance());
-			EventListenerList[] lists =
-				pump.getClassListenerMap().getListenerList(o.getClass());
-			for (int i = 0; i < lists.length; i++) {
-				Object[] listenerList = lists[i].listenerList;
-				for (int j = 0; j < listenerList.length; j += 3) {
-					pump.addModelEventListener(
-						listenerList[j + 2],
-						o,
-						(String) listenerList[j + 1]);
-				}
-			}
-		}
-	}
+    /** Default constructor.
+     */
+    protected AbstractUmlModelFactory() {
+    }
+
+    /**
+     * Initialized some new modelelement o
+     * @param o The new modelelement
+     */
+    protected void initialize(Object o) {
+        if (o instanceof MBase) {
+            if (((MBase) o).getUUID() == null) {
+                ((MBase) o).setUUID(UUIDManager.SINGLETON.getNewUUID());
+            }            
+            addListenersToModelElement(o);
+            UmlModelEventPump pump = UmlModelEventPump.getPump();
+            EventListenerList[] lists =
+                pump.getClassListenerMap().getListenerList(o.getClass());
+            for (int i = 0; i < lists.length; i++) {
+                Object[] listenerList = lists[i]._listenerList;
+                for (int j = 0; j < listenerList.length; j += 3) {
+                    pump.addModelEventListener(
+                        listenerList[j + 2],
+                        o,
+                        (String) listenerList[j + 1]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Turns the flag for the gui on/off. Default the gui is on. Needed for test
+     * modus.
+     * @param gui flag to turn gui on off
+     */
+    public void setGuiEnabled(boolean gui) {
+        GuiEnabled = gui;
+    }
+
+    /**
+     * Checks if the gui is enabled.
+     * @return the gui flag
+     */
+    public boolean isGuiEnabled() {
+        return GuiEnabled;
+    }
+
+    /**
+     * Adds all interested (and centralized) listeners to the given modelelement
+     * handle.
+     * @param handle the modelelement the listeners are interested in
+     */
+    public void addListenersToModelElement(Object handle) {
+        if (handle instanceof MBase) {
+            MBase base = (MBase) handle;
+            UmlModelEventPump pump = UmlModelEventPump.getPump();
+            ((MBase) handle).addMElementListener(pump);
+            if (GuiEnabled) {
+                ((MBase) handle).addMElementListener(
+                    ProjectBrowser.getInstance().getNavigatorPane());
+            }
+            ((MBase) handle).addMElementListener(
+                UmlModelListener.getInstance());
+        }
+    }
 
 }

@@ -242,7 +242,7 @@ public abstract class UMLDiagram
       ProjectManager.getManager().getCurrentProject().moveToTrash(this);      
       
       Object newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
-      ProjectBrowser.TheInstance.setTarget(newTarget);
+      ProjectBrowser.getInstance().setTarget(newTarget);
   }
   
   /**

@@ -73,7 +73,7 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         UMLAddDialog dialog = new UMLAddDialog(getChoices(), getSelected(), getDialogTitle(), isMultiSelect(), isExclusive());
-        int result = dialog.showDialog(ProjectBrowser.TheInstance);
+        int result = dialog.showDialog(ProjectBrowser.getInstance());
         if (result == JOptionPane.OK_OPTION) {
             doIt(dialog.getSelected());
         }

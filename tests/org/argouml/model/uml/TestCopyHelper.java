@@ -426,5 +426,6 @@ public class TestCopyHelper extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
 	}
 }

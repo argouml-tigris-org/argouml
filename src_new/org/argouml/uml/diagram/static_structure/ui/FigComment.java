@@ -186,7 +186,7 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
         // Andreas Rueckert <a_rueckert@gmx.net>
         if (element instanceof MStateVertex) {
 
-            ProjectBrowser pb = ProjectBrowser.TheInstance; // If the current target is a state diagram, we have to
+            ProjectBrowser pb = ProjectBrowser.getInstance(); // If the current target is a state diagram, we have to
             if (pb.getTarget() instanceof UMLStateDiagram) { // check, if we are editing the diagram.
                 StateDiagramGraphModel gm = (StateDiagramGraphModel) (((UMLStateDiagram) pb.getTarget()).getGraphModel());
                 node.setNamespace(gm.getNamespace()); // We are editing, so we set the Namespace directly.

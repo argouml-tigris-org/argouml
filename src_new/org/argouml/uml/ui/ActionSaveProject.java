@@ -23,15 +23,20 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.application.api.*;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import java.io.*;
-import java.awt.event.*;
-import java.util.zip.*;
-import java.text.MessageFormat;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.URL;
+import java.text.MessageFormat;
+
 import javax.swing.JOptionPane;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
 
 /**
  * Action that saves the project.
@@ -77,7 +82,7 @@ public class ActionSaveProject extends UMLAction {
   }
 
   public boolean trySave(boolean overwrite, File file) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     Project p = ProjectManager.getManager().getCurrentProject();
 
     try {

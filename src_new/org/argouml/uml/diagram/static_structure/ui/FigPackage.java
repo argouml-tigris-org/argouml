@@ -162,7 +162,7 @@ public class FigPackage extends FigNodeModelElement {
                     if (lPkg != null) {
                         MNamespace lNS = lPkg;
 
-                        ProjectBrowser lPB = ProjectBrowser.TheInstance;
+                        ProjectBrowser lPB = ProjectBrowser.getInstance();
                         Project lP =
                             ProjectManager.getManager().getCurrentProject();
 
@@ -186,7 +186,7 @@ public class FigPackage extends FigNodeModelElement {
                                     me.consume();
                                     super.mouseClicked(me);
                                     ProjectBrowser
-                                        .TheInstance
+                                        .getInstance()
                                         .getNavigatorPane()
                                         .addToHistory(
                                         lDiagram);
@@ -202,7 +202,7 @@ public class FigPackage extends FigNodeModelElement {
                             super.mouseClicked(me);
 
                             ProjectBrowser
-                                .TheInstance
+                                .getInstance()
                                 .getNavigatorPane()
                                 .addToHistory(
                                 lFirst);
@@ -237,7 +237,7 @@ public class FigPackage extends FigNodeModelElement {
                                     lP.addMember(lNew);
 
                                     ProjectBrowser
-                                        .TheInstance
+                                        .getInstance()
                                         .getNavigatorPane()
                                         .addToHistory(
                                         lNew);
@@ -454,7 +454,7 @@ public class FigPackage extends FigNodeModelElement {
             return;
         MModelElement me = (MModelElement) getOwner();
         MNamespace m = null;
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
         try {
             // If moved into an Package
             if (encloser != null

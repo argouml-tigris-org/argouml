@@ -35,9 +35,9 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -48,28 +48,11 @@ import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
-import org.tigris.gef.presentation.ArrowHeadGreater;
-import org.tigris.gef.presentation.ArrowHeadHalfTriangle;
-import org.tigris.gef.presentation.ArrowHeadNone;
-import org.tigris.gef.presentation.ArrowHeadTriangle;
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigActivation;
-import org.tigris.gef.presentation.FigDynPort;
-import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.presentation.*;
+
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
-import ru.novosoft.uml.behavior.common_behavior.MCallAction;
-import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
-import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
-import ru.novosoft.uml.behavior.common_behavior.MSendAction;
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -855,7 +838,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {
     	((SequenceDiagramLayout)getLayer()).placeAllFigures();
     } else {
-    	Diagram diagram = ProjectBrowser.TheInstance.getActiveDiagram();
+    	Diagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
     	Layer lay = null;
     	if (diagram != null) {
     		lay = diagram.getLayer();

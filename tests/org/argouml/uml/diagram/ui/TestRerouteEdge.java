@@ -133,7 +133,7 @@ public class TestRerouteEdge extends TestCase {
         
         // simulate the user clicking on the edge
         MouseEvent me = 
-        new MouseEvent(ProjectBrowser.TheInstance,
+        new MouseEvent(ProjectBrowser.getInstance(),
             1,1, 1,xs[0], ys[0], 1, false);
         selection.mousePressed(me);
         selection.mouseDragged(me);
@@ -143,7 +143,7 @@ public class TestRerouteEdge extends TestCase {
         
         // simulate the user releasing on class 3
         MouseEvent me2 = 
-        new MouseEvent(ProjectBrowser.TheInstance, 1,1, 1,
+        new MouseEvent(ProjectBrowser.getInstance(), 1,1, 1,
             location.x+5,location.y+5, 1, false);
         selection.mouseReleased(me2);
         

@@ -31,13 +31,15 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
 
 import org.apache.log4j.Category;
-import org.argouml.ui.*;
-import org.tigris.gef.presentation.*;
-import ru.novosoft.uml.foundation.core.*;
+import org.argouml.ui.ProjectBrowser;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigText;
+
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * <p>A FigText class extension for FigClass/FigInterface/FigUseCase
@@ -206,7 +208,7 @@ public class CompartmentFigText extends FigText
         super.setLineWidth(_isHighlighted ? 1 : 0);
 
         if (flag && (_modelElement != null)) {
-	    ProjectBrowser.TheInstance.setTarget(_modelElement);
+	    ProjectBrowser.getInstance().setTarget(_modelElement);
         }
     }
 

@@ -23,17 +23,30 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.util.*;
-import org.argouml.util.osdep.*;
-import org.tigris.gef.base.*;
-import org.tigris.gef.util.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
-import java.io.*;
-import javax.swing.*;
+
+import org.apache.log4j.Category;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.util.FileFilters;
+import org.argouml.util.SuffixFilter;
+import org.argouml.util.osdep.OsUtil;
+import org.tigris.gef.base.CmdSaveEPS;
+import org.tigris.gef.base.CmdSaveGIF;
+import org.tigris.gef.base.CmdSaveGraphics;
+import org.tigris.gef.base.CmdSavePS;
+import org.tigris.gef.base.CmdSaveSVG;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.util.Util;
 
 
 /** Wraps a CmdSaveGIF or CmdSave(E)PS to allow selection of an output file. 
@@ -67,7 +80,7 @@ public class ActionSaveGraphics extends UMLAction {
     }
 
     public boolean trySave( boolean overwrite ) {
-	Object target = ProjectBrowser.TheInstance.getActiveDiagram();
+	Object target = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	if( target instanceof Diagram ) {
 	    String defaultName = ((Diagram)target).getName();
 	    defaultName = Util.stripJunk(defaultName);
@@ -75,7 +88,7 @@ public class ActionSaveGraphics extends UMLAction {
 	    // FIX - It's probably worthwhile to abstract and factor this chooser
 	    // and directory stuff. More file handling is coming, I'm sure.
 
-	    ProjectBrowser pb = ProjectBrowser.TheInstance;
+	    ProjectBrowser pb = ProjectBrowser.getInstance();
 	    Project p =  ProjectManager.getManager().getCurrentProject();
 	    try {
 		JFileChooser chooser = null;

@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
@@ -36,6 +35,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.Generator;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
+
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -66,8 +66,8 @@ public class ActionGenerateProjectCode extends UMLAction {
       Vector classes = new Vector();
       // The following lines should be substituted by the following 2 commented lines.
       // (This is because getting the project still does not seem to work...)
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
-      ArgoDiagram activeDiagram = pb.getActiveDiagram();
+      ProjectBrowser pb = ProjectBrowser.getInstance();
+      ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
       if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram)) return;
       ru.novosoft.uml.foundation.core.MNamespace ns = ((org.argouml.uml.diagram.ui.UMLDiagram)activeDiagram).getNamespace();
       if (ns == null) return;
@@ -87,8 +87,8 @@ public class ActionGenerateProjectCode extends UMLAction {
     }
 
     public boolean shouldBeEnabled() {
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
-      ArgoDiagram activeDiagram = pb.getActiveDiagram();
+      ProjectBrowser pb = ProjectBrowser.getInstance();
+      ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
       return super.shouldBeEnabled() && (activeDiagram instanceof UMLDiagram);
     }
 

@@ -66,6 +66,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
         Project p = ProjectManager.getManager().getCurrentProject();
         model = new UMLAssociationRoleBaseComboBoxModel();
         MClass class1 = CoreFactory.getFactory().createClass();

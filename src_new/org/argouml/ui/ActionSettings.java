@@ -22,16 +22,24 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
-import org.argouml.application.api.*;
-import org.argouml.application.events.*;
-import org.argouml.kernel.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.PluggableSettingsTab;
+import org.argouml.application.api.SettingsTabPanel;
+import org.argouml.application.events.ArgoModuleEvent;
+import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.uml.ui.UMLAction;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import java.util.*;
-import org.tigris.gef.util.*;
 
 /** Action object for handling Argo settings
  *
@@ -106,7 +114,7 @@ implements ArgoModuleEventListener {
 	   dlg.setVisible(false);
 	}
 	else if (source instanceof JMenuItem) {
-            ProjectBrowser pb = ProjectBrowser.TheInstance;
+            ProjectBrowser pb = ProjectBrowser.getInstance();
 	    if (dlg == null) {
                 try {
 	            dlg = new JDialog(pb, localize("caption.settings"), true);

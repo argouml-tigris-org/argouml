@@ -9,21 +9,18 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import java.beans.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.graph.*;
+import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
-import org.argouml.ui.*;
-import org.argouml.uml.ui.*;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.ModePlace;
+import org.tigris.gef.graph.GraphFactory;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.MutableGraphModel;
 
 public class ActionAddExistingNode extends UMLAction implements GraphFactory
 {
@@ -47,9 +44,9 @@ public class ActionAddExistingNode extends UMLAction implements GraphFactory
     }
 
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
         Object target = pb.getTarget();
-        MutableGraphModel gm = (MutableGraphModel)pb.getActiveDiagram().getGraphModel();
+        MutableGraphModel gm = (MutableGraphModel)ProjectManager.getManager().getCurrentProject().getActiveDiagram().getGraphModel();
         return gm.canAddNode(target);
     }
 

@@ -32,14 +32,14 @@ class ActionAddInternalTrans extends UMLChangeAction {
   public ActionAddInternalTrans() { super("action.add-internal-transition"); }
 
   public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     Object target = pb.getDetailsTarget();
     if (!(target instanceof MState)) return;
     MState st = (MState) target;
     super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     Object target = pb.getDetailsTarget();
     return super.shouldBeEnabled() && target instanceof MState;
   }

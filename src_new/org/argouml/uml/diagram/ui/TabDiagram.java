@@ -99,7 +99,7 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
         _jgraph.setDrawingSize((612 - 30) * 2, (792 - 55 - 20) * 2);
         // TODO: should update to size of diagram contents
 
-        Globals.setStatusBar(ProjectBrowser.TheInstance);
+        Globals.setStatusBar(ProjectBrowser.getInstance());
         JPanel p = new JPanel();
         p.setLayout(new BorderLayout());
         p.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
@@ -208,7 +208,7 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
      */
     public void selectionChanged(GraphSelectionEvent gse) {
         Vector sels = gse.getSelections();
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
 
         if (sels.size() == 1)
             pb.setTarget(sels.elementAt(0));

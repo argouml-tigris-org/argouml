@@ -10,11 +10,10 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.graph.MutableGraphModel;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @author Jaap
@@ -53,8 +52,8 @@ public class ActionAddExistingEdge extends UMLAction {
         // 3. Both of the nodes are not yet on the diagram.
         // For the time being we will only implement situation 1.
         // TODO implement situation 2 and 3.
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
-        MutableGraphModel gm = (MutableGraphModel)pb.getActiveDiagram().getGraphModel();
+        ProjectBrowser pb = ProjectBrowser.getInstance();
+        MutableGraphModel gm = (MutableGraphModel)ProjectManager.getManager().getCurrentProject().getActiveDiagram().getGraphModel();
         if (gm.canAddEdge(_edge)) { // situation 1
             gm.addNodeRelatedEdges(gm.getSourcePort(_edge));
         }
@@ -64,9 +63,9 @@ public class ActionAddExistingEdge extends UMLAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
         Object target = pb.getTarget();
-        MutableGraphModel gm = (MutableGraphModel)pb.getActiveDiagram().getGraphModel();
+        MutableGraphModel gm = (MutableGraphModel)ProjectManager.getManager().getCurrentProject().getActiveDiagram().getGraphModel();
         return gm.canAddEdge(target);
     }
 

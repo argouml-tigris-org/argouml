@@ -22,14 +22,15 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import javax.swing.event.*;
-import javax.swing.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.beans.PropertyVetoException;
+
+import javax.swing.JCheckBox;
 
 import org.argouml.ui.ProjectBrowser;
-import java.lang.reflect.*;
-import ru.novosoft.uml.*;
-import java.awt.event.*;
-import java.beans.PropertyVetoException;
+
+import ru.novosoft.uml.MElementEvent;
 
 public class UMLCheckBox extends JCheckBox implements ItemListener, UMLUserInterfaceComponent {
 
@@ -50,7 +51,7 @@ public class UMLCheckBox extends JCheckBox implements ItemListener, UMLUserInter
         _property.setProperty(_container.getTarget(),event.getStateChange() == ItemEvent.SELECTED);
     	}
     	catch (PropertyVetoException ve) {
-    		ProjectBrowser.TheInstance.getStatusBar().showStatus(ve.getMessage());
+    		ProjectBrowser.getInstance().getStatusBar().showStatus(ve.getMessage());
     	}
     	update();
         

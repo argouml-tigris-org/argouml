@@ -205,7 +205,7 @@ public class ToDoPane extends JPanel
             ));
         
         if (doSplash) {
-            SplashScreen splash = ProjectBrowser.TheInstance.getSplashScreen();
+            SplashScreen splash = ProjectBrowser.getInstance().getSplashScreen();
             splash.getStatusBar().showStatus("Making TodoPane: Setting Perspectives");
             splash.getStatusBar().showProgress(25);
         }
@@ -317,7 +317,7 @@ public class ToDoPane extends JPanel
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
         Object sel = getSelectedObject();
-        ProjectBrowser.TheInstance.setToDoItem(sel);
+        ProjectBrowser.getInstance().setToDoItem(sel);
         
         if (_lastSel instanceof ToDoItem) ((ToDoItem)_lastSel).deselect();
         if (sel instanceof ToDoItem) ((ToDoItem)sel).select();
@@ -451,7 +451,7 @@ public class ToDoPane extends JPanel
         if (sel instanceof ToDoItem) {
             ((ToDoItem)sel).action();
             VectorSet offs = ((ToDoItem)sel).getOffenders();
-            ProjectBrowser.TheInstance.jumpToDiagramShowing(offs);
+            ProjectBrowser.getInstance().jumpToDiagramShowing(offs);
         }
         
         //TODO: should fire its own event and ProjectBrowser

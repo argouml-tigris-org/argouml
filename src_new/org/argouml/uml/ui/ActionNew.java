@@ -53,7 +53,7 @@ public class ActionNew extends UMLAction {
   // main methods
 
   public void actionPerformed(ActionEvent e) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     Project p = ProjectManager.getManager().getCurrentProject();
 
     if (p != null && p.needsSave()) {
@@ -86,7 +86,7 @@ public class ActionNew extends UMLAction {
     }
 
     // we should remove all open dialogs. They have as parent the ProjectBrowser
-    Window[] windows = ProjectBrowser.TheInstance.getOwnedWindows();
+    Window[] windows = ProjectBrowser.getInstance().getOwnedWindows();
     for (int i = 0; i < windows.length; i++) {
         windows[i].dispose();
     }
@@ -94,9 +94,9 @@ public class ActionNew extends UMLAction {
     Designer.disableCritiquing();
     Designer.clearCritiquing();
     p = ProjectManager.getManager().makeEmptyProject();
-    FindDialog.SINGLETON.doClearTabs();
-    FindDialog.SINGLETON.doResetFields();
-    ProjectBrowser.TheInstance.setTarget(p.getDiagrams().toArray()[0]);
+    FindDialog.getInstance().doClearTabs();
+    FindDialog.getInstance().doResetFields();
+    ProjectBrowser.getInstance().setTarget(p.getDiagrams().toArray()[0]);
     Designer.enableCritiquing();
   }
 } /* end class ActionNew */

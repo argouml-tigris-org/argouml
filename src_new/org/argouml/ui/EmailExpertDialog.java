@@ -23,14 +23,27 @@
 
 package org.argouml.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
 import org.apache.log4j.Category;
-import org.argouml.cognitive.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Poster;
+import org.argouml.cognitive.ToDoItem;
 
 /** The email expert dialog does not work and is in
  * desperate need of some attention.
@@ -73,7 +86,7 @@ public class EmailExpertDialog extends JDialog implements ActionListener {
   // constructors
 
   public EmailExpertDialog() {
-    super(ProjectBrowser.TheInstance, "Send Email to an Expert");
+    super(ProjectBrowser.getInstance(), "Send Email to an Expert");
     JLabel toLabel = new JLabel("To:");
     JLabel ccLabel = new JLabel("Cc:");
     JLabel subjectLabel = new JLabel("Subject:");

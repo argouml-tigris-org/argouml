@@ -331,7 +331,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   }
 
   public void objectSelected(Object sel) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     // pb.setDetailsTarget(sel);
     pb.setTarget(sel);
   }

@@ -23,27 +23,58 @@
 
 package org.argouml.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.model_management.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 
-import org.tigris.gef.util.*;
-
-import org.argouml.application.api.*;
-import org.argouml.kernel.Project;
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.uml.*;
-import org.argouml.uml.cognitive.*;
+import org.argouml.uml.PredicateFind;
+import org.argouml.uml.cognitive.ChildGenFind;
+import org.tigris.gef.util.Predicate;
+import org.tigris.gef.util.PredicateStringMatch;
+import org.tigris.gef.util.PredicateType;
+
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.behavior.use_cases.MActor;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** this one of the few classes in Argo that is
  * self running.
@@ -56,10 +87,10 @@ public class FindDialog extends JDialog
     ////////////////////////////////////////////////////////////////
     // class variables
 
-    public static FindDialog SINGLETON = new FindDialog();
+    public static FindDialog _Instance;
     public static int nextResultNum = 1;
 
-    public static int _numFinds = 1;
+    public static int _numFinds = 0;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -86,8 +117,15 @@ public class FindDialog extends JDialog
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    public static FindDialog getInstance() {
+        if (_Instance == null) {
+            _Instance = new FindDialog();
+        }
+        return _Instance;
+    }
+    
     public FindDialog() {
-        super(ProjectBrowser.TheInstance, "Search");
+        super(ProjectBrowser.getInstance(), "Search");
         getContentPane().setLayout(new BorderLayout());
 
 
@@ -259,7 +297,7 @@ public class FindDialog extends JDialog
     }
 
     public void setVisible(boolean b) {
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
         setLocation(pb.getBounds().x + 100, pb.getBounds().x + 100);
         super.setVisible(b);
     }
@@ -348,7 +386,7 @@ public class FindDialog extends JDialog
             new PredicateFind(eNamePred, pNamePred, dNamePred, typePred);
 
         ChildGenFind gen = ChildGenFind.SINGLETON;
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
         Object root = ProjectManager.getManager().getCurrentProject();
 
         TabResults newResults = new TabResults();
@@ -427,9 +465,6 @@ public class FindDialog extends JDialog
         }
     }
 
-    public static void main(String args[]) {
-        FindDialog.SINGLETON.show();
-    }
 } /* end class FindDialog */
 
 

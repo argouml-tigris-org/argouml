@@ -47,6 +47,7 @@ package org.argouml.model.uml.behavioralelements.commonbehavior;
 import junit.framework.*;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.util.*;
 
 public class TestCommonBehaviorFactory extends TestCase {
@@ -139,5 +140,6 @@ public class TestCommonBehaviorFactory extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
 	}
 }

@@ -415,12 +415,12 @@ public class FigInterface extends FigNodeModelElement {
                 f = (Fig) v.elementAt(i + 1);
                 ((CompartmentFigText) f).setHighlighted(true);
                 highlightedFigText = (CompartmentFigText) f;
-                ProjectBrowser.TheInstance.setTarget(f);
+                ProjectBrowser.getInstance().setTarget(f);
             }
         }
         if (targetIsSet == false) {
             me.consume();
-            ProjectBrowser.TheInstance.setTarget(getOwner());
+            ProjectBrowser.getInstance().setTarget(getOwner());
         }
     }
 
@@ -463,7 +463,7 @@ public class FigInterface extends FigNodeModelElement {
             return;
         MModelElement me = (MModelElement) getOwner();
         MNamespace m = null;
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
 
         try {
             // If moved into an Package
@@ -508,9 +508,9 @@ public class FigInterface extends FigNodeModelElement {
             highlightedFigText.setHighlighted(true);
             try {
                 ParserDisplay.SINGLETON.parseOperationFig(cls, (MOperation) highlightedFigText.getOwner(), highlightedFigText.getText().trim());
-                ProjectBrowser.TheInstance.getStatusBar().showStatus("");
+                ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
-                ProjectBrowser.TheInstance.getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+                ProjectBrowser.getInstance().getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
             }
             return;
         }

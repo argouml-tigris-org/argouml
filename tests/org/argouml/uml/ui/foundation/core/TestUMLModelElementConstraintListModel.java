@@ -61,6 +61,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true);
+        UmlFactory.getFactory().setGuiEnabled(false);
         ns = ModelManagementFactory.getFactory().createModel();
         elem = CoreFactory.getFactory().buildClass(ns);
         oldEventPolicy = MFactoryImpl.getEventPolicy();

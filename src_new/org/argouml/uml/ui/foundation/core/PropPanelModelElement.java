@@ -197,7 +197,7 @@ abstract public class PropPanelModelElement extends PropPanel {
      */
     public void navigateUp() {
         Object target = getTarget();
-        ProjectBrowser.TheInstance.setTarget(UmlHelper.getHelper().getOwner(getTarget()));
+        ProjectBrowser.getInstance().setTarget(UmlHelper.getHelper().getOwner(getTarget()));
     }
 
     public void navigateNamespace() {

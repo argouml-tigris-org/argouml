@@ -134,7 +134,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         MUseCase owner = ((MExtensionPoint) target).getUseCase();
 
         if(owner != null) {
-            ProjectBrowser.TheInstance.setTarget(owner);
+            ProjectBrowser.getInstance().setTarget(owner);
         }
     }
 

@@ -23,20 +23,22 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.uml.*;
-import org.argouml.uml.diagram.collaboration.ui.*;
-import org.argouml.uml.diagram.ui.FigEdgeModelElement;
-import org.argouml.uml.diagram.ui.FigMessage;
-import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import java.awt.event.ActionEvent;
+
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.*;
-import org.tigris.gef.base.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.presentation.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.FigMessage;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.presentation.FigNode;
+
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /** Action to add a message.
  *  @stereotype singleton
@@ -59,7 +61,7 @@ public class ActionAddMessage extends UMLChangeAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-    	ProjectBrowser pb = ProjectBrowser.TheInstance;
+    	ProjectBrowser pb = ProjectBrowser.getInstance();
     	Object target = pb.getDetailsTarget();
     	Object d = pb.getTarget();
     	
@@ -89,7 +91,7 @@ public class ActionAddMessage extends UMLChangeAction {
     }
 
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target = pb.getDetailsTarget();
 	return super.shouldBeEnabled() && target instanceof MAssociationRole;
     }

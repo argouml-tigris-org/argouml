@@ -26,22 +26,18 @@ package org.argouml.uml.ui;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -70,7 +66,7 @@ public class ActionAddNote extends UMLChangeAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
         Object target = pb.getDetailsTarget();
         if (target == null) {
             target = pb.getTarget();
@@ -80,11 +76,11 @@ public class ActionAddNote extends UMLChangeAction {
         MComment comment = CoreFactory.getFactory().buildComment(elem);
         
         // calculate the position of the comment
-        Fig elemFig = pb.getActiveDiagram().presentationFor(elem);
+        ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        Fig elemFig = diagram.presentationFor(elem);
         if (elemFig == null) return;
         int x = 0;
-        int y = 0;
-        Diagram diagram = pb.getActiveDiagram();
+        int y = 0;       
         Layer lay = diagram.getLayer();
         Rectangle drawingArea = pb.getEditorPane().getBounds();
         FigComment fig = new FigComment(diagram.getGraphModel(), comment);
@@ -223,12 +219,12 @@ public class ActionAddNote extends UMLChangeAction {
     }
 
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target = pb.getDetailsTarget();
-    if (pb.getActiveDiagram() == null) return false;
+    if (ProjectManager.getManager().getCurrentProject().getActiveDiagram() == null) return false;
 	return super.shouldBeEnabled() && 
         (target instanceof MModelElement) && 
         (!(target instanceof MComment)) &&
-        (pb.getActiveDiagram().presentationFor(target) instanceof FigNode);
+        (ProjectManager.getManager().getCurrentProject().getActiveDiagram().presentationFor(target) instanceof FigNode);
     }
 } /* end class ActionAddNote */
