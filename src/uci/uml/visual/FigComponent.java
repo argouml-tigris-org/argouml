@@ -53,8 +53,10 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 public class FigComponent extends FigNodeModelElement {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+/** The distance between the left edge of the fig and the left edge of the
+  	  main rectangle. */
+  private static final int BIGPORT_X = 10;
+
   public static int OVERLAP = 4;
   
   protected FigRect _bigPort;
@@ -68,13 +70,13 @@ public class FigComponent extends FigNodeModelElement {
   // constructors
 
   public FigComponent() {
-    _bigPort = new FigRect(10, 10, 120, 80, Color.cyan, Color.cyan);
+    _bigPort = new FigRect(BIGPORT_X, 10, 120, 80, Color.cyan, Color.cyan);
 
-    _cover = new FigRect(10, 10, 120, 80, Color.black, Color.white);
+    _cover = new FigRect(BIGPORT_X, 10, 120, 80, Color.black, Color.white);
     _upperRect = new FigRect(0, 20, 20, 10, Color.black, Color.white);
     _lowerRect = new FigRect(0, 40, 20, 10, Color.black, Color.white);
 
-    _stereo = new FigText(10,10,120,15,Color.black, "Times", 10);
+    _stereo = new FigText(BIGPORT_X,10,120,15,Color.black, "Times", 10);
     _stereo.setExpandOnly(true);
     _stereo.setFilled(false);
     _stereo.setLineWidth(0);
@@ -83,7 +85,7 @@ public class FigComponent extends FigNodeModelElement {
 
     _name.setLineWidth(0);
     _name.setFilled(false);
-    _name.setText("");
+    _name.setText( placeString() );		
     
     addFig(_bigPort);
     addFig(_cover);
@@ -97,9 +99,12 @@ public class FigComponent extends FigNodeModelElement {
     
   }
 
+  // Why not just super( gm, node ) instead?? (ChL)
   public FigComponent(GraphModel gm, Object node) {
     this();
     setOwner(node);
+    _name.setText(placeString());
+    updateBounds();					
   }
 
   public String placeString() { 
@@ -152,35 +157,36 @@ public class FigComponent extends FigNodeModelElement {
     Dimension nameDim = _name.getMinimumSize();
 
     int h = stereoDim.height + nameDim.height - OVERLAP;
-    int w = Math.max(stereoDim.width, nameDim.width);
+    int w = Math.max(stereoDim.width, nameDim.width) + BIGPORT_X;	
 
     return new Dimension(w, h);
   }
 
   public void setBounds(int x, int y, int w, int h) {
-    if (_name == null) return;
-
+   	
     Rectangle oldBounds = getBounds();
-    _bigPort.setBounds(x, y, w, h);
-    _cover.setBounds(x, y, w, h);
+    _bigPort.setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
+    _cover.setBounds(x + BIGPORT_X, y, w - BIGPORT_X, h);
 
     Dimension stereoDim = _stereo.getMinimumSize();
     Dimension nameDim = _name.getMinimumSize();
     if (h<50) {
-      _upperRect.setBounds(x-10, y+h/6, 20, 10);
-      _lowerRect.setBounds(x-10, y+3*h/6, 20, 10); 
+      _upperRect.setBounds(x, y+h/6, 20, 10);
+      _lowerRect.setBounds(x, y+3*h/6, 20, 10); 
     }
     else {
-      _upperRect.setBounds(x-10, y+13, 20, 10);
-      _lowerRect.setBounds(x-10, y+39, 20, 10); 
+      _upperRect.setBounds(x, y+13, 20, 10);
+      _lowerRect.setBounds(x, y+39, 20, 10); 
     }
 
-    _stereo.setBounds(x+1, y+1, w-2, stereoDim.height);
-    _name.setBounds(x+1, y + stereoDim.height - OVERLAP + 1, w-2, nameDim.height);
+    _stereo.setBounds(x+BIGPORT_X+1, y+1, w-BIGPORT_X-2, stereoDim.height);
+    _name.setBounds(x+BIGPORT_X+1, y + stereoDim.height - OVERLAP + 1, w-BIGPORT_X-2,
+    		 nameDim.height);
     _x = x; _y = y; _w = w; _h = h;
     firePropChange("bounds", oldBounds, getBounds());
     updateEdges();
   }
+
 
   ////////////////////////////////////////////////////////////////
   // user interaction methods
@@ -293,6 +299,23 @@ public class FigComponent extends FigNodeModelElement {
       else _stereo.setText("<<" + stereoStr + ">>");
     }
   }
+  
+  
+  /** Get the rectangle on whose corners the dragging handles are to be drawn.
+  	  Used by Selection Resize. */
+  public Rectangle getHandleBox() {
+  	
+  	Rectangle r = getBounds();
+  	return new Rectangle( r. x + BIGPORT_X, r. y, r. width - BIGPORT_X, r. height );
+  	
+  }
+
+  public void setHandleBox( int x, int y, int w, int h ) {
+  	
+  	setBounds( x - BIGPORT_X, y, w + BIGPORT_X, h );
+  	
+  }
+  
 
   static final long serialVersionUID = 1647392857462847651L;
 

@@ -44,6 +44,11 @@ import java.awt.*;
 
 public class SelectionResize extends Selection {
 
+  private int cx; 	
+  private int cy;
+  private int cw;
+  private int ch;	
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -62,10 +67,7 @@ public class SelectionResize extends Selection {
    * </pre>
    */
   public void hitHandle(Rectangle r, Handle h) {
-    int cx = _content.getX();
-    int cy = _content.getY();
-    int cw = _content.getWidth();
-    int ch = _content.getHeight();
+  	updateHandleBox();
     Rectangle testRect = new Rectangle(0, 0, 0, 0);
     testRect.setBounds(cx-HAND_SIZE/2, cy-HAND_SIZE/2,
 		     HAND_SIZE, ch+HAND_SIZE/2);
@@ -99,13 +101,21 @@ public class SelectionResize extends Selection {
     else { h.index = -1; h.instructions = "Move object(s)"; }
   }
 
+  /** Update the private variables cx etc. that represent the rectangle on
+  	  whose corners handles are to be drawn.*/		
+  private void updateHandleBox() {	
+		Rectangle cRect = _content.getHandleBox();
+  		cx = cRect.x;
+  		cy = cRect.y;
+  		cw = cRect.width;
+  		ch = cRect.height;
+  }	
+
+
   /** Paint the handles at the four corners and midway along each edge
    * of the bounding box.  */
   public void paint(Graphics g) {
-    int cx = _content.getX();
-    int cy = _content.getY();
-    int cw = _content.getWidth();
-    int ch = _content.getHeight();
+  	updateHandleBox();
     g.setColor(Globals.getPrefs().handleColorFor(_content));
     g.fillRect(cx - HAND_SIZE/2, cy - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
     g.fillRect(cx + cw - HAND_SIZE/2, cy - HAND_SIZE/2, HAND_SIZE, HAND_SIZE);
@@ -119,8 +129,8 @@ public class SelectionResize extends Selection {
    *  handles. Needs-More-Work: someday I might implement resizing that
    *  maintains the aspect ratio. */
   public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
-    int x = _content.getX(), y = _content.getY();
-    int w = _content.getWidth(), h = _content.getHeight();
+  	updateHandleBox();								
+  	int x = cx; int y = cy; int w = cw; int h = ch;		
     int newX = x, newY = y, newW = w, newH = h;
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
@@ -164,7 +174,7 @@ public class SelectionResize extends Selection {
       System.out.println("invalid handle number");
       break;
     }
-    _content.setBounds(newX, newY, newW, newH);
+    _content.setHandleBox( newX, newY, newW, newH );
   }
 
   static final long serialVersionUID = 474488384900031706L;

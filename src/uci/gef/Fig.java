@@ -418,6 +418,23 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
     firePropChange("bounds", oldBounds, getBounds());
   }
 
+    /** Get the rectangle on whose corners the dragging handles are to be drawn.
+    * Should be overwritten by Figures with Bounds larger than the HandleBox.
+    * Normally these should be identical.
+  	 */
+  public Rectangle getHandleBox() {
+  	return getBounds();
+  }
+
+  /** Set the HandleBox.
+  * Normally this should not be used. It is intended for figures where the
+  * Handlebox is different from the Bounds.
+  * Overwrite this method if HandleBox and bounds differ
+  */
+  public void setHandleBox( int x, int y, int w, int h ) {
+  	setBounds( x, y, w, h );
+  }
+
 
   ////////////////////////////////////////////////////////////////
   // Editor API
