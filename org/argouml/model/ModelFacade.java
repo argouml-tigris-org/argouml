@@ -327,15 +327,11 @@ public class ModelFacade {
     public static final Object SORTED_ORDERINGKIND = MOrderingKind.SORTED;
 
     public static final Object M1_1_MULTIPLICITY = MMultiplicity.M1_1;
-
     public static final Object M0_1_MULTIPLICITY = MMultiplicity.M0_1;
-
     public static final Object M0_N_MULTIPLICITY = MMultiplicity.M0_N;
-
     public static final Object M1_N_MULTIPLICITY = MMultiplicity.M1_N;
 
     public static final Object CLASSIFIER_SCOPEKIND = MScopeKind.CLASSIFIER;
-
     public static final Object INSTANCE_SCOPEKIND = MScopeKind.INSTANCE;
 
     public static final Object INOUT_PARAMETERDIRECTIONKIND =
@@ -690,13 +686,6 @@ public class ModelFacade {
      */
     public static boolean isACreateAction(Object handle) {
         return handle instanceof MCreateAction;
-    }
-
-    public static boolean isActive(Object handle) {
-        if (handle instanceof MClass) {
-            return ((MClass) handle).isActive();
-        }
-	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1129,10 +1118,32 @@ public class ModelFacade {
         return handle instanceof MPseudostateKind;
     }
 
-    // TODO: - Do we need this as well as getKind - I think not
+    /**
+     * Returns the Kind of a Pseudostate
+     * 
+     * TODO: - Do we need this as well as getKind - I think not
+     * 
+     * @param handle the Pseudostate
+     * @return the Kind
+     */
     public static Object getPseudostateKind(Object handle) {
         if (handle instanceof MPseudostate) {
             return ((MPseudostate) handle).getKind();
+        }
+	return illegalArgumentObject(handle);
+    }
+
+    /**
+     * Returns the Kind of a Pseudostate or Parameter
+     * @param handle the Pseudostate or Parameter
+     * @return the Kind
+     */
+    public static Object getKind(Object handle) {
+        if (handle instanceof MPseudostate) {
+            return ((MPseudostate) handle).getKind();
+        }
+        if (handle instanceof MParameter) {
+            return ((MParameter) handle).getKind();
         }
 	return illegalArgumentObject(handle);
     }
@@ -1149,19 +1160,14 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage) handle).getReceiver();
         }
-	return illegalArgumentObject(handle);
+    return illegalArgumentObject(handle);
     }
 
-    public static Object getKind(Object handle) {
-        if (handle instanceof MPseudostate) {
-            return ((MPseudostate) handle).getKind();
-        }
-        if (handle instanceof MParameter) {
-            return ((MParameter) handle).getKind();
-        }
-	return illegalArgumentObject(handle);
-    }
-
+    /** 
+     * Returns the Link belonging to the given LinkEnd
+     * @param handle the LinkEnd
+     * @return the Link
+     */
     public static Object getLink(Object handle) {
         if (handle instanceof MLinkEnd) {
             return ((MLinkEnd) handle).getLink();
@@ -1373,6 +1379,19 @@ public class ModelFacade {
         return handle instanceof MVisibilityKind;
     }
 
+    /** 
+     * Recognizer for Classes that are Active
+     *  
+     * @param handle candidate
+     * @return true if Class is Active
+     */
+    public static boolean isActive(Object handle) {
+        if (handle instanceof MClass) {
+            return ((MClass) handle).isActive();
+        }
+    return illegalArgumentBoolean(handle);
+    }
+    
     /**
      * Recognizer for attributes that are changeable
      *
@@ -1460,6 +1479,11 @@ public class ModelFacade {
 	return illegalArgumentBoolean(handle);
     }
 
+    /**
+     * Returns true if the given element is Frozen
+     * @param handle candidate
+     * @return boolean true if Frozen
+     */
     public static boolean isFrozen(Object handle) {
         if (handle instanceof MChangeableKind) {
             MChangeableKind ck = (MChangeableKind) handle;
@@ -1773,6 +1797,10 @@ public class ModelFacade {
 	return illegalArgumentBoolean(handle);
     }
 
+    /** Returns true if the given CompositeState is the top state
+     * @param handle CompositeState
+     * @return boolean true if top state
+     */
     public static boolean isTop(Object handle) {
 	if (isACompositeState(handle)) {
             return ((MCompositeState) handle).getStateMachine() != null;
@@ -1996,6 +2024,11 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Return Changeability of a StructuralFeature or a AssociationEnd
+     * @param handle the StructuralFeature or AssociationEnd
+     * @return the Changeability
+     */
     public static Object getChangeability(Object handle) {
         if (handle instanceof MStructuralFeature) {
             return ((MStructuralFeature) handle).getChangeability();
@@ -2199,6 +2232,11 @@ public class ModelFacade {
 	return illegalArgumentCollection(handle);
     }
 
+    /**
+     * Returns the ElementImports of this ModelElement
+     * @param handle the ModelElement
+     * @return the collection of ElementImports
+     */
     public static Collection getElementImports2(Object handle) {
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getElementImports2();
@@ -2232,6 +2270,11 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Get the Expression belonging to a Guard, ChangeEvent or timeEvent
+     * @param handle the Object to get the Expression from
+     * @return Object the Expression
+     */
     public static Object getExpression(Object handle) {
         if (handle instanceof MGuard) {
             return ((MGuard) handle).getExpression();
@@ -2287,6 +2330,12 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Returns the Extensionpoint at given index-number
+     * @param handle Extend
+     * @param index int
+     * @return ExtensionPoint
+     */
     public static Object getExtensionPoint(Object handle, int index) {
         if (handle instanceof MExtend) {
             return ((MExtend) handle).getExtensionPoint(index);
@@ -2374,6 +2423,11 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Returns the Icon of a Stereotype
+     * @param handle the Stereotype to get the Icon from
+     * @return the Icon
+     */
     public static Object getIcon(Object handle) {
         if (handle instanceof MStereotype) {
             return ((MStereotype) handle).getIcon();
@@ -2546,6 +2600,11 @@ public class ModelFacade {
 	return illegalArgumentCollection(handle);
     }
 
+    /**
+     * Get the messages that are activated by the given message
+     * @param handle Message
+     * @return the Collection of Messages
+     */
     public static Collection getMessages4(Object handle) {
         if (handle instanceof MMessage) {
             return ((MMessage) handle).getMessages4();
@@ -2554,7 +2613,7 @@ public class ModelFacade {
     }
 
     /**
-     * Returns the messages belonging to some classifier role
+     * Returns the messages received by the given classifier role
      *
      * @param handle is the classifier role
      * @return Collection
@@ -2566,6 +2625,12 @@ public class ModelFacade {
 	return illegalArgumentCollection(handle);
     }
 
+    /**
+     * Returns the messages send by the given classifier role
+     *
+     * @param handle is the classifier role
+     * @return Collection
+     */
     public static Collection getMessages2(Object handle) {
         if (handle instanceof MClassifierRole) {
             return ((MClassifierRole) handle).getMessages2();
@@ -2727,6 +2792,11 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /** 
+     * Returns the collection of ConstrainingElements of a Collaboration
+     * @param handle the Collaboration
+     * @return the collection of ConstrainingElements
+     */
     public static Collection getConstrainingElements(Object handle) {
         if (handle instanceof MCollaboration) {
             return ((MCollaboration) handle).getConstrainingElements();
@@ -2734,6 +2804,11 @@ public class ModelFacade {
 	return illegalArgumentCollection(handle);
     }
 
+    /**
+     * Get the collection of all constraints of the given ModelElement
+     * @param handle the ModelElement
+     * @return the collection of all constraints
+     */
     public static Collection getConstraints(Object handle) {
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getConstraints();
@@ -2759,6 +2834,11 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Returns the CompositeState that is the container of the given StateVertex
+     * @param handle the StateVertex
+     * @return the CompositeState that is the container 
+     */
     public static Object getContainer(Object handle) {
         if (handle instanceof MStateVertex) {
             return ((MStateVertex) handle).getContainer();
@@ -2766,6 +2846,11 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
     
+    /**
+     * Returns the collection of ModelElements contained in a Partition
+     * @param handle the Partition
+     * @return the contents of the Partition
+     */
     public static Collection getContents(Object handle) {
         if (handle instanceof MPartition) {
             return ((MPartition) handle).getContents();
@@ -2791,6 +2876,11 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Return the collection of the Contexts of a given Signal
+     * @param handle the Signal
+     * @return a collection of the Contexts
+     */
     public static Collection getContexts(Object handle) {
         if (handle instanceof MSignal) {
             return ((MSignal) handle).getContexts();
@@ -2798,6 +2888,13 @@ public class ModelFacade {
 	return illegalArgumentCollection(handle);
     }
 
+    /**
+     * Return the collection of Actions that create/instantiate
+     *  the given Classifier 
+     * 
+     * @param handle the Classifier
+     * @return a collection containing all the creating actions
+     */
     public static Collection getCreateActions(Object handle) {
         if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getCreateActions();
@@ -2865,8 +2962,8 @@ public class ModelFacade {
      */
     public static void setDiscriminator(Object handle, String discriminator) {
         if (handle instanceof MGeneralization) {
-             ((MGeneralization) handle).setDiscriminator(discriminator);
-             return;
+            ((MGeneralization) handle).setDiscriminator(discriminator);
+            return;
         }
         illegalArgument(handle);
     }
@@ -2897,6 +2994,11 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Return the Links of a given Association
+     * @param handle the Association
+     * @return the collection of Links
+     */
     public static Collection getLinks(Object handle) {
         if (handle instanceof MAssociation) {
             return ((MAssociation) handle).getLinks();
@@ -2904,6 +3006,11 @@ public class ModelFacade {
 	return illegalArgumentCollection(handle);
     }
 
+    /**
+     * Return the LinkEnds of a given Instance or AssociationEnd
+     * @param handle the candidate
+     * @return the collection of LinkEnds
+     */
     public static Collection getLinkEnds(Object handle) {
         if (handle instanceof MInstance) {
             return ((MInstance) handle).getLinkEnds();
@@ -3181,6 +3288,11 @@ public class ModelFacade {
 	return illegalArgumentBoolean(handle);
     }
 
+    /**
+     * Returns the Package that is connected by the given ElementImport 
+     * @param handle the ElementImport 
+     * @return the Package
+     */
     public static Object getPackage(Object handle) {
         if (handle instanceof MElementImport) {
             return ((MElementImport) handle).getPackage();
@@ -3203,7 +3315,8 @@ public class ModelFacade {
     }
 
     /**
-     * Get the parameters of a Object Flow State, Behavioral Feature, Classifier or Event.
+     * Get the parameters of a Object Flow State, Behavioral Feature, 
+     * Classifier or Event.
      *
      * @param handle operation to retrieve from
      * @return Iterator with operations.
@@ -3366,6 +3479,11 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Returns the collection of elements in a given component
+     * @param handle the component
+     * @return the Collection of ResidentElements
+     */
     public static Collection getResidentElements(Object handle) {
         if (handle instanceof MComponent) {
             return ((MComponent) handle).getResidentElements();
@@ -3499,7 +3617,8 @@ public class ModelFacade {
      *
      * @param handle is a model element
      * @return Object
-     * @deprecated 0.15 in favor of getStereotypes since UML 1.5 supports multiple stereotypes
+     * @deprecated 0.15 in favor of getStereotypes since UML 1.5 supports 
+     * multiple stereotypes
      */
     public static Object getStereoType(Object handle) {
         if (isAModelElement(handle)) {
@@ -3538,6 +3657,12 @@ public class ModelFacade {
 	return illegalArgumentCollection(handle);
     }
 
+    /**
+     * Returns the Stimuli that are received by the given Instance
+     * 
+     * @param handle the Instance
+     * @return the collection of stimuli
+     */
     public static Collection getStimuli2(Object handle) {
         if (handle instanceof MInstance) {
             return ((MInstance) handle).getStimuli2();
@@ -3545,6 +3670,12 @@ public class ModelFacade {
 	return illegalArgumentCollection(handle);
     }
 
+    /**
+     * Returns the Stimuli that are send by the given Instance
+     * 
+     * @param handle the Instance
+     * @return the collection of stimuli
+     */
     public static Collection getStimuli3(Object handle) {
         if (handle instanceof MInstance) {
             return ((MInstance) handle).getStimuli3();
@@ -3842,6 +3973,11 @@ public class ModelFacade {
         return result;
     }
     
+    /**
+     * Returns the Specification of a given Reception
+     * @param handle the Reception
+     * @return String the Specification
+     */
     public static String getSpecification(Object handle) {
         if (handle instanceof MReception) {
             return ((MReception) handle).getSpecification();
@@ -3947,6 +4083,11 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Returns the AggregationKind of a given AssociationEnd
+     * @param handle the AssociationEnd
+     * @return the AggregationKind
+     */
     public static Object getAggregation(Object handle) {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd) handle).getAggregation();
@@ -4058,6 +4199,11 @@ public class ModelFacade {
 	return null;
     }
 
+    /**
+     * Returns the TaggedValues of a ModelElement
+     * @param handle the ModelElement
+     * @return the Collection of TaggedValues
+     */
     public static Collection getTaggedValuesCollection(Object handle) {
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getTaggedValues();
@@ -4101,6 +4247,12 @@ public class ModelFacade {
 	return "";
     }
 
+    /**
+     * Returns the Value of some UML Object
+     * @param handle Object
+     * @return Object the exact type depends on the handle type
+     * (String, Expression, Instance,...)
+     */
     public static Object getValue(Object handle) {
         if (handle instanceof MTaggedValue) {
             return ((MTaggedValue) handle).getValue();
@@ -4168,7 +4320,7 @@ public class ModelFacade {
             return ((MBase) base).getUUID();
         }
         if (base instanceof CommentEdge) {
-            return (String)((CommentEdge)base).getUUID();
+            return (String) ((CommentEdge) base).getUUID();
         }
         //
 	illegalArgument(base);
@@ -4256,6 +4408,11 @@ public class ModelFacade {
 	illegalArgument(handle, f);
     }
 
+    /**
+     * Add the given Link to the given Link or Association
+     * @param handle the Link or Association 
+     * @param link Link
+     */
     public static void addLink(Object handle, Object link) {
 	if (handle instanceof MAssociation && link instanceof MLink) {
 	    ((MAssociation) handle).addLink((MLink) link);
@@ -4264,6 +4421,11 @@ public class ModelFacade {
 	illegalArgument(handle, link);
     }
 
+    /**
+     * Add Message to a predecessor Message
+     * @param handle predecessor Message
+     * @param mess Message to be added
+     */
     public static void addMessage3(Object handle, Object mess) {
         if (handle instanceof MMessage && mess instanceof MMessage) {
             ((MMessage) handle).addMessage3((MMessage) mess);
@@ -4303,6 +4465,12 @@ public class ModelFacade {
 	illegalArgument(handle, me);
     }
 
+    /**
+     * Add a Parameter to the given object
+     * @param handle the object that will get the Parameter: 
+     * MObjectFlowState, MEvent, MBehavioralFeature, MClassifier
+     * @param parameter Object that will be added
+     */
     public static void addParameter(Object handle, Object parameter) {
         if (parameter instanceof MParameter) {
             if (handle instanceof MObjectFlowState) {
@@ -4327,6 +4495,13 @@ public class ModelFacade {
 	illegalArgument(handle, parameter);
     }
 
+    /**
+     * Add a Parameter to the given object at given location
+     * @param handle the object that will get the Parameter: 
+     * MEvent, MBehavioralFeature
+     * @param index the location
+     * @param parameter Object that will be added
+     */
     public static void addParameter(
         Object handle,
         int index,
@@ -4363,6 +4538,11 @@ public class ModelFacade {
 	illegalArgument(handle, predecessor);
     }
 
+    /**
+     * Add a raised Signal to a Message or Operation
+     * @param handle the Message or Operation
+     * @param sig the Signal that is raised
+     */
     public static void addRaisedSignal(Object handle, Object sig) {
         if (sig instanceof MSignal) {
             if (handle instanceof MMessage) {
@@ -4399,6 +4579,11 @@ public class ModelFacade {
 	illegalArgument(handle, stimulus);
     }
 
+    /**
+     * Add a subvertex to a composite state
+     * @param handle the CompositeState
+     * @param subvertex the StateVertex
+     */
     public static void addSubvertex(Object handle, Object subvertex) {
         if (handle instanceof MCompositeState
             && subvertex instanceof MStateVertex) {
@@ -4457,9 +4642,12 @@ public class ModelFacade {
      * @param comment The comment to which the element is annotated
      * @param annotatedElement The element to annotate
      */
-    public static void addAnnotatedElement(Object comment, Object annotatedElement) {
-        if (comment instanceof MComment && annotatedElement instanceof MModelElement) {
-            ((MComment)comment).addAnnotatedElement(((MModelElement)annotatedElement));
+    public static void addAnnotatedElement(Object comment, 
+            Object annotatedElement) {
+        if (comment instanceof MComment 
+                && annotatedElement instanceof MModelElement) {
+            ((MComment) comment)
+                .addAnnotatedElement(((MModelElement) annotatedElement));
             return;
         }
         illegalArgument(comment, annotatedElement);
@@ -4480,6 +4668,11 @@ public class ModelFacade {
 	illegalArgument(handle, c);
     }
 
+    /**
+     * Adds a Classifier to an Instance
+     * @param handle Instance
+     * @param classifier Classifier
+     */
     public static void addClassifier(Object handle, Object classifier) {
         if (handle instanceof MInstance && classifier instanceof MClassifier) {
             ((MInstance) handle).addClassifier((MClassifier) classifier);
@@ -4519,6 +4712,11 @@ public class ModelFacade {
 	illegalArgument(handle, dependency);
     }
 
+    /**
+     * Adds a TaggedValue to a ModelElement
+     * @param handle ModelElement
+     * @param taggedValue TaggedValue
+     */
     public static void addTaggedValue(Object handle, Object taggedValue) {
         if (isAModelElement(handle) && isATaggedValue(taggedValue)) {
             ((MModelElement) handle).addTaggedValue((MTaggedValue) taggedValue);
@@ -4527,6 +4725,11 @@ public class ModelFacade {
 	illegalArgument(handle, taggedValue);
     }
 
+    /**
+     * Removes the actual Argument from an Action
+     * @param handle Action
+     * @param argument Argument
+     */
     public static void removeActualArgument(Object handle, Object argument) {
         if (handle instanceof MAction && argument instanceof MArgument) {
             ((MAction) handle).removeActualArgument((MArgument) argument);
@@ -4565,6 +4768,11 @@ public class ModelFacade {
 	illegalArgument(handle, dep);
     }
 
+    /**
+     * Remove the given constraint from a given ModelElement
+     * @param handle ModelElement
+     * @param cons Constraint
+     */
     public static void removeConstraint(Object handle, Object cons) {
         if (handle instanceof MModelElement && cons instanceof MConstraint) {
             ((MModelElement) handle).removeConstraint((MConstraint) cons);
@@ -4573,6 +4781,11 @@ public class ModelFacade {
 	illegalArgument(handle, cons);
     }
 
+    /**
+     * Remove the given context (BehavioralFeature) from a Signal
+     * @param handle Signal
+     * @param context BehavioralFeature
+     */
     public static void removeContext(Object handle, Object context) {
         if (handle instanceof MSignal
             && context instanceof MBehavioralFeature) {
@@ -4626,6 +4839,10 @@ public class ModelFacade {
 	illegalArgument(uc, ep);
     }
 
+    /**Removes a successor message
+     * @param handle the Message that needs to loose a successor
+     * @param mess the Message that is removed
+     */
     public static void removeMessage3(Object handle, Object mess) {
         if (handle instanceof MMessage && mess instanceof MMessage) {
             ((MMessage) handle).removeMessage3((MMessage) mess);
@@ -4664,6 +4881,11 @@ public class ModelFacade {
 	illegalArgument(handle, p);
     }
 
+    /** 
+     * Removes a predecessor message
+     * @param handle the Message that needs to loose a predecessor
+     * @param message the Message that is removed
+     */
     public static void removePredecessor(Object handle, Object message) {
         if (handle instanceof MMessage && message instanceof MMessage) {
             ((MMessage) handle).removePredecessor((MMessage) message);
@@ -4672,6 +4894,11 @@ public class ModelFacade {
 	illegalArgument(handle, message);
     }
 
+    /**
+     * Remove a given Reception from a given Signal
+     * @param handle the Signal
+     * @param reception the Reception
+     */
     public static void removeReception(Object handle, Object reception) {
         if (handle instanceof MSignal && reception instanceof MReception) {
             ((MSignal) handle).removeReception((MReception) reception);
@@ -4680,6 +4907,11 @@ public class ModelFacade {
 	illegalArgument(handle, reception);
     }
 
+    /**
+     * Remove a given subvertex from a given composite state
+     * @param handle the composite state
+     * @param subvertex the StateVertex
+     */
     public static void removeSubvertex(Object handle, Object subvertex) {
         if (handle instanceof MCompositeState
             && subvertex instanceof MStateVertex) {
@@ -4755,7 +4987,7 @@ public class ModelFacade {
     }
 
     /**
-     * Sets a body of some method or expression.
+     * Sets a body of a given Method, Constraint or Expression.
      *
      * @param handle is the method, expression
      * @param expr is the body string for the expression
@@ -4775,9 +5007,10 @@ public class ModelFacade {
 
         /* TODO: MVW: The next part is fooling the user of setBody()
          * in thinking that the body of the object is changed.
-         * Instead, a new object is created as a side-effect.
-         * There is no other way: a MExpression can not be altered,
-         * once created! */
+         * Instead, a new object is created and as a side-effect 
+         * the language is lost.
+         * Maybe we should just copy the language?
+         */
         if (handle instanceof MExpression) {
             MExpressionEditor expressionEditor =
 		(MExpressionEditor) UmlFactory.getFactory().getDataTypes()
@@ -4795,34 +5028,34 @@ public class ModelFacade {
      *
      * TODO: This operation is fooling the user
      * in thinking that the body of the object is changed.
-     * Instead, a new object is created as a side-effect.
+     * Instead, a new object is created and as a side-effect the body is lost.
      * There is no other way: a MExpression can not be altered,
      * once created!
-     * So, this operation should return the created object instead!
+     * So, this operation should return the created object instead! 
+     * Or should it simply copy the body?
      *
      * @param handle is the expression
-     * @param expr is the lang
-     *
-     * TODO: Rename the expr parameter to something a little less error-prone.
+     * @param language is the lang
      */
-    public static void setLanguage(Object handle, String expr) {
+    public static void setLanguage(Object handle, String language) {
         if (handle instanceof MExpression) {
             MExpression expression = (MExpression) handle;
             MExpressionEditor expressionEditor = (MExpressionEditor)
                 UmlFactory.getFactory().getDataTypes().
                     createExpressionEditor(handle);
-            expressionEditor.setLanguage(expr);
+            expressionEditor.setLanguage(language);
             handle = expressionEditor.toExpression();
 
             return;
         }
-	illegalArgument(handle, expr);
+	illegalArgument(handle, language);
     }
 
     /**
      * Gets the language attribute of an Expression.
      *
      * @param handle is the Expression of which the language is retrieved
+     * @return String the language
      */
     public static String getLanguage(Object handle) {
         if (handle instanceof MExpression) {
@@ -4860,6 +5093,11 @@ public class ModelFacade {
 	illegalArgument(handle, guard);
     }
 
+    /**
+     * Set the Transition of a guard or effect (Action).
+     * @param handle the Guard or Action
+     * @param trans the Transition
+     */
     public static void setTransition(Object handle, Object trans) {
         if (trans instanceof MTransition) {
             if (handle instanceof MGuard) {
@@ -4889,6 +5127,11 @@ public class ModelFacade {
 	illegalArgument(handle, event);
     }
 
+    /**
+     * Set the icon for a stereotype
+     * @param handle Stereotype
+     * @param icon String
+     */
     public static void setIcon(Object handle, Object icon) {
         if (handle instanceof MStereotype
                 && (icon == null || icon instanceof String)) {
@@ -4898,6 +5141,11 @@ public class ModelFacade {
 	illegalArgument(handle, icon);
     }
 
+    /** Set the ImplementationLocation of the given ElementResidence 
+     * to the given Component.
+     * @param handle the ElementResidence
+     * @param component the Component
+     */
     public static void setImplementationLocation(
         Object handle,
         Object component) {
@@ -4910,6 +5158,11 @@ public class ModelFacade {
 	illegalArgument(handle, component);
     }
 
+    /**
+     * Set the collection of Include relationships for a usecase
+     * @param handle UseCase
+     * @param includes the collection of Include relationships 
+     */
     public static void setIncludes(Object handle, Collection includes) {
         if (handle instanceof MUseCase) {
             ((MUseCase) handle).setIncludes(includes);
@@ -4933,6 +5186,10 @@ public class ModelFacade {
 	illegalArgument(at, expr);
     }
 
+    /** Sets the given Instance to the given LinkEnd or AttributeLink
+     * @param handle LinkEnd or AttributeLink
+     * @param inst null or Instance
+     */
     public static void setInstance(Object handle, Object inst) {
         if (inst == null || inst instanceof MInstance) {
             if (handle instanceof MLinkEnd) {
@@ -4961,6 +5218,10 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /**
+     * @param handle Message
+     * @param messages Collection of predecessor messages
+     */
     public static void setMessages3(Object handle, Collection messages) {
         if (handle instanceof MMessage) {
             ((MMessage) handle).setMessages3(messages);
@@ -5009,9 +5270,9 @@ public class ModelFacade {
         if (handle instanceof MPartition
             && container instanceof MActivityGraph) {
             ((MPartition) handle).setActivityGraph((MActivityGraph) container);
-        } else if (handle instanceof MModelElement &&
-                container instanceof MPartition) {
-            	((MPartition) container).addContents((MModelElement)handle);
+        } else if (handle instanceof MModelElement 
+                && container instanceof MPartition) {
+            ((MPartition) container).addContents((MModelElement) handle);
         } else if (
             handle instanceof MConstraint
                 && container instanceof MStereotype) {
@@ -5172,6 +5433,11 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /** Set the value of a given object
+     * 
+     * @param handle the Object of which the value will be set
+     * @param value Object 
+     */
     public static void setValue(Object handle, Object value) {
         if (handle instanceof MArgument) {
             ((MArgument) handle).setValue((MExpression) value);
@@ -5241,6 +5507,11 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /**
+     * Set the NodeInstance of a ComponentInstance
+     * @param handle ComponentInstance
+     * @param nodeInstance NodeInstance
+     */
     public static void setNodeInstance(Object handle, Object nodeInstance) {
         if (handle instanceof MComponentInstance
 	    && nodeInstance instanceof MNodeInstance) {
@@ -5251,6 +5522,11 @@ public class ModelFacade {
 	illegalArgument(handle, nodeInstance);
     }
 
+    /**
+     * Set the owner of a Feature
+     * @param handle Feature
+     * @param owner Classifier or null
+     */
     public static void setOwner(Object handle, Object owner) {
         if (handle instanceof MFeature
             && (owner == null || owner instanceof MClassifier)) {
@@ -5260,6 +5536,11 @@ public class ModelFacade {
 	illegalArgument(handle, owner);
     }
 
+    /**
+     * Set the Operation of a CallAction or CallEvent
+     * @param handle CallAction or CallEvent
+     * @param operation Operation
+     */
     public static void setOperation(Object handle, Object operation) {
         if (handle instanceof MCallAction) {
             ((MCallAction) handle).setOperation((MOperation) operation);
@@ -5272,6 +5553,11 @@ public class ModelFacade {
 	illegalArgument(handle, operation);
     }
 
+    /**
+     * Set the OrderingKind of a given AssociationEnd 
+     * @param handle AssociationEnd
+     * @param ok OrderingKind
+     */
     public static void setOrdering(Object handle, Object ok) {
         if (handle instanceof MAssociationEnd && ok instanceof MOrderingKind) {
             ((MAssociationEnd) handle).setOrdering((MOrderingKind) ok);
@@ -5299,6 +5585,10 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /**
+     * @param handle Feature
+     * @param os ScopeKind
+     */
     public static void setOwnerScope(Object handle, Object os) {
         if (handle instanceof MFeature
             && (os == null || os instanceof MScopeKind)) {
@@ -5413,6 +5703,10 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /**
+     * @param handle Instance
+     * @param c ComponentInstance or null
+     */
     public static void setComponentInstance(Object handle, Object c) {
         if (handle instanceof MInstance
 	    && (c == null || c instanceof MComponentInstance)) {
@@ -5475,6 +5769,11 @@ public class ModelFacade {
 	illegalArgument(handle, concurrencyKind);
     }
 
+    /**
+     * Makes a Composite State concurrent
+     * @param handle the CompositState
+     * @param concurrent boolean
+     */
     public static void setConcurent(Object handle, boolean concurrent) {
         if (handle instanceof MCompositeState) {
             ((MCompositeState) handle).setConcurent(concurrent);
@@ -5516,6 +5815,11 @@ public class ModelFacade {
 	illegalArgument(handle, compositeState);
     }
 
+    /**
+     * Sets the contexts for a Signal
+     * @param handle the Signal
+     * @param c the collection of contexts
+     */
     public static void setContexts(Object handle, Collection c) {
         if (handle instanceof MSignal) {
             ((MSignal) handle).setContexts(c);
@@ -5599,6 +5903,10 @@ public class ModelFacade {
 	illegalArgument(handle, value);
     }
 
+    /**Set the Expression of a Guard or ChangeEvent
+     * @param handle Guard or ChangeEvent
+     * @param value BooleanExpression or null
+     */
     public static void setExpression(Object handle, Object value) {
         if (handle instanceof MGuard
             && (value == null || value instanceof MBooleanExpression)) {
@@ -5628,6 +5936,11 @@ public class ModelFacade {
         illegalArgument(handle, value);
     }
 
+    /**
+     * Set the extension of a usecase
+     * @param handle Extend
+     * @param ext UseCase or null
+     */
     public static void setExtension(Object handle, Object ext) {
 	checkExists(handle);
 	checkExists(ext);
@@ -5708,6 +6021,10 @@ public class ModelFacade {
 	illegalArgument(handle, association);
     }
 
+    /**Set the Changeability of a StructuralFeature or AssociationEnd
+     * @param handle StructuralFeature or AssociationEnd
+     * @param ck ChangeableKind
+     */
     public static void setChangeability(Object handle, Object ck) {
         if (ck == null || ck instanceof MChangeableKind) {
 	    MChangeableKind changeableKind = (MChangeableKind) ck;
@@ -5731,7 +6048,7 @@ public class ModelFacade {
      * @param flag is the changeability flag
      */
     public static void setChangeable(Object handle, boolean flag) {
-        // FIXME: the implementation is ugly, because I have no spec
+        // TODO: the implementation is ugly, because I have no spec
         // at hand...
         if (handle instanceof MStructuralFeature) {
             if (flag) {
@@ -5755,6 +6072,10 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /**Set the child for a generalization
+     * @param handle Generalization
+     * @param child GeneralizableElement
+     */
     public static void setChild(Object handle, Object child) {
         if (handle instanceof MGeneralization) {
             ((MGeneralization) handle).setChild((MGeneralizableElement) child);
@@ -5788,8 +6109,8 @@ public class ModelFacade {
     /**
      * Sets the addition to an include.
      * There is a bug in NSUML that reverses additions and bases for includes.
-     * @param handle
-     * @param useCase
+     * @param handle Include 
+     * @param useCase UseCase
      */
     public static void setAddition(Object handle, Object useCase) {
 	checkExists(handle);
@@ -5817,6 +6138,11 @@ public class ModelFacade {
 	illegalArgument(handle, action);
     }
 
+    /**
+     * Set the Activator message of an message
+     * @param handle Message
+     * @param message Message
+     */
     public static void setActivator(Object handle, Object message) {
         if (handle instanceof MMessage
             && (message == null || message instanceof MMessage)) {
@@ -5826,6 +6152,10 @@ public class ModelFacade {
 	illegalArgument(handle, message);
     }
 
+    /**Makes a Class active
+     * @param handle Class
+     * @param active boolean
+     */
     public static void setActive(Object handle, boolean active) {
         if (handle instanceof MClass) {
             ((MClass) handle).setActive(active);
@@ -5904,6 +6234,11 @@ public class ModelFacade {
 	illegalArgument(handle, receiver);
     }
 
+    /**
+     * Set the recurrence of an Action
+     * @param handle Action
+     * @param expr IterationExpression
+     */
     public static void setRecurrence(Object handle, Object expr) {
         if (handle instanceof MAction
             && expr instanceof MIterationExpression) {
@@ -5949,6 +6284,11 @@ public class ModelFacade {
 	illegalArgument(handle, operation);
     }
 
+    /**
+     * 
+     * @param handle ElementResidence
+     * @param resident ModelElement or null
+     */
     public static void setResident(Object handle, Object resident) {
         if (handle instanceof MElementResidence
             && (resident == null || resident instanceof MModelElement)) {
@@ -6002,6 +6342,11 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /**
+     * Set the Expression (script) for an Action
+     * @param handle Action
+     * @param expr the script (ActionExpression)
+     */
     public static void setScript(Object handle, Object expr) {
         if (handle instanceof MAction
             && (expr == null || expr instanceof MActionExpression)) {
@@ -6029,6 +6374,11 @@ public class ModelFacade {
 	illegalArgument(handle, sender);
     }
 
+    /**
+     * Set the Signal
+     * @param handle SendAction or Reception or SignalEvent
+     * @param signal Signal or null
+     */
     public static void setSignal(Object handle, Object signal) {
         if (signal == null || signal instanceof MSignal) {
             if (handle instanceof MSendAction) {
@@ -6061,6 +6411,10 @@ public class ModelFacade {
 	illegalArgument(handle, state);
     }
 
+    /**
+     * @param handle Flow
+     * @param specifications the collection of ModelEvents (sourceFlow)
+     */
     public static void setSources(Object handle, Collection specifications) {
         if (handle instanceof MFlow) {
             ((MFlow) handle).setSources(specifications);
@@ -6082,6 +6436,11 @@ public class ModelFacade {
         illegalArgument(handle);
     }
 
+    /**
+     * Set the Specification flag for a ModelElement
+     * @param handle ModelElement
+     * @param specification boolean
+     */
     public static void setSpecification(Object handle, boolean specification) {
         if (handle instanceof MModelElement) {
             ((MModelElement) handle).setSpecification(specification);
@@ -6194,6 +6553,10 @@ public class ModelFacade {
 	illegalArgument(handle, parent);
     }
 
+    /**
+     * @param handle Generalization 
+     * @param pt Classifier
+     */
     public static void setPowertype(Object handle, Object pt) {
         if (handle instanceof MGeneralization && pt instanceof MClassifier) {
             ((MGeneralization) handle).setPowertype((MClassifier) pt);
@@ -6202,6 +6565,11 @@ public class ModelFacade {
 	illegalArgument(handle, pt);
     }
 
+    /**
+     * Set the collection of predecessing messages
+     * @param handle Message
+     * @param predecessors Collection of Messages
+     */
     public static void setPredecessors(
         Object handle,
         Collection predecessors) {
@@ -6273,6 +6641,11 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /**
+     * Set the Tag of a TaggedValue 
+     * @param handle TaggedValue
+     * @param tag String
+     */
     public static void setTag(Object handle, Object tag) {
         if (handle instanceof MTaggedValue && tag instanceof String) {
             ((MTaggedValue) handle).setTag((String) tag);
@@ -6299,6 +6672,11 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /**
+     * Set the TaggedValues of a ModelElement
+     * @param handle ModelElement
+     * @param taggedValues Collection of TaggedValues
+     */
     public static void setTaggedValues(
         Object handle,
         Collection taggedValues) {
@@ -6376,6 +6754,11 @@ public class ModelFacade {
 	illegalArgument(handle, stereo);
     }
 
+    /**
+     * Set the collection of substates for a CompositeState
+     * @param handle CompositeState
+     * @param subvertices collection of sub-StateVertexes
+     */
     public static void setSubvertices(Object handle, Collection subvertices) {
         if (handle instanceof MCompositeState) {
             ((MCompositeState) handle).setSubvertices(subvertices);
@@ -6384,6 +6767,10 @@ public class ModelFacade {
 	illegalArgument(handle, subvertices);
     }
 
+    /** Add an End to a connection
+     * @param handle Association or Link
+     * @param connection AssociationEnd or LinkEnd
+     */
     public static void addConnection(Object handle, Object connection) {
         if (handle instanceof MAssociation
             && connection instanceof MAssociationEnd) {
@@ -6412,6 +6799,10 @@ public class ModelFacade {
 	illegalArgument(handle, mc);
     }
 
+    /**
+     * @param handle Component
+     * @param node Node
+     */
     public static void addDeploymentLocation(Object handle, Object node) {
         if (handle instanceof MComponent && node instanceof MNode) {
             ((MComponent) handle).addDeploymentLocation((MNode) node);
@@ -6420,6 +6811,11 @@ public class ModelFacade {
 	illegalArgument(handle, node);
     }
 
+    /**
+     * Add an extended element to a stereotype
+     * @param handle Stereotype
+     * @param extendedElement ExtensionPoint
+     */
     public static void addExtendedElement(
         Object handle,
         Object extendedElement) {
@@ -6499,6 +6895,12 @@ public class ModelFacade {
         return Collections.EMPTY_LIST;
     }
 
+    /**
+     * Get a string representation of the class type. 
+     * Purpose: documenting an exception
+     * @param handle the Class or null
+     * @return String 
+     */
     protected static String getClassNull(Object handle) {
 	if (handle == null) {
 	    return "[null]";
