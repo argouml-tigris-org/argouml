@@ -60,7 +60,7 @@ public abstract class AbstractUmlModelFactory {
     protected void initialize(Object o) {
         if (o instanceof MBase) {
             if (((MBase) o).getUUID() == null) {
-                ((MBase) o).setUUID(UUIDManager.SINGLETON.getNewUUID());
+                ((MBase) o).setUUID(UUIDManager.getInstance().getNewUUID());
             }            
             addListenersToModelElement(o);
             UmlModelEventPump pump = UmlModelEventPump.getPump();
