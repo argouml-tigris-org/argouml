@@ -80,7 +80,8 @@ import org.argouml.util.*;
  *   provides strings for UML related critiques and check lists.
  *   Source code contains some notes about the translation.
  *
- *   @author Curt Arnold, Alejandro Ramirez
+ *   @author Curt Arnold
+ *   @author Alejandro Ramirez
  *   @since 0.9
  *   @see java.util.ResourceBundle
  *   @see UMLCognitiveResourceBundle_en
