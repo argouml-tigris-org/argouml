@@ -42,7 +42,7 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         {"Print...", "Imprimer..." },  
         {"Save GIF...", "Enregistrer au Format GIF..." },
         {"Save Graphics...", "Enregistrer les Graphiques..." },  
-	{"Save Configuration", "I18N: Save Configuration"},
+	{"Save Configuration", "Enregistrer la Configuration"},
         {"Exit", "Quitter" },  
         {"Undo", "Annuler" },  
         {"Redo", "R\u00e9tablir" },  
