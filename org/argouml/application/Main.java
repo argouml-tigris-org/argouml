@@ -49,6 +49,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.cognitive.critics.*;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.uml.ui.UMLAction;
+import org.argouml.util.*;
 import org.argouml.util.logging.*;
 
 import org.argouml.application.security.ArgoSecurityManager;
@@ -300,6 +301,9 @@ public class Main {
         }
 
 	st.mark("set project");
+
+        // Touch the trash
+        Trash.SINGLETON.getSize();
 
         pb.setProject(p);
 
