@@ -29,6 +29,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.foundation.core.MAttribute;
@@ -60,10 +61,7 @@ public class ActionAddAttribute extends UMLChangeAction {
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
-	Object target = pb.getTarget();
-        if (target instanceof Fig) {
-            target = ((Fig)target).getOwner();
-        }
+	Object target = TargetManager.getInstance().getModelTarget();
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
 	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
@@ -74,7 +72,7 @@ public class ActionAddAttribute extends UMLChangeAction {
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Object target = pb.getDetailsTarget();
+	Object target =  TargetManager.getInstance().getModelTarget();
 	/*
 	if (target instanceof MInterface) {
 		return Notation.getDefaultNotation().getName().equals("Java");

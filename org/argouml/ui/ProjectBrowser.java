@@ -397,7 +397,7 @@ public class ProjectBrowser
      * would then change the target in all views again...
      */
     public void setTarget(Object o) {
-        TargetManager.getInstance().setTarget(o);
+        
 
         if (isInSelectionTransaction()) {
             return;
@@ -452,8 +452,10 @@ public class ProjectBrowser
                 }
             }
             getNavigatorPane().getTree().setTarget(o);
+            
             Actions.updateAllEnabled();
         }
+        TargetManager.getInstance().setTarget(o);
 
         selectionTransactionEnded();
     }
@@ -500,6 +502,12 @@ public class ProjectBrowser
         }
     }
 
+    /**
+     * Gets the target of the detailspane. This is exactly the same as the target
+     * of the TargetManager. 
+     * @deprecated replaced by TargetManager.getInstance().getTarget()
+     * @return the target
+     */
     public Object getDetailsTarget() {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         if (it.hasNext()) {

@@ -355,8 +355,9 @@ public final class UmlModelEventPump implements MElementListener {
         Object listener,
         Object modelelement,
         String[] eventNames) {
-            if (modelelement == null) return;
-        if (listener == null          
+        if (modelelement == null)
+            return;
+        if (listener == null
             || eventNames == null
             || eventNames.length == 0
             || !(listener instanceof MElementListener)
@@ -370,6 +371,10 @@ public final class UmlModelEventPump implements MElementListener {
                     modelelement.getClass(),
                     eventNames[i]);
             for (int j = 0; j < keys.length; j++) {
+                _listenerMap.remove(
+                    (MBase) modelelement,
+                    keys[j],
+                    (MElementListener) listener);
                 _listenerMap.put(
                     (MBase) modelelement,
                     keys[j],
@@ -389,7 +394,8 @@ public final class UmlModelEventPump implements MElementListener {
         Object listener,
         Object modelelement,
         String eventName) {
-            if (modelelement == null) return;
+        if (modelelement == null)
+            return;
         if (listener == null
             || eventName == null
             || !(listener instanceof MElementListener)
@@ -400,6 +406,10 @@ public final class UmlModelEventPump implements MElementListener {
         EventKey[] keys =
             _definition.getEventTypes(modelelement.getClass(), eventName);
         for (int i = 0; i < keys.length; i++) {
+            _listenerMap.remove(
+                (MBase) modelelement,
+                keys[i],
+                (MElementListener) listener);
             _listenerMap.put(
                 (MBase) modelelement,
                 keys[i],
@@ -417,7 +427,8 @@ public final class UmlModelEventPump implements MElementListener {
      * @param modelElement
      */
     public void addModelEventListener(Object listener, Object modelelement) {
-        if (modelelement == null) return;
+        if (modelelement == null)
+            return;
         if (listener == null
             || modelelement == null
             || !(listener instanceof MElementListener)
@@ -425,6 +436,10 @@ public final class UmlModelEventPump implements MElementListener {
             throw new IllegalArgumentException("Wrong argument types while adding a modelelement listener");
         EventKey[] keys = _definition.getEventTypes(modelelement.getClass());
         for (int i = 0; i < keys.length; i++) {
+            _listenerMap.remove(
+                (MBase) modelelement,
+                keys[i],
+                (MElementListener) listener);
             _listenerMap.put(
                 (MBase) modelelement,
                 keys[i],

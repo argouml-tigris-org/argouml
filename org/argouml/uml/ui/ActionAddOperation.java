@@ -31,6 +31,8 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
+
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -62,7 +64,7 @@ public class ActionAddOperation extends UMLChangeAction {
    
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
-	Object target = pb.getDetailsTarget();
+	Object target =  TargetManager.getInstance().getModelTarget();
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
 	MOperation oper = UmlFactory.getFactory().getCore().buildOperation(cls);
@@ -80,7 +82,7 @@ public class ActionAddOperation extends UMLChangeAction {
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Object target = pb.getDetailsTarget();
+	Object target =  TargetManager.getInstance().getModelTarget();
 	return super.shouldBeEnabled() && target instanceof MClassifier && !(target instanceof MSignal);
     }
 } /* end class ActionAddOperation */

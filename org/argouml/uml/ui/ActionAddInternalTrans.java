@@ -23,24 +23,24 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.ui.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+
+import org.argouml.ui.targetmanager.TargetManager;
+
+import ru.novosoft.uml.behavior.state_machines.MState;
 
 
 class ActionAddInternalTrans extends UMLChangeAction {
   public ActionAddInternalTrans() { super("action.add-internal-transition"); }
 
   public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    Object target = pb.getDetailsTarget();
+    Object target = TargetManager.getInstance().getModelTarget();
     if (!(target instanceof MState)) return;
     MState st = (MState) target;
     super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
-    ProjectBrowser pb = ProjectBrowser.getInstance();
-    Object target = pb.getDetailsTarget();
+    Object target = TargetManager.getInstance().getModelTarget();
     return super.shouldBeEnabled() && target instanceof MState;
   }
 } /* end class ActionAddInternalTrans */

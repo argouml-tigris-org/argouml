@@ -81,7 +81,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     /**
      * The number of actual entries in the list.
      */
-    private int _currentModelElementSize = -1;
+    private int _currentModelElementSize = 0;
     /**
      * Set to true when an event suggests that the size needs to be recalculated.
      */

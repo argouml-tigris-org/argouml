@@ -36,6 +36,7 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
@@ -128,8 +129,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
         // Find the target in the project browser. We can only do anything if
         // its a use case.
 
-	ProjectBrowser pb     = ProjectBrowser.getInstance();
-	Object         target = pb.getDetailsTarget();
+	Object         target = TargetManager.getInstance().getModelTarget();
 
 	if (!(target instanceof MUseCase)) {
             return;
@@ -141,7 +141,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
 	MExtensionPoint ep =
             UmlFactory.getFactory().getUseCases().buildExtensionPoint((MUseCase) target);
 
-	pb.setTarget(ep);
+	ProjectBrowser.getInstance().setTarget(ep);
 	super.actionPerformed(ae);
     }
 
@@ -155,8 +155,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
      */
 
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb     = ProjectBrowser.getInstance();
-	Object         target = pb.getDetailsTarget();
+	Object         target = TargetManager.getInstance().getModelTarget();
 
 	return super.shouldBeEnabled() && (target instanceof MUseCase);
     }

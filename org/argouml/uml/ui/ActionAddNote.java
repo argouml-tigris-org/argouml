@@ -31,6 +31,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.tigris.gef.base.Layer;
@@ -66,12 +67,9 @@ public class ActionAddNote extends UMLChangeAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-        ProjectBrowser pb = ProjectBrowser.getInstance();
-        Object target = pb.getDetailsTarget();
-        if (target == null) {
-            target = pb.getTarget();
+        Object target =  TargetManager.getInstance().getModelTarget();
+       
             if (target == null || !(target instanceof MModelElement)) return;
-        }
         MModelElement elem = (MModelElement)target;
         MComment comment = CoreFactory.getFactory().buildComment(elem);
         
@@ -82,7 +80,7 @@ public class ActionAddNote extends UMLChangeAction {
         int x = 0;
         int y = 0;       
         Layer lay = diagram.getLayer();
-        Rectangle drawingArea = pb.getEditorPane().getBounds();
+        Rectangle drawingArea = ProjectBrowser.getInstance().getEditorPane().getBounds();
         FigComment fig = new FigComment(diagram.getGraphModel(), comment);
         if (elemFig instanceof FigNode) {
             x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
@@ -220,7 +218,7 @@ public class ActionAddNote extends UMLChangeAction {
 
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Object target = pb.getDetailsTarget();
+	Object target =  TargetManager.getInstance().getModelTarget();;
     if (ProjectManager.getManager().getCurrentProject().getActiveDiagram() == null) return false;
 	return super.shouldBeEnabled() && 
         (target instanceof MModelElement) && 
