@@ -154,8 +154,6 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
                 "The type of each operation parameter must be visible and imported into the class that owns the operation.\n\nImporting classes is needed for code generation. Good modularization of classes into packages is key to an understandable design.\n\nTo fix this, use the \"Next>\" button, or manually add an import to the class that owns this operation." },
         { "CrSignatureConflict_head" ,
                 "Resolve Signature Conflict" },
-        { "CrSignatureConflict_desc" ,
-                "Two operations of <ocl>self</ocl> have same signature.  A signature consists of the operation's name and the number and types of its parameters.\n\nOperations must have distinct signatures for code generation to produce code that will compile.\n\nTo fix this, use the \"Next>\" button, or manually double click on one of the conflicting operations in the navigator pane and use the Properties tab to change this name or parameters." },
         { "CrUselessAbstract_head" ,
                 "Define Concrete (Sub)Class" },
         { "CrUselessAbstract_desc" ,

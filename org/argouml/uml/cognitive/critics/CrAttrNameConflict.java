@@ -23,7 +23,7 @@
 
 
 
-// File: CrSignatureConflict.java
+// File: CrAttrNameConflict.java
 // Classes: CrAttrNameConflict
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
