@@ -4,6 +4,8 @@ package uci.uml.Model_Management;
 
 import java.util.*;
 
+import java.beans.PropertyVetoException;
+import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
 public class ElementReference {

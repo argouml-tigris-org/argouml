@@ -1,14 +1,18 @@
-// Source file: f:/jr/projects/uml/Model_Management/Model.java
 
+// Source file: f:/jr/projects/uml/Model_Management/Model.java
 package uci.uml.Model_Management;
 
 import java.util.*;
+import java.beans.PropertyVetoException;
 
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.Name;
 
 public class Model extends GeneralizableElementImpl implements Package {
     
   public Model() { }
+  public Model(Name name) { super(name); }
+  public Model(String nameStr) { super(new Name(nameStr)); }
 
   ////////////////////////////////////////////////////////////////
   // Package implementation
@@ -19,7 +23,8 @@ public class Model extends GeneralizableElementImpl implements Package {
   public Vector getReferencedElement() {
     return _referencedElement;
   }
-  public void setReferencedElement(Vector x) {
+  public void setReferencedElement(Vector x) throws PropertyVetoException {
+    fireVetoableChange("referencedElemement", _referencedElement, x);
     _referencedElement = x;
   }
   public void addReferencedElement(ModelElement x) {

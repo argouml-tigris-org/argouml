@@ -2,8 +2,10 @@ package uci.uml.generate;
 
 import java.util.*;
 import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Core.Class;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.Model_Management.*;
 
 // needs-more-work: always check for null!!!
 
@@ -86,8 +88,80 @@ public class GeneratorDisplay extends Generator {
   }
 
 
+  public String generatePackage(Package p) {
+    String s = "";
+    String packName = generateName(p.getName());
+    s += "package " + packName + " {\n";
+    Vector ownedElements = p.getOwnedElement();
+    if (ownedElements != null) {
+      java.util.Enumeration ownedEnum = ownedElements.elements();
+      while (ownedEnum.hasMoreElements()) {
+	ElementOwnership eo = (ElementOwnership) ownedEnum.nextElement();
+	s += generate(eo.getModelElement());
+	s += "\n\n";
+      }
+    }
+    else {
+      s += "(no elements)";
+    }
+    s += "\n}\n";
+    return s;
+  }
+
+
   public String generateClassifier(Classifier cls) {
-    return "";
+    String generatedName = generateName(cls.getName());
+    String classifierKeyword;
+    if (cls instanceof Class) classifierKeyword = "class";
+    else { if (cls instanceof Interface) classifierKeyword = "interface";
+    else classifierKeyword = "class?"; }
+    String s = "";
+    s += generateVisibility(cls.getElementOwnership());
+    if (cls.getIsAbstract().booleanValue()) s += "abstract ";
+    s += classifierKeyword + " " + generatedName + " ";
+    String baseClass = generateGeneralzation(cls.getGeneralization());
+    if (!baseClass.equals("")) s += "extends " + baseClass + " ";
+    String interfaces = generateRealization(cls.getRealization());
+    if (!interfaces.equals("")) s += "implements " + interfaces + " ";
+    s += "{\n";
+
+    Vector strs = cls.getStructuralFeature();
+    if (strs != null) {
+      s += "\n";
+      s += "////////////////////////////////////////////////////////////////\n";
+      s += "// Attributes\n";
+      java.util.Enumeration strEnum = strs.elements();
+      while (strEnum.hasMoreElements())
+	s += generate(strEnum.nextElement()) + ";\n";
+    }
+
+    Vector ends = cls.getAssociationEnd();
+    if (ends != null) {
+      s += "\n";
+      s += "////////////////////////////////////////////////////////////////\n";
+      s += "// Associations\n";
+      java.util.Enumeration endEnum = ends.elements();
+      while (endEnum.hasMoreElements()) {
+	AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
+	IAssociation a = ae.getAssociation();
+	s += generateAssociationFrom(a, ae) + ";\n";
+      }
+    }
+
+    // needs-more-work: constructors
+    
+    Vector behs = cls.getBehavioralFeature();
+    if (behs != null) {
+      s += "\n";
+      s += "////////////////////////////////////////////////////////////////\n";
+      s += "// Operations\n";
+      java.util.Enumeration behEnum = behs.elements();
+      while (behEnum.hasMoreElements())
+	s += generate(behEnum.nextElement()) + ";\n";
+    }
+    
+    s += "} /* end " + classifierKeyword + " " + generatedName + " */\n";
+    return s;
   }
 
   public String generateStereotype(Stereotype s) {
@@ -101,8 +175,31 @@ public class GeneratorDisplay extends Generator {
   }
 
 
-  public String generateAssociation(Association a) {
-    return "";
+  public String generateAssociationFrom(IAssociation a, AssociationEnd ae) {
+    // needs-more-work: does not handle n-ary associations
+    Vector connections = a.getConnection();
+    java.util.Enumeration connEnum = connections.elements();
+    while (connEnum.hasMoreElements()) {
+      AssociationEnd ae2 = (AssociationEnd) connEnum.nextElement();
+      if (ae2 != ae) return generateAssociationEnd(ae2);
+    }
+    System.out.println("should never get here?");
+    return generateAssociation(a);
+  }
+
+  public String generateAssociation(IAssociation a) {
+    String s = "";
+    String generatedName = generateName(a.getName());
+    s += "Association " + generatedName + " {\n";
+
+    java.util.Enumeration endEnum = a.getConnection().elements();
+    while (endEnum.hasMoreElements()) {
+      AssociationEnd ae = (AssociationEnd)endEnum.nextElement();
+      s += generateAssociationEnd(ae);
+      s += ";\n";
+    }
+    s += "}\n";
+    return s;
   }
 
   public String generateAssociationEnd(AssociationEnd ae) {
@@ -139,6 +236,35 @@ public class GeneratorDisplay extends Generator {
   ////////////////////////////////////////////////////////////////
   // internal methods?
   
+
+  public String generateGeneralzation(Vector classifiers) {
+    return generateClassList(classifiers);
+  }
+  public String generateRealization(Vector classifiers) {
+    return generateClassList(classifiers);
+  }
+
+  public String generateClassList(Vector classifiers) {
+    String s = "";
+    if (classifiers == null) return "";
+    java.util.Enumeration clsEnum = classifiers.elements();
+    while (clsEnum.hasMoreElements()) {
+      s += generateClassifierRef((Classifier)clsEnum.nextElement());
+      if (clsEnum.hasMoreElements()) s += ", ";
+    }
+    return s;
+  }
+       
+  public String generateVisibility(ElementOwnership eo) {
+    if (eo == null) return "";
+    VisibilityKind vis = eo.getVisibility();
+    if (vis == null) return "";
+    if (vis == VisibilityKind.PUBLIC) return "public ";
+    if (vis == VisibilityKind.PRIVATE) return "private ";
+    if (vis == VisibilityKind.PROTECTED) return "protected ";
+    return "";
+  }
+
   public String generateVisibility(Feature f) {
     VisibilityKind vis = f.getVisibility();
     if (vis == null) return "";

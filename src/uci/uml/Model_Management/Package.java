@@ -4,6 +4,7 @@
 package uci.uml.Model_Management;
 
 import java.util.*;
+import java.beans.PropertyVetoException;
 import uci.uml.Foundation.Core.GeneralizableElement;
 import uci.uml.Foundation.Core.ModelElement;
 
@@ -12,6 +13,6 @@ public interface Package extends GeneralizableElement {
   // public ModelElement _referencedElement[];
 
   public Vector getReferencedElement();
-  public void setReferencedElement(Vector x);
+  public void setReferencedElement(Vector x) throws PropertyVetoException;
   
 }

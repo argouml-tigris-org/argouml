@@ -3,6 +3,7 @@
 package uci.uml.Foundation.Core;
 
 import java.util.*;
+import java.beans.PropertyVetoException;
 
 public interface GeneralizableElement extends Namespace {
   //    public Boolean _isRoot;
@@ -12,22 +13,22 @@ public interface GeneralizableElement extends Namespace {
   //    public Generalization _specialization[];
     
   public Boolean getIsRoot();
-  public void setIsRoot(Boolean x);
+  public void setIsRoot(Boolean x) throws PropertyVetoException;
   
   public Boolean getIsLeaf();
-  public void setIsLeaf(Boolean x);
+  public void setIsLeaf(Boolean x) throws PropertyVetoException;
   
   public Boolean getIsAbstract();
-  public void setIsAbstract(Boolean x);
+  public void setIsAbstract(Boolean x) throws PropertyVetoException;
   
   public Vector getGeneralization();
-  public void setGeneralization(Vector x);
-  public void addGeneralization(Generalization x);
-  public void removeGeneralization(Generalization x);
+  public void setGeneralization(Vector x) throws PropertyVetoException;
+  public void addGeneralization(Generalization x) throws PropertyVetoException;
+  public void removeGeneralization(Generalization x) throws PropertyVetoException;
   
-  public Vector getSpecialization();
-  public void setSpecialization(Vector x);
-  public void addSpecialization(Generalization x);
-  public void removeSpecialization(Generalization x);
+//-   public Vector getSpecialization();
+//-   public void setSpecialization(Vector x) throws PropertyVetoException;
+//-   public void addSpecialization(Generalization x) throws PropertyVetoException;
+//-   public void removeSpecialization(Generalization x) throws PropertyVetoException;
 
 }

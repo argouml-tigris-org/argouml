@@ -3,6 +3,7 @@
 package uci.uml.Foundation.Core;
 
 import java.util.*;
+import java.beans.PropertyVetoException;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Data_Types.Name;
 import uci.uml.generate.*;

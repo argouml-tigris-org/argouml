@@ -7,7 +7,7 @@ import java.util.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.Link;
 
 
-public interface IAssociation {
+public interface IAssociation extends ModelElement {
 
   public Vector getConnection();
   public void setConnection(Vector x);

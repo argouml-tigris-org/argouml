@@ -3,6 +3,7 @@ package uci.uml.generate;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.Model_Management.*;
 
 public abstract class Generator {
   
@@ -13,6 +14,8 @@ public abstract class Generator {
       return generateAttribute((Attribute) o);
     if (o instanceof Parameter)
       return generateParameter((Parameter) o);
+    if (o instanceof Package)
+      return generatePackage((Package) o);
     if (o instanceof Classifier)
       return generateClassifier((Classifier) o);
     if (o instanceof Expression)
@@ -25,8 +28,8 @@ public abstract class Generator {
       return generateStereotype((Stereotype) o);
     if (o instanceof TaggedValue)
       return generateTaggedValue((TaggedValue) o);
-    if (o instanceof Association)
-      return generateAssociation((Association)o);
+    if (o instanceof IAssociation)
+      return generateAssociation((IAssociation)o);
     if (o instanceof AssociationEnd)
       return generateAssociationEnd((AssociationEnd)o);
     if (o instanceof Element)
@@ -38,10 +41,11 @@ public abstract class Generator {
   public abstract String generateOperation(Operation op);
   public abstract String generateAttribute(Attribute attr);
   public abstract String generateParameter(Parameter param);
+  public abstract String generatePackage(Package p);
   public abstract String generateClassifier(Classifier cls);
   public abstract String generateStereotype(Stereotype s);
   public abstract String generateTaggedValue(TaggedValue s);
-  public abstract String generateAssociation(Association a);
+  public abstract String generateAssociation(IAssociation a);
   public abstract String generateAssociationEnd(AssociationEnd ae);
 
   

@@ -5,6 +5,7 @@ package uci.uml.Foundation.Core;
 import java.util.*;
 //nmw: import uci.uml.Behavioral_Elements.Collaborations.ClassifierRole;
 
+import java.beans.PropertyVetoException;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Model_Management.*;
