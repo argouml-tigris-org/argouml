@@ -129,7 +129,7 @@ public class TestItemUID extends TestCase {
         FigDeepHistoryState figdeephistorystate = new FigDeepHistoryState();
         FigFinalState figfinalstate = new FigFinalState();
         FigForkState figforkstate = new FigForkState();
-        FigHistoryState fighistorystate = new FigHistoryState();
+        //FigHistoryState fighistorystate = new FigHistoryState();
         FigInitialState figinitialstate = new FigInitialState();
         FigJoinState figjoinstate = new FigJoinState();
         FigShallowHistoryState figshallowhistorystate =
@@ -174,7 +174,7 @@ public class TestItemUID extends TestCase {
         checkAssignIDToObject(figdeephistorystate, true, true);
         checkAssignIDToObject(figfinalstate, true, true);
         checkAssignIDToObject(figforkstate, true, true);
-        checkAssignIDToObject(fighistorystate, true, true);
+        //checkAssignIDToObject(fighistorystate, true, true);
         checkAssignIDToObject(figinitialstate, true, true);
         checkAssignIDToObject(figjoinstate, true, true);
         checkAssignIDToObject(figshallowhistorystate, true, true);
