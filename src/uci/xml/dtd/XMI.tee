@@ -1822,7 +1822,7 @@ GeneralizableElementCompositions
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Model_Management.Package">
+<template class="uci.uml.Model_Management.MMPackage">
 <![CDATA[
 <Package XMI.id = "<ocl>self.id</ocl>">
   PackageProperties

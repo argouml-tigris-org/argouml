@@ -14,6 +14,6 @@ SOURCES= \
 	PredicateTrue.java \
 	PredicateType.java \
 	Progress.java \
-	Set.java \
+	VectorSet.java \
 	Util.java \
 	UnexpectedException.java

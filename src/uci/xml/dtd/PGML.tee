@@ -37,18 +37,18 @@ strokecolor="<ocl>self.lineColor</ocl>"
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="java.awt.Rectangle">
 <![CDATA[
-x="<ocl>self.x</ocl>"
-y="<ocl>self.y</ocl>"
-width="<ocl>self.width</ocl>"
-height="<ocl>self.height</ocl>"
+x="<ocl>self.x.intValue</ocl>"
+y="<ocl>self.y.intValue</ocl>"
+width="<ocl>self.width.intValue</ocl>"
+height="<ocl>self.height.intValue</ocl>"
 ]]>
 </template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="java.awt.Point">
 <![CDATA[
-<lineto x="<ocl>self.x</ocl>"
-        y="<ocl>self.y</ocl>" />
+<lineto x="<ocl>self.x.intValue</ocl>"
+        y="<ocl>self.y.intValue</ocl>" />
 ]]>
 </template>
 <!-- luckily, points are only used in paths -->
@@ -85,10 +85,10 @@ height="<ocl>self.height</ocl>"
 <template class="uci.gef.FigCircle">
 <![CDATA[
 <ellipse name="<ocl>self.id</ocl>"
-  x="<ocl>self.center.x</ocl>"
-  y="<ocl>self.center.y</ocl>"
-  rx="<ocl>self.halfWidth</ocl>"
-  ry="<ocl>self.halfHeight</ocl>"
+  x="<ocl>self.center.x.intValue</ocl>"
+  y="<ocl>self.center.y.intValue</ocl>"
+  rx="<ocl>self.halfWidth.intValue</ocl>"
+  ry="<ocl>self.halfHeight.intValue</ocl>"
   FILL_AND_STROKE
 />
 ]]>
@@ -98,8 +98,8 @@ height="<ocl>self.height</ocl>"
 <template class="uci.gef.FigText">
 <![CDATA[
 <text name="<ocl>self.id</ocl>"
-  x="<ocl>self.x</ocl>"
-  y="<ocl>self.y</ocl>"
+  x="<ocl>self.x.intValue</ocl>"
+  y="<ocl>self.y.intValue</ocl>"
   FILL_AND_STROKE
   font="<ocl>self.fontFamily</ocl>"
   textsize="<ocl>self.fontSize</ocl>"
@@ -115,10 +115,10 @@ height="<ocl>self.height</ocl>"
   description="<ocl>self.class.name</ocl>"
   FILL_AND_STROKE
 >
-  <moveto x="<ocl>self.x1</ocl>"
-          y="<ocl>self.y1</ocl>" />
-  <lineto x="<ocl>self.x2</ocl>"
-          y="<ocl>self.y2</ocl>" />
+  <moveto x="<ocl>self.x1.intValue</ocl>"
+          y="<ocl>self.y1.intValue</ocl>" />
+  <lineto x="<ocl>self.x2.intValue</ocl>"
+          y="<ocl>self.y2.intValue</ocl>" />
 </path>
 ]]>
 </template>
@@ -130,8 +130,8 @@ height="<ocl>self.height</ocl>"
   description="<ocl>self.class.name</ocl>"
   FILL_AND_STROKE
 >
-  <moveto x="<ocl>self.firstPoint.x</ocl>"
-          y="<ocl>self.firstPoint.y</ocl>" />
+  <moveto x="<ocl>self.firstPoint.x.intValue</ocl>"
+          y="<ocl>self.firstPoint.y.intValue</ocl>" />
   <ocl>self.pointsVectorNotFirst</ocl>
 </path>
 ]]>
@@ -144,8 +144,8 @@ height="<ocl>self.height</ocl>"
   description="<ocl>self.class.name</ocl>"
   FILL_AND_STROKE
 >
-  <moveto x="<ocl>self.firstPoint.x</ocl>"
-          y="<ocl>self.firstPoint.y</ocl>" />
+  <moveto x="<ocl>self.firstPoint.x.intValue</ocl>"
+          y="<ocl>self.firstPoint.y.intValue</ocl>" />
   <ocl>self.pointsVector</ocl>
 </path>
 ]]>
@@ -158,8 +158,8 @@ height="<ocl>self.height</ocl>"
   description="<ocl>self.class.name</ocl>"
   FILL_AND_STROKE
 >
-  <moveto x="<ocl>self.firstPoint.x</ocl>"
-          y="<ocl>self.firstPoint.y</ocl>" />
+  <moveto x="<ocl>self.firstPoint.x.intValue</ocl>"
+          y="<ocl>self.firstPoint.y.intValue</ocl>" />
   <ocl>self.pointsVector</ocl>
 </path>
 ]]>

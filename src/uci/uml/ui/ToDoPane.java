@@ -217,7 +217,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     Object sel = getSelectedObject();
     if (sel instanceof ToDoItem) {
       ((ToDoItem)sel).action();
-      Set offs = ((ToDoItem)sel).getOffenders();
+      VectorSet offs = ((ToDoItem)sel).getOffenders();
       ProjectBrowser.TheInstance.jumpToDiagramShowing(offs);
     }
 

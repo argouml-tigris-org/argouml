@@ -126,7 +126,7 @@ public class Critic implements Poster, java.io.Serializable {
    *  active. */
   private Hashtable _controlRecs = new Hashtable();
 
-  protected Set _knowledgeTypes = new Set();
+  protected VectorSet _knowledgeTypes = new VectorSet();
   protected long _triggerMask = 0L;
 
   public static int _numCriticsFired = 0;
@@ -259,20 +259,20 @@ public class Critic implements Poster, java.io.Serializable {
   public void addKnowledgeType(String type) {
     _knowledgeTypes.addElement(type);
   }
-  public Set getKnowledgeTypes() { return _knowledgeTypes; }
+  public VectorSet getKnowledgeTypes() { return _knowledgeTypes; }
 
-  public void setKnowledgeTypes(Set kt) { _knowledgeTypes = kt; }
+  public void setKnowledgeTypes(VectorSet kt) { _knowledgeTypes = kt; }
   public void setKnowledgeTypes(String t1) {
-    _knowledgeTypes = new Set();
+    _knowledgeTypes = new VectorSet();
     addKnowledgeType(t1);
   }
   public void setKnowledgeTypes(String t1, String t2) {
-    _knowledgeTypes = new Set();
+    _knowledgeTypes = new VectorSet();
     addKnowledgeType(t1);
     addKnowledgeType(t2);
   }
   public void setKnowledgeTypes(String t1, String t2, String t3) {
-    _knowledgeTypes = new Set();
+    _knowledgeTypes = new VectorSet();
     addKnowledgeType(t1);
     addKnowledgeType(t2);
     addKnowledgeType(t3);
@@ -291,7 +291,7 @@ public class Critic implements Poster, java.io.Serializable {
     return (_triggerMask == 0) || ((_triggerMask & patternCode) != 0);
   }
   
-  public String expand(String desc, Set offs) { return desc; }
+  public String expand(String desc, VectorSet offs) { return desc; }
 
   public Icon getClarifier() {
     return _clarifier;
@@ -446,14 +446,14 @@ public class Critic implements Poster, java.io.Serializable {
   public String getHeadline(Object dm, Designer dsgr) {
     return getHeadline();
   }
-  public String getHeadline(Set offenders, Designer dsgr) {
+  public String getHeadline(VectorSet offenders, Designer dsgr) {
     return getHeadline(offenders.firstElement(), dsgr);
   }
   public String getHeadline() { return _headline; }
   public void setHeadline(String h) {  _headline = h; }
 
   /** Reply the priority used in feedback produced by this Critic. */
-  public int getPriority(Set offenders, Designer dsgr) {
+  public int getPriority(VectorSet offenders, Designer dsgr) {
     return _priority;
   }
   public void setPriority(int p) { _priority = p; }
@@ -462,7 +462,7 @@ public class Critic implements Poster, java.io.Serializable {
   }
 
   /** Reply the description used in feedback produced by this Critic. */
-  public String getDescription(Set offenders, Designer dsgr) {
+  public String getDescription(VectorSet offenders, Designer dsgr) {
     return _description;
   }
   public void setDescription(String d) {  _description = d; }
@@ -471,7 +471,7 @@ public class Critic implements Poster, java.io.Serializable {
   }
 
   /** Reply the moreInfoURL used in feedback produced by this Critic. */
-  public String getMoreInfoURL(Set offenders, Designer dsgr) {
+  public String getMoreInfoURL(VectorSet offenders, Designer dsgr) {
     return _moreInfoURL;
   }
   public void setMoreInfoURL(String m) {  _moreInfoURL = m; }

@@ -129,7 +129,7 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
       }
       String desc = _description.getText();
       String more = _moreinfo.getText();
-      Set offs = new Set();  //? null
+      VectorSet offs = new VectorSet();  //? null
       ToDoItem item = new ToDoItem(dsgr, head, pri, desc, more, offs);
       dsgr.getToDoList().addElement(item); //? inform()
       //System.out.println("add an item");

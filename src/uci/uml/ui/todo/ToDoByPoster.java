@@ -53,7 +53,7 @@ implements ToDoListListener {
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
 
-    Set posters = Designer.theDesigner().getToDoList().getPosters();
+    VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
     java.util.Enumeration enum = posters.elements();
     while (enum.hasMoreElements()) {
       Poster p = (Poster) enum.nextElement();
@@ -88,7 +88,7 @@ implements ToDoListListener {
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
 
-    Set posters = Designer.theDesigner().getToDoList().getPosters();
+    VectorSet posters = Designer.theDesigner().getToDoList().getPosters();
     java.util.Enumeration enum = posters.elements();
     while (enum.hasMoreElements()) {
       Poster p = (Poster) enum.nextElement();

@@ -70,7 +70,7 @@ public class CrNodesOverlap extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Diagram)) return NO_PROBLEM;
     Diagram d = (Diagram) dm;
-    Set offs = computeOffenders(d);
+    VectorSet offs = computeOffenders(d);
     if (offs == null) return NO_PROBLEM;
     return PROBLEM_FOUND;
   }
@@ -78,26 +78,26 @@ public class CrNodesOverlap extends CrUML {
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
     Diagram d = (Diagram) dm;
-    Set offs = computeOffenders(d);
+    VectorSet offs = computeOffenders(d);
     return new ToDoItem(this, offs, dsgr);
   }
 
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
-    Set offs = i.getOffenders();
+    VectorSet offs = i.getOffenders();
     Diagram d = (Diagram) offs.firstElement();
     //if (!predicate(dm, dsgr)) return false;
-    Set newOffs = computeOffenders(d);
+    VectorSet newOffs = computeOffenders(d);
     boolean res = offs.equals(newOffs);
     return res;
   }
 
-  public Set computeOffenders(Diagram d) {
+  public VectorSet computeOffenders(Diagram d) {
     //needs-more-work: algorithm is n^2 in number of nodes
     Vector figs = d.getLayer().getContents();
     int numFigs = figs.size();
     int numRects = 0;
-    Set offs = null;
+    VectorSet offs = null;
     for (int i = 0; i < numFigs-1; i++) {
       Object o_i = figs.elementAt(i);
       if (!(o_i instanceof FigNode)) continue;
@@ -115,7 +115,7 @@ public class CrNodesOverlap extends CrUML {
 	    if (((FigNodeModelElement)fn_j).getEnclosingFig() == fn_i) continue;
 	  }
 	  if (offs == null) {
-	    offs = new Set();
+	    offs = new VectorSet();
 	    offs.addElement(d);
 	  }
 	  offs.addElement(fn_i);

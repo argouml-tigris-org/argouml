@@ -602,7 +602,7 @@ implements IStatusBar {
   public MultiEditorPane getEditorPane() { return _multiPane; }
   public DetailsPane getDetailsPane() { return _detailsPane; }
 
-  public void jumpToDiagramShowing(Set dms) {
+  public void jumpToDiagramShowing(VectorSet dms) {
     if (dms.size() == 0) return;
     Object first = dms.elementAt(0);
     if (first instanceof Diagram && dms.size() > 1) {

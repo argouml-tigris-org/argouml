@@ -64,14 +64,14 @@ public class CrNameConfusion extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof ModelElement)) return NO_PROBLEM;
     ModelElement me = (ModelElement) dm;
-    Set offs = computeOffenders(me);
+    VectorSet offs = computeOffenders(me);
     if (offs.size() > 1) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
-  public Set computeOffenders(ModelElement dm) {
+  public VectorSet computeOffenders(ModelElement dm) {
     Namespace ns = dm.getNamespace();
-    Set res = new Set(dm);
+    VectorSet res = new VectorSet(dm);
     Name n = dm.getName();
     if (n == null || n.equals(Name.UNSPEC)) return res;
     String dmNameStr = n.getBody();
@@ -98,16 +98,16 @@ public class CrNameConfusion extends CrUML {
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
     ModelElement me = (ModelElement) dm;
-    Set offs = computeOffenders(me);
+    VectorSet offs = computeOffenders(me);
     return new ToDoItem(this, offs, dsgr);
   }
 
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
-    Set offs = i.getOffenders();
+    VectorSet offs = i.getOffenders();
     ModelElement dm = (ModelElement) offs.firstElement();
     if (!predicate(dm, dsgr)) return false;
-    Set newOffs = computeOffenders(dm);
+    VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);
 //      System.out.println("offs="+ offs.toString() +
 //  		       " newOffs="+ newOffs.toString() +

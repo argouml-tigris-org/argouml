@@ -114,7 +114,8 @@ implements ItemListener, TreeSelectionListener {
   public void setPerspectives(Vector pers) {
     _perspectives = pers;
     NavPerspective oldCurPers = _curPerspective;
-    _combo.removeAllItems(); // broken in Swing-1.0.3?
+    if(_combo.getItemCount() > 0)
+      _combo.removeAllItems(); // broken in Swing-1.0.3?
     java.util.Enumeration persEnum = _perspectives.elements();
     while (persEnum.hasMoreElements())
       _combo.addItem(persEnum.nextElement());
@@ -181,10 +182,13 @@ implements ItemListener, TreeSelectionListener {
   public void mySingleClick(int row, TreePath path) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    if (getSelectedObject() == null) return;
-    //System.out.println("single: " + getSelectedObject().toString());
-    //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
-    ProjectBrowser.TheInstance.select(getSelectedObject());
+    Object sel = getSelectedObject();
+    if (sel  == null) return;
+    if (sel instanceof Diagram) {
+      myDoubleClick(row, path);
+      return;
+    }
+    ProjectBrowser.TheInstance.select(sel);
     _clicksInNavPane++;
   }
 
@@ -192,10 +196,10 @@ implements ItemListener, TreeSelectionListener {
   public void myDoubleClick(int row, TreePath path) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    if (getSelectedObject() == null) return;
-    //System.out.println("double: " + getSelectedObject().toString());
-    addToHistory(getSelectedObject());
-    ProjectBrowser.TheInstance.setTarget(getSelectedObject());
+    Object sel = getSelectedObject();
+    if (sel == null) return;
+    addToHistory(sel);
+    ProjectBrowser.TheInstance.setTarget(sel);
     repaint();
   }
 

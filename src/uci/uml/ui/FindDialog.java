@@ -277,7 +277,7 @@ implements ActionListener, MouseListener {
     _type.addItem(PredicateType.create(Interface.class));
     _type.addItem(PredicateType.create(Link.class));
     _type.addItem(PredicateType.create(MMClass.class));
-    _type.addItem(PredicateType.create(Package.class));
+    _type.addItem(PredicateType.create(MMPackage.class));
     _type.addItem(PredicateType.create(Operation.class));
     _type.addItem(PredicateType.create(Pseudostate.class));
     _type.addItem(PredicateType.create(Realization.class));

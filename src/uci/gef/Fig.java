@@ -551,10 +551,10 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
 
   public Vector getPopUpActions() {
     Vector actions = new Vector();
-    actions.addElement(new CmdReorder(CmdReorder.BRING_FORWARD));
-    actions.addElement(new CmdReorder(CmdReorder.SEND_BACKWARD));
-    actions.addElement(new CmdReorder(CmdReorder.BRING_TO_FRONT));
-    actions.addElement(new CmdReorder(CmdReorder.SEND_TO_BACK));
+    actions.addElement(CmdReorder.BringForward);
+    actions.addElement(CmdReorder.SendBackward);
+    actions.addElement(CmdReorder.BringToFront);
+    actions.addElement(CmdReorder.SendToBack);
     return actions;
   }
 

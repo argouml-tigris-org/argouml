@@ -330,9 +330,9 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   public boolean containsKnowledgeType(String type) {
     return type.equals("Designer's");
   }
-  public Set getKnowledgeTypes() { return new Set("Designer's"); }
+  public VectorSet getKnowledgeTypes() { return new VectorSet("Designer's"); }
 
-  public String expand(String desc, Set offs) { return desc; }
+  public String expand(String desc, VectorSet offs) { return desc; }
 
   public Icon getClarifier() { return null; }
 

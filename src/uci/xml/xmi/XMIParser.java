@@ -72,7 +72,7 @@ public class XMIParser implements ElementHandler, TagHandler {
   protected uci.uml.Foundation.Core.Namespace _ModelStack[] =
   new uci.uml.Foundation.Core.Namespace[MAX_MODEL_NEST];
   protected int _numNestedModels = 0;
-  protected Package _curPackage = null;
+  protected MMPackage _curPackage = null;
   protected MMClass _curClass = null;
   protected Interface _curInterface = null;
   protected Association _curAssociation = null;
@@ -180,10 +180,10 @@ public class XMIParser implements ElementHandler, TagHandler {
       pc.setTagHandler(this);
       pc.getEntityHandler().setEntityResolver(DTDEntityResolver.SINGLETON);
       //pc.setProcessExternalDTD(false);
-      if (_proj == null) {
-	System.out.println("XMIParser made new project");
-	_proj = new Project();
-      }
+//       if (_proj == null) {
+// 	System.out.println("XMIParser made new project");
+// 	_proj = new Project();
+//       }
       pc.readStream(is);
       is.close();
     }
@@ -1633,7 +1633,7 @@ public class XMIParser implements ElementHandler, TagHandler {
     notImplementedYet(e);
   }
   protected void handlePackage(TXElement e) throws PropertyVetoException {
-    _curPackage = (Package) findOrCreate(e, Package.class);
+    _curPackage = (MMPackage) findOrCreate(e, MMPackage.class);
     if (_firstPass) return;
   }
   protected void handleModel(TXElement e) throws PropertyVetoException {

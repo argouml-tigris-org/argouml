@@ -61,7 +61,7 @@ public class WizNavigable extends Wizard {
 
   public ModelElement getModelElement() {
     if (_item != null) {
-      Set offs = _item.getOffenders();
+      VectorSet offs = _item.getOffenders();
       if (offs.size() >= 1) {
 	ModelElement me = (ModelElement) offs.elementAt(0);
 	return me;

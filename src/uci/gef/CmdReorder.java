@@ -46,6 +46,11 @@ public class CmdReorder extends Cmd {
   public static final int SEND_BACKWARD = 3;
   public static final int BRING_FORWARD = 4;
 
+  public static CmdReorder SendToBack = new CmdReorder(SEND_TO_BACK);
+  public static CmdReorder BringToFront = new CmdReorder(BRING_TO_FRONT);
+  public static CmdReorder SendBackward = new CmdReorder(SEND_BACKWARD);
+  public static CmdReorder BringForward = new CmdReorder(BRING_FORWARD);
+
   ////////////////////////////////////////////////////////////////
   // instance variables
   private int function;

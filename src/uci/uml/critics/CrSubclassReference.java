@@ -63,40 +63,40 @@ public class CrSubclassReference extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MMClass)) return NO_PROBLEM;
     MMClass cls = (MMClass) dm;
-    Set offs = computeOffenders(cls);
+    VectorSet offs = computeOffenders(cls);
     if (offs != null) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
     Classifier cls = (Classifier) dm;
-    Set offs = computeOffenders(cls);
+    VectorSet offs = computeOffenders(cls);
     return new ToDoItem(this, offs, dsgr);
   }
 
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
-    Set offs = i.getOffenders();
+    VectorSet offs = i.getOffenders();
     Classifier dm = (Classifier) offs.firstElement();
     //if (!predicate(dm, dsgr)) return false;
-    Set newOffs = computeOffenders(dm);
+    VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);
     return res;
   }
 
-  public Set computeOffenders(Classifier cls) {
+  public VectorSet computeOffenders(Classifier cls) {
     Vector asc = cls.getAssociationEnd();
     if (asc == null || asc.size() == 0) return null;
     
     Enumeration descendEnum = GenDescendantClasses.SINGLETON.gen(cls);
     if (!descendEnum.hasMoreElements()) return null;
-    Set descendants = new Set();
+    VectorSet descendants = new VectorSet();
     while (descendEnum.hasMoreElements())
       descendants.addElement(descendEnum.nextElement());
 
     //needs-more-work: GenNavigableClasses?
     int nAsc = asc.size();
-    Set offs = null;
+    VectorSet offs = null;
     for (int i = 0; i < nAsc; i++) {
       AssociationEnd ae = (AssociationEnd) asc.elementAt(i);
       IAssociation a = ae.getAssociation();
@@ -109,7 +109,7 @@ public class CrSubclassReference extends CrUML {
       Classifier otherCls = otherEnd.getType();
       if (descendants.contains(otherCls)) {
 	if (offs == null) {
-	  offs = new Set();
+	  offs = new VectorSet();
 	  offs.addElement(cls);
 	}
 	offs.addElement(a);

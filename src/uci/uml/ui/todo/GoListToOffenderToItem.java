@@ -66,7 +66,7 @@ public class GoListToOffenderToItem implements TreeModelPrereqs {
 
 
   public Vector getChildren(Object parent) {
-    Set allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
+    VectorSet allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
     if (parent instanceof ToDoList) {
       return allOffenders.asVector();
     }
@@ -77,7 +77,7 @@ public class GoListToOffenderToItem implements TreeModelPrereqs {
       java.util.Enumeration enum = list.elements();
       while (enum.hasMoreElements()) {
 	ToDoItem item = (ToDoItem) enum.nextElement();
-	Set offs = item.getOffenders();
+	VectorSet offs = item.getOffenders();
 	if (offs.contains(parent)) res.addElement(item);
       }
       return res;

@@ -59,24 +59,24 @@ public class CrCircularInheritance extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof GeneralizableElement)) return NO_PROBLEM;
     GeneralizableElement ge = (GeneralizableElement) dm;
-    Set reach = (new Set(ge)).reachable(new SuperclassGen());
+    VectorSet reach = (new VectorSet(ge)).reachable(new SuperclassGen());
     if (reach.contains(ge)) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
     GeneralizableElement ge = (GeneralizableElement) dm;
-    Set offs = computeOffenders(ge);
+    VectorSet offs = computeOffenders(ge);
     return new ToDoItem(this, offs, dsgr);
   }
 
-  protected Set computeOffenders(GeneralizableElement dm) {
-    Set offs = new Set(dm);
-    Set above = offs.reachable(new SuperclassGen());
+  protected VectorSet computeOffenders(GeneralizableElement dm) {
+    VectorSet offs = new VectorSet(dm);
+    VectorSet above = offs.reachable(new SuperclassGen());
     Enumeration enum = above.elements();
     while (enum.hasMoreElements()) {
       GeneralizableElement ge2 = (GeneralizableElement) enum.nextElement();
-      Set trans = (new Set(ge2)).reachable(new SuperclassGen());
+      VectorSet trans = (new VectorSet(ge2)).reachable(new SuperclassGen());
       if (trans.contains(dm)) offs.addElement(ge2);
     }
     return offs;
@@ -84,10 +84,10 @@ public class CrCircularInheritance extends CrUML {
 
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
-    Set offs = i.getOffenders();
+    VectorSet offs = i.getOffenders();
     GeneralizableElement dm = (GeneralizableElement) offs.firstElement();
     if (!predicate(dm, dsgr)) return false;
-    Set newOffs = computeOffenders(dm);
+    VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);
 //      System.out.println("offs="+ offs.toString() +
 //  		       " newOffs="+ newOffs.toString() +

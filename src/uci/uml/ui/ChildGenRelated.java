@@ -49,8 +49,8 @@ public class ChildGenRelated implements ChildGenerator {
 
     EnumerationComposite res = new EnumerationComposite();
 
-    if (o instanceof Package) {
-      Vector ownedElements = ((Package)o).getOwnedElement();
+    if (o instanceof MMPackage) {
+      Vector ownedElements = ((MMPackage)o).getOwnedElement();
       if (ownedElements != null)
 	return new Enum(ownedElements.elements(), EOElement.SINGLETON);
     }
@@ -58,7 +58,7 @@ public class ChildGenRelated implements ChildGenerator {
     if (o instanceof Classifier) {
       Classifier cls = (Classifier) o;
       Vector assocEnds = cls.getAssociationEnd();
-      Set assoc = new Set();
+      VectorSet assoc = new VectorSet();
       int numAssoc = assocEnds.size();
       for (int i = 0; i < numAssoc; i++) {
 	AssociationEnd ae = (AssociationEnd) assocEnds.elementAt(i);
@@ -77,7 +77,7 @@ public class ChildGenRelated implements ChildGenerator {
     if (o instanceof IAssociation) {
       IAssociation asc = (IAssociation) o;
       Vector assocEnds = asc.getConnection();
-      Set classes = new Set();
+      VectorSet classes = new VectorSet();
       int numAssoc = assocEnds.size();
       for (int i = 0; i < numAssoc; i++) {
 	AssociationEnd ae = (AssociationEnd) assocEnds.elementAt(i);

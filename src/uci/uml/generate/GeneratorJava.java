@@ -200,7 +200,7 @@ public class GeneratorJava extends Generator {
   }
 
 
-  public String generatePackage(Package p) {
+  public String generatePackage(MMPackage p) {
     String s = "";
     String packName = generateName(p.getName());
     s += "package " + packName + " {\n";

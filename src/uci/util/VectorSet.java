@@ -24,8 +24,8 @@
 
 
 
-// File: Set.java
-// Classes: Set
+// File: VectorSet.java
+// Classes: VectorSet
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -38,7 +38,7 @@ import java.util.*;
  *  mathemetical set because it is ordered).  Implemented with a
  *  Vector. */
 
-public class Set implements java.io.Serializable  {
+public class VectorSet implements java.io.Serializable  {
   ////////////////////////////////////////////////////////////////
   // constants
   public static final int TC_LIMIT = 50;
@@ -50,9 +50,9 @@ public class Set implements java.io.Serializable  {
   ////////////////////////////////////////////////////////////////
   // constructors
   
-  public Set() { _v = new Vector(); }
-  public Set(int n) { _v = new Vector(n); }
-  public Set(Object o1) { _v = new Vector(); addElement(o1); }
+  public VectorSet() { _v = new Vector(); }
+  public VectorSet(int n) { _v = new Vector(n); }
+  public VectorSet(Object o1) { _v = new Vector(); addElement(o1); }
 
   public void addElement(Object o) { if (!contains(o)) _v.addElement(o); }
   public void addAllElements(Vector v) {
@@ -72,8 +72,8 @@ public class Set implements java.io.Serializable  {
 	if (p.predicate(e)) addElement(e);
       }
   }  
-  public void addAllElements(Set s) { addAllElements(s.elements()); }
-  public void addAllElementsSuchThat(Set s, Predicate p) {
+  public void addAllElements(VectorSet s) { addAllElements(s.elements()); }
+  public void addAllElementsSuchThat(VectorSet s, Predicate p) {
     addAllElementsSuchThat(s.elements(), p);
   }
 
@@ -110,8 +110,8 @@ public class Set implements java.io.Serializable  {
   public Vector asVector() { return _v; }
 
   public boolean equals(Object o) {
-    if (!(o instanceof Set)) return false;
-    Set set = (Set) o;
+    if (!(o instanceof VectorSet)) return false;
+    VectorSet set = (VectorSet) o;
     if (set.size() != size()) return false;
     Enumeration myEs = elements();
     while (myEs.hasMoreElements()) {
@@ -141,7 +141,7 @@ public class Set implements java.io.Serializable  {
    * Set. In order to avoid very deep searches which are often
    * programming mistakes, only paths of length TC_LIMIT or less are
    * considered. */
-  public Set transitiveClosure(ChildGenerator cg) {
+  public VectorSet transitiveClosure(ChildGenerator cg) {
     return transitiveClosure(cg, TC_LIMIT, PredicateTrue.theInstance());
   }
 
@@ -151,7 +151,7 @@ public class Set implements java.io.Serializable  {
    * original Set. In order to avoid very deep searches which are
    * often programming mistakes, only paths of length TC_LIMIT or less
    * are considered.*/
-  public Set reachable(ChildGenerator cg) {
+  public VectorSet reachable(ChildGenerator cg) {
     return reachable(cg, TC_LIMIT, PredicateTrue.theInstance());
   }
 
@@ -162,8 +162,8 @@ public class Set implements java.io.Serializable  {
    * often programming mistakes, only paths of given max length or
    * less are considered. Only paths consisting of elements which all
    * cause p.predicate() to return true are considered. */
-  public Set reachable(ChildGenerator cg, int max, Predicate p) {
-    Set kids = new Set();
+  public VectorSet reachable(ChildGenerator cg, int max, Predicate p) {
+    VectorSet kids = new VectorSet();
     Enumeration rootEnum = elements();
     while (rootEnum.hasMoreElements()) {
       Object r = rootEnum.nextElement();
@@ -179,17 +179,17 @@ public class Set implements java.io.Serializable  {
    * programming mistakes, only paths of given max length or less are
    * considered. Only paths consisting of elements which all cause
    * p.predicate() to return true are considered. */
-  public Set transitiveClosure(ChildGenerator cg, int max, Predicate p) {
+  public VectorSet transitiveClosure(ChildGenerator cg, int max, Predicate p) {
     int iterCount = 0;
     int lastSize = -1;
-    Set touched = new Set();
-    Set frontier, recent = this;
+    VectorSet touched = new VectorSet();
+    VectorSet frontier, recent = this;
 
     touched.addAllElements(this);
     while ((iterCount < max) && (touched.size() > lastSize)) {
       iterCount++;
       lastSize = touched.size();
-      frontier = new Set();
+      frontier = new VectorSet();
       Enumeration recentEnum = recent.elements();
       while (recentEnum.hasMoreElements()) {
 	Enumeration frontsEnum = cg.gen(recentEnum.nextElement());
@@ -203,4 +203,4 @@ public class Set implements java.io.Serializable  {
 
   static final long serialVersionUID = 2576846502555732231L;
 
-} /* end class Set */
+} /* end class VectorSet */

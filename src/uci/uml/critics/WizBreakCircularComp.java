@@ -75,7 +75,7 @@ public class WizBreakCircularComp extends Wizard {
   protected Vector getOptions1() {
     Vector res = new Vector();
     if (_item != null) {
-      Set offs = _item.getOffenders();
+      VectorSet offs = _item.getOffenders();
       int size = offs.size();
       for (int i = 0; i < size; i++) {
 	ModelElement me = (ModelElement) offs.elementAt(i);
@@ -142,7 +142,7 @@ public class WizBreakCircularComp extends Wizard {
   public void doAction(int oldStep) {
     //System.out.println("doAction " + oldStep);
     int choice = -1;
-    Set offs = _item.getOffenders();
+    VectorSet offs = _item.getOffenders();
     switch (oldStep) {
     case 1:
       if (_step1 != null) choice = _step1.getSelectedIndex();

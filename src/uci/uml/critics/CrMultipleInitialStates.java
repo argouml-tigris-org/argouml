@@ -75,12 +75,12 @@ public class CrMultipleInitialStates extends CrUML {
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
     Pseudostate ps = (Pseudostate) dm;
-    Set offs = computeOffenders(ps);
+    VectorSet offs = computeOffenders(ps);
     return new ToDoItem(this, offs, dsgr);
   }
 
-  protected Set computeOffenders(Pseudostate ps) {
-    Set offs = new Set(ps);
+  protected VectorSet computeOffenders(Pseudostate ps) {
+    VectorSet offs = new VectorSet(ps);
     CompositeState cs = ps.getParent();
     if (cs == null) { System.out.println("null parent in still valid"); return offs; }
     Vector peers = cs.getSubstate();
@@ -96,10 +96,10 @@ public class CrMultipleInitialStates extends CrUML {
 
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
-    Set offs = i.getOffenders();
+    VectorSet offs = i.getOffenders();
     Pseudostate dm = (Pseudostate) offs.firstElement();
     //if (!predicate(dm, dsgr)) return false;
-    Set newOffs = computeOffenders(dm);
+    VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);
 //      System.out.println("offs="+ offs.toString() +
 //  		       " newOffs="+ newOffs.toString() +

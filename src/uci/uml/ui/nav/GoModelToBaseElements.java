@@ -42,8 +42,8 @@ public class GoModelToBaseElements implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof Package) {
-      Vector eos = ((Package)parent).getOwnedElement();
+    if (parent instanceof MMPackage) {
+      Vector eos = ((MMPackage)parent).getOwnedElement();
       java.util.Enumeration eoEnum = eos.elements();
       while (eoEnum.hasMoreElements()) {
 	ElementOwnership eo = (ElementOwnership) eoEnum.nextElement();
@@ -61,9 +61,9 @@ public class GoModelToBaseElements implements TreeModelPrereqs {
   }
   
   public int getChildCount(Object parent) {
-    if (parent instanceof Package) {
+    if (parent instanceof MMPackage) {
       int count = 0;
-      Vector eos = ((Package)parent).getOwnedElement();
+      Vector eos = ((MMPackage)parent).getOwnedElement();
       java.util.Enumeration eoEnum = eos.elements();
       while (eoEnum.hasMoreElements()) {
 	ElementOwnership eo = (ElementOwnership) eoEnum.nextElement();
@@ -79,9 +79,9 @@ public class GoModelToBaseElements implements TreeModelPrereqs {
   }
   
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Package) {
+    if (parent instanceof MMPackage) {
       int count = 0;
-      Vector eos = ((Package)parent).getOwnedElement();
+      Vector eos = ((MMPackage)parent).getOwnedElement();
       java.util.Enumeration eoEnum = eos.elements();
       while (eoEnum.hasMoreElements()) {
 	ElementOwnership eo = (ElementOwnership) eoEnum.nextElement();
@@ -98,7 +98,7 @@ public class GoModelToBaseElements implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Package && getChildCount(node) > 0);
+    return !(node instanceof MMPackage && getChildCount(node) > 0);
   }
   
   public void valueForPathChanged(TreePath path, Object newValue) { }

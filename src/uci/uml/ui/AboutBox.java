@@ -79,7 +79,7 @@ public class AboutBox extends JFrame {
 		     "Built on March 17, 1999\n"+
 		     "\n"+
 		     "Includes:\n"+
-		     "  GEF v0.6.1\n"+
+		     "  GEF v0.6.2\n"+
 		     "  Argo v0.8.1\n"+
 		     "  uci.uml v0.5.1\n"+
 		     "\n"+

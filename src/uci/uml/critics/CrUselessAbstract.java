@@ -64,7 +64,7 @@ public class CrUselessAbstract extends CrUML {
     if (!(dm instanceof MMClass)) return false;
     cls = (MMClass) dm;
     if (!cls.getIsAbstract()) return false;  // original class was not abstract
-    Set derived = (new Set(cls)).reachable(new ChildGenDerivedClasses());
+    VectorSet derived = (new VectorSet(cls)).reachable(new ChildGenDerivedClasses());
     Enumeration enum = derived.elements();
     while (enum.hasMoreElements()) {
       c = (MMClass) enum.nextElement();

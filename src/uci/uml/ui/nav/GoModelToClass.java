@@ -62,9 +62,9 @@ public class GoModelToClass implements TreeModelPrereqs {
 
 
   public Vector getChildren(Object parent) {
-    if (!(parent instanceof Package)) return null; 
+    if (!(parent instanceof MMPackage)) return null; 
     Vector res = new Vector();
-    Vector oes = ((Package)parent).getOwnedElement();
+    Vector oes = ((MMPackage)parent).getOwnedElement();
     if (oes == null) return null;
     java.util.Enumeration enum = oes.elements();
     while (enum.hasMoreElements()) {
@@ -76,7 +76,7 @@ public class GoModelToClass implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Package && getChildCount(node) > 0);
+    return !(node instanceof MMPackage && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }

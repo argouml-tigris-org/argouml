@@ -2,6 +2,6 @@ SOURCES= \
 	ElementOwnership.java \
 	ElementReference.java \
 	Model.java \
-	Package.java \
+	MMPackage.java \
 	Subsystem.java
 

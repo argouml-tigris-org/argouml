@@ -92,9 +92,6 @@ public class Project implements java.io.Serializable {
     _url = Util.fixURLExtension(url, FILE_EXT);
   }
 
-  public Project() {
-    //initProject();
-  }
 
   public static Project makeEmptyProject() {
     System.out.println("Reading " + TEMPLATES + EMPTY_PROJ + "...");
@@ -110,15 +107,16 @@ public class Project implements java.io.Serializable {
     //       System.out.println("SAXException in makeEmptyProject");
     //     }
     p = ArgoParser.SINGLETON.getProject();
+    //p.initProject();
     p.loadAllMembers();
     p.postLoad();
     return p;
   }
 
   // needs-more-work: project setup wizard?
-  protected void initProject() {
-    //_models.addElement(new Model("Object Model"));
-    //_diagrams.addElement(new LayerDiagram("Untitled Diagram"));
+//   protected void initProject() {
+//     //_models.addElement(new Model("Object Model"));
+//     //_diagrams.addElement(new LayerDiagram("Untitled Diagram"));
 
 //     defineType(JavaUML.VOID_TYPE);     //J.101
 //     defineType(JavaUML.CHAR_TYPE);     //J.102
@@ -144,7 +142,8 @@ public class Project implements java.io.Serializable {
 //     defineType(JavaUML.VECTOR_CLASS);    //J.301
 //     defineType(JavaUML.HASHTABLE_CLASS); //J.302
 //     defineType(JavaUML.STACK_CLASS);     //J.303
-  }
+//   }
+
   ////////////////////////////////////////////////////////////////
   // accessors
   // needs-more-work 

@@ -49,8 +49,8 @@ public class GoModelToAssociation implements TreeModelPrereqs {
   }
 
 //   public void xxx() {
-//     if (parent instanceof Package) {
-//       Vector eos = ((Package)parent).getOwnedElement();
+//     if (parent instanceof MMPackage) {
+//       Vector eos = ((MMPackage)parent).getOwnedElement();
 //       for (int i = 0; i < eos.size(); i++) {
 // 	ElementOwnership eo = (ElementOwnership) eos.elementAt(i);
 // 	ModelElement me = eo.getModelElement();
@@ -76,8 +76,8 @@ public class GoModelToAssociation implements TreeModelPrereqs {
 
 //   public int getChildCountxx(Object parent) {
 //     int res = 0;
-//     if (parent instanceof Package) {
-//       Vector oes = ((Package) parent).getOwnedElement();
+//     if (parent instanceof MMPackage) {
+//       Vector oes = ((MMPackage) parent).getOwnedElement();
 //       if (oes == null) return 0;
 //       java.util.Enumeration enum = oes.elements();
 //       while (enum.hasMoreElements()) {
@@ -91,8 +91,8 @@ public class GoModelToAssociation implements TreeModelPrereqs {
 
 //   public int getIndexOfChildxx(Object parent, Object child) {
 //     int res = 0;
-//     if (parent instanceof Package) {
-//       Vector oes = ((Package)parent).getOwnedElement();
+//     if (parent instanceof MMPackage) {
+//       Vector oes = ((MMPackage)parent).getOwnedElement();
 //       if (oes == null) return -1;
 //       java.util.Enumeration enum = oes.elements();
 //       while (enum.hasMoreElements()) {
@@ -107,9 +107,9 @@ public class GoModelToAssociation implements TreeModelPrereqs {
 
 
   public Vector getChildren(Object parent) {
-    if (!(parent instanceof Package)) return null; 
+    if (!(parent instanceof MMPackage)) return null; 
     Vector res = new Vector();
-    Vector oes = ((Package)parent).getOwnedElement();
+    Vector oes = ((MMPackage)parent).getOwnedElement();
     if (oes == null) return null;
     java.util.Enumeration enum = oes.elements();
     while (enum.hasMoreElements()) {
@@ -122,7 +122,7 @@ public class GoModelToAssociation implements TreeModelPrereqs {
 
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Package && getChildCount(node) > 0);
+    return !(node instanceof MMPackage && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }

@@ -66,10 +66,10 @@ public interface Poster {
   boolean supports(Goal g);
   Vector getSupportedGoals();
   boolean containsKnowledgeType(String knowledgeType);
-  Set getKnowledgeTypes();
+  VectorSet getKnowledgeTypes();
 
   /** Customize the description string just before it is displayed. */
-  String expand(String desc, Set offs);
+  String expand(String desc, VectorSet offs);
 
   public Icon getClarifier();
 

@@ -77,7 +77,7 @@ public class ToDoItem implements java.io.Serializable {
   private String _moreInfoURL;
 
   /** Which part of the design does this issue affect? */
-  private Set _offenders;
+  private VectorSet _offenders;
 
   private Icon _clarifier = null;
 
@@ -87,7 +87,7 @@ public class ToDoItem implements java.io.Serializable {
   // constructors
 
   public ToDoItem(Poster poster, String h, int p, String d, String m,
-		  Set offs) {
+		  VectorSet offs) {
     _poster = poster;
     _headline = h;
     _offenders = offs;
@@ -99,14 +99,14 @@ public class ToDoItem implements java.io.Serializable {
   public ToDoItem(Critic c, Object dm, Designer dsgr) {
     _poster = c;
     _headline = c.getHeadline(dm, dsgr);
-    _offenders = new Set(dm);
+    _offenders = new VectorSet(dm);
     _priority = c.getPriority(_offenders, dsgr);
     _description = c.getDescription(_offenders, dsgr);
     _moreInfoURL = c.getMoreInfoURL(_offenders, dsgr);
     _wizard = c.makeWizard(this);
   }
 
-  public ToDoItem(Critic c, Set offs, Designer dsgr) {
+  public ToDoItem(Critic c, VectorSet offs, Designer dsgr) {
     _poster = c;
     _headline = c.getHeadline(offs, dsgr);
     _offenders = offs;
@@ -119,7 +119,7 @@ public class ToDoItem implements java.io.Serializable {
   public ToDoItem(Critic c) {
     _poster = c;
     _headline = c.getHeadline();
-    _offenders = new Set();
+    _offenders = new VectorSet();
     _priority = c.getPriority(null, null);
     _description = c.getDescription(null, null);
     _moreInfoURL = c.getMoreInfoURL(null, null);
@@ -155,7 +155,7 @@ public class ToDoItem implements java.io.Serializable {
   
   /** Reply a Set of design material's that are the subject of this
    * ToDoItem. */
-  public Set getOffenders() { return _offenders; }
+  public VectorSet getOffenders() { return _offenders; }
 
   /** Reply the Critic or Designer that posted this ToDoItem. */
   public Poster getPoster() { return _poster; }

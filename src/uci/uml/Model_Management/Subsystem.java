@@ -30,7 +30,7 @@ import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
 
-public class Subsystem extends Classifier implements Package {
+public class Subsystem extends Classifier implements MMPackage {
   public boolean _isInstantiable;
 
   public Subsystem() { }
@@ -51,7 +51,7 @@ public class Subsystem extends Classifier implements Package {
   }
 
   ////////////////////////////////////////////////////////////////
-  // Package implementation
+  // MMPackage implementation
 
   // needs-more-work: these should use ElementReferences
 

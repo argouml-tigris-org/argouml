@@ -52,7 +52,7 @@ public class ToDoByOffender extends ToDoPerspective {
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
 
-    Set allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
+    VectorSet allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
     java.util.Enumeration enum = allOffenders.elements();
     while (enum.hasMoreElements()) {
       Object off = enum.nextElement();
@@ -60,7 +60,7 @@ public class ToDoByOffender extends ToDoPerspective {
       int nMatchingItems = 0;
       for (int i = 0; i < nItems; i++) {
 	ToDoItem item = (ToDoItem) items.elementAt(i);
-	Set offenders = item.getOffenders();
+	VectorSet offenders = item.getOffenders();
 	if (!offenders.contains(off)) continue;
 	nMatchingItems++;
       }
@@ -70,7 +70,7 @@ public class ToDoByOffender extends ToDoPerspective {
       nMatchingItems = 0;
       for (int i = 0; i < nItems; i++) {
 	ToDoItem item = (ToDoItem) items.elementAt(i);
-	Set offenders = item.getOffenders();
+	VectorSet offenders = item.getOffenders();
 	if (!offenders.contains(off)) continue;
 	childIndices[nMatchingItems] = getIndexOfChild(off, item);
 	children[nMatchingItems] = item;
@@ -87,7 +87,7 @@ public class ToDoByOffender extends ToDoPerspective {
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
 
-    Set allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
+    VectorSet allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
     java.util.Enumeration enum = allOffenders.elements();
     while (enum.hasMoreElements()) {
       Object off = enum.nextElement();
@@ -95,7 +95,7 @@ public class ToDoByOffender extends ToDoPerspective {
       int nMatchingItems = 0;
       for (int i = 0; i < nItems; i++) {
 	ToDoItem item = (ToDoItem) items.elementAt(i);
-	Set offenders = item.getOffenders();
+	VectorSet offenders = item.getOffenders();
 	if (!offenders.contains(off)) continue;
 	nMatchingItems++;
       }
@@ -105,7 +105,7 @@ public class ToDoByOffender extends ToDoPerspective {
       nMatchingItems = 0;
       for (int i = 0; i < nItems; i++) {
 	ToDoItem item = (ToDoItem) items.elementAt(i);
-	Set offenders = item.getOffenders();
+	VectorSet offenders = item.getOffenders();
 	if (!offenders.contains(off)) continue;
 	childIndices[nMatchingItems] = getIndexOfChild(off, item);
 	children[nMatchingItems] = item;
@@ -122,14 +122,14 @@ public class ToDoByOffender extends ToDoPerspective {
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
 
-    Set allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
+    VectorSet allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
     java.util.Enumeration enum = allOffenders.elements();
     while (enum.hasMoreElements()) {
       Object off = enum.nextElement();
 //       boolean anyInOff = false;
 //       for (int i = 0; i < nItems; i++) {
 // 	ToDoItem item = (ToDoItem) items.elementAt(i);
-// 	Set offenders = item.getOffenders();
+// 	VectorSet offenders = item.getOffenders();
 // 	if (offenders.contains(off)) anyInOff = true;
 //       }
 //       if (!anyInOff) continue;

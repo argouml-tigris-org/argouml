@@ -24,7 +24,7 @@
 
 package uci.uml.ui;
 
-import java.io.*;
+import java.io.File;
 import javax.swing.*;
 //import javax.swing.preview.*;
 import javax.swing.filechooser.*;

@@ -66,7 +66,7 @@ public class GoListToPosterToItem implements TreeModelPrereqs {
 
 
   public Vector getChildren(Object parent) {
-    Set allPosters = Designer.TheDesigner.getToDoList().getPosters();
+    VectorSet allPosters = Designer.TheDesigner.getToDoList().getPosters();
     if (parent instanceof ToDoList) {
       return allPosters.asVector();
     }

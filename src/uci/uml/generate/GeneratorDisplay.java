@@ -125,7 +125,7 @@ public class GeneratorDisplay extends Generator {
   }
 
 
-  public String generatePackage(Package p) {
+  public String generatePackage(MMPackage p) {
     String s = "package ";
     String packName = generateName(p.getName());
 

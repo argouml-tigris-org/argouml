@@ -37,6 +37,7 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import uci.ui.*;
 import uci.gef.*;
 import uci.graph.*;
 import uci.argo.kernel.*;
@@ -128,7 +129,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
   public Vector getPopUpActions() {
     Vector popUpActions = super.getPopUpActions();
-    popUpActions.addElement(CmdUMLProperties.Properties);
+    popUpActions.addElement(Actions.Properties);
     return popUpActions;
   }
 

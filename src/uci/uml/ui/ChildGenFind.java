@@ -60,8 +60,8 @@ public class ChildGenFind implements ChildGenerator {
 				      p.getDiagrams().elements());
     }
 
-//     if (o instanceof Package) {
-//       Vector ownedElements = ((Package)o).getOwnedElement();
+//     if (o instanceof MMPackage) {
+//       Vector ownedElements = ((MMPackage)o).getOwnedElement();
 //       if (ownedElements != null) return ownedElements.elements();
 //     }
 

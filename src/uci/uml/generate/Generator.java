@@ -48,8 +48,8 @@ public abstract class Generator {
       return generateAttribute((Attribute) o);
     if (o instanceof Parameter)
       return generateParameter((Parameter) o);
-    if (o instanceof Package)
-      return generatePackage((Package) o);
+    if (o instanceof MMPackage)
+      return generatePackage((MMPackage) o);
     if (o instanceof Classifier)
       return generateClassifier((Classifier) o);
     if (o instanceof Expression)
@@ -86,7 +86,7 @@ public abstract class Generator {
   public abstract String generateOperation(Operation op);
   public abstract String generateAttribute(Attribute attr);
   public abstract String generateParameter(Parameter param);
-  public abstract String generatePackage(Package p);
+  public abstract String generatePackage(MMPackage p);
   public abstract String generateClassifier(Classifier cls);
   public abstract String generateStereotype(Stereotype s);
   public abstract String generateTaggedValue(TaggedValue s);

@@ -32,7 +32,7 @@ import java.beans.*;
 
 import uci.graph.*;
 import uci.ui.*;
-import uci.util.Set;
+import uci.util.*;
 
 /** A diagram is just combination of a GraphModel, a Layer, and a
     title. The GraphModel stores the connected graph representation,
@@ -113,7 +113,7 @@ public class Diagram implements java.io.Serializable, GraphListener {
   public LayerPerspective getLayer() { return _lay; }
   public void setLayer(LayerPerspective lay) { _lay = lay; }
 
-  public int countContained(Set owners) {
+  public int countContained(VectorSet owners) {
     int count = 0;
     int numOwners = owners.size();
     Vector nodes = getNodes();

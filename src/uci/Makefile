@@ -28,7 +28,7 @@ clean: gefDir umlDir argoumlDir criticsDir
 
 processDir:
 	@echo
-	@echo "Processing directory $(DIR): flags '$(MAKEFLAGS)',target '$(TARGET)'"
+	@echo "Processing directory $(DIR)"
 	@echo
 	( $(CD) $(DIR) ; \
 	$(MAKE) $(TARGET) )

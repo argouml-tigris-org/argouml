@@ -26,7 +26,10 @@
 package uci.uml.ui;
 
 import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.beans.*;
 import java.awt.*;
@@ -143,6 +146,7 @@ public class Actions {
   //   public static UMLAction FixItFinish = new ActionFixItFinish();
 
   public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
+  public static UMLAction Properties = new ActionProperties();
 
 
 
@@ -359,7 +363,14 @@ class ActionOpenProject extends UMLAction {
     }
 
     try {
-      JFileChooser chooser = new JFileChooser(Globals.getLastDirectory());
+      JFileChooser chooser = null;
+
+      try { new JFileChooser(Globals.getLastDirectory()); }
+      catch (Exception ex) {
+	System.out.println("Exception in opening JFileChooser");
+	ex.printStackTrace();
+      }
+      if (chooser == null) chooser = new JFileChooser();
 
       chooser.setDialogTitle("Open Project");
       FileFilter filter = FileFilters.ArgoFilter;
@@ -601,10 +612,6 @@ class ActionSaveProject extends UMLAction {
 
   public boolean trySave(boolean overwrite) {
     try {
-      //@@@: just for rapid edig-compile-debug 
-      Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
-      expander = new OCLExpander(templates);
-
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       Project p =  pb.getProject();
 //       String name = p.getFilename();
@@ -666,19 +673,23 @@ class ActionSaveProjectAs extends UMLAction {
   }
 
   public boolean trySave(boolean overwrite) {
-    //@@@: just for rapid edig-compile-debug 
-    Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
-    expander = new OCLExpander(templates);
-
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p =  pb.getProject();
     try {
-      JFileChooser chooser;
-      if (p != null && p.getURL() != null &&
-	  p.getURL().getFile().length()>0) {
-	chooser  = new JFileChooser(p.getURL().getFile());
+      JFileChooser chooser = null;
+      try { 
+	if (p != null && p.getURL() != null &&
+	    p.getURL().getFile().length()>0) {
+	  String filename = p.getURL().getFile();
+	  if (!filename.startsWith("/FILE1/+/"))
+	    chooser  = new JFileChooser(p.getURL().getFile());
+	}
       }
-      else chooser = new JFileChooser();
+      catch (Exception ex) {
+	System.out.println("exception in opening JFileChooser");
+	ex.printStackTrace();
+      }
+      if (chooser == null) chooser = new JFileChooser();
 
       chooser.setDialogTitle("Save Project: " + p.getName());
       FileFilter filter = FileFilters.ArgoFilter;
@@ -1757,3 +1768,16 @@ class ActionAboutArgoUML extends UMLAction {
   }
   public boolean shouldBeEnabled() { return true; }
 } /* end class ActionAboutArgoUML */
+
+
+class ActionProperties extends UMLAction {
+  public ActionProperties() { super("Properties"); }
+
+  public void actionPerformed(ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    if (pb == null) return;
+    DetailsPane dp = pb.getDetailsPane();
+    dp.selectTabNamed("Properties");
+  }
+  public boolean shouldBeEnabled() { return true; }
+} /* end class ActionShowProperties */

@@ -52,27 +52,45 @@ public class ModePopup extends Mode {
 
 
   public String instructions() { return " "; }
+  
+  public void showPopup(MouseEvent me) {
+    int x = me.getX(), y = me.getY();
+    Fig underMouse = _editor.hit(x, y);
+    if (!(underMouse instanceof PopupGenerator)) return;
+    _editor.getSelectionManager().select(underMouse);
+    JPopupMenu popup = new JPopupMenu("test");
+    Vector actions = ((PopupGenerator)underMouse).getPopUpActions();
+    int size = actions.size();
+    for (int i = 0; i < size; ++i) {
+      AbstractAction a = (AbstractAction) actions.elementAt(i);
+      popup.add(a);
+    }
+    popup.show(_editor.getAwtComponent(), me.getX(), me.getY());
+  }
 
   ////////////////////////////////////////////////////////////////
   // event handlers
 
+  /** Show a popup menu on right-mouse-button down. */
+  // works for Solaris
+  //  public void mousePressed(MouseEvent me) {
+  //     System.out.println("mousePressed");
+  //     if (me.isPopupTrigger()) {
+  //       showPopup(me);
+  //       me.consume();
+  //     }
+  //     else System.out.println("not isPopupTrigger mousePressed");
+  //}
+
   /** Show a popup menu on right-mouse-button up. */
+  // works for Windows
   public void mouseReleased(MouseEvent me) {
+    //System.out.println("mouseReleased");
     if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
-      int x = me.getX(), y = me.getY();
-      Fig underMouse = _editor.hit(x, y);
-      if (!(underMouse instanceof PopupGenerator)) return;
-      _editor.getSelectionManager().select(underMouse);
-      JPopupMenu popup = new JPopupMenu("test");
-      Vector actions = ((PopupGenerator)underMouse).getPopUpActions();
-      int size = actions.size();
-      for (int i = 0; i < size; ++i) {
-        AbstractAction a = (AbstractAction) actions.elementAt(i);
-        popup.add(a);
-      }
-      popup.show(_editor.getAwtComponent(), me.getX(), me.getY());
+      showPopup(me);
       me.consume();
     }
+    //else System.out.println("not isPopupTrigger mouseReleased");
   }
 
 } /* end class ModePopup */

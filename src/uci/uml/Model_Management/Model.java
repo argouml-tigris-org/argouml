@@ -29,14 +29,14 @@ import java.beans.PropertyVetoException;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.Name;
 
-public class Model extends GeneralizableElementImpl implements Package {
+public class Model extends GeneralizableElementImpl implements MMPackage {
 
   public Model() { }
   public Model(Name name) { super(name); }
   public Model(String nameStr) { super(new Name(nameStr)); }
 
   ////////////////////////////////////////////////////////////////
-  // Package implementation
+  // MMPackage implementation
 
   // needs-more-work: create ElementReferences
   public Vector _referencedElement;

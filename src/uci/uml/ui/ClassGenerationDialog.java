@@ -197,7 +197,7 @@ class TableModelClassChecks extends AbstractTableModel {
   ////////////////
   // instance varables
   Vector _classes;
-  Set _checked = new Set();
+  VectorSet _checked = new VectorSet();
 
   ////////////////
   // constructor

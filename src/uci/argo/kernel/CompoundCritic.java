@@ -155,13 +155,13 @@ public class CompoundCritic extends Critic {
     System.out.println("this method should never be called: "+
 		       "CompoundCritic addKnowledgeType");
   }
-  public Set getKnowledgeTypes() {
+  public VectorSet getKnowledgeTypes() {
     System.out.println("this method should never be called: "+
 		       "CompoundCritic addSupportedDecision");
-    return new Set();
+    return new VectorSet();
   }
   
-  public String expand(String desc, Set offs) {
+  public String expand(String desc, VectorSet offs) {
     System.out.println("this method should never be called: "+
 		       "CompoundCritic expand");
     return desc;

@@ -30,7 +30,7 @@ import uci.uml.Foundation.Core.GeneralizableElement;
 import uci.uml.Foundation.Core.ModelElement;
 
 
-public interface Package extends GeneralizableElement, java.io.Serializable {
+public interface MMPackage extends GeneralizableElement, java.io.Serializable {
   public Vector getReferencedElement();
   public void setReferencedElement(Vector x) throws PropertyVetoException;
 

@@ -52,9 +52,9 @@ implements Runnable, java.io.Serializable {
   /** Pending ToDoItems for the designer to consider. */
   protected Vector _items = new Vector(100);
 
-  protected Set _allOffenders = new Set(100);
-  protected Set _allKnowledgeTypes = new Set();
-  protected Set _allPosters = new Set();
+  protected VectorSet _allOffenders = new VectorSet(100);
+  protected VectorSet _allKnowledgeTypes = new VectorSet();
+  protected VectorSet _allPosters = new VectorSet();
   
   /** ToDoItems that the designer has explicitly indicated that (s)he
    * considers resolved.  Needs-More-Work: generalize into a design
@@ -172,11 +172,11 @@ implements Runnable, java.io.Serializable {
   public Vector getToDoItems() { return _items; }
 
   // needs-more-work: not implemented
-  public Set getOffenders() { return _allOffenders; }
+  public VectorSet getOffenders() { return _allOffenders; }
   public Vector getDecisions() { return new Vector(); }
   public Vector getGoals() { return new Vector(); }
-  public Set getKnowledgeTypes() { return _allKnowledgeTypes; }
-  public Set getPosters() { return _allPosters; }
+  public VectorSet getKnowledgeTypes() { return _allKnowledgeTypes; }
+  public VectorSet getPosters() { return _allPosters; }
 
   private synchronized void addE(ToDoItem item) {
     /* remove any identical items already on the list */
@@ -293,7 +293,7 @@ implements Runnable, java.io.Serializable {
   }
 
   protected void recomputeAllOffenders() {
-    _allOffenders = new Set(_items.size()*2);
+    _allOffenders = new VectorSet(_items.size()*2);
     int size = _items.size();
     for (int i = 0; i < size; i++) {
       ToDoItem item = (ToDoItem) _items.elementAt(i);
@@ -302,7 +302,7 @@ implements Runnable, java.io.Serializable {
   }
 
   protected void recomputeAllKnowledgeTypes() {
-    _allKnowledgeTypes = new Set();
+    _allKnowledgeTypes = new VectorSet();
     Enumeration enum = _items.elements();
     while (enum.hasMoreElements()) {
       ToDoItem item = (ToDoItem) enum.nextElement();
@@ -311,7 +311,7 @@ implements Runnable, java.io.Serializable {
   }
   
   protected void recomputeAllPosters() {
-    _allPosters = new Set();
+    _allPosters = new VectorSet();
     int size = _items.size();
     for (int i = 0; i < size; i++) {
       ToDoItem item = (ToDoItem) _items.elementAt(i);

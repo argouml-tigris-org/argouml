@@ -58,24 +58,24 @@ public class CrCircularComposition extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Classifier)) return NO_PROBLEM;
     Classifier cls = (Classifier) dm;
-    Set reach = (new Set(cls)).reachable(GenCompositeClasses.SINGLETON);
+    VectorSet reach = (new VectorSet(cls)).reachable(GenCompositeClasses.SINGLETON);
     if (reach.contains(cls)) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
     Classifier cls = (Classifier) dm;
-    Set offs = computeOffenders(cls);
+    VectorSet offs = computeOffenders(cls);
     return new ToDoItem(this, offs, dsgr);
   }
 
-  protected Set computeOffenders(Classifier dm) {
-    Set offs = new Set(dm);
-    Set above = offs.reachable(GenCompositeClasses.SINGLETON);
+  protected VectorSet computeOffenders(Classifier dm) {
+    VectorSet offs = new VectorSet(dm);
+    VectorSet above = offs.reachable(GenCompositeClasses.SINGLETON);
     Enumeration enum = above.elements();
     while (enum.hasMoreElements()) {
       Classifier cls2 = (Classifier) enum.nextElement();
-      Set trans = (new Set(cls2)).reachable(GenCompositeClasses.SINGLETON);
+      VectorSet trans = (new VectorSet(cls2)).reachable(GenCompositeClasses.SINGLETON);
       if (trans.contains(dm)) offs.addElement(cls2);
     }
     return offs;
@@ -83,10 +83,10 @@ public class CrCircularComposition extends CrUML {
 
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
-    Set offs = i.getOffenders();
+    VectorSet offs = i.getOffenders();
     Classifier dm = (Classifier) offs.firstElement();
     if (!predicate(dm, dsgr)) return false;
-    Set newOffs = computeOffenders(dm);
+    VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);
 //      System.out.println("offs="+ offs.toString() +
 //  		       " newOffs="+ newOffs.toString() +
