@@ -29,6 +29,12 @@ import java.beans.*;
 import javax.swing.*;
 
 import org.tigris.gef.base.*;
+import org.tigris.gef.presentation.Fig;
+
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 import org.argouml.kernel.Project;
 import org.argouml.uml.ui.VetoablePropertyChange;
@@ -111,6 +117,32 @@ public class ArgoDiagram extends Diagram implements VetoablePropertyChange {
     		}
     	}
         return false;
+    }
+
+    /**
+     * Finds the presentation (the fig) for some object. If the object is a 
+     * modelelement that is contained in some other modelelement that has its 
+     * own fig, that fig is returned. It extends presentationFor that only gets
+     * the fig belonging to the node obj.
+     * @author jaap.branderhorst@xs4all.nl
+     */
+    public Fig getContainingFig(Object obj) {
+        Fig fig = super.presentationFor(obj);
+        if (fig == null && obj instanceof MModelElement) { // maybe we have a modelelement
+            // that is part of some other fig
+            if (obj instanceof MOperation || obj instanceof MAttribute) {
+                // get all the classes from the diagram
+                Iterator it = getNodes().iterator();
+                while (it.hasNext()) {
+                    Object o = it.next();
+                    if (o instanceof MClassifier) {
+                        MClassifier cl = (MClassifier)o;
+                        if (cl.getFeatures().contains(obj)) return presentationFor(cl);
+                    }
+                }
+            }
+        }
+        return fig;
     }
 
 } /* end class ArgoDiagram */
