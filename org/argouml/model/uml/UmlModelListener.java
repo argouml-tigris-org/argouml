@@ -99,6 +99,12 @@ public class UmlModelListener implements PropertyChangeListener {
         Model.getPump().addModelEventListener(this, elm);
     }
     
+    /**
+     * For every ModelElement that has been deleted, we want to 
+     * remove its listener.
+     * 
+     * @param elm the UML modelelement that has been deleted
+     */
     public void deleteElement(Object elm) {
         Model.getPump().removeModelEventListener(this, elm);
     }

@@ -63,7 +63,7 @@ public abstract class XMLTokenTableBase {
 
     /**
      * @param s the string
-     * @param push 
+     * @param push true if the token is to be pushed
      * @return the token
      */
     public final int toToken(String s, boolean push) {
