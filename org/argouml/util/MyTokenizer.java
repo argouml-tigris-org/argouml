@@ -386,6 +386,7 @@ public class MyTokenizer implements Enumeration
 	private String _savedToken;
 	private int _savedIdx;
 	private Vector _customSeps;
+	private String _putToken;
 
 	/**
 	 * Constructs a new instance. See above for a description of the
@@ -402,6 +403,7 @@ public class MyTokenizer implements Enumeration
 		_eIdx = string.length();
 		_savedToken = null;
 		_customSeps = null;
+		_putToken = null;
 	}
 
 	/**
@@ -447,7 +449,8 @@ public class MyTokenizer implements Enumeration
 	 * @return true if another token can be fetched with nextToken.
 	 */
 	public boolean hasMoreTokens() {
-		return _sIdx < _eIdx || _savedToken != null;
+		return _sIdx < _eIdx || _savedToken != null ||
+			_putToken != null;
 	}
 
 	/**
@@ -460,6 +463,12 @@ public class MyTokenizer implements Enumeration
 		TokenSep sep;
 		String s = null;
 		int i, j;
+
+		if (_putToken != null) {
+			s = _putToken;
+			_putToken = null;
+			return s;
+		}
 
 		if (_savedToken != null) {
 			s = _savedToken;
@@ -573,6 +582,25 @@ public class MyTokenizer implements Enumeration
 	 */
 	public int getTokenIndex() {
 		return _tokIdx;
+	}
+
+	/**
+	 * Put a token on the input stream. This will be the next token read
+	 * from the tokenizer. If this function is called again before the
+	 * last token has been read, then it will be lost.
+	 *
+	 * <p>The index returned from getTokenIndex will be the same for the
+	 * token put as that of the last token that wasn't put.
+	 *
+	 * @param s The token to put.
+	 * @throws NullPointerException if s is null.
+	 */
+	public void putToken(String s) {
+		if (s == null)
+			throw new NullPointerException(
+				"Cannot put a null token");
+
+		_putToken = s;
 	}
 
 	/**
