@@ -73,10 +73,15 @@ public class PropPanelUseCase extends PropPanelClassifier {
         // representation and requesting 3 columns
         super("UseCase", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-    	// addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-    	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+    	// addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        //     "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+    	addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceComboBox());
 
 	
 	// Modifiers - an abstract use case does not really make any sense
@@ -84,20 +89,25 @@ public class PropPanelUseCase extends PropPanelClassifier {
         add(_modifiersPanel);
         
 
-	JList extensionPoints = new UMLMutableLinkedList(new UMLUseCaseExtensionPointListModel(), null, ActionNewUseCaseExtensionPoint.SINGLETON);
+	JList extensionPoints = new UMLMutableLinkedList(
+            new UMLUseCaseExtensionPointListModel(), null, 
+            ActionNewUseCaseExtensionPoint.SINGLETON);
 	addField(Translator.localize("UMLMenu", "label.extension-points"),
 		 new JScrollPane(extensionPoints));
 
 	addSeperator();
 
-	addField(Translator.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-	addField(Translator.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+	addField(Translator.localize("UMLMenu", "label.generalizations"), 
+            getGeneralizationScroll());
+	addField(Translator.localize("UMLMenu", "label.specializations"), 
+            getSpecializationScroll());
 
 	JList extendsList = new UMLLinkedList(new UMLUseCaseExtendListModel());
 	addField(Translator.localize("UMLMenu", "label.extends"),
 		 new JScrollPane(extendsList));
 
-	JList includesList = new UMLLinkedList(new UMLUseCaseIncludeListModel());
+	JList includesList = new UMLLinkedList(
+            new UMLUseCaseIncludeListModel());
 	addField(Translator.localize("UMLMenu", "label.includes"),
 		 new JScrollPane(includesList));
 
@@ -106,15 +116,18 @@ public class PropPanelUseCase extends PropPanelClassifier {
         addField(Translator.localize("UMLMenu", "label.association-ends"), 
             getAssociationEndScroll());
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
-        new PropPanelButton(this, buttonPanel, _useCaseIcon,
-                Translator.localize("UMLMenu", "button.new-usecase"), "newUseCase",
-                            null);
-        new PropPanelButton(this, buttonPanel, _extensionPointIcon,
-                            localize("New Extension Point"),
-                            "newExtensionPoint",
-                            null);
-        new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), getActionNewReception());
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateNamespace()));
+        new PropPanelButton(this, buttonPanel, useCaseIcon,
+                Translator.localize("UMLMenu", "button.new-usecase"), 
+                "newUseCase", null);
+        new PropPanelButton(this, buttonPanel, extensionPointIcon,
+                localize("New Extension Point"),
+                "newExtensionPoint",
+                null);
+        new PropPanelButton(this, buttonPanel, _receptionIcon, 
+                Translator.localize("UMLMenu", "button.new-reception"), 
+                getActionNewReception());
         buttonPanel
         .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
 
@@ -156,7 +169,8 @@ public class PropPanelUseCase extends PropPanelClassifier {
         Object target = getTarget();
 
         if (ModelFacade.isAUseCase(target)) {
-            TargetManager.getInstance().setTarget(UseCasesFactory.getFactory().buildExtensionPoint(target));
+            TargetManager.getInstance().setTarget(UseCasesFactory.getFactory()
+                    .buildExtensionPoint(target));
         }
     }
 } /* end class PropPanelUseCase */

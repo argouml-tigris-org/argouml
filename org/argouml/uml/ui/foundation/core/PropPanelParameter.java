@@ -49,42 +49,58 @@ public class PropPanelParameter extends PropPanelModelElement {
 
     private static UMLParameterBehavioralFeatListModel behFeatureModel;
     
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelParameter() {
         super(
 	      "Parameter",
-	      _parameterIcon,
+	      parameterIcon,
 	      ConfigLoader.getTabPropsOrientation());
-        Class mclass = (Class)ModelFacade.PARAMETER;
+        Class mclass = (Class) ModelFacade.PARAMETER;
 
         Class[] namesToWatch = {
-	    (Class)ModelFacade.STEREOTYPE,
-	    (Class)ModelFacade.OPERATION,
-	    (Class)ModelFacade.PARAMETER,
-	    (Class)ModelFacade.CLASSIFIER 
+	    (Class) ModelFacade.STEREOTYPE,
+	    (Class) ModelFacade.OPERATION,
+	    (Class) ModelFacade.PARAMETER,
+	    (Class) ModelFacade.CLASSIFIER 
 	};
         setNameEventListening(namesToWatch);
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
  
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
 
-        addField(Translator.localize("UMLMenu","label.owner"), getBehavioralFeatureScroll());
+        addField(Translator.localize("UMLMenu", "label.owner"), 
+                getBehavioralFeatureScroll());
         
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.type"), new UMLComboBox2(new UMLParameterTypeComboBoxModel(), ActionSetParameterType.SINGLETON));
+        addField(Translator.localize("UMLMenu", "label.type"), 
+                new UMLComboBox2(new UMLParameterTypeComboBoxModel(), 
+                        ActionSetParameterType.SINGLETON));
 
         addField("Initial Value:", new UMLInitialValueComboBox(this));
         
         //      TODO: i18n
-        add(new UMLParameterDirectionKindRadioButtonPanel("ParameterKind:", true));
+        add(new UMLParameterDirectionKindRadioButtonPanel("ParameterKind:", 
+                true));
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateContainerElement()));
-        	new PropPanelButton(this, buttonPanel, _parameterIcon, Translator.localize("UMLMenu", "button.new-parameter"), "addParameter", null);
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateContainerElement()));
+        new PropPanelButton(this, buttonPanel, parameterIcon, 
+                Translator.localize("UMLMenu", "button.new-parameter"), 
+                "addParameter", null);
 	buttonPanel
         .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
+    /**
+     * @return the type of the parameter
+     */
     public Object getType() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAParameter(target)) {
@@ -93,6 +109,9 @@ public class PropPanelParameter extends PropPanelModelElement {
         return null;
     }
 
+    /**
+     * @param type the type of the parameter
+     */
     public void setType(Object/*MClassifier*/ type) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAParameter(target)) {
@@ -100,10 +119,18 @@ public class PropPanelParameter extends PropPanelModelElement {
         }
     }
 
+    /**
+     * @param type the given parameter type
+     * @return true if the given type is acceptable for the parameter 
+     *         (i.e. it is a Classifier)
+     */
     public boolean isAcceptibleType(Object/*MModelElement*/ type) {
 	return org.argouml.model.ModelFacade.isAClassifier(type);
     }
 
+    /**
+     * @return the behaviouralfeature of this parameter
+     */
     public Object getBehavioralFeature() {
         Object feature = null;
         Object target = getTarget();
@@ -113,6 +140,9 @@ public class PropPanelParameter extends PropPanelModelElement {
         return feature;
     }
 
+    /**
+     * Create a new datatype.
+     */
     public void addDataType() {
         Object target = getTarget();
         if (ModelFacade.isANamespace(target)) {
@@ -124,7 +154,9 @@ public class PropPanelParameter extends PropPanelModelElement {
     }
 
 
-
+    /**
+     * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
+     */
     public void navigateUp() {
         Object feature = getBehavioralFeature();
         if (feature != null) {
@@ -132,17 +164,24 @@ public class PropPanelParameter extends PropPanelModelElement {
         }
     }
 
+    /**
+     * Add a new parameter. 
+     */
     public void addParameter() {
         Object feature = null;
         Object target = getTarget();
         if (ModelFacade.isAParameter(target)) {
             feature = ModelFacade.getBehavioralFeature(target);
             if (feature != null) {
-                TargetManager.getInstance().setTarget(CoreFactory.getFactory().buildParameter(feature));
+                TargetManager.getInstance().setTarget(CoreFactory.getFactory()
+                        .buildParameter(feature));
             }
         }
     }
 
+    /**
+     * @param element (ignored)
+     */
     public void addDataType(Object/*MModelElement*/ element) {
         addDataType();
     }

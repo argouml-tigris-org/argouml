@@ -41,54 +41,91 @@ import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for an Interface.
+ *
+ */
 public class PropPanelInterface extends PropPanelClassifier {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelInterface() {
 	super("Interface", ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = (Class)ModelFacade.INTERFACE;
+	Class mclass = (Class) ModelFacade.INTERFACE;
 
-	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-	// addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+	addField(Translator.localize("UMLMenu", "label.name"), 
+            getNameTextField());
+	// addField(Translator.localize("UMLMenu", "label.stereotype"),
+        //     new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        //         "tooltip.nav-stereo"), getStereotypeBox()));
+	addField(Translator.localize("UMLMenu", "label.stereotype"), 
+            getStereotypeBox());
+	addField(Translator.localize("UMLMenu", "label.namespace"), 
+            getNamespaceComboBox());
 	/*
 	  JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.visibility.public-uc"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.root-uc"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", 
+	      "checkbox.visibility.public-uc"),this,
+	      new UMLEnumerationBooleanProperty("visibility",mclass,
+	      "getVisibility","setVisibility",MVisibilityKind.class,
+	      MVisibilityKind.PUBLIC,null)));
+	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", 
+	      "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty(
+	      "isAbstract",mclass,"isAbstract","setAbstract")));
+	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", 
+	      "checkbox.final-uc"),this,new UMLReflectionBooleanProperty(
+	      "isLeaf",mclass,"isLeaf","setLeaf")));
+	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", 
+	      "checkbox.root-uc"),this,new UMLReflectionBooleanProperty(
+	      "isRoot",mclass,"isRoot","setRoot")));
 	*/
 	add( _modifiersPanel);
 	add(getNamespaceVisibilityPanel());
 
 	addSeperator();
 
-	addField(Translator.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-	addField(Translator.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+	addField(Translator.localize("UMLMenu", "label.generalizations"), 
+            getGeneralizationScroll());
+	addField(Translator.localize("UMLMenu", "label.specializations"), 
+            getSpecializationScroll());
 
 	addSeperator();
 
-	addField(Translator.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
-	addField(Translator.localize("UMLMenu", "label.operations"), getFeatureScroll());
+	addField(Translator.localize("UMLMenu", "label.association-ends"), 
+            getAssociationEndScroll());
+	addField(Translator.localize("UMLMenu", "label.operations"), 
+            getFeatureScroll());
 
-	buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
-	new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize("UMLMenu", "button.new-operation"), "addOperation", null);
-	//new PropPanelButton(this,buttonPanel,_generalizationIcon, Translator.localize("UMLMenu", "button.new-generalization"),"addGeneralization",null);
-	//new PropPanelButton(this,buttonPanel,_realizationIcon, Translator.localize("UMLMenu", "button.new-realization"),"addRealization",null);
-	new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), getActionNewReception());
+	buttonPanel.add(new PropPanelButton2(this, 
+            new ActionNavigateNamespace()));
+	new PropPanelButton(this, buttonPanel, addOpIcon, Translator.localize(
+            "UMLMenu", "button.new-operation"), "addOperation", null);
+	//new PropPanelButton(this,buttonPanel,generalizationIcon, 
+	//    Translator.localize("UMLMenu", "button.new-generalization"),
+        //    "addGeneralization",null);
+	//new PropPanelButton(this,buttonPanel,realizationIcon, 
+        //    Translator.localize("UMLMenu", "button.new-realization"),
+        //    "addRealization",null);
+	new PropPanelButton(this, buttonPanel, _receptionIcon, 
+            Translator.localize("UMLMenu", "button.new-reception"), 
+            getActionNewReception());
 	buttonPanel
         .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
+    /**
+     * Create a new interface.
+     */
     public void newInterface() {
 	Object target = getTarget();
 	if (org.argouml.model.ModelFacade.isAInterface(target)) {
 	    Object iface = /*(MInterface)*/ target;
 	    Object newInterface = CoreFactory.getFactory().createInterface();
-	    ModelFacade.addOwnedElement(ModelFacade.getNamespace(iface), newInterface);
+	    ModelFacade.addOwnedElement(ModelFacade.getNamespace(iface), 
+                newInterface);
 	    TargetManager.getInstance().setTarget(newInterface);
 	}
     }

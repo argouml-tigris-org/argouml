@@ -49,13 +49,13 @@ public class PropPanelSubsystem extends PropPanelPackage {
      * 
      */
     public PropPanelSubsystem() {
-        super("Subsystem", _subsystemIcon, 
+        super("Subsystem", subsystemIcon, 
                 ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.available-features"),
                 getFeatureScroll());
 
-        new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize(
+        new PropPanelButton(this, buttonPanel, addOpIcon, Translator.localize(
                 "UMLMenu", "button.new-operation"), "addOperation", null);
     }
 

@@ -34,6 +34,10 @@ import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for an associationend.
+ *
+ */
 public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
 
     /**
@@ -42,13 +46,17 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
      */
     public PropPanelAssociationEndRole() {
         super("AssociationEndRole", ConfigLoader.getTabPropsOrientation());
-        setAssociationLabel(Translator.localize("UMLMenu", "label.association-role"));
-        assocEndorRoleIcon = _assocEndRoleIcon;
-        createControls((Class)ModelFacade.ASSOCIATION_END_ROLE);
+        setAssociationLabel(Translator.localize("UMLMenu", 
+                "label.association-role"));
+        assocEndorRoleIcon = assocEndRoleIcon;
+        createControls((Class) ModelFacade.ASSOCIATION_END_ROLE);
         positionStandardControls();
         positionControls();
     }
 
+    /**
+     * @see org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd#positionControls()
+     */
     protected void positionControls() {
 
         JList baseList =

@@ -51,7 +51,7 @@ public class PropPanelLink extends PropPanelModelElement {
      * 
      */
     public PropPanelLink() {
-        super("Link", _linkIcon, ConfigLoader.getTabPropsOrientation());
+        super("Link", linkIcon, ConfigLoader.getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.LINK;
         addField(Translator.localize("UMLMenu", "label.name"), 

@@ -48,18 +48,22 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelDataType extends PropPanelClassifier {
 
-    private JScrollPane _attributeScroll;
+    private JScrollPane attributeScroll;
 
-    private JScrollPane _operationScroll;
+    private JScrollPane operationScroll;
 
-    private static UMLClassAttributeListModel attributeListModel = new UMLClassAttributeListModel();
+    private static UMLClassAttributeListModel attributeListModel = 
+        new UMLClassAttributeListModel();
 
-    private static UMLClassOperationListModel operationListModel = new UMLClassOperationListModel();
+    private static UMLClassOperationListModel operationListModel = 
+        new UMLClassOperationListModel();
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelDataType() {
-        super("DataType", _dataTypeIcon, ConfigLoader.getTabPropsOrientation());
+        super("DataType", dataTypeIcon, ConfigLoader.getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.DATATYPE;
 
@@ -96,19 +100,22 @@ public class PropPanelDataType extends PropPanelClassifier {
 
         buttonPanel.add(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, buttonPanel, _dataTypeIcon, Translator
+        new PropPanelButton(this, buttonPanel, dataTypeIcon, Translator
                 .localize("UMLMenu", "button.new-datatype"), "newDataType",
                 null);
-        new PropPanelButton(this, buttonPanel, _addAttrIcon, Translator
+        new PropPanelButton(this, buttonPanel, addAttrIcon, Translator
                 .localize("UMLMenu", "button.new-enumeration-literal"),
                 "addAttribute", null);
 
-        new PropPanelButton(this, buttonPanel, _addOpIcon, Translator.localize(
+        new PropPanelButton(this, buttonPanel, addOpIcon, Translator.localize(
                 "UMLMenu", "button.new-operation"), "addOperation", null);
         buttonPanel
                 .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
+    /**
+     * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#addAttribute()
+     */
     public void addAttribute() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
@@ -162,6 +169,9 @@ public class PropPanelDataType extends PropPanelClassifier {
 
     }
 
+    /**
+     * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#addOperation()
+     */
     public void addOperation() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
@@ -179,11 +189,11 @@ public class PropPanelDataType extends PropPanelClassifier {
      * @return JScrollPane
      */
     public JScrollPane getOperationScroll() {
-        if (_operationScroll == null) {
+        if (operationScroll == null) {
             JList list = new UMLLinkedList(operationListModel);
-            _operationScroll = new JScrollPane(list);
+            operationScroll = new JScrollPane(list);
         }
-        return _operationScroll;
+        return operationScroll;
     }
 
     /**
@@ -192,13 +202,16 @@ public class PropPanelDataType extends PropPanelClassifier {
      * @return JScrollPane
      */
     public JScrollPane getAttributeScroll() {
-        if (_attributeScroll == null) {
+        if (attributeScroll == null) {
             JList list = new UMLLinkedList(attributeListModel);
-            _attributeScroll = new JScrollPane(list);
+            attributeScroll = new JScrollPane(list);
         }
-        return _attributeScroll;
+        return attributeScroll;
     }
 
+    /**
+     * Create a new datatype.
+     */
     public void newDataType() {
         Object target = getTarget();
         if (ModelFacade.isADataType(target)) {

@@ -54,20 +54,21 @@ public class PropPanelComponentInstance extends PropPanelInstance {
      * Contructor.
      */
     public PropPanelComponentInstance() {
-        super("Component Instance", _componentInstanceIcon, ConfigLoader
+        super("Component Instance", componentInstanceIcon, ConfigLoader
                 .getTabPropsOrientation());
 
         Class mclass = (Class) ModelFacade.COMPONENT_INSTANCE;
 
-        Class[] namesToWatch = { (Class) ModelFacade.STEREOTYPE,
-                (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
+        Class[] namesToWatch = {(Class) ModelFacade.STEREOTYPE,
+            (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
 
         setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"), getNameTextField());
 
         addField(Translator.localize("label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("label.namespace"), 
+                getNamespaceComboBox());
 
         addSeperator();
 
@@ -78,16 +79,17 @@ public class PropPanelComponentInstance extends PropPanelInstance {
         addField("Stimuli received:", getStimuliReceiverScroll());
         
         JList resList = new UMLLinkedList(new UMLContainerResidentListModel());
-        addField(Translator.localize("UMLMenu", "label.residents"), new JScrollPane(resList));
+        addField(Translator.localize("UMLMenu", "label.residents"), 
+                new JScrollPane(resList));
 
         addSeperator();
-        AbstractActionAddModelElement _action = new ActionAddInstanceClassifier(
-                (Class) ModelFacade.COMPONENT);
-        JScrollPane _classifierScroll = new JScrollPane(
+        AbstractActionAddModelElement action = 
+            new ActionAddInstanceClassifier( (Class) ModelFacade.COMPONENT);
+        JScrollPane classifierScroll = new JScrollPane(
                 new UMLMutableLinkedList(new UMLInstanceClassifierListModel(),
-                        _action, null, null, true));
+                        action, null, null, true));
         addField(Translator.localize("UMLMenu", "label.classifiers"),
-                _classifierScroll);
+                classifierScroll);
 
         buttonPanel.add(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
@@ -127,7 +129,7 @@ public class PropPanelComponentInstance extends PropPanelInstance {
 
         if (org.argouml.model.ModelFacade.isAInstance(target)) {
             Object inst = /* (MInstance) */target;
-            //            ((MInstance) target).setClassifier((MClassifier) element);
+            //  ((MInstance) target).setClassifier((MClassifier) element);
 
             // delete all classifiers
             Collection col = ModelFacade.getClassifiers(inst);
@@ -144,6 +146,9 @@ public class PropPanelComponentInstance extends PropPanelInstance {
         }
     }
 
+    /**
+     * @see org.argouml.uml.ui.behavior.common_behavior.PropPanelInstance#getClassifier()
+     */
     public Object getClassifier() {
         Object classifier = null;
         Object target = getTarget();

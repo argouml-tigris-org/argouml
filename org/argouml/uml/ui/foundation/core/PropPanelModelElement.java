@@ -56,89 +56,99 @@ import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a modelelement.
+ *
+ */
 public abstract class PropPanelModelElement extends PropPanel {
 
     private static final Logger LOG = Logger
             .getLogger(PropPanelModelElement.class);
 
-    ////////////////////////////////////////////////////////////////
-    // constants
+    /*
+     * TODO: (MVW) What is the use of having these icons here? Since we are in 
+     * an abstract class, why should we prepare for all siblings? 
+     * Let e.g. a Partition take care of its own icon, by writing  
+     *      lookupIcon("Partition")
+     * instead of 
+     *      partitionIcon
+     * The former is not less convenient, and much simpeler.  
+     */
+    protected static ImageIcon partitionIcon = lookupIcon("Partition");
 
-    protected static ImageIcon _partitionIcon = lookupIcon("Partition");
+    protected static ImageIcon objectIcon = lookupIcon("Object");
 
-    protected static ImageIcon _objectIcon = lookupIcon("Object");
-
-    protected static ImageIcon _componentInstanceIcon =
+    protected static ImageIcon componentInstanceIcon =
 	lookupIcon("ComponentInstance");
 
-    protected static ImageIcon _nodeInstanceIcon = lookupIcon("NodeInstance");
+    protected static ImageIcon nodeInstanceIcon = lookupIcon("NodeInstance");
 
-    protected static ImageIcon _instanceIcon = lookupIcon("Instance");
+    protected static ImageIcon instanceIcon = lookupIcon("Instance");
 
-    protected static ImageIcon _linkIcon = lookupIcon("Link");
+    protected static ImageIcon linkIcon = lookupIcon("Link");
 
-    protected static ImageIcon _stimulusIcon = lookupIcon("Stimulus");
+    protected static ImageIcon stimulusIcon = lookupIcon("Stimulus");
 
-    protected static ImageIcon _associationIcon = lookupIcon("Association");
+    protected static ImageIcon associationIcon = lookupIcon("Association");
 
-    protected static ImageIcon _assocEndIcon = lookupIcon("AssociationEnd");
+    protected static ImageIcon assocEndIcon = lookupIcon("AssociationEnd");
 
-    protected static ImageIcon _assocEndRoleIcon =
+    protected static ImageIcon assocEndRoleIcon =
 	lookupIcon("AssociationEndRole");
 
-    protected static ImageIcon _generalizationIcon =
+    protected static ImageIcon generalizationIcon =
 	lookupIcon("Generalization");
 
-    protected static ImageIcon _realizationIcon = lookupIcon("Realization");
+    protected static ImageIcon realizationIcon = lookupIcon("Realization");
 
-    protected static ImageIcon _classIcon = lookupIcon("Class");
+    protected static ImageIcon classIcon = lookupIcon("Class");
 
-    protected static ImageIcon _collaborationIcon = lookupIcon("Collaboration");
+    protected static ImageIcon collaborationIcon = lookupIcon("Collaboration");
 
-    protected static ImageIcon _interfaceIcon = lookupIcon("Interface");
+    protected static ImageIcon interfaceIcon = lookupIcon("Interface");
 
-    protected static ImageIcon _addOpIcon = lookupIcon("NewOperation");
+    protected static ImageIcon addOpIcon = lookupIcon("NewOperation");
 
-    protected static ImageIcon _addAttrIcon = lookupIcon("NewAttribute");
+    protected static ImageIcon addAttrIcon = lookupIcon("NewAttribute");
 
-    protected static ImageIcon _addAssocIcon = lookupIcon("Association");
+    protected static ImageIcon addAssocIcon = lookupIcon("Association");
 
-    protected static ImageIcon _packageIcon = lookupIcon("Package");
+    protected static ImageIcon packageIcon = lookupIcon("Package");
 
-    protected static ImageIcon _modelIcon = lookupIcon("Model");
+    protected static ImageIcon modelIcon = lookupIcon("Model");
     
-    protected static ImageIcon _subsystemIcon = lookupIcon("Subsystem");
+    protected static ImageIcon subsystemIcon = lookupIcon("Subsystem");
 
-    protected static ImageIcon _innerClassIcon = lookupIcon("InnerClass");
+    protected static ImageIcon innerClassIcon = lookupIcon("InnerClass");
 
-    protected static ImageIcon _nodeIcon = lookupIcon("Node");
+    protected static ImageIcon nodeIcon = lookupIcon("Node");
 
-    protected static ImageIcon _componentIcon = lookupIcon("Component");
+    protected static ImageIcon componentIcon = lookupIcon("Component");
 
-    protected static ImageIcon _dataTypeIcon = lookupIcon("DataType");
+    protected static ImageIcon dataTypeIcon = lookupIcon("DataType");
 
-    protected static ImageIcon _actorIcon = lookupIcon("Actor");
+    protected static ImageIcon actorIcon = lookupIcon("Actor");
 
-    protected static ImageIcon _useCaseIcon = lookupIcon("UseCase");
+    protected static ImageIcon useCaseIcon = lookupIcon("UseCase");
 
-    protected static ImageIcon _extendIcon = lookupIcon("Extend");
+    protected static ImageIcon extendIcon = lookupIcon("Extend");
 
-    protected static ImageIcon _extensionPointIcon =
+    protected static ImageIcon extensionPointIcon =
 	lookupIcon("ExtensionPoint");
 
-    protected static ImageIcon _includeIcon = lookupIcon("Include");
+    protected static ImageIcon includeIcon = lookupIcon("Include");
 
-    protected static ImageIcon _dependencyIcon = lookupIcon("Dependency");
+    protected static ImageIcon dependencyIcon = lookupIcon("Dependency");
 
-    protected static ImageIcon _permissionIcon = lookupIcon("Permission");
+    protected static ImageIcon permissionIcon = lookupIcon("Permission");
 
-    protected static ImageIcon _usageIcon = lookupIcon("Usage");
+    protected static ImageIcon usageIcon = lookupIcon("Usage");
 
-    protected static ImageIcon _parameterIcon = lookupIcon("Parameter");
+    protected static ImageIcon parameterIcon = lookupIcon("Parameter");
 
-    protected static ImageIcon _operationIcon = lookupIcon("Operation");
+    protected static ImageIcon operationIcon = lookupIcon("Operation");
 
-    protected static ImageIcon _signalIcon = lookupIcon("SignalSending");
+    protected static ImageIcon signalIcon = lookupIcon("SignalSending");
 
     protected static ImageIcon _stereotypeIcon = lookupIcon("Stereotype");
 
@@ -200,19 +210,22 @@ public abstract class PropPanelModelElement extends PropPanel {
     private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel =
 	new UMLModelElementNamespaceComboBoxModel();
 
-    private static UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel =
+    private static UMLModelElementStereotypeComboBoxModel 
+        stereotypeComboBoxModel =
 	new UMLModelElementStereotypeComboBoxModel();
 
     private static UMLModelElementNamespaceListModel namespaceListModel =
 	new UMLModelElementNamespaceListModel();
 
-    private static UMLModelElementClientDependencyListModel clientDependencyListModel =
+    private static UMLModelElementClientDependencyListModel 
+        clientDependencyListModel =
 	new UMLModelElementClientDependencyListModel();
 
     private static UMLModelElementConstraintListModel constraintListModel =
 	new UMLModelElementConstraintListModel();
 
-    private static UMLModelElementElementResidenceListModel elementResidenceListModel =
+    private static UMLModelElementElementResidenceListModel 
+        elementResidenceListModel =
 	new UMLModelElementElementResidenceListModel();
 
     private static UMLModelElementNameDocument nameDocument =
@@ -221,7 +234,8 @@ public abstract class PropPanelModelElement extends PropPanel {
     private static UMLModelElementSourceFlowListModel sourceFlowListModel =
 	new UMLModelElementSourceFlowListModel();
 
-    private static UMLModelElementSupplierDependencyListModel supplierDependencyListModel =
+    private static UMLModelElementSupplierDependencyListModel 
+        supplierDependencyListModel =
 	new UMLModelElementSupplierDependencyListModel();
 
     private static UMLModelElementTargetFlowListModel targetFlowListModel =
@@ -336,6 +350,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return true;
     }
 
+    /**
+     * @return a scrollpane for the namespace
+     */
     protected JScrollPane getNamespaceScroll() {
         if (namespaceScroll == null) {
             JList namespaceList = new UMLLinkedList(namespaceListModel);
@@ -345,6 +362,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return namespaceScroll;
     }
 
+    /**
+     * @return a combobox for the namespace
+     */
     protected JComboBox getNamespaceComboBox() {
         if (namespaceComboBox == null) {
             namespaceComboBox = new UMLSearchableComboBox(
@@ -355,6 +375,9 @@ public abstract class PropPanelModelElement extends PropPanel {
 
     }
 
+    /**
+     * @return a combobox for the stereotype
+     */
     protected JComboBox getStereotypeComboBox() {
         if (stereotypeComboBox == null) {
             stereotypeComboBox = new UMLComboBox2(stereotypeComboBoxModel,
@@ -367,7 +390,7 @@ public abstract class PropPanelModelElement extends PropPanel {
      * Returns the stereotype box. This is a box with a combobox to select the
      * stereotype and a button to create a new one
      * 
-     * @return
+     * @return the stereotype box
      */
     protected Box getStereotypeBox() {
         if (_stereotypeBox == null) {
@@ -399,6 +422,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return _stereotypeBox;
     }
 
+    /**
+     * @return a scrollpane for supplier dependency
+     */
     protected JScrollPane getSupplierDependencyScroll() {
         if (supplierDependencyScroll == null) {
             JList supplierDependencyList = new UMLLinkedList(
@@ -408,6 +434,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return supplierDependencyScroll;
     }
 
+    /**
+     * @return a scrollpane for client dependency
+     */
     protected JScrollPane getClientDependencyScroll() {
         if (clientDependencyScroll == null) {
             JList clientDependencyList = new UMLLinkedList(
@@ -417,6 +446,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return clientDependencyScroll;
     }
 
+    /**
+     * @return a scrollpane for target flow
+     */
     protected JScrollPane getTargetFlowScroll() {
         if (targetFlowScroll == null) {
             JList targetFlowList = new UMLLinkedList(targetFlowListModel);
@@ -425,6 +457,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return targetFlowScroll;
     }
 
+    /**
+     * @return a scrollpane for source flow
+     */
     protected JScrollPane getSourceFlowScroll() {
         if (sourceFlowScroll == null) {
             JList sourceFlowList = new UMLLinkedList(sourceFlowListModel);
@@ -433,6 +468,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return sourceFlowScroll;
     }
 
+    /**
+     * @return a scrollpane for constraints
+     */
     protected JScrollPane getConstraintScroll() {
         if (constraintScroll == null) {
             JList constraintList = new UMLMutableLinkedList(
@@ -443,6 +481,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return constraintScroll;
     }
 
+    /**
+     * @return a panel for the visibility
+     */
     protected JPanel getNamespaceVisibilityPanel() {
         if (namespaceVisibilityPanel == null) {
             namespaceVisibilityPanel =
@@ -452,6 +493,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return namespaceVisibilityPanel;
     }
 
+    /**
+     * @return a checkbox for the specialization
+     */
     protected JCheckBox getSpecializationCheckBox() {
         if (specializationCheckBox == null) {
             specializationCheckBox =
@@ -460,6 +504,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return specializationCheckBox;
     }
 
+    /**
+     * @return a scrollpane for residence
+     */
     protected JScrollPane getElementResidenceScroll() {
         if (elementResidenceScroll == null) {
             JList elementResidenceList = new UMLLinkedList(
@@ -469,6 +516,9 @@ public abstract class PropPanelModelElement extends PropPanel {
         return elementResidenceScroll;
     }
 
+    /**
+     * @return a textfield for the name
+     */
     protected JTextField getNameTextField() {
         if (nameTextField == null) {
             nameTextField = new UMLTextField2(nameDocument);

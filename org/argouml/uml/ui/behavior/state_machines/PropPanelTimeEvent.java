@@ -30,10 +30,16 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.util.ConfigLoader;
 
+/**
+ * The properties panel for a TimeEvent.
+ *
+ */
 public class PropPanelTimeEvent extends PropPanelEvent {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelTimeEvent() {
         super("Time event", _eventIcon, 
               ConfigLoader.getTabPropsOrientation());

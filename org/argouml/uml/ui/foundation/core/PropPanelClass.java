@@ -116,15 +116,18 @@ public class PropPanelClass extends PropPanelClassifier {
                 .add(new PropPanelButton2(this, 
                         ActionAddOperation.getSingleton()));
         buttonPanel.add(new PropPanelButton2(this, new ActionNewReception()));
-        new PropPanelButton(this, buttonPanel, _innerClassIcon, Translator
+        new PropPanelButton(this, buttonPanel, innerClassIcon, Translator
                 .localize("UMLMenu", "button.new-inner-class"),
                 "addInnerClass", null);
-        new PropPanelButton(this, buttonPanel, _classIcon, Translator.localize(
+        new PropPanelButton(this, buttonPanel, classIcon, Translator.localize(
                 "UMLMenu", "button.new-class"), "newClass", null);
         buttonPanel
                 .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
+    /**
+     * Add an inner class. 
+     */
     public void addInnerClass() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
@@ -134,6 +137,9 @@ public class PropPanelClass extends PropPanelClassifier {
         }
     }
 
+    /**
+     * Add a new class.
+     */
     public void newClass() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {

@@ -45,31 +45,39 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
+/**
+ * The properties panel for an Event.
+ *
+ */
 public abstract class PropPanelEvent extends PropPanelModelElement {
 
-    protected JScrollPane paramScroll;
+    private JScrollPane paramScroll;
 
-    protected UMLEventParameterListModel paramListModel;
+    private UMLEventParameterListModel paramListModel;
 
     /**
      * Constructor for PropPanelEvent.
      * 
-     * @param name
-     * @param icon
-     * @param orientation
+     * @param name the name string of the properties panel
+     * @param icon the icon to be shown next to the name
+     * @param orientation the orientation
      */
-    public PropPanelEvent(String name, ImageIcon icon, Orientation orientation) {
+    public PropPanelEvent(String name, ImageIcon icon, 
+            Orientation orientation) {
         super(name, icon, orientation);
         initialize();
     }
 
-    public void initialize() {
+    /**
+     * Initialize the panel with all fields and stuff.
+     */
+    protected void initialize() {
 
         paramScroll = getParameterScroll();
         buttonPanel.add(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
 
-        new PropPanelButton(this, buttonPanel, _parameterIcon, Translator
+        new PropPanelButton(this, buttonPanel, parameterIcon, Translator
                 .localize("UMLMenu", "button.new-parameter"),
                 "buttonAddParameter", null);
 
@@ -99,6 +107,9 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         TargetManager.getInstance().setTarget(param);
     }
 
+    /**
+     * @return the parameter scroll
+     */
     protected JScrollPane getParameterScroll() {
         if (paramScroll == null) {
             paramListModel = new UMLEventParameterListModel();
