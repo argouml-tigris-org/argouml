@@ -76,47 +76,7 @@ public class PropPanelInterface extends PropPanelClassifier {
     
     addField(Argo.localize("UMLMenu", "label.associations"), connectScroll);
     addField(Argo.localize("UMLMenu", "label.operations"), opsScroll);
-	/*
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(nameField,1,0,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-    //    stereotypeBox.setEnabled(false);
-    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-    addField(namespaceScroll,3,0,0);
-
-    addCaption("Generalizations:",4,0,0);
-    addField(extendsScroll,4,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.modifiers"),5,0,1);
-    JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
-    modifiersPanel.add(new UMLCheckBox(localize("Public"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,5,0,1);
-
-    addCaption(Argo.localize("UMLMenu", "label.associations"),0,1,0.3);
-    addField(connectScroll,0,1,0.3);
-
-    //addCaption(Argo.localize("UMLMenu", "label.implements"),1,1,0.4);
-    //JList implementations = new UMLList(new UMLSupplierDependencyListModel(this,null,true),true);
-    //implementations.setForeground(Color.blue);
-    //implementations.setVisibleRowCount(1);
-    //implementations.setFont(smallFont);
-    // addField(new JScrollPane(implementations),1,1,0.4);
-
-    addCaption("Specializations:",2,1,0.3);
-    addField(derivedScroll,2,1,0.3);
-
-    addCaption(Argo.localize("UMLMenu", "label.operations"),0,2,0.5);
-    addField(opsScroll,0,2,0.5);
-
-    // addCaption(Argo.localize("UMLMenu", "label.attributes"),1,2,0.5);
-    // addField(attrScroll,1,2,0.5);
-	*/
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" , "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
