@@ -29,19 +29,15 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
 
 import javax.xml.transform.Result;
-import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -216,16 +212,16 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * @see org.argouml.persistence.ProjectFilePersister#loadProject(java.net.URL)
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.net.URL)
      */
     public Project doLoad(URL url) throws OpenException {
         try {
             Project p = new Project(url);
             
-            int versionFromFile = Integer.parseInt(getVersion(url));
-
             // TODO: Uncomment this code when the mystery
             // of loading a resource is solved.
+//            int versionFromFile = Integer.parseInt(getVersion(url));
+//
 //            LOG.info("Loading uml file of version " + versionFromFile);
 //            while (versionFromFile < PERSISTENCE_VERSION) {
 //                ++versionFromFile;
@@ -326,18 +322,6 @@ public class UmlFilePersister extends AbstractFilePersister {
         }
     }
 
-//    private File getXsltFile(int version) {
-//        File file;
-//        String xsltFileName = "org/argouml/persistence/upgrade"+ version +".xsl";
-//        InputStream xsltStream = this.getClass().getClassLoader()
-//            .getResourceAsStream(xsltFileName);
-//
-//        // Read xsltStream into a temporary file
-//        // Get url for temp file.
-//        // openStream from url and wrap in StreamSource
-//        return file;
-//    }
-    
     private String getVersion(URL url) throws IOException {
         BufferedInputStream inputStream = new BufferedInputStream(url.openStream());
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
