@@ -379,6 +379,8 @@ public class Init {
       Agency.register(new CrNameConflict(), namespaceCls);
       Agency.register(crAlreadyRealizes, classCls);
       Agency.register(new CrUtilityViolated(), classifierCls);
+      
+      Agency.register(new CrOppEndVsAttr(), classifierCls);
 
       // under testing
       // Agency.register(crConsiderFacade, packageCls);
