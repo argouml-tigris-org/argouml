@@ -62,8 +62,6 @@ import org.argouml.util.Trash;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 
-import ru.novosoft.uml.MFactoryImpl;
-
 public class Main {
 
     // instantiation is done in main
@@ -209,10 +207,7 @@ public class Main {
 
 	// Register the default notation.
 	org.argouml.uml.generator.GeneratorDisplay.getInstance();
-
-	// Initialize NSUML
-	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-
+        
 	// Initialize the UMLActions
 	Actions.getInstance();
                 
@@ -644,8 +639,6 @@ class PreloadClasses implements Runnable {
         c = org.tigris.gef.ui.Swatch.class;
         c = org.tigris.gef.util.EnumerationEmpty.class;
         c = org.tigris.gef.util.EnumerationSingle.class;
-        c = ru.novosoft.uml.foundation.data_types.MChangeableKind.class;
-        c = ru.novosoft.uml.foundation.data_types.MScopeKind.class;
 
         Argo.log.info(" done preloading");
     }

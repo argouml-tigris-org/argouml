@@ -28,6 +28,7 @@ import java.util.Iterator;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**
  * Helper class for UML Foundation::DataTypes Package.
@@ -63,6 +64,78 @@ public class DataTypesHelper {
 	    MTaggedValue tv = (MTaggedValue) it.next();
 	    to.setTaggedValue(tv.getTag(), tv.getValue());
 	}
+    }
+    
+    public boolean equalsINITIALKind(Object kind){
+        
+        if(!(kind instanceof MPseudostateKind)){
+            throw new IllegalArgumentException();
+        }
+        
+        if (MPseudostateKind.INITIAL.equals(kind))
+            return true;
+        else
+            return false;
+    }
+    
+    public boolean equalsDEEP_HISTORYKind(Object kind){
+        
+        if(!(kind instanceof MPseudostateKind)){
+            throw new IllegalArgumentException();
+        }
+        
+        if (MPseudostateKind.DEEP_HISTORY.equals(kind))
+            return true;
+        else
+            return false;
+    }
+    
+    public boolean equalsSHALLOW_HISTORYKind(Object kind){
+        
+        if(!(kind instanceof MPseudostateKind)){
+            throw new IllegalArgumentException();
+        }
+        
+        if (MPseudostateKind.SHALLOW_HISTORY.equals(kind))
+            return true;
+        else
+            return false;
+    }
+    
+    public boolean equalsFORKKind(Object kind){
+        
+        if(!(kind instanceof MPseudostateKind)){
+            throw new IllegalArgumentException();
+        }
+        
+        if (MPseudostateKind.FORK.equals(kind))
+            return true;
+        else
+            return false;
+    }
+    
+    public boolean equalsJOINKind(Object kind){
+        
+        if(!(kind instanceof MPseudostateKind)){
+            throw new IllegalArgumentException();
+        }
+        
+        if (MPseudostateKind.JOIN.equals(kind))
+            return true;
+        else
+            return false;
+    }
+    
+    public boolean equalsBRANCHKind(Object kind){
+        
+        if(!(kind instanceof MPseudostateKind)){
+            throw new IllegalArgumentException();
+        }
+        
+        if (MPseudostateKind.BRANCH.equals(kind))
+            return true;
+        else
+            return false;
     }
 }
 
