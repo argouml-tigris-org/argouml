@@ -193,20 +193,22 @@ public abstract class SAXParserBase extends DefaultHandler {
             Attributes atts) throws SAXException {
         if (isElementOfInterest(name)) {
 
-            XMLElement e = createXmlElement(name, atts);
+            XMLElement element = createXmlElement(name, atts);
             
             if (LOG.isDebugEnabled()) {
                 StringBuffer buf = new StringBuffer();
-                buf.append("START: " + name + " " + e);
+                buf.append("START: ").append(name).append(' ').append(element);
                 for (int i = 0; i < atts.getLength(); i++) {
-            	    buf.append("   ATT: " + atts.getLocalName(i) + " " 
-            		   + atts.getValue(i));
+            	    buf.append("   ATT: ")
+                        .append(atts.getLocalName(i))
+                            .append(' ')
+                                .append(atts.getValue(i));
                 }
                 LOG.debug(buf.toString());
             }
             
-            elements[nElements++] = e;
-            handleStartElement(e);
+            elements[nElements++] = element;
+            handleStartElement(element);
         }
     }
 

@@ -145,8 +145,11 @@ public class ZargoFilePersister extends AbstractFilePersister {
     
             // First we save all objects that are not XMI objects i.e. the
             // diagrams (first for loop).
-            // The we save all XMI objects (second for loop).
+            // Then we save all XMI objects (second for loop).
             // This is because order is important on saving.
+            // Bob - Why not do it the other way around? Surely
+            // when reloading it is better to load XMI first
+            // then the diagrams.
             Collection names = new ArrayList();
             int counter = 0;  
             int size = project.getMembers().size();
