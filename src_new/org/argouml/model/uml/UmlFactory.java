@@ -400,6 +400,11 @@ public class UmlFactory extends AbstractUmlModelFactory {
 	    new ObjectCreateInfo(MPartition.class, factory, "createPartition"));
         elements.put(Uml.STATE,
             new ObjectCreateInfo(MState.class, factory, "createState"));
+        elements.put(Uml.CALL_STATE,
+            new ObjectCreateInfo(
+                MCallState.class, 
+                factory, 
+                "createCallState"));
         elements.put(Uml.COMPOSITE_STATE,
             new ObjectCreateInfo(
                 MCompositeState.class,
@@ -410,6 +415,16 @@ public class UmlFactory extends AbstractUmlModelFactory {
                 MPseudostate.class,
                 factory,
                 "createPseudostate"));
+        elements.put(Uml.OBJECT_FLOW_STATE,
+                new ObjectCreateInfo(
+                    MObjectFlowState.class,
+                    factory,
+                    "createObjectFlowState"));
+        elements.put(Uml.SUBACTIVITY_STATE,
+                new ObjectCreateInfo(
+                    MSubactivityState.class,
+                    factory,
+                    "createSubactivityState"));
         elements.put(Uml.USE_CASE,
             new ObjectCreateInfo(MUseCase.class, factory, "createUseCase"));
         elements.put(Uml.ACTION,
