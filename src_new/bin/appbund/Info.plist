@@ -3,9 +3,9 @@
 <plist version="0.9">
 <dict>
 	<key>CFBundleName</key>
-	<string>ArgoUML</string>
+	<string>@BUNDLE_NAME@</string>
 	<key>CFBundleVersion</key>
-	<string>1.0d1</string>
+	<string>@VERSION_NUMBER@</string>
 	<key>CFBundleAllowMixedLocalizations</key>
 	<string>true</string>
 	<key>CFBundleExecutable</key>
