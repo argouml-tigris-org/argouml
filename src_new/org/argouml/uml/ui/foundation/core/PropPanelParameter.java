@@ -131,6 +131,7 @@ public class PropPanelParameter extends PropPanelModelElement {
             feature = ((MParameter) target).getBehavioralFeature();
             if(feature != null) {
                 MParameter newParam = feature.getFactory().createParameter();
+                newParam.setKind(MParameterDirectionKind.INOUT);
                 feature.addParameter(newParam);
                 navigateTo(newParam);
             }
