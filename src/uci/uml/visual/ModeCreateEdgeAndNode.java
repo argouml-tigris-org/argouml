@@ -32,14 +32,14 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.util.*;
 import uci.graph.*;
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 /** A Mode to interpret user input while creating an edge.  Basically
  *  mouse down starts creating an edge from a source port Fig, mouse
@@ -232,73 +232,73 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
 
     if (f instanceof FigNode) {
-      FigNode destFigNode = (FigNode) f;
-      // If its a FigNode, then check within the  
-      // FigNode to see if a port exists 
-      Object foundPort = destFigNode.deepHitPort(x, y);
-      if (foundPort == null) {
-	Vector portFigs = destFigNode.getPortFigs();
-	if (portFigs.size() > 0)
-	  foundPort = ((Fig)portFigs.elementAt(0)).getOwner();
-      }
+		FigNode destFigNode = (FigNode) f;
+		// If its a FigNode, then check within the  
+		// FigNode to see if a port exists 
+		Object foundPort = destFigNode.deepHitPort(x, y);
+		if (foundPort == null) {
+			Vector portFigs = destFigNode.getPortFigs();
+			if (portFigs.size() > 0)
+				foundPort = ((Fig)portFigs.elementAt(0)).getOwner();
+		}
 
-      FigPoly p = (FigPoly) _newItem;
-      _editor.damaged(p);
-      p._isComplete = true;
+		FigPoly p = (FigPoly) _newItem;
+		_editor.damaged(p);
+		p._isComplete = true;
 
-      if (foundPort != null && foundPort != _startPort) {
-	Fig destPortFig = destFigNode.getPortFig(foundPort);
-	Class edgeClass = (Class) getArg("edgeClass");
-	if (_destToSource) {
-	  Object temp = _startPort;
-	  _startPort = foundPort;
-	  foundPort = temp;
-	  FigNode tempFN = destFigNode;
-	  destFigNode = _sourceFigNode;
-	  _sourceFigNode = tempFN;
-	  Fig tempFigPort = _startPortFig;
-	  _startPortFig = destPortFig;
-	  destPortFig = tempFigPort;
-	}
-	if (edgeClass != null)
-	  _newEdge = mgm.connect(_startPort, foundPort, edgeClass);
-	else
-	  _newEdge = mgm.connect(_startPort, foundPort);
+		if (foundPort != null && foundPort != _startPort) {
+			Fig destPortFig = destFigNode.getPortFig(foundPort);
+			Class edgeClass = (Class) getArg("edgeClass");
+			if (_destToSource) {
+				Object temp = _startPort;
+				_startPort = foundPort;
+				foundPort = temp;
+				FigNode tempFN = destFigNode;
+				destFigNode = _sourceFigNode;
+				_sourceFigNode = tempFN;
+				Fig tempFigPort = _startPortFig;
+				_startPortFig = destPortFig;
+				destPortFig = tempFigPort;
+			}
+			if (edgeClass != null) {
+				_newEdge = mgm.connect(_startPort, foundPort, edgeClass); }
+			else
+				_newEdge = mgm.connect(_startPort, foundPort);
 
-	// Calling connect() will add the edge to the GraphModel and
-	// any LayerPersectives on that GraphModel will get a
-	// edgeAdded event and will add an appropriate FigEdge
-	// (determined by the GraphEdgeRenderer).
+			// Calling connect() will add the edge to the GraphModel and
+			// any LayerPersectives on that GraphModel will get a
+			// edgeAdded event and will add an appropriate FigEdge
+			// (determined by the GraphEdgeRenderer).
 
-	if (null != _newEdge) {
-	  if (_postProcessEdge) postProcessEdge();
-	  ce.damaged(_newItem);
-	  _sourceFigNode.damage();
-	  destFigNode.damage();
+			if (_newEdge != null) {
+				if (_postProcessEdge) postProcessEdge();
+				ce.damaged(_newItem);
+				_sourceFigNode.damage();
+				destFigNode.damage();
 
-	  LayerManager lm = ce.getLayerManager();
-	  _fe = (FigEdge) lm.getActiveLayer().presentationFor(_newEdge);
-	  _newItem.setLineColor(Color.black);
-	  _fe.setLineColor(Color.black);
-	  _fe.setFig(_newItem);
-	  _fe.setSourcePortFig(_startPortFig);
-	  _fe.setSourceFigNode(_sourceFigNode);
-	  _fe.setDestPortFig(destPortFig);
-	  _fe.setDestFigNode(destFigNode);
-	  _fe.setSourcePortFig(_startPortFig);
-	  _fe.setSourceFigNode(_sourceFigNode);
-	  _fe.setDestPortFig(destPortFig);
-	  _fe.setDestFigNode(destFigNode);
-	  if (_fe != null && !nodeWasCreated)
-	    ce.getSelectionManager().select(_fe);
-	  done();
-	  //me.consume();
-	  _newItem = null;
-	  return;
-	}
-	else
-	  System.out.println("connection return null");
-      }
+				LayerManager lm = ce.getLayerManager();
+				_fe = (FigEdge) lm.getActiveLayer().presentationFor(_newEdge);
+				_newItem.setLineColor(Color.black);
+				_fe.setLineColor(Color.black);
+				_fe.setFig(_newItem);
+				_fe.setSourcePortFig(_startPortFig);
+				_fe.setSourceFigNode(_sourceFigNode);
+				_fe.setDestPortFig(destPortFig);
+				_fe.setDestFigNode(destFigNode);
+				_fe.setSourcePortFig(_startPortFig);
+				_fe.setSourceFigNode(_sourceFigNode);
+				_fe.setDestPortFig(destPortFig);
+				_fe.setDestFigNode(destFigNode);
+				if (_fe != null && !nodeWasCreated)
+					ce.getSelectionManager().select(_fe);
+				done();
+				//me.consume();
+				_newItem = null;
+				return;
+			}
+			else
+				System.out.println("connection return null");
+		}
       else
 	System.out.println("in dest node but no port");
     }
@@ -343,14 +343,13 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
   // internal methods
 
   public void postProcessEdge() {
-    if (_newEdge instanceof Association) {
-      Vector conn = ((Association)_newEdge).getConnection();
-      AssociationEnd ae0 = (AssociationEnd) conn.elementAt(0);
-      try { ae0.setAggregation(AggregationKind.COMPOSITE); }
-      catch (PropertyVetoException pve) { }
+    if (_newEdge instanceof MAssociation) {
+      com.sun.java.util.collections.List conn = ((MAssociation)_newEdge).getConnections();
+      MAssociationEnd ae0 = (MAssociationEnd) conn.get(0);
+      ae0.setAggregation(MAggregationKind.COMPOSITE);
     }
     // else if transition
-    // else if AssociationRole
+    // else if MAssociationRole
   }
 
   static final long serialVersionUID = -427957543380196265L;

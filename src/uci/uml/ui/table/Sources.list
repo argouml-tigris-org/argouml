@@ -6,8 +6,12 @@ SOURCES= \
 	OperKeyword.java \
 	TableModelActorByProps.java \
 	TableModelAssocByProps.java \
+	TableModelComponentByProps.java \
+	TableModelObjectByProps.java \
 	TableModelAttr.java \
 	TableModelClassByProps.java \
+	TableModelClass_in_DeplByProps.java \
+	TableModelAssoc_in_DeplByProps.java \
 	TableModelComposite.java \
 	TableModelOper.java \
 	TableModelStateByProps.java \
@@ -18,5 +22,6 @@ SOURCES= \
 	TablePanelUMLClassDiagram.java \
 	TablePanelUMLStateDiagram.java \
 	TablePanelUMLUseCaseDiagram.java \
+	TablePanelUMLDeploymentDiagram.java \
 	TMResults.java
 

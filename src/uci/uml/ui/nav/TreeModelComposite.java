@@ -23,7 +23,8 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+//import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -70,7 +71,7 @@ implements TreeModel, Cloneable {
     if (_subTreeModels.contains(tm)) return;
     if (tm instanceof TreeModelPrereqs) {
       Vector prereqs = ((TreeModelPrereqs)tm).getPrereqs();
-      Enumeration preEnum = prereqs.elements();
+      java.util.Enumeration preEnum = prereqs.elements();
       while (preEnum.hasMoreElements()) {
 	Object pre = preEnum.nextElement();
 	// needs-more-work: check superclasses
@@ -81,7 +82,7 @@ implements TreeModel, Cloneable {
 	}
       }
       Vector provided = ((TreeModelPrereqs)tm).getProvidedTypes();
-      Enumeration proEnum = provided.elements();
+      java.util.Enumeration proEnum = provided.elements();
       while (proEnum.hasMoreElements()) {
 	_providedClasses.addElement(proEnum.nextElement());
       }

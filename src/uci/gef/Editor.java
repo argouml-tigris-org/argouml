@@ -32,7 +32,8 @@ package uci.gef;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.io.Serializable;
 import javax.swing.*;
 
@@ -509,8 +510,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     if (_awt_component == null) return null;
     if (_peer_component == null) {
       _peer_component = _awt_component;
-      while (_peer_component.getPeer() instanceof
-	     java.awt.peer.LightweightPeer)
+      while (_peer_component instanceof JComponent) // getPeer() is deprecated
 	_peer_component = _peer_component.getParent();
     }
 //     try { if (_awt_component.getPeer() == null) _awt_component.addNotify(); }

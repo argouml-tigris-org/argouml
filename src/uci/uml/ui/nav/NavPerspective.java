@@ -23,18 +23,19 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+//import java.util.*;
 import java.awt.*;
 import java.io.Serializable;
 import javax.swing.tree.*;
 import javax.swing.event.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.*;
 
 /** This defines a NavPerspective as a kind of TreeModel that is made
@@ -90,27 +91,27 @@ implements Serializable, TreeModel, Cloneable {
     GoFilteredChildren modelToPackages =
       new GoFilteredChildren("Package->Subpackages",
 			     new GoModelToElements(),
-			     new PredInstanceOf(Model.class));
+			     new PredInstanceOf(MModel.class));
     GoFilteredChildren modelToClassifiers =
       new GoFilteredChildren("Package->Classifiers",
 			     new GoModelToElements(),
-			     new PredInstanceOf(Classifier.class));
+			     new PredInstanceOf(MClassifier.class));
     GoFilteredChildren modelToAssociations =
       new GoFilteredChildren("Package->Associations",
 			     new GoModelToElements(),
-			     new PredInstanceOf(Association.class));
+			     new PredInstanceOf(MAssociation.class));
     GoFilteredChildren modelToInstances =
       new GoFilteredChildren("Package->Instances",
 			     new GoModelToElements(),
-			     new PredInstanceOf(MMObject.class));
+			     new PredInstanceOf(MObject.class));
     GoFilteredChildren modelToLinks =
       new GoFilteredChildren("Package->Links",
 			     new GoModelToElements(),
-			     new PredInstanceOf(Link.class));
+			     new PredInstanceOf(MLink.class));
     GoFilteredChildren modelToCollaboration =
       new GoFilteredChildren("Package->Subpackages",
 			     new GoModelToElements(),
-			     new PredInstanceOf(Collaboration.class));
+			     new PredInstanceOf(MCollaboration.class));
 
     packageCentric.addSubTreeModel(new GoProjectModel());
     packageCentric.addSubTreeModel(new GoModelToDiagram());

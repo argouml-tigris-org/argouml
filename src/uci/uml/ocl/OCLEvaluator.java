@@ -23,15 +23,16 @@
 
 package uci.uml.ocl;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
+//import java.util.*;
 import java.awt.*;
 import java.lang.reflect.*;
 import java.lang.*;
 
-import uci.uml.Foundation.Core.Element;
-import uci.uml.Foundation.Core.Feature;
-import uci.uml.Foundation.Data_Types.Name;
-import uci.uml.Foundation.Data_Types.Expression;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.data_types.MExpression;
 
 // stereotype <<utility>>
 public class OCLEvaluator {
@@ -50,18 +51,19 @@ public class OCLEvaluator {
 
   ////////////////////////////////////////////////////////////////
   // static methods
+
   public static synchronized String evalToString(Object self, String expr) {
     String res = null;
-    if (GET_NAME_EXPR_1.equals(expr) && self instanceof Element) {
-      res = ((Element)self).getName().getBody();
+    if (GET_NAME_EXPR_1.equals(expr) && self instanceof MModelElement) {
+      res = ((MModelElement)self).getName();
       if (res == null || "".equals(res)) res = "(anon)";
     }
-    if (GET_NAME_EXPR_2.equals(expr) && self instanceof Element) {
-      res = ((Element)self).getName().getBody();
+    if (GET_NAME_EXPR_2.equals(expr) && self instanceof MModelElement) {
+      res = ((MModelElement)self).getName();
       if (res == null || "".equals(res)) res = "(anon)";
     }
-    if (GET_OWNER_EXPR.equals(expr) && self instanceof Feature) {
-      res = ((Feature)self).getOwner().getName().getBody();
+    if (GET_OWNER_EXPR.equals(expr) && self instanceof MFeature) {
+      res = ((MFeature)self).getOwner().getName();
       if (res == null || "".equals(res)) res = "(anon)";
     }
     if (res == null) res = evalToString(self, expr, ", ");
@@ -76,12 +78,12 @@ public class OCLEvaluator {
     int size = values.size();
     for (int i = 0; i < size; i++) {
       Object v = values.elementAt(i);
-      if (v instanceof Element) {
-	v = ((Element)v).getName().getBody();
+      if (v instanceof MModelElement) {
+	v = ((MModelElement)v).getName();
 	if ("".equals(v)) v = "(anon)";
       }
-      if (v instanceof Expression) {
-	v = ((Expression)v).getBody().getBody();
+      if (v instanceof MExpression) {
+	v = ((MExpression)v).getBody();
 	if ("".equals(v)) v = "(unspecified)";
       }
       if (! "".equals(v)) {
@@ -95,12 +97,11 @@ public class OCLEvaluator {
   public static Vector eval(Hashtable bindings, String expr) {
     int firstPos = expr.indexOf(".");
     Object target = bindings.get(expr.substring(0, firstPos));
-    Vector targets;
+    Vector targets = null;
 
     if (target instanceof Vector)  {
       targets = (Vector) target;
-    }
-    else {
+    } else {
       targets = new Vector();
       targets.addElement(target);
     }
@@ -154,7 +155,7 @@ public class OCLEvaluator {
       m = target.getClass().getMethod("get" + toTitleCase(property), null);
       o = m.invoke(target, null); // getter methods take no args =>  null
       // System.out.println("Trying to get method " + toTitleCase(property));
-      return  o;
+      return convertCollection(o);
     }
     catch ( NoSuchMethodException e ) {}
     catch ( InvocationTargetException e ) {
@@ -172,7 +173,7 @@ public class OCLEvaluator {
       m = target.getClass().getMethod( property, null);
       o = m.invoke(target, null);
       // System.out.println("Trying to get method " + toTitleCase(property));
-      return o;
+      return convertCollection(o);
     }
     catch ( NoSuchMethodException e ) {}
     catch ( InvocationTargetException e ) {
@@ -190,19 +191,19 @@ public class OCLEvaluator {
       m = target.getClass().getMethod( toTitleCase(property), null);
       o = m.invoke(target, null);
       // System.out.println("Trying to get method" + property);
-      return o;
+      return convertCollection(o);
     } catch ( Exception e ) {}
 
     try {
       f = target.getClass().getField(property);
       o = f.get(target);  // access the field f or object targe
-      return o;
+      return convertCollection(o);
     }
-    catch ( NoSuchFieldException e ) {
-      System.out.println("On Class: " + target.getClass().getName());
-      System.out.println("Trying to get field " + property);
-      e.printStackTrace();
-      return null;
+    catch (NoSuchFieldException e) {
+        System.out.println("On Class: " + target.getClass().getName());
+        System.out.println("Trying to get field " + property);
+        e.printStackTrace();
+        return null;
     }
     catch ( Exception e ) {
       if (f != null) {
@@ -216,6 +217,18 @@ public class OCLEvaluator {
     return null;
   } // end of evaluateProperty
 
+
+  // added this method 02/08/00 (JH) - if an instance of Collection
+  // is encountered, convert it to a Vector so the rest of the
+  // OCL code still works; there may be a more efficient way,
+  // but this was the least intrusive fix
+  public static Object convertCollection(Object o) {
+      if (o instanceof Collection) {
+          return new Vector((Collection)o);
+      } else {
+          return o;
+      }
+  }
 
   public static Vector flatten(Vector v) {
     Vector accum = new Vector();

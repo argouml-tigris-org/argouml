@@ -30,15 +30,15 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class CrDisambigStateName extends CrUML {
 
@@ -59,29 +59,32 @@ public class CrDisambigStateName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof State)) return NO_PROBLEM;
-    State s = (State) dm;
-    Name myName = s.getName();
+    if (!(dm instanceof MState)) return NO_PROBLEM;
+    MState s = (MState) dm;
+    String myName = s.getName();
     // needs-more-work: should define a CompoundCritic
-    if (myName.equals(Name.UNSPEC)) return NO_PROBLEM;
-    String myNameString = myName.getBody();
+    if (myName.equals("")) return NO_PROBLEM;
+    String myNameString = myName;
     if (myNameString.length() == 0) return NO_PROBLEM;
-    ElementOwnership oe = s.getElementOwnership();
-    if (oe == null) return NO_PROBLEM;
-    Namespace ns = oe.getNamespace();
-    if (ns == null) return NO_PROBLEM;
-    Vector oes = ns.getOwnedElement();
-    if (oes == null) return NO_PROBLEM;
-    java.util.Enumeration enum = oes.elements();
-    while (enum.hasMoreElements()) {
-      ElementOwnership eo = (ElementOwnership) enum.nextElement();
-      ModelElement me = (ModelElement) eo.getModelElement();
-      if (!(me instanceof Classifier)) continue;
-      if (me == s) continue;
-      Name meName = me.getName();
-      if (meName == null || meName.equals(Name.UNSPEC)) continue;
-      if (meName.getBody().equals(myNameString)) return PROBLEM_FOUND;
-    }
+    Collection pkgs = s.getElementImports2();
+    if (pkgs == null) return NO_PROBLEM;
+    for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
+      MElementImport imp = (MElementImport)iter.next();
+      MNamespace ns = imp.getPackage();
+      if (ns == null) return NO_PROBLEM;
+      Collection oes = ns.getOwnedElements();
+      if (oes == null) return NO_PROBLEM;
+      Iterator enum = oes.iterator();
+      while (enum.hasNext()) {
+        MElementImport eo = (MElementImport) enum.next();
+        MModelElement me = (MModelElement) eo.getModelElement();
+        if (!(me instanceof MClassifier)) continue;
+        if (me == s) continue;
+        String meName = me.getName();
+        if (meName == null || meName.equals("")) continue;
+        if (meName.equals(myNameString)) return PROBLEM_FOUND;
+      }
+    };
     return NO_PROBLEM;
   }
 

@@ -30,16 +30,16 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
-/** Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
+/** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrMissingClassName extends CrUML {
@@ -57,11 +57,11 @@ public class CrMissingClassName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Element)) return NO_PROBLEM;
-    Element e = (Element) dm;
-    Name myName = e.getName();
-    if (myName == null || myName.equals(Name.UNSPEC) ||
-	 myName.getBody() == null || myName.getBody().length() == 0)
+    if (!(dm instanceof MModelElement)) return NO_PROBLEM;
+    MModelElement e = (MModelElement) dm;
+    String myName = e.getName();
+    if (myName == null || myName.equals("") ||
+	 myName == null || myName.length() == 0)
       return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
@@ -73,13 +73,13 @@ public class CrMissingClassName extends CrUML {
   public void initWizard(Wizard w) {
     if (w instanceof WizMEName) {
       ToDoItem item = w.getToDoItem();
-      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
       String ins = "Set the name of this class.";
       String sug = "ClassName";
       int count = 1;
       if (me.getNamespace() != null)
-	count = me.getNamespace().getOwnedElement().size();
-      sug = me.getOCLTypeStr() + (count + 1);
+	count = me.getNamespace().getOwnedElements().size();
+      sug = me.getUMLClassName() + (count + 1);
       ((WizMEName)w).setInstructions(ins);
       ((WizMEName)w).setSuggestion(sug);
     }

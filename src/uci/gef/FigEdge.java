@@ -31,7 +31,8 @@
 
 package uci.gef;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -219,7 +220,7 @@ implements PropertyChangeListener, Highlightable {
   ////////////////////////////////////////////////////////////////
   // Routing related methods
 
-  /** Method to compute the route a FigEdge should follow.  By defualt
+  /** MMethod to compute the route a FigEdge should follow.  By defualt
    *  this does nothing. Sublcasses, like FigEdgeRectiline override
    *  this method. */
   protected void computeRoute() { }

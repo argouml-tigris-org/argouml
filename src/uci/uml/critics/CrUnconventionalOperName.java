@@ -30,19 +30,19 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.model_management.*;
 
 
 public class CrUnconventionalOperName extends CrUML {
 
   public CrUnconventionalOperName() {
-    setHeadline("Choose a Better Operation Name");
+    setHeadline("Choose a Better MOperation Name");
     sd("Normally operation names begin with a lowercase letter. "+
        "The name '<ocl>self</ocl>' is unconventional because it does not.\n\n"+
        "Following good naming conventions help to improve "+
@@ -55,25 +55,26 @@ public class CrUnconventionalOperName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Operation)) return NO_PROBLEM;
-    Operation oper = (Operation) dm;
-    Name myName = oper.getName();
-    if (myName == null || myName.equals(Name.UNSPEC)) return NO_PROBLEM;
-    String nameStr = myName.getBody();
+    if (!(dm instanceof MOperation)) return NO_PROBLEM;
+    MOperation oper = (MOperation) dm;
+    String myName = oper.getName();
+    if (myName == null || myName.equals("")) return NO_PROBLEM;
+    String nameStr = myName;
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
     char initalChar = nameStr.charAt(0);
-    if (oper.containsStereotype(Stereotype.CONSTRUCTOR)) return NO_PROBLEM;
+    if ((oper.getStereotype()!=null) && "constructor".equals(oper.getStereotype().getName()) )
+      return NO_PROBLEM;
     if (!Character.isLowerCase(initalChar)) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    Feature f = (Feature) dm;
+    MFeature f = (MFeature) dm;
     VectorSet offs = computeOffenders(f);
     return new ToDoItem(this, offs, dsgr);
   }
 
-  protected VectorSet computeOffenders(Feature dm) {
+  protected VectorSet computeOffenders(MFeature dm) {
     VectorSet offs = new VectorSet(dm);
     offs.addElement(dm.getOwner());
     return offs;
@@ -82,7 +83,7 @@ public class CrUnconventionalOperName extends CrUML {
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
     VectorSet offs = i.getOffenders();
-    Feature f = (Feature) offs.firstElement();
+    MFeature f = (MFeature) offs.firstElement();
     if (!predicate(f, dsgr)) return false;
     VectorSet newOffs = computeOffenders(f);
     boolean res = offs.equals(newOffs);
@@ -95,8 +96,8 @@ public class CrUnconventionalOperName extends CrUML {
   public void initWizard(Wizard w) {
     if (w instanceof WizMEName) {
       ToDoItem item = w.getToDoItem();
-      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
-      String sug = me.getName().getBody();
+      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+      String sug = me.getName();
       sug = sug.substring(0,1).toLowerCase() + sug.substring(1);
       String ins = "Change the operation name to start with a "+
 	"lowercase letter.";

@@ -31,7 +31,9 @@
 
 package uci.gef;
 
-import java.util.*;
+//import java.util.Vector;
+import java.util.Enumeration;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;
@@ -39,7 +41,8 @@ import javax.swing.event.EventListenerList;
 
 import uci.util.*;
 import uci.gef.event.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.*;
 
 
 /** This class handles Manager selections. It is basically a
@@ -396,6 +399,7 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   }
 
   /** When a multiple selection are deleted, each selection is deleted */
+	//this is used by CmdDelete
   public void delete() {
     Enumeration ss = ((Vector)_selections.clone()).elements();
     while (ss.hasMoreElements()) ((Selection)ss.nextElement()).delete();
@@ -403,34 +407,25 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 
 
   /** When a multiple selection are deleted, each selection is deleted */
-  public void dispose() {
-    Enumeration ss = ((Vector)_selections.clone()).elements();
-    while (ss.hasMoreElements()) {
-      Selection s = (Selection)ss.nextElement();
-      Fig f = (Fig) s.getContent();
-      Object o = f.getOwner();
-      if (o instanceof ElementImpl) {
-        Vector v =  (Vector) ((ElementImpl)o).getVetoListeners().clone();
-	Enumeration vv = v.elements();
-	vv = v.elements();
-	Object firstElem = null;
-        boolean firstIteration = true;
-	while (vv.hasMoreElements()) {
-	  Object elem = vv.nextElement();
-	  if ( elem instanceof Fig) {
-            if (firstIteration) {
-	      firstElem = elem;
-	      firstIteration = false;
-	      continue;
-	    }
-	    ((Fig)elem).delete();
-	  }
+	// this is used by CmdDispose, "Remove from Model"
+	public void dispose() {
+		Enumeration ss = ((Vector)_selections.clone()).elements();
+		while (ss.hasMoreElements()) {
+			Selection s = (Selection)ss.nextElement();
+			Fig f = (Fig) s.getContent();
+			Object o = f.getOwner();
+			
+			// if o is a ModelElement, remove it
+			if (o instanceof MModelElement) {
+				System.out.println("removing ModelElement: "+o);
+				// ((MModelElement)o).remove();
+			}
+			else {
+				System.out.println("not a ModelElement: "+o);
+			}
+		}
 	}
-	((Fig)firstElem).dispose();
-      }
-    }
-  }
-
+	
 
   ////////////////////////////////////////////////////////////////
   // input events

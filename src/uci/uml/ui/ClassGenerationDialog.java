@@ -26,7 +26,7 @@
 
 package uci.uml.ui;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -37,7 +37,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import uci.util.*;
 import uci.argo.kernel.*;
 import uci.uml.visual.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 import uci.uml.generate.*;
 
 public class ClassGenerationDialog extends JFrame implements ActionListener {
@@ -160,7 +160,7 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
       String path = _dir.getText().trim();
       String newPath = "";
       // convert back slashes to forward slashes
-      StringTokenizer st = new StringTokenizer(path, "\\", true);
+      java.util.StringTokenizer st = new java.util.StringTokenizer(path, "\\", true);
       while (st.hasMoreTokens()) {
 	String t = st.nextToken();
 	if ("\\".equals(t)) newPath += "/";
@@ -175,8 +175,8 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
       int size = nodes.size();
       for (int i = 0; i <size; i++) {
 	Object node = nodes.elementAt(i);
-	if (node instanceof Classifier)
-	  GeneratorJava.GenerateFile((Classifier) node, path);
+	if (node instanceof MClassifier)
+	  GeneratorJava.GenerateFile((MClassifier) node, path);
       }
       setVisible(false);
       dispose();
@@ -211,8 +211,8 @@ class TableModelClassChecks extends AbstractTableModel {
     _checked.removeAllElements();
     int size = _classes.size();
     for (int i = 0; i < size; i++) {
-      Classifier cls = (Classifier) _classes.elementAt(i);
-      String name = cls.getName().getBody();
+      MClassifier cls = (MClassifier) _classes.elementAt(i);
+      String name = cls.getName();
       if (name.length() > 0) _checked.addElement(cls);
     }
     fireTableStructureChanged();
@@ -237,8 +237,8 @@ class TableModelClassChecks extends AbstractTableModel {
   }
 
   public boolean isCellEditable(int row, int col) {
-    Classifier cls = (Classifier) _classes.elementAt(row);
-    return col == 0 && cls.getName().getBody().length() > 0;
+    MClassifier cls = (MClassifier) _classes.elementAt(row);
+    return col == 0 && cls.getName().length() > 0;
   }
 
   public int getRowCount() {
@@ -247,12 +247,12 @@ class TableModelClassChecks extends AbstractTableModel {
   }
 
   public Object getValueAt(int row, int col) {
-    Classifier cls = (Classifier) _classes.elementAt(row);
+    MClassifier cls = (MClassifier) _classes.elementAt(row);
     if (col == 0) {
       return (_checked.contains(cls)) ? Boolean.TRUE : Boolean.FALSE;
     }
     else if (col == 1) {
-      String name = cls.getName().getBody();
+      String name = cls.getName();
       return (name.length() > 0) ? name : "(anon)";
     }
     else

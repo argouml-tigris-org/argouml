@@ -23,14 +23,14 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
 
 public class GoAssocToTarget implements TreeModelPrereqs {
 
@@ -43,10 +43,10 @@ public class GoAssocToTarget implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof IAssociation) {
-      Vector ends = ((IAssociation)parent).getConnection();
-      AssociationEnd ae = null;
-      if (ends != null && index == 0) ae = (AssociationEnd) ends.elementAt(1);
+    if (parent instanceof MAssociation) {
+      Vector ends = new Vector(((MAssociation)parent).getConnections());
+      MAssociationEnd ae = null;
+      if (ends != null && index == 0) ae = (MAssociationEnd) ends.elementAt(1);
       if (ae == null) return null;
       return ae.getType();
     }
@@ -55,13 +55,13 @@ public class GoAssocToTarget implements TreeModelPrereqs {
   }
 
   public int getChildCount(Object parent) {
-    if (parent instanceof IAssociation) return 1;
+    if (parent instanceof MAssociation) return 1;
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof IAssociation) {
-      Vector ends = ((IAssociation)parent).getConnection();
+    if (parent instanceof MAssociation) {
+      Vector ends = new Vector(((MAssociation)parent).getConnections());
       if (ends != null && ends.elementAt(1) == child)
 	return 0;
     }
@@ -69,7 +69,7 @@ public class GoAssocToTarget implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof IAssociation);
+    return !(node instanceof MAssociation);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -78,12 +78,12 @@ public class GoAssocToTarget implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(IAssociation.class);
+    pros.addElement(MAssociation.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Classifier.class);
+    pros.addElement(MClassifier.class);
     return pros;
   }
 

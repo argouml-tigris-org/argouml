@@ -23,7 +23,7 @@
 
 package uci.uml.ui.todo;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;

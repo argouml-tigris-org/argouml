@@ -30,25 +30,25 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
-/** Well-formedness rule [1] for DataType. See page 28 of UML 1.1
+/** Well-formedness rule [1] for MDataType. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrNonAggDataType extends CrUML {
 
   public CrNonAggDataType() {
-    setHeadline("Wrap DataType");
+    setHeadline("Wrap MDataType");
     sd("DataTypes are not full classes and cannot be associated with "+
-       "classes, unless the DataType is part of a composite (black diamond) "+
+       "classes, unless the MDataType is part of a composite (black diamond) "+
        "aggregation. \n\n"+
        "Good OO design depends on careful choices about which entities to "+
        "represent as full objects and which to represent as attributes of "+
        "objects.\n\n"+
-       "To fix this, use the \"Next>\" button, or manually replace the DataType "+
+       "To fix this, use the \"Next>\" button, or manually replace the MDataType "+
        "with a full class or change the association aggregation to containment"+
        "by a full class.\n\n");
 

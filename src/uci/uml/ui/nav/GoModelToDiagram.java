@@ -23,13 +23,13 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
 import uci.uml.visual.UMLDiagram;
 import uci.uml.ui.*;
 
@@ -43,8 +43,8 @@ public class GoModelToDiagram implements TreeModelPrereqs {
   }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof Namespace) {
-      Namespace m = (Namespace) parent;
+    if (parent instanceof MNamespace) {
+      MNamespace m = (MNamespace) parent;
       Project proj = ProjectBrowser.TheInstance.getProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
@@ -59,9 +59,9 @@ public class GoModelToDiagram implements TreeModelPrereqs {
   }
 
   public int getChildCount(Object parent) {
-    if (parent instanceof Namespace) {
+    if (parent instanceof MNamespace) {
       int count = 0;
-      Namespace m = (Namespace) parent;
+      MNamespace m = (MNamespace) parent;
       Project proj = ProjectBrowser.TheInstance.getProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
@@ -75,9 +75,9 @@ public class GoModelToDiagram implements TreeModelPrereqs {
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Namespace) {
+    if (parent instanceof MNamespace) {
       int count = 0;
-      Namespace m = (Namespace) parent;
+      MNamespace m = (MNamespace) parent;
       Project proj = ProjectBrowser.TheInstance.getProject();
       Vector diags = proj.getDiagrams();
       java.util.Enumeration diagEnum = diags.elements();
@@ -93,7 +93,7 @@ public class GoModelToDiagram implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Namespace && getChildCount(node) > 0);
+    return !(node instanceof MNamespace && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -102,7 +102,7 @@ public class GoModelToDiagram implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pres = new Vector();
-    pres.addElement(uci.uml.Model_Management.Model.class);
+    pres.addElement(ru.novosoft.uml.model_management.MModel.class);
     return pres;
   }
   public Vector getProvidedTypes() {

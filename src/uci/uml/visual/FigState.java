@@ -31,7 +31,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
@@ -39,10 +39,10 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
-/** Class to display graphics for a UML State in a diagram. */
+/** Class to display graphics for a UML MState in a diagram. */
 
 public class FigState extends FigStateVertex {
 
@@ -110,7 +110,7 @@ public class FigState extends FigStateVertex {
     setOwner(node);
   }
 
-  public String placeString() { return "new State"; }
+  public String placeString() { return "new MState"; }
 
   public Object clone() {
     FigState figClone = (FigState) super.clone();
@@ -194,7 +194,7 @@ public class FigState extends FigStateVertex {
   protected void modelChanged() {
     super.modelChanged();
     //System.out.println("FigState modelChanged");
-    State s = (State) getOwner();
+    MState s = (MState) getOwner();
     if (s == null) return;
     String newText = GeneratorDisplay.SINGLETON.generateStateBody(s);
     _internal.setText(newText);
@@ -203,7 +203,7 @@ public class FigState extends FigStateVertex {
   public void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
     if (ft == _internal) {
-      State st = (State) getOwner();
+      MState st = (MState) getOwner();
       if (st == null) return;
       String s = ft.getText();
       ParserDisplay.SINGLETON.parseStateBody(st, s);

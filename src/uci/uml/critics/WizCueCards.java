@@ -30,16 +30,16 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.ui.todo.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 /** A non-modal wizard to help the user change navigability
@@ -54,11 +54,11 @@ public class WizCueCards extends Wizard {
 
   public int getNumSteps() { return _cues.size(); }
 
-  public ModelElement getModelElement() {
+  public MModelElement getModelElement() {
     if (_item != null) {
       VectorSet offs = _item.getOffenders();
       if (offs.size() >= 1) {
-	ModelElement me = (ModelElement) offs.elementAt(0);
+	MModelElement me = (MModelElement) offs.elementAt(0);
 	return me;
       }
     }

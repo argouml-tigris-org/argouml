@@ -29,7 +29,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
@@ -37,30 +37,30 @@ import javax.swing.plaf.basic.*;
 
 import uci.gef.*;
 import uci.uml.visual.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.model_management.*;
 
 public class UMLListCellRenderer extends DefaultListCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
-//   protected ImageIcon _AttributeIcon = loadIconResource("Attribute");
-//   protected ImageIcon _OperationIcon = loadIconResource("Operation");
+//   protected ImageIcon _AttributeIcon = loadIconResource("MAttribute");
+//   protected ImageIcon _OperationIcon = loadIconResource("MOperation");
 //   protected ImageIcon _ClassIcon = loadIconResource("Class");
 //   protected ImageIcon _PackageIcon = loadIconResource("Package");
-//   protected ImageIcon _AssociationIcon = loadIconResource("Association");
+//   protected ImageIcon _AssociationIcon = loadIconResource("MAssociation");
 //   protected ImageIcon _AssociationIcon2 = loadIconResource("Association2");
 //   protected ImageIcon _AssociationIcon3 = loadIconResource("Association3");
 //   protected ImageIcon _AssociationIcon4 = loadIconResource("Association4");
 //   protected ImageIcon _AssociationIcon5 = loadIconResource("Association5");
-//   protected ImageIcon _GeneralizationIcon = loadIconResource("Generalization");
+//   protected ImageIcon _GeneralizationIcon = loadIconResource("MGeneralization");
 //   protected ImageIcon _RealizationIcon = loadIconResource("Realization");
 //   protected ImageIcon _ClassDiagramIcon = loadIconResource("ClassDiagram");
 //   protected ImageIcon _UseCaseDiagramIcon = loadIconResource("UseCaseDiagram");
 //   protected ImageIcon _StateDiagramIcon = loadIconResource("StateDiagram");
 
-//   protected ImageIcon _StateIcon = loadIconResource("State");
+//   protected ImageIcon _StateIcon = loadIconResource("MState");
 //   protected ImageIcon _StartStateIcon = loadIconResource("StartState");
 //   protected ImageIcon _DeepIcon = loadIconResource("DeepHistory");
 //   protected ImageIcon _ShallowIcon = loadIconResource("ShallowHistory");
@@ -69,9 +69,9 @@ public class UMLListCellRenderer extends DefaultListCellRenderer {
 //   protected ImageIcon _BranchIcon = loadIconResource("Branch");
 //   protected ImageIcon _FinalStateIcon = loadIconResource("FinalState");
 
-//   protected ImageIcon _StateMachineIcon = loadIconResource("StateMachine");
-//   protected ImageIcon _CompositeStateIcon = loadIconResource("CompositeState");
-//   protected ImageIcon _TransitionIcon = loadIconResource("Transition");
+//   protected ImageIcon _StateMachineIcon = loadIconResource("MStateMachine");
+//   protected ImageIcon _CompositeStateIcon = loadIconResource("MCompositeState");
+//   protected ImageIcon _TransitionIcon = loadIconResource("MTransition");
 
   public Component getListCellRendererComponent( JList list, Object value, 
 						 int index, boolean isSelected,
@@ -83,13 +83,13 @@ public class UMLListCellRenderer extends DefaultListCellRenderer {
       lab.setText("\"\"");
       return lab;
     }
-    if (!(value instanceof Element)) return lab;
-    Name name = ((Element) value).getName();
+    if (!(value instanceof MModelElement)) return lab;
+    String name = ((MModelElement) value).getName();
     if (name == null) {
       lab.setText("(null anon)");
       return lab;
     }
-    String nameStr = name.getBody();
+    String nameStr = name;
     if (nameStr.length() == 0) nameStr = "(anon)";
     lab.setText(nameStr);
     lab.setToolTipText(nameStr + " ");

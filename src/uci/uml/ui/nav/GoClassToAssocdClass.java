@@ -23,13 +23,13 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
 
 public class GoClassToAssocdClass implements TreeModelPrereqs {
 
@@ -62,20 +62,20 @@ public class GoClassToAssocdClass implements TreeModelPrereqs {
   }
 
   public Vector getChildren(Object parent) {
-    if (!(parent instanceof MMClass)) return null;
+    if (!(parent instanceof MClass)) return null;
     Vector res = new Vector();
-    Vector ends = ((MMClass)parent).getAssociationEnd();
+    Vector ends = new Vector(((MClass)parent).getAssociationEnds());
     if (ends == null) return null;
     java.util.Enumeration enum = ends.elements();
     while (enum.hasMoreElements()) {
-      AssociationEnd ae = (AssociationEnd) enum.nextElement();
-      IAssociation asc = ae.getAssociation();
-      Vector allEnds = asc.getConnection();
-      AssociationEnd otherEnd = null;
+      MAssociationEnd ae = (MAssociationEnd) enum.nextElement();
+      MAssociation asc = ae.getAssociation();
+      Vector allEnds = new Vector(asc.getConnections());
+      MAssociationEnd otherEnd = null;
       if (ae == allEnds.elementAt(0))
-	otherEnd = (AssociationEnd) allEnds.elementAt(1);
+	otherEnd = (MAssociationEnd) allEnds.elementAt(1);
       if (ae == allEnds.elementAt(1))
-	otherEnd = (AssociationEnd) allEnds.elementAt(0);
+	otherEnd = (MAssociationEnd) allEnds.elementAt(0);
       if (otherEnd != null && !res.contains(otherEnd.getType()))
 	res.addElement(otherEnd.getType());
       // needs-more-work: handle n-way Associations
@@ -84,7 +84,7 @@ public class GoClassToAssocdClass implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof MMClass && getChildCount(node) > 0);
+    return !(node instanceof MClass && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -93,12 +93,12 @@ public class GoClassToAssocdClass implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Classifier.class);
+    pros.addElement(MClassifier.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Classifier.class);
+    pros.addElement(MClassifier.class);
     return pros;
   }
 

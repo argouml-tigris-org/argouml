@@ -23,18 +23,21 @@
 
 package uci.uml.generate;
 
-import java.util.*;
+//import com.sun.java.util.collections.*;
 import java.beans.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
-import uci.uml.Model_Management.*;
+import com.sun.java.util.collections.*;
+import java.util.StringTokenizer;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.ProjectBrowser;
 import uci.uml.ui.Project;
+import uci.uml.util.MMUtil;
 
 public class ParserDisplay extends Parser {
 
@@ -43,133 +46,44 @@ public class ParserDisplay extends Parser {
   ////////////////////////////////////////////////////////////////
   // parsing methods
 
-  public void parseOperationCompartment(Classifier cls, String s) {
-    StringTokenizer st = new StringTokenizer(s, "\n\r");
-    Vector ops = new Vector();
+  public void parseOperationCompartment(MClassifier cls, String s) {
+    java.util.StringTokenizer st = new java.util.StringTokenizer(s, "\n\r");
+    List newOps = new ArrayList();
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
-      Operation op = parseOperation(token);
-//       if (op != null)
-// 	System.out.println("just parsed " + GeneratorDisplay.Generate(op));
-      ops.addElement(op);
+      MOperation op = parseOperation(token);
+      newOps.add(op);
     }
-    System.out.println("parsed " + ops.size() + " operations");
-    Vector curOps = cls.getBehavioralFeature();
-    if (curOps == null) {
-      try { cls.setBehavioralFeature(ops); }
-      catch (PropertyVetoException pve) { }
-      //System.out.println("set all Behavioral Features");
-      return;
-    }
-    int curOpsSize = curOps.size();
-    Hashtable touched = new Hashtable();
-    int newOpsSize = ops.size();
-    int i;
-    for (i = 0; i < newOpsSize; i++) {
-      Operation op = (Operation) ops.elementAt(i);
-      touched.put(op, op);
-      Operation curOp = (Operation) cls.findBehavioralFeature(op.getName());
-      if (curOp == null || touched.contains(curOp)) {
-	curOps.insertElementAt(op, i);
-	try {
-	  op.setOwner(cls);
-	  //op.setNamespace(cls);
-	}
-	catch (PropertyVetoException pve) { }
-      }
-      else {
-	try {
-	  curOp.setVisibility(op.getVisibility());
-	  curOp.setOwnerScope(op.getOwnerScope());
-	  curOp.setConcurrency(op.getConcurrency());
-	  curOp.setParameter(op.getParameter());
-	  touched.put(curOp, curOp);
-	}
-	catch (PropertyVetoException pve) { }
-      }
-    }
-    Vector removes = new Vector();
-    int totalOpSize = curOps.size();
-    for (i = 0; i < totalOpSize; i++) {
-      Operation op = (Operation) curOps.elementAt(i);
-      if (!touched.containsKey(op)) removes.addElement(op);
-    }
-    int nRemove = removes.size();
-    for (i = 0; i < nRemove; i++) {
-      Operation oldOper = (Operation) removes.elementAt(i);
-      curOps.removeElement(oldOper);
-      try { oldOper.setOwner(null); }
-      catch (PropertyVetoException pve) { }
-    }
+    // System.out.println("parsed " + newOps.size() + " operations");
+	Vector features = new Vector(cls.getFeatures());
+	features.removeAll(MMUtil.SINGLETON.getOperations(cls));
+	features.addAll(newOps);
+	cls.setFeatures(features);
+
   }
 
-  public void parseAttributeCompartment(Classifier cls, String s) {
-    StringTokenizer st = new StringTokenizer(s, "\n\r");
-    Vector attrs = new Vector();
+  public void parseAttributeCompartment(MClassifier cls, String s) {
+    java.util.StringTokenizer st = new java.util.StringTokenizer(s, "\n\r");
+    List newAttrs = new ArrayList();
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
-      Attribute attr = parseAttribute(token);
-//       if (attr != null)
-// 	System.out.println("just parsed " + GeneratorDisplay.Generate(attr));
-      attrs.addElement(attr);
+      MAttribute attr = parseAttribute(token);
+      newAttrs.add(attr);
     }
-    System.out.println("parsed " + attrs.size() + " attributes");
-    Vector curAttrs = cls.getStructuralFeature();
-    if (curAttrs == null) {
-      try { cls.setStructuralFeature(attrs); }
-      catch (PropertyVetoException pve) { }
-      //System.out.println("set all Structural Features");
-      return;
-    }
-    int curAttrsSize = curAttrs.size();
-    Hashtable touched = new Hashtable();
-    int newAttrsSize = attrs.size();
-    int i;
-    for (i = 0; i < newAttrsSize; i++) {
-      Attribute attr = (Attribute) attrs.elementAt(i);
-      touched.put(attr, attr);
-      Attribute curAttr = (Attribute)
-	cls.findStructuralFeature(attr.getName());
-      if (curAttr == null || touched.contains(curAttr)) {
-	curAttrs.insertElementAt(attr, i);
-	try {
-	  attr.setOwner(cls);
-	  //attr.setNamespace(cls);
-	}
-	catch (PropertyVetoException pve) { }
-      }
-      else {
-	try {
-	  curAttr.setVisibility(attr.getVisibility());
-	  curAttr.setOwnerScope(attr.getOwnerScope());
-	  curAttr.setType(attr.getType());
-	  curAttr.setInitialValue(attr.getInitialValue());
-	  touched.put(curAttr, curAttr);
-	}
-	catch (PropertyVetoException pve) { }
-      }
-    }
-    Vector removes = new Vector();
-    int totalAttrSize = curAttrs.size();
-    for (i = 0; i < totalAttrSize; i++) {
-      Attribute attr = (Attribute) curAttrs.elementAt(i);
-      if (!touched.containsKey(attr)) removes.addElement(attr);
-    }
-    int nRemove = removes.size();
-    for (i = 0; i < nRemove; i++) {
-      Attribute oldAttr = (Attribute) removes.elementAt(i);
-      curAttrs.removeElement(oldAttr);
-      try { oldAttr.setOwner(null); }
-      catch (PropertyVetoException pve) { }
-    }
+    // System.out.println("parsed " + newAttrs.size() + " attributes");
+	Vector features = new Vector(cls.getFeatures());
+	features.removeAll(MMUtil.SINGLETON.getAttributes(cls));
+	features.addAll(newAttrs);
+	cls.setFeatures(features);
+	
   }
-
+	
   /** Parse a line of the form:
    *  [visibility] [keywords] returntype name(params)[;] */
-  public Operation parseOperation(String s) {
+  public MOperation parseOperation(String s) {
     s = s.trim();
     if (s.endsWith(";")) s = s.substring(0, s.length()-1);
-    Operation res = new Operation();
+    MOperation res = new MOperationImpl();
     s = parseOutVisibility(res, s);
     s = parseOutKeywords(res, s);
     s = parseOutReturnType(res, s);
@@ -184,50 +98,46 @@ public class ParserDisplay extends Parser {
 
   /** Parse a line of the form:
    *  [visibility] [keywords] type name [= init] [;] */
-  public Attribute parseAttribute(String s) {
+  public MAttribute parseAttribute(String s) {
     s = s.trim();
     if (s.endsWith(";")) s = s.substring(0, s.length()-1);
-    Attribute res = new uci.uml.Foundation.Core.Attribute();
-    s = parseOutVisibility(res, s);
-    s = parseOutKeywords(res, s);
-    s = parseOutType(res, s);
-    s = parseOutName(res, s);
-    if (res.getName() == Name.UNSPEC && res.getType() != null) {
-      try {
-	res.setName(new Name(res.getType().getName().getBody()));
-	Project p = ProjectBrowser.TheInstance.getProject();
-	res.setType(p.findType("int"));
-      }
-      catch (PropertyVetoException pve) { }
-    }
-    s = parseOutInitValue(res, s);
+    MAttribute newAttribute = new MAttributeImpl();
+    s = parseOutVisibility(newAttribute, s);
+    s = parseOutKeywords(newAttribute, s);
+    s = parseOutType(newAttribute, s);
+    s = parseOutName(newAttribute, s);
+//     if (newAttribute.getName() == null && newAttribute.getType() != null) {
+// 		newAttribute.setName(newAttribute.getType().getName());
+// 		Project p = ProjectBrowser.TheInstance.getProject();
+// 		newAttribute.setType(p.findType("int"));
+//    }
+    s = parseOutInitValue(newAttribute, s);
     if (s.length() > 2)
       System.out.println("leftover in parseAttribute=|" + s + "|");
-    return res;
+    return newAttribute;
   }
 
 
-  public String parseOutVisibility(Feature f, String s) {
+  public String parseOutVisibility(MFeature f, String s) {
     s = s.trim();
     int firstSpace = s.indexOf(" ");
     if (firstSpace == -1) firstSpace = s.length();
     String visStr = s.substring(0, firstSpace);
-    VisibilityKind vk = VisibilityKind.PUBLIC;
+    MVisibilityKind vk = MVisibilityKind.PUBLIC;
     if (visStr.equals("public") || s.startsWith("+"))
-      vk = VisibilityKind.PUBLIC;
+      vk = MVisibilityKind.PUBLIC;
     else if (visStr.equals("private") || s.startsWith("-"))
-      vk = VisibilityKind.PRIVATE;
+      vk = MVisibilityKind.PRIVATE;
     else if (visStr.equals("protected") || s.startsWith("#"))
-      vk = VisibilityKind.PROTECTED;
-    else if (visStr.equals("package") || s.startsWith("~"))
-      vk = VisibilityKind.PACKAGE;
+      vk = MVisibilityKind.PROTECTED;
+	//    else if (visStr.equals("package") || s.startsWith("~"))
+	// vk = MVisibilityKind.PACKAGE;
     else {
       System.out.println("unknown visibility \"" + visStr +
 			 "\", using default");
       return s;
     }
-    try { f.setVisibility(vk); }
-    catch (PropertyVetoException pve) { }
+     f.setVisibility(vk);
 
     if (s.startsWith("+") || s.startsWith("-") ||
 	s.startsWith("#") || s.startsWith("~"))
@@ -237,16 +147,16 @@ public class ParserDisplay extends Parser {
     return s;
   }
 
-  public String parseOutKeywords(Feature f, String s) {
+  public String parseOutKeywords(MFeature f, String s) {
     s = s.trim();
     int firstSpace = s.indexOf(" ");
     if (firstSpace == -1) return s;
     String visStr = s.substring(0, firstSpace);
-    try {
+
       if (visStr.equals("static"))
-	f.setOwnerScope(ScopeKind.CLASSIFIER);
-      else if (visStr.equals("synchronized") && (f instanceof Operation))
-	((Operation)f).setConcurrency(CallConcurrencyKind.GUARDED);
+	f.setOwnerScope(MScopeKind.CLASSIFIER);
+      else if (visStr.equals("synchronized") && (f instanceof MOperation))
+	((MOperation)f).setConcurrency(MCallConcurrencyKind.GUARDED);
       else if (visStr.equals("transient"))
 	System.out.println("'transient' keyword is currently ignored");
       else if (visStr.equals("final"))
@@ -256,63 +166,52 @@ public class ParserDisplay extends Parser {
       else {
 	return s;
       }
-    }
-    catch (PropertyVetoException pve) { }
+
     return parseOutKeywords(f, s.substring(firstSpace+1));
   }
 
-  public String parseOutReturnType(Operation op, String s) {
+  public String parseOutReturnType(MOperation op, String s) {
     s = s.trim();
     int firstSpace = s.indexOf(" ");
     if (firstSpace == -1) return s;
     String rtStr = s.substring(0, firstSpace);
     if (rtStr.indexOf("(") > 0) {
-      try { op.addStereotype(Stereotype.CONSTRUCTOR); }
-      catch (PropertyVetoException pve) { }
+		// must be CONSTRUCTOR, must be included in nsuml later on!
+       op.setStereotype(new MStereotypeImpl());
       return s;
     }
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
-    Classifier rt = p.findType(rtStr);
-    try {
-      //System.out.println("setting return type: " + rtStr);
-      op.setReturnType(rt);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("PropertyVetoException in parseOutReturnType");
-    }
-    if (op.getReturnType() != rt) System.out.println("rt not set");
+    MClassifier rt = p.findType(rtStr);
+	
+	//System.out.println("setting return type: " + rtStr);
+	MParameter param = new MParameterImpl();
+	param.setType(rt);
+	MMUtil.SINGLETON.setReturnParameter(op, param);
     return s.substring(firstSpace+1);
   }
 
-  public String parseOutParams(Operation op, String s) {
-    s = s.trim();
-    String leftOver = s;
-    StringTokenizer st = new StringTokenizer(s, "(),");
-    Vector params = new Vector();
-    while (st.hasMoreTokens()) {
-      String token = st.nextToken();
-      Parameter p = parseParameter(token);
-      if (p != null) params.addElement(p);
-      if (!st.hasMoreTokens())
-	leftOver = s.substring(s.indexOf(token) + token.length());
-    }
-    //System.out.println("parsed " + params.size() + " params");
-    //System.out.println("leftOver = '" + leftOver  + "'");
-
-    Classifier rt = op.getReturnType(); // must set again because we overwrite
-    try {
-      op.setParameter(params);
-      op.setReturnType(rt);
-    }
-    catch (PropertyVetoException pve) { }
-    return leftOver;
-  }
-
-  public String parseOutName(ModelElement me, String s) {
+	public String parseOutParams(MOperation op, String s) {
+		s = s.trim();
+		String leftOver = s;
+		java.util.StringTokenizer st = new java.util.StringTokenizer(s, "(),");
+		List params = new ArrayList();
+		while (st.hasMoreTokens()) {
+			String token = st.nextToken();
+			MParameter p = parseParameter(token);
+			if (p != null) params.add(p);
+			if (!st.hasMoreTokens())
+				leftOver = s.substring(s.indexOf(token) + token.length());
+		}
+		op.setParameters(params);
+		
+		return leftOver;
+	}
+	
+  public String parseOutName(MModelElement me, String s) {
     s = s.trim();
     if (s.equals("") || s.charAt(0) == '=') return s;
-    StringTokenizer st = new StringTokenizer(s, " \t()[]=;");
+    java.util.StringTokenizer st = new java.util.StringTokenizer(s, " \t()[]=;");
     if (!st.hasMoreTokens()) {
       System.out.println("name not parsed");
       return s;
@@ -320,145 +219,143 @@ public class ParserDisplay extends Parser {
     String nameStr = st.nextToken();
 
     // needs-more-work: wasteful
-    try { me.setName(new Name(nameStr)); }
-    catch (PropertyVetoException pve) { }
+     me.setName(nameStr);
 
     int namePos = s.indexOf(nameStr);
     return s.substring(namePos + nameStr.length());
   }
 
-  public String parseOutType(Attribute attr, String s) {
-    s = s.trim();
-    int firstSpace = s.indexOf(" ");
+	public String parseOutType(MAttribute attr, String s) {
+		s = s.trim();
+		int firstSpace = s.indexOf(" ");
 
-    int firstEq = s.indexOf("=");
-    if (firstEq != -1 && firstEq < firstSpace) firstSpace = firstEq;
+		int firstEq = s.indexOf("=");
+		if (firstEq != -1 && firstEq < firstSpace) firstSpace = firstEq;
 
-    Project p = ProjectBrowser.TheInstance.getProject();
-    Classifier type = p.findType("int");
+		Project p = ProjectBrowser.TheInstance.getProject();
+		MClassifier type=null; // = p.findType("int");
 
-    if (firstSpace != -1) {
-      String typeStr = s.substring(0, firstSpace);
-      type = p.findType(typeStr);
-    }
-    try {
-      //System.out.println("setting return type: " + rtStr);
-      attr.setType(type);
-    }
-    catch (PropertyVetoException pve) { }
-    return s.substring(firstSpace+1);
-  }
+		if (firstSpace != -1) {
+			String typeStr = s.substring(0, firstSpace);
+			// System.out.println("Trying to find "+typeStr+" in project...");
+			type = p.findType(typeStr);
+		}
 
-  public String parseOutInitValue(Attribute attr, String s) {
+		// System.out.println("setting attribute type: " + type.getName());
+		attr.setType(type);
+		return s.substring(firstSpace+1);
+	}
+
+  public String parseOutInitValue(MAttribute attr, String s) {
     s = s.trim();
     int equalsIndex = s.indexOf("=");
     if (equalsIndex != 0) return s;
     String initStr = s.substring(1).trim(); //move past "="
     if (initStr.length() == 0) return "";
-    Expression initExpr = new Expression(initStr);
-    try {
+    MExpression initExpr = new MExpression("Java", initStr);
+
       //System.out.println("setting return type: " + rtStr);
       attr.setInitialValue(initExpr);
-    }
-    catch (PropertyVetoException pve) { }
     return "";
   }
 
-  public Parameter parseParameter(String s) {
-    StringTokenizer st = new StringTokenizer(s, " \t");
+  public MParameter parseParameter(String s) {
+    java.util.StringTokenizer st = new java.util.StringTokenizer(s, " \t");
     String typeStr = "int", paramNameStr = "parameterName?";
     if (st.hasMoreTokens()) typeStr = st.nextToken();
     if (st.hasMoreTokens()) paramNameStr = st.nextToken();
     Project p = ProjectBrowser.TheInstance.getProject();
-    Classifier cls = p.findType(typeStr);
-    return new Parameter(cls, ParameterDirectionKind.IN, paramNameStr);
+    MClassifier cls = p.findType(typeStr);
+    MParameter param = new MParameterImpl();
+    param.setType(cls);
+    param.setKind(MParameterDirectionKind.IN);
+    param.setName(paramNameStr);
+    return param;
   }
 
 
   //   public abstract Package parsePackage(String s);
-//   public abstract Classifier parseClassifier(String s);
+//   public abstract MClassImpl parseClassifier(String s);
 
-  public Stereotype parseStereotype(String s) {
+  public MStereotype parseStereotype(String s) {
     return null;
   }
 
-  public TaggedValue parseTaggedValue(String s) {
+  public MTaggedValue parseTaggedValue(String s) {
     return null;
   }
 
-//   public abstract IAssociation parseAssociation(String s);
-//   public abstract AssociationEnd parseAssociationEnd(String s);
+//   public abstract MAssociation parseAssociation(String s);
+//   public abstract MAssociationEnd parseAssociationEnd(String s);
 
   /** Parse a string of the form: "range, ...", where range is of the
    *  form "lower..upper", or "integer" */
-  public Multiplicity parseMultiplicity(String s) {
-    s = s.trim();
-    if (s.length() == 0) return Multiplicity.ONE;
-    Multiplicity m = new Multiplicity();
-    StringTokenizer st1 = new StringTokenizer(s, ",");
-    while (st1.hasMoreElements()) {
-      String range = st1.nextToken().trim();
-      String lowStr = "", highStr = "";
-      Integer low = null, high = null;
-      int dotdot = range.indexOf("..");
-      if (dotdot == -1) {
-	lowStr = range;
-	highStr = range;
-      }
-      else {
-	lowStr = range.substring(0, dotdot);
-	highStr = range.substring(dotdot + 2);
-      }
-      try {
-	if (lowStr.indexOf("*") == -1) low = Integer.valueOf(lowStr);
-	if (highStr.indexOf("*") == -1) high = Integer.valueOf(highStr);
-	MultiplicityRange mr = new MultiplicityRange(low, high);
-	m.addRange(mr);
-      }
-      catch (NumberFormatException nfe) { }
-    }
-    return m;
+  public MMultiplicity parseMultiplicity(String s) {
+	  int low = 0;
+	  int high = 0;
+	  s = s.trim();
+	  if (s.length() == 0) return MMultiplicity.M1_1;
+	  java.util.StringTokenizer st1 = new java.util.StringTokenizer(s, ",");
+	  while (st1.hasMoreElements()) {
+		  String range = st1.nextToken().trim();
+		  String lowStr = "", highStr = "";
+		  int dotdot = range.indexOf("..");
+		  if (dotdot == -1) {
+			  lowStr = range;
+			  highStr = range;
+		  }
+		  else {
+			  lowStr = range.substring(0, dotdot);
+			  highStr = range.substring(dotdot + 2);
+		  }
+		  try {
+			  if (lowStr.indexOf("*") == -1) low = Integer.valueOf(lowStr).intValue();
+			  if (highStr.indexOf("*") == -1) high = Integer.valueOf(highStr).intValue();
+		  }
+		  catch (NumberFormatException nfe) { }
+	  }
+	  //	MMultiplicity res =new MMultiplicityImpl();
+	  //res.setUpper(high);
+	  //res.setLower(low);
+	  return new MMultiplicity(low, high);
   }
+	
 
-
-  public State parseState(String s) {
+  public MState parseState(String s) {
     return null;
   }
 
-  public void parseStateBody(State st, String s) {
-    Vector trans = new Vector();
-    StringTokenizer lines = new StringTokenizer(s, "\n\r");
+  public void parseStateBody(MState st, String s) {
+    Collection trans = new ArrayList();
+    java.util.StringTokenizer lines = new java.util.StringTokenizer(s, "\n\r");
     while (lines.hasMoreTokens()) {
       String line = lines.nextToken().trim();
       if (line.startsWith("entry")) parseStateEntyAction(st, line);
       else if (line.startsWith("exit")) parseStateExitAction(st, line);
       else {
-	Transition t = parseTransition(line);
-	if (t == null) continue;
-	//System.out.println("just parsed:" + GeneratorDisplay.Generate(t));
-	trans.addElement(t);
+		MTransition t = parseTransition(line);
+		if (t == null) continue;
+		//System.out.println("just parsed:" + GeneratorDisplay.Generate(t));
+		trans.add(t);
       }
     }
-    try { st.setInternalTransition(trans); }
-    catch (PropertyVetoException pve) { }
+    st.setInternalTransitions(trans);
   }
 
-  public void parseStateEntyAction(State st, String s) {
+  public void parseStateEntyAction(MState st, String s) {
     if (s.startsWith("entry") && s.indexOf("/") > -1)
       s = s.substring(s.indexOf("/")+1).trim();
-    try { st.setEntry(parseActions(s)); }
-    catch (PropertyVetoException pve) { }
+    st.setEntry(parseActions(s));
   }
 
-  public void parseStateExitAction(State st, String s) {
+  public void parseStateExitAction(MState st, String s) {
     if (s.startsWith("exit") && s.indexOf("/") > -1)
       s = s.substring(s.indexOf("/")+1).trim();
-    try { st.setExit(parseActions(s)); }
-    catch (PropertyVetoException pve) { }
+    st.setExit(parseActions(s));
   }
 
   /** Parse a line of the form: "name: trigger [guard] / actions" */
-  public Transition parseTransition(String s) {
+  public MTransition parseTransition(String s) {
     // strip any trailing semi-colons
     s = s.trim();
     if (s.length() == 0) return null;
@@ -492,19 +389,19 @@ public class ParserDisplay extends Parser {
 //     System.out.println("guard=|" + guard +"|");
 //     System.out.println("actions=|" + actions +"|");
 
-    Transition t = new Transition(parseName(name));
-    try {
-      t.setTrigger(parseEvent(trigger));
-      t.setGuard(parseGuard(guard));
-      t.setEffect(parseActions(actions));
-    }
-    catch (PropertyVetoException pve) { }
+    MTransition t = new MTransitionImpl();
+    t.setName(parseName(name));
+
+    t.setTrigger(parseEvent(trigger));
+    t.setGuard(parseGuard(guard));
+    t.setEffect(parseActions(actions));
+
 
     return t;
   }
 
   /** Parse a line of the form: "name: base" */
-  public void parseClassifierRole(ClassifierRole cls, String s) {
+  public void parseClassifierRole(MClassifierRole cls, String s) {
     // strip any trailing semi-colons
     s = s.trim();
     if (s.length() == 0) return;
@@ -520,18 +417,19 @@ public class ParserDisplay extends Parser {
     else {
       name = s;
     }
-    try { cls.setBaseString(base); }
-    catch (PropertyVetoException pve) { }
+    MClassifier clf = new MClassifierImpl();
+    clf.setName(base);
+    cls.addBase(clf);
+    //cls.setBaseString(base);
     //Project p = ProjectBrowser.TheInstance.getProject();
-    //Classifier bs = p.findType(base);
+    //MClassImpl bs = p.findType(base);
 
-    try { cls.setName(new Name(name)); }
-    catch (PropertyVetoException pve) { }
+    cls.setName(new String(name));
 
   }
 
   /** Parse a line of the form: "name: action" */
-  public void parseMessage(Message mes, String s) {
+  public void parseMessage(MMessage mes, String s) {
     // strip any trailing semi-colons
     s = s.trim();
     if (s.length() == 0) return;
@@ -547,33 +445,32 @@ public class ParserDisplay extends Parser {
     }
     else action = s;
 
-    try {
-     UninterpretedAction ua = (UninterpretedAction) mes.getAction();
-     ua.setBody(action);
-    }
-    catch (PropertyVetoException pve) { }
+     MUninterpretedAction ua = (MUninterpretedAction) mes.getAction();
+     ua.setName(action);
+     mes.setName(name);
 
-    try {
-      Name nm = new Name(name);
-      mes.setName(nm);
-    }
-    catch (PropertyVetoException pve) { }
   }
 
-  public MMAction parseAction(String s) {
+  public MAction parseAction(String s) {
     return null;
   }
 
-  public ActionSequence parseActions(String s) {
-    return new ActionSequence(new Name(s));
+  public MActionSequence parseActions(String s) {
+    MActionSequence as = new MActionSequenceImpl();
+    as.setName(s);
+    return as;
   }
 
-  public Guard parseGuard(String s) {
-    return new Guard(s);
+  public MGuard parseGuard(String s) {
+	MGuard g = new MGuardImpl();
+	g.setName(s);
+    return g;
   }
 
-  public Event parseEvent(String s) {
-    return new uci.uml.Behavioral_Elements.State_Machines.SignalEvent(s);
+  public MEvent parseEvent(String s) {
+	MSignalEvent se = new MSignalEventImpl();
+	se.setName(s);
+    return se;
   }
 
 

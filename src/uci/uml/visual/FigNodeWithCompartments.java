@@ -32,7 +32,8 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -42,8 +43,8 @@ import uci.graph.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 /** This class is a FigNodeModeleElement with compartments.<BR>
  *  i.e. abstract class to display diagram icons for UML ModelElements that

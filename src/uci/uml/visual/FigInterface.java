@@ -26,7 +26,8 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -36,8 +37,9 @@ import uci.graph.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 /** Class to display graphics for a UML Class in a diagram. */
 
@@ -53,14 +55,15 @@ public class FigInterface extends FigNodeModelElement {
   protected FigRect _outline;
   protected FigText _stereo;
   protected FigText _oper;
+  public MElementResidence resident = new MElementResidenceImpl();
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public FigInterface() {
 
-//     if (node instanceof ElementImpl)
-//       ((ElementImpl)node).addVetoableChangeListener(this);
+//     if (node instanceof MElementImpl)
+//       ((MElementImpl)node).addVetoableChangeListener(this);
 
     _bigPort = new FigRect(8, 8, 92, 64, Color.cyan, Color.cyan);
 
@@ -168,12 +171,44 @@ public class FigInterface extends FigNodeModelElement {
     firePropChange("bounds", oldBounds, getBounds());
   }
 
+  public void setEnclosingFig(Fig encloser) {
+    super.setEnclosingFig(encloser);
+    if (!(getOwner() instanceof MModelElement)) return;
+    MModelElement me = (MModelElement) getOwner();
+    MNamespace m = null;
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    if (encloser != null && (encloser.getOwner() instanceof MModel)) {
+      m = (MNamespace) encloser.getOwner();
+    }
+    else {
+      if (pb.getTarget() instanceof UMLDiagram) {
+	m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
+      }
+    }
+    if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
+      MComponent component = (MComponent) encloser.getOwner();
+      MInterface in = (MInterface) getOwner();
+      resident.setImplementationLocation(component);
+      resident.setResident(in);
+    }
+    else {
+      resident.setImplementationLocation(null);
+      resident.setResident(null);
+    }     
+    try {
+      me.setNamespace(m);
+    }
+    catch (Exception e) {
+      System.out.println("could not set package");
+    }
+  }
+
   ////////////////////////////////////////////////////////////////
   // internal methods
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
-    Classifier cls = (Classifier) getOwner();
+    MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
     if (ft == _oper) {
       String s = ft.getText();
@@ -183,21 +218,28 @@ public class FigInterface extends FigNodeModelElement {
 
   protected void modelChanged() {
     super.modelChanged();
-    Classifier cls = (Classifier) getOwner();
+    MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
-    Vector behs = cls.getBehavioralFeature();
+    //    String clsNameStr = GeneratorDisplay.Generate(cls.getName());
+    Collection strs = cls.getStructuralFeatures();
+    Collection behs = cls.getFeatures();
+    behs.removeAll(strs);
     String operStr = "";
     if (behs != null) {
-      java.util.Enumeration enum = behs.elements();
-      while (enum.hasMoreElements()) {
-	BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
-	operStr += GeneratorDisplay.Generate(bf);
-	if (enum.hasMoreElements())
-	  operStr += "\n";
+	Iterator iter = behs.iterator();
+      while (iter.hasNext()) {
+	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
+	    operStr += GeneratorDisplay.Generate(bf);
+	    if (iter.hasNext())
+	      operStr += "\n";
       }
     }
 
     _oper.setText(operStr);
+
+    if (cls.isAbstract()) _name.setFont(ITALIC_LABEL_FONT);
+    else _name.setFont(LABEL_FONT);
+
   }
 
   static final long serialVersionUID = 4928213949795787107L;

@@ -30,18 +30,18 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
-/** Well-formedness rule [2] for BehavioralFeature. See page 28 of UML 1.1
+/** Well-formedness rule [2] for MBehavioralFeature. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrParamTypeNotImported extends CrUML {
 
   public CrParamTypeNotImported() {
-    setHeadline("Import Parameter Type into Class");
+    setHeadline("Import MParameter Type into Class");
     sd("The type of each operation parameter must be visible and imported "+
        "into the class that owns the operation.\n\n"+
        "Importing classes is needed for code generation. Good modularization "+
@@ -54,7 +54,7 @@ public class CrParamTypeNotImported extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof BehavioralFeature)) return NO_PROBLEM;
+    if (!(dm instanceof MBehavioralFeature)) return NO_PROBLEM;
     // needs-more-work
     return NO_PROBLEM;
   }

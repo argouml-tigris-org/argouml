@@ -28,15 +28,15 @@ package uci.uml.ui;
 
 import java.net.*;
 import java.io.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.util.*;
 // import uci.gef.*;
 // import uci.argo.kernel.*;
 // import uci.argo.checklist.*;
-// import uci.uml.Model_Management.*;
-// import uci.uml.Foundation.Core.*;
+// import ru.novosoft.uml.model_management.*;
+// import ru.novosoft.uml.foundation.core.*;
 // import uci.uml.generate.*;
 // import uci.uml.visual.*;
 // import uci.util.Util;

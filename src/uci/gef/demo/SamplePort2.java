@@ -32,7 +32,8 @@
 package uci.gef.demo;
 
 import java.awt.*;
-import java.util.Vector;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.io.*;
 
 import uci.gef.*;

@@ -32,7 +32,8 @@
 
 package uci.util;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 /** Step through the elements of some other enumeration, but skip over
  *  any elements that do not satisfy the given predicate. */

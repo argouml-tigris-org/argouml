@@ -23,12 +23,12 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 public class MMClassVisibility implements java.io.Serializable {
   public static final MMClassVisibility PUBLIC =
@@ -43,12 +43,11 @@ public class MMClassVisibility implements java.io.Serializable {
   
   private MMClassVisibility(String label) { _label = label; }
 
-  public static MMClassVisibility VisibilityFor(Classifier cls) {
-    ElementOwnership eo = cls.getElementOwnership();
-    if (eo == null) return PUBLIC;
-    VisibilityKind vk = eo.getVisibility();
-    if (vk == null) return PUBLIC;
-    if (vk.equals(VisibilityKind.PACKAGE)) return PACKAGE;
+  public static MMClassVisibility VisibilityFor(MClassifier cls) {
+	  // doesn't really do anything without vis: PACKAGE in nsuml
+	  //MVisibilityKind vk = cls.getVisibility();
+    //if (vk == null) return PUBLIC;
+    //if (vk.equals(MVisibilityKind.PACKAGE)) return PACKAGE;
     return PUBLIC;
   }
   
@@ -62,13 +61,15 @@ public class MMClassVisibility implements java.io.Serializable {
   
   public String toString() { return _label.toString(); }
 
-  public void set(Classifier target) {
+  public void set(MClassifier target) {
 //     try {
-    if (target.getElementOwnership() == null) return;
+    if (target == null) return;
     if (this == PUBLIC)
-      target.getElementOwnership().setVisibility(VisibilityKind.PUBLIC);
-    if (this == PACKAGE)
-      target.getElementOwnership().setVisibility(VisibilityKind.PACKAGE);
+      target.setVisibility(MVisibilityKind.PUBLIC);
+
+	// no PACKAGE in nsuml!
+	//    if (this == PACKAGE)
+	// target.setVisibility(MVisibilityKind.PACKAGE);
 //     }
 //     catch (PropertyVetoException pve) {
 //       System.out.println("could not set class visibility");

@@ -28,14 +28,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -58,17 +58,30 @@ public class CrNoAssociations extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
-    //if (cls.containsStereotype(Stereotype.UTILITY)) return NO_PROBLEM;
+    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+    MClassifier cls = (MClassifier) dm;
+    //if (cls.containsStereotype(MStereotype.UTILITY)) return NO_PROBLEM;
     // stereotype <<record>>?
     //needs-more-work: different critic or special message for classes
     //that inherit all ops but define none of their own.
 
-    Vector asc = cls.getInheritedAssociationEnds();
+    Collection asc = getInheritedAssociationEnds(cls);
     if (asc == null || asc.size() == 0) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
+  private Collection getInheritedAssociationEnds(MClassifier cls)
+  {
+     Collection res = cls.getAssociationEnds();
+     Collection inh = cls.getGeneralizations();
+     for (Iterator iter = inh.iterator(); iter.hasNext();) {
+       MGeneralization gen = (MGeneralization)iter.next();
+       if (gen.getParent() instanceof MClassifier) {
+         Collection superassocs = getInheritedAssociationEnds((MClassifier)gen.getParent());
+         res.addAll(superassocs);
+       };
+     };
+     return res;
+  };
 } /* end class CrNoAssociations */
 

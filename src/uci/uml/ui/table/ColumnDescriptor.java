@@ -23,21 +23,22 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 import uci.uml.generate.*;
 import uci.uml.ui.ProjectBrowser;
 import uci.uml.ui.Project;
+import uci.uml.util.MMUtil;
 
 public abstract class ColumnDescriptor {
   ////////////////////////////////////////////////////////////////
@@ -45,7 +46,7 @@ public abstract class ColumnDescriptor {
   public static ColumnDescriptor Name       = new ColumnName();
   public static ColumnDescriptor Visibility = new ColumnVisibility();
   public static ColumnDescriptor FeatureVis = new ColumnFeatureVis();
-  public static ColumnDescriptor Stereotype = new ColumnStereotype();
+  public static ColumnDescriptor MStereotype = new ColumnStereotype();
 
   public static ColumnDescriptor Abstract        = new ColumnAbstract();
   public static ColumnDescriptor Root            = new ColumnRoot();
@@ -53,7 +54,8 @@ public abstract class ColumnDescriptor {
   public static ColumnDescriptor ClassVisibility = new ColumnClassVisibility();
   public static ColumnDescriptor ClassKeyword    = new ColumnClassKeyword();
   public static ColumnDescriptor Extends         = new ColumnExtends();
-  public static ColumnDescriptor Implements      = new ColumnImplements();
+	//nsuml Realization problem
+	//  public static ColumnDescriptor Implements      = new ColumnImplements();
 
   public static ColumnDescriptor SrcName = new ColumnSrcName();
   public static ColumnDescriptor SrcType = new ColumnSrcType();
@@ -72,7 +74,7 @@ public abstract class ColumnDescriptor {
   public static ColumnDescriptor Source  = new ColumnSource();
   public static ColumnDescriptor Target  = new ColumnTarget();
   public static ColumnDescriptor Trigger = new ColumnTrigger();
-  public static ColumnDescriptor Guard   = new ColumnGuard();
+  public static ColumnDescriptor MGuard   = new ColumnGuard();
   public static ColumnDescriptor Effect  = new ColumnEffect();
 
   public static ColumnDescriptor Return      = new ColumnReturn();
@@ -81,6 +83,11 @@ public abstract class ColumnDescriptor {
 
   public static ColumnDescriptor Type        = new ColumnType();
   public static ColumnDescriptor AttrKeyword = new ColumnAttrKeyword();
+
+  public static ColumnDescriptor CompNode = new ColumnCompNode();
+  public static ColumnDescriptor ImplLocation = new ColumnImplLocation();
+  public static ColumnDescriptor ComponentInstance = new ColumnComponentInstance();
+  public static ColumnDescriptor Base = new ColumnBase();
 
 
   
@@ -115,17 +122,16 @@ class ColumnName extends ColumnDescriptor {
   ColumnName() { super("Name", String.class, true); }
 
   public boolean isEditable(Object rowObj) {
-    return super.isEditable(rowObj) && !(rowObj instanceof Pseudostate); }
+    return super.isEditable(rowObj) && !(rowObj instanceof MPseudostate); }
 
   
   public Object getValueFor(Object target) {
-    if (target instanceof Element) {
-      Name n = ((Element) target).getName();
-      String res = n.getBody();
+    if (target instanceof MModelElement) {
+      String res = ((MModelElement) target).getName();
       String ocl = "";
-      if (target instanceof ElementImpl)
-	ocl = ((ElementImpl)target).getOCLTypeStr();
-      if (res.length() == 0) res = "(anon " + ocl +")";
+      if (target instanceof MElementImpl)
+	ocl = ((MElementImpl)target).getUMLClassName();
+      if (res == null || res.length() == 0) res = "(anon " + ocl +")";
       return res;
     }
     if (target instanceof Diagram)
@@ -135,41 +141,36 @@ class ColumnName extends ColumnDescriptor {
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Element)) return;
+    if (!(target instanceof MModelElement)) return;
     if (!(value instanceof String)) return;
-    Element e = (Element) target;
+    MModelElement e = (MModelElement) target;
     String s = (String) value;
     if (s.startsWith("(anon")) return;
-    try { e.setName(new Name(s)); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set name in ColumnName");
-    }
+    e.setName(s); 
   }  
 } /* end class ColumnName */
 
 
 class ColumnVisibility extends ColumnDescriptor {
-  ColumnVisibility() { super("Visibility", VisibilityKind.class, true); }
+  ColumnVisibility() { super("Visibility", MVisibilityKind.class, true); }
   
   public Object getValueFor(Object target) {
-    if (target instanceof ModelElement) {
-      ElementOwnership eo = ((ModelElement) target).getElementOwnership();
-      if (eo == null) return "N/A";
-      VisibilityKind vk = eo.getVisibility();
-      return vk.toString();
+    if (target instanceof MModelElement) {
+      MVisibilityKind vk = ((MModelElement) target).getVisibility();
+      if (vk == null || vk.getName() == null) return "N/A";
+      return vk.getName();
     }
     return "N/A";
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof ModelElement)) return;
-    if (!(value instanceof VisibilityKind)) {
-      System.out.println("asdddd");
+    if (!(target instanceof MModelElement)) return;
+    if (!(value instanceof MVisibilityKind)) {
+		// System.out.println("asdddd");
       return;
     }
     //    try {
-      ElementOwnership oe = ((ModelElement)target).getElementOwnership();
-      oe.setVisibility((VisibilityKind) value);
+      ((MModelElement)target).setVisibility((MVisibilityKind) value);
       //}
       //catch (PropertyVetoException pve) {
       //System.out.println("asdawasdw2easd");
@@ -179,25 +180,30 @@ class ColumnVisibility extends ColumnDescriptor {
 
 
 class ColumnFeatureVis extends ColumnDescriptor {
-  ColumnFeatureVis() { super("Visibility", VisibilityKind.class, true); }
+  ColumnFeatureVis() { super("Visibility", MVisibilityKind.class, true); }
   
   public Object getValueFor(Object target) {
-    if (target instanceof Feature) {
-      VisibilityKind vk = ((Feature)target).getVisibility();
-      return vk.toString();
-    }
+    if (target instanceof MFeature) {
+      MVisibilityKind vk = ((MFeature)target).getVisibility();
+	  if (vk != null) {
+		  if (vk.equals(MVisibilityKind.PRIVATE)) return "private";
+		  if (vk.equals(MVisibilityKind.PROTECTED)) return "protected";
+		  if (vk.equals(MVisibilityKind.PUBLIC)) return "public";
+	  }
+	}
     return "N/A";
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Feature)) return;
-    if (!(value instanceof VisibilityKind)) return;
-    try {
-      ((Feature)target).setVisibility((VisibilityKind) value);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("asdawasdw2easd");
-    }
+    if (!(target instanceof MFeature)) return;
+    if (!(value instanceof MVisibilityKind)) return;
+	((MFeature)target).setVisibility((MVisibilityKind) value);
+	/* I couldn't help but keep this... Toby!
+	   }
+	   catch (PropertyVetoException pve) {
+	   System.out.println("asdawasdw2easd");
+	   }
+	*/
   }  
 } /* end class ColumnFeatureVis */
 
@@ -206,31 +212,21 @@ class ColumnStereotype extends ColumnDescriptor {
   ColumnStereotype() { super("Stereotype", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (target instanceof ModelElement) {
-      Vector stereos = ((ModelElement) target).getStereotype();
-      if (stereos.size() == 1) {
-	Stereotype st = (Stereotype) stereos.elementAt(0);
-	return st.getName().getBody();
-      }
-      return "";
-    }
-    return "N/A";
+	  if (target instanceof MModelElement) {
+		  MStereotype st = ((MModelElement) target).getStereotype();
+		  if (st != null && st.getName() != null)
+			  return st.getName();
+	  }
+	  return "N/A";
   }
-
+	
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof ModelElement)) return;
+    if (!(target instanceof MModelElement)) return;
     if (!(value instanceof String)) return;
-    try {
-      String stereoName = (String) value;
-      Stereotype s = new Stereotype(stereoName);
-      Vector stereos = new Vector();
-      stereos.addElement(s);
-      //System.out.println("setting stereotype");
-      ((ModelElement) target).setStereotype(stereos);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set stereotype");
-    } 
+	String stereoName = (String) value;
+	MStereotype s = new MStereotypeImpl();
+	s.setName(stereoName);
+	((MModelElement) target).setStereotype(s);
   }
 } /* end class ColumnStereotype */
 
@@ -239,26 +235,24 @@ class ColumnSrcName extends ColumnDescriptor {
   ColumnSrcName() { super("SrcName", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof IAssociation)) return "N/A";
-    Vector conns = ((IAssociation) target).getConnection();
+    if (!(target instanceof MAssociation)) return "N/A";
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(0);
-      return ae.getName().getBody();
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
+	  if (ae != null && ae.getName() != null)
+		  return ae.getName();
     }
     return "";
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof IAssociation)) return;
+    if (!(target instanceof MAssociation)) return;
     if (!(value instanceof String)) return;
-    Vector conns = ((IAssociation) target).getConnection();
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(0);
-      try { ae.setName(new Name((String)value)); }
-      catch (PropertyVetoException pve) {
-	System.out.println("could not set source name");
-      }
-    }
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
+      ae.setName((String)value);
+	}
   }  
 } /* end class ColumnSrcName */
 
@@ -267,12 +261,14 @@ class ColumnSrcType extends ColumnDescriptor {
   ColumnSrcType() { super("SrcType", String.class, false); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof IAssociation)) return "N/A";
-    Vector conns = ((IAssociation) target).getConnection();
+    if (!(target instanceof MAssociation)) return "N/A";
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(0);
-     GeneratorDisplay g = GeneratorDisplay.SINGLETON;
-     return g.generateClassifierRef(ae.getType());
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
+	  if (ae != null && ae.getType() != null && ae.getType().getName() != null) {
+		  GeneratorDisplay g = GeneratorDisplay.SINGLETON;
+		  return g.generateClassifierRef(ae.getType());
+	  }
     }
     return "";
   }
@@ -286,27 +282,25 @@ class ColumnSrcMultiplicity extends ColumnDescriptor {
   ColumnSrcMultiplicity() { super("SrcMult", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof IAssociation)) return "N/A";
-    Vector conns = ((IAssociation) target).getConnection();
+    if (!(target instanceof MAssociation)) return "N/A";
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(0);
-      return GeneratorDisplay.Generate(ae.getMultiplicity());
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
+	  if (ae != null && ae.getMultiplicity() != null)
+		  return GeneratorDisplay.Generate(ae.getMultiplicity());
     }
     return "";
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof IAssociation)) return;
+    if (!(target instanceof MAssociation)) return;
     if (!(value instanceof String)) return;
     String s = (String) value;
-    Vector conns = ((IAssociation) target).getConnection();
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(0);
-      Multiplicity m = ParserDisplay.SINGLETON.parseMultiplicity(s);
-      try { ae.setMultiplicity(m); }
-      catch (PropertyVetoException pve) {
-	System.out.println("could not set src Multiplicity");
-      }
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
+      MMultiplicity m = ParserDisplay.SINGLETON.parseMultiplicity(s);
+      ae.setMultiplicity(m);
     }
   }  
 } /* end class ColumnSrcMultiplicity */
@@ -316,27 +310,24 @@ class ColumnSrcNavigability extends ColumnDescriptor {
   ColumnSrcNavigability() { super("SrcNav", Boolean.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof IAssociation)) return Boolean.FALSE;
-    Vector conns = ((IAssociation) target).getConnection();
+    if (!(target instanceof MAssociation)) return Boolean.FALSE;
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(0);
-      boolean nav = ae.getIsNavigable();
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
+      boolean nav = ae.isNavigable();
       return nav ? Boolean.TRUE : Boolean.FALSE;
     }
     return Boolean.FALSE;
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof IAssociation)) return;
+    if (!(target instanceof MAssociation)) return;
     if (!(value instanceof Boolean)) return;
     Boolean b = (Boolean) value;
-    Vector conns = ((IAssociation) target).getConnection();
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(0);
-      try { ae.setIsNavigable(b.booleanValue()); }
-      catch (PropertyVetoException pve) {
-	System.out.println("could not set src navigable");
-      }
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
+      ae.setNavigable(b.booleanValue()); 
     }
   }  
 } /* end class ColumnSrcNavigability */
@@ -347,25 +338,23 @@ class ColumnDstName extends ColumnDescriptor {
   ColumnDstName() { super("DstName", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof IAssociation)) return "N/A";
-    Vector conns = ((IAssociation) target).getConnection();
+    if (!(target instanceof MAssociation)) return "N/A";
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(1);
-      return ae.getName().getBody();
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
+	  if (ae != null && ae.getName() != null)
+		  return ae.getName();
     }
     return "";
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof IAssociation)) return;
+    if (!(target instanceof MAssociation)) return;
     if (!(value instanceof String)) return;
-    Vector conns = ((IAssociation) target).getConnection();
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(1);
-      try { ae.setName(new Name((String)value)); }
-      catch (PropertyVetoException pve) {
-	System.out.println("could not set source name");
-      }
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
+      ae.setName((String)value);
     }
   }
 } /* end class ColumnDstName */
@@ -375,12 +364,14 @@ class ColumnDstType extends ColumnDescriptor {
   ColumnDstType() { super("DstType", String.class, false); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof IAssociation)) return "N/A";
-    Vector conns = ((IAssociation) target).getConnection();
+    if (!(target instanceof MAssociation)) return "N/A";
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(1);
-     GeneratorDisplay g = GeneratorDisplay.SINGLETON;
-     return g.generateClassifierRef(ae.getType());
+		MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
+		if (ae != null && ae.getType() != null && ae.getType().getName() != null) {	
+			GeneratorDisplay g = GeneratorDisplay.SINGLETON;
+			return g.generateClassifierRef(ae.getType());
+		}
     }
     return "";
   }
@@ -394,27 +385,25 @@ class ColumnDstMultiplicity extends ColumnDescriptor {
   ColumnDstMultiplicity() { super("DstMult", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof IAssociation)) return "N/A";
-    Vector conns = ((IAssociation) target).getConnection();
+    if (!(target instanceof MAssociation)) return "N/A";
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(1);
-      return GeneratorDisplay.Generate(ae.getMultiplicity());
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
+	  if (ae != null && ae.getMultiplicity() != null)
+		  return GeneratorDisplay.Generate(ae.getMultiplicity());
     }
     return "";
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof IAssociation)) return;
+    if (!(target instanceof MAssociation)) return;
     if (!(value instanceof String)) return;
     String s = (String) value;
-    Vector conns = ((IAssociation) target).getConnection();
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(1);
-      Multiplicity m = ParserDisplay.SINGLETON.parseMultiplicity(s);
-      try { ae.setMultiplicity(m); }
-      catch (PropertyVetoException pve) {
-	System.out.println("could not set dst Multiplicity");
-      }
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
+      MMultiplicity m = ParserDisplay.SINGLETON.parseMultiplicity(s);
+      ae.setMultiplicity(m);
     }
   }  
 } /* end class ColumnDstMultiplicity */
@@ -425,27 +414,24 @@ class ColumnDstNavigability extends ColumnDescriptor {
   ColumnDstNavigability() { super("DstNav", Boolean.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof IAssociation)) return Boolean.FALSE;
-    Vector conns = ((IAssociation) target).getConnection();
+    if (!(target instanceof MAssociation)) return Boolean.FALSE;
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(1);
-      boolean nav = ae.getIsNavigable();
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
+      boolean nav = ae.isNavigable();
       return nav ? Boolean.TRUE : Boolean.FALSE;
     }
     return Boolean.FALSE;
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof IAssociation)) return;
+    if (!(target instanceof MAssociation)) return;
     if (!(value instanceof Boolean)) return;
     Boolean b = (Boolean) value;
-    Vector conns = ((IAssociation) target).getConnection();
+    Vector conns = new Vector(((MAssociation) target).getConnections());
     if (conns.size() == 2) {
-      AssociationEnd ae = (AssociationEnd) conns.elementAt(1);
-      try { ae.setIsNavigable(b.booleanValue()); }
-      catch (PropertyVetoException pve) {
-	System.out.println("could not set dst navigable");
-      }
+      MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
+      ae.setNavigable(b.booleanValue());
     }
   }  
 } /* end class ColumnDstNavigability */
@@ -455,21 +441,18 @@ class ColumnAbstract extends ColumnDescriptor {
   ColumnAbstract() { super("Abstract", Boolean.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof GeneralizableElement)) return Boolean.FALSE;
-    GeneralizableElement ge = (GeneralizableElement) target;
-    boolean abs = ge.getIsAbstract();
+    if (!(target instanceof MGeneralizableElement)) return Boolean.FALSE;
+    MGeneralizableElement ge = (MGeneralizableElement) target;
+    boolean abs = ge.isAbstract();
     return abs ? Boolean.TRUE : Boolean.FALSE;
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof GeneralizableElement)) return;
+    if (!(target instanceof MGeneralizableElement)) return;
     if (!(value instanceof Boolean)) return;
     boolean b = ((Boolean) value).booleanValue();
-    GeneralizableElement ge = (GeneralizableElement) target;
-    try { ge.setIsAbstract(b); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set abstract");
-    }
+    MGeneralizableElement ge = (MGeneralizableElement) target;
+    ge.setAbstract(b);
   }  
 } /* end class ColumnAbstract */
 
@@ -478,21 +461,18 @@ class ColumnRoot extends ColumnDescriptor {
   ColumnRoot() { super("Root", Boolean.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof GeneralizableElement)) return Boolean.FALSE;
-    GeneralizableElement ge = (GeneralizableElement) target;
-    boolean root = ge.getIsRoot();
+    if (!(target instanceof MGeneralizableElement)) return Boolean.FALSE;
+    MGeneralizableElement ge = (MGeneralizableElement) target;
+    boolean root = ge.isRoot();
     return root ? Boolean.TRUE : Boolean.FALSE;
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof GeneralizableElement)) return;
+    if (!(target instanceof MGeneralizableElement)) return;
     if (!(value instanceof Boolean)) return;
     boolean b = ((Boolean) value).booleanValue();
-    GeneralizableElement ge = (GeneralizableElement) target;
-    try { ge.setIsRoot(b); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set root");
-    }
+    MGeneralizableElement ge = (MGeneralizableElement) target;
+    ge.setRoot(b);
   }  
 } /* end class ColumnRoot */
 
@@ -501,21 +481,18 @@ class ColumnLeaf extends ColumnDescriptor {
   ColumnLeaf() { super("Leaf", Boolean.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof GeneralizableElement)) return Boolean.FALSE;
-    GeneralizableElement ge = (GeneralizableElement) target;
-    boolean leaf = ge.getIsLeaf();
+    if (!(target instanceof MGeneralizableElement)) return Boolean.FALSE;
+    MGeneralizableElement ge = (MGeneralizableElement) target;
+    boolean leaf = ge.isLeaf();
     return leaf ? Boolean.TRUE : Boolean.FALSE;
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof GeneralizableElement)) return;
+    if (!(target instanceof MGeneralizableElement)) return;
     if (!(value instanceof Boolean)) return;
     boolean b = ((Boolean) value).booleanValue();
-    GeneralizableElement ge = (GeneralizableElement) target;
-    try { ge.setIsLeaf(b); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set leaf");
-    }
+    MGeneralizableElement ge = (MGeneralizableElement) target;
+    ge.setLeaf(b);
   }  
 } /* end class ColumnLeaf */
 
@@ -526,16 +503,16 @@ class ColumnClassVisibility extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Classifier)) return null;
-    Classifier cls = (Classifier) target;
+    if (!(target instanceof MClassifier)) return null;
+    MClassifier cls = (MClassifier) target;
     return MMClassVisibility.VisibilityFor(cls);
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Classifier)) return;
+    if (!(target instanceof MClassifier)) return;
     if (!(value instanceof MMClassVisibility)) return;
     MMClassVisibility cv = (MMClassVisibility) value;
-    Classifier cls = (Classifier) target;
+    MClassifier cls = (MClassifier) target;
     cv.set(cls);
   }  
 } /* end class ColumnClassVisibility */
@@ -547,16 +524,16 @@ class ColumnClassKeyword extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Classifier)) return null;
-    Classifier cls = (Classifier) target;
+    if (!(target instanceof MClassifier)) return null;
+    MClassifier cls = (MClassifier) target;
     return MMClassKeyword.KeywordFor(cls);
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Classifier)) return;
+    if (!(target instanceof MClassifier)) return;
     if (!(value instanceof MMClassKeyword)) return;
     MMClassKeyword ck = (MMClassKeyword) value;
-    Classifier cls = (Classifier) target;
+    MClassifier cls = (MClassifier) target;
     ck.set(cls);
   }  
 } /* end class ColumnClassKeyword */
@@ -568,16 +545,16 @@ class ColumnExtends extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof GeneralizableElement)) return "";
-    GeneralizableElement cls = (GeneralizableElement) target;
-    Vector gen = cls.getGeneralization();
+    if (!(target instanceof MGeneralizableElement)) return "";
+    MGeneralizableElement cls = (MGeneralizableElement) target;
+    Vector gen = new Vector(cls.getGeneralizations());
     String res = "";
     if  (gen == null || gen.size() == 0) return res;
     int size = gen.size();
     GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
     for (int i = 0; i < size; i++) {
-      Generalization g = (Generalization) gen.elementAt(i);
-      Classifier base = (Classifier) g.getSupertype();
+      MGeneralization g = (MGeneralization) gen.elementAt(i);
+      MClassifier base = (MClassifier) g.getParent();
       res += gd.generateClassifierRef(base);
       if (i < size-1) res += ", ";
     }
@@ -587,49 +564,53 @@ class ColumnExtends extends ColumnDescriptor {
   public void setValueFor(Object target, Object value) {  }  
 } /* end class ColumnExtends */
 
-class ColumnImplements extends ColumnDescriptor {
+/*
+  class ColumnImplements extends ColumnDescriptor {
   ColumnImplements() {
-    super("Implements", String.class, false);
+  super("Implements", String.class, false);
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof MMClass)) return "";
-    MMClass cls = (MMClass) target;
-    Vector gen = cls.getSpecification();
-    String res = "";
-    if  (gen == null || gen.size() == 0) return res;
-    int size = gen.size();
-    GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
-    for (int i = 0; i < size; i++) {
-      Realization g = (Realization) gen.elementAt(i);
-      Classifier base = (Classifier) g.getSupertype();
-      res += gd.generateClassifierRef(base);
-      if (i < size-1) res += ", ";
-    }
-    return res;
+  if (!(target instanceof MClass)) return "";
+  MClass cls = (MClass) target;
+  Vector gen = cls.getSpecification();
+  String res = "";
+  if  (gen == null || gen.size() == 0) return res;
+  int size = gen.size();
+  GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
+  for (int i = 0; i < size; i++) {
+  Realization g = (Realization) gen.elementAt(i);
+  MClassifier base = (MClassifier) g.getParenttype();
+  res += gd.generateClassifierRef(base);
+  if (i < size-1) res += ", ";
   }
-
+  return res;
+  }
+  
   public void setValueFor(Object target, Object value) {  }  
-} /* end class ColumnImplements */
+  }*/ /* end class ColumnImplements */
 
 // needs-more-work: states and use cases!
 
 class ColumnEntry extends ColumnDescriptor {
-  ColumnEntry() {
-    super("Entry Action", String.class, true);
-  }
-  
-  public Object getValueFor(Object target) {
-    if (!(target instanceof State)) return "";
-    State st = (State) target;
-    ActionSequence acts = st.getEntry();
-    return GeneratorDisplay.Generate(acts);
-  }
-
-  public void setValueFor(Object target, Object value) {
-    if (!(target instanceof State)) return;
+	ColumnEntry() {
+		super("Entry Action", String.class, true);
+	}
+	
+	public Object getValueFor(Object target) {
+		if (!(target instanceof MState)) return "";
+		MState st = (MState) target;
+		if (st.getEntry() != null) {
+			MAction acts = st.getEntry();
+			return GeneratorDisplay.Generate(acts);
+		}
+		return "";
+	}
+	
+	public void setValueFor(Object target, Object value) {
+		if (!(target instanceof MState)) return;
     if (!(value instanceof String)) return;
-    State st = (State) target;
+    MState st = (MState) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
     pd.parseStateEntyAction(st, s);    
@@ -643,16 +624,19 @@ class ColumnExit extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof State)) return "";
-    State st = (State) target;
-    ActionSequence acts = st.getExit();
-    return GeneratorDisplay.Generate(acts);
+    if (!(target instanceof MState)) return "";
+    MState st = (MState) target;
+	if (st.getExit() != null) {
+		MAction acts = st.getExit();
+		return GeneratorDisplay.Generate(acts);
+	}
+	return "";
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof State)) return;
+    if (!(target instanceof MState)) return;
     if (!(value instanceof String)) return;
-    State st = (State) target;
+    MState st = (MState) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
     pd.parseStateExitAction(st, s);    
@@ -662,14 +646,17 @@ class ColumnExit extends ColumnDescriptor {
 
 class ColumnParent extends ColumnDescriptor {
   ColumnParent() {
-    super("Parent State", String.class, false);
+    super("Parent MState", String.class, false);
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof StateVertex)) return "";
-    StateVertex sv = (StateVertex) target;
-    CompositeState cs = sv.getParent();
-    return GeneratorDisplay.Generate(cs);
+    if (!(target instanceof MStateVertex)) return "";
+    MStateVertex sv = (MStateVertex) target;
+	if (sv.getContainer() != null) {
+		MCompositeState cs = sv.getContainer();
+		return GeneratorDisplay.Generate(cs);
+	}
+	return "";
   }
 
   public void setValueFor(Object target, Object value) { }
@@ -686,10 +673,13 @@ class ColumnSource extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Transition)) return "";
-    Transition t = (Transition) target;
-    StateVertex sv = t.getSource();
-    return GeneratorDisplay.Generate(sv);
+    if (!(target instanceof MTransition)) return "";
+    MTransition t = (MTransition) target;
+	if (t.getSource() != null) {
+		MStateVertex sv = t.getSource();
+		return GeneratorDisplay.Generate(sv);
+	}
+	return "";
   }
 
   public void setValueFor(Object target, Object value) { }
@@ -702,10 +692,13 @@ class ColumnTarget extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Transition)) return "";
-    Transition t = (Transition) target;
-    StateVertex sv = t.getTarget();
-    return GeneratorDisplay.Generate(sv);
+    if (!(target instanceof MTransition)) return "";
+    MTransition t = (MTransition) target;
+	if (t.getTarget() != null) {
+		MStateVertex sv = t.getTarget();
+		return GeneratorDisplay.Generate(sv);
+	}
+	return "";
   }
 
   public void setValueFor(Object target, Object value) { }
@@ -719,23 +712,20 @@ class ColumnTrigger extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Transition)) return "";
-    Transition t = (Transition) target;
-    Event trigger = t.getTrigger();
+    if (!(target instanceof MTransition)) return "";
+    MTransition t = (MTransition) target;
+    MEvent trigger = t.getTrigger();
     if (trigger == null) return "";
     return GeneratorDisplay.Generate(trigger);
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Transition)) return;
+    if (!(target instanceof MTransition)) return;
     if (!(value instanceof String)) return;
-    Transition tr = (Transition) target;
+    MTransition tr = (MTransition) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
-    try { tr.setTrigger(pd.parseEvent(s)); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set trigger");
-    }
+    tr.setTrigger(pd.parseEvent(s));
   }
 } /* end class ColumnTrigger */
 
@@ -747,23 +737,20 @@ class ColumnGuard extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Transition)) return "";
-    Transition t = (Transition) target;
-    Guard guard = t.getGuard();
+    if (!(target instanceof MTransition)) return "";
+    MTransition t = (MTransition) target;
+    MGuard guard = t.getGuard();
     if (guard == null) return "";
     return GeneratorDisplay.Generate(guard);
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Transition)) return;
+    if (!(target instanceof MTransition)) return;
     if (!(value instanceof String)) return;
-    Transition tr = (Transition) target;
+    MTransition tr = (MTransition) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
-    try { tr.setGuard(pd.parseGuard(s)); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set guard");
-    }
+    tr.setGuard(pd.parseGuard(s));
   }
 } /* end class ColumnGuard */
 
@@ -774,53 +761,53 @@ class ColumnEffect extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Transition)) return "";
-    Transition t = (Transition) target;
-    ActionSequence effect = t.getEffect();
+    if (!(target instanceof MTransition)) return "";
+    MTransition t = (MTransition) target;
+    MAction effect = t.getEffect();
     if (effect == null) return "";
     return GeneratorDisplay.Generate(effect);
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Transition)) return;
+    if (!(target instanceof MTransition)) return;
     if (!(value instanceof String)) return;
-    Transition tr = (Transition) target;
+    MTransition tr = (MTransition) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
-    try { tr.setEffect(pd.parseActions(s)); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set effect");
-    }
+    tr.setEffect(pd.parseActions(s));
   }
 } /* end class ColumnEffect */
 
 
 class ColumnReturn extends ColumnDescriptor {
   ColumnReturn() {
-    super("Return", String.class, true); //Classifier.type?
+    super("Return", String.class, true); //MClassifier.type?
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Operation)) return "";
-    Operation op = (Operation) target;
-    Classifier returnType = op.getReturnType();
-    GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
-    return gd.generateClassifierRef(returnType);
+    if (!(target instanceof MOperation)) return "";
+    MOperation op = (MOperation) target;
+	MParameter returnParameter = MMUtil.SINGLETON.getReturnParameter(op);
+	if (returnParameter != null && returnParameter.getType() != null) {
+		MClassifier returnType = returnParameter.getType();
+		GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
+		return gd.generateClassifierRef(returnType);
+	}
+	return "";
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Operation)) return;
+    if (!(target instanceof MOperation)) return;
     if (!(value instanceof String)) return;
-    Operation op = (Operation) target;
+    MOperation op = (MOperation) target;
     String s = (String) value;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
-    Classifier rt = p.findType(s);
+    MClassifier rt = p.findType(s);
     ParserDisplay pd = ParserDisplay.SINGLETON;
-    try { op.setReturnType(rt); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set return type");
-    }
+	MParameter rp = new MParameterImpl();
+	rp.setType(rt);
+	MMUtil.SINGLETON.setReturnParameter(op, rp);
   }
 } /* end class ColumnReturn */
 
@@ -830,16 +817,16 @@ class ColumnOperKeyword extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Operation)) return null;
-    Operation oper = (Operation) target;
+    if (!(target instanceof MOperation)) return null;
+    MOperation oper = (MOperation) target;
     return uci.uml.ui.table.OperKeyword.KeywordFor(oper);
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Operation)) return;
+    if (!(target instanceof MOperation)) return;
     if (!(value instanceof OperKeyword)) return;
     OperKeyword ok = (OperKeyword) value;
-    Operation oper = (Operation) target;
+    MOperation oper = (MOperation) target;
     ok.set(oper);
   }  
 } /* end class ColumnOperKeyword */
@@ -849,55 +836,49 @@ class ColumnQuery extends ColumnDescriptor {
   ColumnQuery() { super("Query", Boolean.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Operation)) return Boolean.FALSE;
-    Operation oper = (Operation) target;
-    boolean query = oper.getIsQuery();
+    if (!(target instanceof MOperation)) return Boolean.FALSE;
+    MOperation oper = (MOperation) target;
+    boolean query = oper.isQuery();
     return query ? Boolean.TRUE : Boolean.FALSE;
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Operation)) return;
+    if (!(target instanceof MOperation)) return;
     if (!(value instanceof Boolean)) return;
     boolean b = ((Boolean) value).booleanValue();
-    Operation oper = (Operation) target;
-    try { oper.setIsQuery(b); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set query");
-    }
+    MOperation oper = (MOperation) target;
+    oper.setQuery(b);
   }  
 } /* end class ColumnQuery */
 
 
 class ColumnType extends ColumnDescriptor {
   ColumnType() {
-    super("Type", String.class, true);  //Classifier.type?
+    super("Type", String.class, true);  //MClassifier.type?
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Attribute)) return null;
-    Attribute op = (Attribute) target;
-    Classifier type = op.getType();
+    if (!(target instanceof MAttribute)) return null;
+    MAttribute op = (MAttribute) target;
+    MClassifier type = op.getType();
     GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
     return gd.generateClassifierRef(type);
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Attribute)) return;
+    if (!(target instanceof MAttribute)) return;
     if (!(value instanceof String)) return;
-    Attribute op = (Attribute) target;
+    MAttribute op = (MAttribute) target;
     String s = (String) value;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
-    Classifier t = p.findType(s);
+    MClassifier t = p.findType(s);
     if (t == null) {
       System.out.println("attribute type not found");
       return;
     }
     ParserDisplay pd = ParserDisplay.SINGLETON;
-    try { op.setType(t); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set attribute type");
-    }
+    op.setType(t);
   }
 } /* end class ColumnType */
 
@@ -907,16 +888,127 @@ class ColumnAttrKeyword extends ColumnDescriptor {
   }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof Attribute)) return null;
-    Attribute attr = (Attribute) target;
+    if (!(target instanceof MAttribute)) return null;
+    MAttribute attr = (MAttribute) target;
     return uci.uml.ui.table.AttrKeyword.KeywordFor(attr);
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof Attribute)) return;
+    if (!(target instanceof MAttribute)) return;
     if (!(value instanceof AttrKeyword)) return;
     AttrKeyword ak = (AttrKeyword) value;
-    Attribute attr = (Attribute) target;
+    MAttribute attr = (MAttribute) target;
     ak.set(attr);
   }  
 } /* end class ColumnAttrKeyword */
+
+class ColumnCompNode extends ColumnDescriptor {
+  ColumnCompNode() { super("DeploymentLocation", String.class, true); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MComponentImpl)) return null;
+    MComponent co = (MComponent) target;
+    Collection nodes = co.getDeploymentLocations();  
+    MNode node = null;
+    if ((nodes != null) && (nodes.size()>0)) {
+      Iterator it = nodes.iterator();
+      while (it.hasNext()) {
+        node = (MNode) it.next();
+      }
+    }
+    String name = "";
+    if (node != null) {
+      name = node.getName();
+    }
+    return name;
+  }
+
+  public void setValueFor(Object target, Object value) {
+    if (!(target instanceof MComponentImpl)) return;
+    if (!(value instanceof MNodeImpl)) return;
+    MNode node = (MNode) value;
+    MComponent co = (MComponent) target;
+//    node.set(co);
+  }  
+
+} /* end class ColumnCompNode */
+
+class ColumnImplLocation extends ColumnDescriptor {
+  ColumnImplLocation() { super("ImplementationLocation", String.class, true); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MClassifierImpl)) return null;
+    MClassifier co = (MClassifier) target;
+    String name = "";
+    Collection residences = co.getElementResidences();  
+    if (co != null) {
+      Iterator it = residences.iterator();
+      while (it.hasNext()) {
+        MElementResidence residence = (MElementResidence) it.next();
+        MModelElement element = residence.getResident();
+        if (element == co) {
+         MComponent component = residence.getImplementationLocation();
+         name = component.getName();
+        }
+      }
+    }
+    return name;
+  }    
+
+  public void setValueFor(Object target, Object value) {
+    if (!(target instanceof MClassifierImpl)) return;
+    if (!(value instanceof MComponentImpl)) return;
+    MComponent co = (MComponent) value;
+    MClassifier cls = (MClassifier) target;
+//    node.set(co);
+  }  
+
+} /* end class ColumnImplLocation */
+
+class ColumnComponentInstance extends ColumnDescriptor {
+  ColumnComponentInstance() { super("ComponentInstance", String.class, true); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MObjectImpl)) return null;
+    MObject co = (MObject) target;
+    String name = "";
+    MComponentInstance comp = co.getComponentInstance();
+    if (comp != null) {
+      name = comp.getName();
+    }
+    return name;
+  }
+
+  public void setValueFor(Object target, Object value) {
+    if (!(target instanceof MObjectImpl)) return;
+    if (!(value instanceof MComponentInstanceImpl)) return;
+    MComponent co = (MComponent) value;
+    MObject object = (MObject) target;
+//    node.set(co);
+  }  
+
+} /* end class ColumnComponentInstance */
+
+class ColumnBase extends ColumnDescriptor {
+  ColumnBase() { super("Base", String.class, true); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MObjectImpl)) return null;
+    MObject co = (MObject) target;
+    String name = "";
+    if (co.getUMLClassName() != null) {
+      name = co.getUMLClassName().trim();
+    }
+    return name;
+  }
+
+  public void setValueFor(Object target, Object value) {
+    if (!(target instanceof MObjectImpl)) return;
+    if (!(value instanceof String)) return;
+    String str = (String) value;
+    MObject object = (MObject) target;
+//    node.set(co);
+  }  
+
+} /* end class ColumnBase */
+

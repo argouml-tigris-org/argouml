@@ -33,7 +33,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -42,10 +42,10 @@ import javax.swing.text.*;
 import javax.swing.border.*;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 import uci.uml.ui.*;
 
 /** User interface panel shown at the bottom of the screen that allows
@@ -92,35 +92,35 @@ public class PropPanelLink extends PropPanelTwoEnds {
   /** Set the values to be shown in all widgets based on model */
   protected void setTargetInternal(Object t) {
     super.setTargetInternal(t);
-    Link tt = (Link) t;
+    MLink tt = (MLink) t;
     // set the values to be shown in all widgets based on model
   }
 
   public String getSourceLabel() {
-    if (!(_target instanceof Link)) return "non Link";
+    if (!(_target instanceof MLink)) return "non Link";
     return "Instance:";
   }
   public String getSourceValue() {
-    if (!(_target instanceof Link)) return "non Link";
-    Link a = (Link) _target;
-    LinkEnd ae = (LinkEnd) a.getLinkRole().elementAt(0);
-    if (ae == null) return "null ae";
-    Instance inst = ae.getInstance();
+    if (!(_target instanceof MLink)) return "non Link";
+    MLink a = (MLink) _target;
+    MLinkEnd ae = (MLinkEnd) ((Object[])(a.getConnections()).toArray())[0];
+    if (ae == null) return "null Link End";
+    MInstance inst = ae.getInstance();
     if (inst == null) return "null Instance";
-    return inst.getName().getBody();
+    return inst.getName();
   }
   public String getDestLabel() {
-    if (!(_target instanceof Link)) return "non Link";
+    if (!(_target instanceof MLink)) return "non Link";
     return "Instance:";
   }
   public String getDestValue() {
-    if (!(_target instanceof Link)) return "non Link";
-    Link a = (Link) _target;
-    LinkEnd ae = (LinkEnd) a.getLinkRole().elementAt(1);
-    if (ae == null) return "null ae";
-    Instance inst = ae.getInstance();
+    if (!(_target instanceof MLink)) return "non Link";
+    MLink a = (MLink) _target;
+    MLinkEnd ae = (MLinkEnd)((Object[])(a.getConnections()).toArray())[1];
+    if (ae == null) return "null Link End";
+    MInstance inst = ae.getInstance();
     if (inst == null) return "null Instance";
-    return inst.getName().getBody();
+    return inst.getName();
   }
   
 

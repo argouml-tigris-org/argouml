@@ -23,14 +23,14 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.StateMachine;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import uci.uml.ui.Project;
 import uci.uml.ui.ProjectBrowser;
 import uci.uml.visual.*;
@@ -68,7 +68,7 @@ public class GoMachineDiagram implements TreeModelPrereqs {
   public Vector getChildren(Object parent) {
     Project p = ProjectBrowser.TheInstance.getProject();
     if (p == null) return null;
-    if (!(parent instanceof StateMachine)) return null;
+    if (!(parent instanceof MStateMachine)) return null;
     Vector res = new Vector();
     Vector diagrams = p.getDiagrams();
     if (diagrams == null) return null;
@@ -86,7 +86,7 @@ public class GoMachineDiagram implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof StateMachine && getChildCount(node) > 0);
+    return !(node instanceof MStateMachine && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -95,7 +95,7 @@ public class GoMachineDiagram implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(StateMachine.class);
+    pros.addElement(MStateMachine.class);
     return pros;
   }
   public Vector getProvidedTypes() {

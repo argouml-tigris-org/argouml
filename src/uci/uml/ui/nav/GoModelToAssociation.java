@@ -23,17 +23,17 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
 
 public class GoModelToAssociation implements TreeModelPrereqs {
 
-  public String toString() { return "Package->Association"; }
+  public String toString() { return "Package->MAssociation"; }
   
   public Object getRoot() {
     System.out.println("getRoot should never be called");
@@ -49,12 +49,12 @@ public class GoModelToAssociation implements TreeModelPrereqs {
   }
 
 //   public void xxx() {
-//     if (parent instanceof MMPackage) {
-//       Vector eos = ((MMPackage)parent).getOwnedElement();
+//     if (parent instanceof MPackage) {
+//       Vector eos = ((MPackage)parent).getOwnedElements();
 //       for (int i = 0; i < eos.size(); i++) {
-// 	ElementOwnership eo = (ElementOwnership) eos.elementAt(i);
-// 	ModelElement me = eo.getModelElement();
-// 	if (me instanceof IAssociation) index--;
+// 	MElementImport eo = (MElementImport) eos.elementAt(i);
+// 	MModelElement me = eo.getModelElement();
+// 	if (me instanceof MAssociation) index--;
 // 	if (index == 0) return me;
 //       }
 //     }
@@ -76,14 +76,14 @@ public class GoModelToAssociation implements TreeModelPrereqs {
 
 //   public int getChildCountxx(Object parent) {
 //     int res = 0;
-//     if (parent instanceof MMPackage) {
-//       Vector oes = ((MMPackage) parent).getOwnedElement();
+//     if (parent instanceof MPackage) {
+//       Vector oes = ((MPackage) parent).getOwnedElements();
 //       if (oes == null) return 0;
 //       java.util.Enumeration enum = oes.elements();
 //       while (enum.hasMoreElements()) {
-// 	ElementOwnership eo = (ElementOwnership) enum.nextElement();
-// 	ModelElement me = eo.getModelElement();
-// 	if (me instanceof IAssociation) res++;
+// 	MElementImport eo = (MElementImport) enum.nextElement();
+// 	MModelElement me = eo.getModelElement();
+// 	if (me instanceof MAssociation) res++;
 //       }
 //     }
 //     return res;
@@ -91,15 +91,15 @@ public class GoModelToAssociation implements TreeModelPrereqs {
 
 //   public int getIndexOfChildxx(Object parent, Object child) {
 //     int res = 0;
-//     if (parent instanceof MMPackage) {
-//       Vector oes = ((MMPackage)parent).getOwnedElement();
+//     if (parent instanceof MPackage) {
+//       Vector oes = ((MPackage)parent).getOwnedElements();
 //       if (oes == null) return -1;
 //       java.util.Enumeration enum = oes.elements();
 //       while (enum.hasMoreElements()) {
-// 	ElementOwnership eo = (ElementOwnership) enum.nextElement();
-// 	ModelElement me = eo.getModelElement();
+// 	MElementImport eo = (MElementImport) enum.nextElement();
+// 	MModelElement me = eo.getModelElement();
 // 	if (me == child) return res;
-// 	if (me instanceof IAssociation) res++;
+// 	if (me instanceof MAssociation) res++;
 //       }
 //     }
 //     return -1;
@@ -107,22 +107,21 @@ public class GoModelToAssociation implements TreeModelPrereqs {
 
 
   public Vector getChildren(Object parent) {
-    if (!(parent instanceof MMPackage)) return null; 
+    if (!(parent instanceof MPackage)) return null; 
     Vector res = new Vector();
-    Vector oes = ((MMPackage)parent).getOwnedElement();
+    Vector oes = new Vector(((MPackage)parent).getOwnedElements());
     if (oes == null) return null;
     java.util.Enumeration enum = oes.elements();
     while (enum.hasMoreElements()) {
-      ElementOwnership eo = (ElementOwnership) enum.nextElement();
-      ModelElement me = eo.getModelElement();
-      if (me instanceof IAssociation) res.addElement(me);
+      MModelElement me =  (MModelElement) enum.nextElement();
+      if (me instanceof MAssociation) res.addElement(me);
     }
     return res;
   }
 
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof MMPackage && getChildCount(node) > 0);
+    return !(node instanceof MPackage && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -131,12 +130,12 @@ public class GoModelToAssociation implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Model.class);
+    pros.addElement(MModel.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(IAssociation.class);
+    pros.addElement(MAssociation.class);
     return pros;
   }
 

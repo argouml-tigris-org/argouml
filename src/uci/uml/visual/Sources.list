@@ -4,15 +4,23 @@ SOURCES= \
 	SelectionClass.java \
  	SelectionInterface.java \
 	SelectionState.java \
+	SelectionActionState.java \
 	SelectionActor.java \
 	SelectionUseCase.java \
 	SelectionNodeClarifiers.java \
 	SelectionEdgeClarifiers.java \
 	SelectionMoveClarifiers.java \
+	SelectionObject.java \
+	SelectionComponent.java \
+	SelectionComponentInstance.java \
+	SelectionNode.java \
+	SelectionNodeInstance.java \
 	ClassDiagramGraphModel.java \
 	ClassDiagramRenderer.java \
 	CollabDiagramGraphModel.java \
 	CollabDiagramRenderer.java \
+	DeploymentDiagramRenderer.java \
+	DeploymentDiagramGraphModel.java \
 	DiagramInfo.java \
 	FigActionState.java \
 	FigActor.java \
@@ -45,6 +53,11 @@ SOURCES= \
 	FigTrace.java \
 	FigTransition.java \
 	FigUseCase.java \
+	FigMNode.java \
+	FigMNodeInstance.java \
+	FigComponent.java \
+	FigComponentInstance.java \
+	FigObject.java \
 	StateDiagramGraphModel.java \
 	StateDiagramRenderer.java \
 	UMLActivityDiagram.java \
@@ -53,6 +66,7 @@ SOURCES= \
 	UMLDiagram.java \
 	UMLStateDiagram.java \
 	UMLUseCaseDiagram.java \
+	UMLDeploymentDiagram.java \
 	UseCaseDiagramGraphModel.java \
 	UseCaseDiagramRenderer.java
 

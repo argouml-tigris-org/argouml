@@ -23,13 +23,13 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
 
 public class GoModelToElements implements TreeModelPrereqs {
 
@@ -42,33 +42,31 @@ public class GoModelToElements implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof Namespace) {
-      ElementOwnership eo = (ElementOwnership)
-	((Namespace)parent).getOwnedElement().elementAt(index);
-      return eo.getModelElement();
+    if (parent instanceof MNamespace) {
+      return new Vector(((MNamespace)parent).getOwnedElements()).elementAt(index);
     }
     System.out.println("getChild should never be get here GoModelToElements");
     return null;
   }
 
   public int getChildCount(Object parent) {
-    if (parent instanceof Namespace) {
-      Vector oes = ((Namespace) parent).getOwnedElement();
+    if (parent instanceof MNamespace) {
+      Collection oes = ((MNamespace) parent).getOwnedElements();
       return (oes == null) ? 0 : oes.size();
     }
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Namespace) {
-      Vector oes = ((Namespace)parent).getOwnedElement();
+    if (parent instanceof MNamespace) {
+      Vector oes = new Vector(((MNamespace)parent).getOwnedElements());
       if (oes.contains(child)) return oes.indexOf(child);
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Namespace && getChildCount(node) > 0);
+    return !(node instanceof MNamespace && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -77,12 +75,12 @@ public class GoModelToElements implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Model.class);
+    pros.addElement(MModel.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(ModelElement.class);
+    pros.addElement(MModelElement.class);
     return pros;
   }
 

@@ -30,16 +30,16 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.ui.todo.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 /** A non-modal wizard to help the user change navigability
@@ -55,18 +55,18 @@ public class WizAssocComposite extends Wizard {
 
   protected WizStepChoice _step1 = null;
 
-  protected AggregationKind _orig0 = AggregationKind.NONE;
-  protected AggregationKind _orig1 = AggregationKind.NONE;
+  protected MAggregationKind _orig0 = MAggregationKind.NONE;
+  protected MAggregationKind _orig1 = MAggregationKind.NONE;
 
   public WizAssocComposite() { }
 
   public int getNumSteps() { return 1; }
 
-  public ModelElement getModelElement() {
+  public MModelElement getModelElement() {
     if (_item != null) {
       VectorSet offs = _item.getOffenders();
       if (offs.size() >= 1) {
-	ModelElement me = (ModelElement) offs.elementAt(0);
+	MModelElement me = (MModelElement) offs.elementAt(0);
 	return me;
       }
     }
@@ -75,20 +75,21 @@ public class WizAssocComposite extends Wizard {
 
   public Vector getOptions() {
     Vector res = new Vector();
-    Association asc = (Association) getModelElement();
-    AssociationEnd ae0 = (AssociationEnd) asc.getConnection().elementAt(0);
-    AssociationEnd ae1 = (AssociationEnd) asc.getConnection().elementAt(1);
-    Classifier cls0 = ae0.getType();
-    Classifier cls1 = ae1.getType();
+    MAssociation asc = (MAssociation) getModelElement();
+    Iterator iter = asc.getConnections().iterator();
+    MAssociationEnd ae0 = (MAssociationEnd) iter.next();
+    MAssociationEnd ae1 = (MAssociationEnd) iter.next();
+    MClassifier cls0 = ae0.getType();
+    MClassifier cls1 = ae1.getType();
 
     String start = "Start";
     String end = "End";
 
-    if (cls0 != null && !"".equals(cls0.getName().getBody()))
-      start = cls0.getName().getBody();
+    if (cls0 != null && !"".equals(cls0.getName()))
+      start = cls0.getName();
 
-    if (cls1 != null && !"".equals(cls1.getName().getBody()))
-      end =cls1.getName().getBody();
+    if (cls1 != null && !"".equals(cls1.getName()))
+      end =cls1.getName();
 
     _option0 = start + " Contains " + end;
     _option1 = end + " Contains " + start;
@@ -131,13 +132,14 @@ public class WizAssocComposite extends Wizard {
 	return;
       }
       try {
-	Association asc = (Association) getModelElement();
-	AssociationEnd ae0 = (AssociationEnd) asc.getConnection().elementAt(0);
-	AssociationEnd ae1 = (AssociationEnd) asc.getConnection().elementAt(1);
-	ae0.setAggregation(choice == 0 ? AggregationKind.COMPOSITE : _orig0);
-	ae1.setAggregation(choice == 1 ? AggregationKind.COMPOSITE : _orig1);
+	MAssociation asc = (MAssociation) getModelElement();
+        Iterator iter = asc.getConnections().iterator();
+        MAssociationEnd ae0 = (MAssociationEnd) iter.next();
+        MAssociationEnd ae1 = (MAssociationEnd) iter.next();
+	ae0.setAggregation(choice == 0 ? MAggregationKind.COMPOSITE : _orig0);
+	ae1.setAggregation(choice == 1 ? MAggregationKind.COMPOSITE : _orig1);
       }
-      catch (PropertyVetoException pve) {
+      catch (Exception pve) {
 	System.out.println("could not set Containment");
       }
     }

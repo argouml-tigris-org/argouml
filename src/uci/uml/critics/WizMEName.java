@@ -30,20 +30,20 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.ui.todo.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 /** A non-modal wizard to help the user change the name of a
- *  ModelElement to a better name. */
+ *  MModelElement to a better name. */
 
 public class WizMEName extends Wizard {
 
@@ -60,11 +60,11 @@ public class WizMEName extends Wizard {
 
   public int getNumSteps() { return 1; }
 
-  public ModelElement getModelElement() {
+  public MModelElement getModelElement() {
     if (_item != null) {
       VectorSet offs = _item.getOffenders();
       if (offs.size() >= 1) {
-	ModelElement me = (ModelElement) offs.elementAt(0);
+	MModelElement me = (MModelElement) offs.elementAt(0);
 	return me;
       }
     }
@@ -73,10 +73,10 @@ public class WizMEName extends Wizard {
 
   public String getSuggestion() {
     if (_suggestion != null) return _suggestion;
-    ModelElement me = getModelElement();
+    MModelElement me = getModelElement();
     if (me != null) {
-      Name n = me.getName();
-      return n.getBody();
+      String n = me.getName();
+      return n;
     }
     return "";
   }
@@ -122,10 +122,10 @@ public class WizMEName extends Wizard {
       String newName = _suggestion;
       if (_step1 != null) newName = _step1.getText();
       try {
-	ModelElement me = getModelElement();
-	me.setName(new Name(newName));
+	MModelElement me = getModelElement();
+	me.setName(newName);
       }
-      catch (PropertyVetoException pve) {
+      catch (Exception pve) {
 	System.out.println("could not set name");
       }
     }

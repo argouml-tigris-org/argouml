@@ -23,15 +23,15 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class GoStateToOutgoingTrans implements TreeModelPrereqs {
 
@@ -46,8 +46,8 @@ public class GoStateToOutgoingTrans implements TreeModelPrereqs {
   //needs-more-work: should not include internal transitions
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof StateVertex) {
-      Vector outgoing = ((StateVertex)parent).getOutgoing();
+    if (parent instanceof MStateVertex) {
+      Vector outgoing = new Vector(((MStateVertex)parent).getOutgoings());
       return (outgoing == null) ? null : outgoing.elementAt(index);
     }
     System.out.println("getChild should never be get here GoStateToOutgoingTrans");
@@ -55,23 +55,23 @@ public class GoStateToOutgoingTrans implements TreeModelPrereqs {
   }
 
   public int getChildCount(Object parent) {
-    if (parent instanceof StateVertex) {
-      Vector outgoing = ((StateVertex)parent).getOutgoing();
+    if (parent instanceof MStateVertex) {
+      Collection outgoing = ((MStateVertex)parent).getOutgoings();
       return (outgoing == null) ? 0 : outgoing.size();
     }
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof StateVertex) {
-      Vector outgoing = ((StateVertex)parent).getOutgoing();
+    if (parent instanceof MStateVertex) {
+      Vector outgoing = new Vector(((MStateVertex)parent).getOutgoings());
       return (outgoing == null) ? -1 : outgoing.indexOf(child);
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof StateVertex && getChildCount(node) > 0);
+    return !(node instanceof MStateVertex && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -80,12 +80,12 @@ public class GoStateToOutgoingTrans implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(StateVertex.class);
+    pros.addElement(MStateVertex.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Transition.class);
+    pros.addElement(MTransition.class);
     return pros;
   }
 

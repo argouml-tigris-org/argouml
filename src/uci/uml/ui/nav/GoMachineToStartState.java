@@ -23,15 +23,15 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 // needs-more-work: filter only start states
 
@@ -46,13 +46,13 @@ public class GoMachineToStartState implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof StateMachine) {
-      StateMachine sm = (StateMachine)parent;
+    if (parent instanceof MStateMachine) {
+      MStateMachine sm = (MStateMachine)parent;
       if (sm == null) return null;
-      State top = sm.getTop();
+      MState top = sm.getTop();
       if (top == null) return null;
-      if (top instanceof CompositeState)
-	return ((CompositeState)top).getSubstate().elementAt(index);
+      if (top instanceof MCompositeState)
+	return (new Vector(((MCompositeState)top).getSubvertices()).elementAt(index));
       if (index == 0) return top;
       return null;
     }
@@ -61,33 +61,33 @@ public class GoMachineToStartState implements TreeModelPrereqs {
   }
 
   public int getChildCount(Object parent) {
-    if (parent instanceof StateMachine) {
-      StateMachine sm = (StateMachine)parent;
+    if (parent instanceof MStateMachine) {
+      MStateMachine sm = (MStateMachine)parent;
       if (sm == null) return 0;
-      State top = sm.getTop();
+      MState top = sm.getTop();
       if (top == null) return 0;
-      if (top instanceof CompositeState)
-	return ((CompositeState)top).getSubstate().size();
+      if (top instanceof MCompositeState)
+	return ((MCompositeState)top).getSubvertices().size();
       return 1; // atomic top state
     }
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof StateMachine) {
-      StateMachine sm = (StateMachine)parent;
+    if (parent instanceof MStateMachine) {
+      MStateMachine sm = (MStateMachine)parent;
       if (sm == null) return -1;
-      State top = sm.getTop();
+      MState top = sm.getTop();
       if (top == null) return -1;
-      if (top instanceof CompositeState)
-	return ((CompositeState)top).getSubstate().indexOf(child);
+      if (top instanceof MCompositeState)
+	return (new Vector(((MCompositeState)top).getSubvertices()).indexOf(child));
       if (top == child) return 0; // atomic substate
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof StateMachine && getChildCount(node) > 0);
+    return !(node instanceof MStateMachine && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -96,12 +96,12 @@ public class GoMachineToStartState implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(StateMachine.class);
+    pros.addElement(MStateMachine.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(StateVertex.class);
+    pros.addElement(MStateVertex.class);
     return pros;
   }
 

@@ -31,7 +31,8 @@
 package uci.gef;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 /** An Cmd to align 2 or more objects relative to each other. */
 

@@ -31,22 +31,25 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.beans.*;
 
 import uci.graph.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.PseudostateKind;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.util.MMUtil;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by
- *  GEF.  This class handles only UML State Digrams.  */
+ *  GEF.  This class handles only UML MState Digrams.  */
 
 public class StateDiagramGraphModel extends MutableGraphSupport
-implements MutableGraphModel, VetoableChangeListener {
+implements MutableGraphModel, VetoableChangeListener, MElementListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -58,26 +61,28 @@ implements MutableGraphModel, VetoableChangeListener {
    *  Also, elements from other models will have their FigNodes add a
    *  line to say what their model is. */
 
-  protected Namespace _model;
+  protected MNamespace _model;
 
   /** The statemachine we are diagramming */
-  protected StateMachine _machine;
+  protected MStateMachine _machine;
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public Namespace getNamespace() { return _model; }
-  public void setNamespace(Namespace m) {
-    if (_model != null) _model.removeVetoableChangeListener(this);
+  public MNamespace getNamespace() { return _model; }
+  public void setNamespace(MNamespace m) {
+    if (_model != null) _model.removeMElementListener(this);
     _model = m;
-    if (_model != null) _model.addVetoableChangeListener(this);
+    if (_model != null) _model.addMElementListener(this);
   }
 
-  public StateMachine getMachine() { return _machine; }
-  public void setMachine(StateMachine sm) {
-    if (_machine != null) _machine.removeVetoableChangeListener(this);
-    _machine = sm;
-    if (_machine != null) _machine.addVetoableChangeListener(this);
+  public MStateMachine getMachine() { return _machine; }
+  public void setMachine(MStateMachine sm) {
+	  if (sm != null) {
+		  if (_machine != null) _machine.removeMElementListener(this);
+		  _machine = sm;
+		  _machine.addMElementListener(this);
+	  }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -92,8 +97,8 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Return all ports on node or edge */
   public Vector getPorts(Object nodeOrEdge) {
     Vector res = new Vector();  //wasteful!
-    if (nodeOrEdge instanceof State) res.addElement(nodeOrEdge);
-    if (nodeOrEdge instanceof Pseudostate) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof MState) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof MPseudostate) res.addElement(nodeOrEdge);
     return res;
   }
 
@@ -104,39 +109,39 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return all edges going to given port */
   public Vector getInEdges(Object port) {
-    if (port instanceof StateVertex) {
-      return ((StateVertex)port).getIncoming();
+    if (port instanceof MStateVertex) {
+      return new Vector(((MStateVertex)port).getIncomings());
     }
-    System.out.println("needs-more-work getInEdges of State");
+    System.out.println("needs-more-work getInEdges of MState");
     return new Vector(); //wasteful!
   }
 
   /** Return all edges going from given port */
   public Vector getOutEdges(Object port) {
-    if (port instanceof StateVertex) {
-      return ((StateVertex)port).getOutgoing();
+    if (port instanceof MStateVertex) {
+      return new Vector(((MStateVertex)port).getOutgoings());
     }
-    System.out.println("needs-more-work getOutEdges of State");
+    System.out.println("needs-more-work getOutEdges of MState");
     return new Vector(); //wasteful!
   }
 
   /** Return one end of an edge */
   public Object getSourcePort(Object edge) {
-    if (edge instanceof Transition) {
-      Transition tr = (Transition) edge;
+    if (edge instanceof MTransition) {
+      MTransition tr = (MTransition) edge;
       return tr.getSource();
     }
-    System.out.println("needs-more-work getSourcePort of Transition");
+    System.out.println("needs-more-work getSourcePort of MTransition");
     return null;
   }
 
   /** Return  the other end of an edge */
   public Object getDestPort(Object edge) {
-    if (edge instanceof Transition) {
-      Transition tr = (Transition) edge;
+    if (edge instanceof MTransition) {
+      MTransition tr = (MTransition) edge;
       return tr.getTarget();
     }
-    System.out.println("needs-more-work getDestPort of Transition");
+    System.out.println("needs-more-work getDestPort of MTransition");
     return null;
   }
 
@@ -146,12 +151,12 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
-    return (node instanceof StateVertex);
+    return (node instanceof MStateVertex);
   }
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return (edge instanceof Transition);
+    return (edge instanceof MTransition);
   }
 
   /** Remove the given node from the graph. */
@@ -164,49 +169,39 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
     //System.out.println("adding state diagram node: " + node);
-    if (!(node instanceof StateVertex)) {
+    if (!(node instanceof MStateVertex)) {
       System.out.println("internal error: got past canAddNode");
       return;
     }
-    StateVertex sv = (StateVertex) node;
+    MStateVertex sv = (MStateVertex) node;
     if (_nodes.contains(sv)) return;
     _nodes.addElement(sv);
-    try {
-      // needs-more-work: assumes public, user pref for default visibility?
-//       if (sv.getElementOwnership() == null)
-// 	_model.addPublicOwnedElement(sv);
+	// needs-more-work: assumes public, user pref for default visibility?
+	if (sv.getNamespace() == null)
+		_model.addOwnedElement(sv);
       // needs-more-work: assumes not nested in another composite state
-      CompositeState top = (CompositeState) _machine.getTop();
-      top.addSubstate(sv);
+      MCompositeState top = (MCompositeState) _machine.getTop();
+      top.addSubvertex(sv);
 //       sv.setParent(top);
-//       if (sv instanceof State) ((State)sv).setStateMachine(_machine);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("PropertyVetoException in StateDiagramGraphModel addNode");
-    }
+//       if (sv instanceof MState) ((MState)sv).setStateMachine(_machine);
     fireNodeAdded(node);
   }
 
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
     //System.out.println("adding state diagram edge!!!!!!");
-    if (!(edge instanceof Transition)) {
+    if (!(edge instanceof MTransition)) {
       System.out.println("internal error: got past canAddEdge");
       return;
     }
-    Transition tr = (Transition) edge;
+    MTransition tr = (MTransition) edge;
     if (_edges.contains(tr)) return;
     _edges.addElement(tr);
-    try {
-      // needs-more-work: assumes public
-//       if (tr.getElementOwnership() == null)
-// 	_model.addPublicOwnedElement(tr);
-      //_machine.addTransition(tr);
-      tr.setStateMachine(_machine);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("got a PropertyVetoException");
-    }
+	// needs-more-work: assumes public
+	if (tr.getNamespace() == null)
+		_model.addOwnedElement(tr);
+	//_machine.addTransition(tr);
+	tr.setStateMachine(_machine);
     fireEdgeAdded(edge);
   }
 
@@ -220,22 +215,22 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Return true if the two given ports can be connected by a 
    * kind of edge to be determined by the ports. */
   public boolean canConnect(Object fromPort, Object toPort) {
-    if (!(fromPort instanceof StateVertex)) {
+    if (!(fromPort instanceof MStateVertex)) {
       System.out.println("internal error not from sv");
       return false;
     }
-    if (!(toPort instanceof StateVertex)) {
+    if (!(toPort instanceof MStateVertex)) {
       System.out.println("internal error not to sv");
       return false;
     }
-    StateVertex fromSV = (StateVertex) fromPort;
-    StateVertex toSV = (StateVertex) toPort;
+    MStateVertex fromSV = (MStateVertex) fromPort;
+    MStateVertex toSV = (MStateVertex) toPort;
 
-    if (fromSV instanceof Pseudostate)
-      if (PseudostateKind.FINAL.equals(((Pseudostate)fromSV).getKind()))
+    if (fromSV instanceof MPseudostate)
+      if (MPseudostateKind.FINAL.equals(((MPseudostate)fromSV).getKind()))
 	return false;
-    if (toSV instanceof Pseudostate)
-      if (PseudostateKind.INITIAL.equals(((Pseudostate)toSV).getKind()))
+    if (toSV instanceof MPseudostate)
+      if (MPseudostateKind.INITIAL.equals(((MPseudostate)toSV).getKind()))
 	  return false;
 
     return true;
@@ -252,33 +247,34 @@ implements MutableGraphModel, VetoableChangeListener {
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
     //    try {
-    if (!(fromPort instanceof StateVertex)) {
+    if (!(fromPort instanceof MStateVertex)) {
       System.out.println("internal error not from sv");
       return null;
     }
-    if (!(toPort instanceof StateVertex)) {
+    if (!(toPort instanceof MStateVertex)) {
       System.out.println("internal error not to sv");
       return null;
     }
-    StateVertex fromSV = (StateVertex) fromPort;
-    StateVertex toSV = (StateVertex) toPort;
+    MStateVertex fromSV = (MStateVertex) fromPort;
+    MStateVertex toSV = (MStateVertex) toPort;
 
-    if (fromSV instanceof Pseudostate)
-      if (PseudostateKind.FINAL.equals(((Pseudostate)fromSV).getKind()))
+    if (fromSV instanceof MPseudostate)
+      if (MPseudostateKind.FINAL.equals(((MPseudostate)fromSV).getKind()))
 	return null;
-    if (toSV instanceof Pseudostate)
-      if (PseudostateKind.INITIAL.equals(((Pseudostate)toSV).getKind()))
+    if (toSV instanceof MPseudostate)
+      if (MPseudostateKind.INITIAL.equals(((MPseudostate)toSV).getKind()))
 	return null;
 
-    if (edgeClass == Transition.class) {
-      Transition tr = new Transition(fromSV, toSV);
-      // the constructor adds the edge to the SV's incoming and
-      // outgoing vectors
+    if (edgeClass == MTransitionImpl.class) {
+      MTransition tr = new MTransitionImpl();
+      _model.addOwnedElement(tr);
+      tr.setSource(fromSV);
+      tr.setTarget(toSV);
       addEdge(tr);
       return tr;
     }
     else {
-      System.out.println("wrong kind of edge in StateDiagram connect3");
+      System.out.println("wrong kind of edge in StateDiagram connect3 "+edgeClass);
       return null;
     }
       //}
@@ -296,19 +292,33 @@ implements MutableGraphModel, VetoableChangeListener {
 
     if ("ownedElement".equals(pce.getPropertyName())) {
       Vector oldOwned = (Vector) pce.getOldValue();
-      ElementOwnership eo = (ElementOwnership) pce.getNewValue();
-      ModelElement me = eo.getModelElement();
+      MElementImport eo = (MElementImport) pce.getNewValue();
+      MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
 	//System.out.println("model removed " + me);
-	if (me instanceof State) removeNode(me);
-	if (me instanceof Pseudostate) removeNode(me);
-	if (me instanceof Transition) removeEdge(me);
+	if (me instanceof MState) removeNode(me);
+	if (me instanceof MPseudostate) removeNode(me);
+	if (me instanceof MTransition) removeEdge(me);
       }
       else {
 	// System.out.println("model added " + me);
       }
     }
   }
+
+	public void propertySet(MElementEvent mee) {
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	}
+	public void recovered(MElementEvent mee) {
+	}
+	public void removed(MElementEvent mee) {
+	}
+	public void roleAdded(MElementEvent mee) {
+	}
+	public void roleRemoved(MElementEvent mee) {
+	}
+
 
   static final long serialVersionUID = -8056507319026044174L;
 

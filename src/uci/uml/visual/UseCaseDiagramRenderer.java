@@ -30,12 +30,12 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import uci.graph.*;
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 // could be singleton
 
@@ -45,8 +45,8 @@ import uci.uml.Behavioral_Elements.Use_Cases.*;
  * <pre>
  *  UML Object      ---  Fig
  *  ---------------------------------------
- *  Actor           ---  FigActor
- *  UseCase         ---  FigUseCase
+ *  MActor           ---  FigActor
+ *  MUseCase         ---  FigUseCase
  *  </pre>
  */
 
@@ -55,8 +55,8 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-    if (node instanceof Actor) return new FigActor(gm, node);
-    else if (node instanceof UseCase) return new FigUseCase(gm, node);
+    if (node instanceof MActor) return new FigActor(gm, node);
+    else if (node instanceof MUseCase) return new FigUseCase(gm, node);
     System.out.println("needs-more-work UseCaseDiagramRenderer getFigNodeFor");
     return null;
   }
@@ -66,15 +66,15 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       very related to it. */
   public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
     //System.out.println("making figedge for " + edge);
-    if (edge instanceof Association) {
-      Association asc = (Association) edge;
+    if (edge instanceof MAssociation) {
+      MAssociation asc = (MAssociation) edge;
       FigAssociation ascFig = new FigAssociation(asc);
-      Vector connections = asc.getConnection();
+      Vector connections = new Vector(asc.getConnections());
       if (connections == null) System.out.println("null connections....");
-      AssociationEnd fromEnd = (AssociationEnd) connections.elementAt(0);
-      Classifier fromCls = (Classifier) fromEnd.getType();
-      AssociationEnd toEnd = (AssociationEnd) connections.elementAt(1);
-      Classifier toCls = (Classifier) toEnd.getType();
+      MAssociationEnd fromEnd = (MAssociationEnd) connections.elementAt(0);
+      MClassifier fromCls = (MClassifier) fromEnd.getType();
+      MAssociationEnd toEnd = (MAssociationEnd) connections.elementAt(1);
+      MClassifier toCls = (MClassifier) toEnd.getType();
       FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
       FigNode toFN = (FigNode) lay.presentationFor(toCls);
       ascFig.setSourcePortFig(fromFN);
@@ -83,17 +83,17 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       ascFig.setDestFigNode(toFN);
       return ascFig;
     }
-    if (edge instanceof Generalization) {
-      Generalization gen = (Generalization) edge;
+    if (edge instanceof MGeneralization) {
+      MGeneralization gen = (MGeneralization) edge;
       FigGeneralization genFig = new FigGeneralization(gen);
-      GeneralizableElement subType = gen.getSubtype();
-      GeneralizableElement superType = gen.getSupertype();
+      MGeneralizableElement subType = gen.getChild();
+      MGeneralizableElement superType = gen.getParent();
       FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
       FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
-      genFig.setSourcePortFig(subTypeFN);
-      genFig.setSourceFigNode(subTypeFN);
-      genFig.setDestPortFig(superTypeFN);
-      genFig.setDestFigNode(superTypeFN);
+      genFig.setSourcePortFig(superTypeFN);
+      genFig.setSourceFigNode(superTypeFN);
+      genFig.setDestPortFig(subTypeFN);
+      genFig.setDestFigNode(subTypeFN);
       return genFig;
     }
    

@@ -31,7 +31,8 @@
 
 package uci.gef;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.awt.*;
 
 /** A dialog box to let the user edit various preferences that effect

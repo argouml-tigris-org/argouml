@@ -29,7 +29,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import javax.swing.*;
@@ -38,9 +38,10 @@ import javax.swing.table.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 public class TabTaggedValues extends TabSpawnable
 implements TabModelTarget {
@@ -100,7 +101,7 @@ implements TabModelTarget {
   // accessors
 
   public void setTarget(Object t) {
-    if (!(t instanceof ModelElement)) {
+    if (!(t instanceof MModelElement)) {
       _target = null;
       _shouldBeEnabled = false;
       return;
@@ -119,8 +120,8 @@ implements TabModelTarget {
     _table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
     _table.sizeColumnsToFit(0);
 
-    ModelElement me = (ModelElement) _target;
-    Vector tvs = me.getTaggedValue();
+    MModelElement me = (MModelElement) _target;
+    Vector tvs = new Vector(me.getTaggedValues());
     _tableModel.setTarget(me);
     validate();
   }
@@ -136,10 +137,10 @@ implements TabModelTarget {
 
 
 class TableModelTaggedValues extends AbstractTableModel
-implements VetoableChangeListener, DelayedVChangeListener {
+implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   ////////////////
   // instance varables
-  ModelElement _target;
+  MModelElement _target;
   TabTaggedValues _tab = null;
 
   ////////////////
@@ -148,12 +149,12 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   ////////////////
   // accessors
-  public void setTarget(ModelElement t) {
-    if (_target instanceof ElementImpl)
-      ((ModelElementImpl)_target).removeVetoableChangeListener(this);
+  public void setTarget(MModelElement t) {
+    if (_target instanceof MModelElementImpl)
+      ((MModelElementImpl)_target).removeMElementListener(this);
     _target = t;
-    if (_target instanceof ElementImpl)
-      ((ModelElementImpl)_target).addVetoableChangeListener(this);
+    if (_target instanceof MModelElementImpl)
+      ((MModelElementImpl)_target).addMElementListener(this);
     fireTableStructureChanged();
     _tab.resizeColumns();
   }
@@ -178,25 +179,25 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   public int getRowCount() {
     if (_target == null) return 0;
-    Vector tvs = _target.getTaggedValue();
+    Collection tvs = _target.getTaggedValues();
     //if (tvs == null) return 1;
     return tvs.size() + 1;
   }
 
   public Object getValueAt(int row, int col) {
-    Vector tvs = _target.getTaggedValue();
+    Vector tvs = new Vector(_target.getTaggedValues());
     //if (tvs == null) return "";
     if (row == tvs.size()) return ""; //blank line allows addition
-    TaggedValue tv = (TaggedValue) tvs.elementAt(row);
+    MTaggedValue tv = (MTaggedValue) tvs.elementAt(row);
     if (col == 0) {
-      Name n = tv.getTag();
-      if (n == null || n.getBody() == null) return "";
-      return n.getBody();
+      String n = tv.getTag();
+      if (n == null) return "";
+      return n;
     }
     if (col == 1) {
-      Uninterpreted be = tv.getValue();
-      if (be == null || be.getBody() == null) return "";
-      return be.getBody();
+      String be = tv.getValue();
+      if (be == null) return "";
+      return be;
     }
     return "TV-" + row*2+col; // for debugging
   }
@@ -204,11 +205,11 @@ implements VetoableChangeListener, DelayedVChangeListener {
   public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
     if (columnIndex != 0 && columnIndex != 1) return;
     if (!(aValue instanceof String)) return;
-    Vector tvs = _target.getTaggedValue();
+    Vector tvs = new Vector(_target.getTaggedValues());
     if (tvs.size() == rowIndex) {
-      TaggedValue tv = new TaggedValue();
-      if (columnIndex == 0) tv.setTag(new Name((String) aValue));
-      if (columnIndex == 1) tv.setValue(new Uninterpreted((String) aValue));
+      MTaggedValue tv = new MTaggedValueImpl();
+      if (columnIndex == 0) tv.setTag((String)aValue);
+      if (columnIndex == 1) tv.setValue((String) aValue);
       tvs.addElement(tv);
       fireTableStructureChanged(); //?
       _tab.resizeColumns();
@@ -219,14 +220,27 @@ implements VetoableChangeListener, DelayedVChangeListener {
       _tab.resizeColumns();
     }
     else {
-      TaggedValue tv = (TaggedValue) tvs.elementAt(rowIndex);
-      if (columnIndex == 0) tv.setTag(new Name((String) aValue));
-      if (columnIndex == 1) tv.setValue(new Uninterpreted((String) aValue));
+      MTaggedValue tv = (MTaggedValue) tvs.elementAt(rowIndex);
+      if (columnIndex == 0) tv.setTag((String) aValue);
+      if (columnIndex == 1) tv.setValue((String) aValue);
     }
   }
 
   ////////////////
   // event handlers
+	public void propertySet(MElementEvent mee) {
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	}
+	public void recovered(MElementEvent mee) {
+	}
+	public void removed(MElementEvent mee) {
+	}
+	public void roleAdded(MElementEvent mee) {
+	}
+	public void roleRemoved(MElementEvent mee) {
+	}
+
 
   public void vetoableChange(PropertyChangeEvent pce) {
     DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);

@@ -28,7 +28,7 @@ package uci.ui;
 
 import java.beans.*;
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 public class PropCategoryManager {
 

@@ -30,21 +30,21 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
-/** Well-formedness rule [2] for Classifier. See page 29 of UML 1.1
+/** Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrAttrNameConflict extends CrUML {
 
   public CrAttrNameConflict() {
-    setHeadline("Revise Attribute Names to Avoid Conflict");
+    setHeadline("Revise MAttribute Names to Avoid Conflict");
     sd("Attributes must have distinct names.  This may because of an inherited "+
        "attribute. \n\n"+
        "Clear and unambiguous names are key to code generation and producing an "+
@@ -61,18 +61,21 @@ public class CrAttrNameConflict extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
-    Vector str = cls.getStructuralFeature();
+    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+    MClassifier cls = (MClassifier) dm;
+    Collection str = cls.getFeatures();
     if (str == null) return NO_PROBLEM;
-    java.util.Enumeration enum = str.elements();
+    Iterator enum = str.iterator();
     Vector namesSeen = new Vector();
     // warn about inheritied name conflicts, different critic?
-    while (enum.hasMoreElements()) {
-      StructuralFeature sf = (StructuralFeature) enum.nextElement();
-      Name sfName = sf.getName();
-      if (Name.UNSPEC.equals(sfName)) continue;
-      String nameStr = sfName.getBody();
+    while (enum.hasNext()) {
+      MFeature f = (MFeature) enum.next();
+      if (!(f instanceof MStructuralFeature))
+        continue;
+      MStructuralFeature sf = (MStructuralFeature) f;
+      String sfName = sf.getName();
+      if ("".equals(sfName)) continue;
+      String nameStr = sfName;
       if (nameStr.length() == 0) continue;
       if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;
       namesSeen.addElement(nameStr);

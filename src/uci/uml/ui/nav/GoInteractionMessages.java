@@ -23,14 +23,14 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 import uci.uml.ui.Project;
 import uci.uml.ui.ProjectBrowser;
 
@@ -65,12 +65,12 @@ public class GoInteractionMessages implements TreeModelPrereqs {
   }
 
   public Vector getChildren(Object parent) {
-    if (!(parent instanceof Interaction)) return null;
-    return ((Interaction)parent).getMessage();
+    if (!(parent instanceof MInteraction)) return null;
+    return new Vector(((MInteraction)parent).getMessages());
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Interaction && getChildCount(node) > 0);
+    return !(node instanceof MInteraction && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -79,12 +79,12 @@ public class GoInteractionMessages implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Interaction.class);
+    pros.addElement(MInteraction.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Message.class);
+    pros.addElement(MMessage.class);
     return pros;
   }
 

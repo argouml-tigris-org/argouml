@@ -30,7 +30,10 @@
 
 package uci.argo.kernel;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
+import java.util.Observable;
+import java.util.Observer;
 import java.beans.*;
 
 import uci.ui.*;

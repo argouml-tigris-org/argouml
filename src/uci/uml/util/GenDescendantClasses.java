@@ -24,13 +24,12 @@
 
 package uci.uml.util;
 
-import java.util.*;
-
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 /** Utility class to generate the subclasses of a class.  It
  *  recursively moves down the class hierarchy.  But it does that in a
@@ -39,28 +38,27 @@ import uci.uml.Foundation.Data_Types.*;
 public class GenDescendantClasses implements ChildGenerator {
   public static GenDescendantClasses SINGLETON = new GenDescendantClasses();
 
-  public java.util.Enumeration gen(Object o) {
-    if (!(o instanceof GeneralizableElement))
-      return EnumerationEmpty.theInstance();
-
-    Classifier cls = (Classifier) o;
-    Vector gens = cls.getSpecialization();
-    if (gens == null) return EnumerationEmpty.theInstance();
+  public Enumeration gen(Object o) {
     Vector res = new Vector();
+    if (!(o instanceof MGeneralizableElement)) return res.elements();
+
+    MClassifier cls = (MClassifier) o;
+    Collection gens = cls.getSpecializations();
+    if (gens == null) return res.elements();
     accumulateDescendants(cls, res);
     return res.elements();
   }
 
 
-  public void accumulateDescendants(GeneralizableElement cls, Vector accum) {
-    Vector gens = cls.getSpecialization();
+  public void accumulateDescendants(MGeneralizableElement cls, Vector accum) {
+    Vector gens = new Vector(cls.getSpecializations());
     if (gens == null) return;
     int size = gens.size();
     for (int i = 0; i < size; i++) {
-      Generalization g = (Generalization) gens.elementAt(i);
-      GeneralizableElement ge = g.getSubtype();
+      MGeneralization g = (MGeneralization) (gens.elementAt(i));
+      MGeneralizableElement ge = g.getChild();
       if (!accum.contains(ge)) {
-	accum.addElement(ge);
+	accum.add(ge);
 	accumulateDescendants(cls, accum);
       }
     }

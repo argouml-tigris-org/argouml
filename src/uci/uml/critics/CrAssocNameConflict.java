@@ -30,13 +30,13 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
 
-/** Well-formedness rule [2] for Namespace. See page 33 of UML 1.1
+/** Well-formedness rule [2] for MNamespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrAssocNameConflict extends CrUML {
@@ -54,16 +54,15 @@ public class CrAssocNameConflict extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Namespace)) return NO_PROBLEM;
-    Namespace ns = (Namespace) dm;
-    Vector oes = ns.getOwnedElement();
+    if (!(dm instanceof MNamespace)) return NO_PROBLEM;
+    MNamespace ns = (MNamespace) dm;
+    Collection oes = ns.getOwnedElements();
     if (oes == null) return NO_PROBLEM;
     Vector namesSeen = new Vector();
-    java.util.Enumeration enum = oes.elements();
-    while (enum.hasMoreElements()) {
-      ElementOwnership eo = (ElementOwnership) enum.nextElement();
-      ModelElement me = (ModelElement) eo.getModelElement();
-      if (!(me instanceof Association)) continue;
+    Iterator enum = oes.iterator();
+    while (enum.hasNext()) {
+      MModelElement me = (MModelElement) enum.next();
+      if (!(me instanceof MAssociation)) continue;
       // needs-more-work: not implemented yet
     }
     return NO_PROBLEM;

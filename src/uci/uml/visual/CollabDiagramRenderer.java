@@ -30,12 +30,12 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import uci.graph.*;
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 
 
 public class CollabDiagramRenderer
@@ -43,8 +43,8 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-    if (node instanceof ClassifierRole) return new FigClassifierRole(gm, node);
-    if (node instanceof Message) return new FigMessage(gm, node);
+    if (node instanceof MClassifierRole) return new FigClassifierRole(gm, node);
+    if (node instanceof MMessage) return new FigMessage(gm, node);
     System.out.println("needs-more-work CollabDiagramRenderer getFigNodeFor");
     return null;
   }
@@ -53,15 +53,15 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
   /** Generally the same code as for the ClassDiagram, since its
       very related to it. */
   public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-    if (edge instanceof AssociationRole) {
-      AssociationRole asr = (AssociationRole) edge;
+    if (edge instanceof MAssociationRole) {
+      MAssociationRole asr = (MAssociationRole) edge;
       FigAssociationRole asrFig = new FigAssociationRole(asr);
-      Vector connections = asr.getAssociationEndRole();
+      Collection connections = asr.getConnections();
       if (connections == null) System.out.println("null connections....");
-      AssociationEndRole fromEnd = (AssociationEndRole) connections.elementAt(0);
-      Classifier fromCls = (Classifier) fromEnd.getType();
-      AssociationEndRole toEnd = (AssociationEndRole) connections.elementAt(1);
-      Classifier toCls = (Classifier) toEnd.getType();
+      MAssociationEndRole fromEnd = (MAssociationEndRole) ((Object[])connections.toArray())[0];
+      MClassifier fromCls = (MClassifier) fromEnd.getType();
+      MAssociationEndRole toEnd = (MAssociationEndRole) ((Object[])connections.toArray())[1];
+      MClassifier toCls = (MClassifier) toEnd.getType();
       FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
       FigNode toFN = (FigNode) lay.presentationFor(toCls);
       asrFig.setSourcePortFig(fromFN);

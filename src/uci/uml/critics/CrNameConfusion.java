@@ -30,17 +30,17 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
-/** Well-formedness rule [1] for Namespace. See page 33 of UML 1.1
+/** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrNameConfusion extends CrUML {
@@ -62,32 +62,31 @@ public class CrNameConfusion extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof ModelElement)) return NO_PROBLEM;
-    ModelElement me = (ModelElement) dm;
+    if (!(dm instanceof MModelElement)) return NO_PROBLEM;
+    MModelElement me = (MModelElement) dm;
     VectorSet offs = computeOffenders(me);
     if (offs.size() > 1) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
-  public VectorSet computeOffenders(ModelElement dm) {
-    Namespace ns = dm.getNamespace();
+  public VectorSet computeOffenders(MModelElement dm) {
+    MNamespace ns = dm.getNamespace();
     VectorSet res = new VectorSet(dm);
-    Name n = dm.getName();
-    if (n == null || n.equals(Name.UNSPEC)) return res;
-    String dmNameStr = n.getBody();
+    String n = dm.getName();
+    if (n == null || n.equals("")) return res;
+    String dmNameStr = n;
     if (dmNameStr == null || dmNameStr.length() == 0) return res;
     String stripped2 = strip(dmNameStr);
     if (ns == null) return res;
-    Vector oes = ns.getOwnedElement();
+    Collection oes = ns.getOwnedElements();
     if (oes == null) return res;
-    java.util.Enumeration enum = oes.elements();
-    while (enum.hasMoreElements()) {
-      ElementOwnership eo = (ElementOwnership) enum.nextElement();
-      ModelElement me2 = (ModelElement) eo.getModelElement();
+    Iterator enum = oes.iterator();
+    while (enum.hasNext()) {
+      MModelElement me2 = (MModelElement) enum.next();
       if (me2 == dm) continue;
-      Name meName = me2.getName();
-      if (meName == null || meName.equals(Name.UNSPEC)) continue;
-      String compareName = meName.getBody();
+      String meName = me2.getName();
+      if (meName == null || meName.equals("")) continue;
+      String compareName = meName;
       if (confusable(stripped2, strip(compareName)) &&
 	  !dmNameStr.equals(compareName)) {
 	res.addElement(me2);
@@ -97,7 +96,7 @@ public class CrNameConfusion extends CrUML {
   }
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    ModelElement me = (ModelElement) dm;
+    MModelElement me = (MModelElement) dm;
     VectorSet offs = computeOffenders(me);
     return new ToDoItem(this, offs, dsgr);
   }
@@ -105,7 +104,7 @@ public class CrNameConfusion extends CrUML {
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
     VectorSet offs = i.getOffenders();
-    ModelElement dm = (ModelElement) offs.firstElement();
+    MModelElement dm = (MModelElement) offs.firstElement();
     if (!predicate(dm, dsgr)) return false;
     VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);

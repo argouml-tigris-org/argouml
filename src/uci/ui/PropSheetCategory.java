@@ -33,7 +33,7 @@ package uci.ui;
 
 import java.awt.*;
 import javax.swing.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import java.lang.reflect.*;
 //import symantec.itools.awt.NumericSpinner;
@@ -344,7 +344,7 @@ public class PropSheetCategory extends PropSheet {
     //System.out.println("updateComponents");
     super.updateComponents();
     updateKeysComps();
-    Enumeration keysEnum = _keysComps.keys();
+    java.util.Enumeration keysEnum = _keysComps.keys();
     while (keysEnum.hasMoreElements()) {
       PropertyDescriptor pd = (PropertyDescriptor) keysEnum.nextElement();
       if (_inUse.containsKey(pd)) show(pd); else hide(pd);

@@ -24,13 +24,13 @@
 
 package uci.uml.util;
 
-import java.util.*;
-
-import java.util.*;
+// import java.util.*;
+import java.util.Enumeration;
+import com.sun.java.util.collections.*;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 /** Utility class to generate the base classes of a class. It
  *  recursively moves up the class hierarchy.  But id does that in a
@@ -39,29 +39,29 @@ import uci.uml.Foundation.Data_Types.*;
 public class GenAncestorClasses implements ChildGenerator {
   public static GenAncestorClasses TheInstance = new GenAncestorClasses();
 
-  public java.util.Enumeration gen(Object o) {
-    if (!(o instanceof GeneralizableElement))
-      return EnumerationEmpty.theInstance();
+  public Enumeration gen(Object o) {
+	Vector res = new Vector();
 
-    Classifier cls = (Classifier) o;
-    Vector gens = cls.getGeneralization();
-    if (gens == null) return EnumerationEmpty.theInstance();
-    Vector res = new Vector();
+    if (!(o instanceof MGeneralizableElement)) return res.elements();
+    MClassifier cls = (MClassifier) o;
+    Collection gens = cls.getGeneralizations();
+    if (gens == null) return res.elements();
+    // Vector res = new Vector();
     accumulateAncestors(cls, res);
     return res.elements();
   }
 
 
-  public void accumulateAncestors(GeneralizableElement cls, Vector accum) {
-    Vector gens = cls.getGeneralization();
+  public void accumulateAncestors(MGeneralizableElement cls, Vector accum) {
+    Vector gens = new Vector(cls.getGeneralizations());
     if (gens == null) return;
     int size = gens.size();
     for (int i = 0; i < size; i++) {
-      Generalization g = (Generalization) gens.elementAt(i);
-      GeneralizableElement ge = g.getSupertype();
+      MGeneralization g = (MGeneralization) (gens).elementAt(i);
+      MGeneralizableElement ge = g.getParent();
       if (!accum.contains(ge)) {
-	accum.addElement(ge);
-	accumulateAncestors(cls, accum);
+		  accum.add(ge);
+		  accumulateAncestors(cls, accum);
       }
     }
   }

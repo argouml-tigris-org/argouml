@@ -30,12 +30,12 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 
 /** Well-formedness rule [1] for Associations. See page 27 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -44,7 +44,7 @@ public class CrDupRoleNames extends CrUML {
 
   public CrDupRoleNames() {
     setHeadline("Change <ocl>self</ocl> Role Names");
-    sd("Association <ocl>self</ocl> has two roles with conflicting names. \n\n"+
+    sd("MAssociation <ocl>self</ocl> has two roles with conflicting names. \n\n"+
        "Clear and unambiguous naming is key to code generation and "+
        "the understandability and maintainability of the design. \n\n"+
        "To fix this, use the \"Next>\" button, or manually select <ocl>self</ocl> "+
@@ -55,18 +55,18 @@ public class CrDupRoleNames extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof IAssociation)) return NO_PROBLEM;
-    IAssociation asc = (IAssociation) dm;
-    Vector conns = asc.getConnection();
-    if (dm instanceof AssociationRole)
-      conns = ((AssociationRole)asc).getAssociationEndRole();
+    if (!(dm instanceof MAssociation)) return NO_PROBLEM;
+    MAssociation asc = (MAssociation) dm;
+    Collection conns = asc.getConnections();
+    if (dm instanceof MAssociationRole)
+      conns = ((MAssociationRole)asc).getConnections();
     Vector namesSeen = new Vector();
-    java.util.Enumeration enum = conns.elements();
-    while (enum.hasMoreElements()) {
-      AssociationEnd ae = (AssociationEnd) enum.nextElement();
-      Name aeName = ae.getName();
-      if (Name.UNSPEC.equals(aeName)) continue;
-      String nameStr = aeName.getBody();
+    Iterator enum = conns.iterator();
+    while (enum.hasNext()) {
+      MAssociationEnd ae = (MAssociationEnd) enum.next();
+      String aeName = ae.getName();
+      if ("".equals(aeName)) continue;
+      String nameStr = aeName;
       if (nameStr.length() == 0) continue;
       if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;
       namesSeen.addElement(nameStr);

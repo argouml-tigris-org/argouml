@@ -27,7 +27,7 @@
 package uci.uml.ui;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 /** A subclass of JPanel that can act as a tab in the DetailsPane or
@@ -53,7 +53,7 @@ public class TabSpawnable extends JPanel implements Cloneable {
   public TabSpawnable(String title, boolean tear) {
     setTitle(title);
     _tear = tear;
-    System.out.println("making " + title);
+    //System.out.println("making " + title);
   }
 
   public Object clone() {

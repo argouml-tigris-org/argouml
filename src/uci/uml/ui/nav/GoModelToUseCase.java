@@ -23,14 +23,14 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 public class GoModelToUseCase implements TreeModelPrereqs {
 
@@ -43,12 +43,11 @@ public class GoModelToUseCase implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof MMPackage) {
-      Vector eos = ((MMPackage)parent).getOwnedElement();
+    if (parent instanceof MPackage) {
+      Vector eos = new Vector(((MPackage)parent).getOwnedElements());
       for (int i = 0; i < eos.size(); i++) {
-	ElementOwnership eo = (ElementOwnership) eos.elementAt(i);
-	ModelElement me = eo.getModelElement();
-	if (me instanceof UseCase) index--;
+	MModelElement me = (MModelElement) eos.elementAt(i);
+	if (me instanceof MUseCase) index--;
 	if (index == 0) return me;
       }
     }
@@ -58,14 +57,13 @@ public class GoModelToUseCase implements TreeModelPrereqs {
 
   public int getChildCount(Object parent) {
     int res = 0;
-    if (parent instanceof MMPackage) {
-      Vector oes = ((MMPackage) parent).getOwnedElement();
+    if (parent instanceof MPackage) {
+      Vector oes = new Vector(((MPackage) parent).getOwnedElements());
       if (oes == null) return 0;
       java.util.Enumeration enum = oes.elements();
       while (enum.hasMoreElements()) {
-	ElementOwnership eo = (ElementOwnership) enum.nextElement();
-	ModelElement me = eo.getModelElement();
-	if (me instanceof UseCase) res++;
+	MModelElement me = (MModelElement)enum.nextElement();
+	if (me instanceof MUseCase) res++;
       }
     }
     return res;
@@ -73,22 +71,21 @@ public class GoModelToUseCase implements TreeModelPrereqs {
 
   public int getIndexOfChild(Object parent, Object child) {
     int res = 0;
-    if (parent instanceof MMPackage) {
-      Vector oes = ((MMPackage)parent).getOwnedElement();
+    if (parent instanceof MPackage) {
+      Vector oes = new Vector(((MPackage)parent).getOwnedElements());
       if (oes == null) return -1;
       java.util.Enumeration enum = oes.elements();
       while (enum.hasMoreElements()) {
-	ElementOwnership eo = (ElementOwnership) enum.nextElement();
-	ModelElement me = eo.getModelElement();
+	MModelElement me = (MModelElement)enum.nextElement();
 	if (me == child) return res;
-	if (me instanceof UseCase) res++;
+	if (me instanceof MUseCase) res++;
       }
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof MMPackage && getChildCount(node) > 0);
+    return !(node instanceof MPackage && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -97,12 +94,12 @@ public class GoModelToUseCase implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Model.class);
+    pros.addElement(MModel.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(UseCase.class);
+    pros.addElement(MUseCase.class);
     return pros;
   }
 

@@ -30,10 +30,10 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
 /** Well-formedness rule [1] for Associations. See page 27 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -41,9 +41,9 @@ import uci.uml.Foundation.Core.*;
 public class CrCrossNamespaceAssoc extends CrUML {
 
   public CrCrossNamespaceAssoc() {
-    setHeadline("Aggregate Role in N-way Association");
-    sd("Each Class or Interface involved in an Association should be in "+
-       "the Namespace of the Association.\n");
+    setHeadline("Aggregate Role in N-way MAssociation");
+    sd("Each Class or MInterface involved in an MAssociation should be in "+
+       "the MNamespace of the MAssociation.\n");
 
     addSupportedDecision(CrUML.decMODULARITY);
     setKnowledgeTypes(Critic.KT_SYNTAX);

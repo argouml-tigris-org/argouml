@@ -31,7 +31,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
@@ -39,10 +39,10 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
-/** Class to display graphics for a UML State in a diagram. */
+/** Class to display graphics for a UML MState in a diagram. */
 
 public class FigUseCase extends FigNodeModelElement {
   //implements VetoableChangeListener, DelayedVChangeListener {
@@ -90,7 +90,7 @@ public class FigUseCase extends FigNodeModelElement {
     setOwner(node);
   }
 
-  public String placeString() { return "new UseCase"; }
+  public String placeString() { return "new MUseCase"; }
 
   public Object clone() {
     FigUseCase figClone = (FigUseCase) super.clone();

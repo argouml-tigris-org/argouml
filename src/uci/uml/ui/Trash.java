@@ -26,11 +26,11 @@
 
 package uci.uml.ui;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
 
 /** In the furture this will be a trash can icon in the project
  * browser.  Deleting an object moves it to the trash.  You can move
@@ -44,27 +44,24 @@ public class Trash {
 
   /** Keys are model objects, values are TrashItems with recovery info */
   public Vector _contents = new Vector();
-  public Model Trash_Model = new Model("Trash");
+  public MModel Trash_Model = new MModelImpl();
 
 
-  protected Trash() { }
+  protected Trash() { 
+	  Trash_Model.setName("Trash");
+  }
 
   public void addItemFrom(Object obj, Vector places) {
     if (obj == null) {
       System.out.println("tried to add null to trash!");
       return;
     }
-    if (obj instanceof ModelElement) {
-      ModelElement me = (ModelElement) obj;
-      try {
-	TrashItem ti = new TrashItem(obj, places);
-	_contents.addElement(ti);
-	me.setNamespace(Trash_Model);
-	//System.out.println("added " + obj + " to trash");
-      }
-      catch (PropertyVetoException pve) {
-	System.out.println("Trash add had a PropertyVetoException");
-      }
+    if (obj instanceof MModelElement) {
+      MModelElement me = (MModelElement) obj;
+	  TrashItem ti = new TrashItem(obj, places);
+	  _contents.addElement(ti);
+	  me.setNamespace(Trash_Model);
+	  //System.out.println("added " + obj + " to trash");
     }
     //needs-more-work: trash diagrams
   }
@@ -80,14 +77,9 @@ public class Trash {
   
   public void recoverItem(Object obj) {
     System.out.println("needs-more-work: recover from trash");
-    if (obj instanceof ModelElement) {
+    if (obj instanceof MModelElement) {
       TrashItem ti = null; //needs-more-work: find in trash
-      try {
-	((ModelElement)obj).recoverFromTrash(ti);
-      }
-      catch (PropertyVetoException pve) {
-	System.out.println("trash recovery had a PropertyVetoException");
-      }
+	  //((MModelElement)obj).recoverFromTrash(ti);
     }
   }
 
@@ -103,7 +95,7 @@ public class Trash {
   public void emptyTrash() {
     System.out.println("needs-more-work: emptyTheTrash not implemented yet");
     System.out.println("Trash contents:");
-    Enumeration keys = _contents.elements();
+    java.util.Enumeration keys = _contents.elements();
     while (keys.hasMoreElements()) {
       Object k = keys.nextElement();
       System.out.println("| " + ((TrashItem)k)._item);
@@ -126,11 +118,13 @@ class TrashItem {
   TrashItem(Object item, Vector places) {
     _item = item;
     _places = places;
-    if (item instanceof ModelElement) {
-      try {
-	_recoveryInfo = ((ModelElement)item).prepareForTrash();
-      }
-      catch (PropertyVetoException pve) { }
+    if (item instanceof MModelElement) {
+		// this can't work with nsuml. Toby
+		/*      try {
+				_recoveryInfo = ((MModelElement)item).prepareForTrash();
+				}
+				catch (PropertyVetoException pve) { }
+		*/
     }
   }
 

@@ -30,7 +30,8 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.beans.*;
 import javax.swing.*;
 
@@ -38,10 +39,11 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.activity_graphs.*;
 
-/** Class to display graphics for a UML State in a diagram. */
+/** Class to display graphics for a UML MState in a diagram. */
 
 public class FigInitialState extends FigStateVertex {
 
@@ -94,21 +96,32 @@ public class FigInitialState extends FigStateVertex {
   // Fig accessors
 
   public Selection makeSelection() {
-    SelectionState sel = new SelectionState(this);
-    sel.setIncomingButtonEnabled(false);
-    if (getOwner() != null) {
-      Vector outs = ((StateVertex)getOwner()).getOutgoing();
-      sel.setOutgoingButtonEnabled(outs == null || outs.size() == 0);
-    }
-    return sel;
+      MPseudostate pstate = null;
+      Selection sel = null;
+      if (getOwner() != null) {
+	  pstate = (MPseudostate)getOwner();
+	  if (pstate.getContainer().getStateMachine() instanceof MActivityGraph) {
+	      sel = new SelectionActionState(this);
+	      ((SelectionActionState)sel).setIncomingButtonEnabled(false);
+	      Collection outs = ((MStateVertex)getOwner()).getOutgoings();
+	      ((SelectionActionState)sel).setOutgoingButtonEnabled(outs == null || outs.size() == 0);
+	  }
+	  else {
+	      sel = new SelectionState(this);
+	      ((SelectionState)sel).setIncomingButtonEnabled(false);
+	      Collection outs = ((MStateVertex)getOwner()).getOutgoings();
+	      ((SelectionState)sel).setOutgoingButtonEnabled(outs == null || outs.size() == 0);
+	  }
+      }
+      return sel;
   }
-
+    
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
     // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
+    if (node instanceof MElementImpl)
+      ((MElementImpl)node).addMElementListener(this);
   }
 
   /** Initial states are fixed size. */

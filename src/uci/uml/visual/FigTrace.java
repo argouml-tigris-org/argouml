@@ -35,7 +35,7 @@ import java.awt.*;
 
 import uci.gef.*;
 import uci.uml.ui.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
 public class FigTrace extends FigEdgeLine {
 

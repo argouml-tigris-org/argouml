@@ -29,7 +29,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -129,7 +129,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     else _curPerspective = (ToDoPerspective) pers.elementAt(0);
 
     //_combo.removeAllItems(); // broken in Swing-1.0.3?
-    Enumeration persEnum = _perspectives.elements();
+    java.util.Enumeration persEnum = _perspectives.elements();
     while (persEnum.hasMoreElements()) 
       _combo.addItem(persEnum.nextElement());
 

@@ -23,11 +23,11 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 public class OperKeyword implements java.io.Serializable {
   public static final OperKeyword NONE = new OperKeyword("none");
@@ -47,16 +47,16 @@ public class OperKeyword implements java.io.Serializable {
   
   private OperKeyword(String label) { _label = label; }
   
-  public static OperKeyword KeywordFor(Operation op) {
-    ScopeKind sk = op.getOwnerScope();
-    CallConcurrencyKind ck = op.getConcurrency();
+  public static OperKeyword KeywordFor(MOperation op) {
+    MScopeKind sk = op.getOwnerScope();
+    MCallConcurrencyKind ck = op.getConcurrency();
     // needs-more-work final?
-    if (CallConcurrencyKind.CONCURRENT.equals(ck)) {
-      if (ScopeKind.CLASSIFIER.equals(ck)) return STATIC;
+    if (MCallConcurrencyKind.CONCURRENT.equals(ck)) {
+      if (MScopeKind.CLASSIFIER.equals(ck)) return STATIC;
       return NONE;
     }
     else {
-      if (ScopeKind.CLASSIFIER.equals(ck)) return STSYNC;
+      if (MScopeKind.CLASSIFIER.equals(ck)) return STSYNC;
       return SYNC;
     }
   }
@@ -71,25 +71,20 @@ public class OperKeyword implements java.io.Serializable {
   
   public String toString() { return _label.toString(); }
 
-  public void set(Operation target) {
-    CallConcurrencyKind ck = CallConcurrencyKind.CONCURRENT;
+  public void set(MOperation target) {
+    MCallConcurrencyKind ck = MCallConcurrencyKind.CONCURRENT;
     if (this == SYNC || this == STSYNC || this == FINSYNC ||
 	this == SFSYNC)
-      ck = CallConcurrencyKind.GUARDED;
+      ck = MCallConcurrencyKind.GUARDED;
     
-    ScopeKind sk = ScopeKind.INSTANCE;
+    MScopeKind sk = MScopeKind.INSTANCE;
     if (this == STATIC || this == STATFIN || this == STSYNC ||
 	this == SFSYNC)
-      sk = ScopeKind.CLASSIFIER;
+      sk = MScopeKind.CLASSIFIER;
       //needs-more-work: final
       
-    try {
       target.setConcurrency(ck);
       target.setOwnerScope(sk);
       // needs-more-work: final
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set operation keywords");
-    }
   }
 } /* end class OperKeyword */

@@ -23,7 +23,7 @@
 
 package uci.uml.ui.todo;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -51,7 +51,7 @@ public class GoListToDecisionsToItems implements TreeModelPrereqs {
       // found and index == 0
       Vector candidates = new Vector();
       Decision dec = (Decision) parent;
-      Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+      java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
       while (itemEnum.hasMoreElements()) {
 	ToDoItem item = (ToDoItem) itemEnum.nextElement();
 	if (item.getPoster().supports(dec)) candidates.addElement(item);
@@ -71,7 +71,7 @@ public class GoListToDecisionsToItems implements TreeModelPrereqs {
       // found and index == 0
       Vector candidates = new Vector();
       Decision dec = (Decision) parent;
-      Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+      java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
       while (itemEnum.hasMoreElements()) {
 	ToDoItem item = (ToDoItem) itemEnum.nextElement();
 	if (item.getPoster().supports(dec)) candidates.addElement(item);
@@ -90,7 +90,7 @@ public class GoListToDecisionsToItems implements TreeModelPrereqs {
       // found and index == 0
       Vector candidates = new Vector();
       Decision dec = (Decision) parent;
-      Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
+      java.util.Enumeration itemEnum = Designer.TheDesigner.getToDoList().elements();
       while (itemEnum.hasMoreElements()) {
 	ToDoItem item = (ToDoItem) itemEnum.nextElement();
 	if (item.getPoster().supports(dec)) candidates.addElement(item);

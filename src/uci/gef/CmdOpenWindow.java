@@ -32,7 +32,8 @@
 package uci.gef;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 /** Cmd to open a user interface dialog window. Given the name of a
  *  subclass of Frame, this Cmd makes a new instance and calls

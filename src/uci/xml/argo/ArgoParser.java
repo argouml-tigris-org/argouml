@@ -27,7 +27,7 @@ import uci.uml.ui.Project;
 import uci.xml.SAXParserBase;
 import uci.xml.XMLElement;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.io.*;
 import java.net.URL;
 

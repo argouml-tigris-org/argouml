@@ -32,13 +32,13 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.model_management.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -60,9 +60,9 @@ public class CrEmptyPackage extends CrUML {
 
   public boolean predicate2(Object dm, Designer dsgr) {
     //System.out.println("predicate2 on " + dm);
-    if (!(dm instanceof Model)) return NO_PROBLEM;
-    Model mod = (Model) dm;
-    Vector elms = mod.getOwnedElement();
+    if (!(dm instanceof MModel)) return NO_PROBLEM;
+    MModel mod = (MModel) dm;
+    Collection elms = mod.getOwnedElements();
     if (elms == null || elms.size() == 0) return PROBLEM_FOUND;
     return NO_PROBLEM;
     //needs-more-work: different critic for packages consisting only

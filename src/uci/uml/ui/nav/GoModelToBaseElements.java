@@ -23,13 +23,13 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
 
 public class GoModelToBaseElements implements TreeModelPrereqs {
 
@@ -42,14 +42,13 @@ public class GoModelToBaseElements implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof MMPackage) {
-      Vector eos = ((MMPackage)parent).getOwnedElement();
+    if (parent instanceof MPackage) {
+      Vector eos = new Vector(((MPackage)parent).getOwnedElements());
       java.util.Enumeration eoEnum = eos.elements();
       while (eoEnum.hasMoreElements()) {
-	ElementOwnership eo = (ElementOwnership) eoEnum.nextElement();
-	ModelElement me = eo.getModelElement();
-	if (me instanceof GeneralizableElement) {
-	  Vector gens = ((GeneralizableElement)me).getGeneralization();
+	MModelElement me = (MModelElement)eoEnum.nextElement();
+	if (me instanceof MGeneralizableElement) {
+	  Collection gens = ((MGeneralizableElement)me).getGeneralizations();
 	  if (gens == null || gens.size() == 0) index--;
 	  if (index == -1) return me;
 	}
@@ -61,15 +60,14 @@ public class GoModelToBaseElements implements TreeModelPrereqs {
   }
   
   public int getChildCount(Object parent) {
-    if (parent instanceof MMPackage) {
+    if (parent instanceof MPackage) {
       int count = 0;
-      Vector eos = ((MMPackage)parent).getOwnedElement();
+      Vector eos = new Vector(((MPackage)parent).getOwnedElements());
       java.util.Enumeration eoEnum = eos.elements();
       while (eoEnum.hasMoreElements()) {
-	ElementOwnership eo = (ElementOwnership) eoEnum.nextElement();
-	ModelElement me = eo.getModelElement();
-	if (me instanceof GeneralizableElement) {
-	  Vector gens = ((GeneralizableElement)me).getGeneralization();
+	MModelElement me =(MModelElement) eoEnum.nextElement();
+	if (me instanceof MGeneralizableElement) {
+	  Collection gens = ((MGeneralizableElement)me).getGeneralizations();
 	  if (gens == null || gens.size() == 0) count++;
 	}
       }
@@ -79,15 +77,14 @@ public class GoModelToBaseElements implements TreeModelPrereqs {
   }
   
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MMPackage) {
+    if (parent instanceof MPackage) {
       int count = 0;
-      Vector eos = ((MMPackage)parent).getOwnedElement();
+      Vector eos = new Vector(((MPackage)parent).getOwnedElements());
       java.util.Enumeration eoEnum = eos.elements();
       while (eoEnum.hasMoreElements()) {
-	ElementOwnership eo = (ElementOwnership) eoEnum.nextElement();
-	ModelElement me = eo.getModelElement();
-	if (me instanceof GeneralizableElement) {
-	  Vector gens = ((GeneralizableElement)me).getGeneralization();
+	MModelElement me = (MModelElement) eoEnum.nextElement();
+	if (me instanceof MGeneralizableElement) {
+	  Collection gens = ((MGeneralizableElement)me).getGeneralizations();
 	  if (gens == null || gens.size() == 0) return count;
 	  count++;
 	}
@@ -98,7 +95,7 @@ public class GoModelToBaseElements implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof MMPackage && getChildCount(node) > 0);
+    return !(node instanceof MPackage && getChildCount(node) > 0);
   }
   
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -109,12 +106,12 @@ public class GoModelToBaseElements implements TreeModelPrereqs {
   
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Model.class);
+    pros.addElement(MModel.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(ModelElement.class);
+    pros.addElement(MModelElement.class);
     return pros;
   }
 

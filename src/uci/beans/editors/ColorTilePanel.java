@@ -35,7 +35,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.applet.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 /** A Panel that shows an array of little colored squares to allow the
  *  user to pick a color. By default I use "netscape colors" which are

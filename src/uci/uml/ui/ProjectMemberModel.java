@@ -25,23 +25,25 @@
 
 package uci.uml.ui;
 
+import uci.uml.util.UUIDManager;
 
 import java.net.URL;
-import java.util.*;
 import java.io.*;
-
 import javax.swing.*;
 
-import uci.util.Util;
 import uci.util.Dbg;
-import uci.gef.*;
 import uci.xml.xmi.XMIParser;
-import uci.uml.Model_Management.Model;
-import uci.uml.ocl.*;
+import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.xmi.*;
 
 /**
  * @author Piotr Kaminski
  */
+
+
+/** This file updated by Jim Holt 1/17/00 for nsuml support **/
+
 
 public class ProjectMemberModel extends ProjectMember {
 
@@ -50,20 +52,18 @@ public class ProjectMemberModel extends ProjectMember {
 
   public static final String MEMBER_TYPE = "xmi";
   public static final String FILE_EXT = "." + MEMBER_TYPE;
-  public static final String XMI_TEE = "/uci/xml/dtd/XMI.tee";
-  public static OCLExpander expander = null;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  private Model _model;
+  private MModel _model;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public ProjectMemberModel(String name, Project p) { super(name, p); }
 
-  public ProjectMemberModel(Model m, Project p) {
+  public ProjectMemberModel(MModel m, Project p) {
     super(p.getBaseName() + FILE_EXT, p);
     setModel(m);
   }
@@ -71,8 +71,8 @@ public class ProjectMemberModel extends ProjectMember {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public Model getModel() { return _model; }
-  protected void setModel(Model model) { _model = model; }
+  public MModel getModel() { return _model; }
+  protected void setModel(MModel model) { _model = model; }
 
   public String getName() {
     return _project.getBaseName() + FILE_EXT;
@@ -87,14 +87,13 @@ public class ProjectMemberModel extends ProjectMember {
 
   public void load() throws java.io.IOException, org.xml.sax.SAXException {
     Dbg.log(getClass().getName(), "Reading " + getURL());
-    XMIParser.SINGLETON.setIDs(getProject().getIDRegistry());
-    XMIParser.SINGLETON.readModels(getProject(), getURL());
+    XMIParser.SINGLETON.readModels(_project,getURL());
+    _model = XMIParser.SINGLETON.getCurModel();
+    _project._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
     Dbg.log(getClass().getName(), "Done reading " + getURL());
   }
 
   public void save(String path, boolean overwrite) {
-    if (expander == null)
-      expander = new OCLExpander(TemplateReader.readFile(XMI_TEE));
 
     if (!path.endsWith("/")) path += "/";
     String fullpath = path + getName();
@@ -111,24 +110,18 @@ public class ProjectMemberModel extends ProjectMember {
 					JOptionPane.YES_NO_OPTION);
 	if (response == JOptionPane.NO_OPTION) return;
       }
-      FileWriter fw = new FileWriter(f);
-      expander.expand(fw, _project, "", "");
-      fw.close();
+
+      // this is TEMP CODE until UUIDs are set when obj is created !!!!!
+      UUIDManager.SINGLETON.createModelUUIDS((MNamespace)_model);
+
+      XMIWriter writer = new XMIWriter(_model,fullpath);
+      writer.gen();
+
       System.out.println("Wrote " + fullpath);
       pb.showStatus("Wrote " + fullpath);
     }
-    catch (FileNotFoundException ignore) {
-      System.out.println("got an FileNotFoundException");
-    }
-    //       catch (PropertyVetoException ignore) {
-    // 	System.out.println("got an PropertyVetoException in Save XMI");
-    //       }
-    //    catch (java.lang.ClassMismatchException ignore) {
-    //      System.out.println("got an ClassMismatchException");
-    //    }
-    catch (IOException ignore) {
-      System.out.println("got an IOException");
-      ignore.printStackTrace();
+    catch (Exception ex) {
+      ex.printStackTrace();
     }
   }
 

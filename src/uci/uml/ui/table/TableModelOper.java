@@ -23,11 +23,12 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.uml.visual.UMLClassDiagram;
-import uci.uml.Foundation.Core.*;
+import uci.uml.util.MMUtil;
+import ru.novosoft.uml.foundation.core.*;
 
 
 class TableModelOper extends TableModelComposite {
@@ -41,14 +42,14 @@ class TableModelOper extends TableModelComposite {
     addColumn(ColumnDescriptor.OperKeyword);
     addColumn(ColumnDescriptor.Return);
     addColumn(ColumnDescriptor.Query);
-    addColumn(ColumnDescriptor.Stereotype);
+    addColumn(ColumnDescriptor.MStereotype);
   }
 
   public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof Classifier)) return new Vector();
-    Classifier cls = (Classifier) t;
-    Vector oper = cls.getBehavioralFeature();
-    return oper;
+    if (!(t instanceof MClassifier)) return new Vector();
+    MClassifier cls = (MClassifier) t;
+    Collection oper = MMUtil.SINGLETON.getOperations(cls);
+    return new Vector(oper);
   }
 
   public String toString() { return "Operations vs. Properties"; }

@@ -29,7 +29,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -37,7 +37,7 @@ import javax.swing.tree.*;
 
 import uci.util.*;
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
 
 public class TabDocs extends TabText {
@@ -52,7 +52,7 @@ public class TabDocs extends TabText {
   protected String genText() {
     //System.out.println("Docstab getting docs for " + _target);
     Object modelObject = _target;
-    if ( !(modelObject instanceof ElementImpl) ) return null;
+    if ( !(modelObject instanceof MElementImpl) ) return null;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)

@@ -31,8 +31,11 @@ package uci.gef;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import javax.swing.JMenu;
+
+import ru.novosoft.uml.*;
 
 import uci.util.*;
 import uci.ui.*;
@@ -45,7 +48,7 @@ import uci.graph.*;
  *  look of FigNodes on NetNodes. */
 
 public class Fig
-implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator  {
+implements Cloneable, java.io.Serializable, PropertyChangeListener, MElementListener, PopupGenerator  {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -331,7 +334,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   /** Draw the Fig on a PrintGraphics. This just calls paint. */
   public void print(Graphics g) { paint(g); }
 
-  /** Method to paint this Fig.  By default it paints an "empty"
+  /** MMethod to paint this Fig.  By default it paints an "empty"
    *  space, subclasses should override this method. */
   public void paint(Graphics g) {
     g.setColor(Color.pink);
@@ -424,7 +427,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
    *  given editor. */
   public void delete() {
     if (_layer != null) { _layer.deleted(this); }
-    setOwner(null);
+    // setOwner(null);
   }
 
   /** Delete whatever application object this Fig is representing, the
@@ -854,10 +857,35 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
   // property change handling
 
   /** By default just pass it up to enclosing groups.  Subclasses of
-   *  FigNode may want to override this method. */
+   *  FigNode may want to override this method. 
+  */
   public void propertyChange(PropertyChangeEvent pce) {
     if (_group != null) _group.propertyChange(pce);
   }
+
+
+
+	public void propertySet(MElementEvent mee) {
+		if (_group != null) _group.propertySet(mee);
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+		if (_group != null) _group.listRoleItemSet(mee);
+	}
+	public void recovered(MElementEvent mee) {
+		if (_group != null) _group.recovered(mee);
+	}
+	public void removed(MElementEvent mee) {
+		//System.out.println("deleting: "+this + mee);
+		if (_group != null) _group.removed(mee);
+		this.delete();
+	}
+	public void roleAdded(MElementEvent mee) {
+		if (_group != null) _group.roleAdded(mee);
+	}
+	public void roleRemoved(MElementEvent mee) {
+		if (_group != null) _group.roleRemoved(mee);
+	}
+
 
   public void preSave() { }
   public void postSave() { }

@@ -30,19 +30,19 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
-/** Well-formedness rule [1] for Generalization. See page 32 of UML 1.1
+/** Well-formedness rule [1] for MGeneralization. See page 32 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrIllegalGeneralization extends CrUML {
 
   public CrIllegalGeneralization() {
-    setHeadline("Illegal Generalization ");
-    sd("Model elements can only be inherit from others of the same type. \n\n"+
+    setHeadline("Illegal MGeneralization ");
+    sd("MModel elements can only be inherit from others of the same type. \n\n"+
        "A legal inheritance hierarchy is needed for code generation "+
        "and the correctness of the design. \n\n"+
        "To fix this, use the \"Next>\" button, or manually select the  "+
@@ -54,10 +54,10 @@ public class CrIllegalGeneralization extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Generalization)) return NO_PROBLEM;
-    Generalization gen = (Generalization) dm;
-    Object cls1 = gen.getSupertype();
-    Object cls2 = gen.getSubtype();
+    if (!(dm instanceof MGeneralization)) return NO_PROBLEM;
+    MGeneralization gen = (MGeneralization) dm;
+    Object cls1 = gen.getParent();
+    Object cls2 = gen.getChild();
     if (cls1 == null || cls2 == null) return NO_PROBLEM;
     java.lang.Class javaClass1 = cls1.getClass();
     java.lang.Class javaClass2 = cls2.getClass();

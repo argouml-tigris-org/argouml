@@ -30,7 +30,8 @@ import uci.argo.kernel.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+//import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -40,8 +41,8 @@ import javax.swing.tree.*;
 import uci.util.*;
 import uci.ui.*;
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.nav.NavPerspective;
 import uci.uml.visual.UMLDiagram;
 
@@ -112,14 +113,14 @@ implements IStatusBar {
   protected static Action _actionCollaborationDiagram = Actions.CollaborationDiagram;
 
   // ----- model elements
-  //protected static Action _actionModel = Actions.Model;
+  //protected static Action _actionModel = Actions.MModel;
   protected static Action _actionAddTopLevelPackage = Actions.AddTopLevelPackage;
   //protected static Action _actionClass = Actions.Class;
-  //protected static Action _actionInterface = Actions.Interface;
-  //protected static Action _actionActor = Actions.Actor;
-  //protected static Action _actionUseCase = Actions.UseCase;
-  //protected static Action _actionState = Actions.State;
-  //protected static Action _actionPseudostate = Actions.Pseudostate;
+  //protected static Action _actionInterface = Actions.MInterface;
+  //protected static Action _actionActor = Actions.MActor;
+  //protected static Action _actionUseCase = Actions.MUseCase;
+  //protected static Action _actionState = Actions.MState;
+  //protected static Action _actionPseudostate = Actions.MPseudostate;
   //protected static Action _actionAttr = Actions.Attr;
   //protected static Action _actionOper = Actions.Oper;
   // -----  shapes
@@ -169,6 +170,8 @@ implements IStatusBar {
 
   ////////////////////////////////////////////////////////////////
   // constructors
+
+	public ProjectBrowser() {new ProjectBrowser("Test",null);}
 
   public ProjectBrowser(String appName, StatusBar sb) {
     super(appName);
@@ -350,6 +353,7 @@ implements IStatusBar {
     createDiagrams.add(Actions.StateDiagram);
     createDiagrams.add(Actions.ActivityDiagram);
     createDiagrams.add(Actions.CollaborationDiagram);
+    createDiagrams.add(Actions.DeploymentDiagram);
 
     JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
     createModelElements.add(Actions.AddTopLevelPackage);
@@ -434,7 +438,11 @@ implements IStatusBar {
     setTarget(_project.getInitialTarget());
     _navPane.forceUpdate();
   }
-  public Project getProject() { return _project; }
+  public Project getProject() { 
+	  // only for testing...
+	  if (_project == null) _project = Project.makeEmptyProject();
+	  return _project; 
+  }
 
   public void updateTitle() {
     if (_project == null) setTitle(null);
@@ -480,23 +488,19 @@ implements IStatusBar {
   }
 
   public void setTarget(Object o) {
-    _multiPane.setTarget(o);
-    _detailsPane.setTarget(o);
-    if (o instanceof Namespace) _project.setCurrentNamespace((Namespace)o);
-    if (o instanceof UMLDiagram) {
-      Namespace m = ((UMLDiagram)o).getNamespace();
-      if (m != null) _project.setCurrentNamespace(m);
-    }
-    if (o instanceof ModelElement) {
-      ElementOwnership eo = ((ModelElement)o).getElementOwnership();
-      if (eo == null) { System.out.println("no path to model"); return; }
-      while (!(eo.getNamespace() instanceof Model)) {
-	if (eo.getNamespace() == null) break;
-	eo = eo.getNamespace().getElementOwnership();
-      }
-      _project.setCurrentNamespace(eo.getNamespace());
-    }
-    Actions.updateAllEnabled();
+	  _multiPane.setTarget(o);
+	  _detailsPane.setTarget(o);
+	  if (o instanceof MNamespace) _project.setCurrentNamespace((MNamespace)o);
+	  if (o instanceof UMLDiagram) {
+		  MNamespace m = ((UMLDiagram)o).getNamespace();
+		  if (m != null) _project.setCurrentNamespace(m);
+	  }
+	  if (o instanceof MModelElement) {
+		  MModelElement eo = (MModelElement)o;
+		  if (eo == null) { System.out.println("no path to model"); return; }
+		  _project.setCurrentNamespace(eo.getNamespace());
+	  }
+	  Actions.updateAllEnabled();
   }
 
   public Object getTarget() {

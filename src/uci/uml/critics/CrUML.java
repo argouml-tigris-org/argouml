@@ -34,8 +34,8 @@ import uci.util.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
 import uci.uml.ocl.OCLEvaluator;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 /** "Abstract" Critic subclass that captures commonalities among all
  *  critics in the UML domain.  This class also defines and registers
@@ -93,7 +93,7 @@ public class CrUML extends Critic {
   Decision("Stereotypes", 5);
 
   public static final Decision decSTATE_MACHINES = new
-  Decision("State Machines", 5);
+  Decision("MState Machines", 5);
 
   public static String CRITICS_SITE = "http://www.ics.uci.edu/pub/arch/uml/critics/";
 
@@ -165,7 +165,7 @@ public class CrUML extends Critic {
     //System.out.println("expanding: " + res);
     if (offs.size() == 0) return res;
     Object off1 = offs.firstElement();
-    if (!(off1 instanceof Element)) return res;
+    if (!(off1 instanceof MElement)) return res;
 
     int searchPos = 0;
     int matchPos = res.indexOf(OCL_START, searchPos);

@@ -23,11 +23,11 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.uml.visual.UMLUseCaseDiagram;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 class TableModelUseCaseByProps extends TableModelComposite {
   ////////////////
@@ -39,7 +39,7 @@ class TableModelUseCaseByProps extends TableModelComposite {
     addColumn(ColumnDescriptor.ClassVisibility);
     addColumn(ColumnDescriptor.ClassKeyword);
     addColumn(ColumnDescriptor.Extends);
-    addColumn(ColumnDescriptor.Stereotype);
+    addColumn(ColumnDescriptor.MStereotype);
   }
 
   public Vector rowObjectsFor(Object t) {
@@ -50,7 +50,7 @@ class TableModelUseCaseByProps extends TableModelComposite {
     int size = nodes.size();
     for (int i = 0; i < size; i++) {
       Object node = nodes.elementAt(i);
-      if (node instanceof UseCase) res.addElement(node);
+      if (node instanceof MUseCase) res.addElement(node);
     }
     return res;
   }

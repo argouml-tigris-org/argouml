@@ -29,7 +29,7 @@ package uci.uml.ui;
 import java.beans.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -39,11 +39,12 @@ import javax.swing.table.*;
 import javax.swing.border.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.model_management.*;
 
 public class TabConstraints extends TabSpawnable
 implements TabModelTarget, DocumentListener, ActionListener,
@@ -51,7 +52,7 @@ implements TabModelTarget, DocumentListener, ActionListener,
 {
   ////////////////////////////////////////////////////////////////
   // instance variables
-  private ModelElementImpl _target;
+  private MModelElementImpl _target;
   private boolean _shouldBeEnabled = false;
   private boolean _updating = false;
   private TableModelConstraints _tableModel = new TableModelConstraints();
@@ -166,15 +167,15 @@ implements TabModelTarget, DocumentListener, ActionListener,
   ////////////////////////////////////////////////////////////////
   // accessors
   public void setTarget(Object t) {
-    if (!(t instanceof ModelElementImpl)) {
+    if (!(t instanceof MModelElementImpl)) {
       _target = null;
       _shouldBeEnabled = false;
       return;
     }
-    _target = (ModelElementImpl) t;
+    _target = (MModelElementImpl) t;
     _shouldBeEnabled = true;
 
-    Vector constraints = _target.getConstraint();
+    Vector constraints = new Vector(_target.getConstraints());
     _tableModel.setTarget(_target);
     //TableColumn descCol = _table.getColumnModel().getColumn(0);
     //descCol.setMinWidth(100);
@@ -194,7 +195,7 @@ implements TabModelTarget, DocumentListener, ActionListener,
   // utility methods
 
   /** Enable/disable buttons based on the current selection */
-  protected void updateEnabled(Constraint selectedConstraint) {
+  protected void updateEnabled(MConstraint selectedConstraint) {
     _addButton.setEnabled(_target != null);
     _removeButton.setEnabled(selectedConstraint != null);
 
@@ -218,13 +219,13 @@ implements TabModelTarget, DocumentListener, ActionListener,
     if (_updating) return;
     //System.out.println(getClass().getName() + " insert");
     if (e.getDocument() == _expr.getDocument()) {
-      Vector cs = _target.getConstraint();
+      Vector cs = new Vector(_target.getConstraints());
       //int row = _table.getSelectionModel().getMinSelectionIndex();
       int row = _table.getSelectedRow();
       if (row != -1 && row < cs.size()) {
 	//System.out.println("setting constraint body: " + row);
-	Constraint c = (Constraint) cs.elementAt(row);
-	c.getBody().getBody().setBody(_expr.getText());
+	MConstraint c = (MConstraint) cs.elementAt(row);
+	c.setBody(new MBooleanExpression("OCL",_expr.getText()));
 	//System.out.println("text=" + _expr.getText());
       }
     }
@@ -241,17 +242,19 @@ implements TabModelTarget, DocumentListener, ActionListener,
   public void actionPerformed(ActionEvent ae) {
     Object src = ae.getSource();
     if (src == _addButton) {
-      Vector cs = _target.getConstraint();
+      Vector cs = new Vector(_target.getConstraints());
       System.out.println("needs-more-work: add constraint dialog box");
-      cs.addElement(new Constraint("EnterName",
-				   "EnterExpression"));
+	  MConstraint c = new MConstraintImpl();
+	  c.setName("EnterName");
+	  c.setBody(new MBooleanExpression("OCL", "EnterExpression"));
+      cs.addElement(c);
       _table.tableChanged(null);
       _table.sizeColumnsToFit(0);
       return;
     }
     if (src == _removeButton) {
       int row = _table.getSelectedRow();
-      Vector cs = _target.getConstraint();
+      Vector cs = new Vector(_target.getConstraints());
       if (row > -1 && row < cs.size()) {
 	cs.removeElementAt(row);
 	_table.tableChanged(null);
@@ -277,16 +280,16 @@ implements TabModelTarget, DocumentListener, ActionListener,
   public void valueChanged(ListSelectionEvent lse) {
     if (lse.getValueIsAdjusting()) return;
     if (lse.getSource() == _table.getSelectionModel()) {
-      Vector cs = _target.getConstraint();
-      Constraint c;
+      Vector cs = new Vector(_target.getConstraints());
+      MConstraint c;
       //int row = lse.getFirstIndex();
       int row = _table.getSelectedRow();
-      if (row != -1 && row < cs.size()) c = (Constraint) cs.elementAt(row);
+      if (row != -1 && row < cs.size()) c = (MConstraint) cs.elementAt(row);
       else c = null;
       //System.out.println("user selected " + row + " = " + c);
       String bodyText = " ";
       if (c != null && c.getBody() != null)
-	bodyText = c.getBody().getBody().getBody();
+	bodyText = c.getBody().getBody();
       //System.out.println("bodytext=" + bodyText);
       _updating = true;
       try {
@@ -304,10 +307,10 @@ implements TabModelTarget, DocumentListener, ActionListener,
 
 
 class TableModelConstraints extends AbstractTableModel
-implements VetoableChangeListener, DelayedVChangeListener {
+implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   ////////////////
   // instance varables
-  ModelElement _target;
+  MModelElement _target;
 
   ////////////////
   // constructor
@@ -315,12 +318,12 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   ////////////////
   // accessors
-  public void setTarget(ModelElement me) {
-    if (_target instanceof ElementImpl)
-      ((ModelElementImpl)_target).removeVetoableChangeListener(this);
+  public void setTarget(MModelElement me) {
+    if (_target instanceof MElementImpl)
+      ((MModelElementImpl)_target).removeMElementListener(this);
     _target = me;
-    if (_target instanceof ElementImpl)
-      ((ModelElementImpl)_target).addVetoableChangeListener(this);
+    if (_target instanceof MElementImpl)
+      ((MModelElementImpl)_target).addMElementListener(this);
     fireTableStructureChanged(); //?
   }
 
@@ -343,17 +346,17 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   public int getRowCount() {
     if (_target == null) return 0;
-    Vector cs = _target.getConstraint();
+    Collection cs = _target.getConstraints();
     if (cs == null) return 0;
     return cs.size();
   }
 
   public Object getValueAt(int row, int col) {
-    Vector cs = _target.getConstraint();
+    Vector cs = new Vector(_target.getConstraints());
     if (cs == null) return "null constraints";
     //if (row == cs.size()) return ""; // allows adding new constraint
-    Constraint c = (Constraint) cs.elementAt(row);
-    if (col == 0) return c.getName().getBody();
+    MConstraint c = (MConstraint) cs.elementAt(row);
+    if (col == 0) return c.getName();
     else return "C-" + row+","+col; // for debugging
   }
 
@@ -362,9 +365,9 @@ implements VetoableChangeListener, DelayedVChangeListener {
     if (columnIndex != 0) return;
     if (!(aValue instanceof String)) return;
     String val = (String) aValue;
-    Vector cs = _target.getConstraint();
+    Vector cs = new Vector(_target.getConstraints());
     //     if (rowIndex >= cs.size()) {
-    //       cs.addElement(new Constraint(val, "expr"));
+    //       cs.addElement(new MConstraint(val, "expr"));
     //       //fireTableStructureChanged();//?
     //     } else
     if (val.equals("")) {
@@ -372,15 +375,27 @@ implements VetoableChangeListener, DelayedVChangeListener {
       //fireTableStructureChanged();//?
     }
     else {
-      Constraint c = (Constraint) cs.elementAt(rowIndex);
-      try { c.setName(new Name(val)); }
-      catch (PropertyVetoException pve) { }
+      MConstraint c = (MConstraint) cs.elementAt(rowIndex);
+      c.setName(val);
       fireTableRowsUpdated(rowIndex, rowIndex);
     }
   }
 
   ////////////////
   // event handlers
+	public void propertySet(MElementEvent mee) {
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	}
+	public void recovered(MElementEvent mee) {
+	}
+	public void removed(MElementEvent mee) {
+	}
+	public void roleAdded(MElementEvent mee) {
+	}
+	public void roleRemoved(MElementEvent mee) {
+	}
+
 
   public void vetoableChange(PropertyChangeEvent pce) {
     DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);

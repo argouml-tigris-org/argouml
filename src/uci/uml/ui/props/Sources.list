@@ -25,5 +25,10 @@ SOURCES= \
 	PropPanelTransition.java \
 	PropPanelTwoEnds.java \
 	PropPanelUMLStateDiagram.java \
+	PropPanelNode.java \
+	PropPanelNodeInstance.java \
+	PropPanelComponent.java \
+	PropPanelComponentInstance.java \
+	PropPanelObject.java \
 	PropPanelUseCase.java
 

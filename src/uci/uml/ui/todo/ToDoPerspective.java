@@ -27,7 +27,7 @@
 package uci.uml.ui.todo;
 
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.io.Serializable;
 import javax.swing.tree.*;

@@ -36,10 +36,10 @@ import java.awt.event.*;         // New event model.
 import java.io.*;                // Object serialization streams.
 import java.util.zip.*;          // Data compression/decompression streams.
 import java.util.Enumeration;    // To store the scribble in.
-import java.util.Vector;         // To store the scribble in.z
+import com.sun.java.util.collections.Vector;
 import java.util.Properties;     // To store printing preferences in.
 
-import uci.uml.ui.*;
+//import uci.uml.ui.*;
 
 
 public class CmdCopy extends Cmd {

@@ -29,7 +29,8 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
@@ -38,10 +39,11 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.ui.*;
 import uci.uml.ui.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.activity_graphs.*;
 
 
 public class UMLActivityDiagram extends UMLDiagram {
@@ -51,27 +53,27 @@ public class UMLActivityDiagram extends UMLDiagram {
 
 
   protected static Action _actionState =
-  new CmdCreateNode(uci.uml.Behavioral_Elements.State_Machines.ActionState.class, "ActionState");
+  new CmdCreateNode(MActionStateImpl.class, "ActionState");
 
   // start state, end state, forks, joins, etc.
   protected static Action _actionStartPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.INITIAL, "Initial");
+  new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
 
   protected static Action _actionFinalPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.FINAL, "FinalState");
+  new ActionCreatePseudostate(MPseudostateKind.FINAL, "FinalState");
 
   protected static Action _actionBranchPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.BRANCH, "Branch");
+  new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
 
   protected static Action _actionForkPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.FORK, "Fork");
+  new ActionCreatePseudostate(MPseudostateKind.FORK, "Fork");
 
   protected static Action _actionJoinPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.JOIN, "Join");
+  new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
 
   protected static Action _actionTransition =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", Transition.class,
+		 "edgeClass", MTransitionImpl.class,
 		 "Transition");
 
 
@@ -88,40 +90,40 @@ public class UMLActivityDiagram extends UMLDiagram {
     catch (PropertyVetoException pve) { }
   }
 
-  public UMLActivityDiagram(Namespace m) {
+  public UMLActivityDiagram(MNamespace m) {
     this();
     setNamespace(m);
-    StateMachine sm = getStateMachine();
+    MStateMachine sm = getStateMachine();
     String name = null;
-    if (sm.getContext() != null && sm.getContext().getName() != Name.UNSPEC &&
-	sm.getContext().getName().getBody().length() > 0) {
-      name = sm.getContext().getName().getBody() + " states";
+    if (sm.getContext() != null && sm.getContext().getName() != null &&
+	sm.getContext().getName().length() > 0) {
+      name = sm.getContext().getName() + " states";
       try { setName(name); }
       catch (PropertyVetoException pve) { }
     }
   }
 
-  public void setNamespace(Namespace m) {
+  public void setNamespace(MNamespace m) {
     super.setNamespace(m);
     StateDiagramGraphModel gm = new StateDiagramGraphModel();
     gm.setNamespace(m);
-    StateMachine sm = null;
-    Vector beh = m.getBehavior();
-    if (beh.size() == 1) sm = (StateMachine) beh.elementAt(0);
+    MStateMachine sm = null;
+    Vector beh = new Vector(m.getBehaviors());
+    if (beh.size() == 1) sm = (MStateMachine) beh.elementAt(0);
     gm.setMachine(sm);
     setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
+    LayerPerspective lay = new LayerPerspective(m.getName(), gm);
     setLayer(lay);
     StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);
     lay.setGraphEdgeRenderer(rend);
   }
 
-  public StateMachine getStateMachine() {
+  public MStateMachine getStateMachine() {
     return ((StateDiagramGraphModel)getGraphModel()).getMachine();
   }
 
-  public void setStateMachine(StateMachine sm) {
+  public void setStateMachine(MStateMachine sm) {
     ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
   }
 

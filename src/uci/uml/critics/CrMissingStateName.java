@@ -30,15 +30,15 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class CrMissingStateName extends CrUML {
 
@@ -56,11 +56,11 @@ public class CrMissingStateName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Element)) return NO_PROBLEM;
-    Element e = (Element) dm;
-    Name myName = e.getName();
-    if (myName == null || myName.equals(Name.UNSPEC) ||
-	 myName.getBody() == null || myName.getBody().length() == 0)
+    if (!(dm instanceof MModelElement)) return NO_PROBLEM;
+    MModelElement e = (MModelElement) dm;
+    String myName = e.getName();
+    if (myName == null || myName.equals("") ||
+	 myName == null || myName.length() == 0)
       return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
@@ -72,14 +72,14 @@ public class CrMissingStateName extends CrUML {
   public void initWizard(Wizard w) {
     if (w instanceof WizMEName) {
       ToDoItem item = w.getToDoItem();
-      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
       String ins = "Set the name of this state.";
       String sug = "StateName";
-      if (me instanceof StateVertex) {
-	StateVertex sv = (StateVertex) me;
+      if (me instanceof MStateVertex) {
+	MStateVertex sv = (MStateVertex) me;
 	int count = 1;
-	if (sv.getParent() != null)
-	  count = sv.getParent().getSubstate().size();
+	if (sv.getContainer() != null)
+	  count = sv.getContainer().getSubvertices().size();
 	sug = "S" + (count + 1);
       }
       ((WizMEName)w).setInstructions(ins);

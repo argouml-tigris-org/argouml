@@ -29,7 +29,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -37,11 +37,13 @@ import javax.swing.tree.*;
 //import javax.swing.border.*;
 
 import uci.gef.Diagram;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.behavior.activity_graphs.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.props.*;
 
 public class TabProps extends TabSpawnable
@@ -72,45 +74,49 @@ implements TabModelTarget {
   /** Preload property panels that are commonly used within the first
    *  few seconds after the tool is launched. */
   protected void initPanels() {
+
+    _panels.put(MClassImpl.class, new PropPanelClass());
     _panels.put(Diagram.class, new PropPanelDiagram());
-    _panels.put(MMClass.class, new PropPanelClass());
-    _panels.put(Interface.class, new PropPanelInterface());
-    uci.uml.Main.addPostLoadAction(new InitPanelsLater(_panels));
+    _panels.put(MModelImpl.class, new PropPanelModel());
+    _panels.put(MUseCaseImpl.class, new PropPanelUseCase());
+
+
+	uci.uml.Main.addPostLoadAction(new InitPanelsLater(_panels));
   }
 
 
   ////////////////////////////////////////////////////////////////
   // accessors
-  public void setTarget(Object t) {
-    _target = t;
-    if (_lastPanel != null) remove(_lastPanel);
-    if (t == null) {
-      add(_blankPanel, BorderLayout.NORTH);
-      _shouldBeEnabled = false;
-      _lastPanel = _blankPanel;
-      return;
-    }
-    _shouldBeEnabled = true;
-    TabModelTarget newPanel = null;
-    Class targetClass = t.getClass();
-    while (targetClass != null && newPanel == null) {
-      newPanel = findPanelFor(targetClass);
-      targetClass = targetClass.getSuperclass();
-    }
-    if (newPanel instanceof JPanel) {
-      newPanel.setTarget(_target);
-      add((JPanel) newPanel, BorderLayout.NORTH);
-      _shouldBeEnabled = true;
-      _lastPanel = (JPanel) newPanel;
-    }
-    else {
-      add(_blankPanel, BorderLayout.NORTH);
-      _shouldBeEnabled = false;
-      _lastPanel = _blankPanel;
-    }
-    validate();
-    repaint();
-  }
+	public void setTarget(Object t) {
+		_target = t;
+		if (_lastPanel != null) remove(_lastPanel);
+		if (t == null) {
+			add(_blankPanel, BorderLayout.NORTH);
+			_shouldBeEnabled = false;
+			_lastPanel = _blankPanel;
+			return;
+		}
+		_shouldBeEnabled = true;
+		TabModelTarget newPanel = null;
+		Class targetClass = t.getClass();
+		while (targetClass != null && newPanel == null) {
+			newPanel = findPanelFor(targetClass);
+			targetClass = targetClass.getSuperclass();
+		}
+		if (newPanel instanceof JPanel) {
+			newPanel.setTarget(_target);
+			add((JPanel) newPanel, BorderLayout.NORTH);
+			_shouldBeEnabled = true;
+			_lastPanel = (JPanel) newPanel;
+		}
+		else {
+			add(_blankPanel, BorderLayout.NORTH);
+			_shouldBeEnabled = false;
+			_lastPanel = _blankPanel;
+		}
+		validate();
+		repaint();
+	}
 
   public void refresh() { setTarget(_target); }
 
@@ -134,7 +140,7 @@ implements TabModelTarget {
     String targetClassName = targetClass.getName();
     int lastDot = targetClassName.lastIndexOf(".");
     if (lastDot > 0) targetClassName = targetClassName.substring(lastDot+1);
-    if (targetClassName.startsWith("MM"))
+    if (targetClassName.startsWith("M"))
       targetClassName = targetClassName.substring(2);
     try {
       String panelClassName = pack + "." + base + targetClassName;
@@ -161,19 +167,42 @@ class InitPanelsLater implements Runnable {
   /** Load commonly used property panels, but not those that are
    *  commonly used within a few seconds of the tool being launched. */ 
   public void run() {
-    // preload commonly used property panels
-    _panels.put(Model.class, new PropPanelModel());
-    _panels.put(State.class, new PropPanelState());
-    _panels.put(Pseudostate.class, new PropPanelPseudostate());
-    _panels.put(UseCase.class, new PropPanelUseCase());
-    _panels.put(Actor.class, new PropPanelActor());
-    _panels.put(Realization.class, new PropPanelRealization());
-    _panels.put(Association.class, new PropPanelAssociation());
-    _panels.put(Generalization.class, new PropPanelGeneralization());
-    _panels.put(Transition.class, new PropPanelTransition());
-    _panels.put(Attribute.class, new PropPanelAttribute());
-    _panels.put(Operation.class, new PropPanelOperation());
-    _panels.put(Instance.class, new PropPanelInstance());
-    _panels.put(Link.class, new PropPanelLink());
+  //   // preload commonly used property panels
+
+	  //fill the Hashtable. alphabetical order please... ;-)
+    _panels.put(MActionStateImpl.class, new PropPanelActionState());
+    _panels.put(MActorImpl.class, new PropPanelActor());
+    _panels.put(MAssociationImpl.class, new PropPanelAssociation());
+    _panels.put(MAssociationRoleImpl.class, new PropPanelAssociationRole());
+    _panels.put(MAttributeImpl.class, new PropPanelAttribute());
+    // _panels.put(MClassImpl.class, new PropPanelClass());
+    _panels.put(MClassifierRoleImpl.class, new PropPanelClassifierRole());
+    _panels.put(MDependencyImpl.class, new PropPanelDependency());
+    //_panels.put(Diagram.class, new PropPanelDiagram());
+    _panels.put(MGeneralizationImpl.class, new PropPanelGeneralization());
+    _panels.put(MInstanceImpl.class, new PropPanelInstance());
+    _panels.put(MComponentInstanceImpl.class, new PropPanelComponentInstance());
+    _panels.put(MComponentImpl.class, new PropPanelComponent());
+    _panels.put(MNodeInstanceImpl.class, new PropPanelNodeInstance());
+    _panels.put(MNodeImpl.class, new PropPanelNode());
+    _panels.put(MObjectImpl.class, new PropPanelObject());
+    _panels.put(MInstanceImpl.class, new PropPanelInstance());
+    _panels.put(MInterfaceImpl.class, new PropPanelInterface());
+    _panels.put(MLinkImpl.class, new PropPanelLink());
+    _panels.put(MMessageImpl.class, new PropPanelMessage());
+    //_panels.put(MModelImpl.class, new PropPanelModel());
+
+	// how are Notes handled? Toby, nsuml
+    //_panels.put(MNoteImpl.class, new PropPanelNote());
+    _panels.put(MOperationImpl.class, new PropPanelOperation());
+    _panels.put(MPseudostateImpl.class, new PropPanelPseudostate());
+	//    _panels.put(Realization.class, new PropPanelRealization());
+	// Realization in nsuml!!!
+    _panels.put(MStateImpl.class, new PropPanelState());
+    _panels.put(String.class, new PropPanelString());
+    _panels.put(MTransitionImpl.class, new PropPanelTransition());
+    //_panels.put(MUseCaseImpl.class, new PropPanelUseCase());
+
+ 	System.out.println("done preloading Property Panels");
   }
 } /* end class InitPanelsLater */

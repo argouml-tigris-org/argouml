@@ -31,7 +31,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
@@ -39,11 +39,11 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 
 
-/** Class to display graphics for a UML Instance in a diagram. */
+/** Class to display graphics for a UML MInstance in a diagram. */
 
 public class FigInstance extends FigNodeModelElement {
 
@@ -91,7 +91,7 @@ public class FigInstance extends FigNodeModelElement {
     setOwner(node);
   }
 
-  public String placeString() { return "new Instance"; }
+  public String placeString() { return "new MInstance"; }
 
   public Object clone() {
     FigInstance figClone = (FigInstance) super.clone();

@@ -30,20 +30,20 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
-/** Well-formedness rule [2] for AssociationClass. See page 28 of UML 1.1
+/** Well-formedness rule [2] for MAssociationClass. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrCircularAssocClass extends CrUML {
 
   public CrCircularAssocClass() {
-    setHeadline("Circular Association");
+    setHeadline("Circular MAssociation");
     sd("AssociationClasses cannot include roles that refer directly "+
-       "back to the AssociationClass.");
+       "back to the MAssociationClass.");
 
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     setKnowledgeTypes(Critic.KT_SEMANTICS);

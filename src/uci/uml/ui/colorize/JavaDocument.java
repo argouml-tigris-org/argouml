@@ -43,7 +43,7 @@
 package uci.uml.ui.colorize;
 
 import java.io.*;
-import java.util.Vector;
+
 import java.awt.Color;
 
 import javax.swing.event.*;

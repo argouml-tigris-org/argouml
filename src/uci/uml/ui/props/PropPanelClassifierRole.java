@@ -33,7 +33,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -44,10 +44,10 @@ import javax.swing.table.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
 
@@ -123,9 +123,9 @@ implements ItemListener, DocumentListener {
   /** Set the values to be shown in all widgets based on model */
   protected void setTargetInternal(Object t) {
     super.setTargetInternal(t);
-    ClassifierRole cr = (ClassifierRole) t;
-    if (cr.getBaseString() != null)
-      _baseField.setText(cr.getBaseString().trim());
+    MClassifierRole cr = (MClassifierRole) t;
+    if (cr.getUMLClassName() != null)
+      _baseField.setText(cr.getUMLClassName().trim());
     // set the values to be shown in all widgets based on model
 
     //_tableModel.setTarget(cr);
@@ -159,15 +159,17 @@ implements ItemListener, DocumentListener {
   }
 
   protected void setTargetBaseString(String s) {
-    if (_target == null) return;
-    if (_inChange) return;
-    try {
-      ((ClassifierRole)_target).setBaseString(s);
-    }
-    catch (PropertyVetoException pve) { } 
-  }
 
-
+	  // what the hell should this do? Toby, nsuml
+	  /*    if (_target == null) return;
+			if (_inChange) return;
+			try {
+			((MClassifierRole)_target).setBaseString(s);
+			}
+			catch (PropertyVetoException pve) { } 
+			
+	  */			}
+			
 
 } /* end class PropPanelClassifierRole */
 

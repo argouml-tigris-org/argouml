@@ -30,14 +30,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 public class CrUnconventionalPackName extends CrUML {
@@ -58,11 +58,11 @@ public class CrUnconventionalPackName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Model)) return NO_PROBLEM;
-    Model m = (Model) dm;
-    Name myName = m.getName();
-    if (myName == null || myName.equals(Name.UNSPEC)) return NO_PROBLEM;
-    String nameStr = myName.getBody();
+    if (!(dm instanceof MModel)) return NO_PROBLEM;
+    MModel m = (MModel) dm;
+    String myName = m.getName();
+    if (myName == null || myName.equals("")) return NO_PROBLEM;
+    String nameStr = myName;
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
     int size = nameStr.length();
     for (int i = 0; i < size; i++) {
@@ -79,9 +79,9 @@ public class CrUnconventionalPackName extends CrUML {
     public void initWizard(Wizard w) {
     if (w instanceof WizMEName) {
       ToDoItem item = w.getToDoItem();
-      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
       String ins = "Change the name of this package.";
-      String nameStr = me.getName().getBody();
+      String nameStr = me.getName();
       String sug = "";
       int size = nameStr.length();
       for (int i = 0; i < size; i++) {

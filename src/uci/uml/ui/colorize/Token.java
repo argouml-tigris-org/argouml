@@ -148,9 +148,9 @@ public class Token implements Serializable {
 	}
     }
     
-    public static class Expression extends Token {
+    public static class MExpression extends Token {
 
-	Expression(String representation, int scanValue) {
+	MExpression(String representation, int scanValue) {
 	    super(representation, scanValue);
 	}
     }
@@ -361,17 +361,17 @@ public class Token implements Serializable {
     public static final Token BOOLEAN =     new Type(Constants.opNames[Constants.BOOLEAN],
 						     Constants.BOOLEAN);
     /*
-     * Expression keywords
+     * MExpression keywords
      */
-    public static final Token TRUE =        new Expression(Constants.opNames[Constants.TRUE],
+    public static final Token TRUE =        new MExpression(Constants.opNames[Constants.TRUE],
 							   Constants.TRUE);
-    public static final Token FALSE =       new Expression(Constants.opNames[Constants.FALSE],
+    public static final Token FALSE =       new MExpression(Constants.opNames[Constants.FALSE],
 							   Constants.FALSE);
-    public static final Token THIS =        new Expression(Constants.opNames[Constants.THIS],
+    public static final Token THIS =        new MExpression(Constants.opNames[Constants.THIS],
 							   Constants.THIS);
-    public static final Token SUPER =       new Expression(Constants.opNames[Constants.SUPER],
+    public static final Token SUPER =       new MExpression(Constants.opNames[Constants.SUPER],
 							   Constants.SUPER);
-    public static final Token NULL =        new Expression(Constants.opNames[Constants.NULL],
+    public static final Token NULL =        new MExpression(Constants.opNames[Constants.NULL],
 							   Constants.NULL);
     /*
      * Statement keywords

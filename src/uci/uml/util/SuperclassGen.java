@@ -24,10 +24,11 @@
 
 package uci.uml.util;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
 /** Utility class to generate the children of a class.  In this case
  *  the "children" of a class are it's base classes. */
@@ -35,14 +36,15 @@ import uci.uml.Foundation.Core.*;
 
 public class SuperclassGen implements ChildGenerator {
   public Enumeration gen(Object o) {
-    GeneralizableElement ge = (GeneralizableElement) o;
-    Vector gens = ge.getGeneralization();
-    if (gens == null) return EnumerationEmpty.theInstance();
-    Vector res = new Vector();
-    java.util.Enumeration enum = gens.elements();
-    while (enum.hasMoreElements()) {
-      Generalization g = (Generalization) enum.nextElement();
-      res.addElement(g.getSupertype());
+	Vector res = new Vector();
+
+    MGeneralizableElement ge = (MGeneralizableElement) o;
+    Collection gens = ge.getGeneralizations();
+    if (gens == null) return res.elements();
+    Iterator enum = gens.iterator();
+    while (enum.hasNext()) {
+      MGeneralization g = (MGeneralization) enum.next();
+      res.add(g.getParent());
     }
     return res.elements();
   }

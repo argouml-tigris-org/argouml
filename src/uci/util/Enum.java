@@ -31,7 +31,8 @@
 
 package uci.util;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 public class Enum implements Enumeration, java.io.Serializable {
 

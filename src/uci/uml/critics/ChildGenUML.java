@@ -31,13 +31,13 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.util.*;
 import uci.gef.*;
 import uci.uml.ui.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.model_management.*;
 
 /** This class gives critics access to parts of the UML model of the
  *  design.  It defines a gen() function that returns the "children"
@@ -50,8 +50,8 @@ import uci.uml.Model_Management.*;
 public class ChildGenUML implements ChildGenerator {
   public static ChildGenUML SINGLETON = new ChildGenUML();
 
-  /** Reply a Enumeration of the children of the given Object */
-  public Enumeration gen(Object o) {
+  /** Reply a java.util.Enumeration of the children of the given Object */
+  public java.util.Enumeration gen(Object o) {
     if (o instanceof Project) {
       Project p = (Project) o;
       return new EnumerationComposite(p.getModels().elements(),
@@ -63,41 +63,40 @@ public class ChildGenUML implements ChildGenerator {
       if (figs != null) return figs.elements();
     }
 
-    if (o instanceof MMPackage) {
-      Vector ownedElements = ((MMPackage)o).getOwnedElement();
+    if (o instanceof MPackage) {
+      Vector ownedElements = new Vector(((MPackage)o).getOwnedElements());
       if (ownedElements != null) return ownedElements.elements();
     }
 
-    if (o instanceof ElementOwnership) {
-      ModelElement me = ((ElementOwnership)o).getModelElement();
+    if (o instanceof MElementImport) {
+      MModelElement me = ((MElementImport)o).getModelElement();
       return new EnumerationSingle(me);  //wasteful!
     }
 
-    if (o instanceof ModelElement) {
-      Vector behavior = ((ModelElement)o).getBehavior();
+    if (o instanceof MModelElement) {
+      Vector behavior = new Vector(((MModelElement)o).getBehaviors());
       if (behavior != null) behavior.elements();
     }
 
     // needs-more-work: associationclasses fit both of the next 2 cases
 
-    if (o instanceof Classifier) {
-      Classifier cls = (Classifier) o;
+    if (o instanceof MClassifier) {
+      MClassifier cls = (MClassifier) o;
       EnumerationComposite res = new EnumerationComposite();
-      res.addSub(cls.getBehavioralFeature());
-      res.addSub(cls.getStructuralFeature());
+      res.addSub(new Vector(cls.getFeatures()));
 
-      Vector sms = cls.getBehavior();
-      StateMachine sm = null;
-      if (sms != null && sms.size() > 0) sm = (StateMachine) sms.elementAt(0);
+      Vector sms = new Vector(cls.getBehaviors());
+      MStateMachine sm = null;
+      if (sms != null && sms.size() > 0) sm = (MStateMachine) sms.elementAt(0);
       if (sm != null) res.addSub(new EnumerationSingle(sm));
       return res;
     }
 
-    if (o instanceof IAssociation) {
-      IAssociation asc = (IAssociation) o;
-      Vector assocEnds = asc.getConnection();
+    if (o instanceof MAssociation) {
+      MAssociation asc = (MAssociation) o;
+      Vector assocEnds = new Vector(asc.getConnections());
       if (assocEnds != null) return assocEnds.elements();
-      //needs-more-work: AssociationRole
+      //needs-more-work: MAssociationRole
     }
 
 
@@ -105,19 +104,19 @@ public class ChildGenUML implements ChildGenerator {
 
 
     // // needed?
-    if (o instanceof StateMachine) {
-      StateMachine sm = (StateMachine) o;
+    if (o instanceof MStateMachine) {
+      MStateMachine sm = (MStateMachine) o;
       EnumerationComposite res = new EnumerationComposite();
-      State top = sm.getTop();
+      MState top = sm.getTop();
       if (top != null) res.addSub(new EnumerationSingle(top));
-      res.addSub(sm.getTransitions());
+      res.addSub(new Vector(sm.getTransitions()));
       return res;
     }
 
     // needed?
-    if (o instanceof CompositeState) {
-      CompositeState cs = (CompositeState) o;
-      Vector substates = cs.getSubstate();
+    if (o instanceof MCompositeState) {
+      MCompositeState cs = (MCompositeState) o;
+      Vector substates = new Vector(cs.getSubvertices());
       if (substates != null) return substates.elements();
     }
 

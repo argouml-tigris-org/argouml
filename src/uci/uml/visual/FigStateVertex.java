@@ -31,7 +31,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
@@ -39,11 +39,11 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 /** Abstract class to with common behavior for nestable nodes in UML
-    State diagrams. */
+    MState diagrams. */
 
 public abstract class FigStateVertex extends FigNodeModelElement {
 
@@ -62,24 +62,21 @@ public abstract class FigStateVertex extends FigNodeModelElement {
 
   public void setEnclosingFig(Fig encloser) {
     super.setEnclosingFig(encloser);
-    if (!(getOwner() instanceof StateVertex)) return;
-    StateVertex sv = (StateVertex) getOwner();
-    CompositeState m = null;
-    if (encloser != null && (encloser.getOwner() instanceof CompositeState)) {
-      m = (CompositeState) encloser.getOwner();
+    if (!(getOwner() instanceof MStateVertex)) return;
+    MStateVertex sv = (MStateVertex) getOwner();
+    MCompositeState m = null;
+    if (encloser != null && (encloser.getOwner() instanceof MCompositeState)) {
+      m = (MCompositeState) encloser.getOwner();
     }
     else {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       if (pb.getTarget() instanceof UMLDiagram) {
 	GraphModel gm = ((UMLDiagram)pb.getTarget()).getGraphModel();
 	StateDiagramGraphModel sdgm =  (StateDiagramGraphModel) gm;
-	m = (CompositeState) sdgm.getMachine().getTop();
+	m = (MCompositeState) sdgm.getMachine().getTop();
       }
     }
-    try { sv.setParent(m); }
-    catch (Exception e) {
-      System.out.println("could not set parent state");
-    }
+    sv.setContainer(m);
   }
 
 

@@ -26,26 +26,27 @@
 
 package uci.uml.ui;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.beans.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 public class DocumentationManager {
 
   public static String getDocs(Object o) {
-    if (o instanceof ElementImpl) {
-      Vector tValues = ((ElementImpl) o).getTaggedValue();
+    if (o instanceof MModelElementImpl) {
+      Collection tValues = ((MModelElement) o).getTaggedValues();
       if (!tValues.isEmpty()) {
-        java.util.Enumeration enum = tValues.elements();
-        while(enum.hasMoreElements()) {
-          TaggedValue tv = (TaggedValue) enum.nextElement();
-          if (tv.getTag().getBody().equals("javadocs"))
-            return tv.getValue().getBody();
-        }
+		  Iterator iter = tValues.iterator();
+		  while(iter.hasNext()) {
+			  MTaggedValue tv = (MTaggedValue)iter.next();
+			  if (tv.getTag().equals("javadocs"))
+				  return tv.getValue();
+		  }
       }
       else return defaultFor(o);
     }
@@ -53,32 +54,14 @@ public class DocumentationManager {
   }
 
   public static void setDocs(Object o, String s) {
-    Vector tValues = ((ElementImpl) o).getTaggedValue();
-    if (!tValues.isEmpty()) {
-      java.util.Enumeration enum = tValues.elements();
-      while(enum.hasMoreElements()) {
-        TaggedValue tv = (TaggedValue) enum.nextElement();
-        if (tv.getTag().getBody().equals("javadocs"))
-          tv.getValue().setBody(s);
-      }
-    }
-    else {
-      TaggedValue newTag = new TaggedValue(new Name("javadocs"),
-					   new Uninterpreted(s));
-      try {
-        ((ElementImpl) o).addTaggedValue(newTag);
-      }
-      catch (PropertyVetoException pve) {
-	System.out.println("pve while settig java docs");
-      }
-    }
+	  ((MModelElement)o).setTaggedValue("javadocs", s);
   }
 
   ////////////////////////////////////////////////////////////////
   // default documentation
 
   public static String defaultFor(Object o) {
-    if (o instanceof MMClass) {
+    if (o instanceof MClass) {
       return
 	"/** A class that represents ...\n"+
 	" * \n"+
@@ -86,20 +69,20 @@ public class DocumentationManager {
 	" * @author your_name_here\n"+
 	" */";
     }
-    if (o instanceof Attribute) {
+    if (o instanceof MAttribute) {
       return
 	"/** An attribute that represents ...\n"+
 	" */";
     }
 
-    if (o instanceof Operation) {
+    if (o instanceof MOperation) {
       return
 	"/** An operation that does ...\n"+
 	" * \n"+
 	" * @param firstParamName  a description of this parameter\n"+
 	" */";
     }
-    if (o instanceof Interface) {
+    if (o instanceof MInterface) {
       return
 	"/** A interface defining operations expected of ...\n"+
 	" * \n"+
@@ -107,7 +90,7 @@ public class DocumentationManager {
 	" * @author your_name_here\n"+
 	" */";
     }
-    if (o instanceof ModelElement) {
+    if (o instanceof MModelElement) {
       return
 	"/**\n"+
 	" * \n"+

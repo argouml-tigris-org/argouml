@@ -30,10 +30,11 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
@@ -60,12 +61,25 @@ public class CrUselessInterface extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Interface)) return false;
-    Interface intf = (Interface) dm;
-    Vector realization = intf.getRealization();
+    if (!(dm instanceof MInterface)) return false;
+    MInterface intf = (MInterface) dm;
+    Collection realization = getRealizations(intf);
     if (realization == null || realization.size() == 0)
       return PROBLEM_FOUND;
     else return NO_PROBLEM;
   }
+  private Collection getRealizations(MClassifier cls)
+  {
+     Vector res = new Vector();
+     Collection deps = cls.getSupplierDependencies();
+     if (deps==null) return res;
+     for (Iterator iter = deps.iterator(); iter.hasNext();) {
+       MDependency dependency = (MDependency)iter.next();
+       MStereotype stereotype = dependency.getStereotype();
+       if ((stereotype==null) || ("realize".equals(stereotype.getName())))
+         res.addAll(dependency.getClients());
+     };
+     return res;
+  };
 
 } /* end class CrUselessInterface */

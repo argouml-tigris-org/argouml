@@ -30,14 +30,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 
-/** Well-formedness rule [2] for Classifier. See page 29 of UML 1.1
+/** Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 //needs-more-work: split into one critic for inherited problems and
@@ -46,7 +46,7 @@ import uci.uml.Behavioral_Elements.Collaborations.*;
 public class CrOppEndVsAttr extends CrUML {
 
   public CrOppEndVsAttr() {
-    setHeadline("Rename Role or Attribute");
+    setHeadline("Rename Role or MAttribute");
     sd("One of the attributes of <ocl>self</ocl> has the same name as "+
        "<ocl>self</ocl>'s role in an association.  Attributes and roles "+
        "should have distinct names.  "+
@@ -65,37 +65,40 @@ public class CrOppEndVsAttr extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
+    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+    MClassifier cls = (MClassifier) dm;
     Vector namesSeen = new Vector();
-    Vector str = cls.getStructuralFeature();
-    java.util.Enumeration enum = str.elements();
+    Collection str = cls.getFeatures();
+    Iterator enum = str.iterator();
     // warn about inheritied name conflicts, different critic?
-    while (enum.hasMoreElements()) {
-      StructuralFeature sf = (StructuralFeature) enum.nextElement();
-      Name sfName = sf.getName();
-      if (Name.UNSPEC.equals(sfName)) continue;
-      String nameStr = sfName.getBody();
+    while (enum.hasNext()) {
+      Object o = enum.next();
+      if (!(o instanceof MStructuralFeature))
+        continue;
+      MStructuralFeature sf = (MStructuralFeature) o;
+      String sfName = sf.getName();
+      if ("".equals(sfName)) continue;
+      String nameStr = sfName;
       if (nameStr.length() == 0) continue;
       namesSeen.addElement(nameStr);
     }
-    Vector assocEnds = cls.getAssociationEnd();
-    enum = assocEnds.elements();
+    Collection assocEnds = cls.getAssociationEnds();
+    enum = assocEnds.iterator();
     // warn about inheritied name conflicts, different critic?
-    while (enum.hasMoreElements()) {
-      AssociationEnd myAe = (AssociationEnd) enum.nextElement();
-      Association asc = (Association) myAe.getAssociation();
-      Vector conn = asc.getConnection();
-      if (asc instanceof AssociationRole)
-      conn = ((AssociationRole)asc).getAssociationEndRole();
+    while (enum.hasNext()) {
+      MAssociationEnd myAe = (MAssociationEnd) enum.next();
+      MAssociation asc = (MAssociation) myAe.getAssociation();
+      Collection conn = asc.getConnections();
+      if (asc instanceof MAssociationRole)
+      conn = ((MAssociationRole)asc).getConnections();
       if (conn == null) continue;
-      java.util.Enumeration enum2 = conn.elements();
-      while (enum2.hasMoreElements()) {
-	AssociationEnd ae = (AssociationEnd) enum2.nextElement();
+      Iterator enum2 = conn.iterator();
+      while (enum2.hasNext()) {
+	MAssociationEnd ae = (MAssociationEnd) enum2.next();
 	if (ae.getType() == cls) continue;
-	Name aeName = ae.getName();
-	if (Name.UNSPEC.equals(aeName)) continue;
-	String aeNameStr = aeName.getBody();
+	String aeName = ae.getName();
+	if ("".equals(aeName)) continue;
+	String aeNameStr = aeName;
 	if (aeNameStr == null || aeNameStr.length() == 0) continue;
 	if (namesSeen.contains(aeNameStr)) return PROBLEM_FOUND;
       }

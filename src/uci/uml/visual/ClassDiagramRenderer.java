@@ -30,13 +30,15 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 import uci.graph.*;
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import uci.uml.util.MMUtil;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 
 // could be singleton
 
@@ -47,12 +49,12 @@ import uci.uml.Behavioral_Elements.Common_Behavior.*;
  * <pre>
  *  UML Object      ---  Fig
  *  ---------------------------------------
- *  MMClass         ---  FigClass
- *  Interface       ---  FigClass (needs-more-work?)
- *  Generalization  ---  FigGeneralization
+ *  MClass         ---  FigClass
+ *  MInterface       ---  FigClass (needs-more-work?)
+ *  MGeneralization  ---  FigGeneralization
  *  Realization     ---  FigGeneralization (needs-more-work)
- *  Association     ---  FigAssociation
- *  Dependency      ---  FigDependency
+ *  MAssociation     ---  FigAssociation
+ *  MDependency      ---  FigDependency
  *  </pre>
  */
 
@@ -61,26 +63,27 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-    if (node instanceof MMClass) return new FigClass(gm, node);
-    else if (node instanceof Interface) return new FigInterface(gm, node);
-    else if (node instanceof Instance) return new FigInstance(gm, node);
-    else if (node instanceof Model) return new FigPackage(gm, node);
-    System.out.println("needs-more-work ClassDiagramRenderer getFigNodeFor");
+    if (node instanceof MClass) return new FigClass(gm, node);
+    else if (node instanceof MInterface) return new FigInterface(gm, node);
+    else if (node instanceof MInstance) return new FigInstance(gm, node);
+    else if (node instanceof MModel) return new FigPackage(gm, node);
+    System.out.println("needs-more-work ClassDiagramRenderer getFigNodeFor "+node);
     return null;
   }
 
   /** Return a Fig that can be used to represent the given edge */
   public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
     //System.out.println("making figedge for " + edge);
-    if (edge instanceof Association) {
-      Association asc = (Association) edge;
+    if (edge instanceof MAssociation) {
+      MAssociation asc = (MAssociation) edge;
       FigAssociation ascFig = new FigAssociation(asc);
-      Vector connections = asc.getConnection();
+      Collection connections = asc.getConnections();
       if (connections == null) System.out.println("null connections....");
-      AssociationEnd fromEnd = (AssociationEnd) connections.elementAt(0);
-      Classifier fromCls = (Classifier) fromEnd.getType();
-      AssociationEnd toEnd = (AssociationEnd) connections.elementAt(1);
-      Classifier toCls = (Classifier) toEnd.getType();
+	  Object[] connArray = connections.toArray();
+      MAssociationEnd fromEnd = (MAssociationEnd) connArray[0];
+      MClassifier fromCls = (MClassifier) fromEnd.getType();
+      MAssociationEnd toEnd = (MAssociationEnd) connArray[1];
+      MClassifier toCls = (MClassifier) toEnd.getType();
       FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
       FigNode toFN = (FigNode) lay.presentationFor(toCls);
       ascFig.setSourcePortFig(fromFN);
@@ -89,15 +92,16 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       ascFig.setDestFigNode(toFN);
       return ascFig;
     }
-    if (edge instanceof Link) {
-      Link lnk = (Link) edge;
+    if (edge instanceof MLink) {
+      MLink lnk = (MLink) edge;
       FigLink lnkFig = new FigLink(lnk);
-      Vector linkRoles = lnk.getLinkRole();
-      if (linkRoles == null) System.out.println("null linkRoles....");
-      LinkEnd fromEnd = (LinkEnd) linkRoles.elementAt(0);
-      Instance fromInst = fromEnd.getInstance();
-      LinkEnd toEnd = (LinkEnd) linkRoles.elementAt(1);
-      Instance toInst = toEnd.getInstance();
+      Collection linkEnds = lnk.getConnections();
+      if (linkEnds == null) System.out.println("null linkRoles....");
+	  Object[] leArray = linkEnds.toArray();
+      MLinkEnd fromEnd = (MLinkEnd) leArray[0];
+      MInstance fromInst = fromEnd.getInstance();
+      MLinkEnd toEnd = (MLinkEnd) leArray[1];
+      MInstance toInst = toEnd.getInstance();
       FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
       FigNode toFN = (FigNode) lay.presentationFor(toInst);
       lnkFig.setSourcePortFig(fromFN);
@@ -106,24 +110,24 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       lnkFig.setDestFigNode(toFN);
       return lnkFig;
     }
-    if (edge instanceof Generalization) {
-      Generalization gen = (Generalization) edge;
+    if (edge instanceof MGeneralization) {
+      MGeneralization gen = (MGeneralization) edge;
       FigGeneralization genFig = new FigGeneralization(gen);
-      GeneralizableElement subType = gen.getSubtype();
-      GeneralizableElement superType = gen.getSupertype();
+      MGeneralizableElement subType = gen.getChild();
+      MGeneralizableElement superType = gen.getParent();
       FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
       FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
-      genFig.setSourcePortFig(subTypeFN);
-      genFig.setSourceFigNode(subTypeFN);
-      genFig.setDestPortFig(superTypeFN);
-      genFig.setDestFigNode(superTypeFN);
+      genFig.setSourcePortFig(superTypeFN);
+      genFig.setSourceFigNode(superTypeFN);
+      genFig.setDestPortFig(subTypeFN);
+      genFig.setDestFigNode(subTypeFN);
       return genFig;
     }
-    if (edge instanceof Realization) {
+	/*    if (edge instanceof Realization) {
       Realization real = (Realization) edge;
       FigRealization realFig = new FigRealization(real);
-      GeneralizableElement subType = real.getSubtype();
-      GeneralizableElement superType = real.getSupertype();
+      MGeneralizableElement subType = real.getSubtype();
+      MGeneralizableElement superType = real.getSupertype();
       FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
       FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
       realFig.setSourcePortFig(subTypeFN);
@@ -131,23 +135,40 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       realFig.setDestPortFig(superTypeFN);
       realFig.setDestFigNode(superTypeFN);
       return realFig;
-    }
-    if (edge instanceof Dependency) {
-      Dependency dep = (Dependency) edge;
-      FigDependency depFig = new FigDependency(dep);
-
-      ModelElement supplier = (ModelElement)(dep.getSupplier().elementAt(0));
-      ModelElement client = (ModelElement)(dep.getClient().elementAt(0));
-
-      FigNode supFN = (FigNode) lay.presentationFor(supplier);
-      FigNode cliFN = (FigNode) lay.presentationFor(client);
-
-      depFig.setSourcePortFig(supFN);
-      depFig.setSourceFigNode(supFN);
-      depFig.setDestPortFig(cliFN);
-      depFig.setDestFigNode(cliFN);
-      return depFig;
-    }
+	  }*/
+    if (edge instanceof MDependency) {
+      MDependency dep = (MDependency) edge;
+	  if (dep.getStereotype() != null && dep.getStereotype().equals(MMUtil.SINGLETON.getRealizationStereotype())) {
+		  FigRealization realFig = new FigRealization(dep);
+		  
+		  MModelElement supplier = (MModelElement)((dep.getSuppliers().toArray())[0]);
+		  MModelElement client = (MModelElement)((dep.getClients().toArray())[0]);
+		  
+		  FigNode supFN = (FigNode) lay.presentationFor(supplier);
+		  FigNode cliFN = (FigNode) lay.presentationFor(client);
+		  
+		  realFig.setSourcePortFig(supFN);
+		  realFig.setSourceFigNode(supFN);
+		  realFig.setDestPortFig(cliFN);
+		  realFig.setDestFigNode(cliFN);
+		  return realFig;
+	  }
+	  else {
+		  FigDependency depFig = new FigDependency(dep);
+		  
+		  MModelElement supplier = (MModelElement)((dep.getSuppliers().toArray())[0]);
+		  MModelElement client = (MModelElement)((dep.getClients().toArray())[0]);
+		  
+		  FigNode supFN = (FigNode) lay.presentationFor(supplier);
+		  FigNode cliFN = (FigNode) lay.presentationFor(client);
+		  
+		  depFig.setSourcePortFig(supFN);
+		  depFig.setSourceFigNode(supFN);
+		  depFig.setDestPortFig(cliFN);
+		  depFig.setDestFigNode(cliFN);
+		  return depFig;
+	  }
+	}
     // what about realizations? They are not distince objects in my UML model
     // maybe they should be, just as an implementation issue, dont
     // remove any of the methods that are there now.

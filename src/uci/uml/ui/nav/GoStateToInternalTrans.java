@@ -23,15 +23,15 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class GoStateToInternalTrans implements TreeModelPrereqs {
 
@@ -59,16 +59,16 @@ public class GoStateToInternalTrans implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof StateVertex && getChildCount(node) > 0);
+    return !(node instanceof MStateVertex && getChildCount(node) > 0);
   }
 
   public Vector getChildren(Object parent) {
-    if (!(parent instanceof State)) return null;
-    State st = (State) parent;
+    if (!(parent instanceof MState)) return null;
+    MState st = (MState) parent;
     //return st.getInternalTransition();
 
-    Vector in = st.getIncoming();
-    Vector out = st.getOutgoing();
+    Vector in = new Vector(st.getIncomings());
+    Vector out = new Vector(st.getOutgoings());
 
     if (in == null || in.size() == 0) return null;
     if (out == null || out.size() == 0) return null;
@@ -87,12 +87,12 @@ public class GoStateToInternalTrans implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(StateVertex.class);
+    pros.addElement(MStateVertex.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Transition.class);
+    pros.addElement(MTransition.class);
     return pros;
   }
 

@@ -33,7 +33,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -42,11 +42,11 @@ import javax.swing.text.*;
 import javax.swing.border.*;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 import uci.uml.generate.*;
 import uci.uml.ui.*;
 
@@ -126,67 +126,58 @@ public class PropPanelTransition extends PropPanelTwoEnds {
   /** Set the values to be shown in all widgets based on model */
   protected void setTargetInternal(Object t) {
     super.setTargetInternal(t);
-    Transition tt = (Transition) t;
+    MTransition tt = (MTransition) t;
     _triggerField.setText(GeneratorDisplay.Generate(tt.getTrigger()));
     _guardField.setText(GeneratorDisplay.Generate(tt.getGuard()));
     _effectField.setText(GeneratorDisplay.Generate(tt.getEffect()));
   }
 
   public String getSourceLabel() {
-    if (!(_target instanceof Transition)) return "non Transition";
+    if (!(_target instanceof MTransition)) return "non MTransition";
     return "Source:";
   }
   public String getSourceValue() {
-    if (!(_target instanceof Transition)) return "non Transition";
-    Transition g = (Transition) _target;
-    StateVertex src = g.getSource();
+    if (!(_target instanceof MTransition)) return "non MTransition";
+    MTransition g = (MTransition) _target;
+    MStateVertex src = g.getSource();
     if (src == null) return "null";
-    return src.getName().getBody();
+    return src.getName();
   }
   public String getDestLabel() {
-    if (!(_target instanceof Transition)) return "non Transition";
+    if (!(_target instanceof MTransition)) return "non MTransition";
     return "Target:";
   }
   public String getDestValue() {
-    if (!(_target instanceof Transition)) return "non Transition";
-    Transition g = (Transition) _target;
-    StateVertex tar = g.getTarget();
+    if (!(_target instanceof MTransition)) return "non MTransition";
+    MTransition g = (MTransition) _target;
+    MStateVertex tar = g.getTarget();
     if (tar == null) return "null";
-    return tar.getName().getBody();
+    return tar.getName();
   }
   
 
   public void setTargetTrigger() {
     if (_inChange) return;
-    Transition t = (Transition) _target;
+    MTransition t = (MTransition) _target;
     String newText = _triggerField.getText();
     //System.out.println("setTargetTrigger: " + newText);
-    try {
-      t.setTrigger(ParserDisplay.SINGLETON.parseEvent(newText));
-    }
-    catch (PropertyVetoException pve) { }
+	t.setTrigger(ParserDisplay.SINGLETON.parseEvent(newText));
   }
 
   public void setTargetGuard() {
     if (_inChange) return;
-    Transition t = (Transition) _target;
+    MTransition t = (MTransition) _target;
     String newText = _guardField.getText();
     //System.out.println("setTargetGuard: " + newText);
-    try {
-      t.setGuard(ParserDisplay.SINGLETON.parseGuard(newText));
-    }
-    catch (PropertyVetoException pve) { }
+	t.setGuard(ParserDisplay.SINGLETON.parseGuard(newText));
   }
 
   public void setTargetEffect() {
     if (_inChange) return;
-    Transition t = (Transition) _target;
+    MTransition t = (MTransition) _target;
     String newText = _effectField.getText();
     //System.out.println("setTargetEffect: " + newText);
-    try {
-      t.setEffect(ParserDisplay.SINGLETON.parseActions(newText));
-    }
-    catch (PropertyVetoException pve) { }
+	t.setEffect(ParserDisplay.SINGLETON.parseActions(newText));
   }
 
   ////////////////////////////////////////////////////////////////

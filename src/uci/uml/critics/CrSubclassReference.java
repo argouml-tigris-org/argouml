@@ -28,11 +28,11 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 import uci.uml.util.GenDescendantClasses;
 
 
@@ -61,15 +61,15 @@ public class CrSubclassReference extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MMClass)) return NO_PROBLEM;
-    MMClass cls = (MMClass) dm;
+    if (!(dm instanceof MClass)) return NO_PROBLEM;
+    MClass cls = (MClass) dm;
     VectorSet offs = computeOffenders(cls);
     if (offs != null) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    Classifier cls = (Classifier) dm;
+    MClassifier cls = (MClassifier) dm;
     VectorSet offs = computeOffenders(cls);
     return new ToDoItem(this, offs, dsgr);
   }
@@ -77,18 +77,18 @@ public class CrSubclassReference extends CrUML {
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
     VectorSet offs = i.getOffenders();
-    Classifier dm = (Classifier) offs.firstElement();
+    MClassifier dm = (MClassifier) offs.firstElement();
     //if (!predicate(dm, dsgr)) return false;
     VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);
     return res;
   }
 
-  public VectorSet computeOffenders(Classifier cls) {
-    Vector asc = cls.getAssociationEnd();
+  public VectorSet computeOffenders(MClassifier cls) {
+    Collection asc = cls.getAssociationEnds();
     if (asc == null || asc.size() == 0) return null;
-    
-    Enumeration descendEnum = GenDescendantClasses.SINGLETON.gen(cls);
+
+    java.util.Enumeration descendEnum = GenDescendantClasses.SINGLETON.gen(cls);
     if (!descendEnum.hasMoreElements()) return null;
     VectorSet descendants = new VectorSet();
     while (descendEnum.hasMoreElements())
@@ -97,16 +97,16 @@ public class CrSubclassReference extends CrUML {
     //needs-more-work: GenNavigableClasses?
     int nAsc = asc.size();
     VectorSet offs = null;
-    for (int i = 0; i < nAsc; i++) {
-      AssociationEnd ae = (AssociationEnd) asc.elementAt(i);
-      IAssociation a = ae.getAssociation();
-      Vector conn = a.getConnection();
+    for (Iterator iter = asc.iterator(); iter.hasNext();) {
+      MAssociationEnd ae = (MAssociationEnd) iter.next();
+      MAssociation a = ae.getAssociation();
+      List conn = a.getConnections();
       if (conn.size() != 2) continue;
-      AssociationEnd otherEnd = (AssociationEnd) conn.elementAt(0);
-      if (ae == conn.elementAt(0))
-	otherEnd = (AssociationEnd) conn.elementAt(1);
-      if (!otherEnd.getIsNavigable()) continue;
-      Classifier otherCls = otherEnd.getType();
+      MAssociationEnd otherEnd = (MAssociationEnd) conn.get(0);
+      if (ae == conn.get(0))
+	otherEnd = (MAssociationEnd) conn.get(1);
+      if (!otherEnd.isNavigable()) continue;
+      MClassifier otherCls = otherEnd.getType();
       if (descendants.contains(otherCls)) {
 	if (offs == null) {
 	  offs = new VectorSet();

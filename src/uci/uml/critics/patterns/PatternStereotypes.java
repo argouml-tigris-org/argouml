@@ -23,17 +23,18 @@
 
 package uci.uml.critics.patterns;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import uci.argo.kernel.*;
 import uci.uml.critics.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 
 public class PatternStereotypes {
 
-  public static final Stereotype Singleton = new Stereotype("Singleton");
+  public static final MStereotype Singleton = new MStereotypeImpl();
+	static{ Singleton.setName("Singleton"); }
   
 } /* end class PatternStereotypes */

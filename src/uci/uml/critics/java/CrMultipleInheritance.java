@@ -30,14 +30,14 @@
 
 package uci.uml.critics.java;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 import uci.uml.critics.*;
 
-/** Well-formedness rule [2] for AssociationEnd. See page 28 of UML 1.1
+/** Well-formedness rule [2] for MAssociationEnd. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrMultipleInheritance extends CrUML {
@@ -61,9 +61,9 @@ public class CrMultipleInheritance extends CrUML {
   protected void sd(String s) { setDescription(s); }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
-    Vector gen = cls.getGeneralization();
+    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+    MClassifier cls = (MClassifier) dm;
+    Collection gen = cls.getGeneralizations();
     if (gen != null && gen.size() > 1)
       return PROBLEM_FOUND;
     else
@@ -74,16 +74,16 @@ public class CrMultipleInheritance extends CrUML {
     if (w instanceof WizCueCards) {
       WizCueCards wcc = (WizCueCards) w;
       ToDoItem item = w.getToDoItem();
-      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
-      String nameStr = me.getName().getBody();
+      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+      String nameStr = me.getName();
       wcc.addCue("Remove the generalization arrow to one of the base "+
 		 "classes of {name}.");
-      wcc.addCue("Optionally, use the Interface tool to create a new "+
-		 "Interface for {name} to implement.");
+      wcc.addCue("Optionally, use the MInterface tool to create a new "+
+		 "MInterface for {name} to implement.");
       wcc.addCue("Use the Realization tool to add a dashed arrow from "+
-		 "{name} to the new Interface.");
+		 "{name} to the new MInterface.");
       wcc.addCue("Move method declarations from the unused base class "+
-		 "to the new Interface and move method bodies down into "+
+		 "to the new MInterface and move method bodies down into "+
 		 "{name}.");
       wcc.addCue("If the unused base class is not used by anything else "+
 		 "then it can be removed.");

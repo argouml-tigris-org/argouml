@@ -28,7 +28,8 @@
 package uci.uml.visual;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.beans.*;
 import javax.swing.*;
 
@@ -36,9 +37,10 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 
 /** Class to display graphics for a UML collaboration in a diagram. */
 
@@ -91,7 +93,7 @@ public class FigMessage extends FigNodeModelElement {
     setOwner(node);
   }
 
-  public String placeString() { return "new Message"; }
+  public String placeString() { return "new MMessage"; }
 
   public Object clone() {
     FigMessage figClone = (FigMessage) super.clone();
@@ -199,7 +201,7 @@ public class FigMessage extends FigNodeModelElement {
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
-    Message mes = (Message) getOwner();
+    MMessage mes = (MMessage) getOwner();
     if (ft == _name) {
        String s = ft.getText();
        ParserDisplay.SINGLETON.parseMessage(mes, s);
@@ -208,10 +210,13 @@ public class FigMessage extends FigNodeModelElement {
 
   protected void modelChanged() {
     super.modelChanged();
-    Message mes = (Message) getOwner();
+    MMessage mes = (MMessage) getOwner();
     if (mes == null) return;
     String nameStr = GeneratorDisplay.Generate(mes.getName()).trim();
-    String actionString = ((UninterpretedAction)mes.getAction()).getBody().trim();
+	String actionString = "new Action";
+	if (mes.getAction() != null && mes.getAction().getScript() != null 
+		&&  mes.getAction().getScript().getBody() != null)
+		actionString = (((MActionExpression)((MAction)mes.getAction()).getScript()).getBody()).trim();
 
 //     System.out.println("nameStr = " + nameStr);
 //     System.out.println("name = " + _name);
@@ -223,8 +228,8 @@ public class FigMessage extends FigNodeModelElement {
   }
 
   public void dispose() {
-    if (!(getOwner() instanceof Element)) return;
-    Element elmt = (Element) getOwner();
+    if (!(getOwner() instanceof MElement)) return;
+    MElement elmt = (MElement) getOwner();
     Project p = ProjectBrowser.TheInstance.getProject();
     p.moveToTrash(elmt);
     super.dispose();

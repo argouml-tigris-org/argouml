@@ -23,14 +23,14 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Collaborations.Collaboration;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import uci.uml.ui.Project;
 import uci.uml.ui.ProjectBrowser;
 import uci.uml.visual.UMLCollaborationDiagram;
@@ -68,7 +68,7 @@ public class GoCollaborationDiagram implements TreeModelPrereqs {
   public Vector getChildren(Object parent) {
     Project p = ProjectBrowser.TheInstance.getProject();
     if (p == null) return null;
-    if (!(parent instanceof Collaboration)) return null;
+    if (!(parent instanceof MCollaboration)) return null;
     Vector res = new Vector();
     Vector diagrams = p.getDiagrams();
     if (diagrams == null) return null;
@@ -83,7 +83,7 @@ public class GoCollaborationDiagram implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Collaboration && getChildCount(node) > 0);
+    return !(node instanceof MCollaboration && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -92,7 +92,7 @@ public class GoCollaborationDiagram implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Collaboration.class);
+    pros.addElement(MCollaboration.class);
     return pros;
   }
   public Vector getProvidedTypes() {

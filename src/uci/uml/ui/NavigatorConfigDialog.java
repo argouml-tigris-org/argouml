@@ -29,6 +29,7 @@ package uci.uml.ui;
 
 import java.awt.*;
 import java.awt.event.*;
+//import com.sun.java.util.collections.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -40,8 +41,8 @@ import uci.util.*;
 import uci.ui.*;
 import uci.gef.*;
 import uci.argo.kernel.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.nav.*;
 
 
@@ -129,8 +130,8 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
 
 
   public void initPersPanel() {
-    _persList.setListData(NavPerspective.getRegisteredPerspectives());
-    _ruleLibList.setListData(NavPerspective.getRegisteredRules());
+    _persList.setListData(Converter.convert(NavPerspective.getRegisteredPerspectives()));
+    _ruleLibList.setListData(Converter.convert(NavPerspective.getRegisteredRules()));
     _rulesList.setListData(new Vector());
 
     GridBagLayout gb = new GridBagLayout();
@@ -307,7 +308,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   public void doNewPers() {
     NavPerspective newPers = new NavPerspective("New Perspective");
     NavPerspective.registerPerspective(newPers);
-    _persList.setListData(NavPerspective.getRegisteredPerspectives());
+    _persList.setListData(Converter.convert(NavPerspective.getRegisteredPerspectives()));
     _persList.setSelectedValue(newPers, true);
     _persList.repaint();
   }
@@ -354,7 +355,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     TreeModelPrereqs tm = (TreeModelPrereqs) selRule;
     np.addSubTreeModel(tm);
     _rulesList.clearSelection();
-    _rulesList.setListData(np.getSubTreeModels());
+    _rulesList.setListData(Converter.convert(np.getSubTreeModels()));
     //_ruleLibList.repaint();
     //_rulesList.repaint();
     repaint();
@@ -375,7 +376,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     TreeModelPrereqs tm = (TreeModelPrereqs) selRule;
     np.removeSubTreeModel(tm);
     _rulesList.clearSelection();
-    _rulesList.setListData(np.getSubTreeModels());
+    _rulesList.setListData(Converter.convert(np.getSubTreeModels()));
     //_ruleLibList.repaint();
     //_rulesList.repaint();
     repaint();
@@ -388,7 +389,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     _dupPersButton.setEnabled(selPers != null);
     if (selPers == null) return;
     NavPerspective np = (NavPerspective) selPers;
-    _rulesList.setListData(np.getSubTreeModels());
+    _rulesList.setListData(Converter.convert(np.getSubTreeModels()));
     getContentPane().doLayout();
     getContentPane().validate();
     getContentPane().repaint();

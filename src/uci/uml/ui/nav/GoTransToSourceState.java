@@ -23,19 +23,19 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class GoTransToSourceState implements TreeModelPrereqs {
 
-  public String toString() { return "Transition->Source State"; }
+  public String toString() { return "Transition->Source MState"; }
   
   public Object getRoot() {
     System.out.println("getRoot should never be called");
@@ -44,28 +44,28 @@ public class GoTransToSourceState implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof Transition && index == 0) {
-      return ((Transition)parent).getSource();
+    if (parent instanceof MTransition && index == 0) {
+      return ((MTransition)parent).getSource();
     }
     System.out.println("getChild should never be get here GoTransToSourceState");
     return null;
   }
 
   public int getChildCount(Object parent) {
-    if (parent instanceof Transition) return 1;
+    if (parent instanceof MTransition) return 1;
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Transition) {
-      if (((Transition)parent).getSource() == child)
+    if (parent instanceof MTransition) {
+      if (((MTransition)parent).getSource() == child)
 	return 0;
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Transition);
+    return !(node instanceof MTransition);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -74,12 +74,12 @@ public class GoTransToSourceState implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Transition.class);
+    pros.addElement(MTransition.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(StateVertex.class);
+    pros.addElement(MStateVertex.class);
     return pros;
   }
 

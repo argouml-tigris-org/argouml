@@ -63,6 +63,7 @@ SOURCES= \
 	FigPoly.java \
 	FigRect.java \
 	FigRRect.java \
+	FigCube.java \
 	FigSpline.java \
 	FigText.java \
 	FigTextEditor.java \

@@ -25,7 +25,7 @@ package uci.uml.ui.table;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -35,8 +35,8 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import uci.util.*;
 import uci.ui.*;
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 public class TablePanelUMLClassDiagram extends TablePanel {
 
@@ -138,9 +138,9 @@ public class TablePanelUMLClassDiagram extends TablePanel {
 
   public void objectSelected(Object sel) {
     super.objectSelected(sel);
-    if (sel instanceof Classifier) {
-      _tableModelOper.setTarget((Classifier)sel);
-      _tableModelAttr.setTarget((Classifier)sel);
+    if (sel instanceof MClassifier) {
+      _tableModelOper.setTarget((MClassifier)sel);
+      _tableModelAttr.setTarget((MClassifier)sel);
     }
   }
 

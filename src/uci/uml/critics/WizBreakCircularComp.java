@@ -30,16 +30,16 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.ui.todo.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.generate.*;
 
 
@@ -65,8 +65,8 @@ public class WizBreakCircularComp extends Wizard {
   protected WizStepChoice _step2 = null;
   protected WizStepConfirm _step3 = null;
 
-  protected Classifier _selectedCls = null;
-  protected IAssociation _selectedAsc = null;
+  protected MClassifier _selectedCls = null;
+  protected MAssociation _selectedAsc = null;
 
   public WizBreakCircularComp() { }
 
@@ -78,7 +78,7 @@ public class WizBreakCircularComp extends Wizard {
       VectorSet offs = _item.getOffenders();
       int size = offs.size();
       for (int i = 0; i < size; i++) {
-	ModelElement me = (ModelElement) offs.elementAt(i);
+	MModelElement me = (MModelElement) offs.elementAt(i);
 	String s = GeneratorDisplay.Generate(me.getName());
 	res.addElement(s);
       }
@@ -89,18 +89,18 @@ public class WizBreakCircularComp extends Wizard {
   protected Vector getOptions2() {
     Vector res = new Vector();
     if (_selectedCls != null) {
-      Vector aes = _selectedCls.getAssociationEnd();
+      Collection aes = _selectedCls.getAssociationEnds();
       int size = aes.size();
-      Classifier fromType = _selectedCls;
+      MClassifier fromType = _selectedCls;
       String fromName = GeneratorDisplay.Generate(fromType.getName());
-      for (int i = 0; i < size; i++) {
-	AssociationEnd fromEnd = (AssociationEnd) aes.elementAt(i);
-	IAssociation asc = fromEnd.getAssociation();
-	AssociationEnd toEnd = (AssociationEnd)
-	  asc.getConnection().elementAt(0);
+      for (Iterator iter = aes.iterator(); iter.hasNext();) {
+	MAssociationEnd fromEnd = (MAssociationEnd) iter.next();
+	MAssociation asc = fromEnd.getAssociation();
+	MAssociationEnd toEnd = (MAssociationEnd)
+	  asc.getConnections().get(0);
 	if (toEnd == fromEnd)
-	  toEnd = (AssociationEnd) asc.getConnection().elementAt(1);
-	Classifier toType = toEnd.getType();
+	  toEnd = (MAssociationEnd) asc.getConnections().get(1);
+	MClassifier toType = toEnd.getType();
 	String ascName = GeneratorDisplay.Generate(asc.getName());
 	String toName = GeneratorDisplay.Generate(toType.getName());
 	String s = ascName + " from " + fromName + " to " + toName;
@@ -150,7 +150,7 @@ public class WizBreakCircularComp extends Wizard {
 	System.out.println("nothing selected, should not get here");
 	return;
       }
-      _selectedCls = (Classifier) offs.elementAt(choice);
+      _selectedCls = (MClassifier) offs.elementAt(choice);
       break;
       ////////////////
     case 2:
@@ -159,21 +159,23 @@ public class WizBreakCircularComp extends Wizard {
 	System.out.println("nothing selected, should not get here");
 	return;
       }
-      AssociationEnd ae = (AssociationEnd)
-	_selectedCls.getAssociationEnd().elementAt(choice);
+      MAssociationEnd ae=null;
+      Iterator iter = _selectedCls.getAssociationEnds().iterator();
+      for (int n=0; n<=choice; n++)
+        ae = (MAssociationEnd) iter.next();
       _selectedAsc = ae.getAssociation();
       break;
       ////////////////
     case 3:
       if (_selectedAsc != null) {
-	Vector conns = _selectedAsc.getConnection();
-	AssociationEnd ae0 = (AssociationEnd) conns.elementAt(0);
-	AssociationEnd ae1 = (AssociationEnd) conns.elementAt(1);
+	List conns = _selectedAsc.getConnections();
+	MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
+	MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
 	try {
-	  ae0.setAggregation(AggregationKind.NONE);
-	  ae1.setAggregation(AggregationKind.NONE);
+	  ae0.setAggregation(MAggregationKind.NONE);
+	  ae1.setAggregation(MAggregationKind.NONE);
 	}
-	catch (PropertyVetoException pve) {
+	catch (Exception pve) {
 	  System.out.println("could not set aggregation");
 	}
       }

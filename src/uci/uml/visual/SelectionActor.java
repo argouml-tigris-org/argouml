@@ -31,7 +31,7 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.awt.event.*;
 //import java.awt.image.*;
@@ -40,9 +40,9 @@ import javax.swing.Icon;
 import uci.gef.*;
 import uci.graph.*;
 import uci.util.Util;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 
 public class SelectionActor extends SelectionWButtons {
@@ -112,17 +112,17 @@ public class SelectionActor extends SelectionWButtons {
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
     Class edgeClass = null;
-    Class nodeClass = UseCase.class;
+    Class nodeClass = MUseCase.class;
     int bx = mX, by = mY;
     boolean reverse = false;
     switch (hand.index) {
     case 12: //add assoc
-      edgeClass = Association.class;
+      edgeClass = MAssociationImpl.class;
       by = cy + ch/2;
       bx = cx + cw;
       break;
     case 13: // add assoc
-      edgeClass = Association.class;
+      edgeClass = MAssociationImpl.class;
       reverse = true;
       by = cy + ch/2;
       bx = cx;
@@ -144,9 +144,9 @@ public class SelectionActor extends SelectionWButtons {
 
   public void buttonClicked(int buttonCode) {
     super.buttonClicked(buttonCode);
-    UseCase newNode = new UseCase();
+    MUseCase newNode = new MUseCaseImpl();
     FigActor fc = (FigActor) _content;
-    Actor cls = (Actor) fc.getOwner();
+    MActor cls = (MActor) fc.getOwner();
 
     Editor ce = Globals.curEditor();
     GraphModel gm = ce.getGraphModel();
@@ -196,14 +196,14 @@ public class SelectionActor extends SelectionWButtons {
     ce.getSelectionManager().select(fc);
   }
 
-  public Object addAssocClassRight(MutableGraphModel mgm, Actor cls,
-			    UseCase newCls) {
-    return mgm.connect(cls, newCls, Association.class);
+  public Object addAssocClassRight(MutableGraphModel mgm, MActor cls,
+			    MUseCase newCls) {
+    return mgm.connect(cls, newCls, MAssociationImpl.class);
   }
 
-  public Object addAssocClassLeft(MutableGraphModel mgm, Actor cls,
-			    UseCase newCls) {
-    return mgm.connect(newCls, cls, Association.class);
+  public Object addAssocClassLeft(MutableGraphModel mgm, MActor cls,
+			    MUseCase newCls) {
+    return mgm.connect(newCls, cls, MAssociationImpl.class);
   }
 
 

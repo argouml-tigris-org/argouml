@@ -35,14 +35,16 @@ import java.awt.*;               // ScrollPane, PopupMenu, MenuShortcut, etc.
 import java.awt.datatransfer.*;  // Clipboard, Transferable, DataFlavor, etc.
 import java.awt.event.*;         // New event model.
 import java.io.*;                // Object serialization streams.
-import java.util.*;              // Mainly for Enumeration
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.util.zip.*;          // Data compression/decompression streams.
-import java.util.Vector;         // To store the scribble in.
+import com.sun.java.util.collections.Vector;         // To store the scribble in.
 import java.util.Properties;     // To store printing preferences in.
 import java.beans.*;
 
-import uci.uml.ui.*;
-import uci.uml.Foundation.Core.ElementImpl;
+//import uci.uml.ui.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.*;
 
 
 public class CmdPaste extends Cmd {
@@ -64,8 +66,8 @@ public class CmdPaste extends Cmd {
       f.translate(gridSze, gridSze);
       f = (Fig) f.clone();
       Object owner = f.getOwner();
-      if (owner instanceof ElementImpl && f instanceof VetoableChangeListener)
-        ((ElementImpl)owner).addVetoableChangeListener((VetoableChangeListener)f);
+      if (owner instanceof MElementImpl && f instanceof MElementListener)
+        ((MElementImpl)owner).addMElementListener((MElementListener)f);
       ce.add(f);
       figs.addElement(f);
     }

@@ -29,7 +29,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -39,8 +39,8 @@ import javax.swing.plaf.metal.*;
 
 import uci.argo.kernel.*;
 import uci.util.Util;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.todo.PriorityNode;
 import uci.uml.ui.todo.KnowledgeTypeNode;
 
@@ -96,7 +96,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
       else if (value instanceof KnowledgeTypeNode) {
 	lab.setIcon(MetalIconFactory.getTreeFolderIcon());
       }
-      else if (value instanceof ModelElement) {
+      else if (value instanceof MModelElement) {
 	return _navRenderer.getTreeCellRendererComponent(tree, value, sel,
 					      expanded, leaf, row, hasFocus);
       }

@@ -24,40 +24,39 @@
 
 package uci.uml.util;
 
-import java.util.*;
-
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 /** Utility class to generate the children of a class.  In this case
  *  the "children" of a class are the other classes that are
- *  assocaiated with the parent class, and that Association has a
+ *  assocaiated with the parent class, and that MAssociation has a
  *  COMPOSITE end at the parent.  This is used in one of the
  *  NavPerspectives. */
 
 public class GenCompositeClasses implements ChildGenerator {
   public static GenCompositeClasses SINGLETON = new GenCompositeClasses();
 
-  public java.util.Enumeration gen(Object o) {
-    if (!(o instanceof Classifier)) return EnumerationEmpty.theInstance();
-    Classifier cls = (Classifier) o;
-    Vector ends = cls.getInheritedAssociationEnds();
-    if (ends == null) return EnumerationEmpty.theInstance();
-    Vector res = new Vector();
-    java.util.Enumeration enum = ends.elements();
-    while (enum.hasMoreElements()) {
-      AssociationEnd ae = (AssociationEnd) enum.nextElement();
-      if (AggregationKind.COMPOSITE.equals(ae.getAggregation())) {
-	IAssociation asc = ae.getAssociation();
-	Vector conn = asc.getConnection();
+  public Enumeration gen(Object o) {
+      Vector res = new Vector();
+    if (!(o instanceof MClassifier)) return res.elements();
+    MClassifier cls = (MClassifier) o;
+    Vector ends = new Vector(cls.getAssociationEnds());
+    if (ends == null) return res.elements();
+    Iterator enum = ends.iterator();
+    while (enum.hasNext()) {
+      MAssociationEnd ae = (MAssociationEnd) enum.next();
+      if (MAggregationKind.COMPOSITE.equals(ae.getAggregation())) {
+	MAssociation asc = ae.getAssociation();
+	List conn = asc.getConnections();
 	if (conn == null || conn.size() != 2) continue;
-	Object otherEnd = (ae == conn.elementAt(0)) ?
-	  conn.elementAt(1) : conn.elementAt(0);
-	Classifier componentClass = ((AssociationEnd)otherEnd).getType();
-	res.addElement(componentClass);
+	Object otherEnd = (ae == conn.get(0)) ?
+	  conn.get(1) : conn.get(0);
+	MClassifier componentClass = ((MAssociationEnd)otherEnd).getType();
+	res.add(componentClass);
       }
     }
     return res.elements();

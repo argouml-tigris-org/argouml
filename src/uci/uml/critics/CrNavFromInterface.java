@@ -30,28 +30,28 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 
 public class CrNavFromInterface extends CrUML {
 
   public CrNavFromInterface() {
-    setHeadline("Remove Navigation from Interface <ocl>self</ocl>");
-    sd("Associations involving an Interface can be not be naviagable in "+
-       "the direction from the Interface.  This is because interfaces do "+
+    setHeadline("Remove Navigation from MInterface <ocl>self</ocl>");
+    sd("Associations involving an MInterface can be not be naviagable in "+
+       "the direction from the MInterface.  This is because interfaces do "+
        "contain only operation declarations and cannot hold pointers to "+
        "other objects.\n\n" +
        "This part of the design should be changed before you can generate "+
        "code from this design.  If you do generate code before fixing this "+
        "problem, the code will not match the design.\n\n"+
-       "To fix this, select the Association and use the \"Properties\" "+
-       "tab to uncheck Navigable for the end touching the Interface.  "+
-       "The Association should then appear with an stick arrowhead pointed "+
-       "away from the Interface.");
+       "To fix this, select the MAssociation and use the \"Properties\" "+
+       "tab to uncheck Navigable for the end touching the MInterface.  "+
+       "The MAssociation should then appear with an stick arrowhead pointed "+
+       "away from the MInterface.");
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     setKnowledgeTypes(Critic.KT_SYNTAX);
     addTrigger("end_navigable");
@@ -59,20 +59,24 @@ public class CrNavFromInterface extends CrUML {
 
   /** Applies to Associations only, not AssociationClasses. */
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Association)) return NO_PROBLEM;
-    Association asc = (Association) dm;
-    Vector conns = asc.getConnection();
-    if (asc instanceof AssociationRole)
-      conns = ((AssociationRole)asc).getAssociationEndRole();
+    if (!(dm instanceof MAssociation)) return NO_PROBLEM;
+    MAssociation asc = (MAssociation) dm;
+    Collection conns = asc.getConnections();
+    if (asc instanceof MAssociationRole)
+      conns = ((MAssociationRole)asc).getConnections();
     int aggCount = 0;
-    java.util.Enumeration enum = conns.elements();
-    while (enum.hasMoreElements()) {
-      AssociationEnd ae = (AssociationEnd) enum.nextElement();
-      if (!ae.getIsNavigable()) continue;
-      if (ae.getType() instanceof Interface) return PROBLEM_FOUND;
-      if (ae.getType() instanceof ClassifierRole &&
-	   ((ClassifierRole)ae.getType()).getBase() instanceof Interface)
-	return PROBLEM_FOUND;
+    Iterator enum = conns.iterator();
+    while (enum.hasNext()) {
+      MAssociationEnd ae = (MAssociationEnd) enum.next();
+      if (!ae.isNavigable()) continue;
+      if (ae.getType() instanceof MInterface) return PROBLEM_FOUND;
+      if (ae.getType() instanceof MClassifierRole) {
+        Collection bases = ((MClassifierRole)ae.getType()).getBases();
+        for (Iterator iter = bases.iterator(); iter.hasNext();) {
+          if (iter.next() instanceof MInterface)
+            return PROBLEM_FOUND;
+        };
+      };
     }
     return NO_PROBLEM;
   }

@@ -23,14 +23,14 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 import uci.uml.ui.Project;
 import uci.uml.ui.ProjectBrowser;
 
@@ -65,12 +65,12 @@ public class GoAssocRoleMessages implements TreeModelPrereqs {
   }
 
   public Vector getChildren(Object parent) {
-    if (!(parent instanceof AssociationRole)) return null;
-    return ((AssociationRole)parent).getMessages();
+    if (!(parent instanceof MAssociationRole)) return null;
+    return new Vector(((MAssociationRole)parent).getMessages());
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof AssociationRole && getChildCount(node) > 0);
+    return !(node instanceof MAssociationRole && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -79,12 +79,12 @@ public class GoAssocRoleMessages implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(AssociationRole.class);
+    pros.addElement(MAssociationRole.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Message.class);
+    pros.addElement(MMessage.class);
     return pros;
   }
 

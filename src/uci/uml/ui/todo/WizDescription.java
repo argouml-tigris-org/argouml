@@ -28,7 +28,7 @@ package uci.uml.ui.todo;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -36,7 +36,7 @@ import javax.swing.tree.*;
 import uci.ui.ToolBar;
 import uci.util.*;
 import uci.argo.kernel.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 import uci.uml.ui.*;
 
 
@@ -81,7 +81,7 @@ public class WizDescription extends WizStep {
 			   _target.toString() + ".");
       return;
     }
-    else if (_target instanceof ModelElement) {
+    else if (_target instanceof MModelElement) {
       _description.setText("This branch contains \"to do\" items "+
 			   "related to the model element: \n" +
 			   _target.toString() + ".");

@@ -31,7 +31,7 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.awt.event.*;
 //import java.awt.image.*;
@@ -40,9 +40,9 @@ import javax.swing.Icon;
 import uci.gef.*;
 import uci.graph.*;
 import uci.util.Util;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 
 public class SelectionUseCase extends SelectionWButtons {
@@ -137,31 +137,31 @@ public class SelectionUseCase extends SelectionWButtons {
     Class edgeClass = null;
     Class nodeClass = null;
     if (hand.index == 10 || hand.index == 11)
-      nodeClass = UseCase.class;
+      nodeClass = MUseCaseImpl.class;
     else
-      nodeClass = Actor.class;
+      nodeClass = MActorImpl.class;
 
     int bx = mX, by = mY;
     boolean reverse = false;
     switch (hand.index) {
     case 10: //add superclass
-      edgeClass = Generalization.class;
+      edgeClass = MGeneralizationImpl.class;
+      reverse = true;
       by = cy;
       bx = cx + cw/2;
       break;
     case 11: //add subclass
-      edgeClass = Generalization.class;
-      reverse = true;
+      edgeClass = MGeneralizationImpl.class;
       by = cy + ch;
       bx = cx + cw/2;
       break;
     case 12: //add assoc
-      edgeClass = Association.class;
+      edgeClass = MAssociationImpl.class;
       by = cy + ch/2;
       bx = cx + cw;
       break;
     case 13: // add assoc
-      edgeClass = Association.class;
+      edgeClass = MAssociationImpl.class;
       reverse = true;
       by = cy + ch/2;
       bx = cx;
@@ -183,14 +183,14 @@ public class SelectionUseCase extends SelectionWButtons {
 
   public void buttonClicked(int buttonCode) {
     super.buttonClicked(buttonCode);
-    Classifier newNode = null;
+    MClassifier newNode = null;
     if (buttonCode == 10 || buttonCode == 11)
-      newNode = new UseCase();
+      newNode = new MUseCaseImpl();
     else
-      newNode = new Actor();
+      newNode = new MActorImpl();
 
     FigUseCase fc = (FigUseCase) _content;
-    UseCase cls = (UseCase) fc.getOwner();
+    MUseCase cls = (MUseCase) fc.getOwner();
 
     Editor ce = Globals.curEditor();
     GraphModel gm = ce.getGraphModel();
@@ -252,24 +252,24 @@ public class SelectionUseCase extends SelectionWButtons {
     ce.getSelectionManager().select(fc);
   }
 
-  public Object addSuperClass(MutableGraphModel mgm, UseCase cls,
-			    Classifier newCls) {
-    return mgm.connect(cls, newCls, Generalization.class);
+  public Object addSuperClass(MutableGraphModel mgm, MUseCase cls,
+			    MClassifier newCls) {
+    return mgm.connect(newCls, cls, MGeneralizationImpl.class);
   }
 
-  public Object addSubClass(MutableGraphModel mgm, UseCase cls,
-			    Classifier newCls) {
-    return mgm.connect(newCls, cls, Generalization.class);
+  public Object addSubClass(MutableGraphModel mgm, MUseCase cls,
+			    MClassifier newCls) {
+    return mgm.connect(cls, newCls, MGeneralizationImpl.class);
   }
 
-  public Object addAssocClassLeft(MutableGraphModel mgm, UseCase cls,
-			    Classifier newCls) {
-    return mgm.connect(newCls, cls, Association.class);
+  public Object addAssocClassLeft(MutableGraphModel mgm, MUseCase cls,
+			    MClassifier newCls) {
+    return mgm.connect(newCls, cls, MAssociationImpl.class);
   }
 
-  public Object addAssocClassRight(MutableGraphModel mgm, UseCase cls,
-			    Classifier newCls) {
-    return mgm.connect(cls, newCls, Association.class);
+  public Object addAssocClassRight(MutableGraphModel mgm, MUseCase cls,
+			    MClassifier newCls) {
+    return mgm.connect(cls, newCls, MAssociationImpl.class);
   }
 
 

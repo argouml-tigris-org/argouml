@@ -30,20 +30,20 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.ui.todo.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 /** A non-modal wizard to help the user change the name of a
- *  ModelElement to a better name. */
+ *  MModelElement to a better name. */
 
 public class WizManyNames extends Wizard {
 
@@ -70,8 +70,8 @@ public class WizManyNames extends Wizard {
 	Vector names = new Vector();
 	int size = _mes.size();
 	for (int i = 0; i < size; i++) {
-	  ModelElement me = (ModelElement) _mes.elementAt(i);
-	  names.addElement(me.getName().getBody());
+	  MModelElement me = (MModelElement) _mes.elementAt(i);
+	  names.addElement(me.getName());
 	}
 	_step1 = new WizStepManyTextFields(this, _instructions, names);
       }
@@ -94,11 +94,11 @@ public class WizManyNames extends Wizard {
       try {
 	int size = _mes.size();
 	for (int i = 0; i < size; i++) {
-	  ModelElement me = (ModelElement) _mes.elementAt(i);
-	  me.setName(new Name((String)newNames.elementAt(i)));
+	  MModelElement me = (MModelElement) _mes.elementAt(i);
+	  me.setName((String)newNames.elementAt(i));
 	}
       }
-      catch (PropertyVetoException pve) {
+      catch (Exception pve) {
 	System.out.println("could not set name");
       }
     }

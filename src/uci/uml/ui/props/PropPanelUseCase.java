@@ -33,7 +33,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -44,10 +44,11 @@ import javax.swing.table.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import uci.uml.ui.*;
 
 /** User interface panel shown at the bottom of the screen that allows
@@ -144,7 +145,7 @@ public class PropPanelUseCase extends PropPanel {
   /** Set the values to be shown in all widgets based on model */
   protected void setTargetInternal(Object t) {
     super.setTargetInternal(t);
-    UseCase uc = (UseCase) t;
+    MUseCase uc = (MUseCase) t;
     // set the values to be shown in all widgets based on model
 
     _tableModel.setTarget(uc);
@@ -187,10 +188,10 @@ public class PropPanelUseCase extends PropPanel {
 
 
 class TableModelExtensions extends AbstractTableModel
-implements VetoableChangeListener, DelayedVChangeListener {
+implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   ////////////////
   // instance varables
-  UseCase _target;
+  MUseCase _target;
   PropPanelUseCase _panel;
 
   ////////////////
@@ -201,12 +202,12 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   ////////////////
   // accessors
-  public void setTarget(UseCase uc) {
-    if (_target instanceof ElementImpl)
-      ((ModelElementImpl)_target).removeVetoableChangeListener(this);
+  public void setTarget(MUseCase uc) {
+    if (_target instanceof MModelElementImpl)
+      ((MModelElementImpl)_target).removeMElementListener(this);
     _target = uc;
-    if (_target instanceof ElementImpl)
-      ((ModelElementImpl)_target).addVetoableChangeListener(this);
+    if (_target instanceof MElementImpl)
+      ((MModelElementImpl)_target).addMElementListener(this);
     fireTableStructureChanged();
   }
 
@@ -229,13 +230,13 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   public int getRowCount() {
     if (_target == null) return 0;
-    Vector extPts = _target.getExtensionPoint();
+    Vector extPts = new Vector(_target.getExtensionPoints());
     if (extPts == null) return 0;
     return extPts.size() + 1;
   }
 
   public Object getValueAt(int row, int col) {
-    Vector extPts = _target.getExtensionPoint();
+    Vector extPts = new Vector(_target.getExtensionPoints());
     if (extPts == null) return "no extension points";
     if (row == extPts.size()) return ""; // blank line allows adding
     String ext = (String) extPts.elementAt(row);
@@ -248,7 +249,7 @@ implements VetoableChangeListener, DelayedVChangeListener {
     if (columnIndex != 0) return;
     if (!(aValue instanceof String)) return;
     String val = (String) aValue;
-    Vector extPts = _target.getExtensionPoint();
+    Vector extPts = new Vector(_target.getExtensionPoints());
     if (rowIndex >= extPts.size()) {
       extPts.addElement(val);
       fireTableStructureChanged();
@@ -262,19 +263,30 @@ implements VetoableChangeListener, DelayedVChangeListener {
     else extPts.setElementAt(val, rowIndex);
   }
 
-  ////////////////
-  // event handlers
-
-  public void vetoableChange(PropertyChangeEvent pce) {
-    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-    SwingUtilities.invokeLater(delayedNotify);
-  }
-
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    fireTableStructureChanged();
-    _panel.resizeColumns();
-  }
-
-
+	////////////////
+	// event handlers
+	public void propertySet(MElementEvent mee) {
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	}
+	public void recovered(MElementEvent mee) {
+	}
+	public void removed(MElementEvent mee) {
+	}
+	public void roleAdded(MElementEvent mee) {
+	}
+	public void roleRemoved(MElementEvent mee) {
+	}
+	public void vetoableChange(PropertyChangeEvent pce) {
+		DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
+		SwingUtilities.invokeLater(delayedNotify);
+	}
+	
+	public void delayedVetoableChange(PropertyChangeEvent pce) {
+		fireTableStructureChanged();
+		_panel.resizeColumns();
+	}
+	
+	
 } /* end class TableModelExtensions */
 

@@ -30,7 +30,10 @@
 
 package uci.argo.kernel;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import ru.novosoft.uml.*;
+import java.util.Enumeration;
+import java.util.Properties;
 import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
@@ -42,7 +45,7 @@ import uci.util.*;
  *  making of good design decisions. */
 
 public class Designer
-implements Poster, Runnable, PropertyChangeListener, java.io.Serializable {
+implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -202,7 +205,7 @@ implements Poster, Runnable, PropertyChangeListener, java.io.Serializable {
 	      Object dm = _warmQueue.elementAt(0);
 	      _warmQueue.removeElementAt(0);
 	      Agency.applyAllCritics(dm, theDesigner());
-	      Enumeration subDMs = _cg.gen(dm);
+	      java.util.Enumeration subDMs = _cg.gen(dm);
 	      while (subDMs.hasMoreElements()) {
 		Object nextDM = subDMs.nextElement();
 		if (!(_warmQueue.contains(nextDM)))
@@ -254,6 +257,20 @@ implements Poster, Runnable, PropertyChangeListener, java.io.Serializable {
   public void propertyChange(PropertyChangeEvent pce) {
     critiqueASAP(pce.getSource(), pce.getPropertyName());
   }
+	public void propertySet(MElementEvent mee) {
+    critiqueASAP(mee.getSource(), ((ru.novosoft.uml.foundation.core.MModelElement)mee.getOldValue()).getName());
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	}
+	public void recovered(MElementEvent mee) {
+	}
+	public void removed(MElementEvent mee) {
+	}
+	public void roleAdded(MElementEvent mee) {
+	}
+	public void roleRemoved(MElementEvent mee) {
+	}
+
 
   ////////////////////////////////////////////////////////////////
   // criticism control

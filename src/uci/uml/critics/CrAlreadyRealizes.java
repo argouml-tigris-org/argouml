@@ -30,21 +30,22 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 public class CrAlreadyRealizes extends CrUML {
 
   public CrAlreadyRealizes() {
     setHeadline("Remove Unneeded Realizes from <ocl>self</ocl>");
-    sd("The selected class already indirectly realizes Interface " +
+    sd("The selected class already indirectly realizes MInterface " +
        "{item.extra}.  There is no need to directly realize it again.\n\n"+
        "Simplifying the design is always a good idea.  You might dismiss "+
        "this \"to do\" item if you want to make it very explicit that the "+
-       "selected Class realizes this Interface.\n\n"+
+       "selected Class realizes this MInterface.\n\n"+
        "To fix this, select the Realization (dashed line with white "+
        "triangular arrowhead) and press the \"Delete\" key.");
     addSupportedDecision(CrUML.decINHERITANCE);
@@ -54,39 +55,40 @@ public class CrAlreadyRealizes extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MMClass)) return NO_PROBLEM;
-    MMClass cls = (MMClass) dm;
-    Vector interfaces = cls.getSpecification();
+    if (!(dm instanceof MClass)) return NO_PROBLEM;
+    MClass cls = (MClass) dm;
+    Collection interfaces = getSpecifications(cls);
     Vector indirect = findIndirectRealizations(cls);
-    java.util.Enumeration enum = interfaces.elements();
-    while (enum.hasMoreElements()) {
-      Realization r = (Realization) enum.nextElement();
-      Classifier intf = r.getSupertype();
+    Iterator enum = interfaces.iterator();
+    while (enum.hasNext()) {
+      Object o = enum.next();
+      if (!(o instanceof MClassifier))
+        continue;
+      MClassifier intf = (MClassifier)o;
       if (indirect.contains(intf)) return PROBLEM_FOUND;
     }
     return NO_PROBLEM;
   }
 
 
-  public Vector findIndirectRealizations(Classifier cls) {
+  public Vector findIndirectRealizations(MClassifier cls) {
     Vector res = new Vector();
-    Vector interfaces = cls.getSpecification();
-    int size = interfaces.size();
-    //System.out.println("class " + cls + " has " + size + " interfaces");
-    for (int i = 0; i < size; i++) {
-      Realization r = (Realization) interfaces.elementAt(i);
-      Classifier intf = r.getSupertype();
+    Collection interfaces = getSpecifications(cls);
+    for (Iterator iter = interfaces.iterator(); iter.hasNext();) {
+      Object o = iter.next();
+      if (!(o instanceof MClassifier))
+        continue;
+      MClassifier intf = (MClassifier)o;
       accumIndirect(intf, res);
     }
     return res;
   }
 
-  public void accumIndirect(GeneralizableElement intf, Vector res) {
-    Vector gens = intf.getGeneralization();
-    int size = gens.size();
-    for (int i = 0; i < size; i++) {
-      Generalization g = (Generalization) gens.elementAt(i);
-      GeneralizableElement sup = g.getSupertype();
+  public void accumIndirect(MGeneralizableElement intf, Vector res) {
+    Collection gens = intf.getGeneralizations();
+    for (Iterator iter = gens.iterator(); iter.hasNext(); ) {
+      MGeneralization g = (MGeneralization) iter.next();
+      MGeneralizableElement sup = g.getParent();
       //System.out.println("sup = " + sup);
       if (!res.contains(sup)) {
 	res.addElement(sup);
@@ -95,5 +97,18 @@ public class CrAlreadyRealizes extends CrUML {
     }
   }
 
+  private Collection getSpecifications(MClassifier cls)
+  {
+     Vector res = new Vector();
+     Collection deps = cls.getClientDependencies();
+     if (deps==null) return res;
+     for (Iterator iter = deps.iterator(); iter.hasNext();) {
+       MDependency dependency = (MDependency)iter.next();
+       MStereotype stereotype = dependency.getStereotype();
+       if ((stereotype==null) || ("realize".equals(stereotype.getName())))
+         res.addAll(dependency.getSuppliers());
+     };
+     return res;
+  };
 } /* end class CrAlreadyRealizes */
 

@@ -30,7 +30,8 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.beans.*;
 import javax.swing.*;
 
@@ -38,10 +39,10 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
-/** Class to display graphics for a UML State in a diagram. */
+/** Class to display graphics for a UML MState in a diagram. */
 
 public class FigForkState extends FigStateVertex {
 
@@ -94,8 +95,8 @@ public class FigForkState extends FigStateVertex {
     super.setOwner(node);
     bindPort(node, _bigPort);
     // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
+    if (node instanceof MElementImpl)
+      ((MElementImpl)node).addMElementListener(this);
   }
 
   /** Initial states are fixed size. */

@@ -23,11 +23,12 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.uml.visual.UMLClassDiagram;
-import uci.uml.Foundation.Core.*;
+import uci.uml.util.MMUtil;
+import ru.novosoft.uml.foundation.core.*;
 
 class TableModelAttr extends TableModelComposite {
   ////////////////
@@ -39,13 +40,13 @@ class TableModelAttr extends TableModelComposite {
     addColumn(ColumnDescriptor.FeatureVis);
     addColumn(ColumnDescriptor.AttrKeyword);
     addColumn(ColumnDescriptor.Type);
-    addColumn(ColumnDescriptor.Stereotype);
+    addColumn(ColumnDescriptor.MStereotype);
   }
 
   public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof Classifier)) return new Vector();
-    Classifier cls = (Classifier) t;
-    Vector attr = cls.getStructuralFeature();
+    if (!(t instanceof MClassifier)) return new Vector();
+    MClassifier cls = (MClassifier) t;
+    Vector attr = new Vector( MMUtil.SINGLETON.getAttributes(cls));
     return attr;
   }
 

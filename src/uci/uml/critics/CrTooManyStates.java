@@ -28,14 +28,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -67,11 +67,11 @@ public class CrTooManyStates extends CrUML {
   ////////////////////////////////////////////////////////////////
   // critiquing API
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof CompositeState)) return NO_PROBLEM;
-    CompositeState cs = (CompositeState) dm;
+    if (!(dm instanceof MCompositeState)) return NO_PROBLEM;
+    MCompositeState cs = (MCompositeState) dm;
 
     int threshold = ((Integer)getArg(THRESHOLD)).intValue();
-    Vector subs = cs.getSubstate();
+    Collection subs = cs.getSubvertices();
     if (subs.size() <= threshold) return NO_PROBLEM;
     return PROBLEM_FOUND;
   }

@@ -25,12 +25,13 @@
 
 package uci.uml.checklist;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 import uci.util.*;
 import uci.argo.checklist.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 import uci.uml.ocl.OCLEvaluator;
 
 /** A special kind of CheckItem that can replace OCL expressions with

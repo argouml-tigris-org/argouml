@@ -28,12 +28,12 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 
 /** A critic to detect when a state has no outgoing transitions. */
@@ -41,7 +41,7 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 public class CrNoInitialState extends CrUML {
 
   public CrNoInitialState() {
-    setHeadline("Place an Initial State");
+    setHeadline("Place an Initial MState");
     sd("There is no initial state in this machine or composite state. "+
        "Normally each state machine or composite state has one initial state. \n\n"+
        "Defining unabiguous states is needed to complete the behavioral "+
@@ -54,16 +54,16 @@ public class CrNoInitialState extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof CompositeState)) return NO_PROBLEM;
-    CompositeState cs = (CompositeState) dm;
-    Vector peers = cs.getSubstate();
+    if (!(dm instanceof MCompositeState)) return NO_PROBLEM;
+    MCompositeState cs = (MCompositeState) dm;
+    Collection peers = cs.getSubvertices();
     int initialStateCount = 0;
     if (peers == null) return PROBLEM_FOUND;
     int size = peers.size();
-    for (int i =0; i < size; i++) {
-      Object sv = peers.elementAt(i);
-      if (sv instanceof Pseudostate &&
-	  (PseudostateKind.INITIAL.equals(((Pseudostate)sv).getKind())))
+    for (Iterator iter = peers.iterator(); iter.hasNext();) {
+      Object sv = iter.next();
+      if (sv instanceof MPseudostate &&
+	  (MPseudostateKind.INITIAL.equals(((MPseudostate)sv).getKind())))
 	initialStateCount++;
     }
     if (initialStateCount == 0) return PROBLEM_FOUND;

@@ -30,7 +30,8 @@ package uci.gef;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 import javax.swing.*;
 

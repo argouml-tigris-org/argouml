@@ -33,7 +33,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -44,11 +44,11 @@ import javax.swing.table.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
 
@@ -122,11 +122,17 @@ implements ItemListener, DocumentListener {
   /** Set the values to be shown in all widgets based on model */
   protected void setTargetInternal(Object t) {
     super.setTargetInternal(t);
-    Message m = (Message) t;
-    String ua = ((UninterpretedAction) m.getAction()).getBody();
-    //UninterpretedAction uaNew = new UninterpretedAction(ua);
+    MMessage mes = (MMessage) t;
+	String ua = null;
+	if (mes.getAction() != null && mes.getAction().getScript() != null 
+		&&  mes.getAction().getScript().getBody() != null) {
+		ua = (((MAction)mes.getAction()).getScript()).getBody();
+	}
+    //MUninterpretedAction uaNew = new MUninterpretedAction(ua);
     if (ua != null)
-      _actionField.setText(ua.trim());
+		_actionField.setText(ua.trim());
+	else
+		_actionField.setText("(none)");
 
     validate();
   }
@@ -156,14 +162,13 @@ implements ItemListener, DocumentListener {
 
   protected void setTargetActionString(String s) {
     if (_target == null) return;
-    if (_inChange) return;
-    try {
-      UninterpretedAction ua = new UninterpretedAction(s);
-      ((Message)_target).setAction(ua); 
-    }
-    catch (PropertyVetoException pve) { }
+	if (_inChange) return;
+	
+	MAction action = new MActionImpl();
+	action.setScript(new MActionExpression("Java",s));
+	((MMessage)_target).setAction(action); 
     /*try {
-      ((UninterpretedAction)((Message)_target).getAction()).setBody(s);
+      ((MUninterpretedAction)((MMessage)_target).getAction()).setBody(s);
     }
     catch (PropertyVetoException pve) { }*/
   }

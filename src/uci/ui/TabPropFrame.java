@@ -35,7 +35,7 @@ package uci.ui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
@@ -343,7 +343,7 @@ implements ChangeListener, ActionListener {
 // //     //choicePanel.remove(sheetChoice);
 // //     universeChoice = new Choice();
 // //     if (_universe != null) {
-// //       Enumeration items = _universe.elements();
+// //       java.util.Enumeration items = _universe.elements();
 // //       while (items.hasMoreElements()) {
 // // 	Object item = items.nextElement();
 // // 	String str = item.toString();

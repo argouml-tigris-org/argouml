@@ -28,16 +28,16 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 /** A critic to detect when an initial state has more than one
  *  outgoing transitions.  Implements a constraint from the UML
- *  1.1 standard: page 10, Pseudostate [1]. */
+ *  1.1 standard: page 10, MPseudostate [1]. */
 
 public class CrInvalidInitial extends CrUML {
 
@@ -56,11 +56,11 @@ public class CrInvalidInitial extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Pseudostate)) return NO_PROBLEM;
-    Pseudostate ps = (Pseudostate) dm;
-    PseudostateKind k = ps.getKind();
-    if (!PseudostateKind.INITIAL.equals(k)) return NO_PROBLEM;
-    Vector outgoing = ps.getOutgoing();
+    if (!(dm instanceof MPseudostate)) return NO_PROBLEM;
+    MPseudostate ps = (MPseudostate) dm;
+    MPseudostateKind k = ps.getKind();
+    if (!MPseudostateKind.INITIAL.equals(k)) return NO_PROBLEM;
+    Collection outgoing = ps.getOutgoings();
     //Vector incoming = ps.getIncoming();
     int nOutgoing = outgoing == null ? 0 : outgoing.size();
     //int nIncoming = incoming == null ? 0 : incoming.size();

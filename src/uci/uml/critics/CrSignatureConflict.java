@@ -30,12 +30,12 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
-/** Well-formedness rule [1] for Classifier. See page 29 of UML 1.1
+/** Well-formedness rule [1] for MClassifier. See page 29 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrSignatureConflict extends CrUML {
@@ -57,15 +57,19 @@ public class CrSignatureConflict extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof uci.uml.Foundation.Core.Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
-    Vector str = cls.getBehavioralFeature();
+    if (!(dm instanceof ru.novosoft.uml.foundation.core.MClassifier)) return NO_PROBLEM;
+    MClassifier cls = (MClassifier) dm;
+    List str = cls.getFeatures();
     if (str == null) return NO_PROBLEM;
     int size = str.size();
     for (int i = 0; i < size; i++) {
-      BehavioralFeature bf_i = (BehavioralFeature) str.elementAt(i);
+      if (!(str.get(i) instanceof MBehavioralFeature))
+        continue;
+      MBehavioralFeature bf_i = (MBehavioralFeature) str.get(i);
       for (int j = i+1; j < size; j++) {
-	BehavioralFeature bf_j = (BehavioralFeature) str.elementAt(j);
+        if (!(str.get(j) instanceof MBehavioralFeature))
+          continue;
+	MBehavioralFeature bf_j = (MBehavioralFeature) str.get(j);
 	if (bf_i.equals(bf_j)) return PROBLEM_FOUND;
       }
     }

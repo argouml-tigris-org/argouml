@@ -25,9 +25,9 @@ package uci.uml.checklist;
 
 import uci.argo.checklist.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 /** Defines a checklist to help designers design better transitions.
  *  Basically, propmts them to think about various aspects of the
@@ -49,7 +49,7 @@ public class ChTransition extends UMLChecklist {
   addItem("Does the trigger happen too often?");
   addItem("Does the trigger happen too rarely?");
 
-  setNextCategory("Guard");
+  setNextCategory("MGuard");
   addItem("Could this transition be taken too often?");
   addItem("Is this transition's condition too restrictive?");
   addItem("Could it be broken down into two or more transitions?");

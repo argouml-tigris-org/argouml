@@ -31,7 +31,8 @@
 
 package uci.util;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 
 /** An Ordered, non-duplicated collecton of objects (not exactly a
@@ -55,13 +56,18 @@ public class VectorSet implements java.io.Serializable  {
   public VectorSet(Object o1) { _v = new Vector(); addElement(o1); }
 
   public void addElement(Object o) { if (!contains(o)) _v.addElement(o); }
-  public void addAllElements(Vector v) {
+  public void addAllElements(Collection v) {
     if (v == null) return;
-    addAllElements(v.elements());
+    addAllElements(v.iterator());
   }
   public void addAllElements(Enumeration enum) {
     while (enum.hasMoreElements()) {
       addElement(enum.nextElement());
+    }
+  }
+  public void addAllElements(Iterator iter) {
+    while (iter.hasNext()) {
+      addElement(iter.next());
     }
   }
   public void addAllElementsSuchThat(Enumeration enum, Predicate p) {
@@ -72,6 +78,14 @@ public class VectorSet implements java.io.Serializable  {
 	if (p.predicate(e)) addElement(e);
       }
   }  
+  public void addAllElementsSuchThat(Iterator iter, Predicate p) {
+    if (p instanceof PredicateTrue) addAllElements(iter);
+    else
+      while (iter.hasNext()) {
+	Object e = iter.next();
+	if (p.predicate(e)) addElement(e);
+      }
+  }
   public void addAllElements(VectorSet s) { addAllElements(s.elements()); }
   public void addAllElementsSuchThat(VectorSet s, Predicate p) {
     addAllElementsSuchThat(s.elements(), p);

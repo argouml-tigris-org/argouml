@@ -29,7 +29,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -38,9 +38,9 @@ import javax.swing.text.*;
 import javax.swing.border.*;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.*;
 
 public class PropPanelInterface extends PropPanel
@@ -48,9 +48,9 @@ implements DocumentListener, ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final VisibilityKind VISIBILITIES[] = {
-    VisibilityKind.PUBLIC, VisibilityKind.PACKAGE };
-
+  public static final MVisibilityKind VISIBILITIES[] = {
+    MVisibilityKind.PUBLIC };
+	// PACKAGE in nsuml?
   
   ////////////////////////////////////////////////////////////////
   // instance vars
@@ -106,9 +106,9 @@ implements DocumentListener, ItemListener {
 
   protected void setTargetInternal(Object t) {
     super.setTargetInternal(t);
-    Interface inf = (Interface) t;
+    MInterface inf = (MInterface) t;
 
-    VisibilityKind vk = inf.getElementOwnership().getVisibility();
+    MVisibilityKind vk = inf.getVisibility();
     _visField.setSelectedItem(vk);
 
     updateExtendsChoices();
@@ -128,9 +128,9 @@ implements DocumentListener, ItemListener {
   public void setTargetVisibility() {
     if (_target == null) return;
     if (_inChange) return;
-    VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
-    Interface inf = (Interface) _target;
-    inf.getElementOwnership().setVisibility(vk);
+    MVisibilityKind vk = (MVisibilityKind) _visField.getSelectedItem();
+    MInterface inf = (MInterface) _target;
+    inf.setVisibility(vk);
   }
 
 
@@ -164,7 +164,7 @@ implements DocumentListener, ItemListener {
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
     if (src == _visField) {
-      System.out.println("class VisibilityKind now is " +
+      System.out.println("class MVisibilityKind now is " +
 			 _visField.getSelectedItem());
       setTargetVisibility();
     }

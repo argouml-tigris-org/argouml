@@ -31,7 +31,7 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.awt.event.*;
 //import java.awt.image.*;
@@ -40,8 +40,8 @@ import javax.swing.Icon;
 import uci.gef.*;
 import uci.graph.*;
 import uci.util.Util;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 
 public class SelectionInterface extends SelectionWButtons {
@@ -116,13 +116,13 @@ public class SelectionInterface extends SelectionWButtons {
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
     Class edgeClass = null;
-    Class nodeClass = MMClass.class;
+    Class nodeClass = MClass.class;
     int bx = mX, by = mY;
     boolean reverse = false;
     switch (hand.index) {
     case 11: //add realization
-      edgeClass = Realization.class;
-      reverse = true;
+      edgeClass = MAbstractionImpl.class;
+      // reverse = true;
       by = cy + ch;
       bx = cx + cw/2;
       break;
@@ -143,9 +143,9 @@ public class SelectionInterface extends SelectionWButtons {
 
   public void buttonClicked(int buttonCode) {
     super.buttonClicked(buttonCode);
-    MMClass newNode = new MMClass();
+    MClass newNode = new MClassImpl();
     FigInterface fc = (FigInterface) _content;
-    Interface cls = (Interface) fc.getOwner();
+    MInterface cls = (MInterface) fc.getOwner();
 
     Editor ce = Globals.curEditor();
     GraphModel gm = ce.getGraphModel();
@@ -177,7 +177,7 @@ public class SelectionInterface extends SelectionWButtons {
     Point newFCCenter = newFC.center();
     edgeShape.addPoint(newFCCenter.x, newFCCenter.y);
     Object newEdge = null;
-    if (buttonCode == 11) newEdge = addRealization(mgm, cls, newNode);
+	if (buttonCode == 11) newEdge = addRealization(mgm, cls, newNode);
 
     FigEdge fe = (FigEdge) lay.presentationFor(newEdge);
     edgeShape.setLineColor(Color.black);
@@ -187,10 +187,11 @@ public class SelectionInterface extends SelectionWButtons {
     ce.getSelectionManager().select(fc);
   }
 
-  public Object addRealization(MutableGraphModel mgm, Interface cls,
-			    MMClass newCls) {
-    return mgm.connect(newCls, cls, Realization.class);
+	
+  public Object addRealization(MutableGraphModel mgm, MInterface cls,
+			    MClass newCls) {
+    return mgm.connect(cls, newCls, MAbstractionImpl.class);
   }
-
+	
 } /* end class SelectionInterface */
 

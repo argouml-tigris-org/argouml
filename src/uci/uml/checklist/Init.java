@@ -28,11 +28,11 @@ package uci.uml.checklist;
 
 import uci.argo.checklist.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.model_management.*;
 
 /** Registers Checklists for different kinds of model elements. If you
  *  add a new checklist, a line must be added here.
@@ -60,25 +60,25 @@ public class Init {
 
   /** static initializer, register all appropriate critics */
   public static void init() {
-    java.lang.Class modelCls       = Model.class;
-    java.lang.Class classCls       = MMClass.class;
-    java.lang.Class classifierCls  = Classifier.class;
-    java.lang.Class interfaceCls   = Interface.class;
-    java.lang.Class attrCls        = Attribute.class;
-    java.lang.Class operCls        = Operation.class;
-    java.lang.Class iassocCls      = IAssociation.class;
-    java.lang.Class assocCls       = Association.class;
-    java.lang.Class assocClassCls  = AssociationClass.class;
-    java.lang.Class namespaceCls   = Namespace.class;
-    java.lang.Class instanceCls    = Instance.class;
-    java.lang.Class linkCls        = Link.class;
-    java.lang.Class stateCls       = State.class;
-    java.lang.Class transitionCls  = Transition.class;
-    java.lang.Class useCaseCls     = UseCase.class;
-    java.lang.Class actorCls       = Actor.class;
-    java.lang.Class genElementCls  = GeneralizableElement.class;
-    java.lang.Class genCls         = Generalization.class;
-    java.lang.Class datatypeCls    = DataType.class;
+    java.lang.Class modelCls       = MModel.class;
+    java.lang.Class classCls       = MClass.class;
+    java.lang.Class classifierCls  = MClassifier.class;
+    java.lang.Class interfaceCls   = MInterface.class;
+    java.lang.Class attrCls        = MAttribute.class;
+    java.lang.Class operCls        = MOperation.class;
+    java.lang.Class iassocCls      = MAssociation.class;
+    java.lang.Class assocCls       = MAssociation.class;
+    java.lang.Class assocClassCls  = MAssociationClass.class;
+    java.lang.Class namespaceCls   = MNamespace.class;
+    java.lang.Class instanceCls    = MInstance.class;
+    java.lang.Class linkCls        = MLink.class;
+    java.lang.Class stateCls       = MState.class;
+    java.lang.Class transitionCls  = MTransition.class;
+    java.lang.Class useCaseCls     = MUseCase.class;
+    java.lang.Class actorCls       = MActor.class;
+    java.lang.Class genElementCls  = MGeneralizableElement.class;
+    java.lang.Class genCls         = MGeneralization.class;
+    java.lang.Class datatypeCls    = MDataType.class;
 
     CheckManager.register(operCls, chOperation);
     CheckManager.register(attrCls, chAttribute);

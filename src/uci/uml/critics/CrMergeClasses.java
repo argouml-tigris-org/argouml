@@ -28,13 +28,13 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import uci.util.*;
 import uci.argo.kernel.*;
 import uci.uml.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 public class CrMergeClasses extends CrUML {
 
@@ -60,17 +60,17 @@ public class CrMergeClasses extends CrUML {
 
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MMClass)) return NO_PROBLEM;
-    MMClass cls = (MMClass) dm;
-    Vector ends = cls.getAssociationEnd();
+    if (!(dm instanceof MClass)) return NO_PROBLEM;
+    MClass cls = (MClass) dm;
+    Collection ends = cls.getAssociationEnds();
     if (ends == null || ends.size() != 1) return NO_PROBLEM;
-    AssociationEnd myEnd = (AssociationEnd) ends.elementAt(0);
-    IAssociation asc = myEnd.getAssociation();
-    Vector conns = asc.getConnection();
-    AssociationEnd ae0 = (AssociationEnd) conns.elementAt(0);
-    AssociationEnd ae1 = (AssociationEnd) conns.elementAt(1);
-    if (ae0.getMultiplicity().equals(Multiplicity.ONE) &&
-        ae1.getMultiplicity().equals(Multiplicity.ONE))
+    MAssociationEnd myEnd = (MAssociationEnd) ends.iterator().next();
+    MAssociation asc = myEnd.getAssociation();
+    List conns = asc.getConnections();
+    MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
+    MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
+    if (ae0.getMultiplicity().equals(MMultiplicity.M1_1) &&
+        ae1.getMultiplicity().equals(MMultiplicity.M1_1))
       return PROBLEM_FOUND;
     return NO_PROBLEM;
   }

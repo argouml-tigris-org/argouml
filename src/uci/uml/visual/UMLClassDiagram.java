@@ -31,7 +31,7 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
@@ -40,9 +40,9 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.ui.*;
 import uci.uml.ui.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 
 public class UMLClassDiagram extends UMLDiagram {
 
@@ -53,41 +53,42 @@ public class UMLClassDiagram extends UMLDiagram {
 
 
   protected static Action _actionClass =
-  new CmdCreateNode(MMClass.class, "Class");
+  new CmdCreateNode(MClassImpl.class, "Class");
 
    protected static Action _actionObject =
-   new CmdCreateNode(Instance.class, "Instance");
+   new CmdCreateNode(MInstanceImpl.class, "Instance");
 
   protected static Action _actionInterface =
-  new CmdCreateNode(Interface.class, "Interface");
+  new CmdCreateNode(MInterfaceImpl.class, "Interface");
 
   protected static Action _actionDepend =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", Dependency.class,
+		 "edgeClass", MDependencyImpl.class,
 		 "Dependency");
 
   protected static Action _actionAssoc =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", Association.class,
+		 "edgeClass", MAssociationImpl.class,
 		 "Association");
 
   protected static Action _actionLink =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", Link.class,
+		 "edgeClass", MLinkImpl.class,
 		 "Link");
 
   protected static Action _actionGeneralize =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", Generalization.class,
+		 "edgeClass", MGeneralizationImpl.class,
 		 "Generalization");
 
+	/*
   protected static Action _actionRealize =
   new CmdSetMode(ModeCreatePolyEdge.class,
 		 "edgeClass", Realization.class,
 		 "Realization");
-
+	*/
   protected static Action _actionPackage =
-  new CmdCreateNode(Model.class, "Package");
+  new CmdCreateNode(MModelImpl.class, "Package");
 
 
   ////////////////////////////////////////////////////////////////
@@ -100,17 +101,17 @@ public class UMLClassDiagram extends UMLDiagram {
     catch (PropertyVetoException pve) { }
   }
 
-  public UMLClassDiagram(Namespace m) {
+  public UMLClassDiagram(MNamespace m) {
     this();
     setNamespace(m);
   }
 
-  public void setNamespace(Namespace m) {
+  public void setNamespace(MNamespace m) {
     super.setNamespace(m);
     ClassDiagramGraphModel gm = new ClassDiagramGraphModel();
     gm.setNamespace(m);
     setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
+    LayerPerspective lay = new LayerPerspective(m.getName(), gm);
     setLayer(lay);
     ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);
@@ -143,7 +144,7 @@ public class UMLClassDiagram extends UMLDiagram {
 //     _toolBar.addSeparator();
 
     _toolBar.add(_actionInterface);
-    _toolBar.add(_actionRealize);
+	//    _toolBar.add(_actionRealize);
     _toolBar.addSeparator();
 
     _toolBar.add(Actions.AddAttribute);

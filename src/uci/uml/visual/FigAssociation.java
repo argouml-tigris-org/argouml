@@ -29,13 +29,13 @@ package uci.uml.visual;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.gef.*;
 import uci.uml.ui.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 import uci.uml.generate.*;
 
 public class FigAssociation extends FigEdgeModelElement {
@@ -95,47 +95,47 @@ public class FigAssociation extends FigEdgeModelElement {
   // event handlers
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
-    IAssociation asc = (IAssociation) getOwner();
+    MAssociation asc = (MAssociation) getOwner();
     if (asc == null) return;
     super.textEdited(ft);
 
-    Vector conn = asc.getConnection();
+    Collection conn = asc.getConnections();
     if (conn == null || conn.size() == 0) return;
 
     if (ft == _srcRole) {
-      AssociationEnd srcAE = (AssociationEnd) conn.elementAt(0);
-      srcAE.setName(new Name(_srcRole.getText()));
+		MAssociationEnd srcAE = (MAssociationEnd)((Object[]) conn.toArray())[0];
+      srcAE.setName(_srcRole.getText());
     }
     if (ft == _destRole) {
-      AssociationEnd destAE = (AssociationEnd) conn.elementAt(1);
-      destAE.setName(new Name(_destRole.getText()));
+      MAssociationEnd destAE = (MAssociationEnd) ((Object[]) conn.toArray())[1];
+      destAE.setName(_destRole.getText());
     }
     // needs-more-work: parse multiplicities
   }
 
 
   protected void modelChanged() {
-    Association as = (Association) getOwner();
+    MAssociation as = (MAssociation) getOwner();
     if (as == null) return;
     String asNameStr = GeneratorDisplay.Generate(as.getName());
 
     super.modelChanged();
 
-    AssociationEnd ae0 = ((AssociationEnd)(as.getConnection().elementAt(0)));
-    AssociationEnd ae1 = ((AssociationEnd)(as.getConnection().elementAt(1)));
+    MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
+    MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
 
-    Multiplicity mult0 = ae0.getMultiplicity();
-    Multiplicity mult1 = ae1.getMultiplicity();
+    MMultiplicity mult0 = ae0.getMultiplicity();
+    MMultiplicity mult1 = ae1.getMultiplicity();
     _srcMult.setText(GeneratorDisplay.Generate(mult0));
-    if (Multiplicity.ONE.equals(mult0)) _srcMult.setText("");
+    if ((mult0 == null) || (MMultiplicity.M1_1).equals(mult0)) _srcMult.setText("");
     _destMult.setText(GeneratorDisplay.Generate(mult1));
-    if (Multiplicity.ONE.equals(mult1)) _destMult.setText("");
+    if ((mult1 == null) ||(MMultiplicity.M1_1).equals(mult1)) _destMult.setText("");
 
     _srcRole.setText(GeneratorDisplay.Generate(ae0.getName()));
     _destRole.setText(GeneratorDisplay.Generate(ae1.getName()));
 
-    boolean srcNav = ae0.getIsNavigable();
-    boolean destNav = ae1.getIsNavigable();
+    boolean srcNav = ae0.isNavigable();
+    boolean destNav = ae1.isNavigable();
     if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
       srcNav = destNav = false;
     setSourceArrowHead(chooseArrowHead(ae0.getAggregation(), srcNav));
@@ -143,7 +143,7 @@ public class FigAssociation extends FigEdgeModelElement {
   }
 
 
-  static ArrowHead _NAV_AGG =
+  static ArrowHead _NAV_AGGREGATE =
   new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
 			 ArrowHeadGreater.TheInstance);
 
@@ -151,24 +151,24 @@ public class FigAssociation extends FigEdgeModelElement {
   new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
 			 ArrowHeadGreater.TheInstance);
 
-  protected ArrowHead chooseArrowHead(AggregationKind ak, boolean nav) {
+  protected ArrowHead chooseArrowHead(MAggregationKind ak, boolean nav) {
     if (nav) {
-//       if (AggregationKind.UNSPEC.equals(ak))
+//       if (MAggregationKind.UNSPEC.equals(ak))
 // 	return ArrowHeadGreater.TheInstance;
-      if (AggregationKind.NONE.equals(ak))
+      if (MAggregationKind.NONE.equals(ak))
 	return ArrowHeadGreater.TheInstance;
-      else if (AggregationKind.AGG.equals(ak))
-	return _NAV_AGG;
-      else if (AggregationKind.COMPOSITE.equals(ak))
+      else if (MAggregationKind.AGGREGATE.equals(ak))
+	return _NAV_AGGREGATE;
+      else if (MAggregationKind.COMPOSITE.equals(ak))
 	return _NAV_COMP;
     }
-//     if (AggregationKind.UNSPEC.equals(ak))
+//     if (MAggregationKind.UNSPEC.equals(ak))
 //       return ArrowHeadNone.TheInstance;
-    if (AggregationKind.NONE.equals(ak))
+    if (MAggregationKind.NONE.equals(ak))
       return ArrowHeadNone.TheInstance;
-    else if (AggregationKind.AGG.equals(ak))
+    else if (MAggregationKind.AGGREGATE.equals(ak))
       return ArrowHeadDiamond.WhiteDiamond;
-    else if (AggregationKind.COMPOSITE.equals(ak))
+    else if (MAggregationKind.COMPOSITE.equals(ak))
       return ArrowHeadDiamond.BlackDiamond;
     System.out.println("unknown case in drawing assoc arrowhead");
     return ArrowHeadNone.TheInstance;

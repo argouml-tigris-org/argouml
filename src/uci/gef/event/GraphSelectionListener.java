@@ -25,7 +25,7 @@
 
 package uci.gef.event;
 
-import java.util.*;
+import java.util.EventListener;
 
 /** An interface that must be implemented by any object that wants to
  *  be notified when an Editor changes its selection(s).

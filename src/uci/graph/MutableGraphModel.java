@@ -30,7 +30,8 @@
 
 package uci.graph;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 /** This interface provides a facade to a net-level
  *  representation. Similiar in concept to the Swing class

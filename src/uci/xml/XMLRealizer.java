@@ -24,7 +24,8 @@
 package uci.xml;
 
 import org.w3c.dom.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+//import java.util.*;
 
 /**
  * @author Piotr Kaminski

@@ -32,7 +32,7 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
@@ -42,9 +42,9 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.ui.*;
 import uci.uml.ui.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 
 public class DiagramInfo extends JComponent {
 

@@ -23,10 +23,10 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
 public class MMClassKeyword implements java.io.Serializable {
   public static final MMClassKeyword NONE = new MMClassKeyword("none"); 
@@ -40,9 +40,9 @@ public class MMClassKeyword implements java.io.Serializable {
   
   private MMClassKeyword(String label) { _label = label; }
   
-  public static MMClassKeyword KeywordFor(Classifier cls) {
-    if (cls.getIsLeaf()) return FINAL;
-    if (cls.getIsAbstract()) return ABSTRACT;
+  public static MMClassKeyword KeywordFor(MClassifier cls) {
+    if (cls.isLeaf()) return FINAL;
+    if (cls.isAbstract()) return ABSTRACT;
     return NONE;
   }
   
@@ -56,13 +56,8 @@ public class MMClassKeyword implements java.io.Serializable {
   
   public String toString() { return _label.toString(); }
 
-  public void set(Classifier target) {
-    try {
-      target.setIsAbstract(this == ABSTRACT);
-      target.setIsLeaf(this == FINAL);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set class keywords");
-    }
+  public void set(MClassifier target) {
+      target.setAbstract(this == ABSTRACT);
+      target.setLeaf(this == FINAL);
   }
 } /* end class MMClassKeyword */

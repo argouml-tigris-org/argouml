@@ -30,12 +30,12 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
-/** Well-formedness rule [2] for GeneralizableElement. See page 31 of UML 1.1
+/** Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrFinalSubclassed extends CrUML {
@@ -59,10 +59,10 @@ public class CrFinalSubclassed extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof GeneralizableElement)) return NO_PROBLEM;
-    GeneralizableElement ge = (GeneralizableElement) dm;
-    if (!ge.getIsLeaf()) return NO_PROBLEM;
-    Vector subs = ge.getSpecialization();
+    if (!(dm instanceof MGeneralizableElement)) return NO_PROBLEM;
+    MGeneralizableElement ge = (MGeneralizableElement) dm;
+    if (!ge.isLeaf()) return NO_PROBLEM;
+    Collection subs = ge.getSpecializations();
     if (subs == null || subs.size() == 0) return NO_PROBLEM;
     return PROBLEM_FOUND;
   }

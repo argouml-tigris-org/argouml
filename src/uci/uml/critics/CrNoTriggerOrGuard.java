@@ -30,18 +30,18 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class CrNoTriggerOrGuard extends CrUML {
 
   public CrNoTriggerOrGuard() {
     setHeadline("Add Trigger or Guard to Transistion");
-    sd("The highlighted Transisition is incomplete because it has no "+
+    sd("The highlighted Transition is incomplete because it has no "+
        "trigger or guard condition.  Triggers are events that cause a "+
        "transition to be taken.  Guard conditions must be true for the "+
        "transition to be taken.  If only a guard is used, the transition "+
@@ -51,7 +51,7 @@ public class CrNoTriggerOrGuard extends CrUML {
        "tab, or select the Transition and type some text of the form:\n"+
        "TRIGGER [GUARD] / ACTION\n"+
        "Where TRIGGER is an event name, GUARD is a boolean expression, "+
-       "and ACTION is an action to be performed when the Transition is "+
+       "and ACTION is an action to be performed when the MTransition is "+
        "taken.  All three parts are optional.");
 
     addSupportedDecision(CrUML.decSTATE_MACHINES);
@@ -61,19 +61,19 @@ public class CrNoTriggerOrGuard extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Transition)) return NO_PROBLEM;
-    Transition tr = (Transition) dm;
-    Event t = tr.getTrigger();
-    Guard g = tr.getGuard();
-    StateVertex sv = tr.getSource();
-    if (!(sv instanceof State)) return NO_PROBLEM;
-    if (sv instanceof ActionState) return NO_PROBLEM;
-    boolean hasTrigger = (t != null && t.getName().getBody().length() > 0);
+    if (!(dm instanceof MTransition)) return NO_PROBLEM;
+    MTransition tr = (MTransition) dm;
+    MEvent t = tr.getTrigger();
+    MGuard g = tr.getGuard();
+    MStateVertex sv = tr.getSource();
+    if (!(sv instanceof MState)) return NO_PROBLEM;
+    if (((MState)sv).getDoActivity()!=null) return NO_PROBLEM;
+    boolean hasTrigger = (t != null && t.getName().length() > 0);
     if (hasTrigger) return NO_PROBLEM;
     boolean noGuard = (g == null || g.getExpression() == null ||
 			g.getExpression().getBody() == null ||
-			g.getExpression().getBody().getBody() == null ||
-			g.getExpression().getBody().getBody().length() == 0);
+			g.getExpression().getBody() == null ||
+			g.getExpression().getBody().length() == 0);
     if (noGuard) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }

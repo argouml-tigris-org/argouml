@@ -23,7 +23,7 @@
 
 package uci.ui;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import java.awt.*;
 import java.awt.event.*;

@@ -29,7 +29,7 @@ package uci.uml.ui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -40,8 +40,8 @@ import uci.util.*;
 import uci.ui.*;
 import uci.gef.*;
 import uci.argo.kernel.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
 
 
 public class GoalsDialog extends JDialog

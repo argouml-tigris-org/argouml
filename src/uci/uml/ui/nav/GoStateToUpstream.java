@@ -23,15 +23,15 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class GoStateToUpstream implements TreeModelPrereqs {
 
@@ -44,10 +44,10 @@ public class GoStateToUpstream implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof StateVertex) {
-      Vector incoming = ((StateVertex)parent).getIncoming();
+    if (parent instanceof MStateVertex) {
+      Vector incoming = new Vector(((MStateVertex)parent).getIncomings());
       if (incoming == null) return null;
-      return ((Transition)incoming.elementAt(index)).getSource();
+      return ((MTransition)incoming.elementAt(index)).getSource();
     }
     System.out.println("getChild should never be get here GoStateToUpstream");
     return null;
@@ -55,27 +55,27 @@ public class GoStateToUpstream implements TreeModelPrereqs {
 
   // needs-more-work: should be a set
   public int getChildCount(Object parent) {
-    if (parent instanceof StateVertex) {
-      Vector incoming = ((StateVertex)parent).getIncoming();
+    if (parent instanceof MStateVertex) {
+      Collection incoming = ((MStateVertex)parent).getIncomings();
       return (incoming == null) ? 0 : incoming.size();
     }
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof StateVertex) {
-      Vector incoming = ((StateVertex)parent).getIncoming();
+    if (parent instanceof MStateVertex) {
+      Vector incoming = new Vector(((MStateVertex)parent).getIncomings());
       if (incoming == null) return -1;
       int size = incoming.size();
       for (int i = 0; i < size; i++)
-	if (child == ((Transition)incoming.elementAt(i)).getSource())
+	if (child == ((MTransition)incoming.elementAt(i)).getSource())
 	  return i;
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof StateVertex && getChildCount(node) > 0);
+    return !(node instanceof MStateVertex && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -84,12 +84,12 @@ public class GoStateToUpstream implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(StateVertex.class);
+    pros.addElement(MStateVertex.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(StateVertex.class);
+    pros.addElement(MStateVertex.class);
     return pros;
   }
 

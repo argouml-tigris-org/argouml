@@ -29,7 +29,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -77,17 +77,11 @@ uci.gef.event.ModeChangeListener {
     _jgraph.addModeChangeListener(this);
   }
 
-  public Object clone() {
-    try {
-      TabDiagram newPanel = new TabDiagram();
-      return newPanel;
+    public Object clone() {
+	TabDiagram newPanel = new TabDiagram();
+	return newPanel;
     }
-    catch (Exception ex) {
-      System.out.println("exception in TabDiagram clone()");
-    }
-    return null;
-  }
-
+    
 
   ////////////////////////////////////////////////////////////////
   // accessors

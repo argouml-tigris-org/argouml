@@ -31,7 +31,8 @@
 
 package uci.gef;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.awt.*;
 
 /** This class contains preferences that control the behavior of the

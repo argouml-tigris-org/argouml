@@ -29,7 +29,7 @@ package uci.uml.ui.colorize;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -41,7 +41,7 @@ import uci.util.*;
 import uci.gef.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.ModelElement;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 public class TabJavaSrc  extends TabSpawnable
@@ -148,9 +148,9 @@ implements TabModelTarget, DocumentListener {
     _parseChanges = true;
 
     _shouldBeEnabled = false;
-    if (t instanceof ModelElement) _shouldBeEnabled = true;
+    if (t instanceof MModelElement) _shouldBeEnabled = true;
     if (t instanceof Fig) {
-      if (((Fig)t).getOwner() instanceof ModelElement)
+      if (((Fig)t).getOwner() instanceof MModelElement)
 	_shouldBeEnabled = true;
     }
     _text.setSize(_size);

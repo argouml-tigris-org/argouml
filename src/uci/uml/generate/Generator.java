@@ -23,12 +23,13 @@
 
 package uci.uml.generate;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.model_management.*;
+import com.sun.java.util.collections.*;
 
 /** This class is the abstract super class that defines a code
  * generation framework.  It is basically a depth-first traversal of
@@ -42,80 +43,87 @@ import uci.uml.Model_Management.*;
 public abstract class Generator {
 
   public String generate(Object o) {
-    if (o instanceof Operation)
-      return generateOperation((Operation) o);
-    if (o instanceof Attribute)
-      return generateAttribute((Attribute) o);
-    if (o instanceof Parameter)
-      return generateParameter((Parameter) o);
-    if (o instanceof MMPackage)
-      return generatePackage((MMPackage) o);
-    if (o instanceof Classifier)
-      return generateClassifier((Classifier) o);
-    if (o instanceof Expression)
-      return generateExpression((Expression) o);
-    if (o instanceof Name)
-      return generateName((Name) o);
-    if (o instanceof Uninterpreted)
-      return generateUninterpreted((Uninterpreted) o);
-    if (o instanceof Stereotype)
-      return generateStereotype((Stereotype) o);
-    if (o instanceof TaggedValue)
-      return generateTaggedValue((TaggedValue) o);
-    if (o instanceof IAssociation)
-      return generateAssociation((IAssociation)o);
-    if (o instanceof AssociationEnd)
-      return generateAssociationEnd((AssociationEnd)o);
-    if (o instanceof Multiplicity)
-      return generateMultiplicity((Multiplicity)o);
-    if (o instanceof State)
-      return generateState((State)o);
-    if (o instanceof Transition)
-      return generateTransition((Transition)o);
-    if (o instanceof MMAction)
-      return generateAction((MMAction)o);
-    if (o instanceof Guard)
-      return generateGuard((Guard)o);
+    if (o == null)
+      return "";
+    if (o instanceof MOperation)
+      return generateOperation((MOperation) o);
+    if (o instanceof MAttribute)
+      return generateAttribute((MAttribute) o);
+    if (o instanceof MParameter)
+      return generateParameter((MParameter) o);
+    if (o instanceof MPackage)
+      return generatePackage((MPackage) o);
+    if (o instanceof MClassifier)
+      return generateClassifier((MClassifier) o);
+    if (o instanceof MExpression)
+      return generateExpression((MExpression) o);
+    if (o instanceof String)
+      return generateName((String) o);
+    if (o instanceof String)
+      return generateUninterpreted((String) o);
+    if (o instanceof MStereotype)
+      return generateStereotype((MStereotype) o);
+    if (o instanceof MTaggedValue)
+      return generateTaggedValue((MTaggedValue) o);
+    if (o instanceof MAssociation)
+      return generateAssociation((MAssociation)o);
+    if (o instanceof MAssociationEnd)
+      return generateAssociationEnd((MAssociationEnd)o);
+    if (o instanceof MMultiplicity)
+      return generateMultiplicity((MMultiplicity)o);
+    if (o instanceof MState)
+      return generateState((MState)o);
+    if (o instanceof MTransition)
+      return generateTransition((MTransition)o);
+    if (o instanceof MAction)
+      return generateAction((MAction)o);
+    if (o instanceof MGuard)
+      return generateGuard((MGuard)o);
 
-    if (o instanceof Element)
-      return generateName(((Element)o).getName());
+    if (o instanceof MModelElement)
+      return generateName(((MModelElement)o).getName());
     if (o == null) return "";
     return o.toString();
   }
 
-  public abstract String generateOperation(Operation op);
-  public abstract String generateAttribute(Attribute attr);
-  public abstract String generateParameter(Parameter param);
-  public abstract String generatePackage(MMPackage p);
-  public abstract String generateClassifier(Classifier cls);
-  public abstract String generateStereotype(Stereotype s);
-  public abstract String generateTaggedValue(TaggedValue s);
-  public abstract String generateAssociation(IAssociation a);
-  public abstract String generateAssociationEnd(AssociationEnd ae);
-  public abstract String generateMultiplicity(Multiplicity m);
-  public abstract String generateState(State m);
-  public abstract String generateTransition(Transition m);
-  public abstract String generateAction(MMAction m);
-  public abstract String generateGuard(Guard m);
+  public abstract String generateOperation(MOperation op);
+  public abstract String generateAttribute(MAttribute attr);
+  public abstract String generateParameter(MParameter param);
+  public abstract String generatePackage(MPackage p);
+  public abstract String generateClassifier(MClassifier cls);
+  public abstract String generateStereotype(MStereotype s);
+  public abstract String generateTaggedValue(MTaggedValue s);
+  public abstract String generateAssociation(MAssociation a);
+  public abstract String generateAssociationEnd(MAssociationEnd ae);
+  public abstract String generateMultiplicity(MMultiplicity m);
+  public abstract String generateState(MState m);
+  public abstract String generateTransition(MTransition m);
+  public abstract String generateAction(MAction m);
+  public abstract String generateGuard(MGuard m);
 
 
-  public String generateExpression(Expression expr) {
+  public String generateExpression(MExpression expr) {
     if (expr == null) return "";
     return generateUninterpreted(expr.getBody());
   }
-
-  public String generateName(Name n) {
-    return n.getBody();
+  
+  public String generateExpression(MConstraint expr) {
+    if (expr == null) return "";
+    return generateExpression(expr.getBody());
   }
 
-  public String generateUninterpreted(Uninterpreted un) {
+  public String generateName(String n) {
+    return n;
+  }
+
+  public String generateUninterpreted(String un) {
     if (un == null) return "";
-    return un.getBody();
+    return un;
   }
 
-  public String generateClassifierRef(Classifier cls) {
+  public String generateClassifierRef(MClassifier cls) {
     if (cls == null) return "";
-    return generateName(cls.getName());
+    return cls.getName();
   }
 
 } /* end class Generator */

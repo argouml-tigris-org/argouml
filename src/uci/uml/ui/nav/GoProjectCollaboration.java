@@ -23,19 +23,19 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Collaborations.Collaboration;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import uci.uml.ui.Project;
 
 public class GoProjectCollaboration implements TreeModelPrereqs {
 
-  public String toString() { return "Project->Collaboration"; }
+  public String toString() { return "Project->MCollaboration"; }
 
   public Object getRoot() {
     System.out.println("getRoot should never be called");
@@ -71,19 +71,19 @@ public class GoProjectCollaboration implements TreeModelPrereqs {
     java.util.Enumeration enum = models.elements();
     while (enum.hasMoreElements()) {
       Object ns = enum.nextElement();
-      if (ns instanceof Collaboration) res.addElement(ns);
+      if (ns instanceof MCollaboration) res.addElement(ns);
     }
     return res;
   }
 
-//   public void accumCollabs(Model m, Vector res) {
-//     Vector oes = m.getOwnedElement();
+//   public void accumCollabs(MModel m, Vector res) {
+//     Vector oes = m.getOwnedElements();
 //     int size = oes.size();
 //     for (int i = 0; i < size; i++) {
-//       ElementOwnership eo = (ElementOwnership) oes.elementAt(i);
-//       ModelElement me = (ModelElement) eo.getModelElement();
-//       if (me instanceof Collaboration) res.addElement(me);
-//       if (me instanceof Model) accumCollabs((Model)me, res);
+//       MElementImport eo = (MElementImport) oes.elementAt(i);
+//       MModelElement me = (MModelElement) eo.getModelElement();
+//       if (me instanceof MCollaboration) res.addElement(me);
+//       if (me instanceof MModel) accumCollabs((MModel)me, res);
 //     }
 //   }
 
@@ -102,7 +102,7 @@ public class GoProjectCollaboration implements TreeModelPrereqs {
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Collaboration.class);
+    pros.addElement(MCollaboration.class);
     return pros;
   }
 

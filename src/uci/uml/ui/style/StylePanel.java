@@ -25,7 +25,7 @@ package uci.uml.ui.style;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -36,8 +36,8 @@ import javax.swing.border.*;
 import uci.util.*;
 import uci.ui.*;
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 import uci.uml.ui.*;
 
 public class StylePanel extends TabSpawnable
@@ -111,7 +111,7 @@ implements TabFigTarget, ItemListener, DocumentListener, ListSelectionListener, 
 //       setTablePerspective();
 //     }
 //     else if (src == _filterCombo) {
-//       //System.out.println("class VisibilityKind now is " +
+//       //System.out.println("class MVisibilityKind now is " +
 //       //_visField.getSelectedItem());
 //       setFilter();
 //     }

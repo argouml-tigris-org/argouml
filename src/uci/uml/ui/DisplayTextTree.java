@@ -26,7 +26,7 @@
 
 package uci.uml.ui;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -35,13 +35,14 @@ import javax.swing.plaf.basic.*;
 
 import uci.argo.kernel.*;
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 import uci.uml.generate.*;
 import uci.uml.ui.nav.*;
 
 public class DisplayTextTree extends JTree
-implements VetoableChangeListener {
+implements MElementListener, VetoableChangeListener {
 
   Hashtable _expandedPathsInModel = new Hashtable();
   boolean _reexpanding = false;
@@ -60,16 +61,16 @@ implements VetoableChangeListener {
     if (value instanceof ToDoItem) {
       return ((ToDoItem)value).getHeadline();
     }
-    if (value instanceof Element) {
-      Element e = (Element) value;
+    if (value instanceof MElement) {
+      MElement e = (MElement) value;
       String ocl = "";
-      if (e instanceof ElementImpl)
-	ocl = ((ElementImpl)e).getOCLTypeStr();
-      String name = e.getName().getBody();
-      if (e instanceof Transition) {
-	name = GeneratorDisplay.Generate((Transition)e);
+      if (e instanceof MModelElementImpl)
+	ocl = ((MModelElementImpl)e).getUMLClassName();
+      String name = ((MModelElementImpl)e).getName();
+      if (e instanceof MTransition) {
+		  name = GeneratorDisplay.Generate((MTransition)e);
       }
-      if (name.equals("")) name = "(anon " + ocl + ")";
+      if (name == null || name.equals("")) name = "(anon " + ocl + ")";
       return name;
     }
     if (value instanceof Diagram) {
@@ -90,7 +91,7 @@ implements VetoableChangeListener {
   }
 
   /**
-   * Tree Model Expansion notification.
+   * Tree MModel Expansion notification.
    *
    * @param e  a Tree node insertion event
    */
@@ -110,8 +111,8 @@ implements VetoableChangeListener {
   }
 
   protected void addListenerToNode(Object node) {
-    if (node instanceof ElementImpl)
-      ((ElementImpl)node).addVetoableChangeListener(this);
+    if (node instanceof MBase)
+      ((MBase)node).addMElementListener(this);
     if (node instanceof Project)
       ((Project)node).addVetoableChangeListener(this);
     if (node instanceof Diagram)
@@ -121,8 +122,8 @@ implements VetoableChangeListener {
     int childCount = tm.getChildCount(node);
     for (int i = 0; i < childCount; i++) {
       Object child = tm.getChild(node, i);
-      if (child instanceof ElementImpl) 
-	((ElementImpl)child).addVetoableChangeListener(this);
+      if (child instanceof MBase) 
+	((MBase)child).addMElementListener(this);
       if (child instanceof Diagram)
 	((Diagram)child).addVetoableChangeListener(this);
     }
@@ -139,8 +140,8 @@ implements VetoableChangeListener {
   public void setModel(TreeModel newModel) {
     super.setModel(newModel);
     Object r = newModel.getRoot();
-    if (r instanceof ElementImpl)
-      ((ElementImpl)r).addVetoableChangeListener(this);
+    if (r instanceof MBase)
+      ((MBase)r).addMElementListener(this);
     if (r instanceof Project)
       ((Project)r).addVetoableChangeListener(this);
     if (r instanceof Diagram)
@@ -149,22 +150,25 @@ implements VetoableChangeListener {
     int childCount = newModel.getChildCount(r);
     for (int i = 0; i < childCount; i++) {
       Object child = newModel.getChild(r, i);
-      if (child instanceof ElementImpl)
-	((ElementImpl)child).addVetoableChangeListener(this);
+      if (child instanceof MBase)
+	((MBase)child).addMElementListener(this);
       if (child instanceof Diagram)
 	((Diagram)child).addVetoableChangeListener(this);
     }
     reexpand();
   }
 
-  public void vetoableChange(PropertyChangeEvent e) {
-    //System.out.println("DisplayTextTree vetoableChange: " + e.getPropertyName());
-    if (!_myUpdateTreeHack.pending) {
-      SwingUtilities.invokeLater(_myUpdateTreeHack);
-      _myUpdateTreeHack.pending = true;
-    }
-    //else System.out.println("update already pending");
-  }
+	public void vetoableChange(PropertyChangeEvent e) {
+		//System.out.println("DisplayTextTree vetoableChange: " + e.getPropertyName());
+		if (!_myUpdateTreeHack.pending) {
+			SwingUtilities.invokeLater(_myUpdateTreeHack);
+			_myUpdateTreeHack.pending = true;
+		}
+		//else System.out.println("update already pending");
+	}
+	
+	
+
 
 
   public static final int DEPTH_LIMIT = 10;
@@ -220,5 +224,19 @@ implements VetoableChangeListener {
     _reexpanding = false;
 
   }
+
+	public void propertySet(MElementEvent mee) {
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	}
+	public void recovered(MElementEvent mee) {
+	}
+	public void removed(MElementEvent mee) {
+	}
+	public void roleAdded(MElementEvent mee) {
+	}
+	public void roleRemoved(MElementEvent mee) {
+	}
+
 
 } /* end class DisplayTextTree */

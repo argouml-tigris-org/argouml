@@ -32,7 +32,8 @@
 package uci.gef.demo;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import uci.gef.*;
 
 /** A class to define the left hand column of buttons in the Example

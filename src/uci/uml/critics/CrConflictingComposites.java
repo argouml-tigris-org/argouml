@@ -30,13 +30,13 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
-/** Well-formedness rule [2] for AssociationEnd. See page 28 of UML 1.1
+/** Well-formedness rule [2] for MAssociationEnd. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrConflictingComposites extends CrUML {
@@ -59,24 +59,35 @@ public class CrConflictingComposites extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
-    Vector conns = cls.getAssociationEnd();
+    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+    MClassifier cls = (MClassifier) dm;
+    Collection conns = cls.getAssociationEnds();
     if (conns == null) return NO_PROBLEM;
     int compositeCount = 0;
-    java.util.Enumeration enum = conns.elements();
-    while (enum.hasMoreElements()) {
-      AssociationEnd myEnd = (AssociationEnd) enum.nextElement();
-      if (AggregationKind.COMPOSITE.equals(myEnd.getAggregation()))
+    Iterator enum = conns.iterator();
+    while (enum.hasNext()) {
+      MAssociationEnd myEnd = (MAssociationEnd) enum.next();
+      if (MAggregationKind.COMPOSITE.equals(myEnd.getAggregation()))
 	continue;
-      Multiplicity m = myEnd.getMultiplicity();
-      if (m.min() == 0) continue;
-      IAssociation asc = myEnd.getAssociation();
-      if (asc != null && asc.hasCompositeEnd()) compositeCount++;
+      MMultiplicity m = myEnd.getMultiplicity();
+      if (m.getLower() == 0) continue;
+      MAssociation asc = myEnd.getAssociation();
+      if (asc != null && hasCompositeEnd(asc)) compositeCount++;
     }
     if (compositeCount > 1) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
+
+  private final boolean hasCompositeEnd(MAssociation asc)
+  {
+    List ends = asc.getConnections();
+    for (Iterator iter = ends.iterator(); iter.hasNext();) {
+      MAssociationEnd end = (MAssociationEnd)iter.next();
+      if (end.getAggregation()==MAggregationKind.COMPOSITE)
+        return true;
+    };
+    return false;
+  };
 
 } /* end class CrConflictingComposites.java */
 

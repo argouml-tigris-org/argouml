@@ -34,14 +34,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -64,20 +64,19 @@ public class CrNoOperations extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MMClass)) return NO_PROBLEM;
-    MMClass cls = (MMClass) dm;
-    //if (cls.containsStereotype(Stereotype.UTILITY)) return NO_PROBLEM;
+    if (!(dm instanceof MClass)) return NO_PROBLEM;
+    MClass cls = (MClass) dm;
+    //if (cls.containsStereotype(MStereotype.UTILITY)) return NO_PROBLEM;
     // stereotype <<record>>?
     //needs-more-work: different critic or special message for classes
     //that inherit all ops but define none of their own.
 
-    Vector beh = cls.getInheritedBehavioralFeatures();
+    Collection beh = getInheritedBehavioralFeatures(cls);
     if (beh == null) return PROBLEM_FOUND;
-    int size = beh.size();
-    for (int i = 0; i < size; i++) {
-      BehavioralFeature bf = (BehavioralFeature) beh.elementAt(i);
-      ScopeKind sk = bf.getOwnerScope();
-      if (ScopeKind.INSTANCE.equals(sk)) return NO_PROBLEM;
+    for (Iterator iter = beh.iterator(); iter.hasNext();) {
+      MBehavioralFeature bf = (MBehavioralFeature) iter.next();
+      MScopeKind sk = bf.getOwnerScope();
+      if (MScopeKind.INSTANCE.equals(sk)) return NO_PROBLEM;
     }
     //needs-more-work?: don't count static or constants?
     return PROBLEM_FOUND;
@@ -86,6 +85,26 @@ public class CrNoOperations extends CrUML {
   public Icon getClarifier() {
     return ClOperationCompartment.TheInstance;
   }
+
+  private Collection getInheritedBehavioralFeatures(MClassifier cls)
+  {
+     Collection res = new Vector();
+     Collection features = cls.getFeatures();
+     for (Iterator iter = features.iterator(); iter.hasNext();) {
+       Object feature = iter.next();
+       if (feature instanceof MBehavioralFeature)
+         res.add(feature);
+     };
+     Collection inh = cls.getGeneralizations();
+     for (Iterator iter = inh.iterator(); iter.hasNext();) {
+       MGeneralization gen = (MGeneralization)iter.next();
+       if (gen.getParent() instanceof MClassifier) {
+         Collection superassocs = getInheritedBehavioralFeatures((MClassifier)gen.getParent());
+         res.addAll(superassocs);
+       };
+     };
+     return res;
+  };
 
 } /* end class CrNoOperations */
 

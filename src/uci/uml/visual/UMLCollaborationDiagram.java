@@ -31,7 +31,8 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
@@ -40,9 +41,9 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.ui.*;
 import uci.uml.ui.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 
 
 public class UMLCollaborationDiagram extends UMLDiagram {
@@ -52,11 +53,11 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
 
   protected static Action _actionClassifierRole =
-  new CmdCreateNode(ClassifierRole.class, "ClassifierRole");
+  new CmdCreateNode(MClassifierRoleImpl.class, "ClassifierRole");
 
   protected static Action _actionAssoc =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", AssociationRole.class,
+		 "edgeClass", MAssociationRoleImpl.class,
 		 "AssociationRole");
 
 
@@ -70,7 +71,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     catch (PropertyVetoException pve) { }
   }
 
-  public UMLCollaborationDiagram(Namespace m) {
+  public UMLCollaborationDiagram(MNamespace m) {
     this();
     setNamespace(m);
   }
@@ -82,17 +83,17 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     int size = figs.size();
     for (int i=0; i < size; i++) {
       Fig f = (Fig) figs.elementAt(i);
-      if (f.getOwner() instanceof Message) res++;
+      if (f.getOwner() instanceof MMessage) res++;
     }
     return res;
   }
 
-  public void setNamespace(Namespace m) {
+  public void setNamespace(MNamespace m) {
     super.setNamespace(m);
     CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
     gm.setNamespace(m);
     setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
+    LayerPerspective lay = new LayerPerspective(m.getName(), gm);
     setLayer(lay);
     CollabDiagramRenderer rend = new CollabDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);

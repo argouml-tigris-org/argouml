@@ -28,14 +28,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.model_management.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -44,7 +44,7 @@ public class CrUnnavigableAssoc extends CrUML {
 
   public CrUnnavigableAssoc() {
     setHeadline("Make <ocl>self</ocl> Navigable");
-    sd("The Association <ocl>self</ocl> is not navigable in any direction. "+
+    sd("The MAssociation <ocl>self</ocl> is not navigable in any direction. "+
        "All associations should be navigable at least one way.\n\n"+
        "Setting the navigablility of associations allows your code to access "+
        "data by following pointers. \n\n"+
@@ -58,15 +58,14 @@ public class CrUnnavigableAssoc extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Association)) return NO_PROBLEM;
-    Association asc = (Association) dm;
-    Vector conn = asc.getConnection();
-    if (asc instanceof AssociationRole)
-      conn = ((AssociationRole)asc).getAssociationEndRole();
-    int size = conn.size();
-    for (int i=0; i < size; i++) {
-      AssociationEnd ae = (AssociationEnd) conn.elementAt(i);
-      if (ae.getIsNavigable()) return NO_PROBLEM;
+    if (!(dm instanceof MAssociation)) return NO_PROBLEM;
+    MAssociation asc = (MAssociation) dm;
+    Collection conn = asc.getConnections();
+    if (asc instanceof MAssociationRole)
+      conn = ((MAssociationRole)asc).getConnections();
+    for (Iterator iter = conn.iterator(); iter.hasNext();) {
+      MAssociationEnd ae = (MAssociationEnd) iter.next();
+      if (ae.isNavigable()) return NO_PROBLEM;
     }
     return PROBLEM_FOUND;
   }

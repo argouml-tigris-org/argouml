@@ -33,7 +33,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -42,9 +42,9 @@ import javax.swing.text.*;
 import javax.swing.border.*;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.generate.*;
 import uci.uml.ui.*;
 
@@ -57,9 +57,11 @@ implements DocumentListener, ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final VisibilityKind VISIBILITIES[] = {
-    VisibilityKind.PUBLIC, VisibilityKind.PRIVATE,
-    VisibilityKind.PROTECTED, VisibilityKind.PACKAGE };
+  public static final MVisibilityKind VISIBILITIES[] = {
+    MVisibilityKind.PUBLIC, MVisibilityKind.PRIVATE,
+    MVisibilityKind.PROTECTED};
+	// what about PACKAGE in nsuml?
+
   public static final String ATTRKEYWORDS[] = {
     "None", "transient", "static", "final", "static final"};
 
@@ -157,33 +159,33 @@ implements DocumentListener, ItemListener {
 
   protected void setTargetInternal(Object t) {
     super.setTargetInternal(t);
-    Attribute attr = (Attribute) t;
+    MAttribute attr = (MAttribute) t;
 
     Vector offeredTypes = getOfferedTypes();
     if (offeredTypes != null)
-      _typeField.setModel(new DefaultComboBoxModel(offeredTypes));
+      _typeField.setModel(new DefaultComboBoxModel(Converter.convert(offeredTypes)));
 
-    VisibilityKind vk = attr.getVisibility();
+    MVisibilityKind vk = attr.getVisibility();
     _visField.setSelectedItem(vk);
 
-    ScopeKind sk = attr.getOwnerScope();
-    ChangeableKind ck = attr.getChangeable();
+    MScopeKind sk = attr.getOwnerScope();
+    MChangeableKind ck = attr.getChangeability();
 
-    if (ScopeKind.CLASSIFIER.equals(sk) && ChangeableKind.FROZEN.equals(ck))
+    if (MScopeKind.CLASSIFIER.equals(sk) && MChangeableKind.FROZEN.equals(ck))
       _keywordsField.setSelectedItem("static final");
-    else if (ScopeKind.CLASSIFIER.equals(sk))
+    else if (MScopeKind.CLASSIFIER.equals(sk))
       _keywordsField.setSelectedItem("static");
-    else if (ChangeableKind.FROZEN.equals(ck))
+    else if (MChangeableKind.FROZEN.equals(ck))
       _keywordsField.setSelectedItem("final");
     else
       _keywordsField.setSelectedItem("None");
 
-    Classifier type = attr.getType();
+    MClassifier type = attr.getType();
     _typeField.setSelectedItem(type);
 
-    Expression expr = attr.getInitialValue();
+    MExpression expr = attr.getInitialValue();
     if (expr == null) _initText.setText("");
-    else _initText.setText(expr.getBody().getBody());
+    else _initText.setText(expr.getBody());
 
   }
 
@@ -192,12 +194,9 @@ implements DocumentListener, ItemListener {
   public void setTargetVisibility() {
     if (_target == null) return;
     if (_inChange) return;
-    VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
-    Attribute attr = (Attribute) _target;
-    try {
-        attr.setVisibility(vk);
-    }
-    catch (PropertyVetoException ignore) { }
+    MVisibilityKind vk = (MVisibilityKind) _visField.getSelectedItem();
+    MAttribute attr = (MAttribute) _target;
+	attr.setVisibility(vk);
   }
 
   public void setTargetKeywords() {
@@ -208,64 +207,54 @@ implements DocumentListener, ItemListener {
       //System.out.println("keywords are null");
       return;
     }
-    Attribute attr = (Attribute) _target;
-    try { 
-      if (keys.equals("None")) {
-	attr.setOwnerScope(ScopeKind.INSTANCE);
-	attr.setChangeable(ChangeableKind.NONE);
-      }
-      else if (keys.equals("transient")) {
-	System.out.println("needs-more-work: setting to transient...");
-	attr.setOwnerScope(ScopeKind.INSTANCE);
-	attr.setChangeable(ChangeableKind.NONE);
-      }
-      else if (keys.equals("static")) {
-	attr.setOwnerScope(ScopeKind.CLASSIFIER);
-	attr.setChangeable(ChangeableKind.NONE);
-      }
-      else if (keys.equals("final")) {
-	attr.setOwnerScope(ScopeKind.INSTANCE);
-	attr.setChangeable(ChangeableKind.FROZEN);
-      }
-      else if (keys.equals("static final")) {
-	attr.setOwnerScope(ScopeKind.CLASSIFIER);
-	attr.setChangeable(ChangeableKind.FROZEN);
-      }
-      }
-      catch (PropertyVetoException pve) {
-        System.out.println("could not set keywords!");
-       }
+    MAttribute attr = (MAttribute) _target;
+	if (keys.equals("None")) {
+		attr.setOwnerScope(MScopeKind.INSTANCE);
+		attr.setChangeability(null);
+	}
+	else if (keys.equals("transient")) {
+		System.out.println("needs-more-work: setting to transient...");
+		attr.setOwnerScope(MScopeKind.INSTANCE);
+		attr.setChangeability(null);
+	}
+	else if (keys.equals("static")) {
+		attr.setOwnerScope(MScopeKind.CLASSIFIER);
+		attr.setChangeability(null);
+	}
+	else if (keys.equals("final")) {
+		attr.setOwnerScope(MScopeKind.INSTANCE);
+		attr.setChangeability(MChangeableKind.FROZEN);
+	}
+	else if (keys.equals("static final")) {
+		attr.setOwnerScope(MScopeKind.CLASSIFIER);
+		attr.setChangeability(MChangeableKind.FROZEN);
+	}
   }
 
   public void setTargetType() {
-    if (!(_target instanceof Attribute)) return;
+    if (!(_target instanceof MAttribute)) return;
     if (_inChange) return;
-    Attribute attr = (Attribute) _target;
+    MAttribute attr = (MAttribute) _target;
     Object sel = _typeField.getSelectedItem();
-    Classifier cls;
+    MClassifier cls;
     if (sel == null) return;
     //System.out.println("set target type: " + sel);
 
-    if (sel instanceof Classifier)
-      cls = (Classifier) sel;
+    if (sel instanceof MClassifier)
+      cls = (MClassifier) sel;
     else
-      cls = new MMClass(sel.toString());
-
-    try { attr.setType(cls); }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set type");
-    }
+      cls = new MClassifierImpl();
+	cls.setName(sel.toString());
+	attr.setType(cls);
   }
 
 
   public void setTargetInit() {
     if (_target == null) return;
     String initStr = _initText.getText();
-    Attribute attr = (Attribute) _target;
-    try {
-        attr.setInitialValue(new Expression(initStr));
-    }
-    catch (PropertyVetoException pve) { }
+    MAttribute attr = (MAttribute) _target;
+	MExpression exp = new MExpression("Java", initStr);
+	attr.setInitialValue(exp);
   }
 
 
@@ -303,7 +292,7 @@ implements DocumentListener, ItemListener {
       setTargetKeywords();
     }
     else if (src == _visField) {
-      //System.out.println("attr VisibilityKind now is " +
+      //System.out.println("attr MVisibilityKind now is " +
       //_visField.getSelectedItem());
       setTargetVisibility();
     }

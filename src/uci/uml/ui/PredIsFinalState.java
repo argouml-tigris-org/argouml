@@ -27,8 +27,8 @@
 package uci.uml.ui;
 
 import uci.util.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 public class PredIsFinalState implements Predicate {
 
@@ -37,8 +37,8 @@ public class PredIsFinalState implements Predicate {
   private PredIsFinalState() { }
 
   public boolean predicate(Object obj) {
-    return (obj instanceof Pseudostate) &&
-      (PseudostateKind.FINAL.equals(((Pseudostate)obj).getKind()));
+    return (obj instanceof MPseudostate) &&
+      (MPseudostateKind.FINAL.equals(((MPseudostate)obj).getKind()));
   }
 
 } /* end class PredIsFinalState */

@@ -30,14 +30,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 public class CrUnconventionalClassName extends CrUML {
@@ -56,12 +56,12 @@ public class CrUnconventionalClassName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MMClass) && !(dm instanceof Interface))
+    if (!(dm instanceof MClass) && !(dm instanceof MInterface))
       return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
-    Name myName = cls.getName();
-    if (myName == null || myName.equals(Name.UNSPEC)) return NO_PROBLEM;
-    String nameStr = myName.getBody();
+    MClassifier cls = (MClassifier) dm;
+    String myName = cls.getName();
+    if (myName == null || myName.equals("")) return NO_PROBLEM;
+    String nameStr = myName;
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
     char initialChar = nameStr.charAt(0);
     if (!Character.isUpperCase(initialChar)) return PROBLEM_FOUND;
@@ -75,8 +75,8 @@ public class CrUnconventionalClassName extends CrUML {
   public void initWizard(Wizard w) {
     if (w instanceof WizMEName) {
       ToDoItem item = w.getToDoItem();
-      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
-      String sug = me.getName().getBody();
+      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+      String sug = me.getName();
       sug = sug.substring(0,1).toUpperCase() + sug.substring(1);
       String ins = "Change the class name to start with an "+
 	"uppercase letter.";

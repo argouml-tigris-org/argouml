@@ -23,11 +23,11 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.uml.visual.UMLStateDiagram;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 
 
@@ -41,7 +41,7 @@ class TableModelStateByProps extends TableModelComposite {
     addColumn(ColumnDescriptor.Entry);
     addColumn(ColumnDescriptor.Exit);
     addColumn(ColumnDescriptor.Parent);
-    addColumn(ColumnDescriptor.Stereotype);
+    addColumn(ColumnDescriptor.MStereotype);
   }
 
   public Vector rowObjectsFor(Object t) {
@@ -53,7 +53,7 @@ class TableModelStateByProps extends TableModelComposite {
     int size = nodes.size();
     for (int i = 0; i < size; i++) {
       Object node = nodes.elementAt(i);
-      if (node instanceof StateVertex) res.addElement(node);
+      if (node instanceof MStateVertex) res.addElement(node);
     }
     return res;
   }

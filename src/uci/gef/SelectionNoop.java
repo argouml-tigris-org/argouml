@@ -31,7 +31,8 @@
 
 package uci.gef;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.awt.*;
 
 /** Selection object that does not allow the user to do anything. This

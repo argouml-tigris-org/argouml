@@ -32,14 +32,15 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.util.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -47,7 +48,7 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 public class CrNoInstanceVariables extends CrUML {
 
   public CrNoInstanceVariables() {
-    setHeadline("Add Instance Variables to <ocl>self</ocl>");
+    setHeadline("Add MInstance Variables to <ocl>self</ocl>");
     sd("You have not yet specified instance variables for <ocl>self</ocl>. "+
        "Normally classes have instance variables that store state "+
        "information for each instance. Classes that provide only "+
@@ -64,17 +65,18 @@ public class CrNoInstanceVariables extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MMClass)) return NO_PROBLEM;
-    MMClass cls = (MMClass) dm;
-    if (cls.containsStereotype(Stereotype.UTILITY)) return NO_PROBLEM;
-    Vector str = cls.getInheritedStructuralFeatures();
+    if (!(dm instanceof MClass)) return NO_PROBLEM;
+    MClass cls = (MClass) dm;
+    if ((cls.getStereotype()!=null) && "utility".equals(cls.getStereotype().getName()) )
+      return NO_PROBLEM;
+    Collection str = getInheritedStructuralFeatures(cls);
     if (str == null) return PROBLEM_FOUND;
-    java.util.Enumeration enum = str.elements();
-    while (enum.hasMoreElements()) {
-      StructuralFeature sf = (StructuralFeature) enum.nextElement();
-      ChangeableKind ck = sf.getChangeable();
-      ScopeKind sk = sf.getOwnerScope();
-      if (ChangeableKind.NONE.equals(ck) || ScopeKind.INSTANCE.equals(sk))
+    Iterator enum = str.iterator();
+    while (enum.hasNext()) {
+      MStructuralFeature sf = (MStructuralFeature) enum.next();
+      MChangeableKind ck = sf.getChangeability();
+      MScopeKind sk = sf.getOwnerScope();
+      if (MScopeKind.INSTANCE.equals(sk))
 	return NO_PROBLEM;
     }
     //needs-more-work?: don't count static or constants?
@@ -85,5 +87,20 @@ public class CrNoInstanceVariables extends CrUML {
     return ClAttributeCompartment.TheInstance;
   }
 
+  private Collection getInheritedStructuralFeatures(MClassifier cls)
+  {
+     Collection res = new Vector();
+	 res.addAll(MMUtil.SINGLETON.getAttributes(cls));
+
+     Collection inh = cls.getGeneralizations();
+     for (Iterator iter = inh.iterator(); iter.hasNext();) {
+       MGeneralization gen = (MGeneralization)iter.next();
+       if (gen.getParent() instanceof MClassifier) {
+         Collection superstructs = getInheritedStructuralFeatures((MClassifier)gen.getParent());
+         res.addAll(superstructs);
+       };
+     };
+     return res;
+  };
 } /* end class CrNoInstanceVariables */
 

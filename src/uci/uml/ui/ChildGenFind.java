@@ -31,15 +31,15 @@
 
 package uci.uml.ui;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import uci.util.*;
 import uci.gef.Diagram;
 import uci.graph.GraphModel;
 import uci.uml.ui.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.model_management.*;
 
 /** This class gives critics access to parts of the UML model of the
  *  design.  It defines a gen() function that returns the "children"
@@ -52,65 +52,66 @@ import uci.uml.Model_Management.*;
 public class ChildGenFind implements ChildGenerator {
   public static ChildGenFind SINGLETON = new ChildGenFind();
 
-  /** Reply a Enumeration of the children of the given Object */
-  public Enumeration gen(Object o) {
+  /** Reply a Collection of the children of the given Object */
+  public java.util.Enumeration gen(Object o) {
     if (o instanceof Project) {
       Project p = (Project) o;
-      return new EnumerationComposite(p.getModels().elements(),
-				      p.getDiagrams().elements());
+	  Vector res = new Vector();
+	  res.addAll(p.getModels());
+	  res.addAll(p.getDiagrams());
+	  return res.elements();
+      // return new EnumerationComposite(p.getModels().elements(),
+	  //		      p.getDiagrams().elements());
     }
 
-//     if (o instanceof MMPackage) {
-//       Vector ownedElements = ((MMPackage)o).getOwnedElement();
+//     if (o instanceof MPackage) {
+//       Vector ownedElements = ((MPackage)o).getOwnedElements();
 //       if (ownedElements != null) return ownedElements.elements();
 //     }
 
-//     if (o instanceof ElementOwnership) {
-//       ModelElement me = ((ElementOwnership)o).getModelElement();
+//     if (o instanceof MElementImport) {
+//       MModelElement me = ((MElementImport)o).getModelElement();
 //       return new EnumerationSingle(me);  //wasteful!
 //     }
 
-//     if (o instanceof ModelElement) {
-//       Vector behavior = ((ModelElement)o).getBehavior();
+//     if (o instanceof MModelElement) {
+//       Vector behavior = ((MModelElement)o).getBehavior();
 //       if (behavior != null) behavior.elements();
 //     }
 
 //     // needs-more-work: associationclasses fit both of the next 2 cases
 
-    if (o instanceof Classifier) {
-      Classifier cls = (Classifier) o;
-      EnumerationComposite res = new EnumerationComposite();
-      res.addSub(cls.getBehavioralFeature());
-      res.addSub(cls.getStructuralFeature());
-      Vector sms = cls.getBehavior();
-      StateMachine sm = null;
-      if (sms != null && sms.size() > 0) sm = (StateMachine) sms.elementAt(0);
-      if (sm != null) res.addSub(new EnumerationSingle(sm));
-      return res;
+    if (o instanceof MClassifier) {
+      MClassifier cls = (MClassifier) o;
+	  //      EnumerationComposite res = new EnumerationComposite();
+	  Vector res = new Vector(cls.getFeatures());
+      res.addAll(cls.getBehaviors());
+      return res.elements();
     }
 
-    if (o instanceof IAssociation) {
-      IAssociation asc = (IAssociation) o;
-      Vector assocEnds = asc.getConnection();
-      if (assocEnds != null) return assocEnds.elements();
+    if (o instanceof MAssociation) {
+      MAssociation asc = (MAssociation) o;
+	  return new Vector(asc.getConnections()).elements();
+	  //      Vector assocEnds = asc.getConnections();
+      //if (assocEnds != null) return assocEnds.elements();
     }
 
 
 
 //     // // needed?
-//     if (o instanceof StateMachine) {
-//       StateMachine sm = (StateMachine) o;
+//     if (o instanceof MStateMachine) {
+//       MStateMachine sm = (MStateMachine) o;
 //       EnumerationComposite res = new EnumerationComposite();
-//       State top = sm.getTop();
+//       MState top = sm.getTop();
 //       if (top != null) res.addSub(new EnumerationSingle(top));
 //       res.addSub(sm.getTransitions());
 //       return res;
 //     }
 
 //     // needed?
-//     if (o instanceof CompositeState) {
-//       CompositeState cs = (CompositeState) o;
-//       Vector substates = cs.getSubstate();
+//     if (o instanceof MCompositeState) {
+//       MCompositeState cs = (MCompositeState) o;
+//       Vector substates = cs.getSubvertices();
 //       if (substates != null) return substates.elements();
 //     }
 
@@ -118,26 +119,39 @@ public class ChildGenFind implements ChildGenerator {
 
     if (o instanceof Diagram) {
       Diagram d = (Diagram) o;
-      return new EnumerationComposite(d.getGraphModel().getNodes().elements(),
-				      d.getGraphModel().getEdges().elements());
+	  
+	  Vector res = new Vector();
+	  res.addAll(d.getGraphModel().getNodes());
+	  res.addAll(d.getGraphModel().getEdges());
+	  return res.elements();
+      //return new EnumerationComposite(d.getGraphModel().getNodes().elements(),
+	  //			      d.getGraphModel().getEdges().elements());
     }
 
-    if (o instanceof State) {
-      State s = (State) o;
-      Vector interns = s.getInternalTransition();
-      if (interns != null) return interns.elements();
+    if (o instanceof MState) {
+      MState s = (MState) o;
+      //Vector interns = s.getInternalTransition();
+      //if (interns != null) return interns.elements();
+	  return new Vector(s.getInternalTransitions()).elements();
     }
 
-    if (o instanceof Transition) {
-      Transition tr = (Transition) o;
-      Vector parts = new Vector();  // wasteful!!
-      if (tr.getTrigger() != null) parts.addElement(tr.getTrigger());
-      if (tr.getGuard() != null) parts.addElement(tr.getGuard());
-      if (tr.getEffect() != null) parts.addElement(tr.getEffect());
-      return parts.elements();
+    if (o instanceof MTransition) {
+      MTransition tr = (MTransition) o;
+	  Vector res = new Vector();
+	  res.add(tr.getTrigger());
+	  res.add(tr.getGuard());
+	  res.add(tr.getEffect());
+	  /*
+		Vector parts = new Vector();  // wasteful!!
+		if (tr.getTrigger() != null) parts.addElement(tr.getTrigger());
+		if (tr.getGuard() != null) parts.addElement(tr.getGuard());
+		if (tr.getEffect() != null) parts.addElement(tr.getEffect());
+		return parts.elements();
+	  */
+	  return res.elements();
     }
 
-    return EnumerationEmpty.theInstance();
+    return new Vector().elements();
   }
 } /* end class ChildGenFind */
 

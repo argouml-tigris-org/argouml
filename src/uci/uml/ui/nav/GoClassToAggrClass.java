@@ -23,14 +23,14 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 public class GoClassToAggrClass implements TreeModelPrereqs {
 
@@ -43,8 +43,8 @@ public class GoClassToAggrClass implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof MMClass) {
-      Vector children = getChildren((MMClass)parent);
+    if (parent instanceof MClass) {
+      Vector children = getChildren((MClass)parent);
       return children.elementAt(index);
     }
     System.out.println("getChild should never be get here GoClassToAggrClass");
@@ -52,8 +52,8 @@ public class GoClassToAggrClass implements TreeModelPrereqs {
   }
 
   public int getChildCount(Object parent) {
-    if (parent instanceof MMClass) {
-      Vector children = getChildren((MMClass)parent);
+    if (parent instanceof MClass) {
+      Vector children = getChildren((MClass)parent);
       return children.size();
     }
     return 0;
@@ -61,30 +61,30 @@ public class GoClassToAggrClass implements TreeModelPrereqs {
 
   public int getIndexOfChild(Object parent, Object child) {
     int res = 0;
-    if (parent instanceof MMClass) {
-      Vector children = getChildren((MMClass)parent);
+    if (parent instanceof MClass) {
+      Vector children = getChildren((MClass)parent);
       if (children.contains(child))
 	return children.indexOf(child);
     }
     return -1;
   }
 
-  public Vector getChildren(MMClass parentClass) {
+  public Vector getChildren(MClass parentClass) {
     Vector res = new Vector();
-    Vector ends = parentClass.getAssociationEnd();
+    Vector ends = new Vector(parentClass.getAssociationEnds());
     if (ends == null) return res;
     java.util.Enumeration enum = ends.elements();
     while (enum.hasMoreElements()) {
-      AssociationEnd ae = (AssociationEnd) enum.nextElement();
-      if (!ae.getAggregation().equals(AggregationKind.AGG)) continue;
-      IAssociation asc = ae.getAssociation();
-      Vector allEnds = asc.getConnection();
-      AssociationEnd otherEnd = null;
+      MAssociationEnd ae = (MAssociationEnd) enum.nextElement();
+      if (!ae.getAggregation().equals(MAggregationKind.AGGREGATE)) continue;
+      MAssociation asc = ae.getAssociation();
+      Vector allEnds = new Vector(asc.getConnections());
+      MAssociationEnd otherEnd = null;
       if (ae == allEnds.elementAt(0))
-	otherEnd = (AssociationEnd) allEnds.elementAt(1);
+	otherEnd = (MAssociationEnd) allEnds.elementAt(1);
       if (ae == allEnds.elementAt(1))
-	otherEnd = (AssociationEnd) allEnds.elementAt(0);
-      Classifier assocClass = otherEnd.getType();
+	otherEnd = (MAssociationEnd) allEnds.elementAt(0);
+      MClassifier assocClass = otherEnd.getType();
       if (assocClass != null && !res.contains(assocClass))
 	res.addElement(assocClass);
       // needs-more-work: handle n-way Associations
@@ -93,7 +93,7 @@ public class GoClassToAggrClass implements TreeModelPrereqs {
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof MMClass && getChildCount(node) > 0);
+    return !(node instanceof MClass && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -102,12 +102,12 @@ public class GoClassToAggrClass implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Classifier.class);
+    pros.addElement(MClassifier.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Classifier.class);
+    pros.addElement(MClassifier.class);
     return pros;
   }
 

@@ -23,15 +23,15 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class GoStateToSubstate implements TreeModelPrereqs {
 
@@ -63,15 +63,16 @@ public class GoStateToSubstate implements TreeModelPrereqs {
   }
 
   public Vector getChildren(Object parent) {
-    if (!(parent instanceof CompositeState)) return null;
-    CompositeState cs = (CompositeState) parent;
-    Vector subs = cs.getSubstate();
-    if (!cs.getIsConcurrent()) return subs;
+    if (!(parent instanceof MCompositeState)) return null;
+    MCompositeState cs = (MCompositeState) parent;
+    Vector subs = new Vector(cs.getSubvertices());
+	// attention: there is a typing-error in the UML.mdl here:
+    if (!cs.isConcurent()) return subs;
     Vector children = new Vector();
     java.util.Enumeration enum = subs.elements();
     while (enum.hasMoreElements()) {
-      CompositeState sub = (CompositeState) enum.nextElement();
-      Vector subsubs = sub.getSubstate();
+      MCompositeState sub = (MCompositeState) enum.nextElement();
+      Vector subsubs = new Vector(sub.getSubvertices());
       if (subsubs != null) {
 	java.util.Enumeration subEnum = subsubs.elements();
 	while (subEnum.hasMoreElements()) {
@@ -89,12 +90,12 @@ public class GoStateToSubstate implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(CompositeState.class);
+    pros.addElement(MCompositeState.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(StateVertex.class);
+    pros.addElement(MStateVertex.class);
     return pros;
   }
 

@@ -30,12 +30,12 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 
 /** Well-formedness rule [3] for Associations. See page 27 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -43,11 +43,11 @@ import uci.uml.Behavioral_Elements.Collaborations.*;
 public class CrNWayAgg extends CrUML {
 
   public CrNWayAgg() {
-    setHeadline("Aggregate Role in N-way Association");
+    setHeadline("Aggregate Role in N-way MAssociation");
     sd("Three-way (or more) Associations can not have aggregate ends.\n\n" +
        "A clear and consistent is-part-of hierarchy is a key to design clarity, \n"+
        "managable object storage, and the implementation of recursive methods.\n"+
-       "To fix this, use the \"Next>\" button, or manually select the Association \n"+
+       "To fix this, use the \"Next>\" button, or manually select the MAssociation \n"+
        "and set all of its role aggregations to None.");
 
     addSupportedDecision(CrUML.decCONTAINMENT);
@@ -57,19 +57,19 @@ public class CrNWayAgg extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof IAssociation)) return NO_PROBLEM;
-    IAssociation asc = (IAssociation) dm;
-    Vector conns = asc.getConnection();
-    if (asc instanceof AssociationRole)
-      conns = ((AssociationRole)asc).getAssociationEndRole();
+    if (!(dm instanceof MAssociation)) return NO_PROBLEM;
+    MAssociation asc = (MAssociation) dm;
+    Collection conns = asc.getConnections();
+    if (asc instanceof MAssociationRole)
+      conns = ((MAssociationRole)asc).getConnections();
     if (conns == null || conns.size() <= 2) return NO_PROBLEM;
     int aggCount = 0;
-    java.util.Enumeration enum = conns.elements();
-    while (enum.hasMoreElements()) {
-      AssociationEnd ae = (AssociationEnd) enum.nextElement();
-      AggregationKind ak = ae.getAggregation();
-      if (//!AggregationKind.UNSPEC.equals(ak) &&
-	  !AggregationKind.NONE.equals(ak))
+    Iterator enum = conns.iterator();
+    while (enum.hasNext()) {
+      MAssociationEnd ae = (MAssociationEnd) enum.next();
+      MAggregationKind ak = ae.getAggregation();
+      if (//!MAggregationKind.UNSPEC.equals(ak) &&
+	  !MAggregationKind.NONE.equals(ak))
 	aggCount++;
     }
     if (aggCount > 0) return PROBLEM_FOUND;

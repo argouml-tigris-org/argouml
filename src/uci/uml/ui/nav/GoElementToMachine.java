@@ -23,19 +23,19 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class GoElementToMachine implements TreeModelPrereqs {
 
-  public String toString() { return "Class->State Machine"; }
+  public String toString() { return "Class->MState Machine"; }
   
   public Object getRoot() {
     System.out.println("getRoot should never be called");
@@ -44,8 +44,8 @@ public class GoElementToMachine implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof ModelElement) {
-      Vector machines= ((ModelElement)parent).getBehavior();
+    if (parent instanceof MModelElement) {
+      Vector machines= new Vector(((MModelElement)parent).getBehaviors());
       if (machines == null) return null;
       return machines.elementAt(index);
     }
@@ -54,23 +54,23 @@ public class GoElementToMachine implements TreeModelPrereqs {
   }
 
   public int getChildCount(Object parent) {
-    if (parent instanceof ModelElement) {
-      Vector machines = ((ModelElement)parent).getBehavior();
+    if (parent instanceof MModelElement) {
+      Vector machines = new Vector(((MModelElement)parent).getBehaviors());
       return (machines == null) ? 0 : machines.size();
     }
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof ModelElement) {
-      Vector machines = ((ModelElement)parent).getBehavior();
+    if (parent instanceof MModelElement) {
+      Vector machines = new Vector(((MModelElement)parent).getBehaviors());
       return (machines == null) ? -1 : machines.indexOf(child);
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof ModelElement && getChildCount(node) > 0);
+    return !(node instanceof MModelElement && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -79,12 +79,12 @@ public class GoElementToMachine implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(ModelElement.class);
+    pros.addElement(MModelElement.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(StateMachine.class);
+    pros.addElement(MStateMachine.class);
     return pros;
   }
 

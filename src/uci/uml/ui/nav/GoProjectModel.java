@@ -23,13 +23,13 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
 import uci.uml.ui.*;
 
 public class GoProjectModel implements TreeModelPrereqs {
@@ -77,7 +77,7 @@ public class GoProjectModel implements TreeModelPrereqs {
   public Vector getPrereqs() { return new Vector(); }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Model.class);
+    pros.addElement(MModel.class);
     return pros;
   }
 

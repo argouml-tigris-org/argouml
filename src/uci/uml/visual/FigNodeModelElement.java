@@ -32,7 +32,8 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -43,8 +44,9 @@ import uci.graph.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 /** Abstract class to display diagram icons for UML ModelElements that
  *  look like nodes and that have editiable names and can be
@@ -101,11 +103,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
   /** Reply text to be shown while placing node in diagram */
   public String placeString() {
-    if (getOwner() instanceof ModelElement) {
-      ModelElement me = (ModelElement) getOwner();
-      String placeString = "new " + me.getOCLTypeStr();
-      Name n = me.getName();
-      if (n != null && !n.equals(Name.UNSPEC)) placeString = n.getBody();
+    if (getOwner() instanceof MModelElement) {
+      MModelElement me = (MModelElement) getOwner();
+      String placeString = me.getName();
+	  if (placeString == null) placeString = "new " + me.getUMLClassName();
       return placeString;
     }
     return "";
@@ -313,9 +314,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
    *  should override to handle other text elements. */
   protected void textEdited(FigText ft) throws PropertyVetoException {
     if (ft == _name) {
-      ModelElement me = (ModelElement) getOwner();
+      MModelElement me = (MModelElement) getOwner();
       if (me == null) return;
-      me.setName(new Name(ft.getText()));
+      me.setName(ft.getText());
     }
   }
 
@@ -325,35 +326,33 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   /** If the user double clicks on anu part of this FigNode, pass it
    *  down to one of the internal Figs.  This allows the user to
    *  initiate direct text editing. */
-  public void mouseClicked(MouseEvent me) {
-    if (!_readyToEdit) {
-      if (getOwner() instanceof ModelElement) {
-	ModelElement own = (ModelElement) getOwner();
-	try { own.setName(new Name("")); }
-	catch (PropertyVetoException pve) { return; }
-	_readyToEdit = true;
-      }
-      else {
-	System.out.println("not ready to edit name");
-	return;
-      }
-    }
-    if (me.isConsumed()) return;
-    if (me.getClickCount() >= 2 &&
-	!(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
-      if (getOwner() == null) return;
-      Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
-      if (f instanceof MouseListener) ((MouseListener)f).mouseClicked(me);
-    }
-    me.consume();
-  }
+	public void mouseClicked(MouseEvent me) {
+		if (!_readyToEdit) {
+			if (getOwner() instanceof MModelElement) {
+				MModelElement own = (MModelElement) getOwner();
+				own.setName(""); 
+				_readyToEdit = true;
+			}
+			else {
+				System.out.println("not ready to edit name");
+				return;
+			}
+		}
+		if (me.isConsumed()) return;
+		if (me.getClickCount() >= 2 &&
+			!(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
+			if (getOwner() == null) return;
+			Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
+			if (f instanceof MouseListener) ((MouseListener)f).mouseClicked(me);
+		}
+		me.consume();
+	}
 
   public void keyPressed(KeyEvent ke) {
     if (!_readyToEdit) {
-      if (getOwner() instanceof ModelElement) {
-	ModelElement me = (ModelElement) getOwner();
-	try { me.setName(new Name("")); }
-	catch (PropertyVetoException pve) { return; }
+      if (getOwner() instanceof MModelElement) {
+	MModelElement me = (MModelElement) getOwner();
+	me.setName(""); 
 	_readyToEdit = true;
       }
       else {
@@ -365,7 +364,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     if (getOwner() == null) return;
     _name.keyPressed(ke);
     //ke.consume();
-//     ModelElement me = (ModelElement) getOwner();
+//     MModelElement me = (MModelElement) getOwner();
 //     if (me == null) return;
 //     try { me.setName(new Name(_name.getText())); }
 //     catch (PropertyVetoException pve) { }
@@ -378,7 +377,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 //     if (ke.isConsumed()) return;
 //     _name.keyTyped(ke);
 //     //ke.consume();
-//     ModelElement me = (ModelElement) getOwner();
+//     MModelElement me = (MModelElement) getOwner();
 //     if (me == null) return;
 //     try { me.setName(new Name(_name.getText())); }
 //     catch (PropertyVetoException pve) { }
@@ -387,11 +386,11 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   ////////////////////////////////////////////////////////////////
   // internal methods
 
-  /** This is called aftern any part of the UML ModelElement has
+  /** This is called aftern any part of the UML MModelElement has
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
   protected void modelChanged() {
-    ModelElement me = (ModelElement) getOwner();
+    MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
     if (_readyToEdit) {
       String nameStr = GeneratorDisplay.Generate(me.getName());
@@ -403,14 +402,20 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
     super.setOwner(own);
-    if (oldOwner instanceof ModelElement)
-      ((ModelElement)oldOwner).removeVetoableChangeListener(this);
-    if (own instanceof ModelElement)
-      ((ModelElement)own).addVetoableChangeListener(this);
+    if (oldOwner instanceof MModelElement)
+      ((MModelElement)oldOwner).removeMElementListener(this);
+    if (own instanceof MModelElement)
+      ((MModelElement)own).addMElementListener(this);
     modelChanged();
     _readyToEdit = true;
     updateBounds();
   }
 
+
+
+	public void propertySet(MElementEvent mee) {
+	    super.propertySet(mee);
+		modelChanged();
+	}
 
 } /* end class FigNodeModelElement */

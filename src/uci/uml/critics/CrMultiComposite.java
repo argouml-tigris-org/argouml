@@ -30,20 +30,20 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
-/** Well-formedness rule [2] for AssociationEnd. See page 28 of UML
+/** Well-formedness rule [2] for MAssociationEnd. See page 28 of UML
  *  1.1 Semantics. OMG document ad/97-08-04. This Critic is currently
  *  not used.  It is not registered in Init.java. */
 
 public class CrMultiComposite extends CrUML {
 
   public CrMultiComposite() {
-    setHeadline("Composite Role with Multiplicity > 1");
+    setHeadline("Composite Role with MMultiplicity > 1");
     sd("A composite (black diamond) role of an association indicates that \n"+
        "instances of that class contain instances of the associated classes. \n"+
        "Since each instance can only be contained in one other object, the \n"+
@@ -60,12 +60,12 @@ public class CrMultiComposite extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof AssociationEnd)) return NO_PROBLEM;
-    AssociationEnd ae = (AssociationEnd) dm;
-    AggregationKind ak = ae.getAggregation();
-    Multiplicity m = ae.getMultiplicity();
-    if (ak != AggregationKind.COMPOSITE) return NO_PROBLEM;
-    if (m.max() <= 1) return NO_PROBLEM;
+    if (!(dm instanceof MAssociationEnd)) return NO_PROBLEM;
+    MAssociationEnd ae = (MAssociationEnd) dm;
+    MAggregationKind ak = ae.getAggregation();
+    MMultiplicity m = ae.getMultiplicity();
+    if (ak != MAggregationKind.COMPOSITE) return NO_PROBLEM;
+    if (m.getUpper() <= 1) return NO_PROBLEM;
     return PROBLEM_FOUND;
   }
 

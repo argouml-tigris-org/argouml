@@ -26,9 +26,9 @@ package uci.uml.ui;
 import uci.util.Predicate;
 import uci.util.PredicateTrue;
 import uci.gef.Diagram;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 public class PredicateFind implements Predicate {
 
@@ -56,16 +56,16 @@ public class PredicateFind implements Predicate {
     return res;
   }
 
-  public boolean matchPackage(Model m) {
-    boolean res = _packageName.predicate(m.getName().getBody());
+  public boolean matchPackage(MModel m) {
+    boolean res = _packageName.predicate(m.getName());
     return res;
   }
 
   public boolean predicate(Object o) {
-    if (!(o instanceof ModelElement)) return false;
-    ModelElement me = (ModelElement) o;
+    if (!(o instanceof MModelElement)) return false;
+    MModelElement me = (MModelElement) o;
     return _type.predicate(me) && _specific.predicate(me) &&
-      _elementName.predicate(me.getName().getBody());
+      _elementName.predicate(me.getName());
   }
 
 } /* end class PredicateFind */

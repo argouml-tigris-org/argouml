@@ -31,7 +31,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
@@ -39,10 +39,10 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
 
-/** Class to display graphics for a UML State in a diagram. */
+/** Class to display graphics for a UML MState in a diagram. */
 
 public class FigPackage extends FigNodeModelElement {
 
@@ -142,16 +142,16 @@ public class FigPackage extends FigNodeModelElement {
 
   public void setEnclosingFig(Fig encloser) {
     super.setEnclosingFig(encloser);
-    if (!(getOwner() instanceof ModelElement)) return;
-    ModelElement me = (ModelElement) getOwner();
-    Namespace m = null;
+    if (!(getOwner() instanceof MModelElement)) return;
+    MModelElement me = (MModelElement) getOwner();
+    MNamespace m = null;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    if (encloser != null && (encloser.getOwner() instanceof Model)) {
-      m = (Namespace) encloser.getOwner();
+    if (encloser != null && (encloser.getOwner() instanceof MModel)) {
+      m = (MNamespace) encloser.getOwner();
     }
     else {
       if (pb.getTarget() instanceof UMLDiagram) {
-	m = (Namespace) ((UMLDiagram)pb.getTarget()).getNamespace();
+	m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
       }
     }
     try {

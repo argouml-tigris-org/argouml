@@ -33,7 +33,8 @@ package uci.gef;
 import java.applet.*;
 import java.awt.*;
 import java.io.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 /** Used to place labels as specific positions along a FigEdge.  For
  *  example, a label can be placed in the middle of a FigEdge by using 50%. */

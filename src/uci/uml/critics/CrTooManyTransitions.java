@@ -28,14 +28,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -69,12 +69,12 @@ public class CrTooManyTransitions extends CrUML {
   ////////////////////////////////////////////////////////////////
   // critiquing API
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof StateVertex)) return NO_PROBLEM;
-    StateVertex sv = (StateVertex) dm;
+    if (!(dm instanceof MStateVertex)) return NO_PROBLEM;
+    MStateVertex sv = (MStateVertex) dm;
 
     int threshold = ((Integer)getArg(THRESHOLD)).intValue();
-    Vector in = sv.getIncoming();
-    Vector out = sv.getOutgoing();
+    Collection in = sv.getIncomings();
+    Collection out = sv.getOutgoings();
     int inSize = (in == null) ? 0 : in.size();
     int outSize = (out == null) ? 0 : out.size();
     if (inSize + outSize <= threshold) return NO_PROBLEM;

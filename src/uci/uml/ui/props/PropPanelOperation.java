@@ -29,7 +29,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -38,19 +38,22 @@ import javax.swing.text.*;
 import javax.swing.border.*;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.*;
+import uci.uml.util.MMUtil;
 
 public class PropPanelOperation extends PropPanel
 implements ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final VisibilityKind VISIBILITIES[] = {
-    VisibilityKind.PUBLIC, VisibilityKind.PRIVATE,
-    VisibilityKind.PROTECTED, VisibilityKind.PACKAGE };
+  public static final MVisibilityKind VISIBILITIES[] = {
+    MVisibilityKind.PUBLIC, MVisibilityKind.PRIVATE,
+    MVisibilityKind.PROTECTED };
+
+	//PACKAGE in nsuml???
   public static final String ATTRKEYWORDS[] = {
     "None", "static", "final", "static final", "synchronized",
     "static synchronized", "final synchronized", "static final synchronized"
@@ -143,34 +146,31 @@ implements ItemListener {
 
   protected void setTargetInternal(Object t) {
     super.setTargetInternal(t);
-    Operation oper = (Operation) _target;
+    MOperation oper = (MOperation) _target;
 
-    VisibilityKind vk = oper.getVisibility();
+    MVisibilityKind vk = oper.getVisibility();
     _visField.setSelectedItem(vk);
 
-    ScopeKind sk = oper.getOwnerScope();
-    CallConcurrencyKind ck = oper.getConcurrency();
+    MScopeKind sk = oper.getOwnerScope();
+    MCallConcurrencyKind ck = oper.getConcurrency();
     // needs-more-work: concurrency
     // needs-more-work: final methods?
-    if (ScopeKind.CLASSIFIER.equals(sk)) {
-      if (CallConcurrencyKind.GUARDED.equals(ck))
+    if (MScopeKind.CLASSIFIER.equals(sk)) {
+      if (MCallConcurrencyKind.GUARDED.equals(ck))
 	_keywordsField.setSelectedItem("static synchronized");
       else
 	_keywordsField.setSelectedItem("static");
     }
     else {
-      if (CallConcurrencyKind.GUARDED.equals(ck))
+      if (MCallConcurrencyKind.GUARDED.equals(ck))
 	_keywordsField.setSelectedItem("synchronized");
       else
 	_keywordsField.setSelectedItem("None");
     }
 
-    Vector params = oper.getParameter();
-    if (params != null && params.size() > 0) {
-      Classifier rt = oper.getReturnType();
-      if (rt != null) _typeField.setSelectedItem(rt);
-      else _typeField.setSelectedItem(null);
-    }
+	MParameter returnParameter = MMUtil.SINGLETON.getReturnParameter(oper);
+	if (returnParameter != null)
+		_typeField.setSelectedItem(returnParameter.getType());
   }
 
 
@@ -178,12 +178,9 @@ implements ItemListener {
   public void setTargetVisibility() {
     if (_target == null) return;
     if (_inChange) return;
-    VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
-    Operation oper = (Operation) _target;
-    try {
-        oper.setVisibility(vk);
-    }
-    catch (PropertyVetoException ignore) { }
+    MVisibilityKind vk = (MVisibilityKind) _visField.getSelectedItem();
+    MOperation oper = (MOperation) _target;
+	oper.setVisibility(vk);
   }
 
   // needs-more-work: how to model abstract methods?
@@ -197,60 +194,55 @@ implements ItemListener {
       //System.out.println("keywords are null");
       return;
     }
-    Operation oper = (Operation) _target;
-    try {
-      if (keys.equals("None")) {
-	oper.setOwnerScope(ScopeKind.INSTANCE);
-	oper.setConcurrency(CallConcurrencyKind.CONCURRENT);
-      }
-      else if (keys.equals("static")) {
-	oper.setOwnerScope(ScopeKind.CLASSIFIER);
-	oper.setConcurrency(CallConcurrencyKind.CONCURRENT);
-      }
-      else if (keys.equals("final")) {
-	oper.setOwnerScope(ScopeKind.INSTANCE);
-	oper.setConcurrency(CallConcurrencyKind.CONCURRENT);
-      }
-      else if (keys.equals("static final")) {
-	oper.setOwnerScope(ScopeKind.INSTANCE);
-	oper.setConcurrency(CallConcurrencyKind.CONCURRENT);
-      }
-      else if (keys.equals("synchronized")) {
-	oper.setOwnerScope(ScopeKind.INSTANCE);
-	oper.setConcurrency(CallConcurrencyKind.GUARDED);
-      }
-      else if (keys.equals("static synchronized")) {
-	oper.setOwnerScope(ScopeKind.CLASSIFIER);
-	oper.setConcurrency(CallConcurrencyKind.GUARDED);
-      }
-      else if (keys.equals("final synchronized")) {
-	oper.setOwnerScope(ScopeKind.INSTANCE);
-	oper.setConcurrency(CallConcurrencyKind.GUARDED);
-      }
-      else if (keys.equals("static final synchronized")) {
-	oper.setOwnerScope(ScopeKind.CLASSIFIER);
-	oper.setConcurrency(CallConcurrencyKind.GUARDED);
-      }
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set keywords!");
-    }
+    MOperation oper = (MOperation) _target;
+	if (keys.equals("None")) {
+		oper.setOwnerScope(MScopeKind.INSTANCE);
+		oper.setConcurrency(MCallConcurrencyKind.CONCURRENT);
+	}
+	else if (keys.equals("static")) {
+		oper.setOwnerScope(MScopeKind.CLASSIFIER);
+		oper.setConcurrency(MCallConcurrencyKind.CONCURRENT);
+	}
+	else if (keys.equals("final")) {
+		oper.setOwnerScope(MScopeKind.INSTANCE);
+		oper.setConcurrency(MCallConcurrencyKind.CONCURRENT);
+	}
+	else if (keys.equals("static final")) {
+		oper.setOwnerScope(MScopeKind.INSTANCE);
+		oper.setConcurrency(MCallConcurrencyKind.CONCURRENT);
+	}
+	else if (keys.equals("synchronized")) {
+		oper.setOwnerScope(MScopeKind.INSTANCE);
+		oper.setConcurrency(MCallConcurrencyKind.GUARDED);
+	}
+	else if (keys.equals("static synchronized")) {
+		oper.setOwnerScope(MScopeKind.CLASSIFIER);
+		oper.setConcurrency(MCallConcurrencyKind.GUARDED);
+	}
+	else if (keys.equals("final synchronized")) {
+		oper.setOwnerScope(MScopeKind.INSTANCE);
+		oper.setConcurrency(MCallConcurrencyKind.GUARDED);
+	}
+	else if (keys.equals("static final synchronized")) {
+		oper.setOwnerScope(MScopeKind.CLASSIFIER);
+		oper.setConcurrency(MCallConcurrencyKind.GUARDED);
+	}
   }
 
   public void setTargetType() {
     if (_target == null) return;
     if (_inChange) return;
-    Operation op = (Operation) _target;
+    MOperation op = (MOperation) _target;
     Object rtObj = _typeField.getSelectedItem();
-    Classifier rt = null;
+    MClassifier rt = null;
     if (rtObj instanceof String) {
       String rtStr = (String) _typeField.getSelectedItem();
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       Project p = pb.getProject();
       rt = p.findType(rtStr);
     }
-    else if (rtObj instanceof Classifier) {
-      rt = (Classifier) rtObj;
+    else if (rtObj instanceof MClassifier) {
+      rt = (MClassifier) rtObj;
     }
     else {
       // watch out for null rtObj
@@ -259,11 +251,10 @@ implements ItemListener {
       // needs-more-work: selected predefined class
     }
     if (rt != null) {
-      try {
 	//System.out.println("Props setting return type: " + rt);
-	op.setReturnType(rt);
-      }
-      catch (PropertyVetoException pve) { }
+		MParameter p = new MParameterImpl();
+		p.setType(rt);
+		MMUtil.SINGLETON.setReturnParameter(op,p);
     }
   }
 
@@ -296,7 +287,7 @@ implements ItemListener {
       setTargetKeywords();
     }
     else if (src == _visField) {
-//       System.out.println("attr VisibilityKind now is " +
+//       System.out.println("attr MVisibilityKind now is " +
 // 			 _visField.getSelectedItem());
       setTargetVisibility();
     }

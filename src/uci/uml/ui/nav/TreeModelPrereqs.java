@@ -23,7 +23,8 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+//import java.util.*;
 import javax.swing.tree.*;
 
 /** This is a kind of TreeModel that is intended to be used as a

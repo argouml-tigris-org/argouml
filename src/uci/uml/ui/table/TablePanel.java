@@ -25,7 +25,7 @@ package uci.uml.ui.table;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -36,8 +36,8 @@ import javax.swing.border.*;
 import uci.util.*;
 import uci.ui.*;
 import uci.gef.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 import uci.uml.ui.*;
 
 public class TablePanel extends TabSpawnable
@@ -48,7 +48,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
   Object    _target;
   JLabel    _contextLabel = new JLabel("Table view of: XXX");
   JLabel    _sizeLabel    = new JLabel("   [Rows: 000]");
-  Vector    _tableModels  = new Vector();
+  java.util.Vector    _tableModels  = new java.util.Vector();
   JComboBox _persCombo    = null;
   JLabel    _persLabel    = new JLabel("Table:");
   JButton   _config       = new JButton("Config");
@@ -179,8 +179,16 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
 
 
   protected void setEditors(JTable t) {
-    JComboBox visCombo = new JComboBox(VisibilityKind.POSSIBLE_VISIBILITIES);
-    t.setDefaultEditor(VisibilityKind.class, new DefaultCellEditor(visCombo));
+	  // this is no longer dynamically geneerated since nsuml
+	  // doesn't have a list of all possible visibilities
+	  // this should be placed in a file MMVisibility, like MMClassVis...
+	  java.util.Vector visibilityList = new java.util.Vector();
+	  visibilityList.addElement(MVisibilityKind.PUBLIC);
+	  visibilityList.addElement(MVisibilityKind.PRIVATE);
+	  visibilityList.addElement(MVisibilityKind.PROTECTED);
+
+    JComboBox visCombo = new JComboBox(visibilityList);
+    t.setDefaultEditor(MVisibilityKind.class, new DefaultCellEditor(visCombo));
 
     JComboBox clsKeyCombo = new JComboBox(MMClassKeyword.POSSIBLES);
     t.setDefaultEditor(MMClassKeyword.class,
@@ -218,11 +226,11 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
 
   public void updateContext() {
     String targetName = "" + _target;
-    if (_target instanceof Element) {
-      Element e = (Element) _target;
+    if (_target instanceof MElement) {
+      MModelElement e = (MModelElement) _target;
       String ocl = "";
-      if (e instanceof ElementImpl) ocl = ((ElementImpl)e).getOCLTypeStr();
-      targetName = e.getName().getBody();
+      if (e instanceof MElementImpl) ocl = ((MElementImpl)e).getUMLClassName();
+      targetName = e.getName();
       if (targetName.equals("")) targetName = "(anon " + ocl + ")";
     }
     if (_target instanceof Diagram) {
@@ -292,7 +300,7 @@ implements TabModelTarget, ItemListener, DocumentListener, ListSelectionListener
       setTablePerspective();
     }
     else if (src == _filterCombo) {
-      //System.out.println("class VisibilityKind now is " +
+      //System.out.println("class MVisibilityKind now is " +
       //_visField.getSelectedItem());
       setFilter();
     }

@@ -23,14 +23,14 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.StateMachine;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import uci.uml.ui.Project;
 
 public class GoProjectMachine implements TreeModelPrereqs {
@@ -70,24 +70,23 @@ public class GoProjectMachine implements TreeModelPrereqs {
     if (models == null) return null;
     java.util.Enumeration enum = models.elements();
     while (enum.hasMoreElements()) {
-      Namespace ns = (Namespace) enum.nextElement();
+      MNamespace ns = (MNamespace) enum.nextElement();
       accumMachines(ns, res);
     }
     return res;
   }
 
-  public void accumMachines(Namespace m, Vector res) {
-    Vector oes = m.getOwnedElement();
+  public void accumMachines(MNamespace m, Vector res) {
+    Vector oes = new Vector(m.getOwnedElements());
     int size = oes.size();
     for (int i = 0; i < size; i++) {
-      ElementOwnership eo = (ElementOwnership) oes.elementAt(i);
-      ModelElement me = (ModelElement) eo.getModelElement();
-      Vector beh = me.getBehavior();
+      MModelElement me = (MModelElement) oes.elementAt(i);
+      Vector beh = new Vector(me.getBehaviors());
       int behSize = beh.size();
       for (int j = 0; j < behSize; j++) {
 	res.addElement(beh.elementAt(j));
       }
-      if (me instanceof Namespace) accumMachines((Namespace)me, res);
+      if (me instanceof MNamespace) accumMachines((MNamespace)me, res);
     }
   }
 
@@ -106,7 +105,7 @@ public class GoProjectMachine implements TreeModelPrereqs {
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(StateMachine.class);
+    pros.addElement(MStateMachine.class);
     return pros;
   }
 

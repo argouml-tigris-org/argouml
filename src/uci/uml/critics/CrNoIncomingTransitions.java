@@ -28,12 +28,12 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 /** A critic to detect when a state has no outgoing transitions. */
 
@@ -41,7 +41,7 @@ public class CrNoIncomingTransitions extends CrUML {
 
   public CrNoIncomingTransitions() {
     setHeadline("Add Incoming Transitions to <ocl>self</ocl>");
-    sd("State <ocl>self</ocl> has no incoming transitions. "+
+    sd("MState <ocl>self</ocl> has no incoming transitions. "+
        "Normally states have both incoming and outgoing transitions. \n\n"+
        "Defining complete state transitions is needed to complete the behavioral "+
        "specification part of your design. Without incoming transitions, "+
@@ -55,20 +55,20 @@ public class CrNoIncomingTransitions extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof StateVertex)) return NO_PROBLEM;
-    StateVertex sv = (StateVertex) dm;
-    if (sv instanceof State) {
-      StateMachine sm = ((State)sv).getStateMachine();
+    if (!(dm instanceof MStateVertex)) return NO_PROBLEM;
+    MStateVertex sv = (MStateVertex) dm;
+    if (sv instanceof MState) {
+      MStateMachine sm = ((MState)sv).getStateMachine();
       if (sm != null && sm.getTop() == sv) return NO_PROBLEM;
     }
     //Vector outgoing = sv.getOutgoing();
-    Vector incoming = sv.getIncoming();
+    Collection incoming = sv.getIncomings();
     //boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
     boolean needsIncoming = incoming == null || incoming.size() == 0;
-    if (sv instanceof Pseudostate) {
-      PseudostateKind k = ((Pseudostate)sv).getKind();
-      if (k.equals(PseudostateKind.INITIAL)) needsIncoming = false;
-      //if (k.equals(PseudostateKind.FINAL)) needsOutgoing = false;
+    if (sv instanceof MPseudostate) {
+      MPseudostateKind k = ((MPseudostate)sv).getKind();
+      if (k.equals(MPseudostateKind.INITIAL)) needsIncoming = false;
+      //if (k.equals(MPseudostateKind.FINAL)) needsOutgoing = false;
     }
     // if (needsIncoming && !needsOutgoing) return PROBLEM_FOUND;
     if (needsIncoming) return PROBLEM_FOUND;

@@ -34,9 +34,9 @@ import javax.swing.text.*;
 import javax.swing.border.*;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.Element;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 
@@ -49,8 +49,8 @@ class ModelElementRenderer extends JLabel implements ListCellRenderer {
 						int index,   
 						boolean isSelected,
 						boolean cellHasFocus) {
-    if (value instanceof Element)
-      setText(((Element)value).getName().getBody());
+    if (value instanceof MModelElement)
+      setText(((MModelElement)value).getName());
     else
       setText(value.toString());
       

@@ -33,7 +33,8 @@ package uci.gef;
 import java.applet.*;
 import java.awt.*;
 import java.io.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 /** Abstract class that defines a common interface to all of
  *  path-to-coord mapping objects.  These objects store some

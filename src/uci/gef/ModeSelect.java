@@ -32,7 +32,8 @@ package uci.gef;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 /** This class implements a Mode that interperts user input as
  *  selecting one or more Figs. Clicking on a Fig will select

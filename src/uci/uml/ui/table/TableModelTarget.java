@@ -24,7 +24,7 @@
 package uci.uml.ui.table;
 
 import java.beans.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.table.TableModel;
 
 import uci.util.Predicate;

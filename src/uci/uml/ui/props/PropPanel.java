@@ -29,7 +29,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -38,10 +38,11 @@ import javax.swing.text.*;
 //import javax.swing.border.*;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.*;
 
 /** This is an abstract superclass for panels that go in the
@@ -50,7 +51,7 @@ import uci.uml.ui.*;
  * @see TabProps */
 
 public class PropPanel extends TabSpawnable
-implements TabModelTarget, DocumentListener {
+implements TabModelTarget, DocumentListener, MElementListener{
   ////////////////////////////////////////////////////////////////
   // instance vars
   Object _target;
@@ -134,31 +135,30 @@ implements TabModelTarget, DocumentListener {
 
   protected void setTargetInternal(Object t) {
     _target = t;
-    ModelElement me = (ModelElement) _target;
-    String n = me.getName().getBody();
+    MModelElement me = (MModelElement) _target;
+    String n = me.getName();
     // this is a small hack to get the text to update for an empty string
-    if (n.equals("")) _nameField.setText(" ");
+    if ((n == null) || n.equals("")) _nameField.setText(" ");
     _nameField.setText(n);
     _nameField.setCaretPosition(0);
-    Vector stereos = me.getStereotype();
+    MStereotype stereo = me.getStereotype();
     JTextField ed = (JTextField) _stereoField.getEditor().getEditorComponent();
-    if (stereos != null && stereos.size() == 1) {
-      Stereotype s = (Stereotype) stereos.firstElement();
-      String stereoName = s.getName().getBody();
+    if (stereo != null) {
+      String stereoName = stereo.getName();
       // needs-more-work: select from list
-      _stereoField.setSelectedItem(s);
+      _stereoField.setSelectedItem(stereo);
       ed.setText(stereoName);
     }
     else {
       _stereoField.setSelectedItem(null);
       ed.setText("");
     }
-    Namespace ns = me.getNamespace();
+    MNamespace ns = me.getNamespace();
     ed = (JTextField) _namespaceField.getEditor().getEditorComponent();
     if (ns != null) {
-      String namespaceName = ns.getName().getBody();
+      String namespaceName = ns.getName();
       while (ns.getNamespace() != null) {
-	namespaceName = ns.getNamespace().getName().getBody() +
+	namespaceName = ns.getNamespace().getName() +
 	  "." + namespaceName;
 	ns = ns.getNamespace();
       }
@@ -177,44 +177,36 @@ implements TabModelTarget, DocumentListener {
 
   public void refresh() { setTarget(_target); }
 
-  public boolean shouldBeEnabled() { return _target instanceof ModelElement; }
+  public boolean shouldBeEnabled() { return _target instanceof MModelElement; }
 
 
   protected void setTargetName() {
     if (_target == null) return;
     if (_inChange) return;
-    try {
-      String newName = _nameField.getText();
-      ((ModelElement)_target).setName(new Name(newName));
-    }
-    catch (PropertyVetoException pve) { }
+	String newName = _nameField.getText();
+	((MModelElement)_target).setName(newName);
   }
 
   protected void setTargetStereotype() {
     if (_target == null) return;
     if (_inChange) return;
-    try {
-      ModelElement me = (ModelElement) _target;
-      // needs-more-work: find predefined stereotype
-      Component ed = _stereoField.getEditor().getEditorComponent();
-      String stereoName = ((JTextField)ed).getText();
-      Namespace m = ProjectBrowser.TheInstance.getProject().getCurrentNamespace();
-      Stereotype s = null;
-      ElementOwnership eo = m.findElementNamed(stereoName);
-      if (eo != null && eo.getModelElement() instanceof Stereotype)
-	s = (Stereotype) eo.getModelElement();
-      else {
-	s = new Stereotype(stereoName);
-	m.addPublicOwnedElement(s);
-      }
-      Vector stereos = new Vector();
-      stereos.addElement(s);
-      //System.out.println("setting stereotype");
-      me.setStereotype(stereos);
-    }
-    catch (PropertyVetoException pve) { }
+	MModelElement me = (MModelElement) _target;
+	// needs-more-work: find predefined stereotype
+	Component ed = _stereoField.getEditor().getEditorComponent();
+	String stereoName = ((JTextField)ed).getText();
+	MNamespace m = ProjectBrowser.TheInstance.getProject().getCurrentNamespace();
+	MStereotype s = null;
+   	Object eo = m.lookup(stereoName);
+	if (eo != null && eo instanceof MStereotype)
+		s = (MStereotype) eo;
+	else {
+		s = new MStereotypeImpl();
+		s.setName(stereoName);
+		m.addOwnedElement(s);
+	}
+	me.setStereotype(s);
   }
-
+	
   ////////////////////////////////////////////////////////////////
   // DocumentListener implementation
 
@@ -232,5 +224,22 @@ implements TabModelTarget, DocumentListener {
     //System.out.println(getClass().getName() + " changed");
     // Apparently, this method is never called.
   }
+
+	// MElementListener implementation
+
+	public void propertySet(MElementEvent mee) {
+		refresh();
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	}
+	public void recovered(MElementEvent mee) {
+	}
+	public void removed(MElementEvent mee) {
+	}
+	public void roleAdded(MElementEvent mee) {
+	}
+	public void roleRemoved(MElementEvent mee) {
+	}
+
 
 } /* end class PropPanel */

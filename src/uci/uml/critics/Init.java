@@ -27,11 +27,11 @@ import uci.argo.kernel.*;
 import uci.uml.critics.java.*;
 import uci.uml.critics.patterns.*;
 import uci.uml.critics.presentation.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import uci.uml.visual.*;
 
 /** Registers critics for use in Argo/UML.  This class is called at
@@ -109,6 +109,9 @@ public class Init {
   public static Critic crMergeClasses = new CrMergeClasses();
   public static Critic crSubclassReference = new CrSubclassReference();
 
+  public static Critic crComponentWithoutNode = new CrComponentWithoutNode();
+  public static Critic crCompInstanceWithoutNode = new CrCompInstanceWithoutNode();
+
   // from UML 1.1 Semantics spec
 
   // common coding conventions
@@ -152,31 +155,34 @@ public class Init {
   /** static initializer, register all appropriate critics */
   public static void init() {
 //     try {
-      java.lang.Class modelCls = Model.class;
-      java.lang.Class modelElementCls = ModelElementImpl.class;
-      java.lang.Class classCls = MMClass.class;
-      java.lang.Class classifierCls = Classifier.class;
-      java.lang.Class interfaceCls = Interface.class;
-      java.lang.Class attrCls = Attribute.class;
-      java.lang.Class operCls = Operation.class;
-      java.lang.Class iassocCls = IAssociation.class;
-      java.lang.Class assocCls = Association.class;
-      java.lang.Class assocEndCls = AssociationEnd.class;
-      java.lang.Class assocClassCls = AssociationClass.class;
-      java.lang.Class namespaceCls = NamespaceImpl.class;
-      java.lang.Class genElementCls = GeneralizableElementImpl.class;
-      java.lang.Class genCls = Generalization.class;
-      java.lang.Class datatypeCls = DataType.class;
+      java.lang.Class modelCls = MModel.class;
+      java.lang.Class modelElementCls = MModelElementImpl.class;
+      java.lang.Class classCls = MClass.class;
+      java.lang.Class classifierCls = MClassifier.class;
+      java.lang.Class interfaceCls = MInterface.class;
+      java.lang.Class attrCls = MAttribute.class;
+      java.lang.Class operCls = MOperation.class;
+      java.lang.Class iassocCls = MAssociation.class;
+      java.lang.Class assocCls = MAssociation.class;
+      java.lang.Class assocEndCls = MAssociationEnd.class;
+      java.lang.Class assocClassCls = MAssociationClass.class;
+      java.lang.Class namespaceCls = MNamespaceImpl.class;
+      java.lang.Class genElementCls = MGeneralizableElementImpl.class;
+      java.lang.Class genCls = MGeneralization.class;
+      java.lang.Class datatypeCls = MDataType.class;
 
-      java.lang.Class useCaseCls = UseCase.class;
-      java.lang.Class actorCls = Actor.class;
+      java.lang.Class useCaseCls = MUseCase.class;
+      java.lang.Class actorCls = MActor.class;
 
-      java.lang.Class stateVertexCls = StateVertex.class;
-      java.lang.Class stateCls = State.class;
-      java.lang.Class compositieStateCls = CompositeState.class;
-      java.lang.Class pseudostateCls = Pseudostate.class;
-      java.lang.Class transitionCls = Transition.class;
-      //java.lang.Class stateMachineCls = StateMachine.class;
+      java.lang.Class stateVertexCls = MStateVertex.class;
+      java.lang.Class stateCls = MState.class;
+      java.lang.Class compositieStateCls = MCompositeState.class;
+      java.lang.Class pseudostateCls = MPseudostate.class;
+      java.lang.Class transitionCls = MTransition.class;
+      //java.lang.Class stateMachineCls = MStateMachine.class;
+
+      java.lang.Class componentCls = MComponentImpl.class;
+      java.lang.Class componentInstanceCls = MComponentInstanceImpl.class;
 
       java.lang.Class diagramCls        = UMLDiagram.class;
       java.lang.Class classDiagramCls   = UMLClassDiagram.class;
@@ -187,7 +193,7 @@ public class Init {
 
 
       // needs-more-work: Agency should allow registration by interface
-      // useful for IAssociation.
+      // useful for MAssociation.
 
       Agency.register(crAssocNameConflict, namespaceCls);
       Agency.register(crAttrNameConflict, classifierCls);
@@ -285,6 +291,8 @@ public class Init {
       Agency.register(crConsiderSingleton, classCls);
       Agency.register(crSingletonViolated, classCls);
 
+      Agency.register(crComponentWithoutNode, componentCls);
+      Agency.register(crCompInstanceWithoutNode, componentInstanceCls);
 
       Agency.register(crNodesOverlap, diagramCls);
       Agency.register(crZeroLengthEdge, edgeCls);

@@ -31,7 +31,7 @@
 
 package uci.ui;
 
-/** Interface that must be implemented by any window that wants to
+/** MInterface that must be implemented by any window that wants to
  *  take responsibility for displaying status bar information (e.g.,
  *  "Loading File...". */
 

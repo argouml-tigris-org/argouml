@@ -23,7 +23,7 @@
 
 package uci.uml.ui;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.io.*;
 
 
@@ -103,7 +103,7 @@ public class ConfigLoader {
     }
     else if (line.startsWith(panelName)) {
       String tabNames = stripBeforeColon(line).trim();
-      StringTokenizer tabAlternatives = new StringTokenizer(tabNames, "|");
+      java.util.StringTokenizer tabAlternatives = new java.util.StringTokenizer(tabNames, "|");
       Class res = null;
       while (tabAlternatives.hasMoreElements()) {
 	String tabSpec = tabAlternatives.nextToken().trim();

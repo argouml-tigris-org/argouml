@@ -31,123 +31,109 @@
 
 package uci.uml.ui;
 
-import java.util.*;
-
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import uci.util.*;
 import uci.gef.Diagram;
 import uci.graph.GraphModel;
 import uci.uml.ui.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.model_management.*;
 
 public class ChildGenRelated implements ChildGenerator {
   public static ChildGenRelated SINGLETON = new ChildGenRelated();
 
-  /** Reply a Enumeration of the children of the given Object */
-  public Enumeration gen(Object o) {
+  /** Reply a java.util.Enumeration of the children of the given Object */
+	public Enumeration gen(Object o) {
+		
+		Vector res = new Vector();
+		
+		if (o instanceof MPackage) {
+			Collection ownedElements = ((MPackage)o).getOwnedElements();
+			if (ownedElements != null)
+		 
+				//Enum is not used in Argo, why is it there?
+				//return new Enum(ownedElements.elements(), EOElement.SINGLETON);
+			return null;
+		}
+		
+		if (o instanceof MClassifier) {
+			MClassifier cls = (MClassifier) o;
+			Collection assocEnds = cls.getAssociationEnds();
+			Iterator assocIterator = assocEnds.iterator();
+			while (assocIterator.hasNext()) {
+				res.add(((MAssociationEnd)assocIterator.next()).getAssociation());
+			}
 
-    EnumerationComposite res = new EnumerationComposite();
-
-    if (o instanceof MMPackage) {
-      Vector ownedElements = ((MMPackage)o).getOwnedElement();
-      if (ownedElements != null)
-	return new Enum(ownedElements.elements(), EOElement.SINGLETON);
-    }
-
-    if (o instanceof Classifier) {
-      Classifier cls = (Classifier) o;
-      Vector assocEnds = cls.getAssociationEnd();
-      VectorSet assoc = new VectorSet();
-      int numAssoc = assocEnds.size();
-      for (int i = 0; i < numAssoc; i++) {
-	AssociationEnd ae = (AssociationEnd) assocEnds.elementAt(i);
-	assoc.addElement(ae.getAssociation());
-      }
-      res.addSub(assoc.elements());
-      res.addSub(cls.getBehavioralFeature());
-      res.addSub(cls.getStructuralFeature());
-      Vector sms = cls.getBehavior();
-      StateMachine sm = null;
-      if (sms != null && sms.size() > 0) sm = (StateMachine) sms.elementAt(0);
-      if (sm != null) res.addSub(new EnumerationSingle(sm));
-      return res;
-    }
-
-    if (o instanceof IAssociation) {
-      IAssociation asc = (IAssociation) o;
-      Vector assocEnds = asc.getConnection();
-      VectorSet classes = new VectorSet();
-      int numAssoc = assocEnds.size();
-      for (int i = 0; i < numAssoc; i++) {
-	AssociationEnd ae = (AssociationEnd) assocEnds.elementAt(i);
-	classes.addElement(ae.getType());
-      }
-      return classes.elements();
-    }
-
-    if (o instanceof StateMachine) {
-      StateMachine sm = (StateMachine) o;
-      State top = sm.getTop();
-      if (top != null)
-	res.addSub(((CompositeState)top).getSubstate().elements());
-      res.addSub(new EnumerationSingle(sm.getContext())); //wasteful!
-      res.addSub(sm.getTransitions());
-      return res;
-    }
-
-    if (o instanceof StateVertex) {
-      StateVertex sv = (StateVertex) o;
-      Vector incoming = sv.getIncoming();
-      Vector outgoing = sv.getOutgoing();
-      if (incoming != null) res.addSub(incoming.elements());
-      if (outgoing != null) res.addSub(outgoing.elements());
-
-      if (o instanceof State) {
-	State s = (State) o;
-	Vector internal = s.getInternalTransition();
-	if (internal != null) res.addSub(internal.elements());
-      }
-
-      if (o instanceof CompositeState) {
-	CompositeState cs = (CompositeState) o;
-	Vector substates = cs.getSubstate();
-	if (substates != null) res.addSub(substates.elements());
-      }
-      return res;
-    }
-
-    if (o instanceof Transition) {
-      Transition tr = (Transition) o;
-      Vector parts = new Vector();  // wasteful!!
-      if (tr.getTrigger() != null) parts.addElement(tr.getTrigger());
-      if (tr.getGuard() != null) parts.addElement(tr.getGuard());
-      if (tr.getEffect() != null) parts.addElement(tr.getEffect());
-      res.addSub(new EnumerationSingle(tr.getSource()));
-      res.addSub(new EnumerationSingle(tr.getTarget()));
-      res.addSub(parts.elements());
-      return res;
-    }
-
-    // tons more cases
-
-    if (o instanceof Diagram) {
-      Diagram d = (Diagram) o;
-      return new EnumerationComposite(d.getGraphModel().getNodes().elements(),
-				      d.getGraphModel().getEdges().elements());
-    }
-
-
-
-    return EnumerationEmpty.theInstance();
-  }
+			res.addAll(cls.getFeatures());
+			res.addAll(cls.getBehaviors());
+			return res.elements();
+		}
+		
+		if (o instanceof MAssociation) {
+			MAssociation asc = (MAssociation) o;
+			List assocEnds = asc.getConnections();
+			Iterator iter = assocEnds.iterator();
+			while (iter.hasNext()) {
+				res.add(((MAssociationEnd)iter.next()).getType());
+			}
+			return res.elements();
+		}
+		
+		if (o instanceof MStateMachine) {
+			MStateMachine sm = (MStateMachine) o;
+			MState top = sm.getTop();
+			if (top != null)
+				res.addAll(((MCompositeState)top).getSubvertices());
+			res.add(sm.getContext()); //wasteful!
+			res.addAll(sm.getTransitions());
+			return res.elements();
+		}
+		
+		if (o instanceof MStateVertex) {
+			MStateVertex sv = (MStateVertex) o;
+			res.addAll(sv.getIncomings());
+			res.addAll(sv.getOutgoings());
+			
+			if (o instanceof MState) {
+				MState s = (MState) o;
+				res.addAll(s.getInternalTransitions());
+			}
+			
+			if (o instanceof MCompositeState) {
+				MCompositeState cs = (MCompositeState) o;
+				res.addAll(cs.getSubvertices());
+			}
+			return res.elements();
+		}
+		
+		if (o instanceof MTransition) {
+			MTransition tr = (MTransition) o;
+			res.add(tr.getTrigger());
+			res.add(tr.getGuard());
+			res.add(tr.getEffect());
+			res.add(tr.getSource());
+			res.add(tr.getTarget());
+			return res.elements();
+		}
+		
+		// tons more cases
+		
+		if (o instanceof Diagram) {
+			Diagram d = (Diagram) o;
+			res.add(d.getGraphModel().getNodes());
+			res.add(d.getGraphModel().getEdges());
+		}
+		return res.elements();
+	}
 } /* end class ChildGenRelated */
 
 
 class EOElement implements Functor {
-  public static EOElement SINGLETON = new EOElement();
-  public Object apply(Object x) {
-    if (!(x instanceof ElementOwnership)) return x;
-    return ((ElementOwnership)x).getModelElement();
-  }
+	public static EOElement SINGLETON = new EOElement();
+	public Object apply(Object x) {
+		if (!(x instanceof MElementImport)) return x;
+		return ((MElementImport)x).getModelElement();
+	}
 } /* end class EOElement */

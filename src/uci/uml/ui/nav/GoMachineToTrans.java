@@ -23,15 +23,15 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class GoMachineToTrans implements TreeModelPrereqs {
 
@@ -44,10 +44,10 @@ public class GoMachineToTrans implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof StateMachine) {
-      StateMachine sm = (StateMachine)parent;
+    if (parent instanceof MStateMachine) {
+      MStateMachine sm = (MStateMachine)parent;
       if (sm == null) return null;
-      Vector trans = sm.getTransitions();
+      Vector trans = new Vector(sm.getTransitions());
       return (trans == null) ? null : trans.elementAt(index);
     }
     System.out.println("getChild should never be get here GoClassToTrans");
@@ -55,27 +55,27 @@ public class GoMachineToTrans implements TreeModelPrereqs {
   }
 
   public int getChildCount(Object parent) {
-    if (parent instanceof StateMachine) {
-      StateMachine sm = (StateMachine)parent;
+    if (parent instanceof MStateMachine) {
+      MStateMachine sm = (MStateMachine)parent;
       if (sm == null) return 0;
-      Vector trans = sm.getTransitions();
+      Vector trans = new Vector(sm.getTransitions());
       return (trans == null) ? 0 : trans.size();
     }
     return 0;
   }
 
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof StateMachine) {
-      StateMachine sm = (StateMachine)parent;
+    if (parent instanceof MStateMachine) {
+      MStateMachine sm = (MStateMachine)parent;
       if (sm == null) return -1;
-      Vector trans = sm.getTransitions();
+      Vector trans = new Vector(sm.getTransitions());
       return (trans == null) ? -1 : trans.indexOf(child);
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof StateMachine && getChildCount(node) > 0);
+    return !(node instanceof MStateMachine && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -84,12 +84,12 @@ public class GoMachineToTrans implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(StateMachine.class);
+    pros.addElement(MStateMachine.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Transition.class);
+    pros.addElement(MTransition.class);
     return pros;
   }
 

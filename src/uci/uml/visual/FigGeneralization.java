@@ -33,12 +33,12 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.beans.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import uci.gef.*;
 import uci.uml.ui.*;
-import uci.uml.Foundation.Core.*;
-//import uci.uml.Foundation.Extension_Mechanisms.*;
+import ru.novosoft.uml.foundation.core.*;
+//import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 public class FigGeneralization extends FigEdgeModelElement {
 
@@ -49,7 +49,7 @@ public class FigGeneralization extends FigEdgeModelElement {
     addPathItem(_stereo, new PathConvPercent(this, 50, 10));
     ArrowHeadTriangle endArrow = new ArrowHeadTriangle();
     endArrow.setFillColor(Color.white);
-    setDestArrowHead(endArrow);
+    setSourceArrowHead(endArrow);
     setBetweenNearestPoints(true);
   }
 
@@ -63,7 +63,7 @@ public class FigGeneralization extends FigEdgeModelElement {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  /** This is called aftern any part of the UML ModelElement has
+  /** This is called aftern any part of the UML MModelElement has
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
   protected void modelChanged() {

@@ -30,13 +30,13 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 public class CrOperNameConflict extends CrUML {
 
@@ -57,18 +57,21 @@ public class CrOperNameConflict extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
-    Vector str = cls.getBehavioralFeature();
+    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+    MClassifier cls = (MClassifier) dm;
+    Collection str = cls.getFeatures();
     if (str == null) return NO_PROBLEM;
-    java.util.Enumeration enum = str.elements();
+    Iterator enum = str.iterator();
     Vector operSeen = new Vector();
     // warn about inheritied name conflicts, different critic?
-    while (enum.hasMoreElements()) {
-      BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
+    while (enum.hasNext()) {
+      MFeature f = (MFeature) enum.next();
+      if (!(f instanceof MBehavioralFeature))
+        continue;
+      MBehavioralFeature bf = (MBehavioralFeature) f;
       int size = operSeen.size();
       for (int i = 0; i < size; i++) {
-	BehavioralFeature otherBF = (BehavioralFeature) operSeen.elementAt(i);
+	MBehavioralFeature otherBF = (MBehavioralFeature) operSeen.elementAt(i);
 	if (signaturesMatch(bf, otherBF)) return PROBLEM_FOUND;
       }
       operSeen.addElement(bf);
@@ -77,25 +80,25 @@ public class CrOperNameConflict extends CrUML {
   }
 
 
-  public boolean signaturesMatch(BehavioralFeature bf1, BehavioralFeature bf2) {
-    Name name1 = bf1.getName();
-    Name name2 = bf2.getName();
+  public boolean signaturesMatch(MBehavioralFeature bf1, MBehavioralFeature bf2) {
+    String name1 = bf1.getName();
+    String name2 = bf2.getName();
     if (name1 == null || name2 == null) return false;
     if (!name1.equals(name2)) return false;
-    Vector params1 = bf1.getParameter();
-    Vector params2 = bf2.getParameter();
+    List params1 = bf1.getParameters();
+    List params2 = bf2.getParameters();
     int size1 = params1.size();
     int size2 = params2.size();
     if (size1 != size2) return false;
     for (int i = 0; i < size1; i++) {
-      Parameter p1 = (Parameter) params1.elementAt(i);
-      Parameter p2 = (Parameter) params2.elementAt(i);
-      Name p1Name = p1.getName();
-      Name p2Name = p2.getName();
+      MParameter p1 = (MParameter) params1.get(i);
+      MParameter p2 = (MParameter) params2.get(i);
+      String p1Name = p1.getName();
+      String p2Name = p2.getName();
       if (p1Name == null || p2Name == null) return false;
       if (!p1Name.equals(p2Name)) return false;
-      Classifier p1Type = p1.getType();
-      Classifier p2Type = p2.getType();
+      MClassifier p1Type = p1.getType();
+      MClassifier p2Type = p2.getType();
       if (p1Type == null || p2Type == null) return false;
       if (!p1Type.equals(p2Type)) return false;
     }

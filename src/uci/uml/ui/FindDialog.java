@@ -23,7 +23,7 @@
 
 package uci.uml.ui;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -31,12 +31,12 @@ import javax.swing.event.*;
 import javax.swing.border.*;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.model_management.*;
 
 public class FindDialog extends JFrame
 implements ActionListener, MouseListener {
@@ -264,27 +264,27 @@ implements ActionListener, MouseListener {
   public void initTypes() {
     _type.addItem(PredicateType.create());
 
-    _type.addItem(PredicateType.create(MMClass.class, Interface.class));
+    _type.addItem(PredicateType.create(MClass.class, MInterface.class));
 
-    _type.addItem(PredicateType.create(Actor.class));
-    _type.addItem(PredicateType.create(Association.class));
-    _type.addItem(PredicateType.create(Attribute.class));
-    _type.addItem(PredicateType.create(Classifier.class));
-    _type.addItem(PredicateType.create(CompositeState.class));
-    _type.addItem(PredicateType.create(Dependency.class));
-    _type.addItem(PredicateType.create(Generalization.class));
-    _type.addItem(PredicateType.create(Instance.class));
-    _type.addItem(PredicateType.create(Interface.class));
-    _type.addItem(PredicateType.create(Link.class));
-    _type.addItem(PredicateType.create(MMClass.class));
-    _type.addItem(PredicateType.create(MMPackage.class));
-    _type.addItem(PredicateType.create(Operation.class));
-    _type.addItem(PredicateType.create(Pseudostate.class));
-    _type.addItem(PredicateType.create(Realization.class));
-    _type.addItem(PredicateType.create(State.class));
-    _type.addItem(PredicateType.create(StateVertex.class));
-    _type.addItem(PredicateType.create(Transition.class));
-    _type.addItem(PredicateType.create(UseCase.class));
+    _type.addItem(PredicateType.create(MActor.class));
+    _type.addItem(PredicateType.create(MAssociation.class));
+    _type.addItem(PredicateType.create(MAttribute.class));
+    _type.addItem(PredicateType.create(MClassifier.class));
+    _type.addItem(PredicateType.create(MCompositeState.class));
+    _type.addItem(PredicateType.create(MDependency.class));
+    _type.addItem(PredicateType.create(MGeneralization.class));
+    _type.addItem(PredicateType.create(MInstance.class));
+    _type.addItem(PredicateType.create(MInterface.class));
+    _type.addItem(PredicateType.create(MLink.class));
+    _type.addItem(PredicateType.create(MClass.class));
+    _type.addItem(PredicateType.create(MPackage.class));
+    _type.addItem(PredicateType.create(MOperation.class));
+    _type.addItem(PredicateType.create(MPseudostate.class));
+	//    _type.addItem(PredicateType.create(Realization.class));
+    _type.addItem(PredicateType.create(MState.class));
+    _type.addItem(PredicateType.create(MStateVertex.class));
+    _type.addItem(PredicateType.create(MTransition.class));
+    _type.addItem(PredicateType.create(MUseCase.class));
 
   }
 

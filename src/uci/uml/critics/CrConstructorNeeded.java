@@ -32,12 +32,12 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -62,44 +62,58 @@ public class CrConstructorNeeded extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MMClass)) return NO_PROBLEM;
-    MMClass cls = (MMClass) dm;
+    if (!(dm instanceof MClass)) return NO_PROBLEM;
+    MClass cls = (MClass) dm;
 
     boolean uninitializedIVar = false;
-    Vector str = cls.getStructuralFeature();
+    Collection str = cls.getFeatures();
     if (str == null) return NO_PROBLEM;
-    java.util.Enumeration enum = str.elements();
-    while (enum.hasMoreElements()) {
-      StructuralFeature sf = (StructuralFeature) enum.nextElement();
-      if (!(sf instanceof Attribute)) continue;  // what else could it be?
-      Attribute attr = (Attribute) sf;
-      ScopeKind sk = attr.getOwnerScope();
-      ChangeableKind ck = attr.getChangeable();
-      Expression init = attr.getInitialValue();
-      if (ScopeKind.INSTANCE.equals(sk) && ChangeableKind.NONE.equals(ck))
+    Iterator enum = str.iterator();
+    while (enum.hasNext()) {
+      Object feature = enum.next();
+      if (!(feature instanceof MAttribute))
+        continue;
+      MAttribute attr = (MAttribute) feature;
+      MScopeKind sk = attr.getOwnerScope();
+      //MChangeableKind ck = attr.getChangeability();
+      MExpression init = attr.getInitialValue();
+      if (MScopeKind.INSTANCE.equals(sk))
 	if (init == null || init.getBody() == null ||
-	    init.getBody().getBody() == null ||
-	    init.getBody().getBody().trim().length() == 0)
+	    init.getBody() == null ||
+	    init.getBody().trim().length() == 0)
 	  uninitializedIVar = true;
     }
 
     if (!uninitializedIVar) return NO_PROBLEM;
 
-    Vector beh = cls.getBehavioralFeature();
-    String className = cls.getName().getBody();
+    Collection beh = cls.getFeatures();
+    String className = cls.getName();
     if (beh == null) return PROBLEM_FOUND;
-    enum = beh.elements();
-    while (enum.hasMoreElements()) {
-      BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
-      String operName = bf.getName().getBody();
-      if (bf.getReturnType() != null) continue;
+    enum = beh.iterator();
+    while (enum.hasNext()) {
+      Object feature = enum.next();
+      if (!(feature instanceof MBehavioralFeature))
+        continue;
+      MBehavioralFeature bf = (MBehavioralFeature) feature;
+      String operName = bf.getName();
+      if (getReturnType(bf) != null) continue;
       if (!operName.equals(className)) continue;
-      ScopeKind sk = bf.getOwnerScope();
-      if (!ScopeKind.INSTANCE.equals(sk)) continue;
-      if (bf.getReturnType() == null) return NO_PROBLEM;
+      MScopeKind sk = bf.getOwnerScope();
+      if (!MScopeKind.INSTANCE.equals(sk)) continue;
+      if (getReturnType(bf) == null) return NO_PROBLEM;
     }
     return PROBLEM_FOUND;
   }
+  private MParameter getReturnType(MBehavioralFeature bf)
+  {
+    Collection parameters = bf.getParameters();
+    for (Iterator iter = parameters.iterator(); iter.hasNext();) {
+      MParameter param = (MParameter)iter.next();
+      if (param.getKind()==MParameterDirectionKind.RETURN)
+        return param;
+    };
+    return null;
+  };
 
 } /* end class CrConstructorNeeded */
 

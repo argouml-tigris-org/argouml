@@ -31,15 +31,13 @@
 
 package uci.util;
 
-import java.util.*;
-
-/** Interface used in Set to compute transitive closures.  This is
+/** MInterface used in Set to compute transitive closures.  This is
  *  basically a Functor interface for generating (expanding) the
  *  children of some object. */
 
 public interface ChildGenerator extends java.io.Serializable {
   /** Reply a Enumeration of the children of the given Object */
-  public Enumeration gen(Object o);
+  public java.util.Enumeration gen(Object o);
   static final long serialVersionUID = -6461174793151552095L;
 } /* end interface ChildGenerator */
 

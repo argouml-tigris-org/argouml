@@ -23,13 +23,13 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
 
 public class GoModelToClass implements TreeModelPrereqs {
 
@@ -62,21 +62,20 @@ public class GoModelToClass implements TreeModelPrereqs {
 
 
   public Vector getChildren(Object parent) {
-    if (!(parent instanceof MMPackage)) return null; 
+    if (!(parent instanceof MPackage)) return null; 
     Vector res = new Vector();
-    Vector oes = ((MMPackage)parent).getOwnedElement();
+    Vector oes = new Vector(((MPackage)parent).getOwnedElements());
     if (oes == null) return null;
     java.util.Enumeration enum = oes.elements();
     while (enum.hasMoreElements()) {
-      ElementOwnership eo = (ElementOwnership) enum.nextElement();
-      ModelElement me = eo.getModelElement();
-      if (me instanceof MMClass) res.addElement(me);
+      MModelElement me = (MModelElement) enum.nextElement();
+      if (me instanceof MClass) res.addElement(me);
     }
     return res;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof MMPackage && getChildCount(node) > 0);
+    return !(node instanceof MPackage && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -85,12 +84,12 @@ public class GoModelToClass implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Model.class);
+    pros.addElement(MModel.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(MMClass.class);
+    pros.addElement(MClass.class);
     return pros;
   }
 

@@ -28,8 +28,8 @@ package uci.uml.checklist;
 
 import uci.argo.checklist.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
 
 
 /** Defines a checklist to help designers design better attributes.

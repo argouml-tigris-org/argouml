@@ -28,12 +28,12 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 
 /** A critic to detect when a state has no outgoing transitions. */
@@ -55,18 +55,18 @@ public class CrMultipleInitialStates extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Pseudostate)) return NO_PROBLEM;
-    Pseudostate ps = (Pseudostate) dm;
-    if (ps.getKind() != PseudostateKind.INITIAL) return NO_PROBLEM;
-    CompositeState cs = ps.getParent();
+    if (!(dm instanceof MPseudostate)) return NO_PROBLEM;
+    MPseudostate ps = (MPseudostate) dm;
+    if (ps.getKind() != MPseudostateKind.INITIAL) return NO_PROBLEM;
+    MCompositeState cs = ps.getContainer();
     if (cs == null) { System.out.println("null parent state"); return NO_PROBLEM; }
-    Vector peers = cs.getSubstate();
+    Collection peers = cs.getSubvertices();
     int initialStateCount = 0;
     int size = peers.size();
-    for (int i =0; i < size; i++) {
-      Object sv = peers.elementAt(i);
-      if (sv instanceof Pseudostate &&
-	  (PseudostateKind.INITIAL.equals(((Pseudostate)sv).getKind())))
+    for (Iterator iter = peers.iterator(); iter.hasNext();) {
+      Object sv = iter.next();
+      if (sv instanceof MPseudostate &&
+	  (MPseudostateKind.INITIAL.equals(((MPseudostate)sv).getKind())))
 	initialStateCount++;
     }
     if (initialStateCount > 1) return PROBLEM_FOUND;
@@ -74,21 +74,20 @@ public class CrMultipleInitialStates extends CrUML {
   }
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    Pseudostate ps = (Pseudostate) dm;
+    MPseudostate ps = (MPseudostate) dm;
     VectorSet offs = computeOffenders(ps);
     return new ToDoItem(this, offs, dsgr);
   }
 
-  protected VectorSet computeOffenders(Pseudostate ps) {
+  protected VectorSet computeOffenders(MPseudostate ps) {
     VectorSet offs = new VectorSet(ps);
-    CompositeState cs = ps.getParent();
+    MCompositeState cs = ps.getContainer();
     if (cs == null) { System.out.println("null parent in still valid"); return offs; }
-    Vector peers = cs.getSubstate();
-    int size = peers.size();
-    for (int i =0; i < size; i++) {
-      Object sv = peers.elementAt(i);
-      if (sv instanceof Pseudostate &&
-	  ((Pseudostate)sv).getKind().equals(PseudostateKind.INITIAL))
+    Collection peers = cs.getSubvertices();
+    for (Iterator iter = peers.iterator(); iter.hasNext();) {
+      Object sv = iter.next();
+      if (sv instanceof MPseudostate &&
+	  ((MPseudostate)sv).getKind().equals(MPseudostateKind.INITIAL))
 	offs.addElement(sv);
     }
     return offs;
@@ -97,7 +96,7 @@ public class CrMultipleInitialStates extends CrUML {
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
     VectorSet offs = i.getOffenders();
-    Pseudostate dm = (Pseudostate) offs.firstElement();
+    MPseudostate dm = (MPseudostate) offs.firstElement();
     //if (!predicate(dm, dsgr)) return false;
     VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);

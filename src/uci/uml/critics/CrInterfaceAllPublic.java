@@ -30,13 +30,13 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
-/** Well-formedness rule [3] for Interface. See page 32 of UML 1.1
+/** Well-formedness rule [3] for MInterface. See page 32 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrInterfaceAllPublic extends CrUML {
@@ -55,14 +55,14 @@ public class CrInterfaceAllPublic extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Interface)) return NO_PROBLEM;
-    Interface inf = (Interface) dm;
-    Vector bf = inf.getBehavioralFeature();
+    if (!(dm instanceof MInterface)) return NO_PROBLEM;
+    MInterface inf = (MInterface) dm;
+    Collection bf = inf.getFeatures();
     if (bf == null) return NO_PROBLEM;
-    java.util.Enumeration enum = bf.elements();
-    while (enum.hasMoreElements()) {
-      Feature f = (Feature) enum.nextElement();
-      if (!f.getVisibility().equals(VisibilityKind.PUBLIC))
+    Iterator enum = bf.iterator();
+    while (enum.hasNext()) {
+      MFeature f = (MFeature) enum.next();
+      if (!f.getVisibility().equals(MVisibilityKind.PUBLIC))
 	return PROBLEM_FOUND;
     }
     return NO_PROBLEM;

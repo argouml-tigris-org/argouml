@@ -29,7 +29,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import javax.swing.*;
@@ -40,9 +40,10 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import uci.util.*;
 import uci.argo.checklist.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 public class TabChecklist extends TabSpawnable
 implements TabModelTarget, ActionListener, ListSelectionListener {
@@ -95,14 +96,14 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
   ////////////////////////////////////////////////////////////////
   // accessors
   public void setTarget(Object t) {
-    if (!(t instanceof ModelElement)) {
+    if (!(t instanceof MModelElement)) {
       _target = null;
       _shouldBeEnabled = false;
       return;
     }
     _target = t;
     _shouldBeEnabled = true;
-    ModelElement me = (ModelElement) _target;
+    MModelElement me = (MModelElement) _target;
     Checklist cl = CheckManager.getChecklistFor(me);
     if (cl == null) {
       _target = null;
@@ -155,10 +156,10 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
 
 
 class TableModelChecklist extends AbstractTableModel
-implements VetoableChangeListener, DelayedVChangeListener {
+implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   ////////////////
   // instance varables
-  ModelElement _target;
+  MModelElement _target;
   TabChecklist _panel;
 
   ////////////////
@@ -167,12 +168,12 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   ////////////////
   // accessors
-  public void setTarget(ModelElement t) {
-    if (_target instanceof ElementImpl)
-      ((ModelElementImpl)_target).removeVetoableChangeListener(this);
+  public void setTarget(MModelElement t) {
+    if (_target instanceof MElementImpl)
+      ((MModelElementImpl)_target).removeMElementListener(this);
     _target = t;
-    if (_target instanceof ElementImpl)
-      ((ModelElementImpl)_target).addVetoableChangeListener(this);
+    if (_target instanceof MElementImpl)
+      ((MModelElementImpl)_target).addMElementListener(this);
     fireTableStructureChanged();
   }
 
@@ -235,6 +236,19 @@ implements VetoableChangeListener, DelayedVChangeListener {
 
   ////////////////
   // event handlers
+	public void propertySet(MElementEvent mee) {
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	}
+	public void recovered(MElementEvent mee) {
+	}
+	public void removed(MElementEvent mee) {
+	}
+	public void roleAdded(MElementEvent mee) {
+	}
+	public void roleRemoved(MElementEvent mee) {
+	}
+
 
   public void vetoableChange(PropertyChangeEvent pce) {
     DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);

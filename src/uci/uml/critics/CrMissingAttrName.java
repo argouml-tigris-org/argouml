@@ -30,12 +30,12 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 public class CrMissingAttrName extends CrUML {
@@ -53,25 +53,25 @@ public class CrMissingAttrName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Attribute)) return NO_PROBLEM;
-    Attribute attr = (Attribute) dm;
-    Name myName = attr.getName();
-    if (myName == null || myName.equals(Name.UNSPEC)) return PROBLEM_FOUND;
-    if (myName.getBody().length() == 0) return PROBLEM_FOUND;
+    if (!(dm instanceof MAttribute)) return NO_PROBLEM;
+    MAttribute attr = (MAttribute) dm;
+    String myName = attr.getName();
+    if (myName == null || myName.equals("")) return PROBLEM_FOUND;
+    if (myName.length() == 0) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
     public void initWizard(Wizard w) {
     if (w instanceof WizMEName) {
       ToDoItem item = w.getToDoItem();
-      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
       String ins = "Set the name of this attribute.";
       String sug = "AttributeName";
-      if (me instanceof Attribute) {
-	Attribute a = (Attribute) me;
+      if (me instanceof MAttribute) {
+	MAttribute a = (MAttribute) me;
 	int count = 1;
 	if (a.getOwner() != null)
-	  count = a.getOwner().getStructuralFeature().size();
+	  count = a.getOwner().getFeatures().size();
 	sug = "attr" + (count + 1);
       }
       ((WizMEName)w).setInstructions(ins);

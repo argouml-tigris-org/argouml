@@ -26,7 +26,8 @@
 
 package uci.argo.kernel;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import uci.util.*;
 
 

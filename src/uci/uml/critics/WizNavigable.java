@@ -30,16 +30,16 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.ui.todo.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 /** A non-modal wizard to help the user change navigability
@@ -59,11 +59,11 @@ public class WizNavigable extends Wizard {
 
   public int getNumSteps() { return 1; }
 
-  public ModelElement getModelElement() {
+  public MModelElement getModelElement() {
     if (_item != null) {
       VectorSet offs = _item.getOffenders();
       if (offs.size() >= 1) {
-	ModelElement me = (ModelElement) offs.elementAt(0);
+	MModelElement me = (MModelElement) offs.elementAt(0);
 	return me;
       }
     }
@@ -72,17 +72,17 @@ public class WizNavigable extends Wizard {
 
   public Vector getOptions() {
     Vector res = new Vector();
-    Association asc = (Association) getModelElement();
-    AssociationEnd ae0 = (AssociationEnd) asc.getConnection().elementAt(0);
-    AssociationEnd ae1 = (AssociationEnd) asc.getConnection().elementAt(1);
-    Classifier cls0 = ae0.getType();
-    Classifier cls1 = ae1.getType();
+    MAssociation asc = (MAssociation) getModelElement();
+    MAssociationEnd ae0 = (MAssociationEnd) asc.getConnections().get(0);
+    MAssociationEnd ae1 = (MAssociationEnd) asc.getConnections().get(1);
+    MClassifier cls0 = ae0.getType();
+    MClassifier cls1 = ae1.getType();
 
-    if (cls0 != null && !"".equals(cls0.getName().getBody()))
-      _option0 = "Navigable Toward " + cls0.getName().getBody();
+    if (cls0 != null && !"".equals(cls0.getName()))
+      _option0 = "Navigable Toward " + cls0.getName();
 
-    if (cls1 != null && !"".equals(cls1.getName().getBody()))
-      _option1 = "Navigable Toward " + cls1.getName().getBody();
+    if (cls1 != null && !"".equals(cls1.getName()))
+      _option1 = "Navigable Toward " + cls1.getName();
 
     // needs-more-work: put in class names
     res.addElement(_option0);
@@ -122,13 +122,13 @@ public class WizNavigable extends Wizard {
 	return;
       }
       try {
-	Association asc = (Association) getModelElement();
-	AssociationEnd ae0 = (AssociationEnd) asc.getConnection().elementAt(0);
-	AssociationEnd ae1 = (AssociationEnd) asc.getConnection().elementAt(1);
-	ae0.setIsNavigable(choice == 0 || choice == 2);
-	ae1.setIsNavigable(choice == 1 || choice == 2);
+	MAssociation asc = (MAssociation) getModelElement();
+	MAssociationEnd ae0 = (MAssociationEnd) asc.getConnections().get(0);
+	MAssociationEnd ae1 = (MAssociationEnd) asc.getConnections().get(1);
+	ae0.setNavigable(choice == 0 || choice == 2);
+	ae1.setNavigable(choice == 1 || choice == 2);
       }
-      catch (PropertyVetoException pve) {
+      catch (Exception pve) {
 	System.out.println("could not set navigablity");
       }
     }

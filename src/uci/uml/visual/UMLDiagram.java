@@ -26,7 +26,7 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
@@ -34,7 +34,7 @@ import javax.swing.*;
 import uci.gef.*;
 import uci.graph.*;
 import uci.ui.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
 
 public class UMLDiagram extends Diagram {
@@ -75,7 +75,7 @@ public class UMLDiagram extends Diagram {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-  protected Namespace _namespace;
+  protected MNamespace  _namespace;
   protected DiagramInfo _diagramName = new DiagramInfo(this);
 
 
@@ -84,11 +84,11 @@ public class UMLDiagram extends Diagram {
 
   public UMLDiagram() { }
 
-  public UMLDiagram(Namespace ns) {
+  public UMLDiagram(MNamespace ns) {
     _namespace = ns;
   }
 
-  public UMLDiagram(String diagramName, Namespace ns) {
+  public UMLDiagram(String diagramName, MNamespace ns) {
     try { setName(diagramName); }
     catch (PropertyVetoException pve) { }
     _namespace = ns;
@@ -96,7 +96,7 @@ public class UMLDiagram extends Diagram {
 
   public void initialize(Object owner) {
     super.initialize(owner);
-    if (owner instanceof Namespace) setNamespace((Namespace) owner);
+    if (owner instanceof MNamespace) setNamespace((MNamespace) owner);
     else System.out.println("unknown object in UMLDiagram initialize:"
 			    + owner);
   }
@@ -105,16 +105,19 @@ public class UMLDiagram extends Diagram {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public Namespace getNamespace() { return _namespace; }
-  public void setNamespace(Namespace m) { _namespace = m; }
+  public MNamespace getNamespace() { return _namespace; }
+  public void setNamespace(MNamespace m) { _namespace = m; }
 
   public String getClassAndModelID() {
-    String s = super.getClassAndModelID();
-    if (getNamespace() == null) return s;
-    return s + "|" + getNamespace().getId();
+     String s = super.getClassAndModelID();
+     if (getOwner() == null) return s;
+     String id = (String) (getOwner().getUUID());
+     return s + "|" + id;
   }
 
-
+	// needs-more-work: should be overwritten by each subclass of UMLDiagram
+	public MModelElement  getOwner() { return _namespace; }
+    
   public void setName(String n) throws PropertyVetoException {
     super.setName(n);
     _diagramName.updateName();

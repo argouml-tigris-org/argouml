@@ -36,10 +36,10 @@ import java.beans.*;
 
 import uci.gef.*;
 import uci.uml.ui.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 import uci.uml.generate.*;
 
 public class FigTransition extends FigEdgeModelElement {
@@ -66,32 +66,27 @@ public class FigTransition extends FigEdgeModelElement {
    *  should override to handle other text elements. */
   protected void textEdited(FigText ft) throws PropertyVetoException {
     String s = ft.getText();
-    Transition newTrans = ParserDisplay.SINGLETON.parseTransition(s);
-    if (newTrans == null) System.out.println("null new Transition!!");
-    Name newName     = (newTrans == null) ? Name.UNSPEC : newTrans.getName();
-    Event newTrigger = (newTrans == null) ? null : newTrans.getTrigger();
-    Guard newGuard   = (newTrans == null) ? null : newTrans.getGuard();
-    ActionSequence newEffect = (newTrans == null) ?
+    MTransition newTrans = ParserDisplay.SINGLETON.parseTransition(s);
+    if (newTrans == null) System.out.println("null new MTransition!!");
+    String newName     = (newTrans == null) ? null : newTrans.getName();
+    MEvent newTrigger = (newTrans == null) ? null : newTrans.getTrigger();
+    MGuard newGuard   = (newTrans == null) ? null : newTrans.getGuard();
+    MAction newEffect = (newTrans == null) ?
       null : newTrans.getEffect();
 
-    Transition t = (Transition) getOwner();
+    MTransition t = (MTransition) getOwner();
     if (t == null) return;
-    try {
       t.setName(newName);
       t.setTrigger(newTrigger);
       t.setGuard(newGuard);
       t.setEffect(newEffect);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("PropertyVetoException in FigTransition#textEdited");
-    }
   }
 
-  /** This is called aftern any part of the UML ModelElement has
+  /** This is called aftern any part of the UML MModelElement has
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
   protected void modelChanged() {
-    ModelElement me = (ModelElement) getOwner();
+    MModelElement me = (MModelElement) getOwner();
     if (me == null) return;
     //System.out.println("FigTransition modelChanged: " + me.getClass());
     String nameStr = GeneratorDisplay.Generate(me);

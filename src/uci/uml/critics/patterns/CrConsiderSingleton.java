@@ -30,13 +30,14 @@
 
 package uci.uml.critics.patterns;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
+import uci.uml.util.*;
 import uci.uml.critics.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 
 /** A critic to detect when a class can never have instances (of
@@ -77,27 +78,24 @@ public class CrConsiderSingleton extends CrUML {
   protected void sd(String s) { setDescription(s); }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MMClass)) return NO_PROBLEM;
-    MMClass cls = (MMClass) dm;
-    Vector str = cls.getStructuralFeature();
-    Vector ends = cls.getAssociationEnd();
+    if (!(dm instanceof MClass)) return NO_PROBLEM;
+    MClass cls = (MClass) dm;
+    Vector str = new Vector(MMUtil.SINGLETON.getAttributes(cls));
+    Vector ends = new Vector(cls.getAssociationEnds());
 
     //if it is already a Singleton, nevermind
-    Vector stereos = cls.getStereotype();
-    if (stereos != null) {
-      java.util.Enumeration stereoEnum = stereos.elements();
-      while (stereoEnum.hasMoreElements()) {
-	Stereotype st = (Stereotype) stereoEnum.nextElement();
-	if (st.getName().getBody().equals("Singleton")) return NO_PROBLEM;
-      }
+    MStereotype st = cls.getStereotype();
+    if (st != null) {
+ 	if (st.getName().equals("Singleton")) return NO_PROBLEM;
+     
     }
 
     // if it has instance vars, no specific reason for Singleton
     if (str != null) {
       java.util.Enumeration strEnum = str.elements();
       while (strEnum.hasMoreElements()) {
-	StructuralFeature sf = (StructuralFeature) strEnum.nextElement();
-	if (ScopeKind.INSTANCE.equals(sf.getTargetScope())) return NO_PROBLEM;
+	MStructuralFeature sf = (MStructuralFeature) strEnum.nextElement();
+	if (MScopeKind.INSTANCE.equals(sf.getTargetScope())) return NO_PROBLEM;
       }
     }
 
@@ -105,14 +103,14 @@ public class CrConsiderSingleton extends CrUML {
     if (ends != null) {
       java.util.Enumeration endEnum = ends.elements();
       while (endEnum.hasMoreElements()) {
-	AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
-	IAssociation a = ae.getAssociation();
-	Vector connections = a.getConnection();
+	MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
+	MAssociation a = ae.getAssociation();
+	Vector connections = new Vector(a.getConnections());
 	java.util.Enumeration connEnum = connections.elements();
 	while (connEnum.hasMoreElements()) {
-	  AssociationEnd ae2 = (AssociationEnd) connEnum.nextElement();
+	  MAssociationEnd ae2 = (MAssociationEnd) connEnum.nextElement();
 	  if (ae2 == ae) continue;
-	  if (ae2.getIsNavigable()) return NO_PROBLEM;
+	  if (ae2.isNavigable()) return NO_PROBLEM;
 	}
       }
     }

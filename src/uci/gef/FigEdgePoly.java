@@ -30,7 +30,8 @@
 
 package uci.gef;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.awt.*;
 
 /** A Fig that paints edges between ports. This version

@@ -25,9 +25,9 @@ package uci.uml.checklist;
 
 import uci.argo.checklist.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 /** Defines a checklist to help designers design better states.
  *  Basically, propmts them to think about various aspects of the

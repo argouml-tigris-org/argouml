@@ -23,11 +23,11 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.uml.visual.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
 class TableModelAssocByProps extends TableModelComposite {
   ////////////////
@@ -37,7 +37,7 @@ class TableModelAssocByProps extends TableModelComposite {
   public void initColumns() {
     addColumn(ColumnDescriptor.Name);
     addColumn(ColumnDescriptor.Visibility);
-    addColumn(ColumnDescriptor.Stereotype);
+    addColumn(ColumnDescriptor.MStereotype);
 
     addColumn(ColumnDescriptor.SrcName);
     addColumn(ColumnDescriptor.SrcType);
@@ -60,7 +60,7 @@ class TableModelAssocByProps extends TableModelComposite {
     int size = edges.size();
     for (int i = 0; i < size; i++) {
       Object edge = edges.elementAt(i);
-      if (edge instanceof IAssociation) res.addElement(edge);
+      if (edge instanceof MAssociation) res.addElement(edge);
     }
     return res;
   }

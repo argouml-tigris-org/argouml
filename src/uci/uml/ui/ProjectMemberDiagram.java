@@ -28,7 +28,8 @@ package uci.uml.ui;
  */
 
 import java.net.URL;
-import java.util.*;
+import com.sun.java.util.collections.*;
+//import java.util.*;
 import java.beans.*;
 import java.io.*;
 
@@ -83,8 +84,7 @@ public class ProjectMemberDiagram extends ProjectMember {
 
   public void load() {
     Dbg.log(getClass().getName(), "Reading " + getURL());
-    //System.out.println("_idRegistry size=" + proj.getIDRegistry().size());
-    PGMLParser.SINGLETON.setOwnerRegistery(getProject().getIDRegistry());
+    PGMLParser.SINGLETON.setUUIDRefs(getProject()._UUIDRefs);
     Diagram d = PGMLParser.SINGLETON.readDiagram(getURL());
     setDiagram(d);
     try { getProject().addDiagram(d); }

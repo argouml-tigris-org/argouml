@@ -23,7 +23,7 @@
 
 package uci.uml.ui.todo;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import uci.argo.kernel.*;
 

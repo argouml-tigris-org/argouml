@@ -30,12 +30,13 @@
 
 package uci.argo.kernel;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import javax.swing.*;
 
 import uci.util.*;
 
-/** Interface that defines methods required on any object that can
+/** MInterface that defines methods required on any object that can
  *  post a ToDoItem to the Designer's ToDoList. Basically requires that
  *  the poster (1) have contact information, (2) be able to snooze
  *  and unsnooze itself, and (3) be able to determine if a ToDoItem it

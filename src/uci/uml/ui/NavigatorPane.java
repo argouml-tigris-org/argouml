@@ -26,7 +26,8 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+//import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -37,8 +38,8 @@ import uci.util.*;
 import uci.gef.Diagram;
 import uci.uml.ui.nav.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 /** The upper-left pane of the main Argo/UML window.  This shows the
  *  contents of the current project in one of several ways that are
@@ -303,18 +304,18 @@ implements ItemListener, TreeSelectionListener {
 	    popup.add(a);
 	  }
 	}
-	else if (obj instanceof MMClass) {
+	else if (obj instanceof MClass) {
 	  popup.add(new ActionGoToDetails("Properties"));
 	  // goto state diagram
 	  // goto collaboration diagram(s)
 	  tailActions.addElement(Actions.RemoveFromModel);
 	}
-	else if (obj instanceof UseCase) {
+	else if (obj instanceof MUseCase) {
 	  popup.add(new ActionGoToDetails("Properties"));
 	  // goto activity diagram
 	  tailActions.addElement(Actions.RemoveFromModel);
 	}
-	else if (obj instanceof ModelElement || obj instanceof Diagram) {
+	else if (obj instanceof MModelElement || obj instanceof Diagram) {
 	  popup.add(new ActionGoToDetails("Properties")); //was CmdUMLProperties
 	  tailActions.addElement(Actions.RemoveFromModel);
 	}

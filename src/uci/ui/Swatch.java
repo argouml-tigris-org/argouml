@@ -25,7 +25,7 @@
 package uci.ui;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import javax.swing.*;
 

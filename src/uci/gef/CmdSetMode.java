@@ -31,7 +31,9 @@
 
 package uci.gef;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
+import java.util.Properties;
 import javax.swing.ImageIcon;
 
 /** Cmd that sets the next global editor mode. The global editor
@@ -45,7 +47,7 @@ public class CmdSetMode extends Cmd {
   /** Arguments to pass to the new mode instance after creation. */
   protected Hashtable _modeArgs;
 
-  public CmdSetMode(Properties args) {
+  public CmdSetMode(Hashtable args) {
     super(args, "Set Editor Mode");
   }
 

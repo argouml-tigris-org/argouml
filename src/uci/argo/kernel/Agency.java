@@ -30,7 +30,10 @@
 
 package uci.argo.kernel;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
+import java.util.Observable;
+import java.util.Observer;
 import uci.util.*;
 
 /** Agency manages Critics.  Since classes are not really first class
@@ -390,5 +393,3 @@ public class Agency extends Observable { //implements java.io.Serialization
 //     Agency.applyAllCritics(_dm, _dsgr);
 //   }
 // } /* end class Trigger */
-
-

@@ -24,7 +24,6 @@
 
 package uci.uml.ocl;
 
-import java.util.*;
 import java.awt.*;
 import java.io.*;
 import java.lang.*;

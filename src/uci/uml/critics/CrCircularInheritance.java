@@ -30,14 +30,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import uci.util.*;
 import uci.argo.kernel.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 import uci.uml.util.*;
 
-/** Well-formedness rule [2] for GeneralizableElement. See page 31 of UML 1.1
+/** Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrCircularInheritance extends CrUML {
@@ -57,25 +57,25 @@ public class CrCircularInheritance extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof GeneralizableElement)) return NO_PROBLEM;
-    GeneralizableElement ge = (GeneralizableElement) dm;
+    if (!(dm instanceof MGeneralizableElement)) return NO_PROBLEM;
+    MGeneralizableElement ge = (MGeneralizableElement) dm;
     VectorSet reach = (new VectorSet(ge)).reachable(new SuperclassGen());
     if (reach.contains(ge)) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    GeneralizableElement ge = (GeneralizableElement) dm;
+    MGeneralizableElement ge = (MGeneralizableElement) dm;
     VectorSet offs = computeOffenders(ge);
     return new ToDoItem(this, offs, dsgr);
   }
 
-  protected VectorSet computeOffenders(GeneralizableElement dm) {
+  protected VectorSet computeOffenders(MGeneralizableElement dm) {
     VectorSet offs = new VectorSet(dm);
     VectorSet above = offs.reachable(new SuperclassGen());
-    Enumeration enum = above.elements();
+    java.util.Enumeration enum = above.elements();
     while (enum.hasMoreElements()) {
-      GeneralizableElement ge2 = (GeneralizableElement) enum.nextElement();
+      MGeneralizableElement ge2 = (MGeneralizableElement) enum.nextElement();
       VectorSet trans = (new VectorSet(ge2)).reachable(new SuperclassGen());
       if (trans.contains(dm)) offs.addElement(ge2);
     }
@@ -85,7 +85,7 @@ public class CrCircularInheritance extends CrUML {
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
     VectorSet offs = i.getOffenders();
-    GeneralizableElement dm = (GeneralizableElement) offs.firstElement();
+    MGeneralizableElement dm = (MGeneralizableElement) offs.firstElement();
     if (!predicate(dm, dsgr)) return false;
     VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);

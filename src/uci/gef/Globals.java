@@ -35,7 +35,8 @@ import java.applet.*;
 import java.awt.*;
 import java.beans.*;
 import java.net.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import uci.ui.*;
 
 /** This class stores global info that is needed by all Editors. For

@@ -28,14 +28,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -67,12 +67,12 @@ public class CrTooManyAssoc extends CrUML {
   ////////////////////////////////////////////////////////////////
   // critiquing API
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
+    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+    MClassifier cls = (MClassifier) dm;
     // needs-more-work: consider inherited associations?
     // needs-more-work: self loops are double counted
     int threshold = ((Integer)getArg(THRESHOLD)).intValue();
-    Vector aes = cls.getAssociationEnd();
+    Collection aes = cls.getAssociationEnds();
     if (aes == null || aes.size() <= threshold) return NO_PROBLEM;
     return PROBLEM_FOUND;
   }

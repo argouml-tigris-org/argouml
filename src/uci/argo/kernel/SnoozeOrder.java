@@ -30,7 +30,9 @@
 
 package uci.argo.kernel;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
+import java.util.Date;
 
 /** A Critic can be disabled for a certain amount of time by giving it
  *  the snooze command.  Whereas most ControlMech's activate or deactivate

@@ -23,7 +23,8 @@
 
 package uci.xml;
 
-import java.util.Hashtable;
+import com.sun.java.util.collections.Hashtable;
+//import java.util.Hashtable;
 
 /**
  * @author Jim Holy

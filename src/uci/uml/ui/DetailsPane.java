@@ -29,7 +29,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -37,7 +37,7 @@ import javax.swing.tree.*;
 //import javax.swing.border.*;
 
 import uci.gef.*;
-import uci.uml.Foundation.Core.ModelElement;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 /** The lower-right pane of the main Argo/UML window.  This panel has
@@ -58,7 +58,7 @@ implements ChangeListener, MouseListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** Target is the currently selected object from the UML Model,
+  /** Target is the currently selected object from the UML MModel,
    *  usually selected from a Fig in the diagram or from the
    *  navigation panel. */
   protected Fig _figTarget = null;
@@ -145,66 +145,67 @@ implements ChangeListener, MouseListener {
   }
 
 
-  public void setTarget(Object target) {
-    //System.out.println("details target set to:" + target);
-    long start = System.currentTimeMillis();
-    if (target == null) {
-      _figTarget = null;
-      _modelTarget = null;
-    }
-    if (target instanceof Fig) _figTarget = (Fig) target;
-    if (target instanceof Fig && ((Fig)target).getOwner() != null)
-      _modelTarget = ((Fig)target).getOwner();
-    else _modelTarget = target;
+	public void setTarget(Object target) {
+		//System.out.println("details target set to:" + target);
+		long start = System.currentTimeMillis();
+		if (target == null) {
+			_figTarget = null;
+			_modelTarget = null;
+		}
+		if (target instanceof Fig) _figTarget = (Fig) target;
+		if (target instanceof Fig && ((Fig)target).getOwner() != null)
+			_modelTarget = ((Fig)target).getOwner();
+		else _modelTarget = target;
+		//System.out.println("Fig: "+_figTarget+" mElement: "+_modelTarget);
 
-    int firstEnabled = -1;
-    boolean jumpToFirstEnabledTab = false;
-    boolean jumpToPrevEnabled = false;
-    int currentTab = _tabs.getSelectedIndex();
-    for (int i = 0; i < _tabPanels.size(); i++) {
-      long tabstart = System.currentTimeMillis();
-      JPanel tab = (JPanel) _tabPanels.elementAt(i);
-      if (tab instanceof TabModelTarget) {
-	TabModelTarget tabMT = (TabModelTarget) tab;
-	tabMT.setTarget(_modelTarget);
-	boolean shouldEnable = tabMT.shouldBeEnabled();
-	_tabs.setEnabledAt(i, shouldEnable);
-	if (shouldEnable && firstEnabled == -1) firstEnabled = i;
-	if (_lastNonNullTab == i && shouldEnable && _modelTarget != null) {
-	  jumpToPrevEnabled = true;
+		int firstEnabled = -1;
+		boolean jumpToFirstEnabledTab = false;
+		boolean jumpToPrevEnabled = false;
+		int currentTab = _tabs.getSelectedIndex();
+		for (int i = 0; i < _tabPanels.size(); i++) {
+			//long tabstart = System.currentTimeMillis();
+			JPanel tab = (JPanel) _tabPanels.elementAt(i);
+			if (tab instanceof TabModelTarget) {
+				TabModelTarget tabMT = (TabModelTarget) tab;
+				tabMT.setTarget(_modelTarget);
+				boolean shouldEnable = tabMT.shouldBeEnabled();
+				_tabs.setEnabledAt(i, shouldEnable);
+				if (shouldEnable && firstEnabled == -1) firstEnabled = i;
+				if (_lastNonNullTab == i && shouldEnable && _modelTarget != null) {
+					jumpToPrevEnabled = true;
+				}
+				if (currentTab == i && !shouldEnable) {
+					jumpToFirstEnabledTab = true;
+				}
+			}
+			if (tab instanceof TabFigTarget) {
+				TabFigTarget tabFT = (TabFigTarget) tab;
+				tabFT.setTarget(_figTarget);
+				boolean shouldEnable = tabFT.shouldBeEnabled();
+				_tabs.setEnabledAt(i, shouldEnable);
+				if (shouldEnable && firstEnabled == -1) firstEnabled = i;
+				if (_lastNonNullTab == i && shouldEnable && _figTarget != null) {
+					jumpToPrevEnabled = true;
+				}
+				if (currentTab == i && !shouldEnable) {
+					jumpToFirstEnabledTab = true;
+				}
+			}
+			//long tabnow = System.currentTimeMillis();
+			//System.out.println(tab.getClass().getName() + ": " + (tabnow - tabstart));
+		}
+		if (jumpToPrevEnabled) {
+			_tabs.setSelectedIndex(_lastNonNullTab);
+			return;
+		}
+		if (jumpToFirstEnabledTab && firstEnabled != -1)
+			_tabs.setSelectedIndex(firstEnabled);
+		if (jumpToFirstEnabledTab && firstEnabled == -1)
+			_tabs.setSelectedIndex(0);
+		if (target != null) _lastNonNullTab = _tabs.getSelectedIndex();
+		long now = System.currentTimeMillis();
+		Globals.showStatus("[" + (now - start) + "]");
 	}
-	if (currentTab == i && !shouldEnable) {
-	  jumpToFirstEnabledTab = true;
-	}
-      }
-      if (tab instanceof TabFigTarget) {
-	TabFigTarget tabFT = (TabFigTarget) tab;
-	tabFT.setTarget(_figTarget);
-	boolean shouldEnable = tabFT.shouldBeEnabled();
-	_tabs.setEnabledAt(i, shouldEnable);
-	if (shouldEnable && firstEnabled == -1) firstEnabled = i;
-	if (_lastNonNullTab == i && shouldEnable && _figTarget != null) {
-	  jumpToPrevEnabled = true;
-	}
-	if (currentTab == i && !shouldEnable) {
-	  jumpToFirstEnabledTab = true;
-	}
-      }
-      long tabnow = System.currentTimeMillis();
-      //System.out.println(tab.getClass().getName() + ": " + (tabnow - tabstart));
-    }
-    if (jumpToPrevEnabled) {
-      _tabs.setSelectedIndex(_lastNonNullTab);
-      return;
-    }
-    if (jumpToFirstEnabledTab && firstEnabled != -1)
-      _tabs.setSelectedIndex(firstEnabled);
-    if (jumpToFirstEnabledTab && firstEnabled == -1)
-      _tabs.setSelectedIndex(0);
-    if (target != null) _lastNonNullTab = _tabs.getSelectedIndex();
-    long now = System.currentTimeMillis();
-    Globals.showStatus("[" + (now - start) + "]");
-  }
 
   public Object getTarget() { return _modelTarget; }
 

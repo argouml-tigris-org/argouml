@@ -41,7 +41,8 @@
 
 package uci.ui;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Date;
 
 import javax.swing.table.TableModel;
 import javax.swing.event.TableModelEvent;

@@ -28,7 +28,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -38,13 +38,13 @@ import javax.swing.plaf.basic.*;
 import uci.gef.*;
 import uci.util.Util;
 import uci.uml.visual.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.model_management.*;
 
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
@@ -81,16 +81,16 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
       JLabel lab = (JLabel) r;
       Icon icon = (Icon) _iconCache.get(value.getClass());
 
-      if (value instanceof Pseudostate) {
-	Pseudostate ps = (Pseudostate) value;
-	PseudostateKind kind = ps.getKind();
-	if (PseudostateKind.INITIAL.equals(kind)) icon = _InitialStateIcon;
-	if (PseudostateKind.DEEP_HISTORY.equals(kind)) icon = _DeepIcon;
-	if (PseudostateKind.SHALLOW_HISTORY.equals(kind)) icon = _ShallowIcon;
-	if (PseudostateKind.FORK.equals(kind)) icon = _ForkIcon;
-	if (PseudostateKind.JOIN.equals(kind)) icon = _JoinIcon;
-	if (PseudostateKind.BRANCH.equals(kind)) icon = _BranchIcon;
-	if (PseudostateKind.FINAL.equals(kind)) icon = _FinalStateIcon;
+      if (value instanceof MPseudostate) {
+	MPseudostate ps = (MPseudostate) value;
+	MPseudostateKind kind = ps.getKind();
+	if (MPseudostateKind.INITIAL.equals(kind)) icon = _InitialStateIcon;
+	if (MPseudostateKind.DEEP_HISTORY.equals(kind)) icon = _DeepIcon;
+	if (MPseudostateKind.SHALLOW_HISTORY.equals(kind)) icon = _ShallowIcon;
+	if (MPseudostateKind.FORK.equals(kind)) icon = _ForkIcon;
+	if (MPseudostateKind.JOIN.equals(kind)) icon = _JoinIcon;
+	if (MPseudostateKind.BRANCH.equals(kind)) icon = _BranchIcon;
+	if (MPseudostateKind.FINAL.equals(kind)) icon = _FinalStateIcon;
       }
 
       if (icon == null) {
@@ -99,8 +99,8 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 	  String cName = clsPackName.substring(clsPackName.lastIndexOf(".")+1);
 	  // special case "UML*" e.g. UMLClassDiagram
 	  if (cName.startsWith("UML")) cName = cName.substring(3);
-	  // special case "MM*" e.g. MMClass
-	  if (cName.startsWith("MM")) cName = cName.substring(2);
+	  // special case "MM*" e.g. MClass
+	  if (cName.startsWith("M")) cName = cName.substring(2);
 	  icon = Util.loadIconResource(cName);
 	  if (icon != null) _iconCache.put(value.getClass(), icon);
 	}
@@ -109,9 +109,9 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
       if (icon != null) lab.setIcon(icon);
 
       String tip = (value == null) ? "null" : value.toString();
-      if (value instanceof ElementImpl)
-	    tip = ((ElementImpl)value).getOCLTypeStr() + ": " +
-	                               ((ElementImpl)value).getName().getBody();
+      if (value instanceof MModelElementImpl)
+	    tip = ((MModelElementImpl)value).getUMLClassName() + ": " +
+	                               ((MModelElementImpl)value).getName();
       lab.setToolTipText(tip + " ");
       tree.setToolTipText(tip + " ");
 

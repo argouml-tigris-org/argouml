@@ -28,24 +28,24 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 public class CrNoGuard extends CrUML {
 
   public CrNoGuard() {
-    setHeadline("Add Guard to Transistion");
+    setHeadline("Add MGuard to Transistion");
     sd("The highlighted Transisition is incomplete because it has no "+
-       "guard condition.  Guard conditions must be true for the "+
+       "guard condition.  MGuard conditions must be true for the "+
        "transition to be taken.  If only a guard is used, the transition "+
        "is taken when the condition becomes true.\n\n" +
        "This problem must be resolved to complete the state machine.\n\n"+
-       "To fix this, select the Transition and use the \"Properties\" "+
-       "tab, or select the Transition and type some text of the form:\n"+
+       "To fix this, select the MTransition and use the \"Properties\" "+
+       "tab, or select the MTransition and type some text of the form:\n"+
        "[GUARD]\n"+
        "Where GUARD is a boolean expression.");
 
@@ -55,17 +55,17 @@ public class CrNoGuard extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Transition)) return NO_PROBLEM;
-    Transition tr = (Transition) dm;
-    StateVertex sv = tr.getSource();
-    if (!(sv instanceof Pseudostate)) return NO_PROBLEM;
-    Pseudostate ps = (Pseudostate) sv;
-    if (!PseudostateKind.BRANCH.equals(ps.getKind())) return NO_PROBLEM;
-    Guard g = tr.getGuard();
+    if (!(dm instanceof MTransition)) return NO_PROBLEM;
+    MTransition tr = (MTransition) dm;
+    MStateVertex sv = tr.getSource();
+    if (!(sv instanceof MPseudostate)) return NO_PROBLEM;
+    MPseudostate ps = (MPseudostate) sv;
+    if (!MPseudostateKind.BRANCH.equals(ps.getKind())) return NO_PROBLEM;
+    MGuard g = tr.getGuard();
     boolean noGuard = (g == null || g.getExpression() == null ||
 			g.getExpression().getBody() == null ||
-			g.getExpression().getBody().getBody() == null ||
-			g.getExpression().getBody().getBody().length() == 0);
+			g.getExpression().getBody() == null ||
+			g.getExpression().getBody().length() == 0);
     if (noGuard) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }

@@ -85,7 +85,7 @@ public class Util {
     try {
       java.net.URL imgURL = Util.class.getResource(imageName(imgName));
       if (imgURL == null) {
-	System.out.println("Icon for " + imgName + " not found");
+	System.out.println("Icon for " + imgName + " not found, wanted URL: "+imageName(imgName));
 	return null;
       }
       return new ImageIcon(imgURL, desc + " ");

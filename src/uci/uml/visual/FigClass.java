@@ -32,7 +32,7 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -41,10 +41,11 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
+import uci.uml.util.MMUtil;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 /** Class to display graphics for a UML Class in a diagram. */
 
@@ -56,6 +57,7 @@ public class FigClass extends FigNodeWithCompartments {
   protected FigCompartment _attr;
   protected FigCompartment _oper;
   protected FigRect _bigPort;
+  public MElementResidence resident = new MElementResidenceImpl();
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -250,18 +252,41 @@ public class FigClass extends FigNodeWithCompartments {
 
   public void setEnclosingFig(Fig encloser) {
     super.setEnclosingFig(encloser);
-    if (!(getOwner() instanceof ModelElement)) return;
-    ModelElement me = (ModelElement) getOwner();
-    Namespace m = null;
+    if (!(getOwner() instanceof MModelElement)) return;
+    MModelElement me = (MModelElement) getOwner();
+    MNamespace m = null;
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    if (encloser != null && (encloser.getOwner() instanceof Model)) {
-      m = (Namespace) encloser.getOwner();
+    if (encloser != null && (encloser.getOwner() instanceof MModel)) {
+      m = (MNamespace) encloser.getOwner();
     }
     else {
       if (pb.getTarget() instanceof UMLDiagram) {
-	m = (Namespace) ((UMLDiagram)pb.getTarget()).getNamespace();
+	m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
       }
     }
+
+    if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
+      MComponent component = (MComponent) encloser.getOwner();
+      MClass cl = (MClass) getOwner();
+      resident.setImplementationLocation(component);
+      resident.setResident(cl);
+    }
+    else {
+      resident.setImplementationLocation(null);
+      resident.setResident(null);
+    }     
+
+    if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
+      MComponent component = (MComponent) encloser.getOwner();
+      MClass cl = (MClass) getOwner();
+      resident.setImplementationLocation(component);
+      resident.setResident(cl);
+    }
+    else {
+      resident.setImplementationLocation(null);
+      resident.setResident(null);
+    }     
+
     try {
       me.setNamespace(m);
     }
@@ -276,7 +301,7 @@ public class FigClass extends FigNodeWithCompartments {
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
-    Classifier cls = (Classifier) getOwner();
+    MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
     if (ft == _attr) {
       //System.out.println("\n\n\n Edited Attr");
@@ -291,28 +316,30 @@ public class FigClass extends FigNodeWithCompartments {
 
   protected void modelChanged() {
     super.modelChanged();
-    Classifier cls = (Classifier) getOwner();
+    MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
-    //    String clsNameStr = GeneratorDisplay.Generate(cls.getName());
-    Vector strs = cls.getStructuralFeature();
+	String clsNameStr = "";
+	if (cls.getName() != null)
+		clsNameStr = GeneratorDisplay.Generate(cls.getName());
+    Collection attributes = MMUtil.SINGLETON.getAttributes(cls);
     String attrStr = "";
-    if (strs != null) {
-      java.util.Enumeration enum = strs.elements();
-      while (enum.hasMoreElements()) {
-	    StructuralFeature sf = (StructuralFeature) enum.nextElement();
+    if (attributes != null) {
+	Iterator iter = attributes.iterator();
+      while (iter.hasNext()) {
+	    MStructuralFeature sf = (MStructuralFeature) iter.next();
 	    attrStr += GeneratorDisplay.Generate(sf);
-	    if (enum.hasMoreElements())
+	    if (iter.hasNext())
 	      attrStr += "\n";
       }
     }
-    Vector behs = cls.getBehavioralFeature();
+    Collection operations = MMUtil.SINGLETON.getOperations(cls);
     String operStr = "";
-    if (behs != null) {
-      java.util.Enumeration enum = behs.elements();
-      while (enum.hasMoreElements()) {
-	    BehavioralFeature bf = (BehavioralFeature) enum.nextElement();
+    if (operations != null) {
+	Iterator iter = operations.iterator();
+      while (iter.hasNext()) {
+	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
 	    operStr += GeneratorDisplay.Generate(bf);
-	    if (enum.hasMoreElements())
+	    if (iter.hasNext())
 	      operStr += "\n";
       }
     }
@@ -320,7 +347,7 @@ public class FigClass extends FigNodeWithCompartments {
     _attr.setText(attrStr);
     _oper.setText(operStr);
 
-    if (cls.getIsAbstract()) _name.setFont(ITALIC_LABEL_FONT);
+    if (cls.isAbstract()) _name.setFont(ITALIC_LABEL_FONT);
     else _name.setFont(LABEL_FONT);
 
   }

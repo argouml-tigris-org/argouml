@@ -31,7 +31,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 
@@ -39,12 +39,12 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
-/** Class to display graphics for a UML State in a diagram. */
+/** Class to display graphics for a UML MState in a diagram. */
 
-public class FigActionState extends FigNodeModelElement {
+public class FigActionState extends FigStateVertex {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -91,6 +91,10 @@ public class FigActionState extends FigNodeModelElement {
   }
 
   public String placeString() { return "new ActionState"; }
+
+  public Selection makeSelection() {
+    return new SelectionActionState(this);
+  }
 
   public Object clone() {
     FigActionState figClone = (FigActionState) super.clone();

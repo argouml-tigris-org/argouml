@@ -31,7 +31,7 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.awt.event.*;
 //import java.awt.image.*;
@@ -40,8 +40,8 @@ import javax.swing.Icon;
 import uci.gef.*;
 import uci.graph.*;
 import uci.util.Util;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 
 public abstract class SelectionWButtons extends SelectionNodeClarifiers {

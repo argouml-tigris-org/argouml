@@ -23,7 +23,9 @@
 
 package uci.xml.pgml;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.StringTokenizer;
+//import java.util.*;
 import java.awt.*;
 import java.io.*;
 import java.net.URL;
@@ -45,10 +47,10 @@ public class PGMLParser implements ElementHandler, TagHandler {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  protected Diagram _diagram = null;
-  protected int _nestedGroups = 0;
-  protected Hashtable _figRegistry;
-  protected Hashtable _ownerRegistry;
+  protected Diagram   _diagram = null;
+  protected int       _nestedGroups = 0;
+  protected Hashtable _figRegistry = null;
+  protected HashMap   _UUIDRefs = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -85,8 +87,8 @@ public class PGMLParser implements ElementHandler, TagHandler {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setOwnerRegistery(Hashtable owners) {
-    _ownerRegistry = owners;
+  public void setUUIDRefs(HashMap uuids) {
+    _UUIDRefs = uuids;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -424,7 +426,7 @@ public class PGMLParser implements ElementHandler, TagHandler {
 
   //needs-more-work: find object in model
   protected Object findOwner(String uri) {
-    Object own = _ownerRegistry.get(uri);
+    Object own = _UUIDRefs.get(uri);
     return own;
   }
 
@@ -451,6 +453,7 @@ public class PGMLParser implements ElementHandler, TagHandler {
 
   //needs-more-work: make an instance of the named class
   protected GraphModel getGraphModelFor(String desc) {
+	 System.out.println("should be: "+desc);
     return new DefaultGraphModel();
   }
 

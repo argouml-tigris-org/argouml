@@ -32,7 +32,8 @@
 package uci.gef;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import javax.swing.*;
 
 /** A Palette that defines buttons to create lines, rectangles,

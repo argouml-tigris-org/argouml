@@ -34,7 +34,7 @@ package uci.gef.demo;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-
+import com.sun.java.util.collections.Hashtable;
 import uci.gef.*;
 import uci.graph.*;
 
@@ -67,10 +67,10 @@ public class BasicApplication {
     DefaultGraphModel dgm = (DefaultGraphModel) _jgf.getGraphModel();
     for (int i = 0; i < 6; i++) {
       SampleNode sn = new SampleNode();
-      sn.initialize(null);
+      sn.initialize((Hashtable)null);
       dgm.addNode(sn);
       SampleNode2 sn2 = new SampleNode2();
-      sn2.initialize(null);
+      sn2.initialize((Hashtable)null);
       dgm.addNode(sn2);
     }
     System.out.println("finished adding nodes");

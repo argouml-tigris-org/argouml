@@ -27,21 +27,24 @@
 package uci.uml.ui;
 
 import java.io.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+//import java.util.*;
+// 
 import java.beans.*;
 import java.net.*;
 
 import uci.gef.*;
 import uci.argo.kernel.*;
 import uci.argo.checklist.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 import uci.uml.generate.*;
 import uci.uml.visual.*;
-import uci.xml.argo.*;
-import uci.xml.xmi.*;
+import uci.xml.argo.*; 
 import uci.xml.pgml.*;
 import uci.util.*;
+import uci.uml.util.*;
 
 /** A datastructure that represents the designer's current project.  A
  *  Project consists of diagrams and UML models. */
@@ -72,12 +75,12 @@ public class Project implements java.io.Serializable {
   public Vector _members = new Vector();
   public String _historyFile = "";
 
-  public Vector _models = new Vector(); //instances of Model
+  public Vector _models = new Vector(); //instances of MModel
   public Vector _diagrams = new Vector(); // instances of LayerDiagram
   public boolean _needsSave = false;
-  public Namespace _curModel = null;
+  public MNamespace _curModel = null;
   public Hashtable _definedTypes = new Hashtable(80);
-  public Hashtable _idRegistry = new Hashtable(80);
+  public HashMap _UUIDRefs = null;
   public GenerationPreferences _cgPrefs = new GenerationPreferences();
   public transient VetoableChangeSupport _vetoSupport = null;
 
@@ -126,7 +129,8 @@ public class Project implements java.io.Serializable {
 
     p.addSearchPath("PROJECT_DIR");
 
-    Model m1 = new Model("untitledpackage");
+    MModel m1 = new MModelImpl();
+	m1.setName("untitledModel");
     try {
       p.addMember(new UMLClassDiagram(m1));
       p.addMember(new UMLUseCaseDiagram(m1));
@@ -168,8 +172,6 @@ public class Project implements java.io.Serializable {
   // accessors
   // needs-more-work 
 
-  public Hashtable getIDRegistry() { return _idRegistry; }
-
   public String getBaseName() {
     String n = getName();
     if (!n.endsWith(FILE_EXT)) return n;
@@ -188,7 +190,7 @@ public class Project implements java.io.Serializable {
     String s = "";
     if (getURL() != null) s = getURL().toString();
     s = s.substring(0, s.lastIndexOf("/") + 1) + n;
-    System.out.println("s = " + s);
+    //JH    System.out.println("s = " + s);
     setURL(new URL(s));
   }
 
@@ -300,7 +302,7 @@ public class Project implements java.io.Serializable {
     _members.addElement(pm);
   }
 
-  public void addMember(Model m) throws PropertyVetoException {
+  public void addMember(MModel m) throws PropertyVetoException {
     if (_models.contains(m)) return;
     ProjectMember pm = new ProjectMemberModel(m, this);
     addModel(m);
@@ -308,7 +310,7 @@ public class Project implements java.io.Serializable {
     _members.addElement(pm);
   }
 
-  public void addModel(Namespace m) throws PropertyVetoException {
+  public void addModel(MNamespace m) throws PropertyVetoException {
     // fire indeterminate change to avoid copying vector
     getVetoSupport().fireVetoableChange("Models", _models, null);
     if (! _models.contains(m)) _models.addElement(m);
@@ -354,7 +356,7 @@ public class Project implements java.io.Serializable {
   }
 
 //   public void loadAllMembers() {
-//     for (Enumeration enum = members.elements(); enum.hasMoreElements(); ) {
+//     for (java.util.Enumeration enum = members.elements(); enum.hasMoreElements(); ) {
 //       ((ProjectMember) enum.nextElement()).load();
 //     }
 //   }
@@ -368,7 +370,7 @@ public class Project implements java.io.Serializable {
 
   public void loadMembersOfType(String type) {
     if (type == null) return;
-    Enumeration enum = getMembers().elements();
+    java.util.Enumeration enum = getMembers().elements();
     try {
       while (enum.hasMoreElements()) {
 	ProjectMember pm = (ProjectMember) enum.nextElement();
@@ -403,8 +405,21 @@ public class Project implements java.io.Serializable {
 
   public void saveAllMembers(String path, boolean overwrite) {
     int size = _members.size();
-    for (int i = 0; i < size; i++)
-      ((ProjectMember)_members.elementAt(i)).save(path, overwrite);
+    // make sure to save the XMI file first so we get the id references
+    for (int i = 0; i < size; i++) {
+        ProjectMember p = (ProjectMember) _members.elementAt(i);
+        if (p.getType().equalsIgnoreCase("xmi")) {
+        System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+            p.save(path,overwrite);
+        }
+    } 
+    for (int i = 0; i < size; i++) {
+        ProjectMember p = (ProjectMember) _members.elementAt(i);
+        if (!(p.getType().equalsIgnoreCase("xmi"))){
+        System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+            p.save(path,overwrite);
+        }
+    }
     // needs-more-work: check if each file is dirty
   }
 
@@ -425,60 +440,60 @@ public class Project implements java.io.Serializable {
   public void needsSave() { setNeedsSave(true); }
 
   public Vector getModels() { return _models; }
-//   public void addModel(Namespace m) throws PropertyVetoException {
+//   public void addModel(MNamespace m) throws PropertyVetoException {
 //     getVetoSupport().fireVetoableChange("Models", _models, m);
 //     _models.addElement(m);
 //     setCurrentNamespace(m);
 //     _needsSave = true;
 //   }
 
-  public Vector getDefinedTypesVector() {
-    Vector res = new Vector();
-    Enumeration enum = _definedTypes.elements();
-    while (enum.hasMoreElements()) res.addElement(enum.nextElement());
-    return res;
-  }
+  public Vector getDefinedTypesVector() { return new Vector(_definedTypes.values()); }
   public Hashtable getDefinedTypes() { return _definedTypes; }
   public void setDefinedTypes(Hashtable h) { _definedTypes = h; }
-  public void defineType(Classifier cls) {
+  public void defineType(MClassifier cls) {
     //needs-more-work: should take namespaces into account!
-    _definedTypes.put(cls.getName().getBody(), cls);
+    // this is a hack because names are not always being assigned under argo-nsuml branch - JH
+    String name = cls.getName();
+    if (name == null) name = "anon";
+    _definedTypes.put(name,  cls);
   }
-  public Classifier findType(String s) {
+  public MClassifier findType(String s) {
     if (s != null) s = s.trim();
     if (s == null || s.length()==0) return null;
-    Classifier cls = null;
+    MClassifier cls = null;
     int numModels = _models.size();
     for (int i = 0; i < numModels; i++) {
-      cls = findTypeInModel(s, (Namespace) _models.elementAt(i));
+      cls = findTypeInModel(s, (MNamespace) _models.elementAt(i));
       if (cls != null) return cls;
     }
-    cls = (Classifier) _definedTypes.get(s);
+    cls = (MClassifier) _definedTypes.get(s);
     if (cls == null) {
-      cls = new MMClass(s);
+		cls = new MClassImpl();
+		cls.setName(s);
       _definedTypes.put(s, cls);
     }
     return cls;
   }
 
-  public Classifier findTypeInModel(String s, Namespace ns) {
-    Vector ownedElements = ns.getOwnedElement();
-    int size = ownedElements.size();
-    for (int i = 0; i < size; i++) {
-      ElementOwnership eo = (ElementOwnership) ownedElements.elementAt(i);
-      ModelElement me = eo.getModelElement();
-      if (me instanceof Classifier && me.getName().getBody().equals(s))
-	return (Classifier) me;
-      if (me instanceof Namespace) {
-	Classifier res = findTypeInModel(s, (Namespace) me);
-	if (res != null) return res;
-      }
-    }
-    return null;
-  }
+	public MClassifier findTypeInModel(String s, MNamespace ns) {
+		// System.out.println("Looking for type "+s+" in Namespace "+ns.getName());
+		Collection ownedElements = ns.getOwnedElements();
+		Iterator oeIterator = ownedElements.iterator();
 
-  public void setCurrentNamespace(Namespace m) { _curModel = m; }
-  public Namespace getCurrentNamespace() { return _curModel; }
+		while(oeIterator.hasNext()) {
+			MModelElement me = (MModelElement)oeIterator.next();
+			if (me instanceof MClassifier && (me.getName() != null && me.getName().equals(s)))
+				return (MClassifier) me;
+			if (me instanceof MNamespace) {
+				MClassifier res = findTypeInModel(s, (MNamespace) me);
+				if (res != null) return res;
+			}
+		}
+		return null;
+	}
+
+  public void setCurrentNamespace(MNamespace m) { _curModel = m; }
+  public MNamespace getCurrentNamespace() { return _curModel; }
 
   public Vector getDiagrams() { return _diagrams; }
   public void addDiagram(Diagram d) throws PropertyVetoException {
@@ -493,7 +508,7 @@ public class Project implements java.io.Serializable {
     _needsSave = true;
   }
 
-  public int getPresentationCountFor(ModelElement me) {
+  public int getPresentationCountFor(MModelElement me) {
     int presentations = 0;
     int size = _diagrams.size();
     for (int i = 0; i < size; i++) {
@@ -547,64 +562,97 @@ public class Project implements java.io.Serializable {
       ((Diagram)_diagrams.elementAt(i)).postLoad();
     // needs-more-work: is postLoad needed for models?
     _needsSave = false;
+    // we don't need this HashMap anymore so free up the memory
+    _UUIDRefs = null;
   }
 
   ////////////////////////////////////////////////////////////////
   // trash related methos
+
+  // Attention: whole Trash mechanism should be rethought concerning nsuml
   public void moveToTrash(Object obj) {
-    if (Trash.SINGLETON.contains(obj)) return;
-    Vector alsoTrash = null;
-    if (obj instanceof ModelElementImpl)
-      alsoTrash = ((ModelElementImpl)obj).alsoTrash();
-    trashInternal(obj);
-    if (alsoTrash != null) {
+	  if (Trash.SINGLETON.contains(obj)) return;
+	  trashInternal(obj);
+
+	/* old version
+	  if (Trash.SINGLETON.contains(obj)) return;
+	  Vector alsoTrash = null;
+	  if (obj instanceof MModelElementImpl)
+      alsoTrash = ((MModelElementImpl)obj).alsoTrash();
+	  trashInternal(obj);
+	  if (alsoTrash != null) {
       int numTrash = alsoTrash.size();
       for (int i = 0; i < numTrash; i++)
-	moveToTrash(alsoTrash.elementAt(i));
-    }
+	  moveToTrash(alsoTrash.elementAt(i));
+	  }
+	*/
+
+	
   }
 
+  // Attention: whole Trash mechanism should be rethought concerning nsuml
   protected void trashInternal(Object obj) {
-    //System.out.println("trashing: " + obj);
-    if (obj instanceof ModelElement) {
-      ModelElement me = (ModelElement) obj;
-      Vector places = new Vector();
-      Enumeration diagramEnum = _diagrams.elements();
-      while (diagramEnum.hasMoreElements()) {
-	Diagram d = (Diagram) diagramEnum.nextElement();
-	Fig f = d.getLayer().presentationFor(me);
-	while (f != null) {
-	  f.delete();
-	  if (!places.contains(f)) places.addElement(f);
-	  f = d.getLayer().presentationFor(me);
-	} /* end while */
-      } /* end while */
-      Trash.SINGLETON.addItemFrom(obj, places);
-      if (obj instanceof Namespace) trashDiagramsOn((Namespace)obj);
-    }
-    // needs-more-work: trash diagrams
+	  if (obj instanceof MClassifier) {
+		  // System.out.println("trashInternal: "+obj);
+		  MClassifier me = (MClassifier) obj;
+		  // me.remove();
+		  MMUtil.SINGLETON.remove(me);
+	  }  	
+	  if (obj instanceof MStateVertex) {
+		  // System.out.println("trashInternal: "+obj);
+		  MStateVertex me = (MStateVertex) obj;
+		  // me.remove();
+		  MMUtil.SINGLETON.remove(me);
+	  }
+	  else if (obj instanceof MModelElement) {
+		  //System.out.println("trashInternal: "+obj);
+		  MModelElement me = (MModelElement) obj;
+		  me.remove();
+	  }
+	  
+	  /* old version
+		 if (obj instanceof MModelElement) {
+		 MModelElement me = (MModelElement) obj;
+		 Vector places = new Vector();
+		 java.util.Enumeration diagramEnum = _diagrams.elements();
+		 while (diagramEnum.hasMoreElements()) {
+		 Diagram d = (Diagram) diagramEnum.nextElement();
+		 Fig f = d.getLayer().presentationFor(me);
+		 while (f != null) {
+		 f.delete();
+		 if (!places.contains(f)) places.addElement(f);
+		 f = d.getLayer().presentationFor(me);
+		 } // end while 
+		 } // end while 
+		 Trash.SINGLETON.addItemFrom(obj, places);
+		 if (obj instanceof MNamespace) trashDiagramsOn((MNamespace)obj);
+		 }
+		 // needs-more-work: trash diagrams
+		 
+		 }
+		 
+		 protected void trashDiagramsOn(MNamespace ns) {
+		 //System.out.println("trashDiagramsOn: " + ns);
+		 int size = _diagrams.size();
+		 Vector removes = new Vector();
+		 for (int i = 0; i < size; i++) {
+		 Object obj = _diagrams.elementAt(i);
+		 if (!(obj instanceof UMLDiagram)) continue;
+		 if (ns == ((UMLDiagram)obj).getNamespace()) {
+		 //System.out.println("found diagram to remove");
+		 removes.addElement(obj);
+		 }
+		 }
+		 int numRemoves = removes.size();
+		 for (int i = 0; i < numRemoves; i++) {
+		 Diagram d = (Diagram) removes.elementAt(i);
+		 try { removeMember(d); }
+		 catch (PropertyVetoException pve) { }
+		 }
+		 
+	  */
   }
-
-  protected void trashDiagramsOn(Namespace ns) {
-    //System.out.println("trashDiagramsOn: " + ns);
-    int size = _diagrams.size();
-    Vector removes = new Vector();
-    for (int i = 0; i < size; i++) {
-      Object obj = _diagrams.elementAt(i);
-      if (!(obj instanceof UMLDiagram)) continue;
-      if (ns == ((UMLDiagram)obj).getNamespace()) {
-	//System.out.println("found diagram to remove");
-	removes.addElement(obj);
-      }
-    }
-    int numRemoves = removes.size();
-    for (int i = 0; i < numRemoves; i++) {
-      Diagram d = (Diagram) removes.elementAt(i);
-      try { removeMember(d); }
-      catch (PropertyVetoException pve) { }
-    }
-  }
-
+	
   public void moveFromTrash(Object obj) {
     System.out.println("needs-more-work: not restoring " + obj);
   }

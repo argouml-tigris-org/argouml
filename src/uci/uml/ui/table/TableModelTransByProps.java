@@ -23,11 +23,11 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.uml.visual.UMLStateDiagram;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 
 
@@ -41,13 +41,13 @@ class TableModelTransByProps extends TableModelComposite {
     addColumn(ColumnDescriptor.Source);
     addColumn(ColumnDescriptor.Target);
     addColumn(ColumnDescriptor.Trigger);
-    addColumn(ColumnDescriptor.Guard);
+    addColumn(ColumnDescriptor.MGuard);
     addColumn(ColumnDescriptor.Effect);
-    addColumn(ColumnDescriptor.Stereotype);
+    addColumn(ColumnDescriptor.MStereotype);
   }
 
   public Vector rowObjectsFor(Object t) {
-    System.out.println("rowObjectsFor " + t);
+    //System.out.println("rowObjectsFor " + t);
     if (!(t instanceof UMLStateDiagram)) return new Vector();
     UMLStateDiagram d = (UMLStateDiagram) t;
     Vector edges = d.getEdges();
@@ -55,7 +55,7 @@ class TableModelTransByProps extends TableModelComposite {
     int size = edges.size();
     for (int i = 0; i < size; i++) {
       Object edge = edges.elementAt(i);
-      if (edge instanceof Transition) res.addElement(edge);
+      if (edge instanceof MTransition) res.addElement(edge);
     }
     return res;
   }

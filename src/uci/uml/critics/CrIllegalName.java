@@ -30,14 +30,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 public class CrIllegalName extends CrUML {
@@ -56,11 +56,11 @@ public class CrIllegalName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof ModelElement)) return NO_PROBLEM;
-    ModelElement me = (ModelElement) dm;
-    Name meName = me.getName();
-    if (meName == null || meName.equals(Name.UNSPEC)) return NO_PROBLEM;
-    String nameStr = meName.getBody();
+    if (!(dm instanceof MModelElement)) return NO_PROBLEM;
+    MModelElement me = (MModelElement) dm;
+    String meName = me.getName();
+    if (meName == null || meName.equals("")) return NO_PROBLEM;
+    String nameStr = meName;
     int len = nameStr.length();
     for (int i = 0; i < len; i++) {
       char c = nameStr.charAt(i);

@@ -23,18 +23,20 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+
+import uci.uml.util.MMUtil;
 
 public class GoClassifierToStr implements TreeModelPrereqs {
 
-  public String toString() { return "Class->Attribute"; }
+  public String toString() { return "Class->MAttribute"; }
   
   public Object getRoot() {
     System.out.println("getRoot should never be called");
@@ -43,31 +45,34 @@ public class GoClassifierToStr implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof Classifier) {
-      return ((Classifier)parent).getStructuralFeature().elementAt(index);
-    }
+    if (parent instanceof MClassifier) {
+      MClassifier cls = (MClassifier) parent;
+	  Collection behs = MMUtil.SINGLETON.getAttributes(cls);
+	  Vector v = new Vector(behs);
+      return v.elementAt(index);
+	}
     System.out.println("getChild should never be get here GoClassifierToStr");
     return null;
   }
   
   public int getChildCount(Object parent) {
-    if (parent instanceof Classifier) {
-      Vector str = ((Classifier) parent).getStructuralFeature();
+    if (parent instanceof MClassifier) {
+      Collection str = MMUtil.SINGLETON.getAttributes((MClassifier) parent);
       return (str == null) ? 0 : str.size();
     }
     return 0;
   }
   
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Classifier) {
-      Vector str = ((Classifier)parent).getStructuralFeature();
+    if (parent instanceof MClassifier) {
+      Vector str = new Vector(MMUtil.SINGLETON.getAttributes((MClassifier)parent));
       if (str.contains(child)) return str.indexOf(child);
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Classifier && getChildCount(node) > 0);
+    return !(node instanceof MClassifier && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -76,12 +81,12 @@ public class GoClassifierToStr implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(ModelElement.class);
+    pros.addElement(MModelElement.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(StructuralFeature.class);
+    pros.addElement(MStructuralFeature.class);
     return pros;
   }
 

@@ -29,7 +29,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -39,7 +39,7 @@ import javax.swing.text.*;
 import uci.util.*;
 import uci.gef.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.ModelElement;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 public class TabSrc extends TabText {
@@ -80,9 +80,9 @@ public class TabSrc extends TabText {
     super.setTarget(t);
 
     _shouldBeEnabled = false;
-    if (t instanceof ModelElement) _shouldBeEnabled = true;
+    if (t instanceof MModelElement) _shouldBeEnabled = true;
     if (t instanceof Fig) {
-      if (((Fig)t).getOwner() instanceof ModelElement)
+      if (((Fig)t).getOwner() instanceof MModelElement)
 	_shouldBeEnabled = true;
     }
   }

@@ -31,7 +31,7 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.awt.event.*;
 //import java.awt.image.*;
@@ -40,9 +40,10 @@ import javax.swing.Icon;
 import uci.gef.*;
 import uci.graph.*;
 import uci.util.Util;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.activity_graphs.*;
 
 
 public class SelectionState extends SelectionWButtons {
@@ -126,17 +127,24 @@ public class SelectionState extends SelectionWButtons {
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
     Class edgeClass = null;
-    Class nodeClass = State.class;
+    Class nodeClass = MStateImpl.class;
+
+    Editor ce = Globals.curEditor();
+    GraphModel gm = ce.getGraphModel();
+    if (!(gm instanceof MutableGraphModel)) return;
+   
+    MutableGraphModel mgm = (MutableGraphModel) gm;
+
     int bx = mX, by = mY;
     boolean reverse = false;
     switch (hand.index) {
     case 12: //add outgoing
-      edgeClass = Transition.class;
+      edgeClass = MTransitionImpl.class;
       by = cy + ch/2;
       bx = cx + cw;
       break;
     case 13: // add incoming
-      edgeClass = Transition.class;
+      edgeClass = MTransitionImpl.class;
       reverse = true;
       by = cy + ch/2;
       bx = cx;
@@ -146,7 +154,6 @@ public class SelectionState extends SelectionWButtons {
       break;
     }
     if (edgeClass != null && nodeClass != null) {
-      Editor ce = Globals.curEditor();
       ModeCreateEdgeAndNode m = new
 	ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
       m.setup((FigNode)_content, _content.getOwner(), bx, by, reverse);
@@ -157,19 +164,23 @@ public class SelectionState extends SelectionWButtons {
 
   public void buttonClicked(int buttonCode) {
     super.buttonClicked(buttonCode);
-    State newNode = new State();
-    FigState fc = (FigState) _content;
-    State cls = (State) fc.getOwner();
+
+    FigStateVertex fc = (FigStateVertex) _content;
+    MStateVertex cls = (MStateVertex) fc.getOwner();
 
     Editor ce = Globals.curEditor();
     GraphModel gm = ce.getGraphModel();
-    if (!(gm instanceof MutableGraphModel)) return;
-    MutableGraphModel mgm = (MutableGraphModel) gm;
+    if (!(gm instanceof StateDiagramGraphModel)) return;
+    StateDiagramGraphModel mgm = (StateDiagramGraphModel) gm;
 
+    MState newNode = new MStateImpl();
     if (!mgm.canAddNode(newNode)) return;
+    mgm.getNamespace().addOwnedElement(newNode);
+
     GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
     LayerPerspective lay = (LayerPerspective)
       ce.getLayerManager().getActiveLayer();
+
     Fig newFC = renderer.getFigNodeFor(gm, lay, newNode);
 
     Rectangle outputRect = new Rectangle(Math.max(0, fc.getX() - 200),
@@ -208,14 +219,14 @@ public class SelectionState extends SelectionWButtons {
     ce.getSelectionManager().select(fc);
   }
 
-  public Object addOutgoingTrans(MutableGraphModel mgm, State cls,
-			    State newCls) {
-    return mgm.connect(cls, newCls, Transition.class);
+  public Object addOutgoingTrans(MutableGraphModel mgm, MStateVertex cls,
+			    MStateVertex newCls) {
+    return mgm.connect(cls, newCls, MTransitionImpl.class);
   }
 
-  public Object addIncomingTrans(MutableGraphModel mgm, State cls,
-			    State newCls) {
-    return mgm.connect(newCls, cls, Transition.class);
+  public Object addIncomingTrans(MutableGraphModel mgm, MStateVertex cls,
+			    MStateVertex newCls) {
+    return mgm.connect(newCls, cls, MTransitionImpl.class);
   }
 
   ////////////////////////////////////////////////////////////////

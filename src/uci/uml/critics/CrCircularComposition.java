@@ -30,11 +30,11 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 
 import uci.util.*;
 import uci.argo.kernel.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 import uci.uml.util.*;
 
 /**  */
@@ -56,25 +56,25 @@ public class CrCircularComposition extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
+    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+    MClassifier cls = (MClassifier) dm;
     VectorSet reach = (new VectorSet(cls)).reachable(GenCompositeClasses.SINGLETON);
     if (reach.contains(cls)) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    Classifier cls = (Classifier) dm;
+    MClassifier cls = (MClassifier) dm;
     VectorSet offs = computeOffenders(cls);
     return new ToDoItem(this, offs, dsgr);
   }
 
-  protected VectorSet computeOffenders(Classifier dm) {
+  protected VectorSet computeOffenders(MClassifier dm) {
     VectorSet offs = new VectorSet(dm);
     VectorSet above = offs.reachable(GenCompositeClasses.SINGLETON);
-    Enumeration enum = above.elements();
+    java.util.Enumeration enum = above.elements();
     while (enum.hasMoreElements()) {
-      Classifier cls2 = (Classifier) enum.nextElement();
+      MClassifier cls2 = (MClassifier) enum.nextElement();
       VectorSet trans = (new VectorSet(cls2)).reachable(GenCompositeClasses.SINGLETON);
       if (trans.contains(dm)) offs.addElement(cls2);
     }
@@ -84,7 +84,7 @@ public class CrCircularComposition extends CrUML {
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
     VectorSet offs = i.getOffenders();
-    Classifier dm = (Classifier) offs.firstElement();
+    MClassifier dm = (MClassifier) offs.firstElement();
     if (!predicate(dm, dsgr)) return false;
     VectorSet newOffs = computeOffenders(dm);
     boolean res = offs.equals(newOffs);

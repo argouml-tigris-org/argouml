@@ -30,18 +30,18 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 
 
 public class CrUnconventionalAttrName extends CrUML {
 
   public CrUnconventionalAttrName() {
-    setHeadline("Choose a Better Attribute Name");
+    setHeadline("Choose a Better MAttribute Name");
     sd("Normally attributes begin with a lowercase letter. "+
        "The name '<ocl>self</ocl>' is unconventional because it does not.\n\n"+
        "Following good naming conventions help to improve "+
@@ -55,18 +55,18 @@ public class CrUnconventionalAttrName extends CrUML {
 
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Attribute)) return NO_PROBLEM;
-    Attribute attr = (Attribute) dm;
-    Name myName = attr.getName();
-    if (myName == null || myName.equals(Name.UNSPEC)) return NO_PROBLEM;
-    String nameStr = myName.getBody();
+    if (!(dm instanceof MAttribute)) return NO_PROBLEM;
+    MAttribute attr = (MAttribute) dm;
+    String myName = attr.getName();
+    if (myName == null || myName.equals("")) return NO_PROBLEM;
+    String nameStr = myName;
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
     while (nameStr.startsWith("_")) nameStr = nameStr.substring(1);
     if (nameStr.length() == 0) return NO_PROBLEM;
     // needs-more-work: should check for all underscores
     char initalChar = nameStr.charAt(0);
-    ChangeableKind ck = attr.getChangeable();
-    if (ChangeableKind.FROZEN.equals(ck)) return NO_PROBLEM;
+    MChangeableKind ck = attr.getChangeability();
+    if (MChangeableKind.FROZEN.equals(ck)) return NO_PROBLEM;
     // needs-more-work: should check for all caps constants
     if (!Character.isLowerCase(initalChar)) {
       return PROBLEM_FOUND;
@@ -75,12 +75,12 @@ public class CrUnconventionalAttrName extends CrUML {
   }
 
   public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    Feature f = (Feature) dm;
+    MFeature f = (MFeature) dm;
     VectorSet offs = computeOffenders(f);
     return new ToDoItem(this, offs, dsgr);
   }
 
-  protected VectorSet computeOffenders(Feature dm) {
+  protected VectorSet computeOffenders(MFeature dm) {
     VectorSet offs = new VectorSet(dm);
     offs.addElement(dm.getOwner());
     return offs;
@@ -89,7 +89,7 @@ public class CrUnconventionalAttrName extends CrUML {
   public boolean stillValid(ToDoItem i, Designer dsgr) {
     if (!isActive()) return false;
     VectorSet offs = i.getOffenders();
-    Feature f = (Feature) offs.firstElement();
+    MFeature f = (MFeature) offs.firstElement();
     if (!predicate(f, dsgr)) return false;
     VectorSet newOffs = computeOffenders(f);
     boolean res = offs.equals(newOffs);
@@ -103,8 +103,8 @@ public class CrUnconventionalAttrName extends CrUML {
   public void initWizard(Wizard w) {
     if (w instanceof WizMEName) {
       ToDoItem item = w.getToDoItem();
-      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
-      String sug = me.getName().getBody();
+      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+      String sug = me.getName();
       if (sug.startsWith("_"))
 	sug = "_" + sug.substring(1,2).toLowerCase() + sug.substring(2);
       else

@@ -23,11 +23,11 @@
 
 package uci.uml.ui.table;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 public class AttrKeyword implements java.io.Serializable {
   public static final AttrKeyword NONE = new AttrKeyword("none");
@@ -44,15 +44,15 @@ public class AttrKeyword implements java.io.Serializable {
   
   private AttrKeyword(String label) { _label = label; }
   
-  public static AttrKeyword KeywordFor(Attribute attr) {
-    ScopeKind sk = attr.getOwnerScope();
-    ChangeableKind ck = attr.getChangeable();
+  public static AttrKeyword KeywordFor(MAttribute attr) {
+    MScopeKind sk = attr.getOwnerScope();
+    MChangeableKind ck = attr.getChangeability();
     // needs-more-work final?
-    if (ScopeKind.CLASSIFIER.equals(sk) && ChangeableKind.FROZEN.equals(ck))
+    if (MScopeKind.CLASSIFIER.equals(sk) && MChangeableKind.FROZEN.equals(ck))
       return STATFIN;
-    else if (ScopeKind.CLASSIFIER.equals(sk))
+    else if (MScopeKind.CLASSIFIER.equals(sk))
       return STATIC;
-    else if (ChangeableKind.FROZEN.equals(ck))
+    else if (MChangeableKind.FROZEN.equals(ck))
       return FINAL;
     else
       return NONE;
@@ -68,23 +68,19 @@ public class AttrKeyword implements java.io.Serializable {
   
   public String toString() { return _label.toString(); }
 
-  public void set(Attribute target) {
-    ChangeableKind ck = ChangeableKind.NONE;
-    ScopeKind sk = ScopeKind.INSTANCE;
+  public void set(MAttribute target) {
+	  //    MChangeableKind ck = MChangeableKind.NONE;
+    MChangeableKind ck = null;
+    MScopeKind sk = MScopeKind.INSTANCE;
 
     if (this == TRANS)
       System.out.println("needs-more-work: transient not supported");
     
-    if (this == FINAL || this == STATFIN) ck = ChangeableKind.FROZEN;
-    if (this == STATIC || this == STATFIN) sk = ScopeKind.CLASSIFIER;
+    if (this == FINAL || this == STATFIN) ck = MChangeableKind.FROZEN;
+    if (this == STATIC || this == STATFIN) sk = MScopeKind.CLASSIFIER;
       
-    try {
-      target.setChangeable(ck);
+      target.setChangeability(ck);
       target.setOwnerScope(sk);
       // needs-more-work: final
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not set attribute keywords");
-    }
   }
 } /* end class AttrKeyword */

@@ -32,7 +32,8 @@
 package uci.gef;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 
 /** Cmd to close all windows and exit the application.
  *  Needs-More-Work: Needs to keep track of all open windows. */

@@ -23,17 +23,19 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+
+import uci.uml.util.MMUtil;
 
 public class GoClassifierToBeh implements TreeModelPrereqs {
 
-  public String toString() { return "Class->Operation"; }
+  public String toString() { return "Class->MOperation"; }
   
   public Object getRoot() {
     System.out.println("getRoot should never be called");
@@ -42,32 +44,36 @@ public class GoClassifierToBeh implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof Classifier) {
-      Classifier cls = (Classifier) parent;
-      return cls.getBehavioralFeature().elementAt(index);
+    if (parent instanceof MClassifier) {
+      MClassifier cls = (MClassifier) parent;
+	  Collection behs = MMUtil.SINGLETON.getOperations(cls);
+	  Vector v = new Vector(behs);
+      return v.elementAt(index);
     }
     System.out.println("getChild should never be get here GoClassifierToBeh");
     return null;
   }
   
   public int getChildCount(Object parent) {
-    if (parent instanceof Classifier) {
-      Vector beh = ((Classifier) parent).getBehavioralFeature();
+    if (parent instanceof MClassifier) {
+      Collection beh = MMUtil.SINGLETON.getOperations((MClassifier) parent);
       return (beh == null) ? 0 : beh.size();
     }
     return 0;
   }
   
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Classifier) {
-      Vector beh = ((Classifier)parent).getBehavioralFeature();
-      if (beh.contains(child)) return beh.indexOf(child);
+    if (parent instanceof MClassifier) {
+      MClassifier cls = (MClassifier) parent;
+	  Collection behs = MMUtil.SINGLETON.getOperations(cls);
+	  Vector v = new Vector(behs);
+      if (v.contains(child)) return v.indexOf(child);
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof Classifier && getChildCount(node) > 0);
+    return !(node instanceof MClassifier && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -76,12 +82,12 @@ public class GoClassifierToBeh implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(ModelElement.class);
+    pros.addElement(MModelElement.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(BehavioralFeature.class);
+    pros.addElement(MBehavioralFeature.class);
     return pros;
   }
 

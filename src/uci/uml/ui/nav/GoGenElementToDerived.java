@@ -23,14 +23,14 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
 
 public class GoGenElementToDerived implements TreeModelPrereqs {
 
@@ -42,43 +42,33 @@ public class GoGenElementToDerived implements TreeModelPrereqs {
   } 
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof GeneralizableElement) {
-      GeneralizableElement p = (GeneralizableElement) parent;
-      Generalization g = (Generalization) p.getSpecialization().elementAt(index);
-      return g.getSubtype();
+    if (parent instanceof MGeneralizableElement) {
+      MGeneralizableElement p = (MGeneralizableElement) parent;
+      return ((List)p.getChildren()).get(index);
     }
     System.out.println("getChild should never be get here GoClassifierToStr");
     return null;
   }
   
   public int getChildCount(Object parent) {
-    if (parent instanceof GeneralizableElement) {
-      GeneralizableElement p = (GeneralizableElement) parent;
-      Vector specs = p.getSpecialization();
+    if (parent instanceof MGeneralizableElement) {
+      MGeneralizableElement p = (MGeneralizableElement) parent;
+      List specs = p.getChildren();
       return (specs == null) ? 0 : specs.size();
     }
     return 0;
   }
   
   public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof GeneralizableElement) {
-      GeneralizableElement p = (GeneralizableElement) parent;
-      Vector specs = p.getSpecialization();
-      Vector derived = new Vector();
-      java.util.Enumeration specEnum = specs.elements();
-      while (specEnum.hasMoreElements()) {
-	Generalization g = (Generalization) specEnum.nextElement();
-	derived.addElement(g.getSubtype());
-	// needs-more-work: it would be better to just count and
-	// return on first match
-      }
-      if (derived.contains(child)) return derived.indexOf(child);
-    }
-    return -1;
+    if (parent instanceof MGeneralizableElement) {
+      MGeneralizableElement p = (MGeneralizableElement) parent;
+	  return ((List)p.getChildren()).indexOf(child);
+	}
+	return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof GeneralizableElement && getChildCount(node) > 0);
+    return !(node instanceof MGeneralizableElement && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -87,7 +77,7 @@ public class GoGenElementToDerived implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector prereqs = new Vector();
-    prereqs.addElement(ModelElement.class);
+    prereqs.addElement(MModelElement.class);
     return prereqs;
   }
   

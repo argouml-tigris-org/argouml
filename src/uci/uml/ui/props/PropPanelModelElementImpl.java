@@ -29,15 +29,15 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.util.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 //import javax.swing.border.*;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.*;
 
 public class PropPanelModelElementImpl extends PropPanel {

@@ -29,7 +29,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -38,10 +38,10 @@ import javax.swing.text.*;
 //import javax.swing.border.*;
 
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.*;
 
 
@@ -59,32 +59,32 @@ public class PropPanelDependency extends PropPanelTwoEnds {
 
 
   public String getSourceLabel() {
-    if (!(_target instanceof Dependency)) return "non dep";
+    if (!(_target instanceof MDependency)) return "non dep";
     return "Supplier:";
   }
   public String getSourceValue() {
-    if (!(_target instanceof Dependency)) return "non dep";
-    Dependency d = (Dependency) _target;
-    Vector suppliers = d.getSupplier();
+    if (!(_target instanceof MDependency)) return "non dep";
+    MDependency d = (MDependency) _target;
+    Vector suppliers = new Vector(d.getSuppliers());
     if (suppliers == null) return "null suppliers";
     if (suppliers.size() == 0) return "no suppliers";
-    ModelElement sup = (ModelElement) suppliers.elementAt(0);
+    MModelElement sup = (MModelElement) suppliers.elementAt(0);
     if (sup == null) return "null";
-    return sup.getName().getBody();
+    return sup.getName();
   }
   public String getDestLabel() {
-    if (!(_target instanceof Dependency)) return "non dep";
+    if (!(_target instanceof MDependency)) return "non dep";
     return "Client:";
   }
   public String getDestValue() {
-    if (!(_target instanceof Dependency)) return "non dep";
-    Dependency d = (Dependency) _target;
-    Vector clients = d.getClient();
+    if (!(_target instanceof MDependency)) return "non dep";
+    MDependency d = (MDependency) _target;
+    Vector clients = new Vector(d.getClients());
     if (clients == null) return "null clients";
     if (clients.size() == 0) return "no clients";
-    ModelElement tar = (ModelElement) clients.elementAt(0);
+    MModelElement tar = (MModelElement) clients.elementAt(0);
     if (tar == null) return "null";
-    return tar.getName().getBody();
+    return tar.getName();
   }
   
 

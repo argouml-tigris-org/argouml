@@ -30,14 +30,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.ProjectBrowser;
 import uci.uml.ui.Project;
 
@@ -202,11 +202,11 @@ public class CrReservedName extends CrUML {
   // Critic implementation
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof ModelElement)) return NO_PROBLEM;
-    ModelElement me = (ModelElement) dm;
-    Name meName = me.getName();
-    if (meName == null || meName.equals(Name.UNSPEC)) return NO_PROBLEM;
-    String nameStr = meName.getBody();
+    if (!(dm instanceof MModelElement)) return NO_PROBLEM;
+    MModelElement me = (MModelElement) dm;
+    String meName = me.getName();
+    if (meName == null || meName.equals("")) return NO_PROBLEM;
+    String nameStr = meName;
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
 
     // Dont critique the built-in java types, they are supposed to
@@ -235,8 +235,8 @@ public class CrReservedName extends CrUML {
   public void initWizard(Wizard w) {
     if (w instanceof WizMEName) {
       ToDoItem item = w.getToDoItem();
-      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
-      String sug = me.getName().getBody();
+      MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
+      String sug = me.getName();
       String ins = "Change the name to something different.";
       ((WizMEName)w).setInstructions(ins);
       ((WizMEName)w).setSuggestion(sug);

@@ -24,7 +24,7 @@
 
 package uci.argo.kernel;
 
-import java.util.Vector;
+import com.sun.java.util.collections.Vector;
 
 public class ToDoListEvent {
 

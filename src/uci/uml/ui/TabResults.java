@@ -24,7 +24,7 @@
 package uci.uml.ui;
 
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -38,7 +38,7 @@ import uci.gef.Diagram;
 import uci.graph.GraphModel;
 import uci.argo.kernel.*;
 import uci.uml.visual.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 import uci.uml.generate.*;
 import uci.uml.ui.table.TMResults;
 
@@ -192,7 +192,7 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
       Object sel = _results.elementAt(row);
       //System.out.println("selected " + sel);
       _related.removeAllElements();
-      Enumeration enum = ChildGenRelated.SINGLETON.gen(sel);
+      java.util.Enumeration enum = ChildGenRelated.SINGLETON.gen(sel);
       while (enum.hasMoreElements())
 	_related.addElement(enum.nextElement());
       _relatedModel.setTarget(_related, null);
@@ -218,7 +218,7 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
       if (!_pred.matchDiagram(lastDiagram)) return;
       // diagrams are not placed in search results
     }
-    Enumeration enum = _cg.gen(node);
+	java.util.Enumeration enum =  _cg.gen(node);
     while (enum.hasMoreElements()) {
       Object c = enum.nextElement();
       if (_pred.predicate(c)) {

@@ -25,7 +25,7 @@ package uci.uml.ui.table;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.table.*;
@@ -35,7 +35,7 @@ import uci.uml.ui.*;
 import uci.gef.Diagram;
 import uci.graph.GraphModel;
 import uci.uml.visual.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
 
 
@@ -102,13 +102,13 @@ public class TMResults extends AbstractTableModel {
 	return numNodes + " nodes and "+ numEdges + " edges";
       }
     }
-    if (rowObj instanceof ModelElement) {
-      ModelElementImpl me = (ModelElementImpl) rowObj;
+    if (rowObj instanceof MModelElement) {
+      MModelElementImpl me = (MModelElementImpl) rowObj;
       Diagram d = null;
       if (_diagrams != null) d = (Diagram) _diagrams.elementAt(row);
       switch (col) {
-      case 0: return me.getOCLTypeStr();
-      case 1: return me.getName().getBody();
+      case 0: return me.getUMLClassName();
+      case 1: return me.getName();
       case 2: return (d == null) ? "N/A" : d.getName();
       case 3: return "docs";
       }

@@ -23,7 +23,10 @@
 
 package uci.uml.ocl;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
+import java.util.StringTokenizer;
+//import java.util.*;
 import java.io.*;
 import com.ibm.xml.parser.*;
 

@@ -28,15 +28,15 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 /** A critic to detect when a join state has the wrong number of
- *  transitions.  Implements constraint [4] on Pseudostate in the UML
+ *  transitions.  Implements constraint [4] on MPseudostate in the UML
  *  Semantics v1.1, pp. 104. */
 
 
@@ -57,12 +57,12 @@ public class CrInvalidJoin extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Pseudostate)) return NO_PROBLEM;
-    Pseudostate ps = (Pseudostate) dm;
-    PseudostateKind k = ps.getKind();
-    if (!PseudostateKind.JOIN.equals(k)) return NO_PROBLEM;
-    Vector outgoing = ps.getOutgoing();
-    Vector incoming = ps.getIncoming();
+    if (!(dm instanceof MPseudostate)) return NO_PROBLEM;
+    MPseudostate ps = (MPseudostate) dm;
+    MPseudostateKind k = ps.getKind();
+    if (!MPseudostateKind.JOIN.equals(k)) return NO_PROBLEM;
+    Collection outgoing = ps.getOutgoings();
+    Collection incoming = ps.getIncomings();
     int nOutgoing = outgoing == null ? 0 : outgoing.size();
     int nIncoming = incoming == null ? 0 : incoming.size();
     if (nOutgoing > 1) return PROBLEM_FOUND;

@@ -1,8 +1,2 @@
 SOURCES= \
-	AssociationEndRole.java \
-	AssociationRole.java \
-	ClassifierRole.java \
-	Collaboration.java \
-	Interaction.java \
-	Message.java
 

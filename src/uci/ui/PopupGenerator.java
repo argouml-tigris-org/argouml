@@ -24,7 +24,7 @@
 package uci.ui;
 
 import java.awt.event.MouseEvent;
-import java.util.Vector;
+import com.sun.java.util.collections.Vector;
 
 public interface PopupGenerator {
   public Vector getPopUpActions(MouseEvent me);

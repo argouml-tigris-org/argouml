@@ -30,10 +30,10 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.awt.*;
 
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
 import uci.argo.kernel.*;
 import uci.util.*;
@@ -60,15 +60,15 @@ public class CrUselessAbstract extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    MMClass cls, c;
-    if (!(dm instanceof MMClass)) return false;
-    cls = (MMClass) dm;
-    if (!cls.getIsAbstract()) return false;  // original class was not abstract
+    MClass cls, c;
+    if (!(dm instanceof MClass)) return false;
+    cls = (MClass) dm;
+    if (!cls.isAbstract()) return false;  // original class was not abstract
     VectorSet derived = (new VectorSet(cls)).reachable(new ChildGenDerivedClasses());
-    Enumeration enum = derived.elements();
+    java.util.Enumeration enum = derived.elements();
     while (enum.hasMoreElements()) {
-      c = (MMClass) enum.nextElement();
-      if (!c.getIsAbstract()) return false;  // found a concrete subclass
+      c = (MClass) enum.nextElement();
+      if (!c.isAbstract()) return false;  // found a concrete subclass
     }
     return true; // no concrete subclasses defined, this class is "useless"
   }
@@ -78,19 +78,19 @@ public class CrUselessAbstract extends CrUML {
 
 
 class ChildGenDerivedClasses implements ChildGenerator {
-  public Enumeration gen(Object o) {
-    MMClass c = (MMClass) o;
-    Vector specs = c.getSpecialization();
+  public java.util.Enumeration gen(Object o) {
+    MClass c = (MClass) o;
+    Vector specs = new Vector(c.getSpecializations());
     if (specs == null) {
       return EnumerationEmpty.theInstance();
     }
     // needs-more-work: it would be nice to have a EnumerationXform
     // and a Functor object in uci.util
     Vector specClasses = new Vector(specs.size());
-    Enumeration enum = specs.elements();
+    java.util.Enumeration enum = specs.elements();
     while (enum.hasMoreElements()) {
-      Generalization g = (Generalization) enum.nextElement();
-      GeneralizableElement ge = g.getSubtype();
+      MGeneralization g = (MGeneralization) enum.nextElement();
+      MGeneralizableElement ge = g.getChild();
       // assert: ge != null
       if (ge != null) specClasses.addElement(ge);
     }

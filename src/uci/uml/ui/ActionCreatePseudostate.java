@@ -31,13 +31,13 @@
 
 package uci.uml.ui;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.gef.*;
 import uci.graph.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
 /**  */
 
@@ -48,9 +48,10 @@ public class ActionCreatePseudostate extends CmdCreateNode {
 
   /** Construct a new Cmd with the given classes for the NetNode
    *  and its FigNode. */
-  public ActionCreatePseudostate(PseudostateKind kind, String name) {
+  public ActionCreatePseudostate(MPseudostateKind kind, String name) {
     super(new Hashtable(), name);
-    setArg("className", Pseudostate.class);
+    setArg("className", MPseudostateImpl.class);
+	//??? don't know, Toby, nsuml
     setArg("kind", kind);
   }
 
@@ -62,13 +63,13 @@ public class ActionCreatePseudostate extends CmdCreateNode {
   // needs-more-work: should call super, reduce code volume!
   public Object makeNode() {
     Object newNode = super.makeNode();
-    try {
-      PseudostateKind kind = (PseudostateKind) _args.get("kind");
-      ((Pseudostate)newNode).setKind(kind);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("PropertyVetoException in seting pseudo kind");
-    }
+    // try {
+    MPseudostateKind kind = (MPseudostateKind) _args.get("kind");
+    ((MPseudostate)newNode).setKind(kind);
+	// }
+	//catch (PropertyVetoException pve) {
+    //  System.out.println("PropertyVetoException in seting pseudo kind");
+    //}
     return newNode;
   }
 

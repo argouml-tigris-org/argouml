@@ -29,15 +29,16 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.graph.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.model_management.*;
 
 
 /** This class defines a bridge between the UML meta-model
@@ -45,7 +46,7 @@ import uci.uml.Model_Management.*;
  *  GEF.  This class handles only UML Use Case Digrams.  */
 
 public class CollabDiagramGraphModel extends MutableGraphSupport
-implements MutableGraphModel, VetoableChangeListener {
+implements MutableGraphModel, MElementListener, VetoableChangeListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -57,21 +58,22 @@ implements MutableGraphModel, VetoableChangeListener {
    *  Also, elements from other models will have their FigNodes add a
    *  line to say what their model is. */
 
-  /** The collaboration we are diagramming */
-  protected Collaboration _collab;
+  /** The collaboration / interaction we are diagramming */
+	protected MCollaboration _collab;
+	protected MInteraction _interaction;
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public Namespace getNamespace() { return _collab; }
-  public void setNamespace(Namespace m) {
-    if (!(m instanceof Collaboration)) {
+  public MNamespace getNamespace() { return _collab; }
+  public void setNamespace(MNamespace m) {
+    if (!(m instanceof MCollaboration)) {
       System.out.println("invalid namespace for CollabDiagramGraphModel");
       return;
     }
-    if (_collab != null) _collab.removeVetoableChangeListener(this);
-    _collab = (Collaboration) m;
-    if (_collab != null) _collab.addVetoableChangeListener(this);
+    if (_collab != null) _collab.removeMElementListener(this);
+    _collab = (MCollaboration) m;
+    if (_collab != null) _collab.addMElementListener(this);
   }
 
 
@@ -87,7 +89,7 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Return all ports on node or edge */
   public Vector getPorts(Object nodeOrEdge) {
     Vector res = new Vector();  //wasteful!
-    if (nodeOrEdge instanceof ClassifierRole) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof MClassifierRole) res.addElement(nodeOrEdge);
     return res;
   }
 
@@ -99,13 +101,13 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Return all edges going to given port */
   public Vector getInEdges(Object port) {
     Vector res = new Vector(); //wasteful!
-    if (port instanceof ClassifierRole) {
-      ClassifierRole cr = (ClassifierRole) port;
-      Vector ends = cr.getAssociationEndRole();
+    if (port instanceof MClassifierRole) {
+      MClassifierRole cr = (MClassifierRole) port;
+      Collection ends = cr.getAssociationEnds();
       if (ends == null) return res; // empty Vector
-      java.util.Enumeration endEnum = ends.elements();
-      while (endEnum.hasMoreElements()) {
-	    AssociationEndRole aer = (AssociationEndRole) endEnum.nextElement();
+	  Iterator iter = ends.iterator();
+      while (iter.hasNext()) {
+	    MAssociationEndRole aer = (MAssociationEndRole) iter.next();
 	    res.addElement(aer.getAssociation());
       }
     }
@@ -119,10 +121,10 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return one end of an edge */
   public Object getSourcePort(Object edge) {
-    if (edge instanceof IAssociation) {
-      AssociationRole assoc = (AssociationRole) edge;
-      Vector conns = assoc.getAssociationEndRole();
-      return conns.elementAt(0);
+    if (edge instanceof MAssociationRole ) {
+      MAssociationRole assoc = (MAssociationRole) edge;
+      Collection conns = assoc.getConnections();
+      return ((Object[])conns.toArray())[0];
     }
     System.out.println("needs-more-work getSourcePort");
     return null;
@@ -130,10 +132,10 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return  the other end of an edge */
   public Object getDestPort(Object edge) {
-    if (edge instanceof IAssociation) {
-      AssociationRole assoc = (AssociationRole) edge;
-      Vector conns = assoc.getAssociationEndRole();
-      return conns.elementAt(1);
+    if (edge instanceof MAssociation) {
+      MAssociationRole assoc = (MAssociationRole) edge;
+      Collection conns = assoc.getConnections();
+      return ((Object[])conns.toArray())[1];
     }
     System.out.println("needs-more-work getDestPort");
     return null;
@@ -145,12 +147,12 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
-    return (node instanceof ClassifierRole || node instanceof Message);
+    return (node instanceof MClassifierRole || node instanceof MMessage);
   }
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return (edge instanceof AssociationRole);
+    return (edge instanceof MAssociationRole);
   }
 
   /** Remove the given node from the graph. */
@@ -162,18 +164,15 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
-    //System.out.println("adding ClassifierRole node!!");
+    //System.out.println("adding MClassifierRole node!!");
     if (_nodes.contains(node)) return;
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
-    try {
-      if (node instanceof Classifier) {
-	    _collab.addPublicOwnedElement((Classifier) node);
+      if (node instanceof MClassifier) {
+		  _collab.addOwnedElement((MClassifier) node);
+		  // ((MClassifier)node).setNamespace(_collab.getNamespace());
       }
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("got a PropertyVetoException");
-    }
+    
     fireNodeAdded(node);
   }
 
@@ -183,14 +182,10 @@ implements MutableGraphModel, VetoableChangeListener {
     if (_edges.contains(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
-    try {
-      if (edge instanceof Association) {
-	    _collab.addPublicOwnedElement((Association) edge);
+      if (edge instanceof MAssociation) {
+		  _collab.addOwnedElement((MAssociation) edge);
+		  // ((MAssociation)edge).setNamespace(_collab.getNamespace());
       }
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("got a PropertyVetoException");
-    }
     fireEdgeAdded(edge);
   }
 
@@ -204,7 +199,7 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Return true if the two given ports can be connected by a
    * kind of edge to be determined by the ports. */
   public boolean canConnect(Object fromP, Object toP) {
-    if ((fromP instanceof ClassifierRole) && (toP instanceof ClassifierRole)) return true;
+    if ((fromP instanceof MClassifierRole) && (toP instanceof MClassifierRole)) return true;
     return false;
   }
 
@@ -219,19 +214,24 @@ implements MutableGraphModel, VetoableChangeListener {
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
     //try {
-      if (edgeClass == AssociationRole.class &&
-		(fromPort instanceof ClassifierRole && toPort instanceof ClassifierRole)) {
-	    AssociationRole asr = new AssociationRole((Classifier) fromPort,
-					  (Classifier) toPort);
+      if (edgeClass == MAssociationRoleImpl.class &&
+		(fromPort instanceof MClassifierRole && toPort instanceof MClassifierRole)) {
+	    MAssociationRole asr = new MAssociationRoleImpl();
+		MAssociationEndRole aer0 = new MAssociationEndRoleImpl();
+		aer0.setType((MClassifierRole) fromPort);
+		MAssociationEndRole aer1 = new MAssociationEndRoleImpl();
+		aer1.setType((MClassifierRole) toPort);
+		asr.addConnection(aer0);
+		asr.addConnection(aer1);
 	    addEdge(asr);
 	    return asr;
       }
-      /*else if (edgeClass == Generalization.class &&
-		((fromPort instanceof Actor && toPort instanceof Actor) ||
-		 (fromPort instanceof UseCase && toPort instanceof UseCase))) {
-	    Generalization gen = new Generalization((Classifier) fromPort,
-						(Classifier) toPort);
-	    gen.addStereotype(Stereotype.EXTENDS);
+      /*else if (edgeClass == MGeneralization.class &&
+		((fromPort instanceof MActor && toPort instanceof MActor) ||
+		 (fromPort instanceof MUseCase && toPort instanceof MUseCase))) {
+	    MGeneralization gen = new MGeneralization((MClassifier) fromPort,
+						(MClassifier) toPort);
+	    gen.addStereotype(MStereotype.EXTENDS);
 	    addEdge(gen);
 	    return gen;
       }*/
@@ -254,18 +254,31 @@ implements MutableGraphModel, VetoableChangeListener {
 
     if ("ownedElement".equals(pce.getPropertyName())) {
       Vector oldOwned = (Vector) pce.getOldValue();
-      ElementOwnership eo = (ElementOwnership) pce.getNewValue();
-      ModelElement me = eo.getModelElement();
+      MElementImport eo = (MElementImport) pce.getNewValue();
+      MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
 	    //System.out.println("model removed " + me);
-	    if (me instanceof Classifier) removeNode(me);
-	    if (me instanceof Message) removeNode(me);
-	    if (me instanceof Association) removeEdge(me);
+	    if (me instanceof MClassifier) removeNode(me);
+	    if (me instanceof MMessage) removeNode(me);
+	    if (me instanceof MAssociation) removeEdge(me);
       }
       else {
 	    //System.out.println("model added " + me);
       }
     }
   }
+
+	public void propertySet(MElementEvent mee) {
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	}
+	public void recovered(MElementEvent mee) {
+	}
+	public void removed(MElementEvent mee) {
+	}
+	public void roleAdded(MElementEvent mee) {
+	}
+	public void roleRemoved(MElementEvent mee) {
+	}
 } /* end class CollabDiagramGraphModel */
 

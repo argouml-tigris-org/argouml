@@ -31,7 +31,8 @@
 package uci.gef;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import uci.util.*;
 
 /** A Layer is like a drawing layer in high-end drawing applications
@@ -54,7 +55,7 @@ import uci.util.*;
  *  map. <p>
  *
  *  This approach to implementing drawing editors is similar to that
- *  described in a published paper: "Using the Multi-Layer Model for
+ *  described in a published paper: "Using the Multi-Layer MModel for
  *  Building Interactive Graphical Applications" Fekete, et al.
  *  UIST'96. pp. 109-117.  GEF might be improved by making it more
  *  like the system described in that paper: basically by moving some

@@ -77,5 +77,7 @@ SOURCES= \
 	CrUselessAbstract.java \
 	CrUselessInterface.java \
 	CrUtilityViolated.java \
+	CrComponentWithoutNode.java \
+	CrCompInstanceWithoutNode.java \
 	Init.java
 

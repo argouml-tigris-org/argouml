@@ -30,19 +30,19 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
 
-/** Well-formedness rule [1] for BehavioralFeature. See page 28 of UML 1.1
+/** Well-formedness rule [1] for MBehavioralFeature. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrDupParamName extends CrUML {
 
   public CrDupParamName() {
-    setHeadline("Duplicate Parameter Name");
+    setHeadline("Duplicate MParameter Name");
     sd("Each parameter of an operation must have a unique name. \n\n"+
        "Clean and unambigous naming is needed for code generation and to "+
        "achieve clear and maintainable designs.\n\n"+
@@ -54,16 +54,16 @@ public class CrDupParamName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof BehavioralFeature)) return NO_PROBLEM;
-    BehavioralFeature bf = (BehavioralFeature) dm;
-    Vector params = bf.getParameter();
+    if (!(dm instanceof MBehavioralFeature)) return NO_PROBLEM;
+    MBehavioralFeature bf = (MBehavioralFeature) dm;
+    List params = bf.getParameters();
     Vector namesSeen = new Vector();
-    java.util.Enumeration enum = params.elements();
-    while (enum.hasMoreElements()) {
-      Parameter p = (Parameter) enum.nextElement();
-      Name pName = p.getName();
-      if (Name.UNSPEC.equals(pName)) continue;
-      String nameStr = pName.getBody();
+    Iterator enum = params.iterator();
+    while (enum.hasNext()) {
+      MParameter p = (MParameter) enum.next();
+      String pName = p.getName();
+      if ("".equals(pName)) continue;
+      String nameStr = pName;
       if (nameStr.length() == 0) continue;
       if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;
       namesSeen.addElement(nameStr);

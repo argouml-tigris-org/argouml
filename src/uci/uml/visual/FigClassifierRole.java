@@ -28,7 +28,8 @@
 package uci.uml.visual;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.beans.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -37,8 +38,8 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 
 /** Class to display graphics for a UML collaboration in a diagram. */
 
@@ -82,7 +83,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     setOwner(node);
   }
 
-  public String placeString() { return "new ClassifierRole"; }
+  public String placeString() { return "new MClassifierRole"; }
 
   public Object clone() {
     FigClassifierRole figClone = (FigClassifierRole) super.clone();
@@ -152,7 +153,7 @@ public class FigClassifierRole extends FigNodeModelElement {
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
-    ClassifierRole cls = (ClassifierRole) getOwner();
+    MClassifierRole cls = (MClassifierRole) getOwner();
     if (ft == _name) {
        String s = ft.getText();
       ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
@@ -161,10 +162,10 @@ public class FigClassifierRole extends FigNodeModelElement {
 
   protected void modelChanged() {
     super.modelChanged();
-    ClassifierRole cr = (ClassifierRole) getOwner();
+    MClassifierRole cr = (MClassifierRole) getOwner();
     if (cr == null) return;
     String nameStr = GeneratorDisplay.Generate(cr.getName()).trim();
-    String baseString = cr.getBaseString().trim();
+    String baseString = cr.getUMLClassName().trim();
     if (_readyToEdit) {
       if( nameStr == "" && baseString == "")
 	_name.setText("");
@@ -176,8 +177,8 @@ public class FigClassifierRole extends FigNodeModelElement {
 //  public void keyPressed(KeyEvent ke) {}
 
   public void dispose() {
-    if (!(getOwner() instanceof Element)) return;
-    Element elmt = (Element) getOwner();
+    if (!(getOwner() instanceof MElement)) return;
+    MElement elmt = (MElement) getOwner();
     Project p = ProjectBrowser.TheInstance.getProject();
     p.moveToTrash(elmt);
     super.dispose();

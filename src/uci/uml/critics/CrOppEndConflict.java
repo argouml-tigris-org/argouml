@@ -30,14 +30,14 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.Collaborations.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.collaborations.*;
 
-/** Well-formedness rule [2] for Classifier. See page 29 of UML 1.1
+/** Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 //needs-more-work: split into an inherited attr critic and a local
@@ -46,7 +46,7 @@ import uci.uml.Behavioral_Elements.Collaborations.*;
 public class CrOppEndConflict extends CrUML {
 
   public CrOppEndConflict() {
-    setHeadline("Rename Association Roles");
+    setHeadline("Rename MAssociation Roles");
     sd("Two roles of <ocl>self</ocl> have the same name. "+
        "Roles must have distinct names.  This may because of an inherited "+
        "attribute. \n\n"+
@@ -64,28 +64,28 @@ public class CrOppEndConflict extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Classifier)) return NO_PROBLEM;
-    Classifier cls = (Classifier) dm;
+    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+    MClassifier cls = (MClassifier) dm;
     Vector namesSeen = new Vector();
-    Vector assocEnds = cls.getAssociationEnd();
+    Collection assocEnds = cls.getAssociationEnds();
     if (assocEnds == null) return NO_PROBLEM;
-    java.util.Enumeration enum = assocEnds.elements();
+    Iterator enum = assocEnds.iterator();
     // warn about inheritied name conflicts, different critic?
-    while (enum.hasMoreElements()) {
-      AssociationEnd myAe = (AssociationEnd) enum.nextElement();
-      Association asc = (Association) myAe.getAssociation();
+    while (enum.hasNext()) {
+      MAssociationEnd myAe = (MAssociationEnd) enum.next();
+      MAssociation asc = (MAssociation) myAe.getAssociation();
       if (asc == null) continue;
-      Vector conns = asc.getConnection();
-      if (asc instanceof AssociationRole)
-	conns = ((AssociationRole)asc).getAssociationEndRole();
+      Collection conns = asc.getConnections();
+      if (asc instanceof MAssociationRole)
+	conns = ((MAssociationRole)asc).getConnections();
       if (conns == null) continue;
-      java.util.Enumeration enum2 = conns.elements();
-      while (enum2.hasMoreElements()) {
-	AssociationEnd ae = (AssociationEnd) enum2.nextElement();
+      Iterator enum2 = conns.iterator();
+      while (enum2.hasNext()) {
+	MAssociationEnd ae = (MAssociationEnd) enum2.next();
 	if (ae.getType() == cls) continue;
-	Name aeName = ae.getName();
-	if (Name.UNSPEC.equals(aeName)) continue;
-	String aeNameStr = aeName.getBody();
+	String aeName = ae.getName();
+	if ("".equals(aeName)) continue;
+	String aeNameStr = aeName;
 	if (aeNameStr.length() == 0) continue;
 	if (namesSeen.contains(aeNameStr)) return PROBLEM_FOUND;
 	namesSeen.addElement(aeNameStr);

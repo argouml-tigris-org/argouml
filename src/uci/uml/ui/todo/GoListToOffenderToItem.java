@@ -23,7 +23,7 @@
 
 package uci.uml.ui.todo;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
@@ -98,7 +98,7 @@ public class GoListToOffenderToItem implements TreeModelPrereqs {
 
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(uci.uml.Foundation.Core.ModelElement.class);
+    pros.addElement(ru.novosoft.uml.foundation.core.MModelElement.class);
     pros.addElement(ToDoItem.class);
     return pros;
   }

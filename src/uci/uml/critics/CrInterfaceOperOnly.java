@@ -30,12 +30,12 @@
 
 package uci.uml.critics;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
-import uci.uml.Foundation.Core.*;
+import ru.novosoft.uml.foundation.core.*;
 
-/** Well-formedness rule [1] for Interface. See page 32 of UML 1.1
+/** Well-formedness rule [1] for MInterface. See page 32 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
 
 public class CrInterfaceOperOnly extends CrUML {
@@ -55,11 +55,14 @@ public class CrInterfaceOperOnly extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof Interface)) return NO_PROBLEM;
-    Interface inf = (Interface) dm;
-    Vector sf = inf.getStructuralFeature();
+    if (!(dm instanceof MInterface)) return NO_PROBLEM;
+    MInterface inf = (MInterface) dm;
+    Collection sf = inf.getFeatures();
     if (sf == null) return NO_PROBLEM;
-    if (sf.size() > 0) return PROBLEM_FOUND;
+    for (Iterator iter = sf.iterator(); iter.hasNext(); ) {
+      if (iter.next() instanceof MStructuralFeature)
+        return PROBLEM_FOUND;
+    };
     return NO_PROBLEM;
   }
 

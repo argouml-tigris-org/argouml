@@ -31,7 +31,8 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
@@ -40,9 +41,9 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.ui.*;
 import uci.uml.ui.*;
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 
 public class UMLUseCaseDiagram extends UMLDiagram {
@@ -52,19 +53,19 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
 
   protected static Action _actionActor = 
-  new CmdCreateNode(Actor.class, "Actor");
+  new CmdCreateNode(MActorImpl.class, "Actor");
 
   protected static Action _actionUseCase = 
-  new CmdCreateNode(UseCase.class, "UseCase");
+  new CmdCreateNode(MUseCaseImpl.class, "UseCase");
 
   protected static Action _actionAssoc =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", Association.class,
+		 "edgeClass", MAssociationImpl.class,
 		 "Association");
 
   protected static Action _actionGeneralize =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", Generalization.class,
+		 "edgeClass", MGeneralizationImpl.class,
 		 "Generalization");
 
 
@@ -78,17 +79,17 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     catch (PropertyVetoException pve) { }
   }
 
-  public UMLUseCaseDiagram(Namespace m) {
+  public UMLUseCaseDiagram(MNamespace m) {
     this();
     setNamespace(m);
   }
 
-  public void setNamespace(Namespace m) {
+  public void setNamespace(MNamespace m) {
     super.setNamespace(m);
     UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
     gm.setNamespace(m);
     setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
+    LayerPerspective lay = new LayerPerspective(m.getName(), gm);
     setLayer(lay);
     UseCaseDiagramRenderer rend = new UseCaseDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);

@@ -31,7 +31,8 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
@@ -40,10 +41,10 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.ui.*;
 import uci.uml.ui.*;
-//import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
+//import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.state_machines.*;
 
 
 public class UMLStateDiagram extends UMLDiagram {
@@ -52,34 +53,34 @@ public class UMLStateDiagram extends UMLDiagram {
   // actions for toolbar
 
   protected static Action _actionState =
-  new CmdCreateNode(State.class, "State");
+  new CmdCreateNode(MStateImpl.class, "State");
 
   protected static Action _actionCompositeState =
-  new CmdCreateNode(CompositeState.class, "CompositeState");
+  new CmdCreateNode(MCompositeStateImpl.class, "CompositeState");
 
   // start state, end state, forks, joins, etc.
   protected static Action _actionStartPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.INITIAL, "Initial");
+  new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
 
   protected static Action _actionFinalPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.FINAL, "FinalState");
+  new ActionCreatePseudostate(MPseudostateKind.FINAL, "FinalState");
 
   protected static Action _actionBranchPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.BRANCH, "Branch");
+  new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
 
   protected static Action _actionForkPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.FORK, "Fork");
+  new ActionCreatePseudostate(MPseudostateKind.FORK, "Fork");
 
   protected static Action _actionJoinPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.JOIN, "Join");
+  new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
 
   protected static Action _actionHistoryPseudoState =
-  new ActionCreatePseudostate(PseudostateKind.SHALLOW_HISTORY, "ShallowHistory");
+  new ActionCreatePseudostate(MPseudostateKind.SHALLOW_HISTORY, "ShallowHistory");
 
 
   protected static Action _actionTransition =
   new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", Transition.class,
+		 "edgeClass", MTransitionImpl.class,
 		 "Transition");
 
 
@@ -95,41 +96,56 @@ public class UMLStateDiagram extends UMLDiagram {
     try { setName(name); } catch (PropertyVetoException pve) { }
   }
 
-  public UMLStateDiagram(Namespace m) {
+  public UMLStateDiagram(MClass m, MStateMachine sm) {
     this();
-    setNamespace(m);
-    StateMachine sm = getStateMachine();
-    String name = null;
-    if (sm.getContext() != null && sm.getContext().getName() != Name.UNSPEC &&
-	sm.getContext().getName().getBody().length() > 0) {
-      name = sm.getContext().getName().getBody() + " states";
-      try { setName(name); }
-      catch (PropertyVetoException pve) { }
+	if (m != null && m.getName() != null) {
+		String name = m.getName() + " states "+ (m.getBehaviors().size());
+		try { setName(name); }
+		catch (PropertyVetoException pve) { }
     }
+	if (m != null && m.getNamespace() != null) setup(m, sm);
+	
   }
 
-  public void setNamespace(Namespace m) {
-    super.setNamespace(m);
-    StateDiagramGraphModel gm = new StateDiagramGraphModel();
-    gm.setNamespace(m);
-    StateMachine sm = null;
-    Vector beh = m.getBehavior();
-    if (beh.size() == 1) sm = (StateMachine) beh.elementAt(0);
-    else System.out.println("could not setMachine()");
-    gm.setMachine(sm);
-    setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
-    setLayer(lay);
-    StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
-    lay.setGraphNodeRenderer(rend);
-    lay.setGraphEdgeRenderer(rend);
-  }
+	public MModelElement getOwner() {
+		StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
+		MStateMachine sm = gm.getMachine();
+		if (sm != null) return sm;
+		return gm.getNamespace();
+	}
 
-  public StateMachine getStateMachine() {
+	public void initialize(Object o) {
+		if (!(o instanceof MStateMachine)) return;
+		MStateMachine sm = (MStateMachine)o;
+		MModelElement context = sm.getContext();
+		if (context != null && context instanceof MClass)
+			setup((MClass)context, sm);
+		else
+			System.out.println("Statemachine without context not yet possible :-(");
+	}
+
+  public void setup(MClass m, MStateMachine sm) {
+	  MNamespace namespace = null;
+	  if (m.getNamespace() != null) namespace = m.getNamespace();
+	  else namespace = m;
+	  
+	  super.setNamespace(namespace);
+	  StateDiagramGraphModel gm = new StateDiagramGraphModel();
+	  gm.setNamespace(namespace);
+	  if (sm != null) gm.setMachine(sm);
+	  setGraphModel(gm);
+	  LayerPerspective lay = new LayerPerspective(m.getName(), gm);
+	  setLayer(lay);
+	  StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
+	  lay.setGraphNodeRenderer(rend);
+	  lay.setGraphEdgeRenderer(rend);
+  }
+	  
+public MStateMachine getStateMachine() {
     return ((StateDiagramGraphModel)getGraphModel()).getMachine();
   }
 
-  public void setStateMachine(StateMachine sm) {
+  public void setStateMachine(MStateMachine sm) {
     ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
   }
 

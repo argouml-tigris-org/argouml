@@ -1,7 +1,2 @@
 SOURCES= \
-	ElementOwnership.java \
-	ElementReference.java \
-	Model.java \
-	MMPackage.java \
-	Subsystem.java
 

@@ -34,7 +34,8 @@ package uci.gef;
 
 import java.awt.*;
 import java.awt.image.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
+import java.util.Enumeration;
 import java.net.*;
 
 /** Primitive Fig to paint images (such as icons) on a LayerDiagram. */

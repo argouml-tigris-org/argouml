@@ -23,42 +23,43 @@
 
 package uci.uml.generate;
 
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Data_Types.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Behavioral_Elements.Common_Behavior.*;
-import uci.uml.Behavioral_Elements.State_Machines.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.model_management.*;
+import com.sun.java.util.collections.*;
 
 public abstract class Parser {
 
-  public abstract Operation parseOperation(String s);
-  public abstract Attribute parseAttribute(String s);
-  public abstract Parameter parseParameter(String s);
+  public abstract MOperation parseOperation(String s);
+  public abstract MAttribute parseAttribute(String s);
+  public abstract MParameter parseParameter(String s);
 //   public abstract Package parsePackage(String s);
-//   public abstract Classifier parseClassifier(String s);
-  public abstract Stereotype parseStereotype(String s);
-  public abstract TaggedValue parseTaggedValue(String s);
-//   public abstract IAssociation parseAssociation(String s);
-//   public abstract AssociationEnd parseAssociationEnd(String s);
-  public abstract Multiplicity parseMultiplicity(String s);
-  public abstract State parseState(String s);
-  public abstract Transition parseTransition(String s);
-  public abstract MMAction parseAction(String s);
-  public abstract Guard parseGuard(String s);
-  public abstract Event parseEvent(String s);
+//   public abstract MClassImpl parseClassifier(String s);
+  public abstract MStereotype parseStereotype(String s);
+  public abstract MTaggedValue parseTaggedValue(String s);
+//   public abstract MAssociation parseAssociation(String s);
+//   public abstract MAssociationEnd parseAssociationEnd(String s);
+  public abstract MMultiplicity parseMultiplicity(String s);
+  public abstract MState parseState(String s);
+  public abstract MTransition parseTransition(String s);
+  public abstract MAction parseAction(String s);
+  public abstract MGuard parseGuard(String s);
+  public abstract MEvent parseEvent(String s);
 
 
-  public Expression parseExpression(String s) {
-    return new Expression(parseUninterpreted(s));
+  public MExpression parseExpression(String s) {
+    return new MExpression("Java", s);
   }
 
-  public Name parseName(String s) {
-    return new Name(s);
+  public String parseName(String s) {
+    return new String(s);
   }
 
-  public Uninterpreted parseUninterpreted(String s) {
-    return new Uninterpreted(s);
+  public String parseUninterpreted(String s) {
+    return new String(s);
   }
 
 } /* end class Parser */

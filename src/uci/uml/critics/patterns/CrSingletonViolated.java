@@ -30,17 +30,18 @@
 
 package uci.uml.critics.patterns;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import uci.argo.kernel.*;
 import uci.util.*;
+import uci.uml.util.*;
 import uci.uml.critics.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 public class CrSingletonViolated extends CrUML {
 
   public CrSingletonViolated() {
-    setHeadline("Singleton Stereotype Violated");
+    setHeadline("Singleton MStereotype Violated");
     sd("This class is marked with the Singleton stereotype, but it does "+
        "not satisfy the constraints imposed on singletons.  A singleton "+
        "class can have at most one instance.  This means that the class "+
@@ -74,30 +75,25 @@ public class CrSingletonViolated extends CrUML {
   protected void sd(String s) { setDescription(s); }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MMClass)) return NO_PROBLEM;
-    MMClass cls = (MMClass) dm;
-    Vector str = cls.getStructuralFeature();
-    Vector ends = cls.getAssociationEnd();
+    if (!(dm instanceof MClass)) return NO_PROBLEM;
+    MClass cls = (MClass) dm;
+    Vector str = new Vector(MMUtil.SINGLETON.getAttributes(cls));
+    Vector ends = new Vector(cls.getAssociationEnds());
 
     boolean markedSingleton = false;
     //if it is not marked Singleton, nevermind
-    Vector stereos = cls.getStereotype();
-    if (stereos != null) {
-      java.util.Enumeration stereoEnum = stereos.elements();
-      while (stereoEnum.hasMoreElements()) {
-	Stereotype st = (Stereotype) stereoEnum.nextElement();
-	if (st.containsStereotype(PatternStereotypes.Singleton))
-	  markedSingleton = true;
+    MStereotype st = cls.getStereotype();
+    if (st != null && st.getName().equals("Singleton")) {
+		return PROBLEM_FOUND;
+		//markedSingleton = true;
       }
-    }
-    if (!markedSingleton) return NO_PROBLEM;
+	else return NO_PROBLEM;
 
     //needs-more-work
     // (1) The class must have at least one static attr with of the same type
     // (2) All constructors should be private
     // (3) There must be at least on constructor to override default constructor
 
-    return NO_PROBLEM;
   }
 
 } /* end class CrSingletonViolated */

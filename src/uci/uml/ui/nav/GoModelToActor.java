@@ -23,18 +23,18 @@
 
 package uci.uml.ui.nav;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
-import uci.uml.Model_Management.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
+import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 public class GoModelToActor implements TreeModelPrereqs {
 
-  public String toString() { return "Package->Actor"; }
+  public String toString() { return "Package->MActor"; }
   
   public Object getRoot() {
     System.out.println("getRoot should never be called");
@@ -43,12 +43,11 @@ public class GoModelToActor implements TreeModelPrereqs {
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
-    if (parent instanceof MMPackage) {
-      Vector eos = ((MMPackage)parent).getOwnedElement();
+    if (parent instanceof MPackage) {
+      Vector eos = new Vector(((MPackage)parent).getOwnedElements());
       for (int i = 0; i < eos.size(); i++) {
-	ElementOwnership eo = (ElementOwnership) eos.elementAt(i);
-	ModelElement me = eo.getModelElement();
-	if (me instanceof Actor) index--;
+	MModelElement me = (MModelElement)eos.elementAt(i);
+	if (me instanceof MActor) index--;
 	if (index == 0) return me;
       }
     }
@@ -58,14 +57,13 @@ public class GoModelToActor implements TreeModelPrereqs {
 
   public int getChildCount(Object parent) {
     int res = 0;
-    if (parent instanceof MMPackage) {
-      Vector oes = ((MMPackage) parent).getOwnedElement();
+    if (parent instanceof MPackage) {
+      Vector oes = new Vector(((MPackage) parent).getOwnedElements());
       if (oes == null) return 0;
       java.util.Enumeration enum = oes.elements();
       while (enum.hasMoreElements()) {
-	ElementOwnership eo = (ElementOwnership) enum.nextElement();
-	ModelElement me = eo.getModelElement();
-	if (me instanceof Actor) res++;
+	MModelElement me = (MModelElement)enum.nextElement();
+	if (me instanceof MActor) res++;
       }
     }
     return res;
@@ -73,22 +71,21 @@ public class GoModelToActor implements TreeModelPrereqs {
 
   public int getIndexOfChild(Object parent, Object child) {
     int res = 0;
-    if (parent instanceof MMPackage) {
-      Vector oes = ((MMPackage)parent).getOwnedElement();
+    if (parent instanceof MPackage) {
+      Vector oes = new Vector(((MPackage)parent).getOwnedElements());
       if (oes == null) return -1;
       java.util.Enumeration enum = oes.elements();
       while (enum.hasMoreElements()) {
-	ElementOwnership eo = (ElementOwnership) enum.nextElement();
-	ModelElement me = eo.getModelElement();
+	MModelElement me = (MModelElement)enum.nextElement();
 	if (me == child) return res;
-	if (me instanceof Actor) res++;
+	if (me instanceof MActor) res++;
       }
     }
     return -1;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof MMPackage && getChildCount(node) > 0);
+    return !(node instanceof MPackage && getChildCount(node) > 0);
   }
 
   public void valueForPathChanged(TreePath path, Object newValue) { }
@@ -97,12 +94,12 @@ public class GoModelToActor implements TreeModelPrereqs {
 
   public Vector getPrereqs() {
     Vector pros = new Vector();
-    pros.addElement(Model.class);
+    pros.addElement(MModel.class);
     return pros;
   }
   public Vector getProvidedTypes() {
     Vector pros = new Vector();
-    pros.addElement(Actor.class);
+    pros.addElement(MActor.class);
     return pros;
   }
 

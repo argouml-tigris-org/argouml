@@ -29,14 +29,17 @@
 
 package uci.uml.visual;
 
-import java.util.*;
+import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.graph.*;
-import uci.uml.Foundation.Core.*;
-import uci.uml.Foundation.Extension_Mechanisms.*;
-import uci.uml.Behavioral_Elements.Use_Cases.*;
-import uci.uml.Model_Management.*;
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.model_management.*;
+
+import uci.uml.util.MMUtil;
 
 
 /** This class defines a bridge between the UML meta-model
@@ -44,7 +47,7 @@ import uci.uml.Model_Management.*;
  *  GEF.  This class handles only UML Use Case Digrams.  */
 
 public class UseCaseDiagramGraphModel extends MutableGraphSupport
-implements MutableGraphModel, VetoableChangeListener {
+implements MutableGraphModel, VetoableChangeListener, MElementListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Vector _nodes = new Vector();
@@ -56,16 +59,16 @@ implements MutableGraphModel, VetoableChangeListener {
    *  Also, elements from other models will have their FigNodes add a
    *  line to say what their model is. */
 
-  protected Namespace _model;
+  protected MNamespace _model;
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public Namespace getNamespace() { return _model; }
-  public void setNamespace(Namespace m) {
-    if (_model != null) _model.removeVetoableChangeListener(this);
+  public MNamespace getNamespace() { return _model; }
+  public void setNamespace(MNamespace m) {
+    if (_model != null) _model.removeMElementListener(this);
     _model = m;
-    if (_model != null) _model.addVetoableChangeListener(this);
+    if (_model != null) _model.addMElementListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -80,8 +83,8 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Return all ports on node or edge */
   public Vector getPorts(Object nodeOrEdge) {
     Vector res = new Vector();  //wasteful!
-    if (nodeOrEdge instanceof Actor) res.addElement(nodeOrEdge);
-    if (nodeOrEdge instanceof UseCase) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof MActor) res.addElement(nodeOrEdge);
+    if (nodeOrEdge instanceof MUseCase) res.addElement(nodeOrEdge);
     return res;
   }
 
@@ -93,23 +96,23 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Return all edges going to given port */
   public Vector getInEdges(Object port) {
     Vector res = new Vector(); //wasteful!
-    if (port instanceof Actor) {
-      Actor act = (Actor) port;
-      Vector ends = act.getAssociationEnd();
+    if (port instanceof MActor) {
+      MActor act = (MActor) port;
+      Vector ends = new Vector(act.getAssociationEnds());
       if (ends == null) return res; // empty Vector
       java.util.Enumeration endEnum = ends.elements();
       while (endEnum.hasMoreElements()) {
-	AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
+	MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
 	res.addElement(ae.getAssociation());
       }
     }
-    if (port instanceof UseCase) {
-      UseCase use = (UseCase) port;
-      Vector ends = use.getAssociationEnd();
+    if (port instanceof MUseCase) {
+      MUseCase use = (MUseCase) port;
+      Vector ends = new Vector(use.getAssociationEnds());
       if (ends == null) return res; // empty Vector
       java.util.Enumeration endEnum = ends.elements();
       while (endEnum.hasMoreElements()) {
-	AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
+	MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
 	res.addElement(ae.getAssociation());
       }
     }
@@ -123,9 +126,9 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return one end of an edge */
   public Object getSourcePort(Object edge) {
-    if (edge instanceof IAssociation) {
-      IAssociation assoc = (IAssociation) edge;
-      Vector conns = assoc.getConnection();
+    if (edge instanceof MAssociation) {
+      MAssociation assoc = (MAssociation) edge;
+      Vector conns = new Vector(assoc.getConnections());
       return conns.elementAt(0);
     }
     System.out.println("needs-more-work getSourcePort");
@@ -134,9 +137,9 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return  the other end of an edge */
   public Object getDestPort(Object edge) {
-    if (edge instanceof IAssociation) {
-      IAssociation assoc = (IAssociation) edge;
-      Vector conns = assoc.getConnection();
+    if (edge instanceof MAssociation) {
+      MAssociation assoc = (MAssociation) edge;
+      Vector conns = new Vector(assoc.getConnections());
       return conns.elementAt(1);
     }
     System.out.println("needs-more-work getDestPort");
@@ -149,12 +152,12 @@ implements MutableGraphModel, VetoableChangeListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
-    return (node instanceof Actor) || (node instanceof UseCase);
+    return (node instanceof MActor) || (node instanceof MUseCase);
   }
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return (edge instanceof Association) || (edge instanceof Generalization);
+    return (edge instanceof MAssociation) || (edge instanceof MGeneralization);
   }
 
   /** Remove the given node from the graph. */
@@ -170,14 +173,9 @@ implements MutableGraphModel, VetoableChangeListener {
     if (_nodes.contains(node)) return;
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
-    try {
-      if (node instanceof Classifier) {
-	_model.addPublicOwnedElement((Classifier) node);
+      if (node instanceof MClassifier) {
+	_model.addOwnedElement((MClassifier) node);
       }
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("got a PropertyVetoException");
-    }
     fireNodeAdded(node);
   }
 
@@ -187,17 +185,12 @@ implements MutableGraphModel, VetoableChangeListener {
     if (_edges.contains(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
-    try {
-      if (edge instanceof Generalization) {
-	_model.addPublicOwnedElement((Generalization) edge);
+      if (edge instanceof MGeneralization) {
+	_model.addOwnedElement((MGeneralization) edge);
       }
-      if (edge instanceof Association) {
-	_model.addPublicOwnedElement((Association) edge);
+      if (edge instanceof MAssociation) {
+	_model.addOwnedElement((MAssociation) edge);
       }
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("got a PropertyVetoException");
-    }
     fireEdgeAdded(edge);
   }
 
@@ -211,7 +204,7 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Return true if the two given ports can be connected by a 
    * kind of edge to be determined by the ports. */
   public boolean canConnect(Object fromP, Object toP) {
-    if ((fromP instanceof Actor) && (toP instanceof Actor)) return false;
+    if ((fromP instanceof MActor) && (toP instanceof MActor)) return false;
     return true;
   }
 
@@ -225,31 +218,41 @@ implements MutableGraphModel, VetoableChangeListener {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
-    try {
-      if (edgeClass == Association.class) {
-	Association asc = new Association((Classifier) fromPort,
-					  (Classifier) toPort);
-	addEdge(asc);
-	return asc;
+
+      if (edgeClass == MAssociationImpl.class) {
+	  MClassifier fromCls = (MClassifier)fromPort;
+	  MClassifier toCls = (MClassifier)toPort;
+	  MAssociation asc = MMUtil.SINGLETON.buildAssociation(fromCls, toCls);
+	  addEdge(asc);
+	  return asc;
       }
-      else if (edgeClass == Generalization.class &&
-		((fromPort instanceof Actor && toPort instanceof Actor) ||
-		 (fromPort instanceof UseCase && toPort instanceof UseCase))) {
-	Generalization gen = new Generalization((Classifier) fromPort,
-						(Classifier) toPort);
-	gen.addStereotype(Stereotype.EXTENDS);
-	addEdge(gen);
-	return gen;
+      else if (edgeClass == MGeneralizationImpl.class &&
+	       ((fromPort instanceof MActor && toPort instanceof MActor) ||
+		(fromPort instanceof MUseCase && toPort instanceof MUseCase))) {
+	  MClassifier parent = (MClassifier)fromPort;
+	  MClassifier child = (MClassifier)toPort;
+	  MGeneralization gen = MMUtil.SINGLETON.buildGeneralization(parent,child);
+	  addEdge(gen);
+	  return gen;
       }
       else {
-	System.out.println("Incorrect edge");
-	return null;
+		  System.out.println("Incorrect edge");
+		  return null;
       }
-    }
-    catch (java.beans.PropertyVetoException ex) { }
-    System.out.println("should not enter here! connect3");
-    return null;
   }
+
+	public void propertySet(MElementEvent mee) {
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	}
+	public void recovered(MElementEvent mee) {
+	}
+	public void removed(MElementEvent mee) {
+	}
+	public void roleAdded(MElementEvent mee) {
+	}
+	public void roleRemoved(MElementEvent mee) {
+	}
 
 
   ////////////////////////////////////////////////////////////////
@@ -260,13 +263,13 @@ implements MutableGraphModel, VetoableChangeListener {
 
     if ("ownedElement".equals(pce.getPropertyName())) {
       Vector oldOwned = (Vector) pce.getOldValue();
-      ElementOwnership eo = (ElementOwnership) pce.getNewValue();
-      ModelElement me = eo.getModelElement();
+      MElementImport eo = (MElementImport) pce.getNewValue();
+      MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
 	//System.out.println("model removed " + me);
-	if (me instanceof Classifier) removeNode(me);
-	if (me instanceof Association) removeEdge(me);
-	if (me instanceof Generalization) removeEdge(me);
+	if (me instanceof MClassifier) removeNode(me);
+	if (me instanceof MAssociation) removeEdge(me);
+	if (me instanceof MGeneralization) removeEdge(me);
       }
       else {
 	//System.out.println("model added " + me);

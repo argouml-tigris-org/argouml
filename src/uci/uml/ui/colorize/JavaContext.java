@@ -24,7 +24,7 @@
 package uci.uml.ui.colorize;
 
 import java.awt.*;
-import java.util.Vector;
+
 
 import javax.swing.text.*;
 

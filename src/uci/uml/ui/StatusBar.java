@@ -27,7 +27,7 @@
 package uci.uml.ui;
 
 import java.awt.*;
-import java.util.*;
+import com.sun.java.util.collections.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
