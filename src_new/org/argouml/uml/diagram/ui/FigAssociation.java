@@ -155,6 +155,8 @@ public class FigAssociation extends FigEdgeModelElement {
       addPathItem(_destGroup, new PathConvPercent(this, 85, 0));
     
     setBetweenNearestPoints(true);
+    // next line necessary for loading
+    setLayer(ProjectBrowser.TheInstance.getActiveDiagram().getLayer());
   }
 
     /*
