@@ -29,18 +29,15 @@ package org.argouml.ui;
  *   events.
  *
  *    @author Curt Arnold
+ * @deprecated replaced by TargetListener and TargetManager
  */
 public interface NavigationListener {
     /**
      *     Called by a user interface element when a request to 
      *     navigate to a model element has been received.
+     * @deprecated replaced by TargetManager.getInstance().setTarget(Object target)
      */
     public void navigateTo(Object element);
-    /**
-     *    Called by a user interface element when a request to 
-     *    open a model element in a new window has been recieved.
-     */
-    public void open(Object element);
 
 
     /**
@@ -49,6 +46,7 @@ public interface NavigationListener {
      *
      *    @param attempt false if navigation accomplished by earlier listener
      *    @return true if navigation performed
+     * @deprecated replaced by TargetManager.getInstance().navigateBack()
      */
     public boolean navigateBack(boolean attempt);  
     
@@ -58,6 +56,7 @@ public interface NavigationListener {
      *
      *    @param attempt false if navigation accomplished by earlier listener
      *    @return true if navigation performed
+     * @deprecated replaced by TargetManager.getInstance().navigateForward()
      */
     public boolean navigateForward(boolean attempt);    
 
@@ -65,6 +64,7 @@ public interface NavigationListener {
      *    Returns true if this listener has a target for
      *    a back navigation.  Only one listener needs to
      *    return true for the back button to be enabled.
+     * @deprecated replaced by TargetManager.getInstance().navigateBackPossible()
     */
     public boolean isNavigateBackEnabled();
 
@@ -72,6 +72,7 @@ public interface NavigationListener {
      *    Returns true if this listener has a target for
      *    a back navigation.  Only one listener needs to
      *    return true for the back button to be enabled.
+      * @deprecated replaced by TargetManager.getInstance().navigateForwardPossible()
     */
     public boolean isNavigateForwardEnabled();
 

@@ -43,6 +43,7 @@ import org.argouml.model.uml.UmlHelper;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLButtonPanel;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -206,7 +207,7 @@ abstract public class PropPanelModelElement extends PropPanel {
             MModelElement elem = (MModelElement) target;
             MNamespace ns = elem.getNamespace();
             if (ns != null) {
-                navigateTo(ns);
+                TargetManager.getInstance().setTarget(ns);
             }
         }
     }

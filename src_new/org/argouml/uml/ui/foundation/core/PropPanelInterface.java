@@ -33,6 +33,7 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.LabelledLayout;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.util.ConfigLoader;
@@ -86,7 +87,7 @@ public class PropPanelInterface extends PropPanelClassifier {
         MInterface iface = (MInterface) target;
         MInterface newInterface = CoreFactory.getFactory().createInterface();
         iface.getNamespace().addOwnedElement(newInterface);
-        navigateTo(newInterface);
+        TargetManager.getInstance().setTarget(newInterface);
     }
   }
   

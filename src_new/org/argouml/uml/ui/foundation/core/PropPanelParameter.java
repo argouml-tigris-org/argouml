@@ -33,6 +33,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -60,7 +61,7 @@ public class PropPanelParameter extends PropPanelModelElement {
         
          Class[] namesToWatch = { MStereotype.class,MOperation.class,
         MParameter.class,MClassifier.class };
-    setNameEventListening(namesToWatch);
+        setNameEventListening(namesToWatch);
 
         addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(getNameTextField(),1,0,0);
@@ -149,7 +150,7 @@ public class PropPanelParameter extends PropPanelModelElement {
             MNamespace ns = (MNamespace) target;
             MModelElement ownedElem = CoreFactory.getFactory().createDataType();
             ns.addOwnedElement(ownedElem);
-            navigateTo(ownedElem);
+            TargetManager.getInstance().setTarget(ownedElem);
         }
     }
 
@@ -158,7 +159,7 @@ public class PropPanelParameter extends PropPanelModelElement {
     public void navigateUp() {
         Object feature = getBehavioralFeature();
         if(feature != null) {
-            navigateTo(feature);
+            TargetManager.getInstance().setTarget(feature);
         }
     }
 
@@ -169,7 +170,7 @@ public class PropPanelParameter extends PropPanelModelElement {
             feature = ((MParameter) target).getBehavioralFeature();
             if(feature != null) {
                 MParameter param = CoreFactory.getFactory().buildParameter((MOperation)feature);              
-                navigateTo(param);
+                TargetManager.getInstance().setTarget(param);
             }
         }
     }

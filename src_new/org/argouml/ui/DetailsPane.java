@@ -404,33 +404,9 @@ public class DetailsPane
         return null;
     }
 
-    /**
-     * only added to the TabProps instance.
-     */
-    public void addNavigationListener(NavigationListener navListener) {
-        Iterator iter = _tabPanels.iterator();
-        Object panel;
-        while (iter.hasNext()) {
-            panel = iter.next();
-            if (panel instanceof TabProps) {
-                ((TabProps) panel).addNavigationListener(navListener);
-            }
-        }
-    }
+    
 
-    /**
-     * only removed from the TabProps instance.
-     */
-    public void removeNavigationListener(NavigationListener navListener) {
-        Iterator iter = _tabPanels.iterator();
-        Object panel;
-        while (iter.hasNext()) {
-            panel = iter.next();
-            if (panel instanceof TabProps) {
-                ((TabProps) panel).removeNavigationListener(navListener);
-            }
-        }
-    }
+    
 
     ////////////////////////////////////////////////////////////////
     // event handlers

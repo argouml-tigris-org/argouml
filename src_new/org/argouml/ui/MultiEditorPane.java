@@ -48,7 +48,6 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.TabDiagram;
 import org.argouml.uml.ui.TabModelTarget;
-import org.argouml.uml.ui.TabProps;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -294,28 +293,6 @@ public class MultiEditorPane
         JPanel t = (JPanel) _tabPanels.elementAt(tab);
         if (t instanceof TabSpawnable)
              ((TabSpawnable) t).spawn();
-    }
-
-    public void addNavigationListener(NavigationListener navListener) {
-        Iterator iter = _tabPanels.iterator();
-        Object panel;
-        while (iter.hasNext()) {
-            panel = iter.next();
-            if (panel instanceof TabProps) {
-                ((TabProps) panel).addNavigationListener(navListener);
-            }
-        }
-    }
-
-    public void removeNavigationListener(NavigationListener navListener) {
-        Iterator iter = _tabPanels.iterator();
-        Object panel;
-        while (iter.hasNext()) {
-            panel = iter.next();
-            if (panel instanceof TabProps) {
-                ((TabProps) panel).removeNavigationListener(navListener);
-            }
-        }
     }
 
     public int getQuadrant() {

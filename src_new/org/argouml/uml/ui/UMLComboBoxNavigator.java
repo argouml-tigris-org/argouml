@@ -33,6 +33,8 @@ import javax.swing.JComboBox;
 import javax.swing.JPanel;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.ui.targetmanager.TargetManager;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
@@ -82,11 +84,10 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
                 } else
                     _button.setEnabled(false);
             }
-        } else
-            if (item != null) 
-                _button.setEnabled(true);
-            else
-                _button.setEnabled(false);
+        } else if (item != null)
+            _button.setEnabled(true);
+        else
+            _button.setEnabled(false);
     }
 
     /**
@@ -102,12 +103,11 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
                 if (!entry.isPhantom()) {
                     MModelElement target = entry.getElement(null);
                     if (target != null) {
-                        _container.navigateTo(target);
+                        TargetManager.getInstance().setTarget(target);
                     }
                 }
-            } else
-                if (item != null)
-                    _container.navigateTo(item);
+            } else if (item != null)
+                TargetManager.getInstance().setTarget(item);
         }
         if (event.getSource() == _box) {
             Object item = _box.getSelectedItem();
@@ -120,11 +120,10 @@ public class UMLComboBoxNavigator extends JPanel implements ActionListener {
                     } else
                         _button.setEnabled(false);
                 }
-            } else
-                if (item != null)
-                    _button.setEnabled(true);
-                else
-                    _button.setEnabled(false);
+            } else if (item != null)
+                _button.setEnabled(true);
+            else
+                _button.setEnabled(false);
         }
 
     }
