@@ -30,6 +30,7 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
+import org.argouml.kernel.LastLoadInfo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ZargoFilePersister;
 
@@ -73,7 +74,7 @@ public class TestArgoParser extends TestCase {
             ZargoFilePersister persister = new ZargoFilePersister();
             Project p = persister.loadProject(url);
             assertTrue("Load Status for " + filename + ".",
-                   ArgoParser.getInstance().getLastLoadStatus());
+                   LastLoadInfo.getInstance().getLastLoadStatus());
         } catch (java.net.MalformedURLException e) {
             assertTrue("Incorrect test case, malformed filename: " 
                    + filename + ".", false);
@@ -108,7 +109,7 @@ public class TestArgoParser extends TestCase {
             ZargoFilePersister persister = new ZargoFilePersister();
             Project p = persister.loadProject(url);
             assertTrue("Load Status", 
-                    !ArgoParser.getInstance().getLastLoadStatus());
+                    !LastLoadInfo.getInstance().getLastLoadStatus());
         } catch (java.net.MalformedURLException e) {
             assertTrue("Incorrect test case.", false);
         } catch (Exception io) {
