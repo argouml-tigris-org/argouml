@@ -50,6 +50,7 @@ import org.argouml.application.api.Notation;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -145,7 +146,15 @@ class PropertySpecialString {
     }
 }
 
-/** @stereotype singleton
+/** This class is responsible for the parsing of the text that 
+ *  the user entered on the display, i.e. the diagram. Consequently, the 
+ * UML elements represented by the text are created or adapted.
+ * 
+ * There is a certain relation in namegiving with the class GeneratorDisplay, 
+ * which generates a textual representation of UML elements 
+ * for displaying on diagrams. 
+ * 
+ * @stereotype singleton
  */
 public class ParserDisplay extends Parser {
     /** The one and only ParserDisplay */
@@ -2048,15 +2057,18 @@ public class ParserDisplay extends Parser {
                 parseStateDoAction(st, line);
                 foundDo = true;
             } else {
-		Object t = UmlFactory.getFactory()
-		    .getStateMachines().createTransition();
-		//TODO: Why does buildInternalTransition() not work?
+		Object t = UmlFactory.getFactory().getStateMachines()
+		    .createTransition();
+		    //.buildInternalTransition(st);
+    	        /*TODO: Why does buildInternalTransition() not work?
+    	         * (MVW) If I try, then the Target and Source 
+    	         * get reset to null before they are displayed... 
+    	         */
 		if (t == null) continue;
-
 		ModelFacade.setTarget(t, st);
 		ModelFacade.setSource(t, st);
 		parseTransition(t, line);
-		LOG.debug("just parsed:" + GeneratorDisplay.Generate(t));
+		//LOG.debug("just parsed:" + GeneratorDisplay.Generate(t));
 		transitionList.add(t);
 	    }
 	}
@@ -2126,8 +2138,20 @@ public class ParserDisplay extends Parser {
     }
 
     /** Parse a transition description line of the form: 
-     *          "name: trigger [guard] / actions" 
+     *          "name: trigger [guard] / actions"
+     *  The name may not contain a "(". 
      *  If the last character of this line is a ";", then it is ignored.
+     *  The "trigger" may be one of the 4 formats:
+     *      ChangeEvent:    "when(condition)" 
+     *      TimeEvent:      "after(duration)"
+     *      CallEvent:      "a(b,c,d)" or "a(t:b, u:c, v:d)"
+     *      SignalEvent:    "signalname"
+     *  TODO: This distinction between CallEvent - with "()" 
+     *  & SignalEvent - without "()" 
+     *  is not according UML, quote:
+     *  "SignalEvents and CallEvents are not distinguishable by syntax 
+     *  and must be discriminated by their declaration elsewhere."
+     *
      *  @param trans    MTransition. The transition object to which this string
      *                  applies.
      *  @param s        The string to be parsed.
@@ -2145,9 +2169,12 @@ public class ParserDisplay extends Parser {
 	String guard = "";
 	String actions = "";
 	if (s.indexOf(":", 0) > -1) {
-	    name = s.substring(0, s.indexOf(":")).trim();
-	    s = s.substring(s.indexOf(":") + 1).trim();
-	}
+	    /* the name may not contain a "(", for the case of: a(b:c) */
+	    if(s.substring(0, s.indexOf(":")).indexOf("(") < 0){ 
+	        name = s.substring(0, s.indexOf(":")).trim();
+	        s = s.substring(s.indexOf(":") + 1).trim();
+	    }  
+        }
 
         // get the guard from between the []
 	if (s.indexOf("[", 0) > -1 && s.indexOf("]", 0) > -1) {
@@ -2163,8 +2190,37 @@ public class ParserDisplay extends Parser {
 	    s = s.substring(0, s.indexOf("/")).trim();
 	}
 
-        // and the remainder is the trigger
+        // and the remainder is the trigger name
 	trigger = s;
+
+	// let's look for a TimeEvent, ChangeEvent, CallEvent or SignalEvent
+	boolean timeEvent = false;
+	boolean changeEvent = false;
+	boolean callEvent = false;
+	boolean signalEvent = false;
+	String operationName = "";
+	if ((s.toLowerCase().startsWith("after")) 
+	    && (s.indexOf("(", 0) > -1)
+	    && (s.indexOf(")", 0) > -1)) 
+	{   //s shall contain the TimeExpression
+	    s = s.substring(s.indexOf("(") + 1).trim();
+	    s = s.substring(0, s.lastIndexOf(")")).trim();
+	    timeEvent = true;
+	}else if ((s.toLowerCase().startsWith("when")) 
+            && (s.indexOf("(", 0) > -1)
+            && (s.indexOf(")", 0) > -1))
+	{   // s shall contain the ChangeExpression
+	    s = s.substring(s.indexOf("(") + 1).trim();
+	    s = s.substring(0, s.lastIndexOf(")")).trim();
+	    changeEvent = true;
+	}else if ((s.indexOf("(", 0) > -1)
+            && (s.indexOf(")", 0) > -1))
+        {   // s shall contain the operation 
+	    operationName = s.substring(0, s.indexOf("(")).trim();
+	    callEvent = true;
+        }else { // s shall contain the signal 
+            signalEvent = true;
+        }
 
 	LOG.debug("name=|" + name + "|");
 	LOG.debug("trigger=|" + trigger + "|");
@@ -2178,7 +2234,7 @@ public class ParserDisplay extends Parser {
         this transition. 
         We can distinct between 4 cases:
         1. A trigger is given. None exists yet.
-        2. The name of the trigger was present, but is altered.
+        2. The name of the trigger was present, but is (the same or) altered.
         3. A trigger is not given. None exists yet.
         4. The name of the trigger was present, but is removed.
         The reaction in these cases should be:
@@ -2187,40 +2243,82 @@ public class ParserDisplay extends Parser {
         3. Nop.
         4. Unhook and erase the existing trigger.
         
-        In fact it is even more complicated for case 1:
+        TODO:
+        In fact it could be made even more complicated for case 1:
         If the transition did not have a trigger before, 
         a trigger-name is given, and a trigger already
         existed with that name,
         then we have to use the existing trigger object!
         */
         Object evt = ModelFacade.getTrigger(trans);
+        boolean created_evt = false;
 	if (trigger.length() > 0) {
             // case 1 and 2
             if (evt == null) {
                 // case 1
-                evt = UmlFactory.getFactory().getStateMachines()
-						 	.buildCallEvent();
-                if (evt != null) {
-                    ModelFacade.setName(evt, trigger);
-                    ModelFacade.setTrigger(trans, evt);
-                    
-                    /* The next part is explained by the following 
-                     * quote from the UML spec:
-                     * "The event declaration has scope within 
-                     * the package it appears in and may be used in 
-                     * state diagrams for classes that have visibility 
-                     * inside the package. An event is not local to 
-                     * a single class."
-                     */
-                    //TODO: next statement fails for internal transitions
-                    Object enclosingPackage = ModelFacade.getStateMachine(trans);
-                    while((! ModelFacade.isAPackage(enclosingPackage))&&(enclosingPackage != null))
-                        enclosingPackage = ModelFacade.getNamespace(enclosingPackage);
-                    if (enclosingPackage!= null) ModelFacade.setNamespace(evt, enclosingPackage);
+                if (timeEvent){ // after(...)
+                    evt = UmlFactory.getFactory().getStateMachines()
+                                                .buildTimeEvent(s);
                 }
+                if (changeEvent) {  // when(...)
+                    evt = UmlFactory.getFactory().getStateMachines()
+                                                .buildChangeEvent(s);
+                }
+                if (callEvent){  // operation(paramlist)
+                    evt = UmlFactory.getFactory().getStateMachines()
+			                        .buildCallEvent(trans, trigger);
+                }
+                if (signalEvent){  // signalname
+                    evt = UmlFactory.getFactory().getStateMachines()
+                                                .buildSignalEvent(trigger);
+                }
+                created_evt = true;
             } else {
                 // case 2
-                ModelFacade.setName(evt, trigger);
+                if (!ModelFacade.getName(evt).equals(trigger)){
+                    ModelFacade.setName(evt, trigger);
+                    if (timeEvent && !ModelFacade.isATimeEvent(evt)) {
+                        UmlFactory.getFactory().delete(evt);
+                        evt = UmlFactory.getFactory().getStateMachines()
+                            .buildTimeEvent(s);
+                        created_evt = true;
+                    }
+                    if (changeEvent && !ModelFacade.isAChangeEvent(evt)) {
+                        UmlFactory.getFactory().delete(evt);
+                        evt = UmlFactory.getFactory().getStateMachines()
+                            .buildChangeEvent(s);
+                        created_evt = true;
+                    }
+                    if (callEvent && !ModelFacade.isACallEvent(evt)) {
+                        UmlFactory.getFactory().delete(evt);
+                        evt = UmlFactory.getFactory().getStateMachines()
+                            .buildCallEvent(trans, trigger);
+                        created_evt = true;
+                    }
+                    if (signalEvent && !ModelFacade.isASignalEvent(evt)) {
+                        UmlFactory.getFactory().delete(evt);
+                        evt = UmlFactory.getFactory().getStateMachines()
+                            .buildSignalEvent(trigger);
+                        created_evt = true;
+                    }
+                }
+            }
+            if (created_evt && (evt != null)) {
+                StateMachinesHelper.getHelper().setEventAsTrigger(trans, evt);
+                
+                /* The next part is explained by the following 
+                 * quote from the UML spec:
+                 * "The event declaration has scope within 
+                 * the package it appears in and may be used in 
+                 * state diagrams for classes that have visibility 
+                 * inside the package. An event is not local to 
+                 * a single class."
+                 */
+                Object enclosing = StateMachinesHelper.getHelper()
+                                                .getStateMachine(trans);
+                while((!ModelFacade.isAPackage(enclosing))&&(enclosing != null))
+                    enclosing = ModelFacade.getNamespace(enclosing);
+                if (enclosing!= null) ModelFacade.setNamespace(evt, enclosing);
             }
 	} else { 
             // case 3 and 4

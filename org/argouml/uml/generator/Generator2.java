@@ -160,6 +160,9 @@ public abstract class Generator2
         if (ModelFacade.isAMessage(o)) {
             return generateMessage(o);
 	}
+        if (ModelFacade.isAEvent(o)) {
+            return generateEvent(o);
+        }
         if (ModelFacade.isAVisibilityKind(o)) {
             return generateVisibility(o);
 	}
@@ -249,6 +252,11 @@ public abstract class Generator2
      * @see NotationProvider2#generateMessage(Object)
      */
     public abstract String generateMessage(Object m);
+
+    /**
+     * @see NotationProvider2#generateEvent(Object)
+     */
+    public abstract String generateEvent(Object m);
 
     /**
      * @see NotationProvider2#generateVisibility(Object)

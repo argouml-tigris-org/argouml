@@ -73,6 +73,7 @@ import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.common_behavior.MTerminateAction;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
+import ru.novosoft.uml.behavior.state_machines.MChangeEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MFinalState;
@@ -84,6 +85,7 @@ import ru.novosoft.uml.behavior.state_machines.MStateImpl;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
+import ru.novosoft.uml.behavior.state_machines.MTimeEvent;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -138,6 +140,7 @@ import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MProcedureExpression;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import ru.novosoft.uml.foundation.data_types.MTimeExpression;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
@@ -577,6 +580,16 @@ public class ModelFacade {
     }
 
     /**
+     * Recognizer for ChangeEvent
+     *
+     * @param handle candidate
+     * @return true if handle is a ChangeEvent
+     */
+    public static boolean isAChangeEvent(Object handle) {
+        return handle instanceof MChangeEvent;
+    }
+
+    /**
      * Recognizer for Class
      *
      * @param handle candidate
@@ -761,6 +774,16 @@ public class ModelFacade {
      */
     public static boolean isAElementResidence(Object handle) {
         return handle instanceof MElementResidence;
+    }
+
+    /**
+     * Recognizer for Event
+     *
+     * @param handle candidate
+     * @return true if handle is an Event
+     */
+    public static boolean isAEvent(Object handle) {
+        return handle instanceof MEvent;
     }
 
     /**
@@ -1178,6 +1201,16 @@ public class ModelFacade {
     }
 
     /**
+     * Recognizer for SignalEvent
+     *
+     * @param handle candidate
+     * @return true if handle is a SignalEvent
+     */
+    public static boolean isASignalEvent(Object handle) {
+        return handle instanceof MSignalEvent;
+    }
+
+    /**
      * Recognizer for StateMachine
      *
      * @param handle candidate
@@ -1265,6 +1298,16 @@ public class ModelFacade {
      */
     public static boolean isATransition(Object handle) {
         return handle instanceof MTransition;
+    }
+
+    /**
+     * Recognizer for TimeEvent
+     *
+     * @param handle candidate
+     * @return true if handle is a TimeEvent
+     */
+    public static boolean isATimeEvent(Object handle) {
+        return handle instanceof MTimeEvent;
     }
 
     /**
@@ -1462,6 +1505,23 @@ public class ModelFacade {
 	return illegalArgumentBoolean(handle);
     }
 
+    /**
+     * Recognizer for internal transitions.
+     *
+     * @author mvw
+     * @param handle candidate
+     * @return true if handle is an internal transition.
+     */
+    public static boolean isInternal(Object handle) {
+        if (handle instanceof MTransition) {
+            Object state = getState(handle);
+            Object end0 = getSource(handle);
+            Object end1 = getTarget(handle);
+            if (end0 != null)
+                return ((state == end0) && (state == end1)) ;
+        }
+        return illegalArgumentBoolean(handle);
+    }
     /**
      * Recognizer for leafs
      *
@@ -2156,7 +2216,13 @@ public class ModelFacade {
         if (handle instanceof MGuard) {
             return ((MGuard) handle).getExpression();
 	}
-	return illegalArgumentObject(handle);
+        if (handle instanceof MChangeEvent) {
+            return ((MChangeEvent) handle).getChangeExpression();
+        }
+        if (handle instanceof MTimeEvent) {
+            return ((MTimeEvent) handle).getWhen();
+        }
+        return illegalArgumentObject(handle);
     }
 
     /**
@@ -3283,10 +3349,10 @@ public class ModelFacade {
     }
 
     /**
-     * Gets the source for some given transitions.
+     * Gets the source for a given transition.
      *
      * @param handle is the transition
-     * @return Object
+     * @return Object (MStateVertex)
      */
     public static Object getSource(Object handle) {
         if (isATransition(handle)) {
@@ -3295,6 +3361,12 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    /**
+     * Gets the source for some given flow.
+     *
+     * @param handle is the flow
+     * @return Collection
+     */
     public static Collection getSources(Object handle) {
         if (handle instanceof MFlow) {
             return ((MFlow) handle).getSources();
@@ -3333,6 +3405,9 @@ public class ModelFacade {
 
     /**
      * Returns the state machine belonging to some given state or transition
+     * If you need to find the StateMachine for an internal transition,
+     * or for ANY state, 
+     * use StateMachinesHelper.getStateMachine() instead.
      *
      * @param handle is the state or transition
      * @return Object
@@ -5162,6 +5237,20 @@ public class ModelFacade {
         }
 	illegalArgument(handle, element);
     }
+    /**
+     * Sets the state of an internal transition.
+     *
+     * @param handle the internal transition
+     * @param element the state that contains this transition
+     */
+    public static void setState(Object handle, Object element) {
+        if (handle instanceof MTransition
+            && element instanceof MState) {
+            ((MTransition) handle).setState((MState) element);
+            return;
+        }
+        illegalArgument(handle, element);
+    }
 
     /**
      * Set the target scope of some association end or structural feature.
@@ -5398,7 +5487,26 @@ public class ModelFacade {
             ((MGuard) handle).setExpression((MBooleanExpression) value);
             return;
         }
-	illegalArgument(handle, value);
+        if (handle instanceof MChangeEvent
+            && (value == null || value instanceof MBooleanExpression)) {
+            ((MChangeEvent) handle).setChangeExpression((MBooleanExpression) value);
+            return;
+        }
+        illegalArgument(handle, value);
+    }
+
+    /**
+     * Sets the time-expression for a TimeEvent. 
+     * @param handle Object (MTimeEvent)
+     * @param value Object (MTimeExpression)
+     */
+    public static void setWhen(Object handle, Object value) {
+        if (handle instanceof MTimeEvent
+            && (value == null || value instanceof MTimeExpression)) {
+            ((MTimeEvent) handle).setWhen((MTimeExpression) value);
+            return;
+        }
+        illegalArgument(handle, value);
     }
 
     public static void setExtension(Object handle, Object ext) {

@@ -39,6 +39,7 @@ import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * Helper class for UML BehavioralElements::StateMachines Package.
@@ -96,20 +97,20 @@ public class StateMachinesHelper {
     
 
     /**
-     * Gets the statemachine that contains the given parameter
-     * oState. Traverses the state hierarchy of the statemachine
+     * Gets the statemachine that contains the given Object
+     * Traverses the state hierarchy of the statemachine
      * untill the statemachine is reached.  To decouple ArgoUML as
      * much as possible from the NSUML model, the parameter of the
-     * method is of type Object.<p>
+     * method is of type Object, and the result, too.<p>
      *
-     * @param oStateVertex The state for which we want to know the
+     * @param handle The state for which we want to know the
      * statemachine
-     * @return MStateMachine The statemachine the state belongs too or
+     * @return Object MStateMachine The statemachine the state belongs too or
      * null if the given parameter is not a state or null itself.
      */
-    public MStateMachine getStateMachine(Object oStateVertex) {
-        if (oStateVertex instanceof MStateVertex) {
-            MStateVertex state = (MStateVertex) oStateVertex;
+    public Object getStateMachine(Object handle) {
+        if (handle instanceof MStateVertex) {
+            MStateVertex state = (MStateVertex) handle;
             if (state instanceof MState
 		&& ((MState) state).getStateMachine() != null) 
 	    {
@@ -117,7 +118,13 @@ public class StateMachinesHelper {
             } else
                 return getStateMachine(state.getContainer());
         }
-        return null;
+        if (handle instanceof MTransition) {
+            Object sm = ((MTransition) handle).getStateMachine();
+            if (sm != null) return sm;
+            // the next statement is for internal transitions
+            return getStateMachine(((MTransition)handle).getSource());
+        }
+        throw new IllegalArgumentException("null argument to getStateMachine()");
     }
 
     /**
@@ -196,8 +203,14 @@ public class StateMachinesHelper {
         }
     }
     
-    public MState getTop(Object sm) {
-        
+    /**
+     * TODO: (MVW) Since this function is also present in the ModelFacade, 
+     * why is it here?
+     * 
+     * @param sm
+     * @return
+     */
+    public Object getTop(Object sm) {
         if (!(sm instanceof MStateMachine))
             throw new IllegalArgumentException();
         
@@ -226,6 +239,32 @@ public class StateMachinesHelper {
         return null;
     }
     
-    
+    /**
+     * Finds the operation to which a CallEvent refers. 
+     * TODO: This function works for the most normal cases,
+     * but needs some testing for rare cases, e.g. internal transitions,...
+     * 
+     * @author MVW
+     * @param trans Object of type MTransition
+     * @param opname 
+     * @return Object The operation with the given name, or null. 
+     */
+    public Object findOperationByName(Object trans, String opname){
+        if (!(trans instanceof MTransition)) 
+            throw new IllegalArgumentException();
+        Object sm = getStateMachine(trans);
+        Object ns = ModelFacade.getNamespace(sm);
+        if (ModelFacade.isAClassifier(ns)){
+            Collection c = ModelFacade.getOperations(ns);
+            Iterator i = c.iterator();
+            while (i.hasNext()) { 
+                Object op = i.next();
+                String on = ((MModelElement)op).getName();
+                if (on.equals(opname))
+                    return op;
+            }
+        }
+        return null;
+    }
 
 }

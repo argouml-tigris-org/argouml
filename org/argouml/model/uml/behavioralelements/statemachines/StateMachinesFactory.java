@@ -482,6 +482,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * Build a transition between a source state and a target state. The
      * parameters are of type Object to decouple the factory and NSUML as much
      * as possible.
+     * This should not be used for internal transitions!
      * @param source The source state
      * @param target The target state
      * @return MTransition The resulting transition between source an state
@@ -491,7 +492,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
             MTransition trans = (MTransition) createTransition();
             trans.setSource((MStateVertex) source);
             trans.setTarget((MStateVertex) target);
-            trans.setStateMachine(StateMachinesHelper.getHelper()
+            trans.setStateMachine((MStateMachine)StateMachinesHelper.getHelper()
 				  .getStateMachine(source));
             return trans;
         }
@@ -512,6 +513,28 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         return event;
     }
 
+    /** Create a initialized instance of a CallEvent with a name 
+     * as a trigger for a Transition.
+     *  
+     * @param trans Object MTransition for which the CallEvent is a trigger
+     * @param name String with the trigger name 
+     * @return an initialized UML CallEvent instance.
+     */
+    public MCallEvent buildCallEvent(Object trans, String name) {
+        if (!(trans instanceof MTransition))
+            throw new IllegalArgumentException();
+        MCallEvent evt = MFactory.getDefaultFactory().createCallEvent();
+        evt.setNamespace((MModel) ProjectManager.getManager()
+           .getCurrentProject().getModel());
+        ModelFacade.setName(evt, name);
+        String operationName = name.substring(0, name.indexOf("(")).trim();
+        Object op = StateMachinesHelper.getHelper()
+                                .findOperationByName(trans, operationName);
+        if (op != null) 
+            ModelFacade.setOperation(evt, op);
+        return evt;
+    }
+
     /**
      * Builds a signalevent whose namespace (and therefore the
      * ownership) is the rootmodel.<p>
@@ -527,6 +550,21 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     }
 
     /**
+     * Builds a named signalevent whose namespace (and therefore the
+     * ownership) is the rootmodel.<p>
+     *
+     * @param name String the name of the SignalEvent
+     * @return MSignalEvent
+     */
+    public MSignalEvent buildSignalEvent(String name) {
+        MSignalEvent event = createSignalEvent();
+        event.setNamespace((MModel) ProjectManager.getManager()
+               .getCurrentProject().getModel());
+        event.setName(name);
+        return event;
+    }
+
+    /**
      * Builds a timeevent whose namespace (and therefore the
      * ownership) is the rootmodel.<p>
      *
@@ -535,8 +573,26 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MTimeEvent buildTimeEvent() {
         MTimeEvent event = createTimeEvent();
         event.setNamespace((MModel) ProjectManager.getManager()
+               .getCurrentProject().getModel());
+        event.setName("");
+        return event;
+    }
+
+    /**
+     * Builds a timeevent whose namespace (and therefore the
+     * ownership) is the rootmodel.<p>
+     *
+     * @param s String for creating the TimeExpression
+     * @return MTimeEvent
+     */
+    public MTimeEvent buildTimeEvent(String s) {
+        MTimeEvent event = createTimeEvent();
+        event.setNamespace((MModel) ProjectManager.getManager()
 			   .getCurrentProject().getModel());
         event.setName("");
+        Object te = UmlFactory.getFactory().getDataTypes()
+                        .createTimeExpression("", s);
+        ModelFacade.setWhen(event, te);
         return event;
     }
 
@@ -549,8 +605,27 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     public MChangeEvent buildChangeEvent() {
         MChangeEvent event = createChangeEvent();
         event.setNamespace((MModel) ProjectManager.getManager()
+               .getCurrentProject().getModel());
+        event.setName("");
+        return event;
+    }
+
+    /**
+     * Builds a changeevent whose namespace (and therefore the
+     * ownership) is the rootmodel.<p>
+     *
+     * @param s String for creating the BooleanExpression
+     * @return MChangeEvent
+     */
+    public MChangeEvent buildChangeEvent(String s) {
+        MChangeEvent event = createChangeEvent();
+        event.setNamespace((MModel) ProjectManager.getManager()
 			   .getCurrentProject().getModel());
         event.setName("");
+        Object ce = UmlFactory.getFactory().getDataTypes()
+                            .createBooleanExpression("", s);
+        ModelFacade.setExpression(event, ce);
+
         return event;
     }
     
