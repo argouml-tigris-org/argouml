@@ -24,8 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.GridLayout;
-
 import javax.swing.ButtonGroup;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -33,6 +31,8 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.swingext.GridLayout2;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -42,6 +42,7 @@ import org.argouml.uml.ui.UMLInitialValueComboBox;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLRadioButton;
 import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -55,39 +56,30 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 public class PropPanelParameter extends PropPanelModelElement {
 
     public PropPanelParameter() {
-        super("Parameter", _parameterIcon,2);
-
+        super(
+            "Parameter",
+            _parameterIcon,
+            ConfigLoader.getTabPropsOrientation());
         Class mclass = MParameter.class;
         
-         Class[] namesToWatch = { MStereotype.class,MOperation.class,
+        Class[] namesToWatch = { MStereotype.class,MOperation.class,
         MParameter.class,MClassifier.class };
         setNameEventListening(namesToWatch);
 
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(getNameTextField(),1,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()),2,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.owner"),3,0,1);
-        JList namespaceList = new UMLList(new UMLReflectionListModel(this,"behaviorialfeature",false,"getBehavioralFeature",null,null,null),true);
-        addLinkField(new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),3,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.type"),0,1,0);
-        /*
-        UMLComboBoxModel typeModel = new UMLTypeModel(this,"isAcceptibleType",
-            "type","getType","setType",true,MClassifier.class,
-	    MParameter.class,true);
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         
-	UMLComboBox typeComboBox=new UMLComboBox(typeModel);
-        */
-        addField(new UMLComboBox2(new UMLParameterTypeComboBoxModel(), ActionSetParameterType.SINGLETON),0,1,0);
+        JList namespaceList = new UMLList(new UMLReflectionListModel(this,"behaviorialfeature",false,"getBehavioralFeature",null,null,null),true);
+        namespaceList.setVisibleRowCount(1);
+        addLinkField(Argo.localize("UMLMenu", "label.owner"), new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
-        addCaption("Initial Value:",1,1,0);
-        addField(new UMLInitialValueComboBox(this),1,1,0);
+        add(LabelledLayout.getSeperator());
 
-	addCaption("Kind:",2,1,1);
-        JPanel kindPanel = new JPanel(new GridLayout(0,2));
+        addField(Argo.localize("UMLMenu", "label.type"),new UMLComboBox2(new UMLParameterTypeComboBoxModel(), ActionSetParameterType.SINGLETON));
+
+        addField("Initial Value:", new UMLInitialValueComboBox(this));
+
+        JPanel kindPanel = new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));
         ButtonGroup kindGroup = new ButtonGroup();
 
         UMLRadioButton inout = new UMLRadioButton("in/out",this,new UMLEnumerationBooleanProperty("kind",mclass,"getKind","setKind",MParameterDirectionKind.class,MParameterDirectionKind.INOUT,null));
@@ -106,7 +98,7 @@ public class PropPanelParameter extends PropPanelModelElement {
         kindGroup.add(ret);
         kindPanel.add(ret);
 
-        addField(kindPanel,2,1,0);
+	addField("Kind:", kindPanel);
 
 	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);	
 	new PropPanelButton(this,buttonPanel,_parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"),"addParameter",null);

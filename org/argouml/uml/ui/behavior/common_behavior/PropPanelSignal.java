@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
@@ -43,6 +44,7 @@ import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLModelElementListModel;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
@@ -55,46 +57,32 @@ public class PropPanelSignal extends PropPanelModelElement {
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelSignal() {
-        super("Signal", _signalIcon,2);
+        super("Signal", _signalIcon, ConfigLoader.getTabPropsOrientation());
 
         Class mclass = MSignal.class;
 
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(getNameTextField(),1,0,0);
-
-
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-        addField(getStereotypeBox(),2,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
-        addField(getNamespaceComboBox(),3,0,0);
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
         
-        addCaption(Argo.localize("UMLMenu", "label.contexts"), 1,1,0);
+        add(LabelledLayout.getSeperator());
+        
         JList contextList = new UMLList(new UMLReflectionListModel(this,"contexts",false,"getContexts",null,"addContext","deleteContext"),true);
  		contextList.setBackground(getBackground());
         contextList.setForeground(Color.blue);
         JScrollPane contextScroll=new JScrollPane(contextList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        addField(contextScroll,1,1,0.5);
+        addField(Argo.localize("UMLMenu", "label.contexts"), contextScroll);
         
-        addCaption(Argo.localize("UMLMenu", "label.receptions"), 2,1,0);
         JList receiverList = new UMLList(new UMLReflectionListModel(this,"receivers",false,"getReceptions",null,"addReception","deleteReception"),true);
  		receiverList.setBackground(getBackground());
         receiverList.setForeground(Color.blue);
         JScrollPane receiverScroll=new JScrollPane(receiverList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        addField(receiverScroll,2,1,0.5);
+        addField(Argo.localize("UMLMenu", "label.receptions"), receiverScroll);
 
-		new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);		
-		
-		// new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"),"addOperation",null);
-		// new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-attribute"),"addAttribute",null);
-		//new PropPanelButton(this,buttonPanel,_addAssocIcon, Argo.localize("UMLMenu", "button.add-association"),"addAssociation",null);
-		//new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
-		//new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-actor"),"removeElement",null);
-		//new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
-		new PropPanelButton(this,buttonPanel,_signalIcon, Argo.localize("UMLMenu", "button.add-signal"),"newSignal",null);
-		new PropPanelButton(this,buttonPanel,_receptionIcon, Argo.localize("UMLMenu", "button.add-reception"), "newReception", null);
-		new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-signal"),"removeElement",null);
-
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);		
+        new PropPanelButton(this,buttonPanel,_signalIcon, Argo.localize("UMLMenu", "button.add-signal"),"newSignal",null);
+        new PropPanelButton(this,buttonPanel,_receptionIcon, Argo.localize("UMLMenu", "button.add-reception"), "newReception", null);
+        new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-signal"),"removeElement",null);
     }
 
     public void newSignal() {

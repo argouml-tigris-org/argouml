@@ -89,8 +89,7 @@ public class PropPanelOperation extends PropPanelModelElement {
                 Argo.localize("UMLMenu", "tooltip.nav-stereo"),
                 getStereotypeBox()));
 
-        JList ownerList =
-            new UMLList(
+        JList ownerList = new UMLList(
                 new UMLReflectionListModel(
                     this,
                     "owner",
