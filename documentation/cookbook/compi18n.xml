@@ -79,18 +79,18 @@ and that complicates the communications.
 </para>
 	<para>
 To handle this problem for GNU applications 
-there is a community set up around gettext with one language team
-per language working with all gettext applications.
+there is a community set up around <quote>gettext</quote> with one language team
+per language working with all <quote>gettext</quote> applications.
 There are also tools to help the translator do his job
-delivered with gettext that are the same for all the applications.
+delivered with <quote>gettext</quote> that are the same for all the applications.
 In each of these language teams discussions are held that ensure a
 consistent use of words over all these applications.
 </para>
 	<para>
 It is for me (Linus Tolke, May 2002) unclear if and how such a
 community exists for Open Source Java tools and ArgoUML cannot
-simply benefit from the gettext communities since we don't use
-gettext and cannot use the same tools.
+simply benefit from the <quote>gettext</quote> communities since we don't use
+<quote>gettext</quote> and cannot use the same tools.
 </para>
 	<para>
 To get things done, we organize our own Language Teams with ArgoUML.
@@ -242,7 +242,7 @@ design documentation of included packages such as GEF, NSUML...
 Run checkstyle on the i18n parts.
 This is done from
 <filename>argouml/src_new</filename>
-with the checkstyle-i18n target.
+with the <literal>checkstyle-i18n</literal> target.
 </para>
               <para>
 Search for comments on keys.
@@ -279,6 +279,7 @@ your instance of ArgoUML is attempting to run with: en, es, en_GB,...
 </para>
 	      <para>
 The one you are currently using is shown in the log when ArgoUML starts.
+<!-- Not any more by default regretfully! See issue 2514. -->
 You will have to turn on the logging and 
 search for lines looking like:
 <programlisting>
