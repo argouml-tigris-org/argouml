@@ -5050,6 +5050,20 @@ public class ModelFacade {
     }
 
     /**
+     * Remove the given modelelement from a given comment
+     * @param handle MComment
+     * @param me MModelElement
+     */
+    public static void removeAnnotatedElement(Object handle, Object me) {
+        if (handle instanceof MComment && me instanceof MModelElement) {
+            ((MComment) handle).removeAnnotatedElement((MModelElement) me);
+            return;
+        }
+        illegalArgument(handle, me);
+    }
+
+    
+    /**
      * This method removes a classifier from a classifier role.
      *
      * @param handle is the classifier role
