@@ -38,7 +38,7 @@ public class MockUMLUserInterfaceContainer
     implements UMLUserInterfaceContainer {
 
     private Object _target;
-    
+
     /**
      * Constructor for MockUMLUserInterfaceContainer.
      */
@@ -56,7 +56,7 @@ public class MockUMLUserInterfaceContainer
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getModelElement()
      */
-    public MModelElement getModelElement() {
+    public Object getModelElement() {
         return null;
     }
 
@@ -70,7 +70,7 @@ public class MockUMLUserInterfaceContainer
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatElement(ru.novosoft.uml.foundation.core.MModelElement)
      */
-    public String formatElement(MModelElement element) {
+    public String formatElement(/*MModelElement*/Object element) {
         return null;
     }
 
@@ -84,7 +84,7 @@ public class MockUMLUserInterfaceContainer
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatNamespace(ru.novosoft.uml.foundation.core.MNamespace)
      */
-    public String formatNamespace(MNamespace ns) {
+    public String formatNamespace(/*MNamespace*/Object ns) {
         return null;
     }
 
@@ -134,7 +134,7 @@ public class MockUMLUserInterfaceContainer
     public boolean isNavigateForwardEnabled() {
         return false;
     }
-    
+
     public void setTarget(Object target) {
         _target = target;
     }
