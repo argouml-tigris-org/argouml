@@ -21,6 +21,7 @@
 	<!ENTITY chapter-introduction.xml SYSTEM "qstart-introduction.xml">
 	<!ENTITY chapter-installation.xml SYSTEM "qstart-installation.xml">
 	<!ENTITY chapter-credits.xml SYSTEM "qstart-credits.xml">
+	<!ENTITY chapter-running.xml SYSTEM "qstart-running.xml">
 	
 	<!--   
 			TEXT SUBSTITUTION MACROS
@@ -29,7 +30,7 @@
 			e.g. To include a link to the "ArgoUML project" use:
 					&argo-project-link;
 	-->
-	<!ENTITY document-title		'ArgoUML QuickStart Guide'>
+	<!ENTITY document-title		'ArgoUML Quick Guide'>
 	<!ENTITY document-subtitle	'Get started with ArgoUML v0.9.x'>
 ]>
 
@@ -52,9 +53,8 @@
 		</legalnotice>
 	</bookinfo>
 
-&preface.xml;
 &chapter-introduction.xml;
 &chapter-installation.xml;
-&chapter-credits.xml;
+&chapter-running.xml;
 
 </book>

@@ -30,88 +30,45 @@
 	<sect1>
 		<title>Welcome to &argo;</title>
 		<para>
-			Welcome to &argo; from the &argo-project-link; team at &tigris-link;. &argo; is a powerful yet 
+&argo; is a powerful yet 
 			easy-to-use interactive, graphical software design environment that supports the design, 
-			development and documentation of object-oriented software applications. It leverages 
-			the <emphasis>Write Once, Run Anywhere</emphasis> promise of the Java2 platform to allow 
-			you to design great object-oriented software in your preferred Operating System environment.
+			development and documentation of object-oriented software applications.
 		</para>
 		<para>
 			If you are familiar with a family of software applications called Computer Aided Software 
 			Engineering (CASE) tools then you should find &argo; instantly familiar. 
-			It is an interactive, graphical modelling CASE tool that is easy to install, learn, 
-			use and customise for your own unique design environment. It is built on an extendible foundation 
-			of open standards (or industry standards) to ensure interoperability with the rest of the industry. 
-			You can share designs created with &argo; and collaborate with colleagues using other tools easily 
-			because of it's support for open standards. 
 		</para>
 		<para>
-			The typical users of &argo; include software designers &amp; architects, software developers, 
+			The users of &argo; are software designers
+			&amp; architects, software developers, 
 			business analysts, systems analysts and other professionals involved in the analysis, design and 
-			development of software applications. It has a number of features (some unique) that enables 
-			it to better support these users in the design of software systems:
+			development of software applications.
+			Main features:
 			<itemizedlist>
 				<listitem>
 					<para>
-						Uses the open standard Unified Modelling Language (UML) as the language for 
-						documenting and communicating object-oriented designs
+Open standards: XMI, SVG and PGML
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						Supports open standards including XML Metadata Interchange format (XMI), Scalable Vector 
-						Graphics format (SVG) and Portable Graphics Markup Language natively and as formats 
-						for the communicating design information with external systems
+100% Java
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						Is a 100% Java application to ensure that it is available for use on all the major OS platforms 
-						plus any other OS an implementation of the Java2 platform exists
+Open Source allows to extend or customize it.
 					</para>
 				</listitem>
 				<listitem>
 					<para>
-						Is an Open Source product that enables it's users to extend or customize it. Many users also 
-						eventually become contributors to the future development of &argo; itself. On particularly 
-						important group of users are researchers and research groups who often endow &argo; with 
-						state-of-the-art features ahead of other CASE tools
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Incorporates a number of specific cognitive features to better support the design process:
-						<itemizedlist mark="box">
-							<listitem>
-								<para>
-									reflection-in-action
-								</para>
-							</listitem>
-							<listitem>
-								<para>
-									opportunistic design
-								</para>
-							</listitem>
-							<listitem>
-								<para>
-									comprehension and problem solving
-								</para>
-							</listitem>
-						</itemizedlist>
+Cognitive features like:
+reflection-in-action, bopportunistic design, 
+comprehension and problem solving
 					</para>
 				</listitem>
 			</itemizedlist>
 		</para>
-		<para>
-				&argo; was originally a product of a research programme at UCL led by Jason E. Robbins.
-		</para>
-		<caution>
-			<title>&argo; version 0.8.x or earlier</title>
-			<para>
-				This guide is designed for the 0.9.x versions of &argo;. Many of the comments may also 
-				be applicable to earlier versions of the software but that has not been tested.
-			</para>
-		</caution>
 	</sect1>
 	<!--
 		===========================================================
@@ -123,196 +80,15 @@
 		<title>About this guide...</title>
 		<para>
 			This guide - the &document-title;	- is provided to help you get up and running as quickly as 
-			possible with &argo;. It provides step-by-step instructions for obtaining and installing 
-			&argo;, performing common tasks, and outlines your options for contacting &argo-project-link; 
-			team should you need further support or to contribute to &argo;'s development.
-		</para>
-		<sect2>
-			<title>In this guide, you will find...</title>
-			<para>
-				The remainder of this chapter includes information about documentation conventions and what 
-				you need to know to be able to use &argo; effectively. Here's what you can expect to find 
-				in the remaining chapters in this guide:
-			<itemizedlist>
-				<listitem>
-					<para>
-						Download and Installation instructions
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Basic tutorial/introduction to &argo; - step-by-step procedures on essentials
-					</para>
-				</listitem>
-				<listitem>
-					<para>
-						Support option - mailing list, resources, contributions, source code/CVS etc..
-					</para>
-				</listitem>
-			</itemizedlist>
-			</para>
-		</sect2>
-		<sect2>
-			<title>In this guide, you will not find...</title>
-			<para>
-				This guide is not a complete user or reference manual for &argo;. The &argo-website; has 
-				information about the status of other &argo; documentation including a user manual. 
-			</para>
-			<para>
-				This guide does not attempt to teach you about UML, XMI, SVG or any other such standards 
-				that &argo; implements or supports. Neither does it attempt to teach you about the Java 
-				platform or your Operating System platform.
-			</para>
-		</sect2>
-		<sect2>
-			<title>What you should already know</title>
-			<para>
-				This guide assumes that you know how to use your computer. It also assumes that you have some 
-				knowledge of object-oriented software design given your interest in &argo;. You should be familiar 
-				with the process of installing software applications on your computer although full installation 
-				instructions are 	given for &argo;. 
-			</para>
-			<para>
-				Once &argo; is installed, it is assumed that you know how to point, click, and drag with 
-				a mouse or another pointing device and that you can use a keyboard.
-			</para>
-		</sect2>
-		<sect2>
-			<title>Documentation conventions</title>
-			<para>
-				Before reading this guide, please take a moment to ensure that you understand the conventions 
-				followed in the guide. This will help you to use the guide more effectively.
-			</para>
-			<sect3>
-				<title>Conventions related to the use of the mouse</title>
-				<informaltable>
-					<!-- <title>Conventions related to the use of the mouse</title> -->
-					<tgroup cols="2" align="center" colsep="1" rowsep="1">
-						<colspec align="left" colwidth="2.5in"/>
-						<colspec align="left" colwidth="3.2in"/>
-						<thead>
-							<row>
-								<entry>When you see this...</entry>
-								<entry>Do this...</entry>
-							</row>
-						</thead>
-						<tbody>
-							<row>
-								<entry>
-									<command>Click</command>
-								</entry>
-								<entry>
-									Press the primary mouse button (usually the left mouse button).
-								</entry>
-							</row>
-							<row>
-								<entry>
-									<command>Double-click</command>
-								</entry>
-								<entry>
-									Press the primary mouse button quickly twice.
-								</entry>
-							</row>
-							<row>
-								<entry>
-									<command>Right-click</command>
-								</entry>
-								<entry>
-									Press the secondary mouse button (usually the right mouse button).
-								</entry>
-							</row>
-							<row>
-								<entry>
-									<menuchoice>
-										<guimenu>Files</guimenu>
-										<guimenuitem>New</guimenuitem>
-									</menuchoice>
-								</entry>
-								<entry>
-									Click <emphasis>File</emphasis> on the top-level menu bar and, click the 
-									<emphasis>New</emphasis> option in the displayed 'File' menu.
-								</entry>
-							</row>
-							<row>
-								<entry>
-									<menuchoice>
-										<guimenu>Create</guimenu>
-										<guisubmenu>Diagrams</guisubmenu>
-										<guimenuitem>ClassDiagram</guimenuitem>
-									</menuchoice>
-								</entry>
-								<entry>
-									Click <emphasis>Create</emphasis> on the top-level menu bar, click 
-									<emphasis>Diagrams</emphasis> in the 'Create' menu that appears, click the 
-									<emphasis>ClassDiagram</emphasis> option in the 'Diagrams' submenu that appears.
-								</entry>
-							</row>
-							<row>
-								<entry>
-									<command>Select text</command>
-								</entry>
-								<entry>
-									Click and drag to highlight text.
-								</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</informaltable>
-			</sect3>
-			<sect3>
-				<title>Conventions related to the use of the keyboard</title>
-				<informaltable>
-					<!-- <title>Conventions related to the use of the keyboard</title> -->
-					<tgroup cols="2" align="center" colsep="1" rowsep="1">
-						<colspec align="left" colwidth="2.5in"/>
-						<colspec align="left" colwidth="3.2in"/>
-						<thead>
-							<row>
-								<entry>When you see this...</entry>
-								<entry>Do this...</entry>
-							</row>
-						</thead>
-						<tbody>
-							<row>
-								<entry>
-									<keycap>Enter</keycap>
-								</entry>
-								<entry>
-									Press the Enter key on your keyboard.
-								</entry>
-							</row>
-							<row>
-								<entry>
-									<keycombo action="simul">
-										<keycap>Control</keycap>
-										<keycap>Shift</keycap>
-									</keycombo>
-								</entry>
-								<entry>
-									Press the Control key and the Shift key at the same time.
-								</entry>
-							</row>
-							<row>
-								<entry>
-									<keycombo action="press">
-										<keycap>Control</keycap>
-										<keycap>C</keycap>
-									</keycombo>
-								</entry>
-								<entry>
-									Press the Control key and while keeping it pressed, press the C key at the same time.
-								</entry>
-							</row>
-						</tbody>
-					</tgroup>
-				</informaltable>
-			</sect3>
-		</sect2>
-	</sect1>
-	<sect1>
-		<title>If you need further help</title>
-		<para>
-			The website, mailing lists etc...
+			possible with &argo;.
+			It provides step-by-step instructions 
+			for obtaining, installing and starting
+			&argo;, performing common tasks, and 
+			learn more about &argo;.
+If you need further details please look in the
+<ulink url="http://argouml.tigris.org/documentation/defaulthtml/manual/">
+User Manual
+</ulink>.
 		</para>
 	</sect1>
 </chapter>

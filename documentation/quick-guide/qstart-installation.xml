@@ -21,52 +21,15 @@
 			 Chapter "INTRODUCTION" section 
 		===========================================================
 	-->
-	<para>
-		This chapter presents step by step procedures for 
-		<itemizedlist>
-			<listitem>
-				<para>checking ArgoUML system requirement</para>
-			</listitem>
-			<listitem>
-				<para>obtaining ArgoUML</para>
-			</listitem>
-			<listitem>
-				<para>installing ArgoUML</para>
-			</listitem>
-		</itemizedlist>
-	</para>
-
 	<sect1>
-		<title>Can your computer run &argo;?</title>		
-		<para>
-			Before you can install and use &argo; you must ensure that your computer's configuration meets the 
-			minimum system requirements for running &argo;. To ensure that your computer can run &argo; properly 
-			we will check the following:
-		</para>
-		<itemizedlist>
-			<listitem>
-				<para>
-					<link linkend="installation-checks-hardware">Your computer's hardware specification</link>
-				</para>
-			</listitem>
-			<listitem>
-				<para>
-					<link linkend="installation-checks-java">
-						The version of the Java Platform installed on your computer (if any)
-					</link>
-				</para>
-			</listitem>
-		</itemizedlist>
-		<sect2 id="installation-checks-hardware">
-			<title>Check your computer's hardware specification</title>
+		<title>System requirements</title>
 			<para>
-				&argo; is a complex application with an interactive, graphics editing user interface. The minimum 
-				<emphasis>recommended</emphasis> configuration for a computer running &argo; is shown below. 
-				Please check and ensure that your computer meets the following <emphasis>minimum</emphasis> 
-				requirements before installing or using &argo;:				
+Minimum system requirements:
 				<itemizedlist>
 					<listitem>
-						<para>Microsoft Windows 95/98/Me/NT/2000, Linux or other OS that supports Java2</para>
+						<para>
+Any OS that supports Java2
+</para>
 					</listitem>
 					<listitem>
 						<para>200MHz Intel Pentium, AMD K6 or similar processor</para>
@@ -83,25 +46,13 @@
 					<listitem>
 						<para>Mouse (or other pointing device) and a Keyboard</para>
 					</listitem>
+					<listitem>
+						<para>
+Java 2 JRE or JDK.
+</para>
+					</listitem>
 				</itemizedlist>
 			</para>
-		</sect2>
-		<sect2 id="installation-checks-java">
-			<title>Check the version of Java on your computer</title>
-			<para>
-				&argo; is a 100% Pure Java application. Your computer <emphasis>must</emphasis> have a version of the 
-				Java 2 platform JDK installed to use &argo;. More specifically, the Java 2 JDK v1.2 
-				(i.e. JDK1.2 or later) is <emphasis>recommended</emphasis> for use with &argo;. Although &argo;
-				has not been tested an <emphasis>all</emphasis> Java 2 platforms, it <emphasis>should</emphasis> 
-				run on all Java 2 installations regardless of the underlying OS platform. 
-			</para>
-			<note>
-				<para>
-					Official Java 2 JDKs are available to download from Sun at 
-					<ulink url="http://java.sun.com/jdk/">http://java.sun.com/jdk/</ulink>.
-				</para>
-			</note>
-		</sect2>		
 	</sect1>
 	<sect1>
 		<title>Installation options</title>		
@@ -111,326 +62,94 @@
 			<itemizedlist>
 				<listitem>
 					<para>
-						<link linkend="installation-options-webstart">Java Web Start option</link> - this option 
-						is provided for first-time or occasional users. It is the easiest and quickest way to 
-						start using &argo;
+Java Web Start
+</para>
+					<para>
+This alternative is good for occasional users and tests.
+It is the easiest and quickest way to start using &argo;.
+It requires connection to the &argo-homepage;.
 					</para>
-				</listitem>
-				<listitem>
-					<para>						
-						<link linkend="installation-options-binarydist">Binary distribution option</link> - this 
-						option is provided for regular users. You should also choose this option if you are having 
-						problems with the Java Web Start option.
-					</para>
+					<orderedlist>
+						<listitem>
+							<para>
+Make sure you have 
+<ulink url="http://java.sun.com/products/javawebstart/">
+Java Web Start
+</ulink>
+installed.
+</para>
+						</listitem>
+						<listitem>
+							<para>
+Follow the Launch ArgoUML-link from the &argo-homepage;.
+</para>
+						</listitem>
+						<listitem>
+							<para>
+ArgoUML will be downloaded, cached locally and started.
+</para>
+						</listitem>
+						<listitem>
+							<para>
+On subsequent starts, the ArgoUML is available also from the
+Java Web Start console and at each start the version is checked
+against that on the web server and updates are automatically
+downloaded.
+</para>
+						</listitem>
+					</orderedlist>
 				</listitem>
 				<listitem>
 					<para>
-						<link linkend="installation-options-sourcedist">Source or CVS distribution option</link> - this 
-						option is provided for &argo; developers and contributors. You should choose this option if you 
-						are having problems with the other options.
-					</para>
+Binary distribution
+</para>
+					<para>
+This is good for regular users and guarantees that the
+version of &argo; cannot change during the course of your project.
+</para>
+					<orderedlist>
+						<listitem>
+							<para>
+Make sure that you have a Java 2 JRE installed.
+</para>
+						</listitem>
+						<listitem>
+							<para>
+Download the &argo; binary distribution from the &argo-homepage;.
+</para>
+							<para>
+This could also include copying it to and from floppy disks or CD:s
+in order to get it to the computer if no network connection is
+available.
+</para>
+						</listitem>
+						<listitem>
+							<para>
+Create an &argo; installation directory.
+</para>
+						</listitem>
+						<listitem>
+							<para>
+Change the current directory 
+to the &argo; installation directory and 
+extract the &argo; files to the installation directory:
+								<computeroutput>
+jar xvf <replaceable>&argo;-archive-filename</replaceable>
+								</computeroutput>
+							</para>
+						</listitem>
+						<listitem>
+							<para>
+Start by running the <filename>argouml.jar</filename> file.
+								<computeroutput>
+java -jar argouml.jar
+								</computeroutput>
+</para>
+						</listitem>
+					</orderedlist>
 				</listitem>
 			</itemizedlist>
 		</para>
-		<sect2 id="installation-options-webstart">
-			<title>Java Web Start option</title>
-			<para>
-				TBD: Using &argo; with JWS
-			</para>
-		</sect2>
-		<sect2 id="installation-options-binarydist">
-			<title>Binary distribution option</title>
-			<para>
-				This is the most common installation option for regular &argo; users. It involves obtaining a copy of 
-				the binary distribution archive from the &argo-website; and then preparing your computer to be able to 
-				run &argo; using the contents of the binary distribution. You should use this option if you are either 
-				unable or unwilling to run the Java Web Start version or, your computer is not directly connected to 
-				the internet or, you already have the binary distribution.
-			</para>
-			<sect3>
-				<title>Obtain the &argo; binary distribution</title>
-				<para>
-					If you haven't already done so, please download a copy of the binary distribution from the 
-					&argo-homepage;. If the computer on which &argo; will be installed is not connected to the internet, 
-					download the file using another computer and copy the binary distribution file to the target computer.
-				</para>
-			</sect3>
-			<sect3>
-				<title>Create an &argo; installation directory</title>
-				<para>
-					Create a directory on your computer for the &argo; application. This directory will thereafter be 
-					referred to as the <emphasis>&argo; installation directory</emphasis> or just as 
-					<envar>ARGOUML_HOME</envar>. Sample commands for creating an &argo; installation directory on 
-					computers running Windows and Linux are shown below. You might want to choose a different location for 
-					&argo; on your computer.
-				</para>
-				<example>
-					<title>Creating an installation directory</title>
-					<informalexample>						
-						<para>
-							Sample commands for Windows
-							<programlisting>
-mkdir <replaceable>C:\OO-Tools\&argo;</replaceable>
-							</programlisting>
-						</para>
-					</informalexample>
-					<informalexample>
-						<para>
-							Sample commands for Linux and other Unixes
-							<programlisting>
-md <replaceable>/usr/bin/&argo;</replaceable>
-							</programlisting>
-						</para>					
-					</informalexample>
-				</example>
-				<example>
-					<title>Creating an installation directory</title>
-					<blockquote>						
-						<para>
-							Sample commands for Windows
-							<blockquote>
-								<programlisting>
-mkdir <replaceable>C:\OO-Tools\&argo;</replaceable>
-								</programlisting>
-							</blockquote>
-						</para>
-						<para>
-							Sample commands for Linux and other Unixes
-							<blockquote>
-								<programlisting>
-md <replaceable>/usr/bin/&argo;</replaceable>
-								</programlisting>
-							</blockquote>
-						</para>					
-					</blockquote>
-				</example>
-			</sect3>
-			<sect3>
-				<title>Extract the &argo; files to the installation directory</title>
-				<para>
-					You will now change the current directory to the &argo; installation directory you have just created and 
-					extract the files contained in the binary distribution to the directory. The general 
-					form of the command to extract the files is:
-				</para>
-				<para>
-					<computeroutput>jar xvf <replaceable>&argo;-archive-filename</replaceable>
-					</computeroutput>
-				</para>
-				<para>
-					As an example, let's say you have an &argo; binary distribution archive named 
-					<filename>ArgoUML-0.9.3.zip</filename> that it is stored in a directory called 
-					<filename>C:\Distributions</filename> or <filename>~/distributions</filename> on a Windows or Linux 
-					computer respectively. To extract the &argo; files from the archive, you would type the following 
-					commands on the Windows and Linux/Unix platforms. 
-				</para>
-				<example>
-					<title>Extracting &argo; files from binary distribution</title>
-					<programlisting>
-chdir <replaceable>C:\OO-Tools\&argo;</replaceable>                                       <co id="install-bin-extract-win"/>
-jar xvf <replaceable>C:\Distributions\ArgoUML-0.9.3.zip</replaceable>
-
-cd <replaceable>/usr/bin/&argo;</replaceable>                                             <co id="install-bin-extract-unix"/>
-jar xvf <replaceable>~/distributions/ArgoUML-0.9.3.zip</replaceable>
-					</programlisting>
-					<calloutlist>
-						<callout arearefs="install-bin-extract-win">
-							<para>
-								Sample commands for Windows
-							</para>
-						</callout>
-						<callout arearefs="install-bin-extract-unix">
-							<para>
-								Sample commands for Linux/Unix
-							</para>
-						</callout>
-					</calloutlist>
-				</example>
-
-				<example>
-					<title>Extracting &argo; files from binary distribution</title>
-					<para>
-						Sample commands for Windows
-						<blockquote>
-							<programlisting>
-chdir <replaceable>C:\OO-Tools\&argo;</replaceable>
-jar xvf <replaceable>C:\Distributions\ArgoUML-0.9.3.zip</replaceable>
-							</programlisting>
-						</blockquote>
-					</para>
-					<para>
-						Sample commands for Linux and other Unixes
-						<blockquote>
-							<programlisting>
-cd <replaceable>/usr/bin/&argo;</replaceable>
-jar xvf <replaceable>~/distributions/ArgoUML-0.9.3.zip</replaceable>
-							</programlisting>
-						</blockquote>
-					</para>					
-				</example>
-				<note>
-					<para>
-						For the above command to work, the <filename>bin</filename> sub-directory of the JDK directory tree 
-						must be added to your <envar>PATH</envar> environment variable. You might also be able to use a compatible 
-						de-archiver such as <filename>winzip</filename> or <filename>gzip</filename> to extract the files.
-					</para>
-				</note>
-				<para>
-					You should now have the &argo; application's files copied to the installation directory on your system.
-				</para>
-			</sect3>
-		</sect2>
-		<sect2 id="installation-options-sourcedist">
-			<title>Source or CVS distribution option</title>
-			<para>
-				This is the preferred installation option for &argo; developers, contributors and advanced users.
-				It involves obtaining the &argo; source code as a distribution from the &argo-website; or from CVS, 
-				building &argo; on your computer, and then preparing your computer to run &argo;. 
-			</para>
-			<para>
-				You should use this option if you want to keep up with the latest developments, you are a developer 
-				or contributor on the &argo; project or if you have problems using the other installation options. 
-				Please note however that the devlopment copy of &argo; is quite often unstable and is not advised 
-				for production use.
-			</para>
-			<sect3>
-				<title>Obtain the &argo; source code</title>
-				<para>
-					You can obtain the &argo-source; via one of two methods:
-				</para>
-				<itemizedlist>
-					<listitem>
-						<para>
-							<ulink url="http://argouml.tigris.org/v09/ds4.html">Source archive</ulink> 
-							- this is a snapshot of the entire &argo; source code that is updated for each release 
-							(and maybe at other times too). This is the easiest way to get the &argo; source code 
-							but the contents may not be the latest available &argo; source code. You will need to 
-							obtain two archive files, one for the &argo; source code and one for the add-ons that 
-							&argo; depends on.
-						</para>
-					</listitem>
-					<listitem>
-						<para>
-							<ulink url="http://argouml.tigris.org/servlets/ProjectSource">CVS checkout</ulink> 
-							- in this case you will extract the latest copy of the &argo; source code from the 
-							public CVS database that the &argo-project-link; uses to track the development of &argo; 
-							itself. This is really only recommended for developers and other contributors as the 
-							latest source code is also the least stable version of &argo;. When you use this method, 
-							what you get is always a snapshot of &argo;'s source code as it is being developed.
-						</para>
-					</listitem>
-				</itemizedlist>
-				<para>
-					If you haven't already done so, please please obtain a copy of the &argo-source; here. If the 
-					computer on which &argo; will be installed is not connected to the internet, download the file(s) 
-					using another computer and copy the file(s) to the target computer.
-				</para>
-			</sect3>
-			<sect3>
-				<title>Extract the &argo; source code (source archive method only)</title>
-				<para>
-					If you have chosen to obtain the &argo; source distribution archive(s), you need to extract the files 
-					from the archive(s) to a directory on your computer before you can build your copy &argo;.
-				</para>
-				<para>
-					Firstly, create a directory on your computer for the &argo; source code. This directory will 
-					thereafter be referred to as the <emphasis>&argo; source directory</emphasis> or just as 
-					<envar>ARGOSOURCE_HOME</envar>. Sample commands for creating an &argo; source directory on 
-					computers running Windows and Linux are shown below. You might want to choose a different location for 
-					&argo; on your computer.
-				</para>
-				<example>
-					<title>Creating a source directory</title>
-					<blockquote>						
-						<para>
-							Sample commands for Windows
-							<blockquote>
-								<programlisting>
-mkdir <replaceable>C:\OO-Tools\&argo;-source</replaceable>
-								</programlisting>
-							</blockquote>
-						</para>
-						<para>
-							Sample commands for Linux and other Unixes
-							<blockquote>
-								<programlisting>
-md <replaceable>/usr/bin/&argo;-source</replaceable>
-								</programlisting>
-							</blockquote>
-						</para>					
-					</blockquote>
-				</example>
-				<para>
-					Next, change the current directory to the &argo; source directory you have just created and 
-					extract the files contained in the source distribution archive(s) to the directory. The general 
-					form of the command to extract the files is:
-				</para>
-				<para>
-					<computeroutput>jar xvf <replaceable>&argo;-archive-filename</replaceable></computeroutput>
-				</para>
-				<para>
-					As an example, given the following assumption on a Windows computer (with Linux/Unix-specific
-					details in brackets):
-					<itemizedlist>
-						<listitem>
-							<para>
-								an &argo; source archive named <filename>ArgoUML-0.9.3-src.zip</filename> 
-								(<filename>ArgoUML-0.9.3-src.tar.gz</filename> on Linux/Unix)
-							</para>
-						</listitem>
-						<listitem>
-							<para>
-								an &argo; add-ons source archive named <filename>ArgoUML-0.9.3-libs.zip</filename> 
-								(<filename>ArgoUML-0.9.3-libs.tar.gz</filename> on Linux/Unix)
-							</para>
-						</listitem>
-						<listitem>
-							<para>
-								both source archives are stored in the directory <filename>C:\Distributions</filename> 
-								(<filename>~/distributions</filename> on Linux/Unix)
-							</para>
-						</listitem>
-					</itemizedlist>				
-					To extract the files from both archives to the &argo; source directory, you would type the 
-					following commands on the Windows and Linux/Unix platforms. 
-				</para>
-				<example>
-					<title>Extracting &argo; files from source distribution</title>
-					<blockquote>						
-						<para>
-							Sample commands for Windows
-							<blockquote>
-								<programlisting>
-chdir <replaceable>C:\OO-Tools\&argo;-source</replaceable>
-jar xvf <replaceable>C:\Distributions\ArgoUML-0.9.3-src.zip</replaceable>
-jar xvf <replaceable>C:\Distributions\ArgoUML-0.9.3-libs.zip</replaceable>
-								</programlisting>
-							</blockquote>
-						</para>
-						<para>
-							Sample commands for Linux and other Unixes
-							<blockquote>
-								<programlisting>
-cd <replaceable>/usr/bin/&argo;-source</replaceable>
-jar xvf <replaceable>~/distributions/ArgoUML-0.9.3-src.tar.gz</replaceable>
-jar xvf <replaceable>~/distributions/ArgoUML-0.9.3-libs.tar.gz</replaceable>
-								</programlisting>
-							</blockquote>
-						</para>					
-					</blockquote>
-				</example>
-				<note>
-					<para>
-						For the above command to work, the <filename>bin</filename> sub-directory of the JDK directory tree 
-						must be added to your <envar>PATH</envar> environment variable. You might also be able to use a compatible 
-						de-archiver such as <filename>winzip</filename> or <filename>gzip</filename> to extract the files.
-					</para>
-				</note>
-				<para>
-					You should now have the &argo; application's source files copied to the &argo; source directory on 
-					your system.
-				</para>
-			</sect3>
-		</sect2>
 	</sect1>
 
 	<!--
@@ -439,19 +158,4 @@ jar xvf <replaceable>~/distributions/ArgoUML-0.9.3-libs.tar.gz</replaceable>
 												  discussed in this chapter
 		===========================================================
 	-->
-	<sect1>
-		<title>About this guide...</title>
-		<para>
-			This guide - the &document-title;	- is provided to help you get up and running as quickly as 
-			possible with ArgoUML. It provides step-by-step instructions for obtaining and installing 
-			ArgoUML, performing common tasks, and outlines your options for contact the &argo-project-link; 
-			team should you need further support or to contribute to ArgoUML's development.
-		</para>
-	</sect1>
-	<sect1>
-		<title>If you need further help</title>
-		<para>
-			The website, mailing lists etc...
-		</para>
-	</sect1>
 </chapter>

@@ -22,7 +22,8 @@
 	<para>
 		Simulation is the basic premise that underpins OO technology. An OO system is designed and implemented 
 		essentially as a simulation of the real world using software artifacts. This premise is as powerful 
-		as it is simple. By designing and buidling software systems in this manner, the same language and ideas 
+		as it is simple. By designing and building software 
+		systems in this manner, the same language and ideas 
 		can be used in the analysis, design and implementation of OO systems. This allowed a system to be designed 
 		and tested (or more correctly allowed a system to be simulated) without having to actually build the system first. 
 		This feature coupled with the ability to design systems at a very high level empowered experienced OO 
@@ -32,7 +33,8 @@
 		The availabilty of various OO methodologies and the eventual adoption of the Unified Modelling Language 
 		(UML) as the standard language for communicating OO concepts continued the advance of OO technology into 
 		the mainstream. The popularity of the object-based Visual Basic language and the parallel development and 
-		meteoric adoption of the fully object-orinted Java programming language was the final catlayst that fuelled 
+		meteoric adoption of the fully object-oriented 
+		Java programming language was the final catalyst that fuelled 
 		the final stages of the rapid adoption of OO technologies by the mainstream.
 	</para>
 	<para>
