@@ -31,9 +31,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ZargoFilePersister;
-import org.argouml.uml.util.namespace.TestStringNamespace;
 
 /** Testcase to load projects without exception. */
 public class TestArgoParser extends TestCase {
