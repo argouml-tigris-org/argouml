@@ -34,14 +34,12 @@ import java.awt.event.MouseListener;
 import java.text.MessageFormat;
 import java.util.Vector;
 
-import javax.swing.Action;
-import javax.swing.ImageIcon;
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
-
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -49,9 +47,7 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.application.api.QuadrantPanel;
-import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
@@ -61,34 +57,30 @@ import org.argouml.cognitive.Translator;
 import org.argouml.ui.DisplayTextTree;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
-import org.argouml.ui.cmd.ActionFlatToDo;
 import org.tigris.gef.ui.ToolBar;
 
 /**
- * The lower-left pane of the main Argo/UML window, which shows the list
- * of active critics and todo items.
+ * The lower-left pane of the main ArgoUML window, which shows the list
+ * of active critics and todo items. <p>
  *
- * <p>This pane shows
- *  a list or tree of all the "to do" items that the designer should
- *  condsider.
+ * This pane shows a list or tree of all the "to do" items that 
+ * the designer should consider. <p>
  *
- * <p>This class is similar to the NavPane. it uses the same treemodel class and
- * JTree implementation.
+ * This class is similar to the NavigatorPane. 
+ * It uses the same treemodel class and JTree implementation. <p>
  *
- * <p>Perspectives are now built here.
+ * Perspectives are now built here. <p>
  *
- * <p>future plans may involve:
- * 1)DecisionModelListener implementation
- * 2)GoalListener implementation
- * ?
+ * Future plans may involve:<br>
+ * 1)DecisionModelListener implementation<br>
+ * 2)GoalListener implementation<br>
+ * ? <p>
  *
  *<pre>
  * possible future additions:
  *  ToDoPerspective difficulty = new ToDoByDifficulty();
  *  ToDoPerspective skill = new ToDoBySkill();
  *</pre>
-
- * $Id$
  */
 public class ToDoPane extends JPanel
     implements ItemListener,
@@ -122,10 +114,8 @@ public class ToDoPane extends JPanel
     private ToDoPerspective curPerspective;
     
     private ToDoList root;
-    private Action flatView;
     private JToggleButton flatButton;
     private JLabel countLabel;
-    private boolean flat;
     private Object lastSel;
     private int oldSize;
     private char dir;
@@ -137,12 +127,6 @@ public class ToDoPane extends JPanel
     
     /**
      * The constructor.
-     * 
-     *<pre>
-     * TODO: - Bob Tarling 8 Feb 2003
-     * Replace GEF ToolBar class with our own Toolbar class
-     * (only rely on GEF for diagram functionality)
-     *</pre>
      *
      * @param doSplash if true, then we have to show progress in the splash
      */
@@ -157,33 +141,18 @@ public class ToDoPane extends JPanel
         
         perspectives = new Vector();
         
-        flatView = new ActionFlatToDo();
         countLabel = new JLabel(formatCountLabel(999));
-        
-        toolbar.add(combo);
-        // This is the only reason GEF toolbar is used here.
-        // Must find a way to implement the same.
-        flatButton = toolbar.addToggle(flatView,
-                                   "Flat",
-                                   "Hierarchical", 
-                                   "Flat");
-        toolbar.add(countLabel);
+        countLabel.setBorder(BorderFactory.createEmptyBorder(0, 4, 0, 4));
         
         JPanel toolbarPanel = new JPanel(new BorderLayout());
-        toolbarPanel.add(toolbar, BorderLayout.WEST);
-        
-        ImageIcon hierarchicalIcon =
-	    ResourceLoaderWrapper
-	        .lookupIconResource("Hierarchical", "Hierarchical");
-        ImageIcon flatIcon = ResourceLoaderWrapper
-	    .lookupIconResource("Flat", "Flat");
-        flatButton.setIcon(hierarchicalIcon);
-        flatButton.setSelectedIcon(flatIcon);
+        toolbarPanel.add(countLabel, BorderLayout.EAST);
+        toolbarPanel.add(combo, BorderLayout.CENTER);
         add(toolbarPanel, BorderLayout.NORTH);
+        
         add(new JScrollPane(tree), BorderLayout.CENTER);
         
         combo.addItemListener(this);
-        
+
         tree.addTreeSelectionListener(this);
         tree.setCellRenderer(new ToDoTreeRenderer());
         tree.addMouseListener(this);
@@ -308,40 +277,15 @@ public class ToDoPane extends JPanel
         tree.setSelectionPath(trPath);
     }
     
-    /**
-     * Return whether the todo pane is currently in flat hierachy mode.
-     *
-     * @return true if flat.
-     */
-    public boolean isFlat() { return flat; }
-
-    /**
-     * Set the todo pane in a specific hierachy mode.
-     *
-     * @param b is true for flat mode.
-     */
-    public void setFlat(boolean b) {
-        flat = b;
-        flatButton.getModel().setPressed(flat);
-        if (flat) {
-	    tree.setShowsRootHandles(false);
-	} else {
-	    tree.setShowsRootHandles(true);
-	}
-        updateTree();
-    }
-    /** toggle the hierachy mode. */
-    public void toggleFlat() {
-        setFlat(!isFlat());
-    }
-    
     // ------------ ItemListener implementation ----------------------
     
     /**
      * Called when the user selects a perspective from the perspective
-     * combo.
+     * combo. <p>
      *
-     * @param e is the event.
+     * Param e is the event.
+     *
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
      */
     public void itemStateChanged(ItemEvent e) {
         if (e.getSource() == combo) {
@@ -353,9 +297,11 @@ public class ToDoPane extends JPanel
     
     /**
      * Called when the user selects an item in the tree, by clicking or
-     * otherwise.
+     * otherwise.<p>
+     * 
+     * Param e is the event.
      *
-     * @param e is the event.
+     * @see javax.swing.event.TreeSelectionListener#valueChanged(javax.swing.event.TreeSelectionEvent)
      */
     public void valueChanged(TreeSelectionEvent e) {
         LOG.debug("ToDoPane valueChanged");
@@ -513,12 +459,7 @@ public class ToDoPane extends JPanel
 	} else {
             LOG.debug("ToDoPane setting tree model");
             curPerspective.setRoot(root);
-            curPerspective.setFlat(flat);
-            if (flat) {
-		tree.setShowsRootHandles(false);
-	    } else {
-		tree.setShowsRootHandles(true);
-	    }
+            tree.setShowsRootHandles(true);
             tree.setModel(curPerspective);
             tree.setVisible(true); // blinks?
         }
@@ -531,10 +472,10 @@ public class ToDoPane extends JPanel
     
     
     /** 
-     * Called when the user clicks once on an item in the tree.
+     * Called when the user clicks once on an item in the tree. <p>
      *
      * Q: What should the difference be between a single
-     * and double click?
+     * and double click? <p>
      * A: A single click selects the todo item in the tree, 
      * shows the red indication on the diagram, 
      * and selects the todo tab in the details panel.
@@ -549,13 +490,6 @@ public class ToDoPane extends JPanel
      */
     public static void mySingleClick(int row, TreePath path) {
         clicksInToDoPane++;
-        /*
-	  if (getSelectedObject() == null){return;}
-	  Object sel = getSelectedObject();
-	  if (sel instanceof ToDoItem){
-	  selectItem((ToDoItem)sel);}
-	  cat.debug("1: " + getSelectedObject().toString());
-        */
     }
     
     /**
@@ -602,7 +536,6 @@ public class ToDoPane extends JPanel
         perspectives.add(poster);
         perspectives.add(type);
         
-        //
         ToDoPerspective.registerRule(new GoListToDecisionsToItems());
         ToDoPerspective.registerRule(new GoListToGoalsToItems());
         ToDoPerspective.registerRule(new GoListToPriorityToItem());
