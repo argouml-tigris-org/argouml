@@ -136,13 +136,13 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Tell the selected Fig to move to front or back, etc. */
   public void reorder(int func, Layer lay) { lay.reorder(_content, func); }
 
-  /** Do nothing because alignment only makes sense for multiple
-   * selections */
-  public void align(int direction) { /* do nothing */ }
+//   /** Do nothing because alignment only makes sense for multiple
+//    * selections */
+//   public void align(int direction) { /* do nothing */ }
 
-  public void align(Rectangle r, int direction, Editor ed) {
-    _content.align(r, direction, ed);
-  }
+//   public void align(Rectangle r, int direction, Editor ed) {
+//     _content.align(r, direction, ed);
+//   }
 
   /** When the selection is told to move, move the selected
    * Fig */

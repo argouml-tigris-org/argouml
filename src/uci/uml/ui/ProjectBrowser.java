@@ -289,7 +289,6 @@ implements IStatusBar {
 //     tab9Item.setAccelerator(alt9);
 //     JMenuItem tab0Item = detailsTabs.add(new ActionGoToDetails(""));
 //     tab0Item.setAccelerator(alt0);
-    
 
     JMenu create = (JMenu) _menuBar.add(new JMenu("Create"));
     create.setMnemonic('C');
@@ -320,6 +319,36 @@ implements IStatusBar {
     createFig.add(_actionText);
     createFig.add(_actionPoly);
     createFig.add(_actionInk);
+
+    JMenu arrange = (JMenu) _menuBar.add(new JMenu("Arrange"));
+    arrange.setMnemonic('A');
+
+    JMenu align = (JMenu) arrange.add(new JMenu("Align"));
+    align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
+    align.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
+
+    JMenu distribute = (JMenu) arrange.add(new JMenu("Distribute"));
+    distribute.add(new CmdDistribute(CmdDistribute.H_SPACING));
+    distribute.add(new CmdDistribute(CmdDistribute.H_CENTERS));
+    distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
+    distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
+
+    JMenu reorder = (JMenu) arrange.add(new JMenu("Reorder"));
+    reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));
+    reorder.add(new CmdReorder(CmdReorder.BRING_TO_FRONT));
+    reorder.add(new CmdReorder(CmdReorder.SEND_BACKWARD));
+    reorder.add(new CmdReorder(CmdReorder.BRING_FORWARD));
+
+    JMenu nudge = (JMenu) arrange.add(new JMenu("Nudge"));
+    nudge.add(new CmdNudge(CmdNudge.LEFT));
+    nudge.add(new CmdNudge(CmdNudge.RIGHT));
+    nudge.add(new CmdNudge(CmdNudge.UP));
+    nudge.add(new CmdNudge(CmdNudge.DOWN));
 
     JMenu generate = (JMenu) _menuBar.add(new JMenu("Generation"));
     generate.setMnemonic('G');

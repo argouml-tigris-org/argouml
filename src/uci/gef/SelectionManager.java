@@ -255,20 +255,20 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
     return r;
   }
 
-  /** Align the selected Fig's relative to each other */
-  /* needs-more-work: more of this logic should be in ActionAlign */
-  public void align(int dir) {
-    Editor ed = Globals.curEditor();
-    Rectangle bbox = getContentBounds();
-    Enumeration ss = _selections.elements();
-    while (ss.hasMoreElements())
-      ((Selection) ss.nextElement()).align(bbox, dir, ed);
-  }
+//   /** Align the selected Fig's relative to each other */
+//   /* needs-more-work: more of this logic should be in ActionAlign */
+//   public void align(int dir) {
+//     Editor ed = Globals.curEditor();
+//     Rectangle bbox = getContentBounds();
+//     Enumeration ss = _selections.elements();
+//     while (ss.hasMoreElements())
+//       ((Selection) ss.nextElement()).align(bbox, dir, ed);
+//   }
 
-  public void align(Rectangle r, int dir, Editor ed) {
-    Enumeration ss = _selections.elements();
-    while(ss.hasMoreElements()) ((Selection)ss.nextElement()).align(r,dir,ed);
-  }
+//   public void align(Rectangle r, int dir, Editor ed) {
+//     Enumeration ss = _selections.elements();
+//     while(ss.hasMoreElements()) ((Selection)ss.nextElement()).align(r,dir,ed);
+//   }
 
   /** When Manager selections are sent to back, each of them is sent
    * to back. */
@@ -279,9 +279,37 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 
   /** When Manager selections are moved, each of them is moved */
   public void translate(int dx, int dy) {
+    Vector nonMovingEdges = new Vector();
+    Vector movingEdges = new Vector();
+    Vector nodes = new Vector();
     int size = _selections.size();
-    for (int i =0; i < size; ++i)
-      ((Selection)_selections.elementAt(i)).translate(dx, dy);
+    for (int i =0; i < size; ++i) {
+      Selection s = (Selection)_selections.elementAt(i);
+      if (!(s.getContent() instanceof FigNode))
+	s.translate(dx, dy);
+      else {
+	FigNode fn = (FigNode) s.getContent();
+	nodes.addElement(fn);
+	fn.superTranslate(dx, dy);
+	Vector figEdges = fn.getFigEdges();
+	int feSize = figEdges.size();
+	for (int j = 0; j < feSize; j++) {
+	  Object fe = figEdges.elementAt(j);
+	  if (nonMovingEdges.contains(fe)) movingEdges.addElement(fe);
+	  else nonMovingEdges.addElement(fe);
+	}
+      }
+    }
+    int meSize = movingEdges.size();
+    for (int i = 0; i < meSize; i++) {
+      FigEdge fe = (FigEdge) movingEdges.elementAt(i);
+      fe.translateEdge(dx, dy);
+    }
+    int fnSize = nodes.size();
+    for (int i = 0; i < fnSize; i++) {
+      FigNode fn = (FigNode) nodes.elementAt(i);
+      fn.updateEdges();
+    }
   }
 
   /** If only one thing is selected, then it is possible to mouse on

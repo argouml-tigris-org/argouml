@@ -109,6 +109,8 @@ implements MouseListener, PropertyChangeListener, Serializable {
    *  this FigNode moves. */
   public void removeFigEdge(FigEdge fe) { _figEdges.removeElement(fe); }
 
+  public Vector getFigEdges() { return _figEdges; }
+
   /** Sets the owner (an node in some underlying model). If the given
    *  node implements GraphNodeHooks, then the FigNode will register
    *  itself as a listener on the node. */
@@ -444,11 +446,11 @@ implements MouseListener, PropertyChangeListener, Serializable {
 
   public void translate(int dx, int dy) {
     super.translate(dx, dy);
-    Enumeration arcPers = _figEdges.elements();
-    while (arcPers.hasMoreElements()) {
-      FigEdge fe = (FigEdge) arcPers.nextElement();
-      fe.computeRoute();
-    }
+    updateEdges();
+  }
+
+  public void superTranslate(int dx, int dy) {
+    super.translate(dx, dy);
   }
 
   public void setBounds(int x, int y, int w, int h) {
@@ -469,4 +471,3 @@ implements MouseListener, PropertyChangeListener, Serializable {
   public void postLoad() { setOwner(getOwner()); }
 
 } /* end class FigNode */
-

@@ -32,6 +32,7 @@
 package uci.gef;
 
 import java.awt.*;
+import java.util.*;
 
 /** An Cmd to align 2 or more objects relative to each other. */
 
@@ -90,14 +91,27 @@ public class CmdAlign extends Cmd {
 
   public void doIt() {
     Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    if (sm.getLocked()) {
-       Globals.showStatus("Cannot Modify Locked Objects");
-       return;
+    Vector figs = (Vector) getArg("figs");
+    if (figs == null) {
+      SelectionManager sm = ce.getSelectionManager();
+      if (sm.getLocked()) {
+	Globals.showStatus("Cannot Modify Locked Objects");
+	return;
+      }
+      figs = sm.getFigs();
     }
-    sm.startTrans();
-    sm.align(direction);
-    sm.endTrans();
+    int size = figs.size();
+    if (size == 0) return;
+    Rectangle bbox = ((Fig) figs.elementAt(0)).getBounds();
+    for (int i = 1; i < size; i++)
+      bbox.add(((Fig) figs.elementAt(i)).getBounds());
+
+    for (int i = 0; i < size; i++) {
+      Fig f = (Fig) figs.elementAt(i);
+      f.startTrans();
+      f.align(bbox, direction, ce);
+      f.endTrans();
+    }
   }
 
   public void undoIt() { }

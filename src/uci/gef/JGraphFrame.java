@@ -186,6 +186,13 @@ implements IStatusBar, Cloneable {
     align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
     align.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));
 
+    JMenu distribute = new JMenu("Distribute");
+    arrange.add(distribute);
+    distribute.add(new CmdDistribute(CmdDistribute.H_SPACING));
+    distribute.add(new CmdDistribute(CmdDistribute.H_CENTERS));
+    distribute.add(new CmdDistribute(CmdDistribute.V_SPACING));
+    distribute.add(new CmdDistribute(CmdDistribute.V_CENTERS));
+    
     JMenu reorder = new JMenu("Reorder");
     arrange.add(reorder);
     toBackItem = reorder.add(new CmdReorder(CmdReorder.SEND_TO_BACK));

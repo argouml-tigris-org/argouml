@@ -38,6 +38,7 @@ CLASSES = \
 	CmdCreateNode.class \
 	CmdDelete.class \
 	CmdDispose.class \
+	CmdDistribute.class \
 	CmdExit.class \
 	CmdGroup.class \
 	CmdInsertPoint.class \
@@ -97,6 +98,7 @@ CLASSES = \
 	LayerPerspective.class \
 	LayerPolar.class \
 	Mode.class \
+	ModeBroom.class \
 	ModeCreate.class \
 	ModeCreateArc.class \
 	ModeCreateEdge.class \

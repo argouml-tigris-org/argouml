@@ -308,6 +308,11 @@ implements PropertyChangeListener {
   public int[] getYs() { return _fig.getYs(); }
   public void setYs(int[] ys) { _fig.setYs(ys); calcBounds(); }
 
+  public void translateEdge(int dx, int dy) {
+    _fig.translate(dx, dy);
+    calcBounds();
+  }
+
   public void setLineColor(Color c) { _fig.setLineColor(c); }
   public Color getLineColor() { return _fig.getLineColor(); }
 
@@ -415,4 +420,4 @@ implements PropertyChangeListener {
     Fig getFig() { return _fig; }
   }
 
-} /* end class ArcFigNode */
+} /* end class FigEdge */
