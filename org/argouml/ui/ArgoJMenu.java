@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,43 +41,26 @@ import org.argouml.i18n.Translator;
 public class ArgoJMenu extends JMenu {
 
     /**
-     * Constructs a new ArgoJMenu.
-     */
-    public ArgoJMenu() { super(); }
-
-    /**
-     * Constructs a new ArgoJMenu with the supplied string as its text.
+     * Constructs a new ArgoJMenu with the key to localize.
      *
-     * @param     s      the text for the menu label
+     * @param key The key to localize.
      */
-    public ArgoJMenu(String s) { super(s); }
-
-    /**
-     * Constructs a new ArgoJMenu.
-     * Sets this menu's text and mnemonic values using the specified resource
-     * key.
-     * 
-     * @param   bundle      the localization bundle name to use
-     * @param   key         the resource string to find
-     */
-    public ArgoJMenu(String bundle, String key) {
+    public ArgoJMenu(String key) {
         super();
-        ArgoJMenu.localize(this, bundle, key);
+        localize(this, key);
     }
-    
+   
     /**
      * Sets a menu item's text and mnemonic values using the specified resource
      * key.
      * 
      * @param   menuItem    the menu or menu item to localize
-     * @param   bundle      the localization bundle name to use
      * @param   key         the resource string to find
      */
-    public static final void localize(JMenuItem menuItem, 
-            			      String bundle, String key) {
-        menuItem.setText(Translator.localize(bundle, key));
+    public static final void localize(JMenuItem menuItem, String key) {
+        menuItem.setText(Translator.localize(key));
 
-        String localMnemonic = Translator.localize(bundle, key + ".mnemonic");
+        String localMnemonic = Translator.localize(key + ".mnemonic");
         if (localMnemonic != null && localMnemonic.length() == 1) {
             menuItem.setMnemonic(localMnemonic.charAt(0));
         }

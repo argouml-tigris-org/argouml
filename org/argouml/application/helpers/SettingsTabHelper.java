@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,35 +23,33 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.helpers;
-import org.argouml.application.api.*;
+
+import java.util.Vector;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextField;
+
+import org.argouml.application.api.PluggableSettingsTab;
+import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.i18n.Translator;
 
-import javax.swing.*;
-import java.util.*;
-
-/** Helper object for Settings Tabs
+/**
+ * Helper object for Settings Tabs.
  *
- *  @author Thierry Lach
- *  @since  0.9.4
+ * @author Thierry Lach
+ * @since  0.9.4
  */
-
 public abstract class SettingsTabHelper extends JPanel
-    implements SettingsTabPanel, PluggableSettingsTab 
-{
+    implements SettingsTabPanel, PluggableSettingsTab {
 
-    /** Default localization key for Settings
-     */
-    public static final String SETTINGS_BUNDLE = "CoreSettings";
-
-    /** String naming the resource bundle to use for localization.
-     */
-    private String bundle = "";
-
-    /** Constructor gets passed the localizer bundle name and
-     *  a property change listener.
+    /** 
+     * Constructor.
      */
     public SettingsTabHelper() {
-        bundle = getTabResourceBundleKey();
     }
 
     /** 
@@ -62,7 +60,7 @@ public abstract class SettingsTabHelper extends JPanel
      * @return the localized string
      */
     public String localize(String key) {
-        return Translator.localize(bundle, key);
+        return Translator.localize(key);
     }
 
     /** Create a localized JLabel.
@@ -148,12 +146,5 @@ public abstract class SettingsTabHelper extends JPanel
      * @see org.argouml.application.api.SettingsTabPanel#getTabPanel()
      */
     public JPanel getTabPanel() { return this; }
-
-    /**
-     * @see org.argouml.application.api.SettingsTabPanel#getTabResourceBundleKey()
-     */
-    public String getTabResourceBundleKey() {
-        return SETTINGS_BUNDLE;
-    }
 }
 

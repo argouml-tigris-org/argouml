@@ -29,9 +29,11 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Locale;
+
 import javax.xml.parsers.SAXParserFactory;
-import org.argouml.i18n.Translator;
+
 import org.apache.log4j.Logger;
+import org.argouml.i18n.Translator;
 
 /**
  * Some tools thrown together...
@@ -103,8 +105,7 @@ public class Tools {
                 Object[] msgArgs = {
                     saxFactory
                 };
-                sb.append(Translator.messageFormat("label",
-						   "label.sax-factory1", 
+                sb.append(Translator.messageFormat("label.sax-factory1", 
                                                    msgArgs));
             }
 
@@ -114,8 +115,7 @@ public class Tools {
                 Object[] msgArgs = {
                     saxObject.getClass().getName()
                 };
-                sb.append(Translator.messageFormat("label",
-						   "label.sax-factory2", 
+                sb.append(Translator.messageFormat("label.sax-factory2", 
                                                    msgArgs));
                 sb.append("\n");
             }

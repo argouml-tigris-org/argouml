@@ -152,8 +152,7 @@ public class ActionSettings extends UMLAction
                         ((PluggableSettingsTab) o).getSettingsTabPanel();
 
                     tabs.addTab(
-                            Translator.localize(stp.getTabResourceBundleKey(), 
-                                    		stp.getTabKey()), 
+                            Translator.localize(stp.getTabKey()), 
                             stp.getTabPanel());
                 }
 

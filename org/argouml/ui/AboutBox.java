@@ -159,9 +159,8 @@ public class AboutBox extends JDialog {
 	    Object o = iterator.next();
 	    AboutTabPanel atp = ((PluggableAboutTab) o).getAboutTabPanel();
 
-	    tabs.addTab(Translator.localize(atp.getTabResourceBundleKey(),
-				       atp.getTabKey()),
-			 atp.getTabPanel());
+	    tabs.addTab(Translator.localize(atp.getTabKey()),
+			atp.getTabPanel());
 	}
 
 	getContentPane().setLayout(new BorderLayout(0, 0));

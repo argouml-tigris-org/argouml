@@ -532,7 +532,7 @@ public class GenericArgoMenuBar extends JMenuBar
         KeyStroke ctrlEquals = KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, mask);
         KeyStroke f3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
         
-        view = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("View")));
+        view = (ArgoJMenu) add(new ArgoJMenu(MENU + prepareKey("View")));
         setMnemonic(view, "View");
 
         JMenuItem gotoDiagram = view.add(new ActionGotoDiagram());
@@ -634,7 +634,8 @@ public class GenericArgoMenuBar extends JMenuBar
      * Build the menu "Arrange".
      */
     private void initMenuArrange() {
-        arrange = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("Arrange")));
+        arrange =
+            (ArgoJMenu) add(new ArgoJMenu(MENU + prepareKey("Arrange")));
         setMnemonic(arrange, "Arrange");
 
         JMenu align = 
@@ -698,7 +699,8 @@ public class GenericArgoMenuBar extends JMenuBar
      * Build the menu "Critique".
      */
     private void initMenuCritique() {
-        critique = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("Critique")));
+        critique =
+            (ArgoJMenu) add(new ArgoJMenu(MENU + prepareKey("Critique")));
         setMnemonic(critique, "Critique");
         JMenuItem toggleAutoCritique =
 	    critique.addCheckItem(new ActionAutoCritique());

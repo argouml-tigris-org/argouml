@@ -479,7 +479,7 @@ public class FigPackage extends FigNodeModelElement {
         Vector popUpActions = super.getPopUpActions(me);
         Object mpackage = /*(MPackage)*/ getOwner();
 
-        ArgoJMenu modifierMenu = new ArgoJMenu(BUNDLE, "menu.popup.modifiers");
+        ArgoJMenu modifierMenu = new ArgoJMenu("menu.popup.modifiers");
 
         modifierMenu.addCheckItem(new ActionModifier("Abstract",
 						     "isAbstract",
@@ -496,7 +496,7 @@ public class FigPackage extends FigNodeModelElement {
         popUpActions.insertElementAt(modifierMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
-        ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
+        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
 
         if (!showStereotype) {
             showMenu.add(new UMLAction("Show Stereotype", UMLAction.NO_ICON)

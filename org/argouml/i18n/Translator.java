@@ -144,6 +144,8 @@ public class Translator {
      *
      * This is only used when retrieving the strings localized in GEF.
      *
+     * @deprecated by Linus Tolke as of 0.17.2.
+     *             Use {@link #localize(String key)}.
      * @param bundle a binding to a bundle of i18n resources
      * @param key the key to loacalize
      * @return the translation
@@ -154,13 +156,23 @@ public class Translator {
     }
 
     /**
-     * Helper for those that don't want to give the bundle.
+     * Helper for those that don't want to give the bundle.<p>
      *
-     * @param key to localize
-     * @return the translation
+     * <em>Note:</em> The one argument
+     * {@link org.workingfrog.i18n.util.Translator#localize(String key) 
+     * localize(key)}
+     * function doesn't seem to work for tags that aren't prefixed with the
+     * property file name. We get a NullPointerException. For this reason we
+     * stick to the two argument
+     * {@link org.workingfrog.i18n.util.Translator#localize(String, String)
+     * localize(bundle, key)}
+     * for the time being.
+     *
+     * @param key The key to localize.
+     * @return The localized String.
      */
     public static String localize(String key) {
-	return localize("DUMMYBUNDLE", key);
+        return org.workingfrog.i18n.util.Translator.localize(key, key);
     }
 
     /**
@@ -169,6 +181,8 @@ public class Translator {
      * The localized string is a pattern to be processed by
      * {@link MessageFormat}.
      *
+     * @deprecated by Linus Tolke as of 0.17.2.
+     *             Use {@link #messageFormat(String key, Object[] args)}.
      * @param bundle a binding to a bundle of i18n resources
      * @param key the key to localize
      * @param args the args as Objects, inserted in the localized String

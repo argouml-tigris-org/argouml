@@ -46,8 +46,6 @@ import org.argouml.ui.SplashScreen;
  */
 public class ConfigLoader {
 	
-    private static final String BUNDLE = "statusmsg";
-	
     private static final Logger LOG = 
         Logger.getLogger(ConfigLoader.class); 
 	
@@ -206,7 +204,7 @@ public class ConfigLoader {
 			    tabName
 			};
 			splash.getStatusBar().showStatus(Translator.
-				messageFormat(BUNDLE, 
+				messageFormat(
 				    "statusmsg.bar.making-project-browser", 
 				    msgArgs));
 			splash.getStatusBar().incProgress(2);
