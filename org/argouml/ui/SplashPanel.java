@@ -31,6 +31,8 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.AbstractButton; //MVW
+
 import javax.swing.SwingConstants;
 import javax.swing.border.BevelBorder;
 
@@ -85,6 +87,8 @@ class SplashPanel extends JPanel {
 	// JPanel main = new JPanel(new BorderLayout());
 	// setBorder(new EtchedBorder(EtchedBorder.RAISED));
 	add(top, BorderLayout.NORTH);
+
+  splashButton.setHorizontalAlignment(AbstractButton.CENTER); //MVW
 	add(splashButton, BorderLayout.CENTER);
 	// add(_statusBar, BorderLayout.SOUTH);
     }
