@@ -70,13 +70,14 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
     _table.setIntercellSpacing(new Dimension(0, 1));
     _table.setShowVerticalLines(false);
     _table.getSelectionModel().addListSelectionListener(this);
-
+    _table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+    
     TableColumn checkCol = _table.getColumnModel().getColumn(0);
     TableColumn descCol = _table.getColumnModel().getColumn(1);
-    checkCol.setMinWidth(10);
-    checkCol.setWidth(20);
+    checkCol.setMinWidth(20);
+    checkCol.setWidth(30);
     descCol.setMinWidth(250);
-    descCol.setWidth(600);    
+    //descCol.setWidth(600);    
 
     //JScrollPane sp = JTable.createScrollPaneForTable(_table);
     JScrollPane sp = new JScrollPane(_table);
@@ -108,10 +109,10 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
     
     TableColumn checkCol = _table.getColumnModel().getColumn(0);
     TableColumn descCol = _table.getColumnModel().getColumn(1);
-    checkCol.setMinWidth(10);
-    checkCol.setWidth(20);
+    checkCol.setMinWidth(20);
+    checkCol.setWidth(30);
     descCol.setMinWidth(250);
-    descCol.setWidth(600);    
+    //descCol.setWidth(600);    
     validate();
   }
   public Object getTarget() { return _target; }
