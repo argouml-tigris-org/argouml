@@ -801,7 +801,7 @@ Currently, the support in &argouml; for concurrency
 (regions and swimlanes) is weak:
 The actual definition of regions is not yet implemented 
 in the V0.14 release of &argouml;.
-<!-- TODO: See enhancement issue ... -->
+<!-- TODO: See enhancement issue 2433. -->
 It is advised to draw the regions as composite states,
 hence follow the rule: 
 a concurrent state can only contain composite states (i.e. regions).
