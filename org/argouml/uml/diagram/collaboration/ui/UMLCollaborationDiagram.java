@@ -211,10 +211,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 	    getAssociationActions(),
 	    ActionAddMessage.getSingleton(),
 	    actionGeneralize,
-	    actionDepend,
-	    null,
-	    actionComment,
-            actionCommentLink};
+	    actionDepend};
         return actions;
     }
 

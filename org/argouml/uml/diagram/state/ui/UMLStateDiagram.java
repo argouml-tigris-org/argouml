@@ -38,7 +38,6 @@ import org.apache.log4j.Logger;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
@@ -48,8 +47,6 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-
-import ru.novosoft.uml.MElementEvent;
 
 
 /** The correct name for this class is "UMLStatechartDiagram". See issue 2306.
@@ -217,9 +214,9 @@ public class UMLStateDiagram extends UMLDiagram {
      * in <I>LayerManager</I>(GEF) to control the adding, changing and
      * deleting layers on the diagram...
      *
-     * @param namespace MClass from the model in NSUML...connects the class to
+     * @param namespace Class from the UML model...connects the class to
      * the Statechart diagram.
-     * @param sm MStateMachine from the model in NSUML...
+     * @param sm StateMachine from the UML model
      * @author psager@tigris.org Jan. 24, 2oo2
      */
     public void setup(Object namespace,
@@ -228,7 +225,9 @@ public class UMLStateDiagram extends UMLDiagram {
 
         // add the diagram as a listener to the statemachine so
         // that when the statemachine is removed() the diagram is deleted also.
-        UmlModelEventPump.getPump().addModelEventListener(this, sm);
+        // Remark MVW: It also works without the next line.... So why?
+        // UmlModelEventPump.getPump().addModelEventListener(this, sm);
+        
         theStateMachine = sm;
 
         StateDiagramGraphModel gm = new StateDiagramGraphModel();
@@ -283,11 +282,8 @@ public class UMLStateDiagram extends UMLDiagram {
 	    actionForkPseudoState,
 	    actionJoinPseudoState,
 	    actionShallowHistoryPseudoState,
-	    actionDeepHistoryPseudoState,
-	    null,
-	    actionComment,
-            actionCommentLink,
-	};
+	    actionDeepHistoryPseudoState
+        };
         return actions;
     }
 
@@ -307,16 +303,15 @@ public class UMLStateDiagram extends UMLDiagram {
 
     /**
      * This diagram listens to NSUML events from its Statemachine;
-     * When the Statemachine is removed, we also want to delete this
-     * diagram too.
+     * When the Statemachine is removed, we also want to delete this diagram.
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
-    public void removed(MElementEvent e) {
+    /*public void removed(MElementEvent e) {
 
         UmlModelEventPump.getPump().removeModelEventListener(
             this,
             theStateMachine);
         super.removed(e);
-    }
+    }*/
 
 } /* end class UMLStateDiagram */

@@ -80,14 +80,14 @@ public abstract class UMLDiagram
     /**
      * Tool to add a comment node.
      */
-    protected static Action actionComment =
+    private static Action actionComment =
 	new RadioAction(new CmdCreateNode(ModelFacade.COMMENT, "Note"));
 
     /**
      * Tool to create an relationship between a comment node and some other node
-     * using a polyedge.<p>
+     * using a polyedge.<p> 
      */
-    protected static Action actionCommentLink = new RadioAction(
+    private static Action actionCommentLink = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,  
             "edgeClass",
@@ -260,7 +260,7 @@ public abstract class UMLDiagram
     }
 
     /**
-     * Create the toolbar based on actions for the spcific diagram
+     * Create the toolbar based on actions for the specific diagram
      * subclass.
      * @see org.tigris.gef.base.Diagram#initToolBar()
      */
@@ -278,11 +278,13 @@ public abstract class UMLDiagram
     public Object[] getActions() {
         Object manipulateActions[] = getManipulateActions();
         Object umlActions[] = getUmlActions();
+        Object commentActions[] = getCommentActions();
         Object shapeActions[] = getShapeActions();
 
         Object actions[] =
             new Object[manipulateActions.length
                 + umlActions.length
+                + commentActions.length
                 + shapeActions.length];
 
         int posn = 0;
@@ -296,6 +298,10 @@ public abstract class UMLDiagram
         
         System.arraycopy(umlActions, 0, actions, posn, umlActions.length);
         posn += umlActions.length;
+        
+        System.arraycopy(commentActions, 0, actions, posn, 
+                commentActions.length);
+        posn += commentActions.length;
         
         System.arraycopy(shapeActions, 0, actions, posn, shapeActions.length);
 
@@ -319,6 +325,16 @@ public abstract class UMLDiagram
         return actions;
     }
 
+    private Object[] getCommentActions() {
+        Object actions[] =
+        {
+            null,
+            actionComment,
+            actionCommentLink
+        };
+        return actions;
+    }
+    
     private Object[] getShapeActions() {
         Object actions[] = {
 	    null, getShapePopupActions(),

@@ -291,9 +291,6 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionObjectFlowState,
             /*actionSubactivityState,*/
 	    /*getExtendedActions(),*/
-            null,
-	    actionComment,
-            actionCommentLink
 	};
         return actions;
     }
