@@ -37,6 +37,7 @@ import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.GenCompositeClasses;
@@ -65,7 +66,7 @@ public class CrCircularComposition extends CrUML {
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	
         VectorSet offs = computeOffenders(dm);
-	return new ToDoItem(this, offs, dsgr);
+	return new UMLToDoItem(this, offs, dsgr);
     }
 								  
     protected VectorSet computeOffenders(Object dm) {

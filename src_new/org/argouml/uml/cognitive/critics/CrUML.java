@@ -32,11 +32,14 @@ package org.argouml.uml.cognitive.critics;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ocl.OCLEvaluator;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
 
 /** "Abstract" Critic subclass that captures commonalities among all
@@ -205,6 +208,13 @@ public class CrUML extends Critic {
 	    return res;		// string when not needed.
 	else
 	    return beginning.append(res).toString();
+    }
+    
+    /** create a new UMLToDoItem.
+     * @see org.argouml.uml.cognitive.UMLToDoItem
+     */
+    public ToDoItem toDoItem(Object dm, Designer dsgr) {
+	return new UMLToDoItem(this, dm, dsgr);
     }
 
 } /* end class CrUML */

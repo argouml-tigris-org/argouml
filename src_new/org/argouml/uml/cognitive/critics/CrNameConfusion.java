@@ -36,6 +36,7 @@ import java.util.Iterator;
 import javax.swing.Icon;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
@@ -90,7 +91,7 @@ public class CrNameConfusion extends CrUML {
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Object me = /*(MModelElement)*/ dm;
 	VectorSet offs = computeOffenders(me);
-	return new ToDoItem(this, offs, dsgr);
+	return new UMLToDoItem(this, offs, dsgr);
     }
 
     public boolean stillValid(ToDoItem i, Designer dsgr) {

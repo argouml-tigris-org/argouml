@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
@@ -62,7 +63,7 @@ public class CrNameConflict extends CrUML {
     
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	VectorSet offs = computeOffenders(dm);
-	return new ToDoItem(this, offs, dsgr);
+	return new UMLToDoItem(this, offs, dsgr);
     }
 
     protected VectorSet computeOffenders(Object dm) {
