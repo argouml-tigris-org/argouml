@@ -216,11 +216,19 @@ public class ClassdiagramLayouter implements Layouter {
 
 	// For now, all packages go above the classes and
 	// interfaces
+	int currentColumnPosition = 0;  // The number of elements in the current row
+	int currentRow = 0;
 	for(int i=0; i < _layoutedObjects.size(); i++) {
 	    ClassdiagramNode node = getClassdiagramNode(i);
 
 	    if(node.isPackage()) {
-		node.setRank(0);
+		if(currentColumnPosition <= _vMax) {  // If there are not too many elements in the current Row
+		    node.setRank(currentRow);
+		    currentColumnPosition++;
+		} else {
+		    node.setRank(++currentRow);
+		    currentColumnPosition = 0;
+		}
 	    }
 	}
 	
@@ -241,28 +249,6 @@ public class ClassdiagramLayouter implements Layouter {
 	    if(!getClassdiagramNode(i).isPackage())
 		getClassdiagramNode(i).addRank(maxPackageRank);
 	}
-
-	/*
-	 * Markus Klink's code to limit the number of nodes in a row.
-	 * I leave it outcommented until the layout works.
-	int currentColumnPosition = 0;
-	for(int i=0; i < _layoutedObjects.size(); i++) {
-	    if(!getClassdiagramNode(i).isPackage()) {
-		if (currentColumnPosition < _vMax) {
-		    currentColumnPosition++;
-		    getClassdiagramNode(i).addRank(maxPackageRank);
-		    System.err.println("MaxPackageRank: "+maxPackageRank+" Column: "+currentColumnPosition);
-		}
-		else {
-		    currentColumnPosition = 0;
-		    maxPackageRank++;
-		    getClassdiagramNode(i).addRank(maxPackageRank);
-		    System.err.println("MaxPackageRank: "+maxPackageRank+" Column: "+currentColumnPosition);
-		}
-	    }   
-	}
-	*/
-
 
 	// It might help to add pseudo notes here to improve layout, but for 
 	// the moment I'll try to do without. They should be inserted, when
@@ -368,11 +354,23 @@ public class ClassdiagramLayouter implements Layouter {
 
 		rowObject[pos[i]].setColumn(i);  // Required to sort the next rows.
 
-		// Now set the position within the diagram.
-		rowObject[pos[i]].setLocation(new Point(xPos, yPos));
-		
-		// Advance the horizontal position by the width of this figure.
-		xPos += rowObject[pos[i]].getSize().getWidth() + getHGap();
+		// If we have enough elements in this row and this node has no links,
+		// move it down in the diagram
+		if( (i > _vMax) 
+		    && (rowObject[pos[i]].getUplinks().size() == 0) 
+		    && (rowObject[pos[i]].getDownlinks().size() == 0)) {
+
+		    if(getColumns(rows-1) > _vMax) {  // If there are already too many elements in that row
+			rows++;                       // add a new empty row.
+		    }
+		    rowObject[pos[i]].setRank(rows - 1);  // Place the object in the last row.
+		} else {
+		    // Now set the position within the diagram.
+		    rowObject[pos[i]].setLocation(new Point(xPos, yPos));
+		    
+		    // Advance the horizontal position by the width of this figure.
+		    xPos += rowObject[pos[i]].getSize().getWidth() + getHGap();
+		}
 	    }
 
 	    // Advance the vertical position by the height of that row 
@@ -451,6 +449,23 @@ public class ClassdiagramLayouter implements Layouter {
 	}
 
 	return currentHeight;
+    }
+    
+    /**
+     * Get the number of elements in a given row
+     *
+     * @param row The row to check.
+     * @return The number of elements in the given row.
+     */
+    private int getColumns(int row) {
+	int result = 0;
+
+	// Check all the nodes in the layouter
+	for(int i=0; i < _layoutedObjects.size(); i++) {
+	    if((getClassdiagramNode(i)).getRank() == row)    // If the object is in this row
+		result++;                                    // add it to the result.
+	}
+	return result;
     }
 
     /**
