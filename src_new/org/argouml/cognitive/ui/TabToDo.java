@@ -48,7 +48,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   public static UMLAction _actionNewToDoItem = Actions.NewToDoItem;
   public static UMLAction _actionResolve = Actions.Resolve;
   public static UMLAction _actionEmailExpert = Actions.EmailExpert;
-  //public static UMLAction _actionMoreInfo = Actions.MoreInfo;
+  public static UMLAction _actionMoreInfo = Actions.MoreInfo;
   public static UMLAction _actionSnooze = Actions.Snooze;
   //public static UMLAction _actionRecordFix = Actions.RecordFix;
   //public static UMLAction _actionReplayFix = Actions.ReplayFix;
@@ -97,7 +97,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     toolBar.add(_actionNewToDoItem);
     toolBar.add(_actionResolve);
     toolBar.add(_actionEmailExpert);
-    //toolBar.add(_actionMoreInfo);
+    toolBar.add(_actionMoreInfo);
     toolBar.add(_actionSnooze);
     toolBar.addSeparator();
     
