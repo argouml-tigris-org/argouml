@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.swing.event.EventListenerList;
+import javax.swing.JToolBar;
 
 import tudresden.ocl.*;
 import tudresden.ocl.gui.*;
@@ -56,10 +57,98 @@ import org.argouml.ocl.*;
   */
 public class TabConstraints extends TabSpawnable implements TabModelTarget {
   
+
+  
   /**
-    * Adapter to provide information and a manipulation interface for a
-    * target element's set of constraints to the constraint editor.
+    * The actual editor pane.
     */
+  private OCLEditor m_ocleEditor;
+  
+  /**
+    * The current target element.
+    */
+  private MModelElement m_mmeiTarget;
+  
+  public TabConstraints() {
+    super ("tab.constraints");
+    
+    setLayout (new BorderLayout (0, 0));
+    
+    m_ocleEditor = new OCLEditor();
+    m_ocleEditor.setOptionMask (OCLEditor.OPTIONMASK_TYPECHECK /*|  //removed to workaround problems with autosplit
+                                  OCLEditor.OPTIONMASK_AUTOSPLIT*/);
+    m_ocleEditor.setDoAutoSplit (false);
+    setToolbarRollover(true);
+    setToolbarFloatable(false);
+
+    add (m_ocleEditor);
+  }
+
+  /** Set the toolbar rollover style.
+   * @param enable if true then button borders do not become visible until mouse rolls over button
+   */
+  private void setToolbarRollover(boolean enable) {
+    getOclToolbar().putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+  }
+  
+  /** Set the toolbar floating style
+   * @param enable If true then the toolbar can be floated and docked
+   */
+  private void setToolbarFloatable(boolean enable) {
+    getOclToolbar().setFloatable(false);
+  }
+
+  /** Get a reference to the toolbar object contained in the OCLEditor component.
+   * This is currently a nasty hack. We really require an interface method
+   * on OCLEditor (Bob Tarling 8 Feb 2003).
+   * @return The toolbar
+   */
+  private JToolBar getOclToolbar() {
+    return (JToolBar)m_ocleEditor.getComponent(0);
+  }
+  
+  //TabModelTarget interface methods
+  /**
+    * Should this tab be activated for the current target element?
+    */
+  public boolean shouldBeEnabled() {
+    return (m_mmeiTarget != null);
+  }
+  
+  /**
+    * Get the target element whose properties this tab presents.
+    */
+  public Object getTarget() {
+    return m_mmeiTarget;
+  }
+  
+  /**
+    * Refresh the tab because the target has changed.
+    */
+  public void refresh() {
+    setTarget(m_mmeiTarget);
+  }
+  
+  /**
+    * Set the target element to be displayed in this tab. Only model elements
+    * will be accepted by the constraint tab.
+    */
+  public void setTarget(Object oTarget) {
+    if (!(oTarget instanceof MModelElement)) {
+      m_mmeiTarget = null;
+      return;
+    }
+
+    m_mmeiTarget = (MModelElement) oTarget;
+    
+    // Set editor's model
+    m_ocleEditor.setModel (new ConstraintModel (m_mmeiTarget));
+  }
+  
+  /**
+  * Adapter to provide information and a manipulation interface for a
+  * target element's set of constraints to the constraint editor.
+  */
   private static class ConstraintModel implements OCLEditorModel {
     
     /**
@@ -482,65 +571,5 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         }
       }
     }
-  }
-  
-  /**
-    * The actual editor pane.
-    */
-  private OCLEditor m_ocleEditor;
-  
-  /**
-    * The current target element.
-    */
-  private MModelElement m_mmeiTarget;
-  
-  public TabConstraints() {
-    super ("tab.constraints");
-    
-    setLayout (new BorderLayout (0, 0));
-    
-    m_ocleEditor = new OCLEditor();
-    m_ocleEditor.setOptionMask (OCLEditor.OPTIONMASK_TYPECHECK /*|  //removed to workaround problems with autosplit
-                                  OCLEditor.OPTIONMASK_AUTOSPLIT*/);
-    m_ocleEditor.setDoAutoSplit (false);
-    add (m_ocleEditor);
-  }
-  
-  //TabModelTarget interface methods
-  /**
-    * Should this tab be activated for the current target element?
-    */
-  public boolean shouldBeEnabled() {
-    return (m_mmeiTarget != null);
-  }
-  
-  /**
-    * Get the target element whose properties this tab presents.
-    */
-  public Object getTarget() {
-    return m_mmeiTarget;
-  }
-  
-  /**
-    * Refresh the tab because the target has changed.
-    */
-  public void refresh() {
-    setTarget(m_mmeiTarget);
-  }
-  
-  /**
-    * Set the target element to be displayed in this tab. Only model elements
-    * will be accepted by the constraint tab.
-    */
-  public void setTarget(Object oTarget) {
-    if (!(oTarget instanceof MModelElement)) {
-      m_mmeiTarget = null;
-      return;
-    }
-
-    m_mmeiTarget = (MModelElement) oTarget;
-    
-    // Set editor's model
-    m_ocleEditor.setModel (new ConstraintModel (m_mmeiTarget));
   }
 }
