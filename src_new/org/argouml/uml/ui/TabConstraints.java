@@ -32,17 +32,20 @@ import javax.swing.JToolBar;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Category;
+
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ocl.ArgoFacade;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
+
 import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MModelElement;
+
 import tudresden.ocl.OclTree;
 import tudresden.ocl.check.OclTypeException;
 import tudresden.ocl.gui.ConstraintRepresentation;
@@ -55,6 +58,8 @@ import tudresden.ocl.parser.OclParserException;
 
 /**
   * Tab for OCL constraint editing.
+  *
+  * <p>$Id$
   *
   * @author v1.0: Falk Finger
   * @author v2.0: Steffen Zschaler
@@ -114,9 +119,13 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
     }
 
     //TabModelTarget interface methods
+    
     /**
-      * Should this tab be activated for the current target element?
-      */
+     * Should this tab be activated for the current target element?
+     *
+     * <p>Argo only supports constraints for Classes and Features
+     * (eg. Attributes and Operations) currently.
+     */
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
         return (ModelFacade.isAClass(target) || ModelFacade.isAFeature(target));
