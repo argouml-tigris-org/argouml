@@ -200,7 +200,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
     }
    
-    modelChanged();
+    // modelChanged();
   }
 
   ////////////////////////////////////////////////////////////////

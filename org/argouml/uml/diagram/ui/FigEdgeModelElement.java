@@ -536,7 +536,11 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         _fig.damage();
     }
     
-    private boolean updateClassifiers() {
+    /**
+     * Updates the classifiers the edge is attached to. 
+     * @return boolean
+     */
+    protected boolean updateClassifiers() {
     Object owner = getOwner();
     if (owner == null || getLayer() == null) return false;
     
@@ -554,27 +558,29 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     if (newSource != currentSource || newDest != currentDestination) {
         Fig newSourceFig = getLayer().presentationFor(newSource);
         Fig newDestFig = getLayer().presentationFor(newDest);
+    
         if (newSourceFig == null || newDestFig == null) {
             delete();
             return false;
         }
-        if (newSourceFig != currentSourceFig || currentSourceFig == null) {
+        if (newSourceFig != null && newSourceFig != currentSourceFig) {
             setSourceFigNode((FigNode)newSourceFig);
             setSourcePortFig(newSourceFig);
             
         }
-        if (newDestFig != currentDestFig || currentDestFig == null) {
+        if (newDestFig != null && newDestFig != currentDestFig) {
             setDestFigNode((FigNode)newDestFig);
             setDestPortFig(newDestFig);            
         }
-        if (newDestFig != null) {
+        if (newDestFig != null && newSourceFig != null) {
             ((FigNode)newSourceFig).updateEdges();
         }
-        if (newSourceFig != null) {
+        if (newSourceFig != null && newDestFig != null) {
             ((FigNode)newDestFig).updateEdges();
         }
         calcBounds();
     }
+    
     return true;
   }
   
@@ -599,7 +605,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     */
   protected MModelElement getDestination() {
     if (getOwner() != null) {
-        MModelElement newDest = (MClassifier)CoreHelper.getHelper().getDestination((MRelationship)getOwner());
+        return (MClassifier)CoreHelper.getHelper().getDestination((MRelationship)getOwner());
     }
     return null;
   }
