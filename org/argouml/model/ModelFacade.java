@@ -5935,10 +5935,7 @@ public class ModelFacade {
         String tag,
         String value) {
         if (target instanceof MModelElement) {
-            MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
-            tv.setModelElement((MModelElement)target);
-            tv.setTag(tag);
-            tv.setValue(value);
+	    ((MModelElement)target).setTaggedValue(tag, value);
             return;
         }
         throw new IllegalArgumentException("Unrecognized object : " + 
