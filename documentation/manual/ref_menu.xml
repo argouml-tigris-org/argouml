@@ -10,8 +10,6 @@ A description of all the menu bar entries
 <chapter id="ch.ref.menu">
   <title>The Menu bar</title>
 
-  &notupdatedfor014disclaimer;
-
   <sect1>
     <title>Introduction</title>
 
@@ -23,12 +21,15 @@ A description of all the menu bar entries
     <para>A number of the common menu entries are also available through
       keyboard shortcuts.</para>
 
-    <warning><para>It should also be possible to navigate the menu from the
-      keyboard, Motif style. Each level of each menu is identified by a letter
-      (shown underlined in the menu or entry name). This sequence of letters
-      while holding down the ALT key should select the entry. In the current
-      version of &argouml; this functionality is only available when running
-      under Microsoft Windows.</para></warning>
+    <para>It is also be possible to navigate the menu from the
+      keyboard. Each level of each menu is identified by a letter
+      (shown underlined in the menu or entry name 
+      from the moment the ALT key is pressed). 
+      This sequence of letters while holding down the ALT key selects the entry. 
+      In the version V0.14 of &argouml; this functionality is only available when running
+      under Microsoft Windows.
+<!-- TODO: confirm that on other than MSWindows this functionality is absent -->
+      </para>
 
     <para>
 The following is an explanation of why the menuitems are grouped as they are.
@@ -92,7 +93,10 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
 
     <para>Behavior of the mouse in general, and the naming of the buttons is
       covered in the chapter on the overall user interface (see
-      <xref linkend="ch.ref.ui"/>).</para>
+      <xref linkend="s1.ref.mouse"/>). 
+      There is no &argouml; specific behaviour for the menu.
+      <!-- TODO: So, the next parts can all be removed! -->
+      </para>
 
     <!-- Button1 click -->
 
@@ -172,10 +176,10 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
     <sect2 id="s2.ref.menu_new">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center" fileref="images/icons/new.gif"/>
-        </imageobject></inlinemediaobject></guiicon> New&hellip;</title>
+        </imageobject></inlinemediaobject></guiicon> New</title>
 
       <indexterm>
-	<primary>New&hellip;</primary>
+	<primary>New</primary>
       </indexterm>
       <indexterm>
 	<primary>Shortcut key</primary>
@@ -184,18 +188,36 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
       <para>Shortcut Ctrl-N.</para>
 
       <para>This initializes a new project within &argouml;. The project is
-        created with the name <literal>untitledModel</literal> and with two
-        empty diagrams: a class diagram and a use case diagram.</para>
-
-      <note><para>Although the entry is named <literal>New&hellip;</literal>
-        there is no dialog&mdash;the project is just created. The entry should
-        properly be just <literal>New</literal>.</para></note>
+        created without a the name. It contains a (top-level) 
+        <literal>Model</literal> named <literal>untitledModel</literal> 
+        and two empty diagrams: 
+        a class diagram and a use case diagram.</para>
 
       <caution><para><literal>untitledModel</literal> is not a conventional
         model name (most processes suggest models should start with an upper
         case letter). &argouml; permits you to use a lower case letter, but
+<!-- TODO: The critic suggests to use lowercase only! 
+So, who is right? - the critic, or the description here? -->
         a critic will trigger to warn that this is not conventional. See <xref
         linkend="s1.ref.model"/> for a discussion of this.</para></caution>
+        
+      <para>
+        If the model has been altered, then activating the "New" function is
+        potentionally not the user's intention, since it will erase the changes.
+        Hence a confirmation dialog appears to allow the user to save his work
+        first, or cancel the operation completely.
+      </para>
+      
+      <figure float="1">
+        <title>The confirmation dialog for <literal>New</literal>.</title>
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="PNG" align="center"
+                       fileref="images/reference/menu_dialog_confirm_new.png"/>
+          </imageobject>
+        </mediaobject></screenshot>
+      </figure>
+      
     </sect2>
 
     <!-- Open existing project -->
@@ -215,7 +237,8 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
       </indexterm>
       <para>Shortcut Ctrl-O.</para>
 
-      <para>This opens an existing project. Selecting this menu option will
+      <para>This opens an existing project from a file. 
+        Selecting this menu option will
         open a file selection dialog (see
         <xref linkend="fig.ref.menu_open_project"/>).</para>
 
@@ -256,13 +279,20 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
         <guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/details_files.gif"/>
-        </imageobject></inlinemediaobject></guiicon> (which is always grayed
-          out) that would show details of all files if enabled.</para>
+        </imageobject></inlinemediaobject></guiicon> 
+        that shows details of all files.</para>
 
       <para>The main body of the dialog is a text area with a listing of all
+        directories and
         files in the currently selected directory which match the current
         filter (see below). If these will not all fit on the display,
-        scroll bars are provided to move up and down.</para>
+        scroll bars are provided to browse through the list.</para>
+      
+      <para>Hence, navigating up a directory tree is possible by selecting 
+        a directory in the drop down selector at the top of this dialog.
+        Navigating deeper in the tree happens by double clicking &button1; on
+        the directory shown in the main text area.
+      </para>
 
       <para>In the lower portion of the dialog is a text box labeled
         <literal>File&nbsp;name:</literal> for the name of the file to be
@@ -272,20 +302,18 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
       <para>Beneath this is a drop down selector labeled
         <literal>Files&nbsp;of&nbsp;type:</literal> to specify a filter on the
         files to be shown in the directory listing. Only files that match the
-        filter are listed. The available filters are:</para>
+        filter are listed. The available filters are listed below. 
+        The default filter is the second one (.zargo).</para>
 
       <itemizedlist>
-        <listitem><para>all files;</para></listitem>
-
-        <listitem><para>zipped Argo project files (the
-          default);</para></listitem>
-
-        <listitem><para>Argo project files; and</para></listitem>
-
-        <listitem><para>XMI format files.</para></listitem>
+        <listitem><para>All Files</para></listitem>
+        <listitem><para>Argo compressed project files (*.zargo)</para></listitem>
+        <listitem><para>Argo uncompressed project file (*.argo)</para></listitem>
+        <listitem><para>XMI Metadata Interchange (*.xmi)</para></listitem>
       </itemizedlist>
 
-     <para>Argo project files are produced by earlier releases of &argouml;,
+      <para>Argo uncompressed project files (*.argo) 
+        were produced by earlier releases of &argouml;,
         XMI files allow you to use diagrams from other tools (which may not
         always work!).</para>
 
@@ -313,14 +341,19 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
       </indexterm>
       <para>Shortcut Ctrl-S.</para>
 
-      <para>This saves the project using its current file name.</para>
+      <para>This saves the project using its current file name.
+        Use <literal>Save&nbsp;Project&nbsp;As&hellip;</literal> to save the
+        project to a different file.
+        If no filename is given yet (e.g. after <literal>New</literal>), 
+        then this function works
+        exactly as <literal>Save Project As&hellip;</literal>.
+      </para>
 
-      <note><para>A newly created project (see
-        <xref linkend="s2.ref.menu_new"/>) will not have been saved to
-        file. And so this entry is grayed out. Use
-        <literal>Save&nbsp;Project&nbsp;As&hellip;</literal> to save the
-        project to a file for the first time (see
-        <xref linkend="s2.ref.menu_save_project_as"/>).</para></note>
+      <note><para>In certain circumstances, there is nothing to save,
+        and this menuitem is downlighted.
+        E.g. when the user did not yet alter a loaded project. 
+        <!-- TODO: add tip for 0.15.1: How can you see that the file is altered. -->
+      </para></note>
     </sect2>
 
     <!-- Save project under different name -->
@@ -332,23 +365,18 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
         different file name (or to specify a file name for the first time if
         the project is a new project).</para>
 
-      <caution><para>If you are using an experimental version of &argouml; you
-        will receive a warning message that file formats are not guaranteed to
-        be supported in the long term. You should be cautious about using
-        unstable versions of the system for important
-        projects.</para></caution>
-
       <para>The dialog box is identical to that for
         <literal>Open&nbsp;Project</literal> (see 
-        <xref linkend="fig.ref.menu_open_project"/>). The
-        <literal>Files&nbsp;of&nbsp;type:</literal> also specifies the file
-        type used for saving, and you should choose a filename with the
-        corresponding ending.</para>
+        <xref linkend="fig.ref.menu_open_project"/>). 
+        The  <literal>Files&nbsp;of&nbsp;type:</literal> drop down selector 
+        also specifies the file type used for saving, 
+        but only the <literal>.zargo</literal> format is available.
+        The extension of the filename is automatically set.</para>
 
-      <tip><para>Zipped Argo Project files, ending in <literal>.zargo</literal>
+      <!--tip><para>Zipped Argo Project files, ending in <literal>.zargo</literal>
         (the default) are the most efficient way of saving projects. They
         capture all the model and graphical information in a very compact
-        format.</para></tip>
+        format.</para></tip-->
     </sect2>
 
     <!-- Revert to saved project -->
@@ -361,7 +389,7 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
 This menu-item allows you to throw away all your recent changes, 
 and reload the last saved version of the current project. 
 It works a bit like an <literal>Undo</literal> feature, 
-but only restores changes done since the last time the user saved.
+but only restores changes done since the last time the file was saved.
       </para>
 
       <para>
@@ -393,25 +421,9 @@ Selecting <literal>Yes</literal> reloads the last saved file.
       </figure>
     </sect2>
 
-
-    <!-- Import -->
-
-    <sect2>
-      <title>Import&hellip;</title>
-
-      <para>This sub-menu provides access to mechanisms to import a variety of
-        material into &argouml;. In the current version of &argouml; only one
-        type of import is provided as standard, the importing of Java code for
-        reverse engineering.</para>
-
-      <note><para>Despite being named <literal>Import&hellip;</literal> there
-        is no dialog box associated with the Import menu itself (there may be
-        with the sub-menu entries). It should strictly speaking be labeled
-        just <literal>Import</literal> on the menu.</para></note>
-
       <!-- Import sources -->
 
-      <sect3 id="s3.ref.menu_import_sources">
+      <sect2 id="s3.ref.menu_import_sources">
         <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/import_sources.gif"/>
@@ -447,52 +459,108 @@ Selecting <literal>Yes</literal> reloads the last saved file.
           <literal>Open&nbsp;Project</literal> behave in the same way (see
           <xref linkend="s2.ref.menu_open_project"/>).</para>
 
-        <caution><para>The only file filter provided selects all files. However
-          reverse engineering is currently only available, and Java source
-          files only should be selected.</para></caution>
+        <para>Next to the "All Files" file filter, there is only the default
+          filter "Java Source File (*.java)".
+        </para>
 
         <para>The first of the two tabs is labeled <literal>General</literal>
-          and is selected by &button1; click on its tab. It provides a single
-          check box
-          <literal>Descend&nbsp;directories&nbsp;recursively</literal>. If
-          enabled (the default), reverse engineering will track through
-          sub-directories for any further Java files. If not it will restrict
-          to the selected directory.</para>
-
+          and is selected by &button1; click on its tab. 
+          It provides a combo box for the language selection 
+          (in V0.14 of &argouml; only Java can be chosen), 
+          and the following check boxes:
+        </para>
+        
+        <itemizedlist>
+          <listitem>
+            <para>
+              <literal>Descend&nbsp;directories&nbsp;recursively</literal>. If
+              enabled (the default), reverse engineering will track through
+              sub-directories for any further Java files. If not it will restrict
+              to the selected directory.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <literal>Create diagrams from imported code</literal>
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <literal>Minimise Class icons in diagrams</literal>. If selected,
+              then attributes and operations will not be shown in the generated
+              class diagrams.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              <literal>Perform Automatic Diagram Layout</literal>
+            </para>
+          </listitem>
+        </itemizedlist>
+          
         <para>The second of the two tabs is labeled <literal>Java</literal>
           and is selected by &button1; click on its tab. It provides two pairs
           of radio boxes.</para>
+        <!-- TODO: Should be drawn in a box to clearly seperate the pairs. 
+        See issue ... -->
+        <!-- TODO: The 2nd pair should be labeled "Arrays modelled as", 
+        to be conform with the 1st. See issue ... -->
+        
+        <itemizedlist>
+          <listitem>
+            <para>
+              The first radio box allows selection between modeling attributes
+              of Java classes as UML attributes (the default) or as UML
+              associations to the class specified.
+            </para>
+          </listitem>
 
-        <para>The first radio box allows selection between modeling attributes
-          of Java classes as UML attributes (the default) or as UML
-          associations to the class specified.</para>
-
-        <para>The second radio box allows selection between modeling arrays as
-new datatypes in their own right (the default) or as their base
-          datatype with multiplicity.</para>
-      </sect3>
+          <listitem>
+            <para>
+              The second radio box allows selection between modeling arrays as
+              new datatypes in their own right (the default) or as their base
+              datatype with multiplicity.
+            </para>
+          </listitem>
+        </itemizedlist>
     </sect2>
 
     <!-- Load model from DB (grayed out) -->
 
-    <sect2>
+    <!--sect2>
       <title>Load Model From DB</title>
 
       <para>ArgoUML has the ability to save models to and from an SQL
         database. However the code for this is quite old, and at present this
         menu option is grayed out.</para>
-    </sect2>
+    </sect2-->
 
     <!-- Save model to DB (grayed out) -->
 
-    <sect2>
+    <!--sect2>
       <title>Save Model To DB</title>
 
       <para>ArgoUML has the ability to save models to and from an SQL
         database. However the code for this is quite old, and at present this
         menu option is grayed out.</para>
-    </sect2>
+    </sect2-->
 
+    <!-- Printer setup -->
+
+    <sect2>
+      <title><guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center" fileref="images/icons/page_setup.gif"/>
+        </imageobject></inlinemediaobject></guiicon> Page&nbsp;Setup&hellip;</title>
+
+      <indexterm>
+        <primary>Page Setup &hellip;</primary>
+      </indexterm>
+
+      <para>This brings up the standard dialog box provided by the operating system 
+        to adjust printer paper size, orientation, and other options.
+      </para>
+    </sect2>
+    
     <!-- Print out the model -->
 
     <sect2 id="s2.ref.menu_print">
@@ -501,20 +569,65 @@ new datatypes in their own right (the default) or as their base
         </imageobject></inlinemediaobject></guiicon> Print&hellip;</title>
 
       <indexterm>
-	<primary>Print &hellip;</primary>
+        <primary>Print &hellip;</primary>
       </indexterm>
       <indexterm>
-	<primary>Shortcut key</primary>
-	<secondary>Ctrl-P</secondary>
+        <primary>Shortcut key</primary>
+        <secondary>Ctrl-P</secondary>
       </indexterm>
       <para>Shortcut Ctrl-P.</para>
 
-      <para>This brings up a dialog box allowing the &argouml; model to be
+      <para>This brings up the standard dialog box provided 
+        by the operating system allowing the &argouml; model to be
         printed out.</para>
 
-      <warning><para>In the current release of &argouml; this function behaves
+      <warning><para>In the V0.12 release of &argouml; this function behaves
+      <!-- TODO: check if this is still true. 
+      Is this ArgoUML related? If not better not mention it at all. -->
         strangely if you have no printer configured under Linux. A small dialog
         box appears, but it has no functionality.</para></warning>
+        
+      <para>
+        In some cases, when the printing is started, the dialog box of 
+        <xref linkend="fig.ref.menu_diagram_exceeds_page"/>
+        appears. Selecting the "Fit to page" button does print the whole diagram
+        fitted on one page by scaling it down. 
+        Which might cause all text to be too small to read in case of big
+        diagrams, but it is a quick and easy way to get an usable printout.
+        Selecting the "Multiple pages"
+        option does print unscaled, by dividing the diagram in pieces, 
+        on as many pages as needed.
+        Pressing the close button of the dialog does the former option.
+<!-- TODO: It should better cancel the printing process completely, isn't it? 
+Or should this be offered as a 3rd choice? -->
+      </para>
+
+      <figure id="fig.ref.menu_diagram_exceeds_page" float="1">
+        <title>The diagram exceeds page size dialog.
+        </title>
+
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
+                fileref="images/reference/menu_diagram_exceeds_page.png"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+      </figure>
+      
+      <caution>
+        <para>
+          If the diagram contains no selected artifacts, then the whole diagram
+          is printed. However, if one or more artifacts are selected, then only
+          the area they cover is printed! If scaling is selected (by the "Fit to
+          page" choice in the dialog box descibed above), then the scaling is
+          done on  basis of the selected artifacts only. If scaling is not
+          chosen (or in case it is not needed), then all pages containing a
+          selected artifact are printed.
+        </para>
+      </caution>
+      
     </sect2>
 
     <!-- Save the graphics of the model -->
@@ -528,36 +641,32 @@ new datatypes in their own right (the default) or as their base
 
       <para>The dialog box is identical to that for
         <literal>Open&nbsp;Project</literal> (see 
-        <xref linkend="fig.ref.menu_open_project"/>). The
-        <literal>Files&nbsp;of&nbsp;type:</literal> also specifies the graphics
-        type used for saving, and you should choose a filename with the
-        corresponding ending.</para>
+        <xref linkend="fig.ref.menu_open_project"/>), except for the
+        <literal>Files&nbsp;of&nbsp;type:</literal>. The chosen filetype
+        specifies the graphics format used for saving. 
+        The filename is automatically extended with the
+        corresponding ending (if not entered already). 
+        A default filename is generated based on the diagram name.</para>
 
       <para>The available graphics types are:</para>
 
       <itemizedlist>
-        <listitem><para>GIF (the default);</para></listitem>
+        <listitem><para>GIF image (*.gif)</para></listitem>
 
-        <listitem><para>Postscript;</para></listitem>
+        <listitem><para>Postscript file (*.ps)</para></listitem>
 
-        <listitem><para>Encapsulated Postscript; and</para></listitem>
+        <listitem><para>Encapsulated Postscript file (*.eps)</para></listitem>
 
-        <listitem><para>Scalable Vector Graphics (SVG).</para></listitem>
+        <listitem><para>Scalable Vector Graphics file (*.svg)</para></listitem>
       </itemizedlist>
 
-      <para>The filter also allows you to specify all files, in which case the
-        file type is deduced from the filename ending.</para>
-
+      <para>The GIF format is the default.</para>
+      
       <caution><para>You should be aware that there are patent issues
+        <!-- TODO: Deal with it! -->
         surrounding GIF files and act accordingly. There are
         <emphasis>currently</emphasis> no such concerns about
         SVG.</para></caution>
-
-      <warning><para>If you use the all files filter and specify a filename
-        ending that &argouml; does not support (i.e. anything other than
-        <literal>.gif</literal>, <literal>.ps</literal>,
-        <literal>.eps</literal> and <literal>.svg</literal>) &argouml; will
-        silently do nothing.</para></warning>
     </sect2>
 
     <!-- Save configuration data -->
@@ -591,9 +700,10 @@ new datatypes in their own right (the default) or as their base
       </indexterm>
       <para>Shortcut Alt-F4.</para>
 
-      <para>This closes down &argouml; A warning message will pop-up if you
+      <para>This closes down &argouml;. A warning message will pop-up if you
         have a project open with unsaved changes asking if you wish to save
-        it. The three options are:</para>
+        it. See <xref linkend="fig.ref.menu_save_changes"/>.
+        The options are:</para>
 
       <itemizedlist>
         <listitem><para><literal>Yes</literal> (save the project and
@@ -604,15 +714,44 @@ new datatypes in their own right (the default) or as their base
 
         <listitem><para><literal>Cancel</literal> (do not save the project and
           do not exit &argouml;).</para></listitem>
+          
+        <listitem>
+          <para>The dialog box can also be closed by clicking in the
+            close button in the window border. The effect is the same as selecting
+            "No".
+            <!-- TODO: This is unexpected! See issue ... -->
+          </para>
+        </listitem>
       </itemizedlist>
+      
+      <figure id="fig.ref.menu_save_changes" float="1">
+        <title>The save changes dialog.
+        </title>
+
+        <screenshot>
+          <mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
+                fileref="images/reference/menu_save_changes.png"/>
+            </imageobject>
+          </mediaobject>
+        </screenshot>
+      </figure>
+
+      
     </sect2>
   </sect1>
 
   <!-- The Edit menu entries -->
+
+  
+
   
   <sect1>
     <title>The Edit Menu</title>
 
+    &notupdatedfor014disclaimer;
+    
     <para>This menu provides support for selecting artifacts on the editing
       pane; an undo/redo function; cut, copy and paste functions; removal of
       artifacts from diagrams and the model; and control of user
