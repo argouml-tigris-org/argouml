@@ -544,6 +544,7 @@ ${Name} Build file
   <target name="clean" depends="init">
     <delete dir="${build.dir}/src_new"/>
     <delete dir="${build.dir}/javadocs"/>
+    <delete dir="${build.dir}/ext"/>
     <delete dir="${build.dir}/classes"/>
     <delete dir="${build.dir}/bin"/>
     <delete file="${build.src}/${version.package}/ArgoVersion.java"/>
