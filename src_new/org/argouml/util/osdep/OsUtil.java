@@ -41,19 +41,32 @@ public class OsUtil {
     private OsUtil() {
     }
 
-    /** check whether we deal with a Windows Operating System. */
+    /** 
+     * Check whether we deal with a Windows Operating System.
+     * 
+     * @return true if this is Windows
+     */
     public static boolean isWin32() {
         return (System.getProperty("os.name").indexOf("Windows") != -1);
     }
     
-    /** check whether we deal with a Macintosh. */
+    /** 
+     * Check whether we deal with a Macintosh.
+     * 
+     * @return true if this is a Mac
+     */
     public static boolean isMac() {
         return (System.getProperty("mrj.version") != null);
     }
 
-    /** check whether we deal with a Sun JDK. */
+    /** 
+     * Check whether we deal with a Sun Java. 
+     * 
+     * @return true if this is a Sun Java
+     */
     static boolean isSunJdk() {
-        return (System.getProperty("java.vendor").equals("Sun Microsystems Inc."));
+        return (System.getProperty("java.vendor")
+                .equals("Sun Microsystems Inc."));
     }
 
     /** check whether we deal with a JDK 1.3.x */
@@ -61,7 +74,12 @@ public class OsUtil {
         return (System.getProperty("java.version").startsWith("1.3.")); 
     }
 
-    /** return proper FileChooser */
+    /** 
+     * Return a proper FileChooser. This replaces the normal FileChooser with a
+     * system-dependent one, but solely in case of Sun Java 1.3.1 on Windows. 
+     * 
+     * @return <code>JFileChooser</code>
+     */
     public static JFileChooser getFileChooser() {
         if (isWin32() && isSunJdk() && isJdk131()) {
 	    return new JFileChooser(new Win32FileSystemView());
@@ -70,7 +88,19 @@ public class OsUtil {
 	    return new JFileChooser();
 	}
     }
-    /** return proper FileChooser */
+    /**
+     * Return a proper FileChooser. This replaces the normal FileChooser with a
+     * system-dependent one, but solely in case of Sun Java 1.3.1 on Windows. 
+     * 
+     * @param directory a <code>String</code> giving the path to a file 
+     * or directory. Passing in a <code>null</code>
+     * string causes the file chooser to point to the user's default directory.
+     * This default depends on the operating system. It is
+     * typically the "My Documents" folder on Windows, and the user's
+     * home directory on Unix.
+     * 
+     * @return <code>JFileChooser</code>
+     */
     public static JFileChooser getFileChooser(String directory) {
         if (isWin32() && isSunJdk() && isJdk131()) {
 	    return new JFileChooser(directory, new Win32FileSystemView());
