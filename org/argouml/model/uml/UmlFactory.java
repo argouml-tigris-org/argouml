@@ -807,6 +807,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
             ((MBase) elem).remove();
             // TODO: (MVW) How do we replace next statement? Model.getPump()...
             UmlModelEventPump.getPump().cleanUp((MBase) elem);
+            UmlModelListener.getInstance().deleteElement(elem);
         }        
     }
 
