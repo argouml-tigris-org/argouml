@@ -29,6 +29,7 @@ import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
 
@@ -51,6 +52,7 @@ public abstract class UMLList2
         // setDoubleBuffered(true);
         getSelectionModel().addListSelectionListener(this);
         setCellRenderer(new UMLListCellRenderer2(showIcon));
+        setFont(LookAndFeelMgr.getInstance().getSmallFont());
     }
 
     public UMLList2(UMLModelElementListModel2 dataModel) {
@@ -71,6 +73,7 @@ public abstract class UMLList2
         getSelectionModel().addListSelectionListener(this);
         if (renderer != null)
             setCellRenderer(renderer);
+        setFont(LookAndFeelMgr.getInstance().getSmallFont());
     }
 
     /**

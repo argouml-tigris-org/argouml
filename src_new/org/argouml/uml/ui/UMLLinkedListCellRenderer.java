@@ -51,7 +51,7 @@ public class UMLLinkedListCellRenderer extends UMLListCellRenderer2 {
      */
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        /*        
+        /*       
         label.setBackground(list.getBackground());
         label.setForeground(list.getForeground());
         label.setBorder(BorderFactory.createEmptyBorder());
