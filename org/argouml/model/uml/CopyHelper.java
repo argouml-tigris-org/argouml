@@ -170,7 +170,6 @@ public final class CopyHelper {
 			return (MModelElement) f.method.invoke(f.object, args);
 		} catch (Exception e) {
 			cat.error("CopyHelper copy method exception", e);
-			System.out.println("except");
 			return null;
 		}
 	}
