@@ -274,29 +274,29 @@ implements ActionListener, MouseListener {
 
 
   public void initTypes() {
-    _type.addItem(PredicateType.create());
+    _type.addItem(PredicateMType.create());
 
-    _type.addItem(PredicateType.create(MClass.class, MInterface.class));
-
-    _type.addItem(PredicateType.create(MActor.class));
-    _type.addItem(PredicateType.create(MAssociation.class));
-    _type.addItem(PredicateType.create(MAttribute.class));
-    _type.addItem(PredicateType.create(MClassifier.class));
-    _type.addItem(PredicateType.create(MCompositeState.class));
-    _type.addItem(PredicateType.create(MDependency.class));
-    _type.addItem(PredicateType.create(MGeneralization.class));
-    _type.addItem(PredicateType.create(MInstance.class));
-    _type.addItem(PredicateType.create(MInterface.class));
-    _type.addItem(PredicateType.create(MLink.class));
-    _type.addItem(PredicateType.create(MClass.class));
-    _type.addItem(PredicateType.create(MPackage.class));
-    _type.addItem(PredicateType.create(MOperation.class));
-    _type.addItem(PredicateType.create(MPseudostate.class));
-	//    _type.addItem(PredicateType.create(Realization.class));
-    _type.addItem(PredicateType.create(MState.class));
-    _type.addItem(PredicateType.create(MStateVertex.class));
-    _type.addItem(PredicateType.create(MTransition.class));
-    _type.addItem(PredicateType.create(MUseCase.class));
+    _type.addItem(PredicateMType.create(MClass.class));
+    _type.addItem(PredicateMType.create(MInterface.class));
+    _type.addItem(PredicateMType.create(MActor.class));
+    _type.addItem(PredicateMType.create(MAssociation.class));
+    _type.addItem(PredicateMType.create(MAttribute.class));
+    _type.addItem(PredicateMType.create(MClassifier.class));
+    _type.addItem(PredicateMType.create(MCompositeState.class));
+    _type.addItem(PredicateMType.create(MDependency.class));
+    _type.addItem(PredicateMType.create(MGeneralization.class));
+    _type.addItem(PredicateMType.create(MInstance.class));
+    _type.addItem(PredicateMType.create(MInterface.class));
+    _type.addItem(PredicateMType.create(MLink.class));
+    _type.addItem(PredicateMType.create(MClass.class));
+    _type.addItem(PredicateMType.create(MPackage.class));
+    _type.addItem(PredicateMType.create(MOperation.class));
+    _type.addItem(PredicateMType.create(MPseudostate.class));
+	//    _type.addItem(PredicateMType.create(Realization.class));
+    _type.addItem(PredicateMType.create(MState.class));
+    _type.addItem(PredicateMType.create(MStateVertex.class));
+    _type.addItem(PredicateMType.create(MTransition.class));
+    _type.addItem(PredicateMType.create(MUseCase.class));
 
   }
 
@@ -413,3 +413,52 @@ implements ActionListener, MouseListener {
     FindDialog.SINGLETON.show();
   }
 } /* end class FindDialog */
+
+
+/** PredicateMType is a small helper class which removes a trailing
+ *  M from the string representation of the Type, as all the types
+ *  are MThings. Thus they are more human readable when displayed
+ *  in the Find dialog
+ */
+class PredicateMType extends PredicateType
+{
+    protected PredicateMType(Class pats[]) {
+        super(pats, pats.length);
+    }
+  
+    protected PredicateMType(Class pats[], int numPats) {
+        super(pats, numPats);
+    }
+
+    public static PredicateType create() {
+        return new PredicateMType(null, 0);
+    }
+
+    public static PredicateType create(Class c0) {
+        Class classes[] = new Class[1];
+        classes[0] = c0;
+        return new PredicateMType(classes);
+    }
+
+    public static PredicateType create(Class c0, Class c1) {
+        Class classes[] = new Class[2];
+        classes[0] = c0;
+        classes[1] = c1;
+        return new PredicateMType(classes);
+    }
+
+    public static PredicateType create(Class c0, Class c1, Class c2) {
+        Class classes[] = new Class[3];
+        classes[0] = c0;
+        classes[1] = c1;
+        classes[2] = c2;
+        return new PredicateMType(classes);
+    }
+
+
+    public String toString() {
+        String result = super.toString();
+        if (result.startsWith("M")) result = result.substring(1);
+        return result;
+    }
+}
