@@ -31,6 +31,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 import java.util.Vector;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.border.EtchedBorder;
 
@@ -41,7 +42,6 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionCopy;
 import org.argouml.uml.ui.ActionCut;
-import org.argouml.uml.ui.ActionPaste;
 import org.argouml.uml.ui.TabModelTarget;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -380,6 +380,31 @@ class ArgoEditor extends Editor {
             mode((FigModifyingMode)Globals.mode());
             setUnderMouse(me);
             _modeManager.mouseEntered(me);
+        }
+        
+    /** Invoked when the mouse button has been moved (with no buttons no down). */
+        public void mouseMoved(MouseEvent me) {
+            //- RedrawManager.lock();
+            translateMouseEvent(me);
+            Globals.curEditor(this);
+            setUnderMouse(me);
+            if (_curFig != null && Globals.getShowFigTips()) {
+                String tip = _curFig.getTipString(me);
+                if (tip != null && tip.length() > 0 && !tip.endsWith(" "))
+                    tip += " ";
+                if (tip != null && (getAwtComponent() instanceof JComponent)) {
+                    if (((JComponent)getAwtComponent()).getToolTipText() != null && !((JComponent)getAwtComponent()).getToolTipText().equals(tip))
+                    ((JComponent)getAwtComponent()).setToolTipText(tip);
+                }
+            } else if (getAwtComponent() instanceof JComponent) {
+                if (((JComponent)getAwtComponent()).getToolTipText() != null)            
+                    ((JComponent)getAwtComponent()).setToolTipText(null); //was ""
+            }
+
+            _selectionManager.mouseMoved(me);
+            _modeManager.mouseMoved(me);
+            //- RedrawManager.unlock();
+            //- _redrawer.repairDamage();
         }
 
     }
