@@ -150,7 +150,8 @@ public class ActionSaveProject extends UMLAction {
   }
 
   public boolean shouldBeEnabled() {
-    URL url = ProjectBrowser.TheInstance.getProject().getURL();
+    URL url = ProjectBrowser.TheInstance.getProject() != null ?
+		ProjectBrowser.TheInstance.getProject().getURL() : null;
     return super.shouldBeEnabled() && url != null;
   }
 } /* end class ActionSaveProject */
