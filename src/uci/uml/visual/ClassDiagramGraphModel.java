@@ -375,11 +375,11 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 		  return asc;
 	}
 
-	else if (edgeClass == MAbstractionImpl.class) {
-		MAbstraction real = MMUtil.SINGLETON.buildRealization(fromIntf, toCls);
-		addEdge(real);
-		return real;
-	}
+// 	else if (edgeClass == MAbstractionImpl.class) {
+// 		MAbstraction real = MMUtil.SINGLETON.buildRealization(toCls, fromIntf);
+// 		addEdge(real);
+// 		return real;
+// 	}
 
 	else {
 	  System.out.println("Cannot make a "+ edgeClass.getName() +
