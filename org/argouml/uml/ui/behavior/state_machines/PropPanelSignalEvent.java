@@ -59,7 +59,8 @@ public class PropPanelSignalEvent extends PropPanelEvent {
         new PropPanelButton(this, lookupIcon("Parameter"), 
                 Translator.localize("button.new-parameter"),
                 new ActionNewParameter());
-        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
     }
 
 } 

@@ -106,7 +106,8 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
                 Translator.localize("button.new-extension-point"),
                 new ActionNewExtensionPoint());
 
-        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
     }
 
     /**

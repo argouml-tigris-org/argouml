@@ -82,7 +82,8 @@ public class PropPanelInterface extends PropPanelClassifier {
 	        Translator.localize("button.new-interface"), 
 	        new ActionNewInterface());
     
-	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
     }
     
 } /* end class PropPanelInterface */

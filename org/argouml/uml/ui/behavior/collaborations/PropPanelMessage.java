@@ -116,8 +116,8 @@ public class PropPanelMessage extends PropPanelModelElement {
                 Translator.localize("button.new-action"),
                 new ActionToolNewAction());
         
-        addButton(new PropPanelButton2(this, 
-            new ActionRemoveFromModel()));    
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());    
     }
 
     private class ActionToolNewAction extends AbstractActionNewModelElement {

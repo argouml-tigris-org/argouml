@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -65,8 +66,8 @@ public class PropPanelLink extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateNamespace()));
-        addButton(new PropPanelButton2(this, 
-                new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
 	
     }
 

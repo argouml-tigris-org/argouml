@@ -128,7 +128,8 @@ public class PropPanelOperation extends PropPanelFeature {
         new PropPanelButton(this, lookupIcon("SignalSending"),
                 Translator.localize("button.new-raised-signal"), 
                 new ActionNewRaisedSignal());
-        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
     }
 
     /**

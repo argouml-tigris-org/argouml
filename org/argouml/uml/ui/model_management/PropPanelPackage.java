@@ -131,8 +131,8 @@ public class PropPanelPackage extends PropPanelNamespace  {
         new PropPanelButton(this, lookupIcon("Package"), 
                 Translator.localize("button.new-package"), 
                 new ActionAddPackage());
-        addButton(new PropPanelButton2(this, 
-            new ActionRemoveFromModel()));
+        new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
+            "action.delete-from-model"), new ActionRemoveFromModel());
     }
 
     /** add a package to the current package. */
