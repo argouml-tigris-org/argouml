@@ -23,33 +23,55 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Rectangle;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+import java.beans.PropertyVetoException;
 import java.text.ParseException;
-import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
+import javax.swing.JMenu;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.language.helpers.*;
-import org.argouml.ui.*;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.application.api.Notation;
+import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.CompartmentFigText;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.generator.ParserDisplay;
+import org.argouml.uml.ui.ActionAddNote;
+import org.argouml.uml.ui.ActionAddOperation;
+import org.argouml.uml.ui.ActionCompartmentDisplay;
+import org.argouml.uml.ui.ActionModifier;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MComponent;
+import ru.novosoft.uml.foundation.core.MElementResidence;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** Class to display graphics for a UML Interface in a diagram. */
 
@@ -361,7 +383,7 @@ public class FigInterface extends FigNodeModelElement {
   ////////////////////////////////////////////////////////////////
   // user interaction methods
 
-  public void mousePressed(MouseEvent me) {
+  public void mouseClicked(MouseEvent me) {
     super.mousePressed(me);
     boolean targetIsSet = false;
     int i = 0;
@@ -378,14 +400,17 @@ public class FigInterface extends FigNodeModelElement {
 	  i = (v.size()-1) * (me.getY() - f.getY() - 3) / _operVec.getHeight();
 	  if (i >= 0 && i < v.size()-1) {
 	    targetIsSet = true;
+        me.consume();
 	    f = (Fig)v.elementAt(i+1);
 		((CompartmentFigText)f).setHighlighted(true);
 		highlightedFigText = (CompartmentFigText)f;
 		ProjectBrowser.TheInstance.setTarget(f);
 	  }
 	}
-	if (targetIsSet == false)
+	if (targetIsSet == false) {
+            me.consume();
 	  ProjectBrowser.TheInstance.setTarget(getOwner());
+    }
   }
 
   public void mouseExited(MouseEvent me) {
