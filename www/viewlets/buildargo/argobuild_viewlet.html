@@ -1,0 +1,82 @@
+<! DO NOT CHANGE THIS CODE. THE PLAYER APPLET WILL NO LONGER WORK !>
+
+<HTML>
+	<HEAD>
+<TITLE>ArgoUML-'build package' </TITLE>
+		<meta name="Keywords" content="viewlet, qarbon, leelou, help, frequently asked questions, faqs, demonstrations, training, viewlets, help files, software help, software demonstrations, online assistance, authoring tool">
+<meta name="Description" content="At the end of this tutorial you will have seen the steps necessary to build ArgoUML.">
+	</HEAD>
+
+	<BODY BGCOLOR='#ffffff' leftmargin=0 rightmargin=0 topmargin=0>
+
+		<DIV ID='LeelouStatic' STYLE='position:absolute; top:10; left:10; width:839; visibility:visible'>
+		<CENTER>
+			<APPLET CODE=leelou.viewlet.vcr.QBanner.class ARCHIVE='vb20.jar' WIDTH='468' HEIGHT='60'MAYSCRIPT></APPLET>
+		</CENTER>
+		</DIV>
+
+		<SCRIPT language='javascript'>
+		var i=0; // just to avoid the banner request to be cavhed by ie
+
+		function Leelou_show_Dynamic()
+		{
+		if (navigator.appName.substring(0,8) == 'Netscape')
+		{
+		document.LeelouStatic.visibility='hidden';
+		document.LeelouDynamic.visibility='visible';
+		}
+		else
+		{
+		LeelouStatic.style.visibility='hidden';
+		LeelouDynamic.style.visibility='visible';
+		}
+		}
+
+		function rotateBanner()
+		{
+		request="http://ad.jetsoftware.com/servlet/get?action=image&vct=1007380068810&vis=1&pan=wak&ram=2.6.7&osn=D&osv=5*89&osl=vm&bn="+i;
+
+		if (navigator.appName.substring(0,8) == 'Netscape')
+		{
+		document.LeelouDynamic.document.images["banner"].src=request;
+		}
+		else
+		{
+		document.images["banner"].src=request;
+		}
+		setTimeout("rotateBanner()", 45000);
+		i++;
+		}
+
+
+		</SCRIPT>
+
+		<DIV ID='LeelouViewlet' STYLE='position:absolute; top:80; left:10; width:839; visibility:visible'>
+		<CENTER>
+		<APPLET name=leelouviewlet CODE=leelou.viewlet.vcr.QVCRApplet.class ARCHIVE='vb20.jar' WIDTH=839 HEIGHT=600 MAYSCRIPT>
+		<param name=leelouName value='argobuild.viewlet'>
+		<param name=leelouWidth value='839'>
+		<param name=leelouHeight value='600'>
+		alt="Your browser is unable to read the Viewlet (the applet tag is not recognized).<br><br>"
+		Please refer to the <A href="http://www.qarbon.com/faqs/viewletbuilder/spec.html#browsers%20needed" target="NEWPAGE">browser specifications</A> in order to watch the Viewlet.
+		</APPLET>
+		</CENTER>
+		</DIV>
+
+		<DIV ID='LeelouDynamic' STYLE='position:absolute; top:10; left:10; width:839; visibility:hidden'>
+		<CENTER>
+		<a href=http://ad.jetsoftware.com/servlet/get?action=url target='_blank'>
+
+		<img border=0 name="banner" OnLoad=Leelou_show_Dynamic() width=468 height=60></a>
+
+		<script language="javascript">
+		rotateBanner();
+		</script>
+
+		</CENTER>
+		</DIV>
+
+	</BODY>
+</HTML>
+
+<! DO NOT CHANGE THIS CODE. THE PLAYER APPLET WILL NO LONGER WORK !>

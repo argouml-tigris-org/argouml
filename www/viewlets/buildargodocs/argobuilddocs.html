@@ -1,0 +1,272 @@
+<html>
+
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>Welcome, Viewlet Author!</title>
+  <style type="text/css"><!--
+    .common { color: black; font-weight: normal; font-size: 12px; font-family: Verdana, Arial, Helvetica, Geneva, Swiss, SunSans-Regular; padding: 4px }
+    .emptycell { height: 10px }
+    .title    {
+    color:           white;
+    font-weight:      bold;
+    font-size:        14px;
+    font-family:      Verdana, Arial, Helvetica, Geneva, Swiss, SunSans-Regular;
+    background-color: #463c54;
+    padding-top:      4px;
+    padding-bottom:   4px;
+    padding-left:     10px;
+    border-style:     solid;
+    border-width:     1px;
+    border-color:     #65577a #18151e black #65577a }
+    a {
+    color:          blue;
+    font-weight:     bold;
+    text-decoration: none }
+    a:hover {
+    text-decoration: underline }
+    body {
+    background-color: #fbfbf2 }
+  -->
+  </style>
+		<script language="javaScript">
+function isViewletCompliant()
+{
+  answer=true;
+  version=Math.round(parseFloat(navigator.appVersion) * 1000);
+  if (navigator.appName.substring(0,9) == "Microsoft")
+  {
+    if(version<4000) answer=false;
+  }
+  if (navigator.appName.substring(0,8) == "Netscape")
+  {
+    if ((navigator.appVersion.indexOf("Mac")> 0) && (version<5000))
+      answer=false;
+    else
+    if (version<4060)
+      answer=false;
+  }
+
+  plugins=navigator.plugins;
+  if (answer==false && plugins!=null)
+  {
+    for(i=0;i!=plugins.length;i++)
+    if((plugins[i].name.indexOf("Java Plug-in")>=0) && (plugins[i].name.indexOf("1.0")<0))
+    answer=true;
+  }
+  return answer;
+}
+
+function openViewlet(htmlFile,htmlWidth,htmlHeight)
+{
+  str = 'resizable=0,toolbar=0,menubar=0,';
+  str = str + 'scrollbars=0,status=0,location=0,directory=0,width=350,height=200';
+
+  version=Math.round(parseFloat(navigator.appVersion) * 1000);
+
+  if(navigator.appName.indexOf("Konqueror")!=-1) // konqueror
+  {
+    htmlWidth+=18;
+    htmlHeight+=96;
+  }
+
+  if(navigator.appName.indexOf("Netscape")!=-1)
+  {
+    if(version>=5000)
+    {
+      if(navigator.appVersion.indexOf("Mac")!=-1) // Netscape6+ on mac
+      {
+        htmlHeight+=5;
+      }
+    }
+  }
+
+  if(navigator.appName.indexOf("Microsoft")!=-1)
+  {
+    if(navigator.appVersion.indexOf("Mac")!=-1) // IE on Mac
+    {
+       htmlWidth  -= 11;
+       htmlHeight -= 11;
+    }
+  }
+
+    if(!isViewletCompliant())
+    {
+      open("http://www.qarbon.com/warning/index.html",'Leelou',str);
+    }
+    else
+    {
+      window.open(htmlFile,'Leelou','width='+htmlWidth+',height='+htmlHeight+',top=10,left=20');
+    }
+
+}
+    
+  </script>
+	</head>
+
+	<body bgcolor="#fbfbf2">
+		<center>
+			<table border="0" cellspacing="2" width="700">
+				<tr>
+					<td class="title">Congratulations, you've made a Viewlet!</td>
+				</tr>
+				<tr>
+					<td class="common">To watch the Viewlet you've just created, click on the &quot;Title of the Viewlet&quot; link below.<br>
+						<br>
+						<b>Title of the Viewlet:</b><br>
+						<a href="javascript:openViewlet('argobuilddocs_viewlet.html',699,570);">argobuildocs</a></td>
+				</tr>
+				<tr>
+					<td class="common"><b>Description of the Viewlet:<br>
+						</b>A quick and dirty tutorial of building ArgoUML docs.
+<br>
+					</td>
+				</tr>
+				<tr>
+					<td class="common"><b>What happens now?</b><br>
+						To play your Viewlet from an existing Web page, it needs to be uploaded to (i.e. hosted on) a server. You can either have it hosted on Qarbon's dedicated server, ViewletFarm, or host it on your own servers. You'll find more information about hosting Viewlets and posting them on your site below.</td>
+				</tr>
+				<tr>
+					<td class="emptycell"></td>
+				</tr>
+				<tr>
+					<td class="title">Technical Tips &amp; Tricks</td>
+				</tr>
+				<tr>
+					<td class="common">Do you have any <a href="http://www.qarbon.com/links/viewletbuilder.jsp?lang=en&type=wak&ver=2.6.7&page=faq">technical questions</a> about Viewlets or ViewletBuilder?<br>
+						Want some <a href="http://www.qarbon.com/links/viewletbuilder.jsp?lang=en&type=wak&ver=2.6.7&page=help">Tips &amp; Tricks</a> to make your Viewlets fly?<br>
+						Take a look at our selection of <a href="http://www.qarbon.com/links/viewletbuilder.jsp?lang=en&type=wak&ver=2.6.7&page=viewletimages">button designs</a> for launching Viewlets.</td>
+				</tr>
+				<tr>
+					<td class="emptycell"></td>
+				</tr>
+				<tr>
+					<td class="title">Host your Viewlets on Qarbon's ViewletFarm servers</td>
+				</tr>
+				<tr>
+					<td class="common">In order to ensure that your Viewlets play reliably, Qarbon is putting the ViewletFarm, its dedicated servers, at your disposal. This service is absolutely free and takes only a few minutes. We also show you how to add a link from your Web pages to our servers. It's that simple! Visit the <a href="http://www.qarbon.com/links/viewletbuilder.jsp?lang=en&type=wak&ver=2.6.7&page=viewletfarm">ViewletFarm</a> to find out more.</td>
+				</tr>
+				<tr>
+					<td class="emptycell"></td>
+				</tr>
+				<tr>
+					<td class="title"><a name="instructions"></a>Host your Viewlets on your own server</td>
+				</tr>
+				<tr>
+					<td class="common">
+						<p><b>Step 1</b><br>
+							You can upload the Viewlet files to your Web server directly from inside ViewletBuilder. You do this, by clicking on &quot;Viewlet&quot; in the menu bar of ViewletBuilder (make sure the Viewlet project that you would like to upload is open). Then you select &quot;Upload&quot; and click on the &quot;My Web site&quot; tab. Fill in your server information and click on &quot;Upload&quot;.</p>
+						<p><b>Step 2</b><br>
+							After you've uploaded your Viewlet to your server, you can post them on a Web page. Start by copying the following code and paste it between the <b>&lt;head&gt;</b> and <b>&lt;/head&gt;</b> tags of your page:<br>
+							<br>
+							<code>&lt;script language=&quot;JavaScript1.2&quot; src=&quot;http://www.qarbon.com/viewlet.js&quot;&gt;&lt;/script&gt;<br>
+								<br>
+							</code>This links goes to a convenient JavaScript that is permanently updated by our technicians. So no matter which browser your Viewlets are played from, you can be sure that they will always play perfectly.<br>
+							<br>
+							<b>Please note:</b> If you would like to have your Viewlets played from a CD-ROM or from within an intranet in which there is no access to the Web, then the above code will not work. If you would like to have Viewlets on a CD-ROM, please copy the following code between the &lt;<b>head</b>&gt; and &lt;<b>/head</b>&gt; tags of your page instead:<br>
+							<br>
+							<pre>
+&lt;script language=&quot;javaScript&quot;&gt;
+function isViewletCompliant()
+{
+  answer=true;
+  version=Math.round(parseFloat(navigator.appVersion) * 1000);
+  if (navigator.appName.substring(0,9) == "Microsoft")
+  {
+    if(version<4000) answer=false;
+  }
+  if (navigator.appName.substring(0,8) == "Netscape")
+  {
+    if ((navigator.appVersion.indexOf("Mac")> 0) && (version<5000))
+      answer=false;
+    else
+    if (version<4060)
+      answer=false;
+  }
+
+  plugins=navigator.plugins;
+  if (answer==false && plugins!=null)
+  {
+    for(i=0;i!=plugins.length;i++)
+    if((plugins[i].name.indexOf("Java Plug-in")>=0) && (plugins[i].name.indexOf("1.0")<0))
+    answer=true;
+  }
+  return answer;
+}
+
+function openViewlet(htmlFile,htmlWidth,htmlHeight)
+{
+  str = 'resizable=0,toolbar=0,menubar=0,';
+  str = str + 'scrollbars=0,status=0,location=0,directory=0,width=350,height=200';
+
+  version=Math.round(parseFloat(navigator.appVersion) * 1000);
+
+  if(navigator.appName.indexOf("Konqueror")!=-1) // konqueror
+  {
+    htmlWidth+=18;
+    htmlHeight+=96;
+  }
+
+  if(navigator.appName.indexOf("Netscape")!=-1)
+  {
+    if(version>=5000)
+    {
+      if(navigator.appVersion.indexOf("Mac")!=-1) // Netscape6+ on mac
+      {
+        htmlHeight+=5;
+      }
+    }
+  }
+
+  if(navigator.appName.indexOf("Microsoft")!=-1)
+  {
+    if(navigator.appVersion.indexOf("Mac")!=-1) // IE on Mac
+    {
+       htmlWidth  -= 11;
+       htmlHeight -= 11;
+    }
+  }
+
+    if(!isViewletCompliant())
+    {
+      open("http://www.qarbon.com/warning/index.html",'Leelou',str);
+    }
+    else
+    {
+      window.open(htmlFile,'Leelou','width='+htmlWidth+',height='+htmlHeight+',top=10,left=20');
+    }
+
+}
+&lt;/script&gt;
+							</pre></p>
+							<p><b>Step 3</b><br>
+							And finally, copy/paste ONE of the following two links:<br>
+							<br>
+							<b>If the Viewlet is in the same directory as the Web page, copy this link:<br>
+								<br>
+							</b>
+							<code>&lt;a href=&quot;javascript:openViewlet('argobuilddocs_viewlet.html',699,570);&quot;&gt;argobuildocs&lt;/a&gt;
+							</code>
+							<br>
+							<br>
+							&nbsp;&nbsp;<b>Or</b><br>
+							<br>
+							<b>If the Viewlet is in a different directory than the Web page, copy this link:<br>
+								<br>
+							</b>
+							<code>&lt;a href=&quot;javascript:openViewlet('<b>path_to_viewlet</b>/argobuilddocs_viewlet.html',699,570);&quot;&gt;argobuildocs&lt;/a&gt;
+							</code>
+							<br>
+							<br>
+							and replace &quot;<b>path_to_viewlet</b>&quot; by the relative path from the Web page to the Viewlet.<br>
+							<br>
+						</p>
+					</td>
+				</tr>
+				<tr>
+					<td class="title">&nbsp;</td>
+				</tr>
+			</table>
+		</center>
+	</body>
+
+</html>
