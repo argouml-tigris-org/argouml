@@ -39,7 +39,7 @@ public class ActionResolve extends ToDoItemAction {
      * The constructor.
      */
     public ActionResolve() { 
-        super("action.resolve-item"); 
+        super("action.resolve-item", HAS_ICON); 
     }
 
     /**

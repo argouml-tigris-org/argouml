@@ -33,16 +33,12 @@ abstract class ToDoItemAction extends UMLAction {
 
     private Object rememberedTarget = null;
 
-    public ToDoItemAction(String name) { 
-        super(name, HAS_ICON); 
-    }
-
     public ToDoItemAction(String name, boolean hasIcon) {
 	super(name, hasIcon);
     }
     
     /**
-     * @return Returns the rememberedTarget.
+     * @return returns the rememberedTarget
      */
     protected Object getRememberedTarget() {
         return rememberedTarget;
@@ -61,6 +57,10 @@ abstract class ToDoItemAction extends UMLAction {
 	setEnabled(shouldBeEnabled(target));
     }
 
+    /**
+     * @param target the current target
+     * @return true if the action icon should be enabled (i.e. not downlighted)
+     */
     public boolean shouldBeEnabled(Object target) {
 	return target instanceof ToDoItem;
     }

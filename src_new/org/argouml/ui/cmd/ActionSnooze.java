@@ -40,7 +40,7 @@ public class ActionSnooze extends ToDoItemAction {
      * The constructor.
      */
     public ActionSnooze() { 
-        super("action.snooze-critic"); 
+        super("action.snooze-critic", HAS_ICON); 
     }
 
     /**

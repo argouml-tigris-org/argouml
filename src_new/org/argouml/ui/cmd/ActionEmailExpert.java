@@ -44,7 +44,7 @@ public class ActionEmailExpert extends ToDoItemAction {
      * The constructor.
      */
     public ActionEmailExpert() { 
-        super("action.send-email-to-expert"); 
+        super("action.send-email-to-expert", HAS_ICON); 
     }
 
     /**
