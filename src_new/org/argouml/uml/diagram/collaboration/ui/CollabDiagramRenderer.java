@@ -65,6 +65,11 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
         FigGeneralization genFig = new FigGeneralization(gen, lay);
         return genFig;
     }
+    if (edge instanceof MDependency) {
+        MDependency dep = (MDependency) edge;
+        FigDependency depFig = new FigDependency(dep ,lay);
+        return depFig;
+    }
 
     cat.debug("TODO CollabDiagramRenderer getFigEdgeFor");
     return null;

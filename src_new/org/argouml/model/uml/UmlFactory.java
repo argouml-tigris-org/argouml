@@ -191,6 +191,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,             ModelFacade.COMPONENT,          null},
         {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE, ModelFacade.NODE_INSTANCE,      null},
         {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,             ModelFacade.COMPONENT_INSTANCE, null},
+        {ModelFacade.DEPENDENCY,       ModelFacade.CLASSIFIER_ROLE},
         {ModelFacade.USAGE,            ModelFacade.CLASS},
         {ModelFacade.USAGE,            ModelFacade.INTERFACE},
         {ModelFacade.USAGE,            ModelFacade.PACKAGE},

@@ -60,6 +60,7 @@ import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 public class UMLCollaborationDiagram extends UMLDiagram {
@@ -119,6 +120,10 @@ public class UMLCollaborationDiagram extends UMLDiagram {
             MAggregationKind.COMPOSITE,
             true,
             "UniComposition");
+
+    protected static Action _actionDepend = 
+        new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", 
+                       MDependency.class, "Dependency");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -191,6 +196,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
             getAssociationActions(),
             ActionAddMessage.SINGLETON,
             _actionGeneralize,
+            _actionDepend,
             null,
             ActionAddNote.SINGLETON
         };
