@@ -1153,6 +1153,9 @@ ArgoUML itself breaks down into several components. The graphic does not reflect
       <para>
 This chapter is currently under rework with new component organization.
 </para>
+      <para>
+Things that are not actually in place are: TargetManager
+</para>
     </warning>
 <para>...</para>
 
