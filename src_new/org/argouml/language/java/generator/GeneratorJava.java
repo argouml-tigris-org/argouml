@@ -53,6 +53,8 @@ public class GeneratorJava extends Generator {
 
   public static GeneratorJava SINGLETON = null; //new GeneratorJava();
 
+  public final static NotationName NOTATION = Notation.makeNotation("Java");
+
   static {
       // Read Generator class from Property "argo.generator":
       String generatorClass=System.getProperty("argo.generator");
@@ -1012,7 +1014,7 @@ public class GeneratorJava extends Generator {
     }
 
     public NotationName getNotation() {
-        return Notation.makeNotation("Java");
+        return NOTATION;
     }
 
     public boolean canParse() {
@@ -1023,5 +1025,5 @@ public class GeneratorJava extends Generator {
         return true;
     }
 
-
 } /* end class GeneratorJava */
+
