@@ -35,10 +35,7 @@ import java.beans.PropertyVetoException;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.uml.generator.ParserDisplay;
-
-import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
@@ -121,10 +118,6 @@ public class FigSimpleState extends FigState {
 
     ////////////////////////////////////////////////////////////////
     // accessors
-
-    public Selection makeSelection() {
-	return new SelectionState(this);
-    }
 
 
     public void setOwner(Object node) {
