@@ -61,25 +61,27 @@ public class DocumentationManager {
         if (sResult == null)
             return "(No comment)";
 
-        StringBuffer result = new StringBuffer();
-        if (header != null)
-            result.append(header).append('\n');
-        result.append(sResult);
+	StringBuffer result = new StringBuffer();
+	if (header != null) {
+	    result.append(header).append(LINE_SEPARATOR);
+	}
 
-        // Let every line start with a prefix.
-        if (prefix != null) {
-            for (int i = 0; i < result.length() - 1; i++) {
-                if (result.charAt(i) == '\n') {
-                    result.insert(i + 1, prefix);
-                    if (indent != null)
-                        result.insert(i + 1, indent);
-                }
-            }
-        }
+	if (indent != null) {
+	    if (prefix != null) {
+		prefix = indent + prefix;
+	    }
 
-        if (footer != null) {
-            result.append('\n').append(indent).append(footer);
-        }
+	    if (footer != null) {
+		footer = indent + footer;
+	    }
+	}
+
+	appendComment(result, prefix, sResult, 0);
+
+	if (footer != null) {
+	    result.append(footer);
+	}
+
         return result.toString();
     }
 
