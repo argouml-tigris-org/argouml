@@ -1239,33 +1239,24 @@ it yourself. Jeremy Bennet has written the following script to do it:
 </para>
       <para>
 makedoc.sh:
-<computeroutput>
+<programlisting>
 #!/bin/sh
 
 # A script to drive Javadoc for all this
 
-# Modifications
-# =============
-
-# 25 Jan 02:  Jeremy Bennett. First version
-
 ###############################################################################
-
 # The source trees for ordinary source and generated source and where we put it
 # all.
-
 NSUML_HOME=$HOME/nsuml0_4_19/nsuml
 SRCDIR=${NSUML_HOME}/src
 GENDIR=${NSUML_HOME}/gen
-
 DESTDIR=${NSUML_HOME}/docs/javadocs
 
 # Run the javadoc command
-
 javadoc -d $DESTDIR -sourcepath $GENDIR:$SRCDIR @${NSUML_HOME}/package_list
-</computeroutput>
+</programlisting>
 Where package_list is:
-<computeroutput>
+<programlisting>
 ru.novosoft.uml
 ru.novosoft.uml.behavior.activity_graphs
 ru.novosoft.uml.behavior.collaborations
@@ -1278,7 +1269,7 @@ ru.novosoft.uml.foundation.extension_mechanisms
 ru.novosoft.uml.model_management
 ru.novosoft.uml.undo
 ru.novosoft.uml.xmi
-</computeroutput>
+</programlisting>
 </para>
       </sect2>
       <sect2>
