@@ -42,6 +42,7 @@ import org.tigris.gef.util.*;
 public class SettingsTabNotation extends SettingsTabHelper
 implements SettingsTabPanel {
 
+    JCheckBox _allowNotations = null;
     JCheckBox _useGuillemots = null;
 
     public SettingsTabNotation() {
@@ -79,10 +80,16 @@ implements SettingsTabPanel {
 	checkConstraints.gridy = 0;
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
-        _useGuillemots = createCheckBox("label_use_guillemots");
-	top.add(_useGuillemots, checkConstraints);
+        _allowNotations = createCheckBox("label_uml_notation_only");
+	top.add(_allowNotations, checkConstraints);
 	top.add(new JLabel(""), labelConstraints);
 	top.add(new JLabel(""), fieldConstraints);
+
+	checkConstraints.gridy = 1;
+	labelConstraints.gridy = 1;
+	fieldConstraints.gridy = 1;
+        _useGuillemots = createCheckBox("label_use_guillemots");
+	top.add(_useGuillemots, checkConstraints);
 
 	// checkConstraints.gridy = 1;
         // _preload = createCheckBox("label_preload");
@@ -100,11 +107,13 @@ implements SettingsTabPanel {
     }
 
     public void handleSettingsTabRefresh() {
-        _useGuillemots.setSelected(Configuration.getBoolean(Notation.KEY_USE_GUILLEMOTS, false));
+        _useGuillemots.setSelected(Notation.getUseGuillemots());
+        _allowNotations.setSelected(Configuration.getBoolean(Notation.KEY_UML_NOTATION_ONLY, false));
     }
 
     public void handleSettingsTabSave() {
-        Configuration.setBoolean(Notation.KEY_USE_GUILLEMOTS, _useGuillemots.isSelected());
+        Notation.setUseGuillemots(_useGuillemots.isSelected());
+        Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY, _allowNotations.isSelected());
     }
 
     public void handleSettingsTabCancel() {

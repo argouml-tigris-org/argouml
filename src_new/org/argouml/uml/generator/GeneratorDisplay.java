@@ -40,6 +40,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.MMUtil;
 
 /** Generator subclass to generate text for display in diagrams in in
@@ -492,5 +493,17 @@ public class GeneratorDisplay extends Generator {
 	  return generateExpression(m.getExpression());
       return "";
   }
+
+    public NotationName getNotation() {
+        return Notation.makeNotation("Java");
+    }
+
+    public boolean canParse() {
+        return true;
+    }
+
+    public boolean canParse(Object o) {
+        return true;
+    }
 
 } /* end class GeneratorDisplay */

@@ -23,12 +23,8 @@
 
 package org.argouml.application.api;
 import org.argouml.application.notation.*;
-// import org.argouml.language.*;
-// import org.argouml.uml.diagram.ui.*;
-// import org.argouml.language.java.*;
-// import org.argouml.language.uml.*;
+import org.argouml.application.events.*;
 
-// import java.awt.*;
 import java.util.*;
 import java.beans.*;
 
@@ -57,6 +53,10 @@ implements PropertyChangeListener {
    */
   public final static Category cat = Category.getInstance(NotationNameImpl.class.getPackage().getName()); 
 
+  /** The name of the default Argo notation.
+   */
+  public static final NotationName NOTATION_ARGO = makeNotation("Argo");
+
   /** The name of the uml 1.3 notation.
    */
   public static final NotationName NOTATION_UML_13 = makeNotation("Uml", "1.3");
@@ -66,26 +66,31 @@ implements PropertyChangeListener {
   public static final NotationName NOTATION_JAVA = makeNotation("Java");
 
   /** The name of the default notation.  The actual notation to use is
-   *  taken from the configuration using {@link #KEY_NOTATION}.
+   *  taken from the configuration using {@link #KEY_DEFAULT_NOTATION}.
    *  If there is not a value there, then {@link #NOTATION_UML_13} is used.
    */
   public static final NotationName NOTATION_DEFAULT = makeNotation("Default");
 
   /** The configuration key for the preferred notation
    */
-  public static final ConfigurationKey KEY_NOTATION = Configuration.makeKey("notation");
+  public static final ConfigurationKey KEY_DEFAULT_NOTATION = Configuration.makeKey("notation", "default");
 
   /** The configuration key that indicates whether to use guillemots
    *  or greater/lessthan characters in stereotypes.
    */
   public static final ConfigurationKey KEY_USE_GUILLEMOTS = Configuration.makeKey("notation", "guillemots");
 
+  /** Indicates if the user only wants to see UML notation.
+   */
+  public static final ConfigurationKey KEY_UML_NOTATION_ONLY = Configuration.makeKey("notation", "only", "uml");
+
+  /** The configuration key that indicates whether to use guillemots
   /** List of currently available notations.  In the future this will
    *  be dynamically manipulated.
    */
   private static NotationName[] _notations = { NOTATION_DEFAULT,
-			                       NOTATION_JAVA,
-			                       NOTATION_UML_13 };
+			                       // NOTATION_JAVA,
+			                       NOTATION_ARGO };
 
   private static Notation SINGLETON = new Notation();
 
@@ -95,14 +100,18 @@ implements PropertyChangeListener {
   private Notation() {
       _providers = new Hashtable();
       // _defaultNotation = org.argouml.language.uml.NotationUml;
-      Configuration.addListener(KEY_NOTATION, this);
+      Configuration.addListener(KEY_USE_GUILLEMOTS, this);
+      Configuration.addListener(KEY_DEFAULT_NOTATION, this);
+      Configuration.addListener(KEY_UML_NOTATION_ONLY, this);
   }
 
   /** Remove the notation change listener.
    *  <code>finalize</code> should never happen, but play it safe.
    */
   public void finalize() {
-      Configuration.removeListener(KEY_NOTATION, this);
+      Configuration.removeListener(KEY_DEFAULT_NOTATION, this);
+      Configuration.removeListener(KEY_USE_GUILLEMOTS, this);
+      Configuration.removeListener(KEY_UML_NOTATION_ONLY, this);
   }
 
   private NotationProvider getProvider(NotationName notation) {
@@ -229,8 +238,24 @@ implements PropertyChangeListener {
   }
  
   /** Generate an arbitrary notation string for the context.
+   *  The code currently ignores NotationContext
+   *  and goes directly to 
+   *  {@link org.argouml.uml.generator.GeneratorDisplay.Generate(Object)}.
+   *  This allows changes to the new notation interface
+   *  to be coded in FigThings
+   *  prior to full changable notation implementation.
    */
   public static String generate(NotationContext ctx, Object o) {
+      return org.argouml.uml.generator.GeneratorDisplay.Generate(o);
+  }
+
+  /** Code holder to eventually become replacement
+   *  for {@link #generate(NotationContext, Object).
+   *  The code from
+   *  @{link org.argouml.uml.generator.Generator.generate(Object) }
+   *  must be incorporated into this code at that time.
+   */
+  private static String future_generate(NotationContext ctx, Object o) {
     if (o == null)
       return "";
     if (o instanceof MOperation)
@@ -286,21 +311,25 @@ implements PropertyChangeListener {
 	// an override on the notation.
 
 	// UML is the default language
-	// NotationName nn = context.getContextNotation();
-	// String s = Configuration.getString(KEY, DEFAULT_NOTATION_NAME);
-        return NOTATION_UML_13;
+	if (Configuration.getBoolean(Notation.KEY_UML_NOTATION_ONLY, false)) {
+            return NOTATION_UML_13;
+	}
+	else {
+	    return context.getContextNotation();
+	}
     }
 
     /** Called after the notation default property gets changed.
      */
     public void propertyChange(PropertyChangeEvent pce) {
-	// Needs-more-work: do we need to do anything else?
-        Argo.log.info ("Notation changed from : " + pce.getOldValue() +
-	                    " to " + pce.getNewValue());
+	cat.debug ("Notation change:" + pce.getOldValue() + " to " + pce.getNewValue());
+        ArgoEventPump.getInstance().fireEvent(
+	             new ArgoNotationEvent(ArgoEvent.NOTATION_CHANGED, pce));
     }
 
     public NotationProvider getDefaultProvider() {
       if (_defaultProvider == null) {
+          _defaultProvider = org.argouml.uml.generator.GeneratorDisplay.SINGLETON;
           // needs-more-work:  This must be the provider pointed to by the configuration,
 	  // or UML 13 if none.
 	  // 
@@ -411,6 +440,20 @@ implements PropertyChangeListener {
    */
   public static NotationName makeNotation(String k1, String k2) {
       return NotationNameImpl.makeNotation(k1, k2);
+  }
+
+  /** Getter - stereotypes should use guillemots instead
+   *  of &lt;&lt; and &gt;&gt;
+   */
+  public static boolean getUseGuillemots() {
+     return Configuration.getBoolean(KEY_USE_GUILLEMOTS, false);
+  }
+
+  /** Setter - stereotypes should use guillemots instead
+   *  of &lt;&lt; and &gt;&gt;
+   */
+  public static void setUseGuillemots(boolean useGuillemots) {
+     Configuration.setBoolean(KEY_USE_GUILLEMOTS, useGuillemots);
   }
 
 }
