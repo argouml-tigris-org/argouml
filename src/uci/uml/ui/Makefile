@@ -106,10 +106,12 @@ CLASSES = \
 	PropPanelClass.class \
 	PropPanelDiagram.class \
 	PropPanelInterface.class \
+	PropPanelGeneralization.class \
 	PropPanelModel.class \
 	PropPanelActor.class \
 	PropPanelUseCase.class \
 	PropPanelNote.class \
+	PropPanelRealization.class \
 	PropPanelState.class \
 	PropPanelTransition.class \
 	PropPanelPseudostate.class \
