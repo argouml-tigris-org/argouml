@@ -237,7 +237,7 @@ public class Init {
       Agency.register(crCircularAssocClass, assocClassCls);
       Agency.register(crCircularInheritance, genElementCls);
       Agency.register(crCircularComposition, classCls);
-      Agency.register(crClassMustBeAbstract, classCls); //TODO
+      Agency.register(crClassMustBeAbstract, classCls); 
       Agency.register(crCrossNamespaceAssoc, assocCls); // Jeremy Bennett fix
       Agency.register(crDupParamName, operCls);
       Agency.register(crDupRoleNames, assocCls);  // Jeremy Bennett fix
@@ -283,7 +283,7 @@ public class Init {
       Agency.register(crDisambigStateName, stateCls);
       Agency.register(crNameConfusion, classifierCls);
       Agency.register(crNameConfusion, stateCls);
-//      Agency.register(crMergeClasses, classCls);
+      Agency.register(crMergeClasses, classCls);
       Agency.register(crSubclassReference, classCls);
       Agency.register(crIllegalName, classCls);
       Agency.register(crIllegalName, interfaceCls);
