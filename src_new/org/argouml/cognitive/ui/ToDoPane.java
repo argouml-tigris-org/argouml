@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -64,8 +64,6 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.tigris.gef.ui.ToolBar;
 
-import org.tigris.gef.util.VectorSet;
-
 /**
  * The lower-left pane of the main Argo/UML window, which shows the list
  * of active critics and todo items.
@@ -99,12 +97,14 @@ public class ToDoPane extends JPanel
         ToDoListListener,
         QuadrantPanel {
     
+    /**
+     * @deprecated by Linus Tolke as of 0.15.5. Use your own instance of
+     * Logger. This will become private.
+     */
     protected static Logger cat = Logger.getLogger(ToDoPane.class);
     
     ////////////////////////////////////////////////////////////////
     // constants
-    
-    private static final String BUNDLE = "statusmsg";
     
     public static final int WARN_THRESHOLD = 50;
     public static final int ALARM_THRESHOLD = 100;
@@ -118,33 +118,21 @@ public class ToDoPane extends JPanel
     ////////////////////////////////////////////////////////////////
     // instance variables
     
-    /** to be documented */
     protected JTree _tree;
-    /** to be documented */
     protected ToolBar _toolbar;
-    /** to be documented */
     protected JComboBox _combo;
     
     /** vector of TreeModels */
     protected Vector _perspectives;
-    /** to be documented */
     protected ToDoPerspective _curPerspective;
     
-    /** to be documented */
     protected ToDoList _root;
-    /** to be documented */
     protected Action _flatView;
-    /** to be documented */
     protected JToggleButton _flatButton;
-    /** to be documented */
     protected JLabel _countLabel;
-    /** to be documented */
     protected boolean _flat;
-    /** to be documented */
     protected Object _lastSel;
-    /** to be documented */
     protected int _oldSize;
-    /** to be documented */
     protected char _dir;
     /** shouldn't need this */
     protected ProjectBrowser _pb;
@@ -155,7 +143,7 @@ public class ToDoPane extends JPanel
     /**
      *
      *<pre>
-     * TODO - Bob Tarling 8 Feb 2003
+     * TODO: - Bob Tarling 8 Feb 2003
      * Replace GEF ToolBar class with our own Toolbar class
      * (only rely on GEF for diagram functionality)
      *</pre>
@@ -229,62 +217,64 @@ public class ToDoPane extends JPanel
     ////////////////////////////////////////////////////////////////
     // accessors
     
-    /** to be documented */
     public void setRoot(ToDoList r) {
         _root = r;
         updateTree();
     }
     
-    /** to be documented */
     public ToDoList getRoot() { return _root; }
     
-    /** to be documented */
     public Vector getPerspectives() { return _perspectives; }
     
-    /** to be documented */
     public void setPerspectives(Vector pers) {
         _perspectives = pers;
-        if (pers.isEmpty()) _curPerspective = null;
-        else _curPerspective = (ToDoPerspective) pers.elementAt(0);
+        if (pers.isEmpty()) {
+	    _curPerspective = null;
+	} else {
+	    _curPerspective = (ToDoPerspective) pers.elementAt(0);
+	}
         
         java.util.Enumeration persEnum = _perspectives.elements();
-        while (persEnum.hasMoreElements())
+        while (persEnum.hasMoreElements()) {
             _combo.addItem(persEnum.nextElement());
+	}
         
-        if (pers.isEmpty()) _curPerspective = null;
-        else if (pers.contains(_curPerspective))
+        if (pers.isEmpty()) {
+	    _curPerspective = null;
+	} else if (pers.contains(_curPerspective)) {
             setCurPerspective(_curPerspective);
-        else
+	} else {
             setCurPerspective((ToDoPerspective) _perspectives.elementAt(0));
+	}
         updateTree();
     }
     
-    /** to be documented */
     public ToDoPerspective getCurPerspective() { return _curPerspective; }
-    /** to be documented */
     public void setCurPerspective(TreeModel per) {
-        if (_perspectives == null || !_perspectives.contains(per)) return;
+        if (_perspectives == null || !_perspectives.contains(per)) {
+	    return;
+	}
         _combo.setSelectedItem(per);
         _toDoPerspectivesChanged++;
     }
     
-    /** to be documented */
     public Object getSelectedObject() {
         return _tree.getLastSelectedPathComponent();
     }
     
-    /** to be documented */
     public void selectItem(ToDoItem item) {
-        TreeModel tm = _tree.getModel();
         Object path[] = new Object[3];
         Object category = null;
         int size = _curPerspective.getChildCount(_root);
         for (int i = 0; i < size; i++) {
             category = _curPerspective.getChild(_root, i);
-            if (_curPerspective.getIndexOfChild(category, item) != -1)
+            if (_curPerspective.getIndexOfChild(category, item) != -1) {
                 break;
+	    }
         }
-        if (category == null) return;
+        if (category == null) {
+	    return;
+	}
         path[0] = _root;
         path[1] = category;
         path[2] = item;
@@ -294,16 +284,26 @@ public class ToDoPane extends JPanel
         _tree.setSelectionPath(trPath);
     }
     
-    /** return whether the todo pane is currently in flat hierachy mode
+    /**
+     * Return whether the todo pane is currently in flat hierachy mode.
+     *
+     * @return true if flat.
      */
     public boolean isFlat() { return _flat; }
 
-    /** set the todo pane in a spcecific hierachy mode. */
+    /**
+     * Set the todo pane in a specific hierachy mode.
+     *
+     * @param b is true for flat mode.
+     */
     public void setFlat(boolean b) {
         _flat = b;
         _flatButton.getModel().setPressed(_flat);
-        if (_flat) _tree.setShowsRootHandles(false);
-        else _tree.setShowsRootHandles(true);
+        if (_flat) {
+	    _tree.setShowsRootHandles(false);
+	} else {
+	    _tree.setShowsRootHandles(true);
+	}
         updateTree();
     }
     /** toggle the hierachy mode. */
@@ -313,16 +313,26 @@ public class ToDoPane extends JPanel
     
     // ------------ ItemListener implementation ----------------------
     
-    /** called when the user selects a perspective from the perspective
-     *  combo. */
+    /**
+     * Called when the user selects a perspective from the perspective
+     * combo.
+     *
+     * @param e is the event.
+     */
     public void itemStateChanged(ItemEvent e) {
-        if (e.getSource() == _combo) updateTree();
+        if (e.getSource() == _combo) {
+	    updateTree();
+	}
     }
     
     // -------------TreeSelectionListener implementation -----------
     
-    /** called when the user selects an item in the tree, by clicking or
-     *  otherwise. */
+    /**
+     * Called when the user selects an item in the tree, by clicking or
+     * otherwise.
+     *
+     * @param e is the event.
+     */
     public void valueChanged(TreeSelectionEvent e) {
         cat.debug("ToDoPane valueChanged");
         //TODO: should fire its own event and ProjectBrowser
@@ -331,8 +341,12 @@ public class ToDoPane extends JPanel
         ProjectBrowser.getInstance().setToDoItem(sel);
         cat.debug("lastselection: " + _lastSel);
 	cat.debug("sel: " + sel);
-        if (_lastSel instanceof ToDoItem) ((ToDoItem) _lastSel).deselect();
-        if (sel instanceof ToDoItem) ((ToDoItem) sel).select();
+        if (_lastSel instanceof ToDoItem) {
+	    ((ToDoItem) _lastSel).deselect();
+	}
+        if (sel instanceof ToDoItem) {
+	    ((ToDoItem) sel).select();
+	}
         _lastSel = sel;
     }
     
@@ -347,7 +361,6 @@ public class ToDoPane extends JPanel
     /** empty implementation */
     public void mouseExited(MouseEvent e) { }
     
-    /** to be documented */
     public void mouseClicked(MouseEvent e) {
         int row = _tree.getRowForLocation(e.getX(), e.getY());
         TreePath path = _tree.getPathForLocation(e.getX(), e.getY());
@@ -364,37 +377,36 @@ public class ToDoPane extends JPanel
     ////////////////////////////////////////////////////////////////
     // ToDoListListener implementation
     
-    /** to be documented */
     public void toDoItemsChanged(ToDoListEvent tde) {
-        if (_curPerspective instanceof ToDoListListener)
+        if (_curPerspective instanceof ToDoListListener) {
             ((ToDoListListener) _curPerspective).toDoItemsChanged(tde);
+	}
     }
     
-    /** to be documented */
     public void toDoItemsAdded(ToDoListEvent tde) {
-        if (_curPerspective instanceof ToDoListListener)
+        if (_curPerspective instanceof ToDoListListener) {
             ((ToDoListListener) _curPerspective).toDoItemsAdded(tde);
+	}
         updateCountLabel();
     }
     
-    /** to be documented */
     public void toDoItemsRemoved(ToDoListEvent tde) {
-        if (_curPerspective instanceof ToDoListListener)
+        if (_curPerspective instanceof ToDoListListener) {
             ((ToDoListListener) _curPerspective).toDoItemsRemoved(tde);
+	}
         updateCountLabel();
     }
     
-    /** to be documented */
     public void toDoListChanged(ToDoListEvent tde) {
-        if (_curPerspective instanceof ToDoListListener)
+        if (_curPerspective instanceof ToDoListListener) {
             ((ToDoListListener) _curPerspective).toDoListChanged(tde);
+	}
         updateCountLabel();
     }
     
     ////////////////////////////////////////////////////////////////
     // other methods
     
-    /** to be documented */
     private static String formatCountLabel(int size) {
         switch (size) {
 	case 0:
@@ -414,11 +426,14 @@ public class ToDoPane extends JPanel
         }
     }
     
-    /** to be documented */
     public void updateCountLabel() {
         int size = Designer.TheDesigner.getToDoList().size();
-        if (size > _oldSize) _dir = '+';
-        if (size < _oldSize) _dir = '-';
+        if (size > _oldSize) {
+	    _dir = '+';
+	}
+        if (size < _oldSize) {
+	    _dir = '-';
+	}
         _oldSize = size;
         _countLabel.setText(formatCountLabel(size));
         _countLabel.setOpaque(size > WARN_THRESHOLD);
@@ -426,23 +441,25 @@ public class ToDoPane extends JPanel
 				  : WARN_COLOR);
     }
     
-    /** to be documented */
     protected void updateTree() {
         ToDoPerspective tm = (ToDoPerspective) _combo.getSelectedItem();
         _curPerspective = tm;
-        if (_curPerspective == null) _tree.setVisible(false);
-        else {
+        if (_curPerspective == null) {
+	    _tree.setVisible(false);
+	} else {
             cat.debug("ToDoPane setting tree model");
             _curPerspective.setRoot(_root);
             _curPerspective.setFlat(_flat);
-            if (_flat) _tree.setShowsRootHandles(false);
-                else _tree.setShowsRootHandles(true);
+            if (_flat) {
+		_tree.setShowsRootHandles(false);
+	    } else {
+		_tree.setShowsRootHandles(true);
+	    }
             _tree.setModel(_curPerspective);
             _tree.setVisible(true); // blinks?
         }
     }
     
-    /** to be documented */
     public int getQuadrant() { return Q_BOTTOM_LEFT; }
     
     
@@ -451,23 +468,26 @@ public class ToDoPane extends JPanel
      * TODO: what should the difference be between a single
      * and double click?
      */
-    public void mySingleClick(int row, TreePath path) {
+    public static void mySingleClick(int row, TreePath path) {
         _clicksInToDoPane++;
         /*
-	  if (getSelectedObject() == null) return;
+	  if (getSelectedObject() == null){return;}
 	  Object sel = getSelectedObject();
-	  if (sel instanceof ToDoItem) 
-	  selectItem((ToDoItem)sel);
+	  if (sel instanceof ToDoItem){
+	  selectItem((ToDoItem)sel);}
 	  cat.debug("1: " + getSelectedObject().toString());
         */
     }
     
-    /** called when the user clicks once on an item in the tree.
+    /**
+     * Called when the user clicks once on an item in the tree.
      * myDoubleClick will invoke the action() on the ToDoItem.
      */
     public void myDoubleClick(int row, TreePath path) {
         _dblClicksInToDoPane++;
-        if (getSelectedObject() == null) return;
+        if (getSelectedObject() == null) {
+	    return;
+	}
         Object sel = getSelectedObject();
         if (sel instanceof ToDoItem) {
             ((ToDoItem) sel).action();
@@ -479,9 +499,9 @@ public class ToDoPane extends JPanel
     }
     
     /**
-     * the perspectives to be chosen in the combobox are built here.
+     * The perspectives to be chosen in the combobox are built here.
      */
-    private Vector buildPerspectives() {
+    private static Vector buildPerspectives() {
         
         ToDoPerspective priority = new ToDoByPriority();
         ToDoPerspective decision = new ToDoByDecision();
