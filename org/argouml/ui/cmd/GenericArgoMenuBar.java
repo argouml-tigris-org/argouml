@@ -575,7 +575,7 @@ public class GenericArgoMenuBar extends JMenuBar
         setMnemonic(adjustPageBreaks, "Adjust Pagebreaks");
         JMenuItem buttonsOnSelection = 
             view.addCheckItem(new ActionShowRapidButtons());
-        setMnemonic(buttonsOnSelection, "Buttons on Selection");
+        setMnemonic(buttonsOnSelection, "Buttons On Selection");
         //_view.addCheckItem(Actions.ShowDiagramList);
         //_view.addCheckItem(Actions.ShowToDoList);
         //_showDetailsMenuItem = _view.addCheckItem(Actions.ShowDetails);
