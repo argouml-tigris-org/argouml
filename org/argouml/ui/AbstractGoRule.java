@@ -84,9 +84,7 @@ public abstract class AbstractGoRule implements TreeModel {
         // design with GoRules (GoRules do only take into account one node) we have
         // to invent a way around it.
         Vector children = toVector(getChildren(parent));
-        if (children != null && children.contains(child))
-            return children.indexOf(child);
-        return -1;
+        return children.indexOf(child);
     }
     
     /**
