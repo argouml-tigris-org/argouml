@@ -24,25 +24,22 @@
 
 package org.argouml.uml.ui;
 
+import java.awt.event.ActionEvent;
+
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MPackage;
 
-/** Action to add a new sequence diagram.
- * @stereotype singleton
+/** 
+ * <p>Action to add a new sequence diagram.</p>
+ * <p>Fully rebuild starting 1-8-2003</p>
+ * <p>This action is subclassed from UMLChangeAction and not ActionAddDiagram since the
+ * namespace stuff in ActionAddDiagram should be refactored out</p>
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionSequenceDiagram extends ActionAddDiagram {
+public class ActionSequenceDiagram extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -53,82 +50,26 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
     // constructors
 
     private ActionSequenceDiagram() {
-        super("action.sequence-diagram");
+        super("action.sequence-diagram", true, true);
     }
 
-    /**
-     * @see
-     * org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,
-     * Object)
-     */
-    public UMLDiagram createDiagram(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
-            cat.error("No namespace as argument");
-            cat.error(handle);
-            throw new IllegalArgumentException(
-                "The argument " + handle + "is not a namespace.");
-        }
-        MNamespace ns = (MNamespace) handle;
-        MCollaboration c = null;
-        Object target = TargetManager.getInstance().getModelTarget();
-        if (target instanceof MOperation) {
-            c =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    ns);
-            c.setRepresentedOperation((MOperation) target);
-        } else if (target instanceof MClassifier) {
-            c =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    ns);
-            c.setRepresentedClassifier((MClassifier) target);
-        } else if (target instanceof MModel) {
-            c =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    (MModel) target);
-        } else if (target instanceof MInteraction) {
-            c = ((MInteraction) target).getContext();
-        } else if (target instanceof UMLSequenceDiagram) {
-            Object o = ((UMLSequenceDiagram) target).getOwner();
-            if (o instanceof MCollaboration) {
-                //preventing backward compat problems
-                c = (MCollaboration) o;
-            }
-        } else if (target instanceof MCollaboration) {
-            c = (MCollaboration) target;
-        } else {
-            c =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    ns);
-        }
-        UMLSequenceDiagram d = new UMLSequenceDiagram(c);
-        return d;
-    }
-
-    /**
-     * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
-     */
-    public boolean isValidNamespace(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
-            cat.error("No namespace as argument");
-            cat.error(handle);
-            throw new IllegalArgumentException(
-                "The argument " + handle + "is not a namespace.");
-        }
-        MNamespace ns = (MNamespace) handle;
-        return (
-            ns instanceof MCollaboration
-                || ns instanceof MClassifier
-                || ns
-                    == ProjectManager.getManager().getCurrentProject().getModel() ||
-                    ns instanceof MPackage);
-    }
     
     /**
-     * patch to disable SD's in 0.14.
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public boolean shouldBeEnabled() {
-
-        return false;
+    public void actionPerformed(ActionEvent e) {       
+        super.actionPerformed(e);
+        UMLSequenceDiagram diagram = new UMLSequenceDiagram();
+        ProjectManager.getManager().getCurrentProject().addMember(diagram);        
+        TargetManager.getInstance().setTarget(diagram);
+        ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
     }
+
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled(java.lang.Object[])
+     */
+    public boolean shouldBeEnabled(Object[] targets) {    
+        return true;
+    }
+
 } /* end class ActionSequenceDiagram */
