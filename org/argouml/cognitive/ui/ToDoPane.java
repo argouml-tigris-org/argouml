@@ -93,8 +93,8 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
     _flatButton = _toolbar.addToggle(_flatView, "Flat", "Hierarchical", "Flat");
     _toolbar.add(_countLabel);
     ImageIcon hierarchicalIcon =
-      Util.loadIconResource("Hierarchical", "Hierarchical");
-    ImageIcon flatIcon = Util.loadIconResource("Flat", "Flat");
+		ResourceLoader.lookupIconResource("Hierarchical", "Hierarchical");
+    ImageIcon flatIcon = ResourceLoader.lookupIconResource("Flat", "Flat");
     _flatButton.setIcon(hierarchicalIcon);
     _flatButton.setSelectedIcon(flatIcon);
     add(_toolbar, BorderLayout.NORTH);

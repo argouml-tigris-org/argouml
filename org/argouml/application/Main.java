@@ -140,6 +140,21 @@ public class Main {
       }
     }
 
+    //  do some initialization work before anything is drawn
+    //  sets locale for menus
+    //
+    Locale.setDefault(new Locale(System.getProperty("user.language"),
+				 System.getProperty("user.region")));
+    UMLAction.setLocale(Locale.getDefault());
+	ResourceLoader.addResourceExtension("gif");
+	ResourceLoader.addResourceLocation("/org/argouml/Images");
+	ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
+	Localizer.initialize();
+	Localizer.addResource("GefBase","org.tigris.gef.base.BaseResourceBundle");
+	Localizer.addResource("GefPres","org.tigris.gef.presentation.PresentationResourceBundle");
+	Localizer.addResource("CoreMenu","org.argouml.ui.MenuResourceBundle");
+	Localizer.addResource("UMLMenu","org.argouml.uml.ui.UMLResourceBundle");
+	Localizer.addResource("Cognitive","org.argouml.uml.cognitive.UMLCognitiveResourceBundle");
 
     start = System.currentTimeMillis();
     SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");
@@ -151,12 +166,6 @@ public class Main {
 
 
 	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-    //
-    //  sets locale for menus
-    //
-    Locale.setDefault(new Locale(System.getProperty("user.language"),
-				 System.getProperty("user.region")));
-    UMLAction.setLocale(Locale.getDefault());
     ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar());
     phase1 = System.currentTimeMillis();
 

@@ -44,11 +44,11 @@ import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
 import org.argouml.uml.*;
 
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 public class PropPanelStimulus extends PropPanelModelElement {
 
-   protected static ImageIcon _stimulusIcon = Util.loadIconResource("Stimulus");
+   protected static ImageIcon _stimulusIcon = ResourceLoader.lookupIconResource("Stimulus");
 
   public PropPanelStimulus() {
     super("Stimulus Properties",_stimulusIcon, 2);

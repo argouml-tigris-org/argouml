@@ -38,7 +38,7 @@ import ru.novosoft.uml.model_management.*;
 import org.argouml.cognitive.ui.PriorityNode;
 import org.argouml.cognitive.ui.KnowledgeTypeNode;
 
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 import org.argouml.cognitive.*;
 import org.argouml.uml.ui.*;
@@ -46,13 +46,13 @@ import org.argouml.uml.ui.*;
 public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
-  public ImageIcon _PostIt0     = Util.loadIconResource("PostIt0");
-  public ImageIcon _PostIt25    = Util.loadIconResource("PostIt25");
-  public ImageIcon _PostIt50    = Util.loadIconResource("PostIt50");
-  public ImageIcon _PostIt75    = Util.loadIconResource("PostIt75");
-  public ImageIcon _PostIt99    = Util.loadIconResource("PostIt99");
-  public ImageIcon _PostIt100   = Util.loadIconResource("PostIt100");
-  //public ImageIcon _MultiPostIt = Util.loadIconResource("MultiPostIt");
+  public ImageIcon _PostIt0     = ResourceLoader.lookupIconResource("PostIt0");
+  public ImageIcon _PostIt25    = ResourceLoader.lookupIconResource("PostIt25");
+  public ImageIcon _PostIt50    = ResourceLoader.lookupIconResource("PostIt50");
+  public ImageIcon _PostIt75    = ResourceLoader.lookupIconResource("PostIt75");
+  public ImageIcon _PostIt99    = ResourceLoader.lookupIconResource("PostIt99");
+  public ImageIcon _PostIt100   = ResourceLoader.lookupIconResource("PostIt100");
+  //public ImageIcon _MultiPostIt = ResourceLoader.lookupIconResource("MultiPostIt");
 
   protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
 

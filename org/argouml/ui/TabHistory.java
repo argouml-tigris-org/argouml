@@ -31,7 +31,7 @@ import javax.swing.event.*;
 import javax.swing.border.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
 
@@ -40,10 +40,10 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
 
   ////////////////////////////////////////////////////////////////
   // class variables
-  protected ImageIcon _CritiqueIcon = Util.loadIconResource("PostIt0");
-  protected ImageIcon _ResolveIcon = Util.loadIconResource("PostIt100");
-  protected ImageIcon _ManipIcon = Util.loadIconResource("PostIt100");
-  protected ImageIcon _HistoryItemIcon = Util.loadIconResource("Rectangle");
+  protected ImageIcon _CritiqueIcon = ResourceLoader.lookupIconResource("PostIt0");
+  protected ImageIcon _ResolveIcon = ResourceLoader.lookupIconResource("PostIt100");
+  protected ImageIcon _ManipIcon = ResourceLoader.lookupIconResource("PostIt100");
+  protected ImageIcon _HistoryItemIcon = ResourceLoader.lookupIconResource("Rectangle");
 
   protected static String FILTERS[] = { "All History Items",
 					"History of Selection" };

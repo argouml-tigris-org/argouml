@@ -26,11 +26,8 @@ package org.argouml.uml.ui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 import ru.novosoft.uml.foundation.core.*;
-
-
-
 
 /**
  *   This class implements a panel that adds a navigation button
@@ -42,7 +39,7 @@ import ru.novosoft.uml.foundation.core.*;
 public class UMLComboBoxNavigator extends JPanel implements ActionListener {
 
 
-  private static ImageIcon _icon = Util.loadIconResource("ComboNav");
+  private static ImageIcon _icon = ResourceLoader.lookupIconResource("ComboNav");
   private UMLUserInterfaceContainer _container;
   private JComboBox _box;
 

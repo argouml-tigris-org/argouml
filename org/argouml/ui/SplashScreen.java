@@ -28,7 +28,7 @@ import java.util.*;
 import javax.swing.*;
 
 import org.tigris.gef.ui.IStatusBar;
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 // JWindow? I don't want a frame or close widgets
 public class SplashScreen extends JFrame
@@ -39,7 +39,7 @@ implements IStatusBar {
 
   public SplashScreen(String title, String iconName) {
     super();
-    ImageIcon splashImage = Util.loadIconResource(iconName);
+    ImageIcon splashImage = ResourceLoader.lookupIconResource(iconName);
     JLabel splashButton = new JLabel("");
     if (splashImage != null) {
       int imgWidth = splashImage.getIconWidth();
@@ -75,40 +75,6 @@ implements IStatusBar {
   
   public void setVisible(boolean b) {
     super.setVisible(b);
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // static methods
-    protected static ImageIcon loadIconResource(String imgName, String desc) {
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = SplashScreen.class.getResource(imageName(imgName));
-      if (imgURL == null) return null;
-      //System.out.println(imgName);
-      //System.out.println(imgURL);
-      return new ImageIcon(imgURL, desc);
-    }
-    catch (Exception ex) {
-      System.out.println("Exception in loadIconResource");
-      ex.printStackTrace();
-      return new ImageIcon(desc);
-    }
-  }
-
-  protected static String imageName(String name) {
-	  return "/org/argouml/Images/" + stripJunk(name) + ".gif";
-	  //return "/org/tigris/gef/Images/" + stripJunk(name) + ".gif";
-  }
-
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaIdentifierPart(c)) res += c;
-    }
-    return res;
   }
 
 } /* end class SplashScreen */

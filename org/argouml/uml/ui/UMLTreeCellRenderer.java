@@ -40,21 +40,21 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.model_management.*;
 
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
 
-  protected ImageIcon _ActionStateIcon = Util.loadIconResource("ActionState");
-  protected ImageIcon _StateIcon = Util.loadIconResource("State");
-  protected ImageIcon _InitialStateIcon = Util.loadIconResource("Initial");
-  protected ImageIcon _DeepIcon = Util.loadIconResource("DeepHistory");
-  protected ImageIcon _ShallowIcon = Util.loadIconResource("ShallowHistory");
-  protected ImageIcon _ForkIcon = Util.loadIconResource("Fork");
-  protected ImageIcon _JoinIcon = Util.loadIconResource("Join");
-  protected ImageIcon _BranchIcon = Util.loadIconResource("Branch");
-  protected ImageIcon _FinalStateIcon = Util.loadIconResource("FinalState");
+  protected ImageIcon _ActionStateIcon = ResourceLoader.lookupIconResource("ActionState");
+  protected ImageIcon _StateIcon = ResourceLoader.lookupIconResource("State");
+  protected ImageIcon _InitialStateIcon = ResourceLoader.lookupIconResource("Initial");
+  protected ImageIcon _DeepIcon = ResourceLoader.lookupIconResource("DeepHistory");
+  protected ImageIcon _ShallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
+  protected ImageIcon _ForkIcon = ResourceLoader.lookupIconResource("Fork");
+  protected ImageIcon _JoinIcon = ResourceLoader.lookupIconResource("Join");
+  protected ImageIcon _BranchIcon = ResourceLoader.lookupIconResource("Branch");
+  protected ImageIcon _FinalStateIcon = ResourceLoader.lookupIconResource("FinalState");
 
   protected Hashtable _iconCache = new Hashtable();
 
@@ -99,7 +99,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 				  cName = cName.substring(1);
 			  if (cName.endsWith("Impl"))
 				  cName = cName.substring(0,cName.length() -4 );
-			  icon = Util.loadIconResource(cName);
+			  icon = ResourceLoader.lookupIconResource(cName);
 			  if (icon != null) _iconCache.put(value.getClass(), icon);
 		  }
 	  }

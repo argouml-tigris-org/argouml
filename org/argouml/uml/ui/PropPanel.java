@@ -61,10 +61,10 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     protected JPanel buttonPanelWithFlowLayout=new JPanel();
     protected JPanel captionPanel=new JPanel();
 
-  protected static ImageIcon _navBackIcon = Util.loadIconResource("NavigateBack");
-  protected static ImageIcon _navForwardIcon = Util.loadIconResource("NavigateForward");
-  protected static ImageIcon _deleteIcon = Util.loadIconResource("RedDelete");
-  protected static ImageIcon _navUpIcon = Util.loadIconResource("NavigateUp");
+  protected static ImageIcon _navBackIcon = ResourceLoader.lookupIconResource("NavigateBack");
+  protected static ImageIcon _navForwardIcon = ResourceLoader.lookupIconResource("NavigateForward");
+  protected static ImageIcon _deleteIcon = ResourceLoader.lookupIconResource("RedDelete");
+  protected static ImageIcon _navUpIcon = ResourceLoader.lookupIconResource("NavigateUp");
 
     protected Font smallFont = MetalLookAndFeel.getSubTextFont();
 
