@@ -22,12 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.ActivityGraphsFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**

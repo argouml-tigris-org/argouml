@@ -26,7 +26,6 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.ActivityGraphsFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 
@@ -35,7 +34,7 @@ import org.argouml.util.CheckUMLModelHelper;
  *
  */
 public class TestActivityGraphsFactory extends TestCase {
-    
+
     /**
      * All the ModelElements we are going to test.
      */
@@ -47,11 +46,11 @@ public class TestActivityGraphsFactory extends TestCase {
         "ObjectFlowState",
         "Partition",
         "SubactivityState",
-    };   
+    };
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name
      */
     public TestActivityGraphsFactory(String n) { super(n); }
@@ -77,20 +76,20 @@ public class TestActivityGraphsFactory extends TestCase {
 	    "ObjectFlowState",
 	    "Partition",
 	    "SubactivityState",
-	    null
+	    null,
 	};
 
-	CheckUMLModelHelper.createAndRelease(this, 
+	CheckUMLModelHelper.createAndRelease(this,
 					     ActivityGraphsFactory.getFactory(),
 					     objs);
     }
-    
+
     /**
      * The test for deletion.
      */
     public void testDeleteComplete() {
-        CheckUMLModelHelper.deleteComplete(this, 
-					   ActivityGraphsFactory.getFactory(), 
+        CheckUMLModelHelper.deleteComplete(this,
+					   ActivityGraphsFactory.getFactory(),
 					   allModelElements);
     }
 

@@ -29,9 +29,6 @@ import java.lang.ref.WeakReference;
 import junit.framework.TestCase;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.foundation.core.MAssociation;
@@ -44,6 +41,9 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class TestCoreFactory extends TestCase {
 
+    /**
+     * The model elements to test.
+     */
     private static String[] allModelElements =
     {
 	"Abstraction",
@@ -83,7 +83,7 @@ public class TestCoreFactory extends TestCase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name of the test
      */
     public TestCoreFactory(String n) {
@@ -138,9 +138,9 @@ public class TestCoreFactory extends TestCase {
 	    "Relationship",
 
 	    // "StructuralFeature",
-	    "TemplateParameter", "Usage", 
+	    "TemplateParameter", "Usage",
 
-	    null 
+	    null,
 	};
 
 	CheckUMLModelHelper.createAndRelease(
@@ -259,9 +259,9 @@ public class TestCoreFactory extends TestCase {
         assertNotNull("dependency removed", depwr.get());
     }
 
-    /** 
-     * Construct a class, with two self associations and delete the class. 
-     * Test if both associations were deleted in the process. 
+    /**
+     * Construct a class, with two self associations and delete the class.
+     * Test if both associations were deleted in the process.
      */
     public void testDeleteModelelementClassSelfAssociations() {
         MModel model = ModelManagementFactory.getFactory().createModel();
@@ -291,10 +291,11 @@ public class TestCoreFactory extends TestCase {
 	    CoreFactory.getFactory().buildConstraint(null);
 	    fail("IllegalArgumentException should be thrown");
 	} catch (IllegalArgumentException i) {
+	    // Expected IllegalArgumentException seen
 	}
 	MModelElement elem = ModelManagementFactory.getFactory().createModel();
 	Object con = CoreFactory.getFactory().buildConstraint(elem);
-	assertNull("Namespace is unexpectly set", 
+	assertNull("Namespace is unexpectly set",
             ModelFacade.getNamespace(con));
 	assertTrue(
 		   "Constrained element is not set",

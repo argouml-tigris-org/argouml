@@ -28,9 +28,6 @@ import java.lang.ref.WeakReference;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
@@ -61,7 +58,7 @@ public class TestCollaborationsFactory extends TestCase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name
      */
     public TestCollaborationsFactory(String n) {
@@ -93,7 +90,7 @@ public class TestCollaborationsFactory extends TestCase {
 	    "Collaboration",
 	    "Interaction",
 	    "Message",
-	    null
+	    null,
 	};
 
         CheckUMLModelHelper.createAndRelease(
@@ -113,9 +110,9 @@ public class TestCollaborationsFactory extends TestCase {
             allModelElements);
     }
 
-    /** 
+    /**
      * Test to check whether elements which are attached to a
-     * ClassifierRole get deleted upon deletion of the 
+     * ClassifierRole get deleted upon deletion of the
      * ClassifierRole. These elements are Interaction, Message,
      * AssociationRole.
      */

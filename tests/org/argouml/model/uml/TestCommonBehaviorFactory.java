@@ -24,10 +24,9 @@
 
 package org.argouml.model.uml;
 
-import junit.framework.*;
+import junit.framework.TestCase;
 
-import org.argouml.model.uml.CommonBehaviorFactory;
-import org.argouml.util.*;
+import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * Test the CommonBehaviorFactory.
@@ -66,7 +65,7 @@ public class TestCommonBehaviorFactory extends TestCase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param n the name
      */
     public TestCommonBehaviorFactory(String n) {
@@ -110,7 +109,7 @@ public class TestCommonBehaviorFactory extends TestCase {
 	    "Stimulus",
 	    "TerminateAction",
 	    "UninterpretedAction",
-	    null 
+	    null,
 	};
 
 	CheckUMLModelHelper.createAndRelease(
