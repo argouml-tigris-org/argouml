@@ -52,9 +52,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
-import ru.novosoft.uml.behavior.activity_graphs.MActionStateImpl;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-
 public class SelectionActionState extends SelectionWButtons {
     protected static Category cat = 
         Category.getInstance(SelectionActionState.class);
