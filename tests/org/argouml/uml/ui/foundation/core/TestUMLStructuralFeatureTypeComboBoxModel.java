@@ -105,6 +105,12 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         assertTrue(model.getSelectedItem() == types[0]);
     }
     
+    /**
+     * this test does make a huge amount of sense because
+     * the model cannot present null types. therefore until
+     * the combobox model is changed itself, we test for 
+     * a not null value.
+     */
     public void testSetTypeToNull() {
         elem.setType(null);
         assertNotNull(model.getSelectedItem());
