@@ -66,7 +66,7 @@ public class ActionSaveGIF extends UMLAction {
 
     public boolean trySave( boolean overwrite ) {
 	CmdSaveGIF cmd = new CmdSaveGIF();
-	Object target = ProjectBrowser.TheInstance.getTarget();
+	Object target = ProjectBrowser.TheInstance.getActiveDiagram();
 	if( target instanceof Diagram ) {
 	    String defaultName = ((Diagram)target).getName();
 	    defaultName = Util.stripJunk(defaultName);
