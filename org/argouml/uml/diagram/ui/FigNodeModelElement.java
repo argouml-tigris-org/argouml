@@ -343,10 +343,10 @@ public abstract class FigNodeModelElement
             }
         }
 	if (encloser != _encloser) {
-	    if (_encloser instanceof FigGroup)
-		((FigGroup) _encloser).removeFig(this);
-	    if (encloser instanceof FigGroup)
-		((FigGroup) encloser).addFig(this);
+	    if (_encloser instanceof FigNodeModelElement)
+		((FigNodeModelElement) _encloser)._enclosedFigs.remove(this);
+	    if (encloser instanceof FigNodeModelElement)
+		((FigNodeModelElement) encloser)._enclosedFigs.add(this);
 	}
         _encloser = encloser;
     }
