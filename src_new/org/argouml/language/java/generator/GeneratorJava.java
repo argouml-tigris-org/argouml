@@ -115,6 +115,9 @@ public class GeneratorJava
     private static final boolean VERBOSE_DOCS = false;
     private final static String LINE_SEPARATOR = System.getProperty("line.separator");
     // TODO: make it configurable
+    // next two flags shows in what mode we are working
+    private static boolean _isFileGeneration = false; // true when GenerateFile
+    private static boolean _isInUpdateMode = false; // true if GenerateFile in Update Mode
 
     private static GeneratorJava SINGLETON = new GeneratorJava();
 
@@ -177,20 +180,25 @@ public class GeneratorJava
 
         //now decide wether file exist and need an update or is to be newly generated
         File f = new File(pathname);
+        _isFileGeneration = true; // used to produce method javadoc
         if (f.exists()) {
             try {
                 update(cls, f);
             } catch (Exception exp) {
+                _isInUpdateMode = false;
+                _isFileGeneration = false;
                 Argo.log.error("FAILED: " + f.getPath());
             }
 
             //Argo.log.info("----- end generating -----");
+            _isFileGeneration = false;
             return pathname;
         }
 
         //String pathname = path + filename;
         // TODO: package, project basepath, tagged values to configure
         Argo.log.info("Generating (new) " + f.getPath());
+        _isFileGeneration = true;
         String header = SINGLETON.generateHeader(cls, pathname, packagePath);
         String src = SINGLETON.generate(cls);
         BufferedWriter fos = null;
@@ -200,6 +208,7 @@ public class GeneratorJava
             fos.write(src);
         } catch (IOException exp) {
         } finally {
+            _isFileGeneration = false;
             try {
                 if (fos != null)
                     fos.close();
@@ -346,6 +355,8 @@ public class GeneratorJava
     }
 
     public String generateOperation(MOperation op, boolean documented) {
+        if (_isFileGeneration)
+            documented = true; // fix Issue 1506
         StringBuffer sb = new StringBuffer(80);
         String nameStr = null;
         boolean constructor = false;
@@ -357,18 +368,21 @@ public class GeneratorJava
         } else {
             nameStr = generateName(op.getName());
         }
-        sb.append(LINE_SEPARATOR); // begin with a blank line
+        // Each pattern here must be similar to corresponding code piece
+        // Operation code piece doesn't start with '\n'
+        // so the next line is commented. See Issue 1505
+        //sb.append(LINE_SEPARATOR); // begin with a blank line
         if (documented) {
             String s =
                 generateConstraintEnrichedDocComment(op, documented, INDENT);
             if (s != null && s.trim().length() > 0)
-                sb.append(INDENT).append(s).append(LINE_SEPARATOR);
+                sb.append(s).append(LINE_SEPARATOR); // should starts as the code piece
         }
 
         // 2002-07-14
         // Jaap Branderhorst
         // missing concurrency generation
-        sb.append(INDENT);
+	    //sb.append(INDENT); fixed issue 1505
         sb.append(generateConcurrency(op));
         sb.append(generateAbstractness(op));
         sb.append(generateChangeability(op));
@@ -413,15 +427,16 @@ public class GeneratorJava
     }
 
     public String generateAttribute(MAttribute attr, boolean documented) {
+        if (_isFileGeneration)
+            documented = true; // always "documented" if we generate file.
         StringBuffer sb = new StringBuffer(80);
-        sb.append(LINE_SEPARATOR); // begin with a blank line
         if (documented) {
             String s =
                 generateConstraintEnrichedDocComment(attr, documented, INDENT);
             if (s != null && s.trim().length() > 0)
-                sb.append(INDENT).append(s).append(LINE_SEPARATOR);
+                sb.append(s).append(LINE_SEPARATOR);
         }
-        sb.append(INDENT);
+        //sb.append(INDENT); fixed issue 1505
         sb.append(generateCoreAttribute(attr));
         sb.append(";").append(LINE_SEPARATOR);
 
@@ -440,7 +455,7 @@ public class GeneratorJava
              * (no 0..1 as modifier)
              * Therefore removed the multiplicity generation
              * START OLD CODE
-        
+
             if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
             {
             	String m = generateMultiplicity(attr.getMultiplicity());
@@ -526,7 +541,11 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(80);
 
         // Add the comments for this classifier first.
-        sb.append(LINE_SEPARATOR).append(DocumentationManager.getComments(cls)).append(
+        // Each pattern here must be similar to corresponding code piece
+        // Classfier code piece doesn't start with LINE_SEPARATOR
+        // so the next line is commented. See Issue 1505
+        //sb.append (LINE_SEPARATOR);
+        sb.append(DocumentationManager.getComments(cls)).append(
             generateConstraintEnrichedDocComment(cls, true, ""));
 
         // Now add visibility
@@ -585,7 +604,7 @@ public class GeneratorJava
                 sb.append(LINE_SEPARATOR).append("//end of "
                 + classifierkeyword
                 + " "
-                + cls.getName()).append(LINE_SEPARATOR);               
+                + cls.getName()).append(LINE_SEPARATOR);
             }
             sb.append("}");
         }
@@ -670,9 +689,9 @@ public class GeneratorJava
         StringBuffer sb = generateClassifierStart(cls);
         if (sb == null)
         	return ""; // not a class or interface
-        
+
         String tv = null; // helper for tagged values
-        
+
         // add attributes
         Collection strs = MMUtil.SINGLETON.getAttributes(cls);
         //
@@ -690,14 +709,14 @@ public class GeneratorJava
         	{
         		sb.append(INDENT).append("// Attributes\n");
         	}
-        
+
         	Iterator strEnum = strs.iterator();
         	while (strEnum.hasNext())
         	{
         		MStructuralFeature sf = (MStructuralFeature) strEnum.next();
-        
+
         		sb.append(generate(sf));
-        
+
         		tv = generateTaggedValues(sf);
         		if (tv != null && tv.length() > 0)
         		{
@@ -705,7 +724,7 @@ public class GeneratorJava
         		}
         	}
         }
-        
+
         // add attributes implementing associations
         Collection ends = cls.getAssociationEnds();
         if (ends != null)
@@ -715,15 +734,15 @@ public class GeneratorJava
         	{
         		sb.append(INDENT).append("// Associations\n");
         	}
-        
+
         	Iterator endEnum = ends.iterator();
         	while (endEnum.hasNext())
         	{
         		MAssociationEnd ae = (MAssociationEnd) endEnum.next();
         		MAssociation a = ae.getAssociation();
-        
+
         		sb.append(generateAssociationFrom(a, ae));
-        
+
         		tv = generateTaggedValues(a);
         		if (tv != null && tv.length() > 0)
         		{
@@ -731,7 +750,7 @@ public class GeneratorJava
         		}
         	}
         }
-        
+
         // add operations
         // TODO: constructors
         Collection behs = MMUtil.SINGLETON.getOperations(cls);
@@ -751,15 +770,15 @@ public class GeneratorJava
         		sb.append(INDENT).append("// Operations\n");
         	}
         	Iterator behEnum = behs.iterator();
-        
+
         	while (behEnum.hasNext())
         	{
         		MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
-        
+
         		sb.append(generate(bf));
-        
+
         		tv = generateTaggedValues((MModelElement) bf);
-        
+
         		if ((cls instanceof MClass)
         			&& (bf instanceof MOperation)
         			&& (!((MOperation) bf).isAbstract()))
@@ -769,12 +788,12 @@ public class GeneratorJava
         			else
         				sb.append(' ');
         			sb.append('{');
-        
+
         			if (tv.length() > 0)
         			{
         				sb.append('\n').append(INDENT).append(tv);
         			}
-        
+
         			// there is no ReturnType in behavioral feature (nsuml)
         			sb.append('\n').append(generateMethodBody((MOperation) bf)).append(
         				INDENT).append(
@@ -790,9 +809,9 @@ public class GeneratorJava
         		}
         	}
         }
-        
+
         sb = appendClassifierEnd(sb, cls, false);
-        
+
         return sb.toString();
          start new code: */
         StringBuffer returnValue = new StringBuffer();
@@ -970,7 +989,7 @@ public class GeneratorJava
                             }
                         }
                         if (bsb.length() > 0) {
-                            body = bsb.toString();                        
+                            body = bsb.toString();
                         }
                         return body;
                     } else
@@ -1015,6 +1034,8 @@ public class GeneratorJava
     }
 
     public String generateTaggedValues(MModelElement e) {
+        if (_isInUpdateMode)
+            return ""; // no tagged values are generated in update mode. Fixed issue 1512
         Collection tvs = e.getTaggedValues();
         if (tvs == null || tvs.size() == 0)
             return "";
@@ -1167,6 +1188,8 @@ public class GeneratorJava
         MModelElement me,
         boolean documented,
         String indent) {
+        if (_isFileGeneration)
+            documented = true; // always "documented" if we generate file
         // Retrieve any existing doccomment
         String s =
             (VERBOSE_DOCS || DocumentationManager.hasDocs(me))
@@ -1177,6 +1200,7 @@ public class GeneratorJava
         if (s != null && s.trim().length() > 0) {
             sDocComment.append(s).append(LINE_SEPARATOR);
         }
+        cat.debug("documented="+documented);
         if (!documented)
             return sDocComment.toString();
 
@@ -1441,7 +1465,7 @@ public class GeneratorJava
     //  public String generateSpecification(Collection realizations) {
     public String generateSpecification(MClass cls) {
         Collection realizations =
-            UmlHelper.getHelper().getCore().getSpecifications(cls);
+            ModelFacade.getSpecifications(cls);
         if (realizations == null)
             return "";
         StringBuffer sb = new StringBuffer(80);
@@ -1705,7 +1729,7 @@ public class GeneratorJava
     /**
        Gets the Java package name for a given namespace,
        ignoring the root namespace (which is the model).
-    
+
        @param namespace the namespace
        @return the Java package name
     */
@@ -1723,7 +1747,7 @@ public class GeneratorJava
 
     /**
        Update a source code file.
-    
+
        @param mClassifier The classifier to update from.
        @param file The file to update.
     */
@@ -1744,7 +1768,9 @@ public class GeneratorJava
         if (backupFile.exists())
             backupFile.delete();
         //Argo.log.info("Generating " + newFile.getPath());
+        _isInUpdateMode = true;
         cpc.filter(file, newFile, mClassifier.getNamespace());
+        _isInUpdateMode = false;
         //Argo.log.info("Backing up " + file.getPath());
         file.renameTo(backupFile);
         Argo.log.info("Updating " + file.getPath());
