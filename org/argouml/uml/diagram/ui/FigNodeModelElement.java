@@ -74,7 +74,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.UUIDManager;
 import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlFactory;
@@ -85,6 +84,7 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
+import org.argouml.uml.UUIDHelper;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -1220,8 +1220,8 @@ public abstract class FigNodeModelElement
         updateListeners(own);
         super.setOwner(own);
         if (ModelFacade.isAModelElement(own)
-                && ProjectManager.getUUID(own) == null) {
-            ModelFacade.setUUID(own, UUIDManager.getInstance().getNewUUID());
+                && UUIDHelper.getInstance().getUUID(own) == null) {
+            ModelFacade.setUUID(own, UUIDHelper.getInstance().getNewUUID());
         }
         readyToEdit = true;
         if (own != null) {

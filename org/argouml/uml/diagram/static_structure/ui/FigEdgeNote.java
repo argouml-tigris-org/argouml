@@ -34,7 +34,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.UUIDManager;
+import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
@@ -149,9 +149,9 @@ public class FigEdgeNote
             newOwner = new CommentEdge(getSourceFigNode(), getDestFigNode());
         }
         owner = newOwner;
-        if (ProjectManager.getUUID(newOwner) == null) {
+        if (UUIDHelper.getInstance().getUUID(newOwner) == null) {
             ModelFacade.setUUID(newOwner,
-				UUIDManager.getInstance().getNewUUID());
+				UUIDHelper.getInstance().getNewUUID());
 	}
     }
     
