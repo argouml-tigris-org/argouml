@@ -34,7 +34,7 @@ Building the latest versions of ArgoUML is automated using Ant which is a little
 Additionally you have to make sure, that the "JAVA_HOME" environment property should be set to match the JVM you want to use. That's it.
 
 
-Building instructions 
+Building instructions
 =====================
 
 First, make sure your current working directory is where this very file is located. Then just type
@@ -86,7 +86,7 @@ If you want to compile ArgoUML, you need to have following:
 - the additional libraries (nsuml.jar, ocl-argo.jar, xml4j.jar, gef.jar, antlrall.jar) in argouml/lib
 - the support file (uml13.dtd) is optional but desirable in argouml/lib
 
-when these are right the command 
+when these are right the command
 
      build compile
 
@@ -153,7 +153,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="src.dir" value="../src_new"/>
     <property name="lib.dir" value="../lib"/>
-    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/junit.jar"/> 
+    <property name="classpath" value="${JAVA_HOME}/lib/tools.jar:${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/gef.jar:${lib.dir}/antlrall.jar:${lib.dir}/log4j.jar:${lib.dir}/junit.jar"/>
     <property name="ant.xml-libs" value="${ANT_HOME}/lib/jaxp.jar:${ANT_HOME}/lib/parser.jar"/>
 
     <property name="packages" value="org.argouml.*"/>
@@ -235,9 +235,12 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
   <target name="generateparser" depends="prepare">
     <echo message="Generate parsers"/>
-    
-    <java fork="yes" classname="antlr.Tool" classpath="${classpath}"> 
+
+    <java fork="yes" classname="antlr.Tool" classpath="${classpath}">
           <arg line="-o ${build.src}/org/argouml/uml/reveng/java  ${build.src}/org/argouml/uml/reveng/java/java.g"/>
+    </java>
+    <java fork="yes" classname="antlr.Tool" classpath="${classpath}">
+          <arg line="-o ${build.src}/org/argouml/language/java/generator  ${build.src}/org/argouml/language/java/generator/java.g"/>
     </java>
 
   </target>
@@ -247,7 +250,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <!-- <target name="compile" depends="generateparser,prepare"> -->
 
-  <target name="compile" depends="prepare"> 
+  <target name="compile" depends="prepare">
 
     <echo message="Compiling the sources"/>
 
@@ -327,7 +330,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <tar tarfile="../${Name}-${version}-src.tar" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src_new/**"/>
     <gzip zipfile="../${Name}-${version}-src.tar.gz" src="../${Name}-${version}-src.tar" />
     <delete file="../${Name}-${version}-src.tar"/>
-  </target>                                                                                                                                                                    
+  </target>
 
   <!-- =================================================================== -->
   <!-- Creates the lib distribution                                            -->
@@ -338,7 +341,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <tar tarfile="../${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/gef.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
     <gzip zipfile="../${Name}-${version}-libs.tar.gz" src="../${Name}-${version}-libs.tar" />
     <delete file="../${Name}-${version}-libs.tar"/>
-  </target>                                                                                                                   
+  </target>
   <!-- =================================================================== -->
   <!-- Creates the whole distribution                                            -->
   <!-- =================================================================== -->
@@ -352,7 +355,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   	<antcall target="dist-all">
   	</antcall>
   </target>
-  
+
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->

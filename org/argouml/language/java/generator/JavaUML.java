@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,6 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
 package org.argouml.language.java.generator;
 
 import java.awt.*;
@@ -36,14 +37,14 @@ import ru.novosoft.uml.xmi.*;
 
 /** A file of information about the Java language.  This is used to
  *  fill in the offered data types in variable and operation
- *  declarations. 
+ *  declarations.
  * In the end, it would be better to have these in XMI files that are loaded at starting time.
 */
 
 public class JavaUML {
 
   // java.lang
-  
+
   public static MClass STRING_CLASS = new MClassImpl();
 
   public static MDataType VOID_TYPE = new MDataTypeImpl();
@@ -69,7 +70,7 @@ public class JavaUML {
   public static MClass POINT_CLASS = new MClassImpl();
   public static MClass COLOR_CLASS = new MClassImpl();
 
-  
+
   // java.util
   public static MClass VECTOR_CLASS = new MClassImpl();
   public static MClass HASHTABLE_CLASS = new MClassImpl();
@@ -92,7 +93,7 @@ public class JavaUML {
    VECTOR_CLASS.setName("Vector");
    HASHTABLE_CLASS.setName("Hashtable");
    STACK_CLASS.setName("Stack");
-   
+
    VOID_TYPE.setName("void");
    CHAR_TYPE.setName("char");
    INT_TYPE.setName("int");
@@ -131,5 +132,5 @@ public class JavaUML {
 
   }
 
-  
+
 } /* end class JavaUML */
