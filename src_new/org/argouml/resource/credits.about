@@ -10,19 +10,25 @@ Module Owners (contact these people for contributions):
   User FAQ: Ewan R. Grantham
   Release manager: Linus Tolke
   
-Contributing Developers (in no special order):
+Contributing Developers for the previous Versions 0.13.*:
+
   Markus Klink
   Jaap Branderhorst
-  Eugenio Alvarez
-  Alexey Aphanasyev
-  Grzegorz Prokopski
+  Thierry Lach
+  Bob Tarling
+  Linus Tolke
+  Jason Robbins
   Michael Stockman
-  Donat Wullschleger
+  Thomas Neustupny
+  Jean-Hugues de Raigniac
+  Alex Bagehot
+  Steffen Zschaler
+  Alexander Lepekhine
 
-Credits for previous versions:
+Past Developers:
 
 Researchers:  
-  Jason Robbins
+  Jason Robbins (Project Founder)
   David Redmiles
   David Hilbert
 
@@ -34,17 +40,21 @@ Developers and Testers:
   ICS 125 team Spring 1996
   ICS 125 teams Spring 1998
 
-Contributing Developers (alphabetic order):
+(alphabetic order):
+
+  Alexey Aphanasyev
   Andreas Rueckert (a_rueckert@gmx.net) (Java RE)
   Clemens Eichler
   Curt Arnold
   David Glaser
   Dennis Daniels (denny_d@hotmail.com)
+  Donat Wullschleger
   Edwin Park
   Eric Lefevre
+  Eugenio Alvarez
   Frank Finger
   Frank Wienberg
-  Jason Robbins (jrobbins@collab.net) (Knowledge support, Initial idea)
+  Grzegorz Prokopski
   Jim Holt
   Luc Maisonobe
   Marcus Andersson
@@ -55,7 +65,6 @@ Contributing Developers (alphabetic order):
   Piotr Kaminski
   Scott Guyer
   Sean Chen
-  Steffen Zschaler (sz9@inf.tu-dresden.de) (OCL constraints)
   Steve Poole
   Stuart Zakon
   Thomas Schaumburg
