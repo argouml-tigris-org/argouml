@@ -1,50 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-  <xsl:param name="admon.graphics" select="1"/>
-  <xsl:param name="admon.graphics.path" select="'images/'"/>
-  <xsl:param name="admon.style" select="'margin-left: 0.5in; margin-right: 0.5in;'"/>
-  <xsl:param name="author.othername.in.middle" select="1"/>
-  <xsl:param name="biblioentry.item.separator" select="'. '"/>
-  <xsl:param name="callout.defaultcolumn" select="60"/>
-  <xsl:param name="callout.graphics" select="1"/>
-  <xsl:param name="callout.graphics.extension" select="'.png'"/>
-  <xsl:param name="callout.graphics.number.limit" select="10"/>
-  <xsl:param name="callout.graphics.path" select="'images/callouts/'"/>
-  <xsl:param name="callout.list.table" select="1"/>
-  <xsl:param name="chapter.autolabel" select="1"/>
-  <xsl:param name="check.idref" select="0"/>
-  <xsl:param name="css.decoration" select="1"/>
-  <xsl:param name="default.table.width" select="''"/>
-  <xsl:param name="funcsynopsis.decoration" select="1"/>
-  <xsl:param name="funcsynopsis.style" select="'ansi'"/>
-  <xsl:param name="generate.component.toc" select="1"/>
-  <xsl:param name="generate.division.toc" select="1"/>
-  <xsl:param name="generate.qandaset.toc" select="1"/>
-  <xsl:param name="graphic.default.extension" select="'png'"/>
-  <xsl:param name="html.base" select="''"/>
-  <xsl:param name="html.stylesheet" select="'look-and-feel.css'"/>
-  <xsl:param name="html.stylesheet.type" select="'text/css'"/>
-  <xsl:param name="linenumbering.everyNth" select="5"/>
-  <xsl:param name="linenumbering.separator" select="' '"/>
-  <xsl:param name="linenumbering.width" select="3"/>
-  <xsl:param name="link.mailto.url" select="''"/>
-  <xsl:param name="nominal.table.width" select="'6in'"/>
-  <xsl:param name="part.autolabel" select="1"/>
-  <xsl:param name="preface.autolabel" select="1"/>
-  <xsl:param name="qanda.defaultlabel" select="1"/>
-  <xsl:param name="qanda.inherit.numeration" select="1"/>
-  <xsl:param name="qandadiv.autolabel" select="1"/>
-  <xsl:param name="refentry.generate.name" select="1"/>
-  <xsl:param name="refentry.xref.manvolnum" select="1"/>
-  <xsl:param name="rootid" select="''"/>
-  <xsl:param name="section.autolabel" select="1"/>
-  <xsl:param name="section.label.includes.component.label" select="1"/>
-  <xsl:param name="spacing.paras" select="1"/>
-  <xsl:param name="stylesheet.result.type" select="'html'"/>
-  <xsl:param name="toc.list.type" select="'dl'"/>
-  <xsl:param name="toc.section.depth" select="2"/>
-  <xsl:param name="ulink.target" select="'_top'"/>
-  <xsl:param name="use.id.function" select="1"/>
-  <xsl:param name="using.chunker" select="0"/>
+  <xsl:variable name="admon.graphics" select="1"/>
+  <xsl:variable name="admon.graphics.path" select="'images/'"/>
+  <xsl:variable name="admon.style"
+                select="'margin-left: 0.5in; margin-right: 0.5in;'"/>
+  <xsl:variable name="author.othername.in.middle" select="1"/>
+  <xsl:variable name="biblioentry.item.separator" select="'. '"/>
+  <xsl:variable name="callout.defaultcolumn" select="60"/>
+  <xsl:variable name="callout.graphics" select="1"/>
+  <xsl:variable name="callout.graphics.extension" select="'.png'"/>
+  <xsl:variable name="callout.graphics.number.limit" select="10"/>
+  <xsl:variable name="callout.graphics.path" select="'images/callouts/'"/>
+  <xsl:variable name="callout.list.table" select="1"/>
+  <xsl:variable name="chapter.autolabel" select="1"/>
+  <xsl:variable name="check.idref" select="0"/>
+  <xsl:variable name="css.decoration" select="1"/>
+  <xsl:variable name="default.table.width" select="''"/>
+  <xsl:variable name="funcsynopsis.decoration" select="1"/>
+  <xsl:variable name="funcsynopsis.style" select="'ansi'"/>
+  <xsl:variable name="generate.component.toc" select="1"/>
+  <xsl:variable name="generate.division.toc" select="1"/>
+  <xsl:variable name="generate.qandaset.toc" select="1"/>
+  <xsl:variable name="graphic.default.extension" select="'png'"/>
+  <xsl:variable name="html.base" select="''"/>
+  <xsl:variable name="html.stylesheet" select="'look-and-feel.css'"/>
+  <xsl:variable name="html.stylesheet.type" select="'text/css'"/>
+  <xsl:variable name="linenumbering.everyNth" select="5"/>
+  <xsl:variable name="linenumbering.separator" select="' '"/>
+  <xsl:variable name="linenumbering.width" select="3"/>
+  <xsl:variable name="link.mailto.url" select="''"/>
+  <xsl:variable name="nominal.table.width" select="'6in'"/>
+  <xsl:variable name="part.autolabel" select="1"/>
+  <xsl:variable name="preface.autolabel" select="1"/>
+  <xsl:variable name="qanda.defaultlabel" select="1"/>
+  <xsl:variable name="qanda.inherit.numeration" select="1"/>
+  <xsl:variable name="qandadiv.autolabel" select="1"/>
+  <xsl:variable name="refentry.generate.name" select="1"/>
+  <xsl:variable name="refentry.xref.manvolnum" select="1"/>
+  <xsl:variable name="rootid" select="''"/>
+  <xsl:variable name="section.autolabel" select="1"/>
+  <xsl:variable name="section.label.includes.component.label" select="1"/>
+  <xsl:variable name="spacing.paras" select="1"/>
+  <xsl:variable name="stylesheet.result.type" select="'html'"/>
+  <xsl:variable name="toc.list.type" select="'dl'"/>
+  <xsl:variable name="toc.section.depth" select="2"/>
+  <xsl:variable name="ulink.target" select="'_top'"/>
+  <xsl:variable name="use.id.function" select="1"/>
+  <xsl:variable name="using.chunker" select="0"/>
+
+  <!-- Added by Jeremy Bennett for 1.49 XSL stylesheets -->
+
+  <xsl:variable name="saxon.extensions" select="1"/>
+
 </xsl:stylesheet>
 
