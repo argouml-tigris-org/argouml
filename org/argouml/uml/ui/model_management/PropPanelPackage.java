@@ -26,14 +26,15 @@ package org.argouml.uml.ui.model_management;
 
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
-import org.argouml.application.api.PluggablePropertyPanel;
 
 import org.argouml.swingext.Orientation;
+import org.argouml.model.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.model_management.MPackageImpl;
+import ru.novosoft.uml.model_management.MPackage;
 
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -42,7 +43,7 @@ import javax.swing.JScrollPane;
 
 /** PropPanelPackage defines the Property Panel for MPackage elements.
  */
-public class PropPanelPackage extends PropPanelNamespace implements PluggablePropertyPanel {
+public class PropPanelPackage extends PropPanelNamespace  {
 
     protected JPanel _modifiersPanel = new JPanel();
     protected PropPanelButton _stereotypeButton;
@@ -69,26 +70,6 @@ public class PropPanelPackage extends PropPanelNamespace implements PluggablePro
     public PropPanelPackage(String title, Orientation orientation) {
         super(title, orientation);
         placeElements();
-    }
-
-    public Class getClassForPanel() {
-        return MPackageImpl.class;
-    }
-
-    public String getModuleName() {
-        return "PropPanelPackage";
-    }
-    public String getModuleDescription() {
-        return "Property Panel for Package";
-    }
-    public String getModuleAuthor() {
-        return "ArgoUML Core";
-    }
-    public String getModuleVersion() {
-        return ArgoVersion.getVersion();
-    }
-    public String getModuleKey() {
-        return "module.propertypanel.package";
     }
 
     /**
@@ -119,7 +100,21 @@ public class PropPanelPackage extends PropPanelNamespace implements PluggablePro
         addField(Argo.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
 
         new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this,buttonPanel,_packageIcon, Argo.localize("UMLMenu", "button.add-package"), "addPackage", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-package"), "removeElement", "isRemovableElement");
+    }
+
+
+    /** add a package to the current package. */
+    public void addPackage() {
+        Object target = getTarget();
+        if (target instanceof MPackage) {
+            MPackage newPackage =  UmlFactory.getFactory().
+                getModelManagement().createPackage();
+            MPackage currentPackage = (MPackage) target;
+            currentPackage.addOwnedElement(newPackage);
+            TargetManager.getInstance().setTarget(newPackage);
+        }
     }
 
      /**
