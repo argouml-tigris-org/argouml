@@ -36,7 +36,8 @@ public class ConfigLoader {
 
   public static void loadTabs(Vector tabs, String panelName,
 			      StatusBar sb) {
-    String configFile = System.getProperty("argo.config", "argo.ini");
+    String configFile = System.getProperty("argo.config",
+					   "/uci/uml/ui/argo.ini");
     LineNumberReader lnr = null;
     //    try {
       InputStream is = ConfigLoader.class.getResourceAsStream(configFile);

@@ -52,7 +52,7 @@ public class Project implements java.io.Serializable {
   public static final String SEPARATOR = "/";
   public final static String FILE_EXT = ".argo";
   public final static String TEMPLATES = "/uci/uml/templates/";
-  public final static String EMPTY_PROJ = "EmptyProject" + FILE_EXT;
+  //public final static String EMPTY_PROJ = "EmptyProject" + FILE_EXT;
   public final static String UNTITLED_FILE = "Untitled";
 
   ////////////////////////////////////////////////////////////////
@@ -141,28 +141,28 @@ public class Project implements java.io.Serializable {
     return p;
   }
 
-  /** This method is currently not called.  It is an example of how to
-   *  support loading template files.  However, makeEmptyProject() is
-   *  much faster, and that is important since it is done often. */
-  public static Project loadEmptyProject() {
-    System.out.println("Reading " + TEMPLATES + EMPTY_PROJ + "...");
-    URL url = Project.class.getResource(TEMPLATES + EMPTY_PROJ);
-    Project p = null;
-    //try {
-    ArgoParser.SINGLETON.readProject(url);
-    //     }
-    //     catch (IOException ignore) {
-    //       System.out.println("IOException in makeEmptyProject");
-    //     }
-    //     catch (org.xml.sax.SAXException ignore) {
-    //       System.out.println("SAXException in makeEmptyProject");
-    //     }
-    p = ArgoParser.SINGLETON.getProject();
-    //p.initProject();
-    p.loadAllMembers();
-    p.postLoad();
-    return p;
-  }
+//   /** This method is currently not called.  It is an example of how to
+//    *  support loading template files.  However, makeEmptyProject() is
+//    *  much faster, and that is important since it is done often. */
+//   public static Project loadEmptyProject() {
+//     System.out.println("Reading " + TEMPLATES + EMPTY_PROJ + "...");
+//     URL url = Project.class.getResource(TEMPLATES + EMPTY_PROJ);
+//     Project p = null;
+//     //try {
+//     ArgoParser.SINGLETON.readProject(url);
+//     //     }
+//     //     catch (IOException ignore) {
+//     //       System.out.println("IOException in makeEmptyProject");
+//     //     }
+//     //     catch (org.xml.sax.SAXException ignore) {
+//     //       System.out.println("SAXException in makeEmptyProject");
+//     //     }
+//     p = ArgoParser.SINGLETON.getProject();
+//     //p.initProject();
+//     p.loadAllMembers();
+//     p.postLoad();
+//     return p;
+//   }
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -359,12 +359,12 @@ public class Project implements java.io.Serializable {
 //     }
 //   }
 
-  public static Project loadEmpty() throws IOException, org.xml.sax.SAXException {
-    URL emptyURL = Project.class.getResource(TEMPLATES + EMPTY_PROJ);
-    if (emptyURL == null)
-      throw new IOException("Unable to get empty project resource.");
-    return load(emptyURL);
-  }
+//   public static Project loadEmpty() throws IOException, org.xml.sax.SAXException {
+//     URL emptyURL = Project.class.getResource(TEMPLATES + EMPTY_PROJ);
+//     if (emptyURL == null)
+//       throw new IOException("Unable to get empty project resource.");
+//     return load(emptyURL);
+//   }
 
   public void loadMembersOfType(String type) {
     if (type == null) return;
