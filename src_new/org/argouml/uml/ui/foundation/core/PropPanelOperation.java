@@ -86,7 +86,7 @@ public class PropPanelOperation extends PropPanel {
         addField(namespaceList,5,0,0);
         
         addCaption(new JLabel("Return type:"),0,1,0);
-        addField(new UMLClassifierComboBox(this,MClassifier.class,"type","getReturnType","setReturnType",true),0,1,0);
+        addField(new UMLClassifierComboBox(this,MClassifier.class,null,"type","getReturnType","setReturnType",true),0,1,0);
 
         
         

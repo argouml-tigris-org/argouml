@@ -63,13 +63,13 @@ public class PropPanelGeneralization extends PropPanel {
     //
     //   misuse of classifier, but only temporary
     //
-    addField(new UMLClassifierComboBox(this,MGeneralizableElement.class,"parent","getParentElement","setParentElement",false),0,1,0);
+    addField(new UMLClassifierComboBox(this,MGeneralizableElement.class,null,"parent","getParentElement","setParentElement",false),0,1,0);
 
     addCaption(new JLabel("Child:"),1,1,0);
-    addField(new UMLClassifierComboBox(this,MGeneralizableElement.class,"child","getChild","setChild",false),1,1,0);
+    addField(new UMLClassifierComboBox(this,MGeneralizableElement.class,null,"child","getChild","setChild",false),1,1,0);
 
     addCaption(new JLabel("Powertype:"),2,1,1);
-    addField(new UMLClassifierComboBox(this,MClassifier.class,"powertype","getPowertype","setPowertype",true),2,1,0);
+    addField(new UMLClassifierComboBox(this,MClassifier.class,null,"powertype","getPowertype","setPowertype",true),2,1,0);
 
 
 }

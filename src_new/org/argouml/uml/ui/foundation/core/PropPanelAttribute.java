@@ -49,7 +49,7 @@ public class PropPanelAttribute extends PropPanel {
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
         addCaption(new JLabel("Type:"),1,0,0);
-        addField(new UMLClassifierComboBox(this,MClassifier.class,"type","getType","setType",false),1,0,0);
+        addField(new UMLClassifierComboBox(this,MClassifier.class,null,"type","getType","setType",false),1,0,0);
 
         addCaption(new JLabel("Multiplicity:"),2,0,0);
         addField(new UMLMultiplicityComboBox(this,MAttribute.class),2,0,0);

@@ -47,7 +47,7 @@ public class PropPanelParameter extends PropPanel {
         addField(stereotypeBox,1,0,0);
 
         addCaption(new JLabel("Type:"),2,0,0);
-        addField(new UMLClassifierComboBox(this,MClassifier.class,"type","getType","setType",true),0,1,0);
+        addField(new UMLClassifierComboBox(this,MClassifier.class,null,"type","getType","setType",true),0,1,0);
         
         addCaption(new JLabel("Owner:"),3,0,1);
         JList namespaceList = new UMLList(new UMLReflectionListModel(this,"behaviorialfeature",false,"getBehavioralFeature",null,null,null),true);
