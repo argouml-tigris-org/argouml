@@ -745,9 +745,10 @@ public class Modeller
 	String typeName;
 	Object mClassifier;
 
-	if (returnType == null ||
-            ("void".equals(returnType) &&
-             name.equals(ModelFacade.getName(parseState.getClassifier())))) {
+	if (returnType == null 
+            || ("void".equals(returnType) 
+                && name.equals(ModelFacade.getName(parseState
+                        .getClassifier())))) {
 	    // Constructor
 	    ModelFacade.setStereotype(mOperation, 
                 getStereotype(mOperation, "create", "BehavioralFeature" ));
@@ -1502,7 +1503,6 @@ public class Modeller
     private void addDocumentationTag(Object modelElement, String sJavaDocs) {
 	if ((sJavaDocs != null)
 	    && (sJavaDocs.trim().length() >= 5 )) {
-
 	    StringBuffer sbPureDocs = new StringBuffer(80);
 	    String sCurrentTagName = null;
 	    String sCurrentTagData = null;
@@ -1524,7 +1524,6 @@ public class Modeller
 		    }
 		default:
 		    // normal comment text or standard tag
-
 		    // check ahead for tag
 		    int j = nStartPos;
 		    while ((j < sJavaDocs.length())
@@ -1553,7 +1552,6 @@ public class Modeller
 						       sCurrentTagName,
 						       sCurrentTagData);
 			    }
-
 			    // open new tag
 			    int nTemp = sJavaDocs.indexOf (' ', j + 1);
 			    if (nTemp == -1) {
@@ -1561,7 +1559,6 @@ public class Modeller
 			    }
 			    sCurrentTagName = sJavaDocs.substring(j + 1, 
 								  nTemp);
-
 			    int nTemp1 = sJavaDocs.indexOf ('\n', ++nTemp);
 			    if (nTemp1 == -1) {
 				nTemp1 = sJavaDocs.length();
@@ -1569,7 +1566,6 @@ public class Modeller
 			    else {
 				nTemp1++;
 			    }
-
 			    sCurrentTagData =
 				sJavaDocs.substring (nTemp, nTemp1);
 			    nStartPos = nTemp1;
@@ -1600,11 +1596,8 @@ public class Modeller
 		    fHadAsterisk = false;
 		}
 	    }
-
 	    sJavaDocs = sbPureDocs.toString();
-//	    LOG.debug(sJavaDocs);
-	    /*
-	     * After this, we have the documentation text, but
+	    /* After this, we have the documentation text, but
 	     * unfortunately, there's still a trailing '/' left. If
 	     * this is even the only thing on it's line, we want to
 	     * remove the complete line, otherwise we remove just the
@@ -1631,7 +1624,6 @@ public class Modeller
 	    else {
 		sJavaDocs = sJavaDocs.substring (0, 
 		                    sJavaDocs.lastIndexOf ('/') - 1);
-
 		if (sJavaDocs.length() > 0) {
 		    if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
 			sJavaDocs =
@@ -1643,11 +1635,9 @@ public class Modeller
 		sJavaDocs = sJavaDocs.substring(0, sJavaDocs.length() - 1);
 
 	    // Do special things:
-
 	    // Now store documentation text
 	    ModelFacade.setValueOfTag(getTaggedValue(
                 modelElement, "documentation"), sJavaDocs);
-
 	    // If there is a tagged value named stereotype, make it a real
 	    // stereotype
             Object tv = ModelFacade.getTaggedValue(modelElement, "stereotype");
