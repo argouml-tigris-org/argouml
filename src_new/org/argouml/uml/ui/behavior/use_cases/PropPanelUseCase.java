@@ -157,7 +157,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
                 MUseCase useCase = UseCasesFactory.getFactory().createUseCase();
 
                 ns.addOwnedElement(useCase);
-                ProjectBrowser.TheInstance.setTarget(useCase);
+                ProjectBrowser.getInstance().setTarget(useCase);
             }
         }
     }
@@ -181,7 +181,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
             MExtensionPoint extensionPoint =
                     UseCasesFactory.getFactory().buildExtensionPoint(useCase);
-            ProjectBrowser.TheInstance.setTarget(extensionPoint);
+            ProjectBrowser.getInstance().setTarget(extensionPoint);
             
         }
     }
