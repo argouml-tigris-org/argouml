@@ -121,49 +121,106 @@ implements PluggableNotation {
         return s;
     }
 
-
+/*
+public String generateConcurrency(MCallConcurrencyKind concurrency) {
+	concurrency.ge
+*/
+/**
+ * Generates an operation accordin to the UML 1.3 notation:
+ * stereotype visibility name (parameter-list) : return-type-expression {property-string}
+ * For the return-type-expression: only the types of the return parameters are shown.
+ * @author jaap.branderhorst@xs4all.nl
+ * @see org.argouml.application.api.NotationProvider#generateOperation(MOperation, boolean)
+ */
   public String generateOperation(MOperation op, boolean documented) {
-    boolean isConstructor = false;
-    if(op.getStereotype() != null) {
-	isConstructor = ("create".equals(op.getStereotype().getName()) ||
-                     "constructor".equals(op.getStereotype().getName()));
-    }
-    String s = "";
-    s += generateVisibility(op);
-    if (!isConstructor) {
-	s += generateScope(op);
-    }
-    String nameStr = generateName(op.getName());
-    String clsName = generateName(op.getOwner().getName());
-
-    // pick out return type
-    MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
-
-    // name and params
-    Vector params = new Vector(op.getParameters());
-    params.remove(rp);
-    s += nameStr + "(";
-	if (params != null) {
-		boolean first = true;
-		for (int i=0; i < params.size(); i++) {
-			MParameter p = (MParameter) params.elementAt(i);
-			if (!first) s += ", ";
-			s += generateParameter(p);
-			first = false;
-		}
-    }
-    s += ")";
-
-    // append return type
-    if (!isConstructor) {
-	if (rp != null && rp.getType() != null) {
-	    s += ": " + generateClassifierRef(rp.getType());
-	}
-	else {
-            s += "";   // Patch by Jeremy Bennett
-	}
-    }
-    return s;
+  	String stereoStr = generateStereotype(op.getStereotype());
+  	String visStr = generateVisibility(op.getVisibility());
+  	String nameStr = generateName(op.getName());
+  	
+  	// the parameters
+  	StringBuffer parameterListBuffer = new StringBuffer();
+  	Collection parameters = op.getParameters();
+  	Iterator it = parameters.iterator();
+  	int counter = 0;
+  	while (it.hasNext()) {
+  		MParameter parameter = (MParameter)it.next();
+  		if (!parameter.getKind().equals(MParameterDirectionKind.RETURN)) {
+  			counter++;
+  			parameterListBuffer.append(generateParameter(parameter)).append(",");
+  		}
+  	}
+  	if (counter > 0) {
+  		parameterListBuffer.delete(parameterListBuffer.length()-1, parameterListBuffer.length());
+  	}
+  	String parameterStr = "(" + parameterListBuffer.toString() + ")";
+  	
+  	// the returnparameters
+  	Collection returnParas = MMUtil.SINGLETON.getReturnParameters(op);
+  	StringBuffer returnParasSb = new StringBuffer();
+  	if (returnParas.size() > 0) {
+  		returnParasSb.append(": ");
+  	    Iterator it2 = returnParas.iterator();
+  	    while (it2.hasNext()) {
+  	    	MParameter param = (MParameter)it2.next();
+  	    	if (param.getType() != null) {
+  	    		returnParasSb.append(param.getType().getName());
+  	    	}
+  	    	returnParasSb.append(",");
+  	    }
+  	    returnParasSb.delete(returnParasSb.length()-1, returnParasSb.length());
+  	}
+  	String returnParasStr = returnParasSb.toString();
+  	
+  	// the properties
+  	StringBuffer propertySb = new StringBuffer().append("{");
+  	// the query state
+  	if (op.isQuery()) {
+  		propertySb.append("query,");
+  	}
+  	if (op.isRoot()) {
+  		propertySb.append("root,");
+  	}
+  	if (op.isLeaf()) {
+  		propertySb.append("leaf,");
+  	}
+  	propertySb.append(op.getConcurrency().getName().toString()).append(",");
+  	Collection taggedValues = op.getTaggedValues();
+  	StringBuffer taggedValuesSb = new StringBuffer();
+  	if (taggedValues.size() > 0) {
+  		Iterator it3 = taggedValues.iterator();
+  		while (it3.hasNext()) {
+  			taggedValuesSb.append(generateTaggedValue((MTaggedValue)it3.next()));
+  			taggedValuesSb.append(",");
+  		}
+  		taggedValuesSb.delete(taggedValuesSb.length()-1, taggedValuesSb.length());
+  	}
+  	if (propertySb.length()>1) {
+  		propertySb.delete(propertySb.length()-1, propertySb.length()); // remove last ,
+  		propertySb.append("}");
+  	} else {
+  		propertySb = new StringBuffer();
+  	}
+  	String propertiesStr = propertySb.toString();
+  	
+  	// lets concatenate it to the resulting string (genStr)
+  	StringBuffer genStr = new StringBuffer();
+  	if ((stereoStr != null) && (stereoStr.length() > 0)) {
+  		genStr.append(stereoStr).append(" ");
+  	}
+  	if ((visStr != null) && (visStr.length() > 0)) {
+  		genStr.append(visStr).append(" ");
+  	}
+  	if ((nameStr != null) && (nameStr.length() > 0)) {
+  		genStr.append(nameStr);
+  	}
+  	genStr.append(parameterStr).append(" ");
+  	if ((returnParasStr != null) && (returnParasStr.length() > 0)) {
+  		genStr.append(returnParasStr).append(" ");
+  	}
+  	if ((propertiesStr != null) && (propertiesStr.length() > 0)) {
+  		genStr.append(propertiesStr);
+  	}
+  	return genStr.toString().trim();	
   }
   
   protected String generateMultiplicity(MAttribute attr) {
@@ -185,8 +242,10 @@ implements PluggableNotation {
   }
 	
 	
-  public String generateAttribute(MAttribute attr, boolean documented) {
+  public String generateAttribute(MAttribute attr, boolean documented) { 
   	String visibility = generateVisibility(attr.getVisibility());
+  	String stereo = generateStereotype(attr.getStereotype());
+  	cat.debug("Stereotype: " + stereo);
   	String name = attr.getName();
   	String multiplicity = generateMultiplicity(attr.getMultiplicity());
     String type = attr.getType().getName();
@@ -202,6 +261,9 @@ implements PluggableNotation {
   	StringBuffer sb = new StringBuffer();
   	if ((visibility != null) && (visibility.length() > 0)) {
   		sb.append(visibility).append(" ");
+  	}
+  	if ((stereo != null) && (stereo.length() > 0)) {
+  		sb.append(stereo).append(" ");
   	}
   	if ((name != null) && (name.length() > 0)) {
   		sb.append(name).append(" ");
