@@ -31,7 +31,10 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 import javax.swing.text.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
+
+import org.apache.log4j.*;
 
 /** A tab that contains textual information.
  */
@@ -47,6 +50,7 @@ implements TabModelTarget, DocumentListener {
    *  Contains null if no toolbar was requested.
    */
   protected JToolBar _toolbar = null;
+  protected Category cat = Category.getInstance(TabText.class);
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -81,6 +85,7 @@ implements TabModelTarget, DocumentListener {
   // accessors
 
   public void setTarget(Object t) {
+    cat.debug ("TabText.setTarget(" + t + ")");
     _target = t;
     _parseChanges = false;
     if (_target == null) {
@@ -107,11 +112,15 @@ implements TabModelTarget, DocumentListener {
 
   public Object getTarget() { return _target; }
 
-  public void refresh() { setTarget(_target); }
+  public void refresh() {
+      cat.debug ("TabText.refresh() called");
+      setTarget(_target);
+  }
 
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }
 
   protected String genText() {
+    cat.debug("TabText.genText() called");
     if (_target == null) return "nothing selected";
     return _target.toString();
   }
