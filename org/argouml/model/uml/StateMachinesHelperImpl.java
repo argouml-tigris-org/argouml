@@ -175,7 +175,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
      * @return boolean
      */
     public boolean isTopState(Object o) {
-        if (ModelFacade.isACompositeState(o)) {
+        if (o instanceof MCompositeState) {
             if (ModelFacade.getContainer(o) == null) {
                 return true;
             }
@@ -250,7 +250,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
      * @return Collection   all statevertices that are a target
      */
     public Collection getOutgoingStates(Object ostatevertex) {
-        if (ModelFacade.isAStateVertex(ostatevertex)) {
+        if (ostatevertex instanceof MStateVertex) {
             MStateVertex statevertex = (MStateVertex) ostatevertex;
             Collection col = new ArrayList();
             Iterator it = statevertex.getOutgoings().iterator();
@@ -278,7 +278,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
         }
         Object sm = getStateMachine(trans);
         Object ns = ModelFacade.getNamespace(sm);
-        if (ModelFacade.isAClassifier(ns)) {
+        if (ns instanceof MClassifier) {
             Collection c = ModelFacade.getOperations(ns);
             Iterator i = c.iterator();
             while (i.hasNext()) {
@@ -298,12 +298,12 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
      * @return all substates
      */
     public Collection getAllSubStates(Object compState) {
-        if (ModelFacade.isACompositeState(compState)) {
+        if (compState instanceof MCompositeState) {
             List retList = new ArrayList();
             Iterator it = ModelFacade.getSubvertices(compState).iterator();
             while (it.hasNext()) {
                 Object subState = it.next();
-                if (ModelFacade.isACompositeState(subState)) {
+                if (subState instanceof MCompositeState) {
                     retList.addAll(getAllSubStates(subState));
                 }
                 retList.add(subState);
@@ -350,11 +350,11 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
 
     /**
      * Sets the Bound of some SynchState.
-     * 
+     *
      * @param handle Synch State
-     * @param bound A positive integer or the value “unlimited” specifying 
-     *              the maximal count of the SynchState. The count is the 
-     *              difference between the number of times the incoming 
+     * @param bound A positive integer or the value “unlimited” specifying
+     *              the maximal count of the SynchState. The count is the
+     *              difference between the number of times the incoming
      *              and outgoing transitions of the synch state are fired.
      */
     public void setBound(Object handle, int bound) {

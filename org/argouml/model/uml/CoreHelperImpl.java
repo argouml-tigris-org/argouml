@@ -70,6 +70,7 @@ import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
@@ -201,7 +202,7 @@ class CoreHelperImpl implements CoreHelper {
      */
     public Collection getSupertypes(Object ogeneralizableelement) {
         Collection result = new HashSet();
-        if (ModelFacade.isAGeneralizableElement(ogeneralizableelement)) {
+        if (ogeneralizableelement instanceof MGeneralizableElement) {
             MGeneralizableElement cls =
                 (MGeneralizableElement) ogeneralizableelement;
             Collection gens = cls.getGeneralizations();
@@ -320,12 +321,12 @@ class CoreHelperImpl implements CoreHelper {
      */
     public Collection getOperations(Object classifier) {
         Collection result = new ArrayList();
-        if (ModelFacade.isAClassifier(classifier)) {
+        if (classifier instanceof MClassifier) {
             MClassifier mclassifier = (MClassifier) classifier;
             Iterator features = mclassifier.getFeatures().iterator();
             while (features.hasNext()) {
                 MFeature feature = (MFeature) features.next();
-                if (ModelFacade.isAOperation(feature)) {
+                if (feature instanceof MOperation) {
                     result.add(feature);
                 }
             }
@@ -341,13 +342,13 @@ class CoreHelperImpl implements CoreHelper {
      * @param operations the new operations
      */
     public void setOperations(Object classifier, Collection operations) {
-        if (ModelFacade.isAClassifier(classifier)) {
+        if (classifier instanceof MClassifier) {
             MClassifier mclassifier = (MClassifier) classifier;
             List result = new ArrayList(mclassifier.getFeatures());
             Iterator features = mclassifier.getFeatures().iterator();
             while (features.hasNext()) {
                 MFeature feature = (MFeature) features.next();
-                if (ModelFacade.isAOperation(feature)) {
+                if (feature instanceof MOperation) {
                     result.remove(feature);
                 }
             }
@@ -385,13 +386,13 @@ class CoreHelperImpl implements CoreHelper {
      * @param attributes the new attributes
      */
     public void setAttributes(Object classifier, Collection attributes) {
-        if (ModelFacade.isAClassifier(classifier)) {
+        if (classifier instanceof MClassifier) {
             MClassifier mclassifier = (MClassifier) classifier;
             List result = new ArrayList(mclassifier.getFeatures());
             Iterator features = mclassifier.getFeatures().iterator();
             while (features.hasNext()) {
                 MFeature feature = (MFeature) features.next();
-                if (ModelFacade.isAAttribute(feature)) {
+                if (feature instanceof MAttribute) {
                     result.remove(feature);
                 }
             }
@@ -537,7 +538,7 @@ class CoreHelperImpl implements CoreHelper {
             if (ModelFacade.getStereotypes(dep).size() > 0) {
                 stereo = ModelFacade.getStereotypes(dep).iterator().next();
             }
-            if ((ModelFacade.isAAbstraction(dep))
+            if ((dep instanceof MAbstraction)
                 && stereo != null
                 && ModelFacade.getName(stereo) != null
                 && ModelFacade.getName(stereo).equals("realize")) {
@@ -611,12 +612,12 @@ class CoreHelperImpl implements CoreHelper {
      * @return the collection with all behavioral features of some classifier
      */
     public Collection getBehavioralFeatures(Object clazz) {
-        if (ModelFacade.isAClassifier(clazz)) {
+        if (clazz instanceof MClassifier) {
             List ret = new ArrayList();
             Iterator it = ModelFacade.getFeatures(clazz).iterator();
             while (it.hasNext()) {
                 Object o = it.next();
-                if (ModelFacade.isABehavioralFeature(o)) {
+                if (o instanceof MBehavioralFeature) {
                     ret.add(o);
                 }
             }
@@ -697,7 +698,7 @@ class CoreHelperImpl implements CoreHelper {
         List list = new ArrayList();
         while (it.hasNext()) {
             Object clientDependency = it.next();
-            if (ModelFacade.isAAbstraction(clientDependency)) {
+            if (clientDependency instanceof MAbstraction) {
                 Object stereo = null;
                 if (ModelFacade.getStereotypes(clientDependency).size() > 0) {
                     stereo =
@@ -1026,7 +1027,7 @@ class CoreHelperImpl implements CoreHelper {
      */
     public Collection getAssociations(Object oclassifier) {
         Collection col = new ArrayList();
-        if (ModelFacade.isAClassifier(oclassifier)) {
+        if (oclassifier instanceof MClassifier) {
             MClassifier classifier = (MClassifier) oclassifier;
             Iterator it = classifier.getAssociationEnds().iterator();
             while (it.hasNext()) {
@@ -1144,8 +1145,8 @@ class CoreHelperImpl implements CoreHelper {
      */
     public Object getSource(Object relationship) {
         if (!(relationship instanceof MRelationship)
-	    && !(ModelFacade.isALink(relationship))
-	    && !(ModelFacade.isAAssociationEnd(relationship))) {
+	    && !(relationship instanceof MLink)
+	    && !(relationship instanceof MAssociationEnd)) {
 
 
             throw new IllegalArgumentException("Argument "
@@ -1154,7 +1155,7 @@ class CoreHelperImpl implements CoreHelper {
 					       + "a relationship");
 
 	}
-        if (ModelFacade.isALink(relationship)) {
+        if (relationship instanceof MLink) {
 	    Iterator it = ModelFacade.getConnections(relationship).iterator();
 	    if (it.hasNext()) {
 		return ModelFacade.getInstance(it.next());
@@ -1226,13 +1227,13 @@ class CoreHelperImpl implements CoreHelper {
     public Object getDestination(Object relationship) {
 
 	if (!(relationship instanceof MRelationship)
-	    && !(ModelFacade.isALink(relationship))
-	    && !(ModelFacade.isAAssociationEnd(relationship))) {
+	    && !(relationship instanceof MLink)
+	    && !(relationship instanceof MAssociationEnd)) {
 
 	    throw new IllegalArgumentException("Argument is not "
 					       + "a relationship");
 	}
-	if (ModelFacade.isALink(relationship)) {
+	if (relationship instanceof MLink) {
 	    Iterator it = ModelFacade.getConnections(relationship).iterator();
 	    if (it.hasNext()) {
 		it.next();
@@ -1622,7 +1623,7 @@ class CoreHelperImpl implements CoreHelper {
      */
     public Collection getBaseClasses(Object o) {
         Collection col = new ArrayList();
-        if (ModelFacade.isANamespace(o)) {
+        if (o instanceof MNamespace) {
             Iterator it =
                 nsmodel.getModelManagementHelper()
 		    .getAllModelElementsOfKind(o, MGeneralizableElement.class)
@@ -1653,7 +1654,7 @@ class CoreHelperImpl implements CoreHelper {
     //       getChildren won't forget that they need to catch it.
     public Collection getChildren(Object o) {
         Collection col = new ArrayList();
-        if (ModelFacade.isAGeneralizableElement(o)) {
+        if (o instanceof MGeneralizableElement) {
             Iterator it =
                 ((MGeneralizableElement) o).getSpecializations().iterator();
             while (it.hasNext()) {
@@ -1710,14 +1711,14 @@ class CoreHelperImpl implements CoreHelper {
 				Object o, Collection col, Set visited) {
         visited.add(o);
         if (o != null) {
-            if (ModelFacade.isAClass(o)) {
+            if (o instanceof MClass) {
                 MClass clazz = (MClass) o;
                 Collection supDependencies = clazz.getClientDependencies();
                 Iterator it = supDependencies.iterator();
                 while (it.hasNext()) {
                     MDependency dependency = (MDependency) it.next();
                     MStereotype stereo = dependency.getStereotype();
-                    if (ModelFacade.isAAbstraction(dependency)
+                    if (dependency instanceof MAbstraction
                         && stereo != null
 			&& "realize".equals(stereo.getName())
 			&& "Abstraction".equals(stereo.getBaseClass())) {
@@ -1903,8 +1904,8 @@ class CoreHelperImpl implements CoreHelper {
     public void removeSupplierDependency(
             Object supplier,
             Object dependency) {
-        if (ModelFacade.isAModelElement(supplier)
-                && ModelFacade.isADependency(dependency)) {
+        if (supplier instanceof MModelElement
+                && dependency instanceof MDependency) {
             MModelElement me = (MModelElement) supplier;
             me.removeSupplierDependency((MDependency) dependency);
             return;
@@ -1993,8 +1994,8 @@ class CoreHelperImpl implements CoreHelper {
      * @param dependency the dependency
      */
     public void addClientDependency(Object handle, Object dependency) {
-        if (ModelFacade.isAModelElement(handle)
-                && ModelFacade.isADependency(dependency)) {
+        if (handle instanceof MModelElement
+                && dependency instanceof MDependency) {
             MModelElement me = (MModelElement) handle;
             me.addClientDependency((MDependency) dependency);
             return;
@@ -3316,7 +3317,7 @@ class CoreHelperImpl implements CoreHelper {
      * @param uuid is the UUID
      */
     public void setUUID(Object handle, String uuid) {
-        if (ModelFacade.isABase(handle)) {
+        if (handle instanceof MBase) {
             ((MBase) handle).setUUID(uuid);
             return;
         }

@@ -41,7 +41,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -384,7 +383,7 @@ public final class UmlModelEventPump implements MElementListener {
 				      String[] eventNames) {
         // we just return if the modelelement is not a base.
         // we don't support non-nsuml elements yet.
-        if (modelelement == null || !ModelFacade.isABase(modelelement)) {
+        if (modelelement == null || !(modelelement instanceof MBase)) {
             return;
         }
         if (listener == null
@@ -428,7 +427,7 @@ public final class UmlModelEventPump implements MElementListener {
 
         // we just return if the modelelement to add is not a NSUML class.
         // we don't support other event listeners yet.
-        if (modelelement == null || !ModelFacade.isABase(modelelement)) {
+        if (modelelement == null || !(modelelement instanceof MBase)) {
             return;
         }
         if (listener == null
@@ -461,7 +460,7 @@ public final class UmlModelEventPump implements MElementListener {
     public void addModelEventListener(Object listener, Object modelelement) {
         // we just return if the modelelement to add is not a NSUML class.
         // we don't support other event listeners yet.
-        if (modelelement == null || !ModelFacade.isABase(modelelement)) {
+        if (modelelement == null || !(modelelement instanceof MBase)) {
             return;
         }
         if (listener == null

@@ -24,7 +24,6 @@
 
 package org.argouml.model.uml;
 
-import org.argouml.model.ModelFacade;
 import org.argouml.model.UUIDManager;
 
 import ru.novosoft.uml.MBase;
@@ -45,7 +44,8 @@ public abstract class AbstractUmlModelFactory {
     }
 
     /**
-     * Initialized some new modelelement o
+     * Initialized some new modelelement o.
+     *
      * @param o The new modelelement
      */
     protected void initialize(Object o) {
@@ -77,7 +77,7 @@ public abstract class AbstractUmlModelFactory {
      * @param handle the modelelement the listeners are interested in
      */
     public void addListenersToModelElement(Object handle) {
-        if (ModelFacade.isABase(handle)) {
+        if (handle instanceof MBase) {
             UmlModelEventPump pump = UmlModelEventPump.getPump();
 
             ((MBase) handle).addMElementListener(pump);

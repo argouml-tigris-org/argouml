@@ -33,7 +33,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.argouml.model.CoreFactory;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
@@ -946,17 +945,17 @@ public class CoreFactoryImpl
      */
     public Object buildAttribute(Object handle, Object model, Object intType,
                                  Collection propertyChangeListeners) {
-        if (!ModelFacade.isAClassifier(handle)
-                && !ModelFacade.isAAssociationEnd(handle)) {
+        if (!(handle instanceof MClassifier)
+                && !(handle instanceof MAssociationEnd)) {
             return null;
         }
         MAttribute attr = null;
-        if (ModelFacade.isAClassifier(handle)) {
+        if (handle instanceof MClassifier) {
             MClassifier cls = (MClassifier) handle;
             attr = (MAttribute) buildAttribute(model, intType);
             cls.addFeature(attr);
         }
-        if (ModelFacade.isAAssociationEnd(handle)) {
+        if (handle instanceof MAssociationEnd) {
             MAssociationEnd assend = (MAssociationEnd) handle;
             attr = (MAttribute) buildAttribute(model, intType);
             assend.addQualifier(attr);
@@ -1520,7 +1519,7 @@ public class CoreFactoryImpl
         }
         MModelElement elementToAnnotate = (MModelElement) element;
         MComment comment = (MComment) createComment();
-        
+
         MNamespace commentsModel = null;
         if (elementToAnnotate != null) {
             comment.addAnnotatedElement(elementToAnnotate);
@@ -1528,9 +1527,9 @@ public class CoreFactoryImpl
         } else {
             commentsModel = (MNamespace) model;
         }
-        
+
         comment.setNamespace(commentsModel);
-        
+
         return comment;
     }
 
