@@ -280,7 +280,7 @@ public class GeneratorJava
                         UmlHelper
 			.getHelper()
 			.getCore()
-			.getReturnParameters((MOperation) mFeature)
+			.getReturnParameters(/*(MOperation)*/mFeature)
 			.iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();

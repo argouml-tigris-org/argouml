@@ -31,6 +31,7 @@
 package org.argouml.language.java.generator;
 
 import java.util.Vector;
+import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -42,7 +43,7 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 public class ParseState
 {
     /** The current namespace. */
-    private MNamespace namespace;
+    private Object namespace;
 
     /** The inner classes not found yet */
     private Vector newInnerClasses;
@@ -51,32 +52,25 @@ public class ParseState
     private Vector newFeatures;
 
     /** The current classifier */
-    private MClassifier mClassifier;
+    private Object mClassifier;
 
     /**
        Create a new parse state.
 
        @param The namespace the classifier belongs to.
      */
-    public ParseState(MNamespace mNamespace)
-    {
-	this.mClassifier = null;
-	namespace = mNamespace;
-	newFeatures = new Vector();
-	newInnerClasses = new Vector();
-    }
-
-    /**
-       Create a new parse state.
-
-       @param mClassifier Current classifier.
-     */
-    public ParseState(MClassifier mClassifier)
-    {
-	this.mClassifier = mClassifier;
-	namespace = mClassifier;
-	newFeatures = new Vector(mClassifier.getFeatures());
-	newInnerClasses = new Vector(mClassifier.getOwnedElements());
+    public ParseState(Object handle) {
+        if (ModelFacade.isAClassifier(handle)) {
+            this.mClassifier = handle;
+            namespace = handle;
+            newFeatures = new Vector(ModelFacade.getFeatures(mClassifier));
+            newInnerClasses = new Vector(ModelFacade.getOwnedElements(mClassifier));
+        } else {
+            this.mClassifier = null;
+            namespace = handle;
+            newFeatures = new Vector();
+            newInnerClasses = new Vector();
+        }
     }
 
     /**
@@ -85,9 +79,9 @@ public class ParseState
        @param name The name of the classifier.
        @return The new classifier.
      */
-    public MClassifier newClassifier(String name)
+    public Object newClassifier(String name)
     {
-	MClassifier mClassifier = (MClassifier) namespace.lookup(name);
+	Object mClassifier = ModelFacade.lookupIn(namespace, name);
 	if (mClassifier != null) {
 	    newInnerClasses.remove(mClassifier);
 	}
@@ -100,16 +94,14 @@ public class ParseState
 
        @param mFeature The feature found.
     */
-    public void newFeature(MFeature mFeature)
-    {
+    public void newFeature(Object mFeature) {
 	newFeatures.remove(mFeature);
     }
 
     /**
        Get the current classifier.
      */
-    public MClassifier getClassifier()
-    {
+    public Object getClassifier() {
 	return mClassifier;
     }
 
@@ -132,8 +124,7 @@ public class ParseState
     /**
        Get the current namespace.
      */
-    public MNamespace getNamespace()
-    {
+    public Object getNamespace() {
 	return namespace;
     }
 
@@ -145,7 +136,7 @@ public class ParseState
         Vector result = new Vector();
         if (mClassifier == null)
             return result;
-        result.addAll(mClassifier.getAssociationEnds());
+        result.addAll(ModelFacade.getAssociationEnds(mClassifier));
         return result;
     }
 }

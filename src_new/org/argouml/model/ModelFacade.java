@@ -3139,17 +3139,13 @@ public class ModelFacade {
 
             return me.getName();
         }
-
-		if (handle instanceof Diagram) {
-			Diagram d = (Diagram) handle;
-
-			return d.getName();
-		}
-		if (handle instanceof MOrderingKind) {
-			return ((MOrderingKind) handle).getName();
-		}
-
-        // ...
+        if (handle instanceof Diagram) {
+            Diagram d = (Diagram) handle;
+            return d.getName();
+        }
+        if (handle instanceof MOrderingKind) {
+            return ((MOrderingKind) handle).getName();
+        }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
