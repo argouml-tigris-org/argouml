@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
 <html>
 <head>
-<title>org.argouml.kernel package</title>
+<title>org.argouml.diagram.uml.static_structure.layout package</title>
 <!--
    Copyright (c) 1996-99 The Regents of the University of California. All
    Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,16 +29,15 @@
 </head>
 <body bgcolor="white">
 
-
-<h2>Package Specification</h2>
-
- (none)
-
+implements a rank based layout algorithm for static structure diagrams
 
 <h2>Related Documentation </h2>
 
- (none)
+@see org.argouml.uml.diagram.layout
 
+The layout algorithms is essentially inheritance based, in a way that it tries to order nodes by their inheritane structure first. Note that the edges have methods to follow their own layout. Thus generalizations are layouted (centric to the class) slightly different from realizations (offset to the right to avoid overlapping).<br>
+<br>
+<b>TODO</b>: Implement layout for Notes and associations and other potential elements on the class diagram, e.g. standard text notes.
 </body>
 </html>
 

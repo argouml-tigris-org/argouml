@@ -212,6 +212,13 @@ class ClassdiagramNode implements LayoutedNode {
      */
     public void setWeight( float weight) { _weight = weight; }
 
+    /** a node is movable when it hasn't got any up- or downlinks, but sidelinks
+     *
+     * @return whether the node is movable
+     */
+    boolean isMovable() {
+        return ( _downlinks.size()==0 && _uplinks.size()==0 && _sidelinks.size()>0);
+    }
 
     // Attributes
 
@@ -251,6 +258,14 @@ class ClassdiagramNode implements LayoutedNode {
      * above.
      */
     private Vector _downlinks = new Vector();
+    
+    /** Sidelinks are basically associations. We need to know if a node
+     * has sidelinks in order to determine if we can move him around freely
+     * after ranking.
+     * @see isMovable() 
+     */
+    private Vector _sidelinks = new Vector();
+    
 
     /**
      * Attribute _figure represents the figure, that this
@@ -269,6 +284,14 @@ class ClassdiagramNode implements LayoutedNode {
      * minimal number of crossings.
      */
     private float _weight = 1;
+    
+    
+    /** a Node is movable when it has associations and no up- or downlinks.
+     * The logic behind this is, that we would like to move nodes which
+     * were skipped during the rankking process to a position where they are
+     * as close as possible to the respective(s) nodes they share an association to
+     */
+    private boolean _movable = false;
 }
 
 
