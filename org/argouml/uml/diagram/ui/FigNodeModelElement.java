@@ -408,7 +408,9 @@ public abstract class FigNodeModelElement
 	Fig oldEncloser = _encloser;
 	if (encloser != oldEncloser) {
 	    Object owningModelelement = null;
-	    if (encloser == null) {
+	    if (encloser == null && !isVisible()) {
+		// Most likely we're being deleted.
+	    } else if (encloser == null) {
 		// moved outside another fig onto the diagram canvas
 		Project currentProject =
 		    ProjectManager.getManager().getCurrentProject();
