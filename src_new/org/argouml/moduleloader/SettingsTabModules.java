@@ -24,12 +24,24 @@
 
 package org.argouml.moduleloader;
 
-import java.awt.BorderLayout;
+import java.util.Iterator;
+import java.util.Map;
 
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
 
@@ -45,6 +57,7 @@ public class SettingsTabModules
     implements SettingsTabPanel
 {
     private JTable table;
+    private JPanel notYetLoadedPanel = null;
 
     private String[] columnNames = {
 	"Module", "Enabled",
@@ -63,6 +76,8 @@ public class SettingsTabModules
         table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 	table.setShowVerticalLines(false);
         add(table, BorderLayout.CENTER);
+
+	createNotYetLoaded();
     }
 
     /**
@@ -139,11 +154,62 @@ public class SettingsTabModules
 	}
     }
 
+    private void createNotYetLoaded() {
+	if (notYetLoadedPanel != null) {
+	    remove(notYetLoadedPanel);
+	    notYetLoadedPanel = null;
+	}
+
+	notYetLoadedPanel = new JPanel();
+	LayoutManager layout =
+	    new BoxLayout(notYetLoadedPanel, BoxLayout.Y_AXIS);
+
+	Iterator iter =
+	    ModuleLoader2.notYetLoadedModules().entrySet().iterator();
+	while (iter.hasNext()) {
+	    Map.Entry entry = (Map.Entry) iter.next();
+	    final String name = (String) entry.getKey();
+	    final String classname = (String) entry.getValue();
+
+	    JLabel label = new JLabel(name);
+	    JButton button = new JButton("Attempt");
+	    button.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent event) {
+		    try {
+			Class moduleClass =
+			    getClass().getClassLoader().loadClass(classname);
+		    } catch (ClassNotFoundException e) {
+			JOptionPane.showMessageDialog(
+				notYetLoadedPanel,
+			        "Cannot find class " + classname
+				+ " needed to load module " + name,
+				"Cannot find class",
+				JOptionPane.ERROR_MESSAGE);
+			return;
+		    }
+
+		    ModuleLoader2.addClass(classname);
+		    handleSettingsTabRefresh();
+		}
+	    });
+
+	    // button.setLabel(label);
+
+	    Container box = Box.createHorizontalBox();
+	    box.add(label);
+	    box.add(button);
+	    notYetLoadedPanel.add(box);
+	}
+	
+	add(notYetLoadedPanel, BorderLayout.SOUTH);
+    }
+
     /**
      * @see SettingsTabPanel#handleSettingsTabRefresh()
      */
     public void handleSettingsTabRefresh() {
         table.setModel(new ModuleTableModel());
+	createNotYetLoaded();
     }
 
     /**
@@ -158,6 +224,7 @@ public class SettingsTabModules
             }
             ModuleLoader2.doLoad(false);
         }
+	createNotYetLoaded();
     }
 
     /**
@@ -192,7 +259,7 @@ public class SettingsTabModules
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleVersion()
      */
-    public String getModuleVersion() { return ArgoVersion.getVersion(); }
+    public String getModuleVersion() { return "1.0"; }
     
     /**
      * @see org.argouml.application.api.ArgoModule#getModuleKey()

@@ -31,6 +31,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
@@ -239,6 +241,41 @@ public class ModuleLoader2 {
         }
         return sb.toString();
     }
+
+    /**
+     * Get a list of not yet loaded modules.<p>
+     *
+     * TODO: For the moment these modules are hardcoded into this file.
+     * Eventually they will be available in some config file.
+     *
+     * @return a {@link SortedMap}
+     *         from name ({@link String})
+     *         to classname {@link String}.
+     */
+    public static SortedMap notYetLoadedModules() {
+	// The hardcoded list
+	final String[][] modules = {
+	    // name, classname
+	    // The name must match the name if the class.
+	    {
+		"ActionTestLoadableModule",
+		"org.argouml.ui.test.ActionTestLoadableModule",
+	    }
+	};
+	// End of the hardcoded list.
+
+	Collection alreadyFound = allModules();
+
+	SortedMap result = new TreeMap();
+
+	for (int i = 0; i < modules.length; i++) {
+	    if (!alreadyFound.contains(modules[i][0])) {
+		result.put(modules[i][0], modules[i][1]);
+	    }
+	}
+	return result;
+    }
+
 
     // Access methods for the program infrastructure
     /**
@@ -512,6 +549,15 @@ public class ModuleLoader2 {
 	}
     }
 
+    /**
+     * Add a class from the current class loader.
+     *
+     * @param classname The name of the class (including package).
+     */
+    public static void addClass(String classname) {
+	getInstance().addClass(ModuleLoader2.class.getClassLoader(),
+			       classname);
+    }
 
     /**
      * Try to load a module from the given ClassLoader.<p>
