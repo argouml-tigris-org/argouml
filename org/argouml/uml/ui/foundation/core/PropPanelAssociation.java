@@ -134,7 +134,7 @@ public class PropPanelAssociation extends PropPanelModelElement {
     JPanel modifiersPanel = new JPanel(new GridLayout2(0,3,GridLayout2.ROWCOLPREFERRED));
     modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
     modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.root-uc"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(Argo.localize("UMLMenu", "label.modifiers"),modifiersPanel);
 
     add(LabelledLayout.getSeperator());
@@ -147,14 +147,14 @@ public class PropPanelAssociation extends PropPanelModelElement {
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setVisibleRowCount(1);
     JScrollPane extendsScroll=new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    addLinkField("Generalizations:", extendsScroll);
+    addLinkField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
 
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     derivedList.setFont(smallFont);
     JScrollPane derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    addField("Specializations:",derivedScroll);
+    addField(Argo.localize("UMLMenu", "label.specializations"),derivedScroll);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
@@ -200,26 +200,7 @@ public class PropPanelAssociation extends PropPanelModelElement {
         }
     }
 
-    public void addGeneralization() {
-        Object target = getTarget();
-        if(target instanceof MGeneralizableElement) {
-            MGeneralizableElement genElem = (MGeneralizableElement) target;
-            MNamespace ns = genElem.getNamespace();
-            if(ns != null) {
-                MGeneralization newGen = ns.getFactory().createGeneralization();
-                if(newGen != null) {
-                    newGen.setChild(genElem);
-                    ns.addOwnedElement(newGen);
-                    navigateTo(newGen);
-                }
-            }
-        }
-        // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
-    }
-
+    
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Association") ||
           baseClass.equals("ModelElement");

@@ -40,6 +40,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import org.tigris.gef.graph.*;
 
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.uml.MMUtil;
 
 /** This class defines a bridge between the UML meta-model
@@ -435,9 +436,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
           MInterface toIntf = (MInterface) toPort;
 
           if (edgeClass == MGeneralization.class) {
-              MGeneralization gen = UmlFactory.getFactory().getCore().createGeneralization();
-              gen.setChild(fromIntf);
-              gen.setParent(toIntf);
+              MGeneralization gen = CoreFactory.getFactory().buildGeneralization(fromIntf, toIntf);
               addEdge(gen);
               return gen;
           }

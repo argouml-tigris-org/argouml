@@ -368,7 +368,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	    		choices.addAll(CoreHelper.getHelper().getAllClasses());
 	    	}
 	    	choices.remove(clazz);
-	    	selected.addAll(CoreHelper.getHelper().getExtendingClasses(clazz));
+	    	selected.addAll(clazz.getChildren());
 	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-extending-classes"), true, true);
 	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
 	    	if (returnValue == JOptionPane.OK_OPTION) {
@@ -457,10 +457,10 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       implementsScroll= new JScrollPane(implementsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 	  */
       _modifiersPanel = new JPanel(new GridLayout(0,2));
-      _modifiersPanel.add(new UMLCheckBox(localize("public"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-      _modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.visibility.public-uc"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
+      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+      _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.root-uc"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
 
 	  _derivedModel = new UMLReflectionListModel(this,"specialization",true,"getSpecializations",null,"addSpecialization","deleteSpecialization");
       JList derivedList = new UMLList(_derivedModel,true);

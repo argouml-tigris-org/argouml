@@ -37,18 +37,40 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 import org.argouml.application.api.*;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
+import org.argouml.util.ConfigLoader;
 
 public class PropPanelInterface extends PropPanelClassifier {
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelInterface() {
-    super("Interface", _interfaceIcon,3);
+    super("Interface", _interfaceIcon,ConfigLoader.getTabPropsOrientation());
 
     Class mclass = MInterface.class;
-
+    
+    addField(Argo.localize("UMLMenu", "label.name"), nameField);
+    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+    addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
+    JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.visibility.public-uc"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.root-uc"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+    addField(Argo.localize("UMLMenu", "label.modifiers"), modifiersPanel);
+    
+    add(LabelledLayout.getSeperator());
+    
+    addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
+    addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
+    
+    add(LabelledLayout.getSeperator());
+    
+    addField(Argo.localize("UMLMenu", "label.associations"), connectScroll);
+    addField(Argo.localize("UMLMenu", "label.operations"), opsScroll);
+	/*
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
@@ -88,7 +110,7 @@ public class PropPanelInterface extends PropPanelClassifier {
 
     // addCaption(Argo.localize("UMLMenu", "label.attributes"),1,2,0.5);
     // addField(attrScroll,1,2,0.5);
-
+	*/
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" , "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
