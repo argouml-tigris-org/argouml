@@ -120,11 +120,6 @@ public class UMLClassDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        // This calls the getters to fetch actions even though the
-        // action variables are defined is instances of this class.
-        // This is because any number of action getters could have
-        // been overridden in a descendent and it is the action from
-        // that overridden method that should be returned in the array.
         Object actions[] = {
             getActionPackage(),
             getActionClass(),
@@ -146,11 +141,6 @@ public class UMLClassDiagram extends UMLDiagram {
     // remove the comment marks to enable models and subsystems.
     // also replace _actionPackage with getPackageActions() in getUmlActions().
     private Object[] getPackageActions() {
-        // This calls the getters to fetch actions even though the
-        // action variables are defined is instances of this class.
-        // This is because any number of action getters could have
-        // been overridden in a descendent and it is the action from
-        // that overridden method that should be returned in the array.
         /* subsystem, model enabled 
 	   Object actions[] = 
 	   { _actionPackage , 
@@ -169,11 +159,6 @@ public class UMLClassDiagram extends UMLDiagram {
      * pattern of which to build a popup toolbutton
      */
     private Object[] getDependencyActions() {
-        // This calls the getters to fetch actions even though the
-        // action variables are defined is instances of this class.
-        // This is because any number of action getters could have
-        // been overridden in a descendent and it is the action from
-        // that overridden method that should be returned in the array.
         Object actions[][] = {
             {getActionDependency()},
             {getActionPermission()},
