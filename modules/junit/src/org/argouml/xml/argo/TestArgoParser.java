@@ -34,33 +34,37 @@ public class TestArgoParser extends TestCase {
         super(name);
     }
 
-
-    /** try to load a project from the web.
+    /**
+     * Tests that a project is loadable.
      */
-    public void testLoadProjectWeb() {
-        Project p;
-        try {
-            URL url = new URL("http://argouml.tigris.org/models/argouml/ocl.zargo");
-            p = Project.loadProject(url);
-            assert("Load Status", ArgoParser.SINGLETON.getLastLoadStatus());
-        }
-        catch(Exception e) {
-            assert(e.toString(), false);
-        }
+    private void loadProject(String filename) {
+	URL url;
+	try {
+	    url = new URL(filename);
+	} catch (java.net.MalformedURLException e) {
+	    assert("Incorrect test case, malformed filename: " 
+		   + filename + ".", false);
+	    return;
+	}
+	Project p = Project.loadProject(url);
+	assert("Load Status", ArgoParser.SINGLETON.getLastLoadStatus());
     }
 
-        /** try to load a project from the local file system.
-     */
-    public void testLoadProjectFile() {
-        Project p;
-        try {
-            URL url = new URL("file:///home/mkl/Editor.zargo");
-            p = Project.loadProject(url);
-            assert("Load Status", ArgoParser.SINGLETON.getLastLoadStatus());
-        }
-        catch(Exception e) {
-            assert(e.toString(), false);
-        }
+    public void testLoadProjects() {
+	loadProject("file:testmodels/Empty.zargo");
+	loadProject("file:testmodels/Alittlebitofeverything.zargo");
+    }
+
+    public void testLoadGarbage() {
+	URL url;
+	try {
+	    url = new URL("file:testmodels/Garbage.zargo");
+	} catch (java.net.MalformedURLException e) {
+	    assert("Incorrect test case.", false);
+	    return;
+	}
+	Project p = Project.loadProject(url);
+	assert("Load Status", !ArgoParser.SINGLETON.getLastLoadStatus());
     }
 }
 
