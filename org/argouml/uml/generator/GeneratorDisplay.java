@@ -62,10 +62,10 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
 
 /**
- * Generator subclass to generate text for display in diagrams in in
- * text fields in the Argo/UML user interface.  The generated code
+ * Generator subclass to generate code for display in diagrams in 
+ * text fields in the ArgoUML user interface.  The generated code
  * looks a lot like (invalid) Java.  The idea is that other generators
- * could be written for outher languages.  This code is just a
+ * could be written for other languages.  This code is just a
  * placeholder for future development, I expect it to be totally
  * replaced.
  *
@@ -101,7 +101,7 @@ public class GeneratorDisplay extends Generator {
     /**
      * <p>Generate the display for an extension point.</p>
      *
-     * <p>The representation is "name: location". "name :" is omitted if there
+     * <p>The representation is "name: location". "name: " is omitted if there
      *   is no name given.</p>
      *
      * @param ep  The extension point.
@@ -141,15 +141,17 @@ public class GeneratorDisplay extends Generator {
     */
 
     /**
-     * Generates an operation accordin to the UML 1.3 notation:
-     * stereotype visibility name (parameter-list) :
-     * return-type-expression {property-string} For the
-     * return-type-expression: only the types of the return parameters
-     * are shown.  Depending on settings in Notation visibility and
-     * properties are shown/not shown.
+     *  Generates an operation according to the UML 1.3 notation:
      *
-     * @author jaap.branderhorst@xs4all.nl
-     * @see org.argouml.application.api.NotationProvider#generateOperation(
+     *          stereotype visibility name (parameter-list) : 
+     *                          return-type-expression {property-string} 
+     *
+     *  For the return-type-expression: only the types of the return parameters
+     *  are shown.  Depending on settings in Notation, visibility and
+     *  properties are shown/not shown.
+     *
+     *  @author jaap.branderhorst@xs4all.nl
+     *  @see org.argouml.application.api.NotationProvider#generateOperation(
      *          MOperation, boolean)
      */
     public String generateOperation(MOperation op, boolean documented) {
@@ -268,10 +270,10 @@ public class GeneratorDisplay extends Generator {
     /**
      * Generates a string representation for the provided
      * attribute. The string representation will be of the form:
-     * visibility name [multiplicity] : type-expression =
-     * initial-value {property-string} Depending on settings in
-     * Notation visibility, multiplicity, initial value and properties
-     * are shown/not shown.
+     *          visibility name [multiplicity] : type-expression =
+     *                          initial-value {property-string} 
+     * Depending on settings in Notation, visibility, multiplicity, 
+     * initial value and properties are shown/not shown.
      *
      * @see org.argouml.application.api.NotationProvider#generateAttribute(
      *          MAttribute, boolean)
