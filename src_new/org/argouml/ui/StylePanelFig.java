@@ -53,7 +53,7 @@ import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 public class StylePanelFig extends StylePanel
-implements ItemListener, DocumentListener {
+implements ItemListener, FocusListener, KeyListener {
     protected static Category cat = 
         Category.getInstance(StylePanelFig.class);
 
@@ -89,6 +89,8 @@ implements ItemListener, DocumentListener {
 
     Document bboxDoc = _bboxField.getDocument();
     bboxDoc.addDocumentListener(this);
+    _bboxField.addKeyListener(this);
+    _bboxField.addFocusListener(this);
     _fillField.addItemListener(this);
     _lineField.addItemListener(this);
     _shadowField.addItemListener(this);
@@ -356,6 +358,9 @@ implements ItemListener, DocumentListener {
             res.width  = Integer.parseInt(st.nextToken());
             res.height = Integer.parseInt(st.nextToken());
         }
+        catch (NumberFormatException ex) {
+            return null;
+        }
         catch (Exception ex) {
             cat.error(getClass().toString() + 
                                ": parseBBox - could not parse bounds '" +
@@ -405,53 +410,6 @@ implements ItemListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // event handling
 
-
-    /**
-     * <p>The text in the bounds box has had something inserted. Update the
-     *   model.</p>
-     *
-     * <p><em>Note</em>. This appears to be called for any text change,
-     *   irrespective of whether it is an insert, remove or delete.</p>
-     *
-     * @param e  The event that caused us to be called.
-     */
-
-    public void insertUpdate(DocumentEvent e) {
-        setTargetBBox();
-    }
-
-
-    /**
-     * <p>The text in the bounds box has had something removed. Update the
-     *   model.</p>
-     *
-     * <p><em>Note</em>. This never appears to be called for any text
-     *   change. Everything seems to be treated as an insertion.</p>
-     *
-     * @param e  The event that caused us to be called.
-     */
-
-    public void removeUpdate(DocumentEvent e) {
-        setTargetBBox();
-    }
-
-
-    /**
-     * <p>The text in the bounds box has had something changed. Update the
-     *   model.</p>
-     *
-     * <p><em>Note</em>. This never appears to be called for any text
-     *   change. Everything seems to be treated as an insertion.</p>
-     *
-     * @param e  The event that caused us to be called.
-     */
-
-    public void changedUpdate(DocumentEvent e) {
-        setTargetBBox();
-    }
-
-
-
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
     if (src == _fillField) setTargetFill();
@@ -460,5 +418,44 @@ implements ItemListener, DocumentListener {
     //else if (src == _dashedField) setTargetDashed();
     else super.itemStateChanged(e);
   }
+
+    /**
+     * @see java.awt.event.FocusListener#focusGained(java.awt.event.FocusEvent)
+     */
+    public void focusGained(FocusEvent e) {
+    }
+
+    /**
+     * Makes sure that the fig is updated when the _bboxField loses focus.
+     * @see java.awt.event.FocusListener#focusLost(java.awt.event.FocusEvent)
+     */
+    public void focusLost(FocusEvent e) {
+        if (e.getSource() == _bboxField) {
+            setTargetBBox();
+        }
+    }
+
+    /**
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
+    public void keyPressed(KeyEvent e) {
+    }
+
+    /**
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
+    public void keyReleased(KeyEvent e) {
+    }
+
+    /**
+     * Tests if enter is pressed in the _bbodField so we need to set the target
+     * bounds.
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
+    public void keyTyped(KeyEvent e) {
+        if (e.getSource().equals(_bboxField) && e.getKeyChar() == '\n') {
+            setTargetBBox();
+        }
+    }
 
 } /* end class StylePanelFig */

@@ -78,6 +78,7 @@ import org.tigris.gef.base.CmdAdjustPageBreaks;
 import org.tigris.gef.base.CmdSelectAll;
 import org.tigris.gef.base.CmdSelectInvert;
 import org.tigris.gef.base.CmdSelectNext;
+import org.tigris.gef.base.CmdZoom;
 import org.tigris.gef.util.Localizer;
 
 /** GenericArgoMenuBar defines the menubar for all
@@ -390,12 +391,15 @@ public class GenericArgoMenuBar extends JMenuBar
         _view.addSeparator();
 
         JMenu zoom = (JMenu) _view.add(new JMenu(menuLocalize("Zoom")));
-        zoom.add(new ActionZoom(10));
-        zoom.add(new ActionZoom(25));
-        zoom.add(new ActionZoom(50));
-        zoom.add(new ActionZoom(75));
-        zoom.add(new ActionZoom(100));
-        zoom.add(new ActionZoom(150));
+        // zoom.add(new ActionZoom(10));
+        // zoom.add(new ActionZoom(25));
+        // zoom.add(new ActionZoom(50));
+        // zoom.add(new ActionZoom(75));
+        // zoom.add(new ActionZoom(100));
+        // zoom.add(new ActionZoom(150));
+        zoom.add(new CmdZoom(0.9));
+        zoom.add(new CmdZoom(0.0));
+        zoom.add(new CmdZoom(1.1));
 
         _view.addSeparator();
 
