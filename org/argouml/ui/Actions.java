@@ -224,7 +224,6 @@ public class Actions implements TargetListener {
      */
     public static void addAction(AbstractAction newAction) {
         LOG.debug("Adding action: " + newAction.getClass().getName());
-        System.out.println("Adding action: " + newAction.getClass().getName());
         if (newAction instanceof UMLAction) {
             allActions.addElement(newAction);
         } else {
