@@ -97,7 +97,7 @@ public class PropPanelMessage extends PropPanelModelElement {
 
     addCaption("Activator:",1,1,0);
     // UMLModelElementListModel activatorModel=new UMLReflectionListModel(this, "activator",true,"getActivator",null, "addActivator",null);
-    UMLModelElementListModel activatorModel = new UMLActivatorListModel(this, "activator", false);
+    UMLModelElementListModel activatorModel = new UMLActivatorListModel(this, "activator", true);
     JList activatorList = new UMLList(activatorModel,true);
     activatorList.setForeground(Color.blue);
     activatorList.setFont(smallFont);
@@ -106,7 +106,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     addField(activatorScroll,1,1,0);
 
     addCaption("Action:",2,1,1);
-    UMLModelElementListModel actionModel=new UMLReflectionListModel(this, "action",true,"getAction",null,"addAction","deleteAction");
+    UMLModelElementListModel actionModel=new UMLActionListModel(this, "action",true,"getAction",null,"addAction","deleteAction");
     JList actionList = new UMLList(actionModel,true);
     actionList.setForeground(Color.blue);
     actionList.setFont(smallFont);
@@ -175,7 +175,7 @@ public class PropPanelMessage extends PropPanelModelElement {
         return action;
     }
     
-     public MCallAction addAction(int integer) {
+     public MCallAction addAction(Integer integer) {
     	MCallAction action = null;
         Object target = getTarget();
         if(target instanceof MMessage) {
@@ -209,3 +209,57 @@ public class PropPanelMessage extends PropPanelModelElement {
     }
 
 } /* end class PropPanelMessage */
+
+class UMLActionListModel extends UMLReflectionListModel {
+	/**
+	 * Constructor for UMLActionListModel.
+	 * @param container
+	 * @param property
+	 * @param showNone
+	 * @param getMethod
+	 * @param setMethod
+	 * @param addMethod
+	 * @param deleteMethod
+	 */
+	public UMLActionListModel(
+		UMLUserInterfaceContainer container,
+		String property,
+		boolean showNone,
+		String getMethod,
+		String setMethod,
+		String addMethod,
+		String deleteMethod) {
+		super(
+			container,
+			property,
+			showNone,
+			getMethod,
+			setMethod,
+			addMethod,
+			deleteMethod);
+	}
+	
+	
+
+	/**
+	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+	 */
+	public boolean buildPopup(JPopupMenu popup, int index) {
+		UMLUserInterfaceContainer container = getContainer();
+		
+        UMLListMenuItem add = new UMLListMenuItem(container.localize("Add"),this,"add",index);
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
+        if (getModelElementSize() > 0) {
+        	add.setEnabled(false);
+        } else {
+        	open.setEnabled(false);
+        	delete.setEnabled(false);
+        }
+        popup.add(open);
+        popup.add(delete);
+        popup.add(add);
+        return true;
+	}
+
+}
