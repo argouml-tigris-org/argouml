@@ -85,7 +85,25 @@ import org.argouml.model.uml.NsumlModelFacade;]]></replacevalue>
     </target>
     
     <target name="upgrade-step-2">
+        <replace dir="."
+                 includes="**/*.java"
+                 token="import org.argouml.api.model.FacadeManager;"
+                 value="import org.argouml.api.FacadeManager;"
+                 summary="true">
+            <include name="src_new/**/*.java"/>
+            <include name="modules/**/*.java"/>
+        </replace>
+
+        <replace dir="."
+                 includes="**/*.java"
+                 token="import org.argouml.api.model.ObjectFactoryManager;"
+                 value="import org.argouml.api.ObjectFactoryManager;"
+                 summary="true">
+            <include name="src_new/**/*.java"/>
+            <include name="modules/**/*.java"/>
+        </replace>
+
         <antcall target="refresh.local"/>
     </target>
-    
+
 </project>
