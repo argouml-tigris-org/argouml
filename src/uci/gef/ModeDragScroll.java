@@ -30,10 +30,12 @@ package uci.gef;
 
 import java.awt.*;
 import java.awt.event.*;
+
+import javax.swing.Timer; //needed because of java.util.Timer...
+import javax.swing.*;
+
 import java.util.*;
 import java.util.Enumeration;
-
-import javax.swing.*;
 
 /** A Mode that allows the user to scroll the Editor by clicking and dragging
  * with the middle mouse button.
