@@ -60,17 +60,23 @@ import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.explorer.rules.PerspectiveRule;
 
 /**
- * The "Configure Perspectives" dialog.
+ * The "Configure Perspectives" dialog.<p>
  *
- * This class implements the following features:
- * - saving perspectives to the user profile.
- * - adding new perspectives.
- * - deleting perspectives.
- * - renaming perspectives.
- * - duplicating existing perspectives.
- * - reordering perspectives.
- * - selecting any number and combination of rules for a perspective.
+ * This class implements the following features:<p>
+ * <ul>
+ * <li>- saving perspectives to the user profile.
+ * <li>- adding new perspectives.
+ * <li>- deleting perspectives.
+ * <li>- renaming perspectives.
+ * <li>- duplicating existing perspectives.
+ * <li>- reordering perspectives.
+ * <li>- selecting any number and combination of rules for a perspective.
+ * </ul><p>
  *
+ * TODO: make this dialog behave as described in 
+ * http://java.sun.com/products/jlf/at/book/Idioms6.html#57371
+ * 
+ * <p>
  * Created on 21 December 2003.
  * @author  alexb
  */
