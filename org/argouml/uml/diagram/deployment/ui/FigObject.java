@@ -34,6 +34,7 @@ import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Vector;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -42,6 +43,8 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+
+
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -49,13 +52,11 @@ import ru.novosoft.uml.foundation.core.MComponent;
 import ru.novosoft.uml.foundation.core.MElementResidence;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
+
 /** Class to display graphics for a UML Object in a diagram. */
 
 public class FigObject extends FigNodeModelElement {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  public int PADDING = 5;
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -157,7 +158,6 @@ public class FigObject extends FigNodeModelElement {
   // user interaction methods
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
-      // umbringen! super.textEdited(ft);
     MObject obj = (MObject) getOwner();
     if (ft == _name) {
       String s = ft.getText().trim();
@@ -171,13 +171,13 @@ public class FigObject extends FigNodeModelElement {
 
   public void setEnclosingFig(Fig encloser) {
     // super.setEnclosingFig(encloser);
-    if (!(getOwner() instanceof MModelElement)) return;
-    if (getOwner() instanceof MObject) {
+    if (!(ModelFacade.isAModelElement(getOwner()))) return;
+    if (ModelFacade.isAObject(getOwner())) {
       MObject me = (MObject) getOwner();
       MComponentInstance mcompInst = null;
       MComponent mcomp = null;
 
-      if (encloser != null && (encloser.getOwner() instanceof MComponentInstance)) {
+      if (encloser != null && (ModelFacade.isAComponentInstance(encloser.getOwner()))) {
         mcompInst = (MComponentInstance) encloser.getOwner();
         me.setComponentInstance(mcompInst);
       }
@@ -186,7 +186,8 @@ public class FigObject extends FigNodeModelElement {
           me.setComponentInstance(null);
         }
       }
-      if (encloser != null && (encloser.getOwner() instanceof MComponent)) {
+      if (encloser != null && 
+          (ModelFacade.isAComponent(encloser.getOwner()))) {
         mcomp = (MComponent) encloser.getOwner();
         MObject obj = (MObject) getOwner();
         resident.setImplementationLocation(mcomp);
