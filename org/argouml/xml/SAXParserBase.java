@@ -137,7 +137,7 @@ public abstract class SAXParserBase extends DefaultHandler {
     ////////////////////////////////////////////////////////////////
     // non-abstract methods
 
-    public void startElement(String name, Attributes atts)
+    public void startElement(String uri, String localname, String name, Attributes atts)
 	throws SAXException {
 	_startElement = true;
 	XMLElement e = null;
@@ -166,7 +166,7 @@ public abstract class SAXParserBase extends DefaultHandler {
 	_startElement = false;
     }
 
-    public void endElement(String name) throws SAXException {
+    public void endElement(String uri, String localname, String name) throws SAXException {
 	XMLElement e = _elements[--_nElements];
 	if (LOG.isDebugEnabled()) {
 	    StringBuffer buf = new StringBuffer();
