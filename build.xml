@@ -775,8 +775,15 @@ ${Name} Build file
          includes="${names.of.all.included.libs} argouml.jar README.txt"/>
      </copy>
 
-     <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.app.tar"
-          basedir="${app.bundle.dir}"/>
+     <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.app.tar">
+        <tarfileset dir="${app.bundle.dir}">
+          <include name="**/**"/>
+	  <exclude name="**/JavaApplicationStub"/>
+        </tarfileset>
+	<tarfileset dir="${app.bundle.dir}" mode="755">
+	  <include name="**/JavaApplicationStub"/>
+        </tarfileset>
+     </tar>
      <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.app.tgz"
            src="${argo.root.dir}/${Name}-${argo.build.version}.app.tar"/>
      <delete file="${argo.root.dir}/${Name}-${argo.build.version}.app.tar"/>
