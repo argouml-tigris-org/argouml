@@ -24,26 +24,44 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import org.argouml.swingext.Orientation;
+import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.util.ConfigLoader;
 
 /**
- * Added this class to give as much information to the user as possible
- * if the lookup mechanisme for proppanels fails.
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PropPanelRelationship extends PropPanelModelElement {
+public class PropPanelFlow extends PropPanelRelationship {
 
     /**
-     * Constructor for PropPanelRelationship.
+     * Constructor for PropPanelFlow.
      */
-    public PropPanelRelationship() {
-        super("Relationship",null, ConfigLoader.getTabPropsOrientation());
+    public PropPanelFlow() {
+        super("Flow",_flowIcon, ConfigLoader.getTabPropsOrientation());
+        initialize();
     }
-    
-    public PropPanelRelationship(String name, ImageIcon icon, Orientation orientation) {}
 
+    private void initialize() {
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        addField(Argo.localize("UMLMenu", "label.constraints"), constraintScroll);
+        
+        add(LabelledLayout.getSeperator());
+        
+        UMLComboBox2 sourceBox = new UMLComboBox2(this, 
+            new UMLFlowSourceComboBoxModel(this), 
+            ActionSetFlowSource.SINGLETON);
+        addField(Argo.localize("UMLMenu", "label.sources"), 
+            sourceBox);
+        
+        // addField(Argo.localize("UMLMenu", "label.sources"), targetScroll);
+    }
 }

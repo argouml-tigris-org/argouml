@@ -24,26 +24,51 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.ImageIcon;
-
-import org.argouml.swingext.Orientation;
-import org.argouml.util.ConfigLoader;
+import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.foundation.core.MFlow;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * Added this class to give as much information to the user as possible
- * if the lookup mechanisme for proppanels fails.
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class PropPanelRelationship extends PropPanelModelElement {
+public class UMLFlowSourceComboBoxModel extends UMLComboBoxModel2 {
 
     /**
-     * Constructor for PropPanelRelationship.
+     * Constructor for UMLFlowSourceComboBoxModel.
+     * @param container
      */
-    public PropPanelRelationship() {
-        super("Relationship",null, ConfigLoader.getTabPropsOrientation());
+    public UMLFlowSourceComboBoxModel(UMLUserInterfaceContainer container) {
+        super(container);
     }
-    
-    public PropPanelRelationship(String name, ImageIcon icon, Orientation orientation) {}
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidRoleAdded(MElementEvent e) {
+        Object o = getChangedElement(e);
+        return o instanceof MModelElement && !((MFlow)getTarget()).getSources().contains(o)
+            && !((MFlow)getTarget()).getTargets().contains(o);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidPropertySet(ru.novosoft.uml.MElementEvent)
+     */
+    protected boolean isValidPropertySet(MElementEvent e) {
+        return e.getSource() == getTarget() && e.getName().equals("source");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        setElements(((MFlow)getTarget()).getSources());
+        MFlow flow = (MFlow)getTarget();
+        if (!flow.getSources().isEmpty()) {
+            setSelectedItem(flow.getSources().toArray()[0]);
+        }
+    }
 
 }
