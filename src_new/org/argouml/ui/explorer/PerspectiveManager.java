@@ -145,7 +145,8 @@ public class PerspectiveManager {
         
         ExplorerPerspective diagramPerspective = 
             new ExplorerPerspective("combobox.item.diagram-centric");
-        diagramPerspective.addRule(new GoProjectToDiagram());
+        packagePerspective.addRule(new GoProjectToModel());
+        diagramPerspective.addRule(new GoModelToDiagrams());
         diagramPerspective.addRule(new GoDiagramToNode());
         diagramPerspective.addRule(new GoDiagramToEdge());
         diagramPerspective.addRule(new GoUseCaseToExtensionPoint());
