@@ -29,11 +29,29 @@
 </head>
 <body bgcolor="white">
 
- Provides general classes and interfaces that are fundamental to
+ Provides general <a href="#classes">classes</a> and <a href="#interfaces">interfaces</a> that are fundamental to
  ArgoUML and ArgoUML modules.
-
- The <code>Argo</code> class provides static methods to console logging
- using <code>log4j</code>.
+ <h3><a name="interfaces">Interfaces</a></h3>
+ <code>SettingsTabPanel</code> defines the API that
+ tabs on the settings dialog must extend
+ to be used by <code>ActionSettings</code>.
+ <h3><a name="classes">Classes</a></h3>
+<p>
+ The <code>Argo</code> class provides
+ <ul>
+ <li>static definitions of configuration keys</li>
+ <li>static definitions of resource bundle identifier strings</li>
+ <li>static methods for localization using <code>gef</code></li>
+ <li>static methods for environment manipulation</li>
+ <li>static methods for console <code>log4j</code> logging</li>
+ </ul>
+ <p>
+ The <code>Configuration</code> class provides
+ access to persistant configuration information
+ stored for each user.
+ Future enhancements will allow references to shared
+ configuration information, allowing organizational defaults
+ that could be overridden by individuals.
 
 <h2>Package Specification</h2>
 

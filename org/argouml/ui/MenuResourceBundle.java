@@ -27,7 +27,6 @@ import org.argouml.util.*;
 import javax.swing.*;
 import java.awt.event.*;
 
-
 public class MenuResourceBundle extends ListResourceBundle {
 
 
@@ -42,12 +41,14 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Print...", "Print..." },  
         {"Save GIF...", "Save GIF..." },  
         {"Save Graphics...", "Save Graphics..." },  
+	{"Save Configuration", "Save Configuration"},
         {"Exit", "Exit" },  
         {"Undo", "Undo" },  
         {"Redo", "Redo" },  
         {"Cut", "Cut" },  
         {"Copy", "Copy" },  
         {"Paste", "Paste" },  
+	{"Settings...", "Settings..."},
         {"Remove From Diagram", "Remove From Diagram" },  
         {"Delete From Model", "Delete From Model" },  
         {"Empty Trash", "Empty Trash" },  
@@ -168,5 +169,4 @@ public class MenuResourceBundle extends ListResourceBundle {
      public Object[][] getContents() {
         return _contents;
      }
-
 }

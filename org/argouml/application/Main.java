@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -63,14 +63,17 @@ public class Main {
 
   public static void main(String args[]) {
 
-    // first, print out some version info for debuggers...
+    // Force the configuration to load
+    Configuration.load();
+
+    // then, print out some version info for debuggers...
 
     org.argouml.util.Tools.logVersionInfo();
 
-    boolean doSplash = true;
-    boolean useEDEM = true;
-    boolean preload = true;
-    boolean profileLoad = false;
+    boolean doSplash = Configuration.getBoolean(Argo.KEY_SPLASH, true);
+    boolean useEDEM = Configuration.getBoolean(Argo.KEY_EDEM, true);
+    boolean preload = Configuration.getBoolean(Argo.KEY_PRELOAD, true);
+    boolean profileLoad = Configuration.getBoolean(Argo.KEY_PROFILE, false);
 
     File projectFile = null;
     Project p = null;
@@ -153,6 +156,7 @@ public class Main {
 	Localizer.addResource("GefBase","org.tigris.gef.base.BaseResourceBundle");
 	Localizer.addResource("GefPres","org.tigris.gef.presentation.PresentationResourceBundle");
 	Localizer.addResource("CoreMenu","org.argouml.ui.MenuResourceBundle");
+	Localizer.addResource("CoreSettings","org.argouml.ui.SettingsResourceBundle");
 	Localizer.addResource("UMLMenu","org.argouml.uml.ui.UMLResourceBundle");
 	Localizer.addResource("Cognitive","org.argouml.uml.cognitive.UMLCognitiveResourceBundle");
 	Localizer.addResource("Tree","org.argouml.ui.TreeResourceBundle");
@@ -171,13 +175,17 @@ public class Main {
     phase1 = System.currentTimeMillis();
 
     JOptionPane.setRootFrame(pb);
-    //pb.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
+
+    // Set the screen layout to what the user left it before, or
+    // to reasonable defaults.
     Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
     pb.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-    int w = Math.min(WIDTH, scrSize.width);
-    int h = Math.min(HEIGHT, scrSize.height);
-    pb.setLocation(scrSize.width/2 - w/2,
-		       scrSize.height/2 - h/2);
+
+    int w = Math.min(Configuration.getInteger(Argo.KEY_SCREEN_WIDTH, WIDTH), scrSize.width);
+    int h = Math.min(Configuration.getInteger(Argo.KEY_SCREEN_HEIGHT, HEIGHT), scrSize.height);
+    int x = Configuration.getInteger(Argo.KEY_SCREEN_LEFT_X, scrSize.width/2 - w/2);
+    int y = Configuration.getInteger(Argo.KEY_SCREEN_TOP_Y, scrSize.height/2 - h/2);
+    pb.setLocation(x, y);
     pb.setSize(w, h);
 
     if (splash != null) {

@@ -40,12 +40,14 @@ public class MenuResourceBundle_de extends ListResourceBundle {
         {"Print...", "Drucken..." },
         {"Save GIF...", "Exportieren als GIF..." },
         {"Save Graphics...", "Grafik exportieren..." },
+	{"Save Configuration", "Konfiguration speichern"},
         {"Exit", "Beenden" },
         {"Undo", "R\u00fcckg\u00e4ngig" },
         {"Redo", "Wiederherstellen" },
         {"Cut", "Ausschneiden" },
         {"Copy", "Kopieren" },
         {"Paste", "Einf\u00fcgen" },
+	{"Settings...", "Einstellungen..."},
         {"Remove From Diagram", "Aus Diagramm entfernen" },
         {"Delete From Model", "Aus Modell entfernen" },
         {"Empty Trash", "Papierkorb leeren" },
@@ -163,5 +165,4 @@ public class MenuResourceBundle_de extends ListResourceBundle {
      public Object[][] getContents() {
         return _contents;
      }
-
 }
