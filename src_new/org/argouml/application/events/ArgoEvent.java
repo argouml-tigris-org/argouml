@@ -43,8 +43,14 @@ public abstract class ArgoEvent extends EventObject
 
     public int getEventType() { return _eventType; }
 
+    /** Indicates the start of the range for any events.
+     * @return the first id reserved for events. 
+     */
     public int getEventStartRange() { return ANY_EVENT; }
 
+    /** Indicates the end of the range for notation events.
+     * @return the last id reserved for events. 
+     */
     public int getEventEndRange() {
         return (getEventStartRange() == 0
 	       ? ARGO_EVENT_END
