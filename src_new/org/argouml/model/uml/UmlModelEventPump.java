@@ -394,8 +394,20 @@ public final class UmlModelEventPump implements MElementListener {
      * delete on UmlFactory to make sure all listeners are removed.
      * @param element
      */
-    void cleanUp(MBase element) {
-        _listenerModelEventsMap.remove(element);
+    synchronized void cleanUp(MBase element) {
+        String hash = element.hashCode() + "";
+        Iterator it = _listenerModelEventsMap.keySet().iterator();
+        List cleanUplist = new ArrayList();
+        while (it.hasNext()) {
+            String key = (String)it.next();
+            if (key.startsWith(hash)) {
+                cleanUplist.add(key);
+            }
+        }
+        it = cleanUplist.iterator();
+        while (it.hasNext()) {
+            _listenerModelEventsMap.remove(it.next());
+        } 
     }
             
     
