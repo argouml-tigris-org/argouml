@@ -110,7 +110,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
-        System.out.println("removed");
     }
 
     /**
