@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,6 +29,7 @@
 package org.argouml.uml.diagram.ui;
 
 import javax.swing.Action;
+import javax.swing.Icon;
 import javax.swing.JButton;
 import org.argouml.kernel.ProjectManager;
 
@@ -48,7 +49,8 @@ public class RadioAction extends AbstractButtonAction {
     Action realAction;
 
     public RadioAction(Action action) {
-        super(new JButton(action).getName(), new JButton(action).getIcon());
+        super((String)action.getValue(Action.NAME),
+		(Icon)action.getValue(Action.SMALL_ICON));
         putValue(Action.SHORT_DESCRIPTION, action.getValue(Action.SHORT_DESCRIPTION));
         realAction = action;
     }
