@@ -116,7 +116,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Abstraction instance.
      */
-    private Object createAbstraction() {
+    Object createAbstraction() {
 	Object modelElement =
 	    MFactory.getDefaultFactory().createAbstraction();
 	super.initialize(modelElement);
@@ -153,7 +153,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Association instance.
      */
-    private Object createAssociation() {
+    Object createAssociation() {
 	MAssociation modelElement =
 	    MFactory.getDefaultFactory().createAssociation();
 	super.initialize(modelElement);
@@ -165,7 +165,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML AssociationClass instance.
      */
-    private Object createAssociationClass() {
+    Object createAssociationClass() {
 	MAssociationClass modelElement =
 	    MFactory.getDefaultFactory().createAssociationClass();
 	super.initialize(modelElement);
@@ -283,7 +283,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Dependency instance.
      */
-    private Object createDependency() {
+    Object createDependency() {
 	MDependency modelElement =
 	    MFactory.getDefaultFactory().createDependency();
 	super.initialize(modelElement);
@@ -318,7 +318,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Generalization instance.
      */
-    private Object createGeneralization() {
+    Object createGeneralization() {
 	MGeneralization modelElement =
 	    MFactory.getDefaultFactory().createGeneralization();
 	super.initialize(modelElement);
