@@ -36,7 +36,7 @@ class ObjectAST extends CommonAST {
     // Instance vars.
 
     // The buffer.
-    private Object _object = null;
+    private Object object = null;
 
     
     ///////////////
@@ -64,7 +64,7 @@ class ObjectAST extends CommonAST {
      * @return The value of the buffer.
      */
     final Object getObjectValue() {
-	return _object;
+	return object;
     }
 
     /**
@@ -73,7 +73,7 @@ class ObjectAST extends CommonAST {
      * @param val The new value for the buffer.
      */
     final void setObjectValue(Object val) {
-        _object = val;
+        object = val;
     }
 
     /**
@@ -82,7 +82,7 @@ class ObjectAST extends CommonAST {
      * @return The value of the buffer as a int.
      */
     final int getIntegerValue() {
-	return ((Integer) _object).intValue();
+	return ((Integer) object).intValue();
     }
 
     /**
@@ -91,7 +91,7 @@ class ObjectAST extends CommonAST {
      * @return The value of the buffer as a long.
      */
     final long getLongValue() {
-	return ((Long) _object).longValue();
+	return ((Long) object).longValue();
     }
 
     /**
@@ -100,7 +100,7 @@ class ObjectAST extends CommonAST {
      * @return The value of the buffer as a float.
      */
     final float getFloatValue() {
-	return ((Float) _object).shortValue();
+	return ((Float) object).shortValue();
     }
 
     /**
@@ -109,6 +109,6 @@ class ObjectAST extends CommonAST {
      * @return The value of the buffer as a double.
      */
     final double getDoubleValue() {
-	return ((Double) _object).doubleValue();
+	return ((Double) object).doubleValue();
     }
 }

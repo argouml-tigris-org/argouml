@@ -5,17 +5,9 @@ package org.argouml.uml.reveng.classfile;
 import org.argouml.uml.reveng.java.*;
 import java.util.*;
 
-import antlr.TreeParser;
-import antlr.Token;
 import antlr.collections.AST;
 import antlr.RecognitionException;
-import antlr.ANTLRException;
 import antlr.NoViableAltException;
-import antlr.MismatchedTokenException;
-import antlr.SemanticException;
-import antlr.collections.impl.BitSet;
-import antlr.ASTPair;
-import antlr.collections.impl.ASTArray;
 
 
 /*************************************

@@ -26,12 +26,16 @@ package org.argouml.uml.reveng.classfile;
 
 import antlr.*;
 
+/**
+ * A class representing a Token that is a byte.
+ *
+ */
 public class ByteToken extends Token {
 
     //////////////////////
     // Instance variables. 
 
-    byte _val = 0; 
+    private byte val = 0; 
 
     
     ///////////////
@@ -51,11 +55,11 @@ public class ByteToken extends Token {
      * byte value.
      *
      * @param type The type of the token.
-     * @param val The byte value of the token.
+     * @param value The byte value of the token.
      */
-    public ByteToken( int type, byte val) {
+    public ByteToken( int type, byte value) {
 	this(type);
-	setValue(val);
+	setValue(value);
     }
 
 
@@ -65,10 +69,10 @@ public class ByteToken extends Token {
     /**
      * Set the byte value of this token.
      *
-     * @param val The new byte value.
+     * @param value The new byte value.
      */
-    final void setValue( byte val) {
-	_val = val;
+    final void setValue( byte value) {
+	val = value;
     }
 
     /**
@@ -77,7 +81,7 @@ public class ByteToken extends Token {
      * @return the byte value of this token.
      */
     final byte getValue() {
-	return _val;
+	return val;
     }
 
     /**
@@ -86,7 +90,7 @@ public class ByteToken extends Token {
      * @return The byte value of this token as a masked sort.
      */
     final short getShortValue() {
-	return (short) ((short) _val & (short) 0xff);
+	return (short) ((short) val & (short) 0xff);
     }
 
     /**
@@ -95,7 +99,7 @@ public class ByteToken extends Token {
      * @return The byte value of this token as a masked int.
      */
     final int getIntValue() {
-	return (int) _val & 0xff;
+	return (int) val & 0xff;
     }
 }
 
