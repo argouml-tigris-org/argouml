@@ -534,5 +534,151 @@ implements VetoableChangeListener  {
 
   static final long serialVersionUID = -2638688086415040146L;
 
+
+  /**
+   * When rerouting an edge, this is the first method to
+   * be called by SelectionRerouteEdge, in order to determine
+   * whether the graphmodel will allow the change.
+   *
+   * <p>restricted to class<->association changes for now.
+   *
+   * @param newNode this is the new node that one of the ends is dragged to.
+   * @param oldNode this is the existing node that is already connected.
+   * @param edge this is the edge that is being dragged/rerouted
+   *
+   * @return whether or not the rerouting is allowed
+   */
+  public boolean canChangeConnectedNode(Object newNode, Object oldNode, Object edge) {
+           
+    // prevent no changes... 
+    if ( newNode == oldNode)
+    return false;
+            
+    // check parameter types:
+    if ( !(newNode instanceof MClass ||
+         oldNode instanceof MClass ||
+         edge instanceof MAssociation ) )
+        {return false;}
+
+    return true;
+  }
+
+  /**
+   * Reroutes the connection to the old node to be connected to
+   * the new node.
+   *
+   * delegates to rerouteXXX(,,,) for each of the 4 possible edges in
+   * a class diagram: Association, Dependency, Generalization, Link.
+   *
+   * @param newNode this is the new node that one of the ends is dragged to.
+   * @param oldNode this is the existing node that is already connected.
+   * @param edge this is the edge that is being dragged/rerouted
+   * @param isSource tells us which end is being rerouted.
+   */
+  public void changeConnectedNode(Object newNode, Object oldNode, Object edge, boolean isSource) {
+      
+      if (edge instanceof MAssociation) rerouteAssociation(newNode,  oldNode,  edge,  isSource);
+      else if (edge instanceof MGeneralization) rerouteGeneralization(newNode,  oldNode,  edge,  isSource);
+      else if (edge instanceof MDependency) rerouteDependency(newNode,  oldNode,  edge,  isSource);
+      else if (edge instanceof MLink) rerouteLink(newNode,  oldNode,  edge,  isSource);
+  }
+  
+  /**
+   * helper method for changeConnectedNode
+   */
+  private void rerouteAssociation(Object newNode, Object oldNode, Object edge, boolean isSource) {
+      
+      // check param types: only some connections are legal uml connections:
+      
+            if ( !(newNode instanceof MClassifier) ||
+                 !(oldNode instanceof MClassifier)
+                 )
+                return;
+      
+            // can't have a connection between 2 interfaces:
+            // get the 'other' end type
+            MModelElement otherNode=null;
+            
+            if(isSource){
+                otherNode = CoreHelper.getHelper().getDestination((MRelationship)edge);
+            }
+            else{
+                otherNode = CoreHelper.getHelper().getSource((MRelationship)edge);
+            }
+            
+            if( (newNode instanceof MInterface) &&
+                (otherNode instanceof MInterface) )
+                return;
+            
+        // cast the params
+            //MClassifier oldClass = (MClassifier)oldNode;
+            //MClassifier newClass = (MClassifier)newNode;
+            MAssociation edgeAssoc = (MAssociation)edge;
+      
+              MAssociationEnd theEnd = null;
+              MAssociationEnd theOtherEnd = null;
+        // rerouting the source:
+        if(isSource){
+            
+            theEnd =
+            (MAssociationEnd)((Object[])
+            (edgeAssoc.getConnections()).toArray())[0];
+           
+            theOtherEnd =
+            (MAssociationEnd)((Object[])
+            (edgeAssoc.getConnections()).toArray())[1];
+        }
+        // rerouting the destination:
+        else{
+            
+            theEnd =
+            (MAssociationEnd)((Object[])
+            (edgeAssoc.getConnections()).toArray())[1];
+            
+            theOtherEnd =
+            (MAssociationEnd)((Object[])
+            (edgeAssoc.getConnections()).toArray())[0];
+
+        }
+              
+        // set the ends navigability see also Class ActionNavigability
+        if ( newNode instanceof MInterface)
+            theEnd.setNavigable(true);
+        else
+            theEnd.setNavigable(false);
+              
+        if ( otherNode instanceof MInterface)
+            theOtherEnd.setNavigable(true);
+        else
+            theOtherEnd.setNavigable(false);
+              
+        //set the new end type!
+        theEnd.setType((MClassifier)newNode);
+  }
+  
+  /**
+   * helper method for changeConnectedNode
+   * <p>empty at the moment
+   */
+  private void rerouteGeneralization(Object newNode, Object oldNode, Object edge, boolean isSource) {
+  
+  }
+  
+  /**
+   * helper method for changeConnectedNode
+   * <p>empty at the moment
+   */
+  private void rerouteDependency(Object newNode, Object oldNode, Object edge, boolean isSource) {
+  
+  }
+  
+  /**
+   * helper method for changeConnectedNode
+   * <p>empty at the moment
+   */
+  private void rerouteLink(Object newNode, Object oldNode, Object edge, boolean isSource) {
+      
+  }
+  
 } /* end class ClassDiagramGraphModel */
 
