@@ -46,7 +46,7 @@ public class ChOperation extends UMLChecklist {
   setNextCategory("Encoding");
   addItem("Is the return type '{returns}' too restrictive to represent all "+
 	  "possible values returned by {name}?"); 
-  addItem("Does '$returns' allow return values that could never be correct?");
+  addItem("Does '{returns}' allow return values that could never be correct?");
   addItem("Could {name} be combined with some other operation of "+
 	  "{owner} (e.g., {owner.behavioralFeature})?");
   addItem("Could {name} be broken down into two or more parts (e.g., preprocess, "+
