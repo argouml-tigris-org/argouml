@@ -83,23 +83,20 @@ td
 	{mso-style-parent:style0;
 	mso-rotate:90;}
 .xl25
-	{mso-style-parent:style21;
-	color:blue;
-	text-decoration:underline;
-	text-underline-style:single;
-	mso-rotate:90;}
-.xl26
 	{mso-style-parent:style0;
 	mso-number-format:"Short Date";}
-.xl27
+.xl26
 	{mso-style-parent:style0;
 	mso-number-format:"h\:mm";}
-.xl28
+.xl27
 	{mso-style-parent:style0;
 	mso-number-format:0;}
-.xl29
+.xl28
 	{mso-style-parent:style0;
 	mso-number-format:"Short Time";}
+.xl29
+	{mso-style-parent:style0;
+	mso-number-format:"hh\:mm\:ss";}
 .xl30
 	{mso-style-parent:style0;
 	text-align:left;}
@@ -144,4 +141,7 @@ td
 	mso-rotate:90;}
 .xl35
 	{mso-style-parent:style0;
-	mso-number-format:"hh\:mm\:ss";}
+	font-weight:700;
+	font-family:Arial, sans-serif;
+	mso-font-charset:0;
+	mso-rotate:90;}
