@@ -2265,19 +2265,19 @@ public class ParserDisplay extends Parser {
      * Handle the Guard of a Transition.<p>
      *
      * We can distinct between 4 cases:<ol>
-     * <li> A guard is given. None exists yet.
-     * <li> The expression of the guard was present, but is altered.
-     * <li> A guard is not given. None exists yet.
-     * <li> The expression of the guard was present, but is removed.
+     * <li>1. A guard is given. None exists yet.
+     * <li>2. The expression of the guard was present, but is altered.
+     * <li>3. A guard is not given. None exists yet.
+     * <li>4. The expression of the guard was present, but is removed.
      * </ol>
      *
      * The reaction in these cases should be:<ol>
-     * <li>Create a new guard, set its name, language & expression,
+     * <li>1. Create a new guard, set its name, language & expression,
      *     and hook it to the transition.
-     * <li>Change the guard's expression. Leave the name & language
+     * <li>2. Change the guard's expression. Leave the name & language
      *     untouched. See also issue 2742.
-     * <li>Nop.
-     * <li>Unhook and erase the existing guard.
+     * <li>3. Nop.
+     * <li>4. Unhook and erase the existing guard.
      * </ol>
      *
      * @param trans the UML element transition
@@ -2337,19 +2337,19 @@ public class ParserDisplay extends Parser {
      * Handle the Effect (Action) of a Transition.<p>
      *
      * We can distinct between 4 cases:<ol>
-     * <li> An effect is given. None exists yet.
-     * <li> The expression of the effect was present, but is altered.
-     * <li> An effect is not given. None exists yet.
-     * <li> The expression of the effect was present, but is removed.
+     * <li>1. An effect is given. None exists yet.
+     * <li>2. The expression of the effect was present, but is altered.
+     * <li>3. An effect is not given. None exists yet.
+     * <li>4. The expression of the effect was present, but is removed.
      * </ol>
      *
      * The reaction in these cases should be:<ol>
-     * <li> Create a new CallAction, set its name, language &
+     * <li>1. Create a new CallAction, set its name, language &
      * expression, and hook it to the transition.
-     * <li> Change the effect's expression. Leave the actiontype, name
+     * <li>2. Change the effect's expression. Leave the actiontype, name
      * & language untouched.
-     * <li> Nop.
-     * <li> Unhook and erase the existing effect.
+     * <li>3. Nop.
+     * <li>4. Unhook and erase the existing effect.
      * </ol>
      *
      * @param actions the string to be parsed
