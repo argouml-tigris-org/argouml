@@ -85,7 +85,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  need to be updated.
      */
     private String _property;
-    /*
+    /**
      *  The string used to indicate no actual entries in the list.  Eventually,
      *    should be part of the profile or localization.
      */
@@ -246,7 +246,9 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         return _container.formatElement(element);
     }
 
-    //      documented in UMLUserInterfaceComponent
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
+     */
     public void targetChanged() {
         int oldSize = _currentModelElementSize;
         if(_showNone && oldSize == 0) oldSize = 1;
@@ -274,7 +276,9 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
          fireContentsChanged(this,0,getSize()-1);
     }
 
-    //      documented in UMLUserInterfaceComponent
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
+     */
     public void roleAdded(final MElementEvent event) {
        String eventName = event.getName();
         if(_property == null || eventName == null || eventName.equals(_property)) {

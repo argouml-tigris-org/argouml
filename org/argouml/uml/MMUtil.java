@@ -51,10 +51,13 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import java.util.*;
 
 import org.argouml.ui.ProjectBrowser;
+import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 
 public class MMUtil {
+	
+	Category cat = Category.getInstance(org.argouml.uml.MMUtil.class);
 
 	public static MMUtil SINGLETON = new MMUtil();
 
@@ -219,26 +222,78 @@ public class MMUtil {
     public MAssociation buildAssociation(MClassifier c1, MClassifier c2) {
 	return this.buildAssociation(c1, true, c2, true);
     }
+    
+    public MAssociationEnd buildAssociationEnd(MAssociation assoc, 
+    	String name,
+    	MClassifier type,
+    	MMultiplicity multi,
+    	MStereotype stereo,
+    	boolean navigable, 
+    	MOrderingKind order,
+    	MAggregationKind aggregation,
+    	MScopeKind scope,
+    	MChangeableKind changeable,
+    	MVisibilityKind visibility) 
+    {
+    	MAssociationEnd end = new MAssociationEndImpl();
+    	if (assoc != null && type != null) {
+    		end.setAssociation(assoc);
+    		end.setNamespace(assoc.getNamespace());
+    		assoc.addConnection(end);
+    		end.setType(type);
+    	} else {
+    		// this should never happen
+    		cat.fatal("Tried to create associationend without association");
+    		
+    	}
+    	if (name != null && name.length() > 0) {
+    		end.setName(name);
+    	} else {
+    		end.setName("");
+    	}
+    	if (multi != null) {
+    		end.setMultiplicity(multi);
+    	} else {
+    		end.setMultiplicity(MMultiplicity.M1_1);
+    	}
+    	if (stereo != null) {
+    		end.setStereotype(stereo);
+    	}
+    	end.setNavigable(navigable);
+    	if (order != null) {
+    		end.setOrdering(order);
+    	} else {
+    		end.setOrdering(MOrderingKind.UNORDERED);
+    	}
+    	if (aggregation != null) {
+    		end.setAggregation(aggregation);
+    	} else { 
+    		end.setAggregation(MAggregationKind.NONE);
+    	}
+    	if (scope != null) {
+    		end.setTargetScope(scope);
+    	} else {
+    		end.setTargetScope(MScopeKind.INSTANCE);
+    	}
+    	if (changeable != null) {
+    		end.setChangeability(changeable);
+    	} else {
+    		end.setChangeability(MChangeableKind.CHANGEABLE);
+    	}
+    	if (visibility != null) {
+    		end.setVisibility(visibility);
+    	} else {
+    		end.setVisibility(MVisibilityKind.PUBLIC);
+    	}
+    	return end;
+    }		
 
     public MAssociation buildAssociation(MClassifier c1, boolean nav1, MClassifier c2, boolean nav2) {
-		MAssociationEnd ae1 = new MAssociationEndImpl();
-		ae1.setType(c1);
-		ae1.setNavigable(nav1);
-		ae1.setMultiplicity(MMultiplicity.M1_1);
-	
-		MAssociationEnd ae2 = new MAssociationEndImpl();
-		ae2.setType(c2);
-		ae2.setNavigable(nav2);
-		ae2.setMultiplicity(MMultiplicity.M1_1);
-
-		MAssociation asc = new MAssociationImpl();
-		asc.addConnection(ae1);
-		asc.addConnection(ae2);
-
-
-		// asc.setUUID(UUIDManager.SINGLETON.getNewUUID());
-
-		return asc;
+    	MAssociation assoc = new MAssociationImpl();
+    	assoc.setName("");
+    	buildAssociationEnd(assoc, null, c1,null, null, nav1, null, null, null, null, null);
+    	buildAssociationEnd(assoc, null, c2,null, null, nav2, null, null, null, null, null);
+		return assoc;
 	}
 
 	public MGeneralization buildGeneralization(MGeneralizableElement child, MGeneralizableElement parent) {

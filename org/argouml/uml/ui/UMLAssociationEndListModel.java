@@ -65,7 +65,9 @@ public class UMLAssociationEndListModel extends UMLModelElementListModel  {
         return assocEnds;
     }
 
-    //  see superclass documentation
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel#recalcModelElementSize()
+     */
     protected int recalcModelElementSize() {
         int size = 0;
         Collection assocEnds = getAssociationEnds();
