@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+
+<!-- ===========================================================================
+
+
+                           * ================== *
+                           |  How to build Argo |
+                           * ================== *
+
+           Adaption from the FOP build.xml written by Stefano Mazzocchi
+                by Giacomo Pati with some addition by Fotis Jannidis
+	   Adapted by Andreas Rueckert
+
+
+Introduction
+============
+
+ArgoUML is a free UML tool. It is written entirely in Java.
+The homepage of Argo is http://argouml.tigris.org
+
+Installing the build tools
+==========================
+
+Ant is a little but very handy tool that uses a build file written in XML
+(this file) as building instructions. For more information refer to
+"http://jakarta.apache.org/ant/".
+
+Additionaly you have to make sure, that the "JAVA_HOME" environment
+property should be set to match the JVM you want to use. That's it.
+
+
+Building instructions
+=====================
+
+First, make sure your current working directory is where this very file is 
+located. Then type
+
+  ./build.sh (unix)
+  .\build.bat (win32)
+
+if everything is right and all the required packages are visible, this action
+will generate a file called "argouml.jar" in the "./build" directory. Note, that
+if you do further development, compilation time is reduced since Ant is able
+to detect which files have changed an to recompile them at need.
+
+If something went wrong, go to the FAQ section below.
+
+Also, you'll note that reusing a single JVM instance for each task, increases
+tremendously the performance of the whole build system, compared to other
+tools (i.e. make or shell scripts) where a new JVM is started for each task.
+
+
+
+Build targets
+=============
+
+These are the meaningful targets for this build file:
+
+ - package [default] -> creates ./build/argouml.jar
+ - usage -> shows a help screen
+ - dist -> generates the ArgoUML distribution
+ - clean -> restores the distribution to its original and clean state 
+            (excepting dist files)
+ - distclean -> restores the distribution to its original and clean state
+
+====================================== FAQ =====================================
+
+1) Why some of the classes present in the original jar are not built anymore?
+
+The ArgoUML build system is very flexible: if a module requires a package that
+is not present in the classpath at build time, the module is skipped but
+the built process is not stopped.
+
+2) I see a lot of warnings starting like this: "Warning: file modified in the future:"
+Sometimes ant gives out this warnings, but the build is finished without any problems
+
+
+============================================================================ -->
+
+<project default="package" basedir=".">
+
+  <!-- =================================================================== -->
+  <!-- Initialization target                                               -->
+  <!-- =================================================================== -->
+  <target name="init">
+    <tstamp/>
+    <property name="Name" value="ArgoUML"/>
+    <property name="name" value="argouml"/>
+    <property name="version" value="0.7.4"/>
+    <property name="year" value="1999-2000"/>
+
+    <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
+
+    <property name="build.compiler" value="classic"/>
+    <property name="debug" value="off"/>
+    <property name="optimize" value="on"/>
+    <property name="deprecation" value="off"/>
+
+    <property name="src.dir" value="./src"/>
+    <property name="src.codegen" value="./src/codegen"/>
+    <property name="docs.dir" value="./docs"/>
+    <property name="lib.dir" value="./lib"/>
+    <property name="packages" value="uci.* Acme.*"/>
+
+    <property name="build.dir" value="./build"/>
+    <property name="build.src" value="./build/src"/>
+    <property name="build.dest" value="./build/classes"/>
+
+    <property name="ignore_this" value="ignore_this.java"/>
+
+    <filter token="${replacestring}" value="${build.src}/${replacestring}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Help on usage                                                       -->
+  <!-- =================================================================== -->
+  <target name="usage">
+    <echo message=""/>
+    <echo message=""/>
+    <echo message="${Name} Build file"/>
+    <echo message="-------------------------------------------------------------"/>
+    <echo message=""/>
+    <echo message=" available targets are:"/>
+    <echo message=""/>
+    <echo message="   package   --> generates the ${name}.jar file (default)"/>
+    <echo message="   compile   --> compiles the source code"/>
+    <echo message="   dist      --> generates the ${Name} distribution as .tar.gz and .zip"/>
+    <echo message="   clean     --> cleans up the directory (except for the dist files)"/>
+    <echo message="   distclean --> cleans up the directory"/>
+    <echo message=""/>
+    <echo message=" See the comments inside the build.xml file for more details."/>
+    <echo message="-------------------------------------------------------------"/>
+    <echo message=""/>
+    <echo message=""/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the build directory                                        -->
+  <!-- =================================================================== -->
+  <target name="prepare" depends="init">
+    <!-- create directories -->
+    <echo message="Preparing the build directories"/>
+    <mkdir dir="${build.dir}"/>
+    <mkdir dir="${build.src}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the build directory                                        -->
+  <!-- =================================================================== -->
+  <target name="prepare-xt" depends="prepare" if="xt.present">
+    <copydir src="${src.dir}"
+             dest="${build.src}"
+             includes="uci/** **/*.dtd **/*.tee" />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the source code                                            -->
+  <!-- =================================================================== -->
+  <target name="prepare-src" depends="prepare">
+    <!-- copy src files -->
+    <copydir src="${src.dir}"
+             dest="${build.src}"
+             excludes="**/Makefile* **/NMakefile **/Sources.list uci/docs/** **/INSTALL.txt **/argouml.mf"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the source directory                                       -->
+  <!-- =================================================================== -->
+  <target name="compile" depends="prepare-src">
+    <echo message="Compiling the sources "/>
+    <!-- create directories -->
+    <mkdir dir="${build.dest}"/>
+
+    <javac srcdir="${build.src}"
+           destdir="${build.dest}"
+           debug="${debug}"
+           deprecation="${deprecation}"
+           optimize="${optimize}"
+           excludes="**/${ignore_this}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the class package                                           -->
+  <!-- =================================================================== -->
+  <target name="package" depends="compile">
+    <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
+    <jar jarfile="${build.dir}/${name}.jar"
+         basedir="${build.dest}"
+         includes="uci/** Acme/**"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the docs                                                   -->
+  <!-- =================================================================== -->
+  <target name="prepare-docs" depends="init">
+    <mkdir dir="${build.docs}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist" depends="package">
+    <echo message="Building the distribution files (zip,tar)"/>
+    <mkdir dir="${dist.dir}"/>
+    <copyfile src="${basedir}/build.sh" dest="${dist.dir}/build.sh" />
+    <chmod src="${dist.dir}/build.sh" perm="ugo+rx" />
+    <copyfile src="${basedir}/build.bat" dest="${dist.dir}/build.bat" />
+    <copydir src="${build.dir}" dest="${dist.dir}" 
+        excludes="**/classes/**, **/${ignore_this}"/>
+    <zip zipfile="${Name}-${version}.zip" basedir="${dist.dir}" includes="**"/>
+    <tar tarfile="${Name}-${version}.tar" basedir="${dist.dir}" includes="**"/>
+    <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
+    <delete file="${Name}-${version}.tar"/>
+    <deltree dir="${dist.dir}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Clean targets                                                       -->
+  <!-- =================================================================== -->
+  <target name="clean" depends="init">
+    <deltree dir="${build.dir}"/>
+  </target>
+
+  <target name="distclean" depends="clean">
+    <deltree dir="${dist.dir}"/>
+  </target>
+
+</project>
+
+<!-- End of file -->
