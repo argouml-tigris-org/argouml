@@ -45,7 +45,7 @@ import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
 
-/** Class to display graphics for a UML MState in a diagram. */
+/** Class to display graphics for a UML ActionState in a diagram. */
 
 public class FigActionState extends FigStateVertex {
 
