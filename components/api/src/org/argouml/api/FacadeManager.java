@@ -24,6 +24,8 @@
 package org.argouml.api;
 
 import org.argouml.api.model.diagram.DiagramFacade;
+import org.argouml.api.model.diagram.FakeDiagramFacade;
+import org.argouml.api.model.uml.FakeUmlModelFacade;
 import org.argouml.api.model.uml.UmlModelFacade;
 
 /**
@@ -47,6 +49,14 @@ import org.argouml.api.model.uml.UmlModelFacade;
  */
 public final class FacadeManager {
 
+	/** The lookup property key for the diagram model facade */
+	public static final String DIAGRAM_FACADE_PROPERTY = 
+                          "org.argouml.api.model.diagram.facade";
+
+	/** The lookup property key for the uml model facade */
+	public static final String UML_MODEL_FACADE_PROPERTY = 
+                          "org.argouml.api.model.uml.facade";
+
 	/** The global UmlModelFacade object */
 	private static UmlModelFacade modelFacade = null;
 	
@@ -59,7 +69,7 @@ public final class FacadeManager {
 	static {
 		String cname = null;
 		try {
-			cname = System.getProperty("org.argouml.api.model.uml.facade");
+			cname = System.getProperty(UML_MODEL_FACADE_PROPERTY);
 			if (cname != null && cname.length() > 0) {
 				Class clz = ClassLoader.getSystemClassLoader().loadClass(cname);
 				modelFacade = (UmlModelFacade) clz.newInstance();
@@ -70,17 +80,18 @@ public final class FacadeManager {
 		}
 		if (modelFacade == null) {
 			try {
-				cname = "org.argouml.model.uml.NsumlModelFacade";
+				cname = FakeUmlModelFacade.class.getName();
 				Class clz = ClassLoader.getSystemClassLoader().loadClass(cname);
 				modelFacade = (UmlModelFacade) clz.newInstance();
 			} catch (Exception ex) {
-				System.err.println("Could not load NsumlModelFacade");
+				System.err.println("Could not load " + 
+				                    FakeUmlModelFacade.class.getName());
 				ex.printStackTrace();
 			}
 		}
 		
 		try {
-			cname = System.getProperty("org.argouml.api.model.diagram.facade");
+			cname = System.getProperty(DIAGRAM_FACADE_PROPERTY);
 			if (cname != null && cname.length() > 0) {
 				Class clz = ClassLoader.getSystemClassLoader().loadClass(cname);
 				diagramFacade = (DiagramFacade) clz.newInstance();
@@ -91,11 +102,12 @@ public final class FacadeManager {
 		}
 		if (diagramFacade == null) {
 			try {
-				cname = "org.argouml.model.diagram.GefDiagramFacade";
+				cname = FakeDiagramFacade.class.getName();
 				Class clz = ClassLoader.getSystemClassLoader().loadClass(cname);
 				diagramFacade = (DiagramFacade) clz.newInstance();
 			} catch (Exception ex) {
-				System.err.println("Could not load GefModelFacade");
+				System.err.println("Could not load " +
+				                   FakeDiagramFacade.class.getName());
 				ex.printStackTrace();
 			}
 		}
