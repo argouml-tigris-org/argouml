@@ -137,6 +137,12 @@ extract the &argo; files to the installation directory:
 jar xvf <replaceable>&argo;-archive-filename</replaceable>
 								</computeroutput>
 							</para>
+							<para>
+Remember to use <command>jar</command> to do this.
+For some odd reason WinZIP might have problems with the 
+&argo; zip-files.
+							</para>
+
 						</listitem>
 						<listitem>
 							<para>
