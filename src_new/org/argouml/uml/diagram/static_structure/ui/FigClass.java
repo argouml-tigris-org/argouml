@@ -1191,7 +1191,10 @@ public class FigClass extends FigNodeModelElement
                     oper = (CompartmentFigText) figs.elementAt(ocounter);
                 }
                 oper.setText(Notation.generate(this, bf));
-                oper.setOwner(bf);
+                oper.setOwner(bf); //TODO: update the model again here? 
+                /* This causes another event, and modelChanged() called, 
+                 * and updateOperations() called again... */
+                
                 // underline, if static
                 oper.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
 				  .equals(ModelFacade.getOwnerScope(bf)));
