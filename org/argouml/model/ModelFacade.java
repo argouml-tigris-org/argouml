@@ -4325,12 +4325,13 @@ public class ModelFacade {
      * @param model element
      * @param namespace
      */
-    public static void setNamespace(Object o, Object ns) {
-        if (o != null
-            && o instanceof MModelElement
-            && (ns == null || ns instanceof MNamespace)) {
-            ((MModelElement) o).setNamespace((MNamespace) ns);
+    public static void setNamespace(Object handle, Object ns) {
+        if (handle instanceof MModelElement && (ns == null || ns instanceof MNamespace)) {
+            ((MModelElement) handle).setNamespace((MNamespace) ns);
+            return;
         }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + ns);
     }
 
     /**
