@@ -39,12 +39,12 @@ import org.argouml.uml.cognitive.critics.CrUML;
 /** StartCritics is a thread which helps to start the critiquing thread
  */
 public class StartCritics implements Runnable {
-	/** logger */
-	private static Logger cat = Logger.getLogger(StartCritics.class);
+    /** logger */
+    private static final Logger LOG = Logger.getLogger(StartCritics.class);
 
-	/**
-	 * @see java.lang.Runnable#run()
-	 */
+    /**
+     * @see java.lang.Runnable#run()
+     */
     public void run() {
         Designer dsgr = Designer.theDesigner();
         org.argouml.uml.cognitive.critics.Init.init();
@@ -63,7 +63,7 @@ public class StartCritics implements Runnable {
             UmlModelEventPump.getPump().addModelEventListener(dsgr,
 							      o); 
         }
-        cat.info("spawned critiquing thread");
+        LOG.info("spawned critiquing thread");
 
         // should be in logon wizard?
         dsgr.startConsidering(CrUML.decINHERITANCE);

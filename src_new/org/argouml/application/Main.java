@@ -69,7 +69,7 @@ import org.tigris.gef.util.Util;
 public class Main {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(Main.class);
+    private static final Logger LOG = Logger.getLogger(Main.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -257,10 +257,10 @@ public class Main {
             if (!("".equals(s))) {
                 File file = new File(s);
                 if (file.exists()) {
-                    cat.info("Re-opening project " + s);
+                    LOG.info("Re-opening project " + s);
                     projectName = s;
                 } else {
-                    cat.warn(
+                    LOG.warn(
                         "Cannot re-open " + s + " because it does not exist");
                 }
             }
@@ -281,7 +281,7 @@ public class Main {
                 try {
                     urlToOpen = Util.fileToURL(projectFile);
                 } catch (Exception e) {
-                    cat.error("Exception opening project in main()", e);
+                    LOG.error("Exception opening project in main()", e);
                 }
             }
         }
@@ -396,14 +396,14 @@ public class Main {
         postLoadThead.start();
 
         if (profileLoad) {
-            cat.info("");
-            cat.info("profile of load time ############");
+            LOG.info("");
+            LOG.info("profile of load time ############");
             for (Enumeration i = st.result(); i.hasMoreElements();) {
-                cat.info(i.nextElement());
+                LOG.info(i.nextElement());
             }
 
-            cat.info("#################################");
-            cat.info("");
+            LOG.info("#################################");
+            LOG.info("");
         }
         st = null;
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -604,7 +604,7 @@ public class Main {
 
 class PostLoad implements Runnable {
     /** logger */
-    private static Logger cat = Logger.getLogger(PostLoad.class);
+    private static final Logger LOG = Logger.getLogger(PostLoad.class);
 
     Vector postLoadActions = null;
     Thread myThread = null;
@@ -618,7 +618,7 @@ class PostLoad implements Runnable {
         try {
             Thread.sleep(1000);
         } catch (Exception ex) {
-            cat.error("post load no sleep", ex);
+            LOG.error("post load no sleep", ex);
         }
         int size = postLoadActions.size();
         for (int i = 0; i < size; i++) {
@@ -627,7 +627,7 @@ class PostLoad implements Runnable {
             try {
                 Thread.sleep(100);
             } catch (Exception ex) {
-                cat.error("post load no sleep2", ex);
+                LOG.error("post load no sleep2", ex);
             }
         }
     }
@@ -635,11 +635,11 @@ class PostLoad implements Runnable {
 
 class PreloadClasses implements Runnable {
     /** logger */
-    private static Logger cat = Logger.getLogger(PreloadClasses.class);
+    private static final Logger LOG = Logger.getLogger(PreloadClasses.class);
 
     public void run() {
         Class c = null;
-        cat.info("preloading...");
+        LOG.info("preloading...");
 
 	// Alphabetic order
         c = java.beans.BeanDescriptor.class;
@@ -703,7 +703,7 @@ class PreloadClasses implements Runnable {
         c = org.tigris.gef.util.EnumerationEmpty.class;
         c = org.tigris.gef.util.EnumerationSingle.class;
 
-        cat.info(" done preloading");
+        LOG.info(" done preloading");
     }
 
 } /* end class PreloadClasses */
