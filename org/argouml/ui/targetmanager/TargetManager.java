@@ -382,9 +382,6 @@ public final class TargetManager {
      * @throws TargetException if there are more then 1 target.
      */
     public synchronized Object getTarget() throws TargetException {
-        if (_targets.length == 0) {
-            _log.warn("Returning null as target. No target was selected.");
-        }
         return _newTarget != null
             ? _newTarget
             : (_targets.length >= 1 ? _targets[0] : null);
