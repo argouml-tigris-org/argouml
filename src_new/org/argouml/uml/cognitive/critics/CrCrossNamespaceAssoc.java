@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,25 +22,20 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CrCrossNamespaceAssoc.java
 // Classes: CrCrossNamespaceAssoc
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 6 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Code written as part of
-// fix to issue 619.
-
 
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
+
+// Uses Model through ModelFacade
+import org.argouml.model.ModelFacade;
+
 
 /**
  * <p>A critic to check that the classifiers associated with the ends of an
@@ -59,9 +55,6 @@ import org.argouml.cognitive.critics.*;
  *   delete the association, so the critic will not trigger. However it will be
  *   useful for the future when multiple models and sub-systems are
  *   supported.</p>
- *
- * <p>Internally we use some of the static utility methods of the {@link
- *   org.argouml.cognitive.critics.CriticUtils CriticUtils} class.</p>
  *
  * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_cross_namespace_assoc">ArgoUML User Manual: Classifier not in Namespace of its Association</a>
  */
@@ -107,19 +100,20 @@ public class CrCrossNamespaceAssoc extends CrUML {
 
         // Only look at associations
 
-        if (!(dm instanceof MAssociation)) {
+	if (!ModelFacade.isAAssociation(dm))
             return NO_PROBLEM;
-        }
+
+	Object ns = ModelFacade.getNamespace(dm);
+
+	if (ns == null)
+	    return PROBLEM_FOUND;
 
         // Get the Association and its connections.
-
-        MAssociation asc   = (MAssociation) dm;
-        Collection   conns = asc.getConnections();
 
         // Iterate over all the AssociationEnds and check that each connected
         // classifier is in the same sub-system or model
 
-        Iterator enum = conns.iterator();
+        Iterator enum = ModelFacade.getConnections(dm);
 
         while (enum.hasNext()) {
 
@@ -127,16 +121,12 @@ public class CrCrossNamespaceAssoc extends CrUML {
             // classifier is in the namespace of the association. If not we
             // have a problem.
 
-            MAssociationEnd ae  = (MAssociationEnd) enum.next();
-            MClassifier     clf = ae.getType();
-
-            if (!(CriticUtils.sameNamespace(clf, asc))) {
-                return PROBLEM_FOUND;
-            }
+	    Object clf = ModelFacade.getType(enum.next());
+	    if (ns != ModelFacade.getNamespace(clf))
+		return PROBLEM_FOUND;
         }
 
         // If we drop out there is no problem
-
         return NO_PROBLEM;
     }
 
