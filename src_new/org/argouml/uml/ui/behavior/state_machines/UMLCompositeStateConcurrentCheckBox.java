@@ -32,12 +32,12 @@ import org.argouml.uml.ui.UMLCheckBox2;
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLCompositeStateConcurentCheckBox extends UMLCheckBox2 {
+public class UMLCompositeStateConcurrentCheckBox extends UMLCheckBox2 {
 
     /**
-     * Constructor for UMLCompositeStateConcurentCheckBox.
+     * Constructor for UMLCompositeStateConcurrentCheckBox.
      */
-    public UMLCompositeStateConcurentCheckBox() {
+    public UMLCompositeStateConcurrentCheckBox() {
          super(Translator.localize("label.concurrent"), 
             ActionSetCompositeStateConcurrent.getInstance(), 
             "isConcurent");
@@ -47,7 +47,7 @@ public class UMLCompositeStateConcurentCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        setSelected(ModelFacade.isConcurent(getTarget()));
+        setSelected(ModelFacade.isConcurrent(getTarget()));
     }
 
 }

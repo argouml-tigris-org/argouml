@@ -32,7 +32,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateTransition;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLExpressionBodyField;
 import org.argouml.uml.ui.UMLExpressionExpressionModel;
 import org.argouml.uml.ui.UMLExpressionLanguageField;
