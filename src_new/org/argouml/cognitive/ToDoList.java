@@ -37,6 +37,7 @@ import org.tigris.gef.util.*;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.*;
+import org.argouml.cognitive.critics.Critic;
 
 /** Implements a list of ToDoItem's.  If desired it can also
  * spawn a "sweeper" thread that periodically goes through the list
@@ -194,6 +195,7 @@ implements Runnable, java.io.Serializable {
   // accessors
 
   public Vector getToDoItems() { return _items; }
+  public Vector getResolvedItems() { return _resolvedItems; }
 
     /**
      * @return the set of offenders
@@ -246,11 +248,25 @@ implements Runnable, java.io.Serializable {
 
   private synchronized void addE(ToDoItem item) {
     /* remove any identical items already on the list */
-    if (_items.contains(item)) return;
-    if (_resolvedItems.contains(item)) {
-      cat.debug("ToDoItem not added because it was resolved");
+    if (_items.contains(item))
       return;
+
+    if (item.getPoster() instanceof Critic) {
+      ResolvedCritic rc;
+      try {
+        rc = new ResolvedCritic((Critic)item.getPoster(), item.getOffenders(), false);
+        Enumeration enum = _resolvedItems.elements();
+        //cat.debug("Checking for inhibitors " + rc);
+        while (enum.hasMoreElements()) {
+          if (enum.nextElement().equals(rc)) {
+            cat.debug("ToDoItem not added because it was resolved");
+            return;
+          }
+        }
+      } catch (UnresolvableException ure) {
+      }
     }
+
     _items.addElement(item);
     _longestToDoList = Math.max(_longestToDoList, _items.size());
     addOffenders(item.getOffenders());
@@ -307,9 +323,19 @@ implements Runnable, java.io.Serializable {
     return res;
   }
 
-  public boolean explicitlyResolve(ToDoItem item, String reason) {
+  public boolean explicitlyResolve(ToDoItem item, String reason) throws UnresolvableException {
+    if (item.getPoster() instanceof Designer) {
+      boolean res = resolve(item);
+      History.TheHistory.addItemResolution(item, reason);
+      return res;
+    }
+
+    if (!(item.getPoster() instanceof Critic))
+      throw new UnresolvableException("Unable to resolve with poster of type: " + item.getPoster().getClass());
+
+    ResolvedCritic rc = new ResolvedCritic((Critic)item.getPoster(), item.getOffenders());
     boolean res = resolve(item);
-    _resolvedItems.addElement(item);
+    _resolvedItems.addElement(rc);
     History.TheHistory.addItemResolution(item, reason); 
     return res;
   }
