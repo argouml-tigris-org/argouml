@@ -539,10 +539,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     private boolean updateClassifiers() {
     Object owner = getOwner();
     if (owner == null || getLayer() == null) return false;
-    if (!(owner instanceof MRelationship)) throw new IllegalStateException("Owner not instance of Relationship");
     
-    MModelElement newSource = CoreHelper.getHelper().getSource((MRelationship)owner);
-    MModelElement newDest = (MClassifier)CoreHelper.getHelper().getDestination((MRelationship)owner);
+    MModelElement newSource = getSource();
+    MModelElement newDest = getDestination();
     
     Fig currentSourceFig = getSourceFigNode();
     Fig currentDestFig = getDestFigNode();
@@ -577,6 +576,32 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         calcBounds();
     }
     return true;
+  }
+  
+/**
+ * Returns the source of the edge. The source is the owner of the node the edge
+ * travels from in a binary relationship. For instance: for a classifierrole, 
+ * this is the sender.
+ * @return MModelElement
+ */
+  protected MModelElement getSource() {
+    if (getOwner() != null) {
+        return CoreHelper.getHelper().getSource((MRelationship)getOwner());
+    }
+    return null;
+  }
+  /**
+    * Returns the destination of the edge. The destination is the owner of the node the edge
+    * travels to in a binary relationship. For instance: for a classifierrole, 
+    * this is the receiver. Since we don't support n-array associations but only
+    * binary relations, source/destination works for all edges.
+    * @return MModelElement
+    */
+  protected MModelElement getDestination() {
+    if (getOwner() != null) {
+        MModelElement newDest = (MClassifier)CoreHelper.getHelper().getDestination((MRelationship)getOwner());
+    }
+    return null;
   }
 
 } /* end class FigEdgeModelElement */
