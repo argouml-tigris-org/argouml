@@ -365,7 +365,8 @@ public class ArgoParser extends SAXParserBase {
         if (type.equals("xmi")) {
             memberParser = new ModelMemberFilePersister(url, project);
         } else if (type.equals("pgml")) {
-            attributeMap.put("name", name.substring(4,name.length()-9));
+            String value = name.substring(4,name.length()-5);
+            attributeMap.put("name", value);
             memberParser = new DiagramMemberFilePersister(url, project);
         } else if (type.equals("todo")) {
             memberParser = new TodoListMemberFilePersister();
