@@ -1097,12 +1097,27 @@ and commiting.
 	    <para>Upload the files onto the tigris website!</para>
 	    <para>
 Only a project owner can do that.
-Please take the previous releases as an example to write the
-descriptions of the files.
-If everyone follows his own conventions it is likely to be confusing.
-Hint: upload all the files first, then change all the texts at once in
-the edit window.
-It is much faster since you can copy and paste most of the texts.
+Please write the descriptions of the files like this:
+<itemizedlist>
+		<listitem>
+		  <para>libraries</para>
+		  <para>
+libraries needed to compile
+</para>
+		</listitem>
+		<listitem>
+		  <para>sources</para>
+		  <para>
+source code without libraries
+</para>
+		</listitem>
+		<listitem>
+		  <para>complete set</para>
+		  <para>
+binary distribution, including all libraries
+</para>
+		</listitem>
+	      </itemizedlist>
 </para>
 	  </listitem>
 	  <listitem>
@@ -1230,7 +1245,7 @@ in some other way.
 At this point an in-detail description of how poor programming skills
 the culprit has and how ugly his mother is, is probably in place but
 please keep it constructive!
-Remember, you might be misstaken when you guess who the responsible are.
+Remember, you might be misstaken when you guess who the responsible is.
 </para>
 	      </listitem>
 	    </itemizedlist>
@@ -5577,6 +5592,145 @@ the issues discussed recently in the user community.
       <primary>Standards</primary>
       <secondary>CVS</secondary>
     </indexterm>
+
+    <sect1 id="groundrules">
+      <title>Ground rules</title>
+      <para>
+When you have done all the work, and all the testing and
+are about to commit something please do:
+<orderedlist>
+	  <listitem>
+	    <para>
+Compile argouml 
+(<command>build run</command> or <command>build package</command>).
+</para>
+	    <para>
+This goes for all changes, even changes in comments.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+If you changes include removing files make a clean compile.
+(<command>build clean</command> followed by
+<command>build run</command> or <command>build package</command>).
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+If you changes include removing public or protected operations and
+attributes make a clean compile
+(<command>build clean</command> followed by
+<command>build run</command> or <command>build package</command>).
+</para>
+	    <para>
+The build mechanism does not yet have reliable 
+dependancy checker enabled so this is the best way to make sure.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+If your changes include adding abstract operations make a clean compile
+(<command>build clean</command> followed by
+<command>build run</command> or <command>build package</command>).
+</para>
+	    <para>
+The build mechanism does not yet have reliable 
+dependancy checker enabled so this is the best way to make sure.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+If you have changed anything that has the potential of affecting
+something in a totally different part of the code like internal
+data structure, handling of exceptions, 
+run all JUnit test cases
+and start the tool and do some more testing.
+</para>
+	    <para>
+If in doubt, run all JUnit test cases.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Do a <command>cvs update</command> in src_new to make sure that 
+you do not forget to commit any file and to make sure that noone 
+else has commited anything in the mean time.
+</para>
+	    <para>
+Remember that if you do not commit all the files from src_new
+that <command>cvs update</command> found (marked A, R, and M)
+in the same commit then you would better remove those file
+from the checked out copy, update to get the original version
+from the repository and start over with the compilation.
+</para>
+	    <para>
+If someone else have updated a file 
+(<command>cvs update </command> shown U, or no longer pertinent)
+please compile again.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Commit all files that are included in a change at the same time.
+</para>
+	    <para>
+This reduces the chance of anyone getting an inconsistant set of files
+by updating in the middle of your commit.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>
+Commit often.
+</para>
+	    <para>
+Remember that the repository is also a backup copy of your work.
+</para>
+	    <para>
+If your change is so big and involves so many files that you would
+like to commit it for backup reasons but it doesn't compile or
+doesn't work or for some other reason should not confuse the main 
+branch in cvs, create a branch to work in.
+Then when your work is complete, you merge the branch into 
+the main branch.
+</para>
+	  </listitem>
+	</orderedlist>
+</para>
+      <para>
+<emphasis>Rationale:</emphasis>
+These ground rules is for the purpose of not stopping or hindering
+the work for anyone.
+Remember that there might be several developers working with
+different agendas and different efficiency (slower or faster)
+and the commits is the melting point of this.
+</para>
+      <para>
+<emphasis>Perspective:</emphasis>
+If this will take you an extra two minutes before every commit
+remember that if you commit something that will not work this
+will take everyone else (guess 10 persons) the extra time of
+looking at the compilation error or see the tool crash (1 minute),
+wonder why (1 minute),
+search for the error in his own changes (3 minutes),
+search for the error somewhere else (1 minute),
+glance at the mailing list to see if someone else has noticed this 
+and send a mail (1 minute),
+wait for some response (1 hour wait),
+update (1 minute),
+compile (1 minute).
+This amounts to 10 hours wait and 1,5 hours extra work for
+all developers in the project.
+</para>
+
+    </sect1>
+
 <sect1 id="branches">
 <title>Creating and using branches</title>
       <indexterm>
@@ -5856,7 +6010,8 @@ this is not done correctly.
 There could also be CVS clients out there, not doing this correctly. 
 </para>
 	  <para>
-Systems known to the author (Linus) are Unix uses LF, DOS/Windows uses CR-LF,
+Systems known to the author (Linus Tolke) 
+are Unix uses LF, DOS/Windows uses CR-LF,
 Mac uses CR.
 </para>
 	  <para>
@@ -5870,7 +6025,7 @@ There are however some cases when this is cumbersome.
 	    <listitem>
 	      <para>When an editor (or developer) decides to "fix-it".</para>
 	      <para>
-This means that the editor (or the user) goes through the file and
+This means that the editor (or the developer) goes through the file and
 removes ^M on every line or something else that touches every line 
 in the file.
 </para>
@@ -5884,7 +6039,8 @@ a checked out copy will have no help from cvs when doing his merging.
 Remember that you never know what other developers are working with.
 </para>
 	      <para>
-This is fixed by not doing any such fixes and doing a cvs diff before
+This is fixed by not doing any such fixes and doing a 
+<command>cvs diff</command> before
 each check in so that your editor has not done this for you.
 </para>
 	    </listitem>
@@ -5913,7 +6069,8 @@ developers it is better do this as soon as possible.
 When this is fixed, let the fix be the only thing done in that commit.
 </para>
 	      <para>
-To avoid this in the future, always do a cvs diff before doing your
+To avoid this in the future, always do a 
+<command>cvs diff</command> before doing your
 change to make sure that only the lines that you have actually
 modified will be changed by cvs and not the whole file.
 </para>
@@ -5957,10 +6114,11 @@ classes in this file (if more than one),
 original author (if you want).
 Like this:
 <programlisting>
-// $Id$
-// Copyright ...
+// &dollar;Id&dollar;
+// Copyright (c) 2002 The Regents of the University of California. All
+// ...
 
-// Classes: blabla, blabla
+// Classes: blabla, blabla (all classes of interest in this file)
 // Original Author: who ever
 </programlisting>
 </para>
