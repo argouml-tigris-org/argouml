@@ -596,6 +596,23 @@ implements IStatusBar, NavigationListener {
      */
     public void open(Object element) {
     }
+    
+    public boolean navigateBack(boolean attempt) {
+        return false;
+    }
+    
+    public boolean navigateForward(boolean attempt) {
+        return false;
+    }
+
+    public boolean isNavigateBackEnabled() {
+        return false;
+    }
+
+    public boolean isNavigateForwardEnabled() {
+        return false;
+    }
+    
 
 
 } /* end class ProjectBrowser */

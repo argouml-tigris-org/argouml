@@ -31,9 +31,16 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.uml.ui.*;
 
+import org.tigris.gef.util.Util;
 
-public class PropPanelClass extends PropPanel {
+public class PropPanelClass extends PropPanelClassifier {
 
+  private static ImageIcon _addOpIcon = Util.loadIconResource("AddOperation");
+  private static ImageIcon _addAttrIcon = Util.loadIconResource("AddAttribute");
+  private static ImageIcon _addAssocIcon = Util.loadIconResource("Association");
+  private static ImageIcon _packageIcon = Util.loadIconResource("Package");
+  private static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
+  private static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -120,29 +127,32 @@ public class PropPanelClass extends PropPanel {
     innerList.setVisibleRowCount(1);
     addField(new JScrollPane(innerList),3,1,0.25);
     
-    //
-    //  just for decoration now
-    //
-    JButton createClass = new JButton("New");
-    createClass.setEnabled(false);
-    addButton(createClass);
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
     
-    JButton addOperation = new JButton("Add Operation");
-    addOperation.setEnabled(false);
-    addButton(addOperation);
-    
-    JButton addAttribute = new JButton("Add Attribute");
-    addAttribute.setEnabled(false);
-    addButton(addAttribute);
-    
-    JButton addAssociation = new JButton("Add Association");
-    addAssociation.setEnabled(false);
-    addButton(addAssociation);
-    
-    JButton deleteClass = new JButton("Delete");
-    deleteClass.setEnabled(false);
-    addButton(deleteClass);
+    new PropPanelButton(this,buttonPanel,_addOpIcon,"Add operation","addOperation",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_addAttrIcon,"Add attribute","addAttribute",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_addAssocIcon,"Add association","addAssociation",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete class","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
+    new PropPanelButton(this,buttonPanel,_classIcon,"Add inner class","addInnerClass",null);
+
   }
 
-  
+    public void addInnerClass() {
+        Object target = getTarget();
+        if(target instanceof MClassifier) {
+            MClassifier classifier = (MClassifier) target;
+            MClassifier inner = classifier.getFactory().createClass();
+            classifier.addOwnedElement(inner);
+            navigateTo(inner);
+        }
+    }
+
 } /* end class PropPanelClass */

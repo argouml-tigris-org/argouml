@@ -41,5 +41,39 @@ public interface NavigationListener {
      *    open a model element in a new window has been recieved.
      */
     public void open(Object element);
+
+
+    /**
+     *    Called to navigate to previous selection
+     *    returns true if navigation performed
+     *
+     *    @param attempt false if navigation accomplished by earlier listener
+     *    @return true if navigation performed
+     */
+    public boolean navigateBack(boolean attempt);  
     
+    /**
+     *    Called to navigate to next selection
+     *    returns true if navigation performed
+     *
+     *    @param attempt false if navigation accomplished by earlier listener
+     *    @return true if navigation performed
+     */
+    public boolean navigateForward(boolean attempt);    
+
+    /**  
+     *    Returns true if this listener has a target for
+     *    a back navigation.  Only one listener needs to
+     *    return true for the back button to be enabled.
+    */
+    public boolean isNavigateBackEnabled();
+
+    /**  
+     *    Returns true if this listener has a target for
+     *    a back navigation.  Only one listener needs to
+     *    return true for the back button to be enabled.
+    */
+    public boolean isNavigateForwardEnabled();
+
+      
 }

@@ -32,6 +32,7 @@ import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
+import org.tigris.gef.util.*;
 
 /**
  *   This abstract class provides the basic layout and event dispatching
@@ -52,8 +53,12 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
   private Vector _panels = new Vector();
   private UMLNameEventListener _nameListener;
-  private Object _eventQueue;
-  private JPanel _buttons;
+
+  protected static ImageIcon _navBackIcon = Util.loadIconResource("NavigateBack");
+  protected static ImageIcon _navForwardIcon = Util.loadIconResource("NavigateForward");
+  protected static ImageIcon _deleteIcon = Util.loadIconResource("RedDelete");
+  protected static ImageIcon _navUpIcon = Util.loadIconResource("NavigateUp");
+
 
 
   ////////////////////////////////////////////////////////////////
@@ -150,20 +155,6 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         addField(component,row,panel,weighty);
     }
     
-    /**
-        This method adds a shortcut component (typically a button)
-        to the bottom of the prop panel.
-    
-        @param button Button to add
-    */
-    final public void addButton(Component button) {
-        if(_buttons == null) {
-            _buttons = new JPanel(new GridLayout(1,0));
-            add(_buttons,BorderLayout.SOUTH);
-        }
-        _buttons.add(button);
-    }
-    
 
 
     public Profile getProfile() {
@@ -200,8 +191,8 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         if(!t.equals(_target)) {            
             boolean removeOldPromiscuousListener = (_nameListener != null);
             if(t instanceof MBase && _nameListener != null) {
-//XXX                removeOldPromiscuousListener = 
-//XXX                    ((MBase) t).addPromiscuousListener(_nameListener);
+                removeOldPromiscuousListener = 
+                    ((MBase) t).addPromiscuousListener(_nameListener);
             }
             
             //
@@ -213,7 +204,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
                 //  this path shouldn't happen unless t == null
                 //
                 if(removeOldPromiscuousListener) {
-//XXX                    ((MBase) _target).removePromiscuousListener(_nameListener);
+                    ((MBase) _target).removePromiscuousListener(_nameListener);
                 }
             }
             
@@ -316,6 +307,58 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
             ((NavigationListener) iter.next()).open(element);
         }
     }
+
+    
+    public boolean navigateBack(boolean attempt) {
+        boolean navigated = false;
+        Iterator iter = _navListeners.iterator();
+	    while(iter.hasNext()) {
+	        navigated = ((NavigationListener) iter.next()).navigateBack(attempt);
+            if(navigated) attempt = false;
+	    }
+        return navigated;
+    }
+
+    public void navigateBackAction() {
+        boolean attempt = true;
+        navigateBack(attempt);
+    }
+        
+    public boolean navigateForward(boolean attempt) {
+        boolean navigated = false;
+        Iterator iter = _navListeners.iterator();
+	    while(iter.hasNext()) {
+	        navigated = ((NavigationListener) iter.next()).navigateForward(attempt);
+            if(navigated) attempt = false;
+	    }
+        return navigated;
+    }
+    
+    public void navigateForwardAction() {
+        boolean attempt = true;
+        navigateForward(attempt);
+    }
+
+    public boolean isNavigateForwardEnabled() {
+        boolean enabled = false;
+        Iterator iter = _navListeners.iterator();
+	    while(iter.hasNext() && !enabled) {
+	        enabled = ((NavigationListener) iter.next()).isNavigateForwardEnabled();
+	    }
+        return enabled;
+    }
+
+    public boolean isNavigateBackEnabled() {
+        boolean enabled = false;
+        Iterator iter = _navListeners.iterator();
+	    while(iter.hasNext() && !enabled) {
+	        enabled = ((NavigationListener) iter.next()).isNavigateBackEnabled();
+	    }
+        return enabled;
+    }
+
+    
+    
     /**    Registers a listener for navigation events.
      */
     public void addNavigationListener(NavigationListener navListener) {
@@ -338,14 +381,23 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         if(target instanceof MBase) {
             MBase base = (MBase) target;
             if(_nameListener != null) {
-//XXX                base.removePromiscuousListener(_nameListener);
+                base.removePromiscuousListener(_nameListener);
             }
             _nameListener = new UMLNameEventListener(this,metaclasses);
-//XXX            base.addPromiscuousListener(_nameListener);
+            base.addPromiscuousListener(_nameListener);
         }
         else {
             _nameListener = new UMLNameEventListener(this,metaclasses);
         }
     }
-
+    
+    public void removeElement() {
+        Object target = getTarget();
+        if(target instanceof MBase) {
+            ((MBase) target).remove();
+        }
+    }
+    
+        
+    
 } /* end class PropPanel */
