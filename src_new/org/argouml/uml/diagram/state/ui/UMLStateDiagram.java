@@ -48,7 +48,8 @@ import ru.novosoft.uml.behavior.state_machines.MFinalState;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
@@ -56,91 +57,97 @@ import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 public class UMLStateDiagram extends UMLDiagram {
     protected static Category cat = Category.getInstance(UMLStateDiagram.class);
 
-  ////////////////
-  // actions for toolbar
+    ////////////////
+    // actions for toolbar
 
-  protected static Action _actionState =
-  new CmdCreateNode(MState.class, "State");
+    protected static Action _actionState = new CmdCreateNode(MState.class, "State");
 
-  protected static Action _actionCompositeState =
-  new CmdCreateNode(MCompositeState.class, "CompositeState");
+    protected static Action _actionCompositeState = new CmdCreateNode(MCompositeState.class, "CompositeState");
 
-  // start state, end state, forks, joins, etc.
-  protected static Action _actionStartPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
+    // start state, end state, forks, joins, etc.
+    protected static Action _actionStartPseudoState = new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
 
-  protected static Action _actionFinalPseudoState =
-  new CmdCreateNode(MFinalState.class, "FinalState");
+    protected static Action _actionFinalPseudoState = new CmdCreateNode(MFinalState.class, "FinalState");
 
-  protected static Action _actionBranchPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
+    protected static Action _actionBranchPseudoState = new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");
 
-  protected static Action _actionForkPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.FORK, "Fork");
+    protected static Action _actionForkPseudoState = new ActionCreatePseudostate(MPseudostateKind.FORK, "Fork");
 
-  protected static Action _actionJoinPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
+    protected static Action _actionJoinPseudoState = new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
 
-  protected static Action _actionShallowHistoryPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.SHALLOW_HISTORY, "ShallowHistory");
- 
- protected static Action _actionDeepHistoryPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.DEEP_HISTORY, "DeepHistory");
+    protected static Action _actionShallowHistoryPseudoState = new ActionCreatePseudostate(MPseudostateKind.SHALLOW_HISTORY, "ShallowHistory");
 
+    protected static Action _actionDeepHistoryPseudoState = new ActionCreatePseudostate(MPseudostateKind.DEEP_HISTORY, "DeepHistory");
 
-  protected static Action _actionTransition =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MTransition.class,
-		 "Transition");
+    protected static Action _actionTransition = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MTransition.class, "Transition");
 
+    ////////////////////////////////////////////////////////////////
+    // contructors
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
+    protected static int _StateDiagramSerial = 1;
+    /** 
+     *  this constructor is used to build a dummy state diagram so that a project
+     *  will load properly.
+     */
+    public UMLStateDiagram() {
 
-  protected static int _StateDiagramSerial = 1;
-/** 
- *  this constructor is used to build a dummy state diagram so that a project
- *  will load properly.
- */
-  public UMLStateDiagram() {
-  	
-    try { setName(getNewDiagramName()); } catch (PropertyVetoException pve) { }
-  }
-
-  public UMLStateDiagram(MNamespace m, MStateMachine sm) {
-      this();
-	if (m != null && m.getName() != null) {
-        String name = null, diag_name = m.getName();
-        Object[] args = {name};
-        int number = 
-            ((m.getBehaviors()) == null ? 0 : m.getBehaviors().size());
-        name = diag_name + " " + (number++);
-        Argo.log.info("UMLStateDiagram constructor: String name = " + name);
-		try { setName(name); }
-		catch (PropertyVetoException pve) { }
+        try {
+            setName(getNewDiagramName());
+        } catch (PropertyVetoException pve) {
+        }
     }
-	if (m != null && m.getNamespace() != null) setup(m, sm);
-	
-  }
 
-	public MModelElement getOwner() {
-		StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
-                Argo.log.info("UMLStateDiagram.getOwner()...GraphModel = " + gm);
-                MStateMachine sm = gm.getMachine();
-		if (sm != null) return sm;
-                Argo.log.info("UMLStateDiagram.getOwner()...NameSpace = " + gm.getNamespace());
-		return gm.getNamespace();
-	}
+    public UMLStateDiagram(MNamespace m, MStateMachine sm) {
+        this();
+        if (m != null && m.getName() != null) {
+            String name = null, diag_name = m.getName();
+            Object[] args = { name };
+            int number = ((m.getBehaviors()) == null ? 0 : m.getBehaviors().size());
+            name = diag_name + " " + (number++);
+            Argo.log.info("UMLStateDiagram constructor: String name = " + name);
+            try {
+                setName(name);
+            } catch (PropertyVetoException pve) {
+            }
+        }
+        if (m != null && m.getNamespace() != null)
+            setup(m, sm);
 
-	public void initialize(Object o) {
-		if (!(o instanceof MStateMachine)) return;
-		MStateMachine sm = (MStateMachine)o;
-		MModelElement context = sm.getContext();
-		if (context != null && context instanceof MClass)
-			setup((MClass)context, sm);
-		else
-			cat.warn("Statemachine without context not yet possible :-(");
-	}
+    }
+
+    public MModelElement getOwner() {
+        StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
+        Argo.log.info("UMLStateDiagram.getOwner()...GraphModel = " + gm);
+        MStateMachine sm = gm.getMachine();
+        if (sm != null)
+            return sm;
+        Argo.log.info("UMLStateDiagram.getOwner()...NameSpace = " + gm.getNamespace());
+        return gm.getNamespace();
+    }
+
+    /**
+     * Called by the PGML parser to initialize the statediagram. First the
+     * parser creates a statediagram via the default constructor. Then this
+     * method is called.
+     * @see org.tigris.gef.base.Diagram#initialize(Object)
+     */
+    public void initialize(Object o) {
+        if (!(o instanceof MStateMachine))
+            return;
+        MStateMachine sm = (MStateMachine) o;
+        MModelElement context = sm.getContext();
+        MNamespace contextNamespace = null;
+        if (context instanceof MClassifier) {
+            contextNamespace = (MClassifier)context;
+        } else
+        if (context instanceof MBehavioralFeature) {
+            contextNamespace = ((MBehavioralFeature)context).getOwner().getNamespace();
+        }
+        if (contextNamespace != null) {
+            setup(contextNamespace, sm);
+        } else
+        	throw new IllegalStateException("Cannot find context namespace while initializing statediagram");
+    }
 
     /** method to perform a number of important initializations of a StateDiagram. 
      * 
@@ -154,81 +161,82 @@ public class UMLStateDiagram extends UMLDiagram {
      *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
      *           deleting layers on the diagram...
      *           psager@tigris.org   Jan. 24, 2oo2
-     */        
-  public void setup(MNamespace m, MStateMachine sm) {
-	  setNamespace(m);
-	  StateDiagramGraphModel gm = new StateDiagramGraphModel();
-	  gm.setNamespace(m);
-	  if (sm != null) gm.setMachine(sm);
-	  setGraphModel(gm);
-	  LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
-	  setLayer(lay);
-	  StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
-	  lay.setGraphNodeRenderer(rend);
-	  lay.setGraphEdgeRenderer(rend);
-  }
-	  
-public MStateMachine getStateMachine() {
-    return ((StateDiagramGraphModel)getGraphModel()).getMachine();
-  }
+     */
+    public void setup(MNamespace m, MStateMachine sm) {
+        setNamespace(m);
+        StateDiagramGraphModel gm = new StateDiagramGraphModel();
+        gm.setNamespace(m);
+        if (sm != null)
+            gm.setMachine(sm);
+        setGraphModel(gm);
+        LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+        setLayer(lay);
+        StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
+        lay.setGraphNodeRenderer(rend);
+        lay.setGraphEdgeRenderer(rend);
+    }
 
-/**
- * @param sm
- * @param m
- */
-  public void setStateMachine(MStateMachine sm) {
-    ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
-  }
+    public MStateMachine getStateMachine() {
+        return ((StateDiagramGraphModel) getGraphModel()).getMachine();
+    }
 
-  /** initialize the toolbar for this diagram type */
-  protected void initToolBar() {
-    cat.debug("making state toolbar");
-    _toolBar = new ToolBar();
-    _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
-    //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    /**
+     * @param sm
+     * @param m
+     */
+    public void setStateMachine(MStateMachine sm) {
+        ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
+    }
 
-    _toolBar.add(_actionSelect);
-    _toolBar.add(_actionBroom);
-    _toolBar.addSeparator();
+    /** initialize the toolbar for this diagram type */
+    protected void initToolBar() {
+        cat.debug("making state toolbar");
+        _toolBar = new ToolBar();
+        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
-    _toolBar.add(_actionState);
-    _toolBar.add(_actionCompositeState);
-    _toolBar.add(_actionTransition);
-    _toolBar.addSeparator();
+        _toolBar.add(_actionSelect);
+        _toolBar.add(_actionBroom);
+        _toolBar.addSeparator();
 
-    _toolBar.add(_actionStartPseudoState);
-    _toolBar.add(_actionFinalPseudoState);
-    _toolBar.add(_actionBranchPseudoState);
-    _toolBar.add(_actionForkPseudoState);
-    _toolBar.add(_actionJoinPseudoState);
-    _toolBar.add(_actionShallowHistoryPseudoState);
-    _toolBar.add(_actionDeepHistoryPseudoState);
-    _toolBar.addSeparator();
-    _toolBar.add(ActionAddNote.SINGLETON);
-    _toolBar.addSeparator();
-    
-    //_toolBar.add(Actions.AddInternalTrans);
-    //_toolBar.addSeparator();
+        _toolBar.add(_actionState);
+        _toolBar.add(_actionCompositeState);
+        _toolBar.add(_actionTransition);
+        _toolBar.addSeparator();
 
-    _toolBar.add(_actionRectangle);
-    _toolBar.add(_actionRRectangle);
-    _toolBar.add(_actionCircle);
-    _toolBar.add(_actionLine);
-    _toolBar.add(_actionText);
-    _toolBar.add(_actionPoly);
-    _toolBar.add(_actionSpline);
-    _toolBar.add(_actionInk);
-    _toolBar.addSeparator();
+        _toolBar.add(_actionStartPseudoState);
+        _toolBar.add(_actionFinalPseudoState);
+        _toolBar.add(_actionBranchPseudoState);
+        _toolBar.add(_actionForkPseudoState);
+        _toolBar.add(_actionJoinPseudoState);
+        _toolBar.add(_actionShallowHistoryPseudoState);
+        _toolBar.add(_actionDeepHistoryPseudoState);
+        _toolBar.addSeparator();
+        _toolBar.add(ActionAddNote.SINGLETON);
+        _toolBar.addSeparator();
 
-    _toolBar.add(_diagramName.getJComponent());
-  }
-  
-  protected static String getNewDiagramName() {
-  	String name = null;
+        //_toolBar.add(Actions.AddInternalTrans);
+        //_toolBar.addSeparator();
+
+        _toolBar.add(_actionRectangle);
+        _toolBar.add(_actionRRectangle);
+        _toolBar.add(_actionCircle);
+        _toolBar.add(_actionLine);
+        _toolBar.add(_actionText);
+        _toolBar.add(_actionPoly);
+        _toolBar.add(_actionSpline);
+        _toolBar.add(_actionInk);
+        _toolBar.addSeparator();
+
+        _toolBar.add(_diagramName.getJComponent());
+    }
+
+    protected static String getNewDiagramName() {
+        String name = null;
         name = "state diagram " + _StateDiagramSerial;
         _StateDiagramSerial++;
 
-    return name;
-  }
+        return name;
+    }
 
 } /* end class UMLStateDiagram */
