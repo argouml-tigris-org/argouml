@@ -28,6 +28,7 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
 import org.argouml.util.*;
+import org.argouml.uml.reveng.*;
 import org.argouml.uml.reveng.classfile.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 import org.argouml.application.api.*;
@@ -38,7 +39,7 @@ import java.io.*;
 import java.util.*;
 import javax.swing.*;
 
-public class ActionImportFromClassfiles extends UMLAction implements PluggableMenu {
+public class ActionImportFromClassfiles extends UMLAction  { //implements PluggableMenu {
 
     /////////////////////////////////////////////////////////
     // Constants
@@ -60,7 +61,6 @@ public class ActionImportFromClassfiles extends UMLAction implements PluggableMe
      */
     private static JMenuItem _menuItem = null;
 
- 
     ////////////////////////////////////////////////////////////////
     // constructors
 
