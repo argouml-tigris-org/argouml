@@ -43,24 +43,9 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
  * This class handles only UML Use Case Diagrams.<p>
  */
 public class UseCaseDiagramGraphModel
-    extends UMLMutableGraphSupport
-    implements VetoableChangeListener
-{
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat =
-	Logger.getLogger(UseCaseDiagramGraphModel.class);
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // instance variables
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-    
-
+        extends UMLMutableGraphSupport
+        implements VetoableChangeListener {
+	
     /**
      * The "home" UML model of this diagram, not all ModelElements in
      * this graph are in the home model, but if they are added and

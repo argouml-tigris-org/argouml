@@ -38,8 +38,8 @@ import org.apache.log4j.Logger;
 public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
-    protected static Logger cat =
-	Logger.getLogger(DeploymentDiagramGraphModel.class);
+    private static final Logger LOG =
+	    Logger.getLogger(DeploymentDiagramGraphModel.class);
 
     /** The "home" UML model of this diagram, not all ModelElements in this
      *  graph are in the home model, but if they are added and don't

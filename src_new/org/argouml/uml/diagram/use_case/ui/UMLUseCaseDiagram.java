@@ -51,25 +51,19 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  * namespace.<p>
  */
 public class UMLUseCaseDiagram extends UMLDiagram {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat = Logger.getLogger(UMLUseCaseDiagram.class);
-
     // Actions specific to the use case diagram toolbar
 
     /**
      * Tool to add an actor node.<p>
      */
     protected static Action _actionActor =
-	new RadioAction(new CmdCreateNode(ModelFacade.ACTOR, "Actor"));
+	    new RadioAction(new CmdCreateNode(ModelFacade.ACTOR, "Actor"));
     
     /**
      * Tool to add a use case node.<p>
      */
     protected static Action _actionUseCase =
-	new RadioAction(new CmdCreateNode(ModelFacade.USE_CASE, "UseCase"));
+        new RadioAction(new CmdCreateNode(ModelFacade.USE_CASE, "UseCase"));
 
     /**
      * Tool to create an association between UML artifacts using a

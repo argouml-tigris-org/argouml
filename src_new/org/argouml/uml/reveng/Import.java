@@ -489,9 +489,6 @@ public class Import {
      * ImportStatusScreen, in order to cancel long import runs.<p>
      */
     class ImportRun implements Runnable {
-	/** logger */
-	private Logger cat = Logger.getLogger(ImportRun.class);
-        
         Vector _filesLeft;
         
         int _countFiles;

@@ -37,14 +37,14 @@ import org.argouml.uml.reveng.Import;
  */
 public class ActionImportFromSources extends UMLAction {
     
-    protected static Logger cat =
-	Logger.getLogger(org.argouml.uml.ui.ActionImportFromSources.class);
+    private static final Logger LOG =
+        Logger.getLogger(ActionImportFromSources.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
     public static ActionImportFromSources SINGLETON =
-	new ActionImportFromSources(); 
+        new ActionImportFromSources(); 
 
 
     ////////////////////////////////////////////////////////////////

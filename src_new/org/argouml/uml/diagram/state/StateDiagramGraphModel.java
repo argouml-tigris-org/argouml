@@ -52,12 +52,6 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         VetoableChangeListener {
 
     /**
-     * @deprecated by Linus Tolke as of 0.16. Will be private.
-     */
-    protected static Logger cat = Logger
-            .getLogger(StateDiagramGraphModel.class);
-
-    /**
      * The "home" UML model of this diagram, not all ModelElements in
      * this graph are in the home model, but if they are added and
      * don't already have a model, they are placed in the "home

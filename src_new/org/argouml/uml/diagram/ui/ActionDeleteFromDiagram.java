@@ -49,8 +49,8 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
     // static variables
 
     /** logger */
-    private static Logger cat = 
-	Logger.getLogger(ActionDeleteFromDiagram.class);
+    private static final Logger LOG = 
+        Logger.getLogger(ActionDeleteFromDiagram.class);
 
     public static ActionDeleteFromDiagram SINGLETON =
         new ActionDeleteFromDiagram();

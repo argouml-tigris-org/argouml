@@ -40,13 +40,6 @@ import org.argouml.kernel.*;
  * that used reflection a lot.
  */
 public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
-     * class. This will be removed.
-     */
-    protected static Logger cat =
-	Logger.getLogger(UMLReflectionBooleanProperty.class);
-
     private Method _getMethod;
     private Method _setMethod;
     private static final Object[] _noArg = {};

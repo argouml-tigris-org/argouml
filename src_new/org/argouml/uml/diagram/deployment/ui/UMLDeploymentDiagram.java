@@ -50,7 +50,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * @deprecated by Linus Tolke as of 0.15.4. Use your own logger in your
      * class. This will be removed.
      */
-    protected static Logger cat = Logger.getLogger(UMLDeploymentDiagram.class);
+    private static final Logger LOG = Logger.getLogger(UMLDeploymentDiagram.class);
 
     ////////////////
     // actions for toolbar

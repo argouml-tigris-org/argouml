@@ -56,9 +56,6 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
 
     ////////////////////////////////////////////////////////////////
     // constants
-    private final int WIDTH = 320;
-    private final int HEIGHT = 400;
-
     ////////////////////////////////////////////////////////////////
     // instance variables
     private JPanel  _mainPanel = new JPanel();
@@ -70,6 +67,9 @@ public class DesignIssuesDialog extends ArgoDialog implements ChangeListener {
 
     public DesignIssuesDialog(Frame parent) {
         super(parent, Translator.localize("dialog.title.design-issues"), false);
+
+        final int WIDTH = 320;
+        final int HEIGHT = 400;
 
         initMainPanel();
 
