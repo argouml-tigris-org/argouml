@@ -120,24 +120,12 @@ public abstract class SAXParserBase extends DefaultHandler {
     // main parsing method
 
     /**
-     * @param theUrl the url of the project to read
-     * @throws IOException for a file problem
-     * @throws ParserConfigurationException in case of a parser problem
-     * @throws SAXException when parsing xml
-     */
-    public void parse(URL theUrl) throws SAXException, IOException, 
-        ParserConfigurationException {
-	parse(theUrl.openStream());
-    }
-
-    /**
      * @param is the inputstream of the project to read
      * @throws IOException for a file problem
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
      */
-    public void parse(InputStream is) 
-        throws SAXException, IOException, ParserConfigurationException {
+    public void parse(InputStream is) throws SAXException {
 
         long start, end;
         
@@ -145,17 +133,21 @@ public abstract class SAXParserBase extends DefaultHandler {
         factory.setNamespaceAware(false);
         factory.setValidating(false);
         
-        SAXParser parser = factory.newSAXParser();
-        InputSource input = new InputSource(is);
-        input.setSystemId(getJarResource("org.argouml.kernel.Project"));
-    
-        // what is this for?
-        // input.setSystemId(url.toString());
-        start = System.currentTimeMillis();
-        parser.parse(input, this);
-        end = System.currentTimeMillis();
-        parseTime = end - start;
-        if (stats) {
+        try {
+            SAXParser parser = factory.newSAXParser();
+            InputSource input = new InputSource(is);
+            input.setSystemId(getJarResource("org.argouml.kernel.Project"));
+        
+            start = System.currentTimeMillis();
+            parser.parse(input, this);
+            end = System.currentTimeMillis();
+            parseTime = end - start;
+        } catch (IOException e) {
+            throw new SAXException(e);
+        } catch (ParserConfigurationException e) {
+            throw new SAXException(e);
+        }
+        if (stats && LOG.isInfoEnabled()) {
             LOG.info("Elapsed time: " + (end - start) + " ms");
         }
     }
