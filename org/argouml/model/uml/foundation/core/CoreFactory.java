@@ -39,19 +39,12 @@ import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
-import org
-	.argouml
-	.model
-	.uml
-	.foundation
-	.extensionmechanisms
-	.ExtensionMechanismsFactory;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
-import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationClass;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
@@ -132,7 +125,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	 *  @return an initialized UML Abstraction instance.
 	 */
 	public Object createAbstraction() {
-		MAbstraction modelElement =
+		Object modelElement =
 			MFactory.getDefaultFactory().createAbstraction();
 		super.initialize(modelElement);
 		return modelElement;
@@ -1479,7 +1472,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		return con;
 	}
 
-	public void deleteAbstraction(MAbstraction elem) {
+	public void deleteAbstraction(Object elem) {
 	}
 
 	public void deleteAssociation(MAssociation elem) {

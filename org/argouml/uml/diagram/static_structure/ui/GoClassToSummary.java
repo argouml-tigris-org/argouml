@@ -78,7 +78,7 @@ public class GoClassToSummary extends AbstractGoRule {
 
   private boolean hasIncomingDependencies(Object parent){
       
-            Iterator incomingIt = ModelFacade.getSupplierDependencies(parent);
+            Iterator incomingIt = ModelFacade.getSupplierDependencies(parent).iterator();
           
           while(incomingIt.hasNext()){
               
@@ -91,7 +91,7 @@ public class GoClassToSummary extends AbstractGoRule {
   
   private boolean hasOutGoingDependencies(Object parent){
       
-          Iterator incomingIt = ModelFacade.getClientDependencies(parent);
+          Iterator incomingIt = ModelFacade.getClientDependencies(parent).iterator();
           
           while(incomingIt.hasNext()){
               
@@ -104,8 +104,8 @@ public class GoClassToSummary extends AbstractGoRule {
  
   private boolean hasInheritance(Object parent){
       
-          Iterator incomingIt = ModelFacade.getSupplierDependencies(parent);
-          Iterator outgoingIt = ModelFacade.getClientDependencies(parent);
+          Iterator incomingIt = ModelFacade.getSupplierDependencies(parent).iterator();
+          Iterator outgoingIt = ModelFacade.getClientDependencies(parent).iterator();
           Iterator generalizationsIt = ModelFacade.getGeneralizations(parent);
           Iterator specializationsIt = ModelFacade.getSpecializations(parent);
           

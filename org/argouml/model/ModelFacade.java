@@ -906,6 +906,18 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+    
+    /**
+     * The baseclass of some stereotype
+     * @param handle the stereotype
+     * @return the baseclass
+     */
+    public static Object getBaseClass(Object handle) {
+        if (isAStereotype(handle)) {
+            return ((MStereotype)handle).getBaseClass();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** Get the behaviors of a Modelelement.
      *
@@ -957,6 +969,18 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+    
+    /**
+     * Gets the clients of some dependency
+     * @param handle the dependency
+     * @return the clients of the dependency
+     */
+    public static Collection getClients(Object handle) {
+        if (isADependency(handle)) {
+            return ((MDependency)handle).getClients();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /**
      * Get the client dependencies of some classifier
@@ -964,10 +988,10 @@ public class ModelFacade {
      * @param handle to the classifier.
      * @return an iterator with all client dependencies.
      */
-    public static Iterator getClientDependencies(Object handle) {
+    public static Collection getClientDependencies(Object handle) {
         if (isAModelElement(handle)) {
             Collection c = ((MModelElement)handle).getClientDependencies();
-            return (c != null) ? c.iterator() : null;
+            return c;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -1234,9 +1258,9 @@ public class ModelFacade {
      * @param handle operation to retrieve from
      * @return Iterator with operations.
      */
-    public static Iterator getParameters(Object handle) {
+    public static Collection getParameters(Object handle) {
         if (handle instanceof MOperation) {
-            return ((MOperation)handle).getParameters().iterator();
+            return ((MOperation)handle).getParameters();
         }
 
         // ...
@@ -1329,10 +1353,10 @@ public class ModelFacade {
      * @param handle model element.
      * @returns Iterator with the supplier dependencies.
      */
-    public static Iterator getSupplierDependencies(Object handle) {
+    public static Collection getSupplierDependencies(Object handle) {
         if (handle instanceof MModelElement) {
             MModelElement me = (MModelElement)handle;
-            return me.getSupplierDependencies().iterator();
+            return me.getSupplierDependencies();
         }
 
         // ...
@@ -1472,7 +1496,8 @@ public class ModelFacade {
      * @return a collection of the suppliers
      */
     public static Collection getSuppliers(Object handle) {
-        if (handle == null || !(handle instanceof MAbstraction))
+        if (handle == null || !(isAAbstraction(handle)
+        ))
             return null;
         return ((MAbstraction)handle).getSuppliers();
     }

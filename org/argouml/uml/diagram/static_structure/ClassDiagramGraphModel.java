@@ -117,7 +117,7 @@ implements VetoableChangeListener  {
       // top of the hierarchy is ME:
       if(ModelFacade.isAModelElement(port)){
           
-          Iterator it = ModelFacade.getSupplierDependencies(port);
+          Iterator it = ModelFacade.getSupplierDependencies(port).iterator();
           while (it.hasNext()) {
               edges.add(it.next());
           }
@@ -194,7 +194,7 @@ implements VetoableChangeListener  {
       // top of the hierarchy is ME:
       if(ModelFacade.isAModelElement(port)){
           
-          Iterator it = ModelFacade.getClientDependencies(port);
+          Iterator it = ModelFacade.getClientDependencies(port).iterator();
           while (it.hasNext()) {
               edges.add(it.next());
           }

@@ -23,26 +23,23 @@
 
 package org.argouml.uml.reveng.java;
 
-import java.util.*;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Editor;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Stack;
+import java.util.Vector;
 
-import org.argouml.ui.*;
 import org.apache.log4j.Category;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.uml.diagram.ProjectMemberDiagram;
-import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.ocl.OCLUtil;
-import org.argouml.uml.*;
-import org.argouml.uml.reveng.*;
+import org.argouml.uml.MMUtil;
+import org.argouml.uml.reveng.DiagramInterface;
+import org.argouml.uml.reveng.Import;
+import org.tigris.gef.base.Globals;
 
 /**
  * Modeller maps Java source code(parsed/recognised by ANTLR) to UML model
@@ -587,7 +584,7 @@ public class Modeller
           ModelFacade.setConcurrency(mOperation, ModelFacade.SEQUENTIAL);
       }
 
-      for(Iterator i = ModelFacade.getParameters(mOperation); i.hasNext(); ) {
+      for(Iterator i = ModelFacade.getParameters(mOperation).iterator(); i.hasNext(); ) {
           ModelFacade.removeParameter(mOperation, i.next());
       }
 
@@ -814,7 +811,7 @@ public class Modeller
     {
         String name = ModelFacade.getName(child) + " -> " + ModelFacade.getName(parent);
         Object mAbstraction = null;
-        for(Iterator i = ModelFacade.getClientDependencies(child); i.hasNext(); ) {
+        for(Iterator i = ModelFacade.getClientDependencies(child).iterator(); i.hasNext(); ) {
             mAbstraction = i.next();
             Collection c = ModelFacade.getSuppliers(mAbstraction);
             if(c == null || c.size() == 0) {

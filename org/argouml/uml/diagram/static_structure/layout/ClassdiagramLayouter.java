@@ -23,19 +23,20 @@
 
 package org.argouml.uml.diagram.static_structure.layout;
 
-import java.awt.*;
-import java.util.*;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 
-import org.apache.log4j.*;
-
+import org.apache.log4j.Category;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.diagram.layout.*;
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.diagram.layout.LayoutedObject;
+import org.argouml.uml.diagram.layout.Layouter;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-
-import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 
@@ -167,7 +168,7 @@ public class ClassdiagramLayouter implements Layouter {
                 
                 if ( ModelFacade.isAModelElement(node)) {
                     Vector specs = new Vector(((MModelElement)node).getClientDependencies());
-                    specs.addAll(((MModelElement)node).getSupplierDependencies());
+                    specs.addAll(ModelFacade.getSupplierDependencies(node));
                     for( Iterator iter = specs.iterator(); iter.hasNext(); ) {
                         
                         // Realizations are stored as MAbstractions with a stereotype 'realize'.
@@ -175,14 +176,14 @@ public class ClassdiagramLayouter implements Layouter {
                         // for this node to get the abstractions, too.
                         Object dep =  iter.next();
                         if( ModelFacade.isAAbstraction(dep)) {   // Is this a abstraction?
-                            MAbstraction abstr = (MAbstraction)dep;
+                            Object abstr = dep;
                             if (ModelFacade.isRealize(abstr)) {                                
                                 // Is this node the class, that implements the interface?
-                                Collection clients = abstr.getClients();
+                                Collection clients = ModelFacade.getClients(abstr);
                                 for( Iterator iter2 = clients.iterator(); iter2.hasNext(); ) {
                                     MModelElement me = (MModelElement)iter2.next();
                                     if(node == me) {
-                                        Collection suppliers = abstr.getSuppliers();
+                                        Collection suppliers = ModelFacade.getSuppliers(abstr);
                                         for( Iterator iter3 = suppliers.iterator(); iter3.hasNext(); ) {
                                             Object me2 = iter3.next();
                                             if(ModelFacade.isAClassifier(me2)) {
@@ -197,11 +198,11 @@ public class ClassdiagramLayouter implements Layouter {
                                 }
                                 
                                 // Or the implemented interface?
-                                Collection suppliers = abstr.getSuppliers();
+                                Collection suppliers = ModelFacade.getSuppliers(abstr);
                                 for( Iterator iter2 = suppliers.iterator(); iter2.hasNext(); ) {
                                     MModelElement me = (MModelElement)iter2.next();
                                     if(node == me) {
-                                        clients = abstr.getClients();
+                                        clients = ModelFacade.getClients(abstr);
                                         for( Iterator iter3 = clients.iterator(); iter3.hasNext(); ) {
                                             Object me2 = iter3.next();
                                             if(ModelFacade.isAClassifier(me2)) {

@@ -98,7 +98,6 @@ import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
-import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationClass;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
@@ -683,8 +682,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
         } else
         if (elem instanceof MDependency) {
             getCore().deleteDependency((MDependency)elem);
-            if (elem instanceof MAbstraction) {
-                getCore().deleteAbstraction((MAbstraction)elem);
+            if (ModelFacade.isAAbstraction(elem)) {
+                getCore().deleteAbstraction(elem);
             } else
             if (elem instanceof MBinding) {
                 getCore().deleteBinding((MBinding)elem);

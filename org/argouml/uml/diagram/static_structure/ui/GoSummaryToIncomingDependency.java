@@ -53,7 +53,7 @@ public class GoSummaryToIncomingDependency extends AbstractGoRule {
           
           List list = new ArrayList();
           
-          Iterator it = ModelFacade.getSupplierDependencies(((IncomingDependencyNode)parent).getParent());
+          Iterator it = ModelFacade.getSupplierDependencies(((IncomingDependencyNode)parent).getParent()).iterator();
           
           while(it.hasNext()){
               

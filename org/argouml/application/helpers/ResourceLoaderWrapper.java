@@ -30,11 +30,11 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
+import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ResourceLoader;
 
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
-import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
@@ -239,7 +239,7 @@ public final class ResourceLoaderWrapper {
                 icon = _BranchIcon;
             //if (MPseudostateKind.FINAL.equals(kind)) icon = _FinalStateIcon;
         }
-        if (value instanceof MAbstraction) {
+        if (ModelFacade.isAAbstraction(value)) {
             icon = _RealizeIcon;
         }
         // needs more work: sending and receiving icons
