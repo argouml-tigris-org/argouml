@@ -711,6 +711,24 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
       <tip><para>This is a text file, which you can edit to configure
         &argouml;.</para></tip>
     </sect2>
+    
+    <!-- MRUs: Most Recent Used files. -->
+    <sect2>
+      <title>Most Recent Used Files</title>
+      
+      <para>
+        &argouml; remembers a few of the most recently saved files, and lists
+        then here, to enable loading then in the most simple way.
+      </para>
+      
+      <para>
+        The maximum number of files that is listed here, can be adjusted in the
+        <literal>Edit</literal> -&gt; <literal>Settings&hellip;</literal> menu.
+        The list of files is stored in the
+        <filename>argo.user.properties</filename> file in the user's home
+        directory.
+      </para>
+    </sect2>
 
     <!-- Exit -->
 
@@ -744,8 +762,7 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
         <listitem>
           <para>The dialog box can also be closed by clicking in the
             close button in the window border. The effect is the same as selecting
-            "No".
-            <!-- TODO: This is unexpected! See issue 2469. -->
+            "Cancel".     <!-- Problem solved. See issue 2469. -->
           </para>
         </listitem>
       </itemizedlist>
@@ -784,7 +801,7 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
     <!-- The Select sub-menu entries -->
 
     <sect2 id="s2.ref.menu_select">
-      <title>The Select Sub-Menu</title>
+      <title>Select</title>
 
       <para>This sub-menu provides for selection of items on the editing
         menu. It has the following entries.</para>
@@ -800,7 +817,36 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
               <primary>Shortcut key</primary>
               <secondary>Ctrl-A</secondary>
             </indexterm>
-              Selects all artifacts on the editing pane.
+              Selects all artifacts on the current pane or in the current field. 
+              The exact behaviour depends on the <literal>current
+              pane</literal>: explorer pane, editing pane, to-do pane, details
+              pane. One rule applies in all cases though: the selection on the
+              diagram (editing pane) and in the explorer are always
+              synchronised.
+          </para>
+          <para> If the editing pane is the <literal>current pane</literal>:
+            First everything in the explorer and 
+            on the current diagram is deselected,
+            and then everything that is on the current diagram is selected 
+            (on both panes, because they are always synchronised).
+          </para>
+          <para>
+            If the explorer pane is the <literal>current pane</literal>: 
+            All visible items in the explorer pane
+            are selected, and non-visible items are deselected.
+          </para>
+          <para>
+            If the to-do pane is the <literal>current pane</literal>:
+            All visible items in the to-do pane
+            are selected, and non-visible items are deselected.
+            in fact, this works the same as for the explorer pane, because both
+            are tree structures.
+          </para>
+          <para>
+            If the details pane is the <literal>current pane</literal>:
+            The function only works in certain fields, where selecting is
+            possible, e.g. a Name field. In such a case, the Select All function
+            extends the current selection to the whole field contents.
           </para>
         </listitem>
 
@@ -1603,7 +1649,7 @@ but not on any diagram. See issue ... -->
     <!-- Sub-menu to zoom the diagram -->
 
     <sect2 id="s2.ref.menu_zoom">
-      <title>The Zoom Sub-Menu</title>
+      <title>Zoom</title>
 
       <para>This entry brings up a sub-entry, which allows scaling the view of
       all diagrams to a factor of its normal size.</para>
@@ -1639,116 +1685,6 @@ saved at all? -->
       </para></warning>
     </sect2>
 
-    <!-- Sub-menu to select editing presentation (largely irrelevant - there
-         is only one option now. -->
-
-<!-- TODO: This menu should be removed completely ASAP. It has no use. 
-See issue 1788, statement of Bob. See issue 2321 &amp; 2322. -->
-    <!--sect2>
-      <title>The Editor Tabs Sub-Menu</title>
-
-      <para>The editing pane is conceived as a multi-mode editor, allowing you
-        to edit a UML diagram from a number of perspectives.</para>
-
-      <itemizedlist>
-        <listitem><para>As a diagram. This views the diagram in conventional
-          graphical terms and is the default.</para></listitem>
-
-        <listitem><para>As a table. The artifacts on the diagram are listed in
-          a table with a column for each of their properties, which may be
-          edited.</para>
-
-        <note><para>Although this representation was available in &argouml;
-          0.8, it is not supported in the current
-          version.</para></note></listitem>
-
-        <listitem><para>As metrics. This representation is yet to be defined
-          and is not currently available in &argouml;.</para></listitem>
-      </itemizedlist>
-
-      <para>The various representations may be selected by &button1; click on
-        the corresponding tab at the bottom of the editing pane. Since the
-        current version of &argouml; only supports a diagram representation,
-        there is only one tab labeled
-        <literal>As&nbsp;Diagram</literal>.</para>
-
-      <para>The <literal>Editor&nbsp;Tabs</literal> sub-menu has four
-        entries.</para>
-
-      <itemizedlist>
-        <listitem>
-	  <para>
-<literal>Next Editing Tab</literal> (shortcut F6).
-<indexterm>
-  <primary>Next Editing Tab</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>F6</secondary>
-</indexterm>
-Selects the next tab on the editing pane.
-</para>
-
-        <caution><para>Since there is only one editing tab in the current
-          version of &argouml;, <literal>As&nbsp;Diagram</literal>, this always
-          selects that representation, and is thus a null
-          operation.</para></caution></listitem>
-
-        <listitem>
-	  <para>
-<literal>As Diagram</literal> (shortcut Alt+Shift-1). 
-<indexterm>
-  <primary>As Diagram</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt+Shift-1</secondary>
-</indexterm>
-Selects the <literal>As&nbsp;Diagram</literal> tab on
-the editing pane.
-</para>
-</listitem>
-
-        <listitem>
-	  <para>
-<literal>As Table</literal> (shortcut Alt+Shift-2).
-<indexterm>
-  <primary>As Table</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt+Shift-2</secondary>
-</indexterm>
-Selects the <literal>As&nbsp;Table</literal> tab on
-the editing pane.</para>
-
-        <caution><para>Since table representation is not supported in the
-          current version of &argouml; this entry is always grayed out and not
-          available.</para></caution></listitem>
-
-        <listitem>
-	  <para>
-<literal>As Metrics</literal> (shortcut Alt+Shift-3).
-<indexterm>
-  <primary>As Metrics</primary>
-</indexterm>
-<indexterm>
-  <primary>Shortcut key</primary>
-  <secondary>Alt+Shift-3</secondary>
-</indexterm>
-
-Selects the <literal>As&nbsp;Metrics</literal> tab on
-the editing pane.</para>
-
-        <caution><para>Since metrics representation is not supported in the
-          current version of &argouml; this entry is always grayed out and not
-          available.</para></caution></listitem>
-      </itemizedlist>
-    </sect2-->
-
-    <!-- Sub-menu to select which details tab you want. -->
-    <!-- is removed -->
-
     <!-- Alter the grid spacing -->
 
     <sect2 id="s2.ref.menu_adjust_grid">
@@ -1756,6 +1692,9 @@ the editing pane.</para>
 
       <para>This cycles the grid representation on the screen through the
         following sequence:</para>
+      <!-- TODO: How does the user know that this is a toggle? 
+      And which are the possibilities?
+      Improve this! See issue ... -->
 
       <itemizedlist>
         <listitem><para>dots at 16 pixel spacing (the
@@ -1783,6 +1722,9 @@ the editing pane.</para>
 
       <para>This cycles the spacing of grid snapping through the following
         sequence:</para>
+      <!-- TODO: How does the user know that this is a toggle? 
+      And which are the possibilities?
+      Improve this! See issue ... -->
 
       <itemizedlist>
         <listitem><para>snap at 8 pixel spacing (the
@@ -1831,8 +1773,10 @@ the editing pane.</para>
         should be a tick box toggle<!--labeled
         <literal>Page&nbsp;Breaks&nbsp;Visible</literal-->.</para></warning>
         <!-- TODO: Change the menuitem into tick box. See issue ... -->
-        <!-- TODO: Changing the page size (e.g. from A4 to A5) does not move the
-        lines. Why not? -->
+        
+        <!-- TODO: Changing the page size (e.g. from A4 to A5) 
+        or orientation (portrait/landscape) 
+        does not move the lines. Why not? See issue ... -->
     </sect2>
 
     <!-- This controls whether handles are placed on artifacts -->
@@ -1846,8 +1790,12 @@ the editing pane.</para>
         These buttons can be clicked or dragged to create
         connections of various types (e.g. 0associations, generalizations) to other
         artifacts. See for an example of such buttons on selection 
-        <xref linkend="fig.ref.menu_buttons_on_selection"/>.
+        <xref linkend="fig.ref.menu_buttons_on_selection"/> below.
       </para>
+      <!-- TODO: Why do we have this possibility to switch them off? Is there
+      any reason to do so? It is one of our main features!
+      I (MVW) propose to remove this menuitem completely, and not allow the user to
+      switch them off. See issue ... -->
 
         <figure id="fig.ref.menu_buttons_on_selection" float="1">
         <title>An example of buttons on selection for a Class.</title>
@@ -1872,7 +1820,7 @@ the editing pane.</para>
     <!-- Choose whether UML or Java notation -->
 
     <sect2 id="s2.ref.menu_notation">
-      <title>The Notation Sub-Menu</title>
+      <title>Notation</title>
 
       <para>This sub-menu presents a radio button selection for notation. 
         See also <xref linkend="s3.ref.menu_settings_notations"/>).</para>
@@ -1937,21 +1885,21 @@ the editing pane.</para>
     </sect2>
   </sect1>
 
-  <!-- The Create Diagram menu entries -->
+  <!-- The Create menu entries -->
 
   <sect1 id="s1.ref.create.diagram.menu">
-    <title>The Create Diagram Menu</title>
+    <title>The Create Menu</title>
 
     <para>This menu provides for creating the various types of UML diagrams
       supported by &argouml;.</para>
 
-    <!-- Create a Class Diagram -->
+    <!-- Create a New Class Diagram -->
 
     <sect2 id="s2.ref.create.diagram.class_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/class_diagram.gif"/> 
-        </imageobject></inlinemediaobject></guiicon> Class
+        </imageobject></inlinemediaobject></guiicon> New Class
         Diagram</title> 
 
       <para>This menu entry creates a blank class diagram, and selects that
@@ -1962,6 +1910,9 @@ the editing pane.</para>
         created within the namespace of the package. 
         This does not only apply to a package, but also to a class, 
         interface, use case, etc.
+        <!-- TODO: Yeah, but not to diagram: When a diagram is selected, the new
+        diagram is created under the model, not next to the diagram! Would that
+        not be more logical? See issue ... -->
       </para>
 
       <tip><para>This does not prevent artifacts from other namespaces/packages
@@ -1970,13 +1921,13 @@ the editing pane.</para>
         menu.</para></tip>
     </sect2>
 
-    <!-- Create a Use Case Diagram -->
+    <!-- Create a New Use Case Diagram -->
 
     <sect2 id="s2.ref.create.diagram.use_case_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/use_case_diagram.gif"/>
-        </imageobject></inlinemediaobject></guiicon> Use Case
+        </imageobject></inlinemediaobject></guiicon> New Use Case
         Diagram</title> 
 
       <para>This menu entry creates a blank use case diagram, and selects that
@@ -1995,13 +1946,13 @@ the editing pane.</para>
         menu.</para></tip>
     </sect2>
 
-    <!-- Create a Statechart Diagram -->
+    <!-- Create a New Statechart Diagram -->
 
     <sect2 id="s2.ref.create.diagram.state_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/state_diagram.gif"/>
-        </imageobject></inlinemediaobject></guiicon> State
+        </imageobject></inlinemediaobject></guiicon> New Statechart
         Diagram</title> 
 
       <para>This menu entry creates a blank statechart diagram associated with the
@@ -2010,21 +1961,22 @@ the editing pane.</para>
         namespace of the owning class.</para>
 
       <tip><para>Statechart diagrams <emphasis>must</emphasis> be associated
-        with a class. The <literal>State
-        Diagram</literal> menu entry is grayed out if a class is not
-        selected. 
-        <!-- TODO: Not only a class. Also Interface, Use case, actor,
-        Classifierrole,... But not a package, model. Describe more exact.-->  
+        with a model element capable of dynamic behavior, such as classifier or 
+        a behavioral feature, which provides the context for 
+        the state machine it represents.
+        Suitable model elements are e.g. a class, an operation, and a use case. 
+        The <literal>New Statechart Diagram</literal> menu entry is grayed out 
+        if such element is not selected.  
       </para></tip> 
     </sect2>
 
-    <!-- Create an Activity Diagram -->
+    <!-- Create a New Activity Diagram -->
 
     <sect2 id="s2.ref.create.diagram.activity_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/activity_diagram.gif"/>
-        </imageobject></inlinemediaobject></guiicon> Activity
+        </imageobject></inlinemediaobject></guiicon> New Activity
         Diagram</title> 
 
       <para>This menu entry creates a blank activity diagram associated with
@@ -2033,19 +1985,21 @@ the editing pane.</para>
         namespace of the owning class.</para>
 
       <tip><para>Activity diagrams <emphasis>must</emphasis> be associated
-        with a class. The <literal>Activity
-        Diagram</literal> menu entry is  grayed out if a class is not
-        selected. 
+        to packages, classifiers (including use cases) and behavioral features.
+        Suitable model elements are e.g. a class, a use case, an operation, 
+        and a package. 
+        The <literal>Activity Diagram</literal> menu entry is grayed out  
+        if such element is not selected. 
       </para></tip> 
     </sect2>
 
-    <!-- Create a Collaboration Diagram -->
+    <!-- Create a New Collaboration Diagram -->
 
     <sect2 id="s2.ref.create.diagram.collaboration_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/collaboration_diagram.gif"/>
-        </imageobject></inlinemediaobject></guiicon> Collaboration
+        </imageobject></inlinemediaobject></guiicon> New Collaboration
         Diagram</title>
 
       <para>This menu entry creates a blank collaboration diagram, and selects
@@ -2065,13 +2019,13 @@ the editing pane.</para>
         &button2; pop-up menu.</para></tip>
     </sect2>
 
-    <!-- Create a Deployment Diagram -->
+    <!-- Create a New Deployment Diagram -->
 
     <sect2 id="s2.ref.create.diagram.deployment_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/deployment_diagram.gif"/>
-        </imageobject></inlinemediaobject></guiicon> Deployment
+        </imageobject></inlinemediaobject></guiicon> New Deployment
         Diagram</title>
 
       <para>This menu entry creates a blank deployment diagram, and selects
@@ -2090,13 +2044,13 @@ the editing pane.</para>
         &button2; pop-up menu.</para></tip>
     </sect2>
 
-    <!-- Create a Sequence Diagram -->
+    <!-- Create a New Sequence Diagram -->
 
     <sect2>
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
           fileref="images/icons/sequence_diagram.gif"/>
-        </imageobject></inlinemediaobject></guiicon> Sequence
+        </imageobject></inlinemediaobject></guiicon> New Sequence
         Diagram</title> 
 
       <warning>
@@ -2132,7 +2086,7 @@ the editing pane.</para>
     <!-- The Align sub-menu entries -->
 
     <sect2 id="s2.ref.menu_align">
-      <title>The Align Sub-Menu</title>
+      <title>Align</title>
 
       <para>This sub-menu aligns the selected items. There are seven alignment
         options provided.</para>
@@ -2153,16 +2107,16 @@ the editing pane.</para>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
-            fileref="images/icons/align_lefts.gif"/>
+            fileref="images/icons/align_rights.gif"/>
           </imageobject></inlinemediaobject></guiicon> <literal>Align
-          Lefts</literal>. Aligns the selected artifacts by their left
+          Rights</literal> (Shortcut Ctrl-R). Aligns the selected artifacts by their right
           edges.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
-            fileref="images/icons/align_rights.gif"/>
+            fileref="images/icons/align_lefts.gif"/>
           </imageobject></inlinemediaobject></guiicon> <literal>Align
-          Rights</literal>. Aligns the selected artifacts by their right
+          Lefts</literal> (Shortcut Ctrl-L). Aligns the selected artifacts by their left
           edges.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
@@ -2200,7 +2154,7 @@ the editing pane.</para>
     <!-- The Distribute sub-menu entries -->
 
     <sect2>
-      <title>The Distribute Sub-Menu</title>
+      <title>Distribute</title>
 
       <para>This sub-menu distributes the selected items. There are four
         distribution options provided.</para>
@@ -2249,7 +2203,7 @@ the editing pane.</para>
     <!-- The Reorder sub-menu entries -->
 
     <sect2 id="s2.ref.menu_reorder">
-      <title>The Reorder Sub-Menu</title>
+      <title>Reorder</title>
 
       <para>This sub-menu adjusts the ordering of overlapping items. There are
         four reorder options provided.</para>
@@ -2290,7 +2244,7 @@ the editing pane.</para>
     <!-- The Nudge sub-menu entries -->
 
     <sect2>
-      <title>The Nudge Sub-Menu</title>
+      <title>Nudge</title>
 
       <para>This sub-menu provides fine adjustment to the positioning of
         selected artifacts. There are four nudge options provided.</para>
@@ -2326,26 +2280,56 @@ the editing pane.</para>
       </itemizedlist>
     </sect2>
 
+    <!-- The "Set preferred size" menu-item -->
+    
+    <sect2>
+      <title>Set Preferred Size</title>
+      <!-- TODO: This is a discutable name for this feature. 
+      Would it not better be "Resize" or something? 
+      See issue ... -->
+      <para>
+        This menu-item acts on all selected items on the current diagram. It
+        resets all sizes of all artifacts to its <quote>preferred</quote> size,
+        i.e. the minimum size for which all text fits inside.
+      </para>
+    </sect2>
+
+    <!-- The "Toggle Auto Resizing" menu-item -->
+    
+    <sect2>
+      <title>Toggle Auto Resizing (to be written)</title>
+      <!-- TODO: What does it do? Describe it! -->
+      <!-- TODO: This is the only menu-item in this menu that is not an action
+      item, and it does not work on the selected artifact. Maybe we should move
+      this item to somewhere else? See issue ... -->
+      <para>
+        This menu-item is a checkbox ...
+      </para>
+    </sect2>
+    
     <!-- The Layout sub-menu entries -->
 
     <sect2>
-      <title>The Layout Sub-Menu</title>
-
-      <para>This provides control of layout of items on class diagrams 
-      <!-- TODO: Huh? I think that is not what it does, 
-      because you can adjust that in the Import sources dialog -->
-      <!--during  reverse engineering (see
-        <xref linkend="s3.ref.menu_import_sources"/>)-->. 
-        It provides two options.
+      <title>Layout</title>
+          <!-- TODO: That is not a well chosen title. 
+          Because it acts as a "Arrange diagram" function, 
+          i.e. when activated, this menuitem simply rearranges 
+          everything on the current diagram. 
+          Maybe rename "Layout" into "Auto Arrange Diagram" 
+          and both items named after the algorithm.
+          I do not know the names for the algorithms yet...
+          See issue 2480. -->
+          
+      <para>This sub-menu provides automatic diagram layout functions,
+        i.e. when activating this menu-item, all items on class diagrams are
+        rearranged according a certain layout algorithm.
+        Currently, it provides two arranging algorithmes:
       </para>
 
       <itemizedlist>
         <listitem>
           <para><literal>Automatic</literal>. Automated layout.
-          <!-- TODO: That is not a well chosen title. 
-          Because it acts as a "Arrange diagram" function, 
-          i.e. when activated, this menuitem simply rearranges 
-          everything on the current diagram. See issue ... -->
+          <!-- TODO: A description of the algorithm here would be nice... -->
           </para>
           <caution><para>For all except class diagrams, this menu entry is
             grayed out and unavailable. So the utility of
@@ -2355,7 +2339,7 @@ the editing pane.</para>
         <listitem>
           <para><literal>Incremental</literal>. Incremental layout.
           </para>
-          <!-- TODO: What should this menu-item do? -->
+          <!-- TODO: A description of the algorithm here would be nice... -->
           <warning><para>In V0.14 of &argouml;, this menu entry is always
             grayed out and unavailable.</para></warning>
         </listitem>
@@ -3298,7 +3282,7 @@ The original
     </para>
 
     <sect2>
-      <title>Export as XMI</title>
+      <title>Export as XMI&hellip;</title>
       <para>
         This menu-item allows to save the complete structure of the UML model as
         a XMI file, according the XMI V1.0 standard. 
@@ -3314,7 +3298,7 @@ The original
       
       <figure id="fig.ref.menu_export_xmi" float="1">
         <title>The dialog for
-          <literal>Export&nbsp;XMI</literal>.</title>
+          <literal>Export&nbsp;XMI&hellip;</literal>.</title>
 
         <screenshot><mediaobject>
           <imageobject>
@@ -3374,7 +3358,7 @@ The original
     <!-- Information about Argo/UML -->
 
     <sect2 id="s2.ref.menu_help_about">
-      <title>About &argouml;&hellip;</title>
+      <title>About &argouml;</title>
 
       <para>This menu entry brings up the help window for &argouml; (see
         <xref linkend="fig.ref.menu_help"/>).</para>
