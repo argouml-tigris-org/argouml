@@ -49,37 +49,72 @@ public interface ArgoModule {
      */
     public static final Logger cat = 
 	Logger.getLogger("org.argouml.application.modules");
-    // TODO:  JDK 1.2 seems to not return the package name if
-    // not running from a jar.
-    //
-    // public final static Logger cat = 
-    // Logger.getLogger(ModuleLoader.class.getPackage().getName());
-
 
     public static final String MODULEFILENAME = ".argo.modules";
     public static final String MODULEFILENAME_ALTERNATE = "argo.modules";
 
-    public boolean initializeModule(); // called when loading module
+    /** Method called when Argo is loading a module.
+     * 
+     * @return true if the module initialized properly.
+     */
+    public boolean initializeModule();
     
-    public boolean shutdownModule();   // called when the module is shutdown
+    /** Method called when Argo is unloading a module.
+     * 
+     * @return true if the module terminated properly.
+     */
+    public boolean shutdownModule();
 
-    public void setModuleEnabled(boolean tf);  // called to enable-disable
+    /** Called to enable or disable a module programmatically.
+     * 
+     * @param tf true to enable module, false to disable
+     */
+    public void setModuleEnabled(boolean tf);
     
+    /** Allows determination if a module is enabled or disabled
+     * 
+     * @return true if the module is enabled, otherwise false
+     */
     public boolean isModuleEnabled(); // determines if enabled-disabled
 
-    /** Display name of the module. */
+    /** Display name of the module.
+     *
+     * @return the module name
+     */
     public String getModuleName();
 
-    /** Textual description of the module. */
+    /** Textual description of the module.
+     * 
+     * @return the module description
+     */
     public String getModuleDescription(); 
 
+    /** The module version.
+     * 
+     * There is no specified format.
+     * 
+     * @return a string containing the module version
+     */
     public String getModuleVersion(); 
     
+    /** The module author.
+     * 
+     * @return a string containing the module author
+     */
     public String getModuleAuthor(); 
     
-    // calls all modules to let them add to a popup menu
+    /** calls all modules to let them add to a popup menu
+     * 
+     * @param popUpActions Vector of actions
+     * @param context which the actions are valid for
+     * @return
+     */
     public Vector getModulePopUpActions(Vector popUpActions, Object context);
 
+    /** The module identifying key
+     * 
+     * @return the string key the module uses to identify itself
+     */
     public String getModuleKey();
 }
 
