@@ -688,15 +688,10 @@ public class Critic implements Poster, Serializable {
    * @see Critic#canFixIt */
   public void fixIt(ToDoItem item, Object arg) { }
 
-  /** Reply a string that describes this Critic. Mainly useful for
-   *  debugging. */
+  /** Reply a string that describes this Critic. Identical to getCriticName() 
+   */
   public String toString() {
-    return this.getClass().getName() + "(" +
-      getCriticKey() + "," +
-      getCriticType() + "," +
-      getDecisionCategory() + "," +
-      getHeadline() + "," +
-      getPriority() + ")";
+      return getCriticName();
   }
 
 } /* end class Critic */
