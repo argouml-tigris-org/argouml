@@ -401,6 +401,22 @@ public class GeneratorPHP4
                 }
             }
 
+            if (iLanguageMajorVersion >= 5) {
+            	String sTypeHint = null;
+
+            	try {
+            	    sTypeHint = NameGenerator.generateClassifierName(
+                        Model.getFacade().getType(modelElement));
+                } catch (Exception exp) {
+                    LOG.error("Finding type hint FAILED: " + exp.getMessage());
+                } finally {
+	                if (sTypeHint != null && sTypeHint != "" && convertType(
+                        Model.getFacade().getType(modelElement)) == null) {
+	            	    sParameter += " - " + sTypeHint + " ";
+	                }
+                }
+            }
+
             sParameter += "$" + Model.getFacade().getName(modelElement);
 
             String sDefaultValue =
