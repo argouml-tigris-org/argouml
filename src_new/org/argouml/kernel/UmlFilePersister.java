@@ -35,8 +35,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.xml.argo.ArgoParser;
@@ -212,14 +210,12 @@ public class UmlFilePersister extends AbstractFilePersister {
                         new XmlInputStream(url.openStream(), "argo");
 
             ArgoParser parser = new ArgoParser();
-            parser.readProject(url, inputStream);
+            Project p = new Project(url);
+            parser.readProject(p, inputStream);
             inputStream.close();
             
             List memberList = parser.getMemberList();
-            Project p = parser.getProject();
             
-            parser.setProject(null); // clear up project refs
-
             LOG.info(memberList.size() + " members");
             
             HashMap instanceCountByType = new HashMap();
@@ -251,8 +247,6 @@ public class UmlFilePersister extends AbstractFilePersister {
                 instanceCount.increment();
                 instanceCountByType.put(type, instanceCount);
             }
-            
-        
             p.postLoad();
             return p;
         } catch (IOException e) {
@@ -260,9 +254,6 @@ public class UmlFilePersister extends AbstractFilePersister {
             throw new OpenException(e);
         } catch (SAXException e) {
             LOG.error("SAXException", e);
-            throw new OpenException(e);
-        } catch (ParserConfigurationException e) {
-            LOG.error("ParserConfigurationException", e);
             throw new OpenException(e);
         }
     }
