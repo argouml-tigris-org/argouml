@@ -1,7 +1,5 @@
-
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,14 +34,28 @@ import org.apache.log4j.Logger;
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.ModelFacade;
 
-/** @stereotype singleton
+/**
+ * @stereotype singleton
  */
 public class UUIDManager {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Create your own logger in
+     * your class instead. You should probably not inherit this class anyway.
+     */
     protected static Logger cat = Logger.getLogger(UUIDManager.class);
+
+    /**
+     * The logger.
+     */
+    private static Logger LOG = Logger.getLogger(UUIDManager.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
     
+    /**
+     * @deprecated by Linus Tolke as of 0.15.4. Use {@link #getInstance()} 
+     * instead.
+     */
     public static UUIDManager SINGLETON = new UUIDManager();
 
     protected static InetAddress _address = null; 
@@ -53,9 +65,10 @@ public class UUIDManager {
             _address = InetAddress.getLocalHost(); 
         }
 	catch (UnknownHostException e) {
-            cat.fatal("ERROR: unable to get localhost information.", e);
-            cat.fatal("On Unix systems this usually indicates that your /etc/hosts file is incorrectly setup.");
-            cat.fatal("Stopping execution of ArgoUML.");
+            LOG.fatal("ERROR: unable to get localhost information.", e);
+            LOG.fatal("On Unix systems this usually indicates that your "
+		      + "/etc/hosts file is incorrectly setup.");
+            LOG.fatal("Stopping execution of ArgoUML.");
             ArgoSecurityManager.getInstance().setAllowExit(true);
             System.exit(-1);
         }
@@ -64,8 +77,24 @@ public class UUIDManager {
     ////////////////////////////////////////////////////////////////
     // constructors
     
+    /**
+     * Constructor for the UUIDManager. This is private to make sure that 
+     * we are a proper singleton.
+     *
+     * @deprecated by Linus Tolke as of 0.15.4. Will be made private.
+     * Use the UUIDManager singleton instead.
+     */
     protected UUIDManager() { }
     
+    /**
+     * Return the UUIDManager.
+     *
+     * @return an UUIDManager
+     */
+    public UUIDManager getInstance() {
+	return SINGLETON;
+    }
+
     ////////////////////////////////////////////////////////////////
     // public methods
     
@@ -78,48 +107,67 @@ public class UUIDManager {
 		s += (new Byte(b[i])).longValue() + "-";
 	}
 	s += uid.toString();
-//	cat.debug("new UUID: " + s);
+//	LOG.debug("new UUID: " + s);
 	return s;
     }
 
+    /**
+     * @param model is the model that we operate on.
+     * @deprecated by Linus Tolke as of 0.15.4. I assume that the
+     * person that wrote the "temporary method" info message meant
+     * temporary method in the sense that it was implemented to
+     * temporarily solve a problem in the code and that it would
+     * eventually be removed when that problem was solved in some
+     * other way. By deprecating it I am moving this knowledge to
+     * compile time where it belongs, instead of having it in the log
+     * file at run time.<p>
+     *
+     * If this assumption is wrong, then please explain what temporary
+     * method means.
+     */
     public synchronized void createModelUUIDS(Object model) {
         
-        cat.info("NOTE: The temporary method 'createModelUUIDs' has been called.");
+        LOG.info("NOTE: The temporary method 'createModelUUIDs' "
+		 + "has been called.");
         
-        if(!ModelFacade.isANamespace(model))
+        if (!ModelFacade.isANamespace(model)) {
             throw new IllegalArgumentException();
+	}
         
         Collection ownedElements = ModelFacade.getOwnedElements(model);
 	Iterator oeIterator = ownedElements.iterator();
         
         String uuid = ModelFacade.getUUID(model);
-        if (uuid == null) ModelFacade.setUUID(model,getNewUUID());
+        if (uuid == null) {
+	    ModelFacade.setUUID(model, getNewUUID());
+	}
 
 	while (oeIterator.hasNext()) {
             Object me = oeIterator.next();
-            if (ModelFacade.isAModel(me) ||
-                // me instanceof MNamespace ||
-                ModelFacade.isAClassifier(me) ||
-                ModelFacade.isAFeature(me) ||
-                ModelFacade.isAStateVertex(me) ||
-		ModelFacade.isAStateMachine(me) ||
-                ModelFacade.isATransition(me) ||
-                ModelFacade.isACollaboration(me) ||
-		ModelFacade.isAMessage(me) ||
-                ModelFacade.isAAssociation(me) ||
-                ModelFacade.isAAssociationEnd(me) ||
-                ModelFacade.isAGeneralization(me) ||
-                ModelFacade.isADependency(me) ||
-                ModelFacade.isAStereotype(me) ||
-		ModelFacade.isAUseCase(me)) {
+            if (ModelFacade.isAModel(me)
+                || ModelFacade.isAClassifier(me)
+                || ModelFacade.isAFeature(me)
+                || ModelFacade.isAStateVertex(me)
+		|| ModelFacade.isAStateMachine(me)
+                || ModelFacade.isATransition(me)
+                || ModelFacade.isACollaboration(me)
+		|| ModelFacade.isAMessage(me)
+                || ModelFacade.isAAssociation(me)
+                || ModelFacade.isAAssociationEnd(me)
+                || ModelFacade.isAGeneralization(me)
+                || ModelFacade.isADependency(me)
+                || ModelFacade.isAStereotype(me)
+		|| ModelFacade.isAUseCase(me)) {
+
                 uuid = ModelFacade.getUUID(me);
                 if (uuid == null) {
-                    ModelFacade.setUUID(me,getNewUUID());
+                    ModelFacade.setUUID(me, getNewUUID());
                 }
+
             }
 	    //recursive handling of namespaces, needed for Collaborations
 	    if (ModelFacade.isANamespace(me)) {
-		cat.debug("Found another namespace: " + me);
+		LOG.debug("Found another namespace: " + me);
 		createModelUUIDS(me);
 	    }
         }
