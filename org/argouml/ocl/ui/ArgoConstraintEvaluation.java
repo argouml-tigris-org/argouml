@@ -1,3 +1,26 @@
+// Copyright (c) 1996-99 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.ocl.ui;
 
 import javax.swing.*;
@@ -141,37 +164,7 @@ public class ArgoConstraintEvaluation extends ConstraintEvaluation {
 
   protected String getEnteredConstraint()
   {
-//   TODO: was a call to super.getEnteredConstraint
-    return "context " + classifierName + "\n" + getConstraintName();
-  }
-
-  //    TODO:
-  //    This method should be eliminated when ocl-argo
-  //       is updated
-  //    Curt Arnold: 27 Nov 2000
-  private java.lang.reflect.Method _getConstraintName = null;
-  private boolean _attemptedReflection = false;
-  public String getConstraintName() {
-    String name = "unknownName";
-    if(!_attemptedReflection) {
-        _attemptedReflection = true;
-        try {
-            _getConstraintName = ConstraintEvaluation.class.getMethod("getConstraintName",new Class[] {});
-        }
-        catch(Exception ex) {
-            System.out.println("Needs updated ocl-argo.jar");
-            ex.printStackTrace();
-        }
-    }
-    if(_getConstraintName != null) {
-        try {
-            name = (String) _getConstraintName.invoke(this,new Object[] {});
-        }
-        catch(Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-    return name;
+    return "context " + classifierName + "\n" + super.getEnteredConstraint();
   }
 
   protected void doCopyTreeToText() {
@@ -224,5 +217,5 @@ public class ArgoConstraintEvaluation extends ConstraintEvaluation {
       dialog.dispose();
     }
   }
-
 }
+

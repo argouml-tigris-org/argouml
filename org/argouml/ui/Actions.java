@@ -57,7 +57,11 @@ import org.argouml.persistence.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.cognitive.critics.ui.*;
-import org.argouml.ocl.*;
+
+//
+//   Template reader, has nothing to do with OCL
+//
+import org.tigris.gef.ocl.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.ui.*;

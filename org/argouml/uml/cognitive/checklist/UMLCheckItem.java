@@ -31,7 +31,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import org.tigris.gef.util.*;
 
 import org.argouml.cognitive.checklist.*;
-import org.argouml.ocl.OCLEvaluator;
+import org.tigris.gef.ocl.OCLEvaluator;
 
 /** A special kind of CheckItem that can replace OCL expressions with
  *  their values in the generated advice.
