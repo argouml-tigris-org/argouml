@@ -371,8 +371,7 @@ extends DisplayTextTree
             if(!updatingSelection){
                 updatingSelection = true;
                 
-                if (targets == null
-                || (targets.length == 1 && targets[0] == null)) {
+                if (targets.length <= 0) {
                     clearSelection();
                 } else {
                     
