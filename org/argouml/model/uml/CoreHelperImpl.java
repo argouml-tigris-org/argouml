@@ -3165,8 +3165,20 @@ class CoreHelperImpl implements CoreHelper {
     }
 
     /**
-     * Sets the stereotype of some modelelement.<p>
+     * Sets the stereotype of some modelelement. The method also
+     * copies a stereotype that is not a part of the current model to
+     * the current model.<p>
      *
+     * TODO: Currently does not copy the stereotype, but changes the
+     * namespace to the new model (kidnapping it). That might possibly be
+     * dangerous, especially if more complex profile models are developed.
+     * This documentation should say what is supposed to be done. I think
+     * it would have been better if the caller had been responsible for the
+     * stereotype being in the right model and been adviced of
+     * eg ModelManagementHelper.getCorrespondingElement(...). Or if that had
+     * been used here. This function could possibly assert that the caller had
+     * got it right.
+     * 
      * TODO: For moving towards future version of UML we should instead
      * have addStereotype and removeStereotype.
      *
@@ -3177,7 +3189,23 @@ class CoreHelperImpl implements CoreHelper {
         if (handle instanceof MModelElement && 
                 (stereo instanceof MStereotype || stereo == null)) {
             
+            MModelElement me = (MModelElement) handle;
             MStereotype stereotype = (MStereotype) stereo;
+            
+            MStereotype existingStereotype = me.getStereotype();
+            
+            if (existingStereotype == null) {
+                LOG.info("About to give a stereotype to " + handle);
+            } else {
+                LOG.info("About to change stereotype on " + handle
+                        + " to <<" + existingStereotype.getName() + ">>");
+            }
+            
+            if (existingStereotype == stereotype) {
+                LOG.info("Stereotype is already set. Do nothing.");
+                return;
+            }
+            
             if (stereotype == null) {
                 LOG.info("Removing any stereotype on " + handle);
             } else {
@@ -3185,8 +3213,17 @@ class CoreHelperImpl implements CoreHelper {
                         + " to <<" + stereotype.getName() + ">>");
             }
             
-            MModelElement me = (MModelElement) handle;
-            me.setStereotype(stereotype);
+            // With this block in place save fails with an error
+            // With this block removed save appears to work but
+            // the save file does not record the stereotype
+            if (stereotype != null && me.getModel() != stereotype.getModel()) {
+                LOG.info("Changing the stereotype namespace from "
+                        + stereotype.getModel() + " to " + me.getModel());
+                stereotype.setNamespace(me.getModel());
+            }
+            if (existingStereotype != stereotype) {
+                me.setStereotype(stereotype);
+            }
             return;
         }
         throw new IllegalArgumentException("handle: " + handle
