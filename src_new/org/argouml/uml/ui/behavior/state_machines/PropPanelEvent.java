@@ -38,6 +38,7 @@ import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
 public abstract class PropPanelEvent extends PropPanelModelElement {
@@ -55,6 +56,10 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         ImageIcon icon,
         Orientation orientation) {
         super(name, icon, orientation);
+        initialize();
+    }
+
+    public void initialize() {
         JList paramList =
             new UMLLinkedList(new UMLEventParameterListModel());
         paramScroll = new JScrollPane(paramList);
@@ -72,6 +77,12 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
             Argo.localize("UMLMenu", "button.add-parameter"),
             "buttonAddParameter",
             null);
+
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+        addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceScroll());
+
+        addSeperator();
     }
 
     /**
