@@ -159,7 +159,7 @@ public class XmiFilePersister extends AbstractFilePersister {
      *
      * @see org.argouml.persistence.ProjectFilePersister#loadProject(java.net.URL)
      */
-    public Project loadProject(URL url) throws OpenException {
+    public Project doLoad(URL url) throws OpenException {
         try {
             Project p = new Project();
             XMIParser.getSingleton().readModels(p, url);

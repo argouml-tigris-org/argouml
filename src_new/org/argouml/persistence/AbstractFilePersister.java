@@ -29,6 +29,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 
 import javax.swing.filechooser.FileFilter;
 
@@ -218,4 +219,16 @@ public abstract class AbstractFilePersister extends FileFilter
      */
     protected abstract void doSave(Project project, File file)
         throws SaveException;
+    
+    /**
+     * @see org.argouml.persistence.ProjectFilePersister#loadProject(File)
+     */
+    public Project doLoad(File file) throws OpenException {
+        try {
+            return doLoad(file.toURL());
+        } catch (MalformedURLException e) {
+            LOG.error("MalformedURLException", e);
+            throw new OpenException(e);
+        }
+    }
 }
