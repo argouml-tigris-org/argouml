@@ -3567,12 +3567,11 @@ public class ParserDisplay extends Parser {
      *            the string to be parsed.
      */
     public void parseObject(Object/* MObject */obj, String s) {
-        // strip any trailing semi-colons
         s = s.trim();
-
         if (s.length() == 0) {
             return;
         }
+        // strip any trailing semi-colons
         if (s.charAt(s.length() - 1) == ';') {
             s = s.substring(0, s.length() - 2);
         }
@@ -3589,8 +3588,6 @@ public class ParserDisplay extends Parser {
             name = s;
         }
 
-        ModelFacade.setName(obj, name);
-
         ModelFacade.setClassifiers(obj, new Vector());
         if (baseTokens != null) {
             while (baseTokens.hasMoreElements()) {
@@ -3601,6 +3598,8 @@ public class ParserDisplay extends Parser {
                 ModelFacade.addClassifier(obj, type);
             }
         }
+        /* This updates the diagram - hence as last statement: */
+        ModelFacade.setName(obj, name); 
     }
 
     /**
