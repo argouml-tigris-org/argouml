@@ -29,18 +29,30 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggablePropertyPanel;
 
 import org.argouml.swingext.Orientation;
-import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.foundation.core.PropPanelNamespace;
+import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.*;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.model_management.MPackageImpl;
+
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
 
 /** PropPanelPackage defines the Property Panel for MPackage elements.
  */
 public class PropPanelPackage extends PropPanelNamespace implements PluggablePropertyPanel {
 
+    protected JPanel _modifiersPanel = new JPanel();
     protected PropPanelButton _stereotypeButton;
+    protected JScrollPane _generalizationScroll;
+    protected JScrollPane _specializationScroll;
+
+     private static UMLGeneralizableElementGeneralizationListModel generalizationListModel =
+        new UMLGeneralizableElementGeneralizationListModel();
+    private static UMLGeneralizableElementSpecializationListModel specializationListModel =
+        new UMLGeneralizableElementSpecializationListModel();
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -91,13 +103,48 @@ public class PropPanelPackage extends PropPanelNamespace implements PluggablePro
         addField(Argo.localize("UMLMenu", "label.visibility"), getNamespaceVisibilityPanel());
 
         // TODO: facilitate importedElements.
-        // TODO: facilitate the fact that Package is a generalizable element.
+        
+        _modifiersPanel.add(
+                            new UMLGeneralizableElementAbstractCheckBox());
+        _modifiersPanel.add(
+                            new UMLGeneralizableElementLeafCheckBox());
+        _modifiersPanel.add(
+                            new UMLGeneralizableElementRootCheckBox());
+        
+        addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
         addSeperator();
-
+        addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+        addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+        addSeperator();
         addField(Argo.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
 
         new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-package"), "removeElement", "isRemovableElement");
     }
+
+     /**
+     * Returns the generalizationScroll.
+     * @return JScrollPane
+     */
+    public JScrollPane getGeneralizationScroll() {
+        if (_generalizationScroll == null) {
+            JList list = new UMLLinkedList(generalizationListModel);
+            _generalizationScroll = new JScrollPane(list);
+        }
+        return _generalizationScroll;
+    }
+
+    /**
+     * Returns the specializationScroll.
+     * @return JScrollPane
+     */
+    public JScrollPane getSpecializationScroll() {
+        if (_specializationScroll == null) {
+            JList list = new UMLLinkedList(specializationListModel);
+            _specializationScroll = new JScrollPane(list);
+        }
+        return _specializationScroll;
+    }
+
 
 } /* end class PropPanelPackage */
