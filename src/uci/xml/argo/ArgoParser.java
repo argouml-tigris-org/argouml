@@ -23,21 +23,15 @@
 
 package uci.xml.argo;
 
+import uci.uml.ui.Project;
+import uci.xml.SAXParserBase;
+import uci.xml.XMLElement;
+
 import java.util.*;
 import java.io.*;
-import java.beans.*;
 import java.net.URL;
 
-import uci.uml.ui.Project;
-import uci.xml.pgml.PGMLParser;
-import uci.xml.*;
-import uci.gef.Diagram;
-import uci.uml.Model_Management.*;
-
-import com.ibm.xml.parser.*;
-import org.w3c.dom.*;
-
-public class ArgoParser implements TagHandler {
+public class ArgoParser extends SAXParserBase {
 
   ////////////////////////////////////////////////////////////////
   // static variables
@@ -47,12 +41,14 @@ public class ArgoParser implements TagHandler {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  protected Project _proj = null;
+  protected Project        _proj   = null;
+  
+  private   ArgoTokenTable _tokens = new ArgoTokenTable();
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  protected ArgoParser() { }
+  protected ArgoParser() { super(); }
 
   ////////////////////////////////////////////////////////////////
   // main parsing methods
@@ -62,19 +58,10 @@ public class ArgoParser implements TagHandler {
 
   public synchronized void readProject(URL url) {
     try {
-      InputStream is = url.openStream();
-      String filename = url.getFile();
       System.out.println("=======================================");
       System.out.println("== READING PROJECT: " + url);
-      Parser pc = new Parser(filename);
-      pc.setTagHandler(this);
-      pc.getEntityHandler().setEntityResolver(DTDEntityResolver.SINGLETON);
-      //pc.setProcessExternalDTD(false);
       _proj = new Project(url);
-      //_proj.setPathname(pathname);
-      // needs-more-work: predefined types now defined twice
-      pc.readStream(is);
-      is.close();
+      parse(url);
     }
     catch (Exception ex) {
       System.out.println("Exception reading project================");
@@ -84,82 +71,79 @@ public class ArgoParser implements TagHandler {
 
   public Project getProject() { return _proj; }
 
-  public void handleStartTag(TXElement e, boolean empty) {
-    String n = e.getTagName();
-    try {
-      if (n.equals("argo")) handleArgo(e);
-      else if (n.equals("documentation")) handleDocumentation(e);
-    }
-    catch (Exception ex) {
-      System.out.println("Exception!");
-      ex.printStackTrace();
-    }
+  public void handleStartElement(XMLElement e) {
+        if (_dbg) System.out.println("NOTE: ArgoParser handleStartTag:" + e.getName());
+        try {
+            switch (_tokens.toToken(e.getName(), true)) {
+                case _tokens.TOKEN_argo: handleArgo(e); break;
+                case _tokens.TOKEN_documentation: handleDocumentation(e); break;
+                default: if (_dbg) 
+                           System.out.println("WARNING: unknown tag:" + e.getName());  break;
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
   }
 
 
-  public void handleEndTag(TXElement e, boolean empty) {
-    String n = e.getTagName();
-    try {
-      if (n.equals("authorname")) handleAuthorname(e);
-      else if (n.equals("version")) handleVersion(e);
-      else if (n.equals("description")) handleDescription(e);
-      else if (n.equals("searchpath")) handleSearchpath(e);
-      else if (n.equals("member")) handleMember(e);
-      else if (n.equals("historyfile")) handleHistoryfile(e);
-      else if (n.equals("stat")) handleStat(e);
-    }
-    catch (Exception ex) {
-      System.out.println("Exception!");
-      ex.printStackTrace();
-    }
+  public void handleEndElement(XMLElement e) {
+        if (_dbg) System.out.println("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
+        try {
+            switch (_tokens.toToken(e.getName(), false)) {
+                case _tokens.TOKEN_authorname : handleAuthorname(e); break;
+                case _tokens.TOKEN_version : handleVersion(e); break;
+                case _tokens.TOKEN_description : handleDescription(e); break;
+                case _tokens.TOKEN_searchpath : handleSearchpath(e); break;
+                case _tokens.TOKEN_member : handleMember(e); break;
+                case _tokens.TOKEN_historyfile : handleHistoryfile(e); break;
+                default : if (_dbg) 
+                    System.out.println("WARNING: unknown end tag:" + e.getName()); break;
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
   }
 
-  protected void handleArgo(TXElement e) {
+  protected void handleArgo(XMLElement e) {
     /* do nothing */
   }
 
-  protected void handleDocumentation(TXElement e) {
+  protected void handleDocumentation(XMLElement e) {
     /* do nothing */
   }
 
 
-  protected void handleAuthorname(TXElement e) {
+  protected void handleAuthorname(XMLElement e) {
     String authorname = e.getText().trim();
     _proj._authorname = authorname;
   }
 
-  protected void handleVersion(TXElement e) {
+  protected void handleVersion(XMLElement e) {
     String version = e.getText().trim();
     _proj._version = version;
   }
 
-  protected void handleDescription(TXElement e) {
+  protected void handleDescription(XMLElement e) {
     String description = e.getText().trim();
     _proj._description = description;
   }
 
-  protected void handleSearchpath(TXElement e) {
+  protected void handleSearchpath(XMLElement e) {
     String searchpath = e.getAttribute("href").trim();
     _proj.addSearchPath(searchpath);
   }
 
-  protected void handleMember(TXElement e) {
+  protected void handleMember(XMLElement e) {
     String name = e.getAttribute("name").trim();
     String type = e.getAttribute("type").trim();
     _proj.addMember(name, type);
   }
 
-  protected void handleHistoryfile(TXElement e) {
+  protected void handleHistoryfile(XMLElement e) {
     String historyfile = e.getAttribute("name").trim();
     _proj._historyFile = historyfile;
-  }
-
-  protected void handleStat(TXElement e) {
-    String name = e.getAttribute("name").trim();
-    String valueString = e.getAttribute("value").trim();
-    int val = Integer.parseInt(valueString);
-    //UsageStatistic us = new UsageStatistic(name, val);
-    _proj.setStat(name, val);
   }
 
 } /* end class ArgoParser */
