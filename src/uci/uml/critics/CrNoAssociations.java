@@ -72,7 +72,7 @@ public class CrNoAssociations extends CrUML {
 
   private Collection getInheritedAssociationEnds(MClassifier cls)
   {
-     Collection res = cls.getAssociationEnds();
+     Vector res = new Vector(cls.getAssociationEnds());
      Collection inh = cls.getGeneralizations();
      for (Iterator iter = inh.iterator(); iter.hasNext();) {
        MGeneralization gen = (MGeneralization)iter.next();
