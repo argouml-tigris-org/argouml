@@ -55,8 +55,8 @@ public class TestExtensionMechanismsHelper extends TestCase {
         MStereotype stereo1 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test1", ns);
         MStereotype stereo2 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test2", ns);
         Collection col = ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(clazz);
-        assert("stereotype not in list of possible stereotypes", col.contains(stereo1));
-        assert("stereotype not in list of possible stereotypes", col.contains(stereo2));
+        assertTrue("stereotype not in list of possible stereotypes", col.contains(stereo1));
+        assertTrue("stereotype not in list of possible stereotypes", col.contains(stereo2));
     }
     
     public void testGetAllPossibleStereotypes2() {
@@ -66,8 +66,8 @@ public class TestExtensionMechanismsHelper extends TestCase {
         MStereotype stereo1 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test1", ns);
         MStereotype stereo2 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test2", ns2);
         Collection col = ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(clazz);
-        assert("stereotype not in list of possible stereotypes", col.contains(stereo1));
-        assert("stereotype not in list of possible stereotypes", !col.contains(stereo2));
+        assertTrue("stereotype not in list of possible stereotypes", col.contains(stereo1));
+        assertTrue("stereotype not in list of possible stereotypes", !col.contains(stereo2));
     }
     
     public void testGetMetaModelName() {

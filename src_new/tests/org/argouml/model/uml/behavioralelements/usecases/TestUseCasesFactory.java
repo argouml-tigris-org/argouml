@@ -80,7 +80,7 @@ public class TestUseCasesFactory extends TestCase {
 
 	Object o2 = UseCasesFactory.getFactory();
 
-	assert("Different singletons", o1 == o2);
+	assertTrue("Different singletons", o1 == o2);
 
     }
 
@@ -125,10 +125,10 @@ public class TestUseCasesFactory extends TestCase {
         MUseCase extension = UseCasesFactory.getFactory().createUseCase();
         MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(base);
         MExtend extend = UseCasesFactory.getFactory().buildExtend(base, extension, point);
-        assert("extensionpoint not added to base", !base.getExtensionPoints().isEmpty());
-        assert("extend not added to base", !base.getExtends2().isEmpty());
-        assert("extend not added to extension", !extension.getExtends().isEmpty());
-        assert("extend not added to correct extensionpoint", 
+        assertTrue("extensionpoint not added to base", !base.getExtensionPoints().isEmpty());
+        assertTrue("extend not added to base", !base.getExtends2().isEmpty());
+        assertTrue("extend not added to extension", !extension.getExtends().isEmpty());
+        assertTrue("extend not added to correct extensionpoint", 
             extend.getExtensionPoints().contains(point) && 
                 extend.getExtensionPoints().size() == 1);
     }

@@ -71,7 +71,7 @@ public class TestExtensionMechanismsFactory extends TestCase {
 
 	Object o2 = ExtensionMechanismsFactory.getFactory();
 
-	assert("Different singletons", o1 == o2);
+	assertTrue("Different singletons", o1 == o2);
 
     }
 

@@ -92,7 +92,7 @@ public class TestCommonBehaviorFactory extends TestCase {
 
 	Object o2 = CommonBehaviorFactory.getFactory();
 
-	assert("Different singletons", o1 == o2);
+	assertTrue("Different singletons", o1 == o2);
 
     }
 
