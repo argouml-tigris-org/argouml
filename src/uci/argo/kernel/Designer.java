@@ -71,7 +71,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   private Agency _agency;
 
   private Thread _critiquer;
-  private int _critiquingInterval = 3000;
+  private int _critiquingInterval = 8000;
   private boolean _autoCritique = true;
 
   private ChildGenerator _cg = new ChildGenDMElements();
@@ -144,6 +144,7 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
       catch (InterruptedException ignore) {
         System.out.println("InterruptedException!!!");
       }
+      System.gc();
     }
   }
 
