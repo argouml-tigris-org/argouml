@@ -65,7 +65,7 @@ import org.tigris.gef.presentation.FigNode;
 public class UseCaseDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
     private static final Logger LOG =
-	Logger.getLogger(UseCaseDiagramRenderer.class);
+        Logger.getLogger(UseCaseDiagramRenderer.class);
 
 
     /**
@@ -240,7 +240,7 @@ public class UseCaseDiagramRenderer
         // model maybe they should be, just as an implementation issue, dont
         // remove any of the methods that are there now.
 
-        LOG.debug(this.getClass().toString()
+        LOG.error(this.getClass().toString()
 		  + ": getFigEdgeFor(" + gm.toString() + ", "
 		  + lay.toString() + ", " + edge.toString()
 		  + ") - needs more work to handle this sort of edge");

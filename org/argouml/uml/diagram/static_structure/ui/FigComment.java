@@ -158,53 +158,53 @@ public class FigComment
         setOwner(node);
     }
 
-    /**
-     * Create a note for a given model element.
-     * @deprecated as of 0.17.1 nobody should use this constructor since
-     * it not only constructs the fig but also the model behind it.
-     * That should not be done by a fig which is only a view to the model
-     * @param element The annotated model element.
-     */
-    public FigComment(Object element) {
-        this(); // Construct the figure.
-
-        if (!ModelFacade.isAModelElement(element)) {
-            throw new IllegalArgumentException();
-        }
-
-	// Create a new Comment node.
-        Object comment =
-	    Model.getCoreFactory().createComment();
-        setOwner(comment); // Set it as the owner of the figure.
-	// Tell the annotated element, that it has a comment now.
-        Model.getCoreHelper().addComment(element, comment);
-
-        // Notes in statechart diagrams need a special treatment, cause
-        // the nodes in them don't necessary have a namespace, where
-        // we could add the note. So I added this hack... :-(
-        // Andreas Rueckert <a_rueckert@gmx.net>
-        if (ModelFacade.isAStateVertex(element)) {
-
-	    // If the current target is a statechart diagram, we have to
-	    // check, if we are editing the diagram.
-            ProjectBrowser pb = ProjectBrowser.getInstance();
-            if (TargetManager.getInstance().getTarget()
-                    instanceof UMLStateDiagram) {
-                StateDiagramGraphModel gm =
-		    (StateDiagramGraphModel)
-		    (((UMLStateDiagram) TargetManager.getInstance()
-		            .getTarget()).getGraphModel());
-		// We are editing, so we set the Namespace directly.
-                Model.getCoreHelper().setNamespace(comment, gm.getNamespace());
-            }
-        } else {
-	    // Add the comment to the same namespace as the annotated element.
-            Model.getCoreHelper().setNamespace(comment,
-                    ModelFacade.getNamespace(element));
-        }
-
-        storeNote(placeString()); // Set the default text for this figure type.
-    }
+//    /**
+//     * Create a note for a given model element.
+//     * @deprecated as of 0.17.1 nobody should use this constructor since
+//     * it not only constructs the fig but also the model behind it.
+//     * That should not be done by a fig which is only a view to the model
+//     * @param element The annotated model element.
+//     */
+//    public FigComment(Object element) {
+//        this(); // Construct the figure.
+//
+//        if (!ModelFacade.isAModelElement(element)) {
+//            throw new IllegalArgumentException();
+//        }
+//
+//	// Create a new Comment node.
+//        Object comment =
+//	    Model.getCoreFactory().createComment();
+//        setOwner(comment); // Set it as the owner of the figure.
+//	// Tell the annotated element, that it has a comment now.
+//        Model.getCoreHelper().addComment(element, comment);
+//
+//        // Notes in statechart diagrams need a special treatment, cause
+//        // the nodes in them don't necessary have a namespace, where
+//        // we could add the note. So I added this hack... :-(
+//        // Andreas Rueckert <a_rueckert@gmx.net>
+//        if (ModelFacade.isAStateVertex(element)) {
+//
+//	    // If the current target is a statechart diagram, we have to
+//	    // check, if we are editing the diagram.
+//            ProjectBrowser pb = ProjectBrowser.getInstance();
+//            if (TargetManager.getInstance().getTarget()
+//                    instanceof UMLStateDiagram) {
+//                StateDiagramGraphModel gm =
+//		    (StateDiagramGraphModel)
+//		    (((UMLStateDiagram) TargetManager.getInstance()
+//		            .getTarget()).getGraphModel());
+//		// We are editing, so we set the Namespace directly.
+//                Model.getCoreHelper().setNamespace(comment, gm.getNamespace());
+//            }
+//        } else {
+//	    // Add the comment to the same namespace as the annotated element.
+//            Model.getCoreHelper().setNamespace(comment,
+//                    ModelFacade.getNamespace(element));
+//        }
+//
+//        storeNote(placeString()); // Set the default text for this figure type.
+//    }
 
     /**
      * Get the default text for this figure.

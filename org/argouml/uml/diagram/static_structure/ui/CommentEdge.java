@@ -24,9 +24,11 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.UUIDManager;
+import org.argouml.uml.diagram.use_case.ui.UseCaseDiagramRenderer;
 
 
 /**
@@ -44,6 +46,9 @@ public class CommentEdge {
     private Object dest;
     private Object uuid;
 
+    private static final Logger LOG =
+        Logger.getLogger(UseCaseDiagramRenderer.class);
+    
     /**
      * Constructor.
      *
@@ -51,6 +56,7 @@ public class CommentEdge {
      * @param d the destination
      */
     public CommentEdge(Object s, Object d) {
+        LOG.debug("Creating a CommentEdge");
         source = s;
         dest = d;
         uuid = UUIDManager.getInstance().getNewUUID();

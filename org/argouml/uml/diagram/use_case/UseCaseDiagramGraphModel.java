@@ -35,6 +35,7 @@ import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 /**
  * This class defines a bridge between the UML meta-model
@@ -235,13 +236,15 @@ public class UseCaseDiagramGraphModel
      */
     public Object getSourcePort(Object edge) {
 
-        if (ModelFacade.isARelationship(edge)) {
+        if (edge instanceof CommentEdge) {
+            return ((CommentEdge) edge).getSource();
+        } else if (ModelFacade.isARelationship(edge)) {
             return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
-	}
+        }
 
         // Don't know what to do otherwise
 
-        LOG.debug(this.getClass().toString() + ": getSourcePort("
+        LOG.error(this.getClass().toString() + ": getSourcePort("
 		  + edge.toString() + ") - can't handle");
 
         return null;
@@ -266,7 +269,9 @@ public class UseCaseDiagramGraphModel
 
         // Know what to do for an association
 
-        if (ModelFacade.isAAssociation(edge)) {
+        if (edge instanceof CommentEdge) {
+            return ((CommentEdge) edge).getDestination();
+        } else if (ModelFacade.isAAssociation(edge)) {
             Object assoc = /*(MAssociation)*/ edge;
             Vector       conns = new Vector(ModelFacade.getConnections(assoc));
 
@@ -275,7 +280,7 @@ public class UseCaseDiagramGraphModel
 
         // Don't know what to do otherwise
 
-        LOG.debug(this.getClass().toString() + ": getDestPort("
+        LOG.error(this.getClass().toString() + ": getDestPort("
 		  + edge.toString() + ") - can't handle");
 
         return null;
@@ -398,22 +403,18 @@ public class UseCaseDiagramGraphModel
 
             end0 = (clients.toArray())[0];
             end1 = (suppliers.toArray())[0];
+        } else if (edge instanceof CommentEdge) {
+            end0 = ((CommentEdge) edge).getSource();
+            end1 = ((CommentEdge) edge).getDestination();
         }
 
         // Both ends must be defined and nodes that are on the graph already.
 
-        if ((end0 == null)
-	    || (end1 == null)
-	    || (!(containsNode(end0)))
-	    || (!(containsNode(end1)))) {
-
+        if (end0 == null || end1 == null) {
             return false;
-
         }
 
-        // AOK
-
-        return true;
+        return (containsNode(end0) && containsNode(end1));
     }
 
 
@@ -492,15 +493,33 @@ public class UseCaseDiagramGraphModel
      * @param edge  The edge to be added to the graph.
      */
     public void addEdge(Object edge) {
-        LOG.debug("adding class edge!!!!!!");
-        if (!canAddEdge(edge)) return;
+        if (edge == null) {
+            throw new IllegalArgumentException("Cannot add a null edge");
+        }
+
+        if (getDestPort(edge) == null || getSourcePort(edge) == null) {
+            throw new IllegalArgumentException(
+                    "The source and dest port should be provided on an edge");
+        }
+        
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Adding an edge of type "
+                   + edge.getClass().getName()
+                   + " to use case diagram.");
+        }
+
+        if (!canAddEdge(edge)) {
+            LOG.info("Attempt to add edge rejected");
+            return;
+        }
 
         // Add the element and place it in the namespace of the model
         getEdges().add(edge);
 
+        // TODO: assumes public
         if (ModelFacade.isAModelElement(edge)
                 && ModelFacade.getNamespace(edge) == null) {
-            Model.getCoreHelper().addOwnedElement(model, /*(MModelElement)*/ edge);
+            Model.getCoreHelper().addOwnedElement(model, edge);
         }
 
         // Tell GEF
