@@ -23,14 +23,8 @@
 
 package org.argouml.ui;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -44,7 +38,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.ui.ArgoDialog;
 
 /** The email expert dialog does not work and is in
  * desperate need of some attention.
@@ -86,10 +79,8 @@ public class EmailExpertDialog extends ArgoDialog {
 
     public EmailExpertDialog() {
         super(ProjectBrowser.getInstance(), "Send Email to an Expert", true);
-    }
-
-    protected JPanel addComponents() {
-        _okButton.setText("Send");
+        
+        getOkButton().setText("Send");
         
         _to = new JTextField(30);
         _cc = new JTextField(30);
@@ -118,7 +109,8 @@ public class EmailExpertDialog extends ArgoDialog {
         bodyScroller.setPreferredSize(new Dimension(100,50));
         panel.add(bodyScroller);
         
-        return panel;
+        setContent(panel);
+        setButtons(new JButton[] { getOkButton(), getCancelButton() }, getOkButton());
     }
     
   public void setTarget(Object t) {
@@ -131,19 +123,16 @@ public class EmailExpertDialog extends ArgoDialog {
   ////////////////////////////////////////////////////////////////
   // event handlers
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == _okButton) {
-      Designer dsgr = Designer.TheDesigner;
-      String to = _to.getText();
-      String cc = _cc.getText();
-      String subject = _subject.getText();
-      cat.debug("sending email!");
-      setVisible(false);
-      dispose();
-    }
-    if (e.getSource() == _cancelButton) {
-      cat.debug("cancel");
-      setVisible(false);
-      dispose();
-    }
-  }
+      super.actionPerformed(e);   
+      if (e.getSource() == getOkButton()) {
+          Designer dsgr = Designer.TheDesigner;
+          String to = _to.getText();
+          String cc = _cc.getText();
+          String subject = _subject.getText();
+          cat.debug("sending email!");
+      }
+      else if (e.getSource() == getCancelButton()) {
+        cat.debug("cancel");
+      }
+  }  
 } /* end class EmailExpertDialog */
