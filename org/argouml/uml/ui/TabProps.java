@@ -40,6 +40,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.ui.*;
@@ -330,6 +331,6 @@ class InitPanelsLater implements Runnable {
 	}
     }
 
-    System.out.println("done preloading Property Panels");
+    Argo.log.info("done preloading Property Panels");
   }
 } /* end class InitPanelsLater */

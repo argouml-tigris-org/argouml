@@ -23,6 +23,7 @@
 
 package org.argouml.xml;
 
+import org.argouml.application.api.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 import java.util.Stack;
@@ -99,7 +100,7 @@ public abstract class SAXParserBase extends HandlerBase {
       end = System.currentTimeMillis();
       _parseTime = end - start;
       if (_stats) {
-	System.out.println("Elapsed time: " + (end - start) + " ms");
+	Argo.log.info("Elapsed time: " + (end - start) + " ms");
       }
     } 
     catch(SAXException saxEx) {

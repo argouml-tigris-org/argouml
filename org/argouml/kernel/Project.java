@@ -41,6 +41,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.util.*;
 
+import org.argouml.application.api.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.cognitive.critics.*;
@@ -116,7 +117,7 @@ public class Project implements java.io.Serializable {
   }
 
   public Project (MModel model) {
-    System.out.println("making empty project with model: "+model.getName());
+    Argo.log.info("making empty project with model: "+model.getName());
     _saveRegistry = new UMLChangeRegistry();
 
     defineType(JavaUML.VOID_TYPE);     //J.101
@@ -234,7 +235,7 @@ public class Project implements java.io.Serializable {
 		name = zis.getNextEntry().getName();
 	    }
 
-	    System.out.println("Loading Model from "+url);
+	    Argo.log.info("Loading Model from "+url);
 
 	    XMIReader xmiReader = new XMIReader();
 	    MModel mmodel = xmiReader.parse(new InputSource(zis));
@@ -253,13 +254,13 @@ public class Project implements java.io.Serializable {
 	    ZipEntry currentEntry = null;
 	    while ( (currentEntry = sub.getNextEntry()) != null) {
 		if (currentEntry.getName().endsWith(".pgml")) {
-		    System.out.println("Now going to load "+currentEntry.getName()+" from ZipInputStream");
+		    Argo.log.info("Now going to load "+currentEntry.getName()+" from ZipInputStream");
 
 		    // "false" means the stream shall not be closed, but it doesn't seem to matter...
 		    ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(sub,false);
 		    addMember(d);
 		    // sub.closeEntry();
-		    System.out.println("Finished loading "+currentEntry.getName());
+		    Argo.log.info("Finished loading "+currentEntry.getName());
 		}
 	    }
 	    zis.close();
@@ -272,7 +273,7 @@ public class Project implements java.io.Serializable {
     }
 
   public static Project makeEmptyProject() {
-    System.out.println("making empty project");
+    Argo.log.info("making empty project");
     Project p = new Project();
 
     p.defineType(JavaUML.VOID_TYPE);     //J.101
@@ -624,7 +625,7 @@ public class Project implements java.io.Serializable {
 	for (int i = 0; i < size; i++) {
 	    ProjectMember p = (ProjectMember) _members.elementAt(i);
 	    if (!(p.getType().equalsIgnoreCase("xmi"))){
-		System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+		Argo.log.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
 		zos.putNextEntry(new ZipEntry(p.getName()));
 		p.save(path,overwrite,writer);
 		writer.flush();
@@ -635,7 +636,7 @@ public class Project implements java.io.Serializable {
 	for (int i = 0; i < size; i++) {
 	    ProjectMember p = (ProjectMember) _members.elementAt(i);
 	    if (p.getType().equalsIgnoreCase("xmi")) {
-		System.out.println("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
+		Argo.log.info("Saving member of type: " + ((ProjectMember)_members.elementAt(i)).getType());
 		zos.putNextEntry(new ZipEntry(p.getName()));
 		p.save(path,overwrite,writer);
 	    }

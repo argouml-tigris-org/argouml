@@ -23,6 +23,7 @@
 
 package org.argouml.xml.argo;
 
+import org.argouml.application.api.*;
 import java.util.*;
 import java.io.*;
 import java.net.URL;
@@ -72,7 +73,7 @@ public class ArgoParser extends SAXParserBase {
       try{
 	  readProject(url.openStream(), addMembers);
       } catch (IOException e) {
-	  System.out.println("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
+	  Argo.log.info("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
 	  e.printStackTrace();
       }
   }
@@ -86,19 +87,19 @@ public class ArgoParser extends SAXParserBase {
       _addMembers = addMembers;
 
       if ((_url == null) && _addMembers) {
-	  System.out.println("URL not set! Won't be able to add members! Aborting...");
+	  Argo.log.info("URL not set! Won't be able to add members! Aborting...");
 	  return;
       }
 	  
 
     try {
-      System.out.println("=======================================");
-      System.out.println("== READING PROJECT "+_url);
+      Argo.log.info("=======================================");
+      Argo.log.info("== READING PROJECT "+_url);
       _proj = new Project(_url);
       parse(is);
     }
     catch(SAXException saxEx) {
-        System.out.println("Exception reading project================");
+        Argo.log.info("Exception reading project================");
         //
         //  a SAX exception could have been generated
         //    because of another exception.
@@ -113,7 +114,7 @@ public class ArgoParser extends SAXParserBase {
         }
     }
     catch (Exception ex) {
-      System.out.println("Exception reading project================");
+      Argo.log.info("Exception reading project================");
       ex.printStackTrace();
     }
   }
