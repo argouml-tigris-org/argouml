@@ -84,6 +84,7 @@ public class UMLAction extends AbstractAction {
         cat.debug("pushed " + getValue(Action.NAME));
         StatusBar sb = ProjectBrowser.getInstance().getStatusBar();
         sb.doFakeProgress(stripJunk(getValue(Action.NAME).toString()), 100);
+		// TODO Replace deprecated History with TargetManager
         History.TheHistory.addItemManipulation(
 					       "pushed " + getValue(Action.NAME),
 					       "",
