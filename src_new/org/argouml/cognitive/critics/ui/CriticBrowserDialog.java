@@ -34,6 +34,7 @@ import javax.swing.text.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.argouml.kernel.*;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
@@ -42,7 +43,7 @@ import org.tigris.gef.util.*;
 /** Dialog box to list all critics and allow editing of some of their
  *  properties.  Needs-More-Work: knowledge type, supported goals,
  *  supported decisions, critic network. */
-public class CriticBrowserDialog extends JFrame
+public class CriticBrowserDialog extends JDialog
 implements ActionListener, ListSelectionListener, ItemListener, DocumentListener {
   public static int _numCriticBrowser = 0;
 
@@ -90,7 +91,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   // constructors
 
   public CriticBrowserDialog() {
-    super("Critics");
+    super(ProjectBrowser.TheInstance, "Critics");
 
     Container mainContent = getContentPane();
 //     GridBagLayout gb = new GridBagLayout();

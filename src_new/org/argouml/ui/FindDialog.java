@@ -48,7 +48,7 @@ import org.argouml.uml.cognitive.*;
  *
  * The search is buggy and needs work.
  */
-public class FindDialog extends JFrame
+public class FindDialog extends JDialog
 implements ActionListener, MouseListener {
 
   ////////////////////////////////////////////////////////////////
@@ -85,7 +85,7 @@ implements ActionListener, MouseListener {
   // constructors
 
   public FindDialog() {
-    super("Search");
+    super(ProjectBrowser.TheInstance, "Search");
     getContentPane().setLayout(new BorderLayout());
 
 

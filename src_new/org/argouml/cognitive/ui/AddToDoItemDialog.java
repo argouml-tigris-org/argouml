@@ -32,8 +32,9 @@ import javax.swing.event.*;
 import org.tigris.gef.util.*;
 
 import org.argouml.cognitive.*;
+import org.argouml.ui.ProjectBrowser;
 
-public class AddToDoItemDialog extends JFrame implements ActionListener {
+public class AddToDoItemDialog extends JDialog implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -58,7 +59,7 @@ public class AddToDoItemDialog extends JFrame implements ActionListener {
   // constructors
 
   public AddToDoItemDialog() {
-    super("Add a ToDoItem");
+    super(ProjectBrowser.TheInstance, "Add a ToDoItem");
     JLabel headlineLabel = new JLabel("Headline:");
     JLabel priorityLabel = new JLabel("Priority:");
     JLabel moreInfoLabel = new JLabel("MoreInfoURL:");
