@@ -36,7 +36,7 @@ import org.argouml.util.*;
  *   @author Curt Arnold
  *   @since 0.9
  *   @see java.util.ResourceBundle
- *   @see UMLCognitiveResourceBundle_de
+ *   @see org.argouml.uml.cognitive.UMLCognitiveResourceBundle_de
  *   @see org.argouml.util.CheckResourceBundle
  *   @see org.argouml.uml.cognitive.critics.CrUML
  */

@@ -33,7 +33,7 @@ import org.tigris.gef.graph.*;
 /** This class holds the information about the saving state of the current project.
  *  The state is changed by every change made to its diagrams.
  *
- * @see Project
+ * @see org.argouml.kernel.Project
  */
 
 public class ChangeRegistry implements GraphListener

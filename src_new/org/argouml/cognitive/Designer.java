@@ -334,7 +334,7 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
    *  future the designer could specify a condition to determine when
    *  his items expire.
    * @see ToDoItem
-   * @see Critic#stillValid
+   * @see org.argouml.cognitive.critics.Critic#stillValid
    */
   public boolean stillValid(ToDoItem i, Designer d) { return true; }
 

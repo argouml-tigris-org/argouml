@@ -37,11 +37,11 @@ import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
 
-/** This class implments a list of ToDoItem's.  If desired it can also
- *  spwan a "sweeper" thread that periodically goes through the list
+/** This class implements a list of ToDoItem's.  If desired it can also
+ *  spawn a "sweeper" thread that periodically goes through the list
  *  and elimiates ToDoItem's that are no longer valid.
  *
- * @see jargo.ui.UiToDoList
+ * @see org.argouml.cognitive.ToDoList
  * @see Designer#nondisruptivelyWarn
  */
 

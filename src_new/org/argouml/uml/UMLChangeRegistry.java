@@ -35,7 +35,7 @@ import org.argouml.util.*;
 /** This class holds the information about the saving state of the current UML project.
  *  The state is changed by every change made either to the model or to its diagrams.
  *
- * @see Project
+ * @see org.argouml.kernel.Project
  * @see ChangeRegistry
  */
 

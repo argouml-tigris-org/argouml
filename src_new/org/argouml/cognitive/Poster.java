@@ -43,7 +43,7 @@ import org.tigris.gef.util.*;
  *
  *  Currently Critic and Designer implement this interface.
  *
- * @see Critic
+ * @see org.argouml.cognitive.critics.Critic
  * @see Designer */
 
 public interface Poster {

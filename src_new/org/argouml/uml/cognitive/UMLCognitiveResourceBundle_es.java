@@ -84,7 +84,7 @@ import org.argouml.util.*;
  *   @author Alejandro Ramirez
  *   @since 0.9
  *   @see java.util.ResourceBundle
- *   @see UMLCognitiveResourceBundle_en
+ *   @see org.argouml.uml.cognitive.UMLCognitiveResourceBundle
  *   @see org.argouml.util.CheckResourceBundle
  *   @see org.argouml.uml.cognitive.critics.CrUML
  */
