@@ -25,111 +25,151 @@ package org.argouml.uml.ui;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
-import org.tigris.gef.util.*;            
+import org.tigris.gef.util.*;
+
 import ru.novosoft.uml.foundation.core.*;
+
 import java.util.*;
 import java.awt.event.*;
+import java.text.MessageFormat;
+
 import javax.swing.*;
 
-
 public class ActionRemoveFromModel extends UMLChangeAction {
-
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
+  
+  ////////////////////////////////////////////////////////////////
+  // static variables
+  
+  public static ActionRemoveFromModel SINGLETON = new ActionRemoveFromModel();
+  
+  ////////////////////////////////////////////////////////////////
+  // constructors
+  
+  public ActionRemoveFromModel() {
+    super (
+        Localizer.localize ("CoreMenu", "Delete From Model"),
+        NO_ICON
+      );
+  }
+  
+  ////////////////////////////////////////////////////////////////
+  // main methods
+  
+  public boolean shouldBeEnabled() {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getDetailsTarget();
     
-    public static ActionRemoveFromModel SINGLETON = new ActionRemoveFromModel(); 
-
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    public ActionRemoveFromModel() { 
-	super( Localizer.localize("CoreMenu", "Delete From Model"), NO_ICON); 
+    if (target instanceof MModelElement) return true;
+    
+    int size = 0;
+    try {
+      // needs-more-work: trashing diagrams
+      Editor ce = Globals.curEditor();
+      Vector figs = ce.getSelectionManager().getFigs();
+      size = figs.size();
     }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Object target = pb.getDetailsTarget();
-	if (target instanceof MModelElement) return true;
-
-	int size = 0;
-	try {
-	    // needs-more-work: trashing diagrams
-	    Editor ce = Globals.curEditor();
-	    Vector figs = ce.getSelectionManager().getFigs();
-	    size = figs.size();
-	}
-	catch(Exception e) {}
-	if (size > 0) return true;
-	//     for (int i = 0; i < size; i++) {
-	//       Fig f = (Fig) figs.elementAt(i);
-	//       Object owner = f.getOwner();
-	//       if (owner instanceof MModelElement) return true;
-	//     }
-	return false;
+    catch(Exception e) {}
+    
+    if (size > 0) return true;
+    //     for (int i = 0; i < size; i++) {
+    //       Fig f = (Fig) figs.elementAt(i);
+    //       Object owner = f.getOwner();
+    //       if (owner instanceof MModelElement) return true;
+    //     }
+    
+    return false;
+  }
+  
+  public void actionPerformed (ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getDetailsTarget();
+    Project p = pb.getProject();
+    
+    if (target instanceof MModelElement) {
+      if (sureRemove ((MModelElement) target)) {
+        // System.out.println("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
+        p.moveToTrash (target);
+      }
     }
-    public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Object target = pb.getDetailsTarget();
-	Project p = pb.getProject();
-	if (target instanceof MModelElement) {
-	    if (sureRemove((MModelElement)target)) {
-		// System.out.println("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
-		p.moveToTrash(target);
-	    }
-	}
-
-	// needs-more-work: trashing diagrams
-	else {
-	    int size = 0;
-	    try {
-		Editor ce = Globals.curEditor();
-		Vector figs = ce.getSelectionManager().getFigs();
-		size = figs.size();
-		for (int i = 0; i < size; i++) {
-		    Fig f = (Fig) figs.elementAt(i);
-		    Object owner = f.getOwner();
-		    if (owner instanceof MModelElement) {
-			if (!sureRemove((MModelElement)owner)) return;
-		    }
-		}
-		for (int i = 0; i < size; i++) {
-		    Fig f = (Fig) figs.elementAt(i);
-		    Object owner = f.getOwner();
-		    if (owner == null) f.delete();
-		    else if (owner instanceof MModelElement) p.moveToTrash(owner);
-		}
-	    }
-	    catch(Exception ex) {}
-	}
-	super.actionPerformed(ae);
+    // needs-more-work: trashing diagrams
+    else {
+      int size = 0;
+      try {
+        Editor ce = Globals.curEditor();
+        Vector figs = ce.getSelectionManager().getFigs();
+        size = figs.size();
+        for (int i = 0; i < size; i++) {
+          Fig f = (Fig) figs.elementAt (i);
+          Object owner = f.getOwner();
+          if (owner instanceof MModelElement) {
+            if (! sureRemove ((MModelElement) owner)) return;
+          }
+        }
+        
+        for (int i = 0; i < size; i++) {
+          Fig f = (Fig) figs.elementAt (i);
+          Object owner = f.getOwner();
+          if (owner == null) f.delete();
+          else if (owner instanceof MModelElement) p.moveToTrash (owner);
+        }
+      }
+      catch(Exception ex) {}
     }
-
-    public boolean sureRemove(MModelElement me) {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
-	int count = p.getPresentationCountFor(me);
-	String confirmStr = "";
-	if (count > 1) confirmStr += "\nIt will be removed from all diagrams.";
-
-	Collection beh = me.getBehaviors();
-	if (beh != null && beh.size() > 0)
-	    confirmStr += "\nIt's subdiagram will also be removed.";
-
-	if (confirmStr.equals("")) return true;
-	String name = me.getName();
-	if (name == null || name.equals("")) name = "this element";
-	confirmStr = "Are you sure you want to remove " + name + "?" + confirmStr;
-	int response =
-	    JOptionPane.showConfirmDialog(pb, confirmStr, "Are you sure?",
-					  JOptionPane.YES_NO_OPTION);
-	return (response == JOptionPane.YES_OPTION);
+    
+    super.actionPerformed (ae);
+  }
+  
+  public boolean sureRemove (MModelElement me) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    
+    int count = p.getPresentationCountFor (me);
+    
+    boolean doAsk = false;
+    String confirmStr = "";
+    if (count > 1) {
+      confirmStr += Localizer.localize (
+          "Actions",
+          "text.remove_from_model.will_remove_from_diagrams"
+        );
+      doAsk = true;
     }
+    
+    Collection beh = me.getBehaviors();
+    if (beh != null && beh.size() > 0) {
+	    confirmStr += Localizer.localize (
+          "Actions",
+          "text.remove_from_model.will_remove_subdiagram"
+        );
+      doAsk = true;
+    }
+    
+    if (!doAsk) {
+      return true;
+    }
+    
+    String name = me.getName();
+    if (name == null || name.equals ("")) {
+      name = Localizer.localize ("Actions", "text.remove_from_model.anon_element_name");
+    }
+    
+    confirmStr = MessageFormat.format (
+        Localizer.localize (
+          "Actions",
+          "template.remove_from_model.confirm_delete"
+        ),
+        new Object[] {name, confirmStr}
+      );
+    int response = JOptionPane.showConfirmDialog (
+        pb,
+        confirmStr,
+        Localizer.localize ("Actions", "text.remove_from_model.confirm_delete_title"),
+        JOptionPane.YES_NO_OPTION
+      );
+    
+    return (response == JOptionPane.YES_OPTION);
+  }
 } /* end class ActionRemoveFromModel */

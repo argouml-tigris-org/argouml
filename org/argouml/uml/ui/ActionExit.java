@@ -28,51 +28,67 @@ import org.argouml.application.security.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 
+import org.tigris.gef.util.Localizer;
+
 import java.awt.event.*;
+import java.text.MessageFormat;
+
 import javax.swing.*;
 
-
 public class ActionExit extends UMLAction {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    public static ActionExit SINGLETON = new ActionExit(); 
-
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    protected ActionExit() { super("Exit", NO_ICON); }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
-	if (p != null && p.needsSave()) {
-	    String t = "Save changes to " + p.getName();
-	    int response =
-		JOptionPane.showConfirmDialog(pb, t, t,
-					      JOptionPane.YES_NO_CANCEL_OPTION);
-	    if (response == JOptionPane.CANCEL_OPTION) return;
-	    if (response == JOptionPane.YES_OPTION) {
-		boolean safe = false;
-		if (ActionSaveProject.SINGLETON.shouldBeEnabled()) {
-		    safe = ActionSaveProject.SINGLETON.trySave(true);
-		}
-		if (!safe) {
-		    safe = ActionSaveProjectAs.SINGLETON.trySave(false);
-		}
-		if (!safe) {
-		    return;
-		}
-	    }
-	}
-	Configuration.save();
-	ArgoSecurityManager.getInstance().setAllowExit(true);
-	System.exit(0);
+  
+  ////////////////////////////////////////////////////////////////
+  // static variables
+  
+  public static ActionExit SINGLETON = new ActionExit();
+  
+  ////////////////////////////////////////////////////////////////
+  // constructors
+  
+  protected ActionExit() {
+    super ("Exit", NO_ICON);
+  }
+  
+  ////////////////////////////////////////////////////////////////
+  // main methods
+  
+  public void actionPerformed (ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    
+    if (p != null && p.needsSave()) {
+      String t = MessageFormat.format (
+          Localizer.localize (
+            "Actions",
+            "template.exit.save_changes_to"
+          ),
+          new Object[] {p.getName()}
+        );
+      int response = JOptionPane.showConfirmDialog (
+          pb,
+          t,
+          t,
+          JOptionPane.YES_NO_CANCEL_OPTION
+        );
+      
+      if (response == JOptionPane.CANCEL_OPTION) return;
+      if (response == JOptionPane.YES_OPTION) {
+        boolean safe = false;
+        
+        if (ActionSaveProject.SINGLETON.shouldBeEnabled()) {
+          safe = ActionSaveProject.SINGLETON.trySave (true);
+        }
+        if (!safe) {
+          safe = ActionSaveProjectAs.SINGLETON.trySave (false);
+        }
+        if (!safe) {
+          return;
+        }
+      }
     }
+    
+    Configuration.save();
+    ArgoSecurityManager.getInstance().setAllowExit (true);
+    System.exit (0);
+  }
 } /* end class ActionExit */
