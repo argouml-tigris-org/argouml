@@ -51,14 +51,20 @@ import org.tigris.gef.ocl.TemplateReader;
  */
 public class ProjectMemberTodoList extends ProjectMember {
     
-    protected static Logger LOG =
+    private static final Logger LOG =
         Logger.getLogger(ProjectMemberTodoList.class);
 
-    public static final String TODO_TEE = "/org/argouml/xml/dtd/todo.tee";
-    public static final String TODO_EXT = ".todo";
+    private static final String TO_DO_TEE = "/org/argouml/xml/dtd/todo.tee";
+    private static final String TO_DO_EXT = ".todo";
 
-    protected OCLExpander expander = null;
+    private OCLExpander expander = null;
 
+    /**
+     * The constructor. 
+     * 
+     * @param name the name
+     * @param p the project
+     */
     public ProjectMemberTodoList(String name, Project p) {
     	super(name, p);
     }
@@ -74,9 +80,12 @@ public class ProjectMemberTodoList extends ProjectMember {
      * @see org.argouml.kernel.ProjectMember#getFileExtension()
      */
     public String getFileExtension() {
-        return TODO_EXT;
+        return TO_DO_EXT;
     }
 
+    /**
+     * @return a vector containing the to do list
+     */
     public Vector getToDoList() {
         Vector in, out;
         ToDoItem tdi;
@@ -103,6 +112,9 @@ public class ProjectMemberTodoList extends ProjectMember {
         return out;
     }
 
+    /**
+     * @return Vector conaining the resolved critics list
+     */
     public Vector getResolvedCriticsList() {
     	Vector in, out;
     	ResolvedCritic rci;
@@ -114,8 +126,8 @@ public class ProjectMemberTodoList extends ProjectMember {
     	out = new Vector();
     	for (i = 0; i < in.size(); i++) {
     	    try {
-        		rci = (ResolvedCritic) in.elementAt(i);
-        		if (rci == null) {
+        	rci = (ResolvedCritic) in.elementAt(i);
+        	if (rci == null) {
         		    continue;
                 }
     	    }
@@ -127,6 +139,9 @@ public class ProjectMemberTodoList extends ProjectMember {
     	return out;
     }
 
+    /**
+     * @param is an InputStream
+     */
     public void load(InputStream is) {
         TodoParser.SINGLETON.readTodoList(is, true);
     }
@@ -142,6 +157,9 @@ public class ProjectMemberTodoList extends ProjectMember {
     	}
     }
 
+    /**
+     * @see org.argouml.kernel.ProjectMember#save(java.io.Writer)
+     */
     public void save(Writer writer) {
         if (writer == null) {
             LOG.warn("ProjectMemberTodoList.cognitive.argouml.org:"
@@ -150,13 +168,13 @@ public class ProjectMemberTodoList extends ProjectMember {
         }
         
         if (expander == null) {
-            Hashtable templates = TemplateReader.readFile(TODO_TEE);
+            Hashtable templates = TemplateReader.readFile(TO_DO_TEE);
             expander = new OCLExpander(templates);
         }
         
         expander.expand(writer, this, "", "");
         
-        LOG.debug("Done saving TODO LIST!!!");
+        LOG.debug("Done saving TO DO LIST!!!");
     }
 }
 
