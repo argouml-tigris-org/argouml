@@ -86,7 +86,7 @@ public class MenuResourceBundle_de extends ListResourceBundle {
         {"Toggle Auto-Critique", "Auto-Critique umschalten" },
         {"Design Issues...", "Entwurfsprobleme..." },
         {"Design Goals...", "Entwurfsziele..." },
-        {"Browse Critics...", "St\u00f6bere in Critics..." },
+        {"Browse Critics...", "Critics anpassen..." },
         {"Toggle Flat View", "Ebene Ansicht umschalten" },
         {"New To Do Item...", "Neuer Todo Eintrag..." },
         {"Resolve Item...", "Arbeite an Eintrag..." },
