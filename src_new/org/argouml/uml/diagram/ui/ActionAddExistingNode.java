@@ -39,9 +39,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 
 /**
-* ActionAddExistingNode.java
-*
-* This class enables pasting of an existing ModelElement into a Diagram.
+* ActionAddExistingNode enables pasting of an existing node into a Diagram.
 *
 * @author Eugenio Alvarez
 * Data Access Technologies.
