@@ -64,7 +64,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
   public static String Generate (Object o) {
     return SINGLETON.generate (o);
   }
-  
+
   public static String GenerateFile (MClassifier cls,
                                      String path) {
     // GenerateFile now returns the full path name of the
@@ -92,18 +92,18 @@ public class GeneratorJava extends Generator implements PluggableNotation {
 			    return null;
 		    }
       }
-      
+
 	    if (lastIndex == packagePath.length())
 		    break;
-      
+
       int index = packagePath.indexOf (".", lastIndex+1);
 	    if (index == -1)
   		  index = packagePath.length();
-      
+
       path += packagePath.substring (lastIndex+1, index) + fileSep;
       lastIndex = index;
 	  } while (true);
-    
+
     String pathname = path + filename;
 	  System.out.println("-----" + pathname + "-----");
 
@@ -116,7 +116,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       catch (Exception exp) {
         System.out.println ("FAILED: " + f.getPath());
       }
-      
+
       System.out.println ("----- end generating -----");
 	    return pathname;
 	  }
@@ -141,7 +141,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
 		    System.out.println("FAILED: " + f.getPath());
 	    }
     }
-    
+
 	  System.out.println("----- end updating -----");
     return pathname;
   }
@@ -382,7 +382,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       else if (cls instanceof MInterface) sClassifierKeyword = "interface";
       else return null; // actors, use cases etc.
 
-      sbPrefix.append ("} /* end of ")
+      sbPrefix.append ("\n} /* end of ")
               .append (sClassifierKeyword)
               .append (" ")
               .append (generateName (cls.getName()))
@@ -881,8 +881,9 @@ public class GeneratorJava extends Generator implements PluggableNotation {
   public String generateAssociationEnd(MAssociationEnd ae) {
     if (!ae.isNavigable()) return "";
     //String s = INDENT + "protected ";
-    String s = INDENT + "public ";
     // must be public or generate public navigation method!
+    //String s = INDENT + "public ";
+    String s = INDENT + generateVisibility(ae.getVisibility());
 
     if (MScopeKind.CLASSIFIER.equals(ae.getTargetScope()))
 	s += "static ";
