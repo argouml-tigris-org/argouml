@@ -248,6 +248,14 @@ public class AboutBox extends JFrame {
 		    }
 		sb.append('\n');
 	    }
+
+	sb.append("Operation System is: ");
+	sb.append(System.getProperty("os.name", "unknown"));
+	sb.append('\n');
+	sb.append("Operation System Version: ");
+	sb.append(System.getProperty("os.version", "unknown"));
+	sb.append('\n');
+
 	return sb.toString();
     }
 
