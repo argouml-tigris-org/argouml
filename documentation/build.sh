@@ -75,6 +75,6 @@ echo
 echo Starting Ant...
 echo
 
-$ANT_HOME/bin/$ANT $*
+$ANT_HOME/bin/ant $*
 
 exit
