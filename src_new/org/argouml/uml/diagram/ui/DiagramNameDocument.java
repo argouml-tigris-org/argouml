@@ -34,7 +34,6 @@ import javax.swing.text.BadLocationException;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.tigris.gef.base.Diagram;
 
 /**
  * This is the model for the diagram name text box (JTextField)
@@ -66,8 +65,8 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
      * @param t the currently selected object
      */
     private void setTarget(Object t) {
-        if (t instanceof Diagram) 
-            field.setText(((Diagram) t).getName());
+        if (t instanceof UMLDiagram) 
+            field.setText(((UMLDiagram) t).getName());
     }
     
     /**
@@ -120,12 +119,17 @@ class DiagramNameDocument implements DocumentListener, TargetListener {
      */
     private void update(DocumentEvent e) {
         Object target = TargetManager.getInstance().getTarget();
-        if (target instanceof Diagram) {
+        if (target instanceof UMLDiagram) {
+            UMLDiagram d = (UMLDiagram) target;
             try {
-                ((Diagram) target).setName(e.getDocument().getText(0, 
-                        e.getDocument().getLength()));
+                int documentLength = e.getDocument().getLength();
+                String newName = e.getDocument().getText(0, documentLength);
+                String oldName = d.getName();
+                /* Prevent triggering too many events by setName(). */
+                if (!oldName.equals(newName)) { 
+                    d.setName(newName);
+                }
             } catch (PropertyVetoException pe) {
-                // TODO: Auto-generated catch block
                 pe.printStackTrace();
             } catch (BadLocationException ble) {
                 ble.printStackTrace();
