@@ -479,10 +479,10 @@ class ActionSystemInfo extends UMLAction {
 } /* end class ActionSystemInfo */
 
 /**
- * About Argo/UML dialog.
+ * About ArgoUML dialog.
  */
 class ActionAboutArgoUML extends UMLAction {
-  public ActionAboutArgoUML() { super("About Argo/UML", NO_ICON); }
+  public ActionAboutArgoUML() { super("About ArgoUML", NO_ICON); }
 
   public void actionPerformed(ActionEvent ae) {
     JFrame jFrame = (JFrame)ActionUtilities.getActionRoot(ae);

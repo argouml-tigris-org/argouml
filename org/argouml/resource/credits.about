@@ -1,47 +1,21 @@
 ArgoUML was developed by the following:
 Project Lead:
-  Jason Robbins (Collab.net)
-  
-Version 0.9 release managers:
-  Toby Baier (University of Hamburg, Germany)
-  Marko Boger (GentleWare)
+  Linus Tolke (linus@tigris.org)
   
 Module Owners (contact these people for contributions):
-  GEF: Thorsten Sturm (thorsten.sturm@gentleware.de)
-  UML Diagrams: Marko Boger (boger@informatik.uni-hamburg.de)
-  UML Metamodel, XMI: Toby Baier (Toby.Baier@gmx.net)
-  Plugin-support: Thierry Lach (thierry_lach@hotmail.com)
-  Java RE: Andreas Rueckert (a_rueckert@gmx.net)
+  Plugin-support, Build process: Thierry Lach (thierry_lach@hotmail.com)
   Roundtrip engineering, UML notation: Thomas Neustupny (thn-d@gmx.de)
-  Knowledge support: Jason Robbins (jrobbins@collab.net)
-  OCL constraints: Steffen Zschaler (sz9@inf.tu-dresden.de)
-  User manual: Philippe Vanpeperstraete (Philippe.Vanpeperstraete@skynet.be)
-  FAQ: Dennis Daniels (denny_d@hotmail.com)
-  Website: Markus Klink (mkl@baba9.com)
+  User Manual: Jeremy Bennett (jeremybennett@tigris.org)
+  Internationalization: Jean-Hugues de Raigniac (jhraigniac@tigris.org)
+  User FAQ: Ewan R. Grantham
+  Release manager: Linus Tolke
   
 Contributing Developers (in no special order):
-  Eugenio Alvarez
-  Marcus Andersson
-  Curt Arnold
-  Toby Baier
-  Dennis Daniels
-  Clemens Eichler
-  Frank Finger
-  David Glaser
-  Jim Holt
-  Will Howery
   Markus Klink
-  Thierry Lach
-  Luc Maisonobe
-  Thomas Neustupny
-  Edwin Park
-  Andreas Rueckert
-  Phil Sager
-  Thomas Schaumburg
-  Frank Wienberg
-  Stuart Zakon
-  Linus Tolke
-  Steffen Zschaler
+  Jaap Branderhorst
+  Eugenio Alvarez
+  Alexey Aphanasyev
+  Grzegorz Prokopski
 
 Credits for previous versions:
 
@@ -58,11 +32,31 @@ Developers and Testers:
   ICS 125 team Spring 1996
   ICS 125 teams Spring 1998
 
-Contributing Developers:
-  Scott Guyer
-  Piotr Kaminski
-  Nick Santucci
+Contributing Developers (alphabetic order):
+  Andreas Rueckert (a_rueckert@gmx.net) (Java RE)
+  Clemens Eichler
+  Curt Arnold
+  David Glaser
+  Dennis Daniels (denny_d@hotmail.com)
+  Edwin Park
   Eric Lefevre
-  Sean Chen
+  Frank Finger
+  Frank Wienberg
+  Jason Robbins (jrobbins@collab.net) (Knowledge support, Initial idea)
   Jim Holt
+  Luc Maisonobe
+  Marcus Andersson
+  Marko Boger (GentleWare) (UML Diagrams)
+  Nick Santucci
+  Phil Sager
+  Philippe Vanpeperstraete (Philippe.Vanpeperstraete@skynet.be) (User manual)
+  Piotr Kaminski
+  Scott Guyer
+  Sean Chen
+  Steffen Zschaler (sz9@inf.tu-dresden.de) (OCL constraints)
   Steve Poole
+  Stuart Zakon
+  Thomas Schaumburg
+  Thorsten Sturm (thorsten.sturm@gentleware.de) (GEF)
+  Toby Baier (Toby.Baier@gmx.net) (UML Metamodel, XMI, Project leader)
+  Will Howery
