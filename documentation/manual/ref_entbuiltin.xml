@@ -228,14 +228,14 @@ use is for return type and parameter types in method signatures.
   <!-- Built in stereotypes. -->
   <sect1>
     <title>Built In Stereotypes</title>
-    <para>UML 1.3 defines a large number of stereotypes which are (mostly)
-      supported by &argouml;. 
+    <para>UML 1.3 defines a large number of stereotypes which are 
+      all supported by &argouml;. 
     </para>
     <caution>
       <para>Not all stereotypes defined by UML&nbsp;1.3 appear in
-      &argouml;, due to limitations in the current implementation of some
+      &argouml; due to limitations in the current implementation of some
       artifacts. The table below lists all stereotypes defined in 
-      UML 1.3 and if they are supported in &argouml; or not.</para>
+      UML 1.3 and if their base elements are supported in &argouml; or not.</para>
     </caution>
     <caution>
       <para>The UML&nbsp;1.3 standard also specifies many stereotypes in the
@@ -246,12 +246,6 @@ use is for return type and parameter types in method signatures.
       undetermined moment.
       </para>
     </caution>
-    <tip>
-      <para>There is no reason to let &argouml; shortcomings hamper your work. 
-      It is very easy to add any missing stereotypes by hand, 
-      after which they can be used as if they were build in.
-      </para>
-    </tip>
     <table frame="all">
       <title>Stereotypes defined in UML 1.3 and &argouml;</title>
       <tgroup cols="3">

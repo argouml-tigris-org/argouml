@@ -356,27 +356,6 @@ Package is provided by default
 <literal>stub</literal>).
 </para>
 
-	    <note>
-	      <!-- See Issue: 1596 -->
-	      <para>
-          A number of standard stereotypes are currently (V0.14)
-          missing from &argouml;: 
-          <literal>topLevel</literal>, 
-          <literal>systemModel</literal>, 
-          <literal>metamodel</literal> 
-          (all three from package)<!--, 
-          The following chapter 4 stereotypes should not be supported!
-          <literal>use-case&nbsp;system</literal>,
-          <literal>analysis&nbsp;system</literal>,
-          <literal>analysis&nbsp;package</literal>,
-          <literal>use-case&nbsp;package</literal>,
-          <literal>analysis&nbsp;service&nbsp;package</literal>
-          (all five from the
-          <emphasis>software development process</emphasis>
-          profile)-->.
-        </para>
-      </note>
-
 	  </listitem>
         </varlistentry>
 
@@ -478,8 +457,8 @@ Check box, with entries
                 <para>
                   Within &argouml; <literal>Root</literal> only
                   meaningfully applies to the Model, since all packages sit
-                  within the model. In the absence of the
-                  <literal>topLevel</literal> stereotype, this could be used to
+                  within the model. 
+                  This could be used to
                   emphasize that the Model is at the top
                   level.
                 </para>
