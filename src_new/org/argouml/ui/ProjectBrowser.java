@@ -121,26 +121,18 @@ public class ProjectBrowser extends JFrame
   
     private Map detailsPanesByCompassPoint = new HashMap();
   
-    protected GenericArgoMenuBar _menuBar = new GenericArgoMenuBar();
+    private GenericArgoMenuBar _menuBar;
 
-
-    /**
-     * The menu item for hiding/showing the Details pane.
-     */
-    //protected JCheckBoxMenuItem _showDetailsMenuItem = null;
     /** partially implemented. needs work to display
      * import of source and saving of zargo
      */
     protected StatusBar _statusBar = new StatusBar();
-    //protected JToolBar _toolBar = new JToolBar();
 
     /** this needs work so that users can set the font
      * size through a gui preference window
      */
     public Font defaultFont = new Font("Dialog", Font.PLAIN, 10);
-    //  public static JFrame _Frame;
 
-    //protected JSplitPane _mainSplit, _topSplit, _botSplit;
     protected BorderSplitPane _workarea;
     private NavigationHistory _history = new NavigationHistory();
 
@@ -158,6 +150,7 @@ public class ProjectBrowser extends JFrame
     public ProjectBrowser(String appName, StatusBar sb, int theme) {
         super(appName);
         setCurrentTheme(theme);
+        _menuBar = new GenericArgoMenuBar();
         sb.showStatus("Making Project Browser: Navigator Pane");
         sb.incProgress(5);
         _navPane = new NavigatorPane();
@@ -623,124 +616,6 @@ public class ProjectBrowser extends JFrame
         return _history.isNavigateForwardEnabled();
     }
 
-	/**
-     * Makes the navigator pane visible or invisible
-     * @param     visible  true to make the navigator pane visible.
-     */
-	public void setNavigatorPaneVisible(boolean visible) {
-        /*
-          if (_navPane.isVisible() != visible) {
-          if (!visible) {
-          _topSplit.setLastDividerLocation(_topSplit.getDividerLocation());
-          _topSplit.setDividerSize(0);
-          }
-          else {
-          _topSplit.setDividerSize(2);
-          }
-
-          _navPane.setVisible(visible);
-          if (visible) {
-          _topSplit.setDividerLocation(_topSplit.getLastDividerLocation());
-          }
-          }
-        */
-	}
-
-	/**
-     * Makes the todo pane visible or invisible
-     * @param     visible  true to make the todo pane visible.
-     */
-	public void setToDoPaneVisible(boolean visible) {
-        //setLowerPaneVisible(_toDoPane, visible);
-	}
-
-	/**
-     * Makes the details pane visible or invisible
-     * @param     visible  true to make the details pane visible.
-     */
-	public void setDetailsPaneVisible(boolean visible) {
-        /*
-          _showDetailsMenuItem.setSelected(visible);
-          setLowerPaneVisible(_detailsPane, visible);
-        */
-	}
-
-	/**
-     * Makes one of the lower panes (either the details pane or the todo list pane) visible or invisible.
-     * If both panes become invisible then the entire lower pane is removed from view.
-     * @param     pane     The <code>JPanel</code> object to hide/show
-     * @param     visible  true to make the <code>pane</code> visible.
-     */
-	private void setLowerPaneVisible(JPanel pane, boolean visible) {
-        /*
-          // Only process if the visible state is changing from its existing state.
-          if (pane.isVisible() == visible) return;
-
-          // Determine which pane to change and which is the other.
-          JPanel otherPane = null;
-          if (pane.equals(_toDoPane)) otherPane = _detailsPane;
-          else if (pane.equals(_detailsPane)) otherPane = _toDoPane;
-          else return;
-
-          if (!visible && otherPane.isVisible()) {
-          // If the pane is being made invisible with the other pane left behind
-          // then remember the lower divider location and hide the divider.
-          _botSplit.setLastDividerLocation(_botSplit.getDividerLocation());
-          _botSplit.setDividerSize(0);
-          }
-
-          // Show/Hide the required pane.
-          pane.setVisible(visible);
-
-          if (visible && otherPane.isVisible()) {
-          // If both panes have now become visible, restore the lower divider location and make it visible.
-          _botSplit.setDividerSize(2);
-          _botSplit.setDividerLocation(_botSplit.getLastDividerLocation());
-          }
-          else if (!otherPane.isVisible() && !visible) {
-          // If both of the lower panes are now invisible make the bottom pane invisible and make
-          // the top pane take the entire space available. The position of the main divider is stored
-          // before it is removed.
-          _mainSplit.setLastDividerLocation(_mainSplit.getDividerLocation());
-          _botSplit.setVisible(false);
-          _mainSplit.setDividerLocation(_mainSplit.getHeight());
-          _mainSplit.setDividerSize(0);
-          }
-          else if ((otherPane.isVisible() || visible) && !_botSplit.isVisible()) {
-          // If either of the lower panes is visible but the bottom pane that encloses them is invisible
-          // then show the bottom pane and restore the main divider.
-          _botSplit.setVisible(true);
-          _mainSplit.setDividerSize(2);
-          _mainSplit.setDividerLocation(_mainSplit.getLastDividerLocation());
-          }
-        */
-	}
-
-	/**
-     * test if the navigator pane is visible
-     * @return     true if visible
-     */
-	public boolean isNavigatorPaneVisible() {
-        return _navPane.isVisible();
-	}
-
-	/**
-     * test if the details pane is visible
-     * @return     true if visible
-     */
-	public boolean isDetailsPaneVisible() {
-        return _southPane.isVisible();
-	}
-
-	/**
-     * test if the todo pane is visible
-     * @return     true if visible
-     */
-	public boolean isToDoPaneVisible() {
-        return _toDoPane.isVisible();
-    }
-
-
     private static final int ThemeNormal = 1;
     private static final int ThemeBig = 2;
     private static final int ThemeHuge = 3;
@@ -762,8 +637,10 @@ public class ProjectBrowser extends JFrame
     }
 
     private int currentTheme = -1;
-    public int getCurrentTheme() { return currentTheme; }
-    public void setCurrentTheme(int t) {
+    
+    private int getCurrentTheme() { return currentTheme; }
+    
+    private void setCurrentTheme(int t) {
         if (t == 0) {
             t = Configuration.getInteger(Argo.KEY_SCREEN_THEME, ThemeNormal);
         }
@@ -821,10 +698,11 @@ public class ProjectBrowser extends JFrame
         else if ("huge".equals(arg))
             setCurrentTheme(ThemeHuge);
         else {
-            cat.debug("ProjectBrowser.setCurrentTheme: "
+            cat.error("ProjectBrowser.setCurrentTheme: "
                       + "Incorrect theme: " + arg);
         }
     }
+    
     public boolean isCurrentTheme(String arg) {
         if ("normal".equals(arg))
             return getCurrentTheme() == ThemeNormal;
@@ -833,7 +711,7 @@ public class ProjectBrowser extends JFrame
         else if ("huge".equals(arg))
             return getCurrentTheme() == ThemeHuge;
         else {
-            cat.debug("ProjectBrowser.isCurrentTheme: "
+            cat.error("ProjectBrowser.isCurrentTheme: "
                       + "Incorrect theme: " + arg);
             return false;
         }
