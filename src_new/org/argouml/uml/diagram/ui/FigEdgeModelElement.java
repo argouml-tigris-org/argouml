@@ -350,8 +350,10 @@ public abstract class FigEdgeModelElement
     }
 
     /**
-     * Returns a SelectionRerouteEdge object that manages selection
+     * Returns a {@link SelectionRerouteEdge} object that manages selection
      * and rerouting of the edge.
+     *
+     * @return the SelectionRerouteEdge.
      */
     public Selection makeSelection() {
         return new SelectionRerouteEdge(this);
@@ -430,9 +432,11 @@ public abstract class FigEdgeModelElement
     public void mouseExited(MouseEvent me) {
     }
 
-    /** If the user double clicks on anu part of this FigNode, pass it
-     *  down to one of the internal Figs.  This allows the user to
-     *  initiate direct text editing. */
+    /**
+     * If the user double clicks on anu part of this FigNode, pass it
+     * down to one of the internal Figs.  This allows the user to
+     * initiate direct text editing.
+     */
     public void mouseClicked(MouseEvent me) {
         if (me.isConsumed())
             return;
@@ -451,7 +455,9 @@ public abstract class FigEdgeModelElement
             _name.keyPressed(ke);
     }
 
-    /** not used, do nothing. */
+    /**
+     * Not used, do nothing.
+     */
     public void keyReleased(KeyEvent ke) {
     }
 
@@ -905,6 +911,10 @@ public abstract class FigEdgeModelElement
 
     /**
      * Overridden to notify project that save is needed when edge is moved.
+     *
+     * @deprecated by Linus Tolke from 0.15.5. Since GEF 0.10.2 this
+     * has changed name to {@link FigEdgePoly#setPoint(Handle,int,int)}.
+     * Investigate if this is still needed!
      */
     public void setPoints(Handle h, int x, int y) {
         super.setPoints(h, x, y);
