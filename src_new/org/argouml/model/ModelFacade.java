@@ -3395,13 +3395,20 @@ public class ModelFacade {
      * Returns a collection with all residents belonging to the given
      * node.
      *
-     * @param handle is the node
+     * @param handle is the node, nodeinstance, componentinstance
      * @return Collection
      */
     public static Collection getResidents(Object handle) {
         if (isANode(handle)) {
             return ((MNode) handle).getResidents();
         }
+        if (isANodeInstance(handle)) {
+            return ((MNodeInstance) handle).getResidents();
+        }
+        if (isAComponentInstance(handle)) {
+            return ((MComponentInstance) handle).getResidents();
+        }
+            
 	return illegalArgumentCollection(handle);
     }
 
