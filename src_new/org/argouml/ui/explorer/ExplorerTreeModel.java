@@ -180,16 +180,22 @@ ItemListener{
                 
                 while(childrenIt.hasNext()){
                     Object child = childrenIt.next();
-                    ExplorerTreeNode newNode = new ExplorerTreeNode(child);
-                    newNode.setOrder(order);
-                    this.addToMap(child, newNode);
                     
-                    node.add(newNode);
+                    if(child != null){
+                        ExplorerTreeNode newNode = new ExplorerTreeNode(child);
+                        newNode.setOrder(order);
+                        this.addToMap(child, newNode);
+                        
+                        node.add(newNode);
+                    }
                 }
-                node.orderChildren();
-                this.nodeStructureChanged(node);
             }
             
+        }
+        
+        if(node.getChildCount() > 0){
+            node.orderChildren();
+            this.nodeStructureChanged(node);
         }
     }
     
