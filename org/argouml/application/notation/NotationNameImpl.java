@@ -113,12 +113,12 @@ public class NotationNameImpl implements NotationName {
 
     /** Create a notation name with or without a version.
      */
-    public static NotationName makeNotation(String k1, String k2) {
+    public static NotationName makeNotation(String k1, String k2, Icon icon) {
         if (_notations == null) _notations = new ArrayList();
 	NotationName nn = null;
 	nn = findNotation(getNotationNameString(k1, k2));
 	if (nn == null) {
-	    nn = (NotationName)new NotationNameImpl(k1, k2);
+	    nn = (NotationName)new NotationNameImpl(k1, k2, icon);
 	    _notations.add(nn);
 	    fireEvent(ArgoEventTypes.NOTATION_ADDED, nn);
 	}
@@ -156,17 +156,33 @@ public class NotationNameImpl implements NotationName {
         return this.getConfigurationValue().equals(nn.getConfigurationValue());
     }
 
+    /** Finds a NotationName matching the language with no version.
+     *  Returns null if no match.
+     */
+    public static NotationName getNotation(String k1) {
+        return findNotation(getNotationNameString(k1, null));
+    }
+
+    /** Finds a NotationName matching the language and version.
+     *  Returns null if no match.
+     */
+    public static NotationName getNotation(String k1, String k2) {
+        return findNotation(getNotationNameString(k1, k2));
+    }
+
+
     public String toString() {
         if (_version == null) return "{NotationNameImpl:" + _name + "}";
         return "{NotationNameImpl:" + _name + " version " + _version + "}";
     }
 
+
     /** Pre-populate the notation list with the internal notations.
      */
     static {
-        makeNotation("Default", null);
-        makeNotation("UML", "1.3");
-        makeNotation("Java", null);
+        makeNotation("Default", null, null);
+        makeNotation("UML", "1.3", null);
+        makeNotation("Java", null, Argo.lookupIconResource("JavaNotation"));
     }
 }
 

@@ -28,6 +28,8 @@ import org.argouml.application.events.*;
 import java.util.*;
 import java.beans.*;
 
+import javax.swing.*;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -68,7 +70,7 @@ implements PropertyChangeListener {
    *  taken from the configuration using {@link #KEY_DEFAULT_NOTATION}.
    *  If there is not a value there, then {@link #NOTATION_ARGO} is used.
    */
-  public static final NotationName NOTATION_DEFAULT = makeNotation("Default");
+  public static final NotationName NOTATION_DEFAULT = NotationNameImpl.getNotation("Default");
 
   /** The configuration key for the preferred notation
    */
@@ -418,13 +420,25 @@ implements PropertyChangeListener {
   /** Create an unversioned notation name.
    */
   public static NotationName makeNotation(String k1) {
-      return NotationNameImpl.makeNotation(k1, null);
+      return NotationNameImpl.makeNotation(k1, null, null);
   }
 
   /** Create a versioned notation name.
    */
   public static NotationName makeNotation(String k1, String k2) {
-      return NotationNameImpl.makeNotation(k1, k2);
+      return NotationNameImpl.makeNotation(k1, k2, null);
+  }
+
+  /** Create an unversioned notation name with an icon.
+   */
+  public static NotationName makeNotation(String k1, Icon icon) {
+      return NotationNameImpl.makeNotation(k1, null, icon);
+  }
+
+  /** Create a versioned notation name with an icon.
+   */
+  public static NotationName makeNotation(String k1, String k2, Icon icon) {
+      return NotationNameImpl.makeNotation(k1, k2, icon);
   }
 
   public static boolean getUseGuillemots() {
