@@ -48,7 +48,7 @@ public final class OCLUtil extends Object {
             .append (" (");
 
       List lParams = ((MBehavioralFeature) me).getParameters();
-      String sReturnType = null;
+      //String sReturnType = null;
       boolean fFirstParam = true;
 
       for (Iterator i = lParams.iterator(); i.hasNext();) {
@@ -56,7 +56,12 @@ public final class OCLUtil extends Object {
 
         switch (mp.getKind().getValue()) {
           case MParameterDirectionKind._RETURN:
-            sReturnType = mp.getType().getName();
+            // It appears that the OCL toolkit does not like return types on
+            // the end of operation contexts.
+            // this is in conflict with the examples in the UML1.3
+            // specification. however, a practical solution
+            // takes priority here.
+            //sReturnType = mp.getType().getName();
             break;
 
           default:
@@ -75,9 +80,9 @@ public final class OCLUtil extends Object {
 
       sbContext.append (")");
 
-      if (sReturnType != null) {
-        sbContext.append (": ").append (sReturnType);
-      }
+      //if (sReturnType != null) {
+      //  sbContext.append (": ").append (sReturnType);
+      //}
 
       return sbContext.toString();
     }
