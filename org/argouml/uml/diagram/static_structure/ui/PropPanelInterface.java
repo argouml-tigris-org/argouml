@@ -40,7 +40,7 @@ import ru.novosoft.uml.model_management.*;
 import org.argouml.uml.ui.*;
 
 public class PropPanelInterface extends PropPanel
-implements DocumentListener, ItemListener {
+implements ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -91,11 +91,9 @@ implements DocumentListener, ItemListener {
     gb.setConstraints(_extendsField, c);
     add(_extendsField);
 
-    Component ed = _extendsField.getEditor().getEditorComponent();
-    Document extendsDoc = ((JTextField)ed).getDocument();
-    extendsDoc.addDocumentListener(this);
     _visField.addItemListener(this);
-    _extendsField.addItemListener(this);
+    _extendsField.addKeyListener(this);
+    _extendsField.addFocusListener(this);
     
   }
 
@@ -164,21 +162,11 @@ implements DocumentListener, ItemListener {
   ////////////////////////////////////////////////////////////////
   // event handling
 
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    Component ed = _extendsField.getEditor().getEditorComponent();
-    Document extendsDoc = ((JTextField)ed).getDocument();
-    if (e.getDocument() == extendsDoc) setTargetExtends();
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _extendsField)
+	    setTargetExtends();
+    }
 
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();

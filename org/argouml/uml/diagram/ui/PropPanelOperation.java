@@ -293,23 +293,6 @@ implements ItemListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    Component ed = _typeField.getEditor().getEditorComponent();
-    Document typeDoc = ((JTextField)ed).getDocument();
-
-    if (e.getDocument() == typeDoc) setTargetType();
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-  
   public void itemStateChanged(ItemEvent e) {
 	  if (e.getStateChange() == ItemEvent.SELECTED) {
 		  Object src = e.getSource();
