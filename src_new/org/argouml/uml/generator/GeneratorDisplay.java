@@ -41,14 +41,13 @@ import org.argouml.model.uml.UmlHelper;
  * looks a lot like (invalid) Java.  The idea is that other generators
  * could be written for other languages.  This code is just a
  * placeholder for future development, I expect it to be totally
- * replaced.
+ * replaced. <p>
+ * 
+ * TODO: always check for null!!!
  *
  * @stereotype singleton
  * @author jrobbins@ics.uci.edu
  */
-
-// TODO: always check for null!!!
-
 public class GeneratorDisplay extends Generator2 {
 
     private static GeneratorDisplay singleton;
@@ -73,14 +72,6 @@ public class GeneratorDisplay extends Generator2 {
                 "1.3",
                 Argo.lookupIconResource("UmlNotation")));
     }
-
-    /**
-     * @param o the object to be generated
-     * @return the generated string
-     */
-    /*public static String Generate(Object o) {
-        return singleton.generate(o);
-    }*/
 
     /**
      * <p>Generate the display for an extension point.</p>
@@ -118,11 +109,6 @@ public class GeneratorDisplay extends Generator2 {
 
         return s;
     }
-
-    /*
-    public String generateConcurrency(MCallConcurrencyKind concurrency) {
-    	concurrency.ge
-    */
 
     /**
      *  Generates an operation according to the UML 1.3 notation:
