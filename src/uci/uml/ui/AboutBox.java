@@ -75,7 +75,7 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
 
-    _version.setText("Argo/UML Version 0.8.0\n"+
+    _version.setText("ArgoUML Version 0.8.0\n"+
 		     "Built on August, , 2000\n"+
 		     "\n"+
 		     "Includes:\n"+
@@ -83,12 +83,13 @@ public class AboutBox extends JFrame {
 		     "  GIF generation code from www.acme.com\n"+
 		     "\n"+
 		     "Intended for use with:\n"+
-		     "  JDK 1.2 and\n"+
+		     "  JDK 1.2 only plus\n"+
 		     "    IBM's XML4J 2.0.15 or higher\n"+
-		     "    Novosoft's NSUML 0.4.4 or higher"
+		     "    Novosoft's NSUML 0.4.4 or higher (nsuml.sourceforge.net)\n"+
+		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"
 		     );
 
-    _credits.setText("Argo/UML was developed by the following:\n"+
+    _credits.setText("ArgoUML was developed by the following:\n"+
 		     "\nResearchers:  \n"+
 		     "  Jason Robbins\n"+
 		     "  David Redmiles\n"+
@@ -114,9 +115,9 @@ public class AboutBox extends JFrame {
 
     _contact.setText("For more information on the Argo project:\n"+
 		     " + Visit our web site:\n"+
-		     "   http://www.ics.uci.edu/pub/arch/uml\n"+
+		     "   http://www.ArgoUML.org\n"+
 		     " + Send email to Jason Robbins at:\n"+
-		     "   jrobbins@ics.uci.edu\n"+
+		     "   jrobbins@collab.net\n"+
 		     " + Read our conference and journal papers:\n"+
 		     "   (list of publications: KBSE'96, IUI'98, ICSE'98, etc.)"
 		     );

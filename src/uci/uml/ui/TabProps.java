@@ -36,7 +36,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 //import javax.swing.border.*;
 
-import uci.gef.Diagram;
+import uci.gef.*;
 import uci.uml.visual.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
@@ -78,6 +78,8 @@ implements TabModelTarget {
 
     _panels.put(MClassImpl.class, new PropPanelClass());
     _panels.put(Diagram.class, new PropPanelDiagram());
+    // FigText has no owner, so we do it directly
+    _panels.put(FigText.class, new PropPanelString());
     _panels.put(MModelImpl.class, new PropPanelModel());
     _panels.put(MUseCaseImpl.class, new PropPanelUseCase());
 
@@ -123,6 +125,7 @@ implements TabModelTarget {
 
   public TabModelTarget findPanelFor(Class targetClass) {
     TabModelTarget p = (TabModelTarget) _panels.get(targetClass);
+    System.out.println("Getting prop panel for:" + targetClass+", found"+p);
     if (p == null) {
       Class panelClass = panelClassFor(targetClass);
       if (panelClass == null) return null;
