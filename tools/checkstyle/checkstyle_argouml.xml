@@ -37,6 +37,12 @@
                 value="/\*\* (needs documenting|to be documented|\s*) \*/"/>
         </module>
 
+        <module name="GenericIllegalRegexp">
+          <property 
+		name="format"
+                value="(public|protected|final).*Logger"/>
+        </module>
+
  	<module name="HiddenField"/>
 
         <module name="IllegalImport"/>
