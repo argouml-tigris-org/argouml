@@ -123,21 +123,9 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     }
 
 
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return (baseClass.equals("ClassifierRole") ||
-                baseClass.equals("Namespace") ||
-                baseClass.equals("GeneralizableElement") ||
-                baseClass.equals("Classifier"));
-    }
     
-    /**
-     * @see org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper#getAllClassifierRoles()
-     */
-	protected Vector getGeneralizationChoices() {
-		Vector choices = new Vector();
-		choices.addAll(CollaborationsHelper.getHelper().getAllClassifierRoles());
-		return choices;
-	}
+    
+    
 	
 	public MClassifier getBase() {
 		if (getTarget() != null) {

@@ -157,13 +157,6 @@ public class PropPanelDataType extends PropPanelClassifier {
         }
     }
 
-    /**
-     * @see org.argouml.model.uml.foundation.core.CoreHelper#getAllDataTypes()
-     */
-	protected Vector getGeneralizationChoices() {
-		Vector choices = new Vector();
-		choices.addAll(CoreHelper.getHelper().getAllDataTypes());
-		return choices;
-	}
+   
 
 } /* end class PropPanelDataType */

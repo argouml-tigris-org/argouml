@@ -1198,8 +1198,10 @@ public class FigClass extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#renderingChanged()
      */
     public void renderingChanged() {
-        updateAttributes();
-        updateOperations();
+        if (getOwner() != null) {
+            updateAttributes();
+            updateOperations();
+        }
         super.renderingChanged();
     }
 

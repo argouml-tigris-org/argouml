@@ -285,6 +285,20 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      	return actor;
      }
      
+     /**
+      * Builds an actor in the same namespace of the given actor. If object is no
+      * actor nothing is build. Did not give MActor as an argument but object to 
+      * seperate argouml better from NSUML.
+      * @param actor
+      * @return MActor
+      */
+     public MActor buildActor(Object actor) {
+        if (actor instanceof MActor) {
+            return buildActor(((MActor)actor).getNamespace());
+        }
+        return null;
+     }
+     
      public void deleteActor(MActor elem) {}
      
      public void deleteExtend(MExtend elem) {}
