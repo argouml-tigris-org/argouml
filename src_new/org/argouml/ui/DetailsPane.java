@@ -228,6 +228,14 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     if (index != -1) _tabs.setSelectedIndex(index);
   }
 
+  public void addToPropTab(Class c, PropPanel p) {
+    for (int i = 0; i < _tabPanels.size(); i++) {
+      if (_tabPanels.elementAt(i) instanceof TabProps) {
+        ((TabProps)_tabPanels.elementAt(i)).addPanel(c,p);
+      }
+    }
+  }
+
   public void selectNextTab() {
     int size = _tabPanels.size();
     int currentTab = _tabs.getSelectedIndex();
