@@ -51,14 +51,13 @@ import org.argouml.ui.*;
 
 /** Class to display graphics for a UML Class in a diagram. */
 
-public class FigClass extends FigNodeWithCompartments {
+public class FigClass extends FigNodeModelElement {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  protected FigCompartment _stereoCompartment;
-  protected FigCompartment _attr;
-  protected FigCompartment _oper;
+  protected FigText _attr;
+  protected FigText _oper;
   protected FigRect _bigPort;
   protected FigRect _stereoLineBlinder;
   public MElementResidence resident = new MElementResidenceImpl();
@@ -69,47 +68,46 @@ public class FigClass extends FigNodeWithCompartments {
   public FigClass() {
     _bigPort = new FigRect(10, 10, 90, 60, Color.cyan, Color.cyan);
 
-//     _name.setLineWidth(0);
-//     _name.setFilled(false);
+    _name.setLineWidth(1);
+    _name.setFilled(true);
 
 //     _stereo.setLineWidth(0);
 //     _stereo.setFilled(false);
 
-    _attr = new FigCompartment(10, 30, 90, 21);
-    _attr.setFont(LABEL_FONT);
+    _attr = new FigText(10, 30, 90, 21);
+    _attr.setFilled(true);
+    _attr.setLineWidth(1);
     _attr.setExpandOnly(true);
+    _attr.setFont(LABEL_FONT);
     _attr.setTextColor(Color.black);
     _attr.setJustification(FigText.JUSTIFY_LEFT);
 
-    _oper = new FigCompartment(10, 50, 90, 21);
-    _oper.setFont(LABEL_FONT);
+    _oper = new FigText(10, 50, 90, 21);
+    _oper.setFilled(true);
+    _oper.setLineWidth(1);
     _oper.setExpandOnly(true);
+    _oper.setFont(LABEL_FONT);
     _oper.setTextColor(Color.black);
     _oper.setJustification(FigText.JUSTIFY_LEFT);
 
     _stereo.setExpandOnly(true);
-//     _stereo.setFilled(false);
-//     _stereo.setLineWidth(0);
+    _stereo.setFilled(true);
+    _stereo.setLineWidth(1);
     _stereo.setEditable(false);
-    _stereo.setHeight(15);
+    _stereo.setHeight(18);
+    _stereo.setDisplayed(false);
 
-    _stereoLineBlinder = new FigRect(0, 15, 2, 60, Color.white, Color.white);
+    _stereoLineBlinder = new FigRect(10, 15, 2, 60, Color.white, Color.white);
+    _stereoLineBlinder.setLineWidth(2);
+    //_stereoLineBlinder.setFilled(true);
+    _stereoLineBlinder.setDisplayed(false);
 
-//     _stereoCompartment = new FigCompartment(10, 50, 90, 21);
-//     _stereoCompartment.setFont(LABEL_FONT);
-//     _stereoCompartment.setExpandOnly(true);
-//     _stereoCompartment.setTextColor(Color.black);
-//     _stereoCompartment.setFilled(false);
-//     _stereoCompartment.setLineWidth(0);
-//     _stereoCompartment.setDisplayed(true);
-
-
-    setPort(_bigPort);
-
-//     addCompartment(_stereoCompartment);
+    addFig(_bigPort);
+    addFig(_stereo);
     addFig(_name);
-    addCompartment(_attr);
-    addCompartment(_oper);
+    addFig(_stereoLineBlinder);
+    addFig(_attr);
+    addFig(_oper);
 
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
@@ -129,8 +127,8 @@ public class FigClass extends FigNodeWithCompartments {
 	  Vector v = figClone.getFigs();
 	  figClone._bigPort = (FigRect) v.elementAt(0);
 	  figClone._name = (FigText) v.elementAt(1);
-	  figClone._attr = (FigCompartment) v.elementAt(2);
-	  figClone._oper = (FigCompartment) v.elementAt(3);
+	  figClone._attr = (FigText) v.elementAt(2);
+	  figClone._oper = (FigText) v.elementAt(3);
 	  return figClone;
   }
 
@@ -261,6 +259,16 @@ public class FigClass extends FigNodeWithCompartments {
     return new Dimension(w, h);
   }
 
+    public void setFillColor(Color lColor) {
+	super.setFillColor(lColor);
+	_stereoLineBlinder.setLineColor(lColor);
+    }
+
+    public void setLineColor(Color lColor) {
+	super.setLineColor(lColor);
+	_stereoLineBlinder.setLineColor(_stereoLineBlinder.getFillColor());
+    }
+
   public void translate(int dx, int dy) {
     super.translate(dx, dy);
     Editor ce = Globals.curEditor();
@@ -381,6 +389,11 @@ public class FigClass extends FigNodeWithCompartments {
     if (cls.isAbstract()) _name.setFont(ITALIC_LABEL_FONT);
     else _name.setFont(LABEL_FONT);
 
+    calcBounds();
+    Rectangle rect = getBounds();
+    setBounds(rect.x, rect.y, rect.width, rect.height);
+    firePropChange("bounds", rect, getBounds());
+
   }
 
   
@@ -389,53 +402,101 @@ public class FigClass extends FigNodeWithCompartments {
     if (me == null) return;
     MStereotype stereo = me.getStereotype();
     if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) {
-	if (_figs.contains(_stereo)) {
-	    removeFig(_stereo);
-	    removeFig(_stereoLineBlinder);
-	    Rectangle oldBounds = getBounds();
-	    setBounds(oldBounds.x, oldBounds.y + 15, oldBounds.width, oldBounds.height-15);
-	    calcBounds();
-	    firePropChange("bounds", oldBounds, getBounds());
-	}
-      return;
+	if (! _stereo.isDisplayed()) return;
+	Rectangle oldBounds = getBounds();
+	_stereoLineBlinder.setDisplayed(false);
+	_stereo.setDisplayed(false);
+	setBounds(oldBounds.x, oldBounds.y + _stereo.getMinimumSize().height, oldBounds.width, oldBounds.height- _stereo.getMinimumSize().height);
+	calcBounds();
+	firePropChange("bounds", oldBounds, getBounds());
+	
+	return;
     }
     else {
+	Rectangle oldBounds = getBounds();
 	String stereoStr = stereo.getName();
 	_stereo.setText("<<" + stereoStr + ">>");
-	Rectangle oldBounds = getBounds();
-	if (! _figs.contains(_stereo)) {
-	    _stereo.setBounds(oldBounds.x, oldBounds.y - 15, oldBounds.width, 15);
-	    int namePosition = _figs.indexOf(_name);
-	    _figs.insertElementAt(_stereo, namePosition);
-	    _stereo.setGroup(this);
-	    _stereoLineBlinder.setBounds(oldBounds.x, oldBounds.y+1, oldBounds.width, 2);
-	    _figs.insertElementAt(_stereoLineBlinder, namePosition+1);
-	    _stereoLineBlinder.setGroup(this);
+	if (!_stereo.isDisplayed()) {
+	    _stereoLineBlinder.setDisplayed(true);
+	    _stereoLineBlinder.setBounds(oldBounds.x, oldBounds.y, oldBounds.width, 2);
+	    _stereo.setDisplayed(true);
+	    _stereo.setBounds(oldBounds.x, oldBounds.y -  _stereo.getMinimumSize().height, oldBounds.width,  _stereo.getMinimumSize().height);
 	}
-	// _stereo.calcBounds();
+	_stereo.calcBounds();
 	calcBounds();
+	Rectangle rect = getBounds();
+	setBounds(rect.x, rect.y, rect.width, rect.height);
 	firePropChange("bounds", oldBounds, getBounds());
     }
   }
 
+    public void setBounds(int x, int y, int w, int h) {
+	
+	Rectangle oldBounds = getBounds();
+	Enumeration figs = _figs.elements();
 
-//   protected void updateStereotypeText() {
-//     MModelElement me = (MModelElement) getOwner();
-//     if (me == null) return;
-//     MStereotype stereo = me.getStereotype();
-//     if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0) 
-// 	_stereo.setText("");
-//     else {
-// 	String stereoStr = stereo.getName();
-// 	_stereo.setText("<<" + stereoStr + ">>");
-//     }
-//     Rectangle oldBounds = getBounds();
-//     _stereo.calcBounds();
-//     calcBounds();
-//     firePropChange("bounds", oldBounds, getBounds());
-  
-//   }
-  
+	int maxW = w;
+	int cumulatedHeight = 0;
+	figs.nextElement(); // jump over _bigPort
+	while (figs.hasMoreElements()) {
+	  Fig f = (Fig) figs.nextElement();
+	  if (f.isDisplayed()) {
+	      maxW = Math.max(f.getMinimumSize().width, maxW);
+	      cumulatedHeight += f.getMinimumSize().height;
+	  }
+	}
+	if (_stereoLineBlinder.isDisplayed())
+	    cumulatedHeight -= _stereoLineBlinder.getMinimumSize().height;
+
+	int extra_each = h - cumulatedHeight;
+	int noExtraFigs = 1; //this is the bigPort
+        if (_stereo.isDisplayed()) 
+	    noExtraFigs++;
+        if (_stereoLineBlinder.isDisplayed()) 
+	    noExtraFigs++;
+	extra_each = extra_each / (getDisplayedFigs().size()- noExtraFigs);
+
+	Vector mutableFigs = new Vector(_figs);
+	mutableFigs.remove(_stereo);
+	mutableFigs.remove(_stereoLineBlinder);
+	mutableFigs.remove(_bigPort);
+
+	figs = mutableFigs.elements();
+
+	int currentY = y;
+
+	// handle _stereo
+	if (_stereo.isDisplayed()) {
+	    _stereo.setBounds(x, currentY, maxW, _stereo.getMinimumSize().height+1 );
+	    currentY += _stereo.getMinimumSize().height;
+	}
+
+	// handle _stereoLineBlinder
+	if (_stereoLineBlinder.isDisplayed()) {
+	    _stereoLineBlinder.setBounds(x + 1, _stereo.getY() + _stereo.getHeight() -2, maxW - 2, 4 );
+	}
+
+	while (figs.hasMoreElements()) {
+	  Fig f = (Fig) figs.nextElement();
+	  if (f.isDisplayed()) {
+	      int height =  f.getMinimumSize().height + extra_each;
+	      int overlap = 0;
+	      if (_stereo.isDisplayed()) 
+		  overlap =  (getDisplayedFigs().size() > 4? 1:0);
+	      else  overlap =  (getDisplayedFigs().size() > 3? 1:0);
+	      f.setBounds(x, currentY, maxW,  height+overlap);
+	      currentY += height;
+	  }
+	}
+	_bigPort.setBounds(x, y, maxW, currentY - y);
+	
+
+	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+	updateEdges();
+	firePropChange("bounds", oldBounds, getBounds());
+    }
+
+
   
 
 } /* end class FigClass */
