@@ -61,20 +61,18 @@ public abstract class Wizard implements java.io.Serializable {
   // instance variables
 
   /** User interface panels displayed so far. */
-  private Vector _panels = new Vector();
+  protected Vector _panels = new Vector();
 
   /** The current step that the Wizard is on.  Zero indicates that the
    *  wizard has not yet begun. */
-  private int _step = 0;
+  protected int _step = 0;
 
   /** True when the wizard has done everything it can. */
-  private boolean _finished = false;
-  private boolean _started = false;
+  protected boolean _finished = false;
+  protected boolean _started = false;
 
   protected ToDoItem _item = null;
 
-  
-  
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -83,8 +81,10 @@ public abstract class Wizard implements java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // accessors
-  
+
   public void setToDoItem(ToDoItem item) { _item = item; }
+
+  public ToDoItem getToDoItem() { return _item; }
 
   /** An integer between 0 and 100, shows percent done. The current
    *  Argo/UML user itnerface shows different PostIt note icons for
@@ -110,7 +110,7 @@ public abstract class Wizard implements java.io.Serializable {
       return (JPanel) _panels.elementAt(s - 1);
     return null;
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // wizard actions
 
@@ -174,6 +174,8 @@ public abstract class Wizard implements java.io.Serializable {
    *  panels. */
   public abstract void doAction(int oldStep);
 
+  public void doAction() { doAction(_step); }
+
   /** Undo the action done after the given step. For example, when the
    *  given step is 0, nothing was done, so nothing can be undone; and
    *  when the given step is 1, undo the first action.  Undo allows
@@ -181,10 +183,14 @@ public abstract class Wizard implements java.io.Serializable {
    *  result, and explore a different alternative. */
   public void undoAction(int oldStep) { }
 
+  public void undoAction() { undoAction(_step); }
+
   /** Redo the action at the completion of a step. For example, when
    *  the given step is 0, nothing was done, so redo nothing; and when
    *  the given step is 1, redo the first action.  This implementation
    *  simply calls doAction(). */
   public void redoAction(int oldStep) { doAction(oldStep); }
+
+  public void redoAction() { doAction(_step); }
 
 } /* end class Wizard */

@@ -102,6 +102,10 @@ implements TabToDoTarget, ActionListener {
 
   public void setTarget(Object item) {
     _target = item;
+    enableButtons();
+  }
+
+  public void enableButtons() {
     if (_target == null) {
       _backButton.setEnabled(false);
       _nextButton.setEnabled(false);
@@ -132,12 +136,11 @@ implements TabToDoTarget, ActionListener {
     }
     return null;
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // actions
 
   public void doBack() {
-    System.out.println("back");
     Wizard w = getWizard();
     if (w != null) {
       w.back();
@@ -145,7 +148,6 @@ implements TabToDoTarget, ActionListener {
     }
   }
   public void doNext() {
-    System.out.println("next");
     Wizard w = getWizard();
     if (w != null) {
       w.next();
@@ -153,7 +155,6 @@ implements TabToDoTarget, ActionListener {
     }
   }
   public void doFinsh() {
-    System.out.println("finish");
     Wizard w = getWizard();
     if (w != null) {
       w.finish();
@@ -170,9 +171,8 @@ implements TabToDoTarget, ActionListener {
     JPanel ws = getWizard().getCurrentPanel();
     if (ws instanceof WizStep) ((WizStep)ws).setTarget(_target);
     ttd.showStep(ws);
-    System.out.println("showed " + ws);
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // event handlers
 

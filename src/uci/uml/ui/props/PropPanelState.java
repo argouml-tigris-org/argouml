@@ -229,7 +229,7 @@ implements DocumentListener, ItemListener {
 
 
 class TableModelInternalTrans extends AbstractTableModel
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+implements VetoableChangeListener, DelayedVChangeListener {
   ////////////////
   // instance varables
   State _target;

@@ -108,7 +108,7 @@ implements TabModelTarget {
 
 
 class TableModelTaggedValues extends AbstractTableModel
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+implements VetoableChangeListener, DelayedVChangeListener {
   ////////////////
   // instance varables
   ModelElement _target;

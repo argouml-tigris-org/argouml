@@ -104,6 +104,13 @@ implements Runnable, java.io.Serializable {
     forceValidityCheck(removes);
   }
 
+  /** Check each ToDoItem on the list to see if it is still valid.  If
+   *  not, then remove that item.  This is called automatically by the
+   *  ValidityCheckingThread, and it can be called by the user
+   *  pressing a button via forceValidityCheck(). <p>
+   * 
+   *  <b>Warning: Fragile code!<b> No method that this method calls can
+   *  synchronized the Designer, otherwise there will be deadlock. */
   protected synchronized void forceValidityCheck(Vector removes) {
     //Enumeration cur = _items.elements();
     int size = _items.size();

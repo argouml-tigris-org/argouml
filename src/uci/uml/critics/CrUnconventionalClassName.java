@@ -71,16 +71,17 @@ public class CrUnconventionalClassName extends CrUML {
     return ClClassName.TheInstance;
   }
 
-  public Wizard makeWizard(ToDoItem item) {
-    WizMEName w = (WizMEName) super.makeWizard(item);
-    if (w != null) {
+  public void initWizard(Wizard w) {
+    if (w instanceof WizMEName) {
+      ToDoItem item = w.getToDoItem();
       ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
       String sug = me.getName().getBody();
       sug = sug.substring(0,1).toUpperCase() + sug.substring(1);
-      System.out.println("sug=" + sug);
-      w.setSuggestion(sug);
+      String ins = "Change the class name to start with an "+
+	"uppercase letter.";
+      ((WizMEName)w).setInstructions(ins);
+      ((WizMEName)w).setSuggestion(sug);
     }
-    return w;
   }
   public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 

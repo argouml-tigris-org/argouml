@@ -182,7 +182,7 @@ public class PropPanelUseCase extends PropPanel {
 
 
 class TableModelExtensions extends AbstractTableModel
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+implements VetoableChangeListener, DelayedVChangeListener {
   ////////////////
   // instance varables
   UseCase _target;

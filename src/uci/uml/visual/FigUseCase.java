@@ -45,7 +45,7 @@ import uci.uml.Behavioral_Elements.Use_Cases.*;
 /** Class to display graphics for a UML State in a diagram. */
 
 public class FigUseCase extends FigNodeModelElement {
-  //implements VetoableChangeListener, DelayedVetoableChangeListener {
+  //implements VetoableChangeListener, DelayedVChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // constants

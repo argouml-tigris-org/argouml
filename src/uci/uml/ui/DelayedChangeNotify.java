@@ -29,10 +29,10 @@ package uci.uml.ui;
 import java.beans.*;
 
 public class DelayedChangeNotify implements Runnable {
-  DelayedVetoableChangeListener _listener;
+  DelayedVChangeListener _listener;
   PropertyChangeEvent _pce;
 
-  public DelayedChangeNotify(DelayedVetoableChangeListener list,
+  public DelayedChangeNotify(DelayedVChangeListener list,
 			     PropertyChangeEvent pce) {
     _listener = list;
     _pce = pce;

@@ -71,8 +71,8 @@ CLASSES = \
 	UMLUseCaseDiagram.class \
 	UseCaseDiagramGraphModel.class \
 	UseCaseDiagramRenderer.class \
-	CollaborationDiagramGraphModel.class \
-	CollaborationDiagramRenderer.class
+	CollabDiagramGraphModel.class \
+	CollabDiagramRenderer.class
 
 all: $(GEN) $(CLASSES)
 

@@ -125,12 +125,12 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
   public void setNamespace(Namespace m) {
     super.setNamespace(m);
-    CollaborationDiagramGraphModel gm = new CollaborationDiagramGraphModel();
+    CollabDiagramGraphModel gm = new CollabDiagramGraphModel();
     gm.setNamespace(m);
     setGraphModel(gm);
     LayerPerspective lay = new LayerPerspective(m.getName().getBody(), gm);
     setLayer(lay);
-    CollaborationDiagramRenderer rend = new CollaborationDiagramRenderer(); // singleton
+    CollabDiagramRenderer rend = new CollabDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);
     lay.setGraphEdgeRenderer(rend);
   }

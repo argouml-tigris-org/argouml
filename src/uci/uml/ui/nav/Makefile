@@ -44,7 +44,7 @@ CLASSES = \
 	GoClassifierToStr.class \
 	GoDiagramToEdge.class \
 	GoDiagramToNode.class \
-	GoElementToDependentElement.class \
+	GoElement2DependentElement.class \
 	GoElementToMachine.class \
 	GoElementToReqElement.class \
 	GoFilteredChildren.class \

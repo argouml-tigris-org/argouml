@@ -145,7 +145,7 @@ implements TabModelTarget, ActionListener, ListSelectionListener {
 
 
 class TableModelChecklist extends AbstractTableModel
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+implements VetoableChangeListener, DelayedVChangeListener {
   ////////////////
   // instance varables
   ModelElement _target;

@@ -28,10 +28,10 @@ import java.util.*;
 import com.sun.java.swing.table.TableModel;
 
 import uci.util.Predicate;
-import uci.uml.ui.DelayedVetoableChangeListener;
+import uci.uml.ui.DelayedVChangeListener;
 
 public interface TableModelTarget
-extends TableModel, VetoableChangeListener, DelayedVetoableChangeListener {
+extends TableModel, VetoableChangeListener, DelayedVChangeListener {
   public void setTarget(Object target);
   public void setFilter(Predicate p);
 } /* end interface TableModelTarget */

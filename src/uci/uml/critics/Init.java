@@ -60,7 +60,7 @@ public class Init {
   public static Critic crAlreadyRealizes = new CrAlreadyRealizes();
   public static Critic crInterfaceAllPublic = new CrInterfaceAllPublic();
   public static Critic crInterfaceOperOnly = new CrInterfaceOperOnly();
-  public static Critic crMultiComposite = new CrMultiComposite();
+  //public static Critic crMultiComposite = new CrMultiComposite();
   public static Critic crMultipleAgg = new CrMultipleAgg();
   public static Critic crNWayAgg = new CrNWayAgg();
   public static Critic crNavFromInterface = new CrNavFromInterface();
@@ -68,6 +68,8 @@ public class Init {
   public static Critic crNameConflict = new CrNameConflict();
   public static Critic crNameConflictAC = new CrNameConflictAC();
   public static Critic crMissingClassName = new CrMissingClassName();
+  public static Critic crMissingAttrName = new CrMissingAttrName();
+  public static Critic crMissingOperName = new CrMissingOperName();
   public static Critic crMissingStateName = new CrMissingStateName();
   public static Critic crNoInstanceVariables = new CrNoInstanceVariables();
   public static Critic crNoAssociations = new CrNoAssociations();
@@ -120,7 +122,7 @@ public class Init {
   crUnconventionalClassName = new CrUnconventionalClassName(); 
 
   public static Critic
-  crUnconventionalPackageName = new CrUnconventionalPackageName(); 
+  crUnconventionalPackName = new CrUnconventionalPackName(); 
 
   // Java specific
   public static Critic crClassMustBeAbstract = new CrClassMustBeAbstract();
@@ -159,6 +161,7 @@ public class Init {
       java.lang.Class operCls = Operation.class;
       java.lang.Class iassocCls = IAssociation.class;
       java.lang.Class assocCls = Association.class;
+      java.lang.Class assocEndCls = AssociationEnd.class;
       java.lang.Class assocClassCls = AssociationClass.class;
       java.lang.Class namespaceCls = NamespaceImpl.class;
       java.lang.Class genElementCls = GeneralizableElementImpl.class;
@@ -201,7 +204,7 @@ public class Init {
       Agency.register(crAlreadyRealizes, classCls);
       Agency.register(crInterfaceAllPublic, interfaceCls);
       Agency.register(crInterfaceOperOnly, interfaceCls);
-      Agency.register(crMultiComposite, assocCls);
+      //Agency.register(crMultiComposite, assocEndCls);
       Agency.register(crMultipleAgg, assocCls);
       Agency.register(crUnnavigableAssoc, assocCls);
       Agency.register(crNWayAgg, assocCls);
@@ -216,7 +219,11 @@ public class Init {
       Agency.register(clsNaming, actorCls);
       Agency.register(clsNaming, useCaseCls);
 
+      // needs-more-work: should be just CrMissingName with a
+      // customized description
       Agency.register(crMissingClassName, modelCls);
+      Agency.register(crMissingAttrName, attrCls);
+      Agency.register(crMissingOperName, operCls);
       Agency.register(crMissingStateName, stateCls);
 
       Agency.register(crNoInstanceVariables, classCls);
@@ -273,7 +280,7 @@ public class Init {
       Agency.register(crUnconventionalOperName, operCls);
       Agency.register(crUnconventionalAttrName, attrCls);
       Agency.register(crUnconventionalClassName, classCls);
-      Agency.register(crUnconventionalPackageName, modelCls);
+      Agency.register(crUnconventionalPackName, modelCls);
 
       Agency.register(crConsiderSingleton, classCls);
       Agency.register(crSingletonViolated, classCls);

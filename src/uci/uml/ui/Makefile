@@ -42,7 +42,7 @@ CLASSES = \
 	CriticBrowserDialog.class \
 	CmdUMLProperties.class \
 	DelayedChangeNotify.class \
-	DelayedVetoableChangeListener.class \
+	DelayedVChangeListener.class \
 	DesignIssuesDialog.class \
 	DetailsPane.class \
 	DismissToDoItemDialog.class \

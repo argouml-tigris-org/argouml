@@ -421,8 +421,9 @@ public class Project implements java.io.Serializable {
   }
 
   public boolean isInTrash(Object dm) {
-    return (dm instanceof ModelElement) &&
-      ((ModelElement)dm).getElementOwnership() == null;
+    return Trash.SINGLETON.contains(dm);
+//     return (dm instanceof ModelElement) &&
+//       ((ModelElement)dm).getElementOwnership() == null;
   }
 
   public void setStats(Hashtable stats) {

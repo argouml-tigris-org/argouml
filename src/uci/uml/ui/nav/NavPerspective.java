@@ -227,7 +227,7 @@ implements Serializable, TreeModel, Cloneable {
     depCentric.addSubTreeModel(new GoProjectModel());
     depCentric.addSubTreeModel(new GoModelToDiagram());
     depCentric.addSubTreeModel(new GoModelToElements());
-    depCentric.addSubTreeModel(new GoElementToDependentElement());
+    depCentric.addSubTreeModel(new GoElement2DependentElement());
 
     classToBehStr.addSubTreeModel(new GoClassifierToStr());
     classToBehStr.addSubTreeModel(new GoClassifierToBeh());

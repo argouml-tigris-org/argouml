@@ -250,7 +250,7 @@ implements TabModelTarget, DocumentListener, ActionListener,
 
 
 class TableModelConstraints extends AbstractTableModel
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+implements VetoableChangeListener, DelayedVChangeListener {
   ////////////////
   // instance varables
   ModelElement _target;

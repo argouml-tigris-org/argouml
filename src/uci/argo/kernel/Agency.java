@@ -219,15 +219,19 @@ public class Agency extends Observable { //implements java.io.Serialization
    * I would call this critique, but it causes a compilation error 
    * because it conflicts with the instance method critique! */
   public static void applyAllCritics(Object dm, Designer d, long reasonCode) {
+    //System.out.println("applyAllCritics for reason:" + dm);
     Class dmClazz = dm.getClass();
     Vector critics = criticsForClass(dmClazz);
+    //System.out.println("critics=" + critics);
     applyCritics(dm, d, critics, reasonCode);
   }
 
   public static void applyAllCritics(Object dm, Designer d) {
+    //System.out.println("applyAllCritics for no reason:" + dm);
     //System.out.println("applying all critics ====================");
     Class dmClazz = dm.getClass();
     Vector critics = criticsForClass(dmClazz);
+    //System.out.println("critics=" + critics);
     applyCritics(dm, d, critics, -1L);
   }
   

@@ -22,8 +22,8 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-// File: CollaborationDiagramGraphModel.java
-// Classes: CollaborationDiagramGraphModel
+// File: CollabDiagramGraphModel.java
+// Classes: CollabDiagramGraphModel
 // Original Author: agauthie@ics.uci.edu
 // $Id$
 
@@ -44,7 +44,7 @@ import uci.uml.Model_Management.*;
  *  representation of the design and the GraphModel interface used by
  *  GEF.  This class handles only UML Use Case Digrams.  */
 
-public class CollaborationDiagramGraphModel extends MutableGraphSupport
+public class CollabDiagramGraphModel extends MutableGraphSupport
 implements MutableGraphModel, VetoableChangeListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -66,7 +66,7 @@ implements MutableGraphModel, VetoableChangeListener {
   public Namespace getNamespace() { return _collab; }
   public void setNamespace(Namespace m) {
     if (!(m instanceof Collaboration)) {
-      System.out.println("invalid namespace for CollaborationDiagramGraphModel");
+      System.out.println("invalid namespace for CollabDiagramGraphModel");
       return;
     }
     if (_collab != null) _collab.removeVetoableChangeListener(this);
@@ -267,5 +267,5 @@ implements MutableGraphModel, VetoableChangeListener {
       }
     }
   }
-} /* end class CollaborationDiagramGraphModel */
+} /* end class CollabDiagramGraphModel */
 

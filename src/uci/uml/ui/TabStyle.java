@@ -48,7 +48,7 @@ import uci.uml.Model_Management.*;
 import uci.uml.ui.props.*;
 
 public class TabStyle extends TabSpawnable
-implements TabFigTarget, PropertyChangeListener, DelayedVetoableChangeListener {
+implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Fig           _target;

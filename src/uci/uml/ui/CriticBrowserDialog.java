@@ -432,7 +432,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 
 
 class TableModelCritics extends AbstractTableModel
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+implements VetoableChangeListener, DelayedVChangeListener {
   ////////////////
   // instance varables
   Vector _target;

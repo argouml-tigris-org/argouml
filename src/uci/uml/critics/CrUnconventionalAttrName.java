@@ -63,10 +63,11 @@ public class CrUnconventionalAttrName extends CrUML {
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
     while (nameStr.startsWith("_")) nameStr = nameStr.substring(1);
     if (nameStr.length() == 0) return NO_PROBLEM;
-    // needs-more-work: another critic should check for all underscores
+    // needs-more-work: should check for all underscores
     char initalChar = nameStr.charAt(0);
     ChangeableKind ck = attr.getChangeable();
     if (ChangeableKind.FROZEN.equals(ck)) return NO_PROBLEM;
+    // needs-more-work: should check for all caps constants
     if (!Character.isLowerCase(initalChar)) {
       return PROBLEM_FOUND;
     }
@@ -97,6 +98,24 @@ public class CrUnconventionalAttrName extends CrUML {
 //  		       " res = " + res);
     return res;
   }
-  
+
+
+  public void initWizard(Wizard w) {
+    if (w instanceof WizMEName) {
+      ToDoItem item = w.getToDoItem();
+      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      String sug = me.getName().getBody();
+      if (sug.startsWith("_"))
+	sug = "_" + sug.substring(1,2).toLowerCase() + sug.substring(2);
+      else
+	sug = sug.substring(0,1).toLowerCase() + sug.substring(1);
+      String ins = "Change the attribute name to start with a "+
+	"lowercase letter.";
+      ((WizMEName)w).setInstructions(ins);
+      ((WizMEName)w).setSuggestion(sug);
+    }
+  }
+  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
 } /* end class CrUnconventionalAttrName */
 

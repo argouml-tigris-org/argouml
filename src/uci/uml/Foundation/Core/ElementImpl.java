@@ -158,7 +158,7 @@ public class ElementImpl implements Element, Highlightable {
   public void setHighlight(boolean x) {
     boolean old = _highlight;
     _highlight = x;
-    firePropertyChange("highlight", old, _highlight);
+    firePropertyChangeNoCritique("highlight", old, _highlight);
   }
 
 
@@ -261,6 +261,13 @@ public class ElementImpl implements Element, Highlightable {
 			    new Boolean(newValue));
   }
 
+  public void firePropertyChangeNoCritique(String propertyName,
+				 boolean oldValue, boolean newValue) {
+	 firePropertyChangeNoCritique(propertyName,
+			    new Boolean(oldValue),
+			    new Boolean(newValue));
+  }
+
   public void firePropertyChange(String propertyName,
 				 int oldValue, int newValue) {
 	 firePropertyChange(propertyName,
@@ -273,6 +280,11 @@ public class ElementImpl implements Element, Highlightable {
   public void firePropertyChange(String propertyName,
 				 Object oldValue, Object newValue) {
     uci.argo.kernel.Designer.TheDesigner.critiqueASAP(this, propertyName);
+    firePropertyChangeNoCritique(propertyName, oldValue, newValue);
+  }
+
+  public void firePropertyChangeNoCritique(String propertyName,
+				 Object oldValue, Object newValue) {
     if (_propertyListeners == null) return;
     if (oldValue != null && oldValue.equals(newValue)) return;
     PropertyChangeEvent evt =

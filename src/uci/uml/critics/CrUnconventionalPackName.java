@@ -23,8 +23,8 @@
 
 
 
-// File: CrUnconventionalPackageName.java
-// Classes: CrUnconventionalPackageName
+// File: CrUnconventionalPackName.java
+// Classes: CrUnconventionalPackName
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -40,9 +40,9 @@ import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Model_Management.*;
 
 
-public class CrUnconventionalPackageName extends CrUML {
+public class CrUnconventionalPackName extends CrUML {
 
-  public CrUnconventionalPackageName() {
+  public CrUnconventionalPackName() {
     setHeadline("Revise Package Name {name}");
     sd("Normally package names are written in all lower case with "+
        "periods used to indicate \"nested\" packages.  "+
@@ -76,5 +76,26 @@ public class CrUnconventionalPackageName extends CrUML {
     return ClClassName.TheInstance;
   }
 
-} /* end class CrUnconventionalPackageName */
+    public void initWizard(Wizard w) {
+    if (w instanceof WizMEName) {
+      ToDoItem item = w.getToDoItem();
+      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      String ins = "Change the name of this package.";
+      String nameStr = me.getName().getBody();
+      String sug = "";
+      int size = nameStr.length();
+      for (int i = 0; i < size; i++) {
+	char c = nameStr.charAt(i);
+	if (Character.isLowerCase(c) || c == '.') sug += c;
+	else if (Character.isUpperCase(c))
+	  sug += Character.toLowerCase(c);
+      }
+      if (sug.equals("")) sug = "PackageName";
+      ((WizMEName)w).setInstructions(ins);
+      ((WizMEName)w).setSuggestion(sug);
+    }
+  }
+  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
+} /* end class CrUnconventionalPackName */
 

@@ -23,8 +23,8 @@
 
 
 
-// File: WzMEName.java
-// Classes: WzMEName
+// File: WizNavigable.java
+// Classes: WizNavigable
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
@@ -42,19 +42,20 @@ import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Model_Management.*;
 
 
-/** A non-modal wizard to help the user change the name of a
- *  ModelElement to a better name. */
+/** A non-modal wizard to help the user change navigability
+ *  of an association. */
 
-public class WizMEName extends Wizard {
+public class WizNavigable extends Wizard {
 
   protected String _instructions =
-  "Please change the name of the offending model element.";
-  protected String _label = "Name:";
-  protected String _suggestion = "suggestion";
+  "Please select one of the following navigability options.";
+  protected String _option0 = "Navigable Toward Start";
+  protected String _option1 = "Navigable Toward End";
+  protected String _option2 = "Navigable Both Ways";
 
-  protected WizStepTextField _step1 = null;
+  protected WizStepChoice _step1 = null;
 
-  public WizMEName() { }
+  public WizNavigable() { }
 
   public int getNumSteps() { return 1; }
 
@@ -69,16 +70,26 @@ public class WizMEName extends Wizard {
     return null;
   }
 
-  public String getSuggestion() {
-    if (_suggestion != null) return _suggestion;
-    ModelElement me = getModelElement();
-    if (me != null) {
-      Name n = me.getName();
-      return n.getBody();
-    }
-    return "";
+  public Vector getOptions() {
+    Vector res = new Vector();
+    Association asc = (Association) getModelElement();
+    AssociationEnd ae0 = (AssociationEnd) asc.getConnection().elementAt(0);
+    AssociationEnd ae1 = (AssociationEnd) asc.getConnection().elementAt(1);
+    Classifier cls0 = ae0.getType();
+    Classifier cls1 = ae1.getType();
+
+    if (cls0 != null && !"".equals(cls0.getName().getBody()))
+      _option0 = "Navigable Toward " + cls0.getName().getBody();
+
+    if (cls1 != null && !"".equals(cls1.getName().getBody()))
+      _option1 = "Navigable Toward " + cls1.getName().getBody();
+
+    // needs-more-work: put in class names
+    res.addElement(_option0);
+    res.addElement(_option1);
+    res.addElement(_option2);
+    return res;
   }
-  public void setSuggestion(String s) { _suggestion = s; }
 
   public void setInstructions(String s) { _instructions = s; }
 
@@ -87,8 +98,8 @@ public class WizMEName extends Wizard {
     switch (newStep) {
     case 1:
       if (_step1 == null) {
-	_step1 = new WizStepTextField(this, _instructions,
-				      _label, getSuggestion());
+	_step1 = new WizStepChoice(this, _instructions, getOptions());
+	_step1.setTarget(_item);
       }
       return _step1;
     }
@@ -104,17 +115,32 @@ public class WizMEName extends Wizard {
     //System.out.println("doAction " + oldStep);
     switch (oldStep) {
     case 1:
-      String newName = _suggestion;
-      if (_step1 != null) newName = _step1.getText();
+      int choice = -1;
+      if (_step1 != null) choice = _step1.getSelectedIndex();
+      if (choice == -1) {
+	System.out.println("nothing selected, should not get here");
+	return;
+      }
       try {
-	ModelElement me = getModelElement();
-	me.setName(new Name(newName));
+	Association asc = (Association) getModelElement();
+	AssociationEnd ae0 = (AssociationEnd) asc.getConnection().elementAt(0);
+	AssociationEnd ae1 = (AssociationEnd) asc.getConnection().elementAt(1);
+	ae0.setIsNavigable(choice == 0 || choice == 2);
+	ae1.setIsNavigable(choice == 1 || choice == 2);
       }
       catch (PropertyVetoException pve) {
-	System.out.println("could not set name");
+	System.out.println("could not set navigablity");
       }
     }
   }
 
+  public boolean canFinish() {
+    if (!super.canFinish()) return false;
+    if (_step == 0) return true;
+    if (_step == 1 && _step1 != null && _step1.getSelectedIndex() != -1)
+      return true;
+    return false;
+  }
 
-} /* end class WizMEName */
+
+} /* end class WizNavigable */

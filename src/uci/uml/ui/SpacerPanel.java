@@ -31,8 +31,15 @@ package uci.uml.ui;
 import java.awt.*;
 import com.sun.java.swing.*;
 
+/** A Swing panel that displays nothing, but takes up a specified
+ *  amount of space.  Used to make panels with GridBagLayouts look
+ *  better. */
+
 public class SpacerPanel extends JPanel {
-  public Dimension getMinimumSize() { return new Dimension(10, 10); }
-  public Dimension getPreferredSize() { return new Dimension(10, 10); }
-  public Dimension getSize() { return new Dimension(10, 10); }
-}
+  public int _w = 10, _h = 10;
+  public SpacerPanel() { }
+  public SpacerPanel(int w, int h) { _w = w; _h = h; }
+  public Dimension getMinimumSize() { return new Dimension(_w, _h); }
+  public Dimension getPreferredSize() { return new Dimension(_w, _h); }
+  public Dimension getSize() { return new Dimension(_w, _h); }
+} /* end class SpacerPanel */

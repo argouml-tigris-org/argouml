@@ -74,5 +74,9 @@ public class CrMultipleAgg extends CrUML {
     else return NO_PROBLEM;
   }
 
+  public Class getWizardClass(ToDoItem item) {
+    return WizAssocComposite.class;
+  }
+
 } /* end class CrMultipleAgg.java */
 

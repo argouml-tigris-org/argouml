@@ -70,5 +70,21 @@ public class CrMissingClassName extends CrUML {
     return ClClassName.TheInstance;
   }
 
+  public void initWizard(Wizard w) {
+    if (w instanceof WizMEName) {
+      ToDoItem item = w.getToDoItem();
+      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      String ins = "Set the name of this class.";
+      String sug = "ClassName";
+      int count = 1;
+      if (me.getNamespace() != null)
+	count = me.getNamespace().getOwnedElement().size();
+      sug = "Class" + (count + 1);
+      ((WizMEName)w).setInstructions(ins);
+      ((WizMEName)w).setSuggestion(sug);
+    }
+  }
+  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
 } /* end class CrMissingClassName.java */
 

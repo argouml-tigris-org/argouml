@@ -46,6 +46,7 @@ CLASSES = \
 	GoListToTypeToItem.class \
 	WizStep.class \
 	WizStepTextField.class \
+	WizStepChoice.class \
 	WizDescription.class 
 
 

@@ -92,5 +92,19 @@ public class CrUnconventionalOperName extends CrUML {
     return res;
   }
 
+  public void initWizard(Wizard w) {
+    if (w instanceof WizMEName) {
+      ToDoItem item = w.getToDoItem();
+      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      String sug = me.getName().getBody();
+      sug = sug.substring(0,1).toLowerCase() + sug.substring(1);
+      String ins = "Change the operation name to start with a "+
+	"lowercase letter.";
+      ((WizMEName)w).setInstructions(ins);
+      ((WizMEName)w).setSuggestion(sug);
+    }
+  }
+  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
 } /* end class CrUnconventionalOperName */
 

@@ -36,8 +36,9 @@ import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
-/** Well-formedness rule [2] for AssociationEnd. See page 28 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
+/** Well-formedness rule [2] for AssociationEnd. See page 28 of UML
+ *  1.1 Semantics. OMG document ad/97-08-04. This Critic is currently
+ *  not used.  It is not registered in Init.java. */
 
 public class CrMultiComposite extends CrUML {
 
@@ -68,5 +69,10 @@ public class CrMultiComposite extends CrUML {
     return PROBLEM_FOUND;
   }
 
-} /* end class CrMultiComposite.java */
+  public Class getWizardClass(ToDoItem item) {
+    return WizAssocComposite.class;
+  }
+
+
+} /* end class CrMultiComposite */
 

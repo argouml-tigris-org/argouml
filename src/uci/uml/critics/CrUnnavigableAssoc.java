@@ -71,5 +71,7 @@ public class CrUnnavigableAssoc extends CrUML {
     return PROBLEM_FOUND;
   }
 
+  public Class getWizardClass(ToDoItem item) { return WizNavigable.class; }
+
 } /* end class CrUnnavigableAssoc */
 

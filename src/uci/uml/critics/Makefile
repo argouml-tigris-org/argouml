@@ -34,6 +34,8 @@ CLASSES = \
 	ClClassName.class \
 	ClOperationCompartment.class \
 	WizMEName.class \
+	WizNavigable.class \
+	WizAssocComposite.class \
 	CrAlreadyRealizes.class \
 	CrAssocNameConflict.class \
 	CrAttrNameConflict.class \
@@ -60,6 +62,7 @@ CLASSES = \
 	CrInvalidJoin.class \
 	CrMergeClasses.class \
 	CrMissingAttrName.class \
+	CrMissingOperName.class \
 	CrMissingClassName.class \
 	CrMissingStateName.class \
 	CrMultiComposite.class \
@@ -97,7 +100,7 @@ CLASSES = \
 	CrUnconventionalAttrName.class \
 	CrUnconventionalClassName.class \
 	CrUnconventionalOperName.class \
-	CrUnconventionalPackageName.class \
+	CrUnconventionalPackName.class \
 	CrUnnavigableAssoc.class \
 	CrUselessAbstract.class \
 	CrUselessInterface.class \

@@ -50,7 +50,7 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
  *  look like arcs and that have editiable names. */
 
 public abstract class FigEdgeModelElement extends FigEdgePoly
-implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener, KeyListener, PropertyChangeListener  { 
+implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener  { 
 
   ////////////////////////////////////////////////////////////////
   // constants

@@ -28,8 +28,8 @@ package uci.uml.ui;
 
 import java.beans.*;
 
-public interface DelayedVetoableChangeListener {
+public interface DelayedVChangeListener {
 
   public void delayedVetoableChange(PropertyChangeEvent pce);
 
-} /* end class delayedVetoableChange */
+} /* end interface DelayedVChangeListener */

@@ -38,6 +38,7 @@ import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Model_Management.*;
+import uci.uml.Behavioral_Elements.State_Machines.*;
 
 public class CrMissingStateName extends CrUML {
 
@@ -67,6 +68,25 @@ public class CrMissingStateName extends CrUML {
   public Icon getClarifier() {
     return ClClassName.TheInstance;
   }
+
+  public void initWizard(Wizard w) {
+    if (w instanceof WizMEName) {
+      ToDoItem item = w.getToDoItem();
+      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      String ins = "Set the name of this state.";
+      String sug = "StateName";
+      if (me instanceof StateVertex) {
+	StateVertex sv = (StateVertex) me;
+	int count = 1;
+	if (sv.getParent() != null)
+	  count = sv.getParent().getSubstate().size();
+	sug = "S" + (count + 1);
+      }
+      ((WizMEName)w).setInstructions(ins);
+      ((WizMEName)w).setSuggestion(sug);
+    }
+  }
+  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrMissingStateName.java */
 

@@ -33,7 +33,7 @@ import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 
-public class GoElementToDependentElement implements TreeModelPrereqs {
+public class GoElement2DependentElement implements TreeModelPrereqs {
 
   public String toString() { return "Element->Dependent Element"; }
 
@@ -51,7 +51,7 @@ public class GoElementToDependentElement implements TreeModelPrereqs {
       return clients.elementAt(0);
     }
     System.out.println("getChild should never be get here "+
-		       "GoElementToDependentElement");
+		       "GoElement2ependentElement");
     return null;
   }
 

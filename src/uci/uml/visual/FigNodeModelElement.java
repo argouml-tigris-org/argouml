@@ -50,7 +50,7 @@ import uci.uml.Foundation.Data_Types.*;
  *  resized. */
 
 public abstract class FigNodeModelElement extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener, KeyListener, PropertyChangeListener  {
+implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener  {
 
   ////////////////////////////////////////////////////////////////
   // constants

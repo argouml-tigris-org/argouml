@@ -85,7 +85,7 @@ public class ChildGenUML implements ChildGenerator {
       EnumerationComposite res = new EnumerationComposite();
       res.addSub(cls.getBehavioralFeature());
       res.addSub(cls.getStructuralFeature());
-      
+
       Vector sms = cls.getBehavior();
       StateMachine sm = null;
       if (sms != null && sms.size() > 0) sm = (StateMachine) sms.elementAt(0);

@@ -61,5 +61,24 @@ public class CrMissingAttrName extends CrUML {
     return NO_PROBLEM;
   }
 
+    public void initWizard(Wizard w) {
+    if (w instanceof WizMEName) {
+      ToDoItem item = w.getToDoItem();
+      ModelElement me = (ModelElement) item.getOffenders().elementAt(0);
+      String ins = "Set the name of this attribute.";
+      String sug = "AttributeName";
+      if (me instanceof Attribute) {
+	Attribute a = (Attribute) me;
+	int count = 1;
+	if (a.getOwner() != null)
+	  count = a.getOwner().getStructuralFeature().size();
+	sug = "attr" + (count + 1);
+      }
+      ((WizMEName)w).setInstructions(ins);
+      ((WizMEName)w).setSuggestion(sug);
+    }
+  }
+  public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
+
 } /* end class CrMissingAttrName */
 
