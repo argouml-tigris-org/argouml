@@ -204,8 +204,9 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     protected void makeUntitledProject() {
         if (getRoot() != null)
-            throw new IllegalStateException("Tried to make a non-empty project "
-					    + "to an untitled project");
+            throw new IllegalStateException(
+                    "Tried to make a non-empty project "
+                    + "to an untitled project");
         Object model =
             UmlFactory.getFactory().getModelManagement().createModel();
         ModelFacade.setName(model, "untitledModel");
@@ -228,21 +229,18 @@ public class Project implements java.io.Serializable, TargetListener {
         
         if (!ModelFacade.isAModel(model)) {
             throw new IllegalArgumentException();
-	}
+        }
         
         LOG.info("making empty project with model: "
-		 + ModelFacade.getName(model));
+		        + ModelFacade.getName(model));
         setRoot(model);
         setCurrentNamespace(model);
         setNeedsSave(false);
-
     }
     
     /**
-     * Find the base name of this project.<p>
-     * 
-     * Previous javadoc comment that Linus don't understand:
-     * Added Eugenio's patches to load 0.8.1 projects.
+     * Find the base name of this project.<p>This is the name minus
+     * any file extension.
      * 
      * @return The name (a String).
      */
@@ -357,29 +355,6 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void addSearchPath(String searchPathElement) {
         this.searchpath.addElement(searchPathElement);
-    }
-
-    /**
-     * @param name the given string containing the searchpath
-     * @return the equivalent url
-     */
-    public URL findMemberURLInSearchPath(String name) {
-        //ignore searchpath, just find it relative to the project file
-        String u = "";
-        if (getURL() != null)
-            u = getURL().toString();
-        u = u.substring(0, u.lastIndexOf("/") + 1);
-        URL theUrl = null;
-        try {
-            theUrl = new URL(u + name);
-        } catch (MalformedURLException murle) {
-            LOG.error(
-		      "MalformedURLException in findMemberURLInSearchPath:"
-		      + u
-		      + name,
-		      murle);
-        }
-        return theUrl;
     }
 
     /**
@@ -513,38 +488,6 @@ public class Project implements java.io.Serializable, TargetListener {
             LOG.debug("Member \"" + name + "\" not found.");
         }
         return null;
-    }
-
-
-    public void loadMembersOfType(String type) {
-        if (type == null) {
-            return;
-        }
-        java.util.Enumeration enumeration = getMembers().elements();
-        try {
-            while (enumeration.hasMoreElements()) {
-                ProjectMember pm = (ProjectMember) enumeration.nextElement();
-                if (type.equalsIgnoreCase(pm.getType())) {
-                    pm.load();
-                }
-            }
-        } catch (IOException ignore) {
-            LOG.error("IOException in makeEmptyProject", ignore);
-        } catch (org.xml.sax.SAXException ignore) {
-            LOG.error("SAXException in makeEmptyProject", ignore);
-        }
-    }
-
-    /**
-     * Load all members.
-     */
-    public void loadAllMembers() {
-        loadMembersOfType("xmi");
-        loadMembersOfType("argo");
-        loadMembersOfType("pgml");
-        loadMembersOfType("todo");
-        loadMembersOfType("text");
-        loadMembersOfType("html");
     }
 
     /**

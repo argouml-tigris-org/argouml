@@ -33,8 +33,6 @@ import java.io.Writer;
 import java.util.Vector;
 import org.apache.log4j.Logger;
 
-import org.xml.sax.SAXException;
-
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.kernel.SaveException;
@@ -146,17 +144,6 @@ public class ProjectMemberTodoList extends ProjectMember {
      */
     public void load(InputStream is) {
         TodoParser.getSingleton().readTodoList(is, true);
-    }
-
-    /**
-     * @see org.argouml.kernel.ProjectMember#load()
-     */
-    public void load() throws IOException, SAXException {
-    	InputStream is = null;
-    	if (getURL() != null) {
-    	    is = getURL().openStream();
-    	    load(is);
-    	}
     }
 
     /**

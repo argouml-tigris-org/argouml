@@ -156,7 +156,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member: "
                               + ((ProjectMember) project.getMembers()
-                                    .elementAt(i)).getURL());
+                                    .elementAt(i)).getName());
                     }
                     String name = projectMember.getName();
                     String originalName = name;
