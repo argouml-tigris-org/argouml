@@ -151,11 +151,8 @@ public class Modeller
 	mClass.setRoot(false);
 
 	if(superclassName != null) {
-	    MPackage mPackage = getPackage(getPackageName(superclassName));
-	    MClass parentClass = (MClass)
-		(new PackageContext(parseState.getContext(), 
-					mPackage)).
-		get(getClassifierName(superclassName));
+	    MClass parentClass = (MClass)getContext(superclassName)
+		.get(getClassifierName(superclassName));
 
 	    MGeneralization mGeneralization = 
 		getGeneralization(currentPackage, parentClass, mClass);
@@ -166,11 +163,8 @@ public class Modeller
 
 	for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
 	    String interfaceName = (String)i.next();
-	    MPackage mPackage = getPackage(getPackageName(interfaceName));
-	    MInterface mInterface =
-		(new PackageContext(parseState.getContext(), 
-					mPackage)).
-		getInterface(getClassifierName(interfaceName));
+	    MInterface mInterface = getContext(interfaceName)
+		.getInterface(getClassifierName(interfaceName));
 
 	    MAbstraction mAbstraction = 
 		getAbstraction(currentPackage, mInterface, mClass);
@@ -191,16 +185,14 @@ public class Modeller
     public void addAnonymousClass(String type)
     {
 	String name = parseState.anonymousClass();
-	MPackage mPackage = getPackage(getPackageName(type));
 	MClassifier mClassifier =
-	    (new PackageContext(parseState.getContext(), mPackage)).
-	    get(getClassifierName(type));
-	Vector superclass = new Vector();
+	    getContext(type).get(getClassifierName(type));
 	Vector interfaces = new Vector();
 	if(mClassifier instanceof MInterface) {
 	    interfaces.add(type);
 	}
-	addClass(name, (short)0, mClassifier instanceof MClass ? type : null, interfaces, "");
+	addClass(name, (short)0,
+		 mClassifier instanceof MClass ? type : null, interfaces, "");
     }
 
     /**
@@ -225,11 +217,8 @@ public class Modeller
 
 	for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
 	    String interfaceName = (String)i.next();
-	    MPackage mPackage = getPackage(getPackageName(interfaceName));
-	    MInterface parentInterface =
-		(new PackageContext(parseState.getContext(), 
-					mPackage)).
-		getInterface(getClassifierName(interfaceName));
+	    MInterface parentInterface = getContext(interfaceName)
+		.getInterface(getClassifierName(interfaceName));
 
 	    MGeneralization mGeneralization = 
 		getGeneralization(currentPackage, parentInterface, mInterface);
@@ -366,12 +355,8 @@ public class Modeller
 	    mParameter.setKind(MParameterDirectionKind.RETURN);
 	    mOperation.addParameter(mParameter);
 	    
-	    typeName = returnType;
-	    mPackage = getPackage(getPackageName(typeName));
-	    mClassifier = 
-		(new PackageContext(parseState.getContext(), 
-					mPackage)).
-		get(getClassifierName(typeName));
+	    mClassifier =
+		getContext(returnType).get(getClassifierName(returnType));
 	    mParameter.setType(mClassifier);
 	}
 
@@ -383,12 +368,8 @@ public class Modeller
 	    mOperation.addParameter(mParameter);
 	    
 	    typeName = (String)parameter.elementAt(1);
-	    mPackage = getPackage(getPackageName(typeName));
-	    mClassifier = 
-		(new PackageContext(parseState.getContext(),
-					mPackage)).
-		get(getClassifierName(typeName));
-
+	    mClassifier =
+		getContext(typeName).get(getClassifierName(typeName));
 	    mParameter.setType(mClassifier);
 	}
     }
@@ -420,10 +401,8 @@ public class Modeller
 	setVisibility(mAttribute, modifiers);
 	mAttribute.setMultiplicity(MMultiplicity.M1_1);
 
-	MPackage mPackage = getPackage(getPackageName(typeSpec));
-	MClassifier mClassifier = 
-	    (new PackageContext(parseState.getContext(), mPackage)).
-	    get(getClassifierName(typeSpec));
+	MClassifier mClassifier =
+	    getContext(typeSpec).get(getClassifierName(typeSpec));
 	mAttribute.setType(mClassifier);
 
 	// Set the initial value for the attribute.
@@ -511,31 +490,24 @@ public class Modeller
     */
     private MPackage getPackage(String name)
     {
-	if(name.equals("")) {
-	    // This is just a placeholder package. Nothing will be
-	    // added to it.
-	    return new MPackageImpl();
-	}
-	else {
-	    MPackage mPackage = searchPackageInModel(name);
-	    if(mPackage == null) {
-
-		mPackage = new MPackageImpl();
-		mPackage.setName(getRelativePackageName(name));
-		mPackage.setNamespace(model);
-
-		// Find the owner for this package.
-		if("".equals(getPackageName(name))) {
-		    model.addOwnedElement(mPackage);
-		} else {
-		    getPackage(getPackageName(name)).addOwnedElement(mPackage);
-		}	
+	MPackage mPackage = searchPackageInModel(name);
+	if(mPackage == null) {
+	    mPackage = new MPackageImpl();
+	    mPackage.setName(getRelativePackageName(name));
+	    mPackage.setNamespace(model);
+	    
+	    // Find the owner for this package.
+	    if("".equals(getPackageName(name))) {
+		model.addOwnedElement(mPackage);
 	    }
-	    if(mPackage.getUUID() == null) {
-		mPackage.setUUID(name);
-	    }		
-	    return mPackage;
+	    else {
+		getPackage(getPackageName(name)).addOwnedElement(mPackage);
+	    }	
 	}
+	if(mPackage.getUUID() == null) {
+	    mPackage.setUUID(name);
+	}		
+	return mPackage;
     }
 
     /**
@@ -723,4 +695,21 @@ public class Modeller
 	    feature.setOwnerScope(MScopeKind.INSTANCE);
 	}
     }
+
+    /**
+       Get the context for a classifier name that may or may not be
+       fully qualified.
+       
+       @param name The classifier name.
+    */
+    private Context getContext(String name)
+    {
+	Context context = parseState.getContext();
+	String packageName = getPackageName(name);
+	if(!"".equals(packageName)) {
+	    context = new PackageContext(context, getPackage(packageName));
+	}
+	return context;
+    }	
+
 }
