@@ -698,7 +698,7 @@ with.
       </orderedlist>
     </sect1>
 
-    <sect1>
+    <sect1 id="issues_subproducts">
       <title>How to relate issues to problems in subproducts</title>
       <indexterm>
         <primary>subproducts</primary>
