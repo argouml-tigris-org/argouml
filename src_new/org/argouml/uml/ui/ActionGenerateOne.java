@@ -67,6 +67,9 @@ public class ActionGenerateOne extends UMLAction {
 	    if (name == null || name.length() == 0) continue;
 	    classes.addElement(cls);
 	}
+	// There is no need to test if classes is empty because
+	// the shouldBeEnabled mechanism blanks out the possibility to
+	// choose this alternative in this case.
 	ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
 	cgd.show();
     }
