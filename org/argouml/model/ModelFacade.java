@@ -2941,6 +2941,21 @@ public class ModelFacade {
 	return illegalArgumentCollection(handle);
     }
 
+
+    /**
+     * Get the modelelement that were commented.
+     *
+     * @param handle the comment that we are getting the model elemets of
+     * @return the modelelements (or null)
+     */
+    public static Collection getAnnotatedElements(Object handle) {
+        if (handle instanceof MComment) {
+            return ((MComment) handle).getAnnotatedElements();
+        }
+        return illegalArgumentCollection(handle);
+    }
+
+    
     /**
      * Get the communication connection of an message.
      *
@@ -6312,6 +6327,22 @@ public class ModelFacade {
 	illegalArgument(handle);
     }
 
+    /**
+     * Sets the list of annotated elements of the given comment.
+     *
+     * @param handle the given comment
+     * @param elems the list of annotated modelelements
+     */
+    public static void setAnnotatedElements(Object handle, Collection elems) {
+        if (handle instanceof MComment
+            && elems instanceof List) {
+            ((MComment) handle).setAnnotatedElements((List) elems);
+            return;
+        }
+        illegalArgument(handle);
+    }
+
+    
     /**
      * Sets the aggregation of some model element.
      *
