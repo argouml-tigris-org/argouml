@@ -123,8 +123,8 @@ public abstract class ProjectMember {
   // actions
 
   public abstract void load() throws IOException, org.xml.sax.SAXException;
-  public abstract void save(String path, boolean overwrite);
-  public abstract void save(String path, boolean overwrite, Writer writer);
+  public abstract void save(String path, boolean overwrite) throws Exception;
+  public abstract void save(String path, boolean overwrite, Writer writer) throws Exception;
 
 } /* end class ProjectMember */
 
