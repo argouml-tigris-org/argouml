@@ -96,6 +96,9 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     protected JScrollPane innerScroll;
     
     private UMLReflectionListModel _implementsModel = null;
+    private UMLReflectionListModel _extendsModel = null;
+    private UMLReflectionListModel _derivedModel = null;
+    private UMLReflectionListModel _connectModel = null;
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -115,8 +118,10 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       Class[] namesToWatch = { MStereotype.class,MNamespace.class,MOperation.class,
 			       MParameter.class,MAttribute.class,MAssociation.class,MClassifier.class };
       setNameEventListening(namesToWatch);
-
-      JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+		
+	  	_extendsModel = new UMLReflectionListModel(this,"generalization",true,"getGeneralizations",null,"addGeneralization","deleteGeneralization");
+      // JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+      JList extendsList = new UMLList(_extendsModel,true);
       extendsList.setBackground(getBackground());
       extendsList.setForeground(Color.blue);
       extendsList.setVisibleRowCount(3);
@@ -141,7 +146,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
       _modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
 
-      JList derivedList = new UMLList(new UMLSpecializationListModel(this,"specialization",true),true);
+	  _derivedModel = new UMLReflectionListModel(this,"specialization",true,"getSpecializations",null,"addSpecialization","deleteSpecialization");
+      JList derivedList = new UMLList(_derivedModel,true);
       derivedList.setForeground(Color.blue);
       derivedList.setVisibleRowCount(3);
       derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);      
@@ -156,6 +162,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       attrList.setVisibleRowCount(3);
       attrScroll= new JScrollPane(attrList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
+	  _connectModel = new UMLReflectionListModel(this,"associations",true,"getAssociations",null,"addAssociation","deleteAssociation");
+      // TODO implement the methods for _connectModel.This is waiting on some advice
       JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
       connectList.setForeground(Color.blue);
       connectList.setVisibleRowCount(3);
@@ -186,51 +194,6 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	    MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	      navigateTo(attr);
         }
-    }
-
-    public void addAssociation() {
-        Object target = getTarget();
-        if(target instanceof MClassifier) {
-            MClassifier classifier = (MClassifier) target;
-            MNamespace ns = classifier.getNamespace();
-            if(ns != null) {
-                MFactory factory = classifier.getFactory();
-                MAssociation newAssociation = factory.createAssociation();
-                if(newAssociation != null) {
-                    MAssociationEnd end = factory.createAssociationEnd();
-                    end.setType(classifier);
-                    newAssociation.addConnection(end);
-                    end = ns.getFactory().createAssociationEnd();
-                    newAssociation.addConnection(end);
-                    ns.addOwnedElement(newAssociation);
-                    navigateTo(newAssociation);
-                }
-            }
-        }
-        // 2002-07-15
-        // Jaap Branderhorst
-        // Force an update of the navigation pane to solve issue 323
-        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
-    }
-
-    public void addGeneralization() {
-        Object target = getTarget();
-        if(target instanceof MGeneralizableElement) {
-            MGeneralizableElement genElem = (MGeneralizableElement) target;
-            MNamespace ns = genElem.getNamespace();
-            if(ns != null) {
-                MGeneralization newGen = ns.getFactory().createGeneralization();
-                if(newGen != null) {
-                    newGen.setChild(genElem);
-                    ns.addOwnedElement(newGen);
-                    navigateTo(newGen);
-                }
-            }
-        }
-        // 2002-07-15
-        // Jaap Branderhorst
-        // Force an update of the navigation pane to solve issue 323
-        ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     public void removeElement() {
@@ -266,13 +229,13 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	 */
     public void addRealization(Integer index) {
     	Object target = getTarget();
-    	if (target instanceof MClass) {
-    		MClass clazz = (MClass)target;	
+    	if (target instanceof MClassifier) {
+    		MClassifier clazz = (MClassifier)target;	
 	    	Vector choices = new Vector();
 	    	Vector selected = new Vector();
 	    	choices.addAll(CoreHelper.getHelper().getAllInterfaces());
 	    	selected.addAll(CoreHelper.getHelper().getRealizedInterfaces(clazz));
-	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-contexts"), true, true);
+	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-realized-interfaces"), true, true);
 	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
 	    	if (returnValue == JOptionPane.OK_OPTION) {
 	    		Iterator it = dialog.getSelected().iterator();
@@ -293,6 +256,18 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	    				}
 	    			}
 	    		}
+	    		it = selected.iterator();
+	    		while (it.hasNext()) {
+	    			MInterface interf = (MInterface)it.next();
+	    			if (!dialog.getSelected().contains(interf)) {
+	    				MAbstraction realization = CoreHelper.getHelper().getRealization(interf, clazz);
+			    		Object pt = ProjectBrowser.TheInstance.getTarget();
+			    		ProjectBrowser.TheInstance.setTarget(realization);
+			    		ActionEvent event = new ActionEvent(this, 1, "delete");
+			    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+			    		ProjectBrowser.TheInstance.setTarget(pt);
+	    			}
+	    		}
 	    		// have to do it like this since propertyset for the elements in the model is not called
 	    		_implementsModel.resetSize();	
 	    	}
@@ -305,8 +280,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	 */
     public Collection getRealizations() {
     	Object target = getTarget();
-    	if (target instanceof MClass) {
-    		return CoreHelper.getHelper().getRealizedInterfaces((MClass)target);
+    	if (target instanceof MClassifier) {
+    		return CoreHelper.getHelper().getRealizedInterfaces((MClassifier)target);
     	}
     	return new Vector();
     }
@@ -317,8 +292,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 	 */
     public void deleteRealization(Integer index) {
     	Object target = getTarget();
-    	if (target instanceof MClass) {
-    		MClass clazz = (MClass)target;
+    	if (target instanceof MClassifier) {
+    		MClassifier clazz = (MClassifier)target;
     		MInterface interf = (MInterface)UMLModelElementListModel.elementAtUtil(CoreHelper.getHelper().getRealizedInterfaces(clazz), index.intValue(), null);
     		MAbstraction abstraction = CoreHelper.getHelper().getRealization(interf, clazz);
     		if (abstraction.getClients().size() == 1 && abstraction.getSuppliers().size() == 1) {
@@ -332,6 +307,177 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     			interf.removeSupplierDependency(abstraction);
     			clazz.removeClientDependency(abstraction);
     		}
+    	}
+    }
+    
+    /**
+	 * Returns all classes this class extends.
+	 * @return Collection
+	 */
+    public Collection getGeneralizations() {
+    	Object target = getTarget();
+    	if (target instanceof MClassifier) {
+    		return CoreHelper.getHelper().getExtendedClasses((MClassifier)target);
+    	}
+    	return new Vector();
+    }
+    
+    /**
+	 * Opens a new window where existing classes can be added to the class as extended classes
+	 * If the classes are on the same diagram, a FigGeneralization is drawn.
+	 * @param index
+	 */
+    public void addGeneralization(Integer index) {
+    	Object target = getTarget();
+    	if (target instanceof MClassifier) {
+    		MClassifier clazz = (MClassifier)target;	
+	    	Vector choices = new Vector();
+	    	Vector selected = new Vector();
+	    	if (target instanceof MInterface) {
+	    		choices.addAll(CoreHelper.getHelper().getAllInterfaces());
+	    	} else {
+	    		choices.addAll(CoreHelper.getHelper().getAllClasses());
+	    	}
+	    	choices.remove(clazz);
+	    	selected.addAll(CoreHelper.getHelper().getExtendedClasses(clazz));
+	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-extended-classes"), true, true);
+	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+	    	if (returnValue == JOptionPane.OK_OPTION) {
+	    		Iterator it = dialog.getSelected().iterator();
+	    		while (it.hasNext()) {
+	    			MClassifier eclass = (MClassifier)it.next();
+	    			if (!selected.contains(eclass)) {
+	    				ProjectBrowser pb = ProjectBrowser.TheInstance;
+	    				ArgoDiagram diagram = pb.getActiveDiagram();
+	    				Fig figclass = diagram.getLayer().presentationFor(clazz);
+	    				Fig figeclass = diagram.getLayer().presentationFor(eclass);
+	    				if (figclass != null && figeclass != null) {
+	    					GraphModel gm = diagram.getGraphModel();
+	    					if (gm instanceof ClassDiagramGraphModel) {
+	    						((ClassDiagramGraphModel)gm).connect(clazz, eclass, MGeneralization.class);
+	    					}
+	    				} else {
+	    					CoreFactory.getFactory().buildGeneralization(clazz, eclass);
+	    				}
+	    			}
+	    		}
+	    		it = selected.iterator();
+	    		while (it.hasNext()) {
+	    			MClassifier eclass = (MClassifier)it.next();
+	    			if (!dialog.getSelected().contains(eclass)) {
+	    				MGeneralization gen = CoreHelper.getHelper().getGeneralization(clazz, eclass);
+			    		Object pt = ProjectBrowser.TheInstance.getTarget();
+			    		ProjectBrowser.TheInstance.setTarget(gen);
+			    		ActionEvent event = new ActionEvent(this, 1, "delete");
+			    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+			    		ProjectBrowser.TheInstance.setTarget(pt);
+	    			}
+	    		}
+	    	}
+    	}
+    }
+    
+    /**
+	 * Deletes the generalization between this class and the class it extends.
+	 * @param index
+	 */
+    public void deleteGeneralization(Integer index) {
+    	Object target = getTarget();
+    	if (target instanceof MClassifier) {
+    		MClassifier clazz = (MClassifier)target;
+    		MClassifier eclass = (MClassifier)UMLModelElementListModel.elementAtUtil(CoreHelper.getHelper().getExtendedClasses(clazz), index.intValue(), null);
+    		MGeneralization gen = CoreHelper.getHelper().getGeneralization(clazz, eclass);
+    		Object pt = ProjectBrowser.TheInstance.getTarget();
+    		ProjectBrowser.TheInstance.setTarget(gen);
+    		ActionEvent event = new ActionEvent(this, 1, "delete");
+    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+    		ProjectBrowser.TheInstance.setTarget(pt);
+    	}
+    }
+    
+    /**
+	 * Returns all classes extending the target of this proppanel.
+	 * @return Collection
+	 */
+    public Collection getSpecializations() {
+    	Object target = getTarget();
+    	if (target instanceof MClassifier) {
+    		return CoreHelper.getHelper().getExtendingClasses((MClassifier)target);
+    	}
+    	return new Vector();
+    }
+    
+    /**
+	 * Opens a new window where existing classes can be added to the class as classes
+	 * extending this class.
+	 * If the classes are on the same diagram, a FigGeneralization is drawn.
+	 * @param index
+	 */
+    public void addSpecialization(Integer index) {
+    	Object target = getTarget();
+    	if (target instanceof MClassifier) {
+    		MClassifier clazz = (MClassifier)target;	
+	    	Vector choices = new Vector();
+	    	Vector selected = new Vector();
+	    	if (target instanceof MInterface) {
+	    		choices.addAll(CoreHelper.getHelper().getAllInterfaces());
+	    	} else {
+	    		choices.addAll(CoreHelper.getHelper().getAllClasses());
+	    	}
+	    	choices.remove(clazz);
+	    	selected.addAll(CoreHelper.getHelper().getExtendingClasses(clazz));
+	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-extending-classes"), true, true);
+	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+	    	if (returnValue == JOptionPane.OK_OPTION) {
+	    		Iterator it = dialog.getSelected().iterator();
+	    		while (it.hasNext()) {
+	    			MClassifier eclass = (MClassifier)it.next();
+	    			if (!selected.contains(eclass)) {
+	    				ProjectBrowser pb = ProjectBrowser.TheInstance;
+	    				ArgoDiagram diagram = pb.getActiveDiagram();
+	    				Fig figclass = diagram.getLayer().presentationFor(clazz);
+	    				Fig figeclass = diagram.getLayer().presentationFor(eclass);
+	    				if (figclass != null && figeclass != null) {
+	    					GraphModel gm = diagram.getGraphModel();
+	    					if (gm instanceof ClassDiagramGraphModel) {
+	    						((ClassDiagramGraphModel)gm).connect(eclass, clazz, MGeneralization.class);
+	    					}
+	    				} else {
+	    					CoreFactory.getFactory().buildGeneralization(eclass, clazz);
+	    				}
+	    			}
+	    		}
+	    		it = selected.iterator();
+	    		while (it.hasNext()) {
+	    			MClassifier eclass = (MClassifier)it.next();
+	    			if (!dialog.getSelected().contains(eclass)) {
+	    				MGeneralization gen = CoreHelper.getHelper().getGeneralization(eclass, clazz);
+			    		Object pt = ProjectBrowser.TheInstance.getTarget();
+			    		ProjectBrowser.TheInstance.setTarget(gen);
+			    		ActionEvent event = new ActionEvent(this, 1, "delete");
+			    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+			    		ProjectBrowser.TheInstance.setTarget(pt);
+	    			}
+	    		}
+	    	}
+    	}
+    }
+    
+    /**
+	 * Deletes the generalization between this class and the class it extends.
+	 * @param index
+	 */
+    public void deleteSpecialization(Integer index) {
+    	Object target = getTarget();
+    	if (target instanceof MClassifier) {
+    		MClassifier clazz = (MClassifier)target;
+    		MClassifier eclass = (MClassifier)UMLModelElementListModel.elementAtUtil(CoreHelper.getHelper().getExtendingClasses(clazz), index.intValue(), null);
+    		MGeneralization gen = CoreHelper.getHelper().getGeneralization(eclass, clazz);
+    		Object pt = ProjectBrowser.TheInstance.getTarget();
+    		ProjectBrowser.TheInstance.setTarget(gen);
+    		ActionEvent event = new ActionEvent(this, 1, "delete");
+    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+    		ProjectBrowser.TheInstance.setTarget(pt);
     	}
     }
 
