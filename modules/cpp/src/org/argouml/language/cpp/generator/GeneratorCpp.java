@@ -249,8 +249,10 @@ public class GeneratorCpp extends Generator
 	String filename = name + getFileExtension();
 	if (!path.endsWith (FILE_SEPARATOR)) path += FILE_SEPARATOR;
 
-	String packagePath = cls.getNamespace().getName();
-	MNamespace parent = cls.getNamespace().getNamespace();
+        String packagePath = "";
+        // avoid model being used as a package name
+        MNamespace parent = cls.getNamespace().getNamespace();
+        if (parent != null) packagePath = cls.getNamespace().getName();
 	while (parent != null) {
 	    // ommit root package name; it's the model's root
 	    if (parent.getNamespace() != null)
@@ -513,7 +515,7 @@ public class GeneratorCpp extends Generator
 	StringBuffer sb = new StringBuffer(80);
 	Iterator clsEnum = classifiers.iterator();
 	while (clsEnum.hasNext()) {
-	    sb.append(generateHeaderImportLine4Item((MClass) clsEnum.next()));
+	    sb.append(generateHeaderImportLine4Item((MModelElement) clsEnum.next()));
 	}
 	return sb.toString();
     }
@@ -658,7 +660,7 @@ public class GeneratorCpp extends Generator
 
 	if (generatorPass != header_pass)
 	{ // include header in .cpp
-	    sb.append(SINGLETON.generateHeaderImportLine4Item((MClass) cls));
+	    sb.append(SINGLETON.generateHeaderImportLine4Item(cls));
 
 	    Collection tValues = cls.getTaggedValues();
 	    if (!tValues.isEmpty()) {
@@ -708,7 +710,7 @@ public class GeneratorCpp extends Generator
 			String name2 = cls.getName();
 			if (name != name2) {
 			    if (checkIncludeNeeded4Element(ae.getAssociation())) {
-				sb.append(SINGLETON.generateHeaderImportLine4Item((MClass) cls2));
+				sb.append(SINGLETON.generateHeaderImportLine4Item(cls2));
 			    }
 			    else if (generatorPass == header_pass) {
 				// predeclare classes which are not
@@ -742,7 +744,7 @@ public class GeneratorCpp extends Generator
 			String name = attr.getName();
 			if (checkIncludeNeeded4Element(attr)) {
 			    sb.append(SINGLETON.generateHeaderImportLine4Item(
-                                          (MClass) attr.getType()));
+                                          attr.getType()));
 			}
 			else if (generatorPass == header_pass) {
 			    // predeclare classes which are not
@@ -1340,7 +1342,7 @@ public class GeneratorCpp extends Generator
 
 	String sClassifierKeyword;
 	if (cls instanceof MClass) sClassifierKeyword = "class";
-	else if (cls instanceof MInterface) sClassifierKeyword = "interface";
+	else if (cls instanceof MInterface) sClassifierKeyword = "class";
 	else return null; // actors, use cases etc.
 	boolean hasBaseClass = false;
 
@@ -1352,18 +1354,6 @@ public class GeneratorCpp extends Generator
 	String tv = generateTaggedValues (cls, DocCommentTags);
 	if (tv != null && tv.length() > 0) {
 	    sb.append ("\n").append (INDENT).append (tv);
-	}
-
-	// Now add visibility
-	sb.append (generateVisibility (cls.getVisibility()));
-
-	// Add other modifiers
-	if (cls.isAbstract() && !(cls instanceof MInterface)) {
-	    sb.append("abstract ");
-	}
-
-	if (cls.isLeaf()) {
-	    sb.append("final ");
 	}
 
 	// add classifier keyword and classifier name
@@ -2654,9 +2644,13 @@ public class GeneratorCpp extends Generator
 
     /**
      * Generate "abstract" keyword for an abstract operation.
+     * In C++, since it does not have an explicit "interface" keyword, we must 
+     * check against this and set the operation to abstract if so.
      */
     public String generateAbstractness (MOperation op) {
-	if (op.isAbstract()) {
+        // use ModelFacade to check if the operation is owned by an interface
+        Object opOwner = ModelFacade.getOwner(op);
+	if (op.isAbstract() || ModelFacade.isAInterface(opOwner)) {
 	    return " = 0";
 	}
 	else {
