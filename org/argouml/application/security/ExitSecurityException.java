@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,56 +22,40 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model;
+package org.argouml.application.security;
 
-
-/** Utility class providing hooks to
- *  operating-system-specific functionality.
+/** An Argo security exception.
  *
  *  @author Thierry Lach
- *  @since ARGO0.9.8
+ *  @since 0.9.4
  */
+public class ExitSecurityException extends SecurityException
+{
+    private boolean hidden = false;
 
-public class OsUtil { 
-
-    /** Do not allow this class to be instantiated.
-     */
-    private OsUtil() {
-    }
-
-    /** 
-     * Check whether we deal with a Windows Operating System.
+    /**
+     * The constructor.
      * 
-     * @return true if this is Windows
      */
-    public static boolean isWin32() {
-        return (System.getProperty("os.name").indexOf("Windows") != -1);
-    }
-    
-    /** 
-     * Check whether we deal with a Macintosh.
+    public ExitSecurityException() {
+        this(false);
+    } 
+
+    /**
+     * The constructor.
      * 
-     * @return true if this is a Mac
+     * @param h true if the exception is hidden
      */
-    public static boolean isMac() {
-        return (System.getProperty("mrj.version") != null);
+    public ExitSecurityException(boolean h) {
+        super();
+	hidden = h;
     }
 
-    /** 
-     * Check whether we deal with a Sun Java. 
-     * 
-     * @return true if this is a Sun Java
+    /**
+     * @return true if this exception is hidden
      */
-    public static boolean isSunJdk() {
-        return (System.getProperty("java.vendor")
-                .equals("Sun Microsystems Inc."));
+    public boolean isHidden() {
+        return hidden;
     }
 
-    /** 
-     * Check whether we deal with a JDK 1.3.x. 
-     * @return true if we deal with Java 1.3.x.
-     */
-    public static boolean isJdk131() {
-        return (System.getProperty("java.version").startsWith("1.3.")); 
-    }
 }
