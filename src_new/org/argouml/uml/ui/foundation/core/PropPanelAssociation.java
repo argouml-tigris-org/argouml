@@ -82,7 +82,7 @@ public class PropPanelAssociation extends PropPanelRelationship {
 
         addSeperator();
 
-        addField(Translator.localize("label.association-ends"),
+        addField(Translator.localize("label.connections"),
                 assocEndScroll);
 
         addSeperator();
