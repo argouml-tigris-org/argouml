@@ -34,6 +34,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.ui.ToolBar;
 
+import org.argouml.application.api.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
@@ -47,7 +48,7 @@ public class WizDescription extends WizStep {
 
   public WizDescription() {
     super();
-    System.out.println("making WizDescription");
+    Argo.log.info("making WizDescription");
 
     _description.setLineWrap(true);
     _description.setWrapStyleWord(true);

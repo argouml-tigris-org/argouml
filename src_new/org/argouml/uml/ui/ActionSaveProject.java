@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.application.api.*;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.tigris.gef.ocl.*;
@@ -79,7 +80,7 @@ public class ActionSaveProject extends UMLAction {
 		fullpath = fullpath.substring(1); // for Windows /D: -> D:
 	    File f = new File(fullpath);
 	    if (f.exists() && !overwrite) {
-		System.out.println("Are you sure you want to overwrite " +
+		Argo.log.info("Are you sure you want to overwrite " +
 				   fullpath + "?");
 	    }
 
@@ -93,7 +94,7 @@ public class ActionSaveProject extends UMLAction {
 	    // zos.flush();
 	    zos.closeEntry();
 	    String parentDirName = fullpath.substring(0, fullpath.lastIndexOf("/"));
-	    System.out.println("Dir ==" + parentDirName);
+	    Argo.log.info("Dir ==" + parentDirName);
 	    p.saveAllMembers(parentDirName, overwrite, fw, zos);
 	    //needs-more-work: in future allow independent saving
 	    p.postSave();

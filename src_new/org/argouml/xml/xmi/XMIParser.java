@@ -32,6 +32,7 @@ import ru.novosoft.uml.xmi.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
+import org.argouml.application.api.*;
 import org.argouml.kernel.Project;
 
 public class XMIParser {
@@ -68,8 +69,8 @@ public class XMIParser {
 
         _proj = p;
 
-        System.out.println("=======================================");
-        System.out.println("== READING MODEL " + url);
+        Argo.log.info("=======================================");
+        Argo.log.info("== READING MODEL " + url);
         try {
             XMIReader reader = new XMIReader();
             InputSource source = new InputSource(url.openStream());
@@ -95,7 +96,7 @@ public class XMIParser {
         catch (Exception ex) {
             ex.printStackTrace();
         }
-        System.out.println("=======================================");
+        Argo.log.info("=======================================");
 
         try {
             _proj.addModel((ru.novosoft.uml.foundation.core.MNamespace) _curModel);

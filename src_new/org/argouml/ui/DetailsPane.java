@@ -35,6 +35,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.argouml.application.api.*;
 import org.argouml.util.*;
 import org.argouml.uml.ui.*;
 import org.argouml.cognitive.ui.*;
@@ -73,7 +74,7 @@ implements ChangeListener, MouseListener {
   // constructors
 
   public DetailsPane(StatusBar sb) {
-    System.out.println("making DetailsPane");
+    Argo.log.info("making DetailsPane");
     ConfigLoader.loadTabs(_tabPanels, "details", sb);
 
 

@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+import org.argouml.application.api.*;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import java.util.*;
@@ -260,7 +261,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
             new Class[] { MElementListener.class });
         }
         catch(Exception e) {
-          System.out.println("NSUML promiscuous listener hack not detected.");
+          Argo.log.info("NSUML promiscuous listener hack not detected.");
         }
         _loadPromisc = false;
       }

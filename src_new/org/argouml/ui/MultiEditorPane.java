@@ -35,6 +35,7 @@ import javax.swing.tree.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.graph.presentation.*;
 
+import org.argouml.application.api.*;
 import org.argouml.util.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.diagram.ui.*;
@@ -61,7 +62,7 @@ implements ChangeListener, MouseListener {
   // constructors
 
   public MultiEditorPane(StatusBar sb) {
-    System.out.println("making MultiEditorPane");
+    Argo.log.info("making MultiEditorPane");
     ConfigLoader.loadTabs(_tabPanels, "multi", sb);
 
     setLayout(new BorderLayout());
