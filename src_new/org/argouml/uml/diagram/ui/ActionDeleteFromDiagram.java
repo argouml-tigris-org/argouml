@@ -77,7 +77,7 @@ public class ActionDeleteFromDiagram extends UMLAction {
     // main methods
 
     /**
-     * Tells if this action shall be enabled or not.
+     * Tells if this action shall be enabled or not. <p>
      *
      * Remove from diagram is not allowed when the diagram
      * is a statechart. This because the diagram = the
@@ -89,7 +89,6 @@ public class ActionDeleteFromDiagram extends UMLAction {
      * @return true if it shall be enabled.
      */
     public boolean shouldBeEnabled() {
-        super.shouldBeEnabled();
         int size = 0;
         // return false if current diagram is a statechart diagram
         Object targetP = ProjectManager.getManager()
@@ -110,7 +109,7 @@ public class ActionDeleteFromDiagram extends UMLAction {
         } catch (Exception e) {
             LOG.error("could not determine number of figs", e);
         }
-        return size > 0;
+        return super.shouldBeEnabled() && (size > 0);
     }
 
     /**
