@@ -49,6 +49,7 @@ public class FigRealization extends FigEdgeModelElement {
     endArrow.setFillColor(Color.white);
     setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
+    _stereo.setText("");
   }
 
   public FigRealization(Object edge) {
@@ -72,7 +73,7 @@ public class FigRealization extends FigEdgeModelElement {
    *  Subclasses should override and update other parts. */
   protected void modelChanged() {
     // do not set _name
-    updateStereotypeText();
+      //updateStereotypeText();
   }
 
 } /* end class FigRealization */

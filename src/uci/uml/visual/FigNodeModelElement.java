@@ -106,7 +106,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     if (getOwner() instanceof MModelElement) {
       MModelElement me = (MModelElement) getOwner();
       String placeString = me.getName();
-	  if (placeString == null) placeString = "new " + me.getUMLClassName();
+      if (placeString == null) placeString = "new " + me.getUMLClassName();
       return placeString;
     }
     return "";

@@ -52,7 +52,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
  *  MClass         ---  FigClass
  *  MInterface       ---  FigClass (needs-more-work?)
  *  MGeneralization  ---  FigGeneralization
- *  Realization     ---  FigGeneralization (needs-more-work)
+ *  Realization     ---  FigDependency (needs-more-work)
  *  MAssociation     ---  FigAssociation
  *  MDependency      ---  FigDependency
  *  </pre>

@@ -527,8 +527,10 @@ public class Project implements java.io.Serializable {
     }
     cls = (MClassifier) _definedTypes.get(s);
     if (cls == null) {
-		cls = new MClassImpl();
-		cls.setName(s);
+	System.out.println("new Type defined!");
+	cls = new MClassImpl();
+	cls.setName(s);
+	cls.setNamespace(getCurrentNamespace());
       _definedTypes.put(s, cls);
     }
     return cls;

@@ -223,12 +223,10 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     //System.out.println("adding class node!!");
     if (_nodes.contains(node)) return;
     _nodes.addElement(node);
-    // needs-more-work: assumes public, user pref for default visibility?
-	//do I have to check the namespace here? (Toby)
-	if (node instanceof MModelElement &&
-		((MModelElement)node).getNamespace() == null) {
-		_model.addOwnedElement((MModelElement) node);
-	}
+    if (node instanceof MModelElement &&
+	((MModelElement)node).getNamespace() == null) {
+	_model.addOwnedElement((MModelElement) node);
+    }
     fireNodeAdded(node);
   }
 
@@ -297,6 +295,8 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       else if ((fromPort instanceof MModel) && (toPort instanceof MModel)) {
 		  MModel fromPack = (MModel) fromPort;
 		  MModel toPack = (MModel) toPort;
+    // needs-more-work: assumes public, user pref for default visibility?
+	//do I have to check the namespace here? (Toby)
 		  if (edgeClass == MDependencyImpl.class) {
 			  // nsuml: using Usage as default
 			  MDependency dep = MMUtil.SINGLETON.buildUsage(fromPack, toPack);

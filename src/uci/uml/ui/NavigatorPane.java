@@ -277,7 +277,7 @@ implements ItemListener, TreeSelectionListener {
   ////////////////////////////////////////////////////////////////
   // inner classes
 
-  class NavigatorMouseListener extends MouseAdapter {
+    class NavigatorMouseListener extends MouseAdapter {
     public void mouseClicked(MouseEvent me) {
       //if (me.isConsumed()) return;
       int row = _tree.getRowForLocation(me.getX(), me.getY());
@@ -304,8 +304,9 @@ implements ItemListener, TreeSelectionListener {
 	    popup.add(a);
 	  }
 	}
-	else if (obj instanceof MClass) {
+	else if (obj instanceof MClassifier) {
 	  popup.add(new ActionGoToDetails("Properties"));
+	  popup.add(new ActionAddExistingNode("Add to Diagram",obj));
 	  // goto state diagram
 	  // goto collaboration diagram(s)
 	  tailActions.addElement(Actions.RemoveFromModel);
@@ -328,6 +329,7 @@ implements ItemListener, TreeSelectionListener {
         me.consume();
       }
     }
+
   } /* end class NavigatorMouseListener */
 
   class NavigatorKeyListener extends KeyAdapter {

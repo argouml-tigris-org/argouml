@@ -446,7 +446,7 @@ private void handlesinglepixel(int x, int y, int pixel) {
     // if you want to compile this with jdk1.1, you have to comment out this method.
     // if you want to compile this with jdk1.2, you MUST NOT comment out this method.
     // Did sun make a good job implementing jdk1.2? :-(((
-    // public void drawString(java.text.AttributedCharacterIterator aci, int i1, int i2) {}
+    public void drawString(java.text.AttributedCharacterIterator aci, int i1, int i2) {}
 
   public void comment(String cmt) {
       p.println("% " + cmt);

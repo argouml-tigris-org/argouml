@@ -149,6 +149,10 @@ implements ItemListener {
     super.setTargetInternal(t);
     MOperation oper = (MOperation) _target;
 
+    Vector offeredTypes = getOfferedTypes();
+    if (offeredTypes != null)
+      _typeField.setModel(new DefaultComboBoxModel(Converter.convert(offeredTypes)));
+
     MVisibilityKind vk = oper.getVisibility();
 	if (vk != null)
 		_visField.setSelectedItem(vk.getName());
@@ -173,8 +177,8 @@ implements ItemListener {
 	Vector parameters = new Vector(oper.getParameters());
 
 	MParameter returnParameter = MMUtil.SINGLETON.getReturnParameter(oper);
-	if (returnParameter != null)
-		_typeField.setSelectedItem(returnParameter.getType());
+	if (returnParameter != null && returnParameter.getType() != null && returnParameter.getType().getName() != null)
+		_typeField.setSelectedItem(returnParameter.getType().getName());
 
 	DefaultTableModel _argsModel = new DefaultTableModel(0,2);
 	parameters.remove(returnParameter);
@@ -272,6 +276,17 @@ implements ItemListener {
     }
   }
 
+
+  public static Vector getOfferedTypes() {
+    // needs-more-work: should update when project changes
+    Project p = ProjectBrowser.TheInstance.getProject();
+    Vector types = p.getDefinedTypesVector();
+    Vector res = new Vector();
+    for (int i = 0; i<types.size();i++) {
+	res.add(((MClassifier)types.get(i)).getName());
+    }
+    return res;
+  }
 
   ////////////////////////////////////////////////////////////////
   // event handlers

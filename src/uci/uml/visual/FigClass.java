@@ -89,6 +89,8 @@ public class FigClass extends FigNodeWithCompartments {
   public FigClass(GraphModel gm, Object node) {
     this();
     setOwner(node);
+    if (node instanceof MClassifier && (((MClassifier)node).getName() != null))
+	_name.setText(((MModelElement)node).getName());
   }
 
   public String placeString() { return "new Class"; }
@@ -110,7 +112,7 @@ public class FigClass extends FigNodeWithCompartments {
     figClone.setOperationVisible(isOperationVisible());
     Rectangle r = getBounds();
     figClone.setBounds(r.x, r.y, r.width, r.height);
-    figClone.modelChanged();
+    figClone.modelChanged();      
     return figClone;
   }
   ////////////////////////////////////////////////////////////////
@@ -315,18 +317,19 @@ public class FigClass extends FigNodeWithCompartments {
       ParserDisplay.SINGLETON.parseOperationCompartment(cls, s);
     }
   }
-
+ 
   protected void modelChanged() {
     super.modelChanged();
     MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
-    //    String clsNameStr = GeneratorDisplay.Generate(cls.getName());
+    // String clsNameStr = GeneratorDisplay.Generate(cls.getName());
     Collection strs = MMUtil.SINGLETON.getAttributes(cls);
     String attrStr = "";
     if (strs != null) {
 	Iterator iter = strs.iterator();
       while (iter.hasNext()) {
 	    MStructuralFeature sf = (MStructuralFeature) iter.next();
+	    sf.addMElementListener(this);
 	    attrStr += GeneratorDisplay.Generate(sf);
 	    if (iter.hasNext())
 	      attrStr += "\n";
@@ -339,6 +342,7 @@ public class FigClass extends FigNodeWithCompartments {
 	Iterator iter = behs.iterator();
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
+	    bf.addMElementListener(this);
 	    operStr += GeneratorDisplay.Generate(bf);
 	    if (iter.hasNext())
 	      operStr += "\n";

@@ -2,6 +2,7 @@ SOURCES= \
 	DialogConstraint.java \
 	AboutBox.java \
 	ActionCreatePseudostate.java \
+	ActionAddExistingNode.java \
 	ActionGoToDetails.java \
 	ActionGoToEdit.java \
 	Actions.java \

@@ -182,7 +182,8 @@ implements DocumentListener, ItemListener {
       _keywordsField.setSelectedItem("None");
 
     MClassifier type = attr.getType();
-    _typeField.setSelectedItem(type);
+    if (type.getName() != null)
+	_typeField.setSelectedItem(type.getName());
 
     MExpression expr = attr.getInitialValue();
     if (expr == null) _initText.setText("");
@@ -237,20 +238,17 @@ implements DocumentListener, ItemListener {
     if (_inChange) return;
     MAttribute attr = (MAttribute) _target;
     Object sel = _typeField.getSelectedItem();
-    MClassifier cls;
     if (sel == null) return;
-    System.out.println("set target type: " + sel);
+    // System.out.println("set target type: " + sel);
+    Project p = ProjectBrowser.TheInstance.getProject();
+    MClassifier type = p.findType((String)sel);
 
-    if (sel instanceof MClassifier) {
-		    System.out.println("have it");
-			cls = (MClassifier) sel;
-	}
-    else {
-		    System.out.println("new one");
-			cls = new MClassifierImpl();
-			cls.setName(sel.toString());
+    if (type == null) {
+	System.out.println("should not be here!");
+	type = new MClassifierImpl();
+	type.setName(sel.toString());
     }
-    attr.setType(cls);
+    attr.setType(type);
   }
 
 
@@ -325,7 +323,12 @@ implements DocumentListener, ItemListener {
   public static Vector getOfferedTypes() {
     // needs-more-work: should update when project changes
     Project p = ProjectBrowser.TheInstance.getProject();
-    return p.getDefinedTypesVector();
+    Vector types = p.getDefinedTypesVector();
+    Vector res = new Vector();
+    for (int i = 0; i<types.size();i++) {
+	res.add(((MClassifier)types.get(i)).getName());
+    }
+    return res;
   }
 
 } /* end class PropPanelAttribute */
