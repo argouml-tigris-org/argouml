@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <sect1 id="logging">
 <title>Logging</title>
-    <para>
-This section is not yet updated to discuss layers.
+<para id="comp-logging-purpose">
+Purpose - to provide an api for debug log and trace messages.
 </para>
+<para>
+The purpose of debug log and trace messages is:
+To provide a mechanism that allows the developer to
+enable output of minor events focused on a specific problem area
+and
+to follow what is going on inside ArgoUML.
+</para>
+<para>
+The Logging is located in <classname>org.argouml.???</classname>
+</para>
+<para>
+The Logging is a Layer 0 component.
+</para>
+<para>
+Logging is currently implemented using log4j.
+</para>
+<warning>
+<para>
+TODO: The rest of this section is not gone through to fit the new components.
+</para>
+</warning>
 <para>
         <application>ArgoUML</application> uses the standard 
         <ulink url="http://jakarta.apache.org/log4j/">log4j</ulink>
@@ -334,4 +355,3 @@ sgml-parent-document: ("cookbook.xml" "sect1" nil)
 End:
 
 -->
-
