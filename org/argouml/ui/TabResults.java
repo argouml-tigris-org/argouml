@@ -49,9 +49,9 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ChildGenRelated;
 import org.argouml.uml.PredicateFind;
 import org.argouml.uml.TMResults;
-import org.argouml.uml.cognitive.ChildGenRelated;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 
