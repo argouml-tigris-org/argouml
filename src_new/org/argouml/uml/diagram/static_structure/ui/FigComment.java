@@ -65,7 +65,6 @@ import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
-
 /** 
  * Class to display a UML note in a diagram 
  * Since we don't need stereotypes for the note and an
@@ -74,7 +73,6 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public class FigComment extends FigNodeModelElement implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener {
     protected static Category cat = Category.getInstance(FigComment.class);
-
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -86,17 +84,16 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
     public int height = 60;
     public int gapY = 10;
 
-    protected boolean _readyToEdit = true;     
+    protected boolean _readyToEdit = true;
 
     public static Font LABEL_FONT;
     public static Font ITALIC_LABEL_FONT;
     public final int MARGIN = 2;
 
     static {
-	LABEL_FONT = MetalLookAndFeel.getSubTextFont();
-	ITALIC_LABEL_FONT = new Font(LABEL_FONT.getFamily(),
-				     Font.ITALIC, LABEL_FONT.getSize());
-    }                                                                     
+        LABEL_FONT = MetalLookAndFeel.getSubTextFont();
+        ITALIC_LABEL_FONT = new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
+    }
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -118,51 +115,51 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
     // constructors
 
     public FigComment() {
-	_body = new FigPoly( Color.black, Color.white);
-	_body.addPoint(x, y);
-	_body.addPoint(x + width - 1 - gapY, y);
-	_body.addPoint(x + width - 1, y + gapY);
-	_body.addPoint(x + width - 1, y + height - 1);
-	_body.addPoint(x, y + height - 1);
-	_body.addPoint(x, y);
-	_body.setFilled(true);
-	_body.setLineWidth(1);
-	
-	_urCorner = new FigPoly(Color.black, Color.white);
-	_urCorner.addPoint(x + width - 1 - gapY, y);
-	_urCorner.addPoint(x + width - 1, y + gapY);
-	_urCorner.addPoint(x + width - 1 - gapY, y + gapY);
-	_urCorner.addPoint(x + width - 1 - gapY, y);
-	_urCorner.setFilled(true);
-	_urCorner.setLineWidth(1);
+        _body = new FigPoly(Color.black, Color.white);
+        _body.addPoint(x, y);
+        _body.addPoint(x + width - 1 - gapY, y);
+        _body.addPoint(x + width - 1, y + gapY);
+        _body.addPoint(x + width - 1, y + height - 1);
+        _body.addPoint(x, y + height - 1);
+        _body.addPoint(x, y);
+        _body.setFilled(true);
+        _body.setLineWidth(1);
 
-	_bigPort = new FigRect(x, y, width, height, null, null);     
-	_bigPort.setFilled(false);
-	_bigPort.setLineWidth(0);
+        _urCorner = new FigPoly(Color.black, Color.white);
+        _urCorner.addPoint(x + width - 1 - gapY, y);
+        _urCorner.addPoint(x + width - 1, y + gapY);
+        _urCorner.addPoint(x + width - 1 - gapY, y + gapY);
+        _urCorner.addPoint(x + width - 1 - gapY, y);
+        _urCorner.setFilled(true);
+        _urCorner.setLineWidth(1);
 
-	_text = new FigText(2, 2, width - 2 - gapY, height - 4, true);
-	_text.setFont(LABEL_FONT);
-	_text.setTextColor(Color.black);
-	_text.setMultiLine(true);
-	_text.setAllowsTab(false);
-	// _text.setText(placeString());        
-	_text.setJustification(FigText.JUSTIFY_LEFT);
-	_text.setFilled(false);
-	_text.setLineWidth(0);
-	//_text.setLineColor(Color.white);
+        _bigPort = new FigRect(x, y, width, height, null, null);
+        _bigPort.setFilled(false);
+        _bigPort.setLineWidth(0);
 
-	// add Figs to the FigNode in back-to-front order
-	addFig(_bigPort); 
-	addFig(_body);
-	addFig(_urCorner);
-	addFig(_text);
+        _text = new FigText(2, 2, width - 2 - gapY, height - 4, true);
+        _text.setFont(LABEL_FONT);
+        _text.setTextColor(Color.black);
+        _text.setMultiLine(true);
+        _text.setAllowsTab(false);
+        // _text.setText(placeString());        
+        _text.setJustification(FigText.JUSTIFY_LEFT);
+        _text.setFilled(false);
+        _text.setLineWidth(0);
+        //_text.setLineColor(Color.white);
 
-	setBlinkPorts(false); //make port invisble unless mouse enters
-	Rectangle r = getBounds();
-	setBounds(r.x, r.y, r.width, r.height);
-	updateEdges();
+        // add Figs to the FigNode in back-to-front order
+        addFig(_bigPort);
+        addFig(_body);
+        addFig(_urCorner);
+        addFig(_text);
 
-	_readyToEdit = false;
+        setBlinkPorts(false); //make port invisble unless mouse enters
+        Rectangle r = getBounds();
+        setBounds(r.x, r.y, r.width, r.height);
+        updateEdges();
+
+        _readyToEdit = false;
     }
 
     /**
@@ -172,8 +169,8 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      * @param node The underlying MComment node
      */
     public FigComment(GraphModel gm, Object node) {
-	this();
-	setOwner(node);
+        this();
+        setOwner(node);
     }
 
     /**
@@ -182,27 +179,27 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      * @param element The annotated model element.
      */
     public FigComment(MModelElement element) {
-	this();                                     // Construct the figure.
-	MComment node = UmlFactory.getFactory().getCore().createComment();         // Create a new Comment node.
-	setOwner(node);                             // Set it as the owner of the figure.
-	element.addComment(node);                   // Tell the annotated element, that it has a comment now.
+        this(); // Construct the figure.
+        MComment node = UmlFactory.getFactory().getCore().createComment(); // Create a new Comment node.
+        setOwner(node); // Set it as the owner of the figure.
+        element.addComment(node); // Tell the annotated element, that it has a comment now.
 
-	// Notes in state diagrams need a special treatment, cause
-	// the nodes in them don't necessary have a namespace, where
-	// we could add the note. So I added this hack... :-(
-	// Andreas Rueckert <a_rueckert@gmx.net>
-	if(element instanceof MStateVertex) { 
+        // Notes in state diagrams need a special treatment, cause
+        // the nodes in them don't necessary have a namespace, where
+        // we could add the note. So I added this hack... :-(
+        // Andreas Rueckert <a_rueckert@gmx.net>
+        if (element instanceof MStateVertex) {
 
-	    ProjectBrowser pb = ProjectBrowser.TheInstance;    // If the current target is a state diagram, we have to
-	    if (pb.getTarget() instanceof UMLStateDiagram) {   // check, if we are editing the diagram.
-		StateDiagramGraphModel gm = (StateDiagramGraphModel)(((UMLStateDiagram)pb.getTarget()).getGraphModel());
-		node.setNamespace(gm.getNamespace());  // We are editing, so we set the Namespace directly.
-	    }
-	} else {
-	    node.setNamespace(element.getNamespace());  // Add the comment to the same namespace as the annotated element.
-	}
+            ProjectBrowser pb = ProjectBrowser.TheInstance; // If the current target is a state diagram, we have to
+            if (pb.getTarget() instanceof UMLStateDiagram) { // check, if we are editing the diagram.
+                StateDiagramGraphModel gm = (StateDiagramGraphModel) (((UMLStateDiagram) pb.getTarget()).getGraphModel());
+                node.setNamespace(gm.getNamespace()); // We are editing, so we set the Namespace directly.
+            }
+        } else {
+            node.setNamespace(element.getNamespace()); // Add the comment to the same namespace as the annotated element.
+        }
 
-	storeNote( placeString());                  // Set the default text for this figure type.
+        storeNote(placeString()); // Set the default text for this figure type.
     }
 
     /**
@@ -210,9 +207,10 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      *   
      * @return The default text for this figure.
      */
-    public String placeString() { 
+    public String placeString() {
         String placeString = retrieveNote();
-        if (placeString == null) placeString = "new note"; 
+        if (placeString == null)
+            placeString = "new note";
         return placeString;
     }
 
@@ -222,13 +220,13 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      * @return The cloned figure.
      */
     public Object clone() {
-	FigComment figClone = (FigComment)super.clone();
-	Vector v = figClone.getFigs();
-	figClone._bigPort = (FigRect)v.elementAt(0);    
-	figClone._body = (FigPoly)v.elementAt(1);
-	figClone._urCorner = (FigPoly)v.elementAt(2);
-	figClone._text = (FigText) v.elementAt(3);
-	return figClone;
+        FigComment figClone = (FigComment) super.clone();
+        Vector v = figClone.getFigs();
+        figClone._bigPort = (FigRect) v.elementAt(0);
+        figClone._body = (FigPoly) v.elementAt(1);
+        figClone._urCorner = (FigPoly) v.elementAt(2);
+        figClone._text = (FigText) v.elementAt(3);
+        return figClone;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -242,134 +240,144 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      *  down to one of the internal Figs.  This allows the user to
      *  initiate direct text editing. */
     public void mouseClicked(MouseEvent me) {
-	if (!_readyToEdit) {
-	    if (getOwner() instanceof MModelElement) {
-		MModelElement own = (MModelElement)getOwner();
-		storeNote("");
-		_readyToEdit = true;
-	    } else {
-		cat.debug("not ready to edit note");
-		return;
-	    }
-	}
-	if (me.isConsumed()) return;
-	if (me.getClickCount() >= 2 &&
-	    !(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
-	    if (getOwner() == null) return;
-	    Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
-	    if (f instanceof MouseListener) ((MouseListener)f).mouseClicked(me);
-	}       
-	me.consume();
+        if (!_readyToEdit) {
+            if (getOwner() instanceof MModelElement) {
+                MModelElement own = (MModelElement) getOwner();
+                _readyToEdit = true;
+            } else {
+                cat.debug("not ready to edit note");
+                return;
+            }
+        }
+        if (me.isConsumed())
+            return;
+        if (me.getClickCount() >= 2 && !(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
+            if (getOwner() == null)
+                return;
+            Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
+            if (f instanceof MouseListener)
+                 ((MouseListener) f).mouseClicked(me);
+        }
+        me.consume();
     }
 
     public void vetoableChange(PropertyChangeEvent pce) {
-	Object src = pce.getSource();
-	if (src == getOwner()) {
-	    DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-	    SwingUtilities.invokeLater(delayedNotify);
-	}
-	else cat.debug("FigNodeModelElement got vetoableChange"+
-				" from non-owner:" + src);
-    }     
+        Object src = pce.getSource();
+        if (src == getOwner()) {
+            DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
+            SwingUtilities.invokeLater(delayedNotify);
+        } else
+            cat.debug("FigNodeModelElement got vetoableChange" + " from non-owner:" + src);
+    }
 
     public void delayedVetoableChange(PropertyChangeEvent pce) {
-	Object src = pce.getSource();
-	startTrans();
-	// update any text, colors, fonts, etc.
-	renderingChanged();
-	// update the relative sizes and positions of internel Figs
-	endTrans();
+        Object src = pce.getSource();
+        startTrans();
+        // update any text, colors, fonts, etc.
+        renderingChanged();
+        // update the relative sizes and positions of internel Figs
+        endTrans();
     }
 
     public void propertyChange(PropertyChangeEvent pve) {
-	Object src = pve.getSource();
-	String pName = pve.getPropertyName();
-	if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
-	    try {
-		startTrans();
-		//parse the text that was edited
-		textEdited((FigText)src);
-		// resize the FigNode to accomodate the new text
-		Rectangle bbox = getBounds();
-		Dimension minSize = getMinimumSize();
-		bbox.width = Math.max(bbox.width, minSize.width);
-		bbox.height = Math.max(bbox.height, minSize.height);
-		setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-		endTrans();
-	    }
-	    catch (PropertyVetoException ex) {
+        Object src = pve.getSource();
+        String pName = pve.getPropertyName();
+        if (pName.equals("editing") && Boolean.FALSE.equals(pve.getNewValue())) {
+            try {
+                startTrans();
+                //parse the text that was edited
+                textEdited((FigText) src);
+                // resize the FigNode to accomodate the new text
+                Rectangle bbox = getBounds();
+                Dimension minSize = getMinimumSize();
+                bbox.width = Math.max(bbox.width, minSize.width);
+                bbox.height = Math.max(bbox.height, minSize.height);
+                setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
+                endTrans();
+            } catch (PropertyVetoException ex) {
                 cat.error("could not parse and use the text entered in figcomment", ex);
-	    }
-	}
-	else super.propertyChange(pve);
-    }  
+            }
+        } else
+            super.propertyChange(pve);
+    }
 
     public void keyPressed(KeyEvent ke) {
-	if (!_readyToEdit) {
-	    if (getOwner() instanceof MModelElement) {
-		storeNote("");
-		_readyToEdit = true;
-	    } else {
-		cat.debug("not ready to edit note");
-		return;
-	    }
-	}
-	if (ke.isConsumed()) return;
-	if (getOwner() == null) return;
-	_text.keyPressed(ke);
+        if (!_readyToEdit) {
+            if (getOwner() instanceof MModelElement) {
+                storeNote("");
+                _readyToEdit = true;
+            } else {
+                cat.debug("not ready to edit note");
+                return;
+            }
+        }
+        if (ke.isConsumed())
+            return;
+        if (getOwner() == null)
+            return;
+        _text.keyPressed(ke);
     }
 
     /** not used, do nothing. */
-    public void keyReleased(KeyEvent ke) { }
+    public void keyReleased(KeyEvent ke) {
+    }
 
     public void keyTyped(KeyEvent ke) {
-    }                         
-        
+    }
+
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
     public void setLineColor(Color col) {
-	// The _text element has no border, so the line color doesn't matter.
-	_body.setLineColor(col);
-	_urCorner.setLineColor(col);
+        // The _text element has no border, so the line color doesn't matter.
+        _body.setLineColor(col);
+        _urCorner.setLineColor(col);
     }
 
-    public Color getLineColor() { return _body.getLineColor(); }
+    public Color getLineColor() {
+        return _body.getLineColor();
+    }
 
     public void setFillColor(Color col) {
-	_body.setFillColor(col);
-	_urCorner.setFillColor(col);
+        _body.setFillColor(col);
+        _urCorner.setFillColor(col);
     }
 
-    public Color getFillColor() { return _body.getFillColor(); }
-    
-    public void setFilled(boolean f) {
-	_text.setFilled(false);  // The text is always opaque.
-	_body.setFilled(f);
-	_urCorner.setFilled(f);
+    public Color getFillColor() {
+        return _body.getFillColor();
     }
-    
-    public boolean getFilled() { return _body.getFilled(); }
+
+    public void setFilled(boolean f) {
+        _text.setFilled(false); // The text is always opaque.
+        _body.setFilled(f);
+        _urCorner.setFilled(f);
+    }
+
+    public boolean getFilled() {
+        return _body.getFilled();
+    }
 
     public void setLineWidth(int w) {
-	_text.setLineWidth(0);  // Make a seamless integration of the text
-	                        // in the note figure.
-	_body.setLineWidth(w);
-	_urCorner.setLineWidth(w);
+        _text.setLineWidth(0); // Make a seamless integration of the text
+        // in the note figure.
+        _body.setLineWidth(w);
+        _urCorner.setLineWidth(w);
     }
-    
-    public int getLineWidth() { return _body.getLineWidth(); }
+
+    public int getLineWidth() {
+        return _body.getLineWidth();
+    }
 
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
-	if(ft == _text)
-	    storeNote( ft.getText());
-    }     
-    
+        if (ft == _text)
+            storeNote(ft.getText());
+    }
+
     public void setEnclosingFig(Fig encloser) {
-	super.setEnclosingFig(encloser);
+        super.setEnclosingFig(encloser);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -381,8 +389,8 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      * @param note The note to store.
      */
     public final void storeNote(String note) {
-	if(getOwner() != null)
-	    ((MModelElement)getOwner()).setName( note);
+        if (getOwner() != null)
+             ((MModelElement) getOwner()).setName(note);
     }
 
     /**
@@ -391,10 +399,12 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      * @return The note from the associated model element.
      */
     public final String retrieveNote() {
-	return (getOwner() != null) ? ((MModelElement)getOwner()).getName() : null;
+        return (getOwner() != null) ? ((MModelElement) getOwner()).getName() : null;
     }
 
-    public boolean getUseTrapRect() { return true; }
+    public boolean getUseTrapRect() {
+        return true;
+    }
 
     /**
      * Get the minimum size for the note figure.
@@ -403,54 +413,53 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      */
     public Dimension getMinimumSize() {
 
-	// Get the size of the text field.
-	Dimension textMinimumSize = _text.getMinimumSize();
+        // Get the size of the text field.
+        Dimension textMinimumSize = _text.getMinimumSize();
 
-	// And add the gaps around the textfield to get the minimum
-	// size of the note.
-	return new Dimension(textMinimumSize.width + 4 + gapY, textMinimumSize.height + 4);
+        // And add the gaps around the textfield to get the minimum
+        // size of the note.
+        return new Dimension(textMinimumSize.width + 4 + gapY, textMinimumSize.height + 4);
     }
 
     public void setBounds(int x, int y, int w, int h) {
-	if (_text == null) return;
+        if (_text == null)
+            return;
 
-	Rectangle oldBounds = getBounds();
+        Rectangle oldBounds = getBounds();
 
-	// Resize the text figure
-	_text.setBounds(x + 2, y  + 2 , w - 4 - gapY , h - 4);
+        // Resize the text figure
+        _text.setBounds(x + 2, y + 2, w - 4 - gapY, h - 4);
 
-	// Resize the big port around the figure
-	_bigPort.setBounds(x, y, w, h);
+        // Resize the big port around the figure
+        _bigPort.setBounds(x, y, w, h);
 
-	// Since this is a complex polygon, there's no easy way to resize it.
-	Polygon newPoly = new Polygon();
-	newPoly.addPoint(x, y);
-	newPoly.addPoint(x + w - 1 - gapY, y);
-	newPoly.addPoint(x + w - 1, y + gapY);
-	newPoly.addPoint(x + w - 1, y + h - 1);
-	newPoly.addPoint(x, y + h - 1);
-	newPoly.addPoint(x, y);
-	_body.setPolygon(newPoly);
+        // Since this is a complex polygon, there's no easy way to resize it.
+        Polygon newPoly = new Polygon();
+        newPoly.addPoint(x, y);
+        newPoly.addPoint(x + w - 1 - gapY, y);
+        newPoly.addPoint(x + w - 1, y + gapY);
+        newPoly.addPoint(x + w - 1, y + h - 1);
+        newPoly.addPoint(x, y + h - 1);
+        newPoly.addPoint(x, y);
+        _body.setPolygon(newPoly);
 
-	// Just move the corner to it's new position.
-	_urCorner.setBounds(x + w - 1 - gapY, y, gapY, gapY);
+        // Just move the corner to it's new position.
+        _urCorner.setBounds(x + w - 1 - gapY, y, gapY, gapY);
 
-	calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-	firePropChange("bounds", oldBounds, getBounds());
+        calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+        firePropChange("bounds", oldBounds, getBounds());
     }
 
     protected void updateBounds() {
-	Rectangle bbox = getBounds();
-	Dimension minSize = getMinimumSize();
-	bbox.width = Math.max(bbox.width, minSize.width);
-	bbox.height = Math.max(bbox.height, minSize.height);
-	setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-    }    
+        Rectangle bbox = getBounds();
+        Dimension minSize = getMinimumSize();
+        bbox.width = Math.max(bbox.width, minSize.width);
+        bbox.height = Math.max(bbox.height, minSize.height);
+        setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
+    }
 
     ///////////////////////////////////////////////////////////////////
     // Internal methods
-
-    
 
     /** 
      * This is called aftern any part of the UML MModelElement has
@@ -458,25 +467,24 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
      */
     protected final void modelChanged(MElementEvent mee) {
         super.modelChanged(mee);
-	
-	    String noteStr = retrieveNote();
-	    if(noteStr != null)
-		_text.setText(noteStr);
-	
+
+        String noteStr = retrieveNote();
+        if (noteStr != null)
+            _text.setText(noteStr);
+
     }
-    
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
      */
     protected void updateNameText() {
-        if (getOwner() != null) {            
-        	String text = ((MComment)getOwner()).getName();    	
-        	if (text != null) {
-        		_text.setText(text);
+        if (getOwner() != null) {
+            String text = ((MComment) getOwner()).getName();
+            if (text != null) {
+                _text.setText(text);
                 calcBounds();
                 setBounds(getBounds());
-        	}
+            }
         }
     }
 
