@@ -356,6 +356,7 @@ class InitPanelsLater implements Runnable {
         _panels.put(MAssociationRoleImpl.class, new PropPanelAssociationRole());
         _panels.put(MAttributeImpl.class, new PropPanelAttribute());
         // _panels.put(MClassImpl.class, new PropPanelClass());
+        _panels.put(MCollaborationImpl.class, new PropPanelCollaboration());
         _panels.put(MClassifierRoleImpl.class, new PropPanelClassifierRole());
         _panels.put(MDependencyImpl.class, new PropPanelDependency());
         _panels.put(MExtendImpl.class, new PropPanelExtend());
