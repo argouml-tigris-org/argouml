@@ -34,7 +34,7 @@ import antlr.collections.impl.BitSet;
  *         for examples of how to modify a antlr grammar file</li>
  *     <li>save java.g and run argo's build script with the 
  *         "<strong>generateparser</strong>" target.</li>
- *     <li>build argo again</li>
+ *     <li>build argo again.</li>
  * </ol>
  * 
  * <p>Version tracking now done with following cvs ID:
@@ -1454,7 +1454,11 @@ public JavaRecognizer(ParserSharedInputState state) {
 		initializer=varInitializer();
 		}
 		if ( inputState.guessing==0 ) {
-			getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
+			
+					if (!isInCompoundStatement()) {
+					getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
+					}
+					
 		}
 	}
 	
