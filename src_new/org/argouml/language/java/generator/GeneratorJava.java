@@ -149,52 +149,44 @@ public class GeneratorJava extends Generator implements PluggableNotation {
   public String generateHeader (MClassifier cls,
                                 String pathname,
                                 String packagePath) {
-    String s = "";
+    StringBuffer sb = new StringBuffer(80);
     //needs-more-work: add user-defined copyright
-    s += "// FILE: " + pathname.replace ('\\','/') +"\n\n";
-    if (packagePath.length() > 0) s += "package " + packagePath + ";\n";
-    s += "import java.util.*;\n";
-
-    s += "\n";
-    return s;
+    sb.append("// FILE: ").append(pathname.replace('\\','/')).append("\n\n");
+    if (packagePath.length() > 0) sb.append("package ").append(packagePath).append(";\n");
+    sb.append("import java.util.*;\n\n");
+    return sb.toString();
   }
 
   public String generateOperation (MOperation op, boolean documented) {
-    String s = "";
+    StringBuffer sb = new StringBuffer(80);
     String nameStr = generateName (op.getName());
     String clsName = generateName (op.getOwner().getName());
 
     if (documented)
-      s += generateConstraintEnrichedDocComment (op) + "\n" + INDENT;
+      sb.append(generateConstraintEnrichedDocComment(op)).append("\n").append(INDENT);
 
-    s += generateAbstractness (op);
-    s += generateChangeability (op);
-    s += generateScope (op);
-    s += generateVisibility (op);
+    sb.append(generateAbstractness(op));
+    sb.append(generateChangeability(op));
+    sb.append(generateScope(op));
+    sb.append(generateVisibility(op));
 
     // pick out return type
     MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
 	  if ( rp != null) {
       MClassifier returnType = rp.getType();
       if (returnType == null && !nameStr.equals (clsName)) {
-        s += "void ";
+        sb.append("void ");
       }
       else if (returnType != null) {
-        s += generateClassifierRef (returnType) + " ";
+        sb.append(generateClassifierRef(returnType)).append(' ');
       }
-    }
-    else {
-      //          removed since it was throwing exceptions and didn't seem to do
-      //                 much,  Curt Arnold 15 Jan 2001
-      //
-      //		if (nameStr.equals(clsName)) s += " "; // this is a constructor!
     }
 
     // name and params
     Vector params = new Vector (op.getParameters());
     params.remove (rp);
 
-    s += nameStr + "(";
+    sb.append(nameStr).append('(');
 
     if (params != null) {
       boolean first = true;
@@ -202,80 +194,77 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       for (int i=0; i < params.size(); i++) {
         MParameter p = (MParameter) params.elementAt (i);
 
-        if (!first) s += ", ";
+        if (!first) sb.append(", ");
 
-        s += generateParameter (p);
+        sb.append(generateParameter(p));
         first = false;
       }
     }
 
-    s += ")";
+    sb.append(')');
 
-    return s;
+    return sb.toString();
 
   }
 
   public String generateAttribute (MAttribute attr, boolean documented) {
-    String s = "";
+    StringBuffer sb = new StringBuffer(80);
 
     if (documented)
-      s += generateConstraintEnrichedDocComment (attr) + "\n" + INDENT;
+      sb.append(generateConstraintEnrichedDocComment(attr)).append('\n').append(INDENT);
 
-    s += generateVisibility(attr);
-    s += generateScope(attr);
-    s += generateChangability(attr);
+    sb.append(generateVisibility(attr));
+    sb.append(generateScope(attr));
+    sb.append(generateChangability(attr));
     if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
-	    s += generateMultiplicity(attr.getMultiplicity()) + " ";
+	    sb.append(generateMultiplicity(attr.getMultiplicity())).append(' ');
 
     MClassifier type = attr.getType();
-    if (type != null) s += generateClassifierRef(type) + " ";
+    if (type != null) sb.append(generateClassifierRef(type)).append(' ');
 
-    String slash = "";
-    //    if (attr.containsStereotype(MStereotype.DERIVED)) slash = "/";
-
-    s += slash + generateName (attr.getName());
+    sb.append(generateName(attr.getName()));
     MExpression init = attr.getInitialValue();
     if (init != null) {
       String initStr = generateExpression(init).trim();
       if (initStr.length() > 0)
-	      s += " = " + initStr;
+	      sb.append(" = ").append(initStr);
     }
 
-    s += ";\n";
+    sb.append(";\n");
 
-    return s;
+    return sb.toString();
   }
 
 
   public String generateParameter(MParameter param) {
-    String s = "";
+    StringBuffer sb = new StringBuffer(20);
     //needs-more-work: qualifiers (e.g., const)
     //needs-more-work: stereotypes...
-    s += generateClassifierRef(param.getType()) + " ";
-    s += generateName(param.getName());
+    sb.append(generateClassifierRef(param.getType())).append(' ');
+    sb.append(generateName(param.getName()));
     //needs-more-work: initial value
-    return s;
+    return sb.toString();
   }
 
 
   public String generatePackage(MPackage p) {
-    String s = "";
+    StringBuffer sb = new StringBuffer(80);
     String packName = generateName(p.getName());
-    s += "package " + packName + " {\n";
+    sb.append("package ").append(packName).append(" {\n");
     Collection ownedElements = p.getOwnedElements();
     if (ownedElements != null) {
       Iterator ownedEnum = ownedElements.iterator();
       while (ownedEnum.hasNext()) {
 	MModelElement me = (MModelElement) ownedEnum.next();
-	s += generate(me);
-	s += "\n\n";
+	sb.append(generate(me));
+	sb.append("\n\n");
       }
     }
     else {
-      s += "(no elements)";
+      sb.append("(no elements)");
     }
-    s += "\n}\n";
-    return s;
+    sb.append("\n}\n");
+    return sb.toString();
   }
 
   /**
@@ -631,39 +620,39 @@ public class GeneratorJava extends Generator implements PluggableNotation {
    */
   public String generateConstraintEnrichedDocComment (MModelElement me,
                                                       MAssociationEnd ae) {
-    String sDocComment = generateConstraintEnrichedDocComment (me);
+    String s = generateConstraintEnrichedDocComment(me);
 
     MMultiplicity m = ae.getMultiplicity();
     if (! (MMultiplicity.M1_1.equals(m) || MMultiplicity.M0_1.equals (m))) {
       // Multiplicity greater 1, that means we will generate some sort of
       // collection, so we need to specify the element type tag
+      StringBuffer sDocComment = new StringBuffer(80);
 
       // Prepare doccomment
-      if (sDocComment != null) {
+      if (s != null) {
         // Just remove closing */
-        sDocComment = sDocComment.substring (0, sDocComment.indexOf ("*/") + 1);
+        sDocComment.append(s.substring(0,s.indexOf("*/")+1));
       }
       else {
-        sDocComment = INDENT + "/**\n" +
-                      INDENT + " * \n" +
-                      INDENT + " *";
+        sDocComment.append(INDENT).append("/**\n")
+                   .append(INDENT).append(" * \n")
+                   .append(INDENT).append(" *");
       }
 
       // Build doccomment
       MClassifier type = ae.getType();
       if (type != null) {
-          sDocComment += " @element-type " + type.getName();
+          sDocComment.append(" @element-type ").append(type.getName());
       } else {
           // REMOVED: 2002-03-11 STEFFEN ZSCHALER: element type unknown is not recognized by the OCL injector...
           //sDocComment += " @element-type unknown";
       }
-      sDocComment += "\n" +
-                     INDENT + " */";
+      sDocComment.append('\n').append(INDENT).append(" */");
 
-      return sDocComment;
+      return sDocComment.toString();
     }
     else {
-      return ((sDocComment != null)?(sDocComment):(""));
+      return (s != null) ? s : "";
     }
   }
 
@@ -684,37 +673,41 @@ public class GeneratorJava extends Generator implements PluggableNotation {
    * @return the documentation comment for the specified model element, either
    * enhanced or completely generated
    */
-  public String generateConstraintEnrichedDocComment (MModelElement me) {
+  static public String generateConstraintEnrichedDocComment (MModelElement me) {
     // Retrieve any existing doccomment
-    String sDocComment = DocumentationManager.getDocs (me);
+    String s = DocumentationManager.getDocs(me);
+    StringBuffer sDocComment = new StringBuffer(80);
 
-    if (sDocComment != null) {
+    if (s != null) {
       // Fix Bug in documentation manager.defaultFor --> look for current INDENT
       // and use it
-      for (int i = sDocComment.indexOf ('\n');
-           i >= 0 && i < sDocComment.length();
-           i = sDocComment.indexOf ('\n', i + 1)) {
-        sDocComment = sDocComment.substring (0, i + 1) +
-                      INDENT + sDocComment.substring (i + 1);
+      int i1 =0;
+      int i2 = s.indexOf('\n');
+      while (i2 != -1) {
+        sDocComment.append(s.substring(i1,i2+1)).append(INDENT);
+        i1 = i2+1;
+        i2 = s.indexOf('\n',i1);
       }
+      sDocComment.append(s.substring(i1));
     }
 
     // Extract constraints
     Collection cConstraints = me.getConstraints();
 
     if (cConstraints.size() == 0) {
-      return (sDocComment != null)?(sDocComment):("");
+      return sDocComment.toString();
     }
 
     // Prepare doccomment
-    if (sDocComment != null) {
+    if (s != null) {
       // Just remove closing */
-      sDocComment = sDocComment.substring (0, sDocComment.indexOf ("*/") + 1);
+      s = sDocComment.toString();
+      sDocComment = new StringBuffer(s.substring(0,s.indexOf("*/")+1));
     }
     else {
-      sDocComment = INDENT + "/**\n" +
-                    INDENT + " * \n" +
-                    INDENT + " *";
+      sDocComment.append(INDENT).append("/**\n")
+                 .append(INDENT).append(" * \n")
+                 .append(INDENT).append(" *");
     }
 
     // Add each constraint
@@ -784,7 +777,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
         otParsed.apply (te);
 
         for (Iterator j = te.getTags(); j.hasNext();) {
-          sDocComment += " " + j.next() + "\n" + INDENT + " *";
+          sDocComment.append(' ').append(j.next()).append('\n').append(INDENT).append(" *");
         }
       }
       catch (java.io.IOException ioe) {
@@ -792,9 +785,9 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       }
     }
 
-    sDocComment += "/";
+    sDocComment.append('/');
 
-    return sDocComment;
+    return sDocComment.toString();
   }
 
   public String generateConstraints(MModelElement me) {
@@ -802,7 +795,8 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     // This method just adds comments to the generated java code. This should be code generated by ocl-argo int he future?
     Collection cs = me.getConstraints();
     if (cs == null || cs.size() == 0) return "";
-    String s = INDENT + "// constraints\n";
+    StringBuffer sb = new StringBuffer(80);
+    sb.append(INDENT).append("// constraints\n");
     int size = cs.size();
     // MConstraint[] csarray = (MConstraint[])cs.toArray();
     // Argo.log.debug("Got " + csarray.size() + " constraints.");
@@ -812,26 +806,26 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       java.util.StringTokenizer st = new java.util.StringTokenizer(constrStr, "\n\r");
       while (st.hasMoreElements()) {
 	String constrLine = st.nextToken();
-	s += INDENT + "// " + constrLine + "\n";
+	sb.append(INDENT).append("// ").append(constrLine).append('\n');
       }
     }
-    s += "\n";
-    return s;
+    sb.append('\n');
+    return sb.toString();
   }
 
   public String generateConstraint(MConstraint c) {
     if (c == null) return "";
-    String s = "";
+    StringBuffer sb = new StringBuffer(20);
     if (c.getName() != null && c.getName().length() != 0)
-      s += generateName(c.getName()) + ": ";
-    s += generateExpression(c);
-    return s;
+      sb.append(generateName(c.getName())).append(": ");
+    sb.append(generateExpression(c));
+    return sb.toString();
   }
 
 
   public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
     // needs-more-work: does not handle n-ary associations
-    String s = "";
+    StringBuffer sb = new StringBuffer(80);
 
     /*
      * Moved into while loop 2001-09-26 STEFFEN ZSCHALER
@@ -850,17 +844,16 @@ public class GeneratorJava extends Generator implements PluggableNotation {
          * Added generation of doccomment 2001-09-26 STEFFEN ZSCHALER
          *
          */
-        s += generateConstraintEnrichedDocComment (a, ae2) + "\n";
-
-        s += generateAssociationEnd(ae2);
+        sb.append(generateConstraintEnrichedDocComment(a,ae2)).append('\n');
+        sb.append(generateAssociationEnd(ae2));
       }
     }
 
-    return s;
+    return sb.toString();
   }
 
   public String generateAssociation(MAssociation a) {
-    String s = "";
+//    String s = "";
 //     String generatedName = generateName(a.getName());
 //     s += "MAssociation " + generatedName + " {\n";
 
@@ -871,7 +864,8 @@ public class GeneratorJava extends Generator implements PluggableNotation {
 //       s += ";\n";
 //     }
 //     s += "}\n";
-    return s;
+//    return s;
+    return "";
   }
 
   public String generateAssociationEnd(MAssociationEnd ae) {
@@ -879,38 +873,39 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     //String s = INDENT + "protected ";
     // must be public or generate public navigation method!
     //String s = INDENT + "public ";
-    String s = INDENT + generateVisibility(ae.getVisibility());
+    StringBuffer sb = new StringBuffer(80);
+    sb.append(INDENT).append(generateVisibility(ae.getVisibility()));
 
     if (MScopeKind.CLASSIFIER.equals(ae.getTargetScope()))
-	s += "static ";
+	sb.append("static ");
 //     String n = ae.getName();
 //     if (n != null && !String.UNSPEC.equals(n)) s += generateName(n) + " ";
 //     if (ae.isNavigable()) s += "navigable ";
 //     if (ae.getIsOrdered()) s += "ordered ";
     MMultiplicity m = ae.getMultiplicity();
     if (MMultiplicity.M1_1.equals(m) || MMultiplicity.M0_1.equals(m))
-      s += generateClassifierRef(ae.getType());
+      sb.append(generateClassifierRef(ae.getType()));
     else
-      s += "Vector "; //generateMultiplicity(m) + " ";
+      sb.append("Vector "); //generateMultiplicity(m) + " ";
 
-    s += " ";
+    sb.append(' ');
 
     String n = ae.getName();
     MAssociation asc = ae.getAssociation();
     String ascName = asc.getName();
     if (n != null  &&
 	n != null && n.length() > 0) {
-      s += generateName(n);
+      sb.append(generateName(n));
     }
     else if (ascName != null  &&
 	ascName != null && ascName.length() > 0) {
-      s += generateName(ascName);
+      sb.append(generateName(ascName));
     }
     else {
-      s += "my" + generateClassifierRef(ae.getType());
+      sb.append("my").append(generateClassifierRef(ae.getType()));
     }
 
-    return s + ";\n";
+    return (sb.append(";\n")).toString();
   }
 
 //   public String generateConstraints(MModelElement me) {
@@ -952,25 +947,25 @@ public class GeneratorJava extends Generator implements PluggableNotation {
 	public String generateSpecification(MClass cls) {
 		Collection realizations = MMUtil.SINGLETON.getSpecifications(cls);
 		if (realizations == null) return "";
-		String s = "";
+		StringBuffer sb = new StringBuffer(80);
 		Iterator clsEnum = realizations.iterator();
 		while (clsEnum.hasNext()) {
 			MInterface i = (MInterface)clsEnum.next();
-			s += generateClassifierRef(i);
-			if (clsEnum.hasNext()) s += ", ";
+			sb.append(generateClassifierRef(i));
+			if (clsEnum.hasNext()) sb.append(", ");
 		}
-		return s;
+		return sb.toString();
 	}
 
 	public String generateClassList(Collection classifiers) {
-		String s = "";
 		if (classifiers == null) return "";
+		StringBuffer sb = new StringBuffer(80);
 		Iterator clsEnum = classifiers.iterator();
 		while (clsEnum.hasNext()) {
-			s += generateClassifierRef((MClassifier)clsEnum.next());
-			if (clsEnum.hasNext()) s += ", ";
+			sb.append(generateClassifierRef((MClassifier)clsEnum.next()));
+			if (clsEnum.hasNext()) sb.append(", ");
 		}
-		return s;
+		return sb.toString();
 	}
 
   public String generateVisibility(MVisibilityKind vis) {
@@ -1032,16 +1027,16 @@ public class GeneratorJava extends Generator implements PluggableNotation {
   public String generateMultiplicity(MMultiplicity m) {
     if (m == null) { return ""; }
     if (MMultiplicity.M0_N.equals(m)) return ANY_RANGE;
-    String s = "";
     Collection v = m.getRanges();
-    if (v == null) return s;
+    if (v == null) return "";
+    StringBuffer sb = new StringBuffer(20);
     Iterator rangeEnum = v.iterator();
     while (rangeEnum.hasNext()) {
       MMultiplicityRange mr = (MMultiplicityRange) rangeEnum.next();
-      s += generateMultiplicityRange(mr);
-      if (rangeEnum.hasNext()) s += ",";
+      sb.append(generateMultiplicityRange(mr));
+      if (rangeEnum.hasNext()) sb.append(',');
     }
-    return s;
+    return sb.toString();
   }
 
 
@@ -1066,25 +1061,25 @@ public class GeneratorJava extends Generator implements PluggableNotation {
 
   public String generateStateBody(MState m) {
     Argo.log.info("GeneratorJava: generating state body");
-    String s = "";
+    StringBuffer sb = new StringBuffer(80);
     MAction entry = m.getEntry();
     MAction exit = m.getExit();
     if (entry != null) {
       String entryStr = Generate(entry);
-      if (entryStr.length() > 0) s += "entry / " + entryStr;
+      if (entryStr.length() > 0) sb.append("entry / ").append(entryStr);
     }
     if (exit != null) {
       String exitStr = Generate(exit);
-      if (s.length() > 0) s += "\n";
-      if (exitStr.length() > 0) s += "exit / " + exitStr;
+      if (sb.length() > 0) sb.append('\n');
+      if (exitStr.length() > 0) sb.append("exit / ").append(exitStr);
     }
     Collection trans = m.getInternalTransitions();
     if (trans != null) {
 	  Iterator iter = trans.iterator();
 	  while(iter.hasNext())
 	      {
-		  if (s.length() > 0) s += "\n";
-		  s += generateTransition((MTransition)iter.next());
+		  if (sb.length() > 0) sb.append('\n');
+		  sb.append(generateTransition((MTransition)iter.next()));
 	      }
       }
 
@@ -1096,19 +1091,19 @@ public class GeneratorJava extends Generator implements PluggableNotation {
 		s += Generate(transarray[i]);
       }
       }*/
-    return s;
+    return sb.toString();
   }
 
   public String generateTransition(MTransition m) {
-    String s = generate(m.getName());
+    StringBuffer sb = new StringBuffer(generate(m.getName()));
     String t = generate(m.getTrigger());
     String g = generate(m.getGuard());
     String e = generate(m.getEffect());
-    if (s.length() > 0) s += ": ";
-    s += t;
-    if (g.length() > 0) s += " [" + g + "]";
-    if (e.length() > 0) s += " / " + e;
-    return s;
+    if (sb.length() > 0) sb.append(": ");
+    sb.append(t);
+    if (g.length() > 0) sb.append(" [").append(g).append(']');
+    if (e.length() > 0) sb.append(" / ").append(e);
+    return sb.toString();
 
     /*  String s = m.getName();
     String t = generate(m.getTrigger());

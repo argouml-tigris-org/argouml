@@ -139,7 +139,7 @@ public class OperationCodePiece extends NamedCodePiece
             );
 
           /*
-          if ((new CodeGenerator()).generateJavadoc(mOperation, writer)) {
+          if (GeneratorJava.generateConstraintEnrichedDocComment(mOperation, writer)) {
             for(int k=0; k<column; k++) {
               writer.write(" ");
             }
