@@ -1177,6 +1177,12 @@ public class FigClass extends FigNodeModelElement {
         super.updateNameText();
         calcBounds();
         setBounds(getBounds());
+        
+        Object owner = getOwner();
+        if (owner != null && ModelFacade.isAbstract(owner)) {
+            Font font = _name.getFont();              
+            _name.setFont(font.deriveFont(Font.ITALIC));
+        }
         // setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
@@ -1241,17 +1247,17 @@ public class FigClass extends FigNodeModelElement {
     }
 
     /**
-     * FigClass does not need postLoad(), this implementation is empty.
+     * FigClass sets the italic font for abstract classes here.
      *
      * @see org.tigris.gef.presentation.Fig#postLoad()
      */
     public void postLoad() {      
 //        super.postLoad();
-//        Object owner = getOwner();
-//        if (owner != null && ModelFacade.isAbstract(owner)) {
-//            Font font = _name.getFont();              
-//            _name.setFont(font.deriveFont(Font.ITALIC));
-//        }
+        Object owner = getOwner();
+        if (owner != null && ModelFacade.isAbstract(owner)) {
+            Font font = _name.getFont();              
+            _name.setFont(font.deriveFont(Font.ITALIC));
+        }
         
     }
 
