@@ -255,6 +255,7 @@ class InitPanelsLater implements Runnable {
         _panels.put(MDataTypeImpl.class, new PropPanelDataType());
         _panels.put(MPackageImpl.class, new PropPanelPackage());
         _panels.put(MAbstractionImpl.class, new PropPanelAbstraction());
+        _panels.put(MGuardImpl.class,new PropPanelGuard());
     }
     catch(Exception e) {
         System.out.println(e.toString() + " in InitPanelsLater.run()");
