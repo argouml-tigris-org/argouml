@@ -695,10 +695,12 @@ ${Name} Build file
  	<!-- This will replace the release in source as required.   -->
  	<!-- ====================================================== -->
 
+        <!--  Not currently functioning
         <replace dir="org/argouml" summary="yes" includes="**/*.java">
              <replacefilter token="@ACTUAL_RELEASE@"
                             value="${argo.core.version}"/>
  	</replace>
+        -->
 
   	<property name="argo.build.version" value="${argo.core.version}"/>
 
