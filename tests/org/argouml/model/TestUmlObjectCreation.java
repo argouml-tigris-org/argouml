@@ -35,6 +35,7 @@ import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.datatypes.DataTypesFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.ui.NavigatorPane;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRoleImpl;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRoleImpl;
@@ -103,6 +104,7 @@ public class TestUmlObjectCreation extends TestCase {
     }
 
 	public void testObjectFactory() {
+		NavigatorPane.setInstance(null);
 		testObjectFactoryType(
 			Uml.ABSTRACTION,
 			MAbstractionImpl.class,
@@ -302,10 +304,6 @@ public class TestUmlObjectCreation extends TestCase {
 		testObjectFactoryType(Uml.EVENT, MEventImpl.class, null, false);
 
 	}
-
-
-
-
 
 	/** @see junit.framework.TestCase#setUp()
 	 */
