@@ -107,8 +107,8 @@ implements TabModelTarget, NavigationListener {
      */
     public void navigateTo(Object element) {
         Iterator iter = _navListeners.iterator();
-	while(iter.hasNext()) {
-	    ((NavigationListener) iter.next()).navigateTo(element);
+	    while(iter.hasNext()) {
+	        ((NavigationListener) iter.next()).navigateTo(element);
 	    }
     }
 
@@ -120,6 +120,44 @@ implements TabModelTarget, NavigationListener {
         while(iter.hasNext()) {
             ((NavigationListener) iter.next()).open(element);
         }
+    }
+
+    public boolean navigateBack(boolean attempt) {
+        boolean navigated = false;
+        Iterator iter = _navListeners.iterator();
+	    while(iter.hasNext()) {
+	        navigated = ((NavigationListener) iter.next()).navigateBack(attempt);
+            if(navigated) attempt = false;
+	    }
+        return navigated;
+    }
+
+    public boolean navigateForward(boolean attempt) {
+        boolean navigated = false;
+        Iterator iter = _navListeners.iterator();
+	    while(iter.hasNext()) {
+	        navigated = ((NavigationListener) iter.next()).navigateForward(attempt);
+            if(navigated) attempt = false;
+	    }
+        return navigated;
+    }
+
+    public boolean isNavigateForwardEnabled() {
+        boolean enabled = false;
+        Iterator iter = _navListeners.iterator();
+	    while(iter.hasNext() && !enabled) {
+	        enabled = ((NavigationListener) iter.next()).isNavigateForwardEnabled();
+	    }
+        return enabled;
+    }
+
+    public boolean isNavigateBackEnabled() {
+        boolean enabled = false;
+        Iterator iter = _navListeners.iterator();
+	    while(iter.hasNext() && !enabled) {
+	        enabled = ((NavigationListener) iter.next()).isNavigateBackEnabled();
+	    }
+        return enabled;
     }
 
 

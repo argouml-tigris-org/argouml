@@ -32,11 +32,25 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.*;
+import org.argouml.uml.ui.foundation.core.*;
+
+import org.tigris.gef.util.Util;
+
+public class PropPanelPackage extends PropPanelNamespace {
+
+  private static ImageIcon _classIcon = Util.loadIconResource("Class");
+  private static ImageIcon _interfaceIcon = Util.loadIconResource("Interface");
+  private static ImageIcon _dataTypeIcon = Util.loadIconResource("DataType");
+  private static ImageIcon _packageIcon = Util.loadIconResource("Package");
+  private static ImageIcon _stereotypeIcon = Util.loadIconResource("Stereotype");
+//  private static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
+//  private static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
 
 
-public class PropPanelPackage extends PropPanel {
-
+    protected PropPanelButton _stereotypeButton;
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -119,9 +133,37 @@ public class PropPanelPackage extends PropPanel {
     stereoList.setVisibleRowCount(1);
     addField(new JScrollPane(stereoList),4,1,ygrowth);
 
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+    
+    new PropPanelButton(this,buttonPanel,_classIcon,"Add class","addClass",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_interfaceIcon,"Add interface","addInterface",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_dataTypeIcon,"Add datatype","addDataType",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    _stereotypeButton = new PropPanelButton(this,buttonPanel,_stereotypeIcon,"Add stereotype","addStereotype",null);
+    _stereotypeButton.setEnabled(false);
+    
+    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete package","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_packageIcon,"Add subpackage","addPackage",null);
+//    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
+//    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
     
     
   }
 
+    public void addStereotype() {
+        Object target = getTarget();
+        if(target instanceof MPackage) {
+            MPackage pkg = (MPackage) target;
+            MStereotype stereo = pkg.getFactory().createStereotype();
+            pkg.addOwnedElement(stereo);
+            navigateTo(stereo);
+        }
+    }
+    
   
-} /* end class PropPanelClass */
+} /* end class PropPanelPackage */
