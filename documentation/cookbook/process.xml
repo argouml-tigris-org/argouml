@@ -263,7 +263,7 @@ according to the rule for creating Issues.
 	<tertiary>Works for me</tertiary>
       </indexterm>
       <para>
-This can be performed by anyone.
+This can be performed by any member of the project (any role).
 There might be special skills involved but it differs widely depending
 on the nature of the Issue.
 </para>
@@ -274,7 +274,8 @@ Do the following:
 	<listitem id="verify_resolved_fixed_start">
 	  <para>
 Pick any Issue that is RESOLVED/FIXED or WORKSFORME and that you have
-not raised, nor solved.
+not raised, nor solved and that is included in a release
+(Target milestone set to a release available on the site).
 <ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=FIXED&amp;resolution=WORKSFORME">The list of all RESOLVED/FIXED and RESOLVED/WORKSFORME issues</ulink>.
 </para>
 	</listitem>
@@ -299,12 +300,6 @@ Do one of the following:
 	      <para>
 If the problem is gone, the feature is present put the Issue in
 Status VERIFIED.
-</para>
-	      <para>
-If you are allowed to do this directly in Issuezilla or not
-depends on your current role in the project.
-If you are not, then get in contact with someone who is
-and let him do the actual resetting of status.
 </para>
 	    </listitem>
 	    <listitem>
@@ -354,7 +349,7 @@ Do this as many times as you like until there are no Issues left.
 	<tertiary>Duplicate</tertiary>
       </indexterm>
       <para>
-This can be performed by anyone.
+This can be performed by any member of the project (any role).
 There might be special skills involved but it differs widely depending
 on the nature of the Issue.
 </para>
@@ -366,6 +361,7 @@ Do the following:
 	  <para>
 Pick any issue that is RESOLVED/(INVALID, WONTFIX, or DUPLICATE) that
 you have not raised nor solved.
+The chosen issue need not be connected to an available release.
 <ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=INVALID&amp;resolution=WONTFIX&amp;resolution=DUPLICATE">The list of all RESOLVED/INVALID, RESOLVED/WONTFIX and RESOLVED/DUPLICATED issues</ulink>.
 </para>
 	</listitem>
@@ -381,14 +377,9 @@ Do one of the following:
 	  <itemizedlist>
 	    <listitem>
 	      <para>
-If you agree with the statement and feel that the Resolution is correct
+If you agree with the statement and feel that the rejection 
+is done for correct reasons,
 put the Issue in Status VERIFIED.
-</para>
-	      <para>
-If you are allowed to do this directly in Issuezilla or not
-depends on your current role in the project.
-If you are not, then get in contact with someone who is
-and convince him to do the actual resetting of status.
 </para>
 	    </listitem>
 	    <listitem>
@@ -416,6 +407,7 @@ Do this as many times as you like until there are no Issues left.
       <para>
 This is performed by the person that originally raised the Issue
 or by the QA responsible for that area.
+You need to be a member of the project (any role).
 This can also be done by someone who would raise the issue but
 did not because it was already present in Issuesilla.
 </para>
@@ -443,12 +435,6 @@ Do one of the following:
 	    <listitem>
 	      <para>
 If you are satisfied, put the Issue in Status CLOSED.
-</para>
-	      <para>
-If you are allowed to do this directly in Issuezilla or not
-depends on your current role in the project.
-If you are not, then get in contact with someone who is
-and let him do the actual resetting of status.
 </para>
 	    </listitem>
 	    <listitem>
@@ -489,7 +475,7 @@ within ArgoUML.
 If this happens this is the way to register that Issue in Issuezilla.
 </para>
       <para>
-This can be performed by anyone.
+This can be performed by any member of the project (any role).
 There might be special skills involved depending on the nature of the Issue.
 </para>
       <para>
