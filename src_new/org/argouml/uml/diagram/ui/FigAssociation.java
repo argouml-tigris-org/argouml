@@ -283,27 +283,22 @@ public class FigAssociation extends FigEdgeModelElement {
 
     protected ArrowHead chooseArrowHead(Object ak, boolean nav) {
         
-        if(!ModelFacade.isAAggregationKind(ak))
-            throw new IllegalArgumentException();
-        
 	ArrowHead arrow = ArrowHeadNone.TheInstance;
 
 	if (nav) {
-	    if (ModelFacade.NONE_AGGREGATIONKIND.equals(ak) || (ak == null))
+	    if (ModelFacade.NONE_AGGREGATIONKIND.equals(ak) || (ak == null)) {
 		arrow = ArrowHeadGreater.TheInstance;
-	    else if (ModelFacade.AGGREGATE_AGGREGATIONKIND.equals(ak))
+            } else if (ModelFacade.AGGREGATE_AGGREGATIONKIND.equals(ak)) {
 		arrow = _NAV_AGGREGATE;
-	    else if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ak))
+            } else if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ak)) {
 		arrow = _NAV_COMP;
-	}
-	else {
+            }
+	} else {
 	    if (ModelFacade.NONE_AGGREGATIONKIND.equals(ak) || (ak == null)) {
 		arrow = ArrowHeadNone.TheInstance;
-	    }
-	    else if (ModelFacade.AGGREGATE_AGGREGATIONKIND.equals(ak)) {
+	    } else if (ModelFacade.AGGREGATE_AGGREGATIONKIND.equals(ak)) {
 		arrow = ArrowHeadDiamond.WhiteDiamond;
-	    }
-	    else if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ak)) {
+	    } else if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ak)) {
 		arrow = ArrowHeadDiamond.BlackDiamond;
 	    }
 	}
@@ -320,27 +315,28 @@ public class FigAssociation extends FigEdgeModelElement {
 	int rSquared = (int) (.3 * length);
 
 	// max distance is set at 100 pixels, (rSquared = 100^2)
-	if ( rSquared > 100 )
+	if ( rSquared > 100 ) {
 	    rSquared = 10000;
-	else
+        } else {
 	    rSquared *= rSquared;
-
+        }
+        
 	int srcDeterminingFactor =
 	    getSquaredDistance(me.getPoint(), firstPoint);
 	int destDeterminingFactor =
 	    getSquaredDistance(me.getPoint(), lastPoint);
 
 	if (srcDeterminingFactor < rSquared &&
-	    srcDeterminingFactor < destDeterminingFactor) {
-        ArgoJMenu multMenu = new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
-        
-	    multMenu.add(ActionMultiplicity.SrcMultOne);
-	    multMenu.add(ActionMultiplicity.SrcMultZeroToOne);
-	    multMenu.add(ActionMultiplicity.SrcMultOneToMany);
-	    multMenu.add(ActionMultiplicity.SrcMultZeroToMany);
-	    popUpActions.insertElementAt(multMenu, popUpActions.size() - 2);
+                srcDeterminingFactor < destDeterminingFactor) {
+            ArgoJMenu multMenu = new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
 
-        ArgoJMenu aggMenu = new ArgoJMenu(BUNDLE, "menu.popup.aggregation");
+            multMenu.add(ActionMultiplicity.SrcMultOne);
+            multMenu.add(ActionMultiplicity.SrcMultZeroToOne);
+            multMenu.add(ActionMultiplicity.SrcMultOneToMany);
+            multMenu.add(ActionMultiplicity.SrcMultZeroToMany);
+            popUpActions.insertElementAt(multMenu, popUpActions.size() - 2);
+
+            ArgoJMenu aggMenu = new ArgoJMenu(BUNDLE, "menu.popup.aggregation");
         
 	    aggMenu.add(ActionAggregation.SrcAggNone);
 	    aggMenu.add(ActionAggregation.SrcAgg);
@@ -348,14 +344,14 @@ public class FigAssociation extends FigEdgeModelElement {
 	    popUpActions.insertElementAt(aggMenu, popUpActions.size() - 2);
 	}
 	else if (destDeterminingFactor < rSquared) {
-        ArgoJMenu multMenu = new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
+            ArgoJMenu multMenu = new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
 	    multMenu.add(ActionMultiplicity.DestMultOne);
 	    multMenu.add(ActionMultiplicity.DestMultZeroToOne);
 	    multMenu.add(ActionMultiplicity.DestMultOneToMany);
 	    multMenu.add(ActionMultiplicity.DestMultZeroToMany);
 	    popUpActions.insertElementAt(multMenu, popUpActions.size() - 2);
 
-        ArgoJMenu aggMenu = new ArgoJMenu(BUNDLE, "menu.popup.aggregation");
+            ArgoJMenu aggMenu = new ArgoJMenu(BUNDLE, "menu.popup.aggregation");
 	    aggMenu.add(ActionAggregation.DestAggNone);
 	    aggMenu.add(ActionAggregation.DestAgg);
 	    aggMenu.add(ActionAggregation.DestAggComposite);
@@ -365,42 +361,42 @@ public class FigAssociation extends FigEdgeModelElement {
 	    // No particular options for right click in middle of line
 	}
 
-	// Options available when right click anywhere on line (added
-	// by BobTarling 7-Jan-2002)
-	Object asc = getOwner();//MAssociation
-	if (asc != null) {
+	// Options available when right click anywhere on line
+	Object association = getOwner();
+	if (association != null) {
 	    // Navigability menu with suboptions built dynamically to
 	    // allow navigability from atart to end, from end to start
 	    // or bidirectional
-
-	    Collection ascEnds = ModelFacade.getConnections(asc);
+	    Collection ascEnds = ModelFacade.getConnections(association);
             Iterator iter = ascEnds.iterator();
 	    Object ascStart = iter.next();
 	    Object ascEnd = iter.next();
 
 	    if (ModelFacade.isAClassifier(ModelFacade.getType(ascStart))
                     && ModelFacade.isAClassifier(ModelFacade.getType(ascEnd))) {
-        ArgoJMenu navMenu = new ArgoJMenu(BUNDLE, "menu.popup.navigability");
+                ArgoJMenu navMenu = new ArgoJMenu(BUNDLE, "menu.popup.navigability");
         
-		navMenu.add(ActionNavigability.newActionNavigability(ascStart,
-								     ascEnd,
-								     ActionNavigability.BIDIRECTIONAL));
-		navMenu.add(ActionNavigability.newActionNavigability(ascStart,
-								     ascEnd,
-								     ActionNavigability.STARTTOEND));
-		navMenu.add(ActionNavigability.newActionNavigability(ascStart,
-								     ascEnd,
-								     ActionNavigability.ENDTOSTART));
+		navMenu.add(ActionNavigability.newActionNavigability(
+                    ascStart,
+		    ascEnd,
+		    ActionNavigability.BIDIRECTIONAL));
+		navMenu.add(ActionNavigability.newActionNavigability(
+                    ascStart,
+		    ascEnd,
+		    ActionNavigability.STARTTOEND));
+		navMenu.add(ActionNavigability.newActionNavigability(
+                    ascStart,
+                    ascEnd,
+                    ActionNavigability.ENDTOSTART));
 
 		popUpActions.insertElementAt(navMenu, popUpActions.size() - 2);
 	    }
 	}
 
-
 	return popUpActions;
     }
 
-    /* returns the name of the OrderingKind.
+    /** Returns the name of the OrderingKind.
      * @return "{ordered}", "{sorted}" or "" if null or "unordered"
      */
     private String getOrderingName(Object orderingKind) {
