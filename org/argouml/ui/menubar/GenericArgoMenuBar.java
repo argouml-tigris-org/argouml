@@ -512,17 +512,15 @@ public class GenericArgoMenuBar extends JMenuBar
         ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }
 
-    /** Getter for property _createDiagramToolbar.
+    /** Getter for the create diagram toolbar.
      * @return Value of property _createDiagramToolbar.
-     *
      */
     public org.argouml.swingext.Toolbar getCreateDiagramToolbar() {
         return _createDiagramToolbar;
     }
     
-    /** Getter for property _editToolbar.
-     * @return Value of property _editToolbar.
-     *
+    /** Getter for the edit toolbar.
+     * @return the edit toolbar.
      */
     public org.argouml.swingext.Toolbar getEditToolbar() {
         if (_editToolbar == null) {
@@ -537,8 +535,8 @@ public class GenericArgoMenuBar extends JMenuBar
         return _editToolbar;
     }
     
-    /** Getter for property _fileToolbar.
-     * @return Value of property _fileToolbar.
+    /** Getter for the file toolbar.
+     * @return the file toolbar.
      *
      */
     public org.argouml.swingext.Toolbar getFileToolbar() {

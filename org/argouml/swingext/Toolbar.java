@@ -73,7 +73,8 @@ public class Toolbar extends JToolBar implements MouseListener {
      * @param floatable true if the toolbar can be dragged to a floating position
      */
     public Toolbar(String title, boolean floatable) {
-        super(title);
+        super();
+        this.setName(title);
         this.setFloatable(floatable);
         this.setRollover(true);
         this.setMargin(new Insets(0,0,0,0));
