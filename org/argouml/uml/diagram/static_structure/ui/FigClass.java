@@ -37,26 +37,27 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.ActionAddAttribute;
+import org.argouml.uml.diagram.ui.ActionAddNote;
+import org.argouml.uml.diagram.ui.ActionAddOperation;
+import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
+import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
+import org.argouml.uml.diagram.ui.ActionModifier;
+import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigAttributesCompartment;
 import org.argouml.uml.diagram.ui.FigCompartment;
 import org.argouml.uml.diagram.ui.FigEmptyRect;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.argouml.uml.diagram.ui.ActionAddNote;
-import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.FigOperationsCompartment;
-import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.argouml.uml.generator.ParserDisplay;
-import org.argouml.uml.diagram.ui.ActionAddOperation;
-import org.argouml.uml.diagram.ui.ActionCompartmentDisplay;
-import org.argouml.uml.diagram.ui.ActionEdgesDisplay;
-import org.argouml.uml.diagram.ui.ActionModifier;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -273,10 +274,13 @@ public class FigClass extends FigNodeModelElement
      *
      * @param     me     a mouse event
      * @return           a collection of menu items
+     *
+     * @see org.tigris.gef.ui.PopupGenerator#getPopUpActions(java.awt.event.MouseEvent)
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
 
+        // Add...
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
         addMenu.add(new ActionAddAttribute());
         addMenu.add(new ActionAddOperation());
@@ -284,6 +288,7 @@ public class FigClass extends FigNodeModelElement
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
+        // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
         if (isAttributesVisible() && isOperationsVisible()) {
             showMenu.add(ActionCompartmentDisplay.hideAllCompartments());
@@ -309,35 +314,60 @@ public class FigClass extends FigNodeModelElement
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
+        // Modifiers ...
         Object mclass = /*(MClass)*/ getOwner();
         ArgoJMenu modifierMenu = new ArgoJMenu("menu.popup.modifiers");
 
         modifierMenu.addCheckItem(
-		new ActionModifier("Public",
-				   "visibility", "getVisibility",
-				   "setVisibility",
-				   /*(MClass)*/ mclass,
-				   (Class) ModelFacade.VISIBILITYKIND,
-				   ModelFacade.PUBLIC_VISIBILITYKIND,
-				   null));
-        modifierMenu.addCheckItem(
-		new ActionModifier("Abstract",
+		new ActionModifier(Translator.localize("checkbox.abstract-uc"),
 				   "isAbstract", "isAbstract", "setAbstract",
 				   mclass));
         modifierMenu.addCheckItem(
-		new ActionModifier("Leaf",
+		new ActionModifier(Translator.localize("checkbox.final-uc"),
 				   "isLeaf", "isLeaf", "setLeaf", mclass));
         modifierMenu.addCheckItem(
-		new ActionModifier("Root",
+		new ActionModifier(Translator.localize("checkbox.root-uc"),
 				   "isRoot", "isRoot", "setRoot", mclass));
         modifierMenu.addCheckItem(
-		new ActionModifier("Active",
+		new ActionModifier(Translator.localize("checkbox.active-uc"),
 				   "isActive", "isActive", "setActive",
 				   mclass));
 
         popUpActions.insertElementAt(modifierMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
-        // end of block
+       
+        // Visibility ...
+        ArgoJMenu visibilityMenu = new ArgoJMenu("menu.popup.visibility");
+
+        ActionModifier a = new ActionModifier(
+                Translator.localize("checkbox.visibility.public-uc"),
+                "visibility", "getVisibility", "setVisibility",
+                mclass,
+                (Class) ModelFacade.VISIBILITYKIND,
+                ModelFacade.PUBLIC_VISIBILITYKIND,
+                null);
+        /*MVW: Strange, but doing this for this one item, 
+         * makes the other 2 default correctly... */
+        a.putValue("SELECTED", new Boolean(ModelFacade.PUBLIC_VISIBILITYKIND
+                .equals(ModelFacade.getVisibility(mclass))));
+        visibilityMenu.addCheckItem(a);
+
+        visibilityMenu.addCheckItem( new ActionModifier(
+                Translator.localize("checkbox.visibility.protected-uc"),
+                "visibility", "getVisibility", "setVisibility",
+                mclass,
+                (Class) ModelFacade.VISIBILITYKIND,
+                ModelFacade.PROTECTED_VISIBILITYKIND,
+                null)); 
+        visibilityMenu.addCheckItem( new ActionModifier(
+                Translator.localize("checkbox.visibility.private-uc"),
+                "visibility", "getVisibility", "setVisibility",
+                mclass,
+                (Class) ModelFacade.VISIBILITYKIND,
+                ModelFacade.PRIVATE_VISIBILITYKIND,
+                null)); 
+        popUpActions.insertElementAt(visibilityMenu,
+                popUpActions.size() - POPUP_ADD_OFFSET);
 
         return popUpActions;
     }
@@ -739,9 +769,9 @@ public class FigClass extends FigNodeModelElement
             return;
         }
         if (fg == getAttributesFig()) {
-            ActionAddAttribute.getSingleton().actionPerformed(null);
+            (new ActionAddAttribute()).actionPerformed(null);
         } else {
-            ActionAddOperation.getSingleton().actionPerformed(null);
+            (new ActionAddOperation()).actionPerformed(null);
         }
         // TODO: When available use getFigs() returning array
         ft = (CompartmentFigText) new Vector(fg.getFigs(null)).lastElement();
@@ -835,9 +865,8 @@ public class FigClass extends FigNodeModelElement
             updateOperations();
             damage();
         }
-        if (mee != null 
-                && mee.getSource().equals(
-                        ModelFacade.getStereoType(getOwner()))) {
+        if (mee != null && ModelFacade.getStereotypes(getOwner())
+                                .contains(mee.getSource())) {
             updateStereotypeText();
             damage();
         }
