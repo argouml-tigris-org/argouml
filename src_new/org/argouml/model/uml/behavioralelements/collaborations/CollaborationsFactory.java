@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -135,7 +135,7 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     /**
      * Creates a classifierrole and adds it to the given collaboration
      * @param collaboration
-     * @return
+     * @return the created classifier role
      */
     public Object buildClassifierRole(Object collaboration) {
         if (ModelFacade.isACollaboration(collaboration)) {
@@ -171,7 +171,7 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      * given represented element.
      * @param namespace
      * @param representedElement
-     * @return
+     * @return the created collaboration
      */
     public Object buildCollaboration(Object namespace, Object representedElement) {
     	if (ModelFacade.isANamespace(namespace) && (ModelFacade.isAClassifier(representedElement) || ModelFacade.isAObject(representedElement))) {

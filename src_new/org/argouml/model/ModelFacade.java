@@ -353,7 +353,7 @@ public class ModelFacade {
     private ModelFacade() {}
 
     /**
-     * @return
+     * @return the ModelFacade singleton object
      */
     public static ModelFacade getFacade() {
         return singleton;
@@ -399,7 +399,7 @@ public class ModelFacade {
     /**
      * Recognizer for ActionExpression
      * @param handle
-     * @return
+     * @return true if handle is an ActionExpression
      */
     public static boolean isAActionExpression(Object handle) {
         return handle instanceof MActionExpression;
@@ -408,7 +408,7 @@ public class ModelFacade {
     /**
      * Recognizer for ActionSequence
      * @param handle
-     * @return
+     * @return true if handle is an action sequence
      */
     public static boolean isAActionSequence(Object handle) {
         return handle instanceof MActionSequence;
@@ -1998,7 +1998,7 @@ public class ModelFacade {
     /**
      * Returns the effect of some transition
      * @param handle
-     * @return
+     * @return the effect
      */
     public static Object getEffect(Object handle) {
         if (handle instanceof MTransition) {
@@ -2031,7 +2031,7 @@ public class ModelFacade {
     /**
      * Returns the entry action to a state
      * @param handle
-     * @return
+     * @return the entry
      */
     public static Object getEntry(Object handle) {
         if (handle instanceof MState) {
@@ -2044,7 +2044,7 @@ public class ModelFacade {
     /**
      * Returns the exit action to a state
      * @param handle
-     * @return
+     * @return the exit action
      */
     public static Object getExit(Object handle) {
         if (handle instanceof MState) {
@@ -2209,7 +2209,7 @@ public class ModelFacade {
     /**
      * Returns the includes for some use case
      * @param handle
-     * @return
+     * @return the includes as a Collection
      */
     public static Collection getIncludes(Object handle) {
         if (handle instanceof MUseCase) {
@@ -2222,7 +2222,7 @@ public class ModelFacade {
     /**
      * Returns the includes for some use case
      * @param handle
-     * @return
+     * @return the includes as a Collection
      */
     public static Collection getIncludes2(Object handle) {
         if (handle instanceof MUseCase) {
@@ -2290,7 +2290,7 @@ public class ModelFacade {
     /**
      * Returns the interaction for some message
      * @param handle
-     * @return
+     * @return the interaction
      */
     public static Object getInteraction(Object handle) {
         if (handle instanceof MMessage) {
@@ -2657,7 +2657,7 @@ public class ModelFacade {
     /**
      * Returns the do activity action of a state
      * @param handle
-     * @return
+     * @return the do activity
      */
     public static Object getDoActivity(Object handle) {
         if (handle instanceof MState) {
@@ -3019,9 +3019,9 @@ public class ModelFacade {
     }
 
     /**
-     * Returns the recurense iteration expression of an action
+     * Returns the recurrence iteration expression of an action
      * @param handle
-     * @return
+     * @return the recurrence
      */
     public static Object getRecurrence(Object handle) {
         if (handle instanceof MAction) {
@@ -3060,7 +3060,7 @@ public class ModelFacade {
     /**
      * Returns the script belonging to a given action
      * @param handle
-     * @return
+     * @return the script
      */
     public static Object getScript(Object handle) {
         if (handle instanceof MAction) {
@@ -3073,7 +3073,7 @@ public class ModelFacade {
     /**
      * Returns the sender object of a stimulus or a message
      * @param handle
-     * @return
+     * @return the sender
      */
     public static Object getSender(Object handle) {
         if (handle instanceof MStimulus) {
@@ -3088,8 +3088,9 @@ public class ModelFacade {
 
     /**
      * Returns the sender object of a stimulus or a message
+     * TODO: Check if this javadoc comment is really correct?
      * @param handle
-     * @return
+     * @return the signal
      */
     public static Object getSignal(Object handle) {
         if (handle instanceof MSendAction) {
@@ -3598,7 +3599,7 @@ public class ModelFacade {
     /**
      * Returns the action belonging to some message
      * @param handle
-     * @return
+     * @return the action
      */
     public static Object getAction(Object handle) {
         if (handle instanceof MMessage) {
@@ -3611,7 +3612,7 @@ public class ModelFacade {
     /**
      * Returns the activator belonging to some message
      * @param handle
-     * @return
+     * @return the activator
      */
     public static Object getActivator(Object handle) {
         if (handle instanceof MMessage) {
@@ -3624,7 +3625,7 @@ public class ModelFacade {
     /**
      * Returns the actual arguments for a given action.
      * @param handle
-     * @return
+     * @return the actual arguments
      */
     public static Collection getActualArguments(Object handle) {
         if (handle instanceof MAction) {
@@ -3637,7 +3638,7 @@ public class ModelFacade {
     /**
      * Returns an addition for a given inlcude.
      * @param handle
-     * @return
+     * @return the addition
      */
     public static Object getAddition(Object handle) {
         if (handle instanceof MInclude) {
