@@ -4,22 +4,22 @@ First, you need Java installed. At the moment JDK1.2.2 is best for Argo, but 1.3
 
 --- set JAVA_HOME environment variable to where Java is installed on your disk.
 
-Then, you need jakarta-ant installed. This includes 
+Then, you need ANT 1.2 (http://jakarta.apache.org) installed. This includes 
 
 --- setting ANT_HOME environment variable
---- adding ANT_HOME/bin to your PATH environment variable, so you can call "ant" from command prompt
 
 Next, you need to have 
 
---- gef.jar, xml4j.jar, nsuml.jar and ocl-argo.jar in argouml/lib
+--- gef.jar, xerces.jar, nsuml.jar and ocl-argo.jar in argouml/lib
 
 which must be next to argouml/src_new in your directory structure.
 
 Then, you can just 
 
---- type (run) "ant"
+--- type (run) "build package"
 
 and ArgoUML will be compiled. Please note that the build.xml sets its own CLASSPATH, there is no need for you to set one up.
 
 Good luck,
-Toby
+Toby 
+(with modifications by Curt Arnold)

@@ -2,14 +2,6 @@
 
 <!-- ===========================================================================
 
-!!!!!!!!!!!!!!!!  Now requires ANT 1.2   !!!!!!!!!!!!!!!!!!!!!
-if you get a message like:
-
-build.xml:162: Could not create task of type: copy because I can't find it in th
-e list of task class definitions
-
-You are running not running ANT 1.2
-
 
                            * ================== *
                            |  How to build Argo |
@@ -149,7 +141,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="debug" value="off"/>
     <property name="optimize" value="on"/>
-    <property name="deprecation" value="on"/>
+    <property name="deprecation" value="off"/>
 
     <property name="src.dir" value="../src_new"/>
     <property name="lib.dir" value="../lib"/>
@@ -165,7 +157,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="dist.dir" value="${build.dir}/dist"/>
     <property name="docs.dir" value="${build.dir}/doc"/>
 
-    <exec executable="set user.home=C:\" os="windows" />
+    <exec command="set user.home=C:\" os="windows" />
     <property file="${user.home}/.ant.properties"/>
 
   </target>
@@ -206,11 +198,14 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <!-- create directories -->
     <echo message="Preparing the build directories"/>
     <mkdir dir="${build.dir}"/>
-    <copy todir="${build.dest}/org/argouml/Images">
-      <fileset dir="${build.src}/org/argouml/Images" includes="**/**" excludes="CVS/**" />
-    </copy>
-    <copy file="${build.src}/org/argouml/argo.ini" tofile="${build.dest}/org/argouml/argo.ini" />
-    <copy file="${build.src}/org/argouml/default.xmi" tofile="${build.dest}/org/argouml/default.xmi" />
+    <copydir src="${build.src}/org/argouml/Images"
+             dest="${build.dest}/org/argouml/Images"
+             includes="**/**"
+             excludes="CVS/**"/>
+    <copyfile src="${build.src}/org/argouml/argo.ini"
+              dest="${build.dest}/org/argouml/argo.ini"/>
+    <copyfile src="${build.src}/org/argouml/default.xmi"
+              dest="${build.dest}/org/argouml/default.xmi"/>
   </target>
 
   <!-- =================================================================== -->
@@ -250,15 +245,17 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="package" depends="compile">
     <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
     <filter token="version" value="${version}"/>
-    <copy file="${manifest}" tofile="${build.dest}/${manifest}" filtering="on" />
+    <copyfile src="${manifest}"
+              dest="${build.dest}/${manifest}"
+              filtering="on"
+    />
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/argouml/**"
          excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
          manifest="${build.dest}/${manifest}"/>
-    <copy todir="${build.dir}">
-      <fileset dir="${lib.dir}" />
-    </copy>
+    <copydir src="${lib.dir}"
+             dest="${build.dir}"/>
   </target>
 
   <!-- =================================================================== -->
@@ -277,10 +274,13 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="${Name}-${version}.zip" basedir="${build.dir}" includes="*.jar"/>
-    <tar tarfile="${Name}-${version}.tar" basedir="${build.dir}" includes="*.jar"/>
+    <mkdir dir="${dist.dir}"/>
+    <copydir src="${build.dir}" dest="${dist.dir}" excludes="**/${ignore_this}"/>
+    <zip zipfile="${Name}-${version}.zip" basedir="${dist.dir}" includes="**"/>
+    <tar tarfile="${Name}-${version}.tar" basedir="${dist.dir}" includes="**"/>
     <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
     <delete file="${Name}-${version}.tar"/>
+    <deltree dir="${dist.dir}"/>
   </target>
 
   <!-- =================================================================== -->
@@ -289,10 +289,10 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="dist-src" depends="package">
     <echo message="Building the source distribution files (zip,tar)"/>
     <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
-    <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
-    <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
-    <gzip zipfile="${Name}-${version}-src.tar.gz" src="${Name}-${version}-src.tar" />
-    <delete file="${Name}-${version}-src.tar"/>
+    <zip zipfile="${Name}-${version}.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
+    <tar tarfile="${Name}-${version}.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
+    <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
+    <delete file="${Name}-${version}.tar"/>
   </target>                                                                                                                                                                    
 
 
@@ -300,11 +300,11 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
   <target name="clean" depends="init">
-    <delete dir="${build.dir}"/>
+    <deltree dir="${build.dir}"/>
   </target>
 
   <target name="distclean" depends="clean">
-    <delete dir="${dist.dir}"/>
+    <deltree dir="${dist.dir}"/>
     <delete file="${Name}-${version}.zip"/>    
     <delete file="${Name}-${version}.tar.gz"/>    
   </target>
