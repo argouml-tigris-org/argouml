@@ -318,6 +318,8 @@ public class GeneratorPHP4
             if (ModelFacade.CLASSIFIER_SCOPEKIND.equals(ownerScope)) {
                 sAttribute += "static ";
             }
+        } else {
+            sAttribute += "var ";
         }
 
         sAttribute += "$" + NameGenerator.generate(modelElement,
