@@ -1808,6 +1808,9 @@ public class ModelFacade {
         if (handle instanceof MStructuralFeature) {
             return ((MStructuralFeature)handle).getChangeability();
         }
+        if (handle instanceof MAssociationEnd) {
+            return ((MAssociationEnd)handle).getChangeability();
+        }
         throw new IllegalArgumentException("Unrecognized object " + 
 					   getClassNull(handle));
     }
