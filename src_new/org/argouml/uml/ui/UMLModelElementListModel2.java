@@ -24,6 +24,9 @@
 // $header$
 package org.argouml.uml.ui;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 
@@ -138,5 +141,38 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @return boolean
      */
     protected abstract boolean isValid(MModelElement elem);
+    
+    /**
+     * Utility method to set the elements of this list to the contents of the
+     * given collection.
+     * @param col
+     */
+    protected void setAllElements(Collection col) {
+        removeAllElements();
+        addAll(col);
+    }
+    
+    /**
+     * Utility method to add the contents of the given collection to the 
+     * element list.
+     * @param col
+     */
+    protected void addAll(Collection col) {
+        Iterator it = col.iterator();
+        while (it.hasNext()) {
+            addElement(col);
+        }
+    }
+    
+    /**
+     * Utility method to get the target.
+     * @return MModelElement
+     */
+    protected MModelElement getTarget() {
+        if (getContainer() != null) {
+            return (MModelElement)getContainer().getTarget();
+        }
+        return null;
+    }
 
 }

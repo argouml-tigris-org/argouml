@@ -24,31 +24,25 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.Iterator;
-
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * The list of classifiers represented by some collaboration as shown on the 
- * collaboration proppanel
- * @since Oct 2, 2002
+ * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLRepresentedClassifierListModel
+public class UMLInteractionCollaborationListModel
     extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLRepresentedClassifierListModel.
+     * Constructor for UMLInteractionCollaborationListModel.
      * @param container
-     * @param propertyToSet
      */
-    public UMLRepresentedClassifierListModel(
-        UMLUserInterfaceContainer container) {
+    public UMLInteractionCollaborationListModel(UMLUserInterfaceContainer container) {
         super(container);
     }
 
@@ -56,16 +50,15 @@ public class UMLRepresentedClassifierListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        removeAllElements();
-        addElement(((MCollaboration)getTarget()).getRepresentedClassifier());
+        setAllElements(((MCollaboration)getContainer().getTarget()).getInteractions());
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
     protected boolean isValid(MModelElement elem) {
-        return elem instanceof MClassifier && 
-            getTarget() == ((MClassifier)elem).getCollaborations();
+        return (elem instanceof MInteraction &&
+            ((MInteraction)elem).getContext() == getTarget());
     }
 
 }

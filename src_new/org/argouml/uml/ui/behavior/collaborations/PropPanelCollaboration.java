@@ -45,7 +45,7 @@ import ru.novosoft.uml.behavior.collaborations.MCollaboration;
  * implemented correctly speaking in general terms, they are not implemented
  * in this class either.
  * 
- * @author Jaap Branderhorst
+ * @author jaap.branderhorst@xs4all.nl
  */
 public class PropPanelCollaboration extends PropPanelNamespace {
 
@@ -61,6 +61,7 @@ public class PropPanelCollaboration extends PropPanelNamespace {
         addField(Argo.localize("UMLMenu", "label.name"),nameField);
         addField(Argo.localize("UMLMenu", "label.stereotype"), 
             new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
         
         UMLLinkedList classifierList = new UMLLinkedList(this, new UMLRepresentedClassifierListModel(this));
         classifierList.setVisibleRowCount(1);   
@@ -73,6 +74,18 @@ public class PropPanelCollaboration extends PropPanelNamespace {
             new JScrollPane(operationList));
          
         add(LabelledLayout.getSeperator());
+        
+        UMLLinkedList interactionList = new UMLLinkedList(this, new UMLInteractionCollaborationListModel(this));
+        interactionList.setVisibleRowCount(1);
+        addField(Argo.localize("UMLMenu", "label.interaction"), 
+            new JScrollPane(interactionList));
+            
+        UMLLinkedList constrainingList = new UMLLinkedList(this, new UMLConstraintCollaborationListModel(this));
+        addField(Argo.localize("UMLMenu", "label.constraining-elements"), 
+            new JScrollPane(constrainingList));
+            
+        // we do not add the ownedelements since they are not of real interest
+            
     }
 
     /**
