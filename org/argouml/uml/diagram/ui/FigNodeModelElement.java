@@ -682,9 +682,11 @@ public abstract class FigNodeModelElement
             if (me.getUUID() == null)
                 me.setUUID(UUIDManager.SINGLETON.getNewUUID());
         }
-        _readyToEdit = true;        
-        bindPort(own, _bigPort);
+        _readyToEdit = true;      
         renderingChanged();
+        updateBounds();  
+        bindPort(own, _bigPort);
+        
 
     }
 
