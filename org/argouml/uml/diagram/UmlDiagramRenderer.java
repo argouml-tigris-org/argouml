@@ -42,6 +42,7 @@ import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.state.ui.FigBranchState;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
+import org.argouml.uml.diagram.state.ui.FigConcurrentRegion;
 import org.argouml.uml.diagram.state.ui.FigDeepHistoryState;
 import org.argouml.uml.diagram.state.ui.FigFinalState;
 import org.argouml.uml.diagram.state.ui.FigForkState;
@@ -50,6 +51,7 @@ import org.argouml.uml.diagram.state.ui.FigJoinState;
 import org.argouml.uml.diagram.state.ui.FigJunctionState;
 import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
 import org.argouml.uml.diagram.state.ui.FigSimpleState;
+import org.argouml.uml.diagram.state.ui.FigSynchState;
 import org.argouml.uml.diagram.state.ui.FigTransition;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
@@ -65,6 +67,7 @@ import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigAssociationEnd;
+import org.argouml.uml.diagram.ui.FigClassAssociationClass;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigMessage;
@@ -108,6 +111,8 @@ public abstract class UmlDiagramRenderer
         FigNode figNode = null;
         if (Model.getFacade().isAComment(node)) {
             figNode = new FigComment();
+        } else if (Model.getFacade().isAAssociationClass(node)) {
+            figNode = new FigClassAssociationClass();
         } else if (Model.getFacade().isAClass(node)) {
             figNode = new FigClass();
         } else if (Model.getFacade().isAInterface(node)) {
@@ -154,6 +159,10 @@ public abstract class UmlDiagramRenderer
             figNode = new FigActionState();
         } else if (Model.getFacade().isAFinalState(node)) {
             figNode = new FigFinalState();
+        } else if (Model.getFacade().isAConcurrentRegion(node)) {
+            figNode = new FigConcurrentRegion();
+        } else if (Model.getFacade().isASynchState(node)) {
+            figNode = new FigSynchState();
         } else if (Model.getFacade().isACompositeState(node)) {
             figNode = new FigCompositeState();
         } else if (Model.getFacade().isAState(node)) {
@@ -186,7 +195,6 @@ public abstract class UmlDiagramRenderer
             throw new IllegalArgumentException(
                     "Failed to construct a FigNode for " + node);
         }
-
         setStyleAttributes(figNode, styleAttributes);
 
         return figNode;
