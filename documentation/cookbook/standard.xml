@@ -165,6 +165,41 @@ stable release.
 
       <listitem>
 	<para>
+Don't use deprecated methods or classes.
+</para>
+	<para>
+Rationale:
+Deprecation is an indication that a class is to be removed.
+We always want to build ArgoUML in a way that allows for future updates
+of everything.
+Using things that are on the way out already when doing the implementation
+is for this reason not allowed.
+</para>
+	<para>
+Rationale 2:
+If you feel like you really want to use a method that is deprecated instead
+of the replacement you should first convince the person responsible
+for doing the deprecation that he has made a misstake and upgrade ArgoUML
+to a version of that library without that method or class deprecated.
+If it is within ArgoUML discuss it with the person who actually did 
+the deprecation or in the development team.
+</para>
+	<para>
+Comment:
+There is an ongoing work (probably perpetually) to change
+the calls to deprecated methods and classes that
+has been deprecated after used in ArgoUML.
+This is a normal part of improving ArgoUML.
+If this work is too slow it makes it impossible to upgrade to new
+versions of different subtools. 
+This problem is seen by "the person responsible for sourceing of the subtool"
+when actually trying to upgrade the subtool.
+(See <xref linkend="issues_subproducts"></xref>.)
+</para>
+      </listitem>
+
+      <listitem>
+	<para>
 For everything else follow
 <ulink url="http://java.sun.com/docs/codeconv/html/CodeConvTOC.doc.html">
 Code Conventions for the Java Programming Language
