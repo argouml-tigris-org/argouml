@@ -216,7 +216,8 @@ public class CrReservedName extends CrUML {
         // have those "reserved" names.
         Project p = ProjectBrowser.TheInstance.getProject();
         Hashtable definedTypes = p.getDefinedTypes();
-        if (definedTypes.get(nameStr).equals(nameStr)) return NO_PROBLEM;
+        if (definedTypes.get(nameStr)!=null &&
+            definedTypes.get(nameStr).equals(nameStr)) return NO_PROBLEM;
 
         java.util.Enumeration enum = _umlReserved.elements();
         while (enum.hasMoreElements()) {
