@@ -31,6 +31,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
 import ru.novosoft.uml.behavior.state_machines.MChangeEvent;
@@ -49,9 +50,9 @@ import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
 import ru.novosoft.uml.behavior.state_machines.MSynchState;
 import ru.novosoft.uml.behavior.state_machines.MTimeEvent;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 import ru.novosoft.uml.model_management.MModel;
 
@@ -280,10 +281,10 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
 	    MStateMachine machine = createStateMachine();
             MModelElement context = (MModelElement) oContext;
 	    machine.setContext(context);
-	    if (context instanceof MNamespace) {
-		machine.setNamespace((MNamespace) context);
-	    } else if (context instanceof MFeature) {
-		MFeature feature = (MFeature) context;
+	    if (context instanceof MClassifier) {
+		machine.setNamespace((MClassifier) context);
+	    } else if (context instanceof MBehavioralFeature) {
+		MBehavioralFeature feature = (MBehavioralFeature) context;
 		machine.setNamespace(feature.getOwner());
     	    }
 	    StateMachinesFactory.getFactory().buildCompositeState(machine);
