@@ -48,36 +48,42 @@ import ru.novosoft.uml.MElementEvent;
  */
 public abstract class FigState extends FigStateVertex {
 
-    protected FigText _internal;
+    /**
+     * the text inside the state
+     */
+    protected FigText internal;
 
     /**
      * Constructor for FigState.
      */
     public FigState() {
         super();
-        _internal = new FigText(getInitialX() + 2, getInitialY() + 2 + 21 + 4,
+        internal = new FigText(getInitialX() + 2, getInitialY() + 2 + 21 + 4,
                 getInitialWidth() - 4, getInitialHeight()
                         - (getInitialY() + 2 + 21 + 4));
-        _internal.setFont(LABEL_FONT);
-        _internal.setTextColor(Color.black);
-        _internal.setLineWidth(0);
-        _internal.setFilled(false);
-        _internal.setExpandOnly(true);
-        _internal.setMultiLine(true);
-        _internal.setJustification(FigText.JUSTIFY_LEFT);
+        internal.setFont(LABEL_FONT);
+        internal.setTextColor(Color.black);
+        internal.setLineWidth(0);
+        internal.setFilled(false);
+        internal.setExpandOnly(true);
+        internal.setMultiLine(true);
+        internal.setJustification(FigText.JUSTIFY_LEFT);
     }
 
     /**
-     * Constructor for FigState.
+     * Constructor for FigState, used when an UML elm already exists.
      * 
-     * @param gm
-     * @param node
+     * @param gm ignored
+     * @param node the UML element
      */
     public FigState(GraphModel gm, Object node) {
         this();
         setOwner(node);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
     public void setOwner(Object node) {
         super.setOwner(node);
         updateInternal();
@@ -185,18 +191,30 @@ public abstract class FigState extends FigStateVertex {
         Object state = getOwner();
         if (state == null) return;
         String newText = Notation.generateStateBody(this, state);
-        _internal.setText(newText);
+        internal.setText(newText);
 
         calcBounds();
         setBounds(getBounds());
     }
 
+    /**
+     * @return the initial X
+     */
     protected abstract int getInitialX();
 
+    /**
+     * @return the initial Y
+     */
     protected abstract int getInitialY();
 
+    /**
+     * @return the initial width
+     */
     protected abstract int getInitialWidth();
 
+    /**
+     * @return the initial height
+     */
     protected abstract int getInitialHeight();
 
 }
