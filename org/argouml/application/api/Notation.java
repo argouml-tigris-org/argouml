@@ -250,6 +250,9 @@ implements PropertyChangeListener {
   }
   protected String generateClassifierRef(NotationName notation, MClassifier m) {
       return getProvider(notation).generateClassifierRef(m);
+  }  
+  protected String generateAssociationRole(NotationName notation, MAssociationRole m){            
+	return getProvider(notation).generateAssociationRole(m);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -341,7 +344,9 @@ implements PropertyChangeListener {
                                              MClassifier cls) {
       return SINGLETON.generateClassifierRef(Notation.getNotation(ctx), cls);
   }
- 
+  public static String generateAssociationRole(NotationContext ctx, MAssociationRole m){
+        return SINGLETON.generateAssociationRole(Notation.getNotation(ctx), m);
+  } 
 
     /**
      * <p>General purpose static generator for any object that wishes to set
@@ -381,8 +386,12 @@ implements PropertyChangeListener {
     if (o == null)
       return "";
 
-    // Added to support extension points
-
+    //added to support association roles
+    if (o instanceof MAssociationRole){
+        return SINGLETON.generateAssociationRole(Notation.getNotation(ctx), (MAssociationRole)o);
+    }
+    
+    // Added to support extension points   
     if (o instanceof MExtensionPoint) {
         return SINGLETON.generateExtensionPoint(Notation.getNotation(ctx),
                                                 (MExtensionPoint) o);
@@ -433,7 +442,7 @@ implements PropertyChangeListener {
 
     if (o instanceof MModelElement)
       return SINGLETON.generateName(Notation.getNotation(ctx),((MModelElement)o).getName());
-
+    
     if (o == null) return "";
 
     return o.toString();
