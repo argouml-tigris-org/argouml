@@ -33,6 +33,9 @@ import org.xml.sax.AttributeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.argouml.cognitive.ItemUID;
 import org.argouml.ui.ArgoDiagram;
@@ -43,6 +46,17 @@ import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 
 public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
+    
+    /**
+     * HACK to handle issue 2719.
+     */
+    private boolean nestedGroupFlag = false;
+    
+    /**
+     * HACK to handle issue 2719
+     */
+    private Fig figGroup = null;
+    
     private static final Logger LOG = Logger.getLogger(PGMLParser.class);
 
     private int privateTextDepth = 0;
@@ -252,9 +266,13 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 	if ("private".equals(elementName)) {
 	    privateTextDepth++;
 	}
-
-	// OK, that's all with hiding compartments. Now business as usual...
 	super.startElement(elementName, attrList);
+	if (nestedGroupFlag) {
+	    _diagram.remove(figGroup);
+	    figGroup = null;
+	    nestedGroupFlag = false;
+	}
+
     }
 
     /**
@@ -442,6 +460,76 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
         super.endElement(arg0);
     }
+    
+   /**
+    * This is a correct implementation of handleGroup and will add FigGroups to the diagram ONLY if they are
+    * not a FigNode AND if they are not part of a FigNode.
+    * @see org.tigris.gef.xml.pgml.PGMLParser#handleGroup(org.xml.sax.AttributeList)
+    */
+ protected Fig handleGroup(AttributeList attrList) {
+     //System.out.println("[PGMLParser]: handleGroup: ");
+     Fig f = null;
+     String clsNameBounds = attrList.getValue("description");
+     StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
+     String clsName = translateClassName(st.nextToken());
+     String xStr = null;
+     String yStr = null;
+     String wStr = null;
+     String hStr = null;
+     if(st.hasMoreElements()) {
+         xStr = st.nextToken();
+         yStr = st.nextToken();
+         wStr = st.nextToken();
+         hStr = st.nextToken();
+     }
+
+     try {
+         Class nodeClass = Class.forName(translateClassName(clsName));
+         f = (Fig)nodeClass.newInstance();
+         if(xStr != null && !xStr.equals("")) {
+             int x = Integer.parseInt(xStr);
+             int y = Integer.parseInt(yStr);
+             int w = Integer.parseInt(wStr);
+             int h = Integer.parseInt(hStr);
+             f.setBounds(x, y, w, h);
+         }
+
+         if(f instanceof FigNode) {
+             FigNode fn = (FigNode)f;
+             _currentNode = fn;
+             _elementState = NODE_STATE;
+             _textBuf = new StringBuffer();
+             _diagram.add(f);
+         } else {
+             // nested group flag is a flag to repair the ^*&(*^*& implementation of GEF's parser
+             nestedGroupFlag = true;
+             figGroup = f;
+             if (_currentNode != null) {
+                 _currentNode.addFig(f);
+             }
+         }
+
+         if(f instanceof FigEdge) {
+             _currentEdge = (FigEdge)f;
+             _elementState = EDGE_STATE;
+         }  
+       
+     }
+     catch(Exception ex) {
+         System.out.println("Exception in handleGroup");
+         ex.printStackTrace();
+     }
+     catch(NoSuchMethodError ex) {
+         System.out.println("No constructor() in class " + clsName);
+         ex.printStackTrace();
+     }
+
+     setAttrs(f, attrList);
+     return f;
+ }
+ 
+ 
+
 
 } /* end class PGMLParser */
 
