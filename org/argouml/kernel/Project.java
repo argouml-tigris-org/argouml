@@ -995,11 +995,25 @@ public class Project implements java.io.Serializable, TargetListener {
             if (aFig != null) {
                 if (aFig.getOwner() == obj) {
                     if (includeEnclosedOnes) {
-                        Collection encl = aFig.getEnclosedFigs();
-                        if (encl != null) c.addAll(aFig.getEnclosedFigs());
+                        c.addAll(collectAllEnclosedFigsRecursively(aFig));
                     }
                     c.add(aFig);
                 }
+            }
+        }
+        return c;
+    }
+    
+    private Collection collectAllEnclosedFigsRecursively(Fig f) {
+        Collection c = new ArrayList();
+        Collection encl = f.getEnclosedFigs();
+        if (encl != null) { 
+            if (!encl.isEmpty()) {
+                Iterator i = encl.iterator();
+                while (i.hasNext()) {
+                    c.addAll(collectAllEnclosedFigsRecursively((Fig) i.next()));
+                }
+                c.addAll(encl);
             }
         }
         return c;
