@@ -208,7 +208,8 @@ public class PersistenceManager {
      * Set an alternative file persister for diagrams
      * @param persister the persister to use instead of the default
      */
-    public void setDiagramMemberFilePersister(DiagramMemberFilePersister persister) {
+    public void setDiagramMemberFilePersister(
+            DiagramMemberFilePersister persister) {
     	diagramMemberFilePersister = persister;
     }
 }
