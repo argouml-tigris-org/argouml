@@ -3,7 +3,7 @@
       <jnlp
         spec="1.0+"
         codebase="http://www.tigris.org/upload"
-        href="ArgoUMLWebStart.jnlp">
+        href="http://argouml.tigris.org/ArgoUMLWebStart.jnlp">
         <information>
           <title>ArgoUML</title>
           <vendor>Tigris.org (Open Source)</vendor>
