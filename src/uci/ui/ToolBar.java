@@ -36,6 +36,7 @@ import uci.gef.*;
 
 public class ToolBar extends JToolBar implements MouseListener {
   protected Vector _lockable = new Vector();
+  protected Vector _modeButtons = new Vector();
 
   public ToolBar() {
     setFloatable(false);
@@ -60,6 +61,8 @@ public class ToolBar extends JToolBar implements MouseListener {
 
   public JButton add(Action a, String name, Icon icon) {
     JButton b = new JButton(icon);
+    if (a instanceof CmdSetMode || a instanceof CmdCreateNode)
+      _modeButtons.addElement(b);
     b.setToolTipText(name);
     b.setEnabled(a.isEnabled());
     b.addActionListener(a);
@@ -192,10 +195,12 @@ public class ToolBar extends JToolBar implements MouseListener {
   public void mouseReleased(MouseEvent me) { }
   public void mouseClicked(MouseEvent me) {
     Object src = me.getSource();
-    unpressAllButtonsExcept(src);
-    Editor ce = uci.gef.Globals.curEditor();
-    if (ce != null) ce.finishMode();
-    uci.gef.Globals.setSticky(false);
+    if (isModeButton(src)) {
+      unpressAllButtonsExcept(src);
+      Editor ce = uci.gef.Globals.curEditor();
+      if (ce != null) ce.finishMode();
+      uci.gef.Globals.setSticky(false);
+    }
     if (me.getClickCount() >= 2) {
       if (!(src instanceof JButton)) return;
       JButton b = (JButton) src;
@@ -205,16 +210,21 @@ public class ToolBar extends JToolBar implements MouseListener {
       }
     }
     else if (me.getClickCount() == 1) {
-      if (!(src instanceof JButton)) return;
-      JButton b = (JButton) src;
-      b.setFocusPainted(false);
-      b.getModel().setPressed(true);
+      if (src instanceof JButton && isModeButton(src)) {
+	JButton b = (JButton) src;
+	b.setFocusPainted(false);
+	b.getModel().setPressed(true);
+      }
     }
   }
 
 
   protected boolean canLock(Object b) {
     return _lockable.contains(b);
+  }
+
+  protected boolean isModeButton(Object b) {
+    return _modeButtons.contains(b);
   }
 
   protected void unpressAllButtonsExcept(Object src) {
