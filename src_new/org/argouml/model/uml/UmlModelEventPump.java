@@ -659,7 +659,7 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void stopPumpingEvents() {
 
-	MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_DISABLED);
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_DISABLED);
     }
     
     /**
@@ -667,7 +667,7 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void startPumpingEvents() {
 
-	MFactoryImpl.flushEvents();
+        MFactoryImpl.flushEvents();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
     }
     
@@ -676,7 +676,7 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void flushModelEvents() {
 
-	MFactoryImpl.flushEvents();
+        MFactoryImpl.flushEvents();
     }
 }
 
@@ -1169,8 +1169,8 @@ class EventTreeDefinition {
     }
 
     /**
-     * <p>Add all event sources described by the given document. The document must match 
-     * the pattern given by the following example:
+     * <p>Add all event sources described by the given document.
+     * The document must match  the pattern given by the following example:
      * 
      * <pre>
      * &lt;eventtree&gt;
@@ -1283,7 +1283,8 @@ class EventTreeDefinition {
      * @param name
      * @return
      */
-    public synchronized EventKey[] getEventTypes(Class modelClass, String name) {
+    public synchronized EventKey[] getEventTypes(Class modelClass,
+                                                 String name) {
         modelClass = formatClass(modelClass);
         Map nameMap = (Map) _definition.get(modelClass);
         if (nameMap != null) {
