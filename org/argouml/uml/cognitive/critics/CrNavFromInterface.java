@@ -28,6 +28,10 @@
 // Original Author: jrobbins@ics.uci.edu
 // $Id$
 
+// 27 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed to deal with
+// picking up navigation problems at the wrong end! Solution suggested by
+// Chavdar Botev. Tidied up to remove deprecated stuff.
+
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
@@ -39,38 +43,134 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+
+/**
+ * <p> A critic to detect navigation from an Interface to a Class in an
+ * Association. This is not permitted in UML, since it would require the
+ * Interface to hold state to represent the association reference.</p>
+ *
+ * <p>The critic will trigger whenever an association between an interface and
+ * a class is navigable <em>from</em> the interface. In an ideal world, it
+ * wouldn't be possible to create this in ArgoUML.</p>
+ *
+ * <p>Internally we use some of the static utility methods of the {@link
+ * org.argouml.cognitive.critics.CriticUtils CriticUtils} class.</p>
+ *
+ * @see <a href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_nav_from_interface">ArgoUML User Manual: N</a>
+ */
+
 public class CrNavFromInterface extends CrUML {
 
-  public CrNavFromInterface() {
-    setHeadline("Remove Navigation from MInterface <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decRELATIONSHIPS);
-    setKnowledgeTypes(Critic.KT_SYNTAX);
-    addTrigger("end_navigable");
-  }
+    /**
+     * <p>Constructor for the critic.</p>
+     *
+     * <p>Sets up the resource name, which will allow headline and description
+     * to found for the current locale (replaces deprecated setHeadline and sd
+     * methods). Provides a design issue category (RELATIONSHIPS) and knowledge
+     * type (SYNTAX). Adds trigger "end_navigable".</p>
+     *
+     * @return nothing returned since this is a constructor.
+     */
 
-  /** Applies to Associations only, not AssociationClasses. */
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MAssociation)) return NO_PROBLEM;
-    MAssociation asc = (MAssociation) dm;
-    Collection conns = asc.getConnections();
-    if (asc instanceof MAssociationRole)
-      conns = ((MAssociationRole)asc).getConnections();
-    int aggCount = 0;
-    Iterator enum = conns.iterator();
-    while (enum.hasNext()) {
-      MAssociationEnd ae = (MAssociationEnd) enum.next();
-      if (!ae.isNavigable()) continue;
-      if (ae.getType() instanceof MInterface) return PROBLEM_FOUND;
-      if (ae.getType() instanceof MClassifierRole) {
-        Collection bases = ((MClassifierRole)ae.getType()).getBases();
-        for (Iterator iter = bases.iterator(); iter.hasNext();) {
-          if (iter.next() instanceof MInterface)
-            return PROBLEM_FOUND;
-        };
-      };
+    public CrNavFromInterface() {
+
+        // Set the resource label, which will get the headline and description
+        // appropriate for the locale
+
+        setResource("CrNavFromInterface");
+
+        // Specify design issue category and knowledge type
+
+        addSupportedDecision(CrUML.decRELATIONSHIPS);
+        setKnowledgeTypes(Critic.KT_SYNTAX);
+
+        // This may not actually make any difference at present (the code
+        // behind addTrigger needs more work).
+
+        addTrigger("end_navigable");
     }
-    return NO_PROBLEM;
-  }
+
+    /**
+     * <p>The trigger for the critic.</p>
+     *
+     * <p>Applies to Associations only, not AssociationRoles. The reason is
+     * that an AssociationRole cannot have greater navigability than the
+     * Association it specializes, so if the critic has addressed the
+     * Association, the AssociationRole will effectively be addressed. There
+     * may of course be a need for a critic to check that Association Roles do
+     * match their parents in this respect!</p>
+     *
+     * <p>As a consequence, we also don't need to check for associations with
+     * ClassifierRoles.</p>
+     * 
+     * <p>Iterate over all the AssociationEnds. We only have a problem if:</p>
+     * <ol>
+     *   <li><p>There is an end connected to an Interface; and</p></li>
+     *   <li><p>An end other than that end is navigable.</p></li>
+     * </ol>
+     *
+     * @param  dm    the object to be checked against the critic
+     * @param  dsgr  the designer creating the model. Not used, this is for
+     *               future development of ArgoUML
+     * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  */
+    
+    public boolean predicate2(Object dm, Designer dsgr) {
+
+        // Only look at Associations
+
+        if (!(dm instanceof MAssociation)) {
+            return NO_PROBLEM;
+        }
+
+        if (dm instanceof MAssociationRole) {
+            return NO_PROBLEM;
+        }
+
+        // Get the Association and its connections.
+
+        MAssociation asc = (MAssociation) dm;
+        Collection conns = asc.getConnections();
+
+        // Iterate over all the AssociationEnds. We only have a problem if 1)
+        // there is an end connected to an Interface and 2) an end other than
+        // that end is navigable. 
+
+        Iterator enum = conns.iterator();
+
+        boolean haveInterfaceEnd  = false ;  // End at an Interface?
+        boolean otherEndNavigable = false ;  // Navigable other end?
+
+        while (enum.hasNext()) {
+
+            // The next AssociationEnd
+
+            MAssociationEnd ae = (MAssociationEnd) enum.next();
+
+            // If its an interface we have an interface end, otherwise its
+            // something else and we should see if it is navigable. We don't
+            // check that the end is a Classifier, rather than its child
+            // ClassifierRole, since we have effectively eliminated that
+            // possiblity in rejecting AssociationRoles above.
+
+            if (ae.getType() instanceof MInterface) {
+                haveInterfaceEnd = true;
+            }
+            else if (ae.isNavigable()) {
+                otherEndNavigable = true;
+            }
+
+            // We can give up looking if we've hit both criteria
+
+            if (haveInterfaceEnd && otherEndNavigable) {
+                return PROBLEM_FOUND;
+            }
+        }
+
+        // If we drop out we didn't meet both criteria, and all is well.
+
+        return NO_PROBLEM;
+    }
 
 } /* end class CrNavFromInterface */
 
