@@ -86,10 +86,10 @@ public class TreeResourceBundle_fr extends ListResourceBundle {
 	// For the ToDoItem tree
 	{ "todo.perspective.type", "Par Type" },
 	{ "todo.perspective.decision", "Par Decision" },
-	{ "todo.perspective.offender", "Par Coupable" },
+	{ "todo.perspective.offender", "Par Contrevenant" },
 	{ "todo.perspective.priority", "Par Priorit\u00e9" },
-	{ "todo.perspective.goal", "Par But" },
-	{ "todo.perspective.poster", "Par Contributeur" }
+	{ "todo.perspective.goal", "Par Objectif" },
+	{ "todo.perspective.poster", "Par Exp\u00e9diteur" }
    };
 
      public Object[][] getContents() {
