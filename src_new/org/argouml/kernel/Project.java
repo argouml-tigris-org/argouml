@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: Project.java
-// Classes: Project
-
 package org.argouml.kernel;
 
 import java.beans.PropertyVetoException;
@@ -52,28 +49,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Category;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
-import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ProjectMemberTodoList;
-import org.argouml.cognitive.ToDoList;
-import org.argouml.cognitive.checklist.ChecklistStatus;
-import org.argouml.cognitive.critics.Agency;
-import org.argouml.cognitive.critics.Critic;
-import org.argouml.cognitive.critics.ui.CriticBrowserDialog;
-import org.argouml.cognitive.ui.DesignIssuesDialog;
-import org.argouml.cognitive.ui.GoalsDialog;
-import org.argouml.cognitive.ui.TabToDo;
-import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.FindDialog;
-import org.argouml.ui.NavigatorConfigDialog;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.TabResults;
-import org.argouml.ui.UsageStatistic;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -83,8 +65,6 @@ import org.argouml.uml.UMLChangeRegistry;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
-import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
-import org.argouml.uml.diagram.ui.SelectionWButtons;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
@@ -110,43 +90,54 @@ import org.xml.sax.SAXException;
  *  Project consists of diagrams and UML models.
  */
 public class Project implements java.io.Serializable, TargetListener {
+    
     ////////////////////////////////////////////////////////////////
     // constants
+    
     public static final String TEMPLATES = "/org/argouml/templates/";
     public static String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
-    //public final static String EMPTY_PROJ = "EmptyProject" + FILE_EXT;
     public static final String UNTITLED_FILE = "Untitled";
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    protected static OCLExpander expander = null;
+    
+    /**
+     * This is used in the save process for PGML.
+     */
+    protected static OCLExpander expander;
+
+    static final long serialVersionUID = 1399111233978692444L;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    //public String _pathname = "";
-    //public String _filename = UNTITLED_FILE + FILE_EXT;
-
-    //TODO should just be the directory to write
-    private URL _url = null;
+    /** TODO should just be the directory to write
+     */
+    private URL _url;
     protected ChangeRegistry _saveRegistry;
 
-    private String _authorname = "";
-    private String _description = "";
-    private String _version = ArgoVersion.getVersion();
+    private String _authorname;
+    private String _description;
+    private String _version;
 
-    private Vector _searchpath = new Vector();
-    private Vector _members = new Vector();
-    private String _historyFile = "";
+    private Vector _searchpath;
+    private Vector _members;
+    private String _historyFile;
 
-    private Vector _models = new Vector(); //instances of MModel
-    private Vector _diagrams = new Vector(); // instances of LayerDiagram
-    protected Object _defaultModel = null;
-    private boolean _needsSave = false;
-    protected Object _currentNamespace = null;
-    private HashMap _UUIDRefs = null;
-    private GenerationPreferences _cgPrefs = new GenerationPreferences();
-    private transient VetoableChangeSupport _vetoSupport = null;
+    /**
+     * Instances of the uml model.
+     */
+    private Vector _models;
+    /**
+     * Instances of the uml diagrams.
+     */
+    private Vector _diagrams;
+    protected Object _defaultModel;
+    private boolean _needsSave;
+    protected Object _currentNamespace;
+    private HashMap _UUIDRefs;
+    private GenerationPreferences _cgPrefs;
+    private transient VetoableChangeSupport _vetoSupport;
 
     /**
      * True if we are in the proces of making a project, otherwise false
@@ -164,8 +155,13 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     private ArgoDiagram _activeDiagram;
 
+    /** Cache for the default model.
+     */
+    private HashMap _defaultModelCache;
+
     protected static Category cat =
         Category.getInstance(org.argouml.kernel.Project.class);
+    
     ////////////////////////////////////////////////////////////////
     // constructor
 
@@ -181,6 +177,20 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     public Project() {
+        
+        _authorname = "";
+        _description = "";
+        // this should be moved to a ui action.
+        _version = ArgoVersion.getVersion();
+        
+        _searchpath = new Vector();
+        _members = new Vector();
+        _historyFile = "";
+        _models = new Vector();
+        _diagrams = new Vector();
+        _cgPrefs = new GenerationPreferences();
+        _defaultModelCache = new HashMap();
+        
         _saveRegistry = new UMLChangeRegistry();
         Argo.log.info("making empty project with empty model");
         // Jaap Branderhorst 2002-12-09
@@ -224,10 +234,6 @@ public class Project implements java.io.Serializable, TargetListener {
         setRoot(model);
         setCurrentNamespace(model);
         setNeedsSave(false);
-        /*
-	  Runnable resetStatsLater = new ResetStatsLater();
-	  org.argouml.application.Main.addPostLoadAction(resetStatsLater);
-        */
 
     }
     
@@ -291,15 +297,7 @@ public class Project implements java.io.Serializable, TargetListener {
         // the listener.  Until then, do it here.
         UmlHelper.getHelper().addListenersToModel(mmodel);
 
-        // if (mmodel != null && !xmiReader.getErrors()) {
-
         addMember(mmodel);
-
-        //}
-        //        else {
-        //throw new IOException("XMI file " + url.toString() + 
-        //" could not be parsed.");
-        //}
 
         _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
         return mmodel;
@@ -418,15 +416,6 @@ public class Project implements java.io.Serializable, TargetListener {
         _url = url;
     }
 
-    //   public void setFilename(String path, String name)
-    //       throws PropertyVetoException {
-    //     if (!(name.endsWith(FILE_EXT))) name += FILE_EXT;
-    //     if (!(path.endsWith("/"))) path += "/";
-    //     URL url = new URL("file://" + path + name);
-    //     getVetoSupport().fireVetoableChange("url", _url, url);
-    //     _url = url;
-    //   }
-
     public void setFile(File file) {
         try {
             URL url = Util.fileToURL(file);
@@ -478,7 +467,7 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     public void addMember(String name, String type) {
-        //try {
+        
         URL memberURL = findMemberURLInSearchPath(name);
         if (memberURL == null) {
             cat.debug("null memberURL");
@@ -495,9 +484,6 @@ public class Project implements java.io.Serializable, TargetListener {
         else
             throw new RuntimeException("Unknown member type " + type);
         _members.addElement(pm);
-        //} catch (java.net.MalformedURLException e) {
-        //throw new UnexpectedException(e);
-        //}
     }
 
     public void addMember(ArgoDiagram d) {
@@ -630,15 +616,6 @@ public class Project implements java.io.Serializable, TargetListener {
         loadMembersOfType("text");
         loadMembersOfType("html");
     }
-
-    //   public void loadMembersOfType(String type) {
-    //     int size = _members.size();
-    //     for (int i = 0; i < size; i++) {
-    //       ProjectMember pm = (ProjectMember) _members.elementAt(i);
-    //       if (pm.type != null && pm.type.equalsIgnoreCase(type))
-    // 	pm.load();
-    //     }
-    //   }
 
     /**
      * There are known issues with saving, particularly
@@ -786,12 +763,6 @@ public class Project implements java.io.Serializable, TargetListener {
             return null;
         return _models.elementAt(0);
     }
-    //   public void addModel(MNamespace m) throws PropertyVetoException {
-    //     getVetoSupport().fireVetoableChange("Models", _models, m);
-    //     _models.addElement(m);
-    //     setCurrentNamespace(m);
-    //     _needsSave = true;
-    //   }
 
     /**
      * Searches for a type/classifier with name s. If the type is not found,
@@ -854,7 +825,7 @@ public class Project implements java.io.Serializable, TargetListener {
         Iterator it = getDiagrams().iterator();
         while (it.hasNext()) {
             ArgoDiagram diagram = (ArgoDiagram) it.next();
-            Fig fig = diagram.getContainingFig(member);
+            Object fig = diagram.getContainingFig(member);
             if (fig != null) {
                 figs.add(fig);
             }
@@ -885,7 +856,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     public void setCurrentNamespace(Object m) {
         
-        if(!ModelFacade.isANamespace(m))
+        if(m != null && !ModelFacade.isANamespace(m))
             throw new IllegalArgumentException();
         
         _currentNamespace = m;
@@ -1038,33 +1009,19 @@ public class Project implements java.io.Serializable, TargetListener {
         if (Trash.SINGLETON.contains(obj))
             return;
         trashInternal(obj);
-
-        /* old version
-           if (Trash.SINGLETON.contains(obj)) return;
-           Vector alsoTrash = null;
-           if (obj instanceof MModelElement)
-           alsoTrash = ((MModelElementImpl)obj).alsoTrash();
-           trashInternal(obj);
-           if (alsoTrash != null) {
-           int numTrash = alsoTrash.size();
-           for (int i = 0; i < numTrash; i++)
-           moveToTrash(alsoTrash.elementAt(i));
-           }
-        */
-
     }
 
     /**
      * Removes some object from the project. Does not update GUI since
      * this method only handles project management.
      * @param obj
+     *
+     * <p>Attention: whole Trash mechanism should be rethought concerning nsuml
+     * 
+     * <p>Note that at present these are all if, not
+     * else-if. Rather than make a big change, I've just explicitly dealt with
+     * the case where we have a use case that is not classifier.
      */
-    // Attention: whole Trash mechanism should be rethought concerning nsuml
-
-    // Jeremy Bennett. Note that at present these are all if, not
-    // else-if. Rather than make a big change, I've just explicitly dealt with
-    // the case where we have a use case that is not classifier.
-
     protected void trashInternal(Object obj) {
         boolean needSave = false;
         if (obj != null) {
@@ -1106,139 +1063,32 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     ////////////////////////////////////////////////////////////////
-    // usage statistics
+    // usage statistics (deprecated)
 
-    public static void resetStats() {
-        ToDoPane._clicksInToDoPane = 0;
-        ToDoPane._dblClicksInToDoPane = 0;
-        ToDoList._longestToDoList = 0;
-        Designer._longestAdd = 0;
-        Designer._longestHot = 0;
-        Critic._numCriticsFired = 0;
-        ToDoList._numNotValid = 0;
-        Agency._numCriticsApplied = 0;
-        ToDoPane._toDoPerspectivesChanged = 0;
+    /**
+     * @deprecated since 0.15.1, remove in 0.15.2
+     */
+    public static void resetStats() { }
 
-        NavigatorPane._navPerspectivesChanged = 0;
-        NavigatorPane._clicksInNavPane = 0;
-        FindDialog._numFinds = 0;
-        TabResults._numJumpToRelated = 0;
-        DesignIssuesDialog._numDecisionModel = 0;
-        GoalsDialog._numGoalsModel = 0;
+    /**
+     * @deprecated since 0.15.1, remove in 0.15.2
+     */
+    public static void setStat(String n, int v) {}
 
-        CriticBrowserDialog._numCriticBrowser = 0;
-        NavigatorConfigDialog._numNavConfig = 0;
-        TabToDo._numHushes = 0;
-        ChecklistStatus._numChecks = 0;
-        SelectionWButtons.Num_Button_Clicks = 0;
-        ModeCreateEdgeAndNode.Drags_To_New = 0;
-        ModeCreateEdgeAndNode.Drags_To_Existing = 0;
-    }
-
-    public static void setStat(String n, int v) {
-        //     String n = us.name;
-        //     int v = us.value;
-        cat.debug("setStat: " + n + " = " + v);
-        if (n.equals("clicksInToDoPane"))
-            ToDoPane._clicksInToDoPane = v;
-        else if (n.equals("dblClicksInToDoPane"))
-            ToDoPane._dblClicksInToDoPane = v;
-        else if (n.equals("longestToDoList"))
-            ToDoList._longestToDoList = v;
-        else if (n.equals("longestAdd"))
-            Designer._longestAdd = v;
-        else if (n.equals("longestHot"))
-            Designer._longestHot = v;
-        else if (n.equals("numCriticsFired"))
-            Critic._numCriticsFired = v;
-        else if (n.equals("numNotValid"))
-            ToDoList._numNotValid = v;
-        else if (n.equals("numCriticsApplied"))
-            Agency._numCriticsApplied = v;
-        else if (n.equals("toDoPerspectivesChanged"))
-            ToDoPane._toDoPerspectivesChanged = v;
-
-        else if (n.equals("navPerspectivesChanged"))
-            NavigatorPane._navPerspectivesChanged = v;
-        else if (n.equals("clicksInNavPane"))
-            NavigatorPane._clicksInNavPane = v;
-        else if (n.equals("numFinds"))
-            FindDialog._numFinds = v;
-        else if (n.equals("numJumpToRelated"))
-            TabResults._numJumpToRelated = v;
-        else if (n.equals("numDecisionModel"))
-            DesignIssuesDialog._numDecisionModel = v;
-        else if (n.equals("numGoalsModel"))
-            GoalsDialog._numGoalsModel = v;
-
-        else if (n.equals("numCriticBrowser"))
-            CriticBrowserDialog._numCriticBrowser = v;
-        else if (n.equals("numNavConfig"))
-            NavigatorConfigDialog._numNavConfig = v;
-        else if (n.equals("numHushes"))
-            TabToDo._numHushes = v;
-        else if (n.equals("numChecks"))
-            ChecklistStatus._numChecks = v;
-
-        else if (n.equals("Num_Button_Clicks"))
-            SelectionWButtons.Num_Button_Clicks = v;
-        else if (n.equals("Drags_To_New"))
-            ModeCreateEdgeAndNode.Drags_To_New = v;
-        else if (n.equals("Drags_To_Existing"))
-            ModeCreateEdgeAndNode.Drags_To_Existing = v;
-
-        else {
-            cat.warn("unknown UsageStatistic: " + n);
-        }
-    }
-
+    /**
+     * @deprecated since 0.15.1, remove in 0.15.2
+     */
     public static Vector getStats() {
+        
         Vector s = new Vector();
-        addStat(s, "clicksInToDoPane", ToDoPane._clicksInToDoPane);
-        addStat(s, "dblClicksInToDoPane", ToDoPane._dblClicksInToDoPane);
-        addStat(s, "longestToDoList", ToDoList._longestToDoList);
-        addStat(s, "longestAdd", Designer._longestAdd);
-        addStat(s, "longestHot", Designer._longestHot);
-        addStat(s, "numCriticsFired", Critic._numCriticsFired);
-        addStat(s, "numNotValid", ToDoList._numNotValid);
-        addStat(s, "numCriticsApplied", Agency._numCriticsApplied);
-        addStat(
-		s,
-		"toDoPerspectivesChanged",
-		ToDoPane._toDoPerspectivesChanged);
-
-        addStat(
-		s,
-		"navPerspectivesChanged",
-		NavigatorPane._navPerspectivesChanged);
-        addStat(s, "clicksInNavPane", NavigatorPane._clicksInNavPane);
-        addStat(s, "numFinds", FindDialog._numFinds);
-        addStat(s, "numJumpToRelated", TabResults._numJumpToRelated);
-        addStat(s, "numDecisionModel", DesignIssuesDialog._numDecisionModel);
-        addStat(s, "numGoalsModel", GoalsDialog._numGoalsModel);
-        addStat(s, "numCriticBrowser", CriticBrowserDialog._numCriticBrowser);
-        addStat(s, "numNavConfig", NavigatorConfigDialog._numNavConfig);
-        addStat(s, "numHushes", TabToDo._numHushes);
-        addStat(s, "numChecks", ChecklistStatus._numChecks);
-
-        addStat(s, "Num_Button_Clicks", SelectionWButtons.Num_Button_Clicks);
-        addStat(s, "Drags_To_New", ModeCreateEdgeAndNode.Drags_To_New);
-        addStat(
-		s,
-		"Drags_To_Existing",
-		ModeCreateEdgeAndNode.Drags_To_Existing);
-
         return s;
     }
 
-    public static void addStat(Vector stats, String name, int value) {
-        stats.addElement(new UsageStatistic(name, value));
-    }
-
-
-    /** Cache for the default model.
+    /**
+     * @deprecated since 0.15.1, remove in 0.15.2
      */
-    private HashMap _defaultModelCache = new HashMap();
+    public static void addStat(Vector stats, String name, int value) {
+    }
 
     /**
      * @param defaultModel a uml model
@@ -1269,8 +1119,6 @@ public class Project implements java.io.Serializable, TargetListener {
 	_defaultModelCache.put(name, result);
 	return result;
     }
-
-    static final long serialVersionUID = 1399111233978692444L;
 
     /**
      * Returns the root.
@@ -1501,6 +1349,9 @@ public class Project implements java.io.Serializable, TargetListener {
 
 } /* end class Project */
 
+/**
+ * @deprecated since 0.15.1, remove in 0.15.2
+ */
 class ResetStatsLater implements Runnable {
     public void run() {
         Project.resetStats();
