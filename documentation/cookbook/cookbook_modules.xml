@@ -426,8 +426,8 @@ menus using the PluggableMenu interface.
 The implementation of inContext() that you provide should be similar to: 
 <programlisting>
     public boolean inContext(Object[] o) { 
-        if (o.length < 2) return false; 
-        if ((o[0] instanceof JMenuItem) && 
+        if (o.length &lt; 2) return false; 
+        if ((o[0] instanceof JMenuItem) &amp;&amp; 
                 ("Create Diagrams".equals(o[1]))) { 
             return true; 
         } 
