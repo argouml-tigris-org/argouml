@@ -176,19 +176,11 @@ public class TabProps
 
         // Note that state digrams do actually have a diagram property panel!
 
-        _panels.put(
-            UMLActivityDiagram.class,
-            new PropPanelUMLActivityDiagram());
+        _panels.put(UMLActivityDiagram.class, new PropPanelUMLActivityDiagram());
         _panels.put(UMLClassDiagram.class, new PropPanelUMLClassDiagram());
-        _panels.put(
-            UMLCollaborationDiagram.class,
-            new PropPanelUMLCollaborationDiagram());
-        _panels.put(
-            UMLDeploymentDiagram.class,
-            new PropPanelUMLDeploymentDiagram());
-        _panels.put(
-            UMLSequenceDiagram.class,
-            new PropPanelUMLSequenceDiagram());
+        _panels.put(UMLCollaborationDiagram.class, new PropPanelUMLCollaborationDiagram());
+        _panels.put(UMLDeploymentDiagram.class, new PropPanelUMLDeploymentDiagram());
+        _panels.put(UMLSequenceDiagram.class, new PropPanelUMLSequenceDiagram());
         _panels.put(UMLStateDiagram.class, new PropPanelUMLStateDiagram());
         _panels.put(UMLUseCaseDiagram.class, new PropPanelUMLUseCaseDiagram());
 
