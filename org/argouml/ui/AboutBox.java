@@ -34,7 +34,6 @@ import javax.swing.JTextArea;
 import javax.swing.JPanel; 
 import javax.swing.border.EmptyBorder;
 
-import org.apache.log4j.Logger;
 import org.argouml.application.api.AboutTabPanel;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggableAboutTab;
@@ -45,9 +44,6 @@ import org.argouml.util.Tools;
  * 
  */
 public class AboutBox extends JDialog {
-
-    /** logger */
-    private static Logger _Log = Logger.getLogger(AboutBox.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
