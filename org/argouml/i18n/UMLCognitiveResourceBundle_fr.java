@@ -532,7 +532,7 @@ public class UMLCognitiveResourceBundle_fr extends ListResourceBundle {
         { "CrSingletonViolated_desc" ,
                 "<ocl>self</ocl> est marqu\u00e9e avec le st\u00e9r\u00e9otype"
               + " \u00ab Singleton \u00bb, mais elle ne respecte pas les contraintes"
-              + " impos\u00e9es aux singletons (ArgoUML accepte également \u00ab"
+              + " impos\u00e9es aux singletons (ArgoUML accepte \u00e9galement \u00ab"
               + " singleton \u00bb comme st\u00e9r\u00e9otype pour les singletons).\n"
               + "\n"
               + "Une classe singleton ne peut avoir qu'une seule instance. Ceci se"
