@@ -33,7 +33,7 @@
 package org.argouml.application.api;
 
 // import org.argouml.application.events.*;
-import org.argouml.language.*;
+//import org.argouml.language.*;
 import org.argouml.uml.diagram.ui.*;
 
 import java.awt.*;
@@ -74,6 +74,7 @@ public interface NotationProvider {
   public String generateGuard(MGuard m);
   public String generateMessage(MMessage m);
   public String generateClassifierRef(MClassifier m);
+  public String generateAssociationRole(MAssociationRole m);
 
   /** Can the notation be parsed for this object?
    */
