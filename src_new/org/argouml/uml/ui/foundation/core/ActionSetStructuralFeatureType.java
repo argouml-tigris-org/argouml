@@ -29,13 +29,13 @@ import java.awt.event.ActionEvent;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.ModelManagementHelper;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 /**
  * @since Nov 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionSetStructuralFeatureType extends UMLChangeAction {
+public class ActionSetStructuralFeatureType extends UMLAction {
 
     private static final ActionSetStructuralFeatureType SINGLETON =
         new ActionSetStructuralFeatureType();

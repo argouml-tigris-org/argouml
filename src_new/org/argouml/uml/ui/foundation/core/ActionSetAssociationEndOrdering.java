@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 
@@ -37,7 +37,7 @@ import org.argouml.uml.ui.UMLCheckBox2;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
  */
-public class ActionSetAssociationEndOrdering extends UMLChangeAction {
+public class ActionSetAssociationEndOrdering extends UMLAction {
 
     private static final ActionSetAssociationEndOrdering SINGLETON = 
 	new ActionSetAssociationEndOrdering();

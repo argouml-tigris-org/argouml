@@ -30,14 +30,14 @@ import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 /**
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public class ActionSetFlowSource extends UMLChangeAction {
+public class ActionSetFlowSource extends UMLAction {
 
     private static final ActionSetFlowSource SINGLETON = 
         new ActionSetFlowSource();

@@ -30,7 +30,7 @@ import javax.swing.JRadioButton;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
@@ -39,7 +39,7 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  * @author mkl
  *  
  */
-public class ActionSetOperationConcurrencyKind extends UMLChangeAction {
+public class ActionSetOperationConcurrencyKind extends UMLAction {
 
     private static final ActionSetOperationConcurrencyKind SINGLETON = 
         new ActionSetOperationConcurrencyKind();

@@ -44,7 +44,7 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
  *
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionSequenceDiagram extends UMLChangeAction {
+public class ActionSequenceDiagram extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables

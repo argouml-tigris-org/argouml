@@ -51,7 +51,6 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
-import org.argouml.uml.UMLChangeRegistry;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
@@ -60,7 +59,7 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
-import org.argouml.util.ChangeRegistry;
+import org.argouml.uml.ui.ActionSaveProject;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
@@ -168,7 +167,7 @@ public class Project implements java.io.Serializable, TargetListener {
         cgPrefs = new GenerationPreferences();
         defaultModelCache = new HashMap();
         
-        saveRegistry = new UMLChangeRegistry();
+        saveRegistry = new ChangeRegistry();
         LOG.info("making empty project with empty model");
         // Jaap Branderhorst 2002-12-09
         // load the default model
@@ -530,7 +529,13 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param newValue The new value.
      */
     public void setNeedsSave(boolean newValue) {
-        saveRegistry.setChangeFlag(newValue);
+        boolean oldValue = ActionSaveProject.getInstance().isEnabled();
+        
+        if (oldValue != newValue) {
+            ActionSaveProject.getInstance().setEnabled(newValue);
+            // notify the gui to put a * on the title bar (swing gui):
+            ProjectManager.getManager().notifySavePropertyChanged(newValue);
+        }
     }
     
     /**
@@ -539,9 +544,9 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return <tt>true</tt> if the model needs to be saved.
      */
     public boolean needsSave() {
-        return saveRegistry.hasChanged();
+        return ActionSaveProject.getInstance().isEnabled();
     }
-
+    
     /**
      * Returns all models defined by the user. I.e. this does not return the
      * default model but all other models.
@@ -1059,14 +1064,6 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Returns the saveRegistry.
-     * @return ChangeRegistry
-     */
-    public ChangeRegistry getSaveRegistry() {
-        return saveRegistry;
-    }
-
-    /**
      * Returns the searchpath.
      * @return Vector
      */
@@ -1110,9 +1107,9 @@ public class Project implements java.io.Serializable, TargetListener {
      * Sets the saveRegistry.
      * @param theSaveRegistry The saveRegistry to set
      */
-    public void setSaveRegistry(ChangeRegistry theSaveRegistry) {
-        saveRegistry = theSaveRegistry;
-    }
+//    public void setSaveRegistry(ChangeRegistry theSaveRegistry) {
+//        saveRegistry = theSaveRegistry;
+//    }
 
     /**
      * Sets the searchpath.

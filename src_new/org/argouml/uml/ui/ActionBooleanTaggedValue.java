@@ -37,7 +37,7 @@ import org.argouml.model.uml.UmlFactory;
  * @author mkl
  *  
  */
-public class ActionBooleanTaggedValue extends UMLChangeAction {
+public class ActionBooleanTaggedValue extends UMLAction {
 
     private String tagName;
 

@@ -55,7 +55,7 @@ import org.tigris.gef.presentation.Fig;
  * @author original author not known.
  * @author jaap.branderhorst@xs4all.nl extensions
  */
-public class ActionRemoveFromModel extends UMLChangeAction {
+public class ActionRemoveFromModel extends UMLAction {
 
     /**
      * Constructor.

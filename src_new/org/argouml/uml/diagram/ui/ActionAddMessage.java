@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -41,7 +41,7 @@ import org.tigris.gef.presentation.FigNode;
  * Action to add a message.
  * @stereotype singleton
  */
-public class ActionAddMessage extends UMLChangeAction {
+public class ActionAddMessage extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables

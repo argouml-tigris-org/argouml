@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 
 /**
  * A class to implement the addition of extension points to use cases.<p>
@@ -41,7 +41,7 @@ import org.argouml.uml.ui.UMLChangeAction;
  * @author  Jeremy Bennett (mail@jeremybennett.com).
  * @stereotype singleton
  */
-public final class ActionAddExtensionPoint extends UMLChangeAction {
+public final class ActionAddExtensionPoint extends UMLAction {
 
 
     ///////////////////////////////////////////////////////////////////////////

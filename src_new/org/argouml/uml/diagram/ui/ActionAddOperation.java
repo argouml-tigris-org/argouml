@@ -36,14 +36,12 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLChangeAction;
-
-import ru.novosoft.uml.foundation.core.MClassifier;
+import org.argouml.uml.ui.UMLAction;
 
 /** Action to add an operation to a classifier.
  *  @stereotype singleton
  */
-public class ActionAddOperation extends UMLChangeAction {
+public class ActionAddOperation extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -79,10 +77,14 @@ public class ActionAddOperation extends UMLChangeAction {
 	else
 	    return;
 
-    Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(cls);
-    Object model = ProjectManager.getManager().getCurrentProject().getModel();
-    Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-	Object oper = UmlFactory.getFactory().getCore().buildOperation(cls, model, voidType, propertyChangeListeners);
+	Collection propertyChangeListeners = ProjectManager.getManager()
+	    .getCurrentProject().findFigsForMember(cls);
+	Object model = ProjectManager.getManager()
+	    .getCurrentProject().getModel();
+	Object voidType = ProjectManager.getManager()
+	    .getCurrentProject().findType("void");
+	Object oper = UmlFactory.getFactory().getCore()
+	    .buildOperation(cls, model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(oper);
 
         Iterator it =

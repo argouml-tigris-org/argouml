@@ -31,7 +31,7 @@ import org.argouml.i18n.Translator;
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class AbstractActionNewModelElement extends UMLChangeAction {
+public abstract class AbstractActionNewModelElement extends UMLAction {
 
     private Object/*MModelElement*/ target;
     

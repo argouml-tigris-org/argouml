@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.uml.UmlModelListener;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.uml.ui.ActionSaveProject;
 
 /**
  * This class manages the projects loaded in argouml.
@@ -116,11 +115,10 @@ public final class ProjectManager implements PropertyChangeListener {
      */
     private ProjectManager() {
         super();
-        // Register the save action with the UmlModelListener
+        // Register with the UmlModelListener
         // so that any changes to the model will enable the
         // save button/menu item etc.
-        UmlModelListener.getInstance()
-            .setSaveAction(ActionSaveProject.getInstance());
+        UmlModelListener.getInstance().addPropertyChangeListener(this);
     }
 
     /**
@@ -267,6 +265,10 @@ public final class ProjectManager implements PropertyChangeListener {
         }
         else if (pce.getPropertyName().equals(
                 Designer.MODEL_TODOITEM_DISMISSED)) {
+            getCurrentProject().setNeedsSave(true);
+        }
+        else if (pce.getPropertyName().equals(
+                UmlModelListener.SAVE_STATE_PROPERTY_NAME)) {
             getCurrentProject().setNeedsSave(true);
         }
         

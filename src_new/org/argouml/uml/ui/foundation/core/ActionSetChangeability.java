@@ -30,13 +30,13 @@ import javax.swing.JRadioButton;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
  * @author jaap.branderhorst@xs4all.nl, alexb
  */
-public class ActionSetChangeability extends UMLChangeAction {
+public class ActionSetChangeability extends UMLAction {
 
     private static final ActionSetChangeability SINGLETON = 
         new ActionSetChangeability();
