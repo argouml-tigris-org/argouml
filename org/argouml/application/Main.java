@@ -27,6 +27,7 @@ package org.argouml.application;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -52,6 +53,7 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
+import org.argouml.uml.ui.ActionLoadProject;
 import org.argouml.util.Trash;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
@@ -281,9 +283,13 @@ public class Main {
 
         Project p = null;
 
-        if (urlToOpen == null) {
-            p = ProjectManager.getManager().getCurrentProject();
-        } else {
+        if (urlToOpen != null) {
+            
+            ActionLoadProject.SINGLETON.putValue(ActionLoadProject.URL_KEY, urlToOpen);
+            ActionLoadProject.SINGLETON.actionPerformed(
+                            new ActionEvent(Project.class, 0, "loadProject"));
+            
+                            /*
             try {
                 p = Project.loadProject(urlToOpen);
             } catch (FileNotFoundException fn) {
@@ -328,7 +334,9 @@ public class Main {
                 urlToOpen = null;
                 p = ProjectManager.getManager().makeEmptyProject();
             }
+            */
         }
+        p = ProjectManager.getManager().getCurrentProject();
 
         st.mark("set project");
 
