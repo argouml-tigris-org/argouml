@@ -92,6 +92,11 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  *   rather than an included use case. Fixed within the include relationship,
  *   rather than the use case, by reversing the use of access functions for the
  *   "base" and "addition" associations in the code.</p>
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by ?,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 
 public class UMLIncludeListModel extends UMLModelElementListModel  {

@@ -57,6 +57,10 @@ import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MNode;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelNode extends PropPanelClassifier {
 
     ////////////////////////////////////////////////////////////////

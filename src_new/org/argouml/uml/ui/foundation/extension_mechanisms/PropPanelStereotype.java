@@ -50,6 +50,10 @@ import org.argouml.util.ConfigLoader;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelStereotype extends PropPanelModelElement {
 
     /**

@@ -33,10 +33,8 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.Orientation;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLReflectionListModel;
 
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -94,9 +92,6 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
         new UMLClassifierParameterListModel();
     private static UMLClassifierStructuralFeatureListModel structuralFeatureListModel =
         new UMLClassifierStructuralFeatureListModel();
-
-    private UMLReflectionListModel _implementsModel = null;
-    private UMLReflectionListModel _connectModel = null;
 
     ////////////////////////////////////////////////////////////////
     // contructors

@@ -52,6 +52,9 @@ import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
  * mechanism and to include all valid properties as defined in the UML 1.3 spec.
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
+ *
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components
  */
 public class PropPanelGuard extends PropPanelModelElement {
 

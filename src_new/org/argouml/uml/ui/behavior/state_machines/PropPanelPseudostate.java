@@ -53,6 +53,10 @@ import org.argouml.util.ConfigLoader;
 import ru.novosoft.uml.behavior.state_machines.MPseudostate;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelPseudostate extends PropPanelStateVertex {
 
     private ButtonGroup kindGroup = new ButtonGroup();

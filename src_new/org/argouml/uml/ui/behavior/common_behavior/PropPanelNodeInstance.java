@@ -47,6 +47,10 @@ import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelNodeInstance extends PropPanelModelElement {
     public PropPanelNodeInstance() {
         super("Node Instance", _nodeInstanceIcon, ConfigLoader.getTabPropsOrientation());

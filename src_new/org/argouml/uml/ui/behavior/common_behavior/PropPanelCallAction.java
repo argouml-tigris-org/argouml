@@ -36,6 +36,10 @@ import org.argouml.uml.ui.UMLExpressionModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelCallAction extends PropPanelModelElement {
 
     ////////////////////////////////////////////////////////////////

@@ -50,6 +50,10 @@ import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components, specifically namesToWatch mechanism.
+ */
 public class PropPanelMessage extends PropPanelModelElement {
 
   ////////////////////////////////////////////////////////////////

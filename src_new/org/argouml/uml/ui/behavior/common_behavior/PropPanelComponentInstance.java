@@ -46,6 +46,10 @@ import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
+/**
+ * @todo this property panel needs refactoring to remove dependency on
+ *       old gui components.
+ */
 public class PropPanelComponentInstance extends PropPanelModelElement {
 
   ////////////////////////////////////////////////////////////////
