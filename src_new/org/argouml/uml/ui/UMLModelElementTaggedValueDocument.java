@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
@@ -65,7 +66,6 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      * @return the value of the tagged value
      */
     protected String getProperty() {
-        return ((MModelElement) getTarget()).getTaggedValue(this.getEventName());
+        return ModelFacade.getTaggedValue(getTarget(), this.getEventName()).toString();
     }
 }
-

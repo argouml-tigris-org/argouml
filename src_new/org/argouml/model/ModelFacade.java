@@ -3249,12 +3249,12 @@ public class ModelFacade {
     public static Object getTaggedValue(Object modelElement, String name) {
         if (modelElement != null && modelElement instanceof MModelElement) {
 	    MModelElement me = ((MModelElement) modelElement);
-            for (Iterator i = me.getTaggedValues().iterator();
-		 i.hasNext();
-		 ) {
+            Iterator i = me.getTaggedValues().iterator();
+            while(i.hasNext()) {
                 MTaggedValue tv = (MTaggedValue) i.next();
-                if (tv.getTag().equals(name))
+                if (tv.getTag().equals(name)) {
                     return tv;
+                }
             }
         }
         return null;
@@ -3381,6 +3381,42 @@ public class ModelFacade {
         }
     }
 
+    /**
+     * Adds a predecessor to a message
+     * @param target the message
+     * @param predecessor 
+     */
+    public static void addPredecessor(Object target, Object predecessor) {
+        if (target != null
+                && target instanceof MMessage
+                && predecessor != null
+                && predecessor instanceof MMessage) {
+            ((MMessage)target).addPredecessor((MMessage)predecessor);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + predecessor);
+    }
+
+    /**
+     * Adds a stimulus to a action or link
+     * @param target the action or link
+     * @param stimulus
+     */
+    public static void addStimulus(Object target, Object stimulus) {
+        if (target != null && stimulus != null && stimulus instanceof MStimulus) {
+            if (target instanceof MAction) {
+                ((MAction)target).addStimulus((MStimulus)stimulus);
+                return;
+            }
+            if (target instanceof MLink) {
+                ((MLink)target).addStimulus((MStimulus)stimulus);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + stimulus);
+    }
     /**
      * Adds a supplier classifier to some abstraction.
      * @param a abstraction
@@ -4162,6 +4198,26 @@ public class ModelFacade {
             && mc instanceof MConstraint) {
             ((MModelElement) me).addConstraint((MConstraint) mc);
         }
+    }
+
+    /**
+     * Adds a constraint to some model element.
+     * @param me model element
+     * @param mc constraint
+     */
+    public static void addExtensionPoint(Object target, Object extensionPoint) {
+        if (target != null && extensionPoint != null && extensionPoint instanceof MExtensionPoint) {
+            if (target instanceof MUseCase) {
+                ((MUseCase)target).addExtensionPoint((MExtensionPoint)extensionPoint);
+                return;
+            }
+            if (target instanceof MExtend) {
+                ((MExtend)target).addExtensionPoint((MExtensionPoint)extensionPoint);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + extensionPoint);
     }
 
     /** getUMLClassName returns the name of the UML Model class, e.g. it

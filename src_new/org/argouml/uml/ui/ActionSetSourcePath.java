@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -87,7 +84,7 @@ public class ActionSetSourcePath extends UMLAction {
 	String path = null;
 	if (ModelFacade.isAModelElement(obj)) {
 	    name = ModelFacade.getName(obj);
-	    path = ((MModelElement) obj).getTaggedValue("src_path");
+	    path = ModelFacade.getTaggedValue(obj, "src_path").toString();
 	    if (ModelFacade.isAPackage(obj))
 		type = "Package";
 	    else if (ModelFacade.isAClass(obj))

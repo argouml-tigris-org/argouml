@@ -231,7 +231,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	//do I have to check the namespace here? (Toby)
 	if (ModelFacade.isAModelElement(node) &&
 	    (ModelFacade.getNamespace(node) == null)) {
-	    ((MNamespace) _model).addOwnedElement((MModelElement) node);
+	    ModelFacade.addOwnedElement(_model, node);
 	}
 	fireNodeAdded(node);
     }
@@ -243,7 +243,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	_edges.addElement(edge);
 	// TODO: assumes public
 	if (ModelFacade.isAModelElement(edge)) {
-	    ((MNamespace) _model).addOwnedElement((MModelElement) edge);
+	    ModelFacade.addOwnedElement(_model, edge);
 	}
 	fireEdgeAdded(edge);
     }

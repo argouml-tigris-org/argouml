@@ -24,13 +24,11 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.AbstractActionRemoveElement;
-
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
  * Action to remove a base from a classifierrole.
@@ -58,7 +56,7 @@ public class ActionRemoveClassifierRoleBase
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        ((MClassifierRole) getTarget()).removeBase((MClassifier) getObjectToRemove());
+        ModelFacade.removeBase(getTarget(), getObjectToRemove());
     }
 
 }
