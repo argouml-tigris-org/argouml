@@ -3,14 +3,14 @@
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
-// and this paragraph appear in all copies.  This software program and
+// and this paragraph appear in all copies. This software program and
 // documentation are copyrighted by The Regents of the University of
 // California. The software program and documentation are supplied "AS
 // IS", without any accompanying services from The Regents. The Regents
 // does not warrant that the operation of the program will be
 // uninterrupted or error-free. The end-user understands that the program
 // was developed for research purposes and is advised not to rely
-// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
 // UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
 // SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
 // ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -22,39 +22,29 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 // $Id$
 
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 
-import org.apache.log4j.Logger;
+import org.argouml.model.ModelFacade;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
-import org.argouml.model.ModelFacade;
 
 /** Class to display graphics for a UML subsystem in a class diagram. */
 
 public class FigSubsystem extends FigPackage {
-    protected static Logger cat = Logger.getLogger(FigSubsystem.class);
 
-    protected FigPoly _figPoly;
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    protected FigPoly _figPoly = new FigPoly(Color.black, Color.black);
 
     public FigSubsystem() {
         super();
-        _figPoly = new FigPoly(Color.black, Color.black);
-        int[] xpoints = {
-	    125, 125, 130, 130, 130, 135, 135 
-	};
-        int[] ypoints = {
-	    45,  40,  40,  35,  40,  40,  45 
-	};
+
+        int[] xpoints = { 125, 125, 130, 130, 130, 135, 135};
+        int[] ypoints = { 45, 40, 40, 35, 40, 40, 45};
         Polygon polygon = new Polygon(xpoints, ypoints, 7);
         _figPoly.setPolygon(polygon);
         _figPoly.setFilled(false);
@@ -68,16 +58,26 @@ public class FigSubsystem extends FigPackage {
         this();
         setOwner(node);
 
-        // If this figure is created for an existing package node in the
-        // metamodel, set the figure's name according to this node. This is
-        // used when the user click's on 'add to diagram' in the navpane.
-        // Don't know if this should rather be done in one of the super
-        // classes, since similar code is used in FigClass.java etc.
-        // Andreas Rueckert <a_rueckert@gmx.net>
         if (ModelFacade.isASubsystem(node)
-	        && (ModelFacade.getName(node) != null)) {
+                && (ModelFacade.getName(node) != null)) {
             getNameFig().setText(ModelFacade.getName(node));
-	}
+        }
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
+    public void setBounds(int x, int y, int w, int h) {
+
+        if (_figPoly != null) {
+            Rectangle oldBounds = getBounds();
+            Rectangle polyBounds = _figPoly.getBounds();
+            ;
+            _figPoly.translate((x - oldBounds.x) + (w - oldBounds.width), y
+                    - oldBounds.y);
+
+        }
+        super.setBounds(x, y, w, h);
     }
 
     public String placeString() {
