@@ -36,30 +36,48 @@ import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 
+/**
+ * Class that represents the clarifier attribute compartment (?).
+ *
+ */
 public class ClAttributeCompartment implements Clarifier {
-    protected static Logger cat =
+    
+    private static final Logger LOG =
 	Logger.getLogger(ClAttributeCompartment.class);
-    public static ClAttributeCompartment TheInstance =
+    
+    private static ClAttributeCompartment theInstance =
 	new ClAttributeCompartment();
-    public static int WAVE_LENGTH = 4;
-    public static int WAVE_HEIGHT = 2;
+    
+    private static final int WAVE_LENGTH = 4;
+    private static final int WAVE_HEIGHT = 2;
 									  
     ////////////////////////////////////////////////////////////////
     // instance variables
-    Fig _fig;
+    private Fig fig;
 									      
-    public void setFig(Fig f) { _fig = f; }
+    /**
+     * @see org.argouml.ui.Clarifier#setFig(org.tigris.gef.presentation.Fig)
+     */
+    public void setFig(Fig f) { fig = f; }
+    
+    /**
+     * @see org.argouml.ui.Clarifier#setToDoItem(org.argouml.cognitive.ToDoItem)
+     */
     public void setToDoItem(ToDoItem i) { }
 
+    /**
+     * @see javax.swing.Icon#paintIcon(java.awt.Component, java.awt.Graphics, 
+     * int, int)
+     */
     public void paintIcon(Component c, Graphics g, int x, int y) {
-	if (_fig instanceof FigClass) {
-	    FigClass fc = (FigClass) _fig;
+	if (fig instanceof FigClass) {
+	    FigClass fc = (FigClass) fig;
     
 	    // added by Eric Lefevre 13 Mar 1999: we must check if the
 	    // FigText for attributes is drawn before drawing things
 	    // over it
 	    if ( !fc.isAttributesVisible() ) {
-		_fig = null;
+		fig = null;
 		return;
 	    }
 					
@@ -85,23 +103,39 @@ public class ClAttributeCompartment implements Clarifier {
 		i += WAVE_LENGTH;
 		if (i >= right) break;
 	    }
-	    _fig = null;
+	    fig = null;
 	}
     }
 
+    /**
+     * @see javax.swing.Icon#getIconWidth()
+     */
     public int getIconWidth() { return 0; }
+    
+    /**
+     * @see javax.swing.Icon#getIconHeight()
+     */
     public int getIconHeight() { return 0; }
 
+    /**
+     * @see org.argouml.ui.Clarifier#hit(int, int)
+     */
     public boolean hit(int x, int y) {
-	if (!(_fig instanceof FigClass)) {
-	    cat.debug("not a FigClass");
+	if (!(fig instanceof FigClass)) {
+	    LOG.debug("not a FigClass");
 	    return false;
 	}
-	FigClass fc = (FigClass) _fig;
+	FigClass fc = (FigClass) fig;
 	FigGroup fg = fc.getAttributesFig();
 	boolean res = fg.contains(x, y);
-	_fig = null;
+	fig = null;
 	return res;
+    }
+    /**
+     * @return Returns the theInstance.
+     */
+    public static ClAttributeCompartment getTheInstance() {
+        return theInstance;
     }
 
 } /* end class ClAttributeCompartment */
