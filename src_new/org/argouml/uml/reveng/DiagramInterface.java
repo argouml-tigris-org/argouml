@@ -246,6 +246,8 @@ public class DiagramInterface {
             
             newClassFig.setAttributeVisible(!minimise);
             newClassFig.setOperationVisible(!minimise);
+            
+            newClassFig.setSize(newClassFig.getMinimumSize());
         }
     }
 
@@ -265,6 +267,8 @@ public class DiagramInterface {
             currentGM.addNodeRelatedEdges( newInterface);
             
             newInterfaceFig.setOperationVisible(!minimise);
+            
+            newInterfaceFig.setSize(newInterfaceFig.getMinimumSize());
         }
     }
 
