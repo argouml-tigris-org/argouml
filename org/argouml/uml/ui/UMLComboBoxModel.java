@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -182,7 +182,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
      *                                     <code>elementType</code> (see
      *                                     below).
      *
-     * @param putMethod                    Name of a method of the container
+     * @param setMethod                    Name of a method of the container
      *                                     which will set the value associated
      *                                     with this combo box. Takes as 
      *                                     argument an object of type
@@ -222,7 +222,7 @@ public class UMLComboBoxModel extends AbstractListModel implements
 
         if (filter != null) {
             Class[] args =  {
-                (Class)ModelFacade.CLASS
+                (Class) ModelFacade.MODELELEMENT
 	    };
 
             try {
