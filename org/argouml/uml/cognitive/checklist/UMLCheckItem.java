@@ -41,16 +41,34 @@ import org.tigris.gef.util.Predicate;
  * @see org.argouml.ocl.OCLEvaluator */
 
 public class UMLCheckItem extends CheckItem {
-    protected static Logger cat = 
+    private static final Logger LOG = 
         Logger.getLogger(UMLCheckItem.class);
 
+    /**
+     * The constructor.
+     * 
+     * @param c the category
+     * @param d the description
+     */
     public UMLCheckItem(String c, String d) { super(c, d); }
 
+    /**
+     * The constructor.
+     * 
+     * @param c the category
+     * @param d the description
+     * @param m the more-info-url
+     * @param p the predicate
+     */
     public UMLCheckItem(String c, String d, String m, Predicate p) {
 	super(c, d, m, p);
     }
 
 
+    /**
+     * @see org.argouml.cognitive.checklist.CheckItem#expand(java.lang.String, 
+     * java.lang.Object)
+     */
     public String expand(String res, Object dm) {
 	int searchPos = 0;
 	int matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
@@ -63,10 +81,10 @@ public class UMLCheckItem extends CheckItem {
 		res.substring(matchPos + OCLEvaluator.OCL_START.length(),
 			      endExpr);
 	    String evalStr = OCLEvaluator.SINGLETON.evalToString(dm, expr);
-	    cat.debug("expr='" + expr + "' = '" + evalStr + "'");
-	    res = res.substring(0, matchPos) +
-		evalStr +
-		res.substring(endExpr + OCLEvaluator.OCL_END.length());
+	    LOG.debug("expr='" + expr + "' = '" + evalStr + "'");
+	    res = res.substring(0, matchPos) 
+		+ evalStr 
+		+ res.substring(endExpr + OCLEvaluator.OCL_END.length());
 	    searchPos = endExpr + 1;
 	    matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
 	}
