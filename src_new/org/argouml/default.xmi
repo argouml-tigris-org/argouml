@@ -340,7 +340,7 @@
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
-          <Foundation.Extension_Mechanisms.Stereotype.baseClass>Model</Foundation.Extension_Mechanisms.Stereotype.baseClass>
+          <Foundation.Extension_Mechanisms.Stereotype.baseClass>Package</Foundation.Extension_Mechanisms.Stereotype.baseClass>
           <Foundation.Core.ModelElement.namespace>
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
@@ -534,6 +534,17 @@
         </Foundation.Extension_Mechanisms.Stereotype>
         <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.128">
           <Foundation.Core.ModelElement.name>topLevel</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Extension_Mechanisms.Stereotype.baseClass>Package</Foundation.Extension_Mechanisms.Stereotype.baseClass>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Foundation.Extension_Mechanisms.Stereotype>
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.129">
+          <Foundation.Core.ModelElement.name>systemModel</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
