@@ -158,7 +158,7 @@ public class UMLClassDiagram extends UMLDiagram {
     _toolBar.add(_actionClass);
     _toolBar.add(_actionAssoc);
     _toolBar.add(_actionDepend);
-    _toolBar.add(_actionPermission);
+//    _toolBar.add(_actionPermission);
     _toolBar.add(_actionGeneralize);
     _toolBar.addSeparator();
 
