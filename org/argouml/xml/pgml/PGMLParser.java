@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,6 +41,10 @@ import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 
 public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.6. Use your own logger!
+     *             Will become private.
+     */
     protected static Logger cat = Logger.getLogger(PGMLParser.class);
 
     protected int _privateTextDepth = 0;
@@ -53,9 +57,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
     protected HashMap _translateUciToOrg = new HashMap();
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    /**
+     * Constructor
+     */
     protected PGMLParser() {
 	_translateUciToOrg.put("uci.uml.visual.UMLClassDiagram",
 			       "org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram");
@@ -180,6 +184,10 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 	"/org/argouml/xml/dtd/",
 	"/org/tigris/gef/xml/dtd/" 
     };
+    
+    /**
+     * @see org.tigris.gef.xml.pgml.PGMLParser#getEntityPaths()
+     */
     protected String[] getEntityPaths() {
 	return _entityPaths;
     }
@@ -189,6 +197,9 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     protected FigNode _previousNode = null;
 
     /**
+     * @see org.tigris.gef.xml.pgml.PGMLParser#startElement(
+     *          java.lang.String, org.xml.sax.AttributeList)
+     *
      * Called by the XML framework when an entity starts.
      */
     public void startElement(String elementName, AttributeList attrList) {
@@ -247,6 +258,8 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     }
 
     /**
+     * @see org.tigris.gef.xml.pgml.PGMLParser#characters(char[], int, int)
+     *
      * Called by the PGML framework when there are characters inside an XML
      * entity. We need to save them if it would turn out to be a private
      * entity.
@@ -324,6 +337,10 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 	return rv;
     }
   
+    /**
+     * @see org.tigris.gef.xml.pgml.PGMLParser#readDiagram(
+     *          java.io.InputStream, boolean)
+     */
     public synchronized Diagram readDiagram(InputStream is, boolean closeStream) {
         String errmsg = "Exception in readDiagram";
         
@@ -375,6 +392,7 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
         }
         return null;
     }
+
     /**
      * @see org.xml.sax.DocumentHandler#endElement(java.lang.String)
      */
