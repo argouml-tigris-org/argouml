@@ -26,8 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-import org.argouml.application.api.NotationName;
-
 
 /**
  * The interface to the factory for the Core.<p>
@@ -461,24 +459,6 @@ public interface CoreFactory {
      */
     Object buildGeneralization(Object child1, Object parent1);
 
-    /**
-     * Builds a default method belonging to a certain operation. The
-     * language of the body is set to the selected Notation
-     * language. The body of the method is set to an emtpy string.
-     *
-     * @param op is the operation
-     * @return MMethod
-     */
-    Object buildMethod(Object op);
-
-    /**
-     * Builds a method belonging to a certain operation.
-     * @param op The operation this method belongs to
-     * @param notation The notationname (language name) of the body
-     * @param body The actual body of the method
-     * @return MMethod
-     */
-    Object buildMethod(Object op, NotationName notation, String body);
 
     /**
      * Builds a method with a given name.

@@ -42,7 +42,6 @@ import org.argouml.model.ModelManagementHelper;
 import org.argouml.model.StateMachinesHelper;
 import org.argouml.model.UmlHelper;
 import org.argouml.model.UseCasesHelper;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 import ru.novosoft.uml.MBase;
 

@@ -32,11 +32,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.argouml.application.api.Notation;
-import org.argouml.application.api.NotationName;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
@@ -80,7 +77,6 @@ import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
-import ru.novosoft.uml.foundation.data_types.MProcedureExpression;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -1260,45 +1256,6 @@ public class CoreFactoryImpl
         return gen;
     }
 
-    /**
-     * Builds a default method belonging to a certain operation. The
-     * language of the body is set to the selected Notation
-     * language. The body of the method is set to an emtpy string.
-     *
-     * @param op is the operation
-     * @return MMethod
-     */
-    public Object buildMethod(Object op) {
-	return buildMethod(op, Notation.getDefaultNotation(), "");
-    }
-
-    /**
-     * Builds a method belonging to a certain operation.
-     * @param op The operation this method belongs to
-     * @param notation The notationname (language name) of the body
-     * @param body The actual body of the method
-     * @return MMethod
-     */
-    public Object buildMethod(Object op, NotationName notation,
-			       String body) {
-	MMethod method = (MMethod) createMethod();
-	if (op != null) {
-	    if (!(op instanceof MOperation)) {
-	        throw new IllegalArgumentException();
-	    }
-	    method.setSpecification((MOperation) op);
-	    MClassifier owner = ((MOperation) op).getOwner();
-	    if (owner != null) {
-		method.setOwner(owner);
-	    }
-	}
-	if (notation != null && notation.getName() != null) {
-	    method.setBody(
-	            (MProcedureExpression) nsmodel.getDataTypesFactory()
-	            	.createProcedureExpression(notation.getName(), body));
-	}
-	return method;
-    }
 
     /**
      * Builds a method with a given name.

@@ -35,7 +35,6 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreHelper;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -1097,7 +1096,6 @@ class CoreHelperImpl implements CoreHelper {
      *
      * This method also works to get the source of a Link.<p>
      *
-     * This method also works for CommentEdge
      * TODO: move this method to a generic ModelHelper
      *
      * @param relationship is the relation
@@ -1179,7 +1177,6 @@ class CoreHelperImpl implements CoreHelper {
      *
      * This method also works for links.<p>
      *
-     * This method also works for CommentEdge
      * TODO: move this method to a generic ModelHelper
      *
      * @param relationship is the relation
@@ -1339,20 +1336,20 @@ class CoreHelperImpl implements CoreHelper {
 
 	}
 
-        MModelElement m = (MModelElement) mObj;
+        MModelElement modelElement = (MModelElement) mObj;
         MNamespace ns = (MNamespace) nsObj;
 
-        if (m == null || ns == null) {
+        if (modelElement == null || ns == null) {
             return false;
         }
-        if (ns.getModel() != m.getModel()) {
+        if (ns.getModel() != modelElement.getModel()) {
             return false;
         }
-        if (m == ns) {
+        if (modelElement == ns) {
             return false;
         }
-        if (m instanceof MNamespace
-            && m == getFirstSharedNamespace((MNamespace) m, ns)) {
+        if (modelElement instanceof MNamespace
+                && modelElement == getFirstSharedNamespace(modelElement, ns)) {
             return false;
         }
         if (ns instanceof MInterface
@@ -1360,64 +1357,64 @@ class CoreHelperImpl implements CoreHelper {
             || ns instanceof MUseCase) {
             return false;
         } else if (ns instanceof MComponent) {
-            return (m instanceof MComponent && m != ns);
+            return (modelElement instanceof MComponent && modelElement != ns);
         } else if (ns instanceof MCollaboration) {
-            if (!(m instanceof MClassifierRole
-		  || m instanceof MAssociationRole
-		  || m instanceof MGeneralization
-		  || m instanceof MConstraint)) {
+            if (!(modelElement instanceof MClassifierRole
+		  || modelElement instanceof MAssociationRole
+		  || modelElement instanceof MGeneralization
+		  || modelElement instanceof MConstraint)) {
                 return false;
             }
         } else if (ns instanceof MPackage) {
-            if (!(m instanceof MPackage
-		  || m instanceof MClassifier
-		  || m instanceof MAssociation
-		  || m instanceof MGeneralization
-		  || m instanceof MDependency
-		  || m instanceof MConstraint
-		  || m instanceof MCollaboration
-		  || m instanceof MStateMachine
-		  || m instanceof MStereotype)) {
+            if (!(modelElement instanceof MPackage
+		  || modelElement instanceof MClassifier
+		  || modelElement instanceof MAssociation
+		  || modelElement instanceof MGeneralization
+		  || modelElement instanceof MDependency
+		  || modelElement instanceof MConstraint
+		  || modelElement instanceof MCollaboration
+		  || modelElement instanceof MStateMachine
+		  || modelElement instanceof MStereotype)) {
                 return false;
             }
         } else if (ns instanceof MClass) {
-            if (!(m instanceof MClass
-		  || m instanceof MAssociation
-		  || m instanceof MGeneralization
-		  || m instanceof MUseCase
-		  || m instanceof MConstraint
-		  || m instanceof MDependency
-		  || m instanceof MCollaboration
-		  || m instanceof MDataType
-		  || m instanceof MInterface)) {
+            if (!(modelElement instanceof MClass
+		  || modelElement instanceof MAssociation
+		  || modelElement instanceof MGeneralization
+		  || modelElement instanceof MUseCase
+		  || modelElement instanceof MConstraint
+		  || modelElement instanceof MDependency
+		  || modelElement instanceof MCollaboration
+		  || modelElement instanceof MDataType
+		  || modelElement instanceof MInterface)) {
                 return false;
             }
         } else if (ns instanceof MClassifierRole) {
-            if (!(((MClassifierRole) ns).getAvailableContentses().contains(m)
-		  || ((MClassifierRole) ns).getAvailableFeatures()
-		  	.contains(m))) {
+            MClassifierRole cr = (MClassifierRole) ns;
+            if (!(cr.getAvailableContentses().contains(modelElement)
+		  || cr.getAvailableFeatures().contains(modelElement))) {
                 return false;
             }
         }
-        if (m instanceof MStructuralFeature) {
-            if (!isValidNamespace((MStructuralFeature) m, ns)) {
+        if (modelElement instanceof MStructuralFeature) {
+            if (!isValidNamespace((MStructuralFeature) modelElement, ns)) {
                 return false;
             }
-        } else if (m instanceof MGeneralizableElement) {
-            if (!isValidNamespace((MGeneralizableElement) m, ns)) {
+        } else if (modelElement instanceof MGeneralizableElement) {
+            if (!isValidNamespace((MGeneralizableElement) modelElement, ns)) {
                 return false;
             }
-        } else if (m instanceof MGeneralization) {
-            if (!isValidNamespace((MGeneralization) m, ns)) {
+        } else if (modelElement instanceof MGeneralization) {
+            if (!isValidNamespace((MGeneralization) modelElement, ns)) {
                 return false;
             }
         }
-        if (m instanceof MAssociation) {
-            if (!isValidNamespace((MAssociation) m, ns)) {
+        if (modelElement instanceof MAssociation) {
+            if (!isValidNamespace((MAssociation) modelElement, ns)) {
                 return false;
             }
-        } else if (m instanceof MCollaboration) {
-            if (!isValidNamespace((MCollaboration) m, ns)) {
+        } else if (modelElement instanceof MCollaboration) {
+            if (!isValidNamespace((MCollaboration) modelElement, ns)) {
                 return false;
             }
         }
