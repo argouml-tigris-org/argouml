@@ -420,7 +420,7 @@ public class Modeller
         mOperation.setStereotype(getStereotype("create"));
           }
           else {
-	      mParameter = MMUtil.SINGLETON.buildParameter();
+	      mParameter = UmlFactory.getFactory().getCore().buildParameter();
         mParameter.setName("return");
         mParameter.setKind(MParameterDirectionKind.RETURN);
         mOperation.addParameter(mParameter);
@@ -432,7 +432,7 @@ public class Modeller
 
           for(Iterator i=parameters.iterator(); i.hasNext(); ) {
         Vector parameter = (Vector)i.next();
-        mParameter = MMUtil.SINGLETON.buildParameter();
+        mParameter = UmlFactory.getFactory().getCore().buildParameter();
         mParameter.setName((String)parameter.elementAt(2));
         mParameter.setKind(MParameterDirectionKind.IN);
         mOperation.addParameter(mParameter);
@@ -743,7 +743,7 @@ public class Modeller
 	MOperation mOperation = (MOperation)parseState.getOperation(name);
 
 	if(mOperation == null) {
-	    mOperation = MMUtil.SINGLETON.buildOperation();
+	    mOperation = UmlFactory.getFactory().getCore().buildOperation();
 	    mOperation.setName(name);
 	    parseState.getClassifier().addFeature(mOperation);
 	}
@@ -789,7 +789,7 @@ public class Modeller
 	   (initializer != null ||
 	    (noAssociations &&
 	     getAssociationEnd(name, mClassifier) == null))) {
-	    mAttribute = MMUtil.SINGLETON.buildAttribute();
+	    mAttribute = UmlFactory.getFactory().getCore().buildAttribute();
 	    mAttribute.setName(name);
 	    parseState.getClassifier().addFeature(mAttribute);
 	}

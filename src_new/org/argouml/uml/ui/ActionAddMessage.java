@@ -25,6 +25,7 @@ package org.argouml.uml.ui;
 
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.collaboration.ui.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
@@ -66,7 +67,7 @@ public class ActionAddMessage extends UMLChangeAction {
 	    nextStr = "" + (cd.getNumMessages() + 1);
 	}
 	    
-	MMessage msg=MMUtil.SINGLETON.buildMessage(ar,nextStr);
+	MMessage msg=UmlFactory.getFactory().getCollaborations().buildMessage(ar,nextStr);
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();

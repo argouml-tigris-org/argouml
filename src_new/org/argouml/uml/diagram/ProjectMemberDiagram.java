@@ -85,8 +85,8 @@ public class ProjectMemberDiagram extends ProjectMember {
 	UMLDiagram u = (UMLDiagram)d;
 	if (u.getNamespace() instanceof MModelElement) {
 	    MModelElement me = (MModelElement)u.getNamespace();
-	    if (me.getUUID() == null)
-		me.setUUID(UUIDManager.SINGLETON.getNewUUID());
+	    // if (me.getUUID() == null)
+		//   me.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	}
     }
   }

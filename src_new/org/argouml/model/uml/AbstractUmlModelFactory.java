@@ -51,7 +51,9 @@ public abstract class AbstractUmlModelFactory {
        logger.debug("initialize(" + o + ")");
 	   if (o instanceof MBase) {
             ((MBase)o).addMElementListener(UmlModelListener.getInstance());
-            ((MBase)o).setUUID(UUIDManager.SINGLETON.getNewUUID());
+            if (((MBase)o).getUUID() == null) {
+                ((MBase)o).setUUID(UUIDManager.SINGLETON.getNewUUID());
+            }
 	   }
     }
 

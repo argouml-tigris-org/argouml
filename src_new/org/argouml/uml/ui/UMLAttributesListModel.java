@@ -24,18 +24,11 @@
 
 package org.argouml.uml.ui;
 
-import ru.novosoft.uml.*;
+import java.util.Collection;
 
-import javax.swing.*;
-
-import java.util.*;
-import java.awt.*;
-import java.lang.reflect.*;
-
-import ru.novosoft.uml.foundation.core.*;
-
-import org.argouml.uml.MMUtil;
-
+import org.argouml.model.uml.UmlFactory;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClassifier;
 /**
  *   This class implements a list model for the attributes of a classifier.
  *   Used with a UMLList to display a list of attributes.  Since attributes
@@ -64,14 +57,12 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
     public UMLAttributesListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
         super(container,property,showNone);
     }
-
     /**
      *   Called to indicate that the cache of attributes may have become invalid.
      */
     protected void resetCache() {
         _attributes = null;
     }
-
     /**
      *   Called to determine if a particular feauture of the underlying collection
      *   should be in the cached list of model elements.
@@ -81,7 +72,6 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
     public boolean isProperClass(Object obj) {
         return obj instanceof MAttribute;
     }
-
     /**
      *   returns the raw underlying collection from the current target
      *   of the container.
@@ -96,7 +86,6 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
         }
         return raw;
     }
-
     /**
      *    returns the cache of model elements, rebuilding the cache if invalidated.
      *    @return cache of model elements
@@ -118,19 +107,16 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
   */
     public void add(int index){
         Object target = getTarget();
-
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             Collection oldFeatures = classifier.getFeatures();
-            MAttribute newAttr = MMUtil.SINGLETON.buildAttribute(classifier);
-
+            MAttribute newAttr = UmlFactory.getFactory().getCore().buildAttribute(classifier);
             classifier.setFeatures(addElement(oldFeatures, index, newAttr,
                                    _attributes.isEmpty()?null:_attributes.get(index)));
             fireContentsChanged(this,index-1,index);
             navigateTo(newAttr);
         }
     }  // ...end of add()...
-
 
     /**
      *   Deletes a specific attribute from both the cache and underlying
@@ -152,6 +138,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
             }
         }
     }
+
 
     /**
      *   Moves attribute up in the underlying collection.

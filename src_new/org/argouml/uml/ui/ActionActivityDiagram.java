@@ -70,7 +70,6 @@ public class ActionActivityDiagram extends UMLChangeAction {
 	    String contextNameStr = ns.getName();
 	    if (contextNameStr == null) contextNameStr = "untitled";
 	    MActivityGraph am = UmlFactory.getFactory().getActivityGraphs().createActivityGraph();
-	    am.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	    am.setName(contextNameStr + "ActivityGraph");
 	    MCompositeState cs = UmlFactory.getFactory().getStateMachines().createCompositeState();
 	    cs.setName("activities_top");

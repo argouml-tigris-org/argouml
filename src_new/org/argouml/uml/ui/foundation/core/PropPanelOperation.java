@@ -38,6 +38,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 
@@ -272,7 +273,7 @@ public class PropPanelOperation extends PropPanelModelElement {
             MOperation oper = (MOperation) target;
             MClassifier owner = oper.getOwner();
             if(owner != null) {
-		MOperation newOper = MMUtil.SINGLETON.buildOperation(owner);
+		MOperation newOper = UmlFactory.getFactory().getCore().buildOperation(owner);
 		newOper.addMElementListener(((MElementListener)ProjectBrowser.TheInstance.getActiveDiagram().presentationFor(owner)));
                 navigateTo(newOper);
                

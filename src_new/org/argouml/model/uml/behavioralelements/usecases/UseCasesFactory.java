@@ -118,6 +118,122 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
+    
+     /**
+     * <p>Build an extend relationship.</p>
+     *
+     * <p>Set the namespace to the base (preferred) or else extension's
+     *   namespace. We don't do any checking on base and extension. They should
+     *   be different, but that is someone else's problem.</p>
+     *
+     * @param base       The base use case for the relationship
+     *
+     * @param extension  The extension use case for the relationship
+     *
+     * @return           The new extend relationship or <code>null</code> if it
+     *                   can't be created.
+     */
+     public MExtend buildExtend(MUseCase base, MUseCase extension) {
+
+         MExtend extend = UmlFactory.getFactory().getUseCases().createExtend();
+         // Set the ends
+
+         extend.setBase(base);
+         extend.setExtension(extension);
+
+         // Set the namespace to that of the base as first choice, or that of
+         // the extension as second choice.
+
+         if (base.getNamespace() != null) {
+             extend.setNamespace(base.getNamespace());
+         }
+         else if (extension.getNamespace() != null) {
+             extend.setNamespace(extension.getNamespace());
+         }
+
+         return extend;
+     }
+     
+     /**
+     * <p>Build an extension point for a use case.</p>
+     *
+     * <p>Set the namespace to that of the use case if possible.</p>
+     *
+     * @param useCase  The owning use case for the extension point. May be
+     *                 <code>null</code>.
+     *
+     * @return         The new extension point or <code>null</code> if it
+     *                 can't be created.
+     */
+     public MExtensionPoint buildExtensionPoint(MUseCase useCase) {
+
+         MExtensionPoint extensionPoint = UmlFactory.getFactory().getUseCases().createExtensionPoint();
+
+         // Set the owning use case if there is one given.
+
+         if (useCase != null) {
+
+             extensionPoint.setUseCase(useCase);
+
+             // Set the namespace to that of the useCase if possible.
+
+             if (useCase.getNamespace() != null) {
+                 extensionPoint.setNamespace(useCase.getNamespace());
+             }
+         }
+
+         // For consistency with attribute and operation, give it a default
+         // name and location
+
+         extensionPoint.setName("newEP");
+         extensionPoint.setLocation("loc");
+
+         return extensionPoint;
+     }
+     
+      /**
+     * <p>Build an include relationship.</p>
+     *
+     * <p>Set the namespace to the base (preferred) or else extension's
+     *   namespace. We don't do any checking on base and extension. They should
+     *   be different, but that is someone else's problem.</p>
+     *
+     * <p><em>Note</em>. There is a bug in NSUML that gets the base and
+     *   addition associations back to front. We reverse the use of their
+     *   accessors in the code to correct this.</p>
+     *
+     * @param base       The base use case for the relationship
+     *
+     * @param extension  The extension use case for the relationship
+     *
+     * @return           The new include relationship or <code>null</code> if
+     *                   it can't be created.
+     */
+     public MInclude buildInclude(MUseCase base, MUseCase addition) {
+
+         MInclude include = UmlFactory.getFactory().getUseCases().createInclude();
+  
+         // Set the ends. Because of the NSUML bug we reverse the accessors
+         // here.
+
+         include.setAddition(base);
+         include.setBase(addition);
+
+         // Set the namespace to that of the base as first choice, or that of
+         // the addition as second choice.
+
+         if (base.getNamespace() != null) {
+             include.setNamespace(base.getNamespace());
+         }
+         else if (addition.getNamespace() != null) {
+             include.setNamespace(addition.getNamespace());
+         }
+
+         return include;
+     }
+
+
+
 
 }
 

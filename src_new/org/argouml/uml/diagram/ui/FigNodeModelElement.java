@@ -536,6 +536,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       ((MModelElement)oldOwner).removeMElementListener(this);
     if (own instanceof MModelElement) {
 	MModelElement me = (MModelElement)own;
+    me.removeMElementListener(this);
 	me.addMElementListener(this);
 	if ( me.getUUID() == null)
 	    me.setUUID(UUIDManager.SINGLETON.getNewUUID());

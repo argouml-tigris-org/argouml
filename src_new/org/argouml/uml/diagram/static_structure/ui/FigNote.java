@@ -471,6 +471,7 @@ public class FigNote extends FigNode implements VetoableChangeListener, DelayedV
 	    ((MModelElement)oldOwner).removeMElementListener(this);
 	if (own instanceof MModelElement) {
 	    MModelElement me = (MModelElement)own;
+        me.removeMElementListener(this);
 	    me.addMElementListener(this);
 	    if ( me.getUUID() == null)  // Mark the owner with a unique ID, so we can reference it in a
 		me.setUUID(UUIDManager.SINGLETON.getNewUUID());  // stored file.

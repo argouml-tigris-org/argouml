@@ -320,13 +320,13 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
           if (edgeClass == MGeneralizationImpl.class) {
               MGeneralization gen = 
-                  MMUtil.SINGLETON.buildGeneralization(fromCls, toCls);
+                  UmlFactory.getFactory().getCore().buildGeneralization(fromCls, toCls);
               addEdge(gen);
               return gen;
           }
           else if (edgeClass == MAssociationImpl.class) {
               MAssociation asc = 
-                  MMUtil.SINGLETON.buildAssociation(fromCls, toCls);
+                  UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
               addEdge(asc);
               return asc;
               //return asc;
@@ -334,7 +334,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
           else if (edgeClass == MDependencyImpl.class) {
               // nsuml: using Binding as default
               MDependency dep = 
-                  MMUtil.SINGLETON.buildDependency(fromCls, toCls);
+                  UmlFactory.getFactory().getCore().buildDependency(fromCls, toCls);
               addEdge(dep);
               return dep;
           }
@@ -353,7 +353,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
               //do I have to check the namespace here? (Toby)
               if (edgeClass == MDependencyImpl.class) {
                   // nsuml: using Usage as default
-                  MDependency dep = MMUtil.SINGLETON.buildDependency(fromPack, toPack);
+                  MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromPack, toPack);
                   addEdge(dep);
                   return dep;
               }
@@ -366,21 +366,21 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	 
           if (edgeClass == MAbstractionImpl.class) {
               MAbstraction real = 
-                  MMUtil.SINGLETON.buildRealization(fromCls, toIntf);
+                  UmlFactory.getFactory().getCore().buildRealization(fromCls, toIntf);
               addEdge(real);
               return real;
           }
 	
           else  if (edgeClass == MAssociationImpl.class) {
               MAssociation asc = 
-                  MMUtil.SINGLETON.buildAssociation(fromCls, false, toIntf, true);
+                  UmlFactory.getFactory().getCore().buildAssociation(fromCls, false, toIntf, true);
               addEdge(asc);
               return asc;
           }
           else if (edgeClass == MDependencyImpl.class) {
                   // nsuml: using Binding as default
                   MDependency dep = 
-                      MMUtil.SINGLETON.buildDependency(fromCls, toIntf);
+                      UmlFactory.getFactory().getCore().buildDependency(fromCls, toIntf);
                   addEdge(dep);
                   return dep;
               }
@@ -401,7 +401,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
               if (edgeClass == MAssociationImpl.class) {
                   MAssociation asc = 
-                      MMUtil.SINGLETON.buildAssociation(fromIntf, true, 
+                      UmlFactory.getFactory().getCore().buildAssociation(fromIntf, true, 
                                                         toCls, false);
                   addEdge(asc);
                   return asc;
@@ -409,7 +409,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
               else if (edgeClass == MDependencyImpl.class) {
                   // nsuml: using Binding as default
                   MDependency dep = 
-                      MMUtil.SINGLETON.buildDependency(fromIntf, toCls);
+                      UmlFactory.getFactory().getCore().buildDependency(fromIntf, toCls);
                   addEdge(dep);
                   return dep;
               }

@@ -46,6 +46,7 @@ import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.graph.*;
 
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.MMUtil;
 
 /**
@@ -819,7 +820,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
             MClassifier toCls   = (MClassifier)toPort;
 
             MAssociation asc =
-                MMUtil.SINGLETON.buildAssociation(fromCls, toCls);
+                UmlFactory.getFactory().getCore().buildAssociation(fromCls, toCls);
 
             addEdge(asc);
             return asc;
@@ -837,7 +838,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
             MClassifier child  = (MClassifier)toPort;
 
             MGeneralization gen =
-                MMUtil.SINGLETON.buildGeneralization(parent, child);
+                UmlFactory.getFactory().getCore().buildGeneralization(parent, child);
 
             addEdge(gen);
             return gen;
@@ -854,7 +855,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
             MUseCase extension = (MUseCase)fromPort;
 
             MExtend ext =
-                MMUtil.SINGLETON.buildExtend(base, extension);
+                UmlFactory.getFactory().getUseCases().buildExtend(base, extension);
 
             addEdge(ext);
             return ext;
@@ -870,7 +871,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
             MUseCase addition = (MUseCase)toPort;
 
             MInclude inc =
-                MMUtil.SINGLETON.buildInclude(base, addition);
+                UmlFactory.getFactory().getUseCases().buildInclude(base, addition);
 
             addEdge(inc);
             return inc;
@@ -888,7 +889,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
             MClassifier supplier = (MClassifier)toPort;
 
             MDependency dep =
-                MMUtil.SINGLETON.buildDependency(client, supplier);
+                UmlFactory.getFactory().getCore().buildDependency(client, supplier);
 
             addEdge(dep);
             return dep;
