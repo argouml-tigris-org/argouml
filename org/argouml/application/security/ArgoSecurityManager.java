@@ -30,6 +30,7 @@ import java.lang.SecurityManager;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
 import java.util.jar.Attributes;
+import java.util.PropertyPermission;
 import java.security.Permission;
 import java.lang.Thread;
 import java.lang.Class;
@@ -38,10 +39,24 @@ import java.lang.Object;
 import java.lang.String;
 import java.io.FileDescriptor;
 import java.net.InetAddress;
-// import java.security.GuardedObject;
-// import java.security.Guard;
 
 /** The Argo custom security manager.
+ *
+ *  Since Argo is an open-source product, the concept of a
+ *  security manager may seem odd.  This class is not intended
+ *  to provide security in the standard way that Java programmers
+ *  think of, in the context of Applets, for example.
+ *
+ *  Rather, it is intended to protect Argo from accidental modifications
+ *  to its own environment by external modules.
+ *
+ *  One of the areas this is necessary is to protect from the
+ *  {@link System.exit} or {@link Runtime.exit} calls.
+ *
+ *  Another is to prevent modules from replacing the awt exception
+ *  trapping hook so that we are able to properly catch any
+ *  ArgoSecurityExceptions and prevent the stack trace when
+ *  we desire.
  *
  *  @author Thierry Lach
  *  @since 0.9.4
@@ -51,18 +66,37 @@ public final class ArgoSecurityManager extends SecurityManager
 
     private boolean _allowExit = false;
 
-    private static ArgoSecurityManager SINGLETON = new ArgoSecurityManager();
+    /** The only allowed instance. */
+    private final static ArgoSecurityManager SINGLETON = new ArgoSecurityManager();
 
+    /** Accessor for the instance. */
     public final static ArgoSecurityManager getInstance() {
         return SINGLETON;
     }
 
+    /** Don't allow it to be instantiated from the outside. */
     private ArgoSecurityManager() {
     }
 
     public void checkPermission(Permission perm) {
-	if (perm instanceof java.lang.RuntimePermission) {
-	    if ("exitVM".equals(perm.getName())) {
+        // needs-more-work:  
+	// Don't allow write access to <code>sun.awt.exception.handler</code>
+	if (perm.getClass().equals(java.util.PropertyPermission.class)) {
+	    if ("sun.awt.exception.handler".equals(perm.getName())) {
+	        PropertyPermission pp = (PropertyPermission)perm;
+		if("write".equals(pp.getActions())) {
+		    // Don't allow this one to be trapped
+		    // by using ArgoSecurityException.
+		    throw new SecurityException();
+		}
+	    }
+	}
+	// Don't allow anything to exit that we don't know about.
+	else if (perm.getClass().equals(java.lang.RuntimePermission.class)) {
+	    RuntimePermission rp = (RuntimePermission)perm;
+            // Uncomment for more information about what happens...
+	    // System.out.println ("RuntimePermission: " + rp.getName() + " - '" + rp.getActions()+ "'");
+	    if ("exitVM".equals(rp.getName())) {
 		if (! _allowExit) {
 		    throw new ArgoSecurityException(true);
 		}
