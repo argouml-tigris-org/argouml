@@ -758,9 +758,9 @@ public abstract class FigNodeModelElement
             }
             Rectangle r = new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4);
             Fig f = hitFig(r);
-            if (f instanceof MouseListener) {
+            if (f instanceof MouseListener && f.isVisible()) {
 		((MouseListener) f).mouseClicked(me);
-            } else if (f instanceof FigGroup) {
+            } else if (f instanceof FigGroup && f.isVisible()) {
                 //this enables direct text editing for sub figs of a
                 //FigGroup object:
                 Fig f2 = ((FigGroup) f).hitFig(r);
@@ -771,7 +771,6 @@ public abstract class FigNodeModelElement
                 }
             }
         }
-        me.consume();
     }
 
     public void keyPressed(KeyEvent ke) {

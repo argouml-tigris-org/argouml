@@ -990,6 +990,27 @@ public class FigUseCase extends FigNodeModelElement {
     }
 
     /**
+     * React to a mouse key being clicked.<p>
+     *
+     * @param me  The mouse action that caused us to be invoked.
+     */
+
+    public void mouseClicked(MouseEvent me) {
+	super.mouseClicked(me);
+
+	if (me.isConsumed())
+	    return;
+
+	if (!isExtensionPointVisible() || me.getY() < _epSep.getY1()) {
+	    _name.mouseClicked(me);
+	} else if (me.getClickCount() >= 2
+		   && !(me.isPopupTrigger()
+			|| me.getModifiers() == InputEvent.BUTTON3_MASK)) {
+	    createFeatureIn(_epVec, me);
+	}
+    }
+
+    /**
      * Deal with the mouse leaving the fig. Unhighlight the fig.<p>
      *
      * @param me  The mouse action that caused us to be invoked.
@@ -1244,6 +1265,7 @@ public class FigUseCase extends FigNodeModelElement {
 
             _highlightedFigText = ft;
         }
+        ie.consume();
     }
 
     /**
