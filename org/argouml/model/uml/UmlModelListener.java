@@ -27,6 +27,7 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
 import org.apache.log4j.Category;
+import org.argouml.ui.ProjectBrowser;
 
 /**
  * A single listener that converts MElementEvents into Argo events. 
@@ -87,6 +88,8 @@ public class UmlModelListener implements MElementListener {
     public void removed (MElementEvent mee) {
         logger.debug("removed(" + mee + ")");
 	// TODO:  Do we need to model change notify here?
+	// yes since we need to update the GUI
+	notifyModelChanged(mee);
     }
 
     /** Handle the event.
@@ -115,6 +118,10 @@ public class UmlModelListener implements MElementListener {
 	//
 	// Should this be a property change event?
 	//
+	if (mee.getAddedValue() != null || mee.getRemovedValue() != null || !mee.getOldValue().equals(mee.getNewValue())) {
+		ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+	}
+	
     }
 }
 

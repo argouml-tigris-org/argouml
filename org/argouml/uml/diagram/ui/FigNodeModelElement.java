@@ -375,6 +375,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       MModelElement me = (MModelElement) getOwner();
       if (me == null) return;
       me.setName(ft.getText());
+      // ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
   }
 
