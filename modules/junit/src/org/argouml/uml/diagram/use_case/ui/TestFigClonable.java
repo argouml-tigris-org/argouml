@@ -47,7 +47,7 @@ public class TestFigClonable extends TestCase {
      }
 
     /** clone FigActor. */
-    public void TestActorClonable() {
+    public void testActorClonable() {
          try {
              FigActor actor = new FigActor();
              FigActor actorclone;
