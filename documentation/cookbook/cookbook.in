@@ -676,11 +676,11 @@ i.e. independant of any other component.
 	      <primary>Model</primary>
 	    </indexterm>
 	    <para>
-The Model contains a modifyable view of the UML model
+The Model contains a modifyable storage of the UML model
 and the diagrams.
 </para>
 	    <para>
-The Model presents several different views
+The Model presents several different interfaces
 and access methods for the information.
 Among other things, the information can be saved,
 loaded, examined, and observed.
@@ -785,7 +785,7 @@ The Diagrams Component is described in detail in
 	      <primary>Property panels</primary>
 	    </indexterm>
 	    <para>
-This is the prop panel view of the model.
+This is the property panel view of the model.
 </para>
 	    <para>
 The Property Panels Component is described in detail in 
@@ -1561,7 +1561,7 @@ Critics explanations and wizards (belonging to the Critics component)
 Documentation,
 Style,
 Source,
-Constraints (an ocl view of the current object)
+Constraints (an ocl constraints of the current object)
 (See <xref linkend="ocl"></xref>), 
 and
 Tagged values.
