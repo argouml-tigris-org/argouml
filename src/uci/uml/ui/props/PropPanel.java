@@ -51,7 +51,7 @@ import uci.uml.ui.*;
  * @see TabProps */
 
 public class PropPanel extends TabSpawnable
-implements TabModelTarget, DocumentListener, MElementListener{
+implements TabModelTarget, DocumentListener, ItemListener, MElementListener{
   ////////////////////////////////////////////////////////////////
   // instance vars
   Object _target;
@@ -111,13 +111,14 @@ implements TabModelTarget, DocumentListener, MElementListener{
     _nameField.getDocument().addDocumentListener(this);
     _nameField.setFont(_stereoField.getFont());
 
-    Component ed = _stereoField.getEditor().getEditorComponent();
-    Document stereoDoc = ((JTextField)ed).getDocument();
-    stereoDoc.addDocumentListener(this);
-
-    ed = _namespaceField.getEditor().getEditorComponent();
-    Document nsDoc = ((JTextField)ed).getDocument();
-    nsDoc.addDocumentListener(this);
+//     Component ed = _stereoField.getEditor().getEditorComponent();
+//     Document stereoDoc = ((JTextField)ed).getDocument();
+//     stereoDoc.addDocumentListener(this);
+	_stereoField.addItemListener(this);
+//     ed = _namespaceField.getEditor().getEditorComponent();
+//     Document nsDoc = ((JTextField)ed).getDocument();
+//     nsDoc.addDocumentListener(this);
+	_namespaceField.addItemListener(this);
   }
 
   protected SetTargetRunner setTargetRunner = new SetTargetRunner();
@@ -245,6 +246,19 @@ implements TabModelTarget, DocumentListener, MElementListener{
   public void changedUpdate(DocumentEvent e) {
     //System.out.println(getClass().getName() + " changed");
     // Apparently, this method is never called.
+  }
+	// ItemListener implementation
+  public void itemStateChanged(ItemEvent e) {
+	  if (e.getStateChange() == ItemEvent.SELECTED) {
+		  Object src = e.getSource();
+		  if (src == _namespaceField) {
+			  // what to do here?
+			  //setTargetInternal();
+		  }
+		  else if (src == _stereoField) {
+			  setTargetStereotype();
+		  }
+	  }
   }
 
 	// MElementListener implementation

@@ -226,9 +226,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     MStateVertex fromSV = (MStateVertex) fromPort;
     MStateVertex toSV = (MStateVertex) toPort;
 
-    if (fromSV instanceof MPseudostate)
-      if (MPseudostateKind.FINAL.equals(((MPseudostate)fromSV).getKind()))
-	return false;
+    if (fromSV instanceof MFinalState)	return false;
     if (toSV instanceof MPseudostate)
       if (MPseudostateKind.INITIAL.equals(((MPseudostate)toSV).getKind()))
 	  return false;
@@ -258,9 +256,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     MStateVertex fromSV = (MStateVertex) fromPort;
     MStateVertex toSV = (MStateVertex) toPort;
 
-    if (fromSV instanceof MPseudostate)
-      if (MPseudostateKind.FINAL.equals(((MPseudostate)fromSV).getKind()))
-	return null;
+    if (fromSV instanceof MFinalState)	return null;
     if (toSV instanceof MPseudostate)
       if (MPseudostateKind.INITIAL.equals(((MPseudostate)toSV).getKind()))
 	return null;

@@ -90,7 +90,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 	if (MPseudostateKind.FORK.equals(kind)) icon = _ForkIcon;
 	if (MPseudostateKind.JOIN.equals(kind)) icon = _JoinIcon;
 	if (MPseudostateKind.BRANCH.equals(kind)) icon = _BranchIcon;
-	if (MPseudostateKind.FINAL.equals(kind)) icon = _FinalStateIcon;
+	//if (MPseudostateKind.FINAL.equals(kind)) icon = _FinalStateIcon;
       }
       if (icon == null) {
 		  String clsPackName = value.getClass().getName();

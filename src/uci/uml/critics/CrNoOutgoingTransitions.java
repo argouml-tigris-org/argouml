@@ -62,15 +62,10 @@ public class CrNoOutgoingTransitions extends CrUML {
       if (sm != null && sm.getTop() == sv) return NO_PROBLEM;
     }
     Collection outgoing = sv.getOutgoings();
-    //Vector incoming = sv.getIncoming();
     boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
-    //boolean needsIncoming = incoming == null || incoming.size() == 0;
-    if (sv instanceof MPseudostate) {
-      MPseudostateKind k = ((MPseudostate)sv).getKind();
-      //if (k.equals(MPseudostateKind.INITIAL)) needsIncoming = false;
-      if (k.equals(MPseudostateKind.FINAL)) needsOutgoing = false;
+    if (sv instanceof MFinalState) {
+		needsOutgoing = false;
     }
-    // if (!needsIncoming && needsOutgoing) return PROBLEM_FOUND;
     if (needsOutgoing) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }

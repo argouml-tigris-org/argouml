@@ -69,18 +69,13 @@ implements DocumentListener, ItemListener {
   // instance vars
   JLabel _entryLabel = new JLabel("Entry: ");
   JTextField _entryField = new JTextField();
-  JLabel _exitLabel = new JLabel("Exit: ");
-  JTextField _exitField = new JTextField();
-
-  JLabel _internalLabel = new JLabel("Internal Transitions");
-  ActivityTableModelInternalTrans _tableModel = null;
-  JTable _internalTable = new JTable(4, 1);
+;
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelActionState() {
     super("Action State Properties");
-    _tableModel = new ActivityTableModelInternalTrans(this);
+    //_tableModel = new ActivityTableModelInternalTrans(this);
     GridBagLayout gb = (GridBagLayout) getLayout();
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
@@ -94,9 +89,6 @@ implements DocumentListener, ItemListener {
     gb.setConstraints(_entryLabel, c);
     add(_entryLabel);
 
-    c.gridy = 2;
-    gb.setConstraints(_exitLabel, c);
-    add(_exitLabel);
 
     _entryField.setMinimumSize(new Dimension(120, 20));
     c.weightx = 1.0;
@@ -104,23 +96,6 @@ implements DocumentListener, ItemListener {
     c.gridy = 1;
     gb.setConstraints(_entryField, c);
     add(_entryField);
-
-    c.gridy = 2;
-    gb.setConstraints(_exitField, c);
-    add(_exitField);
-
-    _internalTable.setModel(_tableModel);
-
-    Font labelFont = MetalLookAndFeel.getSubTextFont();
-    _internalTable.setFont(labelFont);
-
-    _internalTable.setIntercellSpacing(new Dimension(0, 1));
-    _internalTable.setShowVerticalLines(false);
-    //_internalTable.getSelectionModel().addListSelectionListener(this);
-    _internalTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-
-//     TableColumn descCol = _internalTable.getColumnModel().getColumn(0);
-//     descCol.setMinWidth(50);
 
     SpacerPanel spacer1 = new SpacerPanel();
     c.gridx = 0;
@@ -136,31 +111,9 @@ implements DocumentListener, ItemListener {
     gb.setConstraints(spacer2, c);
     add(spacer2);
 
-    c.gridx = 3;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    c.weightx = 1.0;
-    c.weighty = 0.0;
-    gb.setConstraints(_internalLabel, c);
-    add(_internalLabel);
-
-    c.gridy = 1;
-    c.gridheight = 12; //GridBagConstraints.REMAINDER;
-    c.weightx = 1.0;
-    c.weighty = 1.0;
-    JScrollPane scroll =
-      new JScrollPane(_internalTable,
-		      JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-		      JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    scroll.setPreferredSize(new Dimension(300, 200));
-    gb.setConstraints(scroll, c);
-    add(scroll);
-    _internalTable.setTableHeader(null);
 
     _entryField.getDocument().addDocumentListener(this);
     _entryField.setFont(_stereoField.getFont());
-    _exitField.getDocument().addDocumentListener(this);
-    _exitField.setFont(_stereoField.getFont());
 
     resizeColumns();
   }
@@ -174,18 +127,13 @@ implements DocumentListener, ItemListener {
     MActionState st = (MActionState) t;
 
     _entryField.setText(GeneratorDisplay.Generate(st.getEntry()));
-    _exitField.setText(GeneratorDisplay.Generate(st.getExit()));
 
-    _tableModel.setTarget(st);
-    _internalTable.sizeColumnsToFit(-1);
-//     TableColumn descCol = _internalTable.getColumnModel().getColumn(0);
-//     descCol.setMinWidth(50);
     resizeColumns();
     validate();
   }
 
   public void resizeColumns() {
-    _internalTable.sizeColumnsToFit(0);
+    //_internalTable.sizeColumnsToFit(0);
   }
 
 
@@ -199,16 +147,6 @@ implements DocumentListener, ItemListener {
 	s.setEntry(as);
   }
 
-  public void setTargetExit() {
-    if (_inChange) return;
-    MActionState s = (MActionState) _target;
-    String newText = _exitField.getText();
-    System.out.println("setTargetExit: " + newText);
-	MActionSequence as = new MActionSequenceImpl();
-	as.setName(newText);
-	s.setExit(as);
-  }
-
 
   ////////////////////////////////////////////////////////////////
   // event handlers
@@ -218,7 +156,7 @@ implements DocumentListener, ItemListener {
     //System.out.println(getClass().getName() + " insert");
     // check if it was one of my text fields
     if (e.getDocument() == _entryField.getDocument()) setTargetEntry();
-    if (e.getDocument() == _exitField.getDocument()) setTargetExit();
+   // if (e.getDocument() == _exitField.getDocument()) setTargetExit();
     super.insertUpdate(e);
   }
 

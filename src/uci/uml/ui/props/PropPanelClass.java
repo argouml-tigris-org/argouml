@@ -54,8 +54,7 @@ implements ItemListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // constants
   public static final String VISIBILITIES[] = {
-    MVisibilityKind.PUBLIC.getName(), MVisibilityKind.PRIVATE.getName(),
-    MVisibilityKind.PROTECTED.getName() };
+      "", MVisibilityKind.PUBLIC.getName()};// MVisibilityKind.PRIVATE.getName(), MVisibilityKind.PROTECTED.getName() };
 	// what about PACKAGE in nsuml?
 
 
@@ -165,8 +164,8 @@ implements ItemListener, DocumentListener {
     MClass cls = (MClass) t;
 
     MVisibilityKind vk = cls.getVisibility();
-    if (vk == null) vk = MVisibilityKind.PUBLIC;
-    _visField.setSelectedItem(vk.getName());
+    if (vk != null) 
+	_visField.setSelectedItem(vk.getName());
 
     if (cls.isAbstract())
       _keywordsField.setSelectedItem("abstract");

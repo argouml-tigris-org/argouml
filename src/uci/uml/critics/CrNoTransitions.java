@@ -69,8 +69,9 @@ public class CrNoTransitions extends CrUML {
     if (sv instanceof MPseudostate) {
       MPseudostateKind k = ((MPseudostate)sv).getKind();
       if (k.equals(MPseudostateKind.INITIAL)) needsIncoming = false;
-      if (k.equals(MPseudostateKind.FINAL)) needsOutgoing = false;
     }
+	if (sv instanceof MFinalState) needsOutgoing = false;
+    
     if (needsIncoming && needsOutgoing) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }

@@ -461,11 +461,15 @@ public class GeneratorDisplay extends Generator {
   }
 
   public String generateAction(MAction m) {
-    return m.getScript().getBody();
+      if ((m.getScript() != null) && (m.getScript().getBody() != null))
+	  return m.getScript().getBody();
+      return "";
   }
 
   public String generateGuard(MGuard m) {
-    return generateExpression(m.getExpression());
+      if (m.getExpression() != null)
+	  return generateExpression(m.getExpression());
+      return "";
   }
 
 } /* end class GeneratorDisplay */

@@ -37,8 +37,7 @@ public class PredIsFinalState implements Predicate {
   private PredIsFinalState() { }
 
   public boolean predicate(Object obj) {
-    return (obj instanceof MPseudostate) &&
-      (MPseudostateKind.FINAL.equals(((MPseudostate)obj).getKind()));
+    return (obj instanceof MFinalState);
   }
 
 } /* end class PredIsFinalState */

@@ -60,7 +60,7 @@ public class UMLActivityDiagram extends UMLDiagram {
   new ActionCreatePseudostate(MPseudostateKind.INITIAL, "Initial");
 
   protected static Action _actionFinalPseudoState =
-  new ActionCreatePseudostate(MPseudostateKind.FINAL, "FinalState");
+  new CmdCreateNode(MFinalStateImpl.class, "FinalState");
 
   protected static Action _actionBranchPseudoState =
   new ActionCreatePseudostate(MPseudostateKind.BRANCH, "Branch");

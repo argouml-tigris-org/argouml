@@ -107,31 +107,31 @@ public class JavaUML {
    FLOAT_TYPE.setName("float");
    DOUBLE_TYPE.setName("double");
 
-   javastandards.addOwnedElement(STRING_CLASS);
-   javastandards.addOwnedElement(CHAR_CLASS);
-   javastandards.addOwnedElement(INT_CLASS);
-   javastandards.addOwnedElement(BOOLEAN_CLASS);
-   javastandards.addOwnedElement(BYTE_CLASS);
-   javastandards.addOwnedElement(LONG_CLASS);
-   javastandards.addOwnedElement(FLOAT_CLASS);
-   javastandards.addOwnedElement(DOUBLE_CLASS);
-   javastandards.addOwnedElement(RECTANGLE_CLASS);
-   javastandards.addOwnedElement(POINT_CLASS);
-   javastandards.addOwnedElement(COLOR_CLASS);
-   javastandards.addOwnedElement(VECTOR_CLASS);
-   javastandards.addOwnedElement(HASHTABLE_CLASS);
-   javastandards.addOwnedElement(STACK_CLASS);
-   javastandards.addOwnedElement(VOID_TYPE);
-   javastandards.addOwnedElement(CHAR_TYPE);
-   javastandards.addOwnedElement(INT_TYPE);
-   javastandards.addOwnedElement(BOOLEAN_TYPE);
-   javastandards.addOwnedElement(BYTE_TYPE);
-   javastandards.addOwnedElement(LONG_TYPE);
-   javastandards.addOwnedElement(FLOAT_TYPE);
-   javastandards.addOwnedElement(DOUBLE_TYPE);
+//    javastandards.addOwnedElement(STRING_CLASS);
+//    javastandards.addOwnedElement(CHAR_CLASS);
+//    javastandards.addOwnedElement(INT_CLASS);
+//    javastandards.addOwnedElement(BOOLEAN_CLASS);
+//    javastandards.addOwnedElement(BYTE_CLASS);
+//    javastandards.addOwnedElement(LONG_CLASS);
+//    javastandards.addOwnedElement(FLOAT_CLASS);
+//    javastandards.addOwnedElement(DOUBLE_CLASS);
+//    javastandards.addOwnedElement(RECTANGLE_CLASS);
+//    javastandards.addOwnedElement(POINT_CLASS);
+//    javastandards.addOwnedElement(COLOR_CLASS);
+//    javastandards.addOwnedElement(VECTOR_CLASS);
+//    javastandards.addOwnedElement(HASHTABLE_CLASS);
+//    javastandards.addOwnedElement(STACK_CLASS);
+//    javastandards.addOwnedElement(VOID_TYPE);
+//    javastandards.addOwnedElement(CHAR_TYPE);
+//    javastandards.addOwnedElement(INT_TYPE);
+//    javastandards.addOwnedElement(BOOLEAN_TYPE);
+//    javastandards.addOwnedElement(BYTE_TYPE);
+//    javastandards.addOwnedElement(LONG_TYPE);
+//    javastandards.addOwnedElement(FLOAT_TYPE);
+//    javastandards.addOwnedElement(DOUBLE_TYPE);
 
-   UUIDManager.SINGLETON.createModelUUIDS(javastandards);
-   javastandards.setName("Javastandards");
+//    UUIDManager.SINGLETON.createModelUUIDS(javastandards);
+//    javastandards.setName("Javastandards");
    //try {XMIWriter writer = new XMIWriter(javastandards, "java.xmi");writer.gen();} catch (Exception e) {}
 
   }

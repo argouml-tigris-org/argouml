@@ -51,8 +51,8 @@ import ru.novosoft.uml.behavior.activity_graphs.*;
  *  MState           ---  FigState
  *  MCompositeState  ---  FigCompositeState
  *  MActionState     ---  FigActionState
+ *  MFinalState      ---  FigFinalState
  *  MPseudostate     ---  FigPseudostate
- *    Final         ---  FigFinalState
  *    Inititial     ---  FigInitialState
  *    Branch        ---  FigBranchState
  *    Fork          ---  FigForkState
@@ -70,6 +70,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
     if (node instanceof MActionState) return new FigActionState(gm, node);
+	else if (node instanceof MFinalState) return new FigFinalState(gm, node);
     else if (node instanceof MCompositeState) return new FigCompositeState(gm, node);
     else if (node instanceof MState) return new FigState(gm, node);
     else if (node instanceof MPseudostate) {
@@ -77,8 +78,6 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       if (pState.getKind() == null) return null;
       if (pState.getKind().equals(MPseudostateKind.INITIAL))
 	return new FigInitialState(gm, node);
-      else if (pState.getKind().equals(MPseudostateKind.FINAL))
-	return new FigFinalState(gm, node);
       else if (pState.getKind().equals(MPseudostateKind.BRANCH))
 	return new FigBranchState(gm, node);
       else if (pState.getKind().equals(MPseudostateKind.FORK))

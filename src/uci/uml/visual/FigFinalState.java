@@ -101,10 +101,10 @@ public class FigFinalState extends FigStateVertex {
   // Fig accessors
 
   public Selection makeSelection() {
-      MPseudostate pstate = null;
+      MFinalState pstate = null;
       Selection sel = null;
       if (getOwner() != null) {
-	  pstate = (MPseudostate)getOwner();
+	  pstate = (MFinalState)getOwner();
 	  if (pstate.getContainer().getStateMachine() instanceof MActivityGraph) {
 	      sel = new SelectionActionState(this);
 		  ((SelectionActionState)sel).setOutgoingButtonEnabled(false);
