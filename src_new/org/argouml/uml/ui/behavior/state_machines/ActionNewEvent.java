@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * @since Dec 15, 2002
@@ -67,6 +68,7 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
     protected abstract Object createEvent();
 
     /**
+     * Creates the event, sets its role, and navigates towards it.
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -75,5 +77,6 @@ public abstract class ActionNewEvent extends AbstractActionNewModelElement {
         if (getValue(ROLE).equals(Roles.TRIGGER)) {
             StateMachinesHelper.getHelper().setEventAsTrigger(getTarget(), event);
         }
+        TargetManager.getInstance().setTarget(event);
     }
 }
