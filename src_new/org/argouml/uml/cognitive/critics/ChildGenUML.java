@@ -45,7 +45,7 @@ import org.argouml.kernel.*;
  *  Project, to Models, to ModelElements.  Argo's critic Agency uses
  *  this to apply critics where appropriate.
  *
- * @see org.argouml.kernel.Agency */
+ * @see org.argouml.cognitive.critics.Agency */
 
 public class ChildGenUML implements ChildGenerator {
   public static ChildGenUML SINGLETON = new ChildGenUML();

@@ -36,7 +36,7 @@ import org.argouml.ui.*;
 /** A simple non-modal wizard step that shows instructions and prompts
  *  the user to confirm an action.
  *
- * @see org.argouml.cognitve.critics.Critic
+ * @see org.argouml.cognitive.critics.Critic
  * @see org.argouml.kernel.Wizard
  */
 
