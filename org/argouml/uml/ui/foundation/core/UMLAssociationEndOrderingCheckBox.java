@@ -52,9 +52,9 @@ public class UMLAssociationEndOrderingCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        if (getTarget() != null)
-            setSelected(((MAssociationEnd)getTarget()).getOrdering().equals(MOrderingKind.ORDERED) ? true : false);
-            
+        if (getTarget() != null) {
+            MAssociationEnd associationEnd = (MAssociationEnd)getTarget();
+            setSelected(MOrderingKind.ORDERED.equals(associationEnd.getOrdering()));
+        }
     }
-
 }
