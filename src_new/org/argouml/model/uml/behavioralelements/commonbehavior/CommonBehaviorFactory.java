@@ -345,12 +345,16 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds an action (actually a callaction) for some message
+     * Builds an action (actually an uninterpretedaction) for some message
      */
     public MAction buildAction(MMessage message) {
     	MAction action = createCallAction();
     	action.setName("action"); 
     	message.setAction(action);
+		if (message.getInteraction() != null && message.getInteraction().getContext() != null) {
+    		action.setNamespace(message.getInteraction().getContext());
+		} else 
+			throw new IllegalStateException("In buildaction: message does not have an interaction or the interaction does not have a context");
         return action;
     }
     

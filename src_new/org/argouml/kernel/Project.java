@@ -284,6 +284,7 @@ public class Project implements java.io.Serializable {
      */
     public MModel loadModelFromXMI(URL url) throws IOException {
         ZipInputStream zis = new ZipInputStream(url.openStream());
+   
         String name = zis.getNextEntry().getName();
         while(!name.endsWith(".xmi")) {
             name = zis.getNextEntry().getName();

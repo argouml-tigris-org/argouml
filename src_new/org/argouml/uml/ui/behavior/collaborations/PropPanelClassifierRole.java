@@ -38,8 +38,10 @@ import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.argouml.application.api.*;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
+import org.argouml.util.ConfigLoader;
 
 
 public class PropPanelClassifierRole extends PropPanelClassifier {
@@ -48,10 +50,33 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelClassifierRole() {
-    super("ClassifierRole",_classifierRoleIcon, 2);
+    super("ClassifierRole",_classifierRoleIcon, ConfigLoader.getTabPropsOrientation());
 
     Class mclass = MClassifierRole.class;
+    
+    addField(Argo.localize("UMLMenu", "label.name"), nameField);
+    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+    addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
+    UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleBase","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
+    UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
+    addField(Argo.localize("UMLMenu", "label.base"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),clsComboBox));
+	addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
 
+	add(LabelledLayout.getSeperator());
+	
+	addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
+    addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);	
+	
+	add(LabelledLayout.getSeperator());
+	
+	JList connectList = new UMLList(new UMLClassifierRoleAssociationRoleListModel(this,null,true),true);
+    connectList.setForeground(Color.blue);
+    connectList.setVisibleRowCount(3);
+    connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    	
+	addField(Argo.localize("UMLMenu", "label.association-roles"), connectScroll);
+	
+	/*
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
@@ -68,6 +93,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 
     addCaption("Association Roles:",0,1,0);
     addField(connectScroll,0,1,1);
+    */
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");

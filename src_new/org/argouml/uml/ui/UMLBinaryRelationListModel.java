@@ -164,7 +164,7 @@ abstract public class UMLBinaryRelationListModel extends UMLModelElementListMode
 
         popup.add(open);
         UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
-        if(getChoices().size() == 0 && getSelected().size() == 0) {
+        if(getChoices().size() <= 1 && getSelected().size() == 0) {
             add.setEnabled(false);
         }
         popup.add(add);
@@ -177,17 +177,7 @@ abstract public class UMLBinaryRelationListModel extends UMLModelElementListMode
 	 * @see org.argouml.uml.ui.UMLModelElementListModel#getModelElementAt(int)
 	 */
 	protected MModelElement getModelElementAt(int index) {
-		Iterator it = getSelected().iterator();
-		int counter = 0;
-        while (it.hasNext()) {
-        	Object o = it.next();
-        	if (counter == index) {
-        		return (MModelElement)o;
-        	}
-        	counter++;
-        }
-        throw new IndexOutOfBoundsException();
-             
+		return elementAtUtil(getSelected(),index,MModelElement.class);
 	}
 
 	/**
