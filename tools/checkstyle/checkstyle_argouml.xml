@@ -27,6 +27,9 @@
         <module name="GenericIllegalRegexp">
           <property name="format" value="needs?-?more-?work"/>
         </module>
+        <module name="GenericIllegalRegexp">
+          <property name="format" value="non-Javadoc"/>
+        </module>
 
         <module name="GenericIllegalRegexp">
           <property 
