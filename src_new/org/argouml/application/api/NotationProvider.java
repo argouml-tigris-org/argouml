@@ -44,8 +44,8 @@ public interface NotationProvider {
 
   public NotationName getNotation();
 
-  public String generateOperation(MOperation op);
-  public String generateAttribute(MAttribute attr);
+  public String generateOperation(MOperation op, boolean documented);
+  public String generateAttribute(MAttribute attr, boolean documented);
   public String generateParameter(MParameter param);
   public String generateName(String name);
   public String generatePackage(MPackage pkg);
