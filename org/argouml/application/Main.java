@@ -30,6 +30,7 @@ import java.util.*;
 import java.net.*;
 import java.beans.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.swing.*;
@@ -268,10 +269,40 @@ public class Main {
         	// of argouml if a project is corrupted. Issue 913
         	// try catch block added
         	try {
-            p = Project.loadProject(urlToOpen);
+                p = Project.loadProject(urlToOpen);
         	}
+            catch (FileNotFoundException fn) {
+                JOptionPane.showMessageDialog(pb,
+                    "Could not find the project file " + urlToOpen.toString() +
+                        "\n",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+               Argo.log.error("Could not load most recent project file: " + 
+                    urlToOpen.toString());
+                Argo.log.error(fn);
+                Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
+                urlToOpen = null;
+                p = Project.makeEmptyProject();
+            }
+            catch (IOException io) {
+                JOptionPane.showMessageDialog(pb,
+                    "Could not load the project " + urlToOpen.toString() + 
+                    "\n" +
+                    "Project file probably corrupted.\n" +
+                    "Please file a bug report at argouml.tigris.org including" +
+                    " the corrupted project file.",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+                Argo.log.error("Could not load most recent project file: " + 
+                    urlToOpen.toString());
+                Argo.log.error(io);
+                Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
+                urlToOpen = null;
+                p = Project.makeEmptyProject();
+            }   
         	catch (Exception ex) {
-        		Argo.log.error("Could not load most recent project file: " + urlToOpen.toString());
+        		Argo.log.error("Could not load most recent project file: " + 
+                    urlToOpen.toString());
         		Argo.log.error(ex);
         		Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
         		urlToOpen = null;
