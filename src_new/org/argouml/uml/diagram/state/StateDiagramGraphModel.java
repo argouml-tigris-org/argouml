@@ -64,7 +64,11 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     // accessors
 
     public Object getNamespace() { return _namespace; }
+
     public void setNamespace(Object namespace) {
+        
+        if(!ModelFacade.isANamespace(namespace))
+            throw new IllegalArgumentException();
 	_namespace = namespace;
     }
 

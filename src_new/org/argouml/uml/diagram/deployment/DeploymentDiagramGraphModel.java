@@ -56,6 +56,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 
     /** set the homemodel. */
     public void setNamespace(Object namespace) {
+        
+        if(!ModelFacade.isANamespace(namespace))
+            throw new IllegalArgumentException();
 	_model = namespace;
     }
 

@@ -25,17 +25,11 @@
 // File: FigPermission.java
 // Classes: FigPermission
 // Original Author: Markus Klink
-// $Id$
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.beans.*;
-
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.presentation.ArrowHeadGreater;
 
 public class FigPermission extends FigDependency {
 

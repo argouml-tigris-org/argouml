@@ -57,15 +57,6 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
-import ru.novosoft.uml.behavior.use_cases.MActor;
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MInclude;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
-
 /**
  * <p>The base class of the use case diagram.</p>
  *
@@ -84,13 +75,13 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * <p>Tool to add an actor node.</p>
      */
     protected static Action _actionActor =
-        new CmdCreateNode(MActor.class, "Actor");
+        new CmdCreateNode((Class)ModelFacade.ACTOR, "Actor");
 
     /**
      * <p>Tool to add a use case node.</p>
      */
     protected static Action _actionUseCase =
-        new CmdCreateNode(MUseCase.class, "UseCase");
+        new CmdCreateNode((Class)ModelFacade.USE_CASE, "UseCase");
 
     /**
      * <p>Tool to create an association between UML artifacts using a
@@ -100,27 +91,29 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     //CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
     //MAssociation.class, "Association");
     protected static Action _actionAssociation =
-        new ActionAddAssociation(MAggregationKind.NONE, false, "Association");
+        new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND,
+                                false, "Association");
     protected static Action _actionAggregation =
         new ActionAddAssociation(
-				 MAggregationKind.AGGREGATE,
+				 ModelFacade.AGGREGATE_AGGREGATIONKIND,
 				 false,
 				 "Aggregation");
     protected static Action _actionComposition =
         new ActionAddAssociation(
-				 MAggregationKind.COMPOSITE,
+				 ModelFacade.COMPOSITE_AGGREGATIONKIND,
 				 false,
 				 "Composition");
     protected static Action _actionUniAssociation =
-        new ActionAddAssociation(MAggregationKind.NONE, true, "UniAssociation");
+        new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND,
+                                true, "UniAssociation");
     protected static Action _actionUniAggregation =
         new ActionAddAssociation(
-				 MAggregationKind.AGGREGATE,
+				 ModelFacade.AGGREGATE_AGGREGATIONKIND,
 				 true,
 				 "UniAggregation");
     protected static Action _actionUniComposition =
         new ActionAddAssociation(
-				 MAggregationKind.COMPOSITE,
+				 ModelFacade.COMPOSITE_AGGREGATIONKIND,
 				 true,
 				 "UniComposition");
 
@@ -132,7 +125,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MGeneralization.class,
+		       (Class)ModelFacade.GENERALIZATION,
 		       "Generalization");
 
     /**
@@ -143,7 +136,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MExtend.class,
+		       (Class)ModelFacade.EXTEND,
 		       "Extend");
 
     /**
@@ -154,7 +147,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MInclude.class,
+		       (Class)ModelFacade.INCLUDE,
 		       "Include");
 
     /**
@@ -166,7 +159,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         new CmdSetMode(
 		       ModeCreatePolyEdge.class,
 		       "edgeClass",
-		       MDependency.class,
+		       (Class)ModelFacade.DEPENDENCY,
 		       "Dependency");
     /**
      * <p>A static counter of the use case index (used in constructing a unique
@@ -216,8 +209,12 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         setNamespace(m);
     }
 
-    public UMLUseCaseDiagram(String name, MNamespace m) {
-        this(m);
+    public UMLUseCaseDiagram(String name, Object namespace) {
+        this(namespace);
+        
+        if(!ModelFacade.isANamespace(namespace))
+            throw new IllegalArgumentException();
+        
         try {
             setName(name);
         } catch (PropertyVetoException v) {

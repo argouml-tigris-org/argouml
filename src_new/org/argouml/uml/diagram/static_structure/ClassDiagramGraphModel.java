@@ -66,10 +66,13 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     // accessors
 
     public Object getNamespace() { return _model; }
+
     public void setNamespace(Object namespace) {
+        
+        if(!ModelFacade.isANamespace(namespace))
+            throw new IllegalArgumentException();
 	_model = namespace;
     }
-
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
 
