@@ -71,14 +71,16 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
 
     /** Singleton instance.
      */
-    private static StateMachinesFactory SINGLETON =
+    private static StateMachinesFactory singleton =
 	new StateMachinesFactory();
 
     /**
      * Singleton instance access method.
+     *
+     * @return the singleton
      */
     public static StateMachinesFactory getFactory() {
-        return SINGLETON;
+        return singleton;
     }
 
     /** Don't allow instantiation
@@ -252,8 +254,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /**
      * Builds a compositestate as top for some statemachine.<p>
      *
-     * @param statemachine
-     * @return MCompositeState
+     * @param statemachine the given statemachine
+     * @return MCompositeState the newly build top state
      * @see #buildCompositeState(Object)
      */
     public MCompositeState buildCompositeState(MStateMachine statemachine) {
@@ -270,8 +272,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
     /**
      * Builds a state machine owned by the given context.
      *
-     * @param oContext
-     * @return MStateMachine
+     * @param oContext the given context
+     * @return MStateMachine the newly build statemachine
      */
     public MStateMachine buildStateMachine(Object oContext) {
     	if (oContext != null
@@ -302,10 +304,10 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * transition is coming from, destination the transition is going
      * to). The transition is owned by the compositestate.<p>
      *
-     * @param owningState
-     * @param source
-     * @param dest
-     * @return MTransition
+     * @param owningState the composite state that owns the transition
+     * @param source the source of the transition
+     * @param dest the destination of the transition
+     * @return MTransition the newly build transition
      */
     public Object buildTransition(MCompositeState owningState, 
 				  MStateVertex source, MStateVertex dest) {
@@ -352,8 +354,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * compositeState is of type Object to decouple the factory and
      * NSUML as much as possible from the rest of ArgoUML.
      *
-     * @param compositeState
-     * @return MSynchState
+     * @param compositeState the given compositestate
+     * @return MSynchState the newly created SynchState
      */
     public MSynchState buildSynchState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
@@ -372,8 +374,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * to decouple the factory and NSUML as much as possible from the
      * rest of ArgoUML.
      *
-     * @param compositeState
-     * @return MSynchState
+     * @param compositeState the given composite state
+     * @return MSynchState the newly build stubstate
      */
     public MStubState buildStubState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
@@ -392,8 +394,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * Object to decouple the factory and NSUML as much as possible
      * from the rest of ArgoUML.
      *
-     * @param compositeState
-     * @return MSynchState
+     * @param compositeState the given compositestate
+     * @return MSynchState the newly build synchstate
      * @see #buildCompositeState(MStateMachine)
      */
     public MCompositeState buildCompositeState(Object compositeState) {
@@ -412,8 +414,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * type Object to decouple the factory and NSUML as much as
      * possible.  from the rest of ArgoUML.
      *
-     * @param compositeState
-     * @return MSynchState
+     * @param compositeState the given compositestate
+     * @return MSimpleState the newly build simple state 
      */
     public MSimpleState buildSimpleState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
@@ -430,8 +432,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * Object to decouple the factory and NSUML as much as possible.
      * from the rest of ArgoUML.
      *
-     * @param compositeState
-     * @return MSynchState
+     * @param compositeState the given compositestate
+     * @return MFinalState the given compositestate
      */
     public MFinalState buildFinalState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
@@ -448,8 +450,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * compositeState is of type Object to decouple the factory and
      * NSUML as much as possible.  from the rest of ArgoUML.
      *
-     * @param compositeState
-     * @return MSynchState
+     * @param compositeState the given compositestate
+     * @return MSubmachineState the given submachinestate
      */
     public MSubmachineState buildSubmachineState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
@@ -493,8 +495,8 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
             MTransition trans = (MTransition) createTransition();
             trans.setSource((MStateVertex) source);
             trans.setTarget((MStateVertex) target);
-            trans.setStateMachine((MStateMachine) StateMachinesHelper.getHelper()
-				  .getStateMachine(source));
+            trans.setStateMachine((MStateMachine) StateMachinesHelper
+                    .getHelper().getStateMachine(source));
             return trans;
         }
         return null;
@@ -646,12 +648,20 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         return null;
     }
      
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteCallEvent(MCallEvent elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteChangeEvent(MChangeEvent elem) { }
     
     /**
      * Deletes any associated subVertices.
+     *
+     * @param elem the UML element to be deleted
      */
     public void deleteCompositeState(MCompositeState elem) {
     
@@ -663,18 +673,39 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         }
     }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteEvent(MEvent elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteFinalState(MFinalState elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteGuard(MGuard elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deletePseudostate(MPseudostate elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteSignalEvent(MSignalEvent elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteSimpleState(MSimpleState elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteState(MState elem) { }
     
     /**
@@ -692,7 +723,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * Deletes the outgoing and incoming transitions of a
      * statevertex.<p>
      *
-     * @param elem
+     * @param elem the UML element to be deleted
      */
     public void deleteStateVertex(MStateVertex elem) {
         Collection col = elem.getIncomings();
@@ -707,14 +738,29 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
         }
     }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteStubState(MStubState elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteSubmachineState(MSubmachineState elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteSynchState(MSynchState elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteTimeEvent(MTimeEvent elem) { }
     
+    /**
+     * @param elem the UML element to be deleted
+     */
     public void deleteTransition(MTransition elem) { }
     
     
