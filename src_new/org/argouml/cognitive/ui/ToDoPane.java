@@ -340,9 +340,13 @@ public class ToDoPane extends JPanel
         int row = _tree.getRowForLocation(e.getX(), e.getY());
         TreePath path = _tree.getPathForLocation(e.getX(), e.getY());
         if (row != -1) {
-            if (e.getClickCount() == 1) mySingleClick(row, path);
-            else if (e.getClickCount() >= 2) myDoubleClick(row, path);
+            if (e.getClickCount() >=2) {
+                myDoubleClick(row, path);               
+            } else {
+                mySingleClick(row, path);
+            }       
         }
+        e.consume();
     }
     
     ////////////////////////////////////////////////////////////////
@@ -433,10 +437,13 @@ public class ToDoPane extends JPanel
      */
     public void mySingleClick(int row, TreePath path) {
         _clicksInToDoPane++;
+        /*
         if (getSelectedObject() == null) return;
-        //TODO: should fire its own event and ProjectBrowser
-        //should register a listener
+         Object sel = getSelectedObject();
+         if (sel instanceof ToDoItem) 
+             selectItem((ToDoItem)sel);
         cat.debug("1: " + getSelectedObject().toString());
+        */
     }
     
     /** called when the user clicks once on an item in the tree.

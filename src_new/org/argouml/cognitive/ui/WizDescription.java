@@ -56,7 +56,7 @@ public class WizDescription extends WizStep {
   public void setTarget(Object item) {
     String message = "";
     super.setTarget(item);
-    Object target = TargetManager.getInstance().getTarget();
+    Object target = item;
     if (target == null) {
       _description.setText(Argo.localize("Cognitive", "message.no-item-selected"));
     }
