@@ -36,10 +36,8 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.util.ConfigLoader;
 
 /**
