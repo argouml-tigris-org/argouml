@@ -69,13 +69,13 @@ public class DocumentationManager {
      * Add comment signature.
      */
     if (sResult != null) {
-      sResult = "/**" + sResult;
+      sResult = "/** " + sResult;
 
       for (int nNewLinePos = sResult.indexOf ('\n');
            nNewLinePos >= 0;
            nNewLinePos = sResult.indexOf ('\n', nNewLinePos + 1)) {
         sResult = sResult.substring (0, nNewLinePos + 1) +
-                  indent + " *" + sResult.substring (nNewLinePos + 1);
+                  indent + " *  " + sResult.substring (nNewLinePos + 1);
       }
 
       return sResult + '\n' + indent + " */";
