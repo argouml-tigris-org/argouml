@@ -362,8 +362,13 @@ public class LookAndFeelMgr {
     }
 
     public Font getSmallFont() {
-        Font font = UIManager.getDefaults().getFont("TextField.font");
-        return font.deriveFont(font.getSize2D() - 2f);
+        Font font = getStandardFont();
+        if (font.getSize2D() >= 12f) {
+            return font.deriveFont(font.getSize2D() - 2f);
+        }
+        else {
+            return font;            
+        }
     }
     
     /**
