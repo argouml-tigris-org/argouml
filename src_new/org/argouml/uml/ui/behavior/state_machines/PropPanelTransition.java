@@ -38,6 +38,7 @@ import javax.swing.JScrollPane;
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -183,7 +184,7 @@ public class PropPanelTransition extends PropPanelModelElement {
             trigger = factory.createCallEvent();
 	    trigger.setName("anon");
 	    //TODO
-	    trigger.setNamespace(Project.getCurrentProject().getModel());
+	    trigger.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
             trans.setTrigger(trigger);
         }
 	return trigger;

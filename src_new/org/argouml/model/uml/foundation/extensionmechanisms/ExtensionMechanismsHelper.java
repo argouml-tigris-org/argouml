@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -133,7 +134,7 @@ public class ExtensionMechanismsHelper {
         String baseClass = stereo.getBaseClass();
         if (name == null || baseClass == null) return null;
         ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Iterator it2 = Project.getCurrentProject().getModels().iterator(); 
+        Iterator it2 = ProjectManager.getManager().getCurrentProject().getModels().iterator(); 
         while (it2.hasNext()) {
             MModel model = (MModel)it2.next();
             Iterator it = getStereotypes(model).iterator();
@@ -209,7 +210,7 @@ public class ExtensionMechanismsHelper {
     
     public Collection getStereotypes() {
         List ret = new ArrayList();
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.getModels().iterator();
         while (it.hasNext()) {
             MModel model = (MModel)it.next();

@@ -28,29 +28,32 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyVetoException;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.collaborations.*;
+import javax.swing.Action;
 
-import org.apache.log4j.*;
-
+import org.apache.log4j.Category;
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.collaboration.CollabDiagramGraphModel;
+import org.argouml.uml.diagram.ui.FigMessage;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.ui.ActionAddMessage;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.ui.*;
-
-import org.argouml.ui.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.collaboration.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.ui.ToolBar;
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class UMLCollaborationDiagram extends UMLDiagram {
 
@@ -195,13 +198,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
   
   protected static String getNewDiagramName() {
   	String name = null;
-  	Object[] args = {name};
-  	do {
         name = "collaboration diagram " + _CollaborationDiagramSerial;
         _CollaborationDiagramSerial++;
-        args[0] = name;
-    }
-    while (TheInstance.vetoCheck("name", args));
     return name;
   }
 

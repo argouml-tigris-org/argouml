@@ -29,7 +29,9 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyVetoException;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.base.Diagram;
 
@@ -57,7 +59,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
      */
     public void actionPerformed(ActionEvent e) {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         Object target = pb.getDetailsTarget();
         MNamespace ns = null;
         Object realTarget = null;
@@ -73,13 +75,13 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
                 ns = (MNamespace)target;
             }
         }      
-        if (ns == null || !isValidNamespace(ns)) ns = Project.getCurrentProject().getModel();
+        if (ns == null || !isValidNamespace(ns)) ns = ProjectManager.getManager().getCurrentProject().getModel();
         ArgoDiagram diagram = createDiagram(ns, realTarget);
         try {
             p.addMember(diagram);
         } 
         catch (PropertyVetoException pv) {}
-        ProjectBrowser.TheInstance.getNavPane().addToHistory(diagram);
+        NavigatorPane.getNavigatorPane().addToHistory(diagram);
         ProjectBrowser.TheInstance.setTarget(diagram);
         super.actionPerformed(e);
     }

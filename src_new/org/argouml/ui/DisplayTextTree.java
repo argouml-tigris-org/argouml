@@ -246,7 +246,7 @@ implements MElementListener {
       tme = new TreeModelEvent(this, path, null, null);
       treeModelListener.treeStructureChanged(tme);
       expandPath(path);
-      addListenerToPath(path);
+      // addListenerToPath(path);
     }
     _reexpanding = false;
 

@@ -83,7 +83,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     	ProjectBrowser pb = ProjectBrowser.TheInstance;
     	Object target = pb.getDetailsTarget();
     	if (target == null) { // nothing selected on detailspane
-    		target = pb.getNavPane().getSelectedObject();
+    		target = NavigatorPane.getNavigatorPane().getSelectedObject();
     	}
     	return target;
     }
@@ -96,10 +96,10 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      */	
     public boolean shouldBeEnabled() {
         if (getTarget() instanceof Diagram) { // we cannot delete the last diagram
-            return Project.getCurrentProject().getDiagrams().size() > 1;
+            return ProjectManager.getManager().getCurrentProject().getDiagrams().size() > 1;
         }
         if (getTarget() instanceof MModel &&  // we cannot delete the model itself
-            getTarget().equals(Project.getCurrentProject().getModel())) {
+            getTarget().equals(ProjectManager.getManager().getCurrentProject().getModel())) {
                 return false;
         }
     	return getTarget() != null;
@@ -120,10 +120,10 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 // Argo.log.info("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
                 // move the pointer to the target in the NavPane to some other target (up)
                 ProjectBrowser pb = ProjectBrowser.TheInstance;
-                TreePath path = pb.getNavPane().getParentPath();
+                TreePath path = NavigatorPane.getNavigatorPane().getParentPath();
                 if (path != null) {
                     Object o = path.getLastPathComponent();
-                    Project pr = Project.getCurrentProject();
+                    Project pr = ProjectManager.getManager().getCurrentProject();
                     if (o instanceof MModel && // root model
                         o.equals(pr.getModel()) &&
                         target instanceof Diagram) {
@@ -138,7 +138,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                         ProjectBrowser.TheInstance.select(o);
                     }
                 }
-                Project.getCurrentProject().moveToTrash(target); 
+                ProjectManager.getManager().getCurrentProject().moveToTrash(target); 
             } 
             		
         }
@@ -191,7 +191,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      */
     public static boolean sureRemove(MModelElement me) {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         
         int count = p.getPresentationCountFor(me);
         

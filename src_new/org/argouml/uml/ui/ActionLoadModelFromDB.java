@@ -62,7 +62,7 @@ public class ActionLoadModelFromDB extends UMLAction {
 	DBLoader loader = new DBLoader();
 	if (loader.hasConnection()) {
 	    MModel newModel = loader.read(modelName);
-	    ProjectBrowser.TheInstance.setProject(new Project(newModel));
+            ProjectManager.getManager().setCurrentProject(new Project(newModel));
 	}
     }
 

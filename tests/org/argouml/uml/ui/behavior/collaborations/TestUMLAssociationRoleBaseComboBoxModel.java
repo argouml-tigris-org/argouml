@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
@@ -65,7 +66,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true);
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         model = new UMLAssociationRoleBaseComboBoxModel();
         MClass class1 = CoreFactory.getFactory().createClass();
         MClass class2 = CoreFactory.getFactory().createClass();

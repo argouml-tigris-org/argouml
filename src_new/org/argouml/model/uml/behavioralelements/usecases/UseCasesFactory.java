@@ -24,6 +24,7 @@
 package org.argouml.model.uml.behavioralelements.usecases;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.MFactory;
@@ -265,7 +266,7 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 	 * @return MActor
 	 */
      public MActor buildActor() {
-	     MNamespace ns = Project.getCurrentProject().getModel();
+	     MNamespace ns = ProjectManager.getManager().getCurrentProject().getModel();
 	     return buildActor(ns);
      }
      

@@ -28,29 +28,30 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyVetoException;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.state_machines.*;
+import javax.swing.Action;
 
+import org.apache.log4j.Category;
+import org.argouml.application.api.Argo;
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.state.StateDiagramGraphModel;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.ui.ActionAddNote;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.ui.*;
-
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.state.*;
-import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-// get the note from the class diagram
-import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.tigris.gef.ui.ToolBar;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MFinalState;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 public class UMLStateDiagram extends UMLDiagram {
     protected static Category cat = Category.getInstance(UMLStateDiagram.class);
@@ -113,10 +114,7 @@ public class UMLStateDiagram extends UMLDiagram {
         Object[] args = {name};
         int number = 
             ((m.getBehaviors()) == null ? 0 : m.getBehaviors().size());
-        name = diag_name + " " + number;
-        while (TheInstance.vetoCheck("state", args)) {
-            name = diag_name + " " + (number++);
-        }
+        name = diag_name + " " + (number++);
         Argo.log.info("UMLStateDiagram constructor: String name = " + name);
 		try { setName(name); }
 		catch (PropertyVetoException pve) { }
@@ -227,13 +225,9 @@ public MStateMachine getStateMachine() {
   
   protected static String getNewDiagramName() {
   	String name = null;
-  	Object[] args = {name};
-  	do {
         name = "state diagram " + _StateDiagramSerial;
         _StateDiagramSerial++;
-        args[0] = name;
-    }
-    while (TheInstance.vetoCheck("state", args));
+
     return name;
   }
 

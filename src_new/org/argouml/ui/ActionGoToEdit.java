@@ -55,7 +55,7 @@ public class ActionGoToEdit extends UMLAction {
 
   public boolean shouldBeEnabled() {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = Project.getCurrentProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     if (!super.shouldBeEnabled() || p == null) return false;
     MultiEditorPane mep = pb.getEditorPane();
     return mep.getIndexOfNamedTab(_tabName) != -1;

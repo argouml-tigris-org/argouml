@@ -73,14 +73,14 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 	  return false;
 	boolean success = trySave(overwrite,f);
 	if (success) {
-	    ProjectBrowser.TheInstance.updateTitle(Project.getCurrentProject());
+	    ProjectBrowser.TheInstance.updateTitle(ProjectManager.getManager().getCurrentProject());
 	}
 	return success;
   }
 
     protected File getNewFile() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = Project.getCurrentProject();
+	Project p = ProjectManager.getManager().getCurrentProject();
 
         JFileChooser chooser = null;
 	URL url = p.getURL();

@@ -27,8 +27,10 @@ import java.beans.PropertyVetoException;
 import java.util.Vector;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
@@ -177,7 +179,7 @@ public class DiagramInterface {
 
 	// Check if this diagram already exists in the project
 	ProjectMember m;
-	if((m = Project.getCurrentProject().findMemberByName( getDiagramName(name) + ".pgml")) != null) {
+	if((m = ProjectManager.getManager().getCurrentProject().findMemberByName( getDiagramName(name) + ".pgml")) != null) {
 
 	    // The diagram already exists in this project. Select it as the current target.
 	    // Andreas: These lines did cost me a few hours of debugging.
@@ -210,13 +212,13 @@ public class DiagramInterface {
      *             used to generate the diagram name from.
      */
     public void addClassDiagram(MPackage target, String name) {
-	Project p = Project.getCurrentProject();
+	Project p = ProjectManager.getManager().getCurrentProject();
 	MNamespace ns = (MNamespace) target;
 	try {
 	    ArgoDiagram d = new UMLClassDiagram(ns);
 	    d.setName(getDiagramName(name));
 	    p.addMember(d);
-	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+	    NavigatorPane.getNavigatorPane().addToHistory(d);
 	    ProjectBrowser.TheInstance.setTarget(d);
 
 	    // This is sorta hack, since we don't know yet if anything will

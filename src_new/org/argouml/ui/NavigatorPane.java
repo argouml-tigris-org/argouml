@@ -51,6 +51,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.ActionAddExistingEdge;
 import org.argouml.uml.diagram.ui.ActionAddExistingNode;
@@ -87,6 +88,19 @@ import ru.novosoft.uml.model_management.MPackage;
 public class NavigatorPane extends JPanel
 implements ItemListener, TreeSelectionListener, PropertyChangeListener, QuadrantPanel {
     protected static Category cat = Category.getInstance(NavigatorPane.class);
+    
+    /**
+     * The singleton implementation
+     */
+    
+    private static NavigatorPane _navPane;
+    
+    public static NavigatorPane getNavigatorPane() {
+        if (_navPane == null) {
+            _navPane = new NavigatorPane();
+        }
+        return _navPane;
+    }
     
   //, CellEditorListener
 
@@ -138,6 +152,10 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
     //_tree.getCellEditor().addCellEditorListener(this);
     Configuration.addListener(Notation.KEY_USE_GUILLEMOTS, this);
     Configuration.addListener(Notation.KEY_SHOW_STEREOTYPES, this);
+    setPreferredSize(new Dimension(
+                                  Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, ProjectBrowser.DEFAULT_COMPONENTWIDTH),0
+                                  ));
+    ProjectManager.getManager().addPropertyChangeListener(this);                                  
   }
 
   ////////////////////////////////////////////////////////////////
@@ -373,7 +391,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
 	}
         else {
             if ((obj instanceof MClassifier && !(obj instanceof MDataType))
-                || ((obj instanceof MPackage) && (obj != Project.getCurrentProject().getModel())) 
+                || ((obj instanceof MPackage) && (obj != ProjectManager.getManager().getCurrentProject().getModel())) 
 	        || obj instanceof MStateVertex 
                 || (obj instanceof MInstance && !(obj instanceof MDataValue) && !(ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLSequenceDiagram))) {
                     UMLAction action = new ActionAddExistingNode(menuLocalize("menu.popup.add-to-diagram"),obj);
@@ -388,7 +406,7 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
                 popup.add(action);
             }
                 
-            if ((obj instanceof MModelElement && (obj != Project.getCurrentProject().getModel())) || obj instanceof Diagram ) {
+            if ((obj instanceof MModelElement && (obj != ProjectManager.getManager().getCurrentProject().getModel())) || obj instanceof Diagram ) {
 	        popup.add(ActionRemoveFromModel.SINGLETON);
             }
             popup.add(new ActionGoToDetails(menuLocalize("Properties")));
@@ -437,14 +455,22 @@ implements ItemListener, TreeSelectionListener, PropertyChangeListener, Quadrant
   	
   /** Listen for configuration changes that could require repaint
    *  of the navigator pane.
+   * Listens for changes of the project fired by projectmanager.
    *
    *  @since ARGO0.11.2
    */
   public void propertyChange(PropertyChangeEvent pce) {
+    if (pce.getPropertyName().equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
+        setRoot(pce.getNewValue());
+        forceUpdate();
+        return;
+    }
       if (Notation.KEY_USE_GUILLEMOTS.isChangedProperty(pce) ||
           Notation.KEY_SHOW_STEREOTYPES.isChangedProperty(pce)) {
           _tree.forceUpdate();
       }
-  }
+  } 
+  
+  
 
 } /* end class NavigatorPane */

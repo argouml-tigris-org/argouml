@@ -39,26 +39,29 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyVetoException;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.use_cases.*;
+import javax.swing.Action;
 
+import org.apache.log4j.Category;
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.diagram.use_case.UseCaseDiagramGraphModel;
+import org.argouml.uml.ui.ActionAddExtensionPoint;
+import org.argouml.uml.ui.ActionAddNote;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.ui.*;
-
-import org.argouml.uml.ui.*;
-import org.apache.log4j.Category;
-import org.argouml.ui.CmdCreateNode;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.use_case.*;
+import org.tigris.gef.ui.ToolBar;
+import ru.novosoft.uml.behavior.use_cases.MActor;
+import ru.novosoft.uml.behavior.use_cases.MExtend;
+import ru.novosoft.uml.behavior.use_cases.MInclude;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 
 /**
@@ -304,13 +307,9 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     
      protected static String getNewDiagramName() {
   	String name = null;
-  	Object[] args = {name};
-  	do {
         name = "use case diagram " + _UseCaseDiagramSerial;
         _UseCaseDiagramSerial++;
-        args[0] = name;
-    }
-    while (TheInstance.vetoCheck("name", args));
+
     return name;
   }
 

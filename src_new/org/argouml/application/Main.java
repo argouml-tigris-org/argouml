@@ -50,9 +50,11 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ui.ToDoPerspective;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.NavPerspective;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
@@ -279,7 +281,7 @@ public class Main {
 	st.mark("make empty project");
 
         if (urlToOpen == null) {
-            p = Project.getCurrentProject();
+            p = ProjectManager.getManager().getCurrentProject();
         }
         else {
             try {
@@ -327,7 +329,7 @@ public class Main {
         // Touch the trash
         Trash.SINGLETON.getSize();
 
-        pb.setProject(p);
+        ProjectManager.getManager().setCurrentProject(p);
 
 	st.mark("perspectives");
 
@@ -339,7 +341,7 @@ public class Main {
         }
 
 
-        pb.setPerspectives(NavPerspective.getRegisteredPerspectives());
+        NavigatorPane.getNavigatorPane().setPerspectives(NavPerspective.getRegisteredPerspectives());
         pb.setToDoPerspectives(ToDoPerspective.getRegisteredPerspectives());
 
         pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
@@ -367,7 +369,7 @@ public class Main {
         Object model = p.getUserDefinedModels().elementAt(0);
         Object diag = p.getDiagrams().elementAt(0);
         //pb.setTarget(diag);
-        pb.getNavPane().setSelection(model, diag);
+        NavigatorPane.getNavigatorPane().setSelection(model, diag);
 
 	st.mark("close splash");
         if (splash != null) {
@@ -512,7 +514,7 @@ class StartCritics implements Runnable {
         Designer dsgr = Designer.theDesigner();
         org.argouml.uml.cognitive.critics.Init.init();
         org.argouml.uml.cognitive.checklist.Init.init(Locale.getDefault());
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         dsgr.spawnCritiquer(p);
         dsgr.setChildGenerator(new ChildGenUML());
         java.util.Enumeration models = (p.getUserDefinedModels()).elements();
@@ -588,7 +590,7 @@ class PreloadClasses implements Runnable {
         c = org.argouml.uml.diagram.ui.SPFigEdgeModelElement.class;
 
         c = java.lang.ClassNotFoundException.class;
-        c = org.argouml.ui.UpdateTreeHack.class;
+        // c = org.argouml.ui.UpdateTreeHack.class;
         c = org.argouml.kernel.DelayedChangeNotify.class;
         c = org.tigris.gef.graph.GraphEvent.class;
         c = org.tigris.gef.graph.presentation.NetEdge.class;

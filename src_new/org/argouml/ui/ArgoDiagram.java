@@ -23,24 +23,20 @@
 
 package org.argouml.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyVetoException;
+import java.util.Iterator;
+import java.util.Vector;
 
-import org.tigris.gef.base.*;
+import org.argouml.util.ChangeRegistry;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Editor;
 import org.tigris.gef.presentation.Fig;
-
 import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MClassifier;
 
-import org.argouml.kernel.Project;
-import org.argouml.uml.ui.VetoablePropertyChange;
-import org.argouml.util.*;
-
-public class ArgoDiagram extends Diagram implements VetoablePropertyChange {
+public class ArgoDiagram extends Diagram {
 
 
   // hack to use vetocheck in constructing names
@@ -91,35 +87,7 @@ public class ArgoDiagram extends Diagram implements VetoablePropertyChange {
         return null;
     }
 
-    /**
-     * @see org.argouml.uml.ui.VetoablePropertyChange#vetoCheck(String, Object[])
-     */
-    public boolean vetoCheck(String propertyName, Object[] args) {
-    	if (propertyName.equals("name")) {
-    		if (args.length == 1) {
-    			String newName = (String)args[0];
-    			// 2002-07-18
-  				// Jaap Branderhorst
-  				// check the new name if it does not exist as a diagram name
-  				// patch for issue 738
-  				Project project = Project.getCurrentProject();
-  				if (project != null) {
-  					Vector diagrams = project.getDiagrams();
-  					Iterator it = diagrams.iterator();
-  					while (it.hasNext()) {
-  						ArgoDiagram diagram = (ArgoDiagram)it.next();
-  						if ((diagram.getName() != null ) && 
-  							(diagram.getName().equals(newName)) && 
-  							!getName().equals(newName)) {
-  							return true;
-  						}
-  					}
-  				} else
-                                    return false;
-    		}
-    	}
-        return false;
-    }
+  
 
     /**
      * Finds the presentation (the fig) for some object. If the object is a 

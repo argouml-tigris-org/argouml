@@ -1,33 +1,21 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.Color;
 import java.awt.GridLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JList;
+
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
-import org.argouml.uml.ui.UMLComboBox;
-import org.argouml.uml.ui.UMLComboBoxModel;
-import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLListMenuItem;
-import org.argouml.uml.ui.UMLModelElementListModel;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLTextArea;
-import org.argouml.uml.ui.UMLTextField;
 import org.argouml.uml.ui.UMLTextProperty;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * @author Jaap
@@ -45,7 +33,7 @@ public class PropPanelReception extends PropPanelModelElement {
 		Class mclass = MReception.class;
 		 
 		addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
+        addField(nameField,1,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
         addField(stereotypeBox,2,0,0);

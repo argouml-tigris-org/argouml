@@ -28,6 +28,8 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
@@ -54,7 +56,7 @@ public class ActionRemoveModelElement extends UMLChangeAction {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         if (_elementToDelete != null && ActionRemoveFromModel.sureRemove(_elementToDelete))
             p.moveToTrash(_elementToDelete);
         _elementToDelete = null;

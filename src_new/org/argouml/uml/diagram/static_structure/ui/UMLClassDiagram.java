@@ -28,25 +28,33 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.beans.*;
-import javax.swing.*;
+import java.beans.PropertyVetoException;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
+import javax.swing.Action;
 
+import org.argouml.ui.CmdCreateNode;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.uml.ui.ActionAddAttribute;
+import org.argouml.uml.ui.ActionAddNote;
+import org.argouml.uml.ui.ActionAddOperation;
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
-import org.tigris.gef.ui.*;
-
-import org.argouml.ui.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.static_structure.*;
+import org.tigris.gef.ui.ToolBar;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.foundation.core.MAbstraction;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MPermission;
+import ru.novosoft.uml.foundation.core.MUsage;
+import ru.novosoft.uml.model_management.MPackage;
 
 public class UMLClassDiagram extends UMLDiagram {
 
@@ -112,13 +120,9 @@ public class UMLClassDiagram extends UMLDiagram {
 
   protected static String getNewDiagramName() {
   	String name = null;
-  	Object[] args = {name};
-  	do {
         name = "class diagram " + _ClassDiagramSerial;
         _ClassDiagramSerial++;
-        args[0] = name;
-    }
-    while (TheInstance.vetoCheck("name", args));
+
     return name;
   }
 

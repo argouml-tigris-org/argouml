@@ -52,7 +52,7 @@ public class ActionNew extends UMLAction {
 
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = Project.getCurrentProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
 
     if (p != null && p.needsSave()) {
       String t = MessageFormat.format (
@@ -84,7 +84,7 @@ public class ActionNew extends UMLAction {
     }
 
     p = Project.makeEmptyProject();
-    pb.setProject (p);
+    ProjectManager.getManager().setCurrentProject(p);
     ProjectBrowser.TheInstance.setTitle ("Untitled");
   }
 } /* end class ActionNew */

@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.beans.PropertyVetoException;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.model_management.MModel;
 
@@ -52,7 +53,7 @@ public class ActionAddTopLevelPackage extends UMLChangeAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-	Project p = Project.getCurrentProject();	
+	Project p = ProjectManager.getManager().getCurrentProject();	
         int numPacks = p.getUserDefinedModels().size();
         String nameStr = "package_" + (numPacks + 1);
         MModel model = UmlFactory.getFactory().getModelManagement().createModel();

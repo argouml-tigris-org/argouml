@@ -25,7 +25,7 @@ public class ArgoFacade implements ModelFacade {
     }
 
     public Any getClassifier(String name) {
-      Project p = Project.getCurrentProject();
+      Project p = ProjectManager.getManager().getCurrentProject();
       
       if (target != null && target.getName().equals(name) ) {
         return new ArgoAny(target);

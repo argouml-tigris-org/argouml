@@ -38,6 +38,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractWellformednessRule;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.AssociationEndAggregationWellformednessRule;
@@ -318,7 +319,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     	MAssociation assoc = end.getAssociation();
     	Collection ends = assoc.getConnections();
     	if (ends.size() > 2) {   		
-    		Iterator it = Project.getCurrentProject().findFigsForMember(end.getAssociation()).iterator();
+    		Iterator it = ProjectManager.getManager().getCurrentProject().findFigsForMember(end.getAssociation()).iterator();
     		while (it.hasNext()) {
     			// should do here something if the association end is shown
     		}

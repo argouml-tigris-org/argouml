@@ -33,6 +33,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.activity.ui.*;
 
@@ -68,7 +69,7 @@ public class GoMachineDiagram extends AbstractGoRule {
   }
 
   public Collection getChildren(Object parent) {
-    Project p = Project.getCurrentProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     if (p == null) return null;
     if (!(parent instanceof MStateMachine)) return null;
     Vector res = new Vector();

@@ -130,10 +130,6 @@ public class Project implements java.io.Serializable {
     public GenerationPreferences _cgPrefs = new GenerationPreferences();
     public transient VetoableChangeSupport _vetoSupport = null;
     
-    /**
-     * The project the user is working on at the moment
-     */
-    private static Project _currentProject;
     
     /**
      * True if we are in the proces of making a project, otherwise false
@@ -1149,28 +1145,19 @@ public class Project implements java.io.Serializable {
     static final long serialVersionUID = 1399111233978692444L;
 
     /**
-     * Returns the currentProject.
-     * @return Project
-     */
-    public static Project getCurrentProject() {
-        if (_currentProject == null && !_creatingProject) {
-            Project newProject = makeEmptyProject();
-            setCurrentProject(newProject);
-        }
-        return _currentProject;
-    }
-
-    /**
      * Sets the currentProject.
      * @param currentProject The currentProject to set
      */
     public static void setCurrentProject(Project currentProject) {
+        ProjectManager.getManager().setCurrentProject(currentProject);
+        /*
         // update the graphics
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         if (pb != null) {
             pb.setProject(currentProject);
         }
         _currentProject = currentProject;
+        */
     }
     
     

@@ -31,18 +31,13 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 
-import java.awt.*;
-import javax.swing.*;
-
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
-
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 
 public class PropPanelLink extends PropPanelModelElement {
@@ -56,7 +51,7 @@ public class PropPanelLink extends PropPanelModelElement {
 
     Class mclass = MLink.class;
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
+    addField(nameField,1,0,0);
 
 
     addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);

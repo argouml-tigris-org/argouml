@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -69,7 +70,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
      */
     protected void buildModelList() {
         Set elements = new HashSet();
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.getUserDefinedModels().iterator();
         while (it.hasNext()) {
            MModel model = (MModel)it.next();

@@ -67,7 +67,7 @@ public class ActionImportFromSources extends UMLAction {
 
     public void actionPerformed(ActionEvent event) {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
 
         try {
             String directory = Globals.getLastDirectory();
@@ -108,7 +108,7 @@ public class ActionImportFromSources extends UMLAction {
 			    p.setNeedsSave(true);
 			}
 
-                        pb.setProject(p);
+                        ProjectManager.getManager().setCurrentProject(p);
                         pb.showStatus("Parsed " + filename);
                         return;
                     }

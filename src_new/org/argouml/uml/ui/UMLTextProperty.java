@@ -121,26 +121,13 @@ public class UMLTextProperty  {
                         //   (or a really rare identical string pointer)
                         if(newValue != oldValue) {
                             Object[] args = { newValue };
-                            // 2002-07-18
-                            // Jaap Branderhorst
-                            // Patch for issue 738
-                            // if the setmethod trows a PropertyVetoException it should be handled.
-                            // it's handled by showing the user the message in the exception and not
-                            // marking the project for change if it is thrown.
-                            // this way the setmethod itself can check on some issues.
                             try {
-                            	if ((element instanceof VetoablePropertyChange &&  
-                            		vetoableCheck && 
-                            		((VetoablePropertyChange)element).vetoCheck(_propertyName, args))) {
-                            			throw new PropertyVetoException(
-  											((VetoablePropertyChange)element).getVetoMessage(_propertyName)  ,
-  											new PropertyChangeEvent(element, _propertyName, oldValue, newValue));
-                            	}
+                            	
                             		
                             	_setMethod.invoke(element,args);
                             	// Mark the project as having been changed 
-                            	Project p = Project.getCurrentProject(); 
-								if (p != null) p.setNeedsSave(true); 
+                            	Project p = ProjectManager.getManager().getCurrentProject(); 
+			        if (p != null) p.setNeedsSave(true); 
                             }
                             catch (InvocationTargetException inv) {
                             	Throwable targetException = inv.getTargetException();

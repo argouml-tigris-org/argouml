@@ -209,7 +209,7 @@ public class CrReservedName extends CrUML {
 
         // Dont critique the built-in java types, they are supposed to
         // have those "reserved" names.
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         MClassifier type = p.findTypeInModel(nameStr, p.getDefaultModel());
         if (type != null) return NO_PROBLEM;
 

@@ -22,14 +22,13 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.helpers;
-import org.argouml.application.api.*;
-import org.argouml.ui.*;
-import org.argouml.kernel.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import java.util.*;
+import java.util.Vector;
+
+import javax.swing.JMenuItem;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.PluggableDiagram;
+import org.argouml.ui.ArgoDiagram;
 
 /** Helper object for Diagrams
  *

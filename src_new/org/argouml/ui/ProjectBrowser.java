@@ -25,6 +25,8 @@ package org.argouml.ui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
@@ -50,7 +52,7 @@ import org.argouml.swingext.*;
 /** The main window of the ArgoUML application. */
 
 public class ProjectBrowser extends JFrame
-    implements IStatusBar, NavigationListener {
+    implements IStatusBar, NavigationListener, PropertyChangeListener {
     
     protected static Category cat = 
         Category.getInstance(ProjectBrowser.class);
@@ -58,49 +60,21 @@ public class ProjectBrowser extends JFrame
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private static int DEFAULT_COMPONENTWIDTH = 220;
-    private static int DEFAULT_COMPONENTHEIGHT = 200;
+    public final static int DEFAULT_COMPONENTWIDTH = 220;
+    public final static int DEFAULT_COMPONENTHEIGHT = 200;
 
     ////////////////////////////////////////////////////////////////
     // class variables
 
     public static ProjectBrowser TheInstance;
 
-
-    protected static Action _actionCreateMultiple = Actions.CreateMultiple;
     // ----- diagrams
-    /** this fires the Class Diagram view
-     */
-    protected static Action _actionClassDiagram = ActionClassDiagram.SINGLETON;
-    /** this fires the use case Diagram view
-     */
-    protected static Action _actionUseCaseDiagram = ActionUseCaseDiagram.SINGLETON;
-    /** this fires the state Diagram view
-     */
-    protected static Action _actionStateDiagram = ActionStateDiagram.SINGLETON;
-    /** this fires the activity view
-     */
-    protected static Action _actionActivityDiagram = ActionActivityDiagram.SINGLETON;
-    /** this fires the Collaboration Diagram view
-     */
-    protected static Action _actionCollaborationDiagram = ActionCollaborationDiagram.SINGLETON;
-    /** this fires the deployment Diagram view
-     */
-    protected static Action _actionDeploymentDiagram = ActionDeploymentDiagram.SINGLETON;
-    /** this fires the sequence Diagram view
-     */
-    protected static Action _actionSequenceDiagram = ActionSequenceDiagram.SINGLETON;
-
-    // ----- model elements
-    //protected static Action _actionModel = Actions.MModel;
-    protected static Action _actionAddTopLevelPackage = ActionAddTopLevelPackage.SINGLETON;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     protected String _appName = "ProjectBrowser";
 
-    protected NavigatorPane _navPane;
     /** The toDoPane currently does not remember todos
      * nor is there a way of exporting todos to anothter
      * format
@@ -148,7 +122,7 @@ public class ProjectBrowser extends JFrame
         _menuBar = new GenericArgoMenuBar();
         sb.showStatus("Making Project Browser: Navigator Pane");
         sb.incProgress(5);
-        _navPane = new NavigatorPane();
+        NavigatorPane.getNavigatorPane();
         sb.showStatus("Making Project Browser: To Do Pane");
         sb.incProgress(5);
         _toDoPane = new ToDoPane();
@@ -193,6 +167,7 @@ public class ProjectBrowser extends JFrame
         addWindowListener(new WindowCloser());
         ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
         this.setIconImage(argoImage.getImage());
+        ProjectManager.getManager().addPropertyChangeListener(this);
     }
     
     //   void loadImages() {
@@ -265,16 +240,12 @@ public class ProjectBrowser extends JFrame
                                         ));
         }
 
-        _navPane.setPreferredSize(new Dimension(
-                                  Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTWIDTH),0
-                                  ));
-
         // The workarea is all the visible space except the menu, toolbar and status bar.
         // Workarea is layed out as a BorderSplitPane where the various components that make
         // up the argo application can be positioned.
         _workarea = new BorderSplitPane();
         _workarea.add(_toDoPane, BorderSplitPane.SOUTHWEST);
-        _workarea.add(_navPane, BorderSplitPane.WEST);
+        _workarea.add(NavigatorPane.getNavigatorPane(), BorderSplitPane.WEST);
         //_workarea.add(_northPane, BorderSplitPane.NORTH);
     
         Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
@@ -297,17 +268,6 @@ public class ProjectBrowser extends JFrame
 
     ////////////////////////////////////////////////////////////////
     // accessors
-
-    public void setProject(Project p) {
-        _navPane.setRoot(p);
-        updateTitle(p);
-        Actions.updateAllEnabled();
-        //Designer.TheDesigner.getToDoList().removeAllElements();
-        Designer.TheDesigner.setCritiquingRoot(p);
-        // update all panes
-        setTarget(p.getInitialTarget());
-        _navPane.forceUpdate();
-    }
    
 
     public void updateTitle(Project p) {
@@ -322,20 +282,6 @@ public class ProjectBrowser extends JFrame
 
     public String getAppName() { return _appName; }
     public void setAppName(String n) { _appName = n; }
-
-    public void setPerspectives(Vector v) {
-        _navPane.setPerspectives(v);
-    }
-    public Vector getPerspectives() {
-        return _navPane.getPerspectives();
-    }
-
-    public void setCurPerspective(NavPerspective tm) {
-        _navPane.setCurPerspective(tm);
-    }
-    public NavPerspective getCurPerspective() {
-        return _navPane.getCurPerspective();
-    }
 
     public void setToDoPerspectives(Vector v) {
         _toDoPane.setPerspectives(v);
@@ -361,10 +307,10 @@ public class ProjectBrowser extends JFrame
             detailsPane.setTarget(o);
         }
          
-        if (o instanceof MNamespace) Project.getCurrentProject().setCurrentNamespace((MNamespace)o);
+        if (o instanceof MNamespace) ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)o);
         if (o instanceof UMLDiagram) {
             MNamespace m = ((UMLDiagram)o).getNamespace();
-            if (m != null) Project.getCurrentProject().setCurrentNamespace(m);
+            if (m != null) ProjectManager.getManager().getCurrentProject().setCurrentNamespace(m);
         }
         if (o instanceof ArgoDiagram) {
             setActiveDiagram ((ArgoDiagram) o);
@@ -373,9 +319,9 @@ public class ProjectBrowser extends JFrame
             MModelElement eo = (MModelElement)o;
             if (eo == null) { cat.debug("no path to model"); return; }
             if (eo.getNamespace() != null) {
-                Project.getCurrentProject().setCurrentNamespace(eo.getNamespace());
+                ProjectManager.getManager().getCurrentProject().setCurrentNamespace(eo.getNamespace());
             } else
-                Project.getCurrentProject().setCurrentNamespace((MNamespace)Project.getCurrentProject().getUserDefinedModels().get(0));
+                ProjectManager.getManager().getCurrentProject().setCurrentNamespace((MNamespace)ProjectManager.getManager().getCurrentProject().getUserDefinedModels().get(0));
 	}
 	Actions.updateAllEnabled();
     }
@@ -458,7 +404,6 @@ public class ProjectBrowser extends JFrame
     public JMenuBar getJMenuBar() { return _menuBar; }
 
     public ToDoPane getToDoPane() { return _toDoPane; }
-    public NavigatorPane getNavPane() { return _navPane; }
     public MultiEditorPane getEditorPane() { return _editorPane; }
 
     /**
@@ -523,7 +468,7 @@ public class ProjectBrowser extends JFrame
             select(null);
             return;
         }
-        Vector diagrams = Project.getCurrentProject().getDiagrams();
+        Vector diagrams = ProjectManager.getManager().getCurrentProject().getDiagrams();
         Object target = _editorPane.getTarget();
         if ((target instanceof Diagram) && ((Diagram)target).countContained(dms) == dms.size()) {
             select(first);
@@ -609,7 +554,7 @@ public class ProjectBrowser extends JFrame
      * Save the positions of the screen spliters in the properties file
      */
     public void saveScreenConfiguration() {
-        Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, _navPane.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, NavigatorPane.getNavigatorPane().getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _toDoPane.getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
@@ -653,6 +598,22 @@ public class ProjectBrowser extends JFrame
         }
     } /* end class WindowCloser */
 
+
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
+            Project p = (Project)evt.getNewValue();
+            updateTitle(p);
+            Actions.updateAllEnabled();
+            //Designer.TheDesigner.getToDoList().removeAllElements();
+            Designer.TheDesigner.setCritiquingRoot(p);
+            // update all panes
+            setTarget(p.getInitialTarget());
+            return;
+        }
+    }
 
 } /* end class ProjectBrowser */
 

@@ -27,7 +27,7 @@ import javax.swing.JScrollPane;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -239,7 +239,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                         // 2002-07-15
             			// Jaap Branderhorst
             			// Force an update of the navigation pane to solve issue 323
-            			ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+            			NavigatorPane.getNavigatorPane().forceUpdate();
                     }
                     catch(Exception e) {
                         cat.error(e.toString() + " in PropPanelGeneralization.newElement", e);

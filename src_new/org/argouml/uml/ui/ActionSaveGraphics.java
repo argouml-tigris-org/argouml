@@ -76,7 +76,7 @@ public class ActionSaveGraphics extends UMLAction {
 	    // and directory stuff. More file handling is coming, I'm sure.
 
 	    ProjectBrowser pb = ProjectBrowser.TheInstance;
-	    Project p =  Project.getCurrentProject();
+	    Project p =  ProjectManager.getManager().getCurrentProject();
 	    try {
 		JFileChooser chooser = null;
 		try {

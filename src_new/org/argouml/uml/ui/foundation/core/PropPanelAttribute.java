@@ -63,7 +63,7 @@ public class PropPanelAttribute extends PropPanelModelElement {
 
 
         addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
+        addField(nameField,1,0,0);
 
 	addCaption(Argo.localize("UMLMenu", "label.multiplicity"),2,0,0);
         addField(new UMLMultiplicityComboBox(this,MAttribute.class),2,0,0);

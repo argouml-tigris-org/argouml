@@ -29,6 +29,7 @@ import java.util.Vector;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
@@ -921,7 +922,7 @@ class ColumnReturn extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MOperation op = (MOperation) target;
     String s = (String) value;
-    Project p = Project.getCurrentProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     MClassifier rt = p.findType(s);
     ParserDisplay pd = ParserDisplay.SINGLETON;
 	MParameter rp = UmlFactory.getFactory().getCore().buildParameter(op);
@@ -990,7 +991,7 @@ class ColumnType extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MAttribute op = (MAttribute) target;
     String s = (String) value;
-    Project p = Project.getCurrentProject();
+    Project p = ProjectManager.getManager().getCurrentProject();
     MClassifier t = p.findType(s);
     if (t == null) {
       cat.warn("attribute type not found");
@@ -1167,7 +1168,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
       } 
     } 
 
-    Vector diagrams = Project.getCurrentProject().getDiagrams();
+    Vector diagrams = ProjectManager.getManager().getCurrentProject().getDiagrams();
     GraphModel model = null;
     Vector v = new Vector();
     int size = diagrams.size();
@@ -1241,7 +1242,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
       } 
     } 
 
-    Vector diagrams = Project.getCurrentProject().getDiagrams();
+    Vector diagrams = ProjectManager.getManager().getCurrentProject().getDiagrams();
     GraphModel model = null;
     Vector v = new Vector();
     int size = diagrams.size();
@@ -1316,7 +1317,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
       } 
     } 
 
-    Vector diagrams = Project.getCurrentProject().getDiagrams();
+    Vector diagrams = ProjectManager.getManager().getCurrentProject().getDiagrams();
     GraphModel model = null;
     Vector v = new Vector();
     int size = diagrams.size();

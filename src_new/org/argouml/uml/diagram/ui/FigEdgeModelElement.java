@@ -540,7 +540,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         // GEF does not take into account the multiple diagrams we have
         // therefore we loop through our diagrams and delete each and every 
         // occurence on our own
-        it = Project.getCurrentProject().getDiagrams().iterator();
+        it = ProjectManager.getManager().getCurrentProject().getDiagrams().iterator();
         while (it.hasNext()) {
             ArgoDiagram diagram = (ArgoDiagram)it.next();
             diagram.damage();

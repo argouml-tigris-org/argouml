@@ -217,7 +217,7 @@ public class UMLTextField
         }  
        
     
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         // start new code
         Iterator it = p.findFigsForMember(_target).iterator();
         while (it.hasNext()) {

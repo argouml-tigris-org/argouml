@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
 import ru.novosoft.uml.behavior.use_cases.MActor;
@@ -91,7 +92,7 @@ public class UseCasesHelper {
 	 * @return Collection
 	 */
     public Collection getAllUseCases() {
-    	MNamespace model = Project.getCurrentProject().getModel();
+    	MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllUseCases(model);
 	}
 	
@@ -120,7 +121,7 @@ public class UseCasesHelper {
 	 * @return Collection
 	 */
 	public Collection getAllActors() {
-    	MNamespace model = Project.getCurrentProject().getModel();
+    	MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
 		return getAllActors(model);
 	}
 	

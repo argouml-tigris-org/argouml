@@ -32,6 +32,7 @@ import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import ru.novosoft.uml.MElementEvent;
@@ -49,6 +50,11 @@ import ru.novosoft.uml.foundation.core.MParameterImpl;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUmlModelEventPump extends TestCase {
+    
+    private MClass elem;
+    private MockModelEventListener listener;
+    private boolean eventcalled;
+    private TestListener listener2;
 
     
     private class TestListener implements MElementListener {
@@ -97,10 +103,7 @@ public class TestUmlModelEventPump extends TestCase {
 
     }
     
-    private MClass elem;
-    private MockModelEventListener listener;
-    private boolean eventcalled;
-    private TestListener listener2;
+    
     
     /**
      * Constructor for TestUmlModelEventPump.
@@ -114,11 +117,11 @@ public class TestUmlModelEventPump extends TestCase {
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
-        super.setUp();
+        super.setUp(); 
         ArgoSecurityManager.getInstance().setAllowExit(true);
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         elem = CoreFactory.getFactory().createClass();
-        Project.getCurrentProject().getRoot().addOwnedElement(elem);
+        ProjectManager.getManager().getCurrentProject().getRoot().addOwnedElement(elem);
         listener = new MockModelEventListener();
         eventcalled = false;
         listener2 = new TestListener();

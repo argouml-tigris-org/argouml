@@ -33,6 +33,7 @@ import java.util.Set;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -579,7 +580,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         //build the default attribute
         // this should not be here via the ProjectBrowser but the CoreHelper 
         // should provide this functionality
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         MClassifier intType = p.findType("int");
         if (p.getModel() != intType.getNamespace() && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(intType.getNamespace())) {
         	intType.setNamespace(p.getModel());
@@ -611,7 +612,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
        cls.addFeature(attr);
        // we set the listeners to the figs here too
         // it would be better to do that in the figs themselves
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.findFigsForMember(cls).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
@@ -822,7 +823,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         // we set the listeners to the figs here too
         // it would be better to do that in the figs themselves
         // the elementlistener for the parameter is allready set in buildparameter(oper)
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.findFigsForMember(cls).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
@@ -842,7 +843,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
     public MParameter buildParameter() {
         // this should not be here via the ProjectBrowser but the CoreHelper 
         // should provide this functionality
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         MClassifier voidType = p.findType("void");
         if (voidType.getModel() != p.getModel()) {
         	voidType.setNamespace(p.getModel());
@@ -885,7 +886,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         
         // we set the listeners to the figs here too
         // it would be better to do that in the figs themselves
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         it = p.findFigsForMember(oper).iterator();
         while (it.hasNext()) {
             MElementListener listener = (MElementListener)it.next();
@@ -945,7 +946,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         if (nsc != null && nsc.equals(nss)) {
         	ns = nsc;
         } else
-        	ns = Project.getCurrentProject().getModel();
+        	ns = ProjectManager.getManager().getCurrentProject().getModel();
         ExtensionMechanismsFactory.getFactory().buildStereotype(realization, "realize", ns);
         client.addClientDependency(realization);
         supplier.addSupplierDependency(realization);
@@ -989,7 +990,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
             comment.addAnnotatedElement(elementToComment);
             comment.setNamespace(elementToComment.getModel());
         } else
-            comment.setNamespace(Project.getCurrentProject().getModel());
+            comment.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
         
         return comment;
     }

@@ -434,7 +434,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         // Having moved an include relationship, mark as needing saving
 
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         p.setNeedsSave(true);
 
         // Tell Swing
@@ -476,7 +476,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         // Having moved an include relationship, mark as needing saving
 
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         p.setNeedsSave(true);
 
         // Tell Swing

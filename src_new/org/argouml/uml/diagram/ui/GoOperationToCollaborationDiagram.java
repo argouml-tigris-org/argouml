@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.AbstractGoRule;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
@@ -60,7 +61,7 @@ public class GoOperationToCollaborationDiagram extends AbstractGoRule {
             MOperation operation = (MOperation)parent;
             Collection col = operation.getCollaborations();
             Vector ret = new Vector();
-            Project p = Project.getCurrentProject();
+            Project p = ProjectManager.getManager().getCurrentProject();
             Vector diagrams = p.getDiagrams();
             Iterator it = diagrams.iterator();
             while (it.hasNext()) {

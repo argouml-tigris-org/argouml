@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
@@ -67,7 +68,7 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
         model = new UMLExtendBaseComboBoxModel();
         bases = new MUseCase[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
-        Project.getCurrentProject().setRoot(m);
+        ProjectManager.getManager().getCurrentProject().setRoot(m);
         for (int i = 0 ; i < 10; i++) {
             bases[i] = UseCasesFactory.getFactory().createUseCase();
             m.addOwnedElement(bases[i]);

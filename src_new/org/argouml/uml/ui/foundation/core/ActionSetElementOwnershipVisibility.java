@@ -31,6 +31,7 @@ import javax.swing.JRadioButton;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLButtonGroup;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -84,7 +85,7 @@ public class ActionSetElementOwnershipVisibility extends AbstractAction {
     private void markAsChanged() {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         if (pb == null) return;
-        Project p = Project.getCurrentProject();
+        Project p = ProjectManager.getManager().getCurrentProject();
         if (p == null) return;
         p.setNeedsSave(true);
     }

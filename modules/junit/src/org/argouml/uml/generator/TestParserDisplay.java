@@ -30,6 +30,7 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -242,15 +243,15 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(Project.getCurrentProject().getModel());
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(attr, attr01, null);
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(Project.getCurrentProject().getModel());
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(attr, attr10, "organization");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
-		attr.setNamespace(Project.getCurrentProject().getModel());
+		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(attr, attr11, "machine");
 		checkStereotype(attr, attr01, "machine");
 	}
@@ -346,15 +347,15 @@ public class TestParserDisplay extends TestCase {
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
-		op.setNamespace(Project.getCurrentProject().getModel());
+		op.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(op, oper01, null);
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
-		op.setNamespace(Project.getCurrentProject().getModel());
+		op.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(op, oper02, "create");
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
-		op.setNamespace(Project.getCurrentProject().getModel());
+		op.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(op, oper03, "destroy");
 		checkStereotype(op, oper01, "destroy");
 		checkStereotype(op, oper04, null);

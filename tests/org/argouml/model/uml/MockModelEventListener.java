@@ -77,6 +77,7 @@ public class MockModelEventListener implements MElementListener {
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) {
+         
     }
 
 }

@@ -24,6 +24,7 @@
 package org.argouml.model.uml.foundation.extensionmechanisms;
 
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.MFactory;
@@ -113,7 +114,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
             UmlFactory.getFactory().delete(stereo);
             return stereo2;
         } else {
-            Project.getCurrentProject().getModel().addOwnedElement(stereo);
+            ProjectManager.getManager().getCurrentProject().getModel().addOwnedElement(stereo);
             if (m != null)
                 stereo.addExtendedElement(m);
             return stereo;
