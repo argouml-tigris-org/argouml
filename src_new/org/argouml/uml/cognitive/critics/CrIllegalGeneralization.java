@@ -37,7 +37,10 @@ import ru.novosoft.uml.foundation.core.*;
 import org.argouml.cognitive.*;
 
 /** Well-formedness rule [1] for MGeneralization. See page 32 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
+ *  Semantics. OMG document ad/97-08-04.
+ *  This critic checks that the parent and child in a generalization are
+ *  of the same metatype.
+ */
 
 public class CrIllegalGeneralization extends CrUML {
 
