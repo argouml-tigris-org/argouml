@@ -3,7 +3,64 @@
 <HEAD>
 	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=windows-1252">
 	<TITLE>ArgoUML Tour</TITLE>
+<script language="javaScript">
 
+function isViewletCompliant()
+{
+     answer=true;
+     version=Math.round(parseFloat(navigator.appVersion) * 1000);
+     if (navigator.appName.substring(0,9) == "Microsoft")
+     {
+          //IE4.0+. Ok on all platforms
+          if(version<4000) answer=false;
+     }
+     if (navigator.appName.substring(0,8) == "Netscape")
+     {
+          //NN5.0+ needed on mac, NN4.06+ on other platforms
+          if ((navigator.appVersion.indexOf("Mac")> 0) && (version<5000))
+          answer=false;
+          else
+          if (version<4060)
+               answer=false;
+     }
+     // Browser Shouldn't support java 1.1 but might have plugin
+     plugins=navigator.plugins;
+     if (answer==false && plugins!=null)
+     {
+          for(i=0;i!=plugins.length;i++)
+          if((plugins[i].name.indexOf("Java Plug-in")>=0) && (plugins[i].name.indexOf("1.0")<0))
+               answer=true;
+     }
+     return answer;
+     //For other browsers we assume it works}function openViewlet(htmlFile,htmlWidth,htmlHeight)
+     {
+          str = 'resizable=0,toolbar=0,menubar=0,';
+          str = str + 'scrollbars=0,status=0,location=0,directory=0,width=350,height=200';
+          if(!isViewletCompliant())
+          {
+               open("http://www.qarbon.com/warning/index.html",'Leelou',str);
+          }
+          else
+          {
+               window.open(htmlFile,'Leelou','width='+htmlWidth+',height='+htmlHeight+',top=10,left=20');
+          }
+     }
+}
+
+function openViewlet(htmlFile,htmlWidth,htmlHeight)
+{
+     str = 'resizable=0,toolbar=0,menubar=0,';
+     str = str + 'scrollbars=0,status=0,location=0,directory=0,width=350,height=200';
+     if(!isViewletCompliant())
+     {
+          open("http://www.qarbon.com/warning/index.html",'Leelou',str);
+     }
+     else
+     {
+          window.open(htmlFile,'Leelou','width='+htmlWidth+',height='+htmlHeight+',top=10,left=20');
+     }
+}
+</script>
 </HEAD>
 <BODY TEXT="#000000" bgcolor="#FFFFFF">
 <H2>ArgoUML Tours</H2>
@@ -12,6 +69,7 @@
 <UL>
   <LI>New 13Dec01 
     <UL>
+	
       <LI> <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/22/statediagramrobocode_viewlet.html',839+20,600+90);"> 
         Robocode State Diagram under ArgoUML</a> This brief Viewlet tutorial will 
         show you what a state diagram looks like under Argo and gives some ideas 
@@ -73,6 +131,9 @@
       </ul>
       <p>Building Argo</p>
       <ul>
+
+
+
         <li> <a href="http://www.viewhow2.com/vf/ckxnkki/1/argobuild_viewlet.html"> 
           Build ArgoUML </a>: Please note this will show you the steps to prepare 
           for building but the build itself does not work. </li>
@@ -171,6 +232,56 @@
   <li><a href="criticbrowser.html">Critic Browser Window</a> 
   <li><a href="aboutbox.html">About Box</a> 
 </ul>
+	  
+<h3>Big List of Viewlets</h3>
+<p>If for any reason the above links don't work, these should.</p>
+<p><a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/1/argobuild_viewlet.html',839+20,600+90);">argouml-'build 
+  package' </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/2/argobuilddocs_viewlet.html',679+20,480+90);"> 
+  argobuildocs </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/3/argocvsnb_viewlet.html',839+20,600+90);"> 
+  argouml netbeans cvs to compile </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/4/argoumljar_viewlet.html',839+20,600+90);"> 
+  argouml.jar </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/5/NBCVScommitunderViewerror_viewlet.html',839+20,600+90);"> 
+  failed cvs with nb under viewlets </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/6/psdnmoduleerror_viewlet.html',679+20,480+90);"> 
+  connecting poseidon to nb </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/7/psdntestandsuggestions_viewlet.html',839+20,600+90);"> 
+  poseidontest </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/8/xmlmodel_viewlet.html',679+20,480+90);"> 
+  xmlmodel </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/9/codegeneration_viewlet.html',839+20,600+90);"> 
+  use cases to code generation in argo </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/10/argoumljar1_viewlet.html',839+20,600+90);"> 
+  starting argouml with jar file </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/11/antadventures_viewlet.html',839+20,600+90);"> 
+  ant knocks a dos tree down! </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/12/builddocserror_viewlet.html',839+20,600+90);"> 
+  building docs error build.xml 307 </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/13/buildingcforms_viewlet.html',839+20,600+90);"> 
+  cforms demonstration </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/15/codegenerationdemo_viewlet.html',839+20,600+90);"> 
+  code generation demo from craig cleaveland's work under netbeans </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/16/PSDNstate2java_viewlet.html',839+20,600+90);"> 
+  poseidon test of state2java </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/17/Argo_CVS_and_the_DTD_viewlet.html',839+20,600+90);"> 
+  argo cvs under nb, xml configuration files, and a pitch for data abstraction 
+  </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/18/PoseidonstateRobocode_viewlet.html',839+20,600+90);"> 
+  poseidon state machine using robocode as example </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/19/argobuilddocs1_viewlet.html',839+20,600+90);"> 
+  argo build docs cvs 12 dec 2001 </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/20/NetbeansArgoCompile12dec01_viewlet.html',839+20,600+90);"> 
+  compile argo under netbeans/state diagram of robocode/code generation output 
+  test </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/21/NBArgocompiledemo_viewlet.html',839+20,600+90);"> 
+  argo under netbeans cvs and compile 12dec01 </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/22/statediagramrobocode_viewlet.html',839+20,600+90);"> 
+  robocode state diagram under argo </a><br>
+  <a href="javascript:openViewlet('http://www.viewhow2.com/vf/ckxnkki/23/SimpleSwithPoseidon_viewlet.html',839+20,600+90);"> 
+  simpleswitchposeidon </a><br>
+</p>
 <p>&nbsp;</p>
 <HR>
 <P>Back to <A HREF="../index.html">ArgoUML Home</A>  <A HREF="mailto:webmaster@argouml.org?subject=tour/ index.html">Comments?
