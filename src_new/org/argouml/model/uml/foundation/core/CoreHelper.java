@@ -831,6 +831,29 @@ public class CoreHelper {
 		}
 		return list;
 	}
+	
+	/**
+	 * Returns all attributes of some classifier clazz and of its parents
+	 * @param clazz
+	 * @return Collection
+	 */
+	public Collection getAllAttributes(MClassifier clazz) {
+		if (clazz == null) return new ArrayList();
+		List list = new ArrayList();
+		Iterator it = clazz.getFeatures().iterator();
+		while (it.hasNext()) {
+			MFeature element = (MFeature)it.next();
+			if (element instanceof MAttribute) {
+				list.add(element);
+			}
+		}
+		it = clazz.getGeneralizations().iterator();
+		while (it.hasNext()) {
+			list.addAll(getAllAttributes((MClassifier)it.next()));
+		}
+		return list;
+	}
+		
 		
 		
 	

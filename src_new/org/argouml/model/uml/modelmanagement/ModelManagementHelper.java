@@ -25,10 +25,14 @@ package org.argouml.model.uml.modelmanagement;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.ui.ProjectBrowser;
+
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MSubsystem;
 
@@ -116,6 +120,11 @@ public class ModelManagementHelper {
 		return list;
 	}
 	
+	/**
+	 * Returns all modelelements found in this namespace and its children 
+	 * that are of some class kind n the projectbrowser model
+	 * @return Collection
+	 */
 	public Collection getAllModelElementsOfKind(Class kind) {
 		if (kind == null) return new ArrayList();
 		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
@@ -124,8 +133,7 @@ public class ModelManagementHelper {
 	
 	/**
 	 * Returns all modelelements found in this namespace and its children 
-	 * that are of some class kind. Does NOT return subtypes of the searched
-	 * kind. 
+	 * that are of some class kind. 
 	 * @param ns
 	 * @param kind
 	 * @return Collection
@@ -146,6 +154,20 @@ public class ModelManagementHelper {
 		return list;
 	}
 	
-	
+	/**
+	 * Returns all surrounding namespaces of some namespace ns. See 
+	 * section 2.5.3.24 of the UML 1.3 spec for a definition.
+	 * @param ns
+	 * @return Collection
+	 */
+	public Collection getAllSurroundingNamespaces(MNamespace ns) {
+		Set set = new HashSet();
+		set.add(ns);
+		if (ns.getNamespace() != null) {
+			set.addAll(getAllSurroundingNamespaces(ns.getNamespace()));
+		}
+		return set;
+	}
+		
 }
 

@@ -292,60 +292,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 	    		}
 	    	}
     	}
-/*
-        // Give up if the target isn't a use case or if it doesn't have a
-        // namespace.
 
-        Object target = getTarget();
-
-        if (!(target instanceof MUseCase)) {
-            return;
-        }
-
-        MNamespace ns = ((MModelElement) target).getNamespace();
-
-        if (ns == null) {
-            return;
-        }
-
-        // Get the new include relationship from the factory, and add it to the
-        // namespace
-
-        MInclude newInclude = ns.getFactory().createInclude();
-        ns.addOwnedElement(newInclude);
-
-        // Link it in to the list of includes relationships of the use case
-        // (NSUML will set set up the other end correctly) in the correct
-        // place.
-
-        MUseCase useCase = (MUseCase) target;
-
-        // Now put it in the list of extends relationships of the use case in
-        // the correct place. NSUML will automatically set up the other end.
-
-        // Note there is a bug in NSUML. It has the include and include2
-        // associations swapped over (include should be the other end of base,
-        // not additon). We deal with this elsewhere by swapping accessor
-        // functions for "base" and "addition".
-
-        if (index == getModelElementSize()) {
-            useCase.addInclude(newInclude);
-        }
-        else {
-            useCase.setIncludes(addAtUtil(useCase.getIncludes(),
-                                           newInclude, index));
-        }
-
-        // Having added an include relationship, mark as needing saving
-
-        Project p = ProjectBrowser.TheInstance.getProject();
-        p.setNeedsSave(true);
-
-        // Advise Swing that we have added something at this index and
-        // navigate there.
-*/
-        // fireIntervalAdded(this,index,index);
-        // navigateTo(newInclude);
     }
     
     /**

@@ -72,16 +72,18 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	
 	JList connectList = new UMLList(new UMLClassifierRoleAssociationRoleListModel(this,null,true),true);
     connectList.setForeground(Color.blue);
-    connectList.setVisibleRowCount(3);
+    // connectList.setVisibleRowCount(3);
     connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     
-    JList availableContents = new UMLList(new UMLClassifierRoleAvailableContentsListModel(this,null,true), true);
-    availableContents.setForeground(Color.blue);	
-    JScrollPane availableContentsScroll = new JScrollPane(availableContents,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    // JList availableContents = new UMLList(new UMLClassifierRoleAvailableContentsListModel(this,null,true), true);
+    // availableContents.setForeground(Color.blue);	
+    // JScrollPane availableContentsScroll = new JScrollPane(availableContents,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     
-	addField(Argo.localize("UMLMenu", "label.available-contents"), availableContentsScroll);
+	// addField(Argo.localize("UMLMenu", "label.available-contents"), availableContentsScroll);
 	addField(Argo.localize("UMLMenu", "label.association-roles"), connectScroll);
-	
+	JList attributesList = new UMLList(new UMLAttributesClassifierRoleListModel(this, "attributes", true), true);
+	attributesList.setForeground(Color.blue);
+	addField(Argo.localize("UMLMenu", "label.attributes"), new JScrollPane(attributesList));
 	/*
     addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);

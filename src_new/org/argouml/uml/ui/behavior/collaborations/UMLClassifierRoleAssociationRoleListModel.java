@@ -27,18 +27,21 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.ui.UMLBinaryRelationListModel;
+import org.argouml.uml.ui.UMLConnectionListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
-
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * Binary relation list model for associationsroles between classifierroles
@@ -46,7 +49,7 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLClassifierRoleAssociationRoleListModel
-	extends UMLBinaryRelationListModel {
+	extends UMLConnectionListModel {
 
 	/**
 	 * Constructor for UMLClassifierRoleAssociationRoleListModel.
@@ -68,25 +71,22 @@ public class UMLClassifierRoleAssociationRoleListModel
 		Object target = getTarget();
 		if (target instanceof MClassifierRole) {
 			MClassifierRole role = (MClassifierRole)target;
-			MNamespace ns = role.getNamespace();
-			return CollaborationsHelper.getHelper().getAllClassifierRoles(ns);
+			List list = new ArrayList();
+			Iterator it = role.getBases().iterator();
+			while (it.hasNext()) {
+				MClassifier base = (MClassifier)it.next();
+				list.addAll(CoreHelper.getHelper().getAssociatedClassifiers(base));
+			}
+			return list;
 		} else
 			throw new IllegalStateException("Target not an instanceof MClassifierRole");
-	}
-
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
-	 */
-	protected Collection getSelected() {
-		MClassifierRole role = (MClassifierRole)getTarget();
-		return CollaborationsHelper.getHelper().getClassifierRoles(role);
 	}
 
 	/**
 	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
 	 */
 	protected String getAddDialogTitle() {
-		return "";
+		return Argo.localize("UMLMenu", "dialog.add-associated-classifierroles");
 	}
 
 	/**
