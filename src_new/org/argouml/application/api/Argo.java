@@ -33,6 +33,8 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.application.modules.ModuleLoader;
 import org.argouml.util.logging.ThrowableRenderer;
 
+import org.workingfrog.i18n.util.Translator;
+
 /**
  * The <code>Argo</code> class provides static methods and definitions
  * that can be used as helpers throughout the Argo code.
@@ -206,9 +208,12 @@ public class Argo
     /** Helper for localization to eliminate the need to import
      *  the gef util library.
      */
-    public static String localize(String bundle, String key)
-    {
-	return org.tigris.gef.util.Localizer.localize(bundle, key);
+    public static String localize(String bundle, String key) {
+        if (Translator.isValidBundle(key)) {
+            return Translator.localize(key, bundle);
+        } else {
+            return org.tigris.gef.util.Localizer.localize(bundle, key);
+        }
     }
 
     /** Returns a vector of plugins of the class type passed
