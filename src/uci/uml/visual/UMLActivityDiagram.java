@@ -118,8 +118,8 @@ public class UMLActivityDiagram extends UMLDiagram {
 		if (!(o instanceof MActivityGraph)) return;
 		MActivityGraph sm = (MActivityGraph)o;
 		MModelElement context = sm.getContext();
-		if (context != null && context instanceof MClass)
-			setup((MClass)context, sm);
+		if (context != null && context instanceof MNamespace)
+			setup((MNamespace)context, sm);
 		else
 			System.out.println("ActivityGraph without context not yet possible :-(");
 	}
