@@ -73,6 +73,11 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   JButton _finishButton = new JButton(Argo.localize(BUNDLE, "button.finish"));
   JButton _helpButton = new JButton(Argo.localize(BUNDLE, "button.help"));
   JPanel  _buttonPanel = new JPanel();
+  
+  /**
+   * The current target
+   */
+  private Object _target;
 
     static final protected void setMnemonic(JButton b, String key) {
 	String m = Argo.localize(BUNDLE, key);
@@ -120,6 +125,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   // accessors
 
   public void setTarget(Object item) {
+      _target = item;
     enableButtons();
   }
 
@@ -152,7 +158,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
       */
   public Object getTarget() { return TargetManager.getInstance().getTarget(); }
 
-  public void refresh() { setTarget(TargetManager.getInstance().getTarget()); }
+  public void refresh() { setTarget(_target); }
 
   public Wizard getWizard() {
     if (TargetManager.getInstance().getTarget() instanceof ToDoItem) {

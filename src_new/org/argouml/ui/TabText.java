@@ -88,6 +88,7 @@ public class TabText
 
     public void setTarget(Object t) {
         _parseChanges = false;
+        _target = t;
         if (t == null) {
             _text.setEnabled(false);
             _text.setText("Nothing selected");
@@ -110,10 +111,9 @@ public class TabText
 
     /**
      * Returns the target of this tab.
-     * @deprecated Use TargetManager.getInstance().getTarget() now
      */
     public Object getTarget() {
-        return TargetManager.getInstance().getTarget();
+        return _target;
     }
 
     public void refresh() {

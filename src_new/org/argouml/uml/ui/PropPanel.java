@@ -458,11 +458,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         
     }
 
-    /**
-     * @deprecated use TargetManager.getInstance().getModelTarget() instead
-     */
     public final Object getTarget() {
-        return TargetManager.getInstance().getModelTarget();
+        return _target;
     }
 
     public final MModelElement getModelElement() {

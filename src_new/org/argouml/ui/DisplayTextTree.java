@@ -425,8 +425,9 @@ public class DisplayTextTree extends JTree implements TargetListener {
                         }
                     }
                 }
-                scrollRowToVisible(rowToSelect);
+                
             }
+            scrollRowToVisible(rowToSelect);
         }
     }
 
