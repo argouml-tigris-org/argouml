@@ -31,8 +31,8 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
-import javax.swing.JPanel; //MVW
-import javax.swing.border.EmptyBorder; //MVW
+import javax.swing.JPanel; 
+import javax.swing.border.EmptyBorder;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.AboutTabPanel;
@@ -128,17 +128,17 @@ public class AboutBox extends JDialog {
 
         /** MVW: Added the inset JPanel, so that the image width is also
         applied to the "ArgoUML Vx,xx.x" part */
-        JPanel myInsetPanel = new JPanel(); //MVW
+        JPanel myInsetPanel = new JPanel(); 
         /* top, left, bottom, right */
         myInsetPanel.setBorder(new EmptyBorder(30, 40, 40, 40));
         /* This gives some more space to the row of tabs, 
            so that there will not be 2 rows of tabs
            See issue 2365, remark 3 from Jeremy.         */
-        imgWidth  += 40 + 40; //MVW
-        /* It looks better is the height increases, too */
-        imgHeight += 40 + 40; //MVW
-        myInsetPanel.add(_splashPanel); //MVW
-        _tabs.addTab("Splash", myInsetPanel); //MVW
+        imgWidth  += 40 + 40; 
+        /* It looks better if the height increases, too */
+        imgHeight += 40 + 40; 
+        myInsetPanel.add(_splashPanel); 
+        _tabs.addTab("Splash", myInsetPanel); 
 	//_tabs.addTab("Splash", _splashPanel);
 
 	_tabs.addTab("Version", createPane(versionBuf.toString()));
