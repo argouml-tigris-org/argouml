@@ -106,6 +106,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _commentIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Note");
     protected static ImageIcon _messageIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Message");
     protected static ImageIcon _flowIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Flow");
+    protected static ImageIcon _stateMachineIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("StateMachine");
 
     protected JScrollPane namespaceScroll;
     protected JComboBox namespaceComboBox;

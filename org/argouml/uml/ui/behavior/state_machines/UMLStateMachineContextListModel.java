@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,48 +21,47 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
+// $header$
+package org.argouml.uml.ui.behavior.state_machines;
 
-package org.argouml.uml.ui.behavior.use_cases;
-
-import java.util.Collection;
-import java.util.Vector;
-
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.uml.ui.UMLConnectionListModel;
+import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
 /**
- * Binary relation list model for associations with actors
- * 
+ * Listmodel for the context of a statemachine
+ * @since Dec 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLActorAssociationListModel extends UMLConnectionListModel {
+public class UMLStateMachineContextListModel
+    extends UMLModelElementListModel2 {
 
-	/**
-	 * Constructor for UMLActorAssociationListModel.
-	 * @param container
-	 * @param property
-	 * @param showNone
-	 */
-	public UMLActorAssociationListModel(
-		UMLUserInterfaceContainer container,
-		String property,
-		boolean showNone) {
-		super(container, property, showNone);
-	}
+    /**
+     * Constructor for UMLStateMachineContextListModel.
+     * @param container
+     * @param eventName
+     */
+    public UMLStateMachineContextListModel(
+        UMLUserInterfaceContainer container) {
+        super(container, "context");
+    }
 
-	/**
-	 * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
-	 */
-	protected Collection getChoices() {
-		Vector choices = new Vector();
-		choices.addAll(UseCasesHelper.getHelper().getAllUseCases());
-		choices.addAll(CoreHelper.getHelper().getAllClasses());
-		choices.addAll(ModelManagementHelper.getHelper().getAllSubSystems());
-		return choices;
-	}
+    
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        removeAllElements();
+        addElement(((MStateMachine)getTarget()).getContext());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
+     */
+    protected boolean isValidElement(MBase element) {
+        return element == ((MStateMachine)getTarget()).getContext();
+    }
 
 }

@@ -37,15 +37,15 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.*;
-import java.util.Vector;
+import java.awt.GridLayout;
 
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
+import javax.swing.JPanel;
 
-import org.argouml.application.api.*;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.uml.ui.*;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLCheckBox;
+import org.argouml.uml.ui.UMLReflectionBooleanProperty;
+import ru.novosoft.uml.foundation.core.MComponent;
 
 
 public class PropPanelComponent extends PropPanelClassifier {
