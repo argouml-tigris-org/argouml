@@ -1,4 +1,5 @@
 Manifest-Version: 2.0
+Class-Path: argouml-model.jar argouml-diagram.jar
 Created-By: 1.2 (Sun Microsystems Inc.) 
 
 Name: org/argouml/api/

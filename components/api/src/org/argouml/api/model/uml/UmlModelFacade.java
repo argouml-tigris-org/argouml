@@ -1,4 +1,3 @@
-// $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -22,7 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model.api;
+package org.argouml.api.model.uml;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -58,9 +57,11 @@ import java.util.Iterator;
  * @stereotype utility
  * @author Linus Tolke
  */
-public interface ModelFacadeApi {
+public interface UmlModelFacade {
     ////////////////////////////////////////////////////////////////
     // constants
+    // TODO Move these into static class Uml.
+    
 
     public final short ACC_PUBLIC = 1;
     public final short ACC_PRIVATE = 2;
@@ -71,53 +72,6 @@ public interface ModelFacadeApi {
 
     public final short GUARDED = 1;
     public final short SEQUENTIAL = 2;
-    
-    // TODO Figure out how to handle these...
-
-//    // Types of line
-//    public final Object ABSTRACTION      = MAbstraction.class;
-//    public final Object ASSOCIATION      = MAssociation.class;
-//    public final Object ASSOCIATION_ROLE = MAssociationRole.class;
-//    public final Object DEPENDENCY       = MDependency.class;
-//    public final Object EXTEND           = MExtend.class;
-//    public final Object GENERALIZATION   = MGeneralization.class;
-//    public final Object INCLUDE          = MInclude.class;
-//    public final Object LINK             = MLink.class;
-//    public final Object PERMISSION       = MPermission.class;
-//    public final Object USAGE            = MUsage.class;
-//    public final Object TRANSITION       = MTransition.class;
-//
-//    // Types of node
-//    public final Object ACTOR              = MActor.class;
-//    public final Object CLASS              = MClass.class;
-//    public final Object CLASSIFIER         = MClassifier.class;
-//    public final Object CLASSIFIER_ROLE    = MClassifierRole.class;
-//    public final Object COMPONENT          = MComponent.class;
-//    public final Object COMPONENT_INSTANCE = MComponentInstance.class;
-//    public final Object INSTANCE           = MInstance.class;
-//    public final Object INTERFACE          = MInterface.class;
-//    public final Object NODE               = MNode.class;
-//    public final Object NODE_INSTANCE      = MNodeInstance.class;
-//    public final Object OBJECT             = MObject.class;
-//    public final Object PACKAGE            = MPackage.class;
-//    public final Object STATE              = MState.class;
-//    public final Object COMPOSITESTATE     = MCompositeState.class;
-//    public final Object STATEVERTEX        = MStateVertex.class;
-//    public final Object PSEUDOSTATE        = MPseudostate.class;
-//    public final Object USE_CASE           = MUseCase.class;
-//    
-//    // Invisible model elements
-//    public final Object ACTION             = MAction.class;
-//    public final Object ACTION_EXPRESSION  = MActionExpression.class;
-//    public final Object ASSOCIATION_END    = MAssociationEnd.class;
-//    public final Object CALL_ACTION        = MCallAction.class;
-//    public final Object NAMESPACE          = MNamespace.class;
-//    public final Object RECEPTION          = MReception.class;
-//    public final Object STEREOTYPE         = MStereotype.class;
-//
-//
-//    public final Object ATTRIBUTE          = MAttribute.class;
-//    public final Object OPERATION          = MOperation.class;
     
     ////////////////////////////////////////////////////////////////
     // Recognizer methods for the UML model (in alphabetic order)
@@ -158,7 +112,7 @@ public interface ModelFacadeApi {
     public boolean isAbstract(Object handle);
 
     /** Recognizer for bases. A base is an object that is some form of an element
-     *  in the model. MBase in Novosoft terms.
+     *  in the model. MBase in Novosoft terms. RefBaseObject in JMI terms.
      *
      * @param handle candidate
      * @returns true if handle is abstract.
@@ -556,16 +510,6 @@ public interface ModelFacadeApi {
     public boolean isUtility(Object handle);
 
     ////////////////////////////////////////////////////////////////
-    // Recognizer methods for the diagrams (in alphabetic order)
-
-    /** Recognizer for Diagram.
-     *
-     * @param handle candidate
-     * @returns true if handle is a diagram.
-     */
-    public boolean isADiagram(Object handle);
-
-    ////////////////////////////////////////////////////////////////
     // Getters for the UML model (in alphabetic order)
 
     /**
@@ -699,12 +643,12 @@ public interface ModelFacadeApi {
      */
     public Object getContext(Object handle);
 
-    /** Get the namespace of an element.
-     *
-     * @param handle the model element that we are getting the namespace of
-     * @returns the namespace (or null)
-     */
-    public Object getNamespace(Object handle);
+	/** Get the namespace of an element.
+	 *
+	 * @param handle the model element that we are getting the namespace of
+	 * @returns the namespace (or null)
+	 */
+	public Object getNamespace(Object handle);
 
     /** The list of operations
      *
@@ -878,12 +822,12 @@ public interface ModelFacadeApi {
     ////////////////////////////////////////////////////////////////
     // Common getters
 
-    /** The name of a model element or some diagram part.
-     *
-     * @param handle that points out the object.
-     * @returns the name
-     */
-    public String getName(Object handle);
+	/** The name of a model element.
+	 *
+	 * @param handle that points out the object.
+	 * @returns the name
+	 */
+	public String getName(Object handle);
 
     /**
        Return the owner of a feature.
