@@ -21,14 +21,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
 package org.argouml.uml.ui.foundation.core;
-
-import javax.swing.ImageIcon;
 
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.UMLCheckBox2;
-import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLTextField2;
 
 /**
@@ -40,16 +37,6 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
     
     protected UMLTextField2 _multiplicityTextField;
     protected UMLCheckBox2 _targetScopeCheckBox;
-    
-    /**
-     * Constructor for PropPanelStructuralFeature.
-     * @param name
-     * @param columns
-     */
-    public PropPanelStructuralFeature(String name, int columns) {
-        super(name, columns);
-        initialize();
-    }
 
     /**
      * Constructor for PropPanelStructuralFeature.
@@ -57,31 +44,11 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
      * @param icon
      * @param orientation
      */
-    public PropPanelStructuralFeature(
+    protected PropPanelStructuralFeature(
         String name,
-        ImageIcon icon,
         Orientation orientation) {
-        super(name, icon, orientation);
-        initialize();
-    }
-
-    /**
-     * Constructor for PropPanelStructuralFeature.
-     * @param name
-     * @param icon
-     * @param columns
-     */
-    public PropPanelStructuralFeature(
-        String name,
-        ImageIcon icon,
-        int columns) {
-        super(name, icon, columns);
-        initialize();
-    }
-    
-    private void initialize() {
+        super(name, orientation);
+        
     }   
-        
-        
 
 }

@@ -49,6 +49,7 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -220,7 +221,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     private void initialize() {
         nameField = new UMLTextField2(new UMLModelElementNameDocument());
         stereotypeBox = new UMLComboBox2(stereotypeComboBoxModel, ActionSetModelElementStereotype.SINGLETON);
-        namespaceComboBox = new UMLComboBox2(namespaceComboBoxModel, ActionSetModelElementNamespace.SINGLETON, true);
+        namespaceComboBox = new UMLSearchableComboBox(namespaceComboBoxModel, ActionSetModelElementNamespace.SINGLETON, true);
         JList namespaceList = new UMLLinkedList(new UMLModelElementNamespaceListModel());
         namespaceList.setVisibleRowCount(1);
         namespaceScroll = new JScrollPane(namespaceList);

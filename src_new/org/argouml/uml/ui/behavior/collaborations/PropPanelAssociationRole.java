@@ -24,69 +24,50 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import javax.swing.*;
-
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import org.argouml.util.ConfigLoader;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.application.api.Argo;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.uml.MMUtil;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBox2;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.foundation.core.PropPanelAssociation;
+import org.argouml.util.ConfigLoader;
 
-import java.awt.*;
-import java.util.*;
+public class PropPanelAssociationRole extends PropPanelAssociation {
 
-public class PropPanelAssociationRole extends PropPanelModelElement {
-
-  ////////////////////////////////////////////////////////////////
-  // attributes
+    ////////////////////////////////////////////////////////////////
+    // attributes
     protected JComboBox _baseField;
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelAssociationRole() {
-    super("Association Role",_associationRoleIcon, ConfigLoader.getTabPropsOrientation());
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public PropPanelAssociationRole() {
+        super("Association Role", ConfigLoader.getTabPropsOrientation());        
 
-    //   this will cause the components on this page to be notified
-    //      anytime a stereotype, namespace, operation, etc
-    //      has its name changed or is removed anywhere in the model
-    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MAssociation.class, MMessage.class, MAssociationEndRole.class, MClassifierRole.class, MClassifier.class};
-    setNameEventListening(namesToWatch); 
-    
-    Class mclass = MAssociationRole.class;
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
 
-    addField(Argo.localize("UMLMenu", "label.name"), nameField);
-    addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
-    // commented out next line since changing namespace is not allowed
-    addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        JComboBox baseComboBox = new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), ActionSetAssociationRoleBase.SINGLETON);
+        addField(Argo.localize("UMLMenu", "label.base"), baseComboBox);
 
-    JComboBox baseComboBox = new UMLComboBox2(new UMLAssociationRoleBaseComboBoxModel(), ActionSetAssociationRoleBase.SINGLETON);
-    addField(Argo.localize("UMLMenu", "label.base"), baseComboBox);
-    
-    add(LabelledLayout.getSeperator());
-       
-    JList assocEndList = new UMLLinkedList(new UMLAssociationRoleAssociationEndRoleListModel());
-    assocEndList.setVisibleRowCount(2); // only binary associationroles are allowed
-    addField(Argo.localize("UMLMenu", "label.associationrole-ends"), new JScrollPane(assocEndList));
+        add(LabelledLayout.getSeperator());
 
-    JList messageList = new UMLLinkedList(new UMLAssociationRoleMessageListModel());
-    addField(Argo.localize("UMLMenu", "label.messages"), 
-        new JScrollPane(messageList));
+        JList assocEndList = new UMLLinkedList(new UMLAssociationRoleAssociationEndRoleListModel());
+        assocEndList.setVisibleRowCount(2); // only binary associationroles are allowed
+        addField(Argo.localize("UMLMenu", "label.associationrole-ends"), new JScrollPane(assocEndList));
 
-    
+        JList messageList = new UMLLinkedList(new UMLAssociationRoleMessageListModel());
+        addField(Argo.localize("UMLMenu", "label.messages"), new JScrollPane(messageList));
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
+        new PropPanelButton(this, buttonPanel, _navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
+        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
 
-  }
+    }
 
 } /* end class PropPanelAssociationRole */

@@ -25,66 +25,69 @@
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.LabelledLayout;
+import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.MAssociation;
-
 public class PropPanelAssociation extends PropPanelRelationship {
-
-
+    
+    /**
+     * The scrollpane with the associationends.
+     */
+    protected JScrollPane _assocEndScroll;
+    
+    /**
+     * The scrollpane with the associationroles this association plays a role
+     * in.
+     */
+    protected JScrollPane _associationRoleScroll;
+    
+    /**
+     * Ths scrollpane with the links that implement this association.  
+     */
+    protected JScrollPane _linksScroll;    
   
   public PropPanelAssociation() {
-    super("Association", ConfigLoader.getTabPropsOrientation());
-
-    Class mclass = MAssociation.class;
-
-    //
-    //   this will cause the components on this page to be notified
-    //      anytime a stereotype, namespace, operation, etc
-    //      has its name changed or is removed anywhere in the model
-    /*
-    Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class, MAssociationEnd.class };
-    setNameEventListening(namesToWatch);
-    */
+    this("Association", ConfigLoader.getTabPropsOrientation());
+    
 
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-    addField(Argo.localize("UMLMenu", "label.namespace"),namespaceComboBox);
-
-    JPanel modifiersPanel = new JPanel(new GridLayout2(0,3,GridLayout2.ROWCOLPREFERRED));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.root-uc"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(Argo.localize("UMLMenu", "label.modifiers"),modifiersPanel);
+    addField(Argo.localize("UMLMenu", "label.namespace"),namespaceComboBox);   
 
     add(LabelledLayout.getSeperator());
-    
-    JList assocEndList = new UMLLinkedList(new UMLAssociationConnectionListModel());
-    addField(Argo.localize("UMLMenu", "label.association-ends"),new JScrollPane(assocEndList));
+       
+    addField(Argo.localize("UMLMenu", "label.association-ends"), _assocEndScroll);
     
     add(LabelledLayout.getSeperator());
     
-    JList baseList = new UMLLinkedList(new UMLAssociationAssociationRoleListModel());
-    addField(Argo.localize("UMLMenu", "label.association-roles"),new JScrollPane(baseList));
-    JList linkList = new UMLLinkedList(new UMLAssociationLinkListModel());
-    addField(Argo.localize("UMLMenu", "label.association-links"),new JScrollPane(linkList));
+    addField(Argo.localize("UMLMenu", "label.association-roles"), _associationRoleScroll);
+    addField(Argo.localize("UMLMenu", "label.association-links"), _linksScroll);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association"),"removeElement",null);
 
+  }
+  
+  protected PropPanelAssociation(String title, Orientation orientation) {
+      super(title, orientation);
+      JList assocEndList = new UMLLinkedList(new UMLAssociationConnectionListModel());
+      _assocEndScroll = new JScrollPane(assocEndList);
+      JList baseList = new UMLLinkedList(new UMLAssociationAssociationRoleListModel());
+      _associationRoleScroll = new JScrollPane(baseList);
+      JList linkList = new UMLLinkedList(new UMLAssociationLinkListModel());
+      _linksScroll = new JScrollPane(linkList);
+      
+      // TODO: implement the multiple inheritance of an Association (Generalizable element)
+      
   }
     
 } /* end class PropPanelAssociation */

@@ -44,7 +44,7 @@ public class UMLComboBox2
      * @deprecated use the constructor with the action
      * @param arg0
      */
-    public UMLComboBox2(UMLComboBoxModel2 arg0) {
+    protected UMLComboBox2(UMLComboBoxModel2 arg0) {
         super(arg0);
         addActionListener(this);
 
@@ -61,9 +61,9 @@ public class UMLComboBox2
         super(arg0);
         addActionListener(action);
         setDoubleBuffered(true);
-        setRenderer(new UMLListCellRenderer2(showIcon));
+        setRenderer(new UMLListCellRenderer2(showIcon));        
     }
-    
+           
     public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action) {
         this(arg0, action, false);
     }
@@ -81,14 +81,15 @@ public class UMLComboBox2
      * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
      */
     public void targetReasserted(Object newTarget) {
-        setTarget(newTarget);
+        if (_target != newTarget)
+            setTarget(newTarget);
         ((UMLComboBoxModel2)getModel()).targetReasserted(newTarget);
     }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
-    public void actionPerformed(ActionEvent arg0) {
+    public void actionPerformed(ActionEvent arg0) {        
         int i = getSelectedIndex();
         if ( i >= 0) {
             doIt(arg0);

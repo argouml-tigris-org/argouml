@@ -43,13 +43,17 @@ import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLEditableComboBox;
 import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
 import org.argouml.uml.ui.UMLInitialValueComboBox;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLMultiplicityComboBox;
 import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTaggedBooleanProperty;
 import org.argouml.uml.ui.UMLVisibilityPanel;
+import org.argouml.util.ConfigLoader;
+
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -62,7 +66,10 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 public class PropPanelAttribute extends PropPanelModelElement {
 
     public PropPanelAttribute() {
-        super("Attribute", _addAttrIcon, 2);
+        super("Attribute", ConfigLoader.getTabPropsOrientation());
+        
+        
+        /*
 
         Class mclass = MAttribute.class;
 
@@ -111,6 +118,7 @@ public class PropPanelAttribute extends PropPanelModelElement {
         new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
         new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-attribute"),"newAttribute",null);
         new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-attribute"),"removeElement",null);
+        */
     }
 
 
