@@ -23,16 +23,21 @@
 
 package org.argouml.uml.ui.model_management;
 
+import org.argouml.application.api.*;
 
-public class PropPanelModel extends PropPanelPackage {
+import ru.novosoft.uml.model_management.*;
+
+public class PropPanelModel extends PropPanelPackage
+implements PluggablePropertyPanel {
   ////////////////////////////////////////////////////////////////
   // instance vars
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelModel() {
-    super();
+      super("Model", _modelIcon, 2);
   }
+
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Model") ||
             baseClass.equals("Package") ||
@@ -40,6 +45,14 @@ public class PropPanelModel extends PropPanelPackage {
             baseClass.equals("GeneralizableElement");
     }
 
+    public Class getClassForPanel() {
+        return MModelImpl.class;
+    }
 
+    public String getModuleName() { return "PropPanelModel"; }
+    public String getModuleDescription() { return "Property Panel for Model"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.propertypanel.model"; }
 
 } /* end class PropPanelModel */

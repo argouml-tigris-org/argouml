@@ -29,6 +29,7 @@ import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 
 import org.tigris.gef.util.*;
@@ -55,6 +56,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _addAttrIcon = ResourceLoader.lookupIconResource("AddAttribute");
     protected static ImageIcon _addAssocIcon = ResourceLoader.lookupIconResource("Association");
     protected static ImageIcon _packageIcon = ResourceLoader.lookupIconResource("Package");
+    protected static ImageIcon _modelIcon = ResourceLoader.lookupIconResource("Model");
     protected static ImageIcon _innerClassIcon = ResourceLoader.lookupIconResource("InnerClass");
     protected static ImageIcon _nodeIcon = ResourceLoader.lookupIconResource("Node");
     protected static ImageIcon _componentIcon = ResourceLoader.lookupIconResource("Component");
@@ -145,4 +147,20 @@ abstract public class PropPanelModelElement extends PropPanel {
         }
     }
 
+    //
+    // Pluggable Property Panel support
+    //
+    // THIS CLASS MUST NOT IMPLEMENT PluggablePropertyPanel.  These
+    // are present to provide default implementations for any
+    // property panel that extends this class.
+    public PropPanel getPropertyPanel() { return this; } 
+    public boolean isModuleEnabled() { return true; }
+    public Vector getModulePopUpActions(Vector v, Object o) { return null; }
+    public boolean shutdownModule() { return true; }
+    public boolean initializeModule() {
+        ArgoModule.cat.debug("initializeModule()");
+        return true;
+    }
+    public void setModuleEnabled(boolean enabled) { }
+    public boolean inContext(Object[] o) { return true; }
 }
