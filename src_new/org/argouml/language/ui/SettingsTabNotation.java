@@ -32,7 +32,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,10 +39,10 @@ import javax.swing.JTextField;
 
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Configuration;
+import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.SettingsTabPanel;
 import org.argouml.application.helpers.SettingsTabHelper;
-import org.argouml.swingext.LabelledLayout;
 
 /** Action object for handling Argo settings
  *
@@ -115,8 +114,10 @@ public class SettingsTabNotation extends SettingsTabHelper
 
 	constraints.gridy = 7;
 	constraints.insets = new Insets(5, 30, 0, 4);
-	JPanel defaultShadowWidthPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-	JLabel defaultShadowWidthLabel = createLabel("label.default-shadow-width");
+	JPanel defaultShadowWidthPanel =
+	    new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
+	JLabel defaultShadowWidthLabel =
+	    createLabel("label.default-shadow-width");
 	_defaultShadowWidth = new JTextField(5);
 	defaultShadowWidthLabel.setLabelFor(_defaultShadowWidth);
 	defaultShadowWidthPanel.add(defaultShadowWidthLabel);
@@ -128,24 +129,44 @@ public class SettingsTabNotation extends SettingsTabHelper
 
     public void handleSettingsTabRefresh() {
         _useGuillemots.setSelected(Notation.getUseGuillemots());
-        _allowNotations.setSelected(Configuration.getBoolean(Notation.KEY_UML_NOTATION_ONLY, false));
-        _showVisibility.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY, false));
-        _showInitialValue.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_INITIAL_VALUE, false));
-        _showProperties.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES, false));
-        _showMultiplicity.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_MULTIPLICITY, false));
-        _showStereotypes.setSelected(Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false));
-        _defaultShadowWidth.setText(Configuration.getString(Notation.KEY_DEFAULT_SHADOW_WIDTH, "1"));
+        _allowNotations.setSelected(getBoolean(Notation.KEY_UML_NOTATION_ONLY));
+        _showVisibility.setSelected(getBoolean(Notation.KEY_SHOW_VISIBILITY));
+        _showInitialValue.setSelected(
+	        getBoolean(Notation.KEY_SHOW_INITIAL_VALUE));
+        _showProperties.setSelected(getBoolean(Notation.KEY_SHOW_PROPERTIES));
+        _showMultiplicity.setSelected(
+	        getBoolean(Notation.KEY_SHOW_MULTIPLICITY));
+        _showStereotypes.setSelected(getBoolean(Notation.KEY_SHOW_STEREOTYPES));
+        _defaultShadowWidth.setText(
+                Configuration.getString(Notation.KEY_DEFAULT_SHADOW_WIDTH, 
+					"1"));
+    }
+
+    /** Get a boolean from the configuration.
+     *
+     * @param a notation key.
+     * @returns a boolean
+     */
+    private static boolean getBoolean(ConfigurationKey key) {
+	Configuration.getBoolean(key, false);
     }
 
     public void handleSettingsTabSave() {
         Notation.setUseGuillemots(_useGuillemots.isSelected());
-        Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY, _allowNotations.isSelected());
-        Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY, _showVisibility.isSelected());
-        Configuration.setBoolean(Notation.KEY_SHOW_MULTIPLICITY, _showMultiplicity.isSelected());
-        Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES, _showProperties.isSelected());
-        Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE, _showInitialValue.isSelected());
-        Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES, _showStereotypes.isSelected());
-	Configuration.setString(Notation.KEY_DEFAULT_SHADOW_WIDTH, _defaultShadowWidth.getText());
+        Configuration.setBoolean(Notation.KEY_UML_NOTATION_ONLY, 
+				 _allowNotations.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_VISIBILITY,
+				 _showVisibility.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_MULTIPLICITY,
+				 _showMultiplicity.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_PROPERTIES,
+				 _showProperties.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_INITIAL_VALUE,
+				 _showInitialValue.isSelected());
+        Configuration.setBoolean(Notation.KEY_SHOW_STEREOTYPES,
+				 _showStereotypes.isSelected());
+	Configuration.setString(Notation.KEY_DEFAULT_SHADOW_WIDTH,
+				_defaultShadowWidth.getText());
     }
 
     public void handleSettingsTabCancel() {
