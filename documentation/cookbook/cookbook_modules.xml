@@ -417,8 +417,35 @@ so that the plugin can further decide.
 <para>...</para>
 </listitem>
 
-<listitem><para>...create a pluggable menu?</para>
-<para>...</para>
+<listitem><para>...create a pluggable menu item?</para>
+<para>
+Look at the modules junit and menutest for examples of how to add to
+menus using the PluggableMenu interface.
+</para>
+<para>
+The implementation of inContext() that you provide should be similar to: 
+<programlisting>
+    public boolean inContext(Object[] o) { 
+        if (o.length < 2) return false; 
+        if ((o[0] instanceof JMenuItem) && 
+                ("Create Diagrams".equals(o[1]))) { 
+            return true; 
+        } 
+        return false; 
+    }
+</programlisting>
+</para>
+<para>
+The string "Create Diagrams" is a non-localized key string passed in
+ProjectLoader at about line 440 in the statement
+<programlisting>
+    appendPluggableMenus(_createDiagrams, "Create Diagrams"); 
+</programlisting>
+
+There is no restriction on a single class implementing multiple
+plugins - quite the contrary, that is one of the reasons for providing
+the generic Pluggable interface that PluggableThings extend.
+</para>
 </listitem>
 
 <listitem><para>...create a pluggable notation?</para>
