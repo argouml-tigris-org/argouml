@@ -27,6 +27,7 @@ import java.awt.event.ActionEvent;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
@@ -71,31 +72,13 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
             Vector figs = ce.getSelectionManager().getFigs();
             size = figs.size();
             for (int i = 0; i < size; i++) {
-                Fig f = (Fig) figs.elementAt(i);
-                /*
-                if ( f instanceof FigNodeModelElement ) {
-                    FigNodeModelElement fnme = (FigNodeModelElement) f;
-                    Object owner = fnme.getOwner();
-                    if (owner instanceof MModelElement) {
-                        fnme.remove();
-                    }
-                }
-                else if ( f instanceof FigEdgeModelElement ) {
-                    FigEdgeModelElement fnme = (FigEdgeModelElement) f;
-                    Object owner = fnme.getOwner();
-                    if (owner instanceof MModelElement) {
-                        fnme.();
-                    }
-                }
-                else {
-                    f.delete();
-                }
-                */
+                Fig f = (Fig) figs.elementAt(i);                
                 f.delete();
+                TargetManager.getInstance().removeHistoryElement(f);
             }
         } catch (Exception ex) {
             Argo.log.error(
-                "ActionDeleteFromDiagram.actionPerformed()Exception = ");
+                ex);
         }
     }
 
