@@ -45,24 +45,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
+import org.argouml.i18n.Translator;
+
 /**
  * Display System Information (JDK Version, JDK Vendor, etc).
  * A Copy to System Clipboard button is provided to help generate bug reports.
  *
  * @author Eugenio Alvarez
  */
-public class SystemInfoDialog extends JDialog {
+public class SystemInfoDialog extends ArgoDialog {
 
     ////////////////////////////////////////////////////////////////
     // instance varaibles
 
-    JTabbedPane _tabs = new JTabbedPane();
     JTextArea   _info = new JTextArea();
-    JButton     _runGCButton = new JButton("Run GC");
-    JButton     _copyButton =
-	new JButton("Copy Information to System Clipboard");
-    JButton     _cancelButton = new JButton("Cancel");
-    JPanel      _buttons = new JPanel();
+    JButton     _runGCButton = new JButton();
+    JButton     _copyButton = new JButton();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -76,14 +74,11 @@ public class SystemInfoDialog extends JDialog {
     }
 
     public SystemInfoDialog(Frame owner, boolean modal) {
-	super(owner, modal);
-	this.setTitle("System Information");
-	this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
+	super(owner, Translator.localize("dialog.title.system-information"),
+		ArgoDialog.CLOSE_OPTION, modal);
 
 	_info.setEditable(false);
-
-	_tabs.addTab("System Information", new JScrollPane(_info));
-
+    
 	_runGCButton.addActionListener(new ActionListener() 
 	    {
 		public void actionPerformed(ActionEvent e) {
@@ -96,18 +91,12 @@ public class SystemInfoDialog extends JDialog {
 		    copy_actionPerformed(e);
 		}
 	    });
-	_cancelButton.addActionListener(new ActionListener() 
-	    {
-		public void actionPerformed(ActionEvent e) {
-		    cancel_actionPerformed(e);
-		}
-	    });
-	getContentPane().setLayout(new BorderLayout(0, 0));
-	getContentPane().add(_tabs, BorderLayout.CENTER);
-	_buttons.add(_runGCButton);
-	_buttons.add(_copyButton);
-	_buttons.add(_cancelButton);
-	getContentPane().add(_buttons, BorderLayout.SOUTH);
+    
+	nameButton(_copyButton, "button.copy-to-clipboard");    
+	nameButton(_runGCButton, "button.run-gc");    
+	addButton(_copyButton, 0);
+	addButton(_runGCButton, 0);
+	setContent(new JScrollPane(_info));
 	updateInfo();
 	addWindowListener(new WindowAdapter() 
 	    {
@@ -115,7 +104,7 @@ public class SystemInfoDialog extends JDialog {
 		    updateInfo();
 		} // end windowActivated()
 	    });
-	pack();
+        pack();
     } // end SystemInfoDialog()
 
     void runGC_actionPerformed(ActionEvent e) {
@@ -129,10 +118,6 @@ public class SystemInfoDialog extends JDialog {
 	Clipboard clipboard = getToolkit().getSystemClipboard();
 	clipboard.setContents(contents, defaultClipboardOwner);
     } // end copy_actionPerformed()
-
-    void cancel_actionPerformed(ActionEvent e) {
-	this.setVisible(false);
-    } // end cancel_actionPerformed()
 
     void updateInfo() {
 	StringBuffer info = new StringBuffer();
