@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <XMI xmi.version="1.0">
   <XMI.header>
+    <XMI.documentation>
+      <XMI.exporter>Novosoft UML Library</XMI.exporter>
+      <XMI.exporterVersion>0.4.19</XMI.exporterVersion>
+    </XMI.documentation>
     <XMI.metamodel xmi.name="UML" xmi.version="1.3"/>
   </XMI.header>
   <XMI.content>
@@ -11,7 +15,7 @@
       <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
       <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
       <Foundation.Core.Namespace.ownedElement>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.115">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.2">
           <Foundation.Core.ModelElement.name>extend</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -22,7 +26,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.116">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.3">
           <Foundation.Core.ModelElement.name>include</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -33,7 +37,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.2">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.4">
           <Foundation.Core.ModelElement.name>access</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -44,7 +48,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.3">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.5">
           <Foundation.Core.ModelElement.name>friend</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -55,7 +59,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.4">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.6">
           <Foundation.Core.ModelElement.name>import</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -66,7 +70,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.5">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.7">
           <Foundation.Core.ModelElement.name>association</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -77,7 +81,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.6">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.8">
           <Foundation.Core.ModelElement.name>global</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -88,7 +92,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.7">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.9">
           <Foundation.Core.ModelElement.name>local</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -99,7 +103,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.8">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.10">
           <Foundation.Core.ModelElement.name>parameter</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -110,7 +114,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.9">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.11">
           <Foundation.Core.ModelElement.name>self</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -121,7 +125,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.10">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.12">
           <Foundation.Core.ModelElement.name>become</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -132,7 +136,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.11">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.13">
           <Foundation.Core.ModelElement.name>copy</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -143,7 +147,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.12">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.14">
           <Foundation.Core.ModelElement.name>create</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -154,7 +158,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.13">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.15">
           <Foundation.Core.ModelElement.name>call</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -165,7 +169,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.14">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.16">
           <Foundation.Core.ModelElement.name>instantiate</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -176,7 +180,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.15">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.17">
           <Foundation.Core.ModelElement.name>send</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -187,35 +191,13 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.16">
-          <Foundation.Core.ModelElement.name>create</Foundation.Core.ModelElement.name>
-          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
-          <Foundation.Extension_Mechanisms.Stereotype.baseClass>BehavioralFeature</Foundation.Extension_Mechanisms.Stereotype.baseClass>
-          <Foundation.Core.ModelElement.namespace>
-            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
-          </Foundation.Core.ModelElement.namespace>
-        </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.17">
-          <Foundation.Core.ModelElement.name>destroy</Foundation.Core.ModelElement.name>
-          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
-          <Foundation.Extension_Mechanisms.Stereotype.baseClass>BehavioralFeature</Foundation.Extension_Mechanisms.Stereotype.baseClass>
-          <Foundation.Core.ModelElement.namespace>
-            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
-          </Foundation.Core.ModelElement.namespace>
-        </Foundation.Extension_Mechanisms.Stereotype>
         <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.18">
           <Foundation.Core.ModelElement.name>create</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
-          <Foundation.Extension_Mechanisms.Stereotype.baseClass>CallEvent</Foundation.Extension_Mechanisms.Stereotype.baseClass>
+          <Foundation.Extension_Mechanisms.Stereotype.baseClass>BehavioralFeature</Foundation.Extension_Mechanisms.Stereotype.baseClass>
           <Foundation.Core.ModelElement.namespace>
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
@@ -226,12 +208,34 @@
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
-          <Foundation.Extension_Mechanisms.Stereotype.baseClass>CallEvent</Foundation.Extension_Mechanisms.Stereotype.baseClass>
+          <Foundation.Extension_Mechanisms.Stereotype.baseClass>BehavioralFeature</Foundation.Extension_Mechanisms.Stereotype.baseClass>
           <Foundation.Core.ModelElement.namespace>
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
         <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.20">
+          <Foundation.Core.ModelElement.name>create</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Extension_Mechanisms.Stereotype.baseClass>CallEvent</Foundation.Extension_Mechanisms.Stereotype.baseClass>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Foundation.Extension_Mechanisms.Stereotype>
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.21">
+          <Foundation.Core.ModelElement.name>destroy</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Extension_Mechanisms.Stereotype.baseClass>CallEvent</Foundation.Extension_Mechanisms.Stereotype.baseClass>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Foundation.Extension_Mechanisms.Stereotype>
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.22">
           <Foundation.Core.ModelElement.name>derive</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -242,7 +246,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.21">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.23">
           <Foundation.Core.ModelElement.name>realize</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -253,7 +257,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.22">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.24">
           <Foundation.Core.ModelElement.name>refine</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -264,7 +268,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.23">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.25">
           <Foundation.Core.ModelElement.name>trace</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -275,7 +279,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.24">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.26">
           <Foundation.Core.ModelElement.name>document</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -286,7 +290,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.25">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.27">
           <Foundation.Core.ModelElement.name>executable</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -297,7 +301,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.26">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.28">
           <Foundation.Core.ModelElement.name>file</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -308,7 +312,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.27">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.29">
           <Foundation.Core.ModelElement.name>library</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -319,7 +323,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.28">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.30">
           <Foundation.Core.ModelElement.name>table</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -330,7 +334,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.29">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.31">
           <Foundation.Core.ModelElement.name>facade</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -341,7 +345,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.30">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.32">
           <Foundation.Core.ModelElement.name>framework</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -352,7 +356,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.31">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.33">
           <Foundation.Core.ModelElement.name>metamodel</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -363,7 +367,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.32">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.34">
           <Foundation.Core.ModelElement.name>stub</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -374,7 +378,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.33">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.35">
           <Foundation.Core.ModelElement.name>systemModel</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -385,7 +389,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.34">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.36">
           <Foundation.Core.ModelElement.name>use-case package</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -396,7 +400,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.35">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.37">
           <Foundation.Core.ModelElement.name>analysis service package</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -407,7 +411,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.36">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.38">
           <Foundation.Core.ModelElement.name>implementation</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -418,7 +422,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.37">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.39">
           <Foundation.Core.ModelElement.name>implementationClass</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -429,7 +433,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.38">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.40">
           <Foundation.Core.ModelElement.name>type</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -440,7 +444,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.39">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.41">
           <Foundation.Core.ModelElement.name>boundary</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -451,30 +455,8 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.40">
-          <Foundation.Core.ModelElement.name>entity</Foundation.Core.ModelElement.name>
-          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
-          <Foundation.Extension_Mechanisms.Stereotype.baseClass>Class</Foundation.Extension_Mechanisms.Stereotype.baseClass>
-          <Foundation.Core.ModelElement.namespace>
-            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
-          </Foundation.Core.ModelElement.namespace>
-        </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.41">
-          <Foundation.Core.ModelElement.name>control</Foundation.Core.ModelElement.name>
-          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
-          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
-          <Foundation.Extension_Mechanisms.Stereotype.baseClass>Class</Foundation.Extension_Mechanisms.Stereotype.baseClass>
-          <Foundation.Core.ModelElement.namespace>
-            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
-          </Foundation.Core.ModelElement.namespace>
-        </Foundation.Extension_Mechanisms.Stereotype>
         <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.42">
-          <Foundation.Core.ModelElement.name>worker</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.name>entity</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
@@ -485,7 +467,7 @@
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
         <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.43">
-          <Foundation.Core.ModelElement.name>case worker</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.name>control</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
@@ -496,7 +478,7 @@
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
         <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.44">
-          <Foundation.Core.ModelElement.name>internal worker</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.name>worker</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
@@ -507,7 +489,7 @@
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
         <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.45">
-          <Foundation.Core.ModelElement.name>entity</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.name>case worker</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
@@ -518,6 +500,28 @@
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
         <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.46">
+          <Foundation.Core.ModelElement.name>internal worker</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Extension_Mechanisms.Stereotype.baseClass>Class</Foundation.Extension_Mechanisms.Stereotype.baseClass>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Foundation.Extension_Mechanisms.Stereotype>
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.47">
+          <Foundation.Core.ModelElement.name>entity</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Extension_Mechanisms.Stereotype.baseClass>Class</Foundation.Extension_Mechanisms.Stereotype.baseClass>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Foundation.Extension_Mechanisms.Stereotype>
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.48">
           <Foundation.Core.ModelElement.name>implicit</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -528,7 +532,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.47">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.49">
           <Foundation.Core.ModelElement.name>communicate</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -539,7 +543,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.48">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.50">
           <Foundation.Core.ModelElement.name>subscribe</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -550,7 +554,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.49">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.51">
           <Foundation.Core.ModelElement.name>primary actor</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -561,7 +565,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.50">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.52">
           <Foundation.Core.ModelElement.name>supporting actor</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -572,7 +576,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.51">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.53">
           <Foundation.Core.ModelElement.name>offstage actor</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -583,7 +587,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.52">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.54">
           <Foundation.Core.ModelElement.name>stakeholder</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -594,7 +598,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.53">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.55">
           <Foundation.Core.ModelElement.name>invariant</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -605,7 +609,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.54">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.56">
           <Foundation.Core.ModelElement.name>postcondition</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -616,7 +620,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.55">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.57">
           <Foundation.Core.ModelElement.name>precondition</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -627,7 +631,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.56">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.58">
           <Foundation.Core.ModelElement.name>metaclass</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -638,7 +642,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.57">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.59">
           <Foundation.Core.ModelElement.name>powertype</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -649,7 +653,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.58">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.60">
           <Foundation.Core.ModelElement.name>process</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -660,7 +664,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.59">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.61">
           <Foundation.Core.ModelElement.name>thread</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -671,7 +675,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.60">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.62">
           <Foundation.Core.ModelElement.name>utility</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -682,7 +686,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.61">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.63">
           <Foundation.Core.ModelElement.name>requirement</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -693,7 +697,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.62">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.64">
           <Foundation.Core.ModelElement.name>responsibility</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -704,7 +708,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.63">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.65">
           <Foundation.Core.ModelElement.name>signalFlow</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -715,7 +719,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.64">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.66">
           <Foundation.Core.ModelElement.name>use-case model</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -726,7 +730,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.65">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.67">
           <Foundation.Core.ModelElement.name>analysis model</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -737,7 +741,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.66">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.68">
           <Foundation.Core.ModelElement.name>design model</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -748,7 +752,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.67">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.69">
           <Foundation.Core.ModelElement.name>implementation model</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -759,7 +763,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.68">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.70">
           <Foundation.Core.ModelElement.name>object model</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -770,7 +774,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.69">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.71">
           <Foundation.Core.ModelElement.name>design system</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -781,7 +785,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.70">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.72">
           <Foundation.Core.ModelElement.name>implementation system</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -792,7 +796,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.71">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.73">
           <Foundation.Core.ModelElement.name>implementation subsystem</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -803,7 +807,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.72">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.74">
           <Foundation.Core.ModelElement.name>design service subsystem</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -814,7 +818,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.73">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.75">
           <Foundation.Core.ModelElement.name>object system</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -825,7 +829,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.74">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.76">
           <Foundation.Core.ModelElement.name>organization unit</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -836,7 +840,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.75">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.77">
           <Foundation.Core.ModelElement.name>work unit</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -847,7 +851,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.76">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.78">
           <Foundation.Core.ModelElement.name>use-case realization</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -858,7 +862,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.77">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.79">
           <Foundation.Core.ModelElement.name>enumeration</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -869,7 +873,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.78">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.80">
           <Foundation.Core.ModelElement.name>organization</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -880,7 +884,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.79">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.81">
           <Foundation.Core.ModelElement.name>machine</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -890,7 +894,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.80">
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.82">
           <Foundation.Core.ModelElement.name>person</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -900,7 +904,7 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
         </Foundation.Extension_Mechanisms.Stereotype>
-        <Model_Management.Package xmi.id="xmi.81">
+        <Model_Management.Package xmi.id="xmi.83">
           <Foundation.Core.ModelElement.name>java</Foundation.Core.ModelElement.name>
           <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
           <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -910,17 +914,17 @@
             <Foundation.Core.Namespace xmi.idref="xmi.1"/>
           </Foundation.Core.ModelElement.namespace>
           <Foundation.Core.Namespace.ownedElement>
-            <Model_Management.Package xmi.id="xmi.82">
+            <Model_Management.Package xmi.id="xmi.84">
               <Foundation.Core.ModelElement.name>lang</Foundation.Core.ModelElement.name>
               <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
               <Foundation.Core.ModelElement.namespace>
-                <Foundation.Core.Namespace xmi.idref="xmi.81"/>
+                <Foundation.Core.Namespace xmi.idref="xmi.83"/>
               </Foundation.Core.ModelElement.namespace>
               <Foundation.Core.Namespace.ownedElement>
-                <Foundation.Core.Class xmi.id="xmi.83">
+                <Foundation.Core.Class xmi.id="xmi.85">
                   <Foundation.Core.ModelElement.name>Object</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -928,90 +932,90 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.DataType xmi.id="xmi.84">
+                <Foundation.Core.DataType xmi.id="xmi.86">
                   <Foundation.Core.ModelElement.name>char</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.DataType>
-                <Foundation.Core.DataType xmi.id="xmi.85">
+                <Foundation.Core.DataType xmi.id="xmi.87">
                   <Foundation.Core.ModelElement.name>byte</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.DataType>
-                <Foundation.Core.DataType xmi.id="xmi.86">
+                <Foundation.Core.DataType xmi.id="xmi.88">
                   <Foundation.Core.ModelElement.name>boolean</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.DataType>
-                <Foundation.Core.DataType xmi.id="xmi.87">
+                <Foundation.Core.DataType xmi.id="xmi.89">
                   <Foundation.Core.ModelElement.name>short</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.DataType>
-                <Foundation.Core.DataType xmi.id="xmi.88">
+                <Foundation.Core.DataType xmi.id="xmi.90">
                   <Foundation.Core.ModelElement.name>int</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.DataType>
-                <Foundation.Core.DataType xmi.id="xmi.89">
+                <Foundation.Core.DataType xmi.id="xmi.91">
                   <Foundation.Core.ModelElement.name>long</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.DataType>
-                <Foundation.Core.DataType xmi.id="xmi.90">
+                <Foundation.Core.DataType xmi.id="xmi.92">
                   <Foundation.Core.ModelElement.name>float</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.DataType>
-                <Foundation.Core.DataType xmi.id="xmi.91">
+                <Foundation.Core.DataType xmi.id="xmi.93">
                   <Foundation.Core.ModelElement.name>double</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.DataType>
-                <Foundation.Core.Class xmi.id="xmi.92">
+                <Foundation.Core.Class xmi.id="xmi.94">
                   <Foundation.Core.ModelElement.name>Char</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1019,10 +1023,10 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Class xmi.id="xmi.93">
+                <Foundation.Core.Class xmi.id="xmi.95">
                   <Foundation.Core.ModelElement.name>Byte</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1030,10 +1034,10 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Class xmi.id="xmi.94">
+                <Foundation.Core.Class xmi.id="xmi.96">
                   <Foundation.Core.ModelElement.name>Boolean</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1041,10 +1045,10 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Class xmi.id="xmi.95">
+                <Foundation.Core.Class xmi.id="xmi.97">
                   <Foundation.Core.ModelElement.name>Short</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1052,10 +1056,10 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Class xmi.id="xmi.96">
+                <Foundation.Core.Class xmi.id="xmi.98">
                   <Foundation.Core.ModelElement.name>Integer</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1063,10 +1067,10 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Class xmi.id="xmi.97">
+                <Foundation.Core.Class xmi.id="xmi.99">
                   <Foundation.Core.ModelElement.name>Long</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1074,10 +1078,10 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Class xmi.id="xmi.98">
+                <Foundation.Core.Class xmi.id="xmi.100">
                   <Foundation.Core.ModelElement.name>Float</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1085,10 +1089,10 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Class xmi.id="xmi.99">
+                <Foundation.Core.Class xmi.id="xmi.101">
                   <Foundation.Core.ModelElement.name>Double</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1096,10 +1100,10 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Class xmi.id="xmi.100">
+                <Foundation.Core.Class xmi.id="xmi.102">
                   <Foundation.Core.ModelElement.name>String</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1107,22 +1111,22 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.82"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.84"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
               </Foundation.Core.Namespace.ownedElement>
             </Model_Management.Package>
-            <Model_Management.Package xmi.id="xmi.101">
+            <Model_Management.Package xmi.id="xmi.103">
               <Foundation.Core.ModelElement.name>util</Foundation.Core.ModelElement.name>
               <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
               <Foundation.Core.ModelElement.namespace>
-                <Foundation.Core.Namespace xmi.idref="xmi.81"/>
+                <Foundation.Core.Namespace xmi.idref="xmi.83"/>
               </Foundation.Core.ModelElement.namespace>
               <Foundation.Core.Namespace.ownedElement>
-                <Foundation.Core.Class xmi.id="xmi.102">
+                <Foundation.Core.Class xmi.id="xmi.104">
                   <Foundation.Core.ModelElement.name>Vector</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1130,40 +1134,40 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.101"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.103"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Interface xmi.id="xmi.103">
+                <Foundation.Core.Interface xmi.id="xmi.105">
                   <Foundation.Core.ModelElement.name>Collection</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.101"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.103"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Interface>
-                <Foundation.Core.Interface xmi.id="xmi.104">
+                <Foundation.Core.Interface xmi.id="xmi.106">
                   <Foundation.Core.ModelElement.name>Iterator</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.101"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.103"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Interface>
-                <Foundation.Core.Interface xmi.id="xmi.105">
+                <Foundation.Core.Interface xmi.id="xmi.107">
                   <Foundation.Core.ModelElement.name>List</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.101"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.103"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Interface>
-                <Foundation.Core.Class xmi.id="xmi.106">
+                <Foundation.Core.Class xmi.id="xmi.108">
                   <Foundation.Core.ModelElement.name>Date</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1171,10 +1175,10 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.101"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.103"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Class xmi.id="xmi.107">
+                <Foundation.Core.Class xmi.id="xmi.109">
                   <Foundation.Core.ModelElement.name>Time</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1182,42 +1186,42 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.101"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.103"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Interface xmi.id="xmi.108">
+                <Foundation.Core.Interface xmi.id="xmi.110">
                   <Foundation.Core.ModelElement.name>Set</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.101"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.103"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Interface>
-                <Foundation.Core.Interface xmi.id="xmi.109">
+                <Foundation.Core.Interface xmi.id="xmi.111">
                   <Foundation.Core.ModelElement.name>SortedSet</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.101"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.103"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Interface>
               </Foundation.Core.Namespace.ownedElement>
             </Model_Management.Package>
-            <Model_Management.Package xmi.id="xmi.110">
+            <Model_Management.Package xmi.id="xmi.112">
               <Foundation.Core.ModelElement.name>math</Foundation.Core.ModelElement.name>
               <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
               <Foundation.Core.ModelElement.namespace>
-                <Foundation.Core.Namespace xmi.idref="xmi.81"/>
+                <Foundation.Core.Namespace xmi.idref="xmi.83"/>
               </Foundation.Core.ModelElement.namespace>
               <Foundation.Core.Namespace.ownedElement>
-                <Foundation.Core.Class xmi.id="xmi.111">
+                <Foundation.Core.Class xmi.id="xmi.113">
                   <Foundation.Core.ModelElement.name>BigDecimal</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1225,10 +1229,10 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.110"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.112"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
-                <Foundation.Core.Class xmi.id="xmi.112">
+                <Foundation.Core.Class xmi.id="xmi.114">
                   <Foundation.Core.ModelElement.name>BigInteger</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1236,22 +1240,22 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.110"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.112"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
               </Foundation.Core.Namespace.ownedElement>
             </Model_Management.Package>
-            <Model_Management.Package xmi.id="xmi.113">
+            <Model_Management.Package xmi.id="xmi.115">
               <Foundation.Core.ModelElement.name>net</Foundation.Core.ModelElement.name>
               <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
               <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
               <Foundation.Core.ModelElement.namespace>
-                <Foundation.Core.Namespace xmi.idref="xmi.81"/>
+                <Foundation.Core.Namespace xmi.idref="xmi.83"/>
               </Foundation.Core.ModelElement.namespace>
               <Foundation.Core.Namespace.ownedElement>
-                <Foundation.Core.Class xmi.id="xmi.114">
+                <Foundation.Core.Class xmi.id="xmi.116">
                   <Foundation.Core.ModelElement.name>URL</Foundation.Core.ModelElement.name>
                   <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
                   <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
@@ -1259,13 +1263,24 @@
                   <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
                   <Foundation.Core.Class.isActive xmi.value="false"/>
                   <Foundation.Core.ModelElement.namespace>
-                    <Foundation.Core.Namespace xmi.idref="xmi.113"/>
+                    <Foundation.Core.Namespace xmi.idref="xmi.115"/>
                   </Foundation.Core.ModelElement.namespace>
                 </Foundation.Core.Class>
               </Foundation.Core.Namespace.ownedElement>
             </Model_Management.Package>
           </Foundation.Core.Namespace.ownedElement>
         </Model_Management.Package>
+        <Foundation.Extension_Mechanisms.Stereotype xmi.id="xmi.117">
+          <Foundation.Core.ModelElement.name>singleton</Foundation.Core.ModelElement.name>
+          <Foundation.Core.ModelElement.isSpecification xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isRoot xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isLeaf xmi.value="false"/>
+          <Foundation.Core.GeneralizableElement.isAbstract xmi.value="false"/>
+          <Foundation.Extension_Mechanisms.Stereotype.baseClass>Classifier</Foundation.Extension_Mechanisms.Stereotype.baseClass>
+          <Foundation.Core.ModelElement.namespace>
+            <Foundation.Core.Namespace xmi.idref="xmi.1"/>
+          </Foundation.Core.ModelElement.namespace>
+        </Foundation.Extension_Mechanisms.Stereotype>
       </Foundation.Core.Namespace.ownedElement>
     </Model_Management.Model>
   </XMI.content>
