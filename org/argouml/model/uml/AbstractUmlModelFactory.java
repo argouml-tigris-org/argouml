@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -99,8 +99,9 @@ public abstract class AbstractUmlModelFactory {
     }
 
     /**
-     * Adds all interested (and centralized) listeners to the given modelelement
-     * handle.
+     * Adds all interested (and centralized) listeners to the given
+     * modelelement handle.
+     *
      * @param handle the modelelement the listeners are interested in
      */
     public void addListenersToModelElement(Object handle) {
@@ -108,9 +109,10 @@ public abstract class AbstractUmlModelFactory {
             Object base = handle;
             UmlModelEventPump pump = UmlModelEventPump.getPump();
             
-            ((MBase)base).addMElementListener(pump);
-            pump.addModelEventListener(ExplorerNSUMLEventAdaptor.getInstance(),base);
-            pump.addModelEventListener(UmlModelListener.getInstance(),base);
+            ((MBase) base).addMElementListener(pump);
+            pump.addModelEventListener(ExplorerNSUMLEventAdaptor.getInstance(),
+				       base);
+            pump.addModelEventListener(UmlModelListener.getInstance(), base);
         }
     }
 }
