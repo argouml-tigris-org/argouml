@@ -42,6 +42,24 @@ package org.argouml.ui.explorer;
  * }
  * </pre>
  *
+ * <p>About subsumtion:
+ * <ul>
+ * <li>Weak nodes must not rely on that the Explorer preserves the oldest one.
+ * <li>The Explorer will not check if several PerspectiveRules has returned
+ *     nodes that subsume eachother. Thus it is up to the PerspectiveRules to
+ *     make sure that they will not suggest nodes that subsume eachother.
+ * <li>The Explorer assumes that they have done this, and can thus draw two
+ *     conclusions:
+ *     <ul>
+ *     <li>If the same WeakExplorerNode instance is returned by any
+ *         PerspectiveRule then it will not subsume any other WeakExplorerNode.
+ *     <li>If a WeakExplorerNode has subsumed a new WeakExplorerNode then
+ *         it will not subsume another (if it would, then those would be
+ *         expected to subsume eachother and thus the PerspectiveRules has
+ *         failed).
+ *     </ul>
+ * </ul>
+ *
  * @author d00mst
  * @since 0.16.alpha1
  */
@@ -51,9 +69,24 @@ public interface WeakExplorerNode {
      * This method is called by ExplorerTreeModel to check if this
      * WeakExplorerNode subsumes another WeakExplorerNode, ie if this
      * node should be preserved rather than adding the other node.
-     * This only comes into play if this instance and the other
-     * sorts equal, since otherwise there will anyway be tree
-     * modifications and then it doesn't matter.
+     *
+     * <p>This relation should be reflexive, so that if <code>a</code>
+     * is a WeakExplorerNode then <code>a.subsumes(a) == true</code>.
+     *
+     * <p>This relation should be symmetric, so that if a and b are
+     * WeakExplorerNodes and <code>a.subsumes(b) == true</code> then
+     * <code>b.subsumes(a) == true</code>.
+     *
+     * <p>This relation should be transitive, so that if a, b and c are
+     * WeakExplorerNodes, <code>a.subsumes(b) == true</code> and
+     * <code>b.subsumes(c) == true</code> then
+     * <code>a.subsumes(c) == true</code>.
+     *
+     * <p>Note: While this means that only other WeakExplorerNodes can be
+     * subsumed, the argument is still of Object type. This is just since
+     * there is no particular point in getting a WeakExplorerNode reference,
+     * you would either have to down-cast it further or wouldn't use it more
+     * than as an Object pointer.
      *
      * @param obj another WeakExplorerNode
      * @return true if this node subsumes obj, otherwise false.
