@@ -33,7 +33,7 @@ package org.argouml.cognitive;
 
 import java.io.Serializable;
 import java.util.Enumeration;
-import java.util.Collection;
+//import java.util.Collection;
 import javax.swing.Icon;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;

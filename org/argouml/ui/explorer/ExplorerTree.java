@@ -27,8 +27,8 @@ package org.argouml.ui.explorer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.*;
-import java.util.List;
-import java.util.ArrayList;
+//import java.util.List;
+//import java.util.ArrayList;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.JPopupMenu;

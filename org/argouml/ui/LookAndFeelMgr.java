@@ -32,7 +32,7 @@ package org.argouml.ui;
 
 import java.awt.Font;
 
-import javax.swing.AbstractAction;
+//import javax.swing.AbstractAction;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
