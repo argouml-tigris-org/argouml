@@ -23,7 +23,7 @@
 <!ENTITY intro SYSTEM "intro.xml">
 <!ENTITY tutanalysis SYSTEM "tut_analysis.xml">
 <!ENTITY glossary SYSTEM "glossary.xml">
-<!ENTITY appdocplan SYSTEM "app_docplan.xml">
+<!--ENTITY appdocplan SYSTEM "app_docplan.xml"-->
 <!ENTITY preface SYSTEM "preface.xml">
 <!ENTITY refentities SYSTEM "ref_entities.xml">
 <!ENTITY apphardlimits SYSTEM "app_hardlimits.xml">
@@ -105,7 +105,7 @@ so this tab is greyed out.">
   &appumlres;
   &appumlcase;
   &apphardlimits;
-  &appdocplan;
+  <!-- &appdocplan;  Moved to the cookbook! -->
   <!-- &appdocstand;  Moved to the cookbook! -->
   &applegal;
   <index>

@@ -1,0 +1,546 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+
+
+  <chapter id="documentation_what_goes_where">
+    <chapterinfo>
+      <abstract>
+	<para>
+This chapter contains written down ideas on what goes into what
+part of the documentation. These ideas are formulated by Linus Tolke.
+</para>
+      </abstract>
+      <authorgroup>
+	<author>
+	  <firstname>Linus</firstname>
+	  <surname>Tolke</surname>
+	</author>
+      </authorgroup>
+    </chapterinfo>
+    <title>Organization of ArgoUML documentation</title>
+    <section>
+    <title>Overview</title>
+    <para>
+There are seven significantly different bits of documentation in the
+ArgoUML project.
+By documentation I mean some information of the product that is
+developed alongside the product and that has a persistent value.
+</para>
+    <orderedlist>
+      <listitem>
+	<para>The code, variable names, class names</para>
+      </listitem>
+      <listitem>
+	<para>The javadoc</para>
+      </listitem>
+      <listitem>
+	<para>The cookbook</para>
+      </listitem>
+      <listitem>
+	<para>The web site in CVS</para>
+      </listitem>
+      <listitem>
+	<para>The manual and quick-guide</para>
+      </listitem>
+      <listitem>
+	<para>Help texts within the running ArgoUML</para>
+      </listitem>
+      <listitem>
+	<para>The FAQ</para>
+      </listitem>
+    </orderedlist>
+    <para>
+These different bits have all different purpose and audience and
+the purpose of this chapter is to try to define that.
+</para>
+    <table>
+      <title>Bits of documentation</title>
+      <tgroup cols="4">
+	<thead>
+	  <row>
+	    <entry>Bit</entry>
+	    <entry>Audience</entry>
+	    <entry>Main purpose</entry>
+	    <entry>Contains</entry>
+	  </row>
+	</thead>
+	<tbody valign="top">
+	  <row>
+	    <!-- Bit -->
+	    <entry>The code</entry>
+
+	    <!-- Audience -->
+	    <entry>
+<orderedlist>
+		<listitem>
+		  <para>
+Other developers that will maintain and improve on the code.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+The compiler.
+</para>
+		</listitem>
+	      </orderedlist>
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Implement ArgoUML in a maintainable and understandable way.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+See <xref linkend="standards"/> for details on how to write the code.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>The javadoc</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Developers writing code that communicates or in other ways interact
+with this class.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Make it easy to see what the functions of every class are and how
+to use them.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+Description of the functions of all classes,
+all public and protected methods, variables, and constants.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>The cookbook</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Developers writing code, maintaining the documentation or the web site.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Make it easy to learn how ArgoUML works and how to extend it.
+Be a collection of knowledge around how everything is set up.
+Be a store of the agreed solution around fundamental design decisions
+i.e. design decisions that are so big that it is meaningless to
+store them in the javadoc.
+Be a collection of knowledge around how and why the project makes
+certain decisions.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+Instructions on how to add new functions and behavior.
+Instructions on how to do the chores around maintenance
+(build a release, publish a release,
+build the documentation part of the release,
+test ArgoUML, test the documentation, ...).
+Agreed project rules like what level of quality is aimed for and
+description of processes that achieves that level.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>The web site in CVS</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Everyone, i.e. developers in the project, users of the product,
+people searching for UML tools for the purpose of trying, testing,
+evaluating, and using the tools.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Be an entry point for the other parts of the documentation.
+Be the main download area for the ArgoUML product.
+Be the central point of the ArgoUML user community.
+Be the central point of the ArgoUML development project.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+References to all the other parts of the documentation.
+Current project information like the contents of the upcoming releases
+and the plan for the nearest future.
+Easy access illustration for users to be.
+Some illustrations that do not work well in the other 
+parts of the documentation. 
+This is done as a complement to the other parts. 
+Examples, tours.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>The manual and quick-guide</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Users of ArgoUML.
+Persons that want to evaluate ArgoUML for the purpose of starting to use it.
+Persons that are training to use UML and ArgoUML.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Describe how ArgoUML is installed and used.
+Describe how UML is used with ArgoUML.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+Complete installation instructions for all supported installation schemes.
+Complete description on how to use ArgoUML in your project.
+Complete reference on how to use ArgoUML.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>Help texts within the running ArgoUML</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Users of ArgoUML.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Give a quick help with a specific feature or button.
+Give short explanations of all commands and actions.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+A complete set of quick help and explanations.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>The FAQ</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Users of ArgoUML.
+Members of the users mailing list.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Cope for shortcomings in ArgoUML, the help text, 
+the Manual and quick-guide and the web site.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+A list of issues that are not addressed in the other part of the documentation.
+It is written in questions-answers-format and the contents is governed by
+the issues discussed recently in the user community.
+</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+    <para>
+The Cookbook, the User Manual, and the Quick Guide, 
+are all written in docbook and generated into HTML and PDF 
+during deployment.
+See <xref linkend="app.docstand"/> for details on how to write these.
+</para>
+
+</section>
+
+
+
+
+
+
+<!-- An overview of how the manual should be written -->
+<section>
+  <title>Manual Plan</title>
+  <!-- Target audiences -->
+
+  <section>
+    <title>Target Audiences</title>
+
+    <para>Target audiences are the following.</para>
+
+    <itemizedlist>
+      <listitem><para>Experienced users of UML in &ooad; (perhaps with other
+        tools) who wish to transfer to &argouml;.</para></listitem>
+
+      <listitem><para>Designers who know &ooad;, and wish to adopt a UML
+        based process.</para></listitem>
+    </itemizedlist>
+
+    <para>In the longer term it would be desirable to also target the
+      following.</para>
+
+    <itemizedlist>
+      <listitem><para>Those who are learning design and wish to start with a
+        UML based &ooad; process.</para></listitem>
+
+      <listitem><para>People interested in modularised code design with a
+        GUI.</para></listitem>
+    </itemizedlist>
+  </section>
+
+  <!-- Goals -->
+
+  <section>
+    <title>Goals</title>
+
+    <para>We want to keep the boundaries clearly defined, to avoid confusing
+      duplication with the CookBook, FAQ, Quick Guide, online help etc. There
+      are two goals (in priority order).</para>
+
+    <orderedlist>
+      <listitem><para>A comprehensive tutorial style explanation of &argouml;
+        in the context of an &ooad; process.</para></listitem>
+
+      <listitem><para><emphasis>Descriptive</emphasis> reference material on
+        all components of ArgoUML</para></listitem>
+    </orderedlist>
+
+    <para>I think the existing User Manual is a good start particularly towards
+      the second of these goals.</para>
+
+    <!-- Non-Goals -->
+
+    <section>
+      <title>Non-Goals</title>
+
+      <para>To keep the effort feasible the user manual should avoid the
+        following (at least initially).</para>
+
+      <itemizedlist>
+        <listitem><para>Providing a quick overview&mdash;the Quick Guide
+         already does this.</para></listitem>
+
+        <listitem><para>Listing all the errors and what they mean. The help
+          system does this&mdash;one day the manual will link to
+          that.</para></listitem> 
+
+        <listitem><para>Explaining the internal workings of ArgoUML. The
+          cookbook, combined with Jason Robbins dissertation is already a good
+          start for this.</para></listitem>
+      </itemizedlist>
+    </section>      
+  </section>
+
+  <!-- Structure -->
+
+  <section>
+    <title>Suggested Manual Structure</title>
+
+    <para>Here are my thoughts. I think the user manual is really a set of two
+      books, the tutorial manual (corresponding to Part I of the
+      current manual), and the reference manual (Part II of the current
+      manual)</para>
+
+    <para>I suggest that the tutorial book be based around an &ooad; process
+      (any preferences), and that each UML concept is introduced with each step
+      of the process, followed by an explanation of how to do it under
+      &argouml;. A <emphasis>simple</emphasis>case study will be needed
+      throughout. A lot of this material can come from existing Tutorial 
+      Chapters, with some additional material from the Cookbook,
+      answers in the FAQ and Jason Robbins dissertation.</para>
+
+    <section>
+      <title>Tutorial Manual Structure</title>
+
+      <orderedlist>
+
+        <!-- Introduction puts everything into context -->
+
+        <listitem><para>Introduction</para>
+          <orderedlist>
+            <listitem><para>Origins and overview of &argouml;</para></listitem>
+            <listitem><para>Scope of the User Manual. Include cross-reference
+              to other documentation (Cookbook, FAQ, Quick Guide, online help,
+              &argouml; website etc).</para></listitem>
+            <listitem><para>Overview of the User Manual. Explains that &argouml;
+              will be explained in the context of an &ooad; process, and
+              with an example running through.</para></listitem>
+            <listitem><para>Assumptions. At this stage assume the user knows
+              &ooad;, but not UML.</para></listitem>
+          </orderedlist>
+        </listitem>
+
+        <!-- Need to explain how we're going to go about learning &argouml; -->
+
+        <listitem><para>UML Based &ooad;</para>
+          <orderedlist>
+            <listitem><para>Background to UML&mdash;what it is, history
+              etc.</para></listitem>
+            <listitem><para>UML based processes for &ooad;</para></listitem>
+            <listitem><para>ArgoUML Basics&mdash;projects, drawing, exploring,
+              details</para></listitem>
+            <listitem><para>What &argouml; has that other tools are missing
+              (critics, to-do list, based in cognitive psychology
+              theory).</para></listitem>
+            <listitem><para>The Case Study</para></listitem>
+          </orderedlist>
+        </listitem>
+
+        <!-- Diagrams associated with requirements capture. This will include
+             a lot of &argouml; stuff, since you hit this at the first
+             diagram.-->
+
+        <listitem><para>Requirements Capture</para>
+          <orderedlist>
+            <listitem><para>Use Case Diagrams (this section will be relatively
+              large, because its the first time we use ArgoUML to create
+              something).</para></listitem>
+          </orderedlist>
+        </listitem>
+        
+        <!-- Diagrams for analysis. What goes where is a bit dependent on the
+             specific process. -->
+
+        <listitem><para>Analysis</para>
+          <orderedlist>
+            <listitem><para>Concept Class Diagrams</para></listitem>
+            <listitem><para>System Sequence Charts and Collaboration
+              Diagrams</para></listitem>
+            <listitem><para>System Statechart Diagrams</para></listitem>
+          </orderedlist>
+        </listitem>
+
+        <!-- Design -->
+
+        <listitem><para>Design</para>
+          <orderedlist>
+            <listitem><para>Class Diagrams for Realisation</para></listitem>
+            <listitem><para>Sequence Charts and Collaboration Diagrams for
+              Realisation</para></listitem>
+            <listitem><para>Statechart Diagrams for realisation</para></listitem>
+            <listitem><para>Package Diagrams</para></listitem>
+          </orderedlist>
+        </listitem>
+
+        <!-- Build -->
+          
+        <listitem><para>Build</para>
+          <orderedlist>
+            <listitem><para>Deployment Diagrams</para></listitem>
+            <listitem><para>Code Generation in &argouml;</para></listitem>
+          </orderedlist>
+        </listitem>
+      </orderedlist>
+
+    </section>         
+
+    <!-- What needs to be in the Reference Manual -->
+
+    <section>
+      <title>Reference Manual Structure</title>
+
+      <para>This section largely follows the existing User Manual,
+        including the Gloassary. However it needs a few extra things.</para>
+
+      <orderedlist>
+        <listitem><para>material on each of the
+          diagram types, each of the artifacts that can appear on the diagrams
+          and details of the features of each artifact type.</para></listitem>
+
+        <listitem><para>An Index</para></listitem>
+      </orderedlist>
+
+    </section>
+  </section>
+
+  <!-- What we need to do to get to a final manual -->
+
+  <section>
+    <title>Actions, Priorities and Questions</title>
+
+    <section>
+      <title>Actions and priorities</title>
+
+      <para>Here's my first call for what needs to be done in priority
+        order. From the comments made over the last few days I think the first
+        5 items won't take very long, meaning effort can concentrate on the
+        main stuff.</para>
+
+      <orderedlist>
+        <listitem><para>Get buy-in for the approach</para></listitem>
+
+        <listitem><para>Agree document structure (broadly)</para></listitem>
+
+        <listitem><para>Choose a suitable example to run
+          throughout.</para></listitem>
+
+        <listitem><para>Break into several files (XML entities) to make the
+          manual more manageable.</para></listitem>
+
+        <listitem><para>Identify all existing sources of material to be
+          reused</para></listitem>
+
+        <listitem><para>Get writing! I suggest the priorities here
+          are:</para>
+
+          <orderedlist>
+            <listitem><para>User Manual sections relating to &argouml; diagrams
+              and artifacts (assume the reader knows UML already, and allows a
+              quick advance by pulling together a lot of existing
+              material).</para></listitem>
+
+            <listitem><para>User Manual examples</para></listitem>
+
+            <listitem><para>User Manual sections relating to additional
+              &argouml; cognitive design features.</para></listitem>
+
+            <listitem><para>User Manual sections relating to UML (for readers
+              who don't know UML).</para></listitem>
+
+            <listitem><para>Completion of Reference Manual
+              material.</para></listitem>
+          </orderedlist>
+        </listitem>
+
+        <listitem><para>Create an index.</para></listitem>
+      </orderedlist>
+    </section>
+
+    <!-- What questions still need answering -->
+
+    <section>
+      <title>Remaining Questions</title>
+
+      <orderedlist>
+        <listitem><para>The current manual shows copyright held by Phillipe,
+          and no legal notice. What is the position of this
+          material?</para></listitem>
+      </orderedlist>
+    </section>
+  </section>
+  </section>        
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "appendix" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+indent-tabs-mode: nil
+End:
+
+-->
