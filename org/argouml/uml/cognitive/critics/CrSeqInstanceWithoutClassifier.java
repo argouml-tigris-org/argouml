@@ -37,8 +37,6 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
 import org.argouml.cognitive.*;
-import org.argouml.uml.diagram.sequence.ui.FigSeqLink;
-import org.argouml.uml.diagram.sequence.ui.FigSeqObject;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
