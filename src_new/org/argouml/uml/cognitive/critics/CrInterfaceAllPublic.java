@@ -31,10 +31,12 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 
-/** Well-formedness rule [3] for MInterface. See page 32 of UML 1.1
+/**
+ * Well-formedness rule [3] for MInterface. See page 32 of UML 1.1
  *
  * @author jrobbins
- *  Semantics. OMG document ad/97-08-04. */
+ *  Semantics. OMG document ad/97-08-04.
+ */
 public class CrInterfaceAllPublic extends CrUML {
 
     /**
@@ -53,17 +55,24 @@ public class CrInterfaceAllPublic extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAInterface(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAInterface(dm))) {
+	    return NO_PROBLEM;
+	}
 	Object inf = /*(MInterface)*/ dm;
 	Collection bf = ModelFacade.getFeatures(inf);
-	if (bf == null) return NO_PROBLEM;
+	if (bf == null) {
+	    return NO_PROBLEM;
+	}
 	Iterator features = bf.iterator();
 	while (features.hasNext()) {
 	    Object f = /*(MFeature)*/ features.next();
-	    if (ModelFacade.getVisibility(f) == null) return NO_PROBLEM;
+	    if (ModelFacade.getVisibility(f) == null) {
+	        return NO_PROBLEM;
+	    }
 	    if (!ModelFacade.getVisibility(f)
-                .equals(ModelFacade.PUBLIC_VISIBILITYKIND))
-		return PROBLEM_FOUND;
+                .equals(ModelFacade.getPublicVisibilityKindToken())) {
+	        return PROBLEM_FOUND;
+	    }
 	}
 	return NO_PROBLEM;
     }

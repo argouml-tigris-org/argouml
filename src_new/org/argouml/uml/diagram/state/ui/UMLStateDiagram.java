@@ -43,11 +43,14 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 
-/** The correct name for this class is "UMLStatechartDiagram". See issue 2306.
+/**
+ * The correct name for this class is "UMLStatechartDiagram". See issue 2306.
  *
  */
 public class UMLStateDiagram extends UMLDiagram {
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(UMLStateDiagram.class);
 
     /**
@@ -192,8 +195,9 @@ public class UMLStateDiagram extends UMLDiagram {
 
         StateDiagramGraphModel gm = new StateDiagramGraphModel();
         gm.setNamespace(namespace);
-        if (sm != null)
+        if (sm != null) {
             gm.setMachine(sm);
+        }
         StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
 
         LayerPerspective lay =
@@ -217,8 +221,9 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public void setStateMachine(Object sm) {
 
-        if (!ModelFacade.isAStateMachine(sm))
+        if (!ModelFacade.isAStateMachine(sm)) {
             throw new IllegalArgumentException();
+        }
 
         ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
     }
@@ -248,7 +253,9 @@ public class UMLStateDiagram extends UMLDiagram {
         return actions;
     }
 
-    /** Creates a name for the diagram.
+    /**
+     * Creates a name for the diagram.
+     *
      * @return the new diagram name
      */
     protected String getNewDiagramName() {
@@ -287,7 +294,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionBranchPseudoState == null) {
             actionBranchPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        ModelFacade.BRANCH_PSEUDOSTATEKIND, "Choice"));
+                        ModelFacade.getBranchPseudostateKindToken(), "Choice"));
         }
         return actionBranchPseudoState;
     }
@@ -297,7 +304,7 @@ public class UMLStateDiagram extends UMLDiagram {
     protected Action getActionCompositeState() {
         if (actionCompositeState == null) {
             actionCompositeState = new RadioAction(new CmdCreateNode(
-                    ModelFacade.COMPOSITESTATE, "CompositeState"));
+                    ModelFacade.getCompositeStateToken(), "CompositeState"));
         }
         return actionCompositeState;
     }
@@ -308,7 +315,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionDeepHistoryPseudoState == null) {
             actionDeepHistoryPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND,
+                        ModelFacade.getDeepHistoryPseudostateKindToken(),
                         "DeepHistory"));
         }
         return actionDeepHistoryPseudoState;
@@ -318,8 +325,11 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     protected Action getActionFinalPseudoState() {
         if (actionFinalPseudoState == null) {
-            actionFinalPseudoState = new RadioAction(
-                    new CmdCreateNode(ModelFacade.FINALSTATE, "FinalState"));
+            actionFinalPseudoState =
+                new RadioAction(
+                        new CmdCreateNode(
+                                ModelFacade.getFinalStateToken(),
+                                "FinalState"));
         }
         return actionFinalPseudoState;
     }
@@ -330,7 +340,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionForkPseudoState == null) {
             actionForkPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                            ModelFacade.FORK_PSEUDOSTATEKIND, "Fork"));
+                            ModelFacade.getForkPseudostateKindToken(), "Fork"));
         }
         return actionForkPseudoState;
     }
@@ -340,7 +350,7 @@ public class UMLStateDiagram extends UMLDiagram {
     protected Action getActionJoinPseudoState() {
         if (actionJoinPseudoState == null) {
             actionJoinPseudoState = new RadioAction(new ActionCreatePseudostate(
-                    ModelFacade.JOIN_PSEUDOSTATEKIND, "Join"));
+                    ModelFacade.getJoinPseudostateKindToken(), "Join"));
         }
         return actionJoinPseudoState;
     }
@@ -351,7 +361,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionJunctionPseudoState == null) {
             actionJunctionPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        ModelFacade.JUNCTION_PSEUDOSTATEKIND,
+                        ModelFacade.getJunctionPseudostateKindToken(),
                         "Junction"));
         }
         return actionJunctionPseudoState;
@@ -363,7 +373,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionShallowHistoryPseudoState == null) {
             actionShallowHistoryPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND,
+                        ModelFacade.getShallowHistoryPseudostateKindToken(),
                         "ShallowHistory"));
         }
         return actionShallowHistoryPseudoState;
@@ -375,7 +385,7 @@ public class UMLStateDiagram extends UMLDiagram {
         if (actionStartPseudoState == null) {
             actionStartPseudoState = new RadioAction(
                     new ActionCreatePseudostate(
-                        ModelFacade.INITIAL_PSEUDOSTATEKIND,
+                        ModelFacade.getInitialPseudostateKindToken(),
                         "Initial"));
         }
         return actionStartPseudoState;
@@ -386,7 +396,7 @@ public class UMLStateDiagram extends UMLDiagram {
     protected Action getActionState() {
         if (actionState == null) {
             actionState = new RadioAction(
-                    new CmdCreateNode(ModelFacade.STATE, "State"));
+                    new CmdCreateNode(ModelFacade.getStateToken(), "State"));
         }
         return actionState;
     }
@@ -396,8 +406,11 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     protected Action getActionSynchState() {
         if (actionSynchState == null) {
-            actionSynchState = new RadioAction(
-                    new CmdCreateNode(ModelFacade.SYNCHSTATE, "SynchState"));
+            actionSynchState =
+                new RadioAction(
+                        new CmdCreateNode(
+                                ModelFacade.getSynchStateToken(),
+                                "SynchState"));
         }
         return actionSynchState;
     }
@@ -411,7 +424,7 @@ public class UMLStateDiagram extends UMLDiagram {
                     new CmdSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
-                        ModelFacade.TRANSITION,
+                        ModelFacade.getTransitionToken(),
                         "Transition"));
         }
         return actionTransition;
@@ -422,9 +435,15 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public boolean needsToBeRemoved() {
         Object context = ModelFacade.getContext(theStateMachine);
-        if (context == null) return true;
-        if (Model.getUmlFactory().isRemoved(theStateMachine)) return true;
-        if (Model.getUmlFactory().isRemoved(getNamespace())) return true;
+        if (context == null) {
+            return true;
+        }
+        if (Model.getUmlFactory().isRemoved(theStateMachine)) {
+            return true;
+        }
+        if (Model.getUmlFactory().isRemoved(getNamespace())) {
+            return true;
+        }
         return false;
     }
 

@@ -75,33 +75,40 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
         if (ModelFacade.isAPseudostate(o)) {
             Object kind = ModelFacade.getPseudostateKind(o);
             if (ModelFacade.equalsPseudostateKind(kind,
-                ModelFacade.FORK_PSEUDOSTATEKIND))
+                ModelFacade.getForkPseudostateKindToken())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.fork"));
+            }
             if (ModelFacade.equalsPseudostateKind(kind,
-                ModelFacade.JOIN_PSEUDOSTATEKIND))
+                ModelFacade.getJoinPseudostateKindToken())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.join"));
+            }
             if (ModelFacade.equalsPseudostateKind(kind,
-                ModelFacade.BRANCH_PSEUDOSTATEKIND))
+                ModelFacade.getBranchPseudostateKindToken())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.choice"));
+            }
             if (ModelFacade.equalsPseudostateKind(kind,
-                ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND))
+                ModelFacade.getDeepHistoryPseudostateKindToken())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.deephistory"));
+            }
             if (ModelFacade.equalsPseudostateKind(kind,
-                ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND))
+                ModelFacade.getShallowHistoryPseudostateKindToken())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.shallowhistory"));
+            }
             if (ModelFacade.equalsPseudostateKind(kind,
-                ModelFacade.INITIAL_PSEUDOSTATEKIND))
+                ModelFacade.getInitialPseudostateKindToken())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.initial"));
+            }
             if (ModelFacade.equalsPseudostateKind(kind,
-                ModelFacade.JUNCTION_PSEUDOSTATEKIND))
+                ModelFacade.getJunctionPseudostateKindToken())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.junction"));
+            }
         }
 
     }

@@ -49,7 +49,7 @@ public class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox2 {
     public void buildModel() {
         if (getTarget() != null) {
             Object associationEnd = /*(MAssociationEnd)*/ getTarget();
-            setSelected(ModelFacade.CLASSIFIER_SCOPEKIND
+            setSelected(ModelFacade.getClassifierScopeKindToken()
                            .equals(ModelFacade.getTargetScope(associationEnd)));
         }
     }

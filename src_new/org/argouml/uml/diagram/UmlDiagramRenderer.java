@@ -27,7 +27,6 @@ package org.argouml.uml.diagram;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
@@ -79,7 +78,6 @@ import org.argouml.uml.diagram.use_case.ui.FigActor;
 import org.argouml.uml.diagram.use_case.ui.FigExtend;
 import org.argouml.uml.diagram.use_case.ui.FigInclude;
 import org.argouml.uml.diagram.use_case.ui.FigUseCase;
-
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.Fig;
@@ -87,24 +85,21 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 /**
- * Factory methods to create Figs based an model elements with supplementary 
- * data provided by a map of name value pairs.
+ * Factory methods to create Figs based an model elements with supplementary
+ * data provided by a map of name value pairs.<p>
  *
- * <p>Provides {@link #getFigNodeFor} to implement the {@link
- *   GraphNodeRenderer} interface and {@link #getFigEdgeFor} to implement the
- *   {@link GraphEdgeRenderer} interface.</p>
+ * Provides {@link #getFigNodeFor(Object, Map)} to implement the
+ * {@link GraphNodeRenderer} interface and {@link #getFigEdgeFor(Object, Map)}
+ * to implement the {@link GraphEdgeRenderer} interface.
  */
 public abstract class UmlDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
-    private static final Logger LOG =
-        Logger.getLogger(UmlDiagramRenderer.class);
-
     /**
-     * Return a Fig that can be used to represent the given node
+     * Return a Fig that can be used to represent the given node.
      *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
      * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object)
+     * java.lang.Object, Map)
      */
     public FigNode getFigNodeFor(Object node, Map styleAttributes) {
         if (node == null) {
@@ -167,34 +162,37 @@ public abstract class UmlDiagramRenderer
         } else if (ModelFacade.isAPseudostate(node)) {
             Object pState = node;
             Object kind = ModelFacade.getKind(pState);
-            if (ModelFacade.INITIAL_PSEUDOSTATEKIND.equals(kind)) {
+            if (ModelFacade.getInitialPseudostateKindToken().equals(kind)) {
                 figNode = new FigInitialState();
-            } else if (ModelFacade.BRANCH_PSEUDOSTATEKIND.equals(kind)) {
+            } else if (ModelFacade.getBranchPseudostateKindToken()
+                    .equals(kind)) {
                 figNode = new FigBranchState();
-            } else if (ModelFacade.JUNCTION_PSEUDOSTATEKIND.equals(kind)) {
+            } else if (ModelFacade.getJunctionPseudostateKindToken()
+                    .equals(kind)) {
                 figNode = new FigJunctionState();
-            } else if (ModelFacade.FORK_PSEUDOSTATEKIND.equals(kind)) {
+            } else if (ModelFacade.getForkPseudostateKindToken().equals(kind)) {
                 figNode = new FigForkState();
-            } else if (ModelFacade.JOIN_PSEUDOSTATEKIND.equals(kind)) {
+            } else if (ModelFacade.getJoinPseudostateKindToken().equals(kind)) {
                 figNode = new FigJoinState();
-            } else if (ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND
+            } else if (ModelFacade.getShallowHistoryPseudostateKindToken()
                     .equals(kind)) {
                 figNode = new FigShallowHistoryState();
-            } else if (ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND.equals(kind)) {
+            } else if (ModelFacade.getDeepHistoryPseudostateKindToken()
+                    .equals(kind)) {
                 figNode = new FigDeepHistoryState();
             }
         }
-        
+
         if (figNode == null) {
             throw new IllegalArgumentException(
                     "Failed to construct a FigNode for " + node);
         }
-            
+
         setStyleAttributes(figNode, styleAttributes);
-        
+
         return figNode;
     }
-    
+
     /**
      * Set the fig style according to attributes.
      * @param fig the fig to style.
@@ -207,7 +205,7 @@ public abstract class UmlDiagramRenderer
         while (it.hasNext()) {
             name = (String) it.next();
             value = (String) attributeMap.get(name);
-            
+
             if ("operationsVisible".equals(name)) {
                 ((OperationsCompartmentContainer) fig)
                     .setOperationsVisible(value.equalsIgnoreCase("true"));
@@ -217,7 +215,7 @@ public abstract class UmlDiagramRenderer
             }
         }
     }
-    
+
 
     /**
      * Return a Fig that can be used to represent the given edge.
@@ -268,12 +266,12 @@ public abstract class UmlDiagramRenderer
         } else if (ModelFacade.isAInclude(edge)) {
             newEdge = new FigInclude();
         }
-        
+
         if (newEdge == null) {
             throw new IllegalArgumentException(
                     "Failed to construct a FigEdge for " + edge);
         }
-            
+
         return newEdge;
     }
 

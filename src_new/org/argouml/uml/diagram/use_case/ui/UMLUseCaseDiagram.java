@@ -138,22 +138,25 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
         this();
 
-        if (!ModelFacade.isANamespace(m))
+        if (!ModelFacade.isANamespace(m)) {
             throw new IllegalArgumentException();
+        }
 
         setNamespace(m);
     }
 
     /**
-     * Constructor
+     * Constructor.
+     *
      * @param name the name for the diagram
      * @param namespace the namespace for the diagram
      */
     public UMLUseCaseDiagram(String name, Object namespace) {
         this(namespace);
 
-        if (!ModelFacade.isANamespace(namespace))
+        if (!ModelFacade.isANamespace(namespace)) {
             throw new IllegalArgumentException();
+        }
 
         try {
             setName(name);
@@ -264,7 +267,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionActor() {
         if (actionActor == null) {
             actionActor = new RadioAction(new CmdCreateNode(
-                    ModelFacade.ACTOR, "Actor"));
+                    ModelFacade.getActorToken(), "Actor"));
         }
         return actionActor;
     }
@@ -275,7 +278,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionAggregation == null) {
             actionAggregation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                        ModelFacade.getAggregateAggregationKindToken(),
                         false,
                         "Aggregation"));
         }
@@ -288,7 +291,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionAssociation == null) {
             actionAssociation = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.NONE_AGGREGATIONKIND,
+                        ModelFacade.getNoneAggregationKindToken(),
                         false,
                         "Association"));
         }
@@ -301,7 +304,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionComposition == null) {
             actionComposition = new RadioAction(
                     new ActionAddAssociation(
-                        ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                        ModelFacade.getCompositeAggregationKindToken(),
                         false,
                         "Composition"));
         }
@@ -316,7 +319,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                     new CmdSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
-                        ModelFacade.DEPENDENCY,
+                        ModelFacade.getDependencyToken(),
                         "Dependency"));
         }
         return actionDependency;
@@ -330,7 +333,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                     new CmdSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
-                        ModelFacade.EXTEND,
+                        ModelFacade.getExtendToken(),
                         "Extend"));
         }
         return actionExtend;
@@ -344,7 +347,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                     new CmdSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
-                        ModelFacade.GENERALIZATION,
+                        ModelFacade.getGeneralizationToken(),
                         "Generalization"));
         }
         return actionGeneralize;
@@ -358,7 +361,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
                     new CmdSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
-                        ModelFacade.INCLUDE,
+                        ModelFacade.getIncludeToken(),
                         "Include"));
         }
         return actionInclude;
@@ -370,7 +373,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionUniAggregation == null) {
             actionUniAggregation  = new RadioAction(
                     new ActionAddAssociation(
-                            ModelFacade.AGGREGATE_AGGREGATIONKIND,
+                            ModelFacade.getAggregateAggregationKindToken(),
                             true,
                             "UniAggregation"));
         }
@@ -383,7 +386,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionUniAssociation == null) {
             actionUniAssociation  = new RadioAction(
                     new ActionAddAssociation(
-                            ModelFacade.NONE_AGGREGATIONKIND,
+                            ModelFacade.getNoneAggregationKindToken(),
                             true,
                             "UniAssociation"));
         }
@@ -396,7 +399,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         if (actionUniComposition == null) {
             actionUniComposition  = new RadioAction(
                     new ActionAddAssociation(
-                            ModelFacade.COMPOSITE_AGGREGATIONKIND,
+                            ModelFacade.getCompositeAggregationKindToken(),
                             true,
                             "UniComposition"));
         }
@@ -408,7 +411,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     protected Action getActionUseCase() {
         if (actionUseCase == null) {
             actionUseCase = new RadioAction(new CmdCreateNode(
-                    ModelFacade.USE_CASE, "UseCase"));
+                    ModelFacade.getUseCaseToken(), "UseCase"));
         }
         return actionUseCase;
     }

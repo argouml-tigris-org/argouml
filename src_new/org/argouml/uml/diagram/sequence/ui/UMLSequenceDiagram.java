@@ -136,19 +136,19 @@ public class UMLSequenceDiagram extends UMLDiagram {
         if (actions == null) {
             actions = new Object[5];
             actions[0] =
-                new CmdCreateNode(ModelFacade.OBJECT, "Object");
+                new CmdCreateNode(ModelFacade.getObjectToken(), "Object");
 	    int offset = 1;
 
 	    Object[][] actionList = {
-		{ModelFacade.CALL_ACTION, "CallAction"},
-		{ModelFacade.RETURN_ACTION, "ReturnAction"},
-		{ModelFacade.CREATE_ACTION, "CreateAction"},
-		{ModelFacade.DESTROY_ACTION, "DestroyAction"},
+		{ModelFacade.getCallActionToken(), "CallAction"},
+		{ModelFacade.getReturnActionToken(), "ReturnAction"},
+		{ModelFacade.getCreateActionToken(), "CreateAction"},
+		{ModelFacade.getDestroyActionToken(), "DestroyAction"},
 	    };
 
 	    for (int i = 0; i < actionList.length; i++) {
 		Hashtable args = new Hashtable();
-		args.put("edgeClass", ModelFacade.LINK);
+		args.put("edgeClass", ModelFacade.getLinkToken());
 		args.put("action", actionList[i][0]);
 		actions[i + offset] =
 		    new RadioAction(new CmdSetMode(ModeCreateLink.class, args,

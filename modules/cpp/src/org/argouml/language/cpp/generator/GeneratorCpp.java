@@ -912,7 +912,7 @@ public class GeneratorCpp extends Generator2
             // alternatively every abstract function is defined as
             // virtual
             if ((!ModelFacade.isLeaf(op) && !ModelFacade.isRoot(op)
-                    && (!(ModelFacade.CLASSIFIER_SCOPEKIND.equals(scope))))
+                    && (!(ModelFacade.getClassifierScopeKindToken().equals(scope))))
                     || (ModelFacade.isAbstract(op))) {
                 sb.append("virtual ");
             }
@@ -1070,9 +1070,9 @@ public class GeneratorCpp extends Generator2
             sb.append("*");
         } else if (ModelFacade.isAParameter(attr)) {
             if (ModelFacade.getKind(attr).equals(
-                        ModelFacade.OUT_PARAMETERDIRECTIONKIND)
+                        ModelFacade.getOutParameterDirectionKindToken())
                     || ModelFacade.getKind(attr).equals(
-                        ModelFacade.INOUT_PARAMETERDIRECTIONKIND)) {
+                        ModelFacade.getInOutParameterDirectionKindToken())) {
                 // out or inout parameters are defaulted to reference if
                 // not specified else
                 sb.append("&");
@@ -2086,8 +2086,8 @@ public class GeneratorCpp extends Generator2
         String s = generateTaggedValues (me, DOC_COMMENT_TAGS);
 
         Object multiplicity = ModelFacade.getMultiplicity(ae);
-        if (!(ModelFacade.M1_1_MULTIPLICITY.equals(multiplicity)
-                || ModelFacade.M0_1_MULTIPLICITY.equals (multiplicity))) {
+        if (!(ModelFacade.getM11MultiplicityToken().equals(multiplicity)
+                || ModelFacade.getM01MultiplicityToken().equals (multiplicity))) {
             // Multiplicity greater 1, that means we will generate some sort of
             // collection, so we need to specify the element type tag
             StringBuffer sDocComment = new StringBuffer(80);
@@ -2304,7 +2304,7 @@ public class GeneratorCpp extends Generator2
      * @return The generated text representing the scope.
      */
     private String generateScope(Object scope) {
-        if (ModelFacade.CLASSIFIER_SCOPEKIND.equals(scope)) {
+        if (ModelFacade.getClassifierScopeKindToken().equals(scope)) {
             return "static ";
         }
         return "";
@@ -2345,7 +2345,7 @@ public class GeneratorCpp extends Generator2
     private String generateParameterChangeability(Object par) {
         if (checkAttributeParameter4Tag(par, SEARCH_REFERENCE_POINTER_TAG)
                 && (ModelFacade.getKind(par)).equals(
-                        ModelFacade.IN_PARAMETERDIRECTIONKIND)) {
+                        ModelFacade.getInParameterDirectionKindToken())) {
             return "const ";
         } else {
             return "";
@@ -2354,7 +2354,7 @@ public class GeneratorCpp extends Generator2
 
     private String generateStructuralFeatureChangability(Object sf) {
         Object changeableKind = ModelFacade.getChangeability(sf);
-        if (ModelFacade.FROZEN_CHANGEABLEKIND.equals(changeableKind)) {
+        if (ModelFacade.getFrozenChangeableKindToken().equals(changeableKind)) {
             return "final ";
         }
         return "";
@@ -2369,7 +2369,7 @@ public class GeneratorCpp extends Generator2
         Object concurrency = ModelFacade.getConcurrency(op);
         if (concurrency != null
                 && (ModelFacade.getValue(concurrency)
-                    == ModelFacade.GUARDED_CONCURRENCYKIND)) {
+                    == ModelFacade.getGuardedConcurrencyKindToken())) {
             return "synchronized ";
         }
         return "";
@@ -2382,7 +2382,7 @@ public class GeneratorCpp extends Generator2
         if (multiplicity == null) {
             return "";
         }
-        if (ModelFacade.M0_N_MULTIPLICITY.equals(multiplicity)) {
+        if (ModelFacade.getM0NMultiplicityToken().equals(multiplicity)) {
             return ANY_RANGE;
         }
         String s = "";

@@ -51,8 +51,8 @@ public class PropPanelComponentInstance extends PropPanelInstance {
         super("Component Instance", lookupIcon("ComponentInstance"),
                 ConfigLoader.getTabPropsOrientation());
 
-        Object[] namesToWatch = {ModelFacade.STEREOTYPE,
-            ModelFacade.NAMESPACE, ModelFacade.CLASSIFIER,
+        Object[] namesToWatch = {ModelFacade.getStereotypeToken(),
+            ModelFacade.getNamespaceToken(), ModelFacade.getClassifierToken(),
 	};
 
         setNameEventListening(namesToWatch);
@@ -77,7 +77,7 @@ public class PropPanelComponentInstance extends PropPanelInstance {
 
         addSeperator();
         AbstractActionAddModelElement action =
-            new ActionAddInstanceClassifier((Class) ModelFacade.COMPONENT);
+            new ActionAddInstanceClassifier(ModelFacade.getComponentToken());
         JScrollPane classifierScroll = new JScrollPane(
                 new UMLMutableLinkedList(new UMLInstanceClassifierListModel(),
                         action, null, null, true));

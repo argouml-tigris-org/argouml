@@ -80,11 +80,11 @@ public class ActionSetModelElementVisibility extends UMLAction {
                 Object m = /*(MModelElement)*/ target;
                 Object kind = null;
                 if (actionCommand.equals(PUBLIC_COMMAND)) {
-                    kind = ModelFacade.PUBLIC_VISIBILITYKIND;
+                    kind = ModelFacade.getPublicVisibilityKindToken();
                 } else if (actionCommand.equals(PROTECTED_COMMAND)) {
-                    kind = ModelFacade.PROTECTED_VISIBILITYKIND;
+                    kind = ModelFacade.getProtectedVisibilityKindToken();
                 } else {
-                    kind = ModelFacade.PRIVATE_VISIBILITYKIND;
+                    kind = ModelFacade.getPrivateVisibilityKindToken();
                 }
                 Model.getCoreHelper().setVisibility(m, kind);
 

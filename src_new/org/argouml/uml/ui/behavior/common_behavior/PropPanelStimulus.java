@@ -61,7 +61,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
                 ConfigLoader.getTabPropsOrientation());
 
         Object[] namesToWatch = {
-	    ModelFacade.ACTION,
+	    ModelFacade.getActionToken(),
 	};
         setNameEventListening(namesToWatch);
 
@@ -182,7 +182,9 @@ public class PropPanelStimulus extends PropPanelModelElement {
                 //((MStimulus)stimulus).getFactory().createLink();
                 if (link != null) {
                     Model.getCommonBehaviorHelper().addStimulus(link, stimulus);
-                    Model.getCommonBehaviorHelper().setCommunicationLink(stimulus, /*(MLink)*/link);
+                    Model.getCommonBehaviorHelper().setCommunicationLink(
+                            stimulus,
+                            link);
                 }
             }
             Object oldAssoc = ModelFacade.getAssociation(link);

@@ -61,10 +61,10 @@ public class ActionSetAssociationEndTargetScope extends UMLAction {
                 Object m = /*(MAssociationEnd)*/ target;
                 if (source.isSelected()) {
                     Model.getCoreHelper().setTargetScope(m,
-                            ModelFacade.CLASSIFIER_SCOPEKIND);
+                            ModelFacade.getClassifierScopeKindToken());
                 } else {
                     Model.getCoreHelper().setTargetScope(m,
-                            ModelFacade.INSTANCE_SCOPEKIND);
+                            ModelFacade.getInstanceScopeKindToken());
                 }
             }
         }

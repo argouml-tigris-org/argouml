@@ -81,11 +81,11 @@ public class ActionSetOperationConcurrencyKind extends UMLAction {
                 Object m = /* (MModelElement) */target;
                 Object kind = null;
                 if (actionCommand.equals(SEQUENTIAL_COMMAND)) {
-                    kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
+                    kind = ModelFacade.getSequentialConcurrencyKindToken();
                 } else if (actionCommand.equals(GUARDED_COMMAND)) {
-                    kind = ModelFacade.GUARDED_CONCURRENCYKIND;
+                    kind = ModelFacade.getGuardedConcurrencyKindToken();
                 } else {
-                    kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
+                    kind = ModelFacade.getConcurrentConcurrencyKindToken();
                 }
                 Model.getCoreHelper().setConcurrency(m, kind);
             }

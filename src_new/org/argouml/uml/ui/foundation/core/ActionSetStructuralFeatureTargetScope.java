@@ -58,9 +58,11 @@ public class ActionSetStructuralFeatureTargetScope extends UMLAction {
 	    Object target = source.getTarget();
 	    if (ModelFacade.isAStructuralFeature(target)) {
                 Object m = /*(MStructuralFeature)*/ target;
-		Model.getCoreHelper().setTargetScope(m,
-                    source.isSelected() ? ModelFacade.CLASSIFIER_SCOPEKIND
-                                        : ModelFacade.INSTANCE_SCOPEKIND);
+		Model.getCoreHelper().setTargetScope(
+		        m,
+		        source.isSelected()
+		        ? ModelFacade.getClassifierScopeKindToken()
+		        : ModelFacade.getInstanceScopeKindToken());
 	    }
 	}
     }

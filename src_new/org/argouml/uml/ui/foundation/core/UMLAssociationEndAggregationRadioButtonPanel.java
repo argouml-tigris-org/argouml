@@ -71,19 +71,26 @@ public class UMLAssociationEndAggregationRadioButtonPanel
         if (getTarget() != null) {
             Object target = /*(MAssociationEnd)*/ getTarget();
             Object/*MAggregationKind*/kind = ModelFacade.getAggregation(target);
-            if (kind == null || kind.equals(ModelFacade.NONE_AGGREGATIONKIND)) {
+            if (kind == null
+                    || kind.equals(ModelFacade.getNoneAggregationKindToken())) {
                 setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
-            } else
-		if (kind.equals(ModelFacade.AGGREGATE_AGGREGATIONKIND)) {
+            } else {
+		if (kind.equals(
+		        ModelFacade.getAggregateAggregationKindToken())) {
 		    setSelected(ActionSetAssociationEndAggregation
 		            .AGGREGATE_COMMAND);
-		} else
-		    if (kind.equals(ModelFacade.COMPOSITE_AGGREGATIONKIND)) {
+		} else {
+		    if (kind.equals(
+		            ModelFacade.getCompositeAggregationKindToken())) {
 			setSelected(ActionSetAssociationEndAggregation
 			        .COMPOSITE_COMMAND);
-		    } else
-			setSelected(ActionSetAssociationEndAggregation
+		    } else {
+		        setSelected(ActionSetAssociationEndAggregation
+
 			        .NONE_COMMAND);
+		    }
+		}
+            }
         }
     }
 

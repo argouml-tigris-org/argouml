@@ -52,7 +52,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         super("type", false);
         UmlModelEventPump.getPump()
 	    .addClassModelEventListener(this,
-					ModelFacade.NAMESPACE,
+					ModelFacade.getNamespaceToken(),
 					"ownedElement");
     }
 
@@ -64,15 +64,15 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
     }
 
     /**
-     * Helper method for buildModelList
+     * Helper method for buildModelList.<p>
      *
-     * <p>Adds those elements from source that do not have the same path as
+     * Adds those elements from source that do not have the same path as
      * any path in paths to elements, and its path to paths. Thus elements
      * will never contain two objects with the same path, unless they are
      * added by other means.
      */
     private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
-							Collection source) {
+						      Collection source) {
         Iterator it2 = source.iterator();
 
 	while (it2.hasNext()) {
@@ -115,7 +115,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 		paths,
 		Model.getModelManagementHelper().getAllModelElementsOfKind(
 			model,
-			(Class) ModelFacade.CLASSIFIER));
+			ModelFacade.getClassifierToken()));
         }
 
 	addAllUniqueModelElementsFrom(
@@ -123,7 +123,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 	    paths,
 	    Model.getModelManagementHelper().getAllModelElementsOfKind(
 		    p.getDefaultModel(),
-		    (Class) ModelFacade.CLASSIFIER));
+		    ModelFacade.getClassifierToken()));
 
         setElements(elements);
     }

@@ -44,7 +44,7 @@ public class ActionAddObject extends CmdCreateNode {
      * The constructor.
      */
     public ActionAddObject() {
-        super(ModelFacade.OBJECT, false, "Object");
+        super(ModelFacade.getObjectToken(), false, "Object");
     }
 
     /**

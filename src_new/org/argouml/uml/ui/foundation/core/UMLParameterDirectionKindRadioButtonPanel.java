@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui.foundation.core;
 
 import java.util.HashMap;
@@ -32,7 +31,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
- * A panel for the parameterdiretion (in, inout...) of a parameter
+ * A panel for the parameterdiretion (in, inout...) of a parameter.
  *
  * @author mkl
  */
@@ -74,11 +73,14 @@ public class UMLParameterDirectionKindRadioButtonPanel extends
             Object target = /* (MModelElement) */getTarget();
             Object kind = ModelFacade.getKind(target);
             if (kind == null
-                    || kind.equals(ModelFacade.IN_PARAMETERDIRECTIONKIND)) {
+                    || kind.equals(
+                            ModelFacade.getInParameterDirectionKindToken())) {
                 setSelected(ActionSetParameterDirectionKind.IN_COMMAND);
-            } else if (kind.equals(ModelFacade.INOUT_PARAMETERDIRECTIONKIND)) {
+            } else if (kind.equals(
+                    ModelFacade.getInOutParameterDirectionKindToken())) {
                 setSelected(ActionSetParameterDirectionKind.INOUT_COMMAND);
-            } else if (kind.equals(ModelFacade.OUT_PARAMETERDIRECTIONKIND)) {
+            } else if (kind.equals(
+                    ModelFacade.getOutParameterDirectionKindToken())) {
                 setSelected(ActionSetParameterDirectionKind.OUT_COMMAND);
             } else {
                 setSelected(ActionSetParameterDirectionKind.RETURN_COMMAND);

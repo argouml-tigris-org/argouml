@@ -46,10 +46,10 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.text.ParseException;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
-import java.util.Collection;
 
 import javax.swing.Icon;
 import javax.swing.JSeparator;
@@ -85,12 +85,17 @@ import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.util.Trash;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Selection;
 import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerDiagram;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.*;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigGroup;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * Abstract class to display diagram icons for UML ModelElements that
@@ -119,7 +124,6 @@ public abstract class FigNodeModelElement
     private NotationName currentNotationName;
     private static final Font LABEL_FONT;
     private static final Font ITALIC_LABEL_FONT;
-    private static final int MARGIN = 2;
 
     /**
      * min. 17, used to calculate y pos of FigText items in a compartment
@@ -153,12 +157,12 @@ public abstract class FigNodeModelElement
 
     /**
      * The intensity value of the shadow color (0-255).
-    **/
+     */
     protected static final int SHADOW_COLOR_VALUE = 32;
 
     /**
      * The transparency value of the shadow color (0-255).
-    **/
+     */
     protected static final int SHADOW_COLOR_ALPHA = 128;
 
     static {
@@ -183,13 +187,24 @@ public abstract class FigNodeModelElement
         SHADOW_CONVOLVE_OP = new ConvolveOp(new Kernel(3, 3, blur));
     }
 
-    /** Used for #buildModifierPopUp() */
+    /**
+     * Used for #buildModifierPopUp().
+     */
     protected static final int ROOT = 1;
-    /** Used for #buildModifierPopUp() */
+
+    /**
+     * Used for #buildModifierPopUp().
+     */
     protected static final int ABSTRACT = 2;
-    /** Used for #buildModifierPopUp() */
+
+    /**
+     * Used for #buildModifierPopUp().
+     */
     protected static final int LEAF = 4;
-    /** Used for #buildModifierPopUp() */
+
+    /**
+     * Used for #buildModifierPopUp().
+     */
     protected static final int ACTIVE = 8;
 
     ////////////////////////////////////////////////////////////////
@@ -223,7 +238,9 @@ public abstract class FigNodeModelElement
      */
     private Vector enclosedFigs = new Vector();
 
-    /** The figure enclosing this figure */
+    /**
+     * The figure enclosing this figure.
+     */
     private Fig encloser = null;
 
     private boolean readyToEdit = true;
@@ -235,11 +252,11 @@ public abstract class FigNodeModelElement
     private ItemUID itemUid;
 
     /**
-     * Set the removeFromDiagram to false if this node may not 
+     * Set the removeFromDiagram to false if this node may not
      * be removed from the diagram.
      */
     private boolean removeFromDiagram = true;
-    
+
     /**
      * The main constructor.
      *
@@ -269,9 +286,10 @@ public abstract class FigNodeModelElement
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
-    /** Partially construct a new FigNode.  This method creates the
-     *  name element that holds the name of the model element and adds
-     *  itself as a listener.
+    /**
+     * Partially construct a new FigNode.  This method creates the
+     * name element that holds the name of the model element and adds
+     * itself as a listener.
      *
      * @param gm ignored
      * @param node the owning UML element
@@ -292,7 +310,7 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * USED BY PGML.tee
+     * USED BY PGML.tee.
      * @see org.tigris.gef.presentation.Fig#getNameAndBounds()
      */
     public String classNameAndBounds() {
@@ -306,7 +324,7 @@ public abstract class FigNodeModelElement
     /**
      * After the base clone method has been called determine which child
      * figs of the clone represent the name, stereotype and port. <p>
-     * 
+     *
      * The clone function is used by Copy/Paste operations.
      *
      * @see java.lang.Object#clone()
@@ -318,9 +336,15 @@ public abstract class FigNodeModelElement
         while (thisIter.hasNext()) {
             Fig thisFig = (Fig) thisIter.next();
             Fig cloneFig = (Fig) cloneIter.next();
-            if (thisFig == getBigPort()) clone.setBigPort(cloneFig);
-            if (thisFig == name) clone.name = (FigText) cloneFig;
-            if (thisFig == stereo) clone.stereo = (FigText) cloneFig;
+            if (thisFig == getBigPort()) {
+                clone.setBigPort(cloneFig);
+            }
+            if (thisFig == name) {
+                clone.name = (FigText) cloneFig;
+            }
+            if (thisFig == stereo) {
+                clone.stereo = (FigText) cloneFig;
+            }
         }
         return clone;
     }
@@ -328,8 +352,10 @@ public abstract class FigNodeModelElement
 
 
 
-    /** Default Reply text to be shown while placing node in diagram.
+    /**
+     * Default Reply text to be shown while placing node in diagram.
      * Overrule this when the text is not "new [UMLClassName]".
+     *
      * @return the text to be shown while placing node in diagram
      */
     public String placeString() {
@@ -361,7 +387,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Get the Fig that displays the model element name
+     * Get the Fig that displays the model element name.
+     *
      * @return the name Fig
      */
     public FigText getNameFig() {
@@ -369,7 +396,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Set the Fig that displays the model element name
+     * Set the Fig that displays the model element name.
+     *
      * @param fig the name Fig
      */
     protected void setNameFig(FigText fig) {
@@ -377,7 +405,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Get the name of the model element this Fig represents
+     * Get the name of the model element this Fig represents.
+     *
      * @return the name of the model element
      */
     public String getName() {
@@ -385,7 +414,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Change the name of the model element this Fig represents
+     * Change the name of the model element this Fig represents.
+     *
      * @param n the name of the model element
      */
     public void setName(String n) {
@@ -449,7 +479,7 @@ public abstract class FigNodeModelElement
             super("checkbox.visibility.public-uc", NO_ICON);
             owner = o;
             putValue("SELECTED", new Boolean(
-                    ModelFacade.PUBLIC_VISIBILITYKIND
+                    ModelFacade.getPublicVisibilityKindToken()
                     .equals(ModelFacade.getVisibility(getOwner()))));
         }
 
@@ -458,7 +488,7 @@ public abstract class FigNodeModelElement
          */
         public void actionPerformed(ActionEvent e) {
             Model.getCoreHelper().setVisibility(owner,
-                    ModelFacade.PUBLIC_VISIBILITYKIND);
+                    ModelFacade.getPublicVisibilityKindToken());
         }
     }
 
@@ -473,7 +503,7 @@ public abstract class FigNodeModelElement
             super("checkbox.visibility.protected-uc", NO_ICON);
             owner = o;
             putValue("SELECTED", new Boolean(
-                    ModelFacade.PROTECTED_VISIBILITYKIND
+                    ModelFacade.getProtectedVisibilityKindToken()
                     .equals(ModelFacade.getVisibility(getOwner()))));
         }
 
@@ -482,7 +512,7 @@ public abstract class FigNodeModelElement
          */
         public void actionPerformed(ActionEvent e) {
             Model.getCoreHelper().setVisibility(owner,
-                    ModelFacade.PROTECTED_VISIBILITYKIND);
+                    ModelFacade.getProtectedVisibilityKindToken());
         }
     }
 
@@ -497,7 +527,7 @@ public abstract class FigNodeModelElement
             super("checkbox.visibility.private-uc", NO_ICON);
             owner = o;
             putValue("SELECTED", new Boolean(
-                    ModelFacade.PRIVATE_VISIBILITYKIND
+                    ModelFacade.getPrivateVisibilityKindToken()
                     .equals(ModelFacade.getVisibility(getOwner()))));
         }
 
@@ -506,7 +536,7 @@ public abstract class FigNodeModelElement
          */
         public void actionPerformed(ActionEvent e) {
             Model.getCoreHelper().setVisibility(owner,
-                    ModelFacade.PRIVATE_VISIBILITYKIND);
+                    ModelFacade.getPrivateVisibilityKindToken());
         }
     }
 
@@ -709,8 +739,10 @@ public abstract class FigNodeModelElement
         return enclosedFigs;
     }
 
-    /** Update the order of this fig and the order of the
-     *    figs that are inside of this fig
+    /**
+     * Update the order of this fig and the order of the
+     * figs that are inside of this fig.
+     *
      * @param figures in the new order
      */
     public void elementOrdering(Vector figures) {
@@ -946,7 +978,7 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * set some new bounds
+     * set some new bounds.
      */
     protected void updateBounds() {
         if (!checkSize) {
@@ -990,7 +1022,8 @@ public abstract class FigNodeModelElement
             /* If the source of the event is an UML object,
              * e.g. the owner of this Fig (but not always only the owner
              * is shown, e.g. for a class, also its attributes are shown),
-             * then the UML model has been changed.*/
+             * then the UML model has been changed.
+             */
             modelChanged(pve);
         }
     }
@@ -1114,9 +1147,10 @@ public abstract class FigNodeModelElement
     ////////////////////////////////////////////////////////////////
     // internal methods
 
-    /** This is called after any part of the UML MModelElement has
-     *  changed. This method automatically updates the name FigText.
-     *  Subclasses should override and update other parts.
+    /**
+     * This is called after any part of the UML MModelElement has
+     * changed. This method automatically updates the name FigText.
+     * Subclasses should override and update other parts.
      *
      * @param mee the ModelElementEvent that caused the change
      */
@@ -1137,7 +1171,8 @@ public abstract class FigNodeModelElement
                 && mee.getPropertyName().equals("stereotype"))) {
             if (mee.getOldValue() != null) {
                 /* TODO: MVW: No idea what to replace getRemovedValue() with...
-                 * I try getOldValue() for now. To be checked! */
+                 * I try getOldValue() for now. To be checked!
+                 */
                 Model.getPump().removeModelEventListener(this,
                         mee.getOldValue(), "name");
             }
@@ -1233,7 +1268,7 @@ public abstract class FigNodeModelElement
         super.setOwner(own);
         if (ModelFacade.isAModelElement(own)
                 && UUIDHelper.getInstance().getUUID(own) == null) {
-            Model.getCoreHelper().setUUID(own, 
+            Model.getCoreHelper().setUUID(own,
                     UUIDHelper.getInstance().getNewUUID());
         }
         readyToEdit = true;
@@ -1260,17 +1295,17 @@ public abstract class FigNodeModelElement
             return;
         }
         if (ModelFacade.getStereotypes(getOwner()).size() > 0) {
-            stereotype = ModelFacade.getStereotypes(getOwner()).iterator()
-                    .next();
+            stereotype =
+                ModelFacade.getStereotypes(getOwner()).iterator().next();
         }
         if (stereotype == null) {
             stereo.setText("");
             return;
         }
         String stereoStr = ModelFacade.getName(stereotype);
-        if (stereoStr == null || stereoStr.length() == 0)
+        if (stereoStr == null || stereoStr.length() == 0) {
             stereo.setText("");
-        else {
+        } else {
             stereo.setText(Notation.generate(this, stereotype));
         }
     }
@@ -1280,8 +1315,9 @@ public abstract class FigNodeModelElement
      */
     protected void updateNameText() {
         if (readyToEdit) {
-            if (getOwner() == null)
+            if (getOwner() == null) {
                 return;
+            }
             String nameStr =
                 Notation.generate(this, ModelFacade.getName(getOwner()));
             name.setText(nameStr);
@@ -1417,11 +1453,13 @@ public abstract class FigNodeModelElement
         while (figs.hasMoreElements()) {
             fi = (Fig) figs.nextElement();
             fw = fi.getMinimumSize().width;
-            if (!checkSize && fw > newW - 2)
+            if (!checkSize && fw > newW - 2) {
                 fw = newW - 2;
+            }
             fi.setBounds(x + 1, yy + 1, fw, Math.min(ROWHEIGHT, step) - 2);
-            if (checkSize && newW < fw + 2)
+            if (checkSize && newW < fw + 2) {
                 newW = fw + 2;
+            }
             yy += step;
         }
         myBigPort.setBounds(x, y, newW, newH);
@@ -1533,7 +1571,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Set the Fig containing the stereotype
+     * Set the Fig containing the stereotype.
+     *
      * @param fig the stereotype Fig
      */
     protected void setStereotypeFig(Fig fig) {
@@ -1541,7 +1580,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Get the Fig containing the stereotype
+     * Get the Fig containing the stereotype.
+     *
      * @return the stereotype Fig
      */
     protected Fig getStereotypeFig() {
@@ -1549,7 +1589,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Get the FigText containing the stereotype
+     * Get the FigText containing the stereotype.
+     *
      * @return the stereotype FigText
      */
     protected FigText getStereotypeFigText() {
@@ -1557,7 +1598,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Set the text describing the stereotype
+     * Set the text describing the stereotype.
+     *
      * @param stereotype the stereotype text
      */
     public void setStereotype(String stereotype) {
@@ -1565,7 +1607,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * Get the text describing the stereotype
+     * Get the text describing the stereotype.
+     *
      * @return the stereotype text
      */
     public String getStereotype() {
@@ -1645,10 +1688,11 @@ public abstract class FigNodeModelElement
      * Method to draw a StateVertex Fig's enclosed figs.
      */
     public void redrawEnclosedFigs() {
-        if (!(org.argouml.model.ModelFacade.isAStateVertex(getOwner())))
+        if (!(ModelFacade.isAStateVertex(getOwner()))) {
             return;
+        }
         Editor editor = Globals.curEditor();
-        LayerDiagram lay = 
+        LayerDiagram lay =
             ((LayerDiagram) editor.getLayerManager().getActiveLayer());
         if (!enclosedFigs.isEmpty()) {
             for (int i = 0; i < enclosedFigs.size(); i++) {
@@ -1665,8 +1709,8 @@ public abstract class FigNodeModelElement
     }
 
     /**
-     * To redrawn each element correctly when changing his location 
-     * with X and U additions
+     * To redrawn each element correctly when changing his location
+     * with X and U additions.
      *
      * @param xInc the increment in the x direction
      * @param yInc the increment in the y direction
@@ -1677,9 +1721,10 @@ public abstract class FigNodeModelElement
         setLocation(rFig.x + xInc, rFig.y + yInc);
         figsVector = ((Vector) getEnclosedFigs().clone());
         if (!figsVector.isEmpty()) {
-            for (int i = 0; i < figsVector.size(); i++)
+            for (int i = 0; i < figsVector.size(); i++) {
                 ((FigNodeModelElement) figsVector.elementAt(i))
                             .displace(xInc, yInc);
+            }
         }
     }
 

@@ -98,17 +98,21 @@ public class SelectionState extends SelectionWButtons {
      */
     public void hitHandle(Rectangle r, Handle h) {
 	super.hitHandle(r, h);
-	if (h.index != -1)
+	if (h.index != -1) {
 	    return;
-	if (!isPaintButtons())
+	}
+	if (!isPaintButtons()) {
 	    return;
+	}
 	Editor ce = Globals.curEditor();
 	SelectionManager sm = ce.getSelectionManager();
-	if (sm.size() != 1)
+	if (sm.size() != 1) {
 	    return;
+	}
 	ModeManager mm = ce.getModeManager();
-	if (mm.includes(ModeModify.class) && getPressedButton() == -1)
+	if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
 	    return;
+	}
 	int cx = _content.getX();
 	int cy = _content.getY();
 	int cw = _content.getWidth();
@@ -135,10 +139,12 @@ public class SelectionState extends SelectionWButtons {
 	int cy = _content.getY();
 	int cw = _content.getWidth();
 	int ch = _content.getHeight();
-	if (showOutgoing)
+	if (showOutgoing) {
 	    paintButtonLeft(trans, g, cx + cw, cy + ch / 2, 12);
-	if (showIncoming)
+	}
+	if (showIncoming) {
 	    paintButtonRight(trans, g, cx, cy + ch / 2, 13);
+	}
     }
 
     /**
@@ -157,12 +163,13 @@ public class SelectionState extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class) ModelFacade.STATE;
+	Class nodeClass = (Class) ModelFacade.getStateToken();
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
-	if (!(gm instanceof MutableGraphModel))
+	if (!(gm instanceof MutableGraphModel)) {
 	    return;
+	}
 
 	MutableGraphModel mgm = (MutableGraphModel) gm;
 
@@ -170,12 +177,12 @@ public class SelectionState extends SelectionWButtons {
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12 : //add outgoing
-	    edgeClass = (Class) ModelFacade.TRANSITION;
+	    edgeClass = (Class) ModelFacade.getTransitionToken();
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13 : // add incoming
-	    edgeClass = (Class) ModelFacade.TRANSITION;
+	    edgeClass = (Class) ModelFacade.getTransitionToken();
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -205,7 +212,7 @@ public class SelectionState extends SelectionWButtons {
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
 	return mgm.connect(newNode, _content.getOwner(),
-			   (Class) ModelFacade.TRANSITION);
+			   (Class) ModelFacade.getTransitionToken());
     }
 
     /**
@@ -214,7 +221,7 @@ public class SelectionState extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
 	return gm.connect(newNode, _content.getOwner(),
-			  (Class) ModelFacade.TRANSITION);
+			  (Class) ModelFacade.getTransitionToken());
     }
 
     /**
@@ -223,7 +230,7 @@ public class SelectionState extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
 	return gm.connect(_content.getOwner(), newNode,
-			  (Class) ModelFacade.TRANSITION);
+			  (Class) ModelFacade.getTransitionToken());
     }
 
     /**
@@ -235,7 +242,7 @@ public class SelectionState extends SelectionWButtons {
 	return gm.connect(
 			  _content.getOwner(),
 			  _content.getOwner(),
-			  (Class) ModelFacade.TRANSITION);
+			  (Class) ModelFacade.getTransitionToken());
     }
 
     /**
@@ -244,7 +251,7 @@ public class SelectionState extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
 	return gm.connect(_content.getOwner(), newNode,
-			  (Class) ModelFacade.TRANSITION);
+			  (Class) ModelFacade.getTransitionToken());
     }
 
 

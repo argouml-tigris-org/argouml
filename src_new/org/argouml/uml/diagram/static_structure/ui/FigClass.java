@@ -69,7 +69,7 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**
- * <p>Class to display graphics for a UML Class in a diagram.</p>
+ * Class to display graphics for a UML Class in a diagram.<p>
  */
 public class FigClass extends FigNodeModelElement
         implements AttributesCompartmentContainer,
@@ -89,9 +89,9 @@ public class FigClass extends FigNodeModelElement
     private static final int ATTRIBUTES_POSN = 5;
 
     /**
-     * <p>Manages residency of a class within a component on a deployment
-     *   diagram. Not clear why it is public, or even why it is an instance
-     *   variable (rather than local to the method).</p>
+     * Manages residency of a class within a component on a deployment
+     * diagram. Not clear why it is public, or even why it is an instance
+     * variable (rather than local to the method).<p>
      *
      * not currently used. should be lazily instantiated in future.
      */
@@ -99,14 +99,14 @@ public class FigClass extends FigNodeModelElement
 //	UmlFactory.getFactory().getCore().createElementResidence();
 
     /**
-     * <p>Text highlighted by mouse actions on the diagram.</p>
+     * Text highlighted by mouse actions on the diagram.<p>
      */
     private CompartmentFigText highlightedFigText = null;
 
     /**
-     * <p>Flag to indicate that we have just been created. This is to fix the
-     *   problem with loading classes that have stereotypes already
-     *   defined.</p>
+     * Flag to indicate that we have just been created. This is to fix the
+     * problem with loading classes that have stereotypes already
+     * defined.<p>
      */
     private boolean newlyCreated = false;
 
@@ -227,14 +227,14 @@ public class FigClass extends FigNodeModelElement
     }
 
     /**
-     * <p>Constructor for use if this figure is created for an existing class
-     *   node in the metamodel.</p>
+     * Constructor for use if this figure is created for an existing class
+     * node in the metamodel.<p>
      *
-     * <p>Set the figure's name according to this node. This is used when the
-     *   user click's on 'add to diagram' in the navpane.  Don't know if this
-     *   should rather be done in one of the super classes, since similar code
-     *   is used in FigInterface.java etc.  Andreas Rueckert
-     *   &lt;a_rueckert@gmx.net&gt;</p>
+     * Set the figure's name according to this node. This is used when the
+     * user click's on 'add to diagram' in the navpane.  Don't know if this
+     * should rather be done in one of the super classes, since similar code
+     * is used in FigInterface.java etc.  Andreas Rueckert
+     * &lt;a_rueckert@gmx.net&gt;<p>
      *
      * @param gm   Not actually used in the current implementation
      *
@@ -448,7 +448,7 @@ public class FigClass extends FigNodeModelElement
     }
 
     /**
-     * USED BY PGML.tee
+     * USED BY PGML.tee.
      * @return the class name and bounds together with compartment
      * visibility.
      */
@@ -459,10 +459,10 @@ public class FigClass extends FigNodeModelElement
     }
 
     /**
-     * <p>Gets the minimum size permitted for a class on the diagram.</p>
+     * Gets the minimum size permitted for a class on the diagram.<p>
      *
-     * <p>Parts of this are hardcoded, notably the fact that the name
-     *   compartment has a minimum height of 21 pixels.</p>
+     * Parts of this are hardcoded, notably the fact that the name
+     * compartment has a minimum height of 21 pixels.<p>
      *
      * @return  the size of the minimum bounding box.
      */
@@ -563,8 +563,9 @@ public class FigClass extends FigNodeModelElement
         super.translate(dx, dy);
         Editor ce = Globals.curEditor();
         Selection sel = ce.getSelectionManager().findSelectionFor(this);
-        if (sel instanceof SelectionClass)
-	    ((SelectionClass) sel).hideButtons();
+        if (sel instanceof SelectionClass) {
+            ((SelectionClass) sel).hideButtons();
+        }
     }
 
     ////////////////////////////////////////////////////////////////
@@ -723,8 +724,9 @@ public class FigClass extends FigNodeModelElement
                 i = 1;
             }
             ft2 = (FigText) v.elementAt(i);
-            if (!ft2.isVisible())
+            if (!ft2.isVisible()) {
                 ft2 = null;
+            }
         } while (ft2 == null);
         return ft2;
     }
@@ -907,16 +909,16 @@ public class FigClass extends FigNodeModelElement
     }
 
     /**
-     * <p>Sets the bounds, but the size will be at least the one returned by
-     *   {@link #getMinimumSize()}, unless checking of size is disabled.</p>
+     * Sets the bounds, but the size will be at least the one returned by
+     * {@link #getMinimumSize()}, unless checking of size is disabled.<p>
      *
-     * <p>If the required height is bigger, then the additional height is
-     *   equally distributed among all figs (i.e. compartments), such that the
-     *   cumulated height of all visible figs equals the demanded height<p>.
+     * If the required height is bigger, then the additional height is
+     * equally distributed among all figs (i.e. compartments), such that the
+     * cumulated height of all visible figs equals the demanded height<p>.
      *
-     * <p>Some of this has "magic numbers" hardcoded in. In particular there is
-     *   a knowledge that the minimum height of a name compartment is 21
-     *   pixels.</p>
+     * Some of this has "magic numbers" hardcoded in. In particular there is
+     * a knowledge that the minimum height of a name compartment is 21
+     * pixels.<p>
      *
      * @param x  Desired X coordinate of upper left corner
      *
@@ -1001,10 +1003,10 @@ public class FigClass extends FigNodeModelElement
         if (displayedFigs == 1) {
             height = newH;
         }
-        
+
         getNameFig().setBounds(x, currentY, newW, height);
-        
-        
+
+
         getStereotypeFig().setBounds(x, y, newW, STEREOHEIGHT + 1);
         getFigAt(BLINDER_POSN).setBounds(x + 1, y + STEREOHEIGHT, newW - 2, 2);
 
@@ -1024,7 +1026,7 @@ public class FigClass extends FigNodeModelElement
         if (isCheckSize()) {
             height = ROWHEIGHT * attributeCount + 2 + extraEach;
         } else if (newH > currentY - y && attributeCount + operationCount > 0) {
-            height = (newH + y - currentY) * attributeCount 
+            height = (newH + y - currentY) * attributeCount
                         / (attributeCount + operationCount) + 1;
         } else {
             height = 1;
@@ -1151,10 +1153,11 @@ public class FigClass extends FigNodeModelElement
                 attr.setText(Notation.generate(this, sf));
                 attr.setOwner(sf); //TODO: update the model again here?
                 /* This causes another event, and modelChanged() called,
-                 * and updateAttributes() called again... */
+                 * and updateAttributes() called again...
+                 */
 
                 // underline, if static
-                attr.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
+                attr.setUnderline(ModelFacade.getClassifierScopeKindToken()
 				  .equals(ModelFacade.getOwnerScope(sf)));
                 acounter++;
             }
@@ -1218,10 +1221,11 @@ public class FigClass extends FigNodeModelElement
                 oper.setText(Notation.generate(this, bf));
                 oper.setOwner(bf); //TODO: update the model again here?
                 /* This causes another event, and modelChanged() called,
-                 * and updateOperations() called again... */
+                 * and updateOperations() called again...
+                 */
 
                 // underline, if static
-                oper.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
+                oper.setUnderline(ModelFacade.getClassifierScopeKindToken()
 				  .equals(ModelFacade.getOwnerScope(bf)));
                 // italics, if abstract
                 //oper.setItalic(((MOperation)bf).isAbstract()); //
@@ -1274,7 +1278,7 @@ public class FigClass extends FigNodeModelElement
     }
 
     /**
-     * Updates the name if modelchanged receives an "isAbstract" event
+     * Updates the name if modelchanged receives an "isAbstract" event.
      */
     protected void updateAbstract() {
         Rectangle rect = getBounds();

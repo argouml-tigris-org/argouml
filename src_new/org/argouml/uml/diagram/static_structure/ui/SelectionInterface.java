@@ -69,9 +69,10 @@ public class SelectionInterface extends SelectionWButtons {
      */
     public SelectionInterface(Fig f) { super(f); }
 
-    /** Return a handle ID for the handle under the mouse, or -1 if
-     *  none. TODO: in the future, return a Handle instance or
-     *  null. <p>
+    /**
+     * Return a handle ID for the handle under the mouse, or -1 if
+     * none. TODO: in the future, return a Handle instance or
+     * null. <p>
      *  <pre>
      *   0-------1-------2
      *   |               |
@@ -85,13 +86,21 @@ public class SelectionInterface extends SelectionWButtons {
      */
     public void hitHandle(Rectangle r, Handle h) {
 	super.hitHandle(r, h);
-	if (h.index != -1) return;
-	if (!isPaintButtons()) return;
+	if (h.index != -1) {
+	    return;
+	}
+	if (!isPaintButtons()) {
+	    return;
+	}
 	Editor ce = Globals.curEditor();
 	SelectionManager sm = ce.getSelectionManager();
-	if (sm.size() != 1) return;
+	if (sm.size() != 1) {
+	    return;
+	}
 	ModeManager mm = ce.getModeManager();
-	if (mm.includes(ModeModify.class) && getPressedButton() == -1) return;
+	if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
+	    return;
+	}
 	int cx = _content.getX();
 	int cy = _content.getY();
 	int cw = _content.getWidth();
@@ -137,12 +146,12 @@ public class SelectionInterface extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class) ModelFacade.CLASS;
+	Class nodeClass = (Class) ModelFacade.getClassToken();
 	int bx = mX, by = mY;
 	boolean reverse = false;
 	switch (hand.index) {
 	case 11: //add realization
-	    edgeClass = (Class) ModelFacade.ABSTRACTION;
+	    edgeClass = (Class) ModelFacade.getAbstractionToken();
 	    reverse = true;
 	    by = cy + ch;
 	    bx = cx + cw / 2;
@@ -178,7 +187,8 @@ public class SelectionInterface extends SelectionWButtons {
             throw new IllegalArgumentException();
 	}
 
-	return mgm.connect(cl4ss, interf4ce, (Class) ModelFacade.ABSTRACTION);
+	return mgm.connect(cl4ss, interf4ce,
+	        (Class) ModelFacade.getAbstractionToken());
     }
 
     /**
@@ -187,7 +197,7 @@ public class SelectionInterface extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
-			  (Class) ModelFacade.ABSTRACTION);
+			  (Class) ModelFacade.getAbstractionToken());
     }
 
     /**

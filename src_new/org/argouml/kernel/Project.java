@@ -639,7 +639,8 @@ public class Project implements java.io.Serializable, TargetListener {
 
         Collection allClassifiers =
             Model.getModelManagementHelper()
-	        .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
+	        .getAllModelElementsOfKind(ns,
+	                ModelFacade.getClassifierToken());
 
         Object[] classifiers = allClassifiers.toArray();
         Object classifier = null;

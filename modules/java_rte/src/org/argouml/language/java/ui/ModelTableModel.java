@@ -48,7 +48,9 @@ public class ModelTableModel extends DefaultTableModel implements Runnable {
     private JSplitPane mainPane;
     private Vector results = new Vector();
 
-    /** Creates a new instance of ModelTableModel */
+    /**
+     * Creates a new instance of ModelTableModel.
+     */
     public ModelTableModel() {
 	super(
 	      new Object [][] {},
@@ -74,22 +76,25 @@ public class ModelTableModel extends DefaultTableModel implements Runnable {
 	// The following lines should be substituted
         // by the following 2 commented lines.
 	// (This is because getting the project still does not seem to work...)
-	ArgoDiagram activeDiagram = ProjectManager.getManager()
-	    .getCurrentProject().getActiveDiagram();
-	if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram)) 
+	ArgoDiagram activeDiagram =
+	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+	if (!(activeDiagram instanceof UMLDiagram)) {
 	    return;
+	}
 	// There was a compile error here - hopefully this corrects it properly
 	Object diagramNs = ((UMLDiagram) activeDiagram).getNamespace();
-	if (diagramNs == null) return;
+	if (diagramNs == null) {
+	    return;
+	}
 	if (ModelFacade.isANamespace(diagramNs)) {
 	    Object ns = diagramNs;
 	    while (ModelFacade.getNamespace(ns) != null) {
 		ns = ModelFacade.getNamespace(ns);
 	    }
 	    Collection elems =
-		Model.getModelManagementHelper()
-		    .getAllModelElementsOfKind(ns,
-                                               ModelFacade.CLASSIFIER);
+		Model.getModelManagementHelper().getAllModelElementsOfKind(
+		        ns,
+		        ModelFacade.getClassifierToken());
 	    //Project p = ProjectManager.getManager().getCurrentProject();
 	    //Collection elems = ModelManagementHelper.getHelper()
             //       .getAllModelElementsOfKind(MClassifier.class);
@@ -110,8 +115,7 @@ public class ModelTableModel extends DefaultTableModel implements Runnable {
         String type = null;
         if (ModelFacade.isAClass(cls)) {
             type = "Class";
-        }
-        else if (ModelFacade.isAInterface(cls)) {
+        } else if (ModelFacade.isAInterface(cls)) {
             type = "Interface";
         }
         String codePath = Generator2.getCodePath(cls);
@@ -127,14 +131,18 @@ public class ModelTableModel extends DefaultTableModel implements Runnable {
             }
             // ommit root package name; it's the model's root
             if (ModelFacade.getNamespace(parentNamespace) != null) {
-        	packagePath = ModelFacade.getName(parentNamespace) + "."
-        	    + packagePath;
+        	packagePath =
+        	    ModelFacade.getName(parentNamespace) + "." + packagePath;
             }
             parentNamespace = ModelFacade.getNamespace(parentNamespace);
         }
         if (codePath != null && codePath.length() > 0) {
-            return new Object [] {ModelFacade.getName(cls), type, packagePath,
-                codePath };
+            return new Object [] {
+                ModelFacade.getName(cls),
+                type,
+                packagePath,
+                codePath,
+            };
         } else {
             return null;
         }

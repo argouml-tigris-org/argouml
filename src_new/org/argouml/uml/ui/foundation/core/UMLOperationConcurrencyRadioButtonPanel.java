@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui.foundation.core;
 
 import java.util.HashMap;
@@ -72,12 +71,15 @@ public class UMLOperationConcurrencyRadioButtonPanel extends
             Object target = /* (MModelElement) */getTarget();
             Object kind = ModelFacade.getConcurrency(target);
             if (kind == null
-                    || kind.equals(ModelFacade.SEQUENTIAL_CONCURRENCYKIND)) {
+                    || kind.equals(
+                            ModelFacade.getSequentialConcurrencyKindToken())) {
                 setSelected(ActionSetOperationConcurrencyKind
                         .SEQUENTIAL_COMMAND);
-            } else if (kind.equals(ModelFacade.GUARDED_CONCURRENCYKIND)) {
+            } else if (kind.equals(
+                    ModelFacade.getGuardedConcurrencyKindToken())) {
                 setSelected(ActionSetOperationConcurrencyKind.GUARDED_COMMAND);
-            } else if (kind.equals(ModelFacade.CONCURRENT_CONCURRENCYKIND)) {
+            } else if (kind.equals(
+                    ModelFacade.getConcurrentConcurrencyKindToken())) {
                 setSelected(ActionSetOperationConcurrencyKind
                         .CONCURRENT_COMMAND);
             } else {

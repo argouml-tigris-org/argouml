@@ -76,14 +76,18 @@ public class TestCoreHelper extends TestCase {
     public void testIsSubType() {
     	assertTrue("Is not a subtype",
                        Model.getCoreHelper().
-                       isSubType(ModelFacade.CLASSIFIER, ModelFacade.CLASS));
+                       isSubType(
+                               ModelFacade.getClassifierToken(),
+                               ModelFacade.getClassToken()));
         assertTrue("Is not a parent type",
                         !Model.getCoreHelper().
-                        isSubType(ModelFacade.CLASS, ModelFacade.CLASSIFIER));
+                        isSubType(
+                                ModelFacade.getClassToken(),
+                                ModelFacade.getClassifierToken()));
         assertTrue("Is not a parent type",
                         !Model.getCoreHelper().
-                        isSubType(ModelFacade.CLASS,
-                                  ModelFacade.AGGREGATIONKIND));
+                        isSubType(ModelFacade.getClassToken(),
+                                  ModelFacade.getAggregationKindToken()));
     }
 
     /**

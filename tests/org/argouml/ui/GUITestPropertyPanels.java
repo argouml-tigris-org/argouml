@@ -37,7 +37,6 @@ import java.io.File;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.JPanel;
@@ -77,7 +76,9 @@ public class GUITestPropertyPanels extends TestCase {
     private Object modelElement;
 
     /**
-     * For an explanation on why this is static @see #setUp
+     * For an explanation on why this is static.
+     *
+     * @see #setUp
      */
     private static DetailsPane theDetailsPane = null;
     private JPanel propertyPane;
@@ -142,12 +143,13 @@ public class GUITestPropertyPanels extends TestCase {
         p = persister.doLoad(testfile);
         ProjectManager.getManager().setCurrentProject(p);
         Object model = p.getRoot();
-        Collection me = Model.getUmlHelper().getModelManagement().
-	    getAllModelElementsOfKind(model, ModelFacade.MODELELEMENT);
-        
-        Enumeration meEnum = getAllModelElements(p);
+        Collection me =
+            Model.getUmlHelper().getModelManagement()
+            	.getAllModelElementsOfKind(
+            	        model,
+            	        ModelFacade.getModelElementToken());
 
-        Iterator iter = me.iterator();
+        Enumeration meEnum = getAllModelElements(p);
 
         while (meEnum.hasMoreElements()) {
             Object obj = meEnum.nextElement();
@@ -304,7 +306,7 @@ class ChildGenModelElements implements ChildGenerator {
         if (ModelFacade.isAAssociation(o)) {
             if (ModelFacade.getConnections(o) != null) {
                 Vector assocEnds = new Vector(ModelFacade.getConnections(o));
-                res.addSub( assocEnds.elements());
+                res.addSub(assocEnds.elements());
             }
             //TODO: MAssociationRole
         }

@@ -299,7 +299,7 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
      */
     public Collection getAllBehavioralFeatures(Object ns) {
         Collection classifiers =
-            getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
+            getAllModelElementsOfKind(ns, ModelFacade.getClassifierToken());
         ArrayList features = new ArrayList();
         Iterator i = classifiers.iterator();
         while (i.hasNext()) {

@@ -72,7 +72,9 @@ import antlr.ANTLRException;
 public class GeneratorJava
     extends Generator2 implements FileGenerator {
 
-    /** Logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(GeneratorJava.class);
 
     private static final String ANY_RANGE = "0..*";
@@ -103,12 +105,13 @@ public class GeneratorJava
 
     // TODO: make it configurable
     // next two flags shows in what mode we are working
-    /** true when GenerateFile
+    /**
+     * <code>true</code> when GenerateFile.
      */
     private static boolean isFileGeneration = false;
 
     /**
-     * true if GenerateFile in Update Mode
+     * <code>true</code> if GenerateFile in Update Mode.
      */
     private static boolean isInUpdateMode = false;
 
@@ -146,12 +149,14 @@ public class GeneratorJava
      */
     public String generateFile2(Object modelElement, String path) {
         String name = ModelFacade.getName(modelElement);
-        if (name == null || name.length() == 0)
+        if (name == null || name.length() == 0) {
             return null;
+        }
         Object classifier = /*(MClassifier)*/ modelElement;
         String filename = name + ".java";
-        if (!path.endsWith(FILE_SEPARATOR))
+        if (!path.endsWith(FILE_SEPARATOR)) {
             path += FILE_SEPARATOR;
+        }
 
         String packagePath =
 	    getPackageName(ModelFacade.getNamespace(classifier));
@@ -229,8 +234,9 @@ public class GeneratorJava
         } finally {
             isFileGeneration = false;
             try {
-                if (fos != null)
+                if (fos != null) {
                     fos.close();
+                }
             } catch (IOException exp) {
                 LOG.error("FAILED: " + f.getPath());
             }
@@ -375,8 +381,8 @@ public class GeneratorJava
                         // association end found
                         Object multiplicity =
 			    ModelFacade.getMultiplicity(associationEnd2);
-                        if (!ModelFacade.M1_1_MULTIPLICITY.equals(multiplicity)
-                                && !ModelFacade.M0_1_MULTIPLICITY.equals(
+                        if (!ModelFacade.getM11MultiplicityToken().equals(multiplicity)
+                                && !ModelFacade.getM01MultiplicityToken().equals(
                                         multiplicity)) {
                             importSet.add("java.util.Vector");
                         } else {
@@ -579,7 +585,7 @@ public class GeneratorJava
         // actually the API of generator is buggy since to generate
         // multiplicity correctly we need the attribute too
         if (type != null && multi != null) {
-            if (multi.equals(ModelFacade.M1_1_MULTIPLICITY)) {
+            if (multi.equals(ModelFacade.getM11MultiplicityToken())) {
                 sb.append(generateClassifierRef(type)).append(' ');
             } else if (ModelFacade.isADataType(type)) {
                 sb.append(generateClassifierRef(type)).append("[] ");
@@ -1114,8 +1120,8 @@ public class GeneratorJava
         String s = generateConstraintEnrichedDocComment(me, true, INDENT);
 
         Object/*MMultiplicity*/ m = ModelFacade.getMultiplicity(ae);
-        if (!(ModelFacade.M1_1_MULTIPLICITY.equals(m)
-	      || ModelFacade.M0_1_MULTIPLICITY.equals(m))) {
+        if (!(ModelFacade.getM11MultiplicityToken().equals(m)
+	      || ModelFacade.getM01MultiplicityToken().equals(m))) {
             // Multiplicity greater 1, that means we will generate some sort of
             // collection, so we need to specify the element type tag
             StringBuffer sDocComment = new StringBuffer(80);
@@ -1360,7 +1366,7 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(80);
         sb.append(generateVisibility(ModelFacade.getVisibility(ae)));
 
-        if (ModelFacade.CLASSIFIER_SCOPEKIND.equals(
+        if (ModelFacade.getClassifierScopeKindToken().equals(
                 ModelFacade.getTargetScope(ae)))
             sb.append("static ");
         //     String n = ae.getName();
@@ -1369,8 +1375,8 @@ public class GeneratorJava
         //     if (ae.isNavigable()) s += "navigable ";
         //     if (ae.getIsOrdered()) s += "ordered ";
         Object/*MMultiplicity*/ m = ModelFacade.getMultiplicity(ae);
-        if (ModelFacade.M1_1_MULTIPLICITY.equals(m)
-                || ModelFacade.M0_1_MULTIPLICITY.equals(m)) {
+        if (ModelFacade.getM11MultiplicityToken().equals(m)
+                || ModelFacade.getM01MultiplicityToken().equals(m)) {
             sb.append(generateClassifierRef(ModelFacade.getType(ae)));
         } else {
             sb.append("Vector "); //generateMultiplicity(m) + " ";
@@ -1462,11 +1468,11 @@ public class GeneratorJava
                 return "protected ";
         }
         if (ModelFacade.isAVisibilityKind(o)) {
-            if (ModelFacade.PUBLIC_VISIBILITYKIND.equals(o))
+            if (ModelFacade.getPublicVisibilityKindToken().equals(o))
                 return "public ";
-            if (ModelFacade.PRIVATE_VISIBILITYKIND.equals(o))
+            if (ModelFacade.getPrivateVisibilityKindToken().equals(o))
                 return "private ";
-            if (ModelFacade.PROTECTED_VISIBILITYKIND.equals(o))
+            if (ModelFacade.getProtectedVisibilityKindToken().equals(o))
                 return "protected ";
         }
         return "";
@@ -1514,7 +1520,7 @@ public class GeneratorJava
      */
     private String generateConcurrency(Object op) {
         if (ModelFacade.getConcurrency(op) != null
-            && ModelFacade.GUARDED_CONCURRENCYKIND.equals(
+            && ModelFacade.getGuardedConcurrencyKindToken().equals(
                     ModelFacade.getConcurrency(op))) {
             return "synchronized ";
         }
@@ -1533,7 +1539,7 @@ public class GeneratorJava
         if (m == null) {
             return "";
         }
-        if (ModelFacade.M0_N_MULTIPLICITY.equals(m)) {
+        if (ModelFacade.getM0NMultiplicityToken().equals(m)) {
             return ANY_RANGE;
 	}
         Iterator rangeEnum = ModelFacade.getRanges(m);

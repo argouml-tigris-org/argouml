@@ -89,9 +89,10 @@ public class SelectionClass extends SelectionWButtons {
      */
     public SelectionClass(Fig f) { super(f); }
 
-    /** Return a handle ID for the handle under the mouse, or -1 if
-     *  none. Needs-More-Work: in the future, return a Handle instance or
-     *  null. <p>
+    /**
+     * Return a handle ID for the handle under the mouse, or -1 if
+     * none. TODO: in the future, return a Handle instance or
+     * null. <p>
      *  <pre>
      *   0-------1-------2
      *   |               |
@@ -105,13 +106,21 @@ public class SelectionClass extends SelectionWButtons {
      */
     public void hitHandle(Rectangle r, Handle h) {
         super.hitHandle(r, h);
-        if (h.index != -1) return;
-        if (!isPaintButtons()) return;
+        if (h.index != -1) {
+            return;
+        }
+        if (!isPaintButtons()) {
+            return;
+        }
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
-        if (sm.size() != 1) return;
+        if (sm.size() != 1) {
+            return;
+        }
         ModeManager mm = ce.getModeManager();
-        if (mm.includes(ModeModify.class) && getPressedButton() == -1) return;
+        if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
+            return;
+        }
         int cx = _content.getX();
         int cy = _content.getY();
         int cw = _content.getWidth();
@@ -126,24 +135,19 @@ public class SelectionClass extends SelectionWButtons {
         if (hitAbove(cx + cw / 2, cy, iw, ih, r)) {
             h.index = 10;
             h.instructions = "Add a superclass";
-        }
-        else if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
+        } else if (hitBelow(cx + cw / 2, cy + ch, iw, ih, r)) {
             h.index = 11;
             h.instructions = "Add a subclass";
-        }
-        else if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
+        } else if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
             h.index = 12;
             h.instructions = "Add an associated class";
-        }
-        else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
+        } else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
             h.index = 13;
             h.instructions = "Add an associated class";
-        }
-        else if (hitRight(cx, cy + ch - 10, saw, sah, r)) {
+        } else if (hitRight(cx, cy + ch - 10, saw, sah, r)) {
             h.index = 14;
             h.instructions = "Add a self association";
-        }
-        else {
+        } else {
             h.index = -1;
             h.instructions = "Move object(s)";
         }
@@ -172,8 +176,7 @@ public class SelectionClass extends SelectionWButtons {
             paintButtonLeft(compos, g, cx + cw, cy + ch / 2, 12);
             paintButtonRight(compos, g, cx, cy + ch / 2, 13);
             paintButtonRight(selfassoc, g, cx, cy + ch - 10, 14);
-        }
-        else {
+        } else {
             paintButtonLeft(assoc, g, cx + cw, cy + ch / 2, 12);
             paintButtonRight(assoc, g, cx, cy + ch / 2, 13);
             paintButtonRight(selfassoc, g, cx, cy + ch - 10, 14);
@@ -197,28 +200,28 @@ public class SelectionClass extends SelectionWButtons {
         Dimension minSize = _content.getMinimumSize();
         int minWidth = minSize.width, minHeight = minSize.height;
         Class edgeClass = null;
-        Class nodeClass = (Class) ModelFacade.CLASS;
+        Class nodeClass = (Class) ModelFacade.getClassToken();
         int bx = mX, by = mY;
         boolean reverse = false;
         switch (hand.index) {
         case 10: //add superclass
-            edgeClass = (Class) ModelFacade.GENERALIZATION;
+            edgeClass = (Class) ModelFacade.getGeneralizationToken();
             by = cy;
             bx = cx + cw / 2;
             break;
         case 11: //add subclass
-            edgeClass = (Class) ModelFacade.GENERALIZATION;
+            edgeClass = (Class) ModelFacade.getGeneralizationToken();
             reverse = true;
             by = cy + ch;
             bx = cx + cw / 2;
             break;
         case 12: //add assoc
-            edgeClass = (Class) ModelFacade.ASSOCIATION;
+            edgeClass = (Class) ModelFacade.getAssociationToken();
             by = cy + ch / 2;
             bx = cx + cw;
             break;
         case 13: // add assoc
-            edgeClass = (Class) ModelFacade.ASSOCIATION;
+            edgeClass = (Class) ModelFacade.getAssociationToken();
             reverse = true;
             by = cy + ch / 2;
             bx = cx;
@@ -232,8 +235,9 @@ public class SelectionClass extends SelectionWButtons {
         }
         if (edgeClass != null && nodeClass != null) {
             Editor ce = Globals.curEditor();
-            ModeCreateEdgeAndNode m = new ModeCreateEdgeAndNode(ce, 
-                    edgeClass, nodeClass, useComposite);
+            ModeCreateEdgeAndNode m =
+                new ModeCreateEdgeAndNode(ce,
+                        edgeClass, nodeClass, useComposite);
             m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
             ce.pushMode(m);
         }
@@ -269,7 +273,7 @@ public class SelectionClass extends SelectionWButtons {
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
         return mgm.connect(_content.getOwner(), newNode,
-			   (Class) ModelFacade.GENERALIZATION);
+			   (Class) ModelFacade.getGeneralizationToken());
     }
 
     /**
@@ -278,7 +282,7 @@ public class SelectionClass extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel mgm, Object newNode) {
         return mgm.connect(newNode, _content.getOwner(),
-			   (Class) ModelFacade.ASSOCIATION);
+			   (Class) ModelFacade.getAssociationToken());
     }
 
     /**
@@ -287,7 +291,7 @@ public class SelectionClass extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel mgm, Object newNode) {
         return mgm.connect(_content.getOwner(), newNode,
-			   (Class) ModelFacade.ASSOCIATION);
+			   (Class) ModelFacade.getAssociationToken());
     }
 
     /**
@@ -296,7 +300,7 @@ public class SelectionClass extends SelectionWButtons {
      */
     protected Object createEdgeToSelf(MutableGraphModel mgm) {
         return mgm.connect(_content.getOwner(), _content.getOwner(),
-			   (Class) ModelFacade.ASSOCIATION);
+			   (Class) ModelFacade.getAssociationToken());
     }
 
     /**
@@ -305,7 +309,7 @@ public class SelectionClass extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel mgm, Object newNode) {
         return mgm.connect(newNode, _content.getOwner(),
-			   (Class) ModelFacade.GENERALIZATION);
+			   (Class) ModelFacade.getGeneralizationToken());
     }
 
 } /* end class SelectionClass */

@@ -41,7 +41,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
 public class ActionAddAssociationRole extends CmdSetMode {
 
     /**
-     * Construct a new ActionAddAssociationRole
+     * Construct a new ActionAddAssociationRole.
      *
      * @param aggregationKind the required aggregation for the association.
      * @param unidirectional true if this is to create a unidirectional
@@ -53,7 +53,7 @@ public class ActionAddAssociationRole extends CmdSetMode {
                                     String name) {
         super(ModeCreatePolyEdge.class,
               "edgeClass",
-              ModelFacade.ASSOCIATION_ROLE,
+              ModelFacade.getAssociationRoleToken(),
               name);
         _modeArgs.put("aggregation", aggregationKind);
         _modeArgs.put("unidirectional", new Boolean(unidirectional));

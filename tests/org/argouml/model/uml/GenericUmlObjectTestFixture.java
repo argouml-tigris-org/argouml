@@ -119,22 +119,34 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      */
     protected void runTruthTests(Object o) {
 	runTruthTest(ModelFacade.isABase(o), true, null);
-	runTruthTest(ModelFacade.isAAbstraction(o), ModelFacade.ABSTRACTION);
-	runTruthTest(ModelFacade.isAAssociation(o), ModelFacade.ASSOCIATION);
+	runTruthTest(
+	        ModelFacade.isAAbstraction(o),
+	        ModelFacade.getAbstractionToken());
+	runTruthTest(
+	        ModelFacade.isAAssociation(o),
+	        ModelFacade.getAssociationToken());
 	runTruthTest(ModelFacade.isAAssociationEnd(o),
-	        ModelFacade.ASSOCIATION_END);
+	        ModelFacade.getAssociationEndToken());
 	runTruthTest(ModelFacade.isAAssociationRole(o),
-	        ModelFacade.ASSOCIATION_ROLE);
-	runTruthTest(ModelFacade.isAClass(o), ModelFacade.CLASS);
-	runTruthTest(ModelFacade.isAClassifier(o), ModelFacade.CLASSIFIER);
-	runTruthTest(ModelFacade.isAComment(o), ModelFacade.COMMENT);
-	runTruthTest(ModelFacade.isAComponent(o), ModelFacade.COMPONENT);
+	        ModelFacade.getAssociationRoleToken());
+	runTruthTest(ModelFacade.isAClass(o), ModelFacade.getClassToken());
+	runTruthTest(
+	        ModelFacade.isAClassifier(o),
+	        ModelFacade.getClassifierToken());
+	runTruthTest(ModelFacade.isAComment(o), ModelFacade.getCommentToken());
+	runTruthTest(
+	        ModelFacade.isAComponent(o),
+	        ModelFacade.getComponentToken());
 	runTruthTest(ModelFacade.isAComponentInstance(o),
-            ModelFacade.COMPONENT_INSTANCE);
-	runTruthTest(ModelFacade.isADataType(o), ModelFacade.DATATYPE);
-	runTruthTest(ModelFacade.isADependency(o), ModelFacade.DEPENDENCY);
+            ModelFacade.getComponentInstanceToken());
+	runTruthTest(
+	        ModelFacade.isADataType(o),
+	        ModelFacade.getDatatypeToken());
+	runTruthTest(
+	        ModelFacade.isADependency(o),
+	        ModelFacade.getDependencyToken());
 	runTruthTest(ModelFacade.isACompositeState(o),
-	        ModelFacade.COMPOSITESTATE);
+	        ModelFacade.getCompositeStateToken());
 
 	// Not currently present as token in ModelFacade.
 	// NIF: runTruthTest(ModelFacade.isAElement(o), ModelFacade.ELEMENT);
@@ -144,23 +156,31 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	//           ModelFacade.EXTENSION_POINT);
 	// NIF: runTruthTest(ModelFacade.isAFeature(o), ModelFacade.FEATURE);
 	runTruthTest(ModelFacade.isAGeneralizableElement(o),
-	        ModelFacade.GENERALIZABLE_ELEMENT);
+	        ModelFacade.getGeneralizableElementToken());
 	runTruthTest(ModelFacade.isAGeneralization(o),
-	        ModelFacade.GENERALIZATION);
+	        ModelFacade.getGeneralizationToken());
 
 	// TODO: this fails on ModelElement - why?
 	// runTruthTest(ModelFacade.isAInstance(o), ModelFacade.INSTANCE);
 	// NIF: runTruthTest(ModelFacade.isAInteraction(o),
 	//           ModelFacade.INTERACTION);
 
-	runTruthTest(ModelFacade.isAInterface(o), ModelFacade.INTERFACE);
-	runTruthTest(ModelFacade.isALink(o), ModelFacade.LINK);
+	runTruthTest(
+	        ModelFacade.isAInterface(o),
+	        ModelFacade.getInterfaceToken());
+	runTruthTest(ModelFacade.isALink(o), ModelFacade.getLinkToken());
 	// NIF: runTruthTest(ModelFacade.isAMethod(o), ModelFacade.METHOD);
-	runTruthTest(ModelFacade.isAModel(o), ModelFacade.MODEL);
-	runTruthTest(ModelFacade.isAModelElement(o), ModelFacade.MODELELEMENT);
-	runTruthTest(ModelFacade.isANamespace(o), ModelFacade.NAMESPACE);
-	runTruthTest(ModelFacade.isANode(o), ModelFacade.NODE);
-	runTruthTest(ModelFacade.isANodeInstance(o), ModelFacade.NODE_INSTANCE);
+	runTruthTest(ModelFacade.isAModel(o), ModelFacade.getModelToken());
+	runTruthTest(
+	        ModelFacade.isAModelElement(o),
+	        ModelFacade.getModelElementToken());
+	runTruthTest(
+	        ModelFacade.isANamespace(o),
+	        ModelFacade.getNamespaceToken());
+	runTruthTest(ModelFacade.isANode(o), ModelFacade.getNodeToken());
+	runTruthTest(
+	        ModelFacade.isANodeInstance(o),
+	        ModelFacade.getNodeInstanceToken());
 
 	// TODO: this fails on ModelElement - why?
 	// runTruthTest(ModelFacade.isAOperation(o), ModelFacade.OPERATION);
@@ -168,21 +188,33 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
 	// TODO: this fails on ModelElement - why?
 	// runTruthTest(ModelFacade.isAObject(o), ModelFacade.OBJECT);
 
-	runTruthTest(ModelFacade.isAPermission(o), ModelFacade.PERMISSION);
-	runTruthTest(ModelFacade.isAPackage(o), ModelFacade.PACKAGE);
-	runTruthTest(ModelFacade.isAReception(o), ModelFacade.RECEPTION);
+	runTruthTest(
+	        ModelFacade.isAPermission(o),
+	        ModelFacade.getPermissionToken());
+	runTruthTest(ModelFacade.isAPackage(o), ModelFacade.getPackageToken());
+	runTruthTest(
+	        ModelFacade.isAReception(o),
+	        ModelFacade.getReceptionToken());
 	// NIF: runTruthTest(ModelFacade.isARelationship(o),
 	//           ModelFacade.RELATIONSHIP);
-	runTruthTest(ModelFacade.isAStateMachine(o), ModelFacade.STATEMACHINE);
-	runTruthTest(ModelFacade.isAStateVertex(o), ModelFacade.STATEVERTEX);
-	runTruthTest(ModelFacade.isAStereotype(o), ModelFacade.STEREOTYPE);
+	runTruthTest(
+	        ModelFacade.isAStateMachine(o),
+	        ModelFacade.getStateMachineToken());
+	runTruthTest(
+	        ModelFacade.isAStateVertex(o),
+	        ModelFacade.getStateVertexToken());
+	runTruthTest(
+	        ModelFacade.isAStereotype(o),
+	        ModelFacade.getStereotypeToken());
 	// NIF: runTruthTest(ModelFacade.isAStructuralFeature(o),
         //     ModelFacade.STRUCTURAL_FEATURE);
 	// NIF: runTruthTest(ModelFacade.isATaggedValue(o),
 	//           ModelFacade.TAGGED_VALUE);
-	runTruthTest(ModelFacade.isATransition(o), ModelFacade.TRANSITION);
-	runTruthTest(ModelFacade.isAUseCase(o), ModelFacade.USE_CASE);
-	runTruthTest(ModelFacade.isAActor(o), ModelFacade.ACTOR);
+	runTruthTest(
+	        ModelFacade.isATransition(o),
+	        ModelFacade.getTransitionToken());
+	runTruthTest(ModelFacade.isAUseCase(o), ModelFacade.getUseCaseToken());
+	runTruthTest(ModelFacade.isAActor(o), ModelFacade.getActorToken());
     }
 
     /**

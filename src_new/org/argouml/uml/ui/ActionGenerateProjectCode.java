@@ -33,14 +33,15 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.Generator2;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 
-/** Action to trigger code generation for all classes/interfaces in the
- *  project, which have a source code path set in tagged value 'src_path'
- *  @stereotype singleton
+/**
+ * Action to trigger code generation for all classes/interfaces in the
+ * project, which have a source code path set in tagged value 'src_path'.
+ *
+ * @stereotype singleton
  */
 public class ActionGenerateProjectCode extends UMLAction {
 
@@ -73,21 +74,20 @@ public class ActionGenerateProjectCode extends UMLAction {
      */
     public void actionPerformed(ActionEvent ae) {
 	Vector classes = new Vector();
-	// The following lines should be substituted by the following
-	// 2 commented lines.  (This is because getting the project
-	// still does not seem to work...)
-	ProjectBrowser pb = ProjectBrowser.getInstance();
 	ArgoDiagram activeDiagram =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-	if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram))
+	if (!(activeDiagram instanceof UMLDiagram)) {
 	    return;
-	Object/*MNamespace*/ ns = ((org.argouml.uml.diagram.ui.UMLDiagram)
-            activeDiagram).getNamespace();
-	if (ns == null) return;
-	while (ModelFacade.getNamespace(ns) != null)
+	}
+	Object/*MNamespace*/ ns = ((UMLDiagram) activeDiagram).getNamespace();
+	if (ns == null) {
+	    return;
+	}
+	while (ModelFacade.getNamespace(ns) != null) {
 	    ns = ModelFacade.getNamespace(ns);
+	}
 	Collection elems = Model.getModelManagementHelper()
-	    .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
+	    .getAllModelElementsOfKind(ns, ModelFacade.getClassifierToken());
 	//Project p = ProjectManager.getManager().getCurrentProject();
 	//Collection elems =
 	//ModelManagementHelper.getHelper()
@@ -107,7 +107,6 @@ public class ActionGenerateProjectCode extends UMLAction {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
 	ArgoDiagram activeDiagram =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	return super.shouldBeEnabled() && (activeDiagram instanceof UMLDiagram);

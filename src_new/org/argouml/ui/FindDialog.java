@@ -76,7 +76,9 @@ public class FindDialog extends ArgoDialog
 
     private static int numFinds = 0;
 
-    /** Insets in pixels  */
+    /**
+     * Insets in pixels.
+     */
     private static final int INSET_PX = 3;
 
     ////////////////////////////////////////////////////////////////
@@ -331,25 +333,27 @@ public class FindDialog extends ArgoDialog
     public void initTypes() {
         type.addItem(PredicateMType.create()); // Any type
 
-        type.addItem(PredicateMType.create(ModelFacade.CLASS));
-        type.addItem(PredicateMType.create(ModelFacade.INTERFACE));
-        type.addItem(PredicateMType.create(ModelFacade.ACTOR));
-        type.addItem(PredicateMType.create(ModelFacade.ASSOCIATION));
-        type.addItem(PredicateMType.create(ModelFacade.ATTRIBUTE));
-        type.addItem(PredicateMType.create(ModelFacade.CLASSIFIER));
-        type.addItem(PredicateMType.create(ModelFacade.COMPOSITESTATE));
-        type.addItem(PredicateMType.create(ModelFacade.DEPENDENCY));
-        type.addItem(PredicateMType.create(ModelFacade.GENERALIZATION));
-        type.addItem(PredicateMType.create(ModelFacade.INSTANCE));
-        type.addItem(PredicateMType.create(ModelFacade.INTERFACE));
-        type.addItem(PredicateMType.create(ModelFacade.LINK));
-        type.addItem(PredicateMType.create(ModelFacade.PACKAGE));
-        type.addItem(PredicateMType.create(ModelFacade.OPERATION));
-        type.addItem(PredicateMType.create(ModelFacade.PSEUDOSTATE));
-        type.addItem(PredicateMType.create(ModelFacade.STATE));
-        type.addItem(PredicateMType.create(ModelFacade.STATEVERTEX));
-        type.addItem(PredicateMType.create(ModelFacade.TRANSITION));
-        type.addItem(PredicateMType.create(ModelFacade.USE_CASE));
+        type.addItem(PredicateMType.create(ModelFacade.getClassToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getInterfaceToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getActorToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getAssociationToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getAttributeToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getClassifierToken()));
+        type.addItem(PredicateMType.create(
+                ModelFacade.getCompositeStateToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getDependencyToken()));
+        type.addItem(PredicateMType.create(
+                ModelFacade.getGeneralizationToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getInstanceToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getInterfaceToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getLinkToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getPackageToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getOperationToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getPseudostateToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getStateToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getStateVertexToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getTransitionToken()));
+        type.addItem(PredicateMType.create(ModelFacade.getUseCaseToken()));
 
     }
 
@@ -371,14 +375,11 @@ public class FindDialog extends ArgoDialog
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == search) {
             doSearch();
-        }
-        else if (e.getSource() == clearTabs) {
+        } else if (e.getSource() == clearTabs) {
             doClearTabs();
-        }
-        else if (e.getSource() == getOkButton()) {
+        } else if (e.getSource() == getOkButton()) {
             doGoToSelection();
-        }
-        else {
+        } else {
             super.actionPerformed(e);
         }
         //     if (e.getSource() == _spawn) doSpawn();
@@ -416,12 +417,16 @@ public class FindDialog extends ArgoDialog
             //name += " in " + dName;
         }
         String typeName = type.getSelectedItem().toString();
-        if (!typeName.equals("Any Type")) name += " " + typeName;
-        if (name.length() == 0)
-            name = Translator.localize("dialog.find.tabname")
-                + (nextResultNum++);
-        if (name.length() > 15)
+        if (!typeName.equals("Any Type")) {
+            name += " " + typeName;
+        }
+        if (name.length() == 0) {
+            name =
+                Translator.localize("dialog.find.tabname") + (nextResultNum++);
+        }
+        if (name.length() > 15) {
             name = name.substring(0, 12) + "...";
+        }
 
         String pName = "";
 
@@ -567,10 +572,11 @@ public class FindDialog extends ArgoDialog
 } /* end class FindDialog */
 
 
-/** PredicateMType is a small helper class which removes a trailing
- *  M from the string representation of the Type, as all the types
- *  are MThings. Thus they are more human readable when displayed
- *  in the Find dialog
+/**
+ * PredicateMType is a small helper class which removes a trailing
+ * M from the string representation of the Type, as all the types
+ * are MThings. Thus they are more human readable when displayed
+ * in the Find dialog
  */
 class PredicateMType extends PredicateType {
     protected PredicateMType(Class[] pats) {
@@ -607,9 +613,14 @@ class PredicateMType extends PredicateType {
     }
 
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         String result = super.toString();
-        if (result.startsWith("M")) result = result.substring(1);
+        if (result.startsWith("M")) {
+            result = result.substring(1);
+        }
         return result;
     }
 }

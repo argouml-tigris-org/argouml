@@ -31,8 +31,9 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.ModelFacade;
 
-/** A critic to check whether to classes sharing a 1..1 association can or
- *  should be combined.
+/**
+ * A critic to check whether to classes sharing a 1..1 association can or
+ * should be combined.
  */
 public class CrMergeClasses extends CrUML {
 
@@ -53,10 +54,14 @@ public class CrMergeClasses extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
+	if (!(ModelFacade.isAClass(dm))) {
+	    return NO_PROBLEM;
+	}
 	Object cls = /*(MClass)*/ dm;
 	Collection ends = ModelFacade.getAssociationEnds(cls);
-	if (ends == null || ends.size() != 1) return NO_PROBLEM;
+	if (ends == null || ends.size() != 1) {
+	    return NO_PROBLEM;
+	}
 	Object myEnd = /*(MAssociationEnd)*/ ends.iterator().next();
 	Object asc = ModelFacade.getAssociation(myEnd);
 	List conns = new ArrayList(ModelFacade.getConnections(asc));
@@ -64,17 +69,20 @@ public class CrMergeClasses extends CrUML {
 	Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
 	// both ends must be classes, otherwise there is nothing to merge
 	if (!(ModelFacade.isAClass(ModelFacade.getType(ae0))
-            && ModelFacade.isAClass(ModelFacade.getType(ae1))))
+            && ModelFacade.isAClass(ModelFacade.getType(ae1)))) {
 	    return NO_PROBLEM;
+	}
 	// both ends must be navigable, otherwise there is nothing to merge
 	if (!(ModelFacade.isNavigable(ae0)
-            && ModelFacade.isNavigable(ae1)))
+            && ModelFacade.isNavigable(ae1))) {
 	    return NO_PROBLEM;
+	}
 	if (ModelFacade.getMultiplicity(ae0)
-            .equals(ModelFacade.M1_1_MULTIPLICITY)
+            .equals(ModelFacade.getM11MultiplicityToken())
                 && ModelFacade.getMultiplicity(ae1)
-                    .equals(ModelFacade.M1_1_MULTIPLICITY))
+                    .equals(ModelFacade.getM11MultiplicityToken())) {
 	    return PROBLEM_FOUND;
+	}
 	return NO_PROBLEM;
     }
 

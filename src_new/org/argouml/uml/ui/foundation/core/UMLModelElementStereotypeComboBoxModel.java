@@ -50,7 +50,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
         super("stereotype", true);
         UmlModelEventPump.getPump()
 	    .addClassModelEventListener(this,
-					ModelFacade.NAMESPACE,
+					ModelFacade.getNamespaceToken(),
 					"ownedElement");
     }
 
@@ -65,15 +65,15 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
     }
 
     /**
-     * Helper method for buildModelList
+     * Helper method for buildModelList.<p>
      *
-     * <p>Adds those elements from source that do not have the same path as
+     * Adds those elements from source that do not have the same path as
      * any path in paths to elements, and its path to paths. Thus elements
      * will never contain two objects with the same path, unless they are
      * added by other means.
      */
     private static void addAllUniqueModelElementsFrom(Set elements, Set paths,
-							Collection source) {
+            					      Collection source) {
         Iterator it2 = source.iterator();
 
 	while (it2.hasNext()) {

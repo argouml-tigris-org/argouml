@@ -79,11 +79,11 @@ public class ActionSetChangeability extends UMLAction {
                 Object m = /*(MAssociationEnd)*/ target;
                 Object/*MChangeableKind*/ kind = null;
                 if (actionCommand.equals(CHANGEABLE_COMMAND)) {
-                    kind = ModelFacade.CHANGEABLE_CHANGEABLEKIND;
+                    kind = ModelFacade.getChangeableChangeableKindToken();
                 } else if (actionCommand.equals(ADDONLY_COMMAND)) {
-                    kind = ModelFacade.ADD_ONLY_CHANGEABLEKIND;
+                    kind = ModelFacade.getAddOnlyChangeableKindToken();
                 } else {
-                    kind = ModelFacade.FROZEN_CHANGEABLEKIND;
+                    kind = ModelFacade.getFrozenChangeableKindToken();
                 }
                 Model.getCoreHelper().setChangeability(m, kind);
             }

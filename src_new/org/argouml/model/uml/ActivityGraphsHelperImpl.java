@@ -90,7 +90,8 @@ class ActivityGraphsHelperImpl implements ActivityGraphsHelper {
         if (ns != null) {
             Collection c =
                 nsmodel.getModelManagementHelper()
-                	.getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
+                	.getAllModelElementsOfKind(ns,
+                	        ModelFacade.getClassifierToken());
             Iterator i = c.iterator();
             while (i.hasNext()) {
                 MModelElement classifier = (MModelElement) i.next();
@@ -176,9 +177,12 @@ class ActivityGraphsHelperImpl implements ActivityGraphsHelper {
     public void addInState(Object classifierInState, Object state) {
         if (classifierInState instanceof MClassifierInState
                 && state instanceof MState) {
-            ((MClassifierInState) classifierInState).addInState((MState) state);
+            ((MClassifierInState) classifierInState)
+            	.addInState((MState) state);
         } else {
-            throw new IllegalArgumentException("classifierInState: " + classifierInState + " or state: " + state);
+            throw new IllegalArgumentException(
+                    "classifierInState: " + classifierInState
+                    + " or state: " + state);
         }
     }
 }

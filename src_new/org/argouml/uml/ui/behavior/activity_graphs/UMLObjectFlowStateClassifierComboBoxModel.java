@@ -39,9 +39,6 @@ import org.argouml.uml.ui.UMLComboBoxModel2;
 public class UMLObjectFlowStateClassifierComboBoxModel
     extends UMLComboBoxModel2 {
 
-    private static UMLObjectFlowStateClassifierComboBoxModel theInstance;
-
-
     /**
      * Constructor.
      * TODO: MVW: I do not understand this! Is it correct?
@@ -49,7 +46,7 @@ public class UMLObjectFlowStateClassifierComboBoxModel
     public UMLObjectFlowStateClassifierComboBoxModel() {
         super("classifier", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this,
-                ModelFacade.CLASSIFIER, "type");
+                ModelFacade.getClassifierToken(), "type");
     }
 
     /**
