@@ -68,8 +68,8 @@ public class AboutBox extends JFrame {
 //     _contact.setFont(ctrlFont);
 
     StringBuffer versionBuf = new StringBuffer(
-        "ArgoUML Version 0.9.0\n"+
-		     "Built on 18/09/2000\n"+
+        "ArgoUML Version 0.9.1\n"+
+		     "Built on March 2nd of 2001\n"+
 		     "\n"+
 		     "Needed:\n"+
 		     "  GEF (Graph Editing Framework)\n"+
@@ -79,7 +79,7 @@ public class AboutBox extends JFrame {
 		     "  JDK 1.2 only plus\n"+
 		     "    A JAXP 1.0.1 compatible parser\n" +
                      "       [Xerces-J 1.2.2 or later recommended, (xml.apache.org)]\n"+
-		     "    Novosoft's NSUML 0.4.17 or higher (nsuml.sourceforge.net)\n"+
+		     "    Novosoft's NSUML 0.4.19 or higher (nsuml.sourceforge.net)\n"+
 		     "    Frank Finger's (TU-Dresden) OCL-Compiler (dresden-ocl.sourceforge.net)\n"+
 		     "\n");
 
@@ -113,7 +113,7 @@ public class AboutBox extends JFrame {
 		     "Project Lead:\n"+
 		     "  Jason Robbins (Collab.net)\n"+
 		     "  \n"+
-		     "Version 0.8 release manager:\n"+
+		     "Version 0.9 release managers:\n"+
 		     "  Toby Baier (University of Hamburg, Germany)\n"+
 		     "  Marko Boger (GentleWare)\n"+
 		     "  \n"+
@@ -167,6 +167,9 @@ public class AboutBox extends JFrame {
 		     "   http://www.ArgoUML.org\n"+
 		     " + Send email to Jason Robbins at:\n"+
 		     "   jrobbins@collab.net\n"+
+		     " + Send email to the developers mailing-list at:\n"+
+		     "   dev@argouml.tigris.org\n"+
+		     "   (subscribe by sending a message to dev-subscribe@argouml.tigris.org\n"+
 		     " + Read our conference and journal papers:\n"+
 		     "   (list of publications: KBSE'96, IUI'98, ICSE'98, etc.)"
 		     );

@@ -304,6 +304,16 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <delete file="${Name}-${version}-src.tar"/>
   </target>                                                                                                                                                                    
 
+  <!-- =================================================================== -->
+  <!-- Creates the lib distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist-lib" depends="init">
+    <echo message="Building the library distribution files (zip,tar)"/>
+    <zip zipfile="${Name}-${version}-libs.zip" basedir="${lib.dir}/.." includes="lib/**" />
+    <tar tarfile="${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/**" />
+    <gzip zipfile="${Name}-${version}-libs.tar.gz" src="${Name}-${version}-libs.tar" />
+    <delete file="${Name}-${version}-libs.tar"/>
+  </target>                                                                                                                   
 
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
