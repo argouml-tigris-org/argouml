@@ -1,0 +1,50 @@
+Notes on how to install and compile the UCI Graph Editing Framework
+source code.
+
+This file prepared: 7/30/96.
+
+Basic steps:
+
+1. Unzip or untar the source code archive and you will have the
+following directory structure:
+
+<somepath>
+        |--uci
+             |-- util
+             |-- ui
+             |-- graphedit
+                 |-- contrib
+                 |-- demo
+
+Where <somepath> is the place in your directory structure where you
+unpacked the files.
+
+2. In your development environment set the CLASSPATH environment
+variable so that it includes <somepath>.
+
+3. If you are using Cafe, add all the .java files to your project.
+
+4. Compile, or run make. 
+
+5. If you are on Solaris, run the Makefile in the uci directory with
+no options. You may have to edit uci/Makefile.config to
+set the proper paths for your java executables.
+
+
+
+The UCI Graph Editing Framework has been successfully compiled on
++ Sun's JDK 1.0.2 on SunOS 5.5 on a Sperc 4.
++ Sun's JDK 1.1.1 on SunOS 5.5 on a Sperc 4.
++ Sun's JDK 1.0.2 on a PC under Windows95.
++ Sun's JDK 1.1.1 on a PC under Windows95.
++ Symantec's Cafe on a PC under Windows95.
++ Symantec's VisualCafe on a PC under Windows95.
++ Microsoft's J++ on a PC under Windows95. (a long time ago)
+
+
+
+This is just a very initial version of these instructions. If you have
+trouble installing or if you are using a different development
+environment, please let me know so that I can include any needed steps
+in the next version of this file. EMail jrobbins@ics.uci.edu.
+

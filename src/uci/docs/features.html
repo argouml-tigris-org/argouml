@@ -1,0 +1,728 @@
+<HTML>
+<TITLE>Features of GEF v05</TITLE>
+<BODY BGCOLOR="#FFFFFF">
+
+<H1>Features of GEF v05</H1>
+
+This file prepared on 5/30/97.
+
+<p>This file lists features of GEF. This is useful in seeing what is
+there, and can be a good place to start before diving into the
+code. Also this feature list is useful for informal regression
+testing: if you add something new, check to make sure that all the old
+features still work.
+
+<p>Each feature is named with a unique string (e.g.,
+"drag_object_constrained"). For most features there are comments in
+the source code that indicate where the feature manifests itself. Also
+there are references in the feature list to bugs in the bug list. You
+can follow the references by using a multi-file search command (e.g.,
+grep) or you can use tags if you use emacs. A tag file with entries
+for bugs and features can be downloaded from the GEF web site.
+
+<p>Some features are planned but not implmented. These are left as
+projects for students or other users of this framework. These features
+are marked with "Needs-More-Work" here and in the code (if there is a
+marked place where something should be added).
+
+<p>Most of these features are user-visible, meaning that they are
+something that the user can see and use. Some of them are programmer
+features that only the programmer can see and use. Most of the
+programmer features are in section 7, and most of them are pervasive
+throughout the code, so there are not very many comments in the code
+that refer back to these features.
+
+<p>My intent was mainly to list features, and to describe them only a
+little bit. A detailed description of each feature would be useful for
+on-line help, but it would take a very long time to write and it would
+need to be updated as GEF changes. I have given brief comments only
+where the names of features are not enough to describe them.
+
+
+<p>Feature list overview:
+<OL>
+<LI> <A HREF="#BasicFeatures">Basic Features</A>
+<LI> <A HREF="#DrawingFeatures">Drawing Features</A>
+<LI> <A HREF="#ConnectedGraphFeatures">Connected Graph Features</A>
+<LI> <A HREF="#ViewingFeatures">Viewing Features</A>
+<LI> <A HREF="#EditingFeatures">Editing Features</A>
+<LI> <A HREF="#OtherFeatures">Other Features</A>
+<LI> <A HREF="#ProgrammerFeatures">Programmer Features</A>
+</OL>
+
+
+<HR>
+<A NAME="BasicFeatures">
+<H2>Basic Features</H2>
+
+<UL>
+
+<LI><A NAME="editor_frame">
+<font size=+1 color="#003300">FEATURE: editor_frame</font><br>
+  The drawing editor can be placed in a Frame, and it will open its
+  own Frame if needed.<p>
+
+<LI><A NAME="editor_in_browser">
+<font size=+1 color="#003300">FEATURE: editor_in_browser</font><br>
+  The drawing editor can be placed in the browser window, or any place
+  an AWT component can be placed.<p>
+
+<LI><A NAME="cross_platform">
+<font size=+1 color="#003300"> FEATURE: cross_platform </font> Needs-More-Work<br>
+  GEF will compile and run under a wide range of operating systems and
+  development tools. The main development tool used for GEF's
+  development has been Sun's JDK on a Sparc and PC. It has also been
+  compiled and tested on PC's under Windows95 with Symantec Cafe and
+  VisualCafe, Microsoft J++, and Asymetrix Superceed. The current
+  distrubition contains only source files and unix Makefiles, I should
+  include project files for various IDEs.<p>
+</UL>
+
+    
+<HR>
+<A NAME="DrawingFeatures">
+<H2>2. Drawing Features</H2>
+<UL>
+
+<LI><A NAME="diagram_elements">
+<font size=+1 color="#003300">FEATURE: diagram_elements</font><br>
+  A GEF diagram consists of DiagramElements that are contained and
+  ordered within a Layer. DiagramElements can be individually
+  manipulated. <p>
+
+<LI><A NAME="basic_shapes">
+<font size=+1 color="#003300">FEATURE: basic_shapes</font><br>
+  GEF provides DiagramElements for a wide range of graphics
+  primitives.<p>
+  <UL>
+  <A NAME="basic_shapes_rect">	<font size=+1 color="#003300">FEATURE: basic_shapes_rect</font><br>
+  <A NAME="basic_shapes_circle"> <font size=+1 color="#003300">FEATURE: basic_shapes_circle</font><br>
+  <A NAME="basic_shapes_rounded_rect">	<font size=+1 color="#003300">FEATURE: basic_shapes_rounded_rect</font><br>
+  <A NAME="basic_shapes_line"> <font size=+1 color="#003300">FEATURE: basic_shapes_line</font><br>
+  <A NAME="basic_shapes_text">	<font size=+1 color="#003300">FEATURE: basic_shapes_text</font><br>
+  <A NAME="basic_shapes_polygon"> <font size=+1 color="#003300">FEATURE: basic_shapes_polygon</font><br>
+  <A NAME="basic_shapes_ink">	<font size=+1 color="#003300">FEATURE: basic_shapes_ink</font><br>
+  <A NAME="basic_shapes_image"> <font size=+1 color="#003300">FEATURE: basic_shapes_image</font><br>
+  <A NAME="basic_shapes_group">	<font size=+1 color="#003300">FEATURE: basic_shapes_group </font> Needs-More-Work<br>
+    FigList implements groups of basic shapes, including other
+    groups. Currently groups do not define properties that are shared by
+    their elements, in the future I would like to be able to, e.g.,
+    resize a group and have its contents resize.<p>
+  </UL>
+
+<LI><A NAME="graphical_properties">
+<font size=+1 color="#003300">FEATURE: graphical_properties</font><br>
+  Each DiagramElement has certain graphical properties such as
+  location, size, colors, fonts, line widths, etc. These properties
+  affect the appearance of the object and can be edited with a
+  property sheet (see below). New subclasses can add their own
+  properties.  <p>
+
+<LI><A NAME="graph_visualization">
+<font size=+1 color="#003300">FEATURE: graph_visualization</font><br>
+  A GEF diagram can be used to display a connected graph. Nodes and
+  arcs in the connected graph representation are associated with
+  Perspectives and ArcPerspectives in the diagram. LayerPerspective
+  point to a NetList that represents the connected graph, and it can
+  filter it to display only those parts that are desired in a given
+  context.<p>
+  <UL>
+  
+<LI><A NAME="graph_visualization_nodes">
+<font size=+1 color="#003300">FEATURE: graph_visualization_nodes </font><br>
+    Perspectives in the diagram visualize NetNodes in the
+    NetList. Perspectives are basically a list of basic shapes that
+    together define the look of a node. A single NetNode may be
+    visualized by multiple Perspectives and multiple types of
+    Perspectives.<p>
+  
+<LI><A NAME="graph_visualization_arcs">
+<font size=+1 color="#003300">FEATURE: graph_visualization_arcs </font><br>
+    ArcPerspectives in the diagram visualize NetArcs in the
+NetList.<p>
+  
+<LI><A NAME="graph_visualization_ports">
+<font size=+1 color="#003300">FEATURE: graph_visualization_ports </font><br>
+    Some of the shapes in a Perspective may be used to visualize
+    NetPorts.<p>
+  </UL>
+
+</UL>
+
+
+<HR>
+<A NAME="ConnectedGraphFeatures">
+<H2>3. Connected Graph Features</H2>
+<UL>
+
+<LI><A NAME="graph_representation">
+<font size=+1 color="#003300">FEATURE: graph_representation </font> Needs-More-Work<br>
+  GEF supports a representation of connected graphs that consists of
+  nodes, ports, and arcs. Ports are the connection points on nodes
+  where arcs can be connected. Nodes, ports, and arcs can be defined
+  in subclasses that add their own attributes and behavior. Currently
+  I use one implementation of graphs, in the future I would like to
+  define a set of interfaces and allow multiple representations (e.g.,
+  adjacency matrix). Also in the future I would like to support a
+  node/arc representation of graphs, because ports are not useful for
+  all applications.<p>
+  <UL>
+
+<LI><A NAME="graph_representation_nets">
+<font size=+1 color="#003300">FEATURE: graph_representation_nets </font> Needs-More-Work<br>
+  A NetList contains a collection of nodes. Ports and arcs are
+  implicitly in the NetList because they are referenced from the
+  nodes. In the future I would like to provide more graph-level
+  operations such as finding the transitive closure of a graph or
+  querying the graph to find elements based on their properties.<p>
+
+<LI><A NAME="graph_representation_nodes">
+<font size=+1 color="#003300">FEATURE: graph_representation_nodes </font><br>
+  A NetNode represents a node in a graph. It contains a collection of
+  ports.<p>
+
+<LI><A NAME="graph_representation_ports">
+<font size=+1 color="#003300">FEATURE: graph_representation_ports </font><br>
+  A NetPort represents a port on a node. It maintains a list of the
+  arcs that are connected to that port.<p>
+
+<LI><A NAME="graph_representation_arcs">
+<font size=+1 color="#003300">FEATURE: graph_representation_arcs  </font><br>
+  A NetArc represents a relationship between two ports (possibly on
+  the same node). I currently do no support multi-edges (e.g.,
+  three-way arcs).<p>
+  </UL>
+</UL>
+
+<HR>
+<A NAME="ViewingFeatures">
+<H2>4. Viewing Features</H2>
+<UL>
+
+<LI><A NAME="visual_updates">
+<font size=+1 color="#003300">FEATURE: visual_updates </font><br>
+  When the state of the graph or DiagramElement properties change,
+  those changes will be reflected in the display(s). Redraws are not
+  directly forced by changes, instead a RedrawManager accumulates
+  damaged regions and then redraws them when convinent (e.g., when
+  there are no input events pending) and when the time is right to
+  achieve a specified frame-rate (number of screen updates per
+second). <p>
+
+<LI><A NAME="layers">
+<font size=+1 color="#003300">FEATURE: layers </font><br>
+  A diagram can consist of multiple layers with each layer containing
+  part of the diagram. Layers can also be used to show non-editiable
+  backgrounds (e.g., a grid) or user-interface feedback (e.g., a
+  selection layer, although that is not the way selections are
+  actually drawn now). (for related work see "Using the Multi-Layer
+  Model for Bulding Interactive Graphical Applications", Fekete
+  et. al. in Proc. of the User Interface Systems and Technologies
+  Conference 1996, pg. 109 - 117.)<p>
+  <UL>
+
+<LI><A NAME="layers_menu">
+<font size=+1 color="#003300">FEATURE: layers_menu </font> Needs-More-Work<br>
+  There should be a menu or list somewhere that lists all the layers
+  in the current diagram and allows the user to focus input on one
+  layer. This is not done yet.<p>
+
+<LI><A NAME="layers_hidden">
+<font size=+1 color="#003300">FEATURE: layers_hidden </font> Needs-More-Work<br>
+  It should be possible to hide layers to help the user focus on
+  certain aspects of the diagram. This is not done yet.<p>
+
+<LI><A NAME="layers_dimmed">
+<font size=+1 color="#003300">FEATURE: layers_dimmed </font> Needs-More-Work<br>
+  It should be possible to dim or gray-out layers to help the user
+  focus on certain aspects of the diagram. This is not done yet. <p>
+
+<LI><A NAME="layers_locked">
+<font size=+1 color="#003300">FEATURE: layers_locked </font> Needs-More-Work<br>
+  It should be possible to lock layers to prevent the user from
+  (acidentily modifing) certain aspects of the diagram. This is not
+  done yet.<p>
+  </UL>
+
+<LI><A NAME="multiple_views">
+<font size=+1 color="#003300">FEATURE: multiple_views </font><br>
+  A given diagram can be viewed in multiple editors at the same time
+  and changes made in one editor will be reflected in all
+  editors. Each view is identical to the others, except for editor
+  characteristics such as the current selection and zoom level.<p>
+
+<LI><A NAME="multiple_perspectives">
+<font size=+1 color="#003300">FEATURE: multiple_perspectives </font><br>
+  A given connected graph can be visualized in more than one
+  diagram. Unlike views, graph perspectives are not all alike, each
+  graph perspective selects a subgraph of the underlying graph to
+  show. <p>
+
+<LI><A NAME="redraw_minimal">
+<font size=+1 color="#003300">FEATURE: redraw_minimal </font><br>
+  Only areas of the screen that need to be redrawn are actually
+  redrawn. When one DiagramElement changes state, only the area it
+  occupies is redrawn. Actually it can be faster to redraw a somewhat
+  larger area, but GEF does not redraw the whole diagram very
+  often.<p> 
+
+<LI><A NAME="redraw_off_screen">
+<font size=+1 color="#003300">FEATURE: redraw_off_screen </font><br>
+  Screen updates may optionally be done using an offscreen Image to
+  produce flicker-free screen updates. This is the default behavior on
+  most platforms.<p>
+
+<LI><A NAME="adaptive_redraw">
+<font size=+1 color="#003300">FEATURE: adaptive_redraw </font> Needs-More-Work<br>
+  Different java platforms have very different performace
+  characteristics. GEF dynamically adjusts is redraw policy and
+  frame-rate to match the capability of a given java VM and the
+  complexity of a given diagram. Currently, only the on-screen
+  vs. off-screen policy decision is made automatically, adjusting the
+  frame-rate is done through the preferences window. In the future I
+  would like to introduce degraded drawing modes that draw
+  DiagramElements very fast at lower quality, and then they can be
+  redrawn when there is time to make them look nice. (for related work
+  see http://www.cs.unm.edu/pad++).<p>
+
+<LI><A NAME="zooming_panning">
+<font size=+1 color="#003300">FEATURE: zooming_panning </font> Needs-More-Work<br>
+
+<LI><A NAME="visual_grids">
+<font size=+1 color="#003300">FEATURE: visual_grids </font><br>
+  LayerGrid and LayerPolar are two examples of background layers that
+  help people make nice looking diagrams. LayerPageBreaks gives a
+  visual indication of where the drawing space will be divided into
+  pages when printed.<p>
+
+<LI><A NAME="viewable_properties">
+<font size=+1 color="#003300">FEATURE: viewable_properties </font><br>
+  The properties of a DiagramElement can be viewed in a property
+sheet.<p>
+
+<LI><A NAME="show_document">
+<font size=+1 color="#003300">FEATURE: show_document </font> Needs-More-Work<br>
+  When GEF is run from an applet it can cause the browser to switch to
+  another web page to show on-line help, etc. In the future I would
+  also like to do this for java applications.<p>
+
+<LI><A NAME="view_action_documentation">
+<font size=+1 color="#003300">FEATURE: view_action_documentation </font><br>
+  From the ExecuteActionWindow users can browse on-line help for
+  actions listed in that window.<p>
+</UL>
+
+<HR>
+<A NAME="EditingFeatures">
+<H2>5. Editing Features</H2>
+<UL>
+
+<LI><A NAME="editing_modes">
+<font size=+1 color="#003300">FEATURE: editing_modes </font><br>
+  The GEF Editor can be in one of several input modes. Each mode
+  interperts user input events and instanciates Actions for the Editor
+  to execute. Modes can be combined on a ModeStack.<p>
+  <UL>
+
+<LI><A NAME="editing_modes_select">
+<font size=+1 color="#003300">FEATURE: editing_modes_select </font><br>
+  ModeSelect is the default mode to start in and to come back to when
+  another mode finishes. It is near the bottom of the mode stack and
+  is never popped off.<p>
+  a.<A NAME="select_by_click">
+  <font size=+1 color="#003300">FEATURE: select_by_click </font> Needs-More-Work<br>
+  Clicking on a DiagramElement selects it. Shift-click is buggy.<p>
+  b.<A NAME="select_by_area">
+  <font size=+1 color="#003300">FEATURE: select_by_area </font><br>
+  Starting on the drawing background and dragging out an area with the
+  mouse will select all DiagramElements in the rectangle.<p>
+  c.<A NAME="select_by_tab_key">
+  <font size=+1 color="#003300">FEATURE: select_by_tab_key </font><br>
+  Pressing the tab key when zero or one DiagramElements are selected
+  will select the first or next DiagramElement. Shift-tab selects the
+  last/previous element. The ordering of DiagramElements is their
+  back-to-front ordering.<p>
+  d.<A NAME="select_all">
+  <font size=+1 color="#003300">FEATURE: select_all </font><br>
+  A menu comand allows users to select all DiagramElements in the
+  diagram.<p>
+  e.<A NAME="select_inversion">
+  <font size=+1 color="#003300">FEATURE: select_inversion </font><br>
+  A menu command allows users to select all DiagramElements that are
+  not currently selected.<p>
+  f.<A NAME="select_none">
+  <font size=+1 color="#003300">FEATURE: select_none </font><br>
+  Clicking in the background area deselects all DiagramElements.<p>
+  g.<A NAME="select_by_predicate">
+  <font size=+1 color="#003300">FEATURE: select_by_predicate </font> Needs-More-Work<br>
+  In the future I would like to define a dialog box that allows users
+  to select all DiagramElements that fit certain criteria: e.g.,
+  select all rectangles that have line width of zero.<p>
+
+<LI><A NAME="editing_modes_modify">
+<font size=+1 color="#003300">FEATURE: editing_modes_modify </font><br>
+  When the user drags starting from a DiagramElement, the
+  DiagramElement is continously modified until the user lets go.<p>
+  a.<A NAME="drag_object">
+  <font size=+1 color="#003300">FEATURE: drag_object </font><br>
+  The user can move DiagramElements around by dragging them.<p>
+  b.<A NAME="drag_object_constrained">
+  <font size=+1 color="#003300">FEATURE: drag_object_constrained </font><br>
+  Holding down the control key keeps the DiagramElements moving only
+  vertically or only horizontally.<p>
+  c.<A NAME="drag_handle">
+  <font size=+1 color="#003300">FEATURE: drag_handle </font><br>
+  Dragging on a handle of a selected DiagramElement will change the
+  state of the DiagramElement, e.g., resizing it.<p>
+  d.<A NAME="drag_handle_constrained">
+  <font size=+1 color="#003300">FEATURE: drag_handle_constrained </font> Needs-More-Work<br>
+  In the future control-drag on a handle will resize DiagramElements
+  in a constrained way.<p>
+  e.<A NAME="minimum_modify_delta">
+  <font size=+1 color="#003300">FEATURE: minimum_modify_delta </font><br>
+  Users sometimes accidentily mode DiagramElements a little bit when
+  they try to select them. GEF defines a minimum movement delta, if
+  the user moves less than this distance then the DiagramElement will
+  not be modified. Once the mouse has moved more than this distance,
+  all subsequent mouse movement modifies the DiagramElement.
+  </UL>
+
+<LI><A NAME="editing_actions">
+<font size=+1 color="#003300">FEATURE: editing_actions </font> Needs-More-Work<br>
+  Modifications to the diagram and DiagramElements are not performed
+  directly by the Editor or by editor Modes. Instead Action objects
+  are instanciated to represent what is to be done. Then the Editor
+  executes those Actions and stores them for later undo/redo.
+  Currently the intent is for all modifications to go through Actions,
+  but there are several modifications that do not use actions.
+  <UL>
+
+<LI><A NAME="undo_and_redo">
+<font size=+1 color="#003300">FEATURE: undo_and_redo </font> Needs-More-Work<br>
+  In the future the Editor will store all Action instances in a stack
+  so that they may be undone or redone.<p>
+
+<LI><A NAME="macros">
+<font size=+1 color="#003300">FEATURE: macros </font> Needs-More-Work<br>
+  In the future users will be able to record a sequence of actions
+  that can later be replayed, perhaps parameterized.<p>
+
+<LI><A NAME="execute_action_window">
+<font size=+1 color="#003300">FEATURE: execute_action_window </font><br>
+  The ExecuteActionWindow lists out several Actions that the user can
+  execute by clicking on the action name. This allows programmers to
+  add new Actions without having to work out where exactly in the
+  interface to put it, and allows users to execute actions without
+  having to know the right keystrokes or get into the proper
+  mode. Users can also see on-line help for each Action from this
+  list.
+  </UL>
+
+<LI><A NAME="removing_objects">
+<font size=+1 color="#003300">FEATURE: removing_objects </font><br>
+  DiagramElements can be removed from a diagram by pressing delete, or
+  backaspace, or by using a menu item.
+  <UL>
+
+<LI><A NAME="removing_objects_delete">
+<font size=+1 color="#003300">FEATURE: removing_objects_delete </font><br>
+  Deleting a DiagramElement just removes it from the diagram, it does
+  not affect other DiagramElements in other diagrams.<p>
+
+<LI><A NAME="removing_objects_dispose">
+<font size=+1 color="#003300">FEATURE: removing_objects_dispose </font><br>
+  Disposing a DiagramElement removes it from its diagram and also
+  disposes of any underlying connected graph objects which may, in
+  turn, delete other Perspectives or ArcPerspectives in other
+  views. Currently the user always does ActionDispose, and
+  ActionDelete is only listed in the ExecuteActionWindow as an
+  example.
+  </UL>
+
+<LI><A NAME="selections">
+<font size=+1 color="#003300">FEATURE: selections </font><br>
+  DiagramElements can be selected to identify them as targets for menu
+  commands and keystrokes that create and execute Actions.
+  <UL>
+
+<LI><A NAME="selections_handles">
+<font size=+1 color="#003300">FEATURE: selections_handles </font><br>
+  Some selections have handles that can be dragged to change the state
+  of a DiagramElement, e.g., resize it.<p>
+
+<LI><A NAME="selections_box">
+<font size=+1 color="#003300">FEATURE: selections_box </font><br>
+  Some selections do not have handles, they just indicate what is
+  selected.
+  </UL>
+
+<LI><A NAME="pick_objects">
+<font size=+1 color="#003300">FEATURE: pick_objects </font><br>
+  The user can click on any object to select it. Some objects can be
+  hard to click on if they are small or consist only of thin
+  lines. Picking an object actually determies if the mouse click was
+  "near" a given object. When multiple DiagramElements exist at the
+  point of a mouse click, the highest one in the back-to-front
+  ordering is picked.<p>
+
+<LI><A NAME="palettes">
+<font size=+1 color="#003300">FEATURE: palettes </font><br>
+  A GEF palette is an array of buttons that each perform an Action.
+  This feature will probably be dropped in a future version.
+  <UL>
+
+<LI><A NAME="palettes_sticky_buttons">
+<font size=+1 color="#003300">FEATURE: palettes_sticky_buttons </font><br>
+  Some palette buttons can be made to "stick down" so that the same
+  action can be performed multiple times. This feature will be dropped
+  when palettes are dropped.
+  </UL>
+
+<LI><A NAME="snap_to_guide">
+<font size=+1 color="#003300">FEATURE: snap_to_guide </font><br>
+  A Guide is an object that changes points so that they line up better
+  to make a nice looking diagram. For example, GuideGrid snaps points
+  to a grid. <p>
+
+<LI><A NAME="align_objects">
+<font size=+1 color="#003300">FEATURE: align_objects </font><br>
+  DiagramElements can be aligned with each other or to the grid in
+  various ways: tops, bottoms, lefts, rights, centers, horizontal
+  centers, vertical centers, to grid.<p>
+
+<LI><A NAME="reorder_objects">
+<font size=+1 color="#003300">FEATURE: reorder_objects needs-more-work  </font><br>
+  The back to front ordering of DiagramElements cn be changed in
+  various ways: send to back, bring to front, send backward, send
+  forward. In the future I would like to add Actions to reorder an
+  object backward or forward such that it always causes a visible
+  change, this means that it must continue to move forward or backward
+  until it exchanges places with one/all DiagramElements that overlap it.<p>
+
+<LI><A NAME="event_skipping">
+<font size=+1 color="#003300">FEATURE: event_skipping </font><br>
+  Not all user input events are equally important. For example, one
+  mouse move is not very important if it is followed immeadiately by
+  another mouse move. The GEF Editor speeds up event processing by
+  skipping unimportant events.<p>
+
+<LI><A NAME="editable_properties">
+<font size=+1 color="#003300">FEATURE: editable_properties </font><br>
+  The properties of a DiagramElement can be edited in a property sheet. <p>
+
+<LI><A NAME="property_sheet">
+<font size=+1 color="#003300">FEATURE: property_sheet </font> Needs-More-Work<br>
+  GEF provides a property sheet window to display and edit the
+  properties of the currently selected DiagramElement. In the future I
+  would like to handle multiple selections
+  <UL>
+
+<LI><A NAME="property_sheet_editors">
+<font size=+1 color="#003300">FEATURE: property_sheet_editors </font><br>
+  Each row in the property sheet window displays one property in a way
+  that is appropriate for that type of property. For example, boolean
+  properties are shown/edited with a checkbox.<br>
+  a.<A NAME="rectangle_editor">
+  <font size=+1 color="#003300">FEATURE: rectangle_editor </font> Needs-More-Work<br>
+  b.<A NAME="color_picker"> <font size=+1 color="#003300">FEATURE: color_picker</font><br>
+
+<LI><A NAME="property_sheet_auto_apply">
+<font size=+1 color="#003300">FEATURE: property_sheet_auto_apply </font><br>
+  When the auto-apply checkbox is set, each change to the property
+  sheet fields immeadiatly effects the selected DiagramElement. If 
+  auto-apply is not set, then changes accumulate and are all applied
+  when the user clicks the Apply button.<p>
+
+<LI><A NAME="property_sheet_revert">
+<font size=+1 color="#003300">FEATURE: property_sheet_revert </font><br>
+  When auto-apply is not set and there are pending changes, the Revert
+  button cancels all pending changes.<p>
+
+<LI><A NAME="property_sheet_universe">
+<font size=+1 color="#003300">FEATURE: property_sheet_universe </font><br>
+  When DiagramElements are added to a diagram they are also added to a
+  list of all DiagramElements that is used for a pop-up menu in the
+  property sheet. Selecting an item in the property sheet's universe
+  menu will show/edit the properties of that object (without selecting
+  it in the editor). This is useful when some objects are hard to
+  select with the mouse.
+  </UL>
+
+<LI><A NAME="locked_objects">
+<font size=+1 color="#003300">FEATURE: locked_objects </font><br>
+  DiagramElements can be locked which means that they cannot be edited
+  in the editor, although they can still be modified via the
+  property sheet.<p>
+
+<LI><A NAME="replicate_objects">
+<font size=+1 color="#003300">FEATURE: replicate_objects </font> Needs-More-Work<br>
+  In the future I would like to implement a replicate command that
+  makes many copies of a DiagramElement with each copy transfomed a
+  little bit.<p>
+
+<LI><A NAME="nudge_objects">
+<font size=+1 color="#003300">FEATURE: nudge_objects </font><br>
+  Sometimes users want objects to almost (but not quite) line up with
+  each other, or they want to position an object at a specific place
+  regardless of the Guide. By using the arrow keys users can move
+  objects just a little bit.<p>
+
+<LI><A NAME="default_initial_size">
+<font size=+1 color="#003300">FEATURE: default_initial_size </font><br>
+  When creating new basic shapes users sometimes make very small
+  shapes by accidentilly clicking the mouse. Also, it is common for
+  users to want to create several shapes of the same size. In GEF a
+  single click when creating a Fig will give it the same size as the
+  last Fig that was created.
+</UL>
+
+<HR>
+<A NAME="OtherFeatures">
+<H2>6.	Other Features</H2>
+<UL>
+
+<LI><A NAME="load_and_save">
+<font size=+1 color="#003300">FEATURE: load_and_save </font> Needs-More-Work<br>
+  Diagrams can be saved and loaded using Sun's ObjectSerialization
+  library, which is part of JDK1.1. In the future I would like to
+  support other file formats.<p>
+
+<LI><A NAME="printing">
+<font size=+1 color="#003300">FEATURE: printing </font> Needs-More-Work<br>
+  Diagrams can be printed under JDK1.1. In the furture I would like to
+  support multi-page printing, currently I only print the page nearest
+  the origin.<p>
+
+<LI><A NAME="printing_config">
+<font size=+1 color="#003300">FEATURE: printing_config </font><br>
+  There are several configuration options that can be set via the
+  Preferences dialog box, e.g., should background layers like
+  LayerGrid be printed? <p>
+
+<LI><A NAME="preferences">
+<font size=+1 color="#003300">FEATURE: preferences </font><br>
+  GEF provides a preferences dialog box that allows users to specify
+  various preferences.
+</UL>
+
+<HR>
+<A NAME="ProgrammerFeatures">
+<H2>7.	Programmer Features</H2>
+<UL>
+
+<LI><A NAME="few_basic_concepts">
+<font size=+1 color="#003300">FEATURE: few_basic_concepts </font><br>
+  GEF is implemented with only a few basic concepts that are
+  implemented in clusters of classes. The basic concepts are: Editor,
+  DiagramElement, Layer, Mode, Action, and Selection.<p>
+
+<LI><A NAME="standard_naming_conventions">
+<font size=+1 color="#003300">FEATURE: standard_naming_conventions </font><br>
+  I have tried to use naming conventions that are like that used in
+  java books and the Sun java code. For example, access methods are
+  named getXXX and setXXX.<p>
+
+<LI><A NAME="well_documented_code">
+<font size=+1 color="#003300">FEATURE: well_documented_code </font> Needs-More-Work<br>
+  I have tried to write javadoc comments for every class and most
+  variables and functions. This takes a lot of time and is always
+  incomplete. In the future I would like to see more invative uses of
+  comments such as javadoc comments that include images, animated
+  GIFs, or even applets. Also I would like to define better links
+  between the requirements (basically this feature list) and the
+  code. Also I would liket to document (and possibly publish) the
+  design patterns that are used in this framework.<p>
+
+<LI><A NAME="ten_week_learn_and_use">
+<font size=+1 color="#003300">FEATURE: ten_week_learn_and_use </font> Needs-More-Work<br>
+  I would like GEF to be small enough and simple enough for college
+  undergraduates to use in a 10 week course (including learning the
+  java language and doing something useful with GEF). This has not
+  been well tested or measureed, although I know of severak university
+  students who have used GEF for class projects. In the future I may
+  decide to split GEF into "GEF Lite" and "GEF Pro".<p>
+
+<LI><A NAME="adaptive_performance">
+<font size=+1 color="#003300">FEATURE: adaptive_performance </font> Needs-More-Work<br>
+  Java platforms vary in speed. I would like GEF to be useable on the
+  slowest platforms and make use of the additional power of faster
+  platforms. <p>
+
+<LI><A NAME="extensible_framework">
+<font size=+1 color="#003300">FEATURE: extensible_framework </font><br>
+  I have tired to design GEF so that new features can be added by
+  adding new code in subclasses, rather than having to modify the
+  source code that I distribute.  People who are extending GEF should
+  try to put their code in their own package, and try to minimize
+  modifications to classes in uci.graphedit. <p>
+
+<LI><A NAME="integration_with_exising_code">
+<font size=+1 color="#003300">FEATURE: integration_with_exising_code </font><br>
+  GEF can be used to build a new application starting from scratch, or
+  it can be used to add a graphical interface to an existing
+  application. Using GEF is easiest if you add attributes to
+  subclasses of GEF classes, but if you already have classes in your
+  own class hierarchy, they you must use delegation instead of
+  subclassing. There are places in GEF that are intended for
+  delegation, e.g., the _owner attribute of DiagramElements.<p>
+
+<LI><A NAME="scalable_to_large_documents">
+<font size=+1 color="#003300">FEATURE: scalable_to_large_documents </font> Needs-More-Work<br>
+  Ideally GEF will handle large diagrams well. Currently most of the
+  algorithms for picking, drawing, etc.  are linear in the size of the
+  diagram. I know this can be improved by using a spacial data
+  structure (e.g., a quad-tree), but I don't know when I'll get to
+  it. Loading and saving can take a long time. I think customization
+  is key to scalability, and end-user customization is very limited
+  right now. <p>
+
+<LI><A NAME="easy_to_navigate_code">
+<font size=+1 color="#003300">FEATURE: easy_to_navigate_code </font><br>
+  I have tried to make the GEF source code easy to browse by following
+  careful naming conventions, providing cross-references, and
+  examples. <p>
+
+<LI><A NAME="robust_code">
+<font size=+1 color="#003300">FEATURE: robust_code </font> Needs-More-Work<br>
+  Error handling in GEF is generally inadequit and needs to be
+  improved. However there are specific areas where exceptions are
+  caught, e.g., when an Action is executed in the editor.  Framework
+  support for robust code is key to allowing contributions from a wide
+  range of people.  Security is also important, GEF may evolve to take
+  on more browser-like features and run Actions, Modes, etc under
+  different security managers.<p>
+
+<LI><A NAME="integrated_debugging_support">
+<font size=+1 color="#003300">FEATURE: integrated_debugging_support </font> Needs-More-Work<br>
+  Ideally the framework would help people debug code that they are
+  adding to the framework. There is some support for that in the form
+  of exception handling that prints out diagnostics, code to draw
+  visual indications of how and when redraws are being done, and
+  debugging println's that are guarded by checks for command line args
+  (via the -D option to java).<p>
+
+<LI><A NAME="consistent_style">
+<font size=+1 color="#003300">FEATURE: consistent_style </font> Needs-More-Work<br>
+  Consistent coding style makes the code easier to read, work with,
+  and make global changes to. GEF's coding style has changed over the
+  last few releases and is still not entirely consistent.<p>
+
+<LI><A NAME="cross_development_environments">
+<font size=+1 color="#003300">FEATURE: cross_development_environments </font><br>
+  GEF compiles and runs under JDK 1.0.2 and JDK 1.1 on Solaris and
+  Windows95. I compiled it under a few different compilers on the
+  PC. Different Java VM's behaive a little differently, and I have put
+  in some logic to try to work around variations in some cases (e.g.,
+  flicker free redraws don't work under JDK 1.0.2 on a PC, so that
+  option is turned off by default when you run on that
+  platform). Also, some Java 1.1 constructs will not even compile
+  under JDK 1.0.2, so I have made limited use of the unix m4 utility
+  to do conditional compilation. I am distributing two versions
+  of the source, one preprocessed for JDK1.0.2, and one preprocessed
+  for JDK1.1. Each version can generate the other if you have access
+  to the m4 utility.
+</UL>
+
+<HR>
+</BODY>
+</HTML>

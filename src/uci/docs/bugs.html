@@ -1,0 +1,140 @@
+<HTML>
+<TITLE>Bugs in GEF v05</TITLE>
+<BODY>
+
+<H1>Bugs in GEF v05</H1>
+
+This file prepared on 5/30/97.
+
+<p>Each bug is named with a unique string (e.g.,
+"save_memory_hog"). For some bugs there are comments in the code that
+indicate where the bug is manifested. Also there are references in the
+feature list to these bugs. You can follow the references by using a
+multi-file search command (e.g., grep) or you can use tags if you use
+emacs. A tag file with entries for bugs and features can (soon) be
+downloaded from the GEF web site.
+
+<p>When sending a new bug report please check the GEF home page for
+specific instructions and existing bugs that describe your problem. 
+
+<HR>
+
+<H2>Bugs observed on all platforms:</H2>
+
+<UL>
+<LI> <A NAME="shift_click">
+<TT>BUG:shift_click </TT><br>
+Shift-click when selecting does not always do the right thing.  It
+should deselect an item that is already selected, but it does
+not. Shift-drag seems to work.
+
+<LI><A NAME="rectilinear_arc_constraints">
+<TT>BUG:rectilinear_arc_constraints </TT><br>
+ArcPerspective does not draw properly. It looks pretty bad and
+sometimes the lines make a "T" intersection when it should make a
+right anngle turn. I know that there are missing cases to the logic
+that decides how to draw the arc. This really needs to be totally
+redone.
+
+<LI><A NAME="focus_for_redraw">
+<TT>BUG:focus_for_redraw </TT><br>
+Undersome browsers the applet frames will not be redrawn until you
+move your mouse into the frame.
+
+<LI><A NAME="save_memory_hog">
+<TT> BUG:save_memory_hog </TT><br>
+Saving large documents with connected nodes requires setting the
+amount of stack space used by the Java VM. Use "java -ss1m" to set the
+stack size to 1 Mb, by default the stack size is something like 4
+Kb. Unfortuanely, you cannot set the stack size in the appletviewer or
+most browsers.
+
+<LI><A NAME="saved_file_versioning">
+<TT>BUG:saved_file_versioning </TT><br>
+Since there is no versioning support in Sun's ObjectSerialization
+library, if you change your class definitions there is no easy way to
+load files saved with the old class definitions.
+
+<LI> <A NAME="arc_translate">
+<TT>BUG:arc_translate </TT><br>
+ArcPerzRectilinear should move when both their end points move at
+the same time. To see what I mean: place two nodes, connect the nodes,
+select all objects, move the nodes all around. You will see that some
+points on the arc stay put.
+
+<LI><A NAME="rectilinear_arc_points">
+<TT>BUG:rectilinear_arc_points </TT><br>
+ArcPerzRectilinear inserts too many points when it does it's
+initial routing. There is no command to redo the routing. And
+FigPoly's even/odd convention for rectilinear polylines is not
+followed properly, so it is possible to get diaganol lines if you drag
+some handles around. Also, self-arcs (arcs that go from a port on a
+node to another port on the same node), are not routed properly.
+
+<LI><A NAME="save_under_jdk1">
+<TT>BUG:save_under_jdk1_0_2 </TT><br>
+I updated my version of Sun's ObjectSerialization libary, and much
+to my dispare I found that saving and loading no longer work under
+jdk1.0.2. The problem is that classes such as java.util.Hashtable must
+implement java.io.Serializable, but they do not in jdk1.0.2. So there
+is really nothing I can do, other than stop using Hashtables and
+Vectors. Instead I just use jdk1.1.1 for building applications.
+(Applets cannot currently load or save anyway, but adding the ability
+to use a URL would be a good project).
+
+<LI><A NAME="switch_tabs_without_apply">
+<TT>BUG:switch_tabs_without_apply </TT><br>
+When auto-apply is off, users can loose changes if the switch tabs
+before pressing the "Apply" button.
+</UL>
+
+<HR>
+
+<H2>Bugs observed on Sun's Appletviewer under solaris:</H2>
+<UL>
+<LI> <A NAME="sun_choice_not_shown">
+<TT>BUG:sun_choice_not_shown </TT><br>
+Some Choice components are not drawn, but you can still click on
+them and use them.
+
+<LI> <A NAME="sun_no_key_focus">
+<TT>BUG:sun_no_key_focus </TT><br>
+In InBrowserApplet.html the drawing area is in the same frame as the
+palette. Keystrokes are intercepted by AWT so you cannot type keyboard
+commands for GEF and you cannot type text into a FigText.
+</UL>
+<HR>
+
+<H2>Bugs observed under Win95:</H2>
+<UL>
+<LI><A NAME="win_no_button_background">
+<TT>BUG:win_no_button_background  </TT><br>
+Button colors cannot be changed to highlight which command is "stuck"
+when you set the "sticky" check box.
+
+<LI> <A NAME="win_list_double_click">
+<TT> BUG:win_list_double_click </TT><br>
+List items send their action event on mouse-down when the user double
+clicks.  It should be on mouse-up. The effect is that you can spawn a
+new editor from the Execute Action window and the first events it will
+recieve will be mouse drag, without ever seeing a mouse down event.
+That can cause unexpected behavior.
+
+<LI> <A NAME="win_color_picker_buried">
+<TT> BUG:win_color_picker_buried </TT><br>
+The ColorPickerGrid window should come to the front of all windows
+when you click on a PropEditorColor. Under jdk1.1.1 on windows the
+call to toFront() has no effect.
+
+<LI><A NAME="win_prop_sheet_grabs_focus">
+<TT> BUG:win_prop_sheet_grabs_focus </TT><br>
+The TabPropFrame property sheet sometimes jumps in front of other
+windows when it is not desired. This also sets the keyboard focus to
+the property sheet window, so you can no longer tab through
+DiagramElements unless you click on the editor window to assign
+keyboard focus back there.
+
+</UL>
+</BODY>
+</HTML>
+

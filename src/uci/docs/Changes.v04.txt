@@ -1,0 +1,142 @@
+Changes from GEF v03 to v04. This file prepared 3/4/97.
+
+1. Added support for grid snap. Added classes Guide and GuideGrid, and
+made small modifications to Editor and most Mode's.
+
+2. Added support for rectilinear polygons that can be edited instead
+of the fixed routing of previous versions. Changed FigPoly and
+ArcPerzRectilinear.
+
+3. Added Handle objects to hold the index of a handle being dragged by
+the user. These are not very significant objects. Added class
+Handle. Modified all implementors of dragHandle, basically
+DiagramElement and all subclasses.
+
+4. Added support for "hidden" ports that are only visible when the
+mouse is inside a node perspective. This allows nodes to have much
+cleaner looking perspectives. See SampleNode2 for an example. Modified
+Perspective.
+
+5. Added more colors to FigText. Now it uses LineColor and FillColor
+only for the bounding box rectangle, and it uses TextColor for text
+and TextFillColor for the area behind individual characters.
+
+6. Added support for Aligning to grid and aligning centers. Changed
+ActionAlign. Moved much of the alignment code from SelectionMultiple
+into DiagramElement. Also changed EditorMenu.
+
+7. Added a little support for Java1.1. Basically I got GEF to compile
+under 1.1. I have not changed over to the new event model and I don't
+know when I will do that. You should be able to compile under 1.0.2 or
+1.1 by editing Compat.java. If you are running on Unix and have the m4
+utility, you can just edit Makefile.config instead of
+Compat.java. Also changed FigPoly so that it makes a call to
+Compat.drawPolyline instead of calling Graphics.drawPolygon. The class
+Compat implements two versions of several functions: one for jdk1.0.2 and
+one for jdk1.1.
+
+8. Added ActionPrint to print one page under Java1.1. This file will
+not compile under JDK 1.0.2. When diagrams include text I have not
+been able to print them. However if I save to a postscript file I am
+able to print it later. Also had to modify LayerGrid and Prefs to
+support printing with and without a background.
+
+9. Added LayerPageBreaks to indicate where page breaks will fall when
+printing. Modified EditorMenus.
+
+10. Added FigImage and ModeCreateFigImage. Modified PaletteFig to add
+the new Fig types. The initial version of this code was donated by a
+GEF user. See demo.NodeCPU and demo.NodePrinter for examples. It might
+be a good idea to get the images locally instead of using a URL at
+UCI.
+
+11. Added an example in package demo. The example allows you to plug a
+computer and printer into a power outlet on the wall and connect the
+serial port on the commputer to the printer. The example demonstrates
+using typed ports, ports that determine the type or arc that will be
+used, typed arcs, arcs with different perspectives, nodes with
+perspectives that include images.
+
+12. Added ActionInsertVertex and ActionRemoveVertex to add or remove a
+vertex on a selected FigPoly. Also modified FigPoly.
+
+13. Added asynchonous event handling. That is to say, when the Editor
+gets an event it simply stores it in uci.util.EventQueue (not to be
+confused with java.awt.EventQueue under jdk1.1). Later, when the
+editor gets a chance it processes all events in that queue. The
+advantage of doing this is that I can skip some events if they are not
+so important: for example, I can skip a mouseMove if there is another
+mouseMove after it in the queue. Also, Editor does not request a
+redraw untill all pending events are processed. This makes it
+"impossible" for you to "get ahead of the editor" and have it do lots
+of redraws after you drag an object fast. Actually, you can still get
+ahead of the editor if the PropertySheet slows things down, see below.
+
+14. When creating a Fig (e.g. FigRect) a single click will create the
+same size Fig as the last one that was drawn. That makes it less
+likely that users will make zero sized Figs and get confused when
+nothing is visible.
+
+15. Added a PropertySheet window which shows the attributes of the
+currently selected DiagramElement. Boolean attributes are shown as
+checkboxes. Enumerated types use Choice. Colors allow editing of red,
+green, and blue values. Other attributes types are displayed as
+strings. The property editor is useful for debugging so that you can
+see somethings about your DiagramElement's while the program is
+running. I have made some small effort to make this efficient,
+although it is still rather wasteful in terms of the numbe of objects
+created and AWT operations. The interactive performance of GEF can be
+notably slower when a PropertySheet is open. This part of the
+framework is not finished or well documented and will probably change
+in the next release.
+
+16. Added attributes to FigText to control font style (plain, bold,
+italic, or bold-italic).
+
+17. Added support for locked DiagramElement's that cannot be moved by
+the user. This is helpful when you know that something is in the right
+place and you don't want to accidentally move it. Also, it shows off
+the ability to use booleans in the PropertySheet.
+
+18. Previously objectFillColor or objectLineColor could be null to
+indicate transparent objects or objects with no border. Now I have
+separate properties Filled and LineWidth that control what gets
+drawn. The colors are always instances of Color, never null. Removed
+support for setting FillColor to "Transparent", you should set Filled
+to false instead.
+
+19. Tried to speed up the performance of GEF by reducing the number of
+objects that are allocated (and then garbage collected). In part I
+have done this by using static variables instead of locals. This
+reduces garbage, but it means that any function using the static
+variable must be synchronized. I am not sure if this actually has
+produced better preformance, and if so, if that performance was worth
+the added complexity. If you have comments about this, please email
+me.
+
+20. Added constrained movement in ModeModify to drag objects up/down
+or left/right. Changed ModeModify.java.
+
+21. Now you can more easily construct an editor that displays a given
+Layer. Changed Editor.java.
+
+22. Moved much of the geometric logic to class Geometry. This
+simplified some of the other classes and provides a place to share
+geometric logic. I plan to add some more geometric features to GEF in
+the future, some of them are already dormant in Geometry.java.
+
+23. Changed Action to store its arguments in a Hashtable instead of a
+java.util.Properties object. Also space to hold Action args is not
+allocated until they are actually needed. That is to say, _args can be
+null if there are no arguments, instead of refering to an empty
+Hashtable.
+
+24. Made it much easier to select a FigPoly by clicking on an edge or
+vertex.
+
+25. Changed the way that Node and Arc Perspectives are
+instanciated. It was the case that NetNode's made a single Perspective
+for themselves in thier constructor. Now NetNodes and NetArcs should
+implement a function makePerspective(Layer) to instanciate and return
+a perspective. See NodeCPU.java or ArcPower.java for an example.
+

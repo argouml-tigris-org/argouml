@@ -1,0 +1,92 @@
+Thank you for expressing in interest in the UCI Graph Editing
+Framework.
+
+This file was prepared: 1/16/97.
+
+This file gives some information on known bugs, things that will
+change, things that have changed recently, etc.
+
+Please see uci/docs/Overview.txt for an overview of the framework.
+
+This is an "early experience" release. I call it that because I am not
+ready to call it a "beta" yet. There are several bugs, and there are
+several changes and additions that I want to make that will cause
+code reorganizations.  For that reason, I am not planning on doing
+much support of this version. Instead I am asking for your support!
+Please send me comments about what you would like to see. If you fix
+bugs, please send me the fixes. I will try to get a new release out as
+soon as it makes sense to do so.
+
+KNOWN BUGS AND MISFEATURES:
+
+see uci/docs/bugs.txt
+
+UNIMPLEMENTED FEATURES AND FUTURE TASKS:
+
+The following features are planned but not yet implemented. If you
+would like to help, these are some needed improvements. And they are
+the kind of thing that you are likely to want for whatever application
+you are building anyway.
+
+1. Multiple perspectives for a given class of nodes.
+
+2. Interactive perspective editor.
+
+3. Alternative views on the same NetList.
+
+4. Zooming, scrolling, small panner/overview window.
+
+5. Layers menu, hide, layer, show layer, spawn layer, add, remove.
+
+6. MouseGrid, snapToGrid.
+
+7. Align centers.
+
+8. Better examples of subclassing different nodes, arcs, perspectives,
+layers.
+
+9. Arc perspectives. E.g. curved arcs perspectives would be really
+nice.  Gifs, splines.
+
+11. Better text features, specifically styled text and support for
+arrow keys to move cursor through text, mouse support...
+
+13. A more general purpose, table driven, way to select Actions for
+execution given user interface events (key and mouse) and current
+mode.
+
+14. Ability to download new classes of NetPrimitive, DiagramElement,
+Actions, and Modes from the net. Also each of those will have
+about-box methods.
+
+15. Cut, copy, paste, replicate.
+
+16. Rotation of DiagramElement's and layers.
+
+
+CHANGES THAT WILL BE MADE IN THE NEAR FUTURE:
+
+1. More Javadoc comments in the code.
+
+2. Update OMT style class diagrams on the web site.
+
+3. Update my web site.
+
+4. A "Cookbook" document that gives instructions for extending the
+framework to a specific application. I plan to do it in HTML.
+
+5. Debugging, reacting to comments from interested "early experience"
+partners.
+
+6. I have not yet, but I intend to take a serious look at HotDraw and
+other graph editing frameworks that have been around for a while. I
+find this generally interesting, I wanted to try to make my own
+contribution and work through various problems before I looked at how
+others have done such things. If anyone would like to do a critical
+comparison against HotDraw or anything else I would be very interested.
+
+
+
+RECENT CHANGES:
+
+see Changes-v03.txt
