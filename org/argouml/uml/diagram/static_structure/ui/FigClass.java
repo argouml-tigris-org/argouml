@@ -970,7 +970,7 @@ public class FigClass extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setOwner(Object)
      */
     public void setOwner(Object own) {      
-       if (own != null) {
+       if (own != null) { 
            MClass cl = (MClass)own;
            Iterator it = cl.getFeatures().iterator();
            while (it.hasNext()) {
