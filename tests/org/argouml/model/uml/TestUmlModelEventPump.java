@@ -26,6 +26,7 @@ package org.argouml.model.uml;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
+import java.util.Set;
 
 import junit.framework.TestCase;
 
@@ -197,26 +198,24 @@ public class TestUmlModelEventPump extends TestCase {
     
     /**
      * Tests if it is possible to add a listener twice to the same subclass of
-     * MBase. It should not be possible (exception should be thrown)
+     * MBase. Adding a listener twice, should result in only 1 such element in the listenerlist.
      */
     public void testDoubleClassAdd() {
         UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"name"});
-        try {
-            UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"name"});
-            fail();
-        } catch (Exception ex) {}
+        UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"name"});
+        assertEquals(1, UmlModelEventPump.getPump().getListenerClassModelEventsMap().size());
+        assertEquals(1, ((Set)UmlModelEventPump.getPump().getListenerClassModelEventsMap().get(UmlModelEventPump.getPump().getKey(elem.getClass(), "name"))).size());
     }
     
     /**
      * Tests if it is possible to add a listener twice to the same modelelement.
-     * It should not be possible (exception should be thrown).
+     * Adding a listener twice, should result in only 1 such element in the listenerlist.
      */
     public void testDoubleObjectAdd() {
         UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"name"});
-        try {
-            UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"name"});
-            fail();
-        } catch (Exception ex) {}
+        UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"name"});
+        assertEquals(1, UmlModelEventPump.getPump().getListenerModelEventsMap().size());
+        assertEquals(1, ((Set)UmlModelEventPump.getPump().getListenerModelEventsMap().get(UmlModelEventPump.getPump().getKey(elem, "name"))).size());
     } 
     
     /**
