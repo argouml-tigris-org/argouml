@@ -169,7 +169,6 @@ Property files to be searched:
       <pathelement location="${gef.jar.path}"/>
       <pathelement location="${i18n.jar.path}"/>
       <pathelement location="${log4j.jar.path}"/>
-      <pathelement location="${jh.jar.path}"/>
       <pathelement location="${toolbutton.jar.path}"/>
       <pathelement location="${toolbar.jar.path}"/>
       <path refid="antlr.runtime.classpath"/>
@@ -182,7 +181,6 @@ Property files to be searched:
       <pathelement location="${gef.jar.path}"/>
       <pathelement location="${i18n.jar.path}"/>
       <pathelement location="${log4j.jar.path}"/>
-      <pathelement location="${jh.jar.path}"/>
       <pathelement location="${toolbutton.jar.path}"/>
       <pathelement location="${toolbar.jar.path}"/>
       <path refid="antlr.runtime.classpath"/>
@@ -478,8 +476,6 @@ Property files to be searched:
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar"/>
     <copy file="${xerces.jar.path}" tofile="${argo.build.dir}/xerces.jar"/>
     <!-- End of name synch area in this file. -->
-
-    <copy file="${jh.jar.path}" tofile="${argo.build.dir}/jh.jar"/>
 
     <copy file="${argo.src.dir}/README.txt" tofile="${argo.build.dir}/README.txt"/>
     <copy file="${argo.src.dir}/bin/argouml.sh" todir="${argo.build.dir}"/>
@@ -903,11 +899,11 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <arg value="-c"/>
       <arg value="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml"/>
       <arg value="-r"/>
-      <arg value="org"/>
+      <arg value="${argo.src.dir}/org"/>
       <arg value="-r"/>
-      <arg value="../tests"/>
+      <arg value="${argo.root.dir}/tests"/>
       <arg value="-r"/>
-      <arg value="../modules"/>
+      <arg value="${argo.root.dir}/modules"/>
     </java>
   </target>
 
