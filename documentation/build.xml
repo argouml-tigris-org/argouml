@@ -293,6 +293,8 @@ After these operations the file will still be visible in the GUI.
 		<!-- We try to determine what files image files are to be
 		     copied and copy only those.
 		-->
+		<!-- The following two deletes would benefit from the 
+		      quiet="true" attribute but that does not work. -->
 		<delete file="${documentation.dir}/imglist.txt"/>
 		<delete file="${documentation.dir}/${doc.prefix}.html"/>
 		<style  basedir="${documentation.dir}/${doc.subdir}"
@@ -302,6 +304,8 @@ After these operations the file will still be visible in the GUI.
 		<!-- For some reason the destdir does not work.
 		     Instead we need to move it to the right place.
 		-->
+		<!-- The following delete would benefit from the 
+		      quiet="true" attribute but that does not work. -->
 		<delete file="${documentation.dir}/${doc.prefix}.html"/>
 		<copy todir="${documentation.dir}/${doc.subdir}">
 		  <fileset dir="${documentation.dir}"
