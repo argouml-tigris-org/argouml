@@ -474,6 +474,10 @@ This means that a change of version or indeed a change of choice
 of such a sub-product is an internal matter for the subsystem 
 and should ideally not affect any other subsystem.
 </para>
+            <para>
+All public and protected methods of all public and protected classes
+in this directory constitute the API of that subsystem.
+</para>
 	  </listitem>
           <listitem>
             <para>
@@ -567,13 +571,14 @@ Cookbook (in <xref linkend="inside_subsystems"></xref>).
           </listitem>
           <listitem>
             <para>
-An API with calls to public methods in appointed classes
+An API with calls to public or protected methods.
 </para>
             <para>
-Traditionally subsystems communicate through public methods and
+Traditionally, the subsystems in ArgoUML
+communicate through public methods and
 public variables and
 the subsystems, as defined by the responsibilities,
-are spread over several package setting aside the java visibility rules.
+are spread over several packages setting aside the java visibility rules.
 For this reason it is not well-known or documented
 what public methods form part of a subsystem's API and
 what public methods are internal to a subsystem.
@@ -582,9 +587,20 @@ the signature of a public method.
 (See <xref linkend="groundrules"></xref>.)
 </para>
             <para>
-In order not to worsen things, make it very clear when adding a new
-public method, if it is part of the subsystem's API or not
-(in the javadoc of that method).
+In order to improve things, make it very clear when encountering
+and understanding the purpose of a public method or class,
+if it is part of the subsystem's API or not
+(by improving the javadoc for that method or class).
+</para>
+            <para>
+Try to help in moving the public API methods and classes from wherever,
+to the subsystem's directory/package
+using the proper deprecation procedure.
+</para>
+            <para>
+In order not to worsen things,
+always add new API classes and methods in the subsystem's
+directory/package.
 </para>
             <para>
 This way of communicating is still to be used when it is not
@@ -2281,7 +2297,7 @@ Beware that there might be more than one Fig Element per
 
     <sect1>
       <title>How are modules organized in the java code</title>
-    <para>
+      <para>
 This section is not yet updated to discuss layers.
 </para>
       <para>
@@ -2298,6 +2314,19 @@ on the source code level they are called modules.
 This section describes how they are organized and how you 
 create such source-code modules.
 </para>
+
+      <sect2>
+        <title>Requirements on modules</title>
+        <para>
+New modules that are added to ArgoUML shall reside in whole new packages.
+Either you put your module classes in
+<classname><replaceable>your.own.domain</replaceable>.<replaceable>your.package.name</replaceable></classname>
+or if you want to emphasize the connection to ArgoUML you can use
+<classname>org.argouml.<replaceable>your.package.name</replaceable></classname>
+where <replaceable>your.package.name</replaceable> is the name of your
+addition.
+</para>
+      </sect2>
 
       <sect2 id="howdoi_source_code_modules">
 	<title>How do I ...?</title>
