@@ -80,6 +80,7 @@ import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
+import ru.novosoft.uml.foundation.data_types.MProcedureExpression;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -931,7 +932,8 @@ public class CoreFactoryImpl
         MAttribute attr = (MAttribute) createAttribute();
         attr.setName("newAttr");
         attr.setMultiplicity(
-            nsmodel.getUmlFactory().getDataTypes().createMultiplicity(1, 1));
+                (MMultiplicity) nsmodel.getUmlFactory()
+                	.getDataTypes().createMultiplicity(1, 1));
         attr.setStereotype(null);
         attr.setOwner(null);
         attr.setType(intType);
@@ -1291,8 +1293,9 @@ public class CoreFactoryImpl
 	    }
 	}
 	if (notation != null && notation.getName() != null) {
-	    method.setBody(nsmodel.getUmlFactory().getDataTypes()
-		.createProcedureExpression(notation.getName(), body));
+	    method.setBody((MProcedureExpression)
+	            nsmodel.getUmlFactory().getDataTypes()
+	            	.createProcedureExpression(notation.getName(), body));
 	}
 	return method;
     }
