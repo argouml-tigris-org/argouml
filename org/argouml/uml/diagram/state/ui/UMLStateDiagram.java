@@ -295,8 +295,10 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     protected Action getActionCompositeState() {
         if (actionCompositeState == null) {
-            actionCompositeState = new RadioAction(new CmdCreateNode(
-                    ModelFacade.getCompositeStateToken(), "CompositeState"));
+            actionCompositeState =
+                new RadioAction(new CmdCreateNode(
+                        Model.getMetaTypes().getCompositeState(),
+                        "CompositeState"));
         }
         return actionCompositeState;
     }
@@ -320,7 +322,7 @@ public class UMLStateDiagram extends UMLDiagram {
             actionFinalPseudoState =
                 new RadioAction(
                         new CmdCreateNode(
-                                ModelFacade.getFinalStateToken(),
+                                Model.getMetaTypes().getFinalState(),
                                 "FinalState"));
         }
         return actionFinalPseudoState;
@@ -387,8 +389,10 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     protected Action getActionState() {
         if (actionState == null) {
-            actionState = new RadioAction(
-                    new CmdCreateNode(ModelFacade.getStateToken(), "State"));
+            actionState =
+                new RadioAction(
+                        new CmdCreateNode(Model.getMetaTypes().getState(),
+                                	  "State"));
         }
         return actionState;
     }
@@ -401,7 +405,7 @@ public class UMLStateDiagram extends UMLDiagram {
             actionSynchState =
                 new RadioAction(
                         new CmdCreateNode(
-                                ModelFacade.getSynchStateToken(),
+                                Model.getMetaTypes().getSynchState(),
                                 "SynchState"));
         }
         return actionSynchState;
@@ -416,7 +420,7 @@ public class UMLStateDiagram extends UMLDiagram {
                     new CmdSetMode(
                         ModeCreatePolyEdge.class,
                         "edgeClass",
-                        ModelFacade.getTransitionToken(),
+                        Model.getMetaTypes().getTransition(),
                         "Transition"));
         }
         return actionTransition;

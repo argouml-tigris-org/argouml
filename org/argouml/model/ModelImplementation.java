@@ -175,4 +175,12 @@ public interface ModelImplementation {
      * @return the helper
      */
     UseCasesHelper getUseCasesHelper();
+
+
+    /**
+     * Getter for the MetaTypes object.
+     *
+     * @return the MetaTypes object.
+     */
+    MetaTypes getMetaTypes();
 }

@@ -101,12 +101,12 @@ public class ActionGenerateAll extends UMLAction {
 		    addCollection(Model.getModelManagementHelper()
 				  .getAllModelElementsOfKind(
                                       selected,
-		                      ModelFacade.getClassToken()),
+		                      Model.getMetaTypes().getUMLClass()),
 				  classes);
 		    addCollection(Model.getModelManagementHelper()
 				  .getAllModelElementsOfKind(
                                       selected,
-			              ModelFacade.getInterfaceToken()),
+			              Model.getMetaTypes().getInterface()),
 				  classes);
 		} else if (ModelFacade.isAClass(selected)
 			   || ModelFacade.isAInterface(selected)) {

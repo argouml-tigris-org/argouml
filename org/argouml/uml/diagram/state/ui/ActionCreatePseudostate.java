@@ -55,7 +55,7 @@ public class ActionCreatePseudostate extends CmdCreateNode {
             throw new IllegalArgumentException();
 	}
 
-	setArg("className", ModelFacade.getPseudostateToken());
+	setArg("className", Model.getMetaTypes().getPseudostate());
 	setArg("kind", kind);
     }
 

@@ -48,7 +48,7 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
     public UMLExtendBaseComboBoxModel() {
         super("base", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this,
-                ModelFacade.getNamespaceToken(), "ownedElement");
+                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
     /**
@@ -63,7 +63,7 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
         Object model = p.getRoot();
         setElements(Model.getModelManagementHelper()
                 .getAllModelElementsOfKindWithModel(model,
-                        ModelFacade.getUseCaseToken()));
+                        Model.getMetaTypes().getUseCase()));
         if (ModelFacade.getExtension(extend) != null) {
             removeElement(ModelFacade.getExtension(extend));
         }

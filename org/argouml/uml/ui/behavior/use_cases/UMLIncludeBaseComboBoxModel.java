@@ -46,7 +46,7 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
         // listens for addition modelevents
         super("addition", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this,
-                ModelFacade.getNamespaceToken(), "ownedElement");
+                Model.getMetaTypes().getNamespace(), "ownedElement");
     }
 
     /**
@@ -60,7 +60,9 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
         List list = new ArrayList();
         Object ns = ModelFacade.getNamespace(inc);
         list.addAll(Model.getModelManagementHelper()
-                .getAllModelElementsOfKind(ns, ModelFacade.getUseCaseToken()));
+                .getAllModelElementsOfKind(
+                        ns,
+                        Model.getMetaTypes().getUseCase()));
         list.remove(ModelFacade.getAddition(inc));
         addAll(list);
     }

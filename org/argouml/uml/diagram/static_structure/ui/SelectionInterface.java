@@ -146,12 +146,12 @@ public class SelectionInterface extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class) ModelFacade.getClassToken();
+	Class nodeClass = (Class) Model.getMetaTypes().getUMLClass();
 	int bx = mX, by = mY;
 	boolean reverse = false;
 	switch (hand.index) {
 	case 11: //add realization
-	    edgeClass = (Class) ModelFacade.getAbstractionToken();
+	    edgeClass = (Class) Model.getMetaTypes().getAbstraction();
 	    reverse = true;
 	    by = cy + ch;
 	    bx = cx + cw / 2;
@@ -188,7 +188,7 @@ public class SelectionInterface extends SelectionWButtons {
 	}
 
 	return mgm.connect(cl4ss, interf4ce,
-	        (Class) ModelFacade.getAbstractionToken());
+	        (Class) Model.getMetaTypes().getAbstraction());
     }
 
     /**
@@ -197,7 +197,7 @@ public class SelectionInterface extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
         return gm.connect(newNode, _content.getOwner(),
-			  (Class) ModelFacade.getAbstractionToken());
+			  (Class) Model.getMetaTypes().getAbstraction());
     }
 
     /**

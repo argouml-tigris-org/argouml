@@ -31,11 +31,12 @@ import javax.swing.Action;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 
@@ -242,7 +243,8 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionClass() {
         if (actionClass == null) {
             actionClass =
-                makeCreateNodeAction(ModelFacade.getClassToken(), "Class");
+                makeCreateNodeAction(Model.getMetaTypes().getUMLClass(),
+                        	     "Class");
         }
 
         return actionClass;
@@ -255,7 +257,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionAssociationClass == null) {
             actionAssociationClass =
                 makeCreateEdgeAction(
-                    ModelFacade.getAssociationClassToken(),
+                    Model.getMetaTypes().getAssociationClass(),
                     "AssociationClass");
         }
         return actionAssociationClass;
@@ -278,7 +280,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionDependency == null) {
             actionDependency =
                 makeCreateEdgeAction(
-                        ModelFacade.getDependencyToken(),
+                        Model.getMetaTypes().getDependency(),
                         "Dependency");
         }
         return actionDependency;
@@ -290,7 +292,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionGeneralization() {
         if (actionGeneralization == null) {
             actionGeneralization = makeCreateEdgeAction(
-                    ModelFacade.getGeneralizationToken(),
+                    Model.getMetaTypes().getGeneralization(),
                     "Generalization");
         }
 
@@ -304,7 +306,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionInterface == null) {
             actionInterface =
                 makeCreateNodeAction(
-                        ModelFacade.getInterfaceToken(),
+                        Model.getMetaTypes().getInterface(),
                         "Interface");
         }
         return actionInterface;
@@ -316,7 +318,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionLink() {
         if (actionLink == null) {
             actionLink =
-                makeCreateEdgeAction(ModelFacade.getLinkToken(), "Link");
+                makeCreateEdgeAction(Model.getMetaTypes().getLink(), "Link");
         }
 
         return actionLink;
@@ -327,7 +329,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionModel() {
         if (actionModel == null) {
             actionModel =
-                makeCreateNodeAction(ModelFacade.getModelToken(), "Model");
+                makeCreateNodeAction(Model.getMetaTypes().getModel(), "Model");
         }
 
         return actionModel;
@@ -339,7 +341,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionObject == null) {
             actionObject =
                 makeCreateNodeAction(
-                        ModelFacade.getInstanceToken(),
+                        Model.getMetaTypes().getInstance(),
                         "Instance");
         }
 
@@ -351,7 +353,8 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionPackage() {
         if (actionPackage == null) {
             actionPackage =
-                makeCreateNodeAction(ModelFacade.getPackageToken(), "Package");
+                makeCreateNodeAction(Model.getMetaTypes().getPackage(),
+                        	     "Package");
         }
 
         return actionPackage;
@@ -363,7 +366,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionPermission == null) {
             actionPermission =
                 makeCreateEdgeAction(
-                        ModelFacade.getPermissionToken(),
+                        Model.getMetaTypes().getPermission(),
                         "Permission");
         }
 
@@ -377,7 +380,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionRealization == null) {
             actionRealization =
                 makeCreateEdgeAction(
-                        ModelFacade.getAbstractionToken(),
+                        Model.getMetaTypes().getAbstraction(),
                         "Realization");
         }
 
@@ -391,7 +394,7 @@ public class UMLClassDiagram extends UMLDiagram {
         if (actionSubsystem == null) {
             actionSubsystem =
                 makeCreateNodeAction(
-                        ModelFacade.getSubsystemToken(),
+                        Model.getMetaTypes().getSubsystem(),
                         "Subsystem");
         }
         return actionSubsystem;
@@ -442,7 +445,7 @@ public class UMLClassDiagram extends UMLDiagram {
     protected Action getActionUsage() {
         if (actionUsage == null) {
             actionUsage =
-                makeCreateEdgeAction(ModelFacade.getUsageToken(), "Usage");
+                makeCreateEdgeAction(Model.getMetaTypes().getUsage(), "Usage");
         }
         return actionUsage;
     }

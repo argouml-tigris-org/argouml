@@ -61,7 +61,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
                 ConfigLoader.getTabPropsOrientation());
 
         Object[] namesToWatch = {
-	    ModelFacade.getActionToken(),
+	    Model.getMetaTypes().getAction(),
 	};
         setNameEventListening(namesToWatch);
 

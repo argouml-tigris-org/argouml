@@ -24,11 +24,11 @@
 
 package org.argouml.uml.cognitive.checklist;
 
+import org.argouml.cognitive.checklist.CheckItem;
 import org.argouml.cognitive.checklist.CheckManager;
 import org.argouml.cognitive.checklist.Checklist;
-import org.argouml.cognitive.checklist.CheckItem;
-import org.argouml.model.ModelFacade;
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 
 
 /**
@@ -125,7 +125,7 @@ public class Init {
         newCheckItem(cat, "checklist.class.updates.reasons-for-update", cl);
 	newCheckItem(cat, "checklist.class.updates.affects-something-else", cl);
 
-	CheckManager.register((Class) ModelFacade.getClassToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getUMLClass(), cl);
 
 
 	// Attribute
@@ -175,7 +175,7 @@ public class Init {
 	    "checklist.attribute.updates.exists-method-for-specific-value",
 	    cl);
 
-	CheckManager.register((Class) ModelFacade.getAttributeToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getAttribute(), cl);
 
 
 	// Operation
@@ -229,7 +229,7 @@ public class Init {
 	    "checklist.operation.location.eliminates-or-affects-something-else",
 	    cl);
 
-	CheckManager.register((Class) ModelFacade.getOperationToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getOperation(), cl);
 
 
 
@@ -277,7 +277,7 @@ public class Init {
             "checklist.association.updates.affects-something-else",
 	    cl);
 
-	CheckManager.register((Class) ModelFacade.getAssociationToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getAssociation(), cl);
 
 
 	// Interface
@@ -319,7 +319,7 @@ public class Init {
 	newCheckItem(cat, "checklist.interface.updates.affects-something-else",
 		     cl);
 
-	CheckManager.register((Class) ModelFacade.getInterfaceToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getInterface(), cl);
 
 
 	// Instance
@@ -380,7 +380,7 @@ public class Init {
 	    "checklist.instance.transitions.combine-with-other-outgoing",
 	    cl);
 
-	CheckManager.register((Class) ModelFacade.getInstanceToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getInstance(), cl);
 
 
 	// Link
@@ -417,7 +417,7 @@ public class Init {
 	newCheckItem(cat, "checklist.link.updates.reasons-for-update", cl);
 	newCheckItem(cat, "checklist.link.updates.affects-something-else", cl);
 
-	CheckManager.register((Class) ModelFacade.getLinkToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getLink(), cl);
 
 
 	// State
@@ -474,7 +474,7 @@ public class Init {
 	    "checklist.state.transitions.combine-with-other-outgoing",
 	    cl);
 
-	CheckManager.register((Class) ModelFacade.getStateToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getState(), cl);
 
 
 	// Transition
@@ -512,7 +512,7 @@ public class Init {
 	    "checklist.transition.actions.is-postcondition-consistant-with-"
             + "destination", cl);
 
-	CheckManager.register((Class) ModelFacade.getTransitionToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getTransition(), cl);
 
 
 	// Use Case
@@ -553,7 +553,7 @@ public class Init {
 	newCheckItem(cat, "checklist.usecase.updates.affects-something-else",
 		     cl);
 
-	CheckManager.register((Class) ModelFacade.getUseCaseToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getUseCase(), cl);
 
 
 	// Actor
@@ -590,7 +590,7 @@ public class Init {
 	newCheckItem(cat, "checklist.actor.updates.reasons-for-update", cl);
 	newCheckItem(cat, "checklist.actor.updates.affects-something-else", cl);
 
-	CheckManager.register((Class) ModelFacade.getActorToken(), cl);
+	CheckManager.register(Model.getMetaTypes().getActor(), cl);
 
     }
 

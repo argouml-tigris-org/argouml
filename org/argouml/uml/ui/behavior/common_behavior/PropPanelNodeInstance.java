@@ -28,7 +28,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -75,7 +75,7 @@ public class PropPanelNodeInstance extends PropPanelInstance {
 
         addSeperator();
         AbstractActionAddModelElement a =
-            new ActionAddInstanceClassifier(ModelFacade.getNodeToken());
+            new ActionAddInstanceClassifier(Model.getMetaTypes().getNode());
         JScrollPane classifierScroll =
                 new JScrollPane(new UMLMutableLinkedList(
 	                new UMLInstanceClassifierListModel(),

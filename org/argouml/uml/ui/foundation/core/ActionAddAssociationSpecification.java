@@ -67,7 +67,7 @@ public class ActionAddAssociationSpecification
             Object model = p.getRoot();
             ret.addAll(Model.getModelManagementHelper()
                 .getAllModelElementsOfKindWithModel(model,
-                        ModelFacade.getClassifierToken()));
+                        Model.getMetaTypes().getClassifier()));
         }
         return ret;
     }

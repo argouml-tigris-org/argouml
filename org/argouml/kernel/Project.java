@@ -659,7 +659,7 @@ public class Project implements java.io.Serializable, TargetListener {
         Collection allClassifiers =
             Model.getModelManagementHelper()
 	        .getAllModelElementsOfKind(ns,
-	                ModelFacade.getClassifierToken());
+	                Model.getMetaTypes().getClassifier());
 
         Object[] classifiers = allClassifiers.toArray();
         Object classifier = null;

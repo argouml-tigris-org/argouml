@@ -32,7 +32,6 @@ import java.util.Set;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * Rule for Project->Statemachine.
@@ -57,7 +56,7 @@ public class GoProjectToStateMachine extends AbstractPerspectiveRule {
 	    while (it.hasNext()) {
 		col.addAll(Model.getModelManagementHelper()
 			   .getAllModelElementsOfKind(it.next(),
-					ModelFacade.getStateMachineToken()));
+			           Model.getMetaTypes().getStateMachine()));
 	    }
 	}
 	return col;

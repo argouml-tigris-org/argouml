@@ -271,7 +271,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionCallState =
                 new RadioAction(
                         new CmdCreateNode(
-                                ModelFacade.getCallStateToken(),
+                                Model.getMetaTypes().getCallState(),
                                 "CallState"));
         }
         return actionCallState;
@@ -284,7 +284,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionFinalPseudoState =
                 new RadioAction(
                         new CmdCreateNode(
-                                ModelFacade.getFinalStateToken(),
+                                Model.getMetaTypes().getFinalState(),
                         	"FinalState"));
         }
         return actionFinalPseudoState;
@@ -334,7 +334,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     protected Action getActionNewSwimlane() {
         if (actionNewSwimlane == null) {
             actionNewSwimlane =
-                new CmdCreateNode(ModelFacade.getPartitionToken(),
+                new CmdCreateNode(Model.getMetaTypes().getPartition(),
                         	  "Create a new swimlane");
         }
         return actionNewSwimlane;
@@ -347,7 +347,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionObjectFlowState =
                 new RadioAction(
                         new CmdCreateNode(
-                                ModelFacade.getObjectFlowStateToken(),
+                                Model.getMetaTypes().getObjectFlowState(),
                                 "ObjectFlowState"));
         }
         return actionObjectFlowState;
@@ -373,7 +373,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionState =
                 new RadioAction(
                         new CmdCreateNode(
-                                ModelFacade.getActionStateToken(),
+                                Model.getMetaTypes().getActionState(),
                         	"ActionState"));
         }
         return actionState;
@@ -386,7 +386,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionSubactivityState =
                 new RadioAction(
                         new CmdCreateNode(
-                                ModelFacade.getSubactivityStateToken(),
+                                Model.getMetaTypes().getSubactivityState(),
                         "SubactivityState"));
         }
         return actionSubactivityState;
@@ -401,7 +401,7 @@ public class UMLActivityDiagram extends UMLDiagram {
                         new CmdSetMode(
                                 ModeCreatePolyEdge.class,
                                 "edgeClass",
-                                ModelFacade.getTransitionToken(),
+                                Model.getMetaTypes().getTransition(),
                         "Transition"));
         }
         return actionTransition;

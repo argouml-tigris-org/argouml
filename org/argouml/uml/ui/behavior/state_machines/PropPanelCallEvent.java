@@ -120,7 +120,7 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
                 Collection c =
                     Model.getModelManagementHelper().getAllModelElementsOfKind(
                             ns,
-                            ModelFacade.getClassifierToken());
+                            Model.getMetaTypes().getClassifier());
                 Iterator i = c.iterator();
                 while (i.hasNext()) {
                     ops.addAll(ModelFacade.getOperations(i.next()));

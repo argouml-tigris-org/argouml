@@ -33,7 +33,6 @@ import javax.swing.Icon;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
 import org.tigris.gef.base.Editor;
@@ -177,7 +176,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class) ModelFacade.getClassifierRoleToken();
+	Class nodeClass = (Class) Model.getMetaTypes().getClassifierRole();
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -191,12 +190,12 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12 : //add outgoing
-	    edgeClass = (Class) ModelFacade.getAssociationRoleToken();
+	    edgeClass = (Class) Model.getMetaTypes().getAssociationRole();
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13 : // add incoming
-	    edgeClass = (Class) ModelFacade.getAssociationRoleToken();
+	    edgeClass = (Class) Model.getMetaTypes().getAssociationRole();
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -232,7 +231,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
 	return mgm.connect(newNode, _content.getOwner(),
-			   (Class) ModelFacade.getAssociationRoleToken());
+			   (Class) Model.getMetaTypes().getAssociationRole());
     }
 
     /**
@@ -241,7 +240,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
 	return gm.connect(newNode, _content.getOwner(),
-			  (Class) ModelFacade.getAssociationRoleToken());
+			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 
     /**
@@ -250,7 +249,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
 	return gm.connect(_content.getOwner(), newNode,
-			  (Class) ModelFacade.getAssociationRoleToken());
+			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 
     /**
@@ -263,7 +262,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	return gm.connect(
 			  _content.getOwner(),
 			  _content.getOwner(),
-			  (Class) ModelFacade.getAssociationRoleToken());
+			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 
     /**
@@ -272,7 +271,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
 	return gm.connect(_content.getOwner(), newNode,
-			  (Class) ModelFacade.getAssociationRoleToken());
+			  (Class) Model.getMetaTypes().getAssociationRole());
     }
 
 } /* end class SelectionClassifierRole */

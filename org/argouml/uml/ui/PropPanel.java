@@ -593,18 +593,19 @@ public abstract class PropPanel
         */
         for (int i = 0; i < metaclasses.length; i++) {
             Object clazz = metaclasses[i];
-            if (Model.getCoreHelper().isSubType(ModelFacade.getNamespaceToken(),
-                                                 clazz)) {
+            if (Model.getCoreHelper().isSubType(
+                    Model.getMetaTypes().getNamespace(),
+                    clazz)) {
                 UmlModelEventPump.getPump()
 		    .addClassModelEventListener(this, clazz, "ownedElement");
             }
             if (Model.getCoreHelper().isSubType(
-                    ModelFacade.getModelElementToken(),
+                    Model.getMetaTypes().getModelElement(),
                     clazz)) {
                 UmlModelEventPump.getPump()
 		    .addClassModelEventListener(this, clazz, "name");
             }
-            if (clazz.equals(ModelFacade.getStereotypeToken())) {
+            if (clazz.equals(Model.getMetaTypes().getStereotype())) {
                 UmlModelEventPump.getPump()
 		    .addClassModelEventListener(this, clazz, "baseClass");
             }

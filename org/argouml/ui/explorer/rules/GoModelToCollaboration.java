@@ -57,7 +57,7 @@ public class GoModelToCollaboration extends AbstractPerspectiveRule {
             Collection col =
                 Model.getModelManagementHelper().getAllModelElementsOfKind(
                         parent,
-                        ModelFacade.getCollaborationToken());
+                        Model.getMetaTypes().getCollaboration());
             List returnList = new ArrayList();
             Iterator it = col.iterator();
             while (it.hasNext()) {

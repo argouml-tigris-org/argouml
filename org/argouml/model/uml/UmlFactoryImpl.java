@@ -36,7 +36,6 @@ import org.argouml.model.CommonBehaviorFactory;
 import org.argouml.model.CoreFactory;
 import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.ModelManagementFactory;
 import org.argouml.model.StateMachinesFactory;
 import org.argouml.model.UmlFactory;
@@ -339,7 +338,7 @@ class UmlFactoryImpl
 
         Object connection = null;
 
-        if (elementType == ModelFacade.getAssociationToken()) {
+        if (elementType == nsmodel.getMetaTypes().getAssociation()) {
             connection =
                 getCore().buildAssociation(
                        (MClassifier) fromElement,
@@ -347,7 +346,7 @@ class UmlFactoryImpl
                        (MClassifier) toElement,
                        (MAggregationKind) toStyle,
                        (Boolean) unidirectional);
-        } else if (elementType == ModelFacade.getAssociationEndToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getAssociationEnd()) {
             if (fromElement instanceof MAssociation) {
                 connection =
                     getCore().buildAssociationEnd(toElement, fromElement);
@@ -355,41 +354,52 @@ class UmlFactoryImpl
                 connection =
                     getCore().buildAssociationEnd(fromElement, toElement);
             }
-        } else if (elementType == ModelFacade.getAssociationClassToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getAssociationClass()) {
             connection =
                 getCore().buildAssociationClass(fromElement, toElement);
-        } else if (elementType == ModelFacade.getAssociationRoleToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getAssociationRole()) {
             connection =
                 getCollaborations()
                 	.buildAssociationRole(fromElement, fromStyle,
                 	        toElement, toStyle,
                 	        (Boolean) unidirectional);
-        } else if (elementType == ModelFacade.getGeneralizationToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getGeneralization()) {
             connection =
                 getCore().buildGeneralization(fromElement, toElement);
-        } else if (elementType == ModelFacade.getPermissionToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getPermission()) {
             connection = getCore().buildPermission(fromElement, toElement);
-        } else if (elementType == ModelFacade.getUsageToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getUsage()) {
             connection =
                 getCore().buildUsage(fromElement, toElement);
-        } else if (elementType == ModelFacade.getGeneralizationToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getGeneralization()) {
             connection =
                 getCore().buildGeneralization(fromElement, toElement);
-        } else if (elementType == ModelFacade.getDependencyToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getDependency()) {
             connection = getCore().buildDependency(fromElement, toElement);
-        } else if (elementType == ModelFacade.getAbstractionToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getAbstraction()) {
             connection =
                 getCore().buildRealization(
                         fromElement,
                         toElement,
                         namespace);
-        } else if (elementType == ModelFacade.getLinkToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getLink()) {
             connection = getCommonBehavior().buildLink(fromElement, toElement);
-        } else if (elementType == ModelFacade.getExtendToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getExtend()) {
             // Extend, but only between two use cases. Remember we draw from the
             // extension port to the base port.
             connection = getUseCases().buildExtend(toElement, fromElement);
-        } else if (elementType == ModelFacade.getIncludeToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getInclude()) {
             connection = getUseCases().buildInclude(fromElement, toElement);
         }
 
@@ -420,55 +430,57 @@ class UmlFactoryImpl
     public Object buildNode(Object elementType) {
 
         Object modelElement = null;
-        if (elementType == ModelFacade.getActorToken()) {
+        if (elementType == nsmodel.getMetaTypes().getActor()) {
             return getUseCases().createActor();
-        } else if (elementType == ModelFacade.getUseCaseToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getUseCase()) {
             return getUseCases().createUseCase();
-        } else if (elementType == ModelFacade.getClassToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getUMLClass()) {
             return getCore().buildClass();
-        } else if (elementType == ModelFacade.getInterfaceToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getInterface()) {
             return getCore().buildInterface();
-        } else if (elementType == ModelFacade.getPackageToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getPackage()) {
             return getModelManagement().createPackage();
-        } else if (elementType == ModelFacade.getModelToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getModel()) {
             return getModelManagement().createModel();
-        } else if (elementType == ModelFacade.getInstanceToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getInstance()) {
             return getCommonBehavior().createInstance();
-        } else if (elementType == ModelFacade.getSubsystemToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getSubsystem()) {
             return getModelManagement().createSubsystem();
-        } else if (elementType == ModelFacade.getCallStateToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getCallState()) {
             return getActivityGraphs().createCallState();
-        } else if (elementType == ModelFacade.getFinalStateToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getFinalState()) {
             return getStateMachines().createFinalState();
-        } else if (elementType == ModelFacade.getPseudostateToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getPseudostate()) {
             return getStateMachines().createPseudostate();
-        } else if (elementType == ModelFacade.getObjectFlowStateToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getObjectFlowState()) {
             return getActivityGraphs().createObjectFlowState();
-        } else if (elementType == ModelFacade.getActionStateToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getActionState()) {
             return getActivityGraphs().createActionState();
-        } else if (elementType == ModelFacade.getSubactivityStateToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getSubactivityState()) {
             return getActivityGraphs().createSubactivityState();
-        } else if (elementType == ModelFacade.getCompositeStateToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getCompositeState()) {
             return getStateMachines().createCompositeState();
-        } else if (elementType == ModelFacade.getSynchStateToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getSynchState()) {
             return getStateMachines().createSynchState();
-        } else if (elementType == ModelFacade.getStateToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getState()) {
             return getStateMachines().createState();
-        } else if (elementType == ModelFacade.getClassifierRoleToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getClassifierRole()) {
             return getCollaborations().createClassifierRole();
-        } else if (elementType == ModelFacade.getComponentToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getComponent()) {
             return getCore().createComponent();
-        } else if (elementType == ModelFacade.getComponentInstanceToken()) {
+        } else if (elementType
+                == nsmodel.getMetaTypes().getComponentInstance()) {
             return getCommonBehavior().createComponentInstance();
-        } else if (elementType == ModelFacade.getNodeToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getNode()) {
             return getCore().createNode();
-        } else if (elementType == ModelFacade.getNodeInstanceToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getNodeInstance()) {
             return getCommonBehavior().createNodeInstance();
-        } else if (elementType == ModelFacade.getObjectToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getObject()) {
             return getCommonBehavior().createObject();
-        } else if (elementType == ModelFacade.getCommentToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getComment()) {
             return getCore().createComment();
-        } else if (elementType == ModelFacade.getNamespaceToken()) {
+        } else if (elementType == nsmodel.getMetaTypes().getNamespace()) {
             return getCore().createNamespace();
         }
         return modelElement;
@@ -595,7 +607,7 @@ class UmlFactoryImpl
      * itself. For example: this delete method also removes the binary
      * associations that a class has if the class is deleted. In this
      * way, it is not longer possible that illegal states exist in the
-     * model.<p>
+     * nsmodel.<p>
      *
      * The actual deletion is delegated to delete methods in the rest of the
      * factories. For example: a method deleteClass exists on CoreHelper.
@@ -611,7 +623,7 @@ class UmlFactoryImpl
      *
      * The implementation of this method uses a quite complicate if then else
      * tree. This is done to provide optimal performance and full compliance to
-     * the UML 1.3 model. The last remark refers to the fact that the UML 1.3
+     * the UML 1.3 nsmodel. The last remark refers to the fact that the UML 1.3
      * model knows multiple inheritance in several places. This has to be taken
      * into account.<p>
      *
