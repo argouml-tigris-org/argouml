@@ -316,7 +316,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     view.add(new CmdAdjustPageBreaks());
     view.addCheckItem(Actions.ShowRapidButtons);
 
-
+    view.addSeparator();
+    view.add(org.argouml.language.ui.ActionNotation.getInstance().getMenu());
+ 
     //JMenu create = (JMenu) _menuBar.add(new JMenu(menuLocalize("Create")));
     //setMnemonic(create,"Create",'C');
     //create.add(Actions.CreateMultiple);
