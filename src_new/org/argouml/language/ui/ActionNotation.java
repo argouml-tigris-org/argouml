@@ -47,17 +47,26 @@ public class ActionNotation extends UMLAction
 
     private static final ActionNotation SINGLETON = new ActionNotation();
 
-    private JMenu _menu = null;
+    private JMenu menu = null;
 
+    /**
+     * @return the singleton
+     */
     public static final ActionNotation getInstance() { return SINGLETON; }
 
+    /**
+     * Constructor - adds the Notation menu.
+     */
     public ActionNotation() {
         super("Notation", NO_ICON);
-        _menu = new JMenu("Notation");
-        _menu.add(this);
-        _menu.addMenuListener(this);
+        menu = new JMenu("Notation");
+        menu.add(this);
+        menu.addMenuListener(this);
     }
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
         String key = ae.getActionCommand();
         ArrayList list = Notation.getAvailableNotations();
@@ -74,11 +83,17 @@ public class ActionNotation extends UMLAction
         }
     }
 
-    public JMenu getMenu() { return _menu; }
+    /**
+     * @return the menu for the natation
+     */
+    public JMenu getMenu() { return menu; }
 
+    /**
+     * @see javax.swing.event.MenuListener#menuSelected(javax.swing.event.MenuEvent)
+     */
     public void menuSelected(MenuEvent me) {
         NotationName dflt = Notation.getDefaultNotation();
-        _menu.removeAll();
+        menu.removeAll();
         ArrayList list = Notation.getAvailableNotations();
         ListIterator iterator = list.listIterator();
         ButtonGroup b = new ButtonGroup();
@@ -94,13 +109,19 @@ public class ActionNotation extends UMLAction
                 mi.addActionListener(this);
                 b.add(mi);
                 mi.setSelected(dflt.equals(nn));
-                _menu.add(mi);
+                menu.add(mi);
             }
         }
     }
 
+    /**
+     * @see javax.swing.event.MenuListener#menuDeselected(javax.swing.event.MenuEvent)
+     */
     public void menuDeselected(MenuEvent me) { }
 
+    /**
+     * @see javax.swing.event.MenuListener#menuCanceled(javax.swing.event.MenuEvent)
+     */
     public void menuCanceled(MenuEvent me) { }
 
 }
