@@ -2234,14 +2234,14 @@ public class ParserDisplay extends Parser {
                 // case 2   
 		// Beware: the language should not be reset to "Java" or lost.
 		
-		//TODO: This does not work! Why not?
-	        //Object expr = ModelFacade.getExpression(g);
-		//ModelFacade.setBody(expr,guard);
+		/* TODO: This does not work! Why not? (MVW)
+	        Object expr = ModelFacade.getExpression(g);
+		ModelFacade.setBody(expr,guard);
+		ModelFacade.setExpression(g,expr); */
 	        
 	        //hence a less elegant workaround that works:
 	        String language = 
 			ModelFacade.getLanguage(ModelFacade.getExpression(g));
-                LOG.info("Guard - Case 2 - Language = '" + language + "'.");
 	        ModelFacade.setExpression(g, UmlFactory.getFactory()
                     .getDataTypes().createBooleanExpression(language, guard));
                 /*  TODO: In this case, the properties panel is not updated 
@@ -2278,13 +2278,22 @@ public class ParserDisplay extends Parser {
 	to a CallAction (case 2). */
 	/* TODO: The name and language are reset when the expression is 
 	altered (case 2). */
+	Object effect = ModelFacade.getEffect(trans);
 	if (actions.length() > 0) {
-	    Object effect = /*(MCallAction)*/ parseAction(actions);
-	    ModelFacade.setName(effect, "anon");
-	    ModelFacade.setEffect(trans, effect);
-	}
-	else // case 3 & 4
+	    if (effect == null) {  // case 1
+	        effect = UmlFactory.getFactory().getCommonBehavior().createCallAction();
+	        ModelFacade.setScript(effect, UmlFactory.getFactory().getDataTypes()
+                                            .createActionExpression("Java", actions));
+	        ModelFacade.setName(effect, "anon");
+	        ModelFacade.setEffect(trans, effect);
+	    } else {  // case 2
+                String language = ModelFacade.getLanguage(ModelFacade.getExpression(g));
+                ModelFacade.setScript(effect, UmlFactory.getFactory().getDataTypes()
+                        .createActionExpression(language, actions));
+	    }
+	} else {  // case 3 & 4
 	    ModelFacade.setEffect(trans, null);
+	}
 
 	return trans;
     }
