@@ -42,5 +42,9 @@ public class ObjectNode extends ActivationNode implements LinkPort {
     public Object getObject() {
     	return _owner;
     }
+    
+    public void setObject(Object object) {
+    	_owner = object;
+    }
 
 }
