@@ -41,22 +41,8 @@ import org.argouml.ui.targetmanager.TargetManager;
 
 /**
  * Action to choose and set source path for model elements.
- *
- * @stereotype singleton
  */
 public class ActionSetSourcePath extends UMLAction {
-
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    /**
-     * The singleton.
-     */
-    public static final ActionSetSourcePath SINGLETON =
-        new ActionSetSourcePath();
-
-    //public static final String separator = "/";
-    //System.getProperty("file.separator");
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -64,10 +50,9 @@ public class ActionSetSourcePath extends UMLAction {
     /**
      * The constructor.
      */
-    protected ActionSetSourcePath() {
-	super("action.set-source-path", true, NO_ICON);
+    public ActionSetSourcePath() {
+	super("action.set-source-path", false, NO_ICON);
     }
-
 
     ////////////////////////////////////////////////////////////////
     // main methods
@@ -80,7 +65,8 @@ public class ActionSetSourcePath extends UMLAction {
 	if (f != null) {
 	    Object obj = TargetManager.getInstance().getTarget();
 	    if (ModelFacade.isAModelElement(obj)) {
-		Model.getCoreHelper().setTaggedValue(obj, "src_path", f.getPath());
+		Model.getCoreHelper().setTaggedValue(obj, "src_path", 
+		        f.getPath());
 	    }
 	}
     }
@@ -133,7 +119,8 @@ public class ActionSetSourcePath extends UMLAction {
 	chooser.setDialogTitle(sChooserTitle);
 	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 
-	int retval = chooser.showDialog(ProjectBrowser.getInstance(), "OK");
+	int retval = chooser.showDialog(ProjectBrowser.getInstance(), 
+            Translator.localize("dialog.button.ok"));
 	if (retval == JFileChooser.APPROVE_OPTION) {
 	    return chooser.getSelectedFile();
 	} else {
@@ -141,10 +128,4 @@ public class ActionSetSourcePath extends UMLAction {
 	}
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-	return true;
-    }
 } /* end class ActionSetSourcePath */
