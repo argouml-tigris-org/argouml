@@ -1404,40 +1404,30 @@ public class NSUMLModelFacade implements Facade {
 
 
     /**
-     * Recognizer for constructor.
-     *
-     * @param handle candidate
-     * @return true if handle is a constructor.
+     * @see org.argouml.model.Facade#isConstructor(java.lang.Object)
      */
     public boolean isConstructor(Object handle) {
+        MOperation operation = null;
+        if (handle instanceof MMethod) {
+            operation = ((MMethod) handle).getSpecification();
+        } else if (handle instanceof MOperation) {
+            operation = (MOperation) handle;
+        }
         Object stereo = null;
-        if (isAOperation(handle)) {
-            if (nsmodel.getFacade().getStereotypes(handle).size() > 0) {
-                stereo =
-                    nsmodel.getFacade().getStereotypes(handle)
-                    	.iterator().next();
-            }
-            if (nsmodel.getExtensionMechanismsHelper()
-                    .isStereotypeInh(stereo, "create", "BehavioralFeature")) {
-                return true;
-            }
-            return false;
-        }
-        if (isAMethod(handle)) {
-            Object specification =
-                nsmodel.getCoreHelper().getSpecification(handle);
-            if (nsmodel.getFacade().getStereotypes(specification).size() > 0) {
-                stereo =
-                    nsmodel.getFacade().getStereotypes(specification)
-                    	.iterator().next();
-            }
-            if (nsmodel.getExtensionMechanismsHelper()
-                    .isStereotypeInh(stereo, "create", "BehavioralFeature")) {
-                return true;
+        if (operation != null) {
+            Iterator iter =
+                getStereotypes(operation).iterator();
+            while (iter.hasNext()) {
+                if (nsmodel.getExtensionMechanismsHelper().isStereotypeInh(
+                        stereo,
+                        "create",
+                        "BehavioralFeature")) {
+                    return true;
+                }
             }
             return false;
         }
-	return illegalArgumentBoolean(handle);
+	return illegalArgumentBoolean(operation);
     }
 
     /**
@@ -3213,7 +3203,7 @@ public class NSUMLModelFacade implements Facade {
      * @return Collection
      */
     public Collection getOutgoings(Object handle) {
-        if (nsmodel.getFacade().isAStateVertex(handle)) {
+        if (isAStateVertex(handle)) {
             return ((MStateVertex) handle).getOutgoings();
         }
 	return illegalArgumentCollection(handle);
@@ -4006,13 +3996,13 @@ public class NSUMLModelFacade implements Facade {
      */
     public Collection getStructuralFeatures(Object handle) {
         Collection result = new ArrayList();
-        if (nsmodel.getFacade().isAClassifier(handle)) {
+        if (isAClassifier(handle)) {
             MClassifier mclassifier = (MClassifier) handle;
 
             Iterator features = mclassifier.getFeatures().iterator();
             while (features.hasNext()) {
                 MFeature feature = (MFeature) features.next();
-                if (nsmodel.getFacade().isAStructuralFeature(feature)) {
+                if (isAStructuralFeature(feature)) {
                     result.add(feature);
                 }
             }
@@ -4032,7 +4022,7 @@ public class NSUMLModelFacade implements Facade {
         Iterator features = mclassifier.getFeatures().iterator();
         while (features.hasNext()) {
             MFeature feature = (MFeature) features.next();
-            if (nsmodel.getFacade().isAOperation(feature)) {
+            if (isAOperation(feature)) {
                 result.add(feature);
             }
         }
