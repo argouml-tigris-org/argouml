@@ -36,6 +36,8 @@ import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 
 public class PropPanelClass extends PropPanelClassifier {
@@ -112,6 +114,10 @@ public class PropPanelClass extends PropPanelClassifier {
             classifier.addOwnedElement(inner);
             navigateTo(inner);
         }
+        // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     public void newClass() {
@@ -125,6 +131,10 @@ public class PropPanelClass extends PropPanelClassifier {
                 navigateTo(peer);
             }
         }
+        // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {

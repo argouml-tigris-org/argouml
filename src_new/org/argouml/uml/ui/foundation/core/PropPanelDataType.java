@@ -36,6 +36,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
+
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
@@ -134,7 +136,12 @@ public class PropPanelDataType extends PropPanelClassifier {
             attr.setVisibility(MVisibilityKind.PUBLIC);
             attr.setType(classifier);
             navigateTo(attr);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
+        
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
@@ -151,6 +158,10 @@ public class PropPanelDataType extends PropPanelClassifier {
             MDataType newDt = dt.getFactory().createDataType();
             ns.addOwnedElement(newDt);
             navigateTo(newDt);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 } /* end class PropPanelDataType */

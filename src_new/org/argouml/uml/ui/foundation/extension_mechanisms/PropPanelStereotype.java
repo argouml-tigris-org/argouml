@@ -35,6 +35,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
+
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -96,6 +98,10 @@ public class PropPanelStereotype extends PropPanelModelElement {
                 MStereotype newStereo = ns.getFactory().createStereotype();
                 ns.addOwnedElement(newStereo);
                 navigateTo(newStereo);
+                 // 2002-07-15
+            	// Jaap Branderhorst
+            	// Force an update of the navigation pane to solve issue 323
+            	ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
         }
     }

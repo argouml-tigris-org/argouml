@@ -34,6 +34,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.application.api.*;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 
 import org.tigris.gef.util.*;
@@ -141,6 +142,10 @@ abstract public class PropPanelModelElement extends PropPanel {
             MModelElement ownedElem = ns.getFactory().createDataType();
             ns.addOwnedElement(ownedElem);
             navigateTo(ownedElem);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 

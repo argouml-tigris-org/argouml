@@ -34,6 +34,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import org.argouml.uml.ui.*;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 
 public class PropPanelOperation extends PropPanelModelElement {
@@ -241,6 +242,10 @@ public class PropPanelOperation extends PropPanelModelElement {
             MParameter newParam = MMUtil.SINGLETON.buildParameter(oper);
             newParam.setKind(MParameterDirectionKind.INOUT);
             navigateTo(newParam);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -252,7 +257,12 @@ public class PropPanelOperation extends PropPanelModelElement {
             if(owner != null) {
 		MOperation newOper = MMUtil.SINGLETON.buildOperation(owner);
                 navigateTo(newOper);
+               
             }
+             // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -264,6 +274,10 @@ public class PropPanelOperation extends PropPanelModelElement {
 	    oper.getNamespace().addOwnedElement(newSignal);
             oper.addRaisedSignal(newSignal);
             navigateTo(newSignal);
+             // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 

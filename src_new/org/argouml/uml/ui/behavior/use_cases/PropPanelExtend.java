@@ -34,6 +34,7 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -247,6 +248,10 @@ public class PropPanelExtend extends PropPanelModelElement {
                 ns.addOwnedElement(extensionPoint);
 
                 navigateTo(extensionPoint);
+                // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
         }
     }

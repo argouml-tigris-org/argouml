@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -216,6 +217,10 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                         }
                         _newButton.setEnabled(false);
                         navigateTo(newElement);
+                        // 2002-07-15
+            			// Jaap Branderhorst
+            			// Force an update of the navigation pane to solve issue 323
+            			ProjectBrowser.TheInstance.getNavPane().forceUpdate();
                     }
                     catch(Exception e) {
                         System.out.println(e.toString() + " in PropPanelGeneralization.newElement");

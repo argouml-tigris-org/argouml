@@ -35,6 +35,7 @@ import java.util.*;
 
 import javax.swing.*;
 
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -102,6 +103,10 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
             MParameter newParam = MMUtil.SINGLETON.buildParameter(ev);
             newParam.setKind(MParameterDirectionKind.INOUT);
             navigateTo(newParam);
+            // 2002-07-15
+            // Jaap Branderhorst
+            // Force an update of the navigation pane to solve issue 323
+            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 

@@ -33,6 +33,8 @@ import java.awt.*;
 import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import java.awt.event.*;
@@ -108,6 +110,10 @@ public class PropPanelSignal extends PropPanelClassifier {
                 MSignal newSig = ns.getFactory().createSignal();
                 ns.addOwnedElement(newSig);
                 navigateTo(newSig);
+                // 2002-07-15
+            	// Jaap Branderhorst
+            	// Force an update of the navigation pane to solve issue 323
+            	ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
         }
     }

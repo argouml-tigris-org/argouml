@@ -28,6 +28,8 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
+
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
@@ -134,6 +136,10 @@ public class PropPanelParameter extends PropPanelModelElement {
                 MParameter newParam = MMUtil.SINGLETON.buildParameter(feature);
                 newParam.setKind(MParameterDirectionKind.INOUT);
                 navigateTo(newParam);
+                 // 2002-07-15
+            	// Jaap Branderhorst
+            	// Force an update of the navigation pane to solve issue 323
+            	ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
         }
     }
