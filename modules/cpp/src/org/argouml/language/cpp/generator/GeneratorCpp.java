@@ -286,13 +286,22 @@ public class GeneratorCpp extends Generator2
      * Generates a file for the classifier.
      * This method could have been static if it where not for the need to
      * call it through the Generatorinterface.<p>
+     * It works only for classes and interfaces, everything else is ignored.
      *
-     * Returns the full path name of the the generated file.
+     * Param node is the node.
+     * Param path is the base path for the source.
+     * Returns the full path name of the the generated file, or null if 'o'
+     * is not a class or a interface.
      *
      * @see org.argouml.uml.generator.FileGenerator#generateFile2(
      * java.lang.Object, java.lang.String)
      */
     public String generateFile2(Object o, String path) {
+        if (!Model.getFacade().isAClass(o)
+               && !Model.getFacade().isAInterface(o)) {
+            // TODO: is returning null a correct behaviour here?
+            return null;
+        }
         String packagePath =
             Model.getFacade().getName(Model.getFacade().getNamespace(o));
         String pathname = null;
@@ -1100,15 +1109,19 @@ public class GeneratorCpp extends Generator2
 
         // pick out return type
         Object rp = Model.getCoreHelper().getReturnParameter(op);
-        if (rp != null) {
-            Object returnType = Model.getFacade().getType(rp);
-            if (returnType == null && !constructor) {
-                sb.append("void ");
-            }
-            else if (returnType != null) {
-                sb.append(generateNameWithPkgSelection(returnType)).append(' ');
-                // fixing 2862 - apply modifiers, i.e., pointer or reference TV
-                sb.append(generateAttributeParameterModifier(rp));
+        if (!constructor) {
+            if (rp != null) {
+                Object returnType = Model.getFacade().getType(rp);
+                if (returnType == null) {
+                    sb.append("void ");
+                }
+                else if (returnType != null) {
+                    sb.append(generateNameWithPkgSelection(returnType))
+                        .append(' ');
+                    /* fixing 2862 - apply modifiers, 
+                     * i.e. pointer or reference TV */
+                    sb.append(generateAttributeParameterModifier(rp));
+                }
             }
         }
 
@@ -1172,6 +1185,26 @@ public class GeneratorCpp extends Generator2
                                                       String def) {
         int modType = getAttributeModifierType(attr);
 
+	// if attr has an abstract type it must be pointer or reference
+	if (modType == NORMAL_MOD || modType == -1) {
+	    Object type = Model.getFacade().getType(attr);
+	    if (type == null) {
+		// model corrupt (this really happened -- aslo)
+		LOG.error(attr + " has no type!");
+		return "";
+	    }
+	    if (Model.getFacade().isAbstract(type)
+		|| Model.getFacade().isAInterface(type)) {
+		if (modType == NORMAL_MOD) {
+		    // user explicitly requested no modifier, print a warning
+ 		    LOG.warn("Requested no reference or pointer modifier, but");
+ 		    LOG.warn("\t" + type 
+ 		            + " cannot be instantiated, using reference");
+		}
+		modType = REFERENCE_MOD;
+	    }
+	}
+
         if (modType == NORMAL_MOD) {
             return "";
         } else if (modType == REFERENCE_MOD) {
@@ -1220,13 +1253,6 @@ public class GeneratorCpp extends Generator2
                         generateName(Model.getFacade().getName(attr)),
                         Model.getFacade().getMultiplicity(attr),
                         generateAttributeParameterModifier(attr)));
-        Object initExpression = Model.getFacade().getInitialValue(attr);
-        if (initExpression != null) {
-            String initStr = generateExpression(initExpression).trim();
-            if (initStr.length() > 0)
-                sb.append(" = ").append(initStr);
-        }
-
         sb.append(";");
         if (generatorPass != NONE_PASS)
             sb.append(LINE_SEPARATOR);
@@ -1253,11 +1279,15 @@ public class GeneratorCpp extends Generator2
         sb.append(generateName(Model.getFacade().getName(param)));
 
         // insert default value, if we are generating the header or notation
-        if ((generatorPass != SOURCE_PASS)
-            && (Model.getFacade().getDefaultValue(param) != null)) {
-            sb.append(" = ");
-            sb.append(Model.getFacade().getBody(
-                    Model.getFacade().getDefaultValue(param)));
+        if (generatorPass != SOURCE_PASS) {
+            Object defvalObj = Model.getFacade().getDefaultValue(param);
+            if (defvalObj != null) {
+                String defval =
+                    Model.getFacade().getBody(defvalObj).toString().trim();
+                if (defval.length() > 0) {
+                    sb.append(" = ").append(defval);
+                }
+            }
         }
 
         return sb.toString();
@@ -2473,13 +2503,13 @@ public class GeneratorCpp extends Generator2
                 String visTag =
                     Model.getFacade().getTaggedValueValue(dependency,
                                             "visibility").trim();
+                if (sb.length() > 0) sb.append(", ");
                 if (visTag != null && !visTag.equals("")) {
                     sb.append(visTag).append(" ");
                 } else {
                     sb.append("virtual public ");
                 }
                 sb.append(generateNameWithPkgSelection(iFace));
-                if (depIterator.hasNext()) sb.append(", ");
             }
         }
         return sb.toString();
