@@ -14,6 +14,7 @@ Module Owners (contact these people for contributions):
   Java RE: Andreas Rueckert (a_rueckert@gmx.net)
   Roundtrip engineering, UML notation: Thomas Neustupny (thn-d@gmx.de)
   Knowledge support: Jason Robbins (jrobbins@collab.net)
+  OCL constraints: Steffen Zschaler (sz9@inf.tu-dresden.de)
   User manual: Philippe Vanpeperstraete (Philippe.Vanpeperstraete@skynet.be)
   FAQ: Dennis Daniels (denny_d@hotmail.com)
   Website: Markus Klink (mkl@baba9.com)
@@ -39,6 +40,8 @@ Contributing Developers (in no special order):
   Thomas Schaumburg
   Frank Wienberg
   Stuart Zakon
+  Linus Tolke
+  Steffen Zschaler
 
 Credits for previous versions:
 
