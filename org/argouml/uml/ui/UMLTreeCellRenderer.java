@@ -56,6 +56,8 @@ import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
     private Category cat = Category.getInstance(this.getClass());
+    
+    private static final String BUNDLE = "UMLMenu";
 
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
@@ -96,35 +98,41 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 cat.warn("UMLTreeCellRenderer: using default Icon");
 
             // setting the tooltip
-            String tip = null;
+            String type = null;
             if (ModelFacade.isAModelElement(value)) {
-                tip = ModelFacade.getUMLClassName(value);
+                type = ModelFacade.getUMLClassName(value);
             } else if (value instanceof UMLDiagram) {
-
                 if (value instanceof UMLActivityDiagram)
-                    tip = Argo.localize("UMLMenu", "label.activity-diagram");
+                    type = Argo.localize(BUNDLE, "label.activity-diagram");
                 else if (value instanceof UMLSequenceDiagram)
-                    tip = Argo.localize("UMLMenu", "label.sequence-diagram");
+                    type = Argo.localize(BUNDLE, "label.sequence-diagram");
                 else if (value instanceof UMLCollaborationDiagram)
-                    tip =
-                        Argo.localize("UMLMenu", "label.collaboration-diagram");
+                    type =
+                        Argo.localize(BUNDLE, "label.collaboration-diagram");
                 else if (value instanceof UMLDeploymentDiagram)
-                    tip = Argo.localize("UMLMenu", "label.deployment-diagram");
+                    type = Argo.localize(BUNDLE, "label.deployment-diagram");
                 else if (value instanceof UMLStateDiagram)
-                    tip = Argo.localize("UMLMenu", "label.state-chart-diagram");
+                    type = Argo.localize(BUNDLE, "label.state-chart-diagram");
                 else if (value instanceof UMLUseCaseDiagram)
-                    tip = Argo.localize("UMLMenu", "label.usecase-diagram");
+                    type = Argo.localize(BUNDLE, "label.usecase-diagram");
                 else if (value instanceof UMLClassDiagram)
-                    tip = Argo.localize("UMLMenu", "label.class-diagram");
-            } else
-                // TODO I18n
-                tip = (value == null) ? "empty" : value.toString() + " ";
-
-            // lab.setToolTipText(tip);
-            if ((tree.getToolTipText() != null
-                && !tree.getToolTipText().equals(tip))
-                || (tree.getToolTipText() == null && tip != null))
-                tree.setToolTipText(tip);
+                    type = Argo.localize(BUNDLE, "label.class-diagram");
+            }
+            if (type != null) {
+                StringBuffer buf = new StringBuffer();
+                buf.append("<html>");
+                buf.append(Argo.localize(BUNDLE, "label.name"));
+                buf.append(' ');
+                buf.append(lab.getText());
+                buf.append("<br>");
+                buf.append(Argo.localize(BUNDLE, "label.type"));
+                buf.append(' ');
+                buf.append(type);
+                lab.setToolTipText(buf.toString());
+            }
+            else {
+                lab.setToolTipText(lab.getText());
+            }
         }
         return r;
     }

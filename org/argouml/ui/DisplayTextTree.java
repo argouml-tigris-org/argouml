@@ -38,7 +38,6 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
-
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.cognitive.ToDoItem;
@@ -49,7 +48,6 @@ import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
-
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -89,6 +87,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
         putClientProperty("JTree.lineStyle", "Angled");
         setRootVisible(false);
         setShowsRootHandles(true);
+        setToolTipText("Tree"); // Enables tooltips for tree. Won't be shown.
 
         this.setRowHeight(18); 
 
