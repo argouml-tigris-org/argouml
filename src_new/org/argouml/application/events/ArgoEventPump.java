@@ -195,14 +195,16 @@ public class ArgoEventPump {
             }
         } else {
             if (event.getEventType() >= ArgoEventTypes.ANY_MODULE_EVENT
-                && event.getEventType() < ArgoEventTypes.ANY_MODULE_EVENT + 100) {
+                && event.getEventType() 
+                    < ArgoEventTypes.ANY_MODULE_EVENT + 100) {
                 if (listener instanceof ArgoModuleEventListener) {
                     handleFireModuleEvent((ArgoModuleEvent) event,
 					  (ArgoModuleEventListener) listener);
                 }
             }
             if (event.getEventType() >= ArgoEventTypes.ANY_NOTATION_EVENT
-                && event.getEventType() < ArgoEventTypes.ANY_NOTATION_EVENT + 100) {
+                && event.getEventType() 
+                    < ArgoEventTypes.ANY_NOTATION_EVENT + 100) {
                 if (listener instanceof ArgoNotationEventListener) {
                     handleFireNotationEvent((ArgoNotationEvent) event,
 					(ArgoNotationEventListener) listener);

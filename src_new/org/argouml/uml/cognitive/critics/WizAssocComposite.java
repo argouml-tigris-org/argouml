@@ -44,8 +44,9 @@ import org.argouml.model.ModelFacade;
  * <em>Note</em>. This only applies to binary associations. A separate
  * wizard is needed for 3-way (or more) associations.<p>
  *
- * @see <a 
- * href="http://argouml.tigris.org/documentation/printablehtml/manual/argouml.html/#s2.ref.critics_multiple_agg">
+ * @see <a href=
+ * "http://argouml.tigris.org/documentation/printablehtml/manual/argouml.html/
+ * #s2.ref.critics_multiple_agg">
  * ArgoUML User Manual: Two Aggregate ends (roles) in binary Association
  * </a>
  * @author jrobbins@ics.uci.edu

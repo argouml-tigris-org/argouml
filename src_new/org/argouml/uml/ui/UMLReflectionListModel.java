@@ -244,7 +244,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
 
 
     /**
-     * @param index
+     * @param index index of selected list item
      */
     public void add(int index) {
         try {
@@ -270,7 +270,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
 
 
     /**
-     * @param index
+     * @param index index of selected list item
      */
     public void moveUp(int index) {
         if (theGetMethod != null && theSetMethod != null) {
@@ -296,7 +296,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
     }
 
     /**
-     * @param index
+     * @param index index of selected list item
      */
     public void moveDown(int index) {
         if (theGetMethod != null && theSetMethod != null) {

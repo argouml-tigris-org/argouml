@@ -52,8 +52,9 @@ import org.argouml.model.ModelFacade;
  * org.argouml.uml.cognitive.critics.CrMultipleAgg}) which deals with
  * 2-way assocations.</p>
  *
- * @see <a
- * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_multiple_agg">
+ * @see <a href=
+ * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
+ * #s2.ref.critics_multiple_agg">
  * ArgoUML User Manual: Two Aggregate ends (roles) in binary
  * Association</a> */
 

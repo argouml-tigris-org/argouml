@@ -42,6 +42,7 @@ public abstract class UMLWizard extends Wizard {
     protected String suggestion;
 
     /**
+     * The constructor.
      * 
      */
     public UMLWizard() {

@@ -70,7 +70,7 @@ public class CrMissingOperName extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
-	    ToDoItem item = (ToDoItem)w.getToDoItem();
+	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Set the name of this attribute.";
 	    String sug = "AttributeName";

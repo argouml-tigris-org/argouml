@@ -103,7 +103,7 @@ public class CrDisambigClassName extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
-	    ToDoItem item = (ToDoItem)w.getToDoItem();
+	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = ModelFacade.getName(me);
 	    String ins = "Change the name to something different.";

@@ -54,8 +54,6 @@ public class WizMEName extends UMLWizard {
      * 
      */
     public WizMEName() { }
-								       
-									   									       
 
     /**
      * @param s the instructions
@@ -85,6 +83,9 @@ public class WizMEName extends UMLWizard {
 	return null;
     }
     
+    /**
+     * @see org.argouml.uml.cognitive.critics.UMLWizard#setSuggestion(java.lang.String)
+     */
     public void setSuggestion(String s) {
         origSuggest = s;
         suggestion = s;

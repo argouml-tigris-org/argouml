@@ -67,10 +67,7 @@ public abstract class UMLCheckBox2
         propertySetName = name;
         addActionListener(a);
 
-	// TODO: When no longer requiring support for JDK1.2 this constant
-	// can be changed to Action.ACTION_COMMAND_KEY.
-	final String ACTION_COMMAND_KEY = "ActionCommandKey";
-        setActionCommand((String) a.getValue(ACTION_COMMAND_KEY));
+        setActionCommand((String) a.getValue(Action.ACTION_COMMAND_KEY));
     }
 
     /**

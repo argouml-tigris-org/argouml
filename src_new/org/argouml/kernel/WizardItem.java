@@ -27,16 +27,17 @@ package org.argouml.kernel;
 
 
 /**
- * A WizardItem is a type wizards know how to deal with. It only requires that it
- * is notified to have been changed.
+ * A WizardItem is a type wizards know how to deal with. 
+ * It only requires that it is notified to have been changed.
+ * 
  * @author mkl
  * @see org.argouml.kernel.Wizard
  */
 public interface WizardItem {
 
-    /** notify this wizarditem that it has been changed.
+    /** 
+     * Notify this wizarditem that it has been changed.
      * 
-     *
      */
     void changed();
 

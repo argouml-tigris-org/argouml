@@ -24,8 +24,6 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.Color;
-
 import javax.swing.Action;
 import javax.swing.JButton;
 
