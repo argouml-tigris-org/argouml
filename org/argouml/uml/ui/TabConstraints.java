@@ -249,6 +249,7 @@ public class TabConstraints extends TabSpawnable
 		if (src == _addButton) {
 			MConstraint c = new MConstraintImpl();
 			c.setBody(new MBooleanExpression("OCL", ""));
+			c.setName("new constraint");
 			_target.addConstraint(c);
 			_target.getNamespace().addOwnedElement(c);
 			_table.tableChanged(null);
@@ -280,13 +281,14 @@ public class TabConstraints extends TabSpawnable
 					String result = dialog.getResultingExpression();
 					if (result != null) {
 						c.setBody(new MBooleanExpression("OCL", result));
-
+						/*
 						if (dialog.getConstraintName()==null) {
 							c.setName("malformed constraint");
 						}
 						else {
 							c.setName(dialog.getConstraintName());
 						}
+						*/
 
 						_table.tableChanged(null);
 						_table.sizeColumnsToFit(1);
@@ -364,11 +366,11 @@ public class TabConstraints extends TabSpawnable
 			try {
 				String ocl = "context "+_target.getName()+" "+c.getBody().getBody();
 				OclTree tree = OclTree.createTree(ocl, new ArgoFacade(_target));
-				String name = tree.getConstraintName();
-				c.setName(name);
+				//String name = tree.getConstraintName();
+				//c.setName(name);
 			}
 			catch (Exception e) {
-				c.setName("malformed constraint");
+				//c.setName("malformed constraint");
 			}
 		}
 	}
@@ -424,7 +426,9 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   }
 
   public boolean isCellEditable(int row, int col) {
-    return false;
+      if (col==1) return true;
+      else return false;
+   
   }
 
   public int getRowCount() {
@@ -464,7 +468,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
 
   public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
     //System.out.println("setting table value " + rowIndex + ", " + columnIndex);
-    if (columnIndex != 0) return;
+    
+    //if (columnIndex != 0) return;
     if (!(aValue instanceof String)) return;
     String val = (String) aValue;
     Vector cs = new Vector(_target.getConstraints());
@@ -479,7 +484,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
     else {
       MConstraint c = (MConstraint) cs.elementAt(rowIndex);
       c.setName(val);
-      fireTableRowsUpdated(rowIndex, rowIndex);
+      fireTableRowsUpdated(rowIndex, columnIndex);
     }
   }
 
