@@ -78,7 +78,8 @@ public class TestUMLModelElementSupplierDependencyListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MModelElement) elem).removeSupplierDependency((MDependency) elements[i]);
+            ((MModelElement) elem).removeSupplierDependency(
+                    (MDependency) elements[i]);
         }
     }
 

@@ -53,7 +53,8 @@ public class CoreTestSuite {
 	suite.addTestSuite(TestUMLModelElementNamespaceListModel.class);
 	suite.addTestSuite(TestUMLModelElementSourceFlowListModel.class);
 	suite.addTestSuite(TestUMLModelElementStereotypeComboBoxModel.class);
-	suite.addTestSuite(TestUMLModelElementSupplierDependencyListModel.class);
+	suite.addTestSuite(TestUMLModelElementSupplierDependencyListModel
+	                                                            .class);
 	suite.addTestSuite(TestUMLModelElementTargetFlowListModel.class);
 	suite.addTestSuite(TestUMLStructuralFeatureTypeComboBoxModel.class);
         return suite;

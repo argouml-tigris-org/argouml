@@ -64,7 +64,8 @@ public class TestUMLModelElementNameDocument extends TestCase {
         elem = CoreFactory.getFactory().buildClass(ns);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
+        MockUMLUserInterfaceContainer cont = 
+            new MockUMLUserInterfaceContainer();
         //cont.setTarget(elem);
         model = new UMLModelElementNameDocument();
         model.setTarget(elem);

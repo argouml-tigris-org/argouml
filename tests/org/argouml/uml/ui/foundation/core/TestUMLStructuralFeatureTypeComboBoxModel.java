@@ -65,7 +65,8 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLStructuralFeatureTypeComboBoxModel();
-        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem}));
+        model.targetSet(new TargetEvent(this, "set", new Object[0], 
+                new Object[] {elem}));
         types = new MClassifier[10];
         MModel m = ModelManagementFactory.getFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
@@ -90,12 +91,18 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         model = null;
     }
     
+    /**
+     * set up the test
+     */
     public void testSetUp() {
         assertTrue(model.contains(types[5]));
         assertTrue(model.contains(types[0]));
         assertTrue(model.contains(types[9]));
     }
     
+    /**
+     * Test the setType function.
+     */
     public void testSetType() {
         elem.setType(types[0]);
         assertTrue(model.getSelectedItem() == types[0]);
@@ -112,6 +119,9 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
         assertNotNull(model.getSelectedItem());
     }
     
+    /**
+     * The test for removing types.
+     */
     public void testRemoveType() {
         UmlFactory.getFactory().delete(types[9]);
         assertTrue(!model.contains(types[9]));

@@ -62,7 +62,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
         ns = ModelManagementFactory.getFactory().createModel();
         elem = CoreFactory.getFactory().buildClass(ns);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);        
+        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLModelElementConstraintListModel();
         elem.addMElementListener(model);
         model.setTarget(elem);

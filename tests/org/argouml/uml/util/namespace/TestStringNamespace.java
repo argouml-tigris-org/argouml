@@ -34,16 +34,27 @@ import junit.framework.*;
  */
 public class TestStringNamespace extends TestCase
 {
+    /**
+     * The constructor.
+     * 
+     * @param testName the name of the test
+     */
     public TestStringNamespace(java.lang.String testName)
     {
         super(testName);
     }
 
+    /**
+     * @param args the arguments given on the commandline
+     */
     public static void main(java.lang.String[] args)
     {
         junit.textui.TestRunner.run(suite());
     }
 
+    /**
+     * @return the test suite
+     */
     public static Test suite()
     {
         TestSuite suite = new TestSuite(TestStringNamespace.class);
@@ -55,12 +66,12 @@ public class TestStringNamespace extends TestCase
     {
         StringNamespace sns1 =
             new StringNamespace(
-                new String[] { "org", "argouml", "model" },
+                new String[] {"org", "argouml", "model" },
                 Namespace.UML_NS_TOKEN);
 
         StringNamespace sns2 =
             new StringNamespace(
-                new String[] { "org", "argouml", "model" },
+                new String[] {"org", "argouml", "model" },
                 Namespace.UML_NS_TOKEN);
 
         StringNamespace result =
@@ -144,7 +155,7 @@ public class TestStringNamespace extends TestCase
         assertTrue(sns.isEmpty());
     }
 
-    /*
+    /**
      * Class to test for String toString(String)
      */
     public void testToString()

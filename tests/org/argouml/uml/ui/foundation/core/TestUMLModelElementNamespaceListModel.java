@@ -73,6 +73,9 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Test for setNameSpace.
+     */
     public void testSetNamespace() {
         MNamespace ns = CoreFactory.getFactory().createNamespace();
         elem.setNamespace(ns);

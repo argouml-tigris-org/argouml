@@ -79,7 +79,8 @@ public class TestUMLCollaborationInteractionListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MCollaboration) elem).removeInteraction((MInteraction) elements[i]);
+            ((MCollaboration) elem).removeInteraction(
+                    (MInteraction) elements[i]);
         }
     }
 
