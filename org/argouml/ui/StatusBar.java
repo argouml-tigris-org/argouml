@@ -33,67 +33,88 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.border.EtchedBorder;
 
+/**
+ * The status bar.
+ *
+ */
 public class StatusBar extends JPanel implements Runnable {
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-    protected JLabel _msg = new JLabel();
-    protected JProgressBar _progress = new JProgressBar();
-    protected String _statusText;
-  
-    ////////////////////////////////////////////////////////////////
-    // constructor
-    public StatusBar() {
-	_progress.setMinimum(0);
-	_progress.setMaximum(100);
-	_progress.setMinimumSize(new Dimension(100, 20));
-	_progress.setSize(new Dimension(100, 20));
 
-	_msg.setMinimumSize(new Dimension(300, 20));
-	_msg.setSize(new Dimension(300, 20));
-	_msg.setFont(new Font("Dialog", Font.PLAIN, 10));
-	_msg.setForeground(Color.black);
+    private JLabel msg = new JLabel();
+    private JProgressBar progress = new JProgressBar();
+    private String statusText;
+  
+    /**
+     * The constructor.
+     * 
+     */
+    public StatusBar() {
+	progress.setMinimum(0);
+	progress.setMaximum(100);
+	progress.setMinimumSize(new Dimension(100, 20));
+	progress.setSize(new Dimension(100, 20));
+
+	msg.setMinimumSize(new Dimension(300, 20));
+	msg.setSize(new Dimension(300, 20));
+	msg.setFont(new Font("Dialog", Font.PLAIN, 10));
+	msg.setForeground(Color.black);
 
 	setLayout(new BorderLayout());
 	setBorder(new EtchedBorder(EtchedBorder.LOWERED));
-	add(_msg, BorderLayout.CENTER);
-	add(_progress, BorderLayout.EAST);
+	add(msg, BorderLayout.CENTER);
+	add(progress, BorderLayout.EAST);
     }
 
+    /**
+     * @param s the status string to show
+     */
     public void showStatus(String s) {
-	_msg.setText(s);
+	msg.setText(s);
 	paintImmediately(getBounds());
     }
 
+    /**
+     * @param percent the percentage of the progress bar to be shown
+     */
     public void showProgress(int percent) {
-	_progress.setValue(percent);
+	progress.setValue(percent);
     }
 
+    /**
+     * @param delataPercent an increment for the progrss bar
+     */
     public void incProgress(int delataPercent) {
-	_progress.setValue(_progress.getValue() + delataPercent);
+	progress.setValue(progress.getValue() + delataPercent);
     }
 
+    /**
+     * @param s the status bar text
+     * @param work 
+     */
     public synchronized void doFakeProgress(String s, int work) {
-	_statusText = s;
-	showStatus(_statusText + "... not implemented yet ...");
-	_progress.setMaximum(work);
-	_progress.setValue(0);
+	statusText = s;
+	showStatus(statusText + "... not implemented yet ...");
+	progress.setMaximum(work);
+	progress.setValue(0);
 	Thread t = new Thread(this);
 	t.start();
     }
 
+    /**
+     * @see java.lang.Runnable#run()
+     */
     public synchronized void run() {
-	int work = _progress.getMaximum();
+	int work = progress.getMaximum();
 	for (int i = 0; i < work; i++) {
-	    _progress.setValue(i);
+	    progress.setValue(i);
 	    repaint();
 	    try { wait(10); }
 	    catch (Exception ex) { }
 	}
-	showStatus(_statusText + "... done.");
+	showStatus(statusText + "... done.");
 	repaint();
 	try { wait(1000); }
 	catch (Exception ex) { }
-	_progress.setValue(0);
+	progress.setValue(0);
 	showStatus("");
 	repaint();
     }

@@ -24,14 +24,22 @@
 
 package org.argouml.ui;
 
+/**
+ * TODO: This class is not used. Document its purpose or remove if useless.
+ *
+ */
 public class UsageStatistic {
     ////////////////////////////////////////////////////////////////
     // instance variables
-    public String name;
-    public int value;
+    private String name;
+    private int value;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * The constructor.
+     * 
+     * @param n the name
+     * @param v the value
+     */
     public UsageStatistic(String n, int v) {
 	name = n;
 	value = v;
