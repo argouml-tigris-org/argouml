@@ -421,6 +421,8 @@ ${Name} Build file
           tofile="${argo.build.classes}/org/argouml/default.xmi" />
     <copy file="${argo.src.dir}/org/argouml/registry.xml"
           tofile="${argo.build.classes}/org/argouml/registry.xml"/>
+    <copy file="${argo.src.dir}/org/argouml/eventtree.xml"
+          tofile="${argo.build.classes}/org/argouml/eventtree.xml"/>     
   </target>
 
   <!-- =================================================================== -->

@@ -1221,7 +1221,11 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	 * @param cls
 	 * @return MOperation
 	 */
-	public MOperation buildOperation(MClassifier cls) {
+	public MOperation buildOperation(Object handle) {
+        if (!(handle instanceof MClassifier)) {
+            throw new IllegalArgumentException("Handle is not a classifier");
+        }
+        MClassifier cls = (MClassifier)handle;
 		MOperation oper = createOperation();
 		oper.setName("newOperation");
 		oper.setStereotype(null);

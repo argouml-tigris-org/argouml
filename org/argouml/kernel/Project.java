@@ -203,6 +203,8 @@ public class Project implements java.io.Serializable {
         addMember(new UMLClassDiagram(model));
         addMember(new UMLUseCaseDiagram(model));
         setNeedsSave(false);
+        // TODO: do the next thing via an event
+        ProjectBrowser.TheInstance.setActiveDiagram((ArgoDiagram)getDiagrams().get(0));
     }
 
     public Project(MModel model) {
@@ -797,6 +799,8 @@ public class Project implements java.io.Serializable {
                 return cls;
         }
         cls = findTypeInModel(s, _defaultModel);
+        // hey, now we should move it to the model the user is working in
+        cls = (MClassifier)ModelManagementHelper.getHelper().getCorrespondingElement(cls, getRoot());
 
         if (cls == null && defineNew) {
             cat.debug("new Type defined!");

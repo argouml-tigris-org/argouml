@@ -540,7 +540,16 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     public void notationProviderAdded(ArgoNotationEvent event) { }
     public void notationProviderRemoved(ArgoNotationEvent event) { }
 
+	/**
+	 * Rerenders the fig if needed. This functionality was originally the functionality
+	 * of modelChanged but modelChanged takes the event now into account.
+	 */
     public void renderingChanged() {
+    	// updateAnnotationPositions();
+    	updateClassifiers();
+    	updateNameText();
+    	updateStereotypeText();   
+    	damage();	
     }
 
     /**
