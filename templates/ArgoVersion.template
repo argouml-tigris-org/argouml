@@ -35,8 +35,10 @@ package org.argouml.application;
  */
 public class ArgoVersion {
     /** Version number
+     *
+     * @deprecated to become "private static final" in the future - use getVersion() instead.
      */
-    public static final String VERSION = "@ARGO_RELEASE_VERSION@";
+    public static String VERSION = "@ARGO_RELEASE_VERSION@";
 
     /** Retrieve the version number.
      * @return the version number.
