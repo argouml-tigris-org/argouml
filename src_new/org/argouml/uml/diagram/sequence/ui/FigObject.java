@@ -29,14 +29,26 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ListIterator;
 
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.uml.diagram.sequence.ActivationNode;
+import org.argouml.uml.diagram.sequence.EmptyNode;
+import org.argouml.uml.diagram.sequence.LifeLinePort;
+import org.argouml.uml.diagram.sequence.LinkNode;
+import org.argouml.uml.diagram.sequence.LinkPort;
+import org.argouml.uml.diagram.sequence.Node;
+import org.argouml.uml.diagram.sequence.ObjectNode;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
@@ -44,11 +56,18 @@ import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.MElementEvent;
 
 /**
- * Fig to show an object on a sequence diagram
+ * Fig to show an object on a sequence diagram. The fig consists of an upper box
+ * that shows the name of the object (the owner) and a lifeline. The lifeline consists
+ * of lifeline elements. An element can be a dashed line (no link attached) or a
+ * rectangle (link attached).
  * @author jaap.branderhorst@xs4all.nl
  * Aug 11, 2003
  */
 public class FigObject extends FigNodeModelElement implements MouseListener {
+    /**
+    * The width of an activation box
+    */
+    public final static int WIDTH = 20;
 
     /**
      * The margin between the outer box and the name and stereotype text box.
@@ -87,6 +106,16 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      * attached)
      */
     private FigLine _lifeLine;
+
+    /**
+     * The owner of the lifeline.
+     */
+    private LifeLinePort _lifeLinePort;
+
+    /**
+     * A linked list where the positions of the links are stored
+     */
+    private LinkedList _linkPositions = new LinkedList();
 
     /**
      * The comma seperated list of base names of the classifierRole(s) that this object
@@ -158,12 +187,17 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                 1000,
                 Color.black);
         _lifeLine.setDashed(true);
+        _linkPositions.add(new ObjectNode(this));
+        for (int i = 0;
+            i <= _lifeLine.getHeight() / SequenceDiagramLayout.LINK_DISTANCE;
+            i++) {
+            _linkPositions.add(new EmptyNode());
+        }
         addFig(_lifeLine);
         addFig(_backgroundBox);
         addFig(_stereo);
         addFig(_name);
         addFig(_outerBox);
-
     }
 
     /**
@@ -183,7 +217,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         super.mouseReleased(me);
         Layer lay = Globals.curEditor().getLayerManager().getActiveLayer();
         if (lay instanceof SequenceDiagramLayout) {
-            ((SequenceDiagramLayout)lay).putInPosition(this);
+            ((SequenceDiagramLayout) lay).putInPosition(this);
         }
     }
 
@@ -214,7 +248,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         if (figText.getX() != newX) {
             figText.setX(newX);
             updateBounds();
-        }        
+        }
     }
 
     /**
@@ -247,7 +281,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             _outerBox.getY() + _outerBox.getHeight(),
             0,
             h - _outerBox.getHeight());
-        calcBounds(); //_x = x; _y = y; _w = w; _h = h;		
+        int factor = h / oldBounds.height;
+        calcBounds(); //_x = x; _height = y; _w = w; _h = h;		
         firePropChange("bounds", oldBounds, getBounds());
     }
 
@@ -264,19 +299,22 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             int newX =
                 (_w == 0)
                     ? x
-                    : x + (int) ((f.getX() - _x) * ((float)w / (float)_w));
+                    : x + (int) ((f.getX() - _x) * ((float) w / (float) _w));
             int newY =
                 (_h == 0)
                     ? y
-                    : y + (int) ((f.getY() - _y) * ((float)h / (float)_h));
+                    : y + (int) ((f.getY() - _y) * ((float) h / (float) _h));
             int newW =
                 (_w == 0)
                     ? 0
-                    : (int) (f.getWidth() * ((float)w / (float)_w));
+                    : (int) (((float) f.getWidth()) * ((float) w / (float) _w));
+
             int newH =
                 (_h == 0)
                     ? 0
-                    : (int) (f.getHeight() * ((float)h / (float)_h));
+
+                    : (int) (((float) f.getHeight()) * ((float) h / (float) _h));
+
             f.setBounds(newX, newY, newW, newH);
         }
     }
@@ -305,7 +343,64 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         _y = bounds.y;
         _h = bounds.height;
         _w = bounds.width;
-        
+    }
+
+    private void removeActivations() {
+        Iterator it = getFigs().iterator();
+        while (it.hasNext()) {
+            Fig fig = (Fig) it.next();
+            if (fig != _outerBox
+                && fig != _backgroundBox
+                && fig instanceof FigRect) {
+                removeFig(fig);
+            }
+        }
+    }
+
+    private void addActivations() {
+        boolean startActivation = false;
+        ActivationNode startActivationNode = null;
+        ActivationNode endActivationNode = null;
+        int x = _lifeLine.getX() - WIDTH / 2;
+        for (int i = 1; i < _linkPositions.size(); i++) {
+            Node node = (Node) _linkPositions.get(i);
+            if (node instanceof ActivationNode
+                && ((ActivationNode) node).isStart()) {
+                startActivationNode = (ActivationNode) node;
+                endActivationNode = null;
+                continue;
+            }
+            if (node instanceof ActivationNode
+                && ((ActivationNode) node).isEnd()) {
+                if (startActivationNode == null) {
+                    throw new IllegalStateException("End activation node without start activation node");
+                }
+                endActivationNode = (ActivationNode) node;
+                int startPos = getYCoordinate(startActivationNode);
+                int endPos = getYCoordinate(endActivationNode);
+                if (!startActivationNode.isCutOffTop()) {
+                    startPos =
+                        startPos - SequenceDiagramLayout.LINK_DISTANCE / 2;
+                }
+                if (!endActivationNode.isCutOffBottom()) {
+                    endPos = endPos + SequenceDiagramLayout.LINK_DISTANCE / 2;
+                }
+                FigRect activation =
+                    new FigRect(
+                        x,
+                        startPos + getY(),
+                        WIDTH,
+                        endPos - startPos,
+                        _outerBox.getLineColor(),
+                        _backgroundBox.getFillColor());
+                addFig(activation);
+            }
+        }
+    }
+
+    public void updateActivations() {
+        removeActivations();
+        addActivations();
     }
 
     /**
@@ -480,6 +575,276 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
         updateClassifierRoleNames();
         updateObjectName();
         super.renderingChanged();
+    }
+
+    /**
+     * Returns the port for a given coordinate pair. Normally deepHitPort returns
+     * the owner of the fig in the figgroup that is present at the given coordinate
+     * pair (returning figs that are added later first). In this case it returns
+     * a LinkPort. This method has a side effect of creating a FigLinkPort if 
+     * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
+     */
+    public Object deepHitPort(int x, int y) {
+        Object port = null;
+        Rectangle rect = new Rectangle(x - 16, y - 16, 32, 32);
+        Node foundNode = null;
+        if (_lifeLine.intersects(rect)) {
+            for (int i = 1; i < _linkPositions.size(); i++) {
+                Node node = (Node) _linkPositions.get(i);
+                int position = getYCoordinate(node);
+                if (i < _linkPositions.size() - 1) {
+                    int nextPosition =
+                        getYCoordinate((Node) _linkPositions.get(i + 1));
+                    if (nextPosition >= y && position < y) {
+                        if ((y - position) < (nextPosition - y)) {
+                            foundNode = node;
+                        } else {
+                            foundNode = (Node) _linkPositions.get(i + 1);
+                        }
+                        break;
+                    }
+                } else {
+                    foundNode =
+                        (Node) _linkPositions.get(_linkPositions.size() - 1);
+                    break;
+                }
+            }
+        } else if (_outerBox.intersects(rect)) {
+            foundNode = (Node) _linkPositions.get(0);
+        }
+        if (!(foundNode instanceof LinkPort)) {
+            int index = _linkPositions.indexOf(foundNode);
+            FigLinkPort figLinkPort = null;
+            Node linkNode = null;
+            if (index > 0) {
+                figLinkPort =
+                    new FigLinkPort(
+                        _lifeLine.getX() - WIDTH / 2,
+                        getYCoordinate(foundNode),
+                        _lifeLine.getX() + WIDTH / 2);
+                linkNode = new LinkNode(getOwner(), figLinkPort);
+            } else {
+                figLinkPort =
+                    new FigLinkPort(
+                        _outerBox.getX(),
+                        _outerBox.getHalfHeight(),
+                        _outerBox.getX() + _outerBox.getWidth());
+                linkNode = new ObjectNode(getOwner(), figLinkPort);
+            }
+            _linkPositions.set(index, linkNode);
+            foundNode = linkNode;
+        }
+        return foundNode;
+    }
+
+    private int getYCoordinate(Node node) {
+        int index = _linkPositions.indexOf(node);
+        int y = 0;
+        if (index == 0) {
+            y = getY() + _outerBox.getHalfHeight();
+        } else {
+            y =
+                (index - 1) * SequenceDiagramLayout.LINK_DISTANCE
+                    + getY()
+                    + _outerBox.getHeight();
+        }
+        return y;
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
+    public void setOwner(Object own) {
+        super.setOwner(own);
+        bindPort(own, _outerBox);
+    }
+
+    public void createTopActivation() {
+        Node startNode = new ActivationNode();
+        Node endNode = new ActivationNode();
+        _linkPositions.set(1, startNode);
+        _linkPositions.set(2, endNode);
+        makeActivation(startNode, endNode);
+        ((ActivationNode) _linkPositions.get(1)).setCutOffTop(true);
+    }
+
+    public void createTopActivation(ActivationNode node) {
+        createTopActivation();
+        int index = getIndexOf(node);
+        if (index != 2) {
+            _linkPositions.set(2, node);
+            node.setCutOffBottom(false);
+            node.setEnd(true);
+        }
+        _linkPositions.set(index, new EmptyNode());
+        if (node instanceof LinkPort) {
+            ((LinkPort) node).getFigLinkPort().setY(getYCoordinate(node));
+        }
+    }
+
+    /**
+     * Gets the FigLink that is attached to the given FigLinkPort
+     * @param portFig
+     * @return
+     */
+    public FigLink getFigLink(FigLinkPort portFig) {
+        Iterator it = getFigEdges().iterator();
+        while (it.hasNext()) {
+            FigEdge figEdge = (FigEdge) it.next();
+            if (figEdge instanceof FigLink
+                && (figEdge.getSourcePortFig() == portFig
+                    || figEdge.getDestPortFig() == portFig)) {
+                return (FigLink) figEdge;
+            }
+        }
+        return null;
+    }
+
+    public FigLine getLifeLine() {
+        return _lifeLine;
+    }
+
+    /**
+     * Returns a list with all nodes that belong to the same activation as the given 
+     * node. Does not work for EmptyNode atm.
+     * @param node
+     * @return
+     */
+    public List getActivationNodes(Node node) {
+        int start = 0;
+        int end = 0;
+        if (node instanceof ActivationNode) {
+            ActivationNode activationNode = (ActivationNode) node;
+            if (activationNode.isStart()) {
+                start = _linkPositions.indexOf(activationNode);
+                ListIterator it =
+                    _linkPositions
+                        .subList(
+                            _linkPositions.indexOf(activationNode),
+                            _linkPositions.size())
+                        .listIterator();
+                while (it.hasNext()) {
+                    Node node2 = (Node) it.next();
+                    if (node2 instanceof ActivationNode
+                        && ((ActivationNode) node2).isEnd()) {
+                        end = _linkPositions.indexOf(node2);
+                        break;
+                    }
+                }
+            } else if (activationNode.isEnd()) {
+                end = _linkPositions.indexOf(activationNode);
+                for (int i = end - 1; i >= 1; i--) {
+                    Node node2 = (Node) _linkPositions.get(i);
+                    if (node2 instanceof ActivationNode
+                        && ((ActivationNode) node2).isStart()) {
+                        start = _linkPositions.indexOf(node2);
+                        break;
+                    }
+                }
+            } else {
+                // node is in between activations or does not belong to activation (yet)
+                if (!(getNextNode(activationNode) instanceof ActivationNode)
+                    || !(getPreviousNode(activationNode)
+                        instanceof ActivationNode)) {
+                    return new ArrayList();
+                }
+                for (int i = getIndexOf(activationNode) + 1;
+                    i < _linkPositions.size();
+                    i++) {
+                    Node node2 = (Node) _linkPositions.get(i);
+                    if (node2 instanceof ActivationNode
+                        && ((ActivationNode) node2).isEnd()) {
+                        end = getIndexOf(node2);
+                        break;
+                    }
+                }
+                for (int i = getIndexOf(activationNode) - 1; i > 0; i--) {
+                    Node node2 = (Node) _linkPositions.get(i);
+                    if (node2 instanceof ActivationNode
+                        && ((ActivationNode) node2).isStart()) {
+                        start = getIndexOf(node2);
+                        break;
+                    }
+                }
+                if (end == 0 || start == 0) {
+                    throw new IllegalStateException("There should be an activation");
+                }
+
+            }
+            return _linkPositions.subList(start, end);
+
+        }
+        return new ArrayList();
+    }
+
+    public int getIndexOf(Node node) {
+        return _linkPositions.indexOf(node);
+    }
+
+    public void makeActivation(Node startNode, Node endNode) {
+        int startIndex = _linkPositions.indexOf(startNode);
+        int endIndex = _linkPositions.indexOf(endNode);
+        makeActivation(startIndex, endIndex);
+    }
+
+    public void makeActivation(int startIndex, int endIndex) {
+        for (int i = startIndex; i <= endIndex; i++) {
+            Object o = _linkPositions.get(i);
+            if (!(o instanceof ActivationNode)) {
+                _linkPositions.set(i, new ActivationNode());
+            }
+        }
+        ((ActivationNode) _linkPositions.get(startIndex)).setStart(true);
+        ((ActivationNode) _linkPositions.get(endIndex)).setEnd(true);
+    }
+
+    public Node getNextNode(Node node) {
+        if (getIndexOf(node) < _linkPositions.size())
+            return (Node) _linkPositions.get(getIndexOf(node) + 1);
+        else
+            return null;
+    }
+
+    public Node getPreviousNode(Node node) {
+        if (getIndexOf(node) > 0) {
+            return (Node) _linkPositions.get(getIndexOf(node) - 1);
+        } else
+            return null;
+    }
+
+    public boolean hasActivations() {
+        for (int i = 0; i < _linkPositions.size(); i++) {
+            Node node = (Node) _linkPositions.get(i);
+            if (node instanceof ActivationNode) {
+                if (getActivationNodes(node).isEmpty()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.FigNode#getPortFig(java.lang.Object)
+     */
+    public Fig getPortFig(Object np) {
+        if (np instanceof LinkPort) {
+            return ((LinkPort) np).getFigLinkPort();
+        }
+        return null;
+    }
+
+    public void setNode(int index, Node node) {
+        _linkPositions.set(index, node);
+    }
+    
+    public ObjectNode getObjectNode() {
+    	for (int i = 0; i < _linkPositions.size(); i++) {
+    		if (_linkPositions.get(i) instanceof ObjectNode) {
+    			return (ObjectNode)_linkPositions.get(i);
+    		}
+    	}
+    	return null;
     }
 
 }

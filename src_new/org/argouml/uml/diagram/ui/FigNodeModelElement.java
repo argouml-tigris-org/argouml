@@ -88,8 +88,6 @@ import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDManager;
 import org.argouml.uml.generator.ParserDisplay;
-import org.argouml.uml.diagram.ui.ActionDeleteFromDiagram;
-import org.argouml.uml.diagram.ui.ActionProperties;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -1050,6 +1048,23 @@ public abstract class FigNodeModelElement
             p.setNeedsSave(true);
         }
     }
+    
+    
+
+	/**
+	 * Adds a fig to this FigNodeModelElement and removes it from the group it belonged to if any. 
+	 * Correction to the GEF implementation that does not handle the double association correctly.
+	 * @see org.tigris.gef.presentation.FigGroup#addFig(org.tigris.gef.presentation.Fig)
+	 */
+	public void addFig(Fig f) {
+		Fig group = f.getGroup();
+		if (group != null) {
+		  ((FigGroup)group).removeFig(f);
+		}
+		getFigs().addElement(f);
+		f.setGroup(this);
+		calcBounds();
+	}
 
 } /* end class FigNodeModelElement */
 

@@ -35,6 +35,11 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
     public CmdSetMode(Class modeClass, Hashtable modeArgs) {
         super(modeClass, modeArgs);
     }
+    
+    public CmdSetMode(Class modeClass, Hashtable modeArgs, String name) {
+    	super(modeClass, name);
+    	_modeArgs = modeArgs;
+    }
 
     public CmdSetMode(Class modeClass, String arg, Object value) {
         super(modeClass, arg, value);
