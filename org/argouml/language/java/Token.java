@@ -43,11 +43,10 @@
 package org.argouml.language.java;
 
 import java.io.Serializable;
-import sun.tools.java.Constants;
 
 /**
  * Simple class to represent a lexical token.  This
- * wraps the Constants used by the scanner to provide
+ * wraps the JavaConstants used by the scanner to provide
  * a convenient class that can be stored as a attribute
  * value.
  *
@@ -115,7 +114,7 @@ public class Token implements Serializable {
 
     // --- variables -------------------------------------
 
-    public static final int MaximumScanValue = Constants.INLINENEWINSTANCE + 1;
+    public static final int MaximumScanValue = JavaConstants.INLINENEWINSTANCE + 1;
 
     /**
      * Key to be used in AttributeSet's holding a value of Token.
@@ -204,298 +203,298 @@ public class Token implements Serializable {
     /*
      * Operators
      */
-    public static final Token COMMA =       new Operator(Constants.opNames[Constants.COMMA], 
-							 Constants.COMMA);
-    public static final Token ASSIGN =      new Operator(Constants.opNames[Constants.ASSIGN],
-							 Constants.ASSIGN);
-    public static final Token ASGMUL =      new Operator(Constants.opNames[Constants.ASGMUL],
-							 Constants.ASGMUL);
-    public static final Token ASGDIV =      new Operator(Constants.opNames[Constants.ASGDIV],
-							 Constants.ASGDIV);
-    public static final Token ASGREM =      new Operator(Constants.opNames[Constants.ASGREM],
-							 Constants.ASGREM);
-    public static final Token ASGADD =      new Operator(Constants.opNames[Constants.ASGADD],
-							 Constants.ASGADD);
-    public static final Token ASGSUB =      new Operator(Constants.opNames[Constants.ASGSUB],
-							 Constants.ASGSUB);
-    public static final Token ASGLSHIFT =   new Operator(Constants.opNames[Constants.ASGLSHIFT],
-							 Constants.ASGLSHIFT);
-    public static final Token ASGRSHIFT =   new Operator(Constants.opNames[Constants.ASGRSHIFT],
-							 Constants.ASGRSHIFT);
-    public static final Token ASGURSHIFT =  new Operator(Constants.opNames[Constants.ASGURSHIFT],
-							 Constants.ASGURSHIFT);
-    public static final Token ASGBITAND =   new Operator(Constants.opNames[Constants.ASGBITAND],
-							 Constants.ASGBITAND);
-    public static final Token ASGBITOR =    new Operator(Constants.opNames[Constants.ASGBITOR],
-							 Constants.ASGBITOR);
-    public static final Token ASGBITXOR =   new Operator(Constants.opNames[Constants.ASGBITOR],
-							 Constants.ASGBITOR);
-    public static final Token COND =        new Operator(Constants.opNames[Constants.COND],
-							 Constants.COND);
-    public static final Token OR =          new Operator(Constants.opNames[Constants.OR],
-							 Constants.OR);
-    public static final Token AND =         new Operator(Constants.opNames[Constants.AND],
-							 Constants.AND);
-    public static final Token BITOR =       new Operator(Constants.opNames[Constants.BITOR],
-							 Constants.BITOR);
-    public static final Token BITXOR =      new Operator(Constants.opNames[Constants.BITXOR],
-							 Constants.BITXOR);
-    public static final Token BITAND =      new Operator(Constants.opNames[Constants.BITAND],
-							 Constants.BITAND);
-    public static final Token NE =          new Operator(Constants.opNames[Constants.NE],
-							 Constants.NE);
-    public static final Token EQ =          new Operator(Constants.opNames[Constants.EQ],
-							 Constants.EQ);
-    public static final Token GE =          new Operator(Constants.opNames[Constants.GE],
-							 Constants.GE);
-    public static final Token GT =          new Operator(Constants.opNames[Constants.GT],
-							 Constants.GT);
-    public static final Token LE =          new Operator(Constants.opNames[Constants.LE],
-							 Constants.LE);
-    public static final Token LT =          new Operator(Constants.opNames[Constants.LT],
-							 Constants.LT);
-    public static final Token INSTANCEOF =  new Operator(Constants.opNames[Constants.INSTANCEOF],
-							 Constants.INSTANCEOF);
-    public static final Token LSHIFT =      new Operator(Constants.opNames[Constants.LSHIFT],
-							 Constants.LSHIFT);
-    public static final Token RSHIFT =      new Operator(Constants.opNames[Constants.RSHIFT],
-							 Constants.RSHIFT);
-    public static final Token URSHIFT =     new Operator(Constants.opNames[Constants.URSHIFT],
-							 Constants.URSHIFT);
-    public static final Token ADD =         new Operator(Constants.opNames[Constants.ADD],
-							 Constants.ADD);
-    public static final Token SUB =         new Operator(Constants.opNames[Constants.SUB],
-							 Constants.SUB);
-    public static final Token DIV =         new Operator(Constants.opNames[Constants.DIV],
-							 Constants.DIV);
-    public static final Token REM =         new Operator(Constants.opNames[Constants.REM],
-							 Constants.REM);
-    public static final Token MUL =         new Operator(Constants.opNames[Constants.MUL],
-							 Constants.MUL);
-    public static final Token CAST =        new Operator(Constants.opNames[Constants.CAST],
-							 Constants.CAST);
-    public static final Token POS =         new Operator(Constants.opNames[Constants.POS],
-							 Constants.POS);
-    public static final Token NEG =         new Operator(Constants.opNames[Constants.NEG],
-							 Constants.NEG);
-    public static final Token NOT =         new Operator(Constants.opNames[Constants.NOT],
-							 Constants.NOT);
-    public static final Token BITNOT =      new Operator(Constants.opNames[Constants.BITNOT],
-							 Constants.BITNOT);
-    public static final Token PREINC =      new Operator(Constants.opNames[Constants.PREINC],
-							 Constants.PREINC);
-    public static final Token PREDEC =      new Operator(Constants.opNames[Constants.PREDEC],
-							 Constants.PREDEC);
-    public static final Token NEWARRAY =    new Operator(Constants.opNames[Constants.NEWARRAY],
-							 Constants.NEWARRAY);
-    public static final Token NEWINSTANCE = new Operator(Constants.opNames[Constants.NEWINSTANCE],
-							 Constants.NEWINSTANCE);
-    public static final Token NEWFROMNAME = new Operator(Constants.opNames[Constants.NEWFROMNAME],
-							 Constants.NEWFROMNAME);
-    public static final Token POSTINC =     new Operator(Constants.opNames[Constants.POSTINC],
-							 Constants.POSTINC);
-    public static final Token POSTDEC =     new Operator(Constants.opNames[Constants.POSTDEC],
-							 Constants.POSTDEC);
-    public static final Token FIELD =       new Operator(Constants.opNames[Constants.FIELD],
-							 Constants.FIELD);
-    public static final Token METHOD =      new Operator(Constants.opNames[Constants.METHOD],
-							 Constants.METHOD);
-    public static final Token ARRAYACCESS = new Operator(Constants.opNames[Constants.ARRAYACCESS],
-							 Constants.ARRAYACCESS);
-    public static final Token NEW =         new Operator(Constants.opNames[Constants.NEW],
-							 Constants.NEW);
-    public static final Token INC =         new Operator(Constants.opNames[Constants.INC],
-							 Constants.INC);
-    public static final Token DEC =         new Operator(Constants.opNames[Constants.DEC],
-							 Constants.DEC);
-    public static final Token CONVERT =     new Operator(Constants.opNames[Constants.CONVERT],
-							 Constants.CONVERT);
-    public static final Token EXPR =        new Operator(Constants.opNames[Constants.EXPR],
-							 Constants.EXPR);
-    public static final Token ARRAY =       new Operator(Constants.opNames[Constants.ARRAY],
-							 Constants.ARRAY);
-    public static final Token GOTO =        new Operator(Constants.opNames[Constants.GOTO],
-							 Constants.GOTO);
+    public static final Token COMMA =       new Operator(JavaConstants.opNames[JavaConstants.COMMA], 
+							 JavaConstants.COMMA);
+    public static final Token ASSIGN =      new Operator(JavaConstants.opNames[JavaConstants.ASSIGN],
+							 JavaConstants.ASSIGN);
+    public static final Token ASGMUL =      new Operator(JavaConstants.opNames[JavaConstants.ASGMUL],
+							 JavaConstants.ASGMUL);
+    public static final Token ASGDIV =      new Operator(JavaConstants.opNames[JavaConstants.ASGDIV],
+							 JavaConstants.ASGDIV);
+    public static final Token ASGREM =      new Operator(JavaConstants.opNames[JavaConstants.ASGREM],
+							 JavaConstants.ASGREM);
+    public static final Token ASGADD =      new Operator(JavaConstants.opNames[JavaConstants.ASGADD],
+							 JavaConstants.ASGADD);
+    public static final Token ASGSUB =      new Operator(JavaConstants.opNames[JavaConstants.ASGSUB],
+							 JavaConstants.ASGSUB);
+    public static final Token ASGLSHIFT =   new Operator(JavaConstants.opNames[JavaConstants.ASGLSHIFT],
+							 JavaConstants.ASGLSHIFT);
+    public static final Token ASGRSHIFT =   new Operator(JavaConstants.opNames[JavaConstants.ASGRSHIFT],
+							 JavaConstants.ASGRSHIFT);
+    public static final Token ASGURSHIFT =  new Operator(JavaConstants.opNames[JavaConstants.ASGURSHIFT],
+							 JavaConstants.ASGURSHIFT);
+    public static final Token ASGBITAND =   new Operator(JavaConstants.opNames[JavaConstants.ASGBITAND],
+							 JavaConstants.ASGBITAND);
+    public static final Token ASGBITOR =    new Operator(JavaConstants.opNames[JavaConstants.ASGBITOR],
+							 JavaConstants.ASGBITOR);
+    public static final Token ASGBITXOR =   new Operator(JavaConstants.opNames[JavaConstants.ASGBITOR],
+							 JavaConstants.ASGBITOR);
+    public static final Token COND =        new Operator(JavaConstants.opNames[JavaConstants.COND],
+							 JavaConstants.COND);
+    public static final Token OR =          new Operator(JavaConstants.opNames[JavaConstants.OR],
+							 JavaConstants.OR);
+    public static final Token AND =         new Operator(JavaConstants.opNames[JavaConstants.AND],
+							 JavaConstants.AND);
+    public static final Token BITOR =       new Operator(JavaConstants.opNames[JavaConstants.BITOR],
+							 JavaConstants.BITOR);
+    public static final Token BITXOR =      new Operator(JavaConstants.opNames[JavaConstants.BITXOR],
+							 JavaConstants.BITXOR);
+    public static final Token BITAND =      new Operator(JavaConstants.opNames[JavaConstants.BITAND],
+							 JavaConstants.BITAND);
+    public static final Token NE =          new Operator(JavaConstants.opNames[JavaConstants.NE],
+							 JavaConstants.NE);
+    public static final Token EQ =          new Operator(JavaConstants.opNames[JavaConstants.EQ],
+							 JavaConstants.EQ);
+    public static final Token GE =          new Operator(JavaConstants.opNames[JavaConstants.GE],
+							 JavaConstants.GE);
+    public static final Token GT =          new Operator(JavaConstants.opNames[JavaConstants.GT],
+							 JavaConstants.GT);
+    public static final Token LE =          new Operator(JavaConstants.opNames[JavaConstants.LE],
+							 JavaConstants.LE);
+    public static final Token LT =          new Operator(JavaConstants.opNames[JavaConstants.LT],
+							 JavaConstants.LT);
+    public static final Token INSTANCEOF =  new Operator(JavaConstants.opNames[JavaConstants.INSTANCEOF],
+							 JavaConstants.INSTANCEOF);
+    public static final Token LSHIFT =      new Operator(JavaConstants.opNames[JavaConstants.LSHIFT],
+							 JavaConstants.LSHIFT);
+    public static final Token RSHIFT =      new Operator(JavaConstants.opNames[JavaConstants.RSHIFT],
+							 JavaConstants.RSHIFT);
+    public static final Token URSHIFT =     new Operator(JavaConstants.opNames[JavaConstants.URSHIFT],
+							 JavaConstants.URSHIFT);
+    public static final Token ADD =         new Operator(JavaConstants.opNames[JavaConstants.ADD],
+							 JavaConstants.ADD);
+    public static final Token SUB =         new Operator(JavaConstants.opNames[JavaConstants.SUB],
+							 JavaConstants.SUB);
+    public static final Token DIV =         new Operator(JavaConstants.opNames[JavaConstants.DIV],
+							 JavaConstants.DIV);
+    public static final Token REM =         new Operator(JavaConstants.opNames[JavaConstants.REM],
+							 JavaConstants.REM);
+    public static final Token MUL =         new Operator(JavaConstants.opNames[JavaConstants.MUL],
+							 JavaConstants.MUL);
+    public static final Token CAST =        new Operator(JavaConstants.opNames[JavaConstants.CAST],
+							 JavaConstants.CAST);
+    public static final Token POS =         new Operator(JavaConstants.opNames[JavaConstants.POS],
+							 JavaConstants.POS);
+    public static final Token NEG =         new Operator(JavaConstants.opNames[JavaConstants.NEG],
+							 JavaConstants.NEG);
+    public static final Token NOT =         new Operator(JavaConstants.opNames[JavaConstants.NOT],
+							 JavaConstants.NOT);
+    public static final Token BITNOT =      new Operator(JavaConstants.opNames[JavaConstants.BITNOT],
+							 JavaConstants.BITNOT);
+    public static final Token PREINC =      new Operator(JavaConstants.opNames[JavaConstants.PREINC],
+							 JavaConstants.PREINC);
+    public static final Token PREDEC =      new Operator(JavaConstants.opNames[JavaConstants.PREDEC],
+							 JavaConstants.PREDEC);
+    public static final Token NEWARRAY =    new Operator(JavaConstants.opNames[JavaConstants.NEWARRAY],
+							 JavaConstants.NEWARRAY);
+    public static final Token NEWINSTANCE = new Operator(JavaConstants.opNames[JavaConstants.NEWINSTANCE],
+							 JavaConstants.NEWINSTANCE);
+    public static final Token NEWFROMNAME = new Operator(JavaConstants.opNames[JavaConstants.NEWFROMNAME],
+							 JavaConstants.NEWFROMNAME);
+    public static final Token POSTINC =     new Operator(JavaConstants.opNames[JavaConstants.POSTINC],
+							 JavaConstants.POSTINC);
+    public static final Token POSTDEC =     new Operator(JavaConstants.opNames[JavaConstants.POSTDEC],
+							 JavaConstants.POSTDEC);
+    public static final Token FIELD =       new Operator(JavaConstants.opNames[JavaConstants.FIELD],
+							 JavaConstants.FIELD);
+    public static final Token METHOD =      new Operator(JavaConstants.opNames[JavaConstants.METHOD],
+							 JavaConstants.METHOD);
+    public static final Token ARRAYACCESS = new Operator(JavaConstants.opNames[JavaConstants.ARRAYACCESS],
+							 JavaConstants.ARRAYACCESS);
+    public static final Token NEW =         new Operator(JavaConstants.opNames[JavaConstants.NEW],
+							 JavaConstants.NEW);
+    public static final Token INC =         new Operator(JavaConstants.opNames[JavaConstants.INC],
+							 JavaConstants.INC);
+    public static final Token DEC =         new Operator(JavaConstants.opNames[JavaConstants.DEC],
+							 JavaConstants.DEC);
+    public static final Token CONVERT =     new Operator(JavaConstants.opNames[JavaConstants.CONVERT],
+							 JavaConstants.CONVERT);
+    public static final Token EXPR =        new Operator(JavaConstants.opNames[JavaConstants.EXPR],
+							 JavaConstants.EXPR);
+    public static final Token ARRAY =       new Operator(JavaConstants.opNames[JavaConstants.ARRAY],
+							 JavaConstants.ARRAY);
+    public static final Token GOTO =        new Operator(JavaConstants.opNames[JavaConstants.GOTO],
+							 JavaConstants.GOTO);
     /*
      * Value tokens
      */
-    public static final Token IDENT =       new Value(Constants.opNames[Constants.IDENT],
-						      Constants.IDENT);
-    public static final Token BOOLEANVAL =  new Value(Constants.opNames[Constants.BOOLEANVAL],
-						      Constants.BOOLEANVAL);
-    public static final Token BYTEVAL =     new Value(Constants.opNames[Constants.BYTEVAL],
-						      Constants.BYTEVAL);
-    public static final Token CHARVAL =     new Value(Constants.opNames[Constants.CHARVAL],
-						      Constants.CHARVAL);
-    public static final Token SHORTVAL =    new Value(Constants.opNames[Constants.SHORTVAL],
-						      Constants.SHORTVAL);
-    public static final Token INTVAL =      new Value(Constants.opNames[Constants.INTVAL],
-						      Constants.INTVAL);
-    public static final Token LONGVAL =     new Value(Constants.opNames[Constants.LONGVAL],
-						      Constants.LONGVAL);
-    public static final Token FLOATVAL =    new Value(Constants.opNames[Constants.FLOATVAL],
-						      Constants.FLOATVAL);
-    public static final Token DOUBLEVAL =   new Value(Constants.opNames[Constants.DOUBLEVAL],
-						      Constants.DOUBLEVAL);
-    public static final Token STRINGVAL =   new Value(Constants.opNames[Constants.STRINGVAL],
-						      Constants.STRINGVAL);
+    public static final Token IDENT =       new Value(JavaConstants.opNames[JavaConstants.IDENT],
+						      JavaConstants.IDENT);
+    public static final Token BOOLEANVAL =  new Value(JavaConstants.opNames[JavaConstants.BOOLEANVAL],
+						      JavaConstants.BOOLEANVAL);
+    public static final Token BYTEVAL =     new Value(JavaConstants.opNames[JavaConstants.BYTEVAL],
+						      JavaConstants.BYTEVAL);
+    public static final Token CHARVAL =     new Value(JavaConstants.opNames[JavaConstants.CHARVAL],
+						      JavaConstants.CHARVAL);
+    public static final Token SHORTVAL =    new Value(JavaConstants.opNames[JavaConstants.SHORTVAL],
+						      JavaConstants.SHORTVAL);
+    public static final Token INTVAL =      new Value(JavaConstants.opNames[JavaConstants.INTVAL],
+						      JavaConstants.INTVAL);
+    public static final Token LONGVAL =     new Value(JavaConstants.opNames[JavaConstants.LONGVAL],
+						      JavaConstants.LONGVAL);
+    public static final Token FLOATVAL =    new Value(JavaConstants.opNames[JavaConstants.FLOATVAL],
+						      JavaConstants.FLOATVAL);
+    public static final Token DOUBLEVAL =   new Value(JavaConstants.opNames[JavaConstants.DOUBLEVAL],
+						      JavaConstants.DOUBLEVAL);
+    public static final Token STRINGVAL =   new Value(JavaConstants.opNames[JavaConstants.STRINGVAL],
+						      JavaConstants.STRINGVAL);
     /*
      * Type keywords
      */
-    public static final Token BYTE =        new Type(Constants.opNames[Constants.BYTE],
-						     Constants.BYTE);
-    public static final Token CHAR =        new Type(Constants.opNames[Constants.CHAR],
-						     Constants.CHAR);
-    public static final Token SHORT =       new Type(Constants.opNames[Constants.SHORT],
-						     Constants.SHORT);
-    public static final Token INT =         new Type(Constants.opNames[Constants.INT],
-						     Constants.INT);
-    public static final Token LONG =        new Type(Constants.opNames[Constants.LONG],
-						     Constants.LONG);
-    public static final Token FLOAT =       new Type(Constants.opNames[Constants.FLOAT],
-						     Constants.FLOAT);
-    public static final Token DOUBLE =      new Type(Constants.opNames[Constants.DOUBLE],
-						     Constants.DOUBLE);
-    public static final Token VOID =        new Type(Constants.opNames[Constants.VOID],
-						     Constants.VOID);
-    public static final Token BOOLEAN =     new Type(Constants.opNames[Constants.BOOLEAN],
-						     Constants.BOOLEAN);
+    public static final Token BYTE =        new Type(JavaConstants.opNames[JavaConstants.BYTE],
+						     JavaConstants.BYTE);
+    public static final Token CHAR =        new Type(JavaConstants.opNames[JavaConstants.CHAR],
+						     JavaConstants.CHAR);
+    public static final Token SHORT =       new Type(JavaConstants.opNames[JavaConstants.SHORT],
+						     JavaConstants.SHORT);
+    public static final Token INT =         new Type(JavaConstants.opNames[JavaConstants.INT],
+						     JavaConstants.INT);
+    public static final Token LONG =        new Type(JavaConstants.opNames[JavaConstants.LONG],
+						     JavaConstants.LONG);
+    public static final Token FLOAT =       new Type(JavaConstants.opNames[JavaConstants.FLOAT],
+						     JavaConstants.FLOAT);
+    public static final Token DOUBLE =      new Type(JavaConstants.opNames[JavaConstants.DOUBLE],
+						     JavaConstants.DOUBLE);
+    public static final Token VOID =        new Type(JavaConstants.opNames[JavaConstants.VOID],
+						     JavaConstants.VOID);
+    public static final Token BOOLEAN =     new Type(JavaConstants.opNames[JavaConstants.BOOLEAN],
+						     JavaConstants.BOOLEAN);
     /*
      * MExpression keywords
      */
-    public static final Token TRUE =        new MExpression(Constants.opNames[Constants.TRUE],
-							   Constants.TRUE);
-    public static final Token FALSE =       new MExpression(Constants.opNames[Constants.FALSE],
-							   Constants.FALSE);
-    public static final Token THIS =        new MExpression(Constants.opNames[Constants.THIS],
-							   Constants.THIS);
-    public static final Token SUPER =       new MExpression(Constants.opNames[Constants.SUPER],
-							   Constants.SUPER);
-    public static final Token NULL =        new MExpression(Constants.opNames[Constants.NULL],
-							   Constants.NULL);
+    public static final Token TRUE =        new MExpression(JavaConstants.opNames[JavaConstants.TRUE],
+							   JavaConstants.TRUE);
+    public static final Token FALSE =       new MExpression(JavaConstants.opNames[JavaConstants.FALSE],
+							   JavaConstants.FALSE);
+    public static final Token THIS =        new MExpression(JavaConstants.opNames[JavaConstants.THIS],
+							   JavaConstants.THIS);
+    public static final Token SUPER =       new MExpression(JavaConstants.opNames[JavaConstants.SUPER],
+							   JavaConstants.SUPER);
+    public static final Token NULL =        new MExpression(JavaConstants.opNames[JavaConstants.NULL],
+							   JavaConstants.NULL);
     /*
      * Statement keywords
      */
-    public static final Token IF =             new Statement(Constants.opNames[Constants.IF],
-							     Constants.IF);
-    public static final Token ELSE =           new Statement(Constants.opNames[Constants.ELSE],
-							     Constants.ELSE);
-    public static final Token FOR =            new Statement(Constants.opNames[Constants.FOR],
-							     Constants.FOR);
-    public static final Token WHILE =          new Statement(Constants.opNames[Constants.WHILE],
-							     Constants.WHILE);
-    public static final Token DO =             new Statement(Constants.opNames[Constants.DO],
-							     Constants.DO);
-    public static final Token SWITCH =         new Statement(Constants.opNames[Constants.SWITCH],
-							     Constants.SWITCH);
-    public static final Token CASE =           new Statement(Constants.opNames[Constants.CASE],
-							     Constants.CASE);
-    public static final Token DEFAULT =        new Statement(Constants.opNames[Constants.DEFAULT],
-							     Constants.DEFAULT);
-    public static final Token BREAK =          new Statement(Constants.opNames[Constants.BREAK],
-							     Constants.BREAK);
-    public static final Token CONTINUE =       new Statement(Constants.opNames[Constants.CONTINUE],
-							     Constants.CONTINUE);
-    public static final Token RETURN =         new Statement(Constants.opNames[Constants.RETURN],
-							     Constants.RETURN);
-    public static final Token TRY =            new Statement(Constants.opNames[Constants.TRY],
-							     Constants.TRY);
-    public static final Token CATCH =          new Statement(Constants.opNames[Constants.CATCH],
-							     Constants.CATCH);
-    public static final Token FINALLY =        new Statement(Constants.opNames[Constants.FINALLY],
-							     Constants.FINALLY);
-    public static final Token THROW =          new Statement(Constants.opNames[Constants.THROW],
-							     Constants.THROW);
-    public static final Token STAT =           new Statement(Constants.opNames[Constants.STAT],
-							     Constants.STAT);
-    public static final Token EXPRESSION =     new Statement(Constants.opNames[Constants.EXPRESSION],
-							     Constants.EXPRESSION);
-    public static final Token DECLARATION =    new Statement(Constants.opNames[Constants.DECLARATION],
-							     Constants.DECLARATION);
-    public static final Token VARDECLARATION = new Statement(Constants.opNames[Constants.VARDECLARATION],
-							     Constants.VARDECLARATION);
+    public static final Token IF =             new Statement(JavaConstants.opNames[JavaConstants.IF],
+							     JavaConstants.IF);
+    public static final Token ELSE =           new Statement(JavaConstants.opNames[JavaConstants.ELSE],
+							     JavaConstants.ELSE);
+    public static final Token FOR =            new Statement(JavaConstants.opNames[JavaConstants.FOR],
+							     JavaConstants.FOR);
+    public static final Token WHILE =          new Statement(JavaConstants.opNames[JavaConstants.WHILE],
+							     JavaConstants.WHILE);
+    public static final Token DO =             new Statement(JavaConstants.opNames[JavaConstants.DO],
+							     JavaConstants.DO);
+    public static final Token SWITCH =         new Statement(JavaConstants.opNames[JavaConstants.SWITCH],
+							     JavaConstants.SWITCH);
+    public static final Token CASE =           new Statement(JavaConstants.opNames[JavaConstants.CASE],
+							     JavaConstants.CASE);
+    public static final Token DEFAULT =        new Statement(JavaConstants.opNames[JavaConstants.DEFAULT],
+							     JavaConstants.DEFAULT);
+    public static final Token BREAK =          new Statement(JavaConstants.opNames[JavaConstants.BREAK],
+							     JavaConstants.BREAK);
+    public static final Token CONTINUE =       new Statement(JavaConstants.opNames[JavaConstants.CONTINUE],
+							     JavaConstants.CONTINUE);
+    public static final Token RETURN =         new Statement(JavaConstants.opNames[JavaConstants.RETURN],
+							     JavaConstants.RETURN);
+    public static final Token TRY =            new Statement(JavaConstants.opNames[JavaConstants.TRY],
+							     JavaConstants.TRY);
+    public static final Token CATCH =          new Statement(JavaConstants.opNames[JavaConstants.CATCH],
+							     JavaConstants.CATCH);
+    public static final Token FINALLY =        new Statement(JavaConstants.opNames[JavaConstants.FINALLY],
+							     JavaConstants.FINALLY);
+    public static final Token THROW =          new Statement(JavaConstants.opNames[JavaConstants.THROW],
+							     JavaConstants.THROW);
+    public static final Token STAT =           new Statement(JavaConstants.opNames[JavaConstants.STAT],
+							     JavaConstants.STAT);
+    public static final Token EXPRESSION =     new Statement(JavaConstants.opNames[JavaConstants.EXPRESSION],
+							     JavaConstants.EXPRESSION);
+    public static final Token DECLARATION =    new Statement(JavaConstants.opNames[JavaConstants.DECLARATION],
+							     JavaConstants.DECLARATION);
+    public static final Token VARDECLARATION = new Statement(JavaConstants.opNames[JavaConstants.VARDECLARATION],
+							     JavaConstants.VARDECLARATION);
     /*
      * Declaration keywords
      */
-    public static final Token IMPORT =         new Declaration(Constants.opNames[Constants.IMPORT],
-							       Constants.IMPORT);
-    public static final Token CLASS =          new Declaration(Constants.opNames[Constants.CLASS],
-							       Constants.CLASS);
-    public static final Token EXTENDS =        new Declaration(Constants.opNames[Constants.EXTENDS],
-							       Constants.EXTENDS);
-    public static final Token IMPLEMENTS =     new Declaration(Constants.opNames[Constants.IMPLEMENTS],
-							       Constants.IMPLEMENTS);
-    public static final Token INTERFACE =      new Declaration(Constants.opNames[Constants.INTERFACE],
-							       Constants.INTERFACE);
-    public static final Token PACKAGE =        new Declaration(Constants.opNames[Constants.PACKAGE],
-							       Constants.PACKAGE);
+    public static final Token IMPORT =         new Declaration(JavaConstants.opNames[JavaConstants.IMPORT],
+							       JavaConstants.IMPORT);
+    public static final Token CLASS =          new Declaration(JavaConstants.opNames[JavaConstants.CLASS],
+							       JavaConstants.CLASS);
+    public static final Token EXTENDS =        new Declaration(JavaConstants.opNames[JavaConstants.EXTENDS],
+							       JavaConstants.EXTENDS);
+    public static final Token IMPLEMENTS =     new Declaration(JavaConstants.opNames[JavaConstants.IMPLEMENTS],
+							       JavaConstants.IMPLEMENTS);
+    public static final Token INTERFACE =      new Declaration(JavaConstants.opNames[JavaConstants.INTERFACE],
+							       JavaConstants.INTERFACE);
+    public static final Token PACKAGE =        new Declaration(JavaConstants.opNames[JavaConstants.PACKAGE],
+							       JavaConstants.PACKAGE);
     /*
      * Modifier keywords
      */
-    public static final Token PRIVATE =        new Modifier(Constants.opNames[Constants.PRIVATE],
-							    Constants.PRIVATE);
-    public static final Token PUBLIC =         new Modifier(Constants.opNames[Constants.PUBLIC],
-							    Constants.PUBLIC);
-    public static final Token PROTECTED =      new Modifier(Constants.opNames[Constants.PROTECTED],
-							    Constants.PROTECTED);
-    public static final Token CONST =          new Modifier(Constants.opNames[Constants.CONST],
-							    Constants.CONST);
-    public static final Token STATIC =         new Modifier(Constants.opNames[Constants.STATIC],
-							    Constants.STATIC);
-    public static final Token TRANSIENT =      new Modifier(Constants.opNames[Constants.TRANSIENT],
-							    Constants.TRANSIENT);
-    public static final Token SYNCHRONIZED =   new Modifier(Constants.opNames[Constants.SYNCHRONIZED],
-							    Constants.SYNCHRONIZED);
-    public static final Token NATIVE =         new Modifier(Constants.opNames[Constants.NATIVE],
-							    Constants.NATIVE);
-    public static final Token FINAL =          new Modifier(Constants.opNames[Constants.FINAL],
-							    Constants.FINAL);
-    public static final Token VOLATILE =       new Modifier(Constants.opNames[Constants.VOLATILE],
-							    Constants.VOLATILE);
-    public static final Token ABSTRACT =       new Modifier(Constants.opNames[Constants.ABSTRACT],
-							    Constants.ABSTRACT);
+    public static final Token PRIVATE =        new Modifier(JavaConstants.opNames[JavaConstants.PRIVATE],
+							    JavaConstants.PRIVATE);
+    public static final Token PUBLIC =         new Modifier(JavaConstants.opNames[JavaConstants.PUBLIC],
+							    JavaConstants.PUBLIC);
+    public static final Token PROTECTED =      new Modifier(JavaConstants.opNames[JavaConstants.PROTECTED],
+							    JavaConstants.PROTECTED);
+    public static final Token CONST =          new Modifier(JavaConstants.opNames[JavaConstants.CONST],
+							    JavaConstants.CONST);
+    public static final Token STATIC =         new Modifier(JavaConstants.opNames[JavaConstants.STATIC],
+							    JavaConstants.STATIC);
+    public static final Token TRANSIENT =      new Modifier(JavaConstants.opNames[JavaConstants.TRANSIENT],
+							    JavaConstants.TRANSIENT);
+    public static final Token SYNCHRONIZED =   new Modifier(JavaConstants.opNames[JavaConstants.SYNCHRONIZED],
+							    JavaConstants.SYNCHRONIZED);
+    public static final Token NATIVE =         new Modifier(JavaConstants.opNames[JavaConstants.NATIVE],
+							    JavaConstants.NATIVE);
+    public static final Token FINAL =          new Modifier(JavaConstants.opNames[JavaConstants.FINAL],
+							    JavaConstants.FINAL);
+    public static final Token VOLATILE =       new Modifier(JavaConstants.opNames[JavaConstants.VOLATILE],
+							    JavaConstants.VOLATILE);
+    public static final Token ABSTRACT =       new Modifier(JavaConstants.opNames[JavaConstants.ABSTRACT],
+							    JavaConstants.ABSTRACT);
 
     /*
      * Punctuation
      */
-    public static final Token SEMICOLON =      new Punctuation(Constants.opNames[Constants.SEMICOLON],
-							       Constants.SEMICOLON);
-    public static final Token COLON =          new Punctuation(Constants.opNames[Constants.COLON],
-							       Constants.COLON);
-    public static final Token QUESTIONMARK =   new Punctuation(Constants.opNames[Constants.QUESTIONMARK],
-							       Constants.QUESTIONMARK);
-    public static final Token LBRACE =         new Punctuation(Constants.opNames[Constants.LBRACE],
-							       Constants.LBRACE);
-    public static final Token RBRACE =         new Punctuation(Constants.opNames[Constants.RBRACE],
-							       Constants.RBRACE);
-    public static final Token LPAREN =         new Punctuation(Constants.opNames[Constants.LPAREN],
-							       Constants.LPAREN);
-    public static final Token RPAREN =         new Punctuation(Constants.opNames[Constants.RPAREN],
-							       Constants.RPAREN);
-    public static final Token LSQBRACKET =     new Punctuation(Constants.opNames[Constants.LSQBRACKET],
-							       Constants.LSQBRACKET);
-    public static final Token RSQBRACKET =     new Punctuation(Constants.opNames[Constants.RSQBRACKET],
-							       Constants.RSQBRACKET);
-    public static final Token THROWS =         new Punctuation(Constants.opNames[Constants.THROWS],
-							       Constants.THROWS);
+    public static final Token SEMICOLON =      new Punctuation(JavaConstants.opNames[JavaConstants.SEMICOLON],
+							       JavaConstants.SEMICOLON);
+    public static final Token COLON =          new Punctuation(JavaConstants.opNames[JavaConstants.COLON],
+							       JavaConstants.COLON);
+    public static final Token QUESTIONMARK =   new Punctuation(JavaConstants.opNames[JavaConstants.QUESTIONMARK],
+							       JavaConstants.QUESTIONMARK);
+    public static final Token LBRACE =         new Punctuation(JavaConstants.opNames[JavaConstants.LBRACE],
+							       JavaConstants.LBRACE);
+    public static final Token RBRACE =         new Punctuation(JavaConstants.opNames[JavaConstants.RBRACE],
+							       JavaConstants.RBRACE);
+    public static final Token LPAREN =         new Punctuation(JavaConstants.opNames[JavaConstants.LPAREN],
+							       JavaConstants.LPAREN);
+    public static final Token RPAREN =         new Punctuation(JavaConstants.opNames[JavaConstants.RPAREN],
+							       JavaConstants.RPAREN);
+    public static final Token LSQBRACKET =     new Punctuation(JavaConstants.opNames[JavaConstants.LSQBRACKET],
+							       JavaConstants.LSQBRACKET);
+    public static final Token RSQBRACKET =     new Punctuation(JavaConstants.opNames[JavaConstants.RSQBRACKET],
+							       JavaConstants.RSQBRACKET);
+    public static final Token THROWS =         new Punctuation(JavaConstants.opNames[JavaConstants.THROWS],
+							       JavaConstants.THROWS);
 
     /*
      * Special tokens
      */
-    public static final Token ERROR =             new Special(Constants.opNames[Constants.ERROR],
-							      Constants.ERROR);
-    public static final Token COMMENT =           new Special(Constants.opNames[Constants.COMMENT],
-							      Constants.COMMENT);
-    public static final Token TYPE =              new Special(Constants.opNames[Constants.TYPE],
-							      Constants.TYPE);
-    public static final Token LENGTH =            new Special(Constants.opNames[Constants.LENGTH],
-							      Constants.LENGTH);
-    public static final Token INLINERETURN =      new Special(Constants.opNames[Constants.INLINERETURN],
-							      Constants.INLINERETURN);
-    public static final Token INLINEMETHOD =      new Special(Constants.opNames[Constants.INLINEMETHOD],
-							      Constants.INLINEMETHOD);
-    public static final Token INLINENEWINSTANCE = new Special(Constants.opNames[Constants.INLINENEWINSTANCE],
-							      Constants.INLINENEWINSTANCE);
+    public static final Token ERROR =             new Special(JavaConstants.opNames[JavaConstants.ERROR],
+							      JavaConstants.ERROR);
+    public static final Token COMMENT =           new Special(JavaConstants.opNames[JavaConstants.COMMENT],
+							      JavaConstants.COMMENT);
+    public static final Token TYPE =              new Special(JavaConstants.opNames[JavaConstants.TYPE],
+							      JavaConstants.TYPE);
+    public static final Token LENGTH =            new Special(JavaConstants.opNames[JavaConstants.LENGTH],
+							      JavaConstants.LENGTH);
+    public static final Token INLINERETURN =      new Special(JavaConstants.opNames[JavaConstants.INLINERETURN],
+							      JavaConstants.INLINERETURN);
+    public static final Token INLINEMETHOD =      new Special(JavaConstants.opNames[JavaConstants.INLINEMETHOD],
+							      JavaConstants.INLINEMETHOD);
+    public static final Token INLINENEWINSTANCE = new Special(JavaConstants.opNames[JavaConstants.INLINENEWINSTANCE],
+							      JavaConstants.INLINENEWINSTANCE);
     public static final Token UNSCANNED =         new Special("unscanned", MaximumScanValue);
 
     public static Token[] operators = {
