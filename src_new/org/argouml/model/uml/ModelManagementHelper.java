@@ -77,15 +77,6 @@ public class ModelManagementHelper {
         return SINGLETON;
     }
 
-    /**
-     * Returns all subsystems found in the projectbrowser model
-     * @return Collection
-     */
-    public Collection getAllSubSystems() {
-        MNamespace model =
-            (MModel) ProjectManager.getManager().getCurrentProject().getModel();
-        return getAllSubSystems(model);
-    }
 
     /**
      * Returns all subsystems found in this namespace and in its children
@@ -112,16 +103,6 @@ public class ModelManagementHelper {
     }
 
     /**
-     * Returns all namespaces found in the projectbrowser model
-     * @return Collection
-     */
-    public Collection getAllNamespaces() {
-        Object model = ProjectManager.getManager()
-            .getCurrentProject().getModel();
-        return getAllNamespaces(model);
-    }
-
-    /**
      * Returns all namespaces found in this namespace and in its children
      *
      * This method is CPU intensive and therefore needs to be as efficient as
@@ -143,29 +124,27 @@ public class ModelManagementHelper {
 	    || namespaces.size() == 0) {
             return Collections.EMPTY_LIST;
         }
-        else {
-            
-            // work with an array instead of iterator.
-            Object[] nsArray = namespaces.toArray();
-            
-            for (int i = 0; i < nsArray.length; i++) {
-            
-                Object o = nsArray[i];
-                if (o instanceof MNamespace) {
-                    
-                    // only build a namepace if needed, with 
-                    if (list == Collections.EMPTY_LIST) {
-                        list = new ArrayList(nsArray.length);
-                    }
-                    
-                    list.add(o);
-                    
-                    Collection namespaces1 = getAllNamespaces(o);
-                    // only add all if there are some to add.
-                    if (namespaces1 != Collections.EMPTY_LIST
-			&& namespaces1.size() > 0) {
-                        list.addAll(namespaces1);
-                    }
+        
+        // work with an array instead of iterator.
+        Object[] nsArray = namespaces.toArray();
+        
+        for (int i = 0; i < nsArray.length; i++) {
+        
+            Object o = nsArray[i];
+            if (o instanceof MNamespace) {
+                
+                // only build a namepace if needed, with 
+                if (list == Collections.EMPTY_LIST) {
+                    list = new ArrayList(nsArray.length);
+                }
+                
+                list.add(o);
+                
+                Collection namespaces1 = getAllNamespaces(o);
+                // only add all if there are some to add.
+                if (namespaces1 != Collections.EMPTY_LIST
+		&& namespaces1.size() > 0) {
+                    list.addAll(namespaces1);
                 }
             }
         }
@@ -320,8 +299,8 @@ public class ModelManagementHelper {
      * @return a collection of all behavioralfeatures in the given namespace
      */
     public Collection getAllBehavioralFeatures(Object ns) {
-        Collection classifiers = getAllModelElementsOfKind(ns,
-                (Class) ModelFacade.CLASSIFIER);
+        Collection classifiers =
+            getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
         ArrayList features = new ArrayList();
         Iterator i = classifiers.iterator();
         while (i.hasNext()) {
@@ -524,10 +503,8 @@ public class ModelManagementHelper {
                 parent = ModelFacade.getModelElementContainer(parent);
             }
             return ownershipPath;
-        } else {
-            throw new IllegalArgumentException("Not a base");
         }
-
+        throw new IllegalArgumentException("Not a base");
     }
 }
 
