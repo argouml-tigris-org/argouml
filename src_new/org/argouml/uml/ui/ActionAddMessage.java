@@ -37,7 +37,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigNode;
 
-import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 /** Action to add a message.
  *  @stereotype singleton
  */
@@ -65,7 +64,7 @@ public class ActionAddMessage extends UMLChangeAction {
     	if (!(ModelFacade.isAAssociationRole(target))
 	    && ModelFacade.isACollaboration(ModelFacade.getNamespace(target)))
 	    return;
-    	Object/*MAssociationRole*/ ar = (MAssociationRole) target;
+    	Object/*MAssociationRole*/ ar = target;
         this.addMessage(ar);
         super.actionPerformed(ae);
     }

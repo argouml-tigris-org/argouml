@@ -33,7 +33,6 @@ import org.argouml.kernel.ProjectMember;
 import org.argouml.xml.xmi.XMIParser;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.xmi.IncompleteXMIException;
 import ru.novosoft.uml.xmi.XMIWriter;
 import ru.novosoft.uml.model_management.MModel;

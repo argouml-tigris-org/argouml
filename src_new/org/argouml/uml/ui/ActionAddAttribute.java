@@ -32,8 +32,6 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
-
 /** Action to add an attribute to a classifier.
  *  @stereotype singleton
  */
@@ -60,7 +58,7 @@ public class ActionAddAttribute extends UMLChangeAction {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target = TargetManager.getInstance().getModelTarget();
 	if (!(org.argouml.model.ModelFacade.isAClassifier(target))) return;
-	Object/*MClassifier*/ cls = (MClassifier) target;
+	Object/*MClassifier*/ cls = target;
 	Object/*MAttribute*/ attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
 	TargetManager.getInstance().setTarget(attr);
 	super.actionPerformed(ae);

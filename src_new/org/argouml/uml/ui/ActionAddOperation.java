@@ -35,8 +35,7 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 
-import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.MClassifier;
+//import ru.novosoft.uml.MElementListener;
 /** Action to add an operation to a classifier.
  *  @stereotype singleton
  */
@@ -65,14 +64,14 @@ public class ActionAddOperation extends UMLChangeAction {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target =  TargetManager.getInstance().getModelTarget();
 	if (!(ModelFacade.isAClassifier(target))) return;
-	Object/*MClassifier*/ cls = (MClassifier) target;
+	Object/*MClassifier*/ cls = target;
 	Object/*MOperation*/ oper = UmlFactory.getFactory().getCore().buildOperation(cls);
         TargetManager.getInstance().setTarget(oper);
         Iterator it =
 	    pb.getEditorPane().findPresentationsFor(cls,
 						    p.getDiagrams()).iterator();
         while (it.hasNext()) {
-            MElementListener listener = (MElementListener) it.next();
+            Object/*MElementListener*/ listener = it.next();
             UmlModelEventPump.getPump().removeModelEventListener(listener,
 								 oper);
             UmlModelEventPump.getPump().addModelEventListener(listener, oper);

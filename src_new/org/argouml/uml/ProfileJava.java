@@ -34,10 +34,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.xml.xmi.XMIReader;
 import org.xml.sax.InputSource;
 
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MModelElement;
 /**
  *   This class implements the abstract class Profile for use in modelling
  *   Java language projects.  Eventually, this class may be replaced by
@@ -125,7 +121,7 @@ public class ProfileJava extends Profile {
 	    if (i != 0) {
 		buf.append("-");
 	    }
-	    buf.append(defaultAssocEndName((MAssociationEnd) iter.next(), ns));
+	    buf.append(defaultAssocEndName(iter.next(), ns));
 	}
 	return buf.toString();
     }
@@ -144,16 +140,13 @@ public class ProfileJava extends Profile {
     protected String defaultName(Object/*MModelElement*/ element, Object namespace) {
 	String name = null;
 	if (ModelFacade.isAAssociationEnd(element)) {
-	    name = defaultAssocEndName((MAssociationEnd) element, namespace);
+	    name = defaultAssocEndName(element, namespace);
 	} else {
 	    if (ModelFacade.isAAssociation(element)) {
-		name = defaultAssocName((MAssociation) element, namespace);
+		name = defaultAssocName(element, namespace);
 	    }
 	    if (ModelFacade.isAGeneralization(element)) {
-		name =
-		    defaultGeneralizationName(
-					      (MGeneralization) element,
-					      namespace);
+		name = defaultGeneralizationName(element,namespace);
 	    }
 	}
 	if (name == null)
@@ -165,8 +158,7 @@ public class ProfileJava extends Profile {
 	return ".";
     }
 
-    private void buildPath(
-			   StringBuffer buffer,
+    private void buildPath(StringBuffer buffer,
 			   Object/*MModelElement*/ element,
 			   String pathSep) {
 	if (element != null) {
@@ -203,8 +195,7 @@ public class ProfileJava extends Profile {
 		}
 		obj = iter.next();
 		if (ModelFacade.isAModelElement(obj)) {
-		    buffer.append(formatElement((MModelElement) obj,
-						namespace));
+		    buffer.append(formatElement(obj, namespace));
 		} else {
 		    buffer.append(obj.toString());
 		}

@@ -30,7 +30,7 @@ import java.util.Iterator;
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
-import ru.novosoft.uml.foundation.data_types.MAggregationKind;
+//import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /** Utility class to generate the children of a class.  In this case
  *  the "children" of a class are the other classes that are
@@ -52,7 +52,7 @@ public class GenCompositeClasses implements ChildGenerator {
 	Iterator enum = ends.iterator();
 	while (enum.hasNext()) {
 	    Object ae = /*(MAssociationEnd)*/ enum.next();
-	    if (MAggregationKind.COMPOSITE.equals(ModelFacade.getAggregation(ae))) {
+	    if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ModelFacade.getAggregation(ae))) {
 		Object asc = ModelFacade.getAssociation(ae);
 		ArrayList conn = new ArrayList(ModelFacade.getConnections(asc));
 		if (conn == null || conn.size() != 2) continue;

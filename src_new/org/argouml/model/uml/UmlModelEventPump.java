@@ -428,7 +428,7 @@ public final class UmlModelEventPump implements MElementListener {
      * interested in
      */
     public void removeModelEventListener(
-					 MElementListener listener,
+					 Object/*MElementListener*/ listener,
 					 Object handle,
 					 String[] eventNames) {
         if (handle == null)
@@ -437,6 +437,7 @@ public final class UmlModelEventPump implements MElementListener {
             throw new IllegalArgumentException();
         MBase modelElement = (MBase) handle;
         if (listener == null
+            || !(listener instanceof MElementListener)
             || modelElement == null
             || eventNames == null
             || eventNames.length == 0)
@@ -461,7 +462,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @param listener
      * @param modelElement
      */
-    public void removeModelEventListener(MElementListener listener,
+    public void removeModelEventListener(Object/*MElementListener*/ listener,
 					 Object handle)
     {
         if (handle == null)
@@ -470,8 +471,8 @@ public final class UmlModelEventPump implements MElementListener {
             throw new IllegalArgumentException();
 
 	MBase modelElement = (MBase) handle;
-        if (listener == null || modelElement == null)
-            throw new IllegalArgumentException("listener is null");
+        if (listener == null || modelElement == null || !(listener instanceof MElementListener))
+            throw new IllegalArgumentException("listener is null or an illegal type");
         EventKey[] keys = _definition.getEventTypes(modelElement.getClass());
         for (int i = 0; i < keys.length; i++) {
             _listenerMap.remove(
@@ -487,7 +488,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @param modelElement
      * @param eventName
      */
-    public void removeModelEventListener(MElementListener listener,
+    public void removeModelEventListener(Object/*MElementListener*/ listener,
 					 Object handle,
 					 String eventName)
     {
@@ -496,8 +497,8 @@ public final class UmlModelEventPump implements MElementListener {
         if (!(handle instanceof MBase))
             throw new IllegalArgumentException("Handle is not valid");
         MBase modelElement = (MBase) handle;
-        if (listener == null || modelElement == null || eventName == null)
-            throw new IllegalArgumentException("null listener");
+        if (listener == null || modelElement == null || eventName == null || !(listener instanceof MElementListener))
+            throw new IllegalArgumentException("null listener or illegal type");
         EventKey[] keys =
             _definition.getEventTypes(modelElement.getClass(), eventName);
         for (int j = 0; j < keys.length; j++) {

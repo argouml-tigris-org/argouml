@@ -26,10 +26,7 @@ package org.argouml.uml;
 
 import java.io.Serializable;
 import org.apache.log4j.Logger;
-
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.data_types.MChangeableKind;
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import org.argouml.model.ModelFacade;
 
 /** This class  handles the
  * none
@@ -64,19 +61,21 @@ public class AttrKeyword implements Serializable {
   
     private AttrKeyword(String label) { _label = label; }
   
-    public static AttrKeyword KeywordFor(MAttribute attr) {
-	MScopeKind sk = attr.getOwnerScope();
-	MChangeableKind ck = attr.getChangeability();
+    public static AttrKeyword KeywordFor(Object/*MAttribute*/ attr) {
+	Object/*MScopeKind*/ sk = ModelFacade.getOwnerScope(attr);
+	Object/*MChangeableKind*/ ck = ModelFacade.getChangeability(attr);
 	// TODO final?
-	if (MScopeKind.CLASSIFIER.equals(sk)
-	    && MChangeableKind.FROZEN.equals(ck))
-	    return STATFIN;
-	else if (MScopeKind.CLASSIFIER.equals(sk))
-	    return STATIC;
-	else if (MChangeableKind.FROZEN.equals(ck))
+        if (ModelFacade.CLASSIFIER_SCOPEKIND.equals(sk)) {
+            if (ModelFacade.FROZEN_CHANGEABLEKIND.equals(ck)) {
+                return STATFIN;
+            } else {
+                return STATIC;
+            }
+        } else if (ModelFacade.FROZEN_CHANGEABLEKIND.equals(ck)) {
 	    return FINAL;
-	else
+        } else {
 	    return NONE;
+        }
     }
   
     public boolean equals(Object o) {
@@ -89,20 +88,19 @@ public class AttrKeyword implements Serializable {
   
     public String toString() { return _label.toString(); }
 
-    public void set(MAttribute target) {
+    public void set(Object/*MAttribute*/ target) {
 	//    MChangeableKind ck = MChangeableKind.NONE;
-	MChangeableKind ck = null;
-	MScopeKind sk = MScopeKind.INSTANCE;
+	Object/*MChangeableKind*/ ck = null;
+	Object/*MScopeKind*/ sk = ModelFacade.INSTANCE_SCOPEKIND;
 
 	if (this == TRANS)
 	    cat.info("TODO: transient not supported");
      
-    
-	if (this == FINAL || this == STATFIN) ck = MChangeableKind.FROZEN;
-	if (this == STATIC || this == STATFIN) sk = MScopeKind.CLASSIFIER;
+	if (this == FINAL || this == STATFIN) ck = ModelFacade.FROZEN_CHANGEABLEKIND;
+	if (this == STATIC || this == STATFIN) sk = ModelFacade.CLASSIFIER_SCOPEKIND;
       
-	target.setChangeability(ck);
-	target.setOwnerScope(sk);
+	ModelFacade.setChangeability(target, ck);
+	ModelFacade.setOwnerScope(target, sk);
 	// TODO: final
     }
 } /* end class AttrKeyword */

@@ -28,16 +28,13 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.ui.targetmanager.TargetManager;
 
-import ru.novosoft.uml.behavior.state_machines.MState;
-
-
 class ActionAddInternalTrans extends UMLChangeAction {
     public ActionAddInternalTrans() { super("action.add-internal-transition"); }
 
     public void actionPerformed(ActionEvent ae) {
 	Object target = TargetManager.getInstance().getModelTarget();
 	if (!(org.argouml.model.ModelFacade.isAState(target))) return;
-	Object/*MState*/ st = (MState) target;
+	Object/*MState*/ st = target;
 	super.actionPerformed(ae);
     }
     public boolean shouldBeEnabled() {

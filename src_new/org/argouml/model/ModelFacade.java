@@ -268,6 +268,13 @@ public class ModelFacade {
     public static final Object BOOLEAN_EXPRESSION = MBooleanExpression.class;
     public static final Object GUARD = MGuard.class;
 
+    public static final Object ADD_ONLY_CHANGEABLEKIND = 
+        MChangeableKind.ADD_ONLY;
+    public static final Object CHANGEABLE_CHANGEABLEKIND = 
+        MChangeableKind.CHANGEABLE;
+    public static final Object FROZEN_CHANGEABLEKIND = 
+        MChangeableKind.FROZEN;
+    
     public static final Object CONCURRENT_CONCURRENCYKIND = 
         MCallConcurrencyKind.CONCURRENT;
     
@@ -1853,16 +1860,23 @@ public class ModelFacade {
      * @param o operation.
      * @return the concurrency.
      */
-    public static short getConcurrency(Object o) {
+    public static Object getConcurrency(Object o) {
         if (o != null && o instanceof MOperation) {
-            return ((MOperation) o).getConcurrency()
-                == MCallConcurrencyKind.GUARDED
-                ? GUARDED
-                : SEQUENTIAL;
+            return ((MOperation) o).getConcurrency();
         }
         throw new IllegalArgumentException("Unrecognized object " + o);
     }
 
+//    public static short getConcurrency(Object o) {
+//        if (o != null && o instanceof MOperation) {
+//            return ((MOperation) o).getConcurrency()
+//                == MCallConcurrencyKind.GUARDED
+//                ? GUARDED
+//                : SEQUENTIAL;
+//        }
+//        throw new IllegalArgumentException("Unrecognized object " + o);
+//    }
+//
     /** The list of connections to an association or link.
      *
      * @param handle to the association or link

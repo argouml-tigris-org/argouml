@@ -622,7 +622,7 @@ public class Modeller
 	setVisibility(mOperation, modifiers);
 	if ((modifiers & JavaRecognizer.ACC_SYNCHRONIZED) > 0) {
 	    ModelFacade.setConcurrency(mOperation, ModelFacade.GUARDED);
-	} else if (ModelFacade.getConcurrency(mOperation) == ModelFacade.GUARDED) {
+	} else if (ModelFacade.getConcurrency(mOperation) == ModelFacade.GUARDED_CONCURRENCYKIND) {
 	    ModelFacade.setConcurrency(mOperation, ModelFacade.SEQUENTIAL);
 	}
 

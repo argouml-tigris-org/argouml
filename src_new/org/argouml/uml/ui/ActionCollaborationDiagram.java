@@ -30,10 +30,10 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MModel;
+//import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+//import ru.novosoft.uml.foundation.core.MClassifier;
+//import ru.novosoft.uml.foundation.core.MNamespace;
+//import ru.novosoft.uml.model_management.MModel;
 
 /** Action to trigger creation of new collaboration diagram.
  *  @stereotype singleton
@@ -57,39 +57,36 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        Object/*MNamespace*/ namespace = (MNamespace) handle;
+        Object/*MNamespace*/ namespace = handle;
         Object target = TargetManager.getInstance().getTarget();
         Object collaboration = null;
         if (ModelFacade.isAOperation(target)) {
             collaboration =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    namespace);
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(namespace);
             ModelFacade.setRepresentedOperation(collaboration, target);
         } else if (ModelFacade.isAClassifier(target)) {
             collaboration =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    (MClassifier) target);
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(target);
             ModelFacade.setRepresentedClassifier(collaboration, target);
         } else if (ModelFacade.isAModel(target)) {
             collaboration =
-                UmlFactory.getFactory().getCollaborations().buildCollaboration(
-                    (MModel) target);
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(target);
         } else if (ModelFacade.isAInteraction(target)) {
             collaboration = ModelFacade.getContext(target);
         } else if (target instanceof UMLCollaborationDiagram) {
             Object owner = ((UMLCollaborationDiagram) target).getOwner();
-            if (org.argouml.model.ModelFacade.isACollaboration(owner)) {
+            if (ModelFacade.isACollaboration(owner)) {
                 //preventing backward compat problems
                 collaboration = owner;
             }
-        } else if (org.argouml.model.ModelFacade.isACollaboration(target)) {
-            collaboration = (MCollaboration) target;
+        } else if (ModelFacade.isACollaboration(target)) {
+            collaboration = target;
         } else {
             collaboration =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     namespace);
         }
-        UMLCollaborationDiagram d = new UMLCollaborationDiagram((MCollaboration)collaboration);
+        UMLCollaborationDiagram d = new UMLCollaborationDiagram(collaboration);
         return d;
     }
 
@@ -105,9 +102,8 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        Object/*MNamespace*/ ns = (MNamespace) handle;
-        return CollaborationsHelper.getHelper().isAddingCollaborationAllowed(
-            ns);
+        Object/*MNamespace*/ ns = handle;
+        return CollaborationsHelper.getHelper().isAddingCollaborationAllowed(ns);
     }
 
     /**
@@ -118,7 +114,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
 
         Object target = TargetManager.getInstance().getTarget();
         if (org.argouml.model.ModelFacade.isANamespace(target))
-            return isValidNamespace((MNamespace) target);
+            return isValidNamespace(target);
         else
             return false;
     }

@@ -71,7 +71,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
-import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
+
 public class SelectionSeqObject extends SelectionWButtons  {
     protected static Logger cat = 
         Logger.getLogger(SelectionSeqObject.class);
@@ -271,10 +271,10 @@ public class SelectionSeqObject extends SelectionWButtons  {
 	Collection liEnds = ModelFacade.getConnections(link);
 	if (liEnds.size() != 2 ) return;
 	Iterator iter = liEnds.iterator();
-	MLinkEnd le1 = (MLinkEnd) iter.next();
-	MLinkEnd le2 = (MLinkEnd) iter.next();
-	Object objSrc = /*(MObject)*/ le1.getInstance();
-	Object objDst = /*(MObject)*/ le2.getInstance();
+	Object/*MLinkEnd*/ le1 = iter.next();
+	Object/*MLinkEnd*/ le2 = iter.next();
+	Object objSrc = /*(MObject)*/ ModelFacade.getInstance(le1);
+	Object objDst = /*(MObject)*/ ModelFacade.getInstance(le2);
 
 	FigSeqObject figObjSrc = (FigSeqObject) lay.presentationFor(objSrc);
 	FigSeqObject figObjDst = (FigSeqObject) lay.presentationFor(objDst);
