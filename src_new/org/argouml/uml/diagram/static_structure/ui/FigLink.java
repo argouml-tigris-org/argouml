@@ -35,8 +35,6 @@ import java.awt.Color;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.presentation.Fig;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-
 public class FigLink extends FigEdgeModelElement {
 
     ////////////////////////////////////////////////////////////////
@@ -62,7 +60,7 @@ public class FigLink extends FigEdgeModelElement {
     protected Object getDestination() {
         if (getOwner() != null) {
             return CommonBehaviorHelper.getHelper()
-		.getDestination((MLink) getOwner());
+		.getDestination(/*(MLink)*/ getOwner());
         }
         return null;
     }
@@ -73,10 +71,9 @@ public class FigLink extends FigEdgeModelElement {
     protected Object getSource() {
         if (getOwner() != null) {
             return CommonBehaviorHelper.getHelper()
-		.getSource((MLink) getOwner());
+		.getSource(/*(MLink)*/ getOwner());
         }
         return null;
     }
 
 } /* end class FigLink */
-

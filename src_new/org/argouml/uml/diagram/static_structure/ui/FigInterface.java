@@ -66,15 +66,6 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MComponent;
-import ru.novosoft.uml.foundation.core.MElementResidence;
-import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MOperation;
-
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
@@ -112,7 +103,7 @@ public class FigInterface extends FigNodeModelElement {
      *   diagram. Not clear why it is public, or even why it is an instance
      *   variable (rather than local to the method).</p>
      */
-    public MElementResidence resident =
+    public Object resident =
 	UmlFactory.getFactory().getCore().createElementResidence();
 
     /**
@@ -278,7 +269,7 @@ public class FigInterface extends FigNodeModelElement {
         popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
 
         // Block added by BobTarling 7-Jan-2001
-        MInterface mclass = (MInterface) getOwner();
+        Object mclass = /*(MInterface)*/ getOwner();
         ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
         modifierMenu.addCheckItem(
@@ -286,7 +277,7 @@ public class FigInterface extends FigNodeModelElement {
 				   "visibility", "getVisibility",
 				   "setVisibility",
 				   mclass,
-				   MVisibilityKind.class,
+				   ModelFacade.VISIBILITYKIND,
 				   MVisibilityKind.PUBLIC,
 				   null));
         modifierMenu.addCheckItem(
@@ -499,28 +490,27 @@ public class FigInterface extends FigNodeModelElement {
         super.setEnclosingFig(encloser);
         if (!(org.argouml.model.ModelFacade.isAModelElement(getOwner())))
             return;
-        MModelElement me = (MModelElement) getOwner();
-        MNamespace m = null;
+        Object me = /*(MModelElement)*/ getOwner();
+        Object m = null;
         ProjectBrowser pb = ProjectBrowser.getInstance();
 
         try {
             // If moved into an Package
             if (encloser != null
-		&& oldEncloser != encloser
-		&& org.argouml.model.ModelFacade.isAPackage(encloser.getOwner()))
-	    {
-                me.setNamespace((MNamespace) encloser.getOwner());
+                    && oldEncloser != encloser
+                    && ModelFacade.isAPackage(encloser.getOwner())) {
+                ModelFacade.setNamespace(me, /*(MNamespace)*/ encloser.getOwner());
             }
 
             // If default Namespace is not already set
-            if (me.getNamespace() == null
+            if (ModelFacade.getNamespace(me) == null
 		&& (TargetManager.getInstance().getTarget()
 		    instanceof UMLDiagram))
 	    {
-                m = (MNamespace)
+                m = /*(MNamespace)*/
 		    ((UMLDiagram) TargetManager.getInstance().getTarget())
 		    .getNamespace();
-                me.setNamespace(m);
+                ModelFacade.setNamespace(me, m);
             }
         } catch (Exception e) {
             cat.error("could not set package due to:" + e
@@ -531,13 +521,13 @@ public class FigInterface extends FigNodeModelElement {
         // it detects if the enclosing fig is a component, in this case
         // the ImplementationLocation will be set for the owning MInterface
         if (encloser != null && (org.argouml.model.ModelFacade.isAComponent(encloser.getOwner()))) {
-            MComponent component = (MComponent) encloser.getOwner();
-            MInterface in = (MInterface) getOwner();
-            resident.setImplementationLocation(component);
-            resident.setResident(in);
+            Object component = /*(MComponent)*/ encloser.getOwner();
+            Object in = /*(MInterface)*/ getOwner();
+            ModelFacade.setImplementationLocation(resident, component);
+            ModelFacade.setResident(resident, in);
         } else {
-            resident.setImplementationLocation(null);
-            resident.setResident(null);
+            ModelFacade.setImplementationLocation(resident, null);
+            ModelFacade.setResident(resident, null);
         }
     }
 
@@ -546,7 +536,7 @@ public class FigInterface extends FigNodeModelElement {
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
-        MClassifier cls = (MClassifier) getOwner();
+        Object cls = /*(MClassifier)*/ getOwner();
         if (cls == null)
             return;
         int i = _operVec.getFigs().indexOf(ft);
@@ -556,7 +546,7 @@ public class FigInterface extends FigNodeModelElement {
             try {
                 ParserDisplay.SINGLETON
 		    .parseOperationFig(cls,
-				       (MOperation)
+				       /*(MOperation)*/
 				       highlightedFigText.getOwner(),
 				       highlightedFigText.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
@@ -602,7 +592,7 @@ public class FigInterface extends FigNodeModelElement {
 
     protected void createFeatureIn(FigGroup fg, InputEvent ie) {
         CompartmentFigText ft = null;
-        MClassifier cls = (MClassifier) getOwner();
+        Object cls = /*(MClassifier)*/ getOwner();
         if (cls == null)
             return;
         ActionAddOperation.SINGLETON.actionPerformed(null);
@@ -779,7 +769,7 @@ public class FigInterface extends FigNodeModelElement {
      * cases.
      */
     protected void updateOperations() {
-        MClassifier cls = (MClassifier) getOwner();
+        Object cls = /*(MClassifier)*/ getOwner();
         if (cls != null) {
 
             int xpos = _operBigPort.getX();
@@ -791,7 +781,7 @@ public class FigInterface extends FigNodeModelElement {
                 Vector figs = _operVec.getFigs();
                 CompartmentFigText oper;
                 while (iter.hasNext()) {
-                    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
+                    Object bf = /*(MBehavioralFeature)*/ iter.next();
                     // update the listeners
                     UmlModelEventPump.getPump().removeModelEventListener(this,
 									 bf);
@@ -821,7 +811,7 @@ public class FigInterface extends FigNodeModelElement {
                     oper.setOwner(bf);
                     // underline, if static
                     oper.setUnderline(
-			    MScopeKind.CLASSIFIER.equals(bf.getOwnerScope()));
+			    MScopeKind.CLASSIFIER.equals(ModelFacade.getOwnerScope(bf)));
                     // italics, if abstract
                     //oper.setItalic(((MOperation)bf).isAbstract());
                     //// does not properly work (GEF bug?)

@@ -76,16 +76,6 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MElementResidence;
-import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -136,7 +126,7 @@ public class FigClass extends FigNodeModelElement {
      *   diagram. Not clear why it is public, or even why it is an instance
      *   variable (rather than local to the method).</p>
      */
-    public MElementResidence resident =
+    public Object resident =
 	UmlFactory.getFactory().getCore().createElementResidence();
 
     /**
@@ -358,7 +348,7 @@ public class FigClass extends FigNodeModelElement {
 
         popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
 
-        MClass mclass = (MClass) getOwner();
+        Object mclass = /*(MClass)*/ getOwner();
         ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
         modifierMenu.addCheckItem(
@@ -629,7 +619,7 @@ public class FigClass extends FigNodeModelElement {
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
         super.textEdited(ft);
-        MClassifier cls = (MClassifier) getOwner();
+        Object cls = /*(MClassifier)*/ getOwner();
         if (cls == null)
             return;
         int i = _attrVec.getFigs().indexOf(ft);
@@ -639,7 +629,7 @@ public class FigClass extends FigNodeModelElement {
             try {
                 ParserDisplay.SINGLETON
 		    .parseAttributeFig(cls,
-				       (MAttribute)
+				       /*(MAttribute)*/
 				       highlightedFigText.getOwner(),
 				       highlightedFigText.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
@@ -656,7 +646,7 @@ public class FigClass extends FigNodeModelElement {
             try {
                 ParserDisplay.SINGLETON
 		    .parseOperationFig(cls,
-				       (MOperation)
+				       /*(MOperation)*/
 				       highlightedFigText.getOwner(),
 				       highlightedFigText.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
@@ -717,7 +707,7 @@ public class FigClass extends FigNodeModelElement {
 
     protected void createFeatureIn(FigGroup fg, InputEvent ie) {
         CompartmentFigText ft = null;
-        MClassifier cls = (MClassifier) getOwner();
+        Object cls = /*(MClassifier)*/ getOwner();
         if (cls == null)
             return;
         if (fg == _attrVec)
@@ -767,7 +757,7 @@ public class FigClass extends FigNodeModelElement {
 
         if (getOwner() == null)
             return;
-        MClass cls = (MClass) getOwner();
+        Object cls = /*(MClass)*/ getOwner();
         // attributes
         if (mee == null
 	    || org.argouml.model.ModelFacade.isAAttribute(mee.getSource())
@@ -804,19 +794,21 @@ public class FigClass extends FigNodeModelElement {
 
     protected void updateStereotypeText() {
 
-        MModelElement me = (MModelElement) getOwner();
+        Object me = /*(MModelElement)*/ getOwner();
 
         if (me == null) {
             return;
         }
 
         Rectangle rect = getBounds();
-        MStereotype stereo = me.getStereotype();
+        Object stereo = null;
+        if (ModelFacade.getStereotypes(me).size() > 0) {
+            stereo = ModelFacade.getStereotypes(me).iterator().next();
+        }
 
         if ((stereo == null)
-	    || (stereo.getName() == null)
-	    || (stereo.getName().length() == 0))
-	{
+                || (ModelFacade.getName(stereo) == null)
+                || (ModelFacade.getName(stereo).length() == 0))	{
 
             if (_stereo.isDisplayed()) {
                 _stereoLineBlinder.setDisplayed(false);
@@ -827,7 +819,7 @@ public class FigClass extends FigNodeModelElement {
                 calcBounds();
             }
         } else {
-            _stereo.setText(Notation.generateStereotype(this, stereo));
+            _stereo.setText(Notation.generateStereotype(this, (MStereotype)stereo));
 
             if (!_stereo.isDisplayed()) {
                 _stereoLineBlinder.setDisplayed(true);
@@ -1061,7 +1053,7 @@ public class FigClass extends FigNodeModelElement {
      * cases.
      */
     protected void updateAttributes() {
-        MClassifier cls = (MClassifier) getOwner();
+        Object cls = /*(MClassifier)*/ getOwner();
         int xpos = _attrBigPort.getX();
         int ypos = _attrBigPort.getY();
         int acounter = 1;
@@ -1071,7 +1063,7 @@ public class FigClass extends FigNodeModelElement {
             Vector figs = _attrVec.getFigs();
             CompartmentFigText attr;
             while (iter.hasNext()) {
-                MStructuralFeature sf = (MStructuralFeature) iter.next();
+                Object sf = /*(MStructuralFeature)*/ iter.next();
                 // update the listeners
                 UmlModelEventPump.getPump().removeModelEventListener(this, sf);
                 UmlModelEventPump.getPump().addModelEventListener(this, sf);
@@ -1097,7 +1089,7 @@ public class FigClass extends FigNodeModelElement {
                 attr.setOwner(sf);
                 // underline, if static
                 attr.setUnderline(MScopeKind.CLASSIFIER
-				  .equals(sf.getOwnerScope()));
+				  .equals(ModelFacade.getOwnerScope(sf)));
                 acounter++;
             }
             if (figs.size() > acounter) {
@@ -1120,7 +1112,7 @@ public class FigClass extends FigNodeModelElement {
      * cases.
      */
     protected void updateOperations() {
-        MClassifier cls = (MClassifier) getOwner();
+        Object cls = /*(MClassifier)*/ getOwner();
         int xpos = _operBigPort.getX();
         int ypos = _operBigPort.getY();
         int ocounter = 1;
@@ -1130,7 +1122,7 @@ public class FigClass extends FigNodeModelElement {
             Vector figs = _operVec.getFigs();
             CompartmentFigText oper;
             while (iter.hasNext()) {
-                MBehavioralFeature bf = (MBehavioralFeature) iter.next();
+                Object bf = /*(MBehavioralFeature)*/ iter.next();
                 // update the listeners
                 UmlModelEventPump.getPump().removeModelEventListener(this, bf);
                 UmlModelEventPump.getPump().addModelEventListener(this, bf);
@@ -1156,7 +1148,7 @@ public class FigClass extends FigNodeModelElement {
                 oper.setOwner(bf);
                 // underline, if static
                 oper.setUnderline(MScopeKind.CLASSIFIER
-				  .equals(bf.getOwnerScope()));
+				  .equals(ModelFacade.getOwnerScope(bf)));
                 // italics, if abstract
                 //oper.setItalic(((MOperation)bf).isAbstract()); //
                 //does not properly work (GEF bug?)
@@ -1209,8 +1201,8 @@ public class FigClass extends FigNodeModelElement {
         Rectangle rect = getBounds();
         if (getOwner() == null)
             return;
-        MClass cls = (MClass) getOwner();
-        if (cls.isAbstract())
+        Object cls = /*(MClass)*/ getOwner();
+        if (ModelFacade.isAbstract(cls))
             _name.setFont(ITALIC_LABEL_FONT);
         else
             _name.setFont(LABEL_FONT);
@@ -1226,15 +1218,15 @@ public class FigClass extends FigNodeModelElement {
         Object oldOwner = getOwner();
         if (oldOwner != null && oldOwner != newOwner) {
 	    // remove the listeners if the owner is changed
-            MClass cl = (MClass) oldOwner;
-            Iterator it = cl.getFeatures().iterator();
+            Object cl = /*(MClass)*/ oldOwner;
+            Iterator it = ModelFacade.getFeatures(cl).iterator();
             while (it.hasNext()) {
-                MFeature feat = (MFeature) it.next();
-                if (org.argouml.model.ModelFacade.isAOperation(feat)) {
-                    MOperation oper = (MOperation) feat;
-                    Iterator it2 = oper.getParameters().iterator();
+                Object feat = /*(MFeature)*/ it.next();
+                if (ModelFacade.isAOperation(feat)) {
+                    Object oper = /*(MOperation)*/ feat;
+                    Iterator it2 = ModelFacade.getParameters(oper).iterator();
                     while (it2.hasNext()) {
-                        MParameter param = (MParameter) it2.next();
+                        Object param = /*(MParameter)*/ it2.next();
                         UmlModelEventPump.getPump()
 			    .removeModelEventListener(this, param);
                     }
@@ -1242,15 +1234,15 @@ public class FigClass extends FigNodeModelElement {
             }
         }
         if (newOwner != null) { // add the listeners to the newOwner
-            MClass cl = (MClass) newOwner;
-            Iterator it = cl.getFeatures().iterator();
+            Object cl = /*(MClass)*/ newOwner;
+            Iterator it = ModelFacade.getFeatures(cl).iterator();
             while (it.hasNext()) {
-                MFeature feat = (MFeature) it.next();
-                if (org.argouml.model.ModelFacade.isAOperation(feat)) {
-                    MOperation oper = (MOperation) feat;
-                    Iterator it2 = oper.getParameters().iterator();
+                Object feat = /*(MFeature)*/ it.next();
+                if (ModelFacade.isAOperation(feat)) {
+                    Object oper = /*(MOperation)*/ feat;
+                    Iterator it2 = ModelFacade.getParameters(oper).iterator();
                     while (it2.hasNext()) {
-                        MParameter param = (MParameter) it2.next();
+                        Object param = /*(MParameter)*/ it2.next();
                         // UmlModelEventPump.getPump().removeModelEventListener(this,
                         // param);
                         UmlModelEventPump.getPump().addModelEventListener(this, param);

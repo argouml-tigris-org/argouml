@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -42,6 +41,7 @@ import org.tigris.gef.graph.*;
 
 import org.argouml.uml.diagram.ui.*;
 import org.apache.log4j.Logger;
+import org.argouml.model.ModelFacade;
 
 // could be singleton
 
@@ -84,20 +84,20 @@ public class ClassDiagramRenderer
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
         cat.debug("making figedge for " + edge);
         if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
-            MAssociation asc = (MAssociation) edge;
+            Object asc = /*(MAssociation)*/ edge;
             FigAssociation ascFig = new FigAssociation(asc, lay);
             return ascFig;
         }
         if (org.argouml.model.ModelFacade.isALink(edge)) {
-            MLink lnk = (MLink) edge;
+            Object lnk = /*(MLink)*/ edge;
             FigLink lnkFig = new FigLink(lnk);
-            Collection linkEnds = lnk.getConnections();
+            Collection linkEnds = ModelFacade.getConnections(lnk);
             if (linkEnds == null) cat.debug("null linkRoles....");
             Object[] leArray = linkEnds.toArray();
             MLinkEnd fromEnd = (MLinkEnd) leArray[0];
-            MInstance fromInst = fromEnd.getInstance();
+            Object fromInst = fromEnd.getInstance();
             MLinkEnd toEnd = (MLinkEnd) leArray[1];
-            MInstance toInst = toEnd.getInstance();
+            Object toInst = toEnd.getInstance();
             FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
             FigNode toFN = (FigNode) lay.presentationFor(toInst);
             lnkFig.setSourcePortFig(fromFN);
@@ -108,33 +108,36 @@ public class ClassDiagramRenderer
             return lnkFig;
         }
         if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
-            MGeneralization gen = (MGeneralization) edge;
+            Object gen = /*(MGeneralization)*/ edge;
             FigGeneralization genFig = new FigGeneralization(gen, lay);
             return genFig;
         }
         if (org.argouml.model.ModelFacade.isAPermission(edge)) {
-            MPermission per = (MPermission) edge;
+            Object per = /*(MPermission)*/ edge;
             FigPermission perFig = new FigPermission(per, lay);
             return perFig;
         }
         if (org.argouml.model.ModelFacade.isAUsage(edge)) {
-            MUsage usage = (MUsage) edge;
+            Object usage = /*(MUsage)*/ edge;
             FigUsage usageFig = new FigUsage(usage, lay);
             return usageFig;
         }
-        if (org.argouml.model.ModelFacade.isADependency(edge)) {
+        if (ModelFacade.isADependency(edge)) {
             cat.debug("get fig for " + edge);
-            MDependency dep = (MDependency) edge;
-            cat.debug("stereo " + dep.getStereotype());
-            if (dep.getStereotype() != null
-		&& dep.getStereotype().getName().equals("realize"))
-	    {
+            Object dep = /*(MDependency)*/ edge;
+            Object stereotype = null;
+            if (ModelFacade.getStereotypes(dep).size() > 0) {
+                stereotype = ModelFacade.getStereotypes(dep).iterator().next();
+            }
+            cat.debug("stereo " + stereotype);
+            if (stereotype != null
+		 && ModelFacade.getName(stereotype).equals("realize")) {
                 FigRealization realFig = new FigRealization(dep);
 		  
-                MModelElement supplier =
-		    (MModelElement) ((dep.getSuppliers().toArray())[0]);
-                MModelElement client =
-		    (MModelElement) ((dep.getClients().toArray())[0]);
+                Object supplier =
+		    /*(MModelElement)*/ ((ModelFacade.getSuppliers(dep).toArray())[0]);
+                Object client =
+		    /*(MModelElement)*/ ((ModelFacade.getClients(dep).toArray())[0]);
 		  
                 FigNode supFN = (FigNode) lay.presentationFor(supplier);
                 FigNode cliFN = (FigNode) lay.presentationFor(client);
