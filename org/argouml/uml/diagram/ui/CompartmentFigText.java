@@ -245,7 +245,8 @@ public class CompartmentFigText extends FigText
      *   and will return <code>null</code> if that does not return an instance
      *   of {@link MFeature}.</p>
      *
-     * @return  The feature associated with this compartment.
+     * @return  The feature associated with this compartment or 
+     * 		null if none can be found.
      *
      * @deprecated  Use the more general {@link #getModelElement()} instead.
      */

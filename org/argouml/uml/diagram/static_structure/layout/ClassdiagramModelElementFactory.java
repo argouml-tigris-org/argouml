@@ -40,8 +40,9 @@ public class ClassdiagramModelElementFactory
     private ClassdiagramModelElementFactory() {}
     
     /** create layouter object from a Fig.*
+     *
      * @param f Object which contains the Fig
-     * @return Layouter for the Edge
+     * @return Layouter for the Edge or null if none exists.
      */
     public ClassdiagramEdge getInstance(Object f) {
         if(f instanceof FigEdge) {

@@ -39,8 +39,7 @@ public class GoStateToSubstate implements TreeModel {
   public String toString() { return "State->Substates"; }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called: GoStateToSubstate");
-    return null;
+      throw new Error("getRoot should never be called: GoStateToSubstate");
   }
   public void setRoot(Object r) { }
 

@@ -37,8 +37,7 @@ public class GoListToDecisionsToItems implements TreeModel {
   // TreeModel implementation
   
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   } 
   public void setRoot(Object r) { }
 
@@ -57,8 +56,8 @@ public class GoListToDecisionsToItems implements TreeModel {
         }
       }
     }
-    System.out.println("getChild shouldnt get here GoListToDecisionsToItems");
-    return null;
+
+    throw new Error("getChild shouldn't get here GoListToDecisionsToItems");
   }
   
   private int getChildCountCond(Object parent, boolean stopafterone) {

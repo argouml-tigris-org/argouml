@@ -38,8 +38,7 @@ public class GoAssocToTarget implements TreeModel {
   public String toString() { return "Association->Target Class"; }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -51,8 +50,7 @@ public class GoAssocToTarget implements TreeModel {
       if (ae == null) return null;
       return ae.getType();
     }
-    System.out.println("getChild should never be get here GoAssocToTarget");
-    return null;
+    throw new Error("getChild should never be get here GoAssocToTarget");
   }
 
   public int getChildCount(Object parent) {

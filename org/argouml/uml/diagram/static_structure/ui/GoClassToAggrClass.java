@@ -39,8 +39,7 @@ public class GoClassToAggrClass implements TreeModel {
   public String toString() { return "Class->Aggregate Class"; }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -49,8 +48,7 @@ public class GoClassToAggrClass implements TreeModel {
       Vector children = getChildren((MClass)parent);
       return children.elementAt(index);
     }
-    System.out.println("getChild should never be get here GoClassToAggrClass");
-    return null;
+    throw new Error("getChild should never be get here GoClassToAggrClass");
   }
 
   public int getChildCount(Object parent) {

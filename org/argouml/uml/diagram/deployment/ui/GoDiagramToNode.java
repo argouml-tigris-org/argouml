@@ -41,8 +41,7 @@ public class GoDiagramToNode implements TreeModel {
   public String toString() { return "Diagram->Node"; }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
 
   public Object getChild(Object parent, int index) {
@@ -50,8 +49,7 @@ public class GoDiagramToNode implements TreeModel {
       Vector nodes = ((Diagram)parent).getNodes();
       return nodes.elementAt(index);
     }
-    System.out.println("getChild should never be get here GoModelToElements");
-    return null;
+    throw new Error("getChild should never be get here GoModelToElements");
   }
 
   public int getChildCount(Object parent) {

@@ -892,8 +892,7 @@ public abstract class CriticUtils {
             }
         }
 
-        // If there was no return parameter return null
-
+        // There is no return parameter
         return null;
     }
 

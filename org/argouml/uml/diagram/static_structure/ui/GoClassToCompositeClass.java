@@ -39,8 +39,7 @@ public class GoClassToCompositeClass implements TreeModel {
   public String toString() { return "Class->Composite Class"; }
   
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -49,8 +48,7 @@ public class GoClassToCompositeClass implements TreeModel {
       Vector children = getChildren((MClass)parent);
       return (children == null) ? null : children.elementAt(index);
     }
-    System.out.println("getChild should never get here GoClassToCompositeClass");
-    return null;
+    throw new Error("getChild should never get here GoClassToCompositeClass");
   }
 
   public int getChildCount(Object parent) {

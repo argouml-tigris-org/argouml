@@ -528,8 +528,11 @@ public class Critic implements Poster, Serializable {
   }
 
   /** Return the Class of wizard that can fix the problem identifed by
-   *  this critic.  Return null if no wizard is defined.  This method
-   *  returns null, subclasses with wizards should override it. */
+   *  this critic.
+   *  This method returns null, subclasses with wizards should override it.
+   *
+   *  @return null if no wizard is defined.
+   */
   public Class getWizardClass(ToDoItem item) { return null; }
 
 

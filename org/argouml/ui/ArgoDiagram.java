@@ -82,6 +82,7 @@ public class ArgoDiagram extends Diagram implements VetoablePropertyChange {
 
     /**
      * @see org.argouml.uml.ui.VetoablePropertyChange#getVetoMessage(String)
+     * @return a message or null if not applicable.
      */
     public String getVetoMessage(String propertyName) {
     	if (propertyName.equals("name")) {

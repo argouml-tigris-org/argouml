@@ -39,8 +39,7 @@ public class GoStateToUpstream implements TreeModel {
   public String toString() { return "State->Preceeding States"; }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -50,8 +49,7 @@ public class GoStateToUpstream implements TreeModel {
       if (incoming == null) return null;
       return ((MTransition)incoming.elementAt(index)).getSource();
     }
-    System.out.println("getChild should never be get here GoStateToUpstream");
-    return null;
+    throw new Error("getChild should never be get here GoStateToUpstream");
   }
 
   // needs-more-work: should be a set

@@ -104,7 +104,10 @@ public abstract class Wizard implements java.io.Serializable {
 
 
   /** Get the exising panel at step s. Step 1 is the first wizard
-   *  panel. */
+   *  panel. 
+   *
+   * @return the panel for step s or null if none.
+   */
   public JPanel getPanel(int s) {
     if (s > 0 && s <= _panels.size())
       return (JPanel) _panels.elementAt(s - 1);

@@ -40,8 +40,10 @@ public class ActionUtilities {
    *         Container appRoot = ActionUtilities.getActionRoot(e.getSource());
    *     }
    * </pre>
-   * Returns the root object, usually a <code>JFrame, JDialog or JApplet</code> that is the owner
-   * of the source event source object (JMenu, JMenuItem, JPopupMenu etc).
+   * @return the root object, usually a JFrame, JDialog or JApplet
+   *	     that is the owner of the source event source object 
+   *         (JMenu, JMenuItem, JPopupMenu etc).
+   *         null if none is found.
    */
   public static Container getActionRoot(Object source) {
       Container container = null;

@@ -120,8 +120,7 @@ implements TreeModel, Cloneable {
       if (index < childCount) return tm.getChild(parent, index);
       index -= childCount;
     }
-    System.out.println("TreeModelComposite should never get here");
-    return null;
+    throw new Error("TreeModelComposite should never get here");
   }
 
   public int getChildCount(Object parent) {

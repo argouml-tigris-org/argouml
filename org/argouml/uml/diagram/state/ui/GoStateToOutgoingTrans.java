@@ -39,8 +39,7 @@ public class GoStateToOutgoingTrans implements TreeModel {
   public String toString() { return "State->Outgoing Transitions"; }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -51,8 +50,7 @@ public class GoStateToOutgoingTrans implements TreeModel {
       Vector outgoing = new Vector(((MStateVertex)parent).getOutgoings());
       return (outgoing == null) ? null : outgoing.elementAt(index);
     }
-    System.out.println("getChild should never be get here GoStateToOutgoingTrans");
-    return null;
+    throw new Error("getChild should never be get here GoStateToOutgoingTrans");
   }
 
   public int getChildCount(Object parent) {

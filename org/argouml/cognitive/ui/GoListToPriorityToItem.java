@@ -37,8 +37,7 @@ public class GoListToPriorityToItem implements TreeModel {
   // TreeModel implementation
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   } 
   public void setRoot(Object r) { }
 
@@ -58,8 +57,7 @@ public class GoListToPriorityToItem implements TreeModel {
 	}
       }
     }
-    System.out.println("getChild shouldnt get here GoListToPriorityToItem");
-    return null;
+    throw new Error("getChild shouldnt get here GoListToPriorityToItem");
   }
 
   public int getChildCount(Object parent) {

@@ -41,8 +41,7 @@ public class GoMachineToStartState implements TreeModel {
   public String toString() { return "State Machine->Initial States"; }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -57,8 +56,7 @@ public class GoMachineToStartState implements TreeModel {
       if (index == 0) return top;
       return null;
     }
-    System.out.println("getChild should never get here GoMachineToStartState");
-    return null;
+    throw new Error("getChild should never get here GoMachineToStartState");
   }
 
   public int getChildCount(Object parent) {

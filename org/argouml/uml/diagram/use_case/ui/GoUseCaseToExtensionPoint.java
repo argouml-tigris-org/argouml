@@ -78,9 +78,8 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
      */
 
     public Object getRoot() {
-        System.out.println(getClass().toString() +
-                           ": getRoot() should never be called");
-        return null;
+        throw new Error(getClass().toString() +
+			": getRoot() should never be called");
     }
 
 
@@ -122,10 +121,9 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
         // Give up (with a rude message) if we are not a use case
 
         if (!(parent instanceof MUseCase)) {
-            System.out.println(getClass().toString() +
-                               ": getChild() should not be called " +
-                               "with parent of type " + parent);
-            return null;
+            throw new Error(getClass().toString() +
+			    ": getChild() should not be called " +
+			    "with parent of type " + parent);
         }
 
         // Get the extension points, place in a vector and return the one asked

@@ -39,8 +39,7 @@ public class GoListToPosterToItem implements TreeModel {
   // TreeModel implementation
   
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   } 
   public void setRoot(Object r) { }
 

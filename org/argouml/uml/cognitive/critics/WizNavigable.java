@@ -119,8 +119,7 @@ public class WizNavigable extends Wizard {
       int choice = -1;
       if (_step1 != null) choice = _step1.getSelectedIndex();
       if (choice == -1) {
-	System.out.println("nothing selected, should not get here");
-	return;
+	throw new Error("nothing selected, should not get here");
       }
       try {
 	MAssociation asc = (MAssociation) getModelElement();

@@ -42,8 +42,7 @@ public class GoElementToReqElement implements TreeModel {
   }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+    throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -54,9 +53,8 @@ public class GoElementToReqElement implements TreeModel {
       Vector sup = new Vector(((MDependency)deps.elementAt(index)).getSuppliers());
       return sup.elementAt(0);
     }
-    System.out.println("getChild should never be get here "+
+    throw new Error("getChild should never be get here "+
 		       "GoElementToReqElement");
-    return null;
   }
 
   public int getChildCount(Object parent) {

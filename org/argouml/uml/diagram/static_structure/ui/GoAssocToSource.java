@@ -37,8 +37,7 @@ public class GoAssocToSource implements TreeModel {
   public String toString() { return "Association->Source Class"; }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -50,8 +49,7 @@ public class GoAssocToSource implements TreeModel {
       if (ae == null) return null;
       return ae.getType();
     }
-    System.out.println("getChild should never be get here GoAssocToSource");
-    return null;
+    throw new Error("getChild should never be get here GoAssocToSource");
   }
 
   public int getChildCount(Object parent) {

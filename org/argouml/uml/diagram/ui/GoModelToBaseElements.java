@@ -41,8 +41,7 @@ public class GoModelToBaseElements implements TreeModel {
   }
   
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+    throw new Error("getRoot should never be called");
   } 
   public void setRoot(Object r) { }
 
@@ -60,8 +59,7 @@ public class GoModelToBaseElements implements TreeModel {
       }
       System.out.println("getChild not enough base elements found!");
     }
-    System.out.println("getChild shouldnt get here GoModelToBaseElements");
-    return null;
+    throw new Error("getChild shouldnt get here GoModelToBaseElements");
   }
   
   public int getChildCount(Object parent) {

@@ -41,8 +41,7 @@ public class GoGenElementToDerived implements TreeModel {
   }
   
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+    throw new Error("getRoot should never be called");
   } 
 
   public Object getChild(Object parent, int index) {
@@ -50,8 +49,7 @@ public class GoGenElementToDerived implements TreeModel {
       MGeneralizableElement p = (MGeneralizableElement) parent;
       return ((List)p.getChildren()).get(index);
     }
-    System.out.println("getChild should never be get here GoClassifierToStr");
-    return null;
+    throw new Error("getChild should never be get here GoClassifierToStr");
   }
   
   public int getChildCount(Object parent) {

@@ -39,16 +39,14 @@ public class GoAssocRoleMessages implements TreeModel {
   public String toString() { return "AssociationRole->Messages"; }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
     Vector children = getChildren(parent);
     if (children != null) return children.elementAt(index);
-    System.out.println("getChild should never be get here GoCollaborationDiagram");
-    return null;
+    throw new Error("getChild should never be get here GoCollaborationDiagram");
   }
 
   public int getChildCount(Object parent) {

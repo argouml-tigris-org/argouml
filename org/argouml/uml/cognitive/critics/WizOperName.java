@@ -171,8 +171,7 @@ public class WizOperName extends WizMEName {
 	    
 	    switch (choice) {
 	    case -1:
-		System.out.println("nothing selected, should not get here");
-		return;
+		throw new Error("nothing selected, should not get here");
 
 	    case 0:
 		_stereotypePathChosen = true;

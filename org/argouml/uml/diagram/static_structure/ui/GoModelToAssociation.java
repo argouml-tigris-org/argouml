@@ -38,16 +38,14 @@ public class GoModelToAssociation implements TreeModel {
   public String toString() { return "Package->MAssociation"; }
   
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
     Vector children = getChildren(parent);
     if (children != null) return children.elementAt(index);
-    System.out.println("getChild should never get here GoModelToAssociation");
-    return null;
+    throw new Error("getChild should never get here GoModelToAssociation");
   }
 
 //   public void xxx() {
@@ -60,7 +58,7 @@ public class GoModelToAssociation implements TreeModel {
 // 	if (index == 0) return me;
 //       }
 //     }
-//     System.out.println("getChild should never be get here GoModelToAssociation");
+//     throw new Error("getChild should never be get here GoModelToAssociation");
 //     return null;
 //   }
 

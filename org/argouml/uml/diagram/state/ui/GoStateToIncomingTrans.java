@@ -39,8 +39,7 @@ public class GoStateToIncomingTrans implements TreeModel {
   public String toString() { return "State->Incoming Transitions"; }
 
   public Object getRoot() {
-    System.out.println("getRoot should never be called");
-    return null;
+      throw new Error("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -50,8 +49,7 @@ public class GoStateToIncomingTrans implements TreeModel {
     if (parent instanceof MStateVertex) {
       return new Vector(((MStateVertex)parent).getIncomings()).elementAt(index);
     }
-    System.out.println("getChild should never be get here GoStateToIncomingTrans");
-    return null;
+    throw new Error("getChild should never be get here GoStateToIncomingTrans");
   }
 
   public int getChildCount(Object parent) {
