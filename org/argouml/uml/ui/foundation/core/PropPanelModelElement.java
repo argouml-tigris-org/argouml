@@ -57,6 +57,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _generalizationIcon = ResourceLoader.lookupIconResource("Generalization");
     protected static ImageIcon _realizationIcon = ResourceLoader.lookupIconResource("Realization");
     protected static ImageIcon _classIcon = ResourceLoader.lookupIconResource("Class");
+    protected static ImageIcon _collaborationIcon = ResourceLoader.lookupIconResource("Collaboration");
     protected static ImageIcon _interfaceIcon = ResourceLoader.lookupIconResource("Interface");
     protected static ImageIcon _addOpIcon = ResourceLoader.lookupIconResource("AddOperation");
     protected static ImageIcon _addAttrIcon = ResourceLoader.lookupIconResource("AddAttribute");
