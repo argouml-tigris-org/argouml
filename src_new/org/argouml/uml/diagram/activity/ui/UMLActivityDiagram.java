@@ -36,6 +36,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
@@ -378,4 +379,16 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
         return actionTransition;
     }
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.UMLDiagram#needsToBeRemoved()
+     */
+    public boolean needsToBeRemoved() {
+        Object context = ModelFacade.getContext(getStateMachine());
+        if (context == null) return true;
+        if (UmlFactory.getFactory().isRemoved(getStateMachine())) return true;
+        if (UmlFactory.getFactory().isRemoved(getNamespace())) return true;
+        return false;
+    }
+    
 } /* end class UMLActivityDiagram */
