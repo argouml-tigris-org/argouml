@@ -93,7 +93,8 @@ class UMLCallEventOperationComboBox2 extends UMLSearchableComboBox {
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
         if (ModelFacade.isACallEvent(target)) {
-            Model.getCommonBehaviorHelper().setOperation(target, getSelectedItem());
+            Model.getCommonBehaviorHelper().setOperation(target, 
+                    getSelectedItem());
         }
     }
 }
