@@ -46,7 +46,7 @@ import uci.uml.generate.ParserDisplay;
 import uci.uml.ui.*;
 
 public class PropPanelAssociationRole extends PropPanelTwoEnds
-implements DocumentListener, ItemListener, ChangeListener {
+implements ItemListener, ChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -167,17 +167,10 @@ implements DocumentListener, ItemListener, ChangeListener {
     gb.setConstraints(_navBField, c);
     add(_navBField);
 
-
-    Component ed = _multAField.getEditor().getEditorComponent();
-    Document typeDoc = ((JTextField)ed).getDocument();
-    typeDoc.addDocumentListener(this);
-
-    ed = _multBField.getEditor().getEditorComponent();
-    typeDoc = ((JTextField)ed).getDocument();
-    typeDoc.addDocumentListener(this);
-
-    _roleAField.getDocument().addDocumentListener(this);
-    _roleBField.getDocument().addDocumentListener(this);
+    _roleAField.addKeyListener(this);
+    _roleBField.addKeyListener(this);
+    _roleAField.addFocusListener(this);
+    _roleBField.addFocusListener(this);
 
 //     _visAField.addItemListener(this);
 //     _visBField.addItemListener(this);
@@ -352,29 +345,11 @@ implements DocumentListener, ItemListener, ChangeListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-//     Component ed = _typeField.getEditor().getEditorComponent();
-//     Document typeDoc = ((JTextField)ed).getDocument();
-
-    Document roleADoc = _roleAField.getDocument();
-    Document roleBDoc = _roleBField.getDocument();
-
-    if (e.getDocument() == roleADoc) setRoleNames();
-    else if (e.getDocument() == roleBDoc) setRoleNames();
-//     else if (e.getDocument() == initDoc) setTargetInit();
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-  
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _roleAField || e.getComponent() == _roleBField)
+	    setRoleNames();
+    }  
   
   public void stateChanged(ChangeEvent e) {
     //System.out.println("got stateChanged");

@@ -45,7 +45,7 @@ import uci.uml.generate.ParserDisplay;
 import uci.uml.ui.*;
 
 public class PropPanelAssociation extends PropPanelTwoEnds
-implements DocumentListener, ItemListener, ChangeListener {
+implements ItemListener, ChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // constants

@@ -57,8 +57,7 @@ import uci.uml.generate.*;
  *  the user to edit the properties of the selected UML model
  *  element. */
 
-public class PropPanelNodeInstance extends PropPanel
-implements ItemListener, DocumentListener {
+public class PropPanelNodeInstance extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -93,7 +92,8 @@ implements ItemListener, DocumentListener {
     _baseField.setMinimumSize(new Dimension(120, 20)); 
     gb.setConstraints(_baseField, c); 
     add(_baseField); 
-    _baseField.getDocument().addDocumentListener(this); 
+    _baseField.addKeyListener(this); 
+    _baseField.addFocusListener(this); 
     _baseField.setFont(_stereoField.getFont()); 
 
   }
@@ -139,28 +139,11 @@ implements ItemListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // event handling
 
-  public void insertUpdate(DocumentEvent e) {
-    super.insertUpdate(e);
-    if (e.getDocument() == _baseField.getDocument()) { 
-      setTargetBase(); 
-    } 
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource(); 
-    // check for each widget, and update the model with new value 
-    if (src == _baseField) { 
-      setTargetBase();
-    } 
-  }
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _baseField)
+	    setTargetBase();
+    }
 
   static final long serialVersionUID = 5574833923466612432L;
   

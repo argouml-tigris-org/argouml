@@ -57,8 +57,7 @@ import uci.uml.generate.*;
  *  Needs-More-Work: cut and paste base class code from
  *  PropPanelClass. */
 
-public class PropPanelMessage extends PropPanel
-implements ItemListener, DocumentListener {
+public class PropPanelMessage extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -140,25 +139,11 @@ implements ItemListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  /** The user typed some text */
-  public void insertUpdate(DocumentEvent e) {
-    super.insertUpdate(e);
-    if (e.getDocument() == _actionField.getDocument()) {
-      setTargetActionString(_actionField.getText().trim());
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _actionField)
+	    setTargetActionString(_actionField.getText().trim());
     }
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    // Apparently, this method is never called.
-  }
-
-  /** The user modified one of the widgets */
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    // check for each widget, and update the model with new value
-  }
 
   protected void setTargetActionString(String s) {
     if (_target == null) return;

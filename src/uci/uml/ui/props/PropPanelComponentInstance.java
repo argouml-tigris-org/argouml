@@ -57,8 +57,7 @@ import uci.uml.generate.*;
  *  the user to edit the properties of the selected UML model
  *  element. */
 
-public class PropPanelComponentInstance extends PropPanel 
-implements ItemListener, DocumentListener {
+public class PropPanelComponentInstance extends PropPanel  {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -100,15 +99,8 @@ implements ItemListener, DocumentListener {
     _baseField.setMinimumSize(new Dimension(120, 20)); 
     gb.setConstraints(_baseField, c); 
     add(_baseField); 
-    _baseField.getDocument().addDocumentListener(this); 
-    _baseField.setFont(_stereoField.getFont()); 
-    c.gridy = 2;
-    _deploymentLocationField.setMinimumSize(new Dimension(120, 20));
-    gb.setConstraints(_deploymentLocationField, c);
-    add(_deploymentLocationField);
-    _deploymentLocationField.getDocument().addDocumentListener(this);
-    _deploymentLocationField.setFont(_stereoField.getFont());
-
+    _baseField.addKeyListener(this); 
+    _baseField.addFocusListener(this); 
   }
 
   ////////////////////////////////////////////////////////////////
@@ -162,32 +154,11 @@ implements ItemListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-
-  /** The user typed some text */
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    // check if it was one of my text fields
-    super.insertUpdate(e);
-    if (e.getDocument() == _baseField.getDocument()) { 
-      setTargetBase(); 
-    } 
- }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-  /** The user modified one of the widgets */
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource(); 
-    // check for each widget, and update the model with new value 
-    if (src == _baseField) { 
-      setTargetBase(); 
+    public void focusLost(FocusEvent e){
+	super.focusLost(e);
+	if (e.getComponent() == _baseField)
+	    setTargetBase();
     }
-  }
 
   static final long serialVersionUID = 4536645723645617622L;
   

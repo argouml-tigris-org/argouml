@@ -122,31 +122,5 @@ public class PropPanelLink extends PropPanelTwoEnds {
     if (inst == null) return "null Instance";
     return inst.getName();
   }
-  
-
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-
-  /** The user typed some text */
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    // check if it was one of my text fields
-    super.insertUpdate(e);
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-
-  /** The user modified one of the widgets */
-  public void itemStateChanged(ItemEvent e) {
-    Object src = e.getSource();
-    // check for each widget, and update the model with new value
-  }
-
 
 } /* end class PropPanelState */
