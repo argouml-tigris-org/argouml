@@ -512,7 +512,12 @@ class ActionLoadModelFromDB extends UMLAction {
 	  
   }
   public boolean shouldBeEnabled() {
-	  return false;
+	  try {
+		  Class dbDriver = Class.forName("org.gjt.mm.mysql.Driver");
+	  } catch (ClassNotFoundException e) {
+		  return false;
+	  }
+	  return true;
   }
 
 } /* end class ActionLoadModelFromDB */
@@ -544,8 +549,12 @@ class ActionStoreProjectToDB extends UMLAction {
 // 	  }
   }
   public boolean shouldBeEnabled() {
-	  // this is always true, because there is no way for Argo to be without a model
-	  return false;
+	  try {
+		  Class dbDriver = Class.forName("org.gjt.mm.mysql.Driver");
+	  } catch (ClassNotFoundException e) {
+		  return false;
+	  }
+	  return true;
   }
 
 } /* end class ActionStoreProjectToDB */
