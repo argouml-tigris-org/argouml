@@ -33,8 +33,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.ExtensionMechanismsHelper;
+import org.argouml.model.uml.UmlException;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.Diagram;
@@ -192,6 +195,8 @@ public class ModelFacade {
 
     // TODO: deprecate all of these constants in favor of a separate declaration
 
+    private static final Logger LOG = Logger.getLogger(ModelFacade.class);
+    
     /**
      * The constant ACC_PUBLIC determines visibility.
      */
@@ -4379,26 +4384,41 @@ public class ModelFacade {
      * @return the name
      */
     public static String getName(Object handle) {
+        String name = null;
         if (handle instanceof MModelElement) {
-            return ((MModelElement) handle).getName();
+            name = ((MModelElement) handle).getName();
+        } else if (handle instanceof Diagram) {
+            name = ((Diagram) handle).getName();
+        } else if (handle instanceof MOrderingKind) {
+            name = ((MOrderingKind) handle).getName();
+        } else if (handle instanceof MAggregationKind) {
+            name = ((MAggregationKind) handle).getName();
+        } else if (handle instanceof MVisibilityKind) {
+            name = ((MVisibilityKind) handle).getName();
+        } else if (handle instanceof MCallConcurrencyKind) {
+            name = ((MCallConcurrencyKind) handle).getName();
+        } else {
+            illegalArgument(handle);
         }
-        if (handle instanceof Diagram) {
-            return ((Diagram) handle).getName();
+        // The following code is a workaround for issue
+        // http://argouml.tigris.org/issues/show_bug.cgi?id=2847. The cause is
+        // not known and the best fix available for the moment is to remove
+        // the corruptions as they are found.
+        int pos = 0;
+        boolean fixed = false;
+        while ((pos = name.indexOf(0xffff)) >= 0) {
+            name = name.substring(0,pos) + name.substring(pos+1,name.length());
+            fixed = true;
         }
-        if (handle instanceof MOrderingKind) {
-            return ((MOrderingKind) handle).getName();
+        if (fixed) {
+            try {
+                throw new UmlException("Illegal character stripped out of element name");
+            } catch (UmlException e) {
+                LOG.warn("0xFFFF detected in element name", e);
+            }
+            setName(handle, name);
         }
-        if (handle instanceof MAggregationKind) {
-            return ((MAggregationKind) handle).getName();
-        }
-        if (handle instanceof MVisibilityKind) {
-            return ((MVisibilityKind) handle).getName();
-        }
-        if (handle instanceof MCallConcurrencyKind) {
-            return ((MCallConcurrencyKind) handle).getName();
-        }
-        illegalArgument(handle);
-	return "";
+	return name;
     }
 
     /**
@@ -5669,14 +5689,18 @@ public class ModelFacade {
      */
     public static void setName(Object handle, String name) {
         if ((handle instanceof MModelElement) && (name != null)) {
-            // This is to aid trapping the bug in issue 
-            // http://argouml.tigris.org/issues/show_bug.cgi?id=2847
-            // Once that issue is resolved this check _could_ be
-            // removed.
-            if (name.indexOf(0xffff) >= 0) {
-                throw new IllegalArgumentException(
-                        "An attempt has been made to set the model element"
-                        + " name to contain the illegal character 0xFFFF");
+            // The following code is a workaround for issue
+            // http://argouml.tigris.org/issues/show_bug.cgi?id=2847. The cause is
+            // not known and the best fix available for the moment is to remove
+            // the corruptions as they are found.
+            int pos = 0;
+            while ((pos = name.indexOf(0xffff)) >= 0) {
+                name = name.substring(0,pos) + name.substring(pos+1,name.length());
+                try {
+                    throw new UmlException("Illegal character stripped out of element name");
+                } catch (UmlException e) {
+                    LOG.warn("0xFFFF detected in element name", e);
+                }
             }
             ((MModelElement) handle).setName(name);
             return;
