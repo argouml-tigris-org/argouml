@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -38,10 +37,8 @@ import java.util.Collection;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
-
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-
 
 /**
  * <p>Provides a rule to display extension points in the navigation pane.</p>
@@ -66,8 +63,8 @@ public class GoUseCaseToExtensionPoint extends AbstractGoRule {
     }
 
     public Collection getChildren(Object parent) { 
-        if (org.argouml.model.ModelFacade.isAUseCase(parent)) {
-            return ((MUseCase) parent).getExtensionPoints();
+        if (ModelFacade.isAUseCase(parent)) {
+            return ModelFacade.getExtensionPoints(parent);
         }
         return null;
     }

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -121,7 +120,7 @@ public class PropPanelSignal extends PropPanelModelElement {
     	Collection contexts = new Vector();
     	Object target = getTarget();
     	if (org.argouml.model.ModelFacade.isASignal(target)) {
-	    contexts = ((MSignal) target).getContexts();
+	    contexts = ModelFacade.getContexts(target);
     	}
     	return contexts;
     }

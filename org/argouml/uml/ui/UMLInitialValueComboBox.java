@@ -130,7 +130,7 @@ public class UMLInitialValueComboBox extends JComboBox
             }
         } 
         else if (org.argouml.model.ModelFacade.isAParameter(target)) {
-            MExpression initExpr = (MExpression) ((MParameter) target).getDefaultValue();
+            MExpression initExpr = (MExpression) ModelFacade.getDefaultValue(target);
             if (initExpr != null) {
                 String init = initExpr.getBody();
                 setSelectedItem(init);

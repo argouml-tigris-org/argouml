@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.util.Iterator;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -110,14 +111,13 @@ public abstract class FigState extends FigStateVertex {
         } else if (
 		   ((MState) getOwner()).getInternalTransitions().contains(mee.getSource())
 		   || // the internal transitions
-		   (mee.getSource() == ((MState) getOwner()).getEntry())
+		   (mee.getSource() == ModelFacade.getEntry(getOwner()))
 		   || // the entry
-		   (mee.getSource() == ((MState) getOwner()).getExit())
+		   (mee.getSource() == ModelFacade.getExit(getOwner()))
 		   || // the exit
-		   (mee.getSource() == ((MState) getOwner()).getDoActivity())
+		   (mee.getSource() == ModelFacade.getDoActivity(getOwner()))
 		   || // the doacitivity
-		   ((MState)
-		    getOwner()).getDeferrableEvents().contains(mee.getSource()))
+		   ModelFacade.getDeferrableEvents(getOwner()).contains(mee.getSource()))
 	{
 	    // the defered events
             updateInternal();
