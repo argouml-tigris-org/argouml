@@ -165,7 +165,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   //  public static JFrame _Frame;
 
   //protected JSplitPane _mainSplit, _topSplit, _botSplit;
-  protected BorderSplitPane _borderSplitPane;
+  protected BorderSplitPane _workarea;
   private NavigationHistory _history = new NavigationHistory();
 
   /**
@@ -212,8 +212,6 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     // allows me to ask "Do you want to save first?"
     setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
     addWindowListener(new WindowCloser());
-    if (_componentResizer == null) _componentResizer = new ComponentResizer();
-    addComponentListener(_componentResizer);
     ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
     this.setIconImage(argoImage.getImage());
   }
@@ -532,21 +530,24 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
         Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTWIDTH),0
     ));
 
-    // Create BorderSplitPane and place components inside
-    _borderSplitPane = new BorderSplitPane();
-    _borderSplitPane.add(_toDoPane, BorderSplitPane.SOUTHWEST);
-    _borderSplitPane.add(_detailsPane, BorderSplitPane.SOUTH);
-    _borderSplitPane.add(_navPane, BorderSplitPane.WEST);
-    _borderSplitPane.add(_multiPane);
+    // The workarea is all the visible space except the menu, toolbar and status bar.
+    // Workarea is layed out as a BorderSplitPane where the various components that make
+    // up the argo application can be positioned.
+    _workarea = new BorderSplitPane();
+    _workarea.add(_toDoPane, BorderSplitPane.SOUTHWEST);
+    _workarea.add(_detailsPane, BorderSplitPane.SOUTH);
+    _workarea.add(_navPane, BorderSplitPane.WEST);
+    _workarea.add(_multiPane);
 
-    // Enable the property listeners after all changes are done
-    // (includes component listeners)
-    if (_componentResizer == null) _componentResizer = new ComponentResizer();
-    _navPane.addComponentListener(_componentResizer);
-    _toDoPane.addComponentListener(_componentResizer);
-    _detailsPane.addComponentListener(_componentResizer);
+    // Toolbar boundry is the area between the menu and the status bar. It contains
+    // the workarea at centre and the toolbar position north, south, east or west.
+    // @todo - there is work in progress for toolbars - Bob Tarling
+    JPanel toolbarBoundry = new JPanel();
+    toolbarBoundry.setLayout(new BorderLayout());
+    
+    toolbarBoundry.add(_workarea, BorderLayout.CENTER);
 
-    return _borderSplitPane;
+    return toolbarBoundry;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -978,6 +979,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	Configuration.setInteger(Argo.KEY_SCREEN_THEME, currentTheme);
     }
 
+    
     public void setCurrentTheme(String arg) {
 	if ("normal".equals(arg))
 	    setCurrentTheme(ThemeNormal);
@@ -1004,7 +1006,15 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	}
     }
 
-
+    public void saveScreenConfiguration() {
+        Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, _navPane.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _toDoPane.getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _detailsPane.getHeight());
+        Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
+        Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
+        Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
+        Configuration.setInteger(Argo.KEY_SCREEN_TOP_Y, getY());
+    }
 
   public void moduleUnloaded(ArgoModuleEvent event) {
       // needs-more-work:  Disable menu
@@ -1018,62 +1028,16 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
         // needs-more-work:  Disable menu
   }
 
+  class WindowCloser extends WindowAdapter {
+    public WindowCloser() { }
+    public void windowClosing(WindowEvent e) {
+      
+      ActionExit.SINGLETON.actionPerformed(null);
+    }
+  } /* end class WindowCloser */
+
 
 } /* end class ProjectBrowser */
-
-class WindowCloser extends WindowAdapter {
-  public WindowCloser() { }
-  public void windowClosing(WindowEvent e) {
-    ActionExit.SINGLETON.actionPerformed(null);
-  }
-} /* end class WindowCloser */
-
-class ComponentResizer extends ComponentAdapter {
-  public ComponentResizer() { }
-
-  public void componentResized(ComponentEvent ce) {
-    Component c = ce.getComponent();
-    if (c instanceof NavigatorPane) {
-        Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, c.getWidth());
-
-	// Got the 2 and the 4 by experimentation.  This is equivalent
-	// to jdk 1.3 property JSplitPane.DIVIDER_LOCATION_PROPERTY.
-	// If the width and height are not adjusted by this amount,
-	// the divider will slowly creep after close and open.
-	//Configuration.setInteger(Argo.KEY_SCREEN_VSPLITTOP, c.getWidth() + 2);
-	//Configuration.setInteger(Argo.KEY_SCREEN_HSPLIT, c.getHeight() + 4);
-
-    }
-    else if (c instanceof ToDoPane) {
-        Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, c.getWidth());
-	// Got the 2 by experimentation.  This is equivalent to jdk 1.3
-	// property JSplitPane.DIVIDER_LOCATION_PROPERTY.  If the width
-	// is not adjusted by this amount, the divider will slowly creep
-	// after close and open.
-	//Configuration.setInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, c.getWidth() + 2);
-    }
-    else if (c instanceof DetailsPane) {
-        Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, c.getHeight());
-        // Got the 2 by experimentation.  This is equivalent to jdk 1.3
-        // property JSplitPane.DIVIDER_LOCATION_PROPERTY.  If the width
-        // is not adjusted by this amount, the divider will slowly creep
-        // after close and open.
-        //Configuration.setInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, c.getWidth() + 2);
-    }
-    else if (c instanceof ProjectBrowser) {
-      Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, c.getWidth());
-      Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, c.getHeight());
-    }
-  }
-
-  public void componentMoved(ComponentEvent ce) {
-    Component c = ce.getComponent();
-    if (c instanceof ProjectBrowser) {
-      Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, c.getX());
-      Configuration.setInteger(Argo.KEY_SCREEN_TOP_Y, c.getY());
-    }
-  }
-} /* end class ComponentResizer */
 
 
 class InitMenusLater implements Runnable {
