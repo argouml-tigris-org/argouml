@@ -31,7 +31,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
-import org.argouml.xml.xmi.XMIReader;
+import org.argouml.model.uml.XmiReader;
 import org.xml.sax.InputSource;
 
 /**
@@ -346,7 +346,7 @@ public class ProfileJava extends Profile {
 
 	if (is != null) {
 	    try {
-		XMIReader xmiReader = new XMIReader();
+		XmiReader xmiReader = new XmiReader();
 		//
 		//   would really like to turn validation off to save
 		//      a lot of scary messages
