@@ -1115,6 +1115,44 @@ Webstart version.
 </para>
 	  </listitem>
 	  <listitem>
+	    <para>
+Go through Issuezilla and check things.
+</para>
+	    <para>
+Things to check are:
+</para>
+	    <orderedlist>
+	      <listitem>
+		<para>
+That there is a Version created in issuezilla for the newly created release.
+</para>
+		<para>
+The purpose of this is to make it possible for everyone 
+to report bugs on the new release.
+</para>
+	      </listitem>
+	      <listitem>
+		<para>
+Make sure that the upcoming releases have 
+target milestones created for them.
+</para>
+	      </listitem>
+	      <listitem>
+		<para>
+Change the target milestones of all the non yet resolved issues to ---.
+</para>
+	      </listitem>
+	      <listitem>
+		<para>Other stuff.</para>
+		<para>
+This can also be a good time to change all 
+RESOLVED/REMIND and RESOLVED/LATER.
+Seach for them and Reopen them.
+</para>
+	      </listitem>
+	    </orderedlist>
+	  </listitem>
+	  <listitem>
 	    <para>Make announcements!</para>
 	    <para>
 The announcement shall include a list of what has changed.
