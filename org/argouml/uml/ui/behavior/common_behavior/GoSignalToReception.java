@@ -26,8 +26,9 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.util.Collection;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
+
 
 /**
  * Navigation rule for navperspective to navigate from signal to reception.
@@ -45,8 +46,8 @@ public class GoSignalToReception extends AbstractGoRule {
 	 * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
 	 */
 	public Collection getChildren(Object parent) {
-		if (parent instanceof MSignal) {
-			return ((MSignal)parent).getReceptions();
+		if (ModelFacade.isASignal(parent)) {
+			return ModelFacade.getReceptions(parent);
 		}
 		return null;
 	}

@@ -33,6 +33,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
@@ -91,8 +92,8 @@ public class PropPanelSignal extends PropPanelModelElement {
 
     public void newSignal() {
         Object target = getTarget();
-        if(target instanceof MSignal) {
-            MNamespace ns = ((MSignal) target).getNamespace();
+        if(ModelFacade.isASignal(target)) {
+            MNamespace ns = (MNamespace)ModelFacade.getNamespace(target);
             if(ns != null) {
                 MSignal newSig = ns.getFactory().createSignal();
                 ns.addOwnedElement(newSig);
@@ -103,7 +104,7 @@ public class PropPanelSignal extends PropPanelModelElement {
 
     public void newReception() {
     	Object target = getTarget();
-    	if (target instanceof MSignal) {
+    	if (ModelFacade.isASignal(target)) {
     		MSignal signal = (MSignal)target;
     		MReception reception = CommonBehaviorFactory.getFactory().buildReception(signal);
             TargetManager.getInstance().setTarget(reception);
@@ -165,8 +166,8 @@ public class PropPanelSignal extends PropPanelModelElement {
     public Collection getReceptions() {
     	Collection receptions = new Vector();
     	Object target = getTarget();
-    	if (target instanceof MSignal) {
-    		receptions = ((MSignal)target).getReceptions();
+    	if (ModelFacade.isASignal(target)) {
+    		receptions = ModelFacade.getReceptions(target);
     	}
     	return receptions;
     }
