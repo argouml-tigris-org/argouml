@@ -46,8 +46,7 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.*;
-
-import uk.co.jbob.swingext.*;
+import org.argouml.swingext.*;
 
 /** The main window of the Argo/UML application. */
 
