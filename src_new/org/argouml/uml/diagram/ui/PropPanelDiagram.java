@@ -24,26 +24,74 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
+//import java.awt.event.*;
+//import java.util.*;
+//import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
+//import javax.swing.event.*;
+//import javax.swing.tree.*;
+//import javax.swing.text.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.*;
+//import ru.novosoft.uml.foundation.core.*;
+//import ru.novosoft.uml.foundation.data_types.*;
+//import ru.novosoft.uml.foundation.extension_mechanisms.*;
+//import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.base.*;
 
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
+import org.argouml.kernel.*;
 
-public class PropPanelDiagram extends TabSpawnable
-implements TabModelTarget, DocumentListener {
+public class PropPanelDiagram extends PropPanel  {
+
+  public PropPanelDiagram() {
+    super("Diagram",1);
+    addCaption("Name:",0,0,0);
+    addField(new UMLTextField(this,
+      new UMLTextProperty(Diagram.class,"name","getName","setName")),0,0,0);
+    //
+    //   filler to take up rest of panel
+    addCaption(new JPanel(),1,0,1);
+
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete class"),"removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+    //
+    //  add blank
+    buttonPanel.add(new JPanel());
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+  }
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+      return false;
+    }
+
+    public void removeElement() {
+        Object target = getTarget();
+        if(target instanceof Diagram) {
+          try {
+            Diagram diagram = (Diagram) target;
+            Project project = ProjectBrowser.TheInstance.getProject();
+            //
+            //  can't easily find owner of diagram
+            //    set new target to the model
+            //
+            Object newTarget = project.getModel();
+            project.removeDiagram((Diagram) target);
+            navigateTo(newTarget);
+          }
+          catch(Exception e) {
+            e.printStackTrace();
+          }
+        }
+    }
+
+/*
   ////////////////////////////////////////////////////////////////
   // instance vars
   protected Object _target;
@@ -80,7 +128,7 @@ implements TabModelTarget, DocumentListener {
 
     _nameField.getDocument().addDocumentListener(this);
     // needs-more-work: set font?
-    
+
   }
 
   ////////////////////////////////////////////////////////////////
@@ -106,9 +154,7 @@ implements TabModelTarget, DocumentListener {
   public Object getTarget() { return _target; }
 
   public void refresh() { setTarget(_target); }
-
   public boolean shouldBeEnabled() { return _target instanceof Diagram; }
-
 
   protected void setTargetName() {
     if (!(_target instanceof Diagram)) return;
@@ -134,5 +180,7 @@ implements TabModelTarget, DocumentListener {
     System.out.println(getClass().getName() + " changed");
     // Apparently, this method is never called.
   }
-  
+
+
+*/
 } /* end class PropPanelDiagram */

@@ -114,6 +114,16 @@ public class ProfileJava extends Profile {
         }
         else {
             MNamespace elementNs = element.getNamespace();
+            //
+            //   if element is an AssociationEnd use
+            //      the namespace of containing association
+            //
+            if(element instanceof MAssociationEnd) {
+              MAssociation assoc = ((MAssociationEnd) element).getAssociation();
+              if(assoc != null) {
+                elementNs = assoc.getNamespace();
+              }
+            }
             if(elementNs == namespace) {
                 value = element.getName();
                 if(value == null || value.length() == 0) {

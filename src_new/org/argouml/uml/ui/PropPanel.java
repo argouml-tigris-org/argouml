@@ -254,9 +254,9 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         }
     }
 
-    public Object getTarget() { return _target; }
+    public final Object getTarget() { return _target; }
 
-    public MModelElement getModelElement() {
+    public final MModelElement getModelElement() {
         return _modelElement;
     }
 
@@ -303,13 +303,23 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         SwingUtilities.invokeLater(dispatch);
     }
 
+    /**
+     *   This method can be overriden in derived Panels where the
+     *   appropriate namespace for display may not be the same as
+     *   the namespace of the target
+     */
+    protected MNamespace getDisplayNamespace() {
+      MNamespace ns = null;
+      Object target = getTarget();
+      if(target instanceof MModelElement) {
+        ns = ((MModelElement) target).getNamespace();
+      }
+      return ns;
+    }
+
 
     public String formatElement(MModelElement element) {
-        MNamespace ns = null;
-        if(_modelElement != null) {
-             ns = _modelElement.getNamespace();
-        }
-        return getProfile().formatElement(element,ns);
+        return getProfile().formatElement(element,getDisplayNamespace());
     }
 
     public String formatNamespace(MNamespace ns) {
@@ -319,10 +329,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
 
     public String formatCollection(Iterator iter) {
-        MNamespace ns = null;
-        if(_modelElement != null) {
-            ns = _modelElement.getNamespace();
-        }
+        MNamespace ns = getDisplayNamespace();
         return getProfile().formatCollection(iter,ns);
     }
 
@@ -454,6 +461,18 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         return isAcceptible;
     }
 
+    /**
+     *   This function is used to determine what stereotypes are appropriate
+     *   to list in the stereotype combo box.
+     *
+     *   For example, PropPanelClass would return true for ModelElement,
+     *      Namespace, Classifier and Class and false for everything else.
+     *
+     *   @param a metaclass name such as 'Class', 'Association'.
+     *       Typically the baseClass attribute for a Stereotype.
+     *   @returns true if target type of the panel is an instance
+     *       of the metaclass or a derived metaclass.
+     */
     abstract protected boolean isAcceptibleBaseMetaClass(String baseClass);
 
     public void setStereotype(MStereotype stereotype) {

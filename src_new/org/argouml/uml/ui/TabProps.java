@@ -298,6 +298,7 @@ class InitPanelsLater implements Runnable {
     }
     catch(Exception e) {
         System.out.println(e.toString() + " in InitPanelsLater.run()");
+        e.printStackTrace();
     }
     //_panels.put(MUseCaseImpl.class, new PropPanelUseCase());
 

@@ -154,18 +154,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
             //
             //   should not need to do this
             //
-            if(_model == null) {
+            if(model == null) {
                 System.out.println("Error: getModel() == null for " + target.getClass().toString() + " in UMLComboBoxModel");
-                if(element instanceof MFeature) {
-                    MModelElement owner = ((MFeature) element).getOwner();
-                    if(owner != null) {
-                        _model = owner.getModel();
-                        System.out.println("(target.getOwner().getModel() == null) = " + new Boolean(_model == null).toString());
-                    }
-                    else {
-                        System.out.println("target.getOwner() == null");
-                    }
-                }
             }
 
             if(model != _model) {

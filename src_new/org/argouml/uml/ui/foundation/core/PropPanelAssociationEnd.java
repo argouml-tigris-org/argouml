@@ -57,41 +57,57 @@ public class PropPanelAssociationEnd extends PropPanel {
 
     addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
 
 
     addCaption("Type:",2,0,0);
     UMLComboBoxModel model = new UMLComboBoxModel(this,"isAcceptibleType",
         "type","getType","setType",false,MClassifier.class,true);
     UMLComboBox box = new UMLComboBox(model);
-    addField(box,2,0,0);
+    box.setToolTipText("Warning: Do not use this to change an end that is already in a diagram.");
+    addField(new UMLComboBoxNavigator(this,"NavClass",box),2,0,0);
 
     addCaption("Multiplicity:",3,0,0);
     addField(new UMLMultiplicityComboBox(this,MAssociationEnd.class),3,0,0);
 
     addCaption("Association:",4,0,1);
-    JList namespaceList = new UMLList(new UMLReflectionListModel(this,"association",false,"getAssociation",null,null,null),true);
+    JList namespaceList = new UMLList(
+      new UMLReflectionListModel(this,"association",false,
+        "getAssociation",null,null,null),true);
+
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,4,0,0);
 
     addCaption("Navigable:",0,1,0);
-    addField(new UMLCheckBox(localize("navigable"),this,new UMLReflectionBooleanProperty("navigable",mclass,"isNavigable","setNavigable")),0,1,0);
+    addField(new UMLCheckBox(localize("navigable"),this,
+      new UMLReflectionBooleanProperty("navigable",mclass,
+        "isNavigable","setNavigable")),0,1,0);
 
 
     addCaption("Ordering:",1,1,0);
     JPanel orderingPanel = new JPanel(new GridLayout(0,1));
     ButtonGroup orderingGroup = new ButtonGroup();
-    UMLRadioButton unordered = new UMLRadioButton(localize("unordered"),this,new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.UNORDERED,null));
+
+    UMLRadioButton unordered = new UMLRadioButton(localize("unordered"),this,
+      new UMLEnumerationBooleanProperty("ordering",mclass,
+        "getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.UNORDERED,null));
+
     orderingGroup.add(unordered);
     orderingPanel.add(unordered);
 
 
-    UMLRadioButton ordered = new UMLRadioButton(localize("ordered"),this,new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.ORDERED,null));
+    UMLRadioButton ordered = new UMLRadioButton(localize("ordered"),this,
+      new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering",
+      "setOrdering",MOrderingKind.class,MOrderingKind.ORDERED,null));
+
     orderingGroup.add(ordered);
     orderingPanel.add(ordered);
 
-    UMLRadioButton sorted = new UMLRadioButton(localize("sorted"),this,new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.SORTED,null));
+    UMLRadioButton sorted = new UMLRadioButton(localize("sorted"),this,
+      new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering",
+      "setOrdering",MOrderingKind.class,MOrderingKind.SORTED,null));
+
     orderingGroup.add(sorted);
     orderingPanel.add(sorted);
     addField(orderingPanel,1,1,0);
@@ -99,37 +115,56 @@ public class PropPanelAssociationEnd extends PropPanel {
     addCaption("Aggregation:",2,1,1);
     JPanel aggregationPanel = new JPanel(new GridLayout(0,1));
     ButtonGroup aggregationGroup = new ButtonGroup();
-    UMLRadioButton none = new UMLRadioButton(localize("none"),this,new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation","setAggregation",MAggregationKind.class,MAggregationKind.NONE,null));
+
+    UMLRadioButton none = new UMLRadioButton(localize("none"),this,
+      new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
+        "setAggregation",MAggregationKind.class,MAggregationKind.NONE,null));
+
     aggregationGroup.add(none);
     aggregationPanel.add(none);
 
-    UMLRadioButton aggregation = new UMLRadioButton(localize("aggregation"),this,new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation","setAggregation",MAggregationKind.class,MAggregationKind.AGGREGATE,null));
+    UMLRadioButton aggregation = new UMLRadioButton(localize("aggregation"),this,
+      new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
+        "setAggregation",MAggregationKind.class,MAggregationKind.AGGREGATE,null));
     aggregationGroup.add(aggregation);
     aggregationPanel.add(aggregation);
 
-    UMLRadioButton composite = new UMLRadioButton(localize("composite"),this,new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation","setAggregation",MAggregationKind.class,MAggregationKind.COMPOSITE,null));
+    UMLRadioButton composite = new UMLRadioButton(localize("composite"),this,
+      new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
+        "setAggregation",MAggregationKind.class,MAggregationKind.COMPOSITE,null));
+
     aggregationGroup.add(composite);
     aggregationPanel.add(composite);
     addField(aggregationPanel,2,1,0);
 
 
     addCaption("Scope:",0,2,0);
-    addField(new UMLCheckBox(localize("classifier"),this,new UMLEnumerationBooleanProperty("targetScope",mclass,"getTargetScope","setTargetScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)),0,2,0);
+    addField(new UMLCheckBox(localize("classifier"),this,
+      new UMLEnumerationBooleanProperty("targetScope",mclass,"getTargetScope",
+        "setTargetScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)),0,2,0);
 
     addCaption("Changeability:",1,2,0);
     ButtonGroup changeabilityGroup = new ButtonGroup();
     JPanel changeabilityPanel = new JPanel(new GridLayout(0,1));
 
-    UMLRadioButton changeable = new UMLRadioButton(localize("changeable"),this,new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability","setChangeability",MChangeableKind.class,MChangeableKind.CHANGEABLE,null));
+    UMLRadioButton changeable = new UMLRadioButton(localize("changeable"),this,
+      new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
+        "setChangeability",MChangeableKind.class,MChangeableKind.CHANGEABLE,null));
+
     changeabilityGroup.add(changeable);
     changeabilityPanel.add(changeable);
 
-    UMLRadioButton frozen = new UMLRadioButton(localize("frozen"),this,new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability","setChangeability",MChangeableKind.class,MChangeableKind.FROZEN,null));
+    UMLRadioButton frozen = new UMLRadioButton(localize("frozen"),this,
+      new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
+        "setChangeability",MChangeableKind.class,MChangeableKind.FROZEN,null));
     changeabilityGroup.add(frozen);
     changeabilityPanel.add(frozen);
 
 
-    UMLRadioButton addOnly = new UMLRadioButton(localize("add only"),this,new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability","setChangeability",MChangeableKind.class,MChangeableKind.ADD_ONLY,null));
+    UMLRadioButton addOnly = new UMLRadioButton(localize("add only"),this,
+      new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
+        "setChangeability",MChangeableKind.class,MChangeableKind.ADD_ONLY,null));
+
     changeabilityGroup.add(addOnly);
     changeabilityPanel.add(addOnly);
     addField(changeabilityPanel,1,2,0);
@@ -148,7 +183,7 @@ public class PropPanelAssociationEnd extends PropPanel {
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
     new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("New interface"),"newInterface",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("Delete association end"),"removeElement",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete association end"),"removeElement",null);
     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_assocEndIcon,localize("Go to other end"),"gotoOther",null);
 
@@ -248,21 +283,53 @@ public class PropPanelAssociationEnd extends PropPanel {
         if(target instanceof MAssociationEnd) {
             MAssociationEnd end = (MAssociationEnd) target;
             MAssociation assoc = end.getAssociation();
-            Iterator iter = assoc.getConnections().iterator();
-            Object other;
+            Collection connections = assoc.getConnections();
+            Iterator iter = connections.iterator();
+            Object other = null;
+            Object item = null;
+            //
+            //    always go to the one before match or to end
+            //
+            boolean didNav = false;
             while(iter.hasNext()) {
-                other = iter.next();
-                if(other != end) {
-                    navigateTo(other);
-                    break;
+                item = iter.next();
+                if(item == end) {
+                   if(other != null) {
+                      didNav = true;
+                      navigateTo(other);
+                      break;
+                    }
                 }
-            }
+                else {
+                  other = item;
+                }
+              }
+              //
+              //   if previous end was the first, then navigate to the last
+              if(!didNav) {
+                navigateTo(other);
+              }
         }
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("AssociationEnd");
     }
+
+
+    protected MNamespace getDisplayNamespace(Object target) {
+        MNamespace ns = null;
+        if(target instanceof MAssociationEnd) {
+             MAssociationEnd end = (MAssociationEnd) target;
+             MAssociation assoc = end.getAssociation();
+             if(assoc != null) {
+                 ns = assoc.getNamespace();
+             }
+        }
+        return ns;
+    }
+
+
 
 } /* end class PropPanelAssociationEnd */
 

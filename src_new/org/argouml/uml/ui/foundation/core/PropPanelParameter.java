@@ -46,7 +46,7 @@ public class PropPanelParameter extends PropPanel {
 
         addCaption("Stereotype:",1,0,0);
         JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-        addField(stereotypeBox,1,0,0);
+        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
 
         addCaption("Owner:",2,0,1);
         JList namespaceList = new UMLList(new UMLReflectionListModel(this,"behaviorialfeature",false,"getBehavioralFeature",null,null,null),true);
@@ -55,7 +55,7 @@ public class PropPanelParameter extends PropPanel {
         addCaption("Type:",0,1,0);
         UMLComboBoxModel typeModel = new UMLComboBoxModel(this,"isAcceptibleType",
             "type","getType","setType",false,MClassifier.class,true);
-        addField(new UMLComboBox(typeModel),0,1,0);
+        addField(new UMLComboBoxNavigator(this,"NavClass",new UMLComboBox(typeModel)),0,1,0);
 
 
         addCaption("Kind:",1,1,0);

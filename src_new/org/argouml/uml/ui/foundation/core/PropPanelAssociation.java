@@ -31,6 +31,7 @@ import org.argouml.uml.ui.*;
 import java.awt.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import java.util.*;
 
 import org.tigris.gef.util.Util;
 
@@ -64,7 +65,7 @@ public class PropPanelAssociation extends PropPanelModelElement {
 
     addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
 
     addCaption("Namespace:",2,0,0);
     addLinkField(new UMLList(new UMLNamespaceListModel(this),true),2,0,0);
@@ -157,8 +158,10 @@ public class PropPanelAssociation extends PropPanelModelElement {
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Association");
+        return baseClass.equals("Association") ||
+          baseClass.equals("ModelElement");
     }
+
 
 
 } /* end class PropPanelAssociation */
