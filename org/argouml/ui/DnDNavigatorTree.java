@@ -23,22 +23,24 @@
 
 package org.argouml.ui;
 
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.plaf.metal.*;
-import javax.swing.tree.*;
-
-import java.awt.*;
-import java.awt.datatransfer.*;
+import java.awt.Cursor;
+import java.awt.Point;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.dnd.*;
-import java.awt.dnd.peer.*;
-import java.awt.event.*;
-import java.io.*;
+import java.awt.event.InputEvent;
+import java.io.IOException;
+
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
-
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlHelper;
 
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.
@@ -177,7 +179,7 @@ DragSourceListener{
                     SwingUtilities.invokeLater(new Runnable() {
                         public void run() {
                             JOptionPane.showMessageDialog(
-                                    ProjectBrowser.TheInstance,
+                                    ProjectBrowser.getInstance(),
                                     msg,
                                     "Error Dialog", 
                                     JOptionPane.ERROR_MESSAGE

@@ -47,7 +47,7 @@ public class ActionSaveConfiguration extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent event) {
-        ProjectBrowser.TheInstance.saveScreenConfiguration();
+        ProjectBrowser.getInstance().saveScreenConfiguration();
         if (! Configuration.save())
         Configuration.save(true);
     }
