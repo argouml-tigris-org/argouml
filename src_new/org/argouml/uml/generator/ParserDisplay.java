@@ -2029,39 +2029,55 @@ public class ParserDisplay extends Parser {
      *  @param  s        The string to parse.
      */
     public void parseStateBody(Object st, String s) {
-	/*remove all old transitions; 
-         * TODO: this should be done better!!
-         * It causes issue 1759 */
-	ModelFacade.setEntry(st, null);
-	ModelFacade.setExit(st, null);
-	ModelFacade.setDoActivity(st, null);
-
+        boolean foundEntry = false;
+        boolean foundExit = false;
+        boolean foundDo = false;
+        
 	Collection trans = new ArrayList();
 	java.util.StringTokenizer lines =
 	    new java.util.StringTokenizer(s, "\n\r");
 	while (lines.hasMoreTokens()) {
 	    String line = lines.nextToken().trim();
-	    if (line.toLowerCase().startsWith("entry")) 
-                                        parseStateEntryAction(st, line);
-	    else if (line.toLowerCase().startsWith("exit")) 
-                                        parseStateExitAction(st, line);
-	    else if (line.toLowerCase().startsWith("do")) 
-                                        parseStateDoAction(st, line);
-	    else {
-		Object t = parseTransition(UmlFactory.getFactory().
-				    getStateMachines().createTransition(),
-				    line);
-
+	    if (line.toLowerCase().startsWith("entry")) { 
+                parseStateEntryAction(st, line);
+                foundEntry = true;
+	    } else if (line.toLowerCase().startsWith("exit")) { 
+	        parseStateExitAction(st, line);
+	        foundExit = true;
+    	    } else if (line.toLowerCase().startsWith("do")) { 
+                parseStateDoAction(st, line);
+                foundDo = true;
+            } else {
+		Object t = UmlFactory.getFactory()
+		    .getStateMachines().createTransition();
 		if (t == null) continue;
-		LOG.debug("just parsed:" + GeneratorDisplay.Generate(t));
-		ModelFacade.setStateMachine(t, ModelFacade.getStateMachine(st));
+		
+		/*TODO: The following gives problems with the 
+		 * setInternalTransitions statement below. 
+		 * However, we should set the statemachine 
+		 * attribute for the transition, isn't it?
+		 */
+		// only the top state usually has the statemachine defined
+		/*Object container = ModelFacade.getContainer(st);
+		Object sm = null;
+		while ((null != container) && (sm == null)) { 
+		    sm = ModelFacade.getStateMachine(container);
+		    container = ModelFacade.getContainer(container);
+		}		
+		if (sm != null) ModelFacade.setStateMachine(t, sm); */
+	
 		ModelFacade.setTarget(t, st);
 		ModelFacade.setSource(t, st);
+		parseTransition(t, line);
+		LOG.debug("just parsed:" + GeneratorDisplay.Generate(t));
 		trans.add(t);
 	    }
 	}
 
-
+	if (! foundEntry) delete(ModelFacade.getEntry(st));
+	if (! foundExit) delete(ModelFacade.getExit(st));
+	if (! foundDo) delete(ModelFacade.getDoActivity(st));
+        
 	Vector internals = new Vector(ModelFacade.getInternalTransitions(st));
 	Vector oldinternals = new Vector(ModelFacade.getInternalTransitions(st));
 	internals.removeAll(oldinternals); //now the vector is empty
@@ -2082,9 +2098,12 @@ public class ParserDisplay extends Parser {
     public void parseStateEntryAction(Object st, String s) {
 	if (s.toLowerCase().startsWith("entry") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
-	Object entryAction = /*(MCallAction)*/ parseAction(s);
-	ModelFacade.setName(entryAction, "anon");
-	ModelFacade.setEntry(st, entryAction);
+	Object oldEntry = ModelFacade.getEntry(st);
+	if (oldEntry == null){
+	    ModelFacade.setEntry(st, buildNewCallAction(s));
+	} else {
+            updateAction(oldEntry, s);
+	}
     }
 
     /** Parse a line of the form: "exit /action" and create an action.
@@ -2095,9 +2114,12 @@ public class ParserDisplay extends Parser {
     public void parseStateExitAction(Object st, String s) {
 	if (s.toLowerCase().startsWith("exit") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
-	Object exitAction = /*(MCallAction)*/ parseAction(s);
-	ModelFacade.setName(exitAction, "anon");
-	ModelFacade.setExit(st, exitAction);
+	Object oldExit = ModelFacade.getExit(st);
+	if (oldExit == null){
+	    ModelFacade.setExit(st, buildNewCallAction(s));
+	} else {
+	    updateAction(oldExit, s);
+	}
     }
 
     /** Parse a line of the form: "do /action" and create an action.
@@ -2108,9 +2130,12 @@ public class ParserDisplay extends Parser {
     public void parseStateDoAction(Object st, String s) {
         if (s.toLowerCase().startsWith("do") && s.indexOf("/") > -1)
             s = s.substring(s.indexOf("/") + 1).trim();
-        Object doAction = /*(MCallAction)*/ parseAction(s);
-        ModelFacade.setName(doAction, "anon");
-        ModelFacade.setDoActivity(st, doAction);
+        Object oldDo = ModelFacade.getDoActivity(st);
+        if (oldDo == null){
+            ModelFacade.setDoActivity(st, buildNewCallAction(s));
+        } else {
+            updateAction(oldDo, s);
+        }
     }
 
     /** Parse a transition description line of the form: 
@@ -2162,7 +2187,7 @@ public class ParserDisplay extends Parser {
         // use the name we found to (re)name the transition
 	ModelFacade.setName(trans, name);
 
-        /* The following handles the CallEvent that is the trigger of
+        /* The following handles the Event that is the trigger of
         this transition. 
         We can distinct between 4 cases:
         1. A trigger is given. None exists yet.
@@ -2191,6 +2216,7 @@ public class ParserDisplay extends Parser {
                 if (evt != null) {
                     ModelFacade.setName(evt, trigger);
                     ModelFacade.setTrigger(trans, evt);
+                    
                     /* The next part is explained by the following 
                      * quote from the UML spec:
                      * "The event declaration has scope within 
@@ -2199,11 +2225,11 @@ public class ParserDisplay extends Parser {
                      * inside the package. An event is not local to 
                      * a single class."
                      */
+                    //TODO: next statement fails for internal transitions
                     Object enclosingPackage = ModelFacade.getStateMachine(trans);
-                    while(! ModelFacade.isAPackage(enclosingPackage)) {
+                    while((! ModelFacade.isAPackage(enclosingPackage))&&(enclosingPackage != null))
                         enclosingPackage = ModelFacade.getNamespace(enclosingPackage);
-                    };
-                    ModelFacade.setNamespace(evt, enclosingPackage);
+                    if (enclosingPackage!= null) ModelFacade.setNamespace(evt, enclosingPackage);
                 }
             } else {
                 // case 2
@@ -3718,5 +3744,44 @@ public class ParserDisplay extends Parser {
 	}
 	return base.substring(0, min);
     }
+    
+    /** This builds a CallAction  with default attributes.
+     * 
+     * @author MVW
+     * @param s string representing the Script of the Action
+     */
+    private Object buildNewCallAction(String s) {
+        Object a = UmlFactory.getFactory()
+            .getCommonBehavior().createCallAction();
+        Object ae = UmlFactory.getFactory()
+            .getDataTypes().createActionExpression("Java", s);
+        ModelFacade.setScript(a, ae);
+        ModelFacade.setName(a, "anon");
+        return a;
+    }
 
+    /** update an existing Action with a new Script
+     * 
+     * @author      MVW
+     * @param old   the Action
+     * @param s     a string representing a new
+     *              Script for the ActionExpression
+     */
+    private void updateAction(Object old, String s){
+        Object ae = ModelFacade.getScript(old);
+        String language = "java";
+        if (ae != null) language = ModelFacade.getLanguage(ae);
+        ae = UmlFactory.getFactory().getDataTypes().createActionExpression(language, s);
+        ModelFacade.setScript(old, ae);
+    }
+
+    /** this deletes modelelements, and swallows null without barking
+     * 
+     * @author MVW
+     * @param obj the modelelement to be deleted
+     */
+    private void delete(Object obj){
+        if (obj != null) UmlFactory.getFactory().delete(obj);
+    }
+    
 } /* end class ParserDisplay */
