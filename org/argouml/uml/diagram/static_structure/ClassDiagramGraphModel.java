@@ -38,12 +38,15 @@ import java.util.Vector;
 import java.util.Hashtable;
 
 import org.apache.log4j.Category;
+
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.MMUtil;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.ui.ActionAggregation;
+
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
@@ -111,51 +114,121 @@ implements VetoableChangeListener  {
     return port;
   }
 
-  /** Return all edges going to given port */
+  /** Return all edges going to given port (read Model Element).
+   *
+   * Instances can't currently be added to a class diagram.
+   */
   public Vector getInEdges(Object port) {
-    Vector res = new Vector(); //wasteful!
-    if (port instanceof MClass) {
-      MClass cls = (MClass) port;
-      Collection ends = cls.getAssociationEnds();
-      if (ends == null) return res; // empty Vector
-      //java.util.Enumeration endEnum = ends.elements();
-      Iterator iter = ends.iterator();
-      while (iter.hasNext()) {
-          MAssociationEnd ae = (MAssociationEnd) iter.next();
-          res.add(ae.getAssociation());
+      
+      Vector edges = new Vector();
+      
+      // top of the hierarchy is ME:
+      if(ModelFacade.isAModelElement(port)){
+          
+          Iterator it = ModelFacade.getSupplierDependencies(port);
+          while (it.hasNext()) {
+              edges.add(it.next());
+          }
       }
-    }
-    if (port instanceof MInterface) {
-      MInterface Intf = (MInterface) port;
-      Collection ends = Intf.getAssociationEnds();
-      if (ends == null) return res; // empty Vector
-      Iterator endEnum = ends.iterator();
-      while (endEnum.hasNext()) {
-        MAssociationEnd ae = (MAssociationEnd) endEnum.next();
-        res.addElement(ae.getAssociation());
+      // then Generalizable Element
+      if(ModelFacade.isAGeneralizableElement(port)){
+          
+          Iterator it = ModelFacade.getSpecializations(port);
+          while (it.hasNext()) {
+              edges.add(it.next());
+          }
       }
-    }
-    /*if (port instanceof MPackage) {
-      MPackage cls = (MPackage) port;
-      Vector ends = cls.getAssociationEnd();
-      if (ends == null) return res; // empty Vector
-      java.util.Enumeration endEnum = ends.elements();
-      while (endEnum.hasMoreElements()) {
-        MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
-        res.addElement(ae.getAssociation());
+      // then Classifier
+      if(ModelFacade.isAClassifier(port)){
+          
+          Iterator it = ModelFacade.getAssociationEnds(port).iterator();
+          while (it.hasNext()) {
+              Object nextAssocEnd = it.next();
+              // navigable.... only want incoming
+              if(ModelFacade.isNavigable(nextAssocEnd)){
+                  edges.add(nextAssocEnd);
+              }
+          }
       }
-    }*/
-    if (port instanceof MInstance) {
-      MInstance inst = (MInstance) port;
-      Collection ends = inst.getLinkEnds();
-      res.addAll(ends);
-    }
-    return res;
+      
+      return edges;
+      
+//    Vector res = new Vector(); //wasteful!
+//    if (port instanceof MClass) {
+//      MClass cls = (MClass) port;
+//      Collection ends = cls.getAssociationEnds();
+//      if (ends == null) return res; // empty Vector
+//      //java.util.Enumeration endEnum = ends.elements();
+//      Iterator iter = ends.iterator();
+//      while (iter.hasNext()) {
+//          MAssociationEnd ae = (MAssociationEnd) iter.next();
+//          res.add(ae.getAssociation());
+//      }
+//    }
+//    if (port instanceof MInterface) {
+//      MInterface Intf = (MInterface) port;
+//      Collection ends = Intf.getAssociationEnds();
+//      if (ends == null) return res; // empty Vector
+//      Iterator endEnum = ends.iterator();
+//      while (endEnum.hasNext()) {
+//        MAssociationEnd ae = (MAssociationEnd) endEnum.next();
+//        res.addElement(ae.getAssociation());
+//      }
+//    }
+//    if (port instanceof MPackage) {
+//      MPackage cls = (MPackage) port;
+//      Vector ends = cls.getAssociationEnd();
+//      if (ends == null) return res; // empty Vector
+//      java.util.Enumeration endEnum = ends.elements();
+//      while (endEnum.hasMoreElements()) {
+//        MAssociationEnd ae = (MAssociationEnd) endEnum.nextElement();
+//        res.addElement(ae.getAssociation());
+//      }
+//    }
+//    if (port instanceof MInstance) {
+//      MInstance inst = (MInstance) port;
+//      Collection ends = inst.getLinkEnds();
+//      res.addAll(ends);
+//    }
+//    return res;
   }
 
-  /** Return all edges going from given port */
+  /** Return all edges going from given port (model element)
+   */
   public Vector getOutEdges(Object port) {
-    return new Vector(); // TODO?
+
+      Vector edges = new Vector();
+      
+      // top of the hierarchy is ME:
+      if(ModelFacade.isAModelElement(port)){
+          
+          Iterator it = ModelFacade.getClientDependencies(port);
+          while (it.hasNext()) {
+              edges.add(it.next());
+          }
+      }
+      // then Generalizable Element
+      if(ModelFacade.isAGeneralizableElement(port)){
+          
+          Iterator it = ModelFacade.getGeneralizations(port);
+          while (it.hasNext()) {
+              edges.add(it.next());
+          }
+      }
+      // then Classifier
+      if(ModelFacade.isAClassifier(port)){
+          
+          Iterator it = ModelFacade.getAssociationEnds(port).iterator();
+          while (it.hasNext()) {
+              Object nextAssocEnd = ModelFacade.getOppositeEnd(it.next());
+              // navigable.... only want outgoing
+              if(ModelFacade.isNavigable(nextAssocEnd)){
+                  edges.add(nextAssocEnd);
+              }
+          }
+      }
+      
+      return edges;
   }
 
   /** Return one end of an edge */
