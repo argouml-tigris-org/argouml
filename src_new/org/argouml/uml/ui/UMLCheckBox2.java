@@ -134,6 +134,7 @@ public abstract class UMLCheckBox2
         if (ModelFacade.isABase(_target)) {
             UmlModelEventPump.getPump()
 		.removeModelEventListener(this, _target, _propertySetName);
+            _target = null;
         }
        
         if (ModelFacade.isABase(target)) {
