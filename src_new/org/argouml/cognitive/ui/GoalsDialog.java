@@ -24,68 +24,55 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
-import javax.swing.*;
+
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.GoalModel;
+import org.argouml.i18n.Translator;
+import org.argouml.ui.ArgoDialog;
 
 
-public class GoalsDialog extends JDialog
-    implements ActionListener, ChangeListener
+public class GoalsDialog extends ArgoDialog implements ChangeListener
 {
-
-    public static int _numGoalsModel = 0;
-
     ////////////////////////////////////////////////////////////////
     // constants
-    public final int WIDTH = 300;
-    public final int HEIGHT = 450;
+    private final int WIDTH = 320;
+    private final int HEIGHT = 400;
   
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected JPanel  _mainPanel = new JPanel();
-    protected JButton _okButton = new JButton("OK");
-    protected Hashtable _slidersToDecisions = new Hashtable();
-    protected Hashtable _slidersToDigits = new Hashtable();
+    private JPanel  _mainPanel = new JPanel();
+    private Hashtable _slidersToDecisions = new Hashtable();
+    private Hashtable _slidersToDigits = new Hashtable();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
     public GoalsDialog(Frame parent) {
-	super(parent, "Design Goals", false);
+	super(parent, Translator.localize("dialog.title.design-goals"), false);
 
-	int x = parent.getLocation().x + (parent.getSize().width - WIDTH) / 2;
-	int y = parent.getLocation().y + (parent.getSize().height - HEIGHT) / 2;
-	setLocation(x, y);
-	setSize(WIDTH, HEIGHT);
-	Container content = getContentPane();
-	content.setLayout(new BorderLayout());
 	initMainPanel();
-	JScrollPane scroll =
-	    new JScrollPane(_mainPanel,
-			    ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
-			    ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-	content.add(scroll, BorderLayout.CENTER);
 
-	JPanel buttonPanel = new JPanel();
-	buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-	JPanel buttonInner = new JPanel(new GridLayout(1, 1));
-	buttonInner.add(_okButton);
-	buttonPanel.add(buttonInner);
-
-	content.add(buttonPanel, BorderLayout.SOUTH);
-	_okButton.addActionListener(this);
-
-	getRootPane().setDefaultButton(_okButton);
-	_numGoalsModel++;
+	JScrollPane scroll = new JScrollPane(_mainPanel);
+	scroll.setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        
+	setContent(scroll);
     }
 
 
@@ -95,6 +82,7 @@ public class GoalsDialog extends JDialog
 
 	GridBagLayout gb = new GridBagLayout();
 	_mainPanel.setLayout(gb);
+	_mainPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 	GridBagConstraints c = new GridBagConstraints();
 	c.fill = GridBagConstraints.BOTH;
@@ -152,7 +140,7 @@ public class GoalsDialog extends JDialog
 	while (enum.hasMoreElements()) {
 	    Goal d = (Goal) enum.nextElement();
 	    JLabel decLabel = new JLabel(d.getName());
-	    JLabel valueLabel = new JLabel("   " + d.getPriority());
+	    JLabel valueLabel = new JLabel("    " + d.getPriority());
 	    JSlider decSlide = new JSlider(SwingConstants.HORIZONTAL,
 					   0, 5, d.getPriority());
 	    decSlide.setPaintTicks(true);
@@ -194,22 +182,14 @@ public class GoalsDialog extends JDialog
     ////////////////////////////////////////////////////////////////
     // event handlers
   
-    public void actionPerformed(ActionEvent e) {
-	if (e.getSource() == _okButton) {
-	    setVisible(false);
-	    dispose();
-	}
-    }
-
-
     public void stateChanged(ChangeEvent ce) {
 	JSlider srcSlider = (JSlider) ce.getSource();
 	Goal d = (Goal) _slidersToDecisions.get(srcSlider);
 	JLabel valLab = (JLabel) _slidersToDigits.get(srcSlider);
 	int pri = srcSlider.getValue();
 	d.setPriority(pri);
-	if (pri == 0) valLab.setText(" off");
-	else valLab.setText("   " + pri);
+	if (pri == 0) valLab.setText(Translator.localize("label.off"));
+	else valLab.setText("    " + pri);
     }
   
 } /* end class DesignIssuesDialog */
@@ -217,5 +197,3 @@ public class GoalsDialog extends JDialog
 
 
 ////////////////////////////////////////////////////////////////
-
-
