@@ -214,8 +214,8 @@ public class DetailsPane
         enableTabs(item);
         for (int i = 0; i < tabPanelList.size(); i++) {
             JPanel t = (JPanel) tabPanelList.elementAt(i);
-            if (t instanceof TabToDoTarget) {
-                ((TabToDoTarget) t).setTarget(selectedTodoItem);
+            if (t instanceof TabToDo) {
+                ((TabToDo) t).setTarget(selectedTodoItem);
                 topLevelTabbedPane.setSelectedComponent(t);
                 return true;
             }
@@ -457,8 +457,8 @@ public class DetailsPane
         Object target = TargetManager.getInstance().getTarget();
         
         if (!(sel instanceof TargetListener)) {
-            if (sel instanceof TabToDoTarget)
-		((TabToDoTarget) sel).refresh();
+            if (sel instanceof TabToDo)
+		((TabToDo) sel).refresh();
 
             else if (sel instanceof TabTarget)
 		((TabTarget) sel).setTarget(target);
