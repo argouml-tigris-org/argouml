@@ -3182,9 +3182,10 @@ public JavaRecognizer(ParserSharedInputState state) {
  */
 	public final void newExpression() throws RecognitionException, TokenStreamException {
 		
+		String t = null;
 		
 		match(LITERAL_new);
-		type();
+		t=type();
 		{
 		switch ( LA(1)) {
 		case LPAREN:
@@ -3196,7 +3197,13 @@ public JavaRecognizer(ParserSharedInputState state) {
 			switch ( LA(1)) {
 			case LCURLY:
 			{
+				if ( inputState.guessing==0 ) {
+					getModeller().addAnonymousClass(t);
+				}
 				classBlock();
+				if ( inputState.guessing==0 ) {
+					getModeller().popClassifier();
+				}
 				break;
 			}
 			case SEMI:
