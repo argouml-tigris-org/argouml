@@ -29,6 +29,9 @@ import java.util.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+import org.argouml.uml.diagram.static_structure.ui.FigPackage;
+import org.argouml.uml.diagram.state.ui.FigCompositeState;
+
 /** A command to set selected figs to their preferred size or minimum size.
  * 
  * @author Markus Klink
@@ -97,7 +100,7 @@ public class CmdSetPreferredSize extends Cmd {
             fi.startTrans();
             // only resize elements which the user would also be able 
             // to resize.
-            if (fi.isResizable() == true) {
+            if (fi.isResizable() == true && (!((fi instanceof FigPackage) || (fi instanceof FigCompositeState)))) {
                 if (_mode == PREFERRED_SIZE)
                     fi.setSize(fi.getPreferedSize());
                 else
