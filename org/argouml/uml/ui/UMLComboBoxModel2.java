@@ -419,7 +419,7 @@ public abstract class UMLComboBoxModel2
 
     public void removeAllElements() {
         int startIndex = 0;
-        int endIndex = _objects.size() - 1;
+        int endIndex = Math.max(0, _objects.size() - 1);
         // if (!_objects.isEmpty()) {
         _objects.clear();
         _selectedObject = null;
