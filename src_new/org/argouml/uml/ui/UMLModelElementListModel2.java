@@ -219,6 +219,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @param target
      */
     public void setTarget(Object target) {
+        if (target == _target) return;
         if (_eventName == null || _eventName.equals("")) 
             throw new IllegalStateException("eventName not set!");
         if (_target instanceof MBase) {
