@@ -52,9 +52,9 @@ public class ActionActivityDiagram extends ActionStateDiagram {
         Object target = TargetManager.getInstance().getModelTarget();
         Object/*MActivityGraph*/ graph =
 	    ActivityGraphsFactory.getFactory().buildActivityGraph(target);
-        if (org.argouml.model.ModelFacade.isABehavioralFeature(target)) {
-            ns = ModelFacade.getNamespace(target);
-        }
+        /*if (org.argouml.model.ModelFacade.isABehavioralFeature(target)) {
+            ns = ModelFacade.getNamespace(target); // this fails always, see issue 1817
+        }*/
         UMLActivityDiagram d = new UMLActivityDiagram(ns, graph);
         return d;
     }
