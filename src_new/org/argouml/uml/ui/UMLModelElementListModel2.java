@@ -242,8 +242,11 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         if (elem instanceof Collection) {
             Iterator it = ((Collection)elem).iterator();
             while(it.hasNext()) {
-                if (super.contains(it.next())) return true;
+                if (!super.contains(it.next())) {
+                     return false;
+                }
             }
+            return true;
         }
         return false;
     }
