@@ -971,6 +971,9 @@ public interface Facade {
     /**
      * Recognizer for constructor.
      *
+     * A constructor is an operation that has a stereotype named create or
+     * a method that is a specification of an operator that is a constructor.
+     *
      * @param handle candidate
      * @return true if handle is a constructor.
      */

@@ -75,8 +75,9 @@ public class TestAgainstUmlModel extends TestCase {
 	       IOException,
 	       ParserConfigurationException {
 	Document doc = prepareDocument();
-	if (doc == null)
+	if (doc == null) {
 	    return;		// Could not find model.
+	}
 
 	NodeList list = doc.getElementsByTagName("Model:Class");
 
@@ -94,8 +95,7 @@ public class TestAgainstUmlModel extends TestCase {
      *
      * @param message that is to me printed.
      */
-    private static void printInconclusiveMessage(String message)
-    {
+    private static void printInconclusiveMessage(String message) {
 	System.out.println("WARNING: INCONCLUSIVE TEST!");
 	System.out.println(message);
 	System.out.println("You will have to fetch the model using the command"
@@ -324,17 +324,24 @@ public class TestAgainstUmlModel extends TestCase {
      * @throws IOException when there's an IO error
      * @throws ParserConfigurationException when the parser finds wrong syntax
      */
-    public static Test suite()
-	throws SAXException,
-	       IOException,
-	       ParserConfigurationException {
+    public static Test suite() {
         TestSuite suite =
 	    new TestSuite("Tests for "
 			  + TestAgainstUmlModel.class.getPackage().getName());
 
-	Document doc = prepareDocument();
-	if (doc == null)
+	Document doc = null;
+	try {
+	    doc = prepareDocument();
+	} catch (ParserConfigurationException e) {
+	    e.printStackTrace();
+	} catch (SAXException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	if (doc == null) {
 	    return suite;	// Could not find model.
+	}
 
         NodeList list = doc.getElementsByTagName("Model:Class");
 
