@@ -845,7 +845,7 @@ public class Project implements java.io.Serializable, TargetListener {
         
         Collection allClassifiers =
             ModelManagementHelper.getHelper()
-	        .getAllModelElementsOfKind(ns, "Classifier");
+	        .getAllModelElementsOfKind(ns, (Class)ModelFacade.CLASSIFIER);
         Iterator it = allClassifiers.iterator();
         while (it.hasNext()) {
             Object classifier = it.next();
