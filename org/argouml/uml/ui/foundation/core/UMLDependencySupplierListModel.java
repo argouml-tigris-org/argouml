@@ -29,9 +29,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MDependency;
-
-
 /**
  * 
  * @author jaap.branderhorst@xs4all.nl	

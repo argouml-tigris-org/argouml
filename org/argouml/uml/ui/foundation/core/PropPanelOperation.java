@@ -53,7 +53,6 @@ import org.argouml.uml.ui.UMLVisibilityPanel;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
-import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
