@@ -135,7 +135,7 @@ public class CrConsiderSingleton extends CrUML {
 
 	while (ends.hasNext()) {
 	    Iterator otherends = 
-		ModelFacade.getOtherAssociationEnds(ends.next());
+		ModelFacade.getOtherAssociationEnds(ends.next()).iterator();
 
 	    while (otherends.hasNext()) {
 		if (ModelFacade.isNavigable(otherends.next()))

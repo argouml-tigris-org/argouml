@@ -33,8 +33,8 @@ import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
+
 
 public class PropPanelAssociation extends PropPanelRelationship {
     
@@ -74,7 +74,9 @@ public class PropPanelAssociation extends PropPanelRelationship {
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    // new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.add-association-end"),"addAssociationEnd",null);
     new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association"),"removeElement",null);
+    
 
   }
   
@@ -89,6 +91,14 @@ public class PropPanelAssociation extends PropPanelRelationship {
       
       // TODO: implement the multiple inheritance of an Association (Generalizable element)
       
+  }
+  
+  /**
+   * Adds an associationend to the association.
+   */
+  protected void addAssociationEnd() {
+      // TODO implement this method as soon as issue 1703 is answered.
+      throw new UnsupportedOperationException("addAssociationEnd is not yet implemented");
   }
     
 } /* end class PropPanelAssociation */

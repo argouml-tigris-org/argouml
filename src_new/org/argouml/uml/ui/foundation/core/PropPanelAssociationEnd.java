@@ -24,8 +24,6 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.GridLayout;
-
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -35,9 +33,10 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
+import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
-import org.argouml.swingext.GridLayout2;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -190,7 +189,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
         new PropPanelButton(this, buttonPanel, _navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
         new PropPanelButton(this, buttonPanel, _assocEndIcon, localize("Go to other end"), "gotoOther", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-association-end"), "removeElement", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-association-end"), "removeElement", "isDeleteEnabled");
     }
     
     protected void setAssociationLabel(String label) {
@@ -218,10 +217,22 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      */
     public void gotoOther() {
         Object target = getTarget();
-        if (target instanceof MAssociationEnd) {
+        if (ModelFacade.isAAssociationEnd(target)) {
             MAssociationEnd end = (MAssociationEnd) target;
             ProjectBrowser.TheInstance.setTarget(end.getOppositeEnd());           
         }
+    }
+    
+    /**
+     * Checks if the delete button of the associationend panel should be
+     * enabled. It should be disabled if there are two or less association ends.
+     * @return boolean
+     */
+    public boolean isDeleteEnabled() {
+        if (ModelFacade.isAAssociationEnd(getTarget())) {
+          return ModelFacade.getOtherAssociationEnds(getTarget()).size() > 1;
+        }
+        return false;
     }
     
 

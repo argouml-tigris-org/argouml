@@ -946,6 +946,18 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+    
+    /**
+     * Returns the opposite end of an association end.
+     * @param handle
+     * @return Object the opposite end.
+     */
+    public static Object getOppositeEnd(Object handle) {
+        if (handle instanceof MAssociationEnd) {
+            return ((MAssociationEnd)handle).getOppositeEnd();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
 
     /** Returns the list of Transitions outgoing from the given stateVertex.
      *
@@ -965,22 +977,22 @@ public class ModelFacade {
      * @param handle association end to start from
      * @returns Iterator with all connected association ends.
      */
-    public static Iterator getOtherAssociationEnds(Object handle) {
+    public static Collection getOtherAssociationEnds(Object handle) {
         if (handle instanceof MAssociationEnd) {
             MAssociation a = ((MAssociationEnd)handle).getAssociation();
 
             if (a == null)
-                return emptyIterator();
+                return emptyCollection();
 
             Collection allEnds = a.getConnections();
             if (allEnds == null)
-                return emptyIterator();
+                return emptyCollection();
 
             // TODO: An Iterator filter would be nice here instead of the
             // mucking around with the Collection.
             allEnds = new ArrayList(allEnds);
             allEnds.remove(handle);
-            return allEnds.iterator();
+            return allEnds;
         }
 
         // ...
@@ -1813,5 +1825,9 @@ public class ModelFacade {
      */
     private static Iterator emptyIterator() {
         return Collections.EMPTY_SET.iterator();
+    }
+    
+    private static Collection emptyCollection() {
+        return Collections.EMPTY_LIST;
     }
 }
