@@ -15,6 +15,9 @@
 <!ENTITY componentinternationalization SYSTEM "compi18n.xml">
 <!ENTITY cookbookmodules SYSTEM "cookbook_modules.xml">
 <!ENTITY cookbooklogging SYSTEM "cookbook_logging.xml">
+
+<!ENTITY argoversion    "@VERSION@">
+
 ]>
 
 <!-- THIS IS THE ARGO/UML DEVELOPER COOKBOOK 
@@ -24,7 +27,7 @@
      DOCUMENTATION MODULE UNDER THE DIRECTORY COOKBOOK
      - PLEASE VERIFY THAT YOUR CHANGES COMPILE CORRECTLY BEFORE COMMITING THEM
 -->
-     
+
 <book>
      <bookinfo>
          <date>2001-11-10
@@ -35,6 +38,10 @@
       <para>
 The purpose of this Cookbook is to help in coordinating 
 and documenting the development of ArgoUML.
+</para>
+      <para>
+This version of the cookbook is loosely connected to the version
+&argoversion; of ArgoUML.
 </para>
     </abstract>
          <authorgroup>

@@ -38,8 +38,13 @@ Modifications
   <date>5/17/2002</date>
 
   <title>&argouml; User Manual</title>
-  <subtitle>A tutorial and reference description of &argouml;</subtitle>
+  <subtitle>A tutorial and reference description</subtitle>
 
+  <abstract>
+    <para>
+This version of the manual is intended to describe 
+the version &argoversion; of &argouml;.
+</para>
   <authorgroup>
     <author>
       <firstname>Alejandro</firstname>

@@ -31,7 +31,7 @@
 					&argo-project-link;
 	-->
 	<!ENTITY document-title		'ArgoUML Quick Guide'>
-	<!ENTITY document-subtitle	'Get started with ArgoUML v0.9.x'>
+	<!ENTITY document-subtitle	'Get started with ArgoUML @VERSION@'>
 ]>
 
 

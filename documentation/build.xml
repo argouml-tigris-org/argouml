@@ -444,6 +444,14 @@ To get it, call ant with the docbook-xsl-get target.
 
   <target name="internal-dispatcher">
 
+    <!-- We generate a property file. -->
+    <copy file="${documentation.dir}/${doc.subdir}/${doc.prefix}.in"
+          tofile="${documentation.dir}/${doc.subdir}/${doc.prefix}.xml">
+      <filterset>
+        <filter token="VERSION" value="${argo.core.version}"/>
+      </filterset>
+    </copy>
+
     <!-- We copy the 'images' directory into our source directory.  (this is to
          allow each output directory to be self-contained).  Of course it also
          means that more space is used up by these multiple copies of the
