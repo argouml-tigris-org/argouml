@@ -1,31 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
+<!-- $Id$ -->
 <!--
 
 Description of all the artifacts associated with use case diagrams within
-Argo/UML.
-
-
-Modifications
-=============
-
- 5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
-
-19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
-              problems with generating PDF.
-
- 4 Apr 2002:  Jeremy Bennett. Updated details for actor and use case to show
-              new popup menus and fields to support include, extend and
-              extension points for 0.9.8.
-
-18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
-              particularly relating to "limitations" section.
-
- 3 May 2002:  Jeremy Bennett. Updated details to cover display of extension
-              points in use cases
-
-17 May 2002:  Jeremy Bennett. Improved description of discriminators in
-              generalizations.
+ArgoUML.
 
 -->
 
@@ -64,21 +42,26 @@ Modifications
       </mediaobject></screenshot>
     </figure>
 
-    <!-- Limitations in Argo/UML relating to display of extension points. -->
+    <!-- Limitations in ArgoUML relating to display of extension points. -->
 
     <sect2>
       <title>&argouml; Limitations Concerning Use Case Diagrams</title>
 
-      <para>Use case diagrams are now well supported within &argouml;. The min
-        outstanding limitation is that extension points cannot be shown in a
+      <para>
+Use case diagrams are now well supported within &argouml;. 
+The only limitation is that extension points cannot be shown in a
         separate compartment on the use case.</para>
 
-      <caution><para>Earlier versions of &argouml; implemented extend and
+      <note>
+        <para>
+Earlier versions of &argouml; (0.9 and earlier) implemented extend and
         include relationships by using a stereotyped dependency
         relationship. Although such diagrams will show correctly on the
         diagram, they will not link correctly to the use cases, and should be
         replaced by proper extend and include relationships using the current
-        system.</para></caution>
+        system.
+</para>
+      </note>
     </sect2>
   </sect1>
 
@@ -130,7 +113,11 @@ Modifications
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem>
+            <para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -162,7 +149,9 @@ Modifications
 
           <listitem><para>Standard tab. There are no standard constraints
             defined for <literal>Actor</literal> within the UML
-            metamodel.</para></listitem>
+metamodel so this is greyed out.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -203,12 +192,7 @@ Modifications
                 value in analysis to introduce useful names or
                 concepts.</para></note></listitem>
             </itemizedlist>
-
-            <note><para>The UML <literal>Element</literal> metaclass from
-              which all other artifacts are derived includes the tagged
-              element <literal>documentation</literal> which is handled by
-              the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+          </listitem>
         </varlistentry>
 
       </variablelist>
@@ -234,48 +218,17 @@ Modifications
             model.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Add actor button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/actor.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
-            actor</literal></term>
+                </imageobject>
+              </inlinemediaobject>
+</guiicon>
+<literal>Add Actor</literal>
+</term>
 
           <listitem><para>This creates a new actor within the model, (but not
             within the diagram), navigating immediately to the
@@ -302,7 +255,10 @@ Modifications
             <emphasis>not</emphasis> just the diagram. To delete an actor
             from the diagram, but keep it within the model, use the main
             menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+            </warning>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -337,12 +293,17 @@ Modifications
             the UML standard stereotypes (<literal>metaclass</literal>,
             <literal>powertype</literal>, <literal>process</literal>,
             <literal>thread</literal>, <literal>utility</literal>) for
-            classifiers. &argouml; also provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal>,
-            <literal>person</literal> and
-            <literal>singleton</literal>. Stereotypes are of limited value
-            with actors, but these last three are probably of most
-            use.</para></listitem>
+classifiers.
+Stereotypes are of limited value with actors.
+The stereotypes
+<literal>machine</literal>,
+<literal>organization</literal>,
+<literal>person</literal> and
+<literal>singleton</literal>
+are probebly of most use.
+However, they are not provided by default with &argouml;.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -366,10 +327,7 @@ Modifications
 
           <listitem><para>Text box. Records the namespace for the actor. This
             is the package hierarchy.</para>
-
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Modifiers -->
@@ -378,10 +336,14 @@ Modifications
           <term><literal>Modifiers</literal></term>
 
           <listitem><para>Check box, with entries <literal>Abstract</literal>,
-            <literal>Final</literal> and <literal>Root</literal>.</para>
+<literal>Leaf</literal> and
+<literal>Root</literal>.
+</para>
 
-          <itemizedlist>
-            <listitem><para><literal>abstract</literal> is used to declare
+            <itemizedlist>
+              <listitem>
+                <para><literal>Abstract</literal>
+is used to declare
               that this actor cannot be instantiated, but must always be
               specialized.</para>
 
@@ -391,11 +353,14 @@ Modifications
               does not itself interact with a use case, but whose children
               do.</para></caution></listitem>
 
-            <listitem><para><literal>final</literal> indicates that this
+              <listitem>
+                <para><literal>leaf</literal>
+indicates that this
               actor can have no further children, while
-              <literal>root</literal> indicates it is a top level
+<literal>Root</literal> indicates it is a top level
               actor with no parent.</para></listitem>
-          </itemizedlist></listitem>
+            </itemizedlist>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Generalizations -->
@@ -406,44 +371,12 @@ Modifications
           <listitem><para>Text area. Lists any actor that
             <emphasis>generalizes</emphasis> this actor.</para>
 
-          <para>&Button1; click navigates to the generalization and opens
+            <para>
+&Button1; Double Click
+navigates to the generalization and opens
             its property tab.</para>
 
-          <para>&Button2; click yields a drop down menu with five
-            entries</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram. You will need to find it in
-              the explorer and add it from there.</para>
-
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the actor (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Specializations -->
@@ -458,40 +391,7 @@ Modifications
           <para>&button1; click navigates to the generalization and opens
             its property tab.</para>
 
-          <para>&Button2; click yields a drop down menu with five
-            entries</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram.</para>
-
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the actor (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Associations -->
@@ -500,53 +400,14 @@ Modifications
           <term><literal>Associations</literal></term>
 
           <listitem><para>Text area. Lists any associations connected to the
-            actor. &Button1; click on an association will navigate to
-            that association. &Button2; click gives a pop up menu with
-            five options.</para>
+actor.
+&Button1; Double Click
+on an association will navigate to that association.
+</para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Where a navigation
-              exists, navigate to it.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              association. Note that the new association is added to the
-              model, but not the diagram. You will need to find it in the
-              explorer and add it from there.</para>
-
-            <tip><para>It is far easier to add associations by drawing them
-              on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. Where an association
-              is linked to this actor, this removes the link to the
-              actor.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              association from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove associations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-             there are two or more associations listed, and the association
-             selected is not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-             there are two or more associations listed, and the association
-             selected is not at the bottom. It is moved down
-             one.</para></listitem> </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
 
-        <!-- Entry for Implements -->
-
-        <varlistentry>
-          <term><literal>Implements</literal></term>
-
-          <listitem><para>Text area. Listing the classes that are implemented
-            by this actor. Although it is possible to create an abstraction
-            through a &button2; pop up menu, this makes no sense for an
-            actor.</para></listitem>
-        </varlistentry>
       </variablelist>
     </sect2>
   </sect1>
@@ -573,9 +434,14 @@ Modifications
       <literal>Show</literal> menu (using &button2; click), or from the Style
       tab.</para></caution>
 
-    <warning><para>The current release of &argouml; does not preserve
-      information about whether the extension point compartment is showing on
-      save. On reload, no compartments will be visible.</para></warning>
+    <warning>
+      <para>
+<!-- Issue: 2140 -->
+The current release of &argouml; does not preserve
+information about whether the extension point compartment is showing on save.
+On reload, no compartments will be visible.
+</para>
+    </warning>
 
     <!-- The details tabs -->
 
@@ -611,7 +477,11 @@ Modifications
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem>
+            <para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -691,11 +561,7 @@ Modifications
                 concepts.</para></note></listitem>
             </itemizedlist>
 
-            <note><para>The UML <literal>Element</literal> metaclass from
-              which all other artifacts are derived includes the tagged
-              element <literal>documentation</literal> which is handled by
-              the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -718,40 +584,6 @@ Modifications
 
           <listitem><para>Navigate up through the package structure of the
             model.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
         </varlistentry>
 
         <!-- Entry for Add use case button -->
@@ -803,7 +635,10 @@ Modifications
             <emphasis>not</emphasis> just the diagram. To delete a use case
             from the diagram, but keep it within the model, use the main
             menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+            </warning>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -838,17 +673,13 @@ Modifications
             with the UML standard stereotypes (<literal>metaclass</literal>,
             <literal>powertype</literal>, <literal>process</literal>,
             <literal>thread</literal>, <literal>utility</literal>) for
-            classifiers. &argouml; also provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal>,
-            <literal>person</literal> and
-            <literal>singleton</literal>. Stereotyping can be useful when
+classifiers.
+Stereotyping can be useful when
             creating use cases in the problem domain (requirements capture) and
             solution domain (analysis), but none of the pre-defined stereotypes
             are well suited to this.</para>
 
-          <warning><para>In the current release of &argouml; if a stereotype is
-            selected in &argouml; it will not be displayed in the
-            diagram.</para></warning></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -873,9 +704,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             use case. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Modifiers -->
@@ -883,209 +712,23 @@ Modifications
         <varlistentry>
           <term><literal>Modifiers</literal></term>
 
-          <listitem><para>Check box, with entries <literal>Abstract</literal>,
-            <literal>Final</literal> and <literal>Root</literal>.</para>
+          <listitem>
+            <para>Check box,
+with entries
+<literal>leaf</literal> and
+<literal>root</literal>.
+</para>
 
-          <itemizedlist>
-            <listitem><para><literal>abstract</literal> is used to declare
-              that this use case cannot be instantiated, but must always be
-              specialized.</para>
-
-            <caution><para>While use cases can be specialized and
-              generalized, it is not clear that an abstract use case has
-              any meaning. Perhaps it might be used to indicate an use case
-              that does not itself interact with an actor, but whose
-              children do.</para></caution></listitem>
-
-            <listitem><para><literal>final</literal> indicates that this
-              use case can have no further children, while
-              <literal>root</literal> indicates it is a top level
-              use case with no parent.</para></listitem>
-          </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Generalizations -->
-
-        <varlistentry>
-          <term><literal>
-            <anchor id="ref.use_case_generalization"/>Generalizations
-          </literal></term>
-
-          <listitem><para>Text area. Lists use cases which are generalizations
-            of this one. Will be set whenever a generalization is created
-            on the diagram. &Button1; click on a generalization will
-            navigate to that generalization. &Button2; click gives a pop
-            up menu with five options.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Where a generalization
-              exists, navigate to it.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new association is added to the
-              model, but not the diagram. You will need to find it in the
-              explorer and add it from there.</para>
-
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip>
-
-            <caution><para>It is possible to add multiple
-              generalizations. However is is hard to see a sensible meaning
-              for this. In addition the size of the text area makes this
-              very inconvenient in &argouml;.</para></caution></listitem>
-
-            <listitem><para><literal>Delete</literal>. Where a
-              generalization exists linking to this use case, this removes
-              the link to this use case.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more generalizations listed (see
-              <emphasis>caution</emphasis> above), and the generalization
-              selected is not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more generalizations listed (see
-              <emphasis>caution</emphasis> above), and the generalization
-              selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Specializations -->
-
-        <varlistentry>
-          <term><literal>Specializations</literal></term>
-
-          <listitem><para>Text box. Lists any specialized use case (i.e. for
-            which this use case is a generalization.</para>
-
-          <para>&button1; click navigates to the generalization and opens
-            its property tab.</para>
-
-          <para>&Button2; click yields a drop down menu with five
-            entries</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram.</para>
-
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the use case (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-             there are two or more specializations listed, and the
-             specialization selected is not at the top. It is moved up
-             one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-             there are two or more specializations listed, and the
-             specialization selected is not at the bottom. It is moved down
-             one.</para></listitem> </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Extends -->
-
-        <varlistentry>
-          <term><literal>Extends</literal></term>
-
-          <listitem><para>Text box. Lists any class that is extended by this
-            use case.</para>
-
-          <para>Where an extends relationship has been created (see below),
-            &button1; click will navigate to that relationship. &Button2; gives
-            a pop up menu with five entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Where an extends
-              relationship has been created, navigate to
-              it.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              extend relationship and navigate to it. The current use case is
-              set as the extension end of the extend relationship.</para>
-
-            <caution><para>It is possible to add multiple extends
-              relationships. However is is hard to see a sensible meaning
-              for this.</para></caution></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the link to the
-              selected extend relationship.</para>
-
-            <note><para>This deletes the connection to the extend relationship,
-              but does not delete the extend relationship from the
-              model.</para></note></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-             there are two or more extend relationships listed (not
-             recommended), and the extend relationship selected is not at the
-             top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-             there are two or more extend relationships listed (not
-             recommended), and the extend relationship selected is not at the
-             bottom. It is moved down one.</para></listitem>
-             </itemizedlist></listitem>
-        </varlistentry>
-
-        <!-- Entry for Includes -->
-
-        <varlistentry>
-          <term><literal>Includes</literal></term>
-
-          <listitem><para>Text box. Lists any use case that this use case
-            includes.</para>
-
-          <para>Where an include relationship has been created (see below),
-            &button1; click will navigate to that relationship. &Button2; gives
-            a pop up menu with five entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Where an include
-              relationship has been created, navigate to
-              it.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              include relationship and navigate to it. The current use case
-              will be made the base use case of the include
-              relationship.</para></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the link to the
-              selected include relationship.</para>
-
-            <note><para>This deletes the connection to the include
-              relationship, but does not delete the include relationship from
-              the model.</para></note></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more include relationships listed, and the
-              include relationship selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more include relationships listed, and the
-              include relationship selected is not at the bottom. It is moved
-              down one.</para></listitem> </itemizedlist></listitem>
+            <itemizedlist>
+              <listitem>
+                <para><literal>leaf</literal>
+indicates that this use case can have no further children, 
+while <literal>root</literal> indicates it is a top level
+use case with no parent.
+</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Extension Points -->
@@ -1100,17 +743,24 @@ Modifications
             rather than their name.</para></note>
 
           <para>Where an extension point has been created (see below),
-            &button1; click will navigate to that relationship. &Button2; gives
-            a pop up menu with five entries.</para>
+&button1; Double Click will navigate to that relationship.
+<!-- Issue: 2141 -->
+&Button2; gives a pop up menu with one entry.
+</para>
 
-          <itemizedlist>
+            <itemizedlist>
+<!-- Issue: 2141
             <listitem><para><literal>Open</literal>. Where an extension
               point has been created, navigate to it.</para></listitem>
+ -->
 
-            <listitem><para><literal>Add</literal>. Add a new extension point
+              <listitem>
+                <para><literal>New</literal>.
+Add a new extension point
               and navigate to it, making this use case the owning use case of
               the extension point.</para></listitem>
 
+<!-- Issue: 2141
             <listitem><para><literal>Delete</literal>. Where an extension
               point has been created, this removes it.</para>
 
@@ -1126,11 +776,84 @@ Modifications
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more extension points listed, and the extension
               point selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+one.
+</para>
+              </listitem>
+ -->
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Generalizations -->
+
+        <varlistentry>
+          <term><literal>
+            <anchor id="ref.use_case_generalization"/>Generalizations
+          </literal></term>
+
+          <listitem><para>Text area. Lists use cases which are generalizations
+            of this one. Will be set whenever a generalization is created
+on the from this Use Case.
+&Button1; Double Click on a generalization will
+navigate to that generalization.
+</para>
+
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Specializations -->
+
+        <varlistentry>
+          <term><literal>Specializations</literal></term>
+
+          <listitem><para>Text box. Lists any specialized use case (i.e. for
+            which this use case is a generalization.</para>
+
+            <para>
+&button1; Double Click
+navigates to the generalization and opens its property tab.
+</para>
+
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Extends -->
+
+        <varlistentry>
+          <term><literal>Extends</literal></term>
+
+          <listitem><para>Text box. Lists any class that is extended by this
+            use case.</para>
+
+            <para>
+Where an extends relationship has been created,
+&button1; Double Click
+will navigate to that relationship.
+</para>
+
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Includes -->
+
+        <varlistentry>
+          <term><literal>Includes</literal></term>
+
+          <listitem><para>Text box. Lists any use case that this use case
+            includes.</para>
+
+            <para>
+Where an include relationship has been created,
+&button1; Double Click
+will navigate to that relationship.
+</para>
+
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Associations -->
 
+<!-- Issue: 2143
         <varlistentry>
           <term><literal>Associations</literal></term>
 
@@ -1169,10 +892,17 @@ Modifications
             <listitem><para><literal>Move Down</literal>. Only available where
              there are two or more associations listed, and the association
              selected is not at the bottom. It is moved down
-             one.</para></listitem> </itemizedlist></listitem>
+one.
+</para>
+              </listitem>
+            </itemizedlist>
+          </listitem>
         </varlistentry>
+-->
 
         <!-- Entry for Operations -->
+
+<!-- Issue: 2144
 
         <varlistentry>
           <term><literal>Operations</literal></term>
@@ -1195,9 +925,11 @@ Modifications
               linkend="ref.use_case_generalization">Generalizations</link>
             for examples of how these operations are used).</para></listitem>
         </varlistentry>
+-->
 
         <!-- Entry for Attributes -->
 
+<!-- Issue: 2145
         <varlistentry>
           <term><literal>Attributes</literal></term>
 
@@ -1219,6 +951,7 @@ Modifications
               linkend="ref.use_case_generalization">Generalizations</link>
             for examples of how these operations are used).</para></listitem>
         </varlistentry>
+-->
       </variablelist>
     </sect2>
   </sect1>
@@ -1254,9 +987,6 @@ Modifications
       <para>The details tabs that are active for extension points are as
         follows.</para>
 
-      <note><para>There is no source tab, since there is no source code that
-        could be generated for an extension point.</para></note>
-
       <variablelist>
 
         <!-- Entry for ToDoItem tab -->
@@ -1283,7 +1013,11 @@ Modifications
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem>
+            <para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -1291,12 +1025,35 @@ Modifications
         <varlistentry>
           <term><literal>Style</literal></term>
 
-          <listitem><para>Standard tab</para>
+          <listitem>
+            <para>Standard tab</para>
 
-          <caution><para>When the extension point has been reached via a use
-            case, the values here are those of the owning use case. When
-            reached via an extend relationship, the values relate to the extend
-            relationship.</para></caution></listitem>
+            <note>
+              <para>
+The <literal>Style</literal> tab is grayed out, 
+since the extension points has no style of their own in the diagram.
+</para>
+            </note>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Source tab -->
+
+        <varlistentry>
+          <term><literal>Source</literal></term>
+
+          <listitem>
+            <para>Standard tab.
+It would not be usual to provide any code for an extension point,
+since it is external to the system.
+</para>
+
+            <note>
+              <para>
+The source tab content can be changed, but this has no effect.
+</para>
+            </note>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -1306,7 +1063,18 @@ Modifications
 
           <listitem><para>Standard tab. In the UML metamodel,
             <literal>ExtensionPoint</literal> has no standard
-            constraints defined.</para></listitem>
+constraints defined.
+</para>
+
+            <note>
+              <para>
+<!-- Issue: 1805 -->
+In the current implementation of ArgoUML
+it is not possible to set constraints on extension points.
+For this reason this tab is greyed out.
+</para>
+            </note>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1330,11 +1098,7 @@ Modifications
                 have any value in analysis.</para></note></listitem>
             </itemizedlist>
 
-            <note><para>The UML <literal>Element</literal> metaclass from
-              which all other artifacts are derived includes the tagged
-              element <literal>documentation</literal> which is handled by
-              the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1357,40 +1121,6 @@ Modifications
 
           <listitem><para>Navigate up to the use case which owns this extension
             point.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -1435,13 +1165,10 @@ Modifications
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. &argouml; provides the
-            non-standard stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-<literal>person</literal>.
-It also rather bizarrely provides the
-            <literal>realize</literal> stereotype (which is more properly just
-            a stereotype of abstraction relationships.</para>
+          <listitem>
+            <para>Drop down selector.
+&argouml; does not provide any stereotypes for extension points.
+</para>
 
           <tip><para>Stereotyping does not have great value on an extension
             point.</para></tip></listitem>
@@ -1459,19 +1186,6 @@ It also rather bizarrely provides the
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype"/>).</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Namespace -->
-
-        <varlistentry>
-          <term><literal>Namespace</literal></term>
-
-          <listitem><para>Text box. Records the namespace for the
-            extension point. This is the package hierarchy.</para>
-
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
         </varlistentry>
 
         <!-- Entry for Location -->
@@ -1493,69 +1207,28 @@ It also rather bizarrely provides the
         <varlistentry>
           <term><literal>Base Use Case</literal></term>
 
-          <listitem><para>Drop down selector. Records the base use case within
-            which this extension point is defined. &Button1; click
-            on this entry will give a drop down menu of all available use cases
-            (and an empty entry) which may be selected by &button1;
-            click.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for NavUseCase -->
-
-        <varlistentry>
-          <term><literal>Navigate Use Case</literal></term>
-
-          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-              format="GIF" align="center"
-              fileref="images/icons/navigate_stereotype.gif"/>
-            </imageobject></inlinemediaobject></guiicon> icon. If a
-              base use case has been selected, this will navigate to the
-              use case property panel (see <xref
-                linkend="s1.ref.use_case"/>).</para></listitem>
+          <listitem>
+            <para>Text box.
+Shows the base use case within which this extension point is defined. 
+&Button1; Double Click
+will navigate to the use case.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Extending Use Case -->
 
         <varlistentry>
-          <term><literal>Extending Use Cases</literal></term>
+          <term><literal>Extend</literal></term>
 
           <listitem><para>Text box. Lists all use cases which extend the base
             use case through this extension point.</para>
 
-          <para>Where an extending use case exists, &button1; click will
-            navigate to that relationship. &Button2; gives a pop up menu with
-            five entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the extend
-              relationship that links to the selected
-              use case. Grayed out if there are currently no extending use
-              cases.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new extend
-              relationship (which can then add an extension use case)
-              before the current use case in the list and navigate to
-              it. The owning use case of the current extension point
-              relationship is made the base use case of the new extend
-              relationship.</para></listitem>
-
-            <listitem><para><literal>Delete</literal>. Where an extend
-              relationship to an extending use case has been
-              created<literal>Add</literal>, this removes the link to
-              it.</para>
-
-            <note><para>This deletes the connection to the extend relationship,
-              but does not delete the extend relationship from the
-              model.</para></note></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more use cases listed, and the use case selected
-              is not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more use cases listed, and the use case selected
-              is not at the bottom. It is moved down one.</para></listitem>
-              </itemizedlist></listitem>
+            <para>
+Where an extending use case exists, 
+&button1; Double Click will navigate to that relationship.
+</para>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1642,7 +1315,11 @@ from the depending artifact to that which it is dependent upon
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem>
+            <para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -1665,7 +1342,9 @@ from the depending artifact to that which it is dependent upon
 
           <listitem><para>Standard tab. There are no standard constraints
             defined for <literal>Dependency</literal> within
-            the UML metamodel.</para></listitem>
+the UML metamodel so this is greyed out.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -1690,11 +1369,7 @@ from the depending artifact to that which it is dependent upon
                 concepts.</para></note></listitem>
             </itemizedlist>
 
-            <note><para>The UML <literal>Element</literal> metaclass from
-              which all other artifacts are derived includes the tagged
-              element <literal>documentation</literal> which is handled by
-              the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1720,40 +1395,6 @@ from the depending artifact to that which it is dependent upon
             the dependency.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -1770,7 +1411,10 @@ from the depending artifact to that which it is dependent upon
             <emphasis>not</emphasis> just the diagram. To delete a
             dependency from the diagram, but keep it within the model, use
             the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+            </warning>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1804,15 +1448,12 @@ from the depending artifact to that which it is dependent upon
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Dependency has no standard
-            stereotypes of its own under UML&nbsp;1.3. &argouml; provides two
-            stereotypes <literal>extend</literal> and
-            <literal>include</literal>, which in the past allowed depend to be
-            used to draw these relationships. &argouml; also provides the
-            additional stereotypes, <literal>machine</literal>,
-            <literal>organization</literal>, <literal>person</literal> and
-            rather bizarrely <literal>realize</literal> (which properly is a
-            stereotype only of abstraction). The stereotype is shown between
+<!-- Issue: 2146 -->
+          <listitem>
+              <para>Drop down selector.
+Dependency has no standard stereotypes of its own under UML&nbsp;1.3.n
+so &argouml; does not provide any.
+The stereotype is shown between
             &laquo; and &raquo; above or across the
             generalization.</para></listitem>
         </varlistentry>
@@ -1839,9 +1480,7 @@ from the depending artifact to that which it is dependent upon
           <listitem><para>Text box. Records the namespace for the
             dependency. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Suppliers -->
@@ -1853,18 +1492,11 @@ from the depending artifact to that which it is dependent upon
             of the relationship, i.e. the end supplying what is needed by
             the other end.</para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Where a supplier
-              exists, navigate to it.</para></listitem>
+            <para>
+&Button1; Double Click on a client will navigate to that use case.
+</para>
 
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more suppliers, and the supplier selected is not
-              at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more suppliers listed, and the supplier selected
-              is not at the bottom. It is moved down one.</para></listitem>
-              </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Clients -->
@@ -1876,22 +1508,11 @@ from the depending artifact to that which it is dependent upon
             of the relationship, i.e. the end supplying what is needed by
             the other end.</para>
 
-          <para>&Button1; click on a client will navigate to that
-            use case. &Button2; click gives a pop up menu with three
-            options.</para>
+            <para>
+&Button1; Double Click on a client will navigate to that use case.
+</para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Where a client
-              exists, navigate to it.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more clients, and the client selected is not at
-              the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more clients listed, and the client selected is
-              not at the bottom. It is moved down one.</para></listitem>
-              </itemizedlist></listitem>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1963,7 +1584,11 @@ from the depending artifact to that which it is dependent upon
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem>
+            <para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -1986,12 +1611,9 @@ from the depending artifact to that which it is dependent upon
           <term><literal>Source</literal></term>
 
           <listitem><para>Standard tab. You would not expect to generate any
-            code for an association end, but this tab contains the name of
-            the generalization.</para>
-
-          <note><para>This is probably not the correct thing to do for good
-            code generation, and will need to be changed in future versions
-            of &argouml;.</para></note></listitem>
+code for an association end so this is empty.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -1999,7 +1621,14 @@ from the depending artifact to that which it is dependent upon
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. In the UML metamodel,
+          <listitem>
+            <para>Standard tab.
+<!-- Issue: 1805 -->
+&argouml; does not support constraints on Generalizations
+so this is greyed out.
+</para>
+            <para>
+In the UML metamodel,
             <literal>Generalization</literal> has the following standard
             constraints defined.</para>
 
@@ -2049,7 +1678,8 @@ from the depending artifact to that which it is dependent upon
                 within the set (although this is not
                 guaranteed).</para></listitem>
 
-            </itemizedlist></listitem>
+            </itemizedlist>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2073,12 +1703,7 @@ from the depending artifact to that which it is dependent upon
                 analysis to introduce useful names or concepts, and in
                 design to avoid re-computation.</para></note></listitem>
             </itemizedlist>
-
-            <note><para>The UML <literal>Element</literal> metaclass from
-              which all other artifacts are derived includes the tagged
-              element <literal>documentation</literal> which is handled by
-              the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2104,40 +1729,6 @@ from the depending artifact to that which it is dependent upon
             the generalization.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -2154,7 +1745,10 @@ from the depending artifact to that which it is dependent upon
             <emphasis>not</emphasis> just the diagram. To delete a
             generalization from the diagram, but keep it within the model,
             use the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+            </warning>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2179,8 +1773,13 @@ from the depending artifact to that which it is dependent upon
           <note><para>&argouml; does not enforce any naming convention for
             associations.</para></note>
 
-          <note><para>There is no representation of the stereotype of a
-            generalization on the diagram.</para></note></listitem>
+          <note>
+              <para>
+There is no representation of the name of a
+generalization on the diagram.
+</para>
+            </note>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -2189,11 +1788,9 @@ from the depending artifact to that which it is dependent upon
           <term><literal>Stereotype</literal></term>
 
           <listitem><para>Drop down selector. Generalization is provided by
-            default with the UML standard stereotype,
-            (<literal>implementation</literal>. &argouml; also provides the
-            additional stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-            <literal>person</literal>. The stereotype is shown between
+default with the UML standard stereotype
+<literal>implementation</literal>.
+The stereotype is shown between
             &laquo; and &raquo; above or across the generalization.</para>
 
           <tip><para>Stereotyping generalization does not have great value
@@ -2248,9 +1845,7 @@ There is little point in using this within a use case
           <listitem><para>Text box. Records the namespace for the
             generalization. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Parent -->
@@ -2258,9 +1853,12 @@ There is little point in using this within a use case
         <varlistentry>
           <term><literal>Parent</literal></term>
 
-          <listitem><para>Text box. Records the use case or actor that is the
-            <emphasis>parent</emphasis> in this relationship, i.e. the more
-            general end of the relationship. &Button1; click
+          <listitem>
+            <para>Text box.
+Shows the use case or actor that is the
+<emphasis>parent</emphasis> in this relationship,
+i.e. the more general end of the relationship.
+&Button1; Double Click
             on this entry will navigate to that use case or
             actor. &Button2; click will give a pop up menu, with a single
             entry, <literal>Open</literal> which will also navigate to that
@@ -2272,9 +1870,12 @@ There is little point in using this within a use case
         <varlistentry>
           <term><literal>Child</literal></term>
 
-          <listitem><para>Text box. Records the use case or actor that is the
-            <emphasis>child</emphasis> in this relationship, i.e. the more
-            specific end of the relationship. &Button1; click
+          <listitem>
+            <para>Text box.
+Shows the use case or actor that is the
+<emphasis>child</emphasis> in this relationship,
+i.e. the more specific end of the relationship.
+&Button1; Double Click
             on this entry will navigate to that use case or
             actor. &Button2; click will give a pop up menu, with a single
             entry, <literal>Open</literal> which will also navigate to that
@@ -2384,7 +1985,11 @@ There is little point in using this within a use case
         <varlistentry>
           <term><literal>Documentation</literal></term>
 
-          <listitem><para>Standard tab.</para></listitem>
+          <listitem>
+            <para>Standard tab.
+See <xref linkend="s2.ref.documentation_tab"/>.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Style tab -->
@@ -2408,7 +2013,9 @@ There is little point in using this within a use case
 
           <listitem><para>Standard tab. In the UML metamodel,
             <literal>Extend</literal> has no standard
-            constraints defined.</para></listitem>
+constraints defined so this is greyed out.
+</para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2432,12 +2039,7 @@ There is little point in using this within a use case
                 in analysis to introduce useful names or
                 concepts.</para></note></listitem>
             </itemizedlist>
-
-            <note><para>The UML <literal>Element</literal> metaclass from
-              which all other artifacts are derived includes the tagged
-              element <literal>documentation</literal> which is handled by
-              the <emphasis>documentation tab</emphasis> under
-              &argouml;</para></note></listitem>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2463,40 +2065,6 @@ There is little point in using this within a use case
             the extend.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Add extension point button -->
 
         <varlistentry>
@@ -2508,8 +2076,9 @@ There is little point in using this within a use case
 
           <listitem><para>This creates a new use case extension point within
             the namespace of the current extend relationship, with the current
-            extend relationship as its first extending relationship, navigating
-            immediately to the properties tab for that extension point.</para>
+extend relationship as its first extending relationship.
+<!-- Issue: 2147 -->
+</para>
 
           <tip><para>While it is perfectly valid to create extension points
             from an extend relationship, the created extension point will have
@@ -2518,7 +2087,10 @@ There is little point in using this within a use case
           <para>It would be more usual to instead create the extension point
             within a use case and subsequently link to it from an extend
             relationship (see <xref linkend="s2.ref.extend_property_fields"/>
-            below).</para></tip></listitem>
+below).
+</para>
+            </tip>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -2530,14 +2102,18 @@ There is little point in using this within a use case
           </imageobject></inlinemediaobject></guiicon>
             <literal>Delete</literal></term>
 
-          <listitem><para>This deletes the selected extend relationshp from the
-            model.</para>
+          <listitem>
+            <para>This deletes the selected extend relationship from the
+model.</para>
 
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete a
             extend from the diagram, but keep it within the model,
             use the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+            </warning>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2568,13 +2144,10 @@ There is little point in using this within a use case
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. &argouml; provides the
-            non-standard stereotypes, <literal>machine</literal>,
-            <literal>organization</literal> and
-<literal>person</literal>.
-It also rather bizarrely provides the
-            <literal>realize</literal> stereotype (which is more properly just
-            a stereotype of abstraction relationships.</para>
+          <listitem>
+            <para>Drop down selector.
+&argouml; does not provide any stereotypes by default.
+</para>
 
           <tip><para>Stereotyping does not have great value on an extend
             relationship.</para></tip>
@@ -2603,53 +2176,30 @@ It also rather bizarrely provides the
           <term><literal>Namespace</literal></term>
 
           <listitem><para>Text box. Records the namespace for the
-            extend. This is the package hierarchy.</para>
+extend relationship.
+This is the package hierarchy.
+</para>
 
-          <para>&Button1; click on the entry will navigate to the package
+            <para>
+<!-- Issue: 2148 -->
+&Button1; Double Click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for condition -->
-
-        <varlistentry>
-          <term><literal>Condition</literal></term>
-
-          <listitem><para>Text area. Multi-line textual description of any
-            condition attached to the extend relationship.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Base -->
 
         <varlistentry>
-          <term><literal>Base</literal></term>
+          <term><literal>Base Usecase</literal></term>
 
-          <listitem><para>Drop down selector. Records the use case that is
+          <listitem>
+            <para>Drop down selector.
+Shows the use case that is
             being extended by this extend relationship.  &Button1; click
             on this entry will give a drop down menu of all available use cases
             (and an empty entry) which may be selected by &button1;
             click.</para>
-
-          <caution><para>In the current version of &argouml; if you change the
-            base use case on an extend relationship that is already shown on a
-            diagram, then it will NOT be redrawn. Currently the only way to
-            effect a redraw is to remove the use cases at each end from the
-            diagram and then add them back from the explorer.
-          </para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for NavUseCase (Base) -->
-
-        <varlistentry>
-          <term><literal>Navigate Use Case (Base)</literal></term>
-
-          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-              format="GIF" align="center"
-              fileref="images/icons/navigate_stereotype.gif"/>
-            </imageobject></inlinemediaobject></guiicon> icon. If a
-              base use case has been selected, this will navigate to the
-              use case property panel (see <xref
-                linkend="s1.ref.use_case"/>).</para></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Extension -->
@@ -2657,32 +2207,14 @@ It also rather bizarrely provides the
         <varlistentry>
           <term><literal>Extension</literal></term>
 
-          <listitem><para>Drop down selector. Records the use case that is
+          <listitem>
+            <para>Drop down selector.
+Show the use case that is
             doing the extending through this extend relationship.  &Button1;
             click on this entry will give a drop down menu of all available use
             cases (and an empty entry) which may be selected by &button1;
             click.</para>
-
-          <caution><para>In the current version of &argouml; if you change the
-            extension use case on an extend relationship that is already shown
-            on a diagram, then it will NOT be redrawn. Currently the only way
-            to effect a redraw is to remove the use cases at each end from the
-            diagram and then add them back from the explorer.
-          </para></caution></listitem>
-        </varlistentry>
-
-        <!-- Entry for NavUseCase (Extension) -->
-
-        <varlistentry>
-          <term><literal>Navigate Use Case (Extension)</literal></term>
-
-          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-              format="GIF" align="center"
-              fileref="images/icons/navigate_stereotype.gif"/>
-            </imageobject></inlinemediaobject></guiicon> icon. If a
-              extension use case has been selected, this will navigate to
-              the use case property panel (see <xref
-                linkend="s1.ref.use_case"/>).</para></listitem>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Extension Points -->
@@ -2696,16 +2228,26 @@ It also rather bizarrely provides the
           <note><para>Extension points are listed by their location point
             rather than their name.</para></note>
 
-          <para>Where an extension point has been created (see below),
-            &button1; click will navigate to that relationship. &Button2; gives
-            a pop up menu with six entries.</para>
+            <para>
+Where an extension point has been created,
+&button1; Double Click
+will navigate to that relationship.
+&Button2; gives a pop up menu with two entries.
+<!-- Issue: 2149 -->
+</para>
 
           <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the selected
-              extension point. Grayed out if there are currently no extension
-              points.</para></listitem>
+              <listitem>
+                <para><literal>Add</literal>.
+<!-- Issue: 2150 -->
+<!-- HERE! This is so far Linus' work through this file has proceeded. -->
+The add extensionpoints window opens.
+</para>
+              </listitem>
 
-            <listitem><para><literal>Add</literal>. Add a new extension point
+            <listitem>
+                <para><literal>New</literal>.
+Add a new extension point
               before the current extension point in the list and navigate to
               it. The current extend relationship is added as the first in list
               of extending relationships of the new extension
@@ -2728,25 +2270,23 @@ It also rather bizarrely provides the
               the second part of the list in the middle of a model
               reorganisation. In the fullness of time, an &argouml; critic will
               warn of this problem.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. Where an extension
-              point has been created<literal>Add</literal>, this removes
-              it.</para>
-
-            <note><para>This deletes the connection to the extension point
-              extension point, but does not delete the extension point from the
-              model.</para></note></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more extension points listed, and the extension
-              point selected is not at the top. It is moved up
-              one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more extension points listed, and the extension
-              point selected is not at the bottom. It is moved down
-              one.</para></listitem> </itemizedlist></listitem>
+            </itemizedlist>
+          </listitem>
         </varlistentry>
+
+        <!-- Entry for condition -->
+
+        <varlistentry>
+          <term><literal>Condition</literal></term>
+
+          <listitem>
+            <para>Text area.
+Multi-line textual description of any condition 
+attached to the extend relationship.
+</para>
+          </listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
   </sect1>
@@ -2887,40 +2427,6 @@ It also rather bizarrely provides the
             the include.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -2937,7 +2443,10 @@ It also rather bizarrely provides the
             <emphasis>not</emphasis> just the diagram. To delete a
             include from the diagram, but keep it within the model,
             use the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+(Delete).
+</para>
+            </warning>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -3089,6 +2598,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "chapter" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->
