@@ -155,7 +155,7 @@ public class FigAssociation extends FigEdgeModelElement {
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
     super.setOwner(own);
-    if (!own.equals(oldOwner) && oldOwner instanceof MAssociation) {
+    if (oldOwner != null && !oldOwner.equals(own) && oldOwner instanceof MAssociation) {
         ((MAssociation)oldOwner).remove();
     }
 
