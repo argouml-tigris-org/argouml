@@ -34,6 +34,8 @@ public abstract class Generator {
       return generateAssociationEnd((AssociationEnd)o);
     if (o instanceof Element)
       return generateName(((Element)o).getName());
+    if (o instanceof Multiplicity)
+      return generateMultiplicity((Multiplicity)o);
     else
       return o.toString();
   }
@@ -47,6 +49,7 @@ public abstract class Generator {
   public abstract String generateTaggedValue(TaggedValue s);
   public abstract String generateAssociation(IAssociation a);
   public abstract String generateAssociationEnd(AssociationEnd ae);
+  public abstract String generateMultiplicity(Multiplicity m);
 
   
   public String generateExpression(Expression expr) {

@@ -38,6 +38,14 @@ public class Multiplicity {
   }
 
   ////////////////////////////////////////////////////////////////
+  // debugging methods
+
+  public String toString() {
+    // needs-more-work:should be no dependencies out of UML meta-model
+    return uci.uml.generate.GeneratorDisplay.Generate(this);
+  }
+  
+  ////////////////////////////////////////////////////////////////
   // utility methods
 
   public int max() {

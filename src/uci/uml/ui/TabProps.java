@@ -25,6 +25,7 @@ implements TabModelTarget {
   PropPanelInterface interfacePane = new PropPanelInterface();
   PropPanelAttr attrPane = new PropPanelAttr();
   PropPanelOper operPane = new PropPanelOper();
+  PropPanelAssoc assocPane = new PropPanelAssoc();
   //PropPanelAssoc assocPane = new PropPanelAssoc();
   JPanel _lastPanel = null;
   
@@ -71,7 +72,12 @@ implements TabModelTarget {
       add(operPane, BorderLayout.NORTH);
       _lastPanel = operPane;
     }
-    // association panel
+    else if (_target instanceof uci.uml.Foundation.Core.Association) {
+      _shouldBeEnabled = true;
+      assocPane.setTarget(_target);
+      add(assocPane, BorderLayout.NORTH);
+      _lastPanel = assocPane;
+    }
     //else if ...
     else {
       _shouldBeEnabled = false;

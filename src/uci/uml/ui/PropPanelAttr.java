@@ -152,7 +152,10 @@ implements DocumentListener, ItemListener {
     VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
     uci.uml.Foundation.Core.Attribute attr =
       (uci.uml.Foundation.Core.Attribute) _target;
-    attr.setVisibility(vk);
+    try {
+        attr.setVisibility(vk);
+    }
+    catch (PropertyVetoException ignore) { }
   }
 
   public void setTargetKeywords() {
@@ -164,7 +167,7 @@ implements DocumentListener, ItemListener {
     }
     uci.uml.Foundation.Core.Attribute attr =
       (uci.uml.Foundation.Core.Attribute) _target;
-    //try { 
+    try { 
       if (keys.equals("None")) {
 	attr.setOwnerScope(ScopeKind.INSTANCE);
 	attr.setChangeable(ChangeableKind.NONE);
@@ -186,10 +189,10 @@ implements DocumentListener, ItemListener {
 	attr.setOwnerScope(ScopeKind.CLASSIFIER);
 	attr.setChangeable(ChangeableKind.FROZEN);
       }
-      //}
-      //catch (PropertyVetoException pve) {
-      //  System.out.println("could not set keywords!");
-      // }
+      }
+      catch (PropertyVetoException pve) {
+        System.out.println("could not set keywords!");
+       }
   }
 
   public void setTargetType() {

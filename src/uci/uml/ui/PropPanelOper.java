@@ -149,7 +149,10 @@ implements ItemListener {
     VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
     uci.uml.Foundation.Core.Operation oper =
       (uci.uml.Foundation.Core.Operation) _target;
-    oper.setVisibility(vk);
+    try {
+        oper.setVisibility(vk);
+    }
+    catch (PropertyVetoException ignore) { }
   }
 
   public void setTargetKeywords() {
@@ -161,9 +164,12 @@ implements ItemListener {
     }
     uci.uml.Foundation.Core.Operation oper =
       (uci.uml.Foundation.Core.Operation) _target;
-    //try {
+    try {
     if (keys.equals("None")) {
-      oper.setOwnerScope(ScopeKind.INSTANCE);
+      try {
+        oper.setOwnerScope(ScopeKind.INSTANCE);
+      }
+      catch (PropertyVetoException ignore) { }
     }
     else if (keys.equals("static")) {
       oper.setOwnerScope(ScopeKind.CLASSIFIER);
@@ -186,10 +192,10 @@ implements ItemListener {
     else if (keys.equals("static final synchronized")) {
       oper.setOwnerScope(ScopeKind.CLASSIFIER);
     }
-    //}
-    //catch (PropertyVetoException pve) {
-    //  System.out.println("could not set keywords!");
-    // }
+    }
+    catch (PropertyVetoException pve) {
+      System.out.println("could not set keywords!");
+    }
   }
 
   public void setTargetType() {
