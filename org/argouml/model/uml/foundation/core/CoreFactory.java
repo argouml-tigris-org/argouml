@@ -45,6 +45,7 @@ import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationClass;
@@ -231,16 +232,27 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
 
-    /** Create an empty but initialized instance of a UML Component.
-     *
-     *  @return an initialized UML Component instance.
-     */
-    public MComponent createComponent() {
+	/** Create an empty but initialized instance of a UML Component.
+	 *
+	 *  @return an initialized UML Component instance.
+	 */
+	public MComponent createComponent() {
 	MComponent modelElement =
-	    MFactory.getDefaultFactory().createComponent();
+		MFactory.getDefaultFactory().createComponent();
 	super.initialize(modelElement);
 	return modelElement;
-    }
+	}
+
+	/** Create an empty but initialized instance of a UML ComponentInstance.
+	 *
+	 *  @return an initialized UML Component instance.
+	 */
+	public MComponentInstance createComponentInstance() {
+	MComponentInstance modelElement =
+		MFactory.getDefaultFactory().createComponentInstance();
+	super.initialize(modelElement);
+	return modelElement;
+	}
 
     /** Create an empty but initialized instance of a UML Constraint.
      *
