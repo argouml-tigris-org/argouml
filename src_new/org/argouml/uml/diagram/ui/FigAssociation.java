@@ -92,10 +92,13 @@ public class FigAssociation extends FigEdgeModelElement {
 
   protected ArrowHead sourceArrowHead, destArrowHead;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
 
-    protected FigAssociation() {
+
+    /**
+     * Don't call this constructor directly. It is public since this is necessary 
+     * for loading. Use the FigAssociation(Object, Layer) constructor instead!
+     */
+    public FigAssociation() {
    
     
         // lets use groups to construct the different text sections at the association
