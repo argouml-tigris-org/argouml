@@ -152,9 +152,10 @@ public class UMLInitialValueComboBox extends JComboBox
  */
     public void propertySet(final MElementEvent event) {
         String eventProp = event.getName();
-        Argo.log.info("Event Property = " + eventProp);
-        if(eventProp.equals("owner") || eventProp.equals("name")) return;
-        
+//        Argo.log.info("Event Property = " + eventProp);
+        if(eventProp.equals("owner") || eventProp.equals("name")) {
+            return;
+        }
         update();
     } 
     
@@ -171,8 +172,10 @@ public class UMLInitialValueComboBox extends JComboBox
         }
         else if (target instanceof MParameter){
             MBehavioralFeature feature = ((MParameter) target).getBehavioralFeature();
-            MClassifier classifier = (MClassifier) feature.getOwner();
-            classifier.setFeatures(classifier.getFeatures());
+            if (feature != null){
+                MClassifier classifier = (MClassifier) feature.getOwner();
+                classifier.setFeatures(classifier.getFeatures());
+            }
         }
     }   // ...end of update() method...
     
