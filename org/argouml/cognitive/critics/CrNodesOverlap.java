@@ -59,7 +59,6 @@ public class CrNodesOverlap extends CrUML {
 
   ////////////////////////////////////////////////////////////////
   // critiquing API
-  Rectangle nodeRects[] = new Rectangle[100];
 
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Diagram)) return NO_PROBLEM;
@@ -139,4 +138,6 @@ public class CrNodesOverlap extends CrUML {
   }
 
 } /* end class CrNodesOverlap */
+
+
 
