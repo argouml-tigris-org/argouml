@@ -167,7 +167,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     public abstract Object getNamespace();
 
     /**
-     * Contruct and add a new edge of the given kind and connect
+     * Construct and add a new edge of the given kind and connect
      * the given ports.
      *
      * @param fromPort   The originating port to connect
@@ -197,12 +197,11 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             // Create the UML connection of the given type between the
             // given model elements.
 	    // default aggregation (none)
-            connection =
-		UmlFactory.getFactory().buildConnection(
-                edgeClass, fromPort,
-				style, toPort,
-				null, unidirectional,
-                ProjectManager.getManager().getCurrentProject().getModel());
+            connection = UmlFactory.getFactory().buildConnection(
+                    edgeClass, fromPort,
+                    style, toPort,
+                    null, unidirectional,
+                    ProjectManager.getManager().getCurrentProject().getModel());
         } catch (UmlException ex) {
             // fail silently as we expect users to accidentally drop
             // on to wrong component
