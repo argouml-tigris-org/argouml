@@ -189,41 +189,44 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      *
      * <p>Set the namespace to that of the use case if possible.</p>
      *
-     * @param useCase  The owning use case for the extension point. May be
-     *                 <code>null</code>.
+     * @param modelElement  The owning use case for the extension point. May be
+     *                      <code>null</code>.
      *
      * @return         The new extension point or <code>null</code> if it
      *                 can't be created.
      */
-     public MExtensionPoint buildExtensionPoint(MUseCase useCase) {
+    public MExtensionPoint buildExtensionPoint(Object modelElement) {
+        if (!(modelElement instanceof MUseCase)) 
+            throw new IllegalArgumentException("An extension point can only be built on a use case");
 
-         MExtensionPoint extensionPoint = UmlFactory.getFactory().getUseCases().createExtensionPoint();
+        MUseCase useCase = (MUseCase)modelElement;
+        MExtensionPoint extensionPoint = UmlFactory.getFactory().getUseCases().createExtensionPoint();
 
-         // Set the owning use case if there is one given.
+        // Set the owning use case if there is one given.
 
-         if (useCase != null) {
+        if (useCase != null) {
 
-             extensionPoint.setUseCase(useCase);
+            extensionPoint.setUseCase(useCase);
 
-             // Set the namespace to that of the useCase if possible.
+            // Set the namespace to that of the useCase if possible.
              
-             // the usecase itself is a namespace...
-             extensionPoint.setNamespace(useCase);
+            // the usecase itself is a namespace...
+            extensionPoint.setNamespace(useCase);
 /*
              if (useCase.getNamespace() != null) {
                  extensionPoint.setNamespace(useCase.getNamespace());
              }
              */
-         }
+        }
 
-         // For consistency with attribute and operation, give it a default
-         // name and location
+        // For consistency with attribute and operation, give it a default
+        // name and location
 
-         extensionPoint.setName("newEP");
-         extensionPoint.setLocation("loc");
+        extensionPoint.setName("newEP");
+        extensionPoint.setLocation("loc");
 
-         return extensionPoint;
-     }
+        return extensionPoint;
+    }
      
       /**
      * <p>Build an include relationship.</p>

@@ -34,9 +34,12 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.ModelFacade;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -48,28 +51,17 @@ public class PropPanelLink extends PropPanelModelElement {
 
   ////////////////////////////////////////////////////////////////
   // contructors
-  public PropPanelLink() {
-    
-    super("Link Properties",_linkIcon, 2);
+    public PropPanelLink() {
+        super("Link Properties",_linkIcon, ConfigLoader.getTabPropsOrientation());
 
-    Class mclass = MLink.class;
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(getNameTextField(),1,0,0);
+        Class mclass = MLink.class;
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addLinkField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-    addField(getStereotypeBox(),2,0,0);
-
-
-    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
-    addLinkField(getNamespaceComboBox(),3,0,1);
-
-
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);   
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
-
-  
-  }
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);   
+        new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
+    }
 
      public void navigateNamespace() {
         Object target = getTarget();
