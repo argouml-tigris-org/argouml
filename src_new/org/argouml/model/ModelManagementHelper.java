@@ -27,8 +27,6 @@ package org.argouml.model;
 import java.util.Collection;
 import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * The interface for the helper for ModelManagement.<p>
@@ -42,7 +40,7 @@ public interface ModelManagementHelper {
      * @param ns is the namespace
      * @return Collection
      */
-    Collection getAllSubSystems(MNamespace ns);
+    Collection getAllSubSystems(Object ns);
 
     /**
      * Returns all namespaces found in this namespace and in its children
@@ -92,7 +90,7 @@ public interface ModelManagementHelper {
      * @param ns to process
      * @return Collection of surrounding namespaces.
      */
-    Collection getAllSurroundingNamespaces(MNamespace ns);
+    Collection getAllSurroundingNamespaces(Object ns);
 
     /**
      * @return a collection of all behavioralfeatures in the current project
@@ -112,7 +110,7 @@ public interface ModelManagementHelper {
      * @param theRootNamespace the given namespace to start from
      * @return the modelelement looked for, or null if not found
      */
-    MModelElement getElement(Vector path, Object theRootNamespace);
+    Object getElement(Vector path, Object theRootNamespace);
 
     /**
      * Finds the absolute path of a ModelElement. Ie the name of each
@@ -182,7 +180,7 @@ public interface ModelManagementHelper {
      * @param obj2 is another object.
      * @return true if obj1 corresponds to obj2, false otherwise.
      */
-    boolean corresponds(MModelElement obj1, MModelElement obj2);
+    boolean corresponds(Object obj1, Object obj2);
 
     /**
      * Checks if a child for some ownershiprelationship (as in a

@@ -29,22 +29,16 @@ import junit.framework.TestCase;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * @since Oct 26, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUMLModelElementClientDependencyListModel extends TestCase {
 
-    private MModelElement elem = null;
-    private int oldEventPolicy;
+    private Object elem = null;
     private UMLModelElementClientDependencyListModel model;
-    private MModel ns;
-    
+    private Object ns;
+
     /**
      * Constructor for TestUMLModelElementClientDependencyListModel.
      * @param arg0 is the name of the test case.
@@ -59,11 +53,8 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         ns = Model.getModelManagementFactory().createModel();
-        elem = (MModelElement) Model.getCoreFactory().buildClass(ns);
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+        elem = Model.getCoreFactory().buildClass(ns);
         model = new UMLModelElementClientDependencyListModel();
-        elem.addMElementListener(model);
         model.setTarget(elem);
     }
 
@@ -74,20 +65,18 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
         Model.getUmlFactory().delete(ns);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Tests the programmatically adding of multiple elements to the list.
      */
-    public void testAddMultiple() {      
-        MModelElement[] suppliers = new MModelElement[10];
-        Object[] dependencies = new MDependency[10];
+    public void testAddMultiple() {
+        Object[] suppliers = new Object[10];
+        Object[] dependencies = new Object[10];
         for (int i = 0; i < 10; i++) {
-            suppliers[i] = 
-                (MModelElement) Model.getCoreFactory().buildClass(ns);
-            dependencies[i] = 
+            suppliers[i] = Model.getCoreFactory().buildClass(ns);
+            dependencies[i] =
                 Model.getCoreFactory().buildDependency(elem, suppliers[i]);
         }
         assertEquals(10, model.getSize());
@@ -95,17 +84,16 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
         assertEquals(model.getElementAt(0), dependencies[0]);
         assertEquals(model.getElementAt(9), dependencies[9]);
     }
-    
+
     /**
-     * Test the removal of several elements from the list
+     * Test the removal of several elements from the list.
      */
     public void testRemoveMultiple() {
-        MModelElement[] suppliers = new MModelElement[10];
-        Object[] dependencies = new MDependency[10];
+        Object[] suppliers = new Object[10];
+        Object[] dependencies = new Object[10];
         for (int i = 0; i < 10; i++) {
-            suppliers[i] = 
-                (MModelElement) Model.getCoreFactory().buildClass(ns);
-            dependencies[i] = 
+            suppliers[i] = Model.getCoreFactory().buildClass(ns);
+            dependencies[i] =
                 Model.getCoreFactory().buildDependency(elem, suppliers[i]);
         }
         for (int i = 0; i < 5; i++) {

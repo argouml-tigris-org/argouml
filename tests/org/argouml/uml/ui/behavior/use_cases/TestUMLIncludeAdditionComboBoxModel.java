@@ -28,24 +28,19 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
-
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.use_cases.MInclude;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @since Nov 1, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
-    
-    private int oldEventPolicy;
-    private MUseCase[] additions;
+
+    private Object[] additions;
     private UMLIncludeAdditionComboBoxModel model;
-    private MInclude elem;
-    
+    private Object elem;
+
     /**
      * Constructor for TestUMLIncludeAdditionComboBoxModel.
      * @param arg0 is the name of the test case.
@@ -60,20 +55,17 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getUseCasesFactory().createInclude();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLIncludeAdditionComboBoxModel();
-        model.targetSet(new TargetEvent(this, "set", new Object[0], 
+        model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
-        additions = new MUseCase[10];
-        MModel m = Model.getModelManagementFactory().createModel();
+        additions = new Object[10];
+        Object m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
-        elem.setNamespace(m);
+        ModelFacade.setNamespace(elem, m);
         for (int i = 0; i < 10; i++) {
             additions[i] = Model.getUseCasesFactory().createUseCase();
-            m.addOwnedElement(additions[i]);
+            ModelFacade.addOwnedElement(m, additions[i]);
         }
-        
     }
 
     /**
@@ -85,10 +77,9 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
         for (int i = 0; i < 10; i++) {
             Model.getUmlFactory().delete(additions[i]);
         }
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setup.
      */
@@ -98,24 +89,27 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
         assertTrue(model.contains(additions[0]));
         assertTrue(model.contains(additions[9]));
     }
-    
+
     /**
      * Test setBase().
      */
     public void testSetBase() {
         // NSUML has base and addition for includes mixed up. We mix it back.
-        elem.setBase(additions[0]);
+        // Issue 2034.
+        // The following line was:
+        // ((MInclude) elem).setBase((MUseCase) additions[0]);
+        ModelFacade.setAddition(elem, additions[0]);
         assertTrue(model.getSelectedItem() == additions[0]);
     }
-    
+
     /**
      * Test setAddition() with null argument.
      */
     public void testSetBaseToNull() {
-        elem.setAddition(null);
+        ModelFacade.setAddition(elem, null);
         assertNull(model.getSelectedItem());
     }
-    
+
     /**
      * Test deletion.
      */
@@ -123,6 +117,5 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
         Model.getUmlFactory().delete(additions[9]);
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(additions[9]));
-    } 
-
+    }
 }

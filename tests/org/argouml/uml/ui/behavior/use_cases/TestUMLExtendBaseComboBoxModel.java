@@ -28,12 +28,10 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * @since Oct 31, 2002
@@ -41,11 +39,10 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class TestUMLExtendBaseComboBoxModel extends TestCase {
 
-    private int oldEventPolicy;
-    private MUseCase[] bases;
+    private Object[] bases;
     private UMLExtendBaseComboBoxModel model;
-    private MExtend elem;
-    
+    private Object elem;
+
     /**
      * Constructor for TestUMLExtendBaseComboBoxModel.
      * @param arg0 is the name of the test case.
@@ -60,17 +57,15 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getUseCasesFactory().createExtend();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLExtendBaseComboBoxModel();
-        bases = new MUseCase[10];
-        MModel m = Model.getModelManagementFactory().createModel();
+        bases = new Object[10];
+        Object m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
         for (int i = 0; i < 10; i++) {
             bases[i] = Model.getUseCasesFactory().createUseCase();
-            m.addOwnedElement(bases[i]);
+            ModelFacade.addOwnedElement(m, bases[i]);
         }
-        model.targetSet(new TargetEvent(this, "set", new Object[0], 
+        model.targetSet(new TargetEvent(this, "set", new Object[0],
                 new Object[] {elem}));
     }
 
@@ -83,10 +78,9 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
         for (int i = 0; i < 10; i++) {
             Model.getUmlFactory().delete(bases[i]);
         }
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setup.
      */
@@ -96,23 +90,23 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
         assertTrue(model.contains(bases[0]));
         assertTrue(model.contains(bases[9]));
     }
-    
+
     /**
      * Test setBase().
      */
     public void testSetBase() {
-        elem.setBase(bases[0]);
+        ModelFacade.setBase(elem, bases[0]);
         assertTrue(model.getSelectedItem() == bases[0]);
     }
-    
+
     /**
      * Test setBase() with null argument.
      */
     public void testSetBaseToNull() {
-        elem.setBase(null);
+        ModelFacade.setBase(elem, null);
         assertNull(model.getSelectedItem());
     }
-    
+
     /**
      * Test removing a Base.
      */
@@ -120,7 +114,5 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
         Model.getUmlFactory().delete(bases[9]);
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(bases[9]));
-    } 
-        
-        
+    }
 }

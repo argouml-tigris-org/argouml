@@ -63,7 +63,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         Project p = ProjectManager.getManager().getCurrentProject();
         model = new UMLModelElementStereotypeComboBoxModel();
         elem = Model.getCoreFactory().createClass();
-        MModel m = Model.getModelManagementFactory().createModel();
+        Object m = Model.getModelManagementFactory().createModel();
         p.setRoot(m);
         ModelFacade.setNamespace(elem, m);
         stereotypes = new MStereotype[10];

@@ -169,7 +169,7 @@ public class TestCoreFactory extends TestCase {
      * Test if deleting a classifier does also delete its association.
      */
     public void testDeleteClassifier1() {
-        MModel model = nsumlmodel.getModelManagementFactory().createModel();
+        MModel model = (MModel) nsumlmodel.getModelManagementFactory().createModel();
         Object class1 = nsumlmodel.getCoreFactory().buildClass(model);
         Object class2 = nsumlmodel.getCoreFactory().buildClass(model);
         MAssociation assoc =
@@ -189,7 +189,8 @@ public class TestCoreFactory extends TestCase {
      * Test if deleting a classifier does also delete its association.
      */
     public void testDeleteClassifierAssociation() {
-        MModel model = nsumlmodel.getModelManagementFactory().createModel();
+        MModel model =
+            (MModel) nsumlmodel.getModelManagementFactory().createModel();
         Object class1 = nsumlmodel.getCoreFactory().buildClass(model);
         Object class2 = nsumlmodel.getCoreFactory().buildClass(model);
         MAssociation assoc =
@@ -212,7 +213,8 @@ public class TestCoreFactory extends TestCase {
      * Test if deleting a class also deletes its dependency.
      */
     public void testDeleteModelelementDependency() {
-        MModel model = nsumlmodel.getModelManagementFactory().createModel();
+        MModel model =
+            (MModel) nsumlmodel.getModelManagementFactory().createModel();
         Object class1 = nsumlmodel.getCoreFactory().buildClass(model);
         Object class2 = nsumlmodel.getCoreFactory().buildClass(model);
         Object dep =
@@ -231,7 +233,8 @@ public class TestCoreFactory extends TestCase {
      * Test if deleting a class also deletes its dependency.
      */
     public void testDeleteModelelementDependencyClient() {
-        MModel model = nsumlmodel.getModelManagementFactory().createModel();
+        MModel model =
+            (MModel) nsumlmodel.getModelManagementFactory().createModel();
         Object class1 = nsumlmodel.getCoreFactory().buildClass(model);
         Object class2 = nsumlmodel.getCoreFactory().buildClass(model);
         MDependency dep =
@@ -253,7 +256,8 @@ public class TestCoreFactory extends TestCase {
      * Test if deleting a class also deletes its dependency.
      */
     public void testDeleteModelelementDependencySupplier() {
-        MModel model = nsumlmodel.getModelManagementFactory().createModel();
+        MModel model =
+            (MModel) nsumlmodel.getModelManagementFactory().createModel();
         Object class1 = nsumlmodel.getCoreFactory().buildClass(model);
         Object class2 = nsumlmodel.getCoreFactory().buildClass(model);
         MDependency dep =
@@ -276,7 +280,7 @@ public class TestCoreFactory extends TestCase {
      * Test if both associations were deleted in the process.
      */
     public void testDeleteModelelementClassSelfAssociations() {
-        MModel model = nsumlmodel.getModelManagementFactory().createModel();
+        MModel model = (MModel) nsumlmodel.getModelManagementFactory().createModel();
         Object class1 = nsumlmodel.getCoreFactory().buildClass(model);
         MAssociation assoc1 =
             (MAssociation)
@@ -308,7 +312,7 @@ public class TestCoreFactory extends TestCase {
 	    // Expected IllegalArgumentException seen
 	}
 	MModelElement elem =
-	    nsumlmodel.getModelManagementFactory().createModel();
+	    (MModel) nsumlmodel.getModelManagementFactory().createModel();
 	MConstraint con =
 	    (MConstraint) nsumlmodel.getCoreFactory().buildConstraint(elem);
 	assertNull("Namespace is unexpectly set", con.getNamespace());

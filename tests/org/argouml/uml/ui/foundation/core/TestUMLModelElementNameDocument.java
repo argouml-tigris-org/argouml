@@ -32,19 +32,15 @@ import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.model_management.MModel;
-
 /**
  * @since Oct 26, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUMLModelElementNameDocument extends TestCase {
-    
+
     private Object elem = null;
-    private int oldEventPolicy;
     private UMLModelElementNameDocument model;
-    private MModel ns;
+    private Object ns;
 
     /**
      * Constructor for TestUMLModelElementNameDocument.
@@ -61,9 +57,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
         super.setUp();
         ns = Model.getModelManagementFactory().createModel();
         elem = Model.getCoreFactory().buildClass(ns);
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        MockUMLUserInterfaceContainer cont = 
+        MockUMLUserInterfaceContainer cont =
             new MockUMLUserInterfaceContainer();
         //cont.setTarget(elem);
         model = new UMLModelElementNameDocument();
@@ -79,92 +73,85 @@ public class TestUMLModelElementNameDocument extends TestCase {
         Model.getUmlFactory().delete(elem);
         elem = null;
         ns = null;
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setName().
-     * 
+     *
      * @throws BadLocationException when the location is refused
      */
     public void testSetName() throws BadLocationException {
         ModelFacade.setName(elem, "test");
         assertEquals("test", model.getText(0, model.getLength()));
     }
-    
+
     /**
      * Test setName() for removal of a name.
-     * 
+     *
      * @throws BadLocationException when the location is refused
      */
-    public void testRemoveName() throws BadLocationException
-    {
+    public void testRemoveName() throws BadLocationException {
         ModelFacade.setName(elem, "test");
         ModelFacade.setName(elem, "");
         assertEquals("", model.getText(0, model.getLength()));
     }
-    
+
     /**
      * Test insertString().
-     * 
+     *
      * @throws BadLocationException when the location is refused
      */
     public void testInsertString()
-	throws BadLocationException
-    {
+	throws BadLocationException {
         ModelFacade.setName(elem, "");
     	model.insertString(0, "test", null);
         assertEquals("test", ModelFacade.getName(elem));
     }
-    
+
     /**
      * Test remove().
-     * 
+     *
      * @throws BadLocationException when the location is refused
      */
-    public void testRemoveString() 
-	throws BadLocationException
-    {
+    public void testRemoveString()
+	throws BadLocationException {
 	model.insertString(0, "test", null);
 	model.remove(0, model.getLength());
         assertEquals("", ModelFacade.getName(elem));
     }
-    
+
     /**
      * Test insertString() for appending.
-     * 
+     *
      * @throws BadLocationException when the location is refused
      */
     public void testAppendString()
-	throws BadLocationException
-    {
+	throws BadLocationException {
         ModelFacade.setName(elem, "test");
     	model.insertString(model.getLength(), "test", null);
         assertEquals("testtest", ModelFacade.getName(elem));
     }
-    
+
     /**
      * Test insertString() for inserting in the middle.
-     * 
+     *
      * @throws BadLocationException when the location is refused
      */
     public void testInsertStringHalfway()
-	throws BadLocationException
-    {
+	throws BadLocationException {
         ModelFacade.setName(elem, "test");
     	model.insertString(1, "test", null);
         assertEquals("ttestest", ModelFacade.getName(elem));
     }
-    
+
     /**
      * Test removing a string from the middle.
-     * 
+     *
      * @throws BadLocationException when the location is refused
      */
     public void testRemoveStringHalfway()
-	throws BadLocationException
-    {
+	throws BadLocationException {
         ModelFacade.setName(elem, "test");
     	model.remove(1, model.getLength() - 2);
         assertEquals("tt", ModelFacade.getName(elem));
