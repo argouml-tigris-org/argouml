@@ -10,6 +10,8 @@ import java.awt.event.*;
 /**
  * A <code>ProportionalLayout</code> which recognises a contained <code>Splitter</code> and 
  * automatically registers components either side to be resized.
+ *
+ * @author Bob Tarling
  */
 public class SplitterLayout extends ProportionalLayout {
 
@@ -19,7 +21,7 @@ public class SplitterLayout extends ProportionalLayout {
         this(HORIZONTAL);
     }
 
-    public SplitterLayout(int orientation) {
+    public SplitterLayout(Orientation orientation) {
         super(orientation);
         splitterMouseListener = new SplitterMouseListener();
     }

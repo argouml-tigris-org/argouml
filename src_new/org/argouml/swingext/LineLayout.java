@@ -9,17 +9,15 @@ import java.util.*;
 /**
  * Abstract class for a layout manager that sets all child components in a single row or single
  * column. PrefferedSize and MinimumSize are calculated.
+ *
+ * @author Bob Tarling
  */
 public abstract class LineLayout implements LayoutManager2 {
 
-    final static public int HORIZONTAL = Orientation.HORIZONTAL;
-    final static public int VERTICAL = Orientation.VERTICAL;
+    final static public Orientation HORIZONTAL = Horizontal.getInstance();
+    final static public Orientation VERTICAL = Vertical.getInstance();
 
     protected Orientation orientation;
-
-    public LineLayout(int orientation) {
-        this.orientation = Orientation.getOrientation(orientation);
-    }
 
     public LineLayout(Orientation orientation) {
         this.orientation = orientation;
@@ -46,7 +44,7 @@ public abstract class LineLayout implements LayoutManager2 {
                 }
             }
         }
-        preferredSize = DimensionUtilities.add(preferredSize, parent.getInsets());
+        preferredSize = DimensionUtility.add(preferredSize, parent.getInsets());
         return preferredSize;
     }
 
@@ -62,7 +60,7 @@ public abstract class LineLayout implements LayoutManager2 {
                 }
             }
         }
-        minimumSize = DimensionUtilities.add(minimumSize, parent.getInsets());
+        minimumSize = DimensionUtility.add(minimumSize, parent.getInsets());
         return minimumSize;
     }
 
@@ -79,7 +77,7 @@ public abstract class LineLayout implements LayoutManager2 {
                 }
             }
         }
-        maximumSize = DimensionUtilities.add(maximumSize, parent.getInsets());
+        maximumSize = DimensionUtility.add(maximumSize, parent.getInsets());
         return maximumSize;
     }
 

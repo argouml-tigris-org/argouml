@@ -11,6 +11,8 @@ import javax.swing.*;
  * another grid on the right until the full width of the container is filled. Once the containers
  * width is full it flows to the right no more, the grid depths increase instead so that the user
  * scrolls up/down instead of left/right.
+ *
+ * @author Bob Tarling
  */
 public class NewspaperLayout extends GridLayout2 {
 

@@ -9,6 +9,8 @@ import java.util.*;
 /**
  * Allows components to be a set as a proportion to their container or left as fixed size.
  * Components are resized accordingly when the parent is resized.
+ *
+ * @author Bob Tarling
  */
 
 public class ProportionalLayout extends LineLayout {
@@ -19,7 +21,7 @@ public class ProportionalLayout extends LineLayout {
         this(HORIZONTAL);
     }
 
-    public ProportionalLayout(int orientation) {
+    public ProportionalLayout(Orientation orientation) {
         super(orientation);
         componentTable = new Hashtable();
     }

@@ -8,6 +8,8 @@ import java.awt.*;
 /**
  * Same as the standard java class GridLayout but allows more flexability for sizing of columns
  * and rows.
+ *
+ * @author Bob Tarling
  */
 public class GridLayout2 implements LayoutManager, java.io.Serializable {
 

@@ -13,10 +13,12 @@ import java.util.*;
  * Components will line up with eachother by edge or follow a common central line.<br />
  * The gap to leave before the first component and the following gaps between each component can
  * be set to be set.
+ *
+ * @author Bob Tarling
  */
 public class SerialLayout extends LineLayout {
-    public final static int VERTICAL = Orientation.VERTICAL;
-    public final static int HORIZONTAL = Orientation.HORIZONTAL;
+    public final static Orientation VERTICAL = Vertical.getInstance();
+    public final static Orientation HORIZONTAL = Horizontal.getInstance();
 
     public final static int LEFTTORIGHT = 10;
     public final static int TOPTOBOTTOM = 10;
@@ -41,22 +43,6 @@ public class SerialLayout extends LineLayout {
     String position = WEST;
     int direction = LEFTTORIGHT;
     int alignment = TOP;
-
-    public SerialLayout(int orientation) {
-        this(orientation, WEST, LEFTTORIGHT, TOP);
-    }
-    public SerialLayout(int orientation, String position) {
-        this(orientation, position, LEFTTORIGHT, TOP);
-    }
-    public SerialLayout(int orientation, String position, int direction) {
-        this(orientation, position, direction, TOP);
-    }
-    public SerialLayout(int orientation, String position, int direction, int alignment) {
-        super(orientation);
-        this.position = position;
-        this.direction = direction;
-        this.alignment = alignment;
-    }
 
     public SerialLayout(Orientation orientation) {
         this(orientation, WEST, LEFTTORIGHT, TOP);
@@ -91,8 +77,9 @@ public class SerialLayout extends LineLayout {
             }
         }
         else {
-            if (orientation.isHorizontal()) loc = new Point(parent.getWidth() - insets.right, insets.top);
-            else                            loc = new Point(insets.left, parent.getHeight() - insets.bottom);
+            int lastUsablePosition = orientation.getLastUsablePosition(parent);
+            int firstUsableOffset = orientation.getFirstUsableOffset(parent);
+            loc = orientation.newPoint(lastUsablePosition, firstUsableOffset);
 
             int nComps = parent.getComponentCount();
             for (int i = 0 ; i < nComps ; i++) {
