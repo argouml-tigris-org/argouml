@@ -36,11 +36,11 @@ import java.awt.event.*;
 public class SettingsResourceBundle extends ListResourceBundle {
 
    static final Object[][] _contents = {
-        {"button_apply", "Apply" },  
-        {"button_cancel", "Cancel" },  
-        {"button_ok", "OK" },  
+        {"button.apply", "Apply" },  
+        {"button.cancel", "Cancel" },  
+        {"button.ok", "OK" },  
 
-        {"caption_settings", "Settings" },
+        {"caption.settings", "Settings" },
 
         {"label_edem", "Report Usage Statistics" },  
         {"label_email", "Email Address:" },  

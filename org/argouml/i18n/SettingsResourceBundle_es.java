@@ -37,9 +37,12 @@ import java.awt.event.*;
 public class SettingsResourceBundle_es extends ListResourceBundle {
 
    static final Object[][] _contents = {
-        {"button_ok", "OK" },
-        {"button_cancel", "Cancelar" },
-        {"button_apply", "Aplicar" },
+        {"button.apply", "Aplicar" },
+        {"button.cancel", "Cancelar" },
+        {"button.ok", "OK" },
+
+        {"caption.settings", "Configuraci\u00f3n" },
+
         {"tab_user", "Usuario" },
         {"label_user", "Nombre completo:" },
         {"label_email", "Direcci\u00f3n de correo:" },
@@ -49,7 +52,6 @@ public class SettingsResourceBundle_es extends ListResourceBundle {
         {"label_profile", "Informe de Tiempo de Carga" },
         {"tab_preferences", "Preferencias" },
         {"tab_environment", "I18N: Environment" },
-        {"caption_settings", "Configuraci\u00f3n" }
    };
 
      public Object[][] getContents() {

@@ -36,9 +36,12 @@ import java.awt.event.*;
 public class SettingsResourceBundle_ru extends ListResourceBundle {
 
    static final Object[][] _contents = {
-        {"button_ok", "OK" },  
-        {"button_cancel", "Отменить" },  
-        {"button_apply", "Применить" },  
+        {"button.apply", "Применить" },  
+        {"button.cancel", "Отменить" },  
+        {"button.ok", "OK" },  
+
+        {"caption.settings", "Установки" },
+
         {"tab_user", "Пользователь" },  
         {"label_user", "Полное имя:" },  
         {"label_email", "Адрес электронной почты:" },  
@@ -54,7 +57,6 @@ public class SettingsResourceBundle_ru extends ListResourceBundle {
 	{"label_fonts_big", "Большой" },
 	{"label_fonts_huge", "Гигантский" },
 
-        {"caption_settings", "Установки" },
    };
 
      public Object[][] getContents() {
