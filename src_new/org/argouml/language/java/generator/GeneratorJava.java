@@ -62,9 +62,17 @@ import org.argouml.uml.generator.*;
 public class GeneratorJava extends Generator
 implements PluggableNotation, FileGenerator {
 
-  private static final boolean VERBOSE_DOCS = false; // TODO: make it configurable
-  private static final boolean LF_BEFORE_CURLY = false; // TODO: make it configurable
+  /*
+    	 * 2002-06-09
+    	 * changed visibility of VERBOSE_DOCS and LF_BEFORE_CURLY to public instead of private
+    	 * Reason: needed for testing
+    	 * 2002-06-11
+    	 * removed VERBOSE_DOCS and LF_BEFORE_CURLY and changed them in configurable items (not yet implemented in GUI)
+    	 */
 
+    protected boolean _verboseDocs = false;
+    protected boolean _lfBeforeCurly = false;private static final boolean VERBOSE_DOCS = false; // TODO: make it configurable
+  
   private static GeneratorJava SINGLETON = new GeneratorJava();
 
   public static GeneratorJava getInstance() { return SINGLETON; }
@@ -89,7 +97,7 @@ implements PluggableNotation, FileGenerator {
     String name = cls.getName();
     if (name == null || name.length() == 0) return null;
     String filename = name + ".java";
-    if (!path.endsWith (fileSep)) path += fileSep;
+    if (!path.endsWith (FILE_SEPARATOR)) path += FILE_SEPARATOR;
 
     String packagePath = cls.getNamespace().getName();
     MNamespace parent = cls.getNamespace().getNamespace();
@@ -117,7 +125,7 @@ implements PluggableNotation, FileGenerator {
 	    if (index == -1)
   		  index = packagePath.length();
 
-      path += packagePath.substring (lastIndex+1, index) + fileSep;
+      path += packagePath.substring (lastIndex+1, index) + FILE_SEPARATOR;
       lastIndex = index;
 	  } while (true);
 
@@ -205,6 +213,10 @@ implements PluggableNotation, FileGenerator {
       sb.append(INDENT).append(s);
 
     sb.append(INDENT);
+    // 2002-07-14
+    // Jaap Branderhorst
+    // missing concurrency generation
+    sb.append(generateConcurrency(op));
     sb.append(generateAbstractness(op));
     sb.append(generateChangeability(op));
     sb.append(generateScope(op));
@@ -258,11 +270,22 @@ implements PluggableNotation, FileGenerator {
     sb.append(generateVisibility(attr));
     sb.append(generateScope(attr));
     sb.append(generateChangability(attr));
-    if (!MMultiplicity.M1_1.equals(attr.getMultiplicity())) {
-		String m = generateMultiplicity(attr.getMultiplicity());
-		if (m != null && m.trim().length() >0)
-	      sb.append(m).append(' ');
-	}
+    /*
+         * 2002-07-14
+         * Jaap Branderhorst
+         * Generating the multiplicity should not lead to putting the range in the generated code
+         * (no 0..1 as modifier)
+         * Therefore removed the multiplicity generation
+         * START OLD CODE
+         
+        if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
+        {
+        	String m = generateMultiplicity(attr.getMultiplicity());
+        	if (m != null && m.trim().length() > 0)
+        		sb.append(m).append(' ');
+        }
+        */
+        // END OLD CODE
 
     MClassifier type = attr.getType();
     if (type != null) sb.append(generateClassifierRef(type)).append(' ');
@@ -373,7 +396,7 @@ implements PluggableNotation, FileGenerator {
     }
 
     // add opening brace
-	  sb.append(LF_BEFORE_CURLY ? "\n{" : " {");
+	  sb.append(_lfBeforeCurly ? "\n{" : " {");
 
     // list tagged values for documentation
     String tv = generateTaggedValues (cls);
@@ -385,160 +408,402 @@ implements PluggableNotation, FileGenerator {
 
     return sb;
   }
+  
+    protected StringBuffer generateClassifierEnd(MClassifier cls)
+    {
+        StringBuffer sb = new StringBuffer();
+        if (cls instanceof MClass || cls instanceof MInterface)
+        {
+            if (_verboseDocs)
+            {
+                String classifierkeyword = null;
+                if (cls instanceof MClass)
+                {
+                    classifierkeyword = "class";
+                }
+                else
+                {
+                    classifierkeyword = "interface";
+                }
+                sb.append(
+                    "\n//end of "
+                        + classifierkeyword
+                        + " "
+                        + cls.getName()
+                        + "\n");
+            }
+            sb.append("}");
+        }
+        return sb;
+    }
+  /**
+     * Append the classifier end sequence to the prefix text specified. The
+     * classifier end sequence is the closing curly brace together with any
+     * comments marking the end of the classifier.
+     *
+     * This method is intented for package internal usage.
+     *
+     * @param sbPrefix the prefix text to be amended. It is OK to call append on
+     *                 this parameter.
+     * @param cls      the classifier for which to generate the classifier end
+     *                 sequence. Only classes and interfaces have a classifier
+     *                 end sequence.
+     * @param fPlain   if true, only the closing brace is generated. Otherwise,
+     *                 this may also generate some comments.
+     *
+     * @return the complete classifier code, i.e., sbPrefix plus the classifier
+     *         end sequence
+     */
+    StringBuffer appendClassifierEnd(
+        StringBuffer sbPrefix,
+        MClassifier cls,
+        boolean fPlain)
+    {
+        // 2002-07-11
+        // Jaap Branderhorst
+        // Was:
+        // START OLD CODE
+        // if (fPlain)
+        // {
+        // 	return sbPrefix.append("}");
+        // }
+        // else
+        // {
+        //	String sClassifierKeyword;
+        //	if (cls instanceof MClassImpl)
+        //		sClassifierKeyword = "class";
+        //	else
+        //		if (cls instanceof MInterface)
+        //			sClassifierKeyword = "interface";
+        //		else
+        //			return null; // actors, use cases etc.
+
+        //			sbPrefix.append("\n}");
+        //	if (_verboseDocs)
+        //	{
+        //		sbPrefix
+        //			.append(" /* end of ")
+        //			.append(sClassifierKeyword)
+        //			.append(" ")
+        //			.append(generateName(cls.getName()))
+        //			.append(" */"); 
+        //	}
+        //	sbPrefix.append('\n');
+        // END OLD CODE
+        // which caused problems due to the misuse of the boolean fplain. (verbosedocs has same semantics)
+        // To prevent backward compatibility problems i didnt remove the method but changed to:
+        sbPrefix.append(generateClassifierEnd(cls));
+
+        return sbPrefix;
+
+    }
 
   /**
-   * Append the classifier end sequence to the prefix text specified. The
-   * classifier end sequence is the closing curly brace together with any
-   * comments marking the end of the classifier.
-   *
-   * This method is intented for package internal usage.
-   *
-   * @param sbPrefix the prefix text to be amended. It is OK to call append on
-   *                 this parameter.
-   * @param cls      the classifier for which to generate the classifier end
-   *                 sequence. Only classes and interfaces have a classifier
-   *                 end sequence.
-   * @param fPlain   if true, only the closing brace is generated. Otherwise,
-   *                 this may also generate some comments.
-   *
-   * @return the complete classifier code, i.e., sbPrefix plus the classifier
-   *         end sequence
-   */
-  StringBuffer appendClassifierEnd (StringBuffer sbPrefix,
-                                    MClassifier  cls,
-                                    boolean      fPlain) {
-    if (fPlain) {
-      return sbPrefix.append ("}");
-    }
-    else {
-      String sClassifierKeyword;
-      if (cls instanceof MClassImpl) sClassifierKeyword = "class";
-      else if (cls instanceof MInterface) sClassifierKeyword = "interface";
-      else return null; // actors, use cases etc.
-
-      sbPrefix.append ("\n}");
-      if (VERBOSE_DOCS) {
-        sbPrefix.append (" /* end of ")
-                .append (sClassifierKeyword)
-                .append (" ")
-                .append (generateName (cls.getName()))
-                .append (" */");
-      }
-      sbPrefix.append ('\n');
-
-      return sbPrefix;
-    }
-  }
-
-  public String generateClassifier(MClassifier cls) {
-    StringBuffer sb = generateClassifierStart (cls);
-    if (sb == null) return ""; // not a class or interface
-
-    String tv = null;  // helper for tagged values
-
-    // add attributes
-    Collection strs = MMUtil.SINGLETON.getAttributes(cls);
-    if (strs != null && !strs.isEmpty()) {
-      sb.append ('\n');
-      if (VERBOSE_DOCS && cls instanceof MClassImpl) {
-        sb.append (INDENT)
-          .append("// Attributes\n");
-      }
-
-      Iterator strEnum = strs.iterator();
-      while (strEnum.hasNext()) {
-        MStructuralFeature sf = (MStructuralFeature) strEnum.next();
-
-        sb.append (generate (sf));
-
-        tv = generateTaggedValues (sf);
-        if (tv != null && tv.length() > 0) {
-          sb.append (INDENT)
-            .append (tv);
+     * Generates code for a classifier. In case of Java code is generated for classes and interfaces only at the moment.
+     * @see org.argouml.application.api.NotationProvider#generateClassifier(MClassifier)
+     */
+    public String generateClassifier(MClassifier cls)
+    {
+        /* 
+         * 2002-07-11
+         * Jaap Branderhorst
+         * To prevent generation of not requested whitespace etc. the method is reorganized.
+         * First the start of the classifier is generated.
+         * Next the body (method).
+         * Then the end of the classifier.
+         * The last step is to concatenate everything.
+         * Done this because if the body was empty there were still linefeeds.
+         * Start old code:
+        StringBuffer sb = generateClassifierStart(cls);
+        if (sb == null)
+        	return ""; // not a class or interface
+        
+        String tv = null; // helper for tagged values
+        
+        // add attributes
+        Collection strs = MMUtil.SINGLETON.getAttributes(cls);
+        // 
+         // 2002-06-08
+         // Jaap Branderhorst
+         // Bugfix: strs is never null. Should check for isEmpty instead
+         // old code:
+         // if (strs != null)
+         // new code:
+         //
+        if (!strs.isEmpty())
+        {
+        	sb.append('\n');
+        	if (_verboseDocs && cls instanceof MClassImpl)
+        	{
+        		sb.append(INDENT).append("// Attributes\n");
+        	}
+        
+        	Iterator strEnum = strs.iterator();
+        	while (strEnum.hasNext())
+        	{
+        		MStructuralFeature sf = (MStructuralFeature) strEnum.next();
+        
+        		sb.append(generate(sf));
+        
+        		tv = generateTaggedValues(sf);
+        		if (tv != null && tv.length() > 0)
+        		{
+        			sb.append(INDENT).append(tv);
+        		}
+        	}
         }
-      }
+        
+        // add attributes implementing associations
+        Collection ends = cls.getAssociationEnds();
+        if (ends != null)
+        {
+        	sb.append('\n');
+        	if (_verboseDocs && cls instanceof MClassImpl)
+        	{
+        		sb.append(INDENT).append("// Associations\n");
+        	}
+        
+        	Iterator endEnum = ends.iterator();
+        	while (endEnum.hasNext())
+        	{
+        		MAssociationEnd ae = (MAssociationEnd) endEnum.next();
+        		MAssociation a = ae.getAssociation();
+        
+        		sb.append(generateAssociationFrom(a, ae));
+        
+        		tv = generateTaggedValues(a);
+        		if (tv != null && tv.length() > 0)
+        		{
+        			sb.append(INDENT).append(tv);
+        		}
+        	}
+        }
+        
+        // add operations
+        // needs-more-work: constructors
+        Collection behs = MMUtil.SINGLETON.getOperations(cls);
+        // 
+         // 2002-06-08
+         // Jaap Branderhorst
+         // Bugfix: behs is never null. Should check for isEmpty instead
+         // old code:
+         // if (behs != null)
+         // new code:
+         //
+        if (!behs.isEmpty())
+        {
+        	sb.append('\n');
+        	if (_verboseDocs)
+        	{
+        		sb.append(INDENT).append("// Operations\n");
+        	}
+        	Iterator behEnum = behs.iterator();
+        
+        	while (behEnum.hasNext())
+        	{
+        		MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
+        
+        		sb.append(generate(bf));
+        
+        		tv = generateTaggedValues((MModelElement) bf);
+        
+        		if ((cls instanceof MClassImpl)
+        			&& (bf instanceof MOperation)
+        			&& (!((MOperation) bf).isAbstract()))
+        		{
+        			if (_lfBeforeCurly)
+        				sb.append('\n').append(INDENT);
+        			else
+        				sb.append(' ');
+        			sb.append('{');
+        
+        			if (tv.length() > 0)
+        			{
+        				sb.append('\n').append(INDENT).append(tv);
+        			}
+        
+        			// there is no ReturnType in behavioral feature (nsuml)
+        			sb.append('\n').append(generateMethodBody((MOperation) bf)).append(
+        				INDENT).append(
+        				"}\n");
+        		}
+        		else
+        		{
+        			sb.append(";\n");
+        			if (tv.length() > 0)
+        			{
+        				sb.append(INDENT).append(tv).append('\n');
+        			}
+        		}
+        	}
+        }
+        
+        sb = appendClassifierEnd(sb, cls, false);
+        
+        return sb.toString();
+         start new code: */
+        StringBuffer returnValue = new StringBuffer();
+        StringBuffer start = generateClassifierStart(cls);
+        if (start.length() > 0)
+        {
+            StringBuffer body = generateClassifierBody(cls);
+            StringBuffer end = generateClassifierEnd(cls);
+            returnValue.append(start);
+            if (body.length() > 0)
+            {
+                returnValue.append("\n");
+                returnValue.append(body);
+                if (_lfBeforeCurly)
+                {
+                    returnValue.append("\n");
+                }
+            }
+            returnValue.append(end);
+        }
+        return returnValue.toString();
     }
 
-    // add attributes implementing associations
-    Collection ends = cls.getAssociationEnds();
-    if (ends != null && !ends.isEmpty()) {
-      sb.append ('\n');
-      if (VERBOSE_DOCS && cls instanceof MClassImpl) {
-        sb.append (INDENT)
-          .append ("// Associations\n");
-      }
+    /**
+     * Generates the body of a class or interface.
+     * @param cls
+     * @return StringBuffer
+     */
+    protected StringBuffer generateClassifierBody(MClassifier cls)
+    {
+        StringBuffer sb = new StringBuffer();
+        if (cls instanceof MClass || cls instanceof MInterface)
+        {
+            String tv = null; // helper for tagged values
 
-      Iterator endEnum = ends.iterator();
-      while (endEnum.hasNext()) {
-        MAssociationEnd ae = (MAssociationEnd) endEnum.next();
-        MAssociation a = ae.getAssociation();
+            // add attributes
+            Collection strs = MMUtil.SINGLETON.getAttributes(cls);
+            // 
+            // 2002-06-08
+            // Jaap Branderhorst
+            // Bugfix: strs is never null. Should check for isEmpty instead
+            // old code:
+            // if (strs != null)
+            // new code:
+            //
+            if (!strs.isEmpty())
+            {
+                sb.append('\n');
+                if (_verboseDocs && cls instanceof MClassImpl)
+                {
+                    sb.append(INDENT).append("// Attributes\n");
+                }
 
-        sb.append (generateAssociationFrom (a, ae));
+                Iterator strEnum = strs.iterator();
+                while (strEnum.hasNext())
+                {
+                    MStructuralFeature sf = (MStructuralFeature) strEnum.next();
 
-        tv = generateTaggedValues (a);
-        if (tv != null && tv.length() > 0) {
-          sb.append (INDENT)
-            .append (tv);
+                    sb.append(generate(sf));
+
+                    tv = generateTaggedValues(sf);
+                    if (tv != null && tv.length() > 0)
+                    {
+                        sb.append(INDENT).append(tv);
+                    }
+                }
+            }
+
+            // add attributes implementing associations
+            Collection ends = cls.getAssociationEnds();
+            // 2002-06-08
+            // Jaap Branderhorst
+            // Bugfix: ends is never null. Should check for isEmpty instead
+            // old code:
+            // if (ends != null)
+            // new code:
+            if (!ends.isEmpty())
+            {
+                sb.append('\n');
+                if (_verboseDocs && cls instanceof MClassImpl)
+                {
+                    sb.append(INDENT).append("// Associations\n");
+                }
+
+                Iterator endEnum = ends.iterator();
+                while (endEnum.hasNext())
+                {
+                    MAssociationEnd ae = (MAssociationEnd) endEnum.next();
+                    MAssociation a = ae.getAssociation();
+
+                    sb.append(generateAssociationFrom(a, ae));
+
+                    tv = generateTaggedValues(a);
+                    if (tv != null && tv.length() > 0)
+                    {
+                        sb.append(INDENT).append(tv);
+                    }
+                }
+            }
+
+            // add operations
+            // needs-more-work: constructors
+            Collection behs = MMUtil.SINGLETON.getOperations(cls);
+            // 
+            // 2002-06-08
+            // Jaap Branderhorst
+            // Bugfix: behs is never null. Should check for isEmpty instead
+            // old code:
+            // if (behs != null)
+            // new code:
+            //
+            if (!behs.isEmpty())
+            {
+                sb.append('\n');
+                if (_verboseDocs)
+                {
+                    sb.append(INDENT).append("// Operations\n");
+                }
+                Iterator behEnum = behs.iterator();
+
+                while (behEnum.hasNext())
+                {
+                    MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
+
+                    sb.append(generate(bf));
+
+                    tv = generateTaggedValues((MModelElement) bf);
+
+                    if ((cls instanceof MClassImpl)
+                        && (bf instanceof MOperation)
+                        && (!((MOperation) bf).isAbstract()))
+                    {
+                        if (_lfBeforeCurly)
+                            sb.append('\n').append(INDENT);
+                        else
+                            sb.append(' ');
+                        sb.append('{');
+
+                        if (tv.length() > 0)
+                        {
+                            sb.append('\n').append(INDENT).append(tv);
+                        }
+
+                        // there is no ReturnType in behavioral feature (nsuml)
+                        sb
+                            .append('\n')
+                            .append(generateMethodBody((MOperation) bf))
+                            .append(INDENT)
+                            .append("}\n");
+                    }
+                    else
+                    {
+                        sb.append(";\n");
+                        if (tv.length() > 0)
+                        {
+                            sb.append(INDENT).append(tv).append('\n');
+                        }
+                    }
+                }
+            }
         }
-      }
-    }
+        return sb;
 
-    // add operations
-    // needs-more-work: constructors
-    Collection behs = MMUtil.SINGLETON.getOperations(cls);
-    if (behs != null && !behs.isEmpty()) {
-      sb.append ('\n');
-      if (VERBOSE_DOCS) {
-        sb.append (INDENT)
-          .append ("// Operations\n");
-      }
-      Iterator behEnum = behs.iterator();
-
-      while (behEnum.hasNext()) {
-        MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
-
-        sb.append (generate (bf));
-
-        tv = generateTaggedValues ((MModelElement)bf);
-
-        if ((cls instanceof MClassImpl) &&
-            (bf instanceof MOperation) &&
-            (! ((MOperation) bf).isAbstract())) {
-          if (LF_BEFORE_CURLY)
-            sb.append ('\n').append (INDENT);
-          else
-            sb.append (' ');
-          sb.append ('{');
-
-          if (tv.length() > 0) {
-            sb.append ('\n')
-              .append (INDENT)
-              .append (tv);
-          }
-
-          // there is no ReturnType in behavioral feature (nsuml)
-          sb.append ('\n')
-            .append (generateMethodBody ((MOperation) bf))
-            .append (INDENT)
-            .append ("}\n");
-        }
-        else {
-          sb.append (";\n");
-          if (tv.length() > 0) {
-            sb.append (INDENT)
-              .append (tv)
-              .append ('\n');
-          }
-        }
-      }
-    }
-
-    sb = appendClassifierEnd (sb, cls, false);
-
-    return sb.toString();
-  }
-
-  /**
+    }  /**
    * Generate the body of a method associated with the given operation. This
    * assumes there's at most one method associated!
    *
@@ -597,7 +862,17 @@ implements PluggableNotation, FileGenerator {
     Iterator iter = tvs.iterator();
     String s = null;
     while(iter.hasNext()) {
-        s = generateTaggedValue((MTaggedValue)iter.next());
+        /*
+         * 2002-11-07
+         * Jaap Branderhorst
+         * Was
+         * s = generateTaggedValue((MTaggedValue) iter.next());
+         * which caused problems because the test tags (i.e. tags with name <NotationName.getName()>+TEST_SUFFIX)
+         * were still generated.
+         * New code:
+         */
+        s = generate((MTaggedValue) iter.next());
+        // end new code
         if (s != null && s.length() > 0) {
 			if (first) {
         /*
@@ -1065,7 +1340,20 @@ implements PluggableNotation, FileGenerator {
     return "";
   }
 
-  public String generateMultiplicity(MMultiplicity m) {
+    /**
+     * Generates "synchronized" keyword for guarded operations.
+     * @param op The operation
+     * @return String The synchronized keyword if the operation is guarded, else ""
+     */
+    public String generateConcurrency(MOperation op)
+    {
+        if (op.getConcurrency() != null
+            && op.getConcurrency().getValue() == MCallConcurrencyKind._GUARDED)
+        {
+            return "synchronized ";
+        }
+        return "";
+    }  public String generateMultiplicity(MMultiplicity m) {
     if (m == null) { return ""; }
     if (MMultiplicity.M0_N.equals(m)) return ANY_RANGE;
     Collection v = m.getRanges();
@@ -1233,6 +1521,40 @@ implements PluggableNotation, FileGenerator {
     public String getModuleVersion() { return "0.9.4"; }
     public String getModuleKey() { return "module.language.java.generator"; }
 
+/**
+     * Returns the _lfBeforeCurly.
+     * @return boolean
+     */
+    public boolean isLfBeforeCurly()
+    {
+        return _lfBeforeCurly;
+    }
 
-} /* end class GeneratorJava */
+    /**
+     * Returns the _verboseDocs.
+     * @return boolean
+     */
+    public boolean isVerboseDocs()
+    {
+        return _verboseDocs;
+    }
 
+    /**
+     * Sets the _lfBeforeCurly.
+     * @param _lfBeforeCurly The _lfBeforeCurly to set
+     */
+    public void setLfBeforeCurly(boolean _lfBeforeCurly)
+    {
+        this._lfBeforeCurly = _lfBeforeCurly;
+    }
+
+    /**
+     * Sets the _verboseDocs.
+     * @param _verboseDocs The _verboseDocs to set
+     */
+    public void setVerboseDocs(boolean _verboseDocs)
+    {
+        this._verboseDocs = _verboseDocs;
+    }
+
+}
