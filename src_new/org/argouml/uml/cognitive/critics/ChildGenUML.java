@@ -54,6 +54,7 @@ public class ChildGenUML implements ChildGenerator {
 
     /** Reply a java.util.Enumeration of the children of the given Object */
     public Enumeration gen(Object o) {
+        
 	if (o instanceof Project) {
 	    Project p = (Project) o;
 	    return new EnumerationComposite(p.getUserDefinedModels().elements(),
@@ -76,11 +77,7 @@ public class ChildGenUML implements ChildGenerator {
 	    return new EnumerationSingle(me);  //wasteful!
 	}
 
-	if (ModelFacade.isAModelElement(o)) {
-	    Vector behavior = new Vector(ModelFacade.getBehaviors(o));
-	    if (behavior != null) return behavior.elements();
-	}
-
+	
 	// TODO: associationclasses fit both of the next 2 cases
 
 	if (ModelFacade.isAClassifier(o)) {
@@ -114,6 +111,11 @@ public class ChildGenUML implements ChildGenerator {
 	if (ModelFacade.isACompositeState(o)) {
 	    Vector substates = new Vector(ModelFacade.getSubvertices(o));
 	    if (substates != null) return substates.elements();
+	}
+
+        if (ModelFacade.isAModelElement(o)) {
+	    Vector behavior = new Vector(ModelFacade.getBehaviors(o));
+	    if (behavior != null) return behavior.elements();
 	}
 
 	// tons more cases
