@@ -5,6 +5,7 @@ package org.argouml.swingext;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.border.Border;
 
 /**
  * Various utilities to aid components that are aware of their horizontal/vertical orientation.
@@ -297,7 +298,7 @@ public class Vertical extends Orientation {
      * @return The resulting <code>ArrowButton</code>.
      */
     public ArrowButton getStartArrowButton() {
-        return new ArrowButton(ArrowButton.NORTH);
+        return new ArrowButton(ArrowButton.NORTH, (Border)null);
     }
     
     /**
@@ -306,6 +307,6 @@ public class Vertical extends Orientation {
      * @return The resulting <code>ArrowButton</code>.
      */
     public ArrowButton getEndArrowButton() {
-        return new ArrowButton(ArrowButton.SOUTH);
+        return new ArrowButton(ArrowButton.SOUTH, (Border)null);
     }
 }

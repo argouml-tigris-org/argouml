@@ -5,6 +5,7 @@ package org.argouml.swingext;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.border.Border;
 
 /**
  * A horizontal implementation of  <code>Orientation</code>.
@@ -410,7 +411,7 @@ public class Horizontal extends Orientation {
      * @return The resulting <code>ArrowButton</code>.
      */
     public ArrowButton getStartArrowButton() {
-        return new ArrowButton(ArrowButton.WEST);
+        return new ArrowButton(ArrowButton.WEST, (Border)null);
     }
     
     /**
@@ -419,6 +420,6 @@ public class Horizontal extends Orientation {
      * @return The resulting <code>ArrowButton</code>.
      */
     public ArrowButton getEndArrowButton() {
-        return new ArrowButton(ArrowButton.EAST);
+        return new ArrowButton(ArrowButton.EAST, (Border)null);
     }
 }
