@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -155,7 +155,7 @@ public class ToDoByDecision extends ToDoPerspective
     //   protected boolean isNeeded(ToDoPseudoNode node) {
     //     PredicateDecision pd = (PredicateDecision) node.getPredicate();
     //     Decision d = pd.getDecision();
-    //     java.util.Enumeration items = _root.elements();
+    //     Enumeration items = _root.elements();
     //     while (items.hasMoreElements()) {
     //       ToDoItem item = (ToDoItem) items.nextElement();
     //       if (item.getPoster().supports(d)) return true;
@@ -170,9 +170,9 @@ public class ToDoByDecision extends ToDoPerspective
     //       addNodeIfNeeded(Decision.UNSPEC, newNodes);
     //     }
     //     else {
-    //       java.util.Enumeration enum = decs.elements();
-    //       while (enum.hasMoreElements()) {
-    // 	Decision itemDec = (Decision) enum.nextElement();
+    //       Enumeration elems = decs.elements();
+    //       while (elems.hasMoreElements()) {
+    // 	Decision itemDec = (Decision) elems.nextElement();
     // 	addNodeIfNeeded(itemDec, newNodes);
     //       }
     //     }
@@ -181,9 +181,9 @@ public class ToDoByDecision extends ToDoPerspective
 
 
     //   protected void addNodeIfNeeded(Decision itemDec, Vector newNodes) {
-    //     java.util.Enumeration enum2 = _pseudoNodes.elements();
-    //     while (enum2.hasMoreElements()) {
-    //       ToDoPseudoNode node = (ToDoPseudoNode) enum2.nextElement();
+    //     Enumeration elems = _pseudoNodes.elements();
+    //     while (elems.hasMoreElements()) {
+    //       ToDoPseudoNode node = (ToDoPseudoNode) elems.nextElement();
     //       PredicateDecision pd = (PredicateDecision) node.getPredicate();
     //       Decision nodeDec = pd.getDecision();
     //       //if (nodeDec.getName().equals(itemDec.getName())) return;
