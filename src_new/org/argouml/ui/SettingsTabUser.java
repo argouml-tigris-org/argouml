@@ -23,16 +23,18 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
+
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 import org.argouml.application.ArgoVersion;
-import org.argouml.application.api.*;
-import org.argouml.application.helpers.*;
-import org.argouml.kernel.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import java.util.*;
-import org.tigris.gef.util.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+import org.argouml.application.api.SettingsTabPanel;
+import org.argouml.application.helpers.SettingsTabHelper;
 
 /** Action object for handling Argo settings
  *

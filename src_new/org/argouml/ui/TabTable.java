@@ -24,14 +24,8 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import org.argouml.uml.ui.TabProps;
 
-import org.argouml.uml.ui.*;
 
 public class TabTable extends TabProps {
 

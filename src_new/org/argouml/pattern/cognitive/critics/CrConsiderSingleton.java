@@ -28,15 +28,14 @@
 
 package org.argouml.pattern.cognitive.critics;
 
-import java.util.*;
+import java.util.Iterator;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.ModelFacade;
 
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
-import org.argouml.uml.*;
-import org.argouml.uml.cognitive.critics.*;
 
 // Use Model through ModelFacade.
-import org.argouml.model.ModelFacade;
+import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * <p>A critic to detect when a class can never have more than one instance (of

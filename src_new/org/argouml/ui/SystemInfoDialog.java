@@ -28,15 +28,22 @@
 
 package org.argouml.ui;
 
-import java.util.*;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.datatransfer.*;
-
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 
 /**
  * Display System Information (JDK Version, JDK Vendor, etc).
@@ -77,19 +84,19 @@ public class SystemInfoDialog extends JDialog {
 
 	_tabs.addTab("System Information", new JScrollPane(_info));
 
-	_runGCButton.addActionListener(new java.awt.event.ActionListener() 
+	_runGCButton.addActionListener(new ActionListener() 
 	    {
 		public void actionPerformed(ActionEvent e) {
 		    runGC_actionPerformed(e);
 		}
 	    });
-	_copyButton.addActionListener(new java.awt.event.ActionListener() 
+	_copyButton.addActionListener(new ActionListener() 
 	    {
 		public void actionPerformed(ActionEvent e) {
 		    copy_actionPerformed(e);
 		}
 	    });
-	_cancelButton.addActionListener(new java.awt.event.ActionListener() 
+	_cancelButton.addActionListener(new ActionListener() 
 	    {
 		public void actionPerformed(ActionEvent e) {
 		    cancel_actionPerformed(e);

@@ -24,8 +24,8 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Dimension;
+import javax.swing.JPanel;
 
 /** A Swing panel that displays nothing, but takes up a specified
  *  amount of space.  Used to make panels with GridBagLayouts look

@@ -28,6 +28,7 @@
 
 package org.argouml.ui;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -354,7 +355,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
 
         _reexpanding = true;
 
-        java.util.Enumeration enum = getExpandedPaths().elements();
+        Enumeration enum = getExpandedPaths().elements();
         while (enum.hasMoreElements()) {
             TreePath path = (TreePath) enum.nextElement();
             expandPath(path);

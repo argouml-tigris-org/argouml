@@ -23,10 +23,12 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import java.awt.event.*;
  
+import java.awt.event.ActionEvent;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+import org.argouml.uml.ui.UMLAction;
+
 /** Action for handling Argo configuration save
 *
 * @author Thierry Lach

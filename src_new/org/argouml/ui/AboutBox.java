@@ -23,18 +23,24 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.ui;
-import org.argouml.application.api.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.ListIterator;
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.event.*;
-import javax.swing.tree.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-
-import org.tigris.gef.util.*;
+import javax.swing.tree.*;
+import org.argouml.application.api.AboutTabPanel;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.PluggableAboutTab;
+import org.argouml.util.Tools;
 
 /** This is what you see after you click the About
  * button in the toolbar.
@@ -74,7 +80,7 @@ public class AboutBox extends JDialog {
 
 	StringBuffer versionBuf = new StringBuffer();
 	versionBuf.append("\n--- Generated version information: ---\n");
-	versionBuf.append(org.argouml.util.Tools.getVersionInfo());
+	versionBuf.append(Tools.getVersionInfo());
 	versionBuf.append(
 			  "\n" +
 			  "Intended for use with:\n" +

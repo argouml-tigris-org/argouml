@@ -24,10 +24,14 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.border.EtchedBorder;
 
 public class StatusBar extends JPanel implements Runnable {
     ////////////////////////////////////////////////////////////////

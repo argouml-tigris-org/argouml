@@ -28,6 +28,7 @@ package org.argouml.ui;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -40,11 +41,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.ui.CriticBrowserDialog;
-import org.argouml.cognitive.ui.AddToDoItemDialog;
-import org.argouml.cognitive.ui.DesignIssuesDialog;
-import org.argouml.cognitive.ui.DismissToDoItemDialog;
-import org.argouml.cognitive.ui.GoalsDialog;
-import org.argouml.cognitive.ui.TabToDo;
+import org.argouml.cognitive.ui.*;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.ActionUtilities;
@@ -55,6 +52,7 @@ import org.argouml.uml.diagram.ui.SelectionWButtons;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.CmdPrint;
 import org.tigris.gef.base.Diagram;
+
 
 public class Actions implements TargetListener {
     
@@ -112,7 +110,7 @@ public class Actions implements TargetListener {
      *
      */
     public static void updateAllEnabled() {
-	java.util.Enumeration actions = _allActions.elements();
+	Enumeration actions = _allActions.elements();
 	while (actions.hasMoreElements()) {
 	    UMLAction a = (UMLAction) actions.nextElement();
 	    a.updateEnabled();

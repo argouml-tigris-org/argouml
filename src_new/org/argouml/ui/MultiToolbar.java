@@ -30,8 +30,9 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import javax.swing.JComponent;
 
 public class MultiToolbar extends JComponent {	
     

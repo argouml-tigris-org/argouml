@@ -24,10 +24,11 @@
 
 package org.argouml.ui;
 
-import java.util.*;
-import java.lang.ref.*;
-
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.List;
 import org.argouml.model.ModelFacade;
+
 
 /**
 *    This class implements a navigation history

@@ -22,15 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
 package org.argouml.ui;
 
-import java.awt.*;
-import javax.swing.*;
-
-import org.tigris.gef.presentation.*;
-
-import org.argouml.cognitive.*;
+import javax.swing.Icon;
+import org.argouml.cognitive.ToDoItem;
+import org.tigris.gef.presentation.Fig;
 
 public interface Clarifier extends Icon {
     public void setFig(Fig f);
