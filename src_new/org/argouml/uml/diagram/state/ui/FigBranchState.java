@@ -37,17 +37,19 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 //import org.tigris.gef.presentation.FigPoly;
 
-/** Class to display graphics for a UML Choice State in a diagram. */
-
+/** 
+ * Class to display graphics for a UML Choice State in a diagram. 
+ * 
+ */
 public class FigBranchState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private int x = 10;
-    private int y = 10;
-    private int width = 20;
-    private int height = 20;
+    private static final int X = 10;
+    private static final int Y = 10;
+    private static final int WIDTH = 24;
+    private static final int HEIGHT = 24;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -61,9 +63,9 @@ public class FigBranchState extends FigStateVertex {
      * constructor
      */
     public FigBranchState() {
-        setBigPort(new FigCircle(x, y, width, height, Color.cyan,
+        setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan,
                 Color.cyan));
-        head = new FigCircle(x, y, width, height, Color.black, Color.white);
+        head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
@@ -168,6 +170,8 @@ public class FigBranchState extends FigStateVertex {
     }
 
     /**
+     * Block any textentry on the diagram - there is nothing to edit!
+     * 
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {

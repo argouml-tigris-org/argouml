@@ -25,7 +25,6 @@
 // File: FigHistoryState.java
 // Classes: FigHistoryState
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.diagram.state.ui;
 
@@ -39,28 +38,28 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML MState in a diagram. */
-
+/** Class to display graphics for a UML HistoryState in a diagram. 
+ * 
+ * TODO: This class seems never used, which is understandable, 
+ * since we have Figs for both a DeepHistory and a ShallowHistory. 
+ * Maybe we can make the 2 others extend this one...
+ */
 public class FigHistoryState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
     // constants
 
     private static final int MARGIN = 2;
-
-    private static final int X = 0;
-
-    private static final int Y = 0;
-
+    private static final int X = 10;
+    private static final int Y = 10;
     private static final int WIDTH = 24;
-
     private static final int HEIGHT = 24;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     /** The main label on this icon. */
-    private FigText name;
+    private FigText h;
     private FigCircle head;
 
     ////////////////////////////////////////////////////////////////
@@ -72,16 +71,16 @@ public class FigHistoryState extends FigStateVertex {
     public FigHistoryState() {
         setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan));
         head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
-        name = new FigText(X + 5, Y + 5, WIDTH - 10, HEIGHT - 10);
-        name.setText("H");
-        name.setTextColor(Color.black);
-        name.setFilled(false);
-        name.setLineWidth(0);
+        h = new FigText(X + 5, Y + 5, WIDTH - 10, HEIGHT - 10);
+        h.setText("H");
+        h.setTextColor(Color.black);
+        h.setFilled(false);
+        h.setLineWidth(0);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
         addFig(head);
-        addFig(name);
+        addFig(h);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
@@ -112,7 +111,7 @@ public class FigHistoryState extends FigStateVertex {
         Iterator it = figClone.getFigs(null).iterator();
         figClone.setBigPort((FigCircle) it.next());
         figClone.head = (FigCircle) it.next();
-        figClone.name = (FigText) it.next();
+        figClone.h = (FigText) it.next();
         return figClone;
     }
 
@@ -192,6 +191,8 @@ public class FigHistoryState extends FigStateVertex {
     }
 
     /**
+     * Block any textentry on the diagram - there is nothing to edit!
+     * 
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {

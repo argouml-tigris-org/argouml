@@ -29,12 +29,10 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.argouml.model.ModelFacade;
@@ -43,20 +41,19 @@ import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
-import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML MState in a diagram. */
-
+/** Class to display graphics for a UML FinalState in a diagram. 
+ */
 public class FigFinalState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
     // constants
 
     private static final int MARGIN = 2;
-    private int x = 0;
-    private int y = 0;
-    private int width = 20;
-    private int height = 20;
+    private static final int X = 10;
+    private static final int Y = 10;
+    private static final int WIDTH = 24;
+    private static final int HEIGHT = 24;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -73,38 +70,22 @@ public class FigFinalState extends FigStateVertex {
     public FigFinalState() {
         super();
         Color handleColor = Globals.getPrefs().getHandleColor();
-        x = 45;
-        y = 0;
-        //FigRect bigPort = new FigRect(x, y, width, height);
-        //bigPort.setLineWidth(0);
-        //bigPort.setFilled(false);
-        
         FigCircle bigPort =
-            new FigCircle(x, y, width, height, Color.black, Color.white);
+            new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
         inCircle =
             new FigCircle(
-        		  x + 5,
-        		  y + 5,
-        		  width - 10,
-        		  height - 10,
+        		  X + 5,
+        		  Y + 5,
+        		  WIDTH - 10,
+        		  HEIGHT - 10,
         		  handleColor,
         		  Color.black);
         
         bigPort.setLineWidth(1);
         inCircle.setLineWidth(0);
         
-        setNameFig(new FigText(x + 10, y + 22, 0, 21, true));
-        getNameFig().setFilled(false);
-        getNameFig().setLineWidth(0);
-        getNameFig().setFont(getLabelFont());
-        getNameFig().setTextColor(Color.black);
-        getNameFig().setMultiLine(false);
-        getNameFig().setAllowsTab(false);
-        getNameFig().setJustificationByName("center");
-        	
         addFig(bigPort);
         addFig(inCircle);
-        addFig(getNameFig());
         setBigPort(bigPort);
         
         setBlinkPorts(false); //make port invisble unless mouse enters
@@ -233,6 +214,8 @@ public class FigFinalState extends FigStateVertex {
     }
     
     /**
+     * Block any textentry on the diagram - there is nothing to edit!
+     * 
      * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
      */
     public void keyPressed(KeyEvent ke) {
@@ -242,23 +225,28 @@ public class FigFinalState extends FigStateVertex {
 
 
     /**
+     * TODO: MVW: I do not see any reason for this. Can we remove it?
+     * 
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
-    public void setBounds(int boundX, int boundY, int boundW, int boundH) {
+    /*public void setBounds(int boundX, int boundY, int boundW, int boundH) {
         _x = boundX;
         _y = boundY;
         getBigPort().setX(boundX);
         getBigPort().setY(boundY);
         inCircle.setX(boundX + 5);
         inCircle.setY(boundY + 5);
-    }
+    }*/
 
     /**
      * Makes sure that edges stick to the outer circle and not to the name or
      * stereobox.
+     * 
+     * TODO: MVW: I do not see any reason for this. Can we remove it?
+     * 
      * @see org.tigris.gef.presentation.Fig#getGravityPoints()
      */
-    public Vector getGravityPoints() {
+    /*public Vector getGravityPoints() {
         Vector ret = new Vector();
         int cx = getBigPort().center().x;
         int cy = getBigPort().center().y;
@@ -274,6 +262,6 @@ public class FigFinalState extends FigStateVertex {
         }
         return ret;
         	
-    }
+    }*/
 
 } /* end class FigFinalState */
