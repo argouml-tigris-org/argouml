@@ -27,48 +27,63 @@ package org.argouml.model;
 import java.beans.PropertyChangeListener;
 
 /**
- * Abstract class that implements the convenience methods of the 
+ * Abstract class that implements the convenience methods of the
  * {@link ModelEventPump} interface.
  *
- * The default visibility is to guarantee that it is not seen outside the 
+ * The default visibility is to guarantee that it is not seen outside the
  * model component.
  *
  * @author Linus Tolke
  */
-abstract class AbstractModelEventPump implements ModelEventPump {
+abstract class AbstractModelEventPump {
 
     /**
      * @see org.argouml.model.ModelEventPump#addModelEventListener(
-     *          java.beans.PropertyChangeListener, java.lang.Object, 
+     *          java.beans.PropertyChangeListener, java.lang.Object,
      *          java.lang.String[])
+     *
+     * @param listener The listener to add.
+     * @param modelelement The model element to listen to.
+     * @param eventNames The names of the events to listen to.
      */
     public abstract void addModelEventListener(PropertyChangeListener listener,
-            				       Object modelelement, 
+            				       Object modelelement,
             				       String[] eventNames);
 
     /**
      * @see org.argouml.model.ModelEventPump#addModelEventListener(
      *          java.beans.PropertyChangeListener, java.lang.Object,
      *          java.lang.String)
+     *
+     * @param listener The listener to add.
+     * @param modelelement The model element to listen to.
+     * @param eventName The name of the event to listen to.
      */
     public void addModelEventListener(PropertyChangeListener listener,
             Object modelelement, String eventName) {
-        addModelEventListener(listener, 
-                	      modelelement, 
+        addModelEventListener(listener,
+                	      modelelement,
                 	      new String[] {eventName });
     }
 
     /**
      * @see org.argouml.model.ModelEventPump#addModelEventListener(
      *          java.beans.PropertyChangeListener, java.lang.Object)
+     *
+     * @param listener The listener to add.
+     * @param modelelement The model element to listen to.
      */
     public abstract void addModelEventListener(PropertyChangeListener listener,
             				       Object modelelement);
 
     /**
      * @see org.argouml.model.ModelEventPump#removeModelEventListener(
-     *          java.beans.PropertyChangeListener, java.lang.Object, 
+     *          java.beans.PropertyChangeListener, java.lang.Object,
      *          java.lang.String[])
+     *
+     * @param listener The listener to remove.
+     * @param modelelement The model element to stop listening to.
+     * @param eventNames The names of the events to stop listening to.
      */
     public abstract void removeModelEventListener(
             PropertyChangeListener listener,
@@ -76,68 +91,91 @@ abstract class AbstractModelEventPump implements ModelEventPump {
 
     /**
      * @see org.argouml.model.ModelEventPump#removeModelEventListener(
-     *          java.beans.PropertyChangeListener, java.lang.Object, 
+     *          java.beans.PropertyChangeListener, java.lang.Object,
      *          java.lang.String)
+     *
+     * @param listener The listener to remove.
+     * @param modelelement The model element to stop listening to.
+     * @param eventName The name of the event to stop listening to.
      */
     public void removeModelEventListener(PropertyChangeListener listener,
-            				 Object modelelement, 
+            				 Object modelelement,
             				 String eventName) {
-        removeModelEventListener(listener, 
-                		 modelelement, 
+        removeModelEventListener(listener,
+                		 modelelement,
                 		 new String[] {eventName, });
     }
 
     /**
      * @see org.argouml.model.ModelEventPump#removeModelEventListener(
      * 		java.beans.PropertyChangeListener, java.lang.Object)
+     *
+     * @param listener The listener to remove.
+     * @param modelelement The model element to stop listening to.
      */
     public abstract void removeModelEventListener(
             PropertyChangeListener listener,
             Object modelelement);
-    
+
     /**
      * @see org.argouml.model.ModelEventPump#addClassModelEventListener(
-     * 		java.beans.PropertyChangeListener, java.lang.Object, 
+     * 		java.beans.PropertyChangeListener, java.lang.Object,
      * 		java.lang.String[])
+     *
+     * @param listener The listener to add.
+     * @param modelClass The model class to listen to.
+     * @param eventNames The names of the events to listen to.
      */
     public abstract void addClassModelEventListener(
             PropertyChangeListener listener,
-            Object modelClass, 
+            Object modelClass,
             String[] eventNames);
 
     /**
      * @see org.argouml.model.ModelEventPump#addClassModelEventListener(
-     * 		java.beans.PropertyChangeListener, java.lang.Object, 
+     * 		java.beans.PropertyChangeListener, java.lang.Object,
      * 		java.lang.String)
+     *
+     * @param listener The listener to add.
+     * @param modelClass The model class to listen to.
+     * @param eventName The name of the event to listen to.
      */
     public void addClassModelEventListener(PropertyChangeListener listener,
-            				   Object modelClass, 
+            				   Object modelClass,
             				   String eventName) {
-        addClassModelEventListener(listener, 
-                		   modelClass, 
+        addClassModelEventListener(listener,
+                		   modelClass,
                 		   new String[] {eventName, });
     }
 
     /**
      * @see org.argouml.model.ModelEventPump#removeClassModelEventListener(
-     * 		java.beans.PropertyChangeListener, java.lang.Object, 
+     * 		java.beans.PropertyChangeListener, java.lang.Object,
      * 		java.lang.String[])
+     *
+     * @param listener The listener to remove.
+     * @param modelClass The model class to stop listening to.
+     * @param eventNames The names of the events to stop listening to.
      */
     public abstract void removeClassModelEventListener(
             PropertyChangeListener listener,
-            Object modelClass, 
+            Object modelClass,
             String[] eventNames);
 
     /**
      * @see org.argouml.model.ModelEventPump#removeClassModelEventListener(
-     * 		java.beans.PropertyChangeListener, java.lang.Object, 
+     * 		java.beans.PropertyChangeListener, java.lang.Object,
      * 		java.lang.String)
+     *
+     * @param listener The listener to remove.
+     * @param modelClass The model class to stop listening to.
+     * @param eventName The name of the event to stop listening to.
      */
     public void removeClassModelEventListener(PropertyChangeListener listener,
-            				      Object modelClass, 
+            				      Object modelClass,
             				      String eventName) {
-        removeClassModelEventListener(listener, 
-                		      modelClass, 
+        removeClassModelEventListener(listener,
+                		      modelClass,
                 		      new String[] {eventName, });
 
     }
