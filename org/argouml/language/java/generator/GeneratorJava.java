@@ -194,11 +194,12 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     String nameStr = generateName (op.getName());
     String clsName = generateName (op.getOwner().getName());
 
-    sb.append ('\n')
-      .append (DocumentationManager.getComments(op));
-    if (documented)
-      sb.append(generateConstraintEnrichedDocComment(op)).append(INDENT);
+    sb.append('\n');
+    String s = generateConstraintEnrichedDocComment(op,documented,INDENT);
+    if (s != null && s.trim().length() > 0)
+      sb.append(INDENT).append(s);
 
+    sb.append(INDENT);
     sb.append(generateAbstractness(op));
     sb.append(generateChangeability(op));
     sb.append(generateScope(op));
@@ -244,16 +245,19 @@ public class GeneratorJava extends Generator implements PluggableNotation {
   public String generateAttribute (MAttribute attr, boolean documented) {
     StringBuffer sb = new StringBuffer(80);
 
-    sb.append ('\n')
-      .append (DocumentationManager.getComments(attr));
-    if (documented)
-      sb.append(generateConstraintEnrichedDocComment(attr)).append(INDENT);
+    String s = generateConstraintEnrichedDocComment(attr,documented,INDENT);
+    if (s != null && s.trim().length() > 0)
+      sb.append('\n').append(INDENT).append(s);
 
+    sb.append(INDENT);
     sb.append(generateVisibility(attr));
     sb.append(generateScope(attr));
     sb.append(generateChangability(attr));
-    if (!MMultiplicity.M1_1.equals(attr.getMultiplicity()))
-	    sb.append(generateMultiplicity(attr.getMultiplicity())).append(' ');
+    if (!MMultiplicity.M1_1.equals(attr.getMultiplicity())) {
+		String m = generateMultiplicity(attr.getMultiplicity());
+		if (m != null && m.trim().length() >0)
+	      sb.append(m).append(' ');
+	}
 
     MClassifier type = attr.getType();
     if (type != null) sb.append(generateClassifierRef(type)).append(' ');
@@ -325,7 +329,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
     // Add the comments for this classifier first.
     sb.append ('\n')
       .append (DocumentationManager.getComments(cls))
-      .append (generateConstraintEnrichedDocComment(cls));
+      .append (generateConstraintEnrichedDocComment(cls,true,""));
 
     // Now add visibility
     sb.append (generateVisibility (cls.getVisibility()));
@@ -440,8 +444,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       while (strEnum.hasNext()) {
         MStructuralFeature sf = (MStructuralFeature) strEnum.next();
 
-        sb.append (INDENT)
-          .append (generate (sf));
+        sb.append (generate (sf));
 
         tv = generateTaggedValues (sf);
         if (tv != null && tv.length() > 0) {
@@ -465,8 +468,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
         MAssociationEnd ae = (MAssociationEnd) endEnum.next();
         MAssociation a = ae.getAssociation();
 
-        sb.append (INDENT)
-          .append (generateAssociationFrom (a, ae));
+        sb.append (generateAssociationFrom (a, ae));
 
         tv = generateTaggedValues (a);
         if (tv != null && tv.length() > 0) {
@@ -490,8 +492,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
       while (behEnum.hasNext()) {
         MBehavioralFeature bf = (MBehavioralFeature) behEnum.next();
 
-        sb.append (INDENT)
-          .append (generate (bf));
+        sb.append (generate (bf));
 
         tv = generateTaggedValues ((MModelElement)bf);
 
@@ -660,7 +661,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
    */
   public String generateConstraintEnrichedDocComment (MModelElement me,
                                                       MAssociationEnd ae) {
-    String s = generateConstraintEnrichedDocComment(me);
+    String s = generateConstraintEnrichedDocComment(me,true,INDENT);
 
     MMultiplicity m = ae.getMultiplicity();
     if (! (MMultiplicity.M1_1.equals(m) || MMultiplicity.M0_1.equals (m))) {
@@ -710,26 +711,21 @@ public class GeneratorJava extends Generator implements PluggableNotation {
    * @author Steffen Zschaler
    *
    * @param me the model element for which the documentation comment is needed
+   * @param documented if existing tagged values should be generated in addition to javadoc
+   * @param indent indent String (usually blanks) for indentation of generated comments
    * @return the documentation comment for the specified model element, either
    * enhanced or completely generated
    */
-  static public String generateConstraintEnrichedDocComment (MModelElement me) {
+  static public String generateConstraintEnrichedDocComment (MModelElement me, boolean documented, String indent) {
     // Retrieve any existing doccomment
-    String s = (VERBOSE_DOCS || DocumentationManager.hasDocs(me)) ? DocumentationManager.getDocs(me) : null;
+    String s = (VERBOSE_DOCS || DocumentationManager.hasDocs(me)) ? DocumentationManager.getDocs(me,indent) : null;
     StringBuffer sDocComment = new StringBuffer(80);
 
     if (s != null && s.trim().length() > 0) {
-      // Fix Bug in documentation manager.defaultFor --> look for current INDENT
-      // and use it
-      int i1 =0;
-      int i2 = s.indexOf('\n');
-      while (i2 != -1) {
-        sDocComment.append(s.substring(i1,i2+1)).append(INDENT);
-        i1 = i2+1;
-        i2 = s.indexOf('\n',i1);
-      }
-      sDocComment.append(s.substring(i1)).append('\n');
+      sDocComment.append(s).append('\n');
     }
+    if (!documented)
+      return sDocComment.toString();
 
     // Extract constraints
     Collection cConstraints = me.getConstraints();
@@ -884,7 +880,7 @@ public class GeneratorJava extends Generator implements PluggableNotation {
          * Added generation of doccomment 2001-09-26 STEFFEN ZSCHALER
          *
          */
-        sb.append(generateConstraintEnrichedDocComment(a,ae2));
+        sb.append (INDENT).append(generateConstraintEnrichedDocComment(a,ae2));
         sb.append(generateAssociationEnd(ae2));
       }
     }

@@ -33,11 +33,11 @@ import ru.novosoft.uml.model_management.*;
 
 public class DocumentationManager {
 
-  public static String getDocs(Object o) {
+  public static String getDocs(Object o, String indent) {
     /*
      * Added 2001-10-05 STEFFEN ZSCHALER
      */
-    String sResult = defaultFor (o);
+    String sResult = defaultFor(o,indent);
 
     if (o instanceof MModelElementImpl) {
       Collection tValues = ((MModelElement) o).getTaggedValues();
@@ -48,6 +48,7 @@ public class DocumentationManager {
           String tag = tv.getTag();
           if (tag.equals("documentation") || tag.equals("javadocs")) {
             sResult = tv.getValue();
+            if (tag.equals("documentation")) break; // give priority to "documentation"
           }
         }
       }
@@ -74,10 +75,10 @@ public class DocumentationManager {
            nNewLinePos >= 0;
            nNewLinePos = sResult.indexOf ('\n', nNewLinePos + 1)) {
         sResult = sResult.substring (0, nNewLinePos + 1) +
-                  " *" + sResult.substring (nNewLinePos + 1);
+                  indent + " *" + sResult.substring (nNewLinePos + 1);
       }
 
-      return sResult + "\n */";
+      return sResult + '\n' + indent + " */";
     }
     else {
       return "(No comment)";
@@ -116,7 +117,7 @@ public class DocumentationManager {
   ////////////////////////////////////////////////////////////////
   // default documentation
 
-  public static String defaultFor(Object o) {
+  public static String defaultFor(Object o, String indent) {
     if (o instanceof MClass) {
       /*
        * Changed 2001-10-05 STEFFEN ZSCHALER
@@ -131,10 +132,9 @@ public class DocumentationManager {
 	" * /";
        *
        */
-      return " A class that represents ...\n" +
-             "\n" +
-             " @see OtherClasses\n" +
-             " @author your_name_here";
+      return " A class that represents ...\n\n" +
+             indent + " @see OtherClasses\n" +
+             indent + " @author your_name_here";
     }
     if (o instanceof MAttribute) {
       /*
@@ -163,9 +163,8 @@ public class DocumentationManager {
 	" * /";
        *
        */
-      return " An operation that does...\n" +
-             "\n" +
-             " @param firstParam a description of this parameter";
+      return " An operation that does...\n\n" +
+             indent + " @param firstParam a description of this parameter";
     }
     if (o instanceof MInterface) {
       /*
@@ -181,10 +180,9 @@ public class DocumentationManager {
 	" * /";
        *
        */
-      return " A interface defining operations expected of ...\n" +
-             "\n" +
-             " @see OtherClasses\n" +
-             " @author your_name_here";
+      return " A interface defining operations expected of ...\n\n" +
+             indent + " @see OtherClasses\n" +
+             indent + " @author your_name_here";
     }
     if (o instanceof MModelElement) {
       /*

@@ -54,7 +54,7 @@ public class TabDocs extends TabText {
     if (_target instanceof FigEdge)
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return null;
-    return DocumentationManager.getDocs(modelObject);
+    return DocumentationManager.getDocs(modelObject,"");
   }
 
   protected void parseText(String s) {
