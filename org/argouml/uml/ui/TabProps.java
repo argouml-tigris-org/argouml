@@ -111,7 +111,7 @@ public class TabProps
     protected JPanel _lastPanel = null;
     protected String _panelClassBaseName = "";
     private LinkedList _navListeners = new LinkedList();
-    
+
     private Object _target;
 
     /**
@@ -306,9 +306,9 @@ public class TabProps
     public void setTarget(Object t) {
         // targets ought to be modelelements or diagrams 
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (!(t== null || ModelFacade.isABase(t) || t instanceof ArgoDiagram))
+        if (!(t == null || ModelFacade.isABase(t) || t instanceof ArgoDiagram))
             return;
-        
+
         if (_lastPanel != null) {
             remove(_lastPanel);
             if (_lastPanel instanceof TargetListener)
@@ -330,9 +330,9 @@ public class TabProps
                     break;
             }
             if (newPanel != null) {
-                addTargetListener(newPanel);                
+                addTargetListener(newPanel);
             }
-            if (newPanel instanceof JPanel) {  
+            if (newPanel instanceof JPanel) {
                 add((JPanel) newPanel, BorderLayout.CENTER);
                 _shouldBeEnabled = true;
                 _lastPanel = (JPanel) newPanel;
@@ -341,8 +341,7 @@ public class TabProps
                 _shouldBeEnabled = false;
                 _lastPanel = _blankPanel;
             }
-            validate();
-            repaint();
+
         }
     }
 
@@ -435,7 +434,7 @@ public class TabProps
      * the current diagram. If so, that modelelement is the target.
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(Object)
      */
-    public boolean shouldBeEnabled(Object target) {      
+    public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isADiagram(target) || ModelFacade.isABase(target)) {
             _shouldBeEnabled = true;
@@ -476,6 +475,10 @@ public class TabProps
         // in a set of targets. The first target can only be 
         // changed in a targetRemoved or a TargetSet event
         fireTargetAdded(e);
+        if (_listenerList.getListenerCount() > 0) {
+            validate();
+            repaint();
+        }
 
     }
 
@@ -487,7 +490,10 @@ public class TabProps
         // probably the TabProps should only show an empty pane in that case
         setTarget(e.getNewTargets()[0]);
         fireTargetRemoved(e);
-
+        if (_listenerList.getListenerCount() > 0) {
+            validate();
+            repaint();
+        }
     }
 
     /**
@@ -496,6 +502,10 @@ public class TabProps
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
         fireTargetSet(e);
+        if (_listenerList.getListenerCount() > 0) {
+            validate();
+            repaint();
+        }
 
     }
 
@@ -516,8 +526,8 @@ public class TabProps
     }
 
     private void fireTargetSet(TargetEvent targetEvent) {
-//      Guaranteed to return a non-null array
-             Object[] listeners = _listenerList.getListenerList();       
+        //      Guaranteed to return a non-null array
+        Object[] listeners = _listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
@@ -528,7 +538,7 @@ public class TabProps
 
     private void fireTargetAdded(TargetEvent targetEvent) {
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();       
+        Object[] listeners = _listenerList.getListenerList();
 
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
@@ -609,7 +619,7 @@ class InitPanelsLater implements Runnable {
             _panels.put(MStimulusImpl.class, new PropPanelStimulus());
             _panels.put(MMessageImpl.class, new PropPanelMessage());
             //_panels.put(MModelImpl.class, new PropPanelModel());
-
+            
             // how are Notes handled? Toby, nsuml
             //_panels.put(MNoteImpl.class, new PropPanelNote());
             _panels.put(MOperationImpl.class, new PropPanelOperation());
