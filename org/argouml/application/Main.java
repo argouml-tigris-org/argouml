@@ -45,6 +45,7 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.cognitive.critics.*;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.uml.ui.UMLAction;
@@ -202,28 +203,11 @@ public class Main {
         //  sets locale for menus
         //
 	st.mark("locales");
-        
         ResourceLoader.addResourceExtension("gif");
         ResourceLoader.addResourceLocation("/org/argouml/Images");
         ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
-        Localizer.addResource("GefBase",
-        "org.tigris.gef.base.BaseResourceBundle");
-        Localizer.addResource("GefPres",
-        "org.tigris.gef.presentation.PresentationResourceBundle");
-        Localizer.addResource("CoreMenu",
-        "org.argouml.i18n.MenuResourceBundle");
-        Localizer.addResource("CoreSettings",
-        "org.argouml.i18n.SettingsResourceBundle");
-        Localizer.addResource("DiagramType",
-        "org.argouml.i18n.DiagramResourceBundle");
-        Localizer.addResource("UMLMenu",
-        "org.argouml.i18n.UMLResourceBundle");
-        Localizer.addResource("Cognitive",
-        "org.argouml.i18n.UMLCognitiveResourceBundle");
-        Localizer.addResource("Tree", "org.argouml.i18n.TreeResourceBundle");
-        Localizer.addResource("Actions",
-        "org.argouml.i18n.ActionResourceBundle");
+        Translator.init();
 
 	st.mark("splash");
         SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");

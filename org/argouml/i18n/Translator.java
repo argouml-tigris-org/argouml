@@ -27,7 +27,10 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.IOException;
 
+import java.util.Locale;
 import java.util.Properties;
+
+import org.tigris.gef.util.Localizer;
 
 /**
  * A tool class to help localization.
@@ -37,11 +40,41 @@ import java.util.Properties;
  */
 public class Translator {
 
+    /** Key for menu resource bundle. */
+    public static final String MENU_BUNDLE = "CoreMenu";
+
     /** Binding between new key names and old ones needed by gef. */
     private static Properties images = null;
 
     /** Property file containing the bindings. */
     private static String propertiesFile = "images.properties";
+
+    /**
+     * Default Locale is set and resources Bundles are loaded.
+     */
+    public static void init () {
+
+        Locale.setDefault(new Locale(System.getProperty("user.language","en"),
+            System.getProperty("user.country","CA")));
+
+        Localizer.addResource("GefBase",
+        "org.tigris.gef.base.BaseResourceBundle");
+        Localizer.addResource("GefPres",
+        "org.tigris.gef.presentation.PresentationResourceBundle");
+        Localizer.addResource("CoreMenu",
+        "org.argouml.i18n.MenuResourceBundle");
+        Localizer.addResource("CoreSettings",
+        "org.argouml.i18n.SettingsResourceBundle");
+        Localizer.addResource("DiagramType",
+        "org.argouml.i18n.DiagramResourceBundle");
+        Localizer.addResource("UMLMenu",
+        "org.argouml.i18n.UMLResourceBundle");
+        Localizer.addResource("Cognitive",
+        "org.argouml.i18n.UMLCognitiveResourceBundle");
+        Localizer.addResource("Tree", "org.argouml.i18n.TreeResourceBundle");
+        Localizer.addResource("Actions",
+        "org.argouml.i18n.ActionResourceBundle");
+    }
 
     /**   
      * Loads image bindings from a File.
@@ -95,6 +128,6 @@ public class Translator {
      * @return the translation
      */
     public static String localize(String bundle, String key) {
-        return org.tigris.gef.util.Localizer.localize(bundle, key);
+        return Localizer.localize(bundle, key);
     }
 }
