@@ -39,11 +39,13 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*; 
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.generator.*;
 
@@ -74,6 +76,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
 
     addFig(_bigPort);
     addFig(_cover);
+    addFig(_stereo);
     addFig(_name);
     addFig(_test);
 
@@ -95,8 +98,9 @@ public class FigMNodeInstance extends FigNodeModelElement {
     Vector v = figClone.getFigs();
     figClone._bigPort = (FigRect) v.elementAt(0);
     figClone._cover = (FigCube) v.elementAt(1);
-    figClone._name = (FigText) v.elementAt(2);
-    figClone._test = (FigRect) v.elementAt(3);
+    figClone._stereo = (FigText) v.elementAt(2);
+    figClone._name = (FigText) v.elementAt(3);
+    figClone._test = (FigRect) v.elementAt(4);
     return figClone;
   }	
 
@@ -106,6 +110,8 @@ public class FigMNodeInstance extends FigNodeModelElement {
   public void setLineColor(Color c) {
 //     super.setLineColor(c);
      _cover.setLineColor(c);
+     _stereo.setFilled(false);
+     _stereo.setLineWidth(0);
      _name.setFilled(false);
      _name.setLineWidth(0);
      _test.setLineColor(c);
@@ -121,9 +127,10 @@ public class FigMNodeInstance extends FigNodeModelElement {
   }
 
   public Dimension getMinimumSize() {
+    Dimension stereoDim = _stereo.getMinimumSize();
     Dimension nameDim = _name.getMinimumSize();
-    int w = nameDim.width + 20;
-    int h = nameDim.height + 20;
+    int w = Math.max(stereoDim.width, nameDim.width) + 20;
+    int h = stereoDim.height + nameDim.height + 20;
     return new Dimension(w, h);
   }
 
@@ -133,11 +140,31 @@ public class FigMNodeInstance extends FigNodeModelElement {
     Rectangle oldBounds = getBounds();
     _bigPort.setBounds(x, y, w, h);
     _cover.setBounds(x, y, w, h);
+
+    Dimension stereoDim = _stereo.getMinimumSize();
     Dimension nameDim = _name.getMinimumSize();
-    _name.setBounds(x, y, w, nameDim.height);
+    _name.setBounds(x, y + stereoDim.height + 1, w, nameDim.height);
+    _stereo.setBounds(x+1,y+1,w-2,stereoDim.height);
     _x = x; _y = y; _w = w; _h = h;
     firePropChange("bounds", oldBounds, getBounds());
     updateEdges();
+  }
+
+  protected void updateStereotypeText() {
+    MModelElement me = (MModelElement) getOwner();
+    if (me == null) return;
+    MStereotype stereo = me.getStereotype();
+    if (stereo == null || stereo.getName() == null || stereo.getName().length() == 0)
+        _stereo.setText("");
+    else {
+        _stereo.setText(Notation.generateStereotype(this, stereo));
+    }
+    
+    Rectangle oldBounds = getBounds();
+    _stereo.calcBounds();
+    calcBounds();
+    firePropChange("bounds", oldBounds, getBounds());
+
   }
 
   ////////////////////////////////////////////////////////////////
@@ -181,7 +208,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
   } 
  
   protected void modelChanged() { 
-//    super.modelChanged(); 
+    super.modelChanged(); 
     MNodeInstance noi = (MNodeInstance) getOwner(); 
     if (noi == null) return; 
     String nameStr = ""; 
@@ -215,4 +242,6 @@ public class FigMNodeInstance extends FigNodeModelElement {
   static final long serialVersionUID = 8822005566372687713L;
 
 } /* end class FigMNodeInstance */
+
+
 
