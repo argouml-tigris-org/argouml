@@ -196,11 +196,10 @@ implements Serializable, TreeModel, Cloneable {
     // rules for statemachinediagram and activitydiagram
     packageCentric.addSubTreeModel(new GoBehavioralFeatureToStateMachine());
     packageCentric.addSubTreeModel(new GoClassifierToStateMachine());
-	// packageCentric.addSubTreeModel(new GoMachineDiagram());
     packageCentric.addSubTreeModel(new GoMachineToState());
     packageCentric.addSubTreeModel(new GoStateToSubstate());
-    packageCentric.addSubTreeModel(new GoStateToIncomingTrans());
-    packageCentric.addSubTreeModel(new GoStateToOutgoingTrans());
+    packageCentric.addSubTreeModel(new GoStateToInternalTrans());
+    packageCentric.addSubTreeModel(new GoStateMachineToTransition());
 	
     diagramCentric.addSubTreeModel(new GoProjectDiagram());
     diagramCentric.addSubTreeModel(new GoDiagramToNode());
