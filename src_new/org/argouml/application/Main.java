@@ -28,23 +28,23 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.io.File;
-import java.io.InputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Properties;
 import java.util.Vector;
-import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.ToolTipManager;
 
-import org.apache.log4j.Logger;
 import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.PropertyConfigurator;
 import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
@@ -53,6 +53,7 @@ import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.PersisterManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.moduleloader.ModuleLoader2;
@@ -61,9 +62,8 @@ import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.uml.ui.ActionExit;
-import org.argouml.util.FileConstants;
+import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.util.Trash;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
@@ -235,9 +235,7 @@ public class Main {
         URL urlToOpen = null;
 
         if (projectName != null) {
-            if (!projectName.endsWith(FileConstants.COMPRESSED_FILE_EXT)) {
-                projectName += FileConstants.COMPRESSED_FILE_EXT;
-	    }
+            projectName = (new PersisterManager()).fixExtension(projectName);
             urlToOpen = projectUrl(projectName, urlToOpen);
         }
 

@@ -59,9 +59,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.argouml.util.ChangeRegistry;
-import org.argouml.util.FileConstants;
 import org.argouml.util.Trash;
-
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Util;
@@ -158,8 +156,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public Project(URL theProjectUrl) {
         this();
-        url = Util.fixURLExtension(theProjectUrl, 
-                FileConstants.COMPRESSED_FILE_EXT);
+        url = (new PersisterManager()).fixUrlExtension(theProjectUrl);
     }
 
     /**
@@ -234,24 +231,15 @@ public class Project implements java.io.Serializable, TargetListener {
     }
     
     /**
-     * Find the base name of this project.<p>This is the name minus
-     * any file extension.
+     * Find the base name of this project.<p>
+     * 
+     * This is the name minus any valid file extension.
      * 
      * @return The name (a String).
      */
     public String getBaseName() {
         String n = getName();
-
-        if (n.endsWith(FileConstants.COMPRESSED_FILE_EXT)) {
-            return n.substring(0,
-			       n.length()
-			       - FileConstants.COMPRESSED_FILE_EXT.length());
-        }
-        if (n.endsWith(FileConstants.UNCOMPRESSED_FILE_EXT)) {
-            return n.substring(0,
-			       n.length()
-			       - FileConstants.UNCOMPRESSED_FILE_EXT.length());
-        }
+        n = (new PersisterManager()).getBaseName(n);
         return n;
     }
 
@@ -299,8 +287,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setURL(URL theUrl) {
         if (theUrl != null) {
-            theUrl = Util.fixURLExtension(theUrl, 
-                    FileConstants.COMPRESSED_FILE_EXT);
+            theUrl = (new PersisterManager()).fixUrlExtension(theUrl);
         }
 
         if (LOG.isDebugEnabled()) {

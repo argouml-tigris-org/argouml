@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 
+import java.io.File;
 import java.net.URL;
 import java.text.MessageFormat;
 
@@ -129,11 +130,13 @@ public abstract class ActionFileOperations extends UMLAction {
      * the old project.
      * 
      * @param url the url to open.
+     * @return true if the file was successfully opened
      */
-    public void loadProject(URL url) {
+    public boolean loadProject(URL url) {
         PersisterManager pm = new PersisterManager();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
-
+        boolean success = true;
+        
         // TODO:
         // This is actually a hack! Some diagram types
         // (like the statechart diagrams) access the current
@@ -144,63 +147,73 @@ public abstract class ActionFileOperations extends UMLAction {
 
         Designer.disableCritiquing();
         Designer.clearCritiquing();
-
         Project p = null;
-        try {
-            ProjectFilePersister persister = 
-                pm.getPersisterFromFileName(url.getFile());
-            if (persister == null)
-                throw new IllegalStateException("Filename " + url.getFile() 
-                        + " is not of a known file type");
-            
-            p = persister.loadProject(url);
 
-            ProjectBrowser.getInstance().showStatus(
-                    MessageFormat.format(Translator.localize(
-                    "label.open-project-status-read"),
-                    new Object[] {
-                            url.toString()
-                    }));
-        } catch (OpenException ex) {
-            LOG.error("Exception while loading project", ex);
-            showErrorPane(
-                    "Could not load the project "
-                    + url.toString()
-                    + " due to parser configuration errors.\n"
-                    + "Please read the instructions at www.argouml.org "
-                    + "on the "
-                    + "requirements of argouml and how to install it.");
-            p = oldProject;
-        } finally {
-            if (!ArgoParser.getInstance().getLastLoadStatus()) {
-                p = oldProject;
-                showErrorPane(
-                        "Problem in loading the project "
-                        + url.toString()
-                        + "\n"
-                        + "Project file probably corrupt from "
-                        + "an earlier version or ArgoUML.\n"
-                        + "Error message:\n"
-                        + ArgoParser.getInstance().getLastLoadMessage()
-                        + "\n"
-                        + "Since the project was incorrectly "
-                        + "saved some things might be missing "
-                        + "from before you saved it.\n"
-                        + "These things cannot be restored. "
-                        + "You can continue working with what "
-                        + "was actually loaded.\n");
-            }
-            else if (oldProject != null) {
-                // if p equals oldProject there was an exception and we do
-                // not have to gc the old project
-                if (p != null && !p.equals(oldProject)) {
-                    //prepare the old project for gc
-                    ProjectManager.getManager().removeProject(oldProject);
-                }
-            }
-            ProjectManager.getManager().setCurrentProject(p);
+        if (!(new File(url.getFile()).canRead())) {
+            showErrorPane("File not found " + url.toString() + ".");
             Designer.enableCritiquing();
+            success = false;
+        } else {
+            try {
+                ProjectFilePersister persister = 
+                    pm.getPersisterFromFileName(url.getFile());
+                if (persister == null) {
+                    success = false;
+                    throw new IllegalStateException("Filename " + url.getFile() 
+                            + " is not of a known file type");
+                }
+                p = persister.loadProject(url);
+                
+                ProjectBrowser.getInstance().showStatus(
+                        MessageFormat.format(Translator.localize(
+                        "label.open-project-status-read"),
+                        new Object[] {
+                                url.toString()
+                        }));
+            } catch (OpenException ex) {
+                LOG.error("Exception while loading project", ex);
+                success = false;
+                showErrorPane(
+                        "Could not load the project "
+                        + url.toString()
+                        + " due to parser configuration errors.\n"
+                        + "Please read the instructions at www.argouml.org "
+                        + "on the "
+                        + "requirements of argouml and how to install it.");
+                p = oldProject;
+            } finally {
+                if (!ArgoParser.getInstance().getLastLoadStatus()) {
+                    p = oldProject;
+                    success = false;
+                    showErrorPane(
+                            "Problem in loading the project "
+                            + url.toString()
+                            + "\n"
+                            + "Project file probably corrupt from "
+                            + "an earlier version or ArgoUML.\n"
+                            + "Error message:\n"
+                            + ArgoParser.getInstance().getLastLoadMessage()
+                            + "\n"
+                            + "Since the project was incorrectly "
+                            + "saved some things might be missing "
+                            + "from before you saved it.\n"
+                            + "These things cannot be restored. "
+                            + "You can continue working with what "
+                            + "was actually loaded.\n");
+                }
+                else if (oldProject != null) {
+                    // if p equals oldProject there was an exception and we do
+                    // not have to gc (garbage collect) the old project
+                    if (p != null && !p.equals(oldProject)) {
+                        //prepare the old project for gc
+                        ProjectManager.getManager().removeProject(oldProject);
+                    }
+                }
+                ProjectManager.getManager().setCurrentProject(p);
+                Designer.enableCritiquing();
+            }
         }
+        return success;
     }
 
     /**

@@ -24,8 +24,14 @@
 
 package org.argouml.util;
 
-/** Utility class to store file constants, such as file extensions 
- *  frequently used across ArgoUML.
+/** 
+ * Utility class to store file extensions frequently used across ArgoUML. <p>
+ * These extensions are only to be used to distinguish between parts 
+ * (i.e. the contents) of a project file, 
+ * and NOT for filnamens for loading and saving projects. 
+ * Filename extensions are handled by the Persisters themselves. 
+ * See AbstractFilePersister.
+ * 
  * @stereotype utility
  */
 public class FileConstants {
