@@ -150,9 +150,11 @@ some external event to occur, or some dynamic activity
             define the bounding box of the state.</para>
 
           <caution><para>The <literal>Shadow</literal> field has no
-            effect&mdash; in the current release of &argouml;. There are no
+            effect&mdash; in the V0.14 release of &argouml;. There are no
             shadow effects provided for states on the
-            diagram.</para></caution></listitem>
+            diagram.
+            <!-- TODO: Se enhancement issue ... -->
+          </para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -722,7 +724,8 @@ metamodel.
           <listitem><para>Text box. The expression that defines the
             action.</para>
 
-          <caution><para>The current release of &argouml; only partially
+          <caution><para>The V0.14 release of &argouml; only partially
+            <!-- TODO: See enhancement issue ... -->
             implements actions. As a practical convention it is suggested
             that call actions are shown as the name of the operation
             generating the action with any arguments in parentheses and
@@ -797,7 +800,8 @@ If this value is true, then the composite state is decomposed into two or more
 Currently, the support in &argouml; for concurrency 
 (regions and swimlanes) is weak:
 The actual definition of regions is not yet implemented 
-in the current release of &argouml;.
+in the V0.14 release of &argouml;.
+<!-- TODO: See enhancement issue ... -->
 It is advised to draw the regions as composite states,
 hence follow the rule: 
 a concurrent state can only contain composite states (i.e. regions).
@@ -1285,12 +1289,13 @@ An event is represented by its name.
     </para>
 
     <caution><para>
-The current release of &argouml; does not allow entry of the
+The V0.14 release of &argouml; does not allow entry of the
+<!-- TODO: See enhancement issue ... -->
 parameters of the event.
     </para></caution>
 
     <caution><para>
-The current release of &argouml; has only partially implemented events. 
+The V0.14 release of &argouml; has only partially implemented events. 
 In practice, only the name can be specified,
 there is no difference between the 4 kinds of events described above.
 The name field should be used to indicate that it is a 
@@ -1351,7 +1356,8 @@ Standard tab.
 
             <note><para>
 In the fullness of time this tab will contain code to implement the event. 
-This is not implemented in the current release of &argouml;.
+This is not implemented in the V0.14 release of &argouml;.
+<!-- TODO: See enhancement issue ... -->
             </para></note>
           </listitem>
         </varlistentry>
@@ -1561,7 +1567,8 @@ Deletes the selected parameter from the model.
           <listitem>
             <para>
 Only present for a Call Event.
-The current release of &argouml; does not allow entry of the operation.
+The V0.14 release of &argouml; does not allow entry of the operation.
+<!-- TODO: See enhancement issue ... -->
             </para>
           </listitem>
         </varlistentry>
@@ -1862,7 +1869,8 @@ below (see
       <xref linkend="s1.ref.shallow_history"/> and
       <xref linkend="s1.ref.deep_history"/>).</para>
 
-    <caution><para>The current release of &argouml; does not provide support
+    <caution><para>The V0.14 release of &argouml; does not provide support
+      <!-- TODO: See enhancement issue ... -->
       for a junction pseudostate.</para></caution>
 
     <!-- Pseudostate details tabs -->
@@ -1910,7 +1918,8 @@ below (see
           <listitem><para>Standard tab.</para>
 
           <caution><para>The <literal>Shadow</literal> field has no
-            effect&mdash; in the current release of &argouml;. There are no
+            effect&mdash; in the V0.14 release of &argouml;. There are no
+            <!-- TODO: See enhancement issue ... -->
             shadow effects provided for states on the
             diagram.</para></caution></listitem>
         </varlistentry>
@@ -1925,7 +1934,9 @@ below (see
 
           <note><para>In the fullness of time this tab will contain any
             code to implement the pseudostate. This is not implemented in
-            the current release of &argouml;.</para></note></listitem>
+            the V0.14 release of &argouml;.
+            <!-- TODO: See enhancement issue ... -->
+          </para></note></listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -2247,7 +2258,8 @@ which must have (at most) one outgoing transition.
           <listitem><para>Standard tab.</para>
 
           <caution><para>The <literal>Shadow</literal> field has no
-            effect&mdash; in the current release of &argouml;. There are no
+            effect&mdash; in the V0.14 release of &argouml;. There are no
+            <!-- TODO: See enhancement issue ... -->
             shadow effects provided for states on the
             diagram.</para></caution></listitem>
         </varlistentry>
@@ -2264,7 +2276,8 @@ Standard tab, containing just the name of the final state.
 
           <note><para>In the fullness of time this tab will contain any
             code to implement the final state. This is not implemented in
-            the current release of &argouml;.</para></note></listitem>
+            <!-- TODO: See enhancement issue ... -->
+            the V0.14 release of &argouml;.</para></note></listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -2554,8 +2567,10 @@ which splits a transition into two or more concurrent
       transitions.</para>
 
     <caution><para>The outgoing transitions should not have
-      guards. However the current release of &argouml; will not enforce
-      this.</para></caution>
+      guards. However the V0.14 release of &argouml; will not enforce
+      <!-- TODO: See enhancement issue ... -->
+      this.
+    </para></caution>
 
     <para>A fork is represented on the diagram as a solid (black by default) 
     horizontal bar.</para>
@@ -2581,8 +2596,10 @@ and dragging with &button1; one of its corners.
       transition.</para>
 
     <caution><para>The incoming transitions should not have
-      guards. However the current release of &argouml; will not enforce
-      this.</para></caution>
+      guards. However the V0.14 release of &argouml; will not enforce
+      this.
+      <!-- TODO: See enhancement issue ... -->
+    </para></caution>
 
     <para>A join is represented on the diagram as a solid (black by default)
       horizontal bar.</para>

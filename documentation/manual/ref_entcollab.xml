@@ -11,8 +11,6 @@ Argo/UML.
 <chapter id="ch.ref.entcollab">
   <title>Collaboration Diagram Artifact Reference</title>
 
-  &notupdatedfor014disclaimer;
-
   <sect1>
     <title>Introduction</title>
 
@@ -49,7 +47,7 @@ Argo/UML.
       </mediaobject></screenshot>
     </figure>
 
-    <!-- Limitations in Argo/UML relating to support in general -->
+    <!-- Limitations in ArgoUML relating to support in general -->
 
     <sect2>
       <title>Limitations Concerning Collaboration Diagrams in &argouml;</title>
@@ -163,7 +161,10 @@ Argo/UML.
 
             <caution><para>A classifier role should not generate any code,
               so having this tab active is probably a
-              mistake.</para></caution></listitem>
+              mistake.
+              <!-- TODO: See enhancement issue ... -->
+            </para></caution>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -286,21 +287,9 @@ Argo/UML.
             and use bumpy caps to divide words within the name.</para>
 
           <note><para>&argouml; does not enforce this naming
-            convention.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Classifier -->
-
-        <varlistentry>
-          <term><literal>Classifier</literal></term>
-
-          <listitem><para>Drop down selector. The name of the classifier
-            of which this is a classifier role.</para>
-
-          <note><para>In the current release of &argouml; the same
-            graphical presentation is used, even if the classifier role is
-            actually representing an instance of an actor (when a stick-man
-            would be more usual).</para></note></listitem>
+            convention. <!-- TODO: See enhancement issue ... -->
+          </para></note>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -308,27 +297,14 @@ Argo/UML.
         <varlistentry>
           <term><literal>Stereotype</literal></term>
 
-          <listitem><para>Drop down selector. Classifier Role should be
+          <listitem>
+            <para>Drop down selector. Classifier Role is
             provided by default with the UML standard stereotypes for
-            <literal>Classifier</literal> (<literal>metaclass</literal>,
+            a classifier (<literal>metaclass</literal>,
             <literal>powerType</literal>, <literal>process</literal>,
             <literal>thread</literal> and <literal>utility</literal>).
-            &argouml; also provides the additional stereotypes,
-            <literal>machine</literal>, <literal>organization</literal> and
-            <literal>person</literal>.</para>
-
-          <caution><para>&argouml; also provides the stereotype
-            <literal>realize</literal> for classifier roles. This appears
-            to be an error, since this stereotype properly belongs to the
-            <literal>Abstraction</literal>
-            metaclass.</para></caution>
-
-          <warning><para>In the current release of &argouml; the standard
-            stereotypes for <literal>Classifier</literal>
-            (<literal>metaclass</literal>, <literal>powerType</literal>,
-            <literal>process</literal>, <literal>thread</literal> and
-            <literal>utility</literal>) are not
-            provided.</para></warning></listitem>
+            </para>
+          </listitem>
         </varlistentry>
 
         <!-- Entry for NavStereo -->
@@ -342,7 +318,7 @@ Argo/UML.
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
-                linkend="s1.ref.stereotype_class"/>).</para></listitem>
+                linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 
         <!-- Entry for Namespace -->
@@ -350,62 +326,165 @@ Argo/UML.
         <varlistentry>
           <term><literal>Namespace</literal></term>
 
-          <listitem><para>Text box. Records the namespace for the
-            classifier role. This is the package hierarchy.</para>
+          <listitem>
+            <para>Text box. Records the namespace for the
+              classifier role, which is always the containing Collaboration.
+            </para>
 
-          <para>&Button1; click on the entry will navigate to the package
-            defining this namespace (or the model for the top level
-            namespace).</para></listitem>
+            <para>&Button1; double click on the entry will navigate to the
+              collaboration.
+            </para>
+          </listitem>
         </varlistentry>
 
-        <!-- Entry for Association Roles -->
+        <!-- Entry for multiplicity -->
 
         <varlistentry>
-          <term><literal>Association Roles</literal></term>
+          <term><literal>Multiplicity</literal></term>
 
-          <listitem><para>Text area. Lists the association roles that are
-            linked to this classifier role.</para>
+          <listitem>
+            <para>Drop down selector. The default value is 
+              <literal>*</literal>, which means
+              that there are any number of instances of this classifierrole 
+              that play a role in the collaboration. The drop down provides
+              some different multiplicities. E.g. <literal>1..1</literal> would
+              mean that only one instance plays a role in this collaboration.
+            </para>
 
-          <para>&Button1; click navigates to the selected entry, &button2;
-            gives a pop up menu with five entries.</para>
-
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected association role.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              association role.</para>
-
-            <warning><para>In the current release of &argouml; this creates
-              an association, not an association
-              role. In any case there is no mechanism to add a newly
-              created artifact to the diagram.</para></warning></listitem>
-
-            <listitem><para><literal>Delete</literal>. Delete the selected
-              association role.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more association roles, and the association role
-              selected is not at the top. It is moved up one.</para>
-
-            <caution><para>In the current release of &argouml; this entry
-              is always grayed out. Association roles can not be moved in
-              the order. To change the order a association role must be
-              deleted and then recreated on the
-              diagram.</para></caution></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more association roles listed, and the
-              association role selected is not at the bottom. It is moved down
-              one.</para>
-
-            <caution><para>In the current release of &argouml; this entry
-              is always grayed out. Association roles can not be moved in
-              the order. To change the order a collaboration role must be
-              deleted and then recreated on the
-              diagram.</para></caution></listitem>
-          </itemizedlist></listitem>
+          <caution><para>&argouml; restricts you to a number of predefined
+            ranges for multiplicity. There is no way to give a user defined
+            range: typing something different seems to work, 
+            but the entered value is not remembered.
+            <!-- TODO: See issue ... -->
+          </para></caution></listitem>
         </varlistentry>
+
+        <!-- Entry for Base -->
+
+        <varlistentry>
+          <term><literal>Base</literal></term>
+
+          <listitem>
+            <para>List. The names of the classifiers
+              of which this is a classifierrole. &Button1; double click
+              navigates to the classifier. &Button2; click gives a pop up menu
+              with the following entries.
+            </para>
+            <itemizedlist>
+              <listitem>
+                <para><literal>Add</literal>. Allows adding or removeing 
+                  classifiers to the list. To this end, a dialog box pops up, as
+                  shown in the figure below.
+                </para>
+                
+                <figure id="fig.ref.signal_add_classifierrole_base" float="1">
+                  <title>The <quote>add context</quote> dialog box</title>
+                  <screenshot><mediaobject><imageobject>
+                    <imagedata format="PNG" align="center"
+                       fileref="images/reference/signal_add_classifierrole_base.png"/>
+                  </imageobject></mediaobject></screenshot>
+                </figure>
+
+              </listitem>
+            </itemizedlist>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Generalizations -->
+
+        <varlistentry>
+          <term><literal>Generalizations</literal></term>
+
+          <listitem><para>Text area. Lists any classifierrole that
+            <emphasis>generalizes</emphasis> this classifierrole.</para>
+
+            <para>&Button1; double click navigates to the generalization and opens
+              its property tab.
+            </para>
+
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Specializations -->
+
+        <varlistentry>
+          <term><literal>Specializations</literal></term>
+
+          <listitem><para>Text box. Lists any specialized classifierrole (i.e. for
+            which this classifierrole is a generalization.</para>
+
+          <para>&button1; double click navigates to the generalization and opens
+            its property tab.</para>
+
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Association End Role  -->
+
+        <varlistentry>
+          <term><literal>Association End Role</literal></term>
+
+          <listitem>
+            <para>Text area. Lists the association roles that are
+              linked to this classifier role.
+            </para>
+
+            <para>&Button1; double click navigates to the selected entry.
+            </para>
+
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Available Contents -->
+
+        <varlistentry>
+          <term><literal>Available Contents</literal></term>
+
+          <listitem>
+            <para>Text area. Lists the subset of modelelements contained 
+              in the base classifier which is used in the collaboration.
+            </para>
+
+            <para>&Button1; double click navigates to the modelelement and opens
+              its property tab.
+            </para>
+            
+            <caution>
+              <para>
+                &argouml; V0.14 does not seem to provide a way to add anything 
+                in the list here.
+                <!-- TODO: See issue ... -->
+              </para>
+            </caution>
+
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for Available Features -->
+
+        <varlistentry>
+          <term><literal>Available Features</literal></term>
+
+          <listitem>
+            <para>Text box. Lists the subset of features 
+              of the base classifier which is used in the collaboration.
+            </para>
+
+            <para>&button1; double click navigates to the feature and opens
+              its property tab.
+            </para>
+            
+            <caution>
+              <para>
+                &argouml; V0.14 does not seem to provide a way to add anything 
+                in the list here.
+                <!-- TODO: See issue ... -->
+              </para>
+            </caution>
+
+          </listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
   </sect1>
@@ -415,6 +494,8 @@ Argo/UML.
 
   <sect1 id="s1.ref.association_role">
     <title>Association Role</title>
+
+  &notupdatedfor014disclaimer;
 
     <para>An association role is a specialization of an association, used to
       describe an associations behavior in a particular context. In the UML
@@ -737,6 +818,8 @@ Argo/UML.
 
   <sect1 id="s1.ref.association_end_role">
     <title>Association End Role</title>
+
+  &notupdatedfor014disclaimer;
 
     <para>An association end role is a specialization of an association end,
       used to describe an association end's behavior in a particular
@@ -1111,6 +1194,8 @@ Argo/UML.
 
   <sect1>
     <title>Message</title>
+
+  &notupdatedfor014disclaimer;
 
     <para>A message is a communication between two instances of an association
       role on a specification level collaboration diagram. It describes an
