@@ -127,20 +127,15 @@ public class ExplorerPopup extends JPopupMenu {
                     Model.getFacade().isALink(selectedItem);
                 final boolean transitionSelected =
                     Model.getFacade().isATransition(selectedItem);
-                final boolean diagramSelected =
-                    selectedItem instanceof Diagram;
-
                 final boolean sequenceDiagramActive =
                     activeDiagram instanceof UMLSequenceDiagram;
                 final boolean stateDiagramActive =
                     activeDiagram instanceof UMLStateDiagram;
-
                 final Object selectedStateMachine
                     = (stateVertexSelected)
                     ? Model.getStateMachinesHelper()
 		          .getStateMachine(selectedItem)
                     : null;
-
                 final Object diagramStateMachine
                     = (stateDiagramActive)
                     ? ((UMLStateDiagram) activeDiagram).getStateMachine()
@@ -187,7 +182,7 @@ public class ExplorerPopup extends JPopupMenu {
                     this.add(ActionAddPackage.SINGLETON);
                 }
                 
-                if (selectedItem != projectModel || diagramSelected) {
+                if (selectedItem != projectModel) {
                     this.add(new ActionRemoveFromModel());
                 }
 
@@ -204,11 +199,9 @@ public class ExplorerPopup extends JPopupMenu {
                 this.add(action);
 	    }
 
-//            if (selectedItem != null) {
-//                this.add(
-//                    new ActionGoToDetails(menuLocalize("action.properties"))
-//                );
-//            }
+	    if (selectedItem instanceof Diagram) {
+	        this.add(new ActionRemoveFromModel());
+	    }
         }
     }
 
