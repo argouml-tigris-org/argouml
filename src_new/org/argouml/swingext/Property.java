@@ -127,7 +127,9 @@ public class Property implements Comparable {
     
     /**
      * Compares two Properties by comparing their names.
-    **/
+     *
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
     public int compareTo(Object o) {
         return name.compareTo(((Property) o).name);    
     }
