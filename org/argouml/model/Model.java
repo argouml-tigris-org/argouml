@@ -24,7 +24,8 @@
 
 package org.argouml.model;
 
-import org.argouml.model.uml.DefaultModelImplementation;
+import org.apache.log4j.Logger;
+
 
 /**
  * This is the root class of the Model subsystem. All other subsystems
@@ -42,6 +43,11 @@ import org.argouml.model.uml.DefaultModelImplementation;
  */
 public final class Model {
     /**
+     * Logger.
+     */
+    private static final Logger LOG = Logger.getLogger(Model.class);
+
+    /**
      * Constructor to prohibit creation.
      */
     private Model() {
@@ -50,16 +56,43 @@ public final class Model {
     /**
      * The object used to get objects of the implementation.
      */
-    private static ModelImplementation impl =
-        new DefaultModelImplementation();
+    private static ModelImplementation impl;
+
+    static {
+        String className =
+            System.getProperty(
+                    "argouml.model.implementation",
+            	    "org.argouml.model.uml.DefaultModelImplementation");
+
+        try {
+            Class implType = Class.forName(className);
+            impl = (ModelImplementation) implType.newInstance();
+        } catch (ClassNotFoundException e) {
+            reportError(e);
+        } catch (InstantiationException e) {
+            reportError(e);
+        } catch (IllegalAccessException e) {
+            reportError(e);
+        }
+    }
 
     /**
-     * Selects the implementation.
+     * @param e The exception to be logged.
+     */
+    private static void reportError(Exception e) {
+        LOG.fatal("Model component not correctly initiated.", e);
+    }
+
+    /**
+     * Selects the implementation.<p>
+     *
+     * This is used for testing purposes only when a fake implementation
+     * is used. Normally this is set when loading the Model subsystem.
      *
      * @param newImpl The ModelImplementation object of the selected
      * 		      implementation.
      */
-    public static void setImplementation(ModelImplementation newImpl) {
+    static void setImplementation(ModelImplementation newImpl) {
         impl = newImpl;
     }
 
@@ -354,5 +387,12 @@ public final class Model {
      */
     public static VisibilityKind getVisibilityKind() {
         return impl.getVisibilityKind();
+    }
+
+    /**
+     * @return <code>true</code> if the Model subsystem is correctly initiated.
+     */
+    public static boolean isInitiated() {
+        return impl != null;
     }
 }
