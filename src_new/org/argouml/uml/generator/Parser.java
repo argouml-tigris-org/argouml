@@ -44,12 +44,13 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
 import java.util.*;
+import java.text.ParseException;
 
 public abstract class Parser {
 
   public abstract MExtensionPoint parseExtensionPoint(String s);
   public abstract MOperation parseOperation(String s);
-  public abstract MAttribute parseAttribute(String s);
+  public abstract void parseAttribute(String s, MAttribute attr) throws ParseException;
   public abstract MParameter parseParameter(String s);
 //   public abstract Package parsePackage(String s);
 //   public abstract MClassImpl parseClassifier(String s);
