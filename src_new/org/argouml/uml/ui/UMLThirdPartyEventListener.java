@@ -67,7 +67,14 @@ public class UMLThirdPartyEventListener implements MElementListener {
      * <p>The container which is listening for all these events.</p>
      */
 
-    private Container _propPanel;
+    private PropPanel _propPanel;
+
+
+    /**
+     * <p>The model we are listening on.</p>
+     */
+
+    private MModel _model = null;
 
 
     /**
@@ -89,7 +96,7 @@ public class UMLThirdPartyEventListener implements MElementListener {
      *   Java library (i.e implementing the {@link Set} interface).</p>
      */
 
-    private HashSet _listenerList;
+    private HashSet _listenerList = new HashSet();
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -129,36 +136,10 @@ public class UMLThirdPartyEventListener implements MElementListener {
         _propPanel = propPanel;
         _pairList  = pairList;
 
-        // Create a new list of listeners (must do this even if have no target,
-        // so removeListeners will still work).
+        // Invoke the target changed method. This will start up listeners if we
+        // now have a model.
 
-        _listenerList = new HashSet();
-
-        // Get the owning model. The target associated with the propPanel
-        // should always be a MModelElement (if its not null), but we double
-        // check. Its possible it doesn't have a model, so we'll listen for one
-        // being added.
-
-        Object target = propPanel.getTarget();
-
-        // Quietly stop here if we have no target
-
-        if (target == null) {
-            return ;
-        }
-
-        // Complain if the target is not a model element
-
-        if (!(target instanceof MModelElement)) {
-            System.out.println(getClass().toString() +
-                               ": cannot build listener for " +
-                               target.getClass().toString());
-            return;
-        }
-
-        // Add listeners to everything relevant in the model
-
-        addListeners(((MModelElement) target).getModel());
+        targetChanged();
     }
     
 
@@ -303,30 +284,36 @@ public class UMLThirdPartyEventListener implements MElementListener {
         // Copy to the instance variable
 
         _pairList = pairList;
-
-        // If we have a target set up any new listeners (rather inefficiently
-        // we do everything, but only new things will get added).
-
-        // Get the owning model. The target associated with the propPanel
-        // should always be a MModelElement (if its not null), but we double
-        // check. Its possible it doesn't have a model, so we'll listen for one
-        // being added.
-
-        Object target = ((PropPanel) _propPanel).getTarget();
-
-        // Quietly stop here if we have no target or it is not a model element
-        // (no need to complain - we'll have done that the first time in the
-        // constructor).
-
-        if ((target == null) || (!(target instanceof MModelElement))) {
-            return ;
-        }
-
-        // Add listeners to everything relevant in the model
-
-        addListeners(((MModelElement) target).getModel());
     }
 
+
+    /**
+     * <p>The target of the container has changed. If this has led to a change
+     *   of model, we need to start/restart everything.</p>
+     */
+
+    void targetChanged() {
+
+        // Get the target. If its not a model element, we can do nothing more.
+
+        Object target = _propPanel.getTarget();
+
+        if (!(target instanceof MModelElement)) {
+            return;
+        }
+
+        // Get the model. If it's changed, we close down all listeners, and
+        // start up some new ones (which will do nothing if it has changed to
+        // null).
+
+        MModel model = ((MModelElement) target).getModel();
+
+        if(model != _model) {
+            removeAllListeners();
+            _model = model;
+            addListeners(model);
+        }
+    }
 
 
     ///////////////////////////////////////////////////////////////////////////

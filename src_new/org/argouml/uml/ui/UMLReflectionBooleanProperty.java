@@ -21,9 +21,19 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
+// project as needing saving if a property is set.
+
+
 package org.argouml.uml.ui;
+
 import java.lang.reflect.*;
+
 import ru.novosoft.uml.*;
+
+import org.argouml.ui.*;
+import org.argouml.kernel.*;
+
 
 public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
     private Method _getMethod;
@@ -73,6 +83,11 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
             catch(Exception e) {
                 System.out.println(e.toString() + " in UMLReflectionBooleanProperty.setMethod()");
             }
+
+            // Having set a property, mark as needing saving
+
+            Project p = ProjectBrowser.TheInstance.getProject();
+            p.setNeedsSave(true);
         }
     }
     

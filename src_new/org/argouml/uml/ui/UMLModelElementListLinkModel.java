@@ -99,7 +99,7 @@ abstract public class UMLModelElementListLinkModel extends
      * <p>The list for the link pop-up menu. Null at creation.</p>
      */
  
-    protected Vector _links = null;
+    private Vector _links = null;
 
 
     /**
@@ -107,34 +107,7 @@ abstract public class UMLModelElementListLinkModel extends
      *   is <code>false</code> (no "Link" menu).</p>
      */
  
-    protected boolean _useLink = false;
-
-
-    /**
-     * <p>Create a new list model, with the "Link" sub-menu disabled.<p>
-     *
-     * <p>Implementation invokes {@link
-     *   #UMLModelElementListLinkModel(UMLUserInterfaceContainer, String,
-     *   boolean, boolean)} version of the constructor with an explicit
-     *   <code>false</code> flag for the "Link" menu</p>
-     *
-     * @param container  The container for this list&mdash;the use case
-     *                   or extend property panel.
-     *
-     * @param property   The name associated with the NSUML {@link
-     *                   MElementEvent} that we are tracking or
-     *                   <code>null</code> if we track them all. We 
-     *                   want to just track the "extensionPoint" event.
-     *
-     * @param showNone   <code>true</code> if an empty list is represented by
-     *                   the keyword "none", <code>false</code> otherwise.
-     */
-
-    public UMLModelElementListLinkModel(UMLUserInterfaceContainer container,
-                                        String property, boolean showNone) {
-
-        this(container,property,showNone,false);
-    }
+    private boolean _useLink = false;
 
 
     /**
@@ -144,27 +117,39 @@ abstract public class UMLModelElementListLinkModel extends
      * <p>Implementation is just an invocation of the parent constructor and a
      *   setting of the flag.</p>
      *
-     * @param container  The container for this list&mdash;the use case
-     *                   or extend property panel.
+     * @param container    The container for this list&mdash;the use case
+     *                     or extend property panel.
      *
-     * @param property   The name associated with the NSUML {@link
-     *                   MElementEvent} that we are tracking or
-     *                   <code>null</code> if we track them all. We 
-     *                   want to just track the "extensionPoint" event.
+     * @param elementType  The element type of entries in the Link menu entry.
      *
-     * @param showNone   <code>true</code> if an empty list is represented by
-     *                   the keyword "none", <code>false</code> otherwise.
+     * @param showNone     <code>true</code> if an empty list is represented by
+     *                     the keyword "none", <code>false</code> otherwise.
      *
-     * @param useLink    <code>true</code> if the "Link" menu should be shown,
-     *                   <code>false</code> otherwise.
+     * @param useLink      <code>true</code> if the "Link" menu should be
+     *                     shown, <code>false</code> otherwise.
      */
 
     public UMLModelElementListLinkModel(UMLUserInterfaceContainer container,
-                                        String property, boolean showNone,
+                                        Class elementType, boolean showNone,
                                         boolean useLink) {
 
-        super(container,property,showNone);
-        setUseLink(useLink);
+        // The property entry of the superconstructor is irrelevant we'll do
+        // that ourselves.
+
+        super(container, null, showNone);
+
+        // Set instance variables
+
+        _useLink = useLink;
+
+        // Finally add a third party listener if the container is a prop panel,
+        // so we can here of any changes to objects of meta class elementType.
+        // Other containers will have to do this for themselves.
+
+        if (container instanceof PropPanel) {
+            Object[] eventsToWatch = {elementType, null};
+            ((PropPanel) container).addThirdPartyEventListening(eventsToWatch);
+        }
     }
 
 
@@ -333,6 +318,7 @@ abstract public class UMLModelElementListLinkModel extends
      */
 
     public boolean buildSubPopup(JMenu submenu, int index) {
+
         UMLUserInterfaceContainer container = getContainer();
         Object                    target    = getTarget();
 

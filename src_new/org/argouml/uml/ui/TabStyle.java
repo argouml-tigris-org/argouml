@@ -21,6 +21,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: TabStyle.java
+// Classes: TabStyle
+// Original Author:
+// $Id$
+
+// 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// use case style panel that handles optional display of extension points.
+
+
 package org.argouml.uml.ui;
 
 import java.awt.*;
@@ -76,17 +85,19 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
   }
 
   protected void initPanels() {
-    StylePanelFigClass spfc = new StylePanelFigClass();
+    StylePanelFigClass spfc      = new StylePanelFigClass();
+    StylePanelFigUseCase spfuc   = new StylePanelFigUseCase();
     SPFigEdgeModelElement spfeme = new SPFigEdgeModelElement();
-    StylePanelFig spf = new StylePanelFig();
+    StylePanelFig spf            = new StylePanelFig();
+
     _panels.put(FigClass.class, spfc);
+    _panels.put(FigUseCase.class, spfuc);
     _panels.put(FigNodeModelElement.class, spf);
     _panels.put(FigEdgeModelElement.class, spfeme);
     _panels.put(FigInterface.class, spf);
     _panels.put(FigAssociation.class, spfeme);
     _panels.put(FigState.class, spf);
     _panels.put(FigTransition.class, spfeme);
-    _panels.put(FigUseCase.class, spf);
     _panels.put(FigActor.class, spf);
     _panels.put(FigInstance.class, spf);
     _panels.put(FigLink.class, spfeme);

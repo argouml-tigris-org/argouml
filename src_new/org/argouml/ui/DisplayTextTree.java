@@ -21,6 +21,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: DisplayTextTree.java
+// Classes: DisplayTextTree
+// Original Author:
+// $Id$
+
+// 26 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Patch to give a better
+// naming for extension points in convertValueToText.
+
+
 package org.argouml.ui;
 
 import java.util.*;
@@ -33,6 +42,7 @@ import javax.swing.plaf.basic.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
 import org.tigris.gef.base.*;
@@ -76,6 +86,9 @@ implements MElementListener, VetoableChangeListener {
         String name = ((MModelElementImpl)e).getName();
       if (e instanceof MTransition) {
 		  name = GeneratorDisplay.Generate((MTransition)e);
+      }
+      if (e instanceof MExtensionPoint) {  // Jeremy Bennett patch
+          name = GeneratorDisplay.Generate((MExtensionPoint) e);
       }
       if (name == null || name.equals("")) name = "(anon " + ocl + ")";
       return name;

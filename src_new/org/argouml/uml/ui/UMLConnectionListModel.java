@@ -21,12 +21,21 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
+// project as needing saving if an association is added, deleted, changed or
+// moved.
+
 package org.argouml.uml.ui;
+
 import ru.novosoft.uml.*;
 import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
 import java.util.*;
 import java.awt.*;
+
+import org.argouml.ui.*;
+import org.argouml.kernel.*;
+
 
 public class UMLConnectionListModel extends UMLModelElementListModel  {
 
@@ -91,6 +100,11 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
             MAssociationEnd otherEnd = new MAssociationEndImpl();
             newAssoc.addConnection(otherEnd);
 
+            // Having added an association, mark as needing saving
+
+            Project p = ProjectBrowser.TheInstance.getProject();
+            p.setNeedsSave(true);
+
             fireIntervalAdded(this,index,index);
             navigateTo(newAssoc);
         }
@@ -112,6 +126,12 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
                 }
               }
             }
+
+            // Having removed an association, mark as needing saving
+
+            Project p = ProjectBrowser.TheInstance.getProject();
+            p.setNeedsSave(true);
+
             fireIntervalRemoved(this,index,index);
         }
     }
@@ -121,6 +141,12 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             classifier.setAssociationEnds(moveUpUtil(classifier.getAssociationEnds(),index));
+
+            // Having moved an association, mark as needing saving
+
+            Project p = ProjectBrowser.TheInstance.getProject();
+            p.setNeedsSave(true);
+
             fireContentsChanged(this,index-1,index);
         }
     }
@@ -130,6 +156,12 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
             classifier.setAssociationEnds(moveDownUtil(classifier.getAssociationEnds(),index));
+
+            // Having moved an association, mark as needing saving
+
+            Project p = ProjectBrowser.TheInstance.getProject();
+            p.setNeedsSave(true);
+
             fireContentsChanged(this,index,index+1);
         }
     }

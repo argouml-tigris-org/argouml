@@ -25,6 +25,10 @@
 // Classes: CompartmentFigText
 // Original Author: thn
 
+// 8 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// the display of extension points within use cases.
+
+
 package org.argouml.uml.diagram.ui;
 
 import java.awt.*;
@@ -34,52 +38,252 @@ import org.argouml.ui.*;
 import org.tigris.gef.presentation.*;
 import ru.novosoft.uml.foundation.core.*;
 
-/** A FigText class extension for FigClass/FigInterface compartments */
+/**
+ * <p>A FigText class extension for FigClass/FigInterface/FigUseCase
+ *   compartments.</p>
+ *
+ * <p>This implementation now supports the extension point compartment in a use
+ *   case. The {@link #getFeature()} and {@link #setFeature(MFeature)} methods
+ *   are now deprecated in favour of the more generic {@link
+ *   #getModelElement()} and {@link #setModelElement(MModelElement)}
+ *   methods.</p>
+ */
 
 public class CompartmentFigText extends FigText
 {
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    // Instance variables
+    //
+    ///////////////////////////////////////////////////////////////////////////
 
-  protected Fig refFig;
-  protected boolean _isHighlighted = false;
-  protected MFeature _feature = null;
+    /**
+     * <p>The bounding figure of the compartment containing this fig text.</p>
+     */
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    protected Fig           _refFig;
 
-  public CompartmentFigText(int x, int y, int w, int h, Fig aFig) {
-    super(x,y,w,h,true);
-    refFig = aFig; // not allowed: null (is not handled!)
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    /**
+     * <p>Record whether we are currently highlighted.</p>
+     */
 
-  // The following method overrides are necessary for proper graphical behavior
-  public void setLineWidth(int w) {super.setLineWidth(0);}
-  public int getLineWidth() {return 1;}
-  public boolean getFilled() {return true;}
-  public Color getFillColor() {return refFig.getFillColor();}
-  public Color getLineColor() {return refFig.getLineColor();}
+    protected boolean       _isHighlighted = false;
 
-  public void setHighlighted(boolean flag) {
-    _isHighlighted = flag;
-    super.setLineWidth(_isHighlighted ? 1 : 0);
-    if (flag && _feature != null)
-	    ProjectBrowser.TheInstance.setTarget(_feature);
-  }
 
-  public boolean isHighlighted() {
-    return _isHighlighted;
-  }
+    /**
+     * <p>The model element with which we are associated.</p>
+     */
 
-  public void setFeature(MFeature feature) {
-    _feature = feature;
-  }
+    protected MModelElement _modelElement = null;
 
-  public MFeature getFeature() {
-    return _feature;
-  }
-}
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    // constructors
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+    /**
+     * <p>Build a new compartment figText of the given dimensions, within the
+     *   compartment described by <code>aFig</code>.</p>
+     *
+     * <p>Invoke the parent constructor, then set the reference to the
+     *   associated compartment figure. The associated FigText is marked as
+     *   expand only.</p>
+     *
+     * <p><em>Warning</em>. Won't work properly if <code>aFig</code> is
+     *   null. A warning is printed.</p>
+     *
+     * @param x     X coordinate of the top left of the FigText.
+     *
+     * @param y     Y coordinate of the top left of the FigText.
+     *
+     * @param w     Width of the FigText.
+     *
+     * @param h     Height of the FigText.
+     *
+     * @param aFig  The figure describing the whole compartment
+     */
+
+    public CompartmentFigText(int x, int y, int w, int h, Fig aFig) {
+        super(x,y,w,h,true);
+
+        // Set the enclosing compartment fig. Warn if its null (which will
+        // break).
+
+        _refFig = aFig;
+
+        if (_refFig == null) {
+            System.out.println(this.getClass().toString() +
+                               ": Cannot create with null compartment fig");
+        }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    //
+    // Accessors
+    //
+    ///////////////////////////////////////////////////////////////////////////
+
+
+    // The following method overrides are necessary for proper graphical
+    // behavior
+
+    /**
+     * <p>Override for correct graphical behaviour.</p>
+     *
+     * @param w  Desired line width. Overridden and set to zero anyway.
+     */
+
+    public void setLineWidth(int w) {
+        super.setLineWidth(0);
+    }
+
+
+    /**
+     * <p>Override for correct graphical behaviour.</p>
+     *
+     * @return  Current line width&mdash;always 1.
+     */
+
+    public int getLineWidth() {
+        return 1;
+    }
+
+    
+    /**
+     * <p>Override for correct graphical behaviour.</p>
+     *
+     * @return  Current fill status&mdash;always <code>true</code>.
+     */
+
+    public boolean getFilled() {
+        return true;
+    }
+
+
+    /**
+     * <p>Override for correct graphical behaviour.</p>
+     *
+     * @return  Current fill colour&mdash;always the fill colour of the
+     *          associated compartment fig.
+     */
+
+    public Color getFillColor() {
+        return _refFig.getFillColor();
+    }
+
+
+    /**
+     * <p>Override for correct graphical behaviour.</p>
+     *
+     * @return  Current fill colour&mdash;always the fill colour of the
+     *          associated compartment fig.
+     */
+
+    public Color getLineColor() {
+        return _refFig.getLineColor();
+    }
+
+
+    /**
+     * <p>Mark whether this item is to be highlighted.</p>
+     *
+     * <p>If it is highlighted, make the superclass line width 1 rather than 0
+     *   and set the associated component fig as the target in the browser.</p>
+     *
+     * @param flag  <code>true</code> if the entry is to be highlighted,
+     *              <code>false</code> otherwise.
+     */
+
+    public void setHighlighted(boolean flag) {
+        _isHighlighted = flag;
+        super.setLineWidth(_isHighlighted ? 1 : 0);
+
+        if (flag && (_modelElement != null)) {
+	    ProjectBrowser.TheInstance.setTarget(_modelElement);
+        }
+    }
+
+
+    /**
+     * <p>Return whether this item is highlighted.</p>
+     *
+     * @return  <code>true</code> if the entry is highlighted,
+     *          <code>false</code> otherwise.
+     */
+
+    public boolean isHighlighted() {
+        return _isHighlighted;
+    }
+
+
+    /**
+     * <p>Set the NSUML feature associated with this compartment.</p>
+     *
+     * <p><em>Note</em>. This is implemented using {@link
+     *   #setModelElement(MModelElement)}.</p>
+     *
+     * @param feature  The feature to set.
+     *
+     * @deprecated  Use the more general {@link
+     *              #setModelElement(MModelElement)} instead.
+     */
+
+    public void setFeature(MFeature feature) {
+        setModelElement(feature);
+    }
+
+
+    /**
+     * <p>Get the NSUML feature associated with this compartment.</p>
+     *
+     * <p><em>Note</em>. This is implemented using {@link #getModelElement()}
+     *   and will return <code>null</code> if that does not return an instance
+     *   of {@link MFeature}.</p>
+     *
+     * @return  The feature associated with this compartment.
+     *
+     * @deprecated  Use the more general {@link #getModelElement()} instead.
+     */
+
+    public MFeature getFeature() {
+        MModelElement modelElement = getModelElement();
+
+        if (modelElement instanceof MFeature) {
+            return (MFeature) modelElement;
+        }
+        else {
+            return null;
+        }
+    }
+
+
+    /**
+     * <p>Set the NSUML model element associated with this compartment.</p>
+     *
+     * @param modelElement  The model element to set.
+     */
+
+    public void setModelElement(MModelElement modelElement) {
+
+        _modelElement = modelElement;
+    }
+
+
+    /**
+     * <p>Get the NSUML modelElement associated with this compartment.</p>
+     *
+     * @return  The modelElement associated with this compartment.
+     */
+
+    public MModelElement getModelElement() {
+
+        return _modelElement;
+    }
+
+} /* End of class CompartmentFigText */
+

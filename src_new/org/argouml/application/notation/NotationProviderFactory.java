@@ -21,6 +21,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: NotationProviderFactory.java
+// Classes: NotationProviderFactory
+// Original Author: Thierry Lach
+// $Id$
+
+// 8 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
+// extension points.
+
+
 package org.argouml.application.notation;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
