@@ -38,7 +38,7 @@ import javax.swing.ImageIcon;
  */
 public class DropDownIcon extends DecoratedIcon {
 
-    private static final int[][] standardBuffer = {
+    private static final int[][] STANDARDBUFFER = {
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
 	{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -61,6 +61,6 @@ public class DropDownIcon extends DecoratedIcon {
     /** Creates a new instance of DropDownIcon */
     DropDownIcon(ImageIcon imageIcon) {
         super(imageIcon);
-        init(standardBuffer);
+        init(STANDARDBUFFER);
     }
 }

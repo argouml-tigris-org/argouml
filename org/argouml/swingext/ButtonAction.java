@@ -35,8 +35,25 @@ package org.argouml.swingext;
  * @author ButtonAction
  */
 public interface ButtonAction {
+   
+    /**
+     * @param modal the modal of the action
+     */
     public void setModal(boolean modal);
+    
+    /**
+     * @return true if the action is modal
+     */
     public boolean isModal();
+    
+    /**
+     * @param lockMethod  purpose: action buttons can remain depressed 
+     *                    so that they can be used multiple times
+     */
     public void setLockMethod(int lockMethod);
+    
+    /**
+     * @return the int lockMethod
+     */
     public int getLockMethod();
 }

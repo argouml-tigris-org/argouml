@@ -48,7 +48,7 @@ import org.apache.log4j.Logger;
  */
 public class SerialLayout extends LineLayout {
     
-    protected static Logger cat = 
+    private static final Logger LOG = 
         Logger.getLogger(SerialLayout.class);
         
     public static final int LEFTTORIGHT = 10;
@@ -76,6 +76,9 @@ public class SerialLayout extends LineLayout {
     int direction = LEFTTORIGHT;
     int alignment = TOP;
 
+    /**
+     * The constructor.
+     */
     public SerialLayout() {
         this(Horizontal.getInstance(), WEST, LEFTTORIGHT, TOP);
     }
@@ -111,7 +114,7 @@ public class SerialLayout extends LineLayout {
 
         Point loc;
         int preferredBreadth =
-	    _orientation.getBreadth(parent.getPreferredSize());
+	    orientation.getBreadth(parent.getPreferredSize());
         if (direction == LEFTTORIGHT) {
             if (position.equals(EAST)) {
                 loc =
@@ -128,32 +131,32 @@ public class SerialLayout extends LineLayout {
                 if (comp != null && comp.isVisible()) {
                     Dimension size = comp.getPreferredSize();
                     if (alignment == FILL) {
-                        _orientation.setBreadth(size, preferredBreadth);
+                        orientation.setBreadth(size, preferredBreadth);
                     }
                     comp.setSize(size);
                     comp.setLocation(loc);
-                    loc = _orientation.addToPosition(loc, comp);
-                    loc = _orientation.addToPosition(loc, _gap);
+                    loc = orientation.addToPosition(loc, comp);
+                    loc = orientation.addToPosition(loc, gap);
                 }
             }
         }
         else {
-            int lastUsablePosition = _orientation.getLastUsablePosition(parent);
-            int firstUsableOffset = _orientation.getFirstUsableOffset(parent);
-            loc = _orientation.newPoint(lastUsablePosition, firstUsableOffset);
+            int lastUsablePosition = orientation.getLastUsablePosition(parent);
+            int firstUsableOffset = orientation.getFirstUsableOffset(parent);
+            loc = orientation.newPoint(lastUsablePosition, firstUsableOffset);
 
             int nComps = parent.getComponentCount();
             for (int i = 0; i < nComps; i++) {
                 Component comp = parent.getComponent(i);
                 if (comp != null && comp.isVisible()) {
-                    loc = _orientation.subtractFromPosition(loc, comp);
+                    loc = orientation.subtractFromPosition(loc, comp);
                     Dimension size = comp.getPreferredSize();
                     if (alignment == FILL) {
-                        _orientation.setBreadth(size, preferredBreadth);
+                        orientation.setBreadth(size, preferredBreadth);
                     }
                     comp.setSize(size);
                     comp.setLocation(loc);
-                    loc = _orientation.subtractFromPosition(loc, _gap);
+                    loc = orientation.subtractFromPosition(loc, gap);
                 }
             }
         }
