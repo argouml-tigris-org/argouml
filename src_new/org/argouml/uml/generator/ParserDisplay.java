@@ -110,8 +110,8 @@ interface PropertyOperation {
  * @see ParserDisplay#setProperties
  */
 class PropertySpecialString {
-    private String _name;
-    private PropertyOperation _op;
+    private String name;
+    private PropertyOperation op;
 
     /**
      * Constructs a new PropertySpecialString that will invoke the action in
@@ -119,11 +119,11 @@ class PropertySpecialString {
      * then return true from invoke.
      *
      * @param str The name of this PropertySpecialString.
-     * @param op An object containing the method to invoke on a match.
+     * @param propop An object containing the method to invoke on a match.
      */
-    public PropertySpecialString(String str, PropertyOperation op) {
-	_name = str;
-	_op = op;
+    public PropertySpecialString(String str, PropertyOperation propop) {
+	name = str;
+	op = propop;
     }
 
     /**
@@ -133,14 +133,14 @@ class PropertySpecialString {
      * may assume that all required actions have been taken and stop
      * searching.
      *
-     * @param name The name of a property.
+     * @param pname The name of a property.
      * @param value The value of a property.
      * @return <b>true</b> if an action is performed, otherwise <b>false</b>.
      */
-    public boolean invoke(Object element, String name, String value) {
-	if (!_name.equalsIgnoreCase(name))
+    public boolean invoke(Object element, String pname, String value) {
+	if (!name.equalsIgnoreCase(pname))
 	    return false;
-	_op.found(element, value);
+	op.found(element, value);
 	return true;
     }
 }
@@ -250,15 +250,15 @@ public class ParserDisplay extends Parser {
 	_operationSpecialStrings[3] =
 	    new PropertySpecialString("concurrency", new PropertyOperation() {
                 public void found(Object element, String value) {
-                    Object kind =
-                        ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
-                    if ("guarded".equalsIgnoreCase(value))
-                        kind = ModelFacade.GUARDED_CONCURRENCYKIND;
-                    else if ("concurrent".equalsIgnoreCase(value))
-                        kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
-                    if (ModelFacade.isAOperation(element))
-                        ModelFacade.setConcurrency(element, kind);
-                }
+		Object kind =
+		    ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
+		if ("guarded".equalsIgnoreCase(value))
+		    kind = ModelFacade.GUARDED_CONCURRENCYKIND;
+		else if ("concurrent".equalsIgnoreCase(value))
+		    kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
+		if (ModelFacade.isAOperation(element))
+		    ModelFacade.setConcurrency(element, kind);
+		}
             });
 	_operationSpecialStrings[4] =
 	    new PropertySpecialString("abstract",
@@ -274,38 +274,38 @@ public class ParserDisplay extends Parser {
 	_operationSpecialStrings[5] =
 	    new PropertySpecialString("leaf",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        boolean isLeaf = true;
-                        if (value != null && value.equalsIgnoreCase("false"))
-                            isLeaf = false;
-                        if (ModelFacade.isAOperation(element))
-                            ModelFacade.setLeaf(element, isLeaf);
-                    }
-                });
+		public void found(Object element, String value) {
+		    boolean isLeaf = true;
+		    if (value != null && value.equalsIgnoreCase("false"))
+			isLeaf = false;
+		    if (ModelFacade.isAOperation(element))
+			ModelFacade.setLeaf(element, isLeaf);
+		}
+	    });
 	_operationSpecialStrings[6] =
 	    new PropertySpecialString("query",
                 new PropertyOperation() {
-                    public void found(Object element, String value)
-                    {
-                        boolean isQuery = true;
-                        if (value != null && value.equalsIgnoreCase("false"))
-                            isQuery = false;
-                        if (ModelFacade.isABehavioralFeature(element))
-                            ModelFacade.setQuery(element, isQuery);
-                    }
-                });
+		public void found(Object element, String value)
+		{
+		    boolean isQuery = true;
+		    if (value != null && value.equalsIgnoreCase("false"))
+			isQuery = false;
+		    if (ModelFacade.isABehavioralFeature(element))
+			ModelFacade.setQuery(element, isQuery);
+		}
+	    });
 	_operationSpecialStrings[7] =
 	    new PropertySpecialString("root",
                 new PropertyOperation() {
-                    public void found(Object element, String value)
-                    {
-                        boolean isRoot = true;
-                        if (value != null && value.equalsIgnoreCase("false"))
-                            isRoot = false;
-                        if (ModelFacade.isAOperation(element))
-                            ModelFacade.setRoot(element, isRoot);
-                    }
-                });
+                public void found(Object element, String value)
+		{
+		    boolean isRoot = true;
+		    if (value != null && value.equalsIgnoreCase("false"))
+			isRoot = false;
+		    if (ModelFacade.isAOperation(element))
+			ModelFacade.setRoot(element, isRoot);
+		}
+	    });
 	_operationCustomSep = new Vector();
 	_operationCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 	_operationCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
@@ -1306,8 +1306,9 @@ public class ParserDisplay extends Parser {
 			    throw new ParseException("Attribute cannot have two"
 						     + " types",
 						     st.getTokenIndex());
-			if (token.length() > 0 && 
-                           (token.charAt(0) == '\"' || token.charAt(0) == '\''))
+			if (token.length() > 0 
+			    && (token.charAt(0) == '\"' 
+				|| token.charAt(0) == '\''))
 			    throw new ParseException("Type cannot be quoted",
 						     st.getTokenIndex());
 			if (token.length() > 0 && token.charAt(0) == '(')
@@ -1664,13 +1665,16 @@ public class ParserDisplay extends Parser {
                 ModelFacade.setQuery(op, true);
             } else if (property.equals("sequential") 
                     || property.equals("concurrency=sequential")) {
-                ModelFacade.setConcurrency(op, ModelFacade.SEQUENTIAL_CONCURRENCYKIND);
+                ModelFacade.setConcurrency(op, 
+				ModelFacade.SEQUENTIAL_CONCURRENCYKIND);
             } else if (property.equals("guarded") 
                     || property.equals("concurrency=guarded")) {
-                ModelFacade.setConcurrency(op, ModelFacade.GUARDED_CONCURRENCYKIND);
+                ModelFacade.setConcurrency(op, 
+				ModelFacade.GUARDED_CONCURRENCYKIND);
             } else if (property.equals("concurrent") 
                     || property.equals("concurrency=concurrent")) {
-                ModelFacade.setConcurrency(op, ModelFacade.CONCURRENT_CONCURRENCYKIND);
+                ModelFacade.setConcurrency(op, 
+				ModelFacade.CONCURRENT_CONCURRENCYKIND);
             } else {
                 addTaggedValue(op, property);
             }
@@ -1694,8 +1698,8 @@ public class ParserDisplay extends Parser {
         if (property.indexOf("=") >= 0) {
             tagStr =
                 property.substring(0, property.indexOf("=") - 1);
-            valueStr =
-                property.substring(property.indexOf("=" + 1, property.length()));
+            valueStr = property.substring(property.indexOf("=" + 1, 
+	    						property.length()));
         }
         Object tag =
             UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
@@ -1780,8 +1784,8 @@ public class ParserDisplay extends Parser {
 		    Iterator it = pr.findFigsForMember(op).iterator();
 		    while (it.hasNext()) {
 			Object listener = it.next();
-			// UmlModelEventPump.getPump().removeModelEventListener(listener,
-			// p);
+			/* UmlModelEventPump.getPump()
+			   	.removeModelEventListener(listener, p); */
 			UmlModelEventPump.getPump()
                                 .addModelEventListener(listener, p);
 		    }
@@ -2172,7 +2176,8 @@ public class ParserDisplay extends Parser {
             if (evt == null) {
                 // case 1
                 /* TODO: Why not createCallEvent() in the next line? */
-                evt = UmlFactory.getFactory().getStateMachines().buildCallEvent();
+                evt = UmlFactory.getFactory().getStateMachines()
+						 	.buildCallEvent();
                 if (evt != null) {
                     ModelFacade.setName(evt, trigger);
                     ModelFacade.setTrigger(trans, /*(MCallEvent)*/ evt);
@@ -2188,10 +2193,9 @@ public class ParserDisplay extends Parser {
 	    } else {
                 // case 4
                 ModelFacade.setTrigger(trans, null); // unhook it
-                // now erase it
-                /* TODO: Erase the event!*/
-                /* This does not work: (and besides, it can be another kind of event) */
-                /* StateMachinesFactory.getFactory().deleteCallEvent((MCallEvent) evt); */
+                // now erase it:
+		ProjectManager.getManager().getCurrentProject()
+							.moveToTrash(evt);
             }
         }
 
@@ -2236,6 +2240,8 @@ public class ParserDisplay extends Parser {
 		ModelFacade.setGuard(trans, null); // unhook it
 		// now erase it:
 		/* TODO: Erase the guard and the expression, or shouldn't we? */
+		/*ProjectManager.getManager().getCurrentProject()
+							.moveToTrash(g);*/
 	    }
 	}
 
