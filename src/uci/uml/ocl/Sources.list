@@ -1,0 +1,6 @@
+SOURCES= \
+	OCLEvaluator.java \
+	OCLExpander.java \
+	TemplateReader.java \
+	TemplateRecord.java
+

@@ -1,0 +1,6 @@
+SOURCES= \
+	CheckItem.java \
+	Checklist.java \
+	ChecklistStatus.java \
+	CheckManager.java
+

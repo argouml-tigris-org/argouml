@@ -29,7 +29,7 @@ package uci.uml.ui;
 import java.io.*;
 import java.util.*;
 import java.beans.*;
-import java.net.URL;
+import java.net.*;
 
 import uci.gef.*;
 import uci.argo.kernel.*;
@@ -38,20 +38,32 @@ import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.generate.*;
 import uci.uml.visual.*;
-import uci.uml.xmi.*;
+import uci.xml.argo.*;
+import uci.xml.xmi.*;
+import uci.xml.pgml.*;
+import uci.util.*;
 
 /** A datastructure that represents the designer's current project.  A
  *  Project consists of diagrams and UML models. */
 
 public class Project implements java.io.Serializable {
-
-  public static final String separator = "/";
+  ////////////////////////////////////////////////////////////////
+  // constants
+  public static final String SEPARATOR = "/";
+  public final static String FILE_EXT = ".argo";
+  public final static String TEMPLATES = "/uci/uml/templates/";
+  public final static String EMPTY_PROJ = "EmptyProject" + FILE_EXT;
+  public final static String UNTITLED_FILE = "Untitled";
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  public String _pathname = "";
-  public String _filename = "untitled.argo";
+  //public String _pathname = "";
+  //public String _filename = UNTITLED_FILE + FILE_EXT;
+
+  //needs-more-work should just be the directory to write
+  private URL _url = null;
+
   public String _authorname = "";
   public String _description = "";
   public String _version = "";
@@ -72,24 +84,38 @@ public class Project implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // constructor
 
-  public Project(String name) {
-    _filename = name;
-    if (!_filename.endsWith(".argo")) _filename += ".argo";
+  public Project(File file) throws MalformedURLException, IOException {
+    this(Util.fileToURL(file));
+  }
+
+  public Project(URL url) {
+    _url = Util.fixURLExtension(url, FILE_EXT);
+  }
+
+  public Project() {
     initProject();
   }
 
   public static Project makeEmptyProject() {
-    String path = "/uci/uml/templates/";
-    String filename = "EmptyProject.argo";
-    System.out.println("Reading " + path + filename + "...");
-    URL url = Project.class.getResource(path + filename);
-    ArgoParserIBM.SINGLETON.readProject(filename, url);
-    Project p = ArgoParserIBM.SINGLETON.getProject();
+    System.out.println("Reading " + TEMPLATES + EMPTY_PROJ + "...");
+    URL url = Project.class.getResource(TEMPLATES + EMPTY_PROJ);
+    Project p = null;
+    //try {
+    ArgoParser.SINGLETON.readProject(url);
+    //     }
+    //     catch (IOException ignore) {
+    //       System.out.println("IOException in makeEmptyProject");
+    //     }
+    //     catch (org.xml.sax.SAXException ignore) {
+    //       System.out.println("SAXException in makeEmptyProject");
+    //     }
+    p = ArgoParser.SINGLETON.getProject();
     p.loadAllMembers();
     p.postLoad();
-    try { p.setName("Untitled.argo"); }
+    try { p.setName(UNTITLED_FILE + FILE_EXT); }
     catch (PropertyVetoException pve) { }
-    System.out.println("Read " + path + filename + "...");
+    catch (MalformedURLException murle) { }
+    System.out.println("Read " + TEMPLATES + EMPTY_PROJ + "...");
     return p;
   }
 
@@ -131,71 +157,168 @@ public class Project implements java.io.Serializable {
 
   public String getBaseName() {
     String n = getName();
-    if (!n.endsWith(".argo")) return n;
+    if (!n.endsWith(FILE_EXT)) return n;
     return n.substring(0, n.length() - ".argo".length());
   }
 
   public String getName() {
     // needs-more-work: maybe separate name
-    return _filename;
-  }
-  public void setName(String n) throws PropertyVetoException {
-    getVetoSupport().fireVetoableChange("Name", _filename, n);
-    _filename = n;
+    String name = _url.getFile();
+    int i = name.lastIndexOf('/');
+    return name.substring(i+1);
   }
 
-  public String getFilename() { return _filename; }
-  public void setFilename(String n) throws PropertyVetoException {
-    getVetoSupport().fireVetoableChange("Filename", _filename, n);
-    _filename = n;
+  public void setName(String n)
+       throws PropertyVetoException, MalformedURLException {
+    setURL(new URL(getURL(), n));
   }
 
-  public String getPathname() { return _pathname; }
-  public void setPathname(String n) throws PropertyVetoException {
-    if (!n.endsWith(separator)) n += separator;
-    getVetoSupport().fireVetoableChange("Pathname", _pathname, n);
-    _pathname = n;
+//   public void setName(String n) throws PropertyVetoException {
+//     getVetoSupport().fireVetoableChange("Name", _filename, n);
+//     _filename = n;
+//   }
+
+  public URL getURL() { return _url; }
+
+  public void setURL(URL url) throws PropertyVetoException {
+    url = Util.fixURLExtension(url, FILE_EXT);
+    getVetoSupport().fireVetoableChange("url", _url, url);
+    _url = url;
   }
+
+//   public String getFilename() { return _filename; }
+//   public void setFilename(String n) throws PropertyVetoException {
+//     getVetoSupport().fireVetoableChange("Filename", _filename, n);
+//     _filename = n;
+//   }
+
+//   public String getPathname() { return _pathname; }
+//   public void setPathname(String n) throws PropertyVetoException {
+//     if (!n.endsWith(SEPARATOR)) n += SEPARATOR;
+//     getVetoSupport().fireVetoableChange("Pathname", _pathname, n);
+//     _pathname = n;
+//   }
 
   public Vector getSearchPath() { return _searchpath; }
   public void addSearchPath(String searchpath) {
     _searchpath.addElement(searchpath);
   }
 
+  public URL findMemberURLInSearchPath(String name) {
+    //ignore searchpath, just find it relative to the project file
+    String u = getURL().toString();
+    u = u.substring(0, u.lastIndexOf("/") + 1);
+    URL url = null;
+    try { url = new URL(u + name); }
+    catch (MalformedURLException murle) {
+      System.out.println("MalformedURLException in findMemberURLInSearchPath");
+    }
+    return url;
+  }
+
   public Vector getMembers() { return _members; }
 
   public void addMember(String name, String type) {
-    ProjectMember pm = new ProjectMember(name, type, this);
-    _members.addElement(pm);
-  }
-
-  public void addMember(Diagram d) {
-    ProjectMember pm = new ProjectMember(null, "pgml", this);
-    pm.setMember(d);
-    _members.addElement(pm);
-    try { addDiagram(d); }
-    catch (PropertyVetoException pve) { }
-  }
-
-  public void addMember(Model m) {
-    ProjectMember pm = new ProjectMember(null, "xmi", this);
-    pm.setMember(m);
-    _members.addElement(pm);
-    try { addModel(m); }
-    catch (PropertyVetoException pve) { }
-  }
-  public void removeMember(Diagram d) {
-    int size = _members.size();
-    for (int i = 0; i < size; i++) {
-      ProjectMember pm = (ProjectMember) _members.elementAt(i);
-      if (pm.member == d) {
-	_members.removeElementAt(i);
-	try { removeDiagram(d); }
-	catch (PropertyVetoException pve) { }
+    //try {
+      URL memberURL = findMemberURLInSearchPath(name);
+      if (memberURL == null) {
+	System.out.println("null memberURL");
 	return;
       }
+      else System.out.println("memberURL = " + memberURL);
+      ProjectMember pm;
+      if ("pgml".equals(type))
+	pm = new ProjectMemberDiagram(name, this);
+      else if ("xmi".equals(type))
+	pm = new ProjectMemberModel(name, this);
+      else throw new RuntimeException("Unknown member type " + type);
+      _members.addElement(pm);
+      //} catch (java.net.MalformedURLException e) {
+      //throw new UnexpectedException(e);
+      //}
+  }
+
+  public void addMember(Diagram d) throws PropertyVetoException {
+    ProjectMember pm = new ProjectMemberDiagram(d, this);
+    addDiagram(d);
+    // if diagram added successfully, add the member too
+    _members.addElement(pm);
+  }
+
+  public void addMember(Model m) throws PropertyVetoException {
+    ProjectMember pm = new ProjectMemberModel(m, this);
+    addModel(m);
+    // got past the veto, add the member
+    _members.addElement(pm);
+  }
+
+  public void addModel(Namespace m) throws PropertyVetoException {
+    // fire indeterminate change to avoid copying vector
+    getVetoSupport().fireVetoableChange("Models", _models, null);
+    _models.addElement(m);
+    setCurrentNamespace(m);
+    _needsSave = true;
+  }
+
+//   public void removeMember(Diagram d) {
+//     int size = _members.size();
+//     for (int i = 0; i < size; i++) {
+//       ProjectMember pm = (ProjectMember) _members.elementAt(i);
+//       if (pm.member == d) {
+// 	_members.removeElementAt(i);
+// 	try { removeDiagram(d); }
+// 	catch (PropertyVetoException pve) { }
+// 	return;
+//       }
+//     }
+//   }
+
+
+  public void removeMember(Diagram d) throws PropertyVetoException {
+    removeDiagram(d);
+    _members.removeElement(d);
+  }
+
+  public static Project load(URL url) throws IOException, org.xml.sax.SAXException {
+    Dbg.log("uci.uml.ui.Project", "Reading " + url);
+    ArgoParser.SINGLETON.readProject(url);
+    Project p = ArgoParser.SINGLETON.getProject();
+    p.loadAllMembers();
+    p.postLoad();
+    Dbg.log("uci.uml.ui.Project", "Done reading " + url);
+    return p;
+  }
+
+//   public void loadAllMembers() {
+//     for (Enumeration enum = members.elements(); enum.hasMoreElements(); ) {
+//       ((ProjectMember) enum.nextElement()).load();
+//     }
+//   }
+
+  public static Project loadEmpty() throws IOException, org.xml.sax.SAXException {
+    URL emptyURL = Project.class.getResource(TEMPLATES + EMPTY_PROJ);
+    if (emptyURL == null)
+      throw new IOException("Unable to get empty project resource.");
+    return load(emptyURL);
+  }
+
+  public void loadMembersOfType(String type) {
+    if (type == null) return;
+    Enumeration enum = getMembers().elements();
+    try {
+      while (enum.hasMoreElements()) {
+	ProjectMember pm = (ProjectMember) enum.nextElement();
+	if (type.equalsIgnoreCase(pm.getType())) pm.load();
+      }
+    }
+    catch (IOException ignore) {
+      System.out.println("IOException in makeEmptyProject");
+    }
+    catch (org.xml.sax.SAXException ignore) {
+      System.out.println("SAXException in makeEmptyProject");
     }
   }
+
 
   public void loadAllMembers() {
     loadMembersOfType("xmi");
@@ -205,19 +328,19 @@ public class Project implements java.io.Serializable {
     loadMembersOfType("html");
   }
 
-  public void loadMembersOfType(String type) {
-    int size = _members.size();
-    for (int i = 0; i < size; i++) {
-      ProjectMember pm = (ProjectMember) _members.elementAt(i);
-      if (pm.type != null && pm.type.equalsIgnoreCase(type))
-	pm.load();
-    }
-  }
+//   public void loadMembersOfType(String type) {
+//     int size = _members.size();
+//     for (int i = 0; i < size; i++) {
+//       ProjectMember pm = (ProjectMember) _members.elementAt(i);
+//       if (pm.type != null && pm.type.equalsIgnoreCase(type))
+// 	pm.load();
+//     }
+//   }
 
-  public void saveAllMembers(boolean overwrite) {
+  public void saveAllMembers(String path, boolean overwrite) {
     int size = _members.size();
     for (int i = 0; i < size; i++)
-      ((ProjectMember)_members.elementAt(i)).save(overwrite);
+      ((ProjectMember)_members.elementAt(i)).save(path, overwrite);
     // needs-more-work: check if each file is dirty
   }
 
@@ -238,12 +361,12 @@ public class Project implements java.io.Serializable {
   public void needsSave() { setNeedsSave(true); }
 
   public Vector getModels() { return _models; }
-  public void addModel(Namespace m) throws PropertyVetoException {
-    getVetoSupport().fireVetoableChange("Models", _models, m);
-    _models.addElement(m);
-    setCurrentNamespace(m);
-    _needsSave = true;
-  }
+//   public void addModel(Namespace m) throws PropertyVetoException {
+//     getVetoSupport().fireVetoableChange("Models", _models, m);
+//     _models.addElement(m);
+//     setCurrentNamespace(m);
+//     _needsSave = true;
+//   }
 
   public Vector getDefinedTypesVector() {
     Vector res = new Vector();
@@ -295,12 +418,13 @@ public class Project implements java.io.Serializable {
 
   public Vector getDiagrams() { return _diagrams; }
   public void addDiagram(Diagram d) throws PropertyVetoException {
-    getVetoSupport().fireVetoableChange("Diagrams", _diagrams, d);
+    // send indeterminate new value instead of making copy of vector
+    getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
     _diagrams.addElement(d);
     _needsSave = true;
   }
   public void removeDiagram(Diagram d) throws PropertyVetoException {
-    getVetoSupport().fireVetoableChange("Diagrams", _diagrams, d);
+    getVetoSupport().fireVetoableChange("Diagrams", _diagrams, null);
     _diagrams.removeElement(d);
     _needsSave = true;
   }
@@ -336,7 +460,7 @@ public class Project implements java.io.Serializable {
     getVetoSupport().removeVetoableChangeListener(l);
   }
 
-  protected VetoableChangeSupport getVetoSupport() {
+  public VetoableChangeSupport getVetoSupport() {
     if (_vetoSupport == null) _vetoSupport = new VetoableChangeSupport(this);
     return _vetoSupport;
   }
@@ -412,7 +536,8 @@ public class Project implements java.io.Serializable {
     int numRemoves = removes.size();
     for (int i = 0; i < numRemoves; i++) {
       Diagram d = (Diagram) removes.elementAt(i);
-      removeMember(d);
+      try { removeMember(d); }
+      catch (PropertyVetoException pve) { }
     }
   }
 
@@ -422,8 +547,6 @@ public class Project implements java.io.Serializable {
 
   public boolean isInTrash(Object dm) {
     return Trash.SINGLETON.contains(dm);
-//     return (dm instanceof ModelElement) &&
-//       ((ModelElement)dm).getElementOwnership() == null;
   }
 
   public void setStats(Hashtable stats) {
@@ -519,6 +642,7 @@ public class Project implements java.io.Serializable {
   }
 
   static final long serialVersionUID = 1399111233978692444L;
+
 } /* end class Project */
 
 

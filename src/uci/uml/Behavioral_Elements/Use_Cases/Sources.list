@@ -1,0 +1,5 @@
+SOURCES= \
+	Actor.java \
+	UseCase.java \
+	UseCaseInstance.java
+

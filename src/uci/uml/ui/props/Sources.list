@@ -1,0 +1,29 @@
+SOURCES= \
+	PropPanel.java \
+	PropPanelActionState.java \
+	PropPanelActor.java \
+	PropPanelAssociation.java \
+	PropPanelAssociationRole.java \
+	PropPanelAttribute.java \
+	PropPanelClass.java \
+	PropPanelClassifierRole.java \
+	PropPanelDependency.java \
+	PropPanelDiagram.java \
+	PropPanelGeneralization.java \
+	PropPanelInstance.java \
+	PropPanelInterface.java \
+	PropPanelLink.java \
+	PropPanelMessage.java \
+	PropPanelModel.java \
+	PropPanelModelElementImpl.java \
+	PropPanelNote.java \
+	PropPanelOperation.java \
+	PropPanelPseudostate.java \
+	PropPanelRealization.java \
+	PropPanelState.java \
+	PropPanelString.java \
+	PropPanelTransition.java \
+	PropPanelTwoEnds.java \
+	PropPanelUMLStateDiagram.java \
+	PropPanelUseCase.java
+

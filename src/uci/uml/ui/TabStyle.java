@@ -56,20 +56,22 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
   protected JPanel        _blankPanel         = new JPanel();
   protected Hashtable     _panels             = new Hashtable();
   protected JPanel        _lastPanel          = null;
-  protected TabFigTarget  _stylePanel          = null;
+  protected TabFigTarget  _stylePanel         = null;
   protected String        _panelClassBaseName = "";
+  protected String        _alternativeBase    = "";
 
   ////////////////////////////////////////////////////////////////
   // constructor
-  public TabStyle(String tabName, String panelClassBase) {
+  public TabStyle(String tabName, String panelClassBase, String altBase) {
     super(tabName);
     _panelClassBaseName = panelClassBase;
+    _alternativeBase = altBase;
     setLayout(new BorderLayout());
     //setFont(new Font("Dialog", Font.PLAIN, 10));
   }
 
   public TabStyle() {
-    this("Style", "style.StylePanel");
+    this("Style", "style.StylePanel", "style.SP");
   }
 
 
@@ -100,7 +102,7 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
       _lastPanel = (JPanel) _stylePanel;
     }
     else {
-      add(_blankPanel, BorderLayout.NORTH);      
+      add(_blankPanel, BorderLayout.NORTH);
       _shouldBeEnabled = false;
       _lastPanel = _blankPanel;
     }
@@ -125,6 +127,7 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
   public Class panelClassFor(Class targetClass) {
     String pack = "uci.uml.ui";
     String base = getClassBaseName();
+    String alt = getAlternativeClassBaseName();
 
     String targetClassName = targetClass.getName();
     int lastDot = targetClassName.lastIndexOf(".");
@@ -135,11 +138,19 @@ implements TabFigTarget, PropertyChangeListener, DelayedVChangeListener {
       return cls;
     }
     catch (ClassNotFoundException ignore) { }
-    targetClass = targetClass.getSuperclass();
+    try {
+      String panelClassName = pack + "." + alt + targetClassName;
+      Class cls = Class.forName(panelClassName);
+      return cls;
+    }
+    catch (ClassNotFoundException ignore) { }
     return null;
   }
 
   protected String getClassBaseName() { return _panelClassBaseName; }
+
+  protected String getAlternativeClassBaseName() {
+    return _alternativeBase; }
 
   public Fig getTarget() { return _target; }
 

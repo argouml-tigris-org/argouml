@@ -21,7 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package uci.uml.xmi;
+package uci.xml.xmi;
 
 import java.util.*;
 import java.io.*;
@@ -38,11 +38,13 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Collaborations.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
+import uci.xml.*;
 
 import com.ibm.xml.parser.*;
 import org.w3c.dom.*;
+//import org.xml.sax.SAXDriver;
 
-public class XMIParserIBM implements ElementHandler, TagHandler {
+public class XMIParser implements ElementHandler, TagHandler {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -52,7 +54,7 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
   ////////////////////////////////////////////////////////////////
   // static variables
 
-  public static XMIParserIBM SINGLETON = new XMIParserIBM();
+  public static XMIParser SINGLETON = new XMIParser();
   protected static Hashtable _seen = null;
 
   ////////////////////////////////////////////////////////////////
@@ -142,7 +144,7 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  protected XMIParserIBM() { }
+  protected XMIParser() { }
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -156,33 +158,31 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
   ////////////////////////////////////////////////////////////////
   // main parsing methods
 
-  public void readModels(String pathname, String filename) {
-    pass1(pathname, filename);
-    pass2(pathname, filename);
+  public synchronized void readModels(Project p, URL url) {
+    _proj = p;
+    pass1(url);
+    pass2(url);
     int ec = ElementImpl.getElementCount();
     ElementImpl.setElementCount(Math.max(ec, _elementIdMax + 1));
   }
 
-  protected void pass1(String pathname, String filename) {
+  protected void pass1(URL url) {
     _firstPass = true;
     try {
       System.out.println("=======================================");
-      System.out.println("== READING MODEL " + filename);
-      System.out.println("== PASS ONE ===========================");
-      System.out.println("== Pathname: " + pathname);
-      InputStream is = null;
-      if (pathname.indexOf(":") < 3) {
-	is = new FileInputStream(pathname + filename);
-      }
-      else {
-	is = (new URL(pathname + filename)).openStream();
-      }
+      System.out.println("== READING MODEL " + url);
+      System.out.println("== PASS ONE");
+      InputStream is = url.openStream();
 
-      Parser pc = new Parser(filename);
+      Parser pc = new Parser(url.getFile());
       pc.addElementHandler(this);
       pc.setTagHandler(this);
-      pc.setProcessExternalDTD(false);
-      if (_proj == null) _proj = new Project("untitled");
+      pc.getEntityHandler().setEntityResolver(DTDEntityResolver.SINGLETON);
+      //pc.setProcessExternalDTD(false);
+      if (_proj == null) {
+	System.out.println("XMIParser made new project");
+	_proj = new Project();
+      }
       pc.readStream(is);
       is.close();
     }
@@ -196,23 +196,17 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
 //     }
   }
 
-  protected void pass2(String pathname, String filename) {
+  protected void pass2(URL url) {
     _firstPass = false;
     try {
-      System.out.println("=======================================");
-      System.out.println("== PASS TWO ===========================");
-      InputStream is = null;
-      if (pathname.indexOf(":") < 3) {
-	is = new FileInputStream(pathname + filename);
-      }
-      else {
-	is = (new URL(pathname + filename)).openStream();
-      }
+      System.out.println("== PASS TWO");
+      InputStream is = url.openStream();
 
-      Parser pc = new Parser(filename);
+      Parser pc = new Parser(url.getFile());
       pc.addElementHandler(this);
       pc.setTagHandler(this);
-      pc.setProcessExternalDTD(false);
+      pc.getEntityHandler().setEntityResolver(DTDEntityResolver.SINGLETON);
+      //pc.setProcessExternalDTD(false);
       pc.readStream(is);
       is.close();
     }
@@ -228,10 +222,10 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
 
 
   public TXElement handleElement(TXElement e) {
+    //System.out.println("XMIParser handleElement:" + e.getName());
     String n = e.getName();
     try {
       if (n.equals("name")) handle_name(e);
-
     }
     catch (Exception ex) {
       System.out.println("Exception!");
@@ -242,6 +236,7 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
 
   public void handleStartTag(TXElement e, boolean empty) {
     String n = e.getName();
+    //System.out.println("XMIParser handleStartTag:" + e.getName());
 
     try {
       if (n.equals("XMI")) handleXMI(e);
@@ -412,6 +407,7 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
       else if (n.equals("Model")) handleModel(e);
       else if (n.equals("isInstantiable")) handle_isInstantiable(e);
       else if (n.equals("Subsystem")) handleSubsystem(e);
+      //else System.out.println("unknown tag:" + n);
     }
     catch (Exception ex) {
       System.out.println("Exception!");
@@ -423,6 +419,7 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
 
   public void handleEndTag(TXElement e, boolean empty) {
     String n = e.getName();
+    //System.out.println("XMIParser handleEndTag:" + e.getName()+".");
     try {
       if (n.equals("tag")) handle_tag(e);
       else if (n.equals("value")) handle_value(e);
@@ -500,6 +497,9 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
       else if (n.equals("referencedElement")) handle_referencedElement(e);
       else if (n.equals("body")) handle_body(e);
       else if (n.equals("multiplicity")) handle_multiplicity(e);
+      else if (n.equals("Class")) handleClassEnd(e);
+      else if (n.equals("DataType")) handleDataTypeEnd(e);
+      //else System.out.println("unknown end tag:" + n);
     }
     catch (Exception ex) {
       System.out.println("Exception!");
@@ -807,6 +807,10 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
     if (_firstPass) return;
     addToModel(_curME);
   }
+  protected void handleClassEnd(TXElement e) throws PropertyVetoException {
+    if (_firstPass) return;
+    if (_curModel == null) _proj.defineType(_curClass);
+  }
   protected void handleAssociationClass(TXElement e) throws PropertyVetoException {
     _curAssociationClass = (AssociationClass)
       findOrCreate(e, AssociationClass.class);
@@ -893,6 +897,11 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
     if (_firstPass) return;
     addToModel(_curME);
   }
+  protected void handleDataTypeEnd(TXElement e) throws PropertyVetoException {
+    if (_firstPass) return;
+    if (_curModel == null) _proj.defineType(_curDataType);
+  }
+
   protected void handleDescription(TXElement e) throws PropertyVetoException {
     //     Description o = (Description) findOrCreate(e, Description.class);
     if (_firstPass) return;
@@ -1700,13 +1709,8 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
 
   protected void addToModel(ModelElement me) throws PropertyVetoException {
     if (_curModel != null) _curModel.addPublicOwnedElement(me);
-    else if (_proj != null && me instanceof Model) {
-      //System.out.println("Adding top-level model");
-      addTopModel(me);
-    }
-    else if (me instanceof Classifier) {
-      _proj.defineType((Classifier)me);
-    }
+    else if (_proj != null && me instanceof Model) addTopModel(me);
+    else if (me instanceof Classifier) { /* will be added to definedTypes */ }
     else {
       System.out.println("trying to add to null model:" + me);
       System.out.println("id:" + me.getId());
@@ -1731,19 +1735,5 @@ public class XMIParserIBM implements ElementHandler, TagHandler {
   }
 
 
-  ////////////////////////////////////////////////////////////////
-  // main program for testing
-
-  public static void main(String args[]) {
-    if (args.length != 1) {
-      System.out.println("usage: java uci.uml.xmi.XMIParserIBM filename");
-      return;
-    }
-    String filename = args[0];
-    XMIParserIBM xmip = new XMIParserIBM();
-    xmip.readModels("", filename);
-    System.exit(0);
-  }
-
-} /* end class XMIParserIBM */
+} /* end class XMIParser */
 

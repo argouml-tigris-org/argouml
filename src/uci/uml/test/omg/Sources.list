@@ -1,0 +1,17 @@
+SOURCES= \
+	ComplexTransExample.java \
+	ConcurrentSubstatesExample.java \
+	DialingExample.java \
+	GraphicsExample.java \
+	HumanResourcesExample.java \
+	ImplementationExample.java \
+	Main.java \
+	MathPackExample.java \
+	PackageExample.java \
+	PasswordExample.java \
+	ShapesExample.java \
+	SoccerExample.java \
+	StubbedTransExample.java \
+	TelephoneCatalogExample.java \
+	WindowExample.java
+

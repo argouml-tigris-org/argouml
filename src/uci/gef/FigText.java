@@ -519,7 +519,7 @@ public class FigText extends Fig implements KeyListener, MouseListener {
    *  on the font, font size, and current text. Needs-More-Work: Right
    *  now text objects can get larger when you type more, but they
    *  do not get smaller when you backspace.  */
-  protected void calcBounds() {
+  public void calcBounds() {
     if (_font == null) return;
     if (_fm == null) _fm = Toolkit.getDefaultToolkit().getFontMetrics(_font);
     int overallW = 0;

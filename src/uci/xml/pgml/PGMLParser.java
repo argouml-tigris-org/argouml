@@ -21,7 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package uci.gef;
+package uci.xml.pgml;
 
 import java.util.*;
 import java.awt.*;
@@ -29,16 +29,18 @@ import java.io.*;
 import java.net.URL;
 
 import uci.graph.*;
+import uci.gef.*;
+import uci.xml.*;
 
 import com.ibm.xml.parser.*;
 import org.w3c.dom.*;
 
-public class PGMLParserIBM implements ElementHandler, TagHandler {
+public class PGMLParser implements ElementHandler, TagHandler {
 
   ////////////////////////////////////////////////////////////////
   // static variables
 
-  public static PGMLParserIBM SINGLETON = new PGMLParserIBM();
+  public static PGMLParser SINGLETON = new PGMLParser();
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -51,24 +53,22 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  protected PGMLParserIBM() { }
+  protected PGMLParser() { }
 
   ////////////////////////////////////////////////////////////////
   // main parsing methods
 
-  public Diagram readDiagram(String pathname, String filename) {
+  public synchronized Diagram readDiagram(URL url) {
     try {
-      InputStream is = null;
-      if (pathname.indexOf(":") == -1) {
-	is = new FileInputStream(pathname + filename);
-      }
-      else {
-	is = (new URL(pathname + filename)).openStream();
-      }
+      InputStream is = url.openStream();
+      String filename = url.getFile();
+      System.out.println("=======================================");
+      System.out.println("== READING DIAGRAM: " + url);
       Parser pc = new Parser(filename);
       pc.addElementHandler(this);
       pc.setTagHandler(this);
-      pc.setProcessExternalDTD(false);
+      pc.getEntityHandler().setEntityResolver(DTDEntityResolver.SINGLETON);
+      //pc.setProcessExternalDTD(false);
       initDiagram("uci.gef.Diagram");
       _figRegistry = new Hashtable();
       pc.readStream(is);
@@ -156,7 +156,7 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
       }
     }
     catch (Exception ex) {
-      System.out.println("Exception in PGMLParserIBM handleElement");
+      System.out.println("Exception in PGMLParser handleElement");
       ex.printStackTrace();
     }
     return e; // needs-more-work: too much memory? should return null.
@@ -393,9 +393,9 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
       int hInt = (h == null || h.equals("")) ? 20 : Integer.parseInt(h);
       f.setBounds(xInt, yInt, wInt, hInt);
     }
-    String stroke = e.getAttribute("stroke");
-    if (stroke != null && !stroke.equals(""))
-      f.setLineWidth(Integer.parseInt(stroke));
+    String linewidth = e.getAttribute("linewidth");
+    if (linewidth != null && !linewidth.equals(""))
+      f.setLineWidth(Integer.parseInt(linewidth));
     String strokecolor = e.getAttribute("strokecolor");
     if (strokecolor != null && !strokecolor.equals(""))
       f.setLineColor(colorByName(strokecolor, Color.blue));
@@ -476,5 +476,5 @@ public class PGMLParserIBM implements ElementHandler, TagHandler {
   }
 
 
-} /* end class PGMLParserIBM */
+} /* end class PGMLParser */
 

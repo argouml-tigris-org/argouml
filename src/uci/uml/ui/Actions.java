@@ -27,6 +27,7 @@ package uci.uml.ui;
 
 import java.util.*;
 import java.io.*;
+import java.net.URL;
 import java.beans.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -49,7 +50,7 @@ import uci.uml.Behavioral_Elements.Collaborations.*;
 import uci.uml.Model_Management.*;
 import uci.uml.visual.*;
 import uci.uml.generate.*;
-import uci.uml.xmi.*;
+import uci.xml.argo.ArgoParser;
 import uci.uml.ocl.*;
 
 public class Actions {
@@ -356,7 +357,7 @@ class ActionOpenProject extends UMLAction {
       }
     }
 
-    //try {
+    try {
       JFileChooser chooser = new JFileChooser(Globals.getLastDirectory());
 
       chooser.setDialogTitle("Open Project");
@@ -374,27 +375,31 @@ class ActionOpenProject extends UMLAction {
 	  Globals.setLastDirectory(path);
 	  if (filename != null) {
 	    pb.showStatus("Reading " + path + filename + "...");
-	    ArgoParserIBM.SINGLETON.readProject(theFile);
-	    p = ArgoParserIBM.SINGLETON.getProject();
+	    URL url = Util.fileToURL(theFile);
+	    ArgoParser.SINGLETON.readProject(url);
+	    p = ArgoParser.SINGLETON.getProject();
 	    p.loadAllMembers();
 	    p.postLoad();
 	    pb.setProject(p);
 	    pb.showStatus("Read " + path + filename);
-      //p.setStats(stats);
+	    //p.setStats(stats);
 	    return;
 	  }
 	}
       }
-      //}
+    }
     //catch (FileNotFoundException ignore) {
     //  System.out.println("got an FileNotFoundException");
     //}
     //     catch (java.lang.ClassNotFoundException ignore) {
     //       System.out.println("got an ClassNotFoundException");
     //      }
-    //catch (IOException ignore) {
-    //  System.out.println("got an IOException");
-    //}
+    catch (IOException ignore) {
+      System.out.println("got an IOException in ActionOpenProject");
+    }
+//     catch (org.xml.sax.SAXException ignore) {
+//       System.out.println("got an SAXException in ActionOpenProject");
+//     }
   }
 } /* end class ActionOpenProject */
 
@@ -585,7 +590,7 @@ class ActionSaveProject extends UMLAction {
   protected static OCLExpander expander = null;
   public ActionSaveProject() {
     super("Save Project");
-    Hashtable templates = TemplateReader.readFile("/uci/dtd/argo.tee");
+    Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
     expander = new OCLExpander(templates);
   }
 
@@ -596,28 +601,28 @@ class ActionSaveProject extends UMLAction {
   public boolean trySave(boolean overwrite) {
     try {
       //@@@: just for rapid edig-compile-debug 
-      Hashtable templates = TemplateReader.readFile("/uci/dtd/argo.tee");
+      Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
       expander = new OCLExpander(templates);
 
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       Project p =  pb.getProject();
-      String name = p.getFilename();
-      String path = p.getPathname();
-      System.out.println("ActionSaveProject path = " + path);
-      System.out.println("ActionSaveProject name = " + name);
-      File f = new File(path + name);
+//       String name = p.getFilename();
+//       String path = p.getPathname();
+      System.out.println("ActionSaveProject at " + p.getURL());
+//       System.out.println("ActionSaveProject name = " + name);
+      File f = new File(p.getURL().getFile());
       if (f.exists() && !overwrite) {
 	System.out.println("Are you sure you want to overwrite " +
-			   name + "?");
+			   p.getURL().getFile() + "?");
       }
       FileWriter fw = new FileWriter(f);
       p.preSave();
       expander.expand(fw, p, "", "");
-      p.saveAllMembers(overwrite); //needs-more-work: in future allow
-      //independent saving
+      p.saveAllMembers(f.getParent(), overwrite);
+      //needs-more-work: in future allow independent saving
       p.postSave();
       fw.close();
-      pb.showStatus("Wrote " + path);
+      pb.showStatus("Wrote " + p.getURL());
       return true;
     }
     catch (FileNotFoundException ignore) {
@@ -644,7 +649,7 @@ class ActionSaveProjectAs extends UMLAction {
   protected static OCLExpander expander = null;
   public ActionSaveProjectAs() {
     super("Save Project As...");
-    Hashtable templates = TemplateReader.readFile("/uci/dtd/argo.tee");
+    Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
     expander = new OCLExpander(templates);
   }
 
@@ -654,15 +659,16 @@ class ActionSaveProjectAs extends UMLAction {
 
   public boolean trySave(boolean overwrite) {
     //@@@: just for rapid edig-compile-debug 
-    Hashtable templates = TemplateReader.readFile("/uci/dtd/argo.tee");
+    Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
     expander = new OCLExpander(templates);
 
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p =  pb.getProject();
     try {
       JFileChooser chooser;
-      if (p != null && p.getPathname() != null && p.getPathname().length()>0) {
-	chooser  = new JFileChooser(p.getPathname());
+      if (p != null && p.getURL() != null &&
+	  p.getURL().getFile().length()>0) {
+	chooser  = new JFileChooser(p.getURL().getFile());
       }
       else chooser = new JFileChooser();
 
@@ -683,8 +689,9 @@ class ActionSaveProjectAs extends UMLAction {
 	  if (!path.endsWith(separator)) path += separator;
 	  pb.showStatus("Writing " + path + name + "...");
 	  p.setName(name);
-	  p.setPathname(path);
+	  //p.setPathname(path);
 	  File f = new File(path + name);
+	  p.setURL(Util.fileToURL(f));
 	  if (f.exists() && !overwrite) {
 	    System.out.println("Are you sure you want to overwrite " +
 			       name + "?");
@@ -692,8 +699,8 @@ class ActionSaveProjectAs extends UMLAction {
 	  FileWriter fw = new FileWriter(f);
 	  p.preSave();
 	  expander.expand(fw, p, "", "");
-	  p.saveAllMembers(overwrite); //needs-more-work: in future allow
-			      //indendent saving
+	  p.saveAllMembers(path, overwrite);
+	  //needs-more-work: in future allow indendent saving
 	  p.postSave();
 	  fw.close();
 	  pb.showStatus("Wrote " + path + name);
@@ -1065,13 +1072,13 @@ class ActionClassDiagram extends UMLChangeAction {
     Object target = ProjectBrowser.TheInstance.getDetailsTarget();
     Namespace ns = p.getCurrentNamespace();
     if (target instanceof Model) ns = (Namespace) target;
-    //    try {
-    Diagram d = new UMLClassDiagram(ns);
-    p.addMember(d);
-    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-    ProjectBrowser.TheInstance.setTarget(d);
-    //}
-    //catch (PropertyVetoException pve) { }
+    try {
+      Diagram d = new UMLClassDiagram(ns);
+      p.addMember(d);
+      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+      ProjectBrowser.TheInstance.setTarget(d);
+    }
+    catch (PropertyVetoException pve) { }
     super.actionPerformed(ae);
   }
 } /* end class ActionClassDiagram */
@@ -1082,16 +1089,16 @@ class ActionUseCaseDiagram extends UMLChangeAction {
   public void actionPerformed(ActionEvent ae) {
     //_cmdCreateNode.doIt();
     Project p = ProjectBrowser.TheInstance.getProject();
-    //try {
-    Object target = ProjectBrowser.TheInstance.getDetailsTarget();
-    Namespace ns = p.getCurrentNamespace();
-    if (target instanceof Model) ns = (Namespace) target;
-    Diagram d  = new UMLUseCaseDiagram(ns);
-    p.addMember(d);
-    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-    ProjectBrowser.TheInstance.setTarget(d);
-    //}
-    //catch (PropertyVetoException pve) { }
+    try {
+      Object target = ProjectBrowser.TheInstance.getDetailsTarget();
+      Namespace ns = p.getCurrentNamespace();
+      if (target instanceof Model) ns = (Namespace) target;
+      Diagram d  = new UMLUseCaseDiagram(ns);
+      p.addMember(d);
+      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+      ProjectBrowser.TheInstance.setTarget(d);
+    }
+    catch (PropertyVetoException pve) { }
     super.actionPerformed(ae);
   }
 } /* end class ActionUseCaseDiagram */
@@ -1368,11 +1375,13 @@ class ActionAddAttribute extends UMLChangeAction {
 
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
     Object target = pb.getDetailsTarget();
     if (!(target instanceof Classifier)) return;
     Classifier cls = (Classifier) target;
     try {
-      Attribute attr = new Attribute("newAttr", INT_TYPE, "0");
+      Classifier intType = p.findType("int");
+      Attribute attr = new Attribute("newAttr", intType, "0");
       attr.setVisibility(VisibilityKind.PUBLIC);
       cls.addStructuralFeature(attr);
       super.actionPerformed(ae);
@@ -1397,11 +1406,13 @@ class ActionAddOperation extends UMLChangeAction {
 
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
     Object target = pb.getDetailsTarget();
     if (!(target instanceof Classifier)) return;
     Classifier cls = (Classifier) target;
     try {
-      Operation oper = new Operation(VOID_TYPE, "newOperation");
+      Classifier voidType = p.findType("void");
+      Operation oper = new Operation(voidType, "newOperation");
       oper.setVisibility(VisibilityKind.PUBLIC);
       cls.addBehavioralFeature(oper);
       super.actionPerformed(ae);
@@ -1501,14 +1512,14 @@ class ActionAddTopLevelPackage extends UMLChangeAction {
 
   public void actionPerformed(ActionEvent ae) {
     Project p = ProjectBrowser.TheInstance.getProject();
-    //try {
-    int numPacks = p.getModels().size();
-    String nameStr = "package_" + (numPacks + 1);
-    p.addMember(new Model(nameStr));
-    super.actionPerformed(ae);
-    Actions.ClassDiagram.actionPerformed(ae);
-    //}
-    //catch (PropertyVetoException pve) { }
+    try {
+      int numPacks = p.getModels().size();
+      String nameStr = "package_" + (numPacks + 1);
+      p.addMember(new Model(nameStr));
+      super.actionPerformed(ae);
+      Actions.ClassDiagram.actionPerformed(ae);
+    }
+    catch (PropertyVetoException pve) { }
   }
 
 } /* end class ActionAddTopLevelPackage */

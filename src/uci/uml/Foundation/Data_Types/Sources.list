@@ -1,0 +1,24 @@
+SOURCES= \
+	AggregationKind.java \
+	BooleanExpression.java \
+	CallConcurrencyKind.java \
+	ChangeableKind.java \
+	Enumeration.java \
+	EnumerationLiteral.java \
+	EventOriginKind.java \
+	Expression.java \
+	MessageDirectionKind.java \
+	Multiplicity.java \
+	MultiplicityRange.java \
+	Name.java \
+	ObjectSetExpression.java \
+	OperationDirectionKind.java \
+	ParameterDirectionKind.java \
+	ProcedureExpression.java \
+	PseudostateKind.java \
+	ScopeKind.java \
+	SynchronousKind.java \
+	TimeExpression.java \
+	Uninterpreted.java \
+	VisibilityKind.java
+

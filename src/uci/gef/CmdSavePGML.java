@@ -38,6 +38,8 @@ import java.io.*;
 
 import uci.uml.ocl.*;
 
+import uci.xml.pgml.*;
+
 
 
 /** Cmd to save the current document to a binary file using Sun's

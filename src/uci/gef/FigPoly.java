@@ -539,7 +539,7 @@ public class FigPoly extends Fig {
   }
 
   /** Update the bounding box. */
-  protected void calcBounds() {
+  public void calcBounds() {
     //needs-more-work: could be faster, dont alloc polygon
     Rectangle polyBounds = getPolygon().getBounds();
     _x = polyBounds.x;

@@ -31,6 +31,10 @@ package uci.gef;
 import java.util.*;
 import java.io.*;
 import java.awt.*;
+import java.net.*;
+
+import uci.util.*;
+import uci.xml.pgml.*;
 
 /** Cmd to Load a previously saved document document. The loaded
  *  editor is displayed in a new JGraphFrame.
@@ -43,7 +47,7 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
     super("Open PGML...");
     setArg("filterPattern", "*.pgml");
   }
-  
+
   public void doIt() {
       Editor ce = Globals.curEditor();
       FileDialog fd =
@@ -54,21 +58,25 @@ public class CmdOpenPGML extends Cmd implements FilenameFilter {
       String filename = fd.getFile(); // blocking
       String path = fd.getDirectory(); // blocking
       Globals.setLastDirectory(path);
-      
+
       if (filename != null) {
-    	Globals.showStatus("Reading " + path + filename + "...");
-    	Diagram diag = PGMLParserIBM.SINGLETON.readDiagram(path, filename);
-	Editor ed = new Editor(diag);
-	//System.out.println("load done, showing editor");
-	//System.out.println(ed.toString());
-	//System.out.println(ed.getLayerManager().toString());
-    	Globals.showStatus("Read " + path + filename);
-	JGraphFrame jgf = new JGraphFrame(path + filename, ed);
-	Object d = getArg("dimension");
-	if (d instanceof Dimension) jgf.setSize((Dimension)d);
-	jgf.setVisible(true);
-     }
-   
+	try {
+	  Globals.showStatus("Reading " + path + filename + "...");
+	  URL url = Util.fileToURL(new File(path + filename));
+	  Diagram diag = PGMLParser.SINGLETON.readDiagram(url);
+	  Editor ed = new Editor(diag);
+	  //System.out.println("load done, showing editor");
+	  //System.out.println(ed.toString());
+	  //System.out.println(ed.getLayerManager().toString());
+	  Globals.showStatus("Read " + path + filename);
+	  JGraphFrame jgf = new JGraphFrame(path + filename, ed);
+	  Object d = getArg("dimension");
+	  if (d instanceof Dimension) jgf.setSize((Dimension)d);
+	  jgf.setVisible(true);
+	}
+	catch (MalformedURLException murle) { System.out.println("bad URL"); }
+	catch (IOException e) { System.out.println("IOExcept in openpgml"); }
+      }
   }
 
   /** Only let the user select files that match the filter. This does

@@ -1,0 +1,7 @@
+SOURCES= \
+	ElementOwnership.java \
+	ElementReference.java \
+	Model.java \
+	Package.java \
+	Subsystem.java
+

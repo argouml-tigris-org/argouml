@@ -21,7 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package uci.uml.xmi;
+package uci.xml.argo;
 
 import java.util.*;
 import java.io.*;
@@ -29,19 +29,20 @@ import java.beans.*;
 import java.net.URL;
 
 import uci.uml.ui.Project;
-import uci.gef.PGMLParserIBM;
+import uci.xml.pgml.PGMLParser;
+import uci.xml.*;
 import uci.gef.Diagram;
 import uci.uml.Model_Management.*;
 
 import com.ibm.xml.parser.*;
 import org.w3c.dom.*;
 
-public class ArgoParserIBM implements TagHandler {
+public class ArgoParser implements TagHandler {
 
   ////////////////////////////////////////////////////////////////
   // static variables
 
-  public static ArgoParserIBM SINGLETON = new ArgoParserIBM();
+  public static ArgoParser SINGLETON = new ArgoParser();
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -51,7 +52,7 @@ public class ArgoParserIBM implements TagHandler {
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  protected ArgoParserIBM() { }
+  protected ArgoParser() { }
 
   ////////////////////////////////////////////////////////////////
   // main parsing methods
@@ -59,42 +60,18 @@ public class ArgoParserIBM implements TagHandler {
   // needs-more-work: should be able to merge an existing project into
   // the current one.
 
-  public void readProject(File f) {
-    try {
-      FileInputStream fis = new FileInputStream(f);
-      String filename = f.getName();
-      String pathname = f.getParent();
-      //System.out.println("== pathname: " + pathname);
-      readProject(filename, pathname, fis);
-    }
-    catch (Exception ex) {
-      System.out.println("Exception reading project 1================");
-      ex.printStackTrace();
-    }
-  }
-
-  public void readProject(String filename, URL url) {
+  public synchronized void readProject(URL url) {
     try {
       InputStream is = url.openStream();
-      String pathname = url.toString();
-      pathname = pathname.substring(0, pathname.length() - filename.length());
-      readProject(filename, pathname, is);
-    }
-    catch (IOException ex) {
-      System.out.println("could not read project from URL:" + url);
-      ex.printStackTrace();
-    }
-  }
-
-  public void readProject(String filename, String pathname, InputStream is) {
-    try {
+      String filename = url.getFile();
       System.out.println("=======================================");
-      System.out.println("== READING PROJECT: " + filename);
+      System.out.println("== READING PROJECT: " + url);
       Parser pc = new Parser(filename);
       pc.setTagHandler(this);
-      pc.setProcessExternalDTD(false);
-      _proj = new Project(filename);
-      _proj.setPathname(pathname);
+      pc.getEntityHandler().setEntityResolver(DTDEntityResolver.SINGLETON);
+      //pc.setProcessExternalDTD(false);
+      _proj = new Project(url);
+      //_proj.setPathname(pathname);
       // needs-more-work: predefined types now defined twice
       pc.readStream(is);
       is.close();
@@ -109,11 +86,9 @@ public class ArgoParserIBM implements TagHandler {
 
   public void handleStartTag(TXElement e, boolean empty) {
     String n = e.getName();
-
     try {
       if (n.equals("argo")) handleArgo(e);
       else if (n.equals("documentation")) handleDocumentation(e);
-
     }
     catch (Exception ex) {
       System.out.println("Exception!");
@@ -178,4 +153,4 @@ public class ArgoParserIBM implements TagHandler {
     _proj._historyFile = historyfile;
   }
 
-} /* end class ArgoParserIBM */
+} /* end class ArgoParser */

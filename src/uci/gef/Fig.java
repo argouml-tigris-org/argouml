@@ -793,7 +793,7 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerat
    *  the bounds have already been updated, so this does nothing.
    *
    * @see FigText#calcBounds */
-  protected void calcBounds() { }
+  public void calcBounds() { }
 
 
   ////////////////////////////////////////////////////////////////

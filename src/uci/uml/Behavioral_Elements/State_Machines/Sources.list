@@ -1,0 +1,22 @@
+SOURCES= \
+	ActionState.java \
+	ActivityModel.java \
+	ActivityState.java \
+	CallEvent.java \
+	ChangeEvent.java \
+	ClassifierInState.java \
+	CompositeState.java \
+	Event.java \
+	Guard.java \
+	ObjectFlowState.java \
+	Partition.java \
+	Pseudostate.java \
+	SignalEvent.java \
+	SimpleState.java \
+	State.java \
+	StateMachine.java \
+	StateVertex.java \
+	SubmachineState.java \
+	TimeEvent.java \
+	Transition.java
+

@@ -29,7 +29,9 @@ package uci.uml;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.net.*;
 import java.beans.*;
+import java.io.File;
 import com.sun.java.swing.*;
 import com.sun.java.swing.plaf.metal.MetalLookAndFeel;
 
@@ -44,6 +46,7 @@ import uci.uml.test.omg.*;
 
 import uci.argo.kernel.*;
 
+import uci.xml.argo.ArgoParser;
 
 public class Main {
   ////////////////////////////////////////////////////////////////
@@ -56,37 +59,69 @@ public class Main {
   // main
 
   public static void main(String args[]) {
-    //defineMockHistory();
+    boolean doSplash = true;
+    File projectFile = null;
+    Project p = null;
+    String projectName = null;
+    URL urlToOpen = null;
+
     Vector argv = new Vector();
     for (int i = 0; i < args.length; ++i) argv.addElement(args[i]);
 
-//     try {
-//       UIManager.setLookAndFeel(new JasonsLookAndFeel());
-//     }
-//     catch (Exception ex) {
-//       System.out.println("could not set look and feel!");
-//     }
+    /* This is the default */
+    MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsTheme());
 
-    if (argv.contains("-big")) {
-      MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsBigTheme());
-    }
-    else if (argv.contains("-huge")) {
-      MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsHugeTheme());
-    }
-    else {
-      MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsTheme());
+    //--------------------------------------------
+    // Parse command line args:
+    // The assumption is that all options precede
+    // the name of a project file to load.
+    //--------------------------------------------
+
+    for (int i=0; i < args.length; i++) {
+      if (args[i].startsWith("-")) {
+	if (args[i].equals("-big")) {
+	  MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsBigTheme());
+	} else if (args[i].equals("-huge")) {
+	  MetalLookAndFeel.setCurrentTheme(new uci.uml.ui.JasonsHugeTheme());
+	} else if (args[i].equals("-help") || args[i].equals("-h")) {
+	  System.err.println("Usage: [options] [project-file]");
+	  System.err.println("Options include: ");
+	  System.err.println("  -big       use big fonts");
+	  System.err.println("  -huge      use huge fonts");
+	  System.err.println("  -nosplash  dont display Argo/UML logo");
+	  System.exit(0);
+	} else if (args[i].equals("-nosplash")) {
+	  doSplash = false;
+	} else {
+	  System.err.println("Ingoring unknown option '" + args[i] + "'");
+	}
+      } else {
+	projectName = args[i];
+	if (!projectName.endsWith(Project.FILE_EXT))
+	  projectName += Project.FILE_EXT;
+	projectFile = new File(projectName);
+	if (!projectFile.exists()) {
+	  System.err.println("Project file '" + projectFile +
+			     "' does not exist.");
+	  /* this will cause an empty project to be created */
+	  p = null;
+	} else {
+	  try { urlToOpen = Util.fileToURL(projectFile); }
+	  catch (Exception e) {
+	    System.out.println("Exception opening project in main()");
+	    e.printStackTrace();
+	  }
+	}
+	/* by our assumption, any following args will be ignored */
+	break;
+      }
     }
 
-    boolean doSplash = !argv.contains("-nosplash");
+    SplashScreen splash = new SplashScreen("Loading Argo/UML...", "Splash");
+    splash.getStatusBar().showStatus("Making Project Browser");
+    splash.getStatusBar().showProgress(10);
 
-    SplashScreen splash = null;
-
-    if (doSplash) {
-      splash = new SplashScreen("Loading Argo/UML...", "Splash");
-      splash.setVisible(true);
-      splash.getStatusBar().showStatus("Making Project Browser");
-      splash.getStatusBar().showProgress(10);
-    }
+    splash.setVisible(doSplash);
 
     ProjectBrowser pb = new ProjectBrowser("Argo/UML", splash.getStatusBar());
     JOptionPane.setRootFrame(pb);
@@ -100,11 +135,22 @@ public class Main {
     pb.setSize(w, h);
 
     if (splash != null) {
-      splash.getStatusBar().showStatus("Making Default Project");
+      if (urlToOpen == null)
+	splash.getStatusBar().showStatus("Making Default Project");
+      else
+	splash.getStatusBar().showStatus("Reading " + projectName);
+
       splash.getStatusBar().showProgress(40);
     }
-    Project empty = Project.makeEmptyProject();
-    pb.setProject(empty);
+
+    if (urlToOpen == null) p = Project.makeEmptyProject();
+    else {
+      ArgoParser.SINGLETON.readProject(urlToOpen);
+      p = ArgoParser.SINGLETON.getProject();
+      p.loadAllMembers();
+      p.postLoad();
+    }
+    pb.setProject(p);
 
     if (splash != null) {
       splash.getStatusBar().showStatus("Setting Perspectives");
@@ -134,12 +180,15 @@ public class Main {
     }
 
     pb.setVisible(true);
-    Object model = empty.getModels().elementAt(0);
-    Object diag = empty.getDiagrams().elementAt(0);
+    Object model = p.getModels().elementAt(0);
+    Object diag = p.getDiagrams().elementAt(0);
     //pb.setTarget(diag);
     pb.getNavPane().setSelection(model, diag);
-    if (splash != null) splash.setVisible(false);
-
+    if (splash != null) {
+	splash.setVisible(false);
+	splash.dispose();
+	splash = null;
+    }
 
     //should be done in ProjectBrowser.setProject();
     dsgr.spawnCritiquer(pb.getProject());

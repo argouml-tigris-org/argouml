@@ -1,0 +1,15 @@
+#
+# Default Win32 for Argo/UML
+#
+# Must specify the relative dir of this
+# make file to $(TOP).
+#
+REL_DIR=uci\uml\critics\presentation
+!INCLUDE Sources.list
+!INCLUDE ..\..\..\..\NMakefile.config
+
+
+archive: objdir
+	$(COPY) *.class $(OUT_DIR)
+
+

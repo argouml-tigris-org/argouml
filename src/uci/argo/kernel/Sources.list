@@ -1,0 +1,32 @@
+SOURCES= \
+	Agency.java \
+	ArgoConstants.java \
+	ChildGenDMElements.java \
+	Clarifier.java \
+	CompoundCritic.java \
+	ControlMech.java \
+	Critic.java \
+	Decision.java \
+	DecisionModel.java \
+	Design.java \
+	Designer.java \
+	DesignMaterial.java \
+	EnabledCM.java \
+	Goal.java \
+	GoalModel.java \
+	History.java \
+	HistoryEvent.java \
+	HistoryItem.java \
+	HistoryItemCritique.java \
+	HistoryItemManipulation.java \
+	HistoryItemResolve.java \
+	HistoryListener.java \
+	Poster.java \
+	SnoozeOrder.java \
+	StandardCM.java \
+	ToDoItem.java \
+	ToDoList.java \
+	ToDoListEvent.java \
+	ToDoListListener.java \
+	Wizard.java
+

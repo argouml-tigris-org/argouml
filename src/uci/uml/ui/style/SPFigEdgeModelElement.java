@@ -45,7 +45,7 @@ import uci.gef.*;
 import uci.uml.ui.*;
 
 
-public class StylePanelFigEdgeModelElement extends StylePanel
+public class SPFigEdgeModelElement extends StylePanel
 implements ItemListener, DocumentListener {
 
   ////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ implements ItemListener, DocumentListener {
 
   ////////////////////////////////////////////////////////////////
   // contructors
-  public StylePanelFigEdgeModelElement() {
+  public SPFigEdgeModelElement() {
     super("Edge Appearance");
     initChoices();
     GridBagLayout gb = (GridBagLayout) getLayout();
@@ -234,7 +234,7 @@ implements ItemListener, DocumentListener {
 
 
 
-} /* end class StylePanelFigEdgeModelElement */
+} /* end class SPFigEdgeModelElement */
 
 
 

@@ -1,0 +1,22 @@
+SOURCES= \
+	AttrKeyword.java \
+	ColumnDescriptor.java \
+	MMClassKeyword.java \
+	MMClassVisibility.java \
+	OperKeyword.java \
+	TableModelActorByProps.java \
+	TableModelAssocByProps.java \
+	TableModelAttr.java \
+	TableModelClassByProps.java \
+	TableModelComposite.java \
+	TableModelOper.java \
+	TableModelStateByProps.java \
+	TableModelTarget.java \
+	TableModelTransByProps.java \
+	TableModelUseCaseByProps.java \
+	TablePanel.java \
+	TablePanelUMLClassDiagram.java \
+	TablePanelUMLStateDiagram.java \
+	TablePanelUMLUseCaseDiagram.java \
+	TMResults.java
+

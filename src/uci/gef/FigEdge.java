@@ -248,7 +248,7 @@ implements PropertyChangeListener, Highlightable {
   }
 
   /** Update my bounding box */
-  protected void calcBounds() {
+  public void calcBounds() {
     _fig.calcBounds();
     Rectangle res = _fig.getBounds();
 

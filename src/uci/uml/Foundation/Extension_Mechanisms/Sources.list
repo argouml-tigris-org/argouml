@@ -1,0 +1,4 @@
+SOURCES= \
+	Stereotype.java \
+	TaggedValue.java
+

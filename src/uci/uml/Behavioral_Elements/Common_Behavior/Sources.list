@@ -1,0 +1,20 @@
+SOURCES= \
+	ActionSequence.java \
+	Argument.java \
+	CreateAction.java \
+	DestroyAction.java \
+	Instance.java \
+	Link.java \
+	LinkEnd.java \
+	LocalInvocation.java \
+	MMAction.java \
+	MMException.java \
+	MMObject.java \
+	Reception.java \
+	Request.java \
+	ReturnAction.java \
+	SendAction.java \
+	Signal.java \
+	TerminateAction.java \
+	UninterpretedAction.java
+
