@@ -398,7 +398,9 @@ public class Project implements java.io.Serializable {
   public URL getURL() { return _url; }
 
   public void setURL(URL url) throws PropertyVetoException {
-    url = Util.fixURLExtension(url, FILE_EXT);
+    if (url != null) {
+      url = Util.fixURLExtension(url, FILE_EXT);
+    }
     getVetoSupport().fireVetoableChange("url", _url, url);
 
     System.out.println ("Setting project URL from \"" + _url + "\" to \"" + url + "\".");
