@@ -2,13 +2,7 @@
 
 <!--
 
-UML conforming CASE tools.
-
-Modifications
-=============
-
- 7 Dec 2001:  Jeremy Bennett. First version, based on Andreas Rueckert's
-              material
+Important limits and shortcomings in ArgoUML.
 
 -->
 
@@ -29,6 +23,19 @@ diagrams is limited to 6000 units in height and width.
 
   </sect1>
 
+
+  <sect1>
+    <title>Missing functions</title>
+
+    <para>
+For the 0.14 release the sequence diagrams are disabled.
+It will be replace by a new and improved version in the upcoming release.
+In the 0.12 release they were not working and in the 0.10 release
+they did not follow the UML specification correctly.
+</para>
+
+  </sect1>
+
 </appendix>
 
 <!-- Local stuff for Emacs - please do not delete
@@ -39,6 +46,7 @@ sgml-doctype: "argomanual.xml"
 sgml-parent-document: ("argomanual.xml" "appendix" nil)
 sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
   argomanual.xml"
+indent-tabs-mode: nil
 End:
 
 -->
