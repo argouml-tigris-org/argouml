@@ -23,9 +23,12 @@
 
 package org.argouml.uml.reveng; 
 
+import java.beans.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.graph.*;
 import org.tigris.gef.presentation.*;
+import org.argouml.kernel.*;
+import org.argouml.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
@@ -48,7 +51,7 @@ public class DiagramInterface {
      * @param editor The editor to operate on.
      */
     public DiagramInterface(Editor editor) {
-	_currentEditor = editor;
+  	_currentEditor = editor;
     }
 
     /**
@@ -72,6 +75,64 @@ public class DiagramInterface {
 
 	getEditor().add( newPackageFig);
 	getEditor().damaged( newPackageFig);
+    }
+
+
+    /**
+     * Create a diagram name from a package name
+     *
+     * @param packageName The package name.
+     * @return The name for the diagram.
+     */
+    private String getDiagramName(String packageName) {
+	return packageName.replace('.','_') + "_classes";
+    }
+
+    /**
+     * Create a diagram name for a package
+     *
+     * @param p The package.
+     * @return The name for the diagram.
+     */
+    private String getDiagramName(MPackage p) {
+	return getDiagramName(p.getName());
+    }
+
+    /**
+     * Select or create a class diagram for a package.
+     *
+     * @param p The package.
+     * @param name The fully qualified name of this package.
+     */
+    public void selectClassDiagram(MPackage p, String name) {
+
+	// Check if this diagram already exists in the project
+	ProjectMember m;
+	if((m = ProjectBrowser.TheInstance.getProject().findMemberByName( getDiagramName(name) + ".pgml")) != null) {
+	    ProjectBrowser.TheInstance.setTarget(m);  // Select the existing diagram.
+	} else {  // Otherwise
+	    addClassDiagram(p, name);  // create a new classdiagram for the package.
+	}
+    }
+
+    /**
+     * Add a new class diagram for a package to the project.
+     *
+     * @param target The package to attach the diagram to.
+     * @param name The fully qualified name of the package, which is
+     *             used to generate the diagram name from.
+     */
+    public void addClassDiagram(MPackage target, String name) {
+	Project p = ProjectBrowser.TheInstance.getProject();
+	MNamespace ns = (MNamespace) target;
+	try {
+	    Diagram d = new UMLClassDiagram(ns);
+	    d.setName(getDiagramName(name));
+	    p.addMember(d);
+	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+	    ProjectBrowser.TheInstance.setTarget(d);
+	}
+	catch (PropertyVetoException pve) { }
     }
     
     /**
@@ -112,6 +173,28 @@ public class DiagramInterface {
 	getEditor().damaged( newInterfaceFig);		
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

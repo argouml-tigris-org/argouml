@@ -71,7 +71,7 @@ public class JavaImport {
 	    System.out.println("Starting java parser for file: " + f.getAbsolutePath());
 
 	    // start parsing at the compilationUnit rule
-	    parser.compilationUnit(modeller);
+	    parser.compilationUnit(modeller, lexer);
 	} catch ( Exception e) {
 	    System.err.println("parser exception: "+e);
 	    e.printStackTrace();   // so we can get stack trace		
