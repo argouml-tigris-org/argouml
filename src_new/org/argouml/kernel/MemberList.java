@@ -44,9 +44,9 @@ public class MemberList implements List {
     /** logger */
     private static final Logger LOG = Logger.getLogger(MemberList.class);
 
-    private ProjectMember model;
+    private AbstractProjectMember model;
     private ArrayList members = new ArrayList(10);
-    private ProjectMember todoList;
+    private AbstractProjectMember todoList;
 
     /**
      * The constructor.
@@ -62,11 +62,11 @@ public class MemberList implements List {
 
         if (member instanceof ProjectMemberModel) {
             // Always put the model at the top
-            model = (ProjectMember) member;
+            model = (AbstractProjectMember) member;
             return true;
         } else if (member instanceof ProjectMemberTodoList) {
             // otherwise add the diagram at the start
-            setTodoList((ProjectMember) member);
+            setTodoList((AbstractProjectMember) member);
             return true;
         } else if (member instanceof ProjectMemberDiagram) {
             // otherwise add the diagram at the start
@@ -83,7 +83,7 @@ public class MemberList implements List {
         if (member instanceof Diagram) {
             return removeDiagram((Diagram) member);
         }
-        ((ProjectMember) member).remove();
+        ((AbstractProjectMember) member).remove();
         if (model == member) {
             model = null;
             return true;
@@ -206,7 +206,7 @@ public class MemberList implements List {
         }
         Iterator membersIt = members.iterator();
         while (membersIt.hasNext()) {
-            ((ProjectMember) membersIt.next()).remove();
+            ((AbstractProjectMember) membersIt.next()).remove();
         }
         members.clear();
     }
@@ -269,7 +269,7 @@ public class MemberList implements List {
         return temp;
     }
 
-    private void setTodoList(ProjectMember member) {
+    private void setTodoList(AbstractProjectMember member) {
         LOG.info("Setting todoList to " + member);
         todoList = member;
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,12 +25,31 @@
 package org.argouml.kernel;
 
 /**
- * @author Administrator
+ * A member of the project.
  *
- * TODO To change the template for this generated type comment go to
- * Window - Preferences - Java - Code Style - Code Templates
  */
-public interface ProjectMember {
+public abstract class AbstractProjectMember implements ProjectMember {
+
+    ////////////////////////////////////////////////////////////////
+    // instance varables
+
+    private String name;
+    private Project project = null;
+
+    ////////////////////////////////////////////////////////////////
+    // constructors
+
+    /**
+     * The constructor.
+     * 
+     * @param theName the name of the member
+     * @param theProject the owning project
+     */
+    public AbstractProjectMember(String theName, Project theProject) {
+        project = theProject;
+        setName(theName);
+    }
+
     /**
      * In contrast to {@link #getName} returns the member's name without the
      * prepended name of the project. This is the name that
@@ -40,7 +59,17 @@ public interface ProjectMember {
      *
      * @return the member's name without the prepended name of the project
      */
-    public abstract String getPlainName();
+    public String getPlainName() {
+        String s = name;
+        
+        if (s != null) {
+            if (!s.endsWith (getFileExtension())) {
+        	s += getFileExtension();
+            }
+        }
+        
+        return s;
+    }
 
     /**
      * In contrast to {@link #getPlainName} returns the member's name
@@ -49,16 +78,70 @@ public interface ProjectMember {
      *
      * @return the member's name including the project's base name
      */
-    public abstract String getName();
+    public String getName() {
+        if (name == null)
+            return null;
+        
+        String s = project.getBaseName();
+        
+        if (name.length() > 0)
+            s += "_" + name;
+        
+        if (!s.endsWith(getFileExtension()))
+            s += getFileExtension();
+        
+        return s;
+    }
+  
+    /**
+     * @param s the name of the member
+     */
+    protected void setName(String s) {
+        name = s;
+        
+        if (name == null) {
+            return;
+        }
+        
+        if (name.startsWith (project.getBaseName())) {
+            name = name.substring (project.getBaseName().length());
+            int i = 0;
+            for (; i < name.length(); i++) {
+            	if (name.charAt(i) != '_') {
+            	    break;
+                }
+            }
+            if (i > 0) {
+                name = name.substring(i);
+            }
+        }
+        
+        if (name.endsWith(getFileExtension())) {
+            name = 
+                name.substring(0,
+                        name.length() - getFileExtension().length());
+        }
+    }
 
     /**
      * @return a short string defining the member type. 
      * Usually equals the file extension.
      */
     public abstract String getType();
-
+    
     /**
      * @return the file extension string
      */
     public abstract String getFileExtension();
-}
+
+    ////////////////////////////////////////////////////////////////
+    // actions
+
+    /**
+     * Remove this member from its project.
+     */
+    protected void remove() {
+        name = null;
+        project = null;
+    }
+} /* end class ProjectMember */

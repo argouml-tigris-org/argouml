@@ -30,7 +30,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ResolvedCritic;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectMember;
+import org.argouml.kernel.AbstractProjectMember;
 import org.argouml.persistence.ResolvedCriticXMLHelper;
 import org.argouml.persistence.ToDoItemXMLHelper;
 
@@ -41,7 +41,7 @@ import org.argouml.persistence.ToDoItemXMLHelper;
  *
  * @author	Michael Stockman
  */
-public class ProjectMemberTodoList extends ProjectMember {
+public class ProjectMemberTodoList extends AbstractProjectMember {
     
     private static final String TO_DO_EXT = ".todo";
 
@@ -56,14 +56,14 @@ public class ProjectMemberTodoList extends ProjectMember {
     }
 
     /**
-     * @see org.argouml.kernel.ProjectMember#getType()
+     * @see org.argouml.kernel.AbstractProjectMember#getType()
      */
     public String getType() {
         return "todo";
     }
 
     /**
-     * @see org.argouml.kernel.ProjectMember#getFileExtension()
+     * @see org.argouml.kernel.AbstractProjectMember#getFileExtension()
      */
     public String getFileExtension() {
         return TO_DO_EXT;
