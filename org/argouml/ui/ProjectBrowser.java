@@ -95,10 +95,11 @@ public class ProjectBrowser extends JFrame
     protected String _appName = "ProjectBrowser";
 
     protected MultiEditorPane _editorPane;
-    
-    /** 
-     * the detailspane in the lower right part of the projectbrowser
-     */
+    protected DetailsPane _northEastPane;
+    protected DetailsPane _northPane;
+    protected DetailsPane _northWestPane;
+    protected DetailsPane _eastPane;
+    protected DetailsPane _southEastPane;
     protected DetailsPane _southPane;
   
     private Map detailsPanesByCompassPoint = new HashMap();
@@ -158,12 +159,12 @@ public class ProjectBrowser extends JFrame
         _editorPane = new MultiEditorPane();
         _editorPane.addNavigationListener(this);
         
-        DetailsPane _eastPane      = makeDetailsPane(BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
+        _eastPane      = makeDetailsPane(BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
         _southPane     = makeDetailsPane(BorderSplitPane.SOUTH. toLowerCase(), Horizontal.getInstance());
-        DetailsPane _southEastPane = makeDetailsPane(BorderSplitPane.SOUTHEAST.toLowerCase(), Horizontal.getInstance());
-        DetailsPane _northWestPane = makeDetailsPane(BorderSplitPane.NORTHWEST.toLowerCase(), Horizontal.getInstance());
-        DetailsPane _northPane     = makeDetailsPane(BorderSplitPane.NORTH.toLowerCase(), Horizontal.getInstance());
-        DetailsPane _northEastPane = makeDetailsPane(BorderSplitPane.NORTHEAST.toLowerCase(), Horizontal.getInstance());
+        _southEastPane = makeDetailsPane(BorderSplitPane.SOUTHEAST.toLowerCase(), Horizontal.getInstance());
+        _northWestPane = makeDetailsPane(BorderSplitPane.NORTHWEST.toLowerCase(), Horizontal.getInstance());
+        _northPane     = makeDetailsPane(BorderSplitPane.NORTH.toLowerCase(), Horizontal.getInstance());
+        _northEastPane = makeDetailsPane(BorderSplitPane.NORTHEAST.toLowerCase(), Horizontal.getInstance());
 
         if (_southPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
         if (_southEastPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST, _southEastPane);
