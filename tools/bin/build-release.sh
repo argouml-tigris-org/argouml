@@ -30,6 +30,11 @@ echo "Give the tag name of the freeze tag (like VERSION_X_Y_Z_F):"
 read freezetag
 mkdir "$freezetag" || exit 1;
 cd "$freezetag"
+echo "Give the tag name of the release tag (like VERSION_X_Y_Z):"
+read releasetag
+echo "Give the name of the release (like X.Y.Z):"
+read releasename
+
 echo $BUILD Checking out
 cvs co -r "$freezetag" argouml/src_new
 cvs co -r "$freezetag" argouml/src
@@ -67,10 +72,9 @@ echo "$BUILD Give the test case TestAll, uncheck Reload at every run"
 echo "$BUILD When done, Exit the tool."
 ( cd ../modules/junit && ../../tools/ant-1.4.1/bin/ant run )
 echo "$BUILD Tests done."
+echo "$BUILD No more input."
 
 # 5. Tag with the release tag
-echo "Give the tag name of the release tag (like VERSION_X_Y_Z):"
-read releasetag
 cd ..
 cvs tag $releasetag
 
@@ -78,8 +82,6 @@ cvs tag $releasetag
 
 # 7. Upload the files to the tigris website.
 #    This number should be gotten from the default.properties file.
-echo "Give the name of the release (like X.Y.Z):"
-read releasename
 directoryname=argouml-$releasename
 wait
 for pdffile in build/documentation/pdf/*/*.pdf
