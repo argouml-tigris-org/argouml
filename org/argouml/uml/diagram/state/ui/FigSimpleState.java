@@ -31,6 +31,7 @@ import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Iterator;
 
+import org.argouml.i18n.Translator;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
@@ -234,9 +235,11 @@ public class FigSimpleState extends FigState {
 	    try {
 	        ParserDisplay.SINGLETON.parseStateBody(state, s);
 	    } catch (ParseException pe) {
-	        ProjectBrowser.getInstance().getStatusBar().showStatus(
-	                "Error: " + pe + " at " + pe.getErrorOffset());
-                // TODO: i18n
+                String msg = "statusmsg.bar.error.parsing.state";
+                Object[] args = {pe.getLocalizedMessage(), 
+                    new Integer(pe.getErrorOffset())};
+                ProjectBrowser.getInstance().getStatusBar().showStatus(
+                        Translator.messageFormat(msg, args));
 	    }
 	}
     }

@@ -36,6 +36,7 @@ import java.util.Vector;
 
 import javax.swing.JSeparator;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
@@ -381,9 +382,11 @@ public class FigCompositeState extends FigState {
             try {
                 ParserDisplay.SINGLETON.parseStateBody(st, s);
             } catch (ParseException pe) {
+                String msg = "statusmsg.bar.error.parsing.compositestate";
+                Object[] args = {pe.getLocalizedMessage(), 
+                    new Integer(pe.getErrorOffset())};
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
-                        "Error: " + pe + " at " + pe.getErrorOffset());
-                // TODO: i18n
+                        Translator.messageFormat(msg, args));
             }
         }
     }

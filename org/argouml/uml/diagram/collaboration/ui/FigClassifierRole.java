@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -465,8 +466,11 @@ public class FigClassifierRole extends FigNodeModelElement {
 		ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
 		ProjectBrowser.getInstance().getStatusBar().showStatus("");
 	    } catch (ParseException pe) {
-		ProjectBrowser.getInstance().getStatusBar()
-		    .showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+                String msg = "statusmsg.bar.error.parsing.classifierrole";
+                Object[] args = {pe.getLocalizedMessage(), 
+                    new Integer(pe.getErrorOffset())};
+                ProjectBrowser.getInstance().getStatusBar().showStatus(
+                        Translator.messageFormat(msg, args));
 	    }
         }
     }
@@ -498,7 +502,8 @@ public class FigClassifierRole extends FigNodeModelElement {
             baseString += Model.getFacade().getName(bases.elementAt(0));
 
             for (int i = 1; i < bases.size(); i++)
-                baseString += ", " + Model.getFacade().getName(bases.elementAt(i));
+                baseString += 
+                    ", " + Model.getFacade().getName(bases.elementAt(i));
         }
 
         // Build the final string and set it as the name text.

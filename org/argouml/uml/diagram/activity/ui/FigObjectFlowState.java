@@ -36,6 +36,7 @@ import java.util.Iterator;
 import org.argouml.application.api.Notation;
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
+import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -358,8 +359,11 @@ public class FigObjectFlowState extends FigNodeModelElement {
             }
             ProjectBrowser.getInstance().getStatusBar().showStatus("");
         } catch (ParseException pe) {
+            String msg = "statusmsg.bar.error.parsing.objectflowstate";
+            Object[] args = {pe.getLocalizedMessage(), 
+                new Integer(pe.getErrorOffset())};
             ProjectBrowser.getInstance().getStatusBar().showStatus(
-                    "Input rejected: " + pe.getMessage());
+                    Translator.messageFormat(msg, args));
             updateClassifierText();
             updateStateText();
         }
