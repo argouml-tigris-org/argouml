@@ -74,6 +74,11 @@
         <module name="ParameterName"/>
         <module name="ParameterNumber"/>
         <module name="RedundantImport"/>
+
+        <module name="RegexpHeader">
+          <property name="headerFile" value="${checkstyle.header.file}"/>
+        </module>
+
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
         <module name="TypeName"/>
@@ -86,10 +91,6 @@
         <module name="WhitespaceAround"/>
 
     <!-- To enable later:
-
-        <module name="Header">
-          <property name="headerFile" value="${checkstyle.header.file}"/>
-        </module>
 
         <module name="LeftCurly">
             <property name="option" value="nl"/>
