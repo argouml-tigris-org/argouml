@@ -513,53 +513,6 @@ public class ProjectBrowser
         if (getTarget() != o) {
 
             cat.debug("setting project target = " + o);
-
-            // _editorPane.setTarget(o);
-	    /*
-	      _target = o;
-	      if (o instanceof MNamespace) {
-	      ProjectManager
-	      .getManager()
-	      .getCurrentProject()
-	      .setCurrentNamespace(
-	      (MNamespace) o);
-	      } else if (o instanceof MModelElement) {
-	      if (((MModelElement) o).getNamespace() != null) {
-	      ProjectManager
-	      .getManager()
-	      .getCurrentProject()
-	      .setCurrentNamespace(
-	      ((MModelElement) o).getNamespace());
-	      } else
-	      ProjectManager
-	      .getManager()
-	      .getCurrentProject()
-	      .setCurrentNamespace(
-	      (MNamespace) ProjectManager
-	      .getManager()
-	      .getCurrentProject()
-	      .getRoot());
-	      }
-
-	      if (o instanceof ArgoDiagram) {
-	      ProjectManager
-	      .getManager()
-	      .getCurrentProject()
-	      .setActiveDiagram(
-	      (ArgoDiagram) o);
-	      if (o instanceof UMLDiagram) {
-	      MNamespace m = ((UMLDiagram) o).getNamespace();
-	      if (m != null)
-	      ProjectManager
-	      .getManager()
-	      .getCurrentProject()
-	      .setCurrentNamespace(
-	      m);
-	      }
-	      }
-            */
-            // getNavigatorPane().getTree().setTarget(o);
-            
             
         }
         TargetManager.getInstance().setTarget(o);
