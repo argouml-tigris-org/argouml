@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- $Id$ -->
+
 <!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
 <!ENTITY cookbookmodules SYSTEM "cookbook_modules.xml">
 <!ENTITY cookbooklogging SYSTEM "cookbook_logging.xml">
 ]>
-
-<!-- $Id$ -->
 
 <!-- THIS IS THE ARGO/UML DEVELOPER COOKBOOK 
      - PLEASE FEEL FREE TO ADD TO THE CONTENT AND INSERT YOUR 
@@ -5689,11 +5689,19 @@ by the ArgoUML
 </para>
 	  <para>
 These are distributed with argouml and have licenses that allow this.
-For clairity the readmy files and licenses and other distribution
+For clarity the README files and licenses and other distribution
 details of each used jar will also be stored in this directory.
 (Quick summary: BSD License, Apache License are LGPL are OK, GPL is not.)
 Don't forget to arrange for the modules version and license information
 to appear when starting ArgoUML and in the About box.
+</para>
+          <para>
+Take care also to make version of these librairies explicit,
+so as to allow people building from sources to figure out
+exact dependencies. Easiest way is to rename the files to
+include versioning informations, the same way as shared
+libraries in Unix world: foo-x.y.z.jar, bar-x.y.z.jar,
+etc...
 </para>
 	</listitem>
 	<listitem>
