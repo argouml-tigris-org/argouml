@@ -2298,20 +2298,20 @@ combination of heuristic and empirical techniques.
 	<secondary>Dissertation</secondary>
       </indexterm>
       <para>
-Enhancing a UML Modelling Tool with Context-Based Constraints for Components
+Enhancing an UML Modelling Tool with Context-Based Constraints for Components
 </para>
       <sect2>
 	<title>Abstract</title>
 	<para lang="de">
 Noch vor der Erstellung eines detaillierten Entwurfs hilft ein
-Spezifiationmodell eines komponenten-basierten Systems dabei, Probleme
-so früh im Entwicklungsprozeß wie möglich zu entdecken. Die Sprache
+Spezifikationsmodell eines komponenten-basierten Systems dabei, Probleme
+so früh im Entwicklungsprozess wie möglich zu entdecken. Die Sprache
 CCL ('Component Constraint Language') wurde bei CIS entwickelt und
 erlaubt den Entwickler 'Contextbased Constraints' dem
 Spezifikationsmodell hinzuzufügen. Dadurch entsteht ein Modell, das
 über die Beschreibung der statische Struktur des Systems
-hinausgeht. Zur Zeit existiert allerdings kein Werkzeug, das das
-Komponentenspezifikationsmodell in den Entwicklungsprozeß
+hinausgeht. Zur Zeit existiert allerdings kein Werkzeug, dass das
+Komponentenspezifikationsmodell in den Entwicklungsprozess
 integriert. Ziel dieser Diplomarbeit war der Entwurf eines solchen
 Werkzeugs, um die Philosophie des Continuous Software Engineering
 (CSE) zu unterstützten.
@@ -2344,35 +2344,35 @@ LINK: <ulink url="http://www.cocons.org/publications/CCL_plugin_for_ArgoUML.pdf"
 
 
  <chapter>
-  <title>Screen Grabs</title> 
+  <title>Screen Grabs</title>
     <para>
 The following chapters are moved here from the User FAQ. They need rework.
 </para>
     <para>
 The current goal in this rework for this, the Screen Grabs chapter is to
-join or move each section into the 
+join or move each section into the
 <xref linkend="inside_components"/>.
 </para>
     <sect1>
-      <title>How to make Screen Grabs</title> 
+      <title>How to make Screen Grabs</title>
       <indexterm>
 	<primary>Screen Grabs</primary>
 	<secondary>How to make them</secondary>
       </indexterm>
-  <para>There's nothing like show and tell when using software! Everyone likes screen grabs...here's how you can help out!</para> 
-  <para>Make screen grabs as you go! And here's how...</para> 
+  <para>There's nothing like show and tell when using software! Everyone likes screen grabs...here's how you can help out!</para>
+  <para>Make screen grabs as you go! And here's how...</para>
       <sect2>
 	<title>MS Windows</title>
-  <para>You can use the PrintScreen key to copy the screen to the clipboard (as a bitmap), and then you can paste it into another application (such as MS Word, PowerPoint, etc. (maybe Paint, too)) using the Paste function (ctrl-v). MS Word may (depending on your version) allow you to save the document as an HTML page, which creates an html source file and gif files for all the embedded images (i.e. your pasted screen shot).</para> 
-  <para>To capture a single window instead of the entire screen, use Alt-PrintScreen.</para> 
-  <para>Image resolution is determined by screen size, for best results: 256 colors by 800X600 is good for a full screen capture.</para> 
-  <para>Thanks to Derek for that little tip!</para> 
-  <para>Do a search on any of your favorite freeware sites for more elaborate applications. Snagit from techsmith has been recommended</para> 
+  <para>You can use the PrintScreen key to copy the screen to the clipboard (as a bitmap), and then you can paste it into another application (such as MS Word, PowerPoint, etc. (maybe Paint, too)) using the Paste function (ctrl-v). MS Word may (depending on your version) allow you to save the document as an HTML page, which creates an html source file and gif files for all the embedded images (i.e. your pasted screen shot).</para>
+  <para>To capture a single window instead of the entire screen, use Alt-PrintScreen.</para>
+  <para>Image resolution is determined by screen size, for best results: 256 colors by 800X600 is good for a full screen capture.</para>
+  <para>Thanks to Derek for that little tip!</para>
+  <para>Do a search on any of your favorite freeware sites for more elaborate applications. Snagit from techsmith has been recommended</para>
       </sect2>
       <sect2>
-	<title>Linux</title> 
+	<title>Linux</title>
   <para>There's a number of screen shots apps under Linux.
-  In KDE you kan use <command>ksnapshot</command>. In Gnome you can use <command>Take a Screenshot</command> from the "Action" menu.</para>
+  In KDE you can use <command>ksnapshot</command>. In Gnome use <command>Take a Screenshot</command> from the "Action" menu.</para>
       </sect2>
     </sect1>
     <sect1>
