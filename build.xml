@@ -1066,10 +1066,12 @@ ${Name} Build file
     <junit printsummary="true"
            haltonfailure="false"
            errorproperty="junit.failure"
+           maxmemory="48M"
            fork="yes">
-		<sysproperty key="test.model.uml13" value="${011202.xml}"/>
-                <sysproperty key="log4j.configuration"
-		value="org/argouml/resource/default.lcf"/>
+	<sysproperty key="test.model.uml13" value="${011202.xml}"/>
+	<sysproperty key="log4j.configuration"
+		     value="org/argouml/resource/default.lcf"/>
+	<sysproperty key="java.awt.headless" value="true"/>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
