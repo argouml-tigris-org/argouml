@@ -37,15 +37,15 @@ import org.argouml.i18n.Translator;
  *  @stereotype singleton
  */
 public class ActionActivityDiagram extends ActionStateDiagram {
-    
-    public static ActionActivityDiagram SINGLETON = new ActionActivityDiagram(); 
-    
+
+    public static ActionActivityDiagram SINGLETON = new ActionActivityDiagram();
+
     protected static Category cat = Category.getInstance(org.argouml.uml.ui.ActionActivityDiagram.class);
 
     private ActionActivityDiagram() {
-        super(Translator.localize("CoreMenu", "ActivityDiagram"));
+        super("ActivityDiagram");
     }
-   
+
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */

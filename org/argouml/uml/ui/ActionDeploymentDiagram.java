@@ -39,15 +39,15 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    public static ActionDeploymentDiagram SINGLETON = new ActionDeploymentDiagram(); 
+
+    public static ActionDeploymentDiagram SINGLETON = new ActionDeploymentDiagram();
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionDeploymentDiagram() { 
-        super(Translator.localize("CoreMenu", "DeploymentDiagram"));
+    private ActionDeploymentDiagram() {
+        super("DeploymentDiagram");
     }
 
     ////////////////////////////////////////////////////////////////

@@ -39,12 +39,12 @@ import java.beans.*;
  */
 public class ActionUseCaseDiagram extends ActionAddDiagram {
 
-    public static ActionUseCaseDiagram SINGLETON = new ActionUseCaseDiagram(); 
+    public static ActionUseCaseDiagram SINGLETON = new ActionUseCaseDiagram();
 
     private ActionUseCaseDiagram() {
-        super(Translator.localize("CoreMenu", "UseCaseDiagram"));
+        super("UseCaseDiagram");
     }
-    
+
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace)
      */
