@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 
 import javax.swing.event.DocumentEvent;
@@ -55,6 +56,17 @@ public class StylePanel
     ////////////////////////////////////////////////////////////////
     // instance vars
     protected Fig _target;
+
+    /**
+     * This method must be overriden by implementors if they don't want to refresh
+     * the whole stylepanel every time a property change events is fired.
+     * @since 8 june 2003, 0.13.6
+     * @see org.argouml.ui.TabTarget#refresh(java.beans.PropertyChangeEvent)
+     */
+    public void refresh(PropertyChangeEvent e) {
+        refresh();
+
+    }
 
     ////////////////////////////////////////////////////////////////
     // constructors

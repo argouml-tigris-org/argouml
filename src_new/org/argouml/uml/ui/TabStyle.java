@@ -88,7 +88,10 @@ public class TabStyle
     protected JPanel _blankPanel = new JPanel();
     protected Hashtable _panels = new Hashtable();
     protected JPanel _lastPanel = null;
-    protected TabFigTarget _stylePanel = null;
+    /**
+     * The stylepanel shown by the tab style. 
+     */
+    protected StylePanel _stylePanel = null;
     protected String _panelClassBaseName = "";
     protected String _alternativeBase = "";
 
@@ -220,8 +223,9 @@ public class TabStyle
     public void refresh() {
         setTarget(_target);
     }
+      
 
-    public TabFigTarget findPanelFor(Class targetClass) {
+    public StylePanel findPanelFor(Class targetClass) {
         TabFigTarget p = (TabFigTarget) _panels.get(targetClass);
         if (p == null) {
             Class panelClass = panelClassFor(targetClass);
@@ -237,7 +241,7 @@ public class TabStyle
             _panels.put(targetClass, p);
         } else
             _cat.debug("found style for " + targetClass.getName());
-        return p;
+        return (StylePanel)p;
     }
 
     public Class panelClassFor(Class targetClass) {
@@ -319,7 +323,7 @@ public class TabStyle
 
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         if (_stylePanel != null)
-            _stylePanel.refresh();
+            _stylePanel.refresh(pce);
     }
 
     /**
