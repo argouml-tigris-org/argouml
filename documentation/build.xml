@@ -602,11 +602,13 @@ directory for further information.
         <pathelement location="${fop.lib.dir}/xalanj1compat.jar"/>
         <pathelement location="${xerces.jar.path}"/>         
       </classpath>
+      <!-- Idea 1: Change the -q to -d when you are trouble-shooting. -->
       <arg value="-q"/>
       <arg line="-fo ${source.dir}/${source.fo}"/>
       <arg line="-pdf ${target.dir}/${target.pdf}"/>
     </java>
 
+    <!-- Idea 2: Comment the delete out so you can look at the .fo file. -->
     <delete file="${source.dir}/${source.fo}"/>
     <antcall target="jimi-check"/>
 
