@@ -1107,10 +1107,10 @@ public class Modeller
     private void setOwnerScope(Object feature, short modifiers)
     {
         if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-            ModelFacade.setOwnerScope(feature,ModelFacade.CLASSIFIER);
+            ModelFacade.setOwnerScope(feature,ModelFacade.CLASSIFIER_SCOPE);
         }
         else {
-            ModelFacade.setOwnerScope(feature,ModelFacade.INSTANCE);
+            ModelFacade.setOwnerScope(feature,ModelFacade.INSTANCE_SCOPE);
         }
     }
 
@@ -1124,10 +1124,10 @@ public class Modeller
     private void setTargetScope(Object mAssociationEnd, short modifiers)
     {
         if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-            ModelFacade.setTargetScope(mAssociationEnd,ModelFacade.CLASSIFIER);
+            ModelFacade.setTargetScope(mAssociationEnd,ModelFacade.CLASSIFIER_SCOPE);
         }
         else {
-            ModelFacade.setTargetScope(mAssociationEnd,ModelFacade.INSTANCE);
+            ModelFacade.setTargetScope(mAssociationEnd,ModelFacade.INSTANCE_SCOPE);
         }
     }
 

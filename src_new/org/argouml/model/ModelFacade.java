@@ -45,6 +45,7 @@ import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
@@ -113,8 +114,8 @@ public class ModelFacade {
     public static final short ACC_PRIVATE = 2;
     public static final short ACC_PROTECTED = 3;
 
-    public static final short CLASSIFIER = 1;
-    public static final short INSTANCE = 2;
+    public static final short CLASSIFIER_SCOPE = 1;
+    public static final short INSTANCE_SCOPE = 2;
 
     public static final short GUARDED = 1;
     public static final short SEQUENTIAL = 2;
@@ -134,9 +135,11 @@ public class ModelFacade {
     // Types of node
     public static final Object ACTOR              = MActor.class;
     public static final Object CLASS              = MClass.class;
+    public static final Object CLASSIFIER         = MClassifier.class;
     public static final Object CLASSIFIER_ROLE    = MClassifierRole.class;
     public static final Object COMPONENT          = MComponent.class;
     public static final Object COMPONENT_INSTANCE = MComponentInstance.class;
+    public static final Object INSTANCE           = MInstance.class;
     public static final Object INTERFACE          = MInterface.class;
     public static final Object NODE               = MNode.class;
     public static final Object NODE_INSTANCE      = MNodeInstance.class;
@@ -1728,9 +1731,9 @@ public class ModelFacade {
      */
     public static void setOwnerScope(Object f, short os) {
         if (f != null && f instanceof MFeature) {
-            if (os == CLASSIFIER) {
+            if (os == CLASSIFIER_SCOPE) {
                 ((MFeature)f).setOwnerScope(MScopeKind.CLASSIFIER);
-            } else if (os == INSTANCE) {
+            } else if (os == INSTANCE_SCOPE) {
                 ((MFeature)f).setOwnerScope(MScopeKind.INSTANCE);
             }
         }
@@ -1743,9 +1746,9 @@ public class ModelFacade {
      */
     public static void setTargetScope(Object ae, short ts) {
         if (ae != null && ae instanceof MAssociationEnd) {
-            if (ts == CLASSIFIER) {
+            if (ts == CLASSIFIER_SCOPE) {
                 ((MAssociationEnd)ae).setTargetScope(MScopeKind.CLASSIFIER);
-            } else if (ts == INSTANCE) {
+            } else if (ts == INSTANCE_SCOPE) {
                 ((MAssociationEnd)ae).setTargetScope(MScopeKind.INSTANCE);
             }
         }
