@@ -44,6 +44,7 @@ import org.apache.log4j.Category;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -450,35 +451,44 @@ public class FigPackage extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////
     // user interaction methods
-
-    public void setEnclosingFig(Fig encloser) {
-        Fig oldEncloser = getEnclosingFig();
-        super.setEnclosingFig(encloser);
-        if (!(getOwner() instanceof MModelElement))
-            return;
-        MModelElement me = (MModelElement) getOwner();
-        MNamespace m = null;
+/*
+    public void setEnclosingFig(Fig encloser) {        
+        if (!(ModelFacade.isAPackage(getOwner())))
+            return;        
         try {
-            // If moved into an Package
-            if (encloser != null
-                && oldEncloser != encloser
-                && encloser.getOwner() instanceof MPackage) {
-                me.setNamespace((MNamespace) encloser.getOwner());
+            Fig oldEncloser = getEnclosingFig();
+            if (encloser != oldEncloser) {
+                Object namespace = null;
+                if (encloser == null) { // moved outside of another fig
+                    ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+                    if (diagram instanceof UMLDiagram) { // the namespace must be the namespace to which the diagram belongs
+                        if (((UMLDiagram)diagram).getNamespace() != null) {
+                            namespace = ((UMLDiagram)diagram).getNamespace();                
+                        } else { // if the diagram has no namespace (for instance statediagrams or sequence diagrams)
+                            namespace = ProjectManager.getManager().getCurrentProject().getRoot();
+                        }
+                    } else { // the diagram does not know a namespace
+                        namespace = ProjectManager.getManager().getCurrentProject().getRoot();
+                    }
+                } else {
+                    if (ModelFacade.isANamespace(encloser.getOwner())) {
+                        namespace = encloser.getOwner();
+                    } else {
+                        namespace = ProjectManager.getManager().getCurrentProject().getRoot();
+                    }
+                }
+                ModelFacade.setNamespace(getOwner(), namespace);
             }
-
-            // If default Namespace is not already set
-            if (me.getNamespace() == null
-                && TargetManager.getInstance().getTarget() instanceof UMLDiagram) {
-                m = (MNamespace) ((UMLDiagram) TargetManager.getInstance().getTarget()).getNamespace();
-                me.setNamespace(m);
-            }
+            super.setEnclosingFig(encloser);
+            
+            
         } catch (Exception e) {
             cat.error(
 		      "could not set package due to:" + e + "' at " + encloser,
 		      e);
         }
     }
-
+*/
     ////////////////////////////////////////////////////////////////
     // accessor methods
 

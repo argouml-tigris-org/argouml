@@ -51,6 +51,7 @@ import org.argouml.ui.Actions;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionOpenProject;
 import org.argouml.util.FileConstants;
 import org.argouml.util.Trash;
@@ -289,7 +290,8 @@ public class Main {
 
         pb.setVisible(true);
         Object model = p.getUserDefinedModels().elementAt(0);
-        Object diag = p.getDiagrams().elementAt(0);       
+        Object diag = p.getDiagrams().elementAt(0);   
+        TargetManager.getInstance().setTarget(diag);    
         pb.getNavigatorPane().setSelection(model, diag);
             
         st.mark("close splash");
