@@ -7,6 +7,7 @@
     <title>ArgoUML 0.10</title>
     <vendor>ArgoUML Open Source development group (hosted at Tigris.org)</vendor>
     <homepage href="http://argouml.tigris.org/"/>
+    <description>ArgoUML 0.10</description>
     <description kind="short">ArgoUML, a Swing based editor. Version 0.10.</description>
     <icon href="images/notepad.gif"/>
     <offline-allowed/>
