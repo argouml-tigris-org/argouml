@@ -47,6 +47,8 @@ import org.argouml.cognitive.ui.*;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.*;
 
+import uk.co.jbob.swingext.*;
+
 /** The main window of the Argo/UML application. */
 
 public class ProjectBrowser extends JFrame
@@ -153,7 +155,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   /**
    * The menu item for hiding/showing the Details pane.
    */
-  protected JCheckBoxMenuItem _showDetailsMenuItem = null;
+  //protected JCheckBoxMenuItem _showDetailsMenuItem = null;
   /** partially implemented. needs work to display
    * import of source and saving of zargo
    */
@@ -168,8 +170,8 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   public Font defaultFont = new Font("Dialog", Font.PLAIN, 10);
   //  public static JFrame _Frame;
 
-  protected JSplitPane _mainSplit, _topSplit, _botSplit;
-
+  //protected JSplitPane _mainSplit, _topSplit, _botSplit;
+  protected BorderSplitPane _borderSplitPane;
   private NavigationHistory _history = new NavigationHistory();
 
   /**
@@ -183,7 +185,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
     public ProjectBrowser() {new ProjectBrowser("Test",null,0);}
 
-    public ProjectBrowser(String appName, StatusBar sb, int theme) {
+  public ProjectBrowser(String appName, StatusBar sb, int theme) {
 	super(appName);
 	setCurrentTheme(theme);
     sb.showStatus("Making Project Browser: Navigator Pane");
@@ -412,9 +414,9 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     _view.add(new CmdAdjustGuide());
     _view.add(new CmdAdjustPageBreaks());
     _view.addCheckItem(Actions.ShowRapidButtons);
-    _view.addCheckItem(Actions.ShowDiagramList);
-    _view.addCheckItem(Actions.ShowToDoList);
-    _showDetailsMenuItem = _view.addCheckItem(Actions.ShowDetails);
+    //_view.addCheckItem(Actions.ShowDiagramList);
+    //_view.addCheckItem(Actions.ShowToDoList);
+    //_showDetailsMenuItem = _view.addCheckItem(Actions.ShowDetails);
 
     _view.addSeparator();
     _view.add(org.argouml.language.ui.ActionNotation.getInstance().getMenu());
@@ -511,17 +513,24 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
 
   protected Component createPanels() {
-    _topSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _navPane, _multiPane);
-    _botSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _toDoPane, _detailsPane);
-    _mainSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _topSplit, _botSplit);
-    _topSplit.setDividerSize(2);
-    _topSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_VSPLITTOP, DEFAULT_VSPLIT));
+    _borderSplitPane = new BorderSplitPane();
+    _borderSplitPane.add(_toDoPane, BorderSplitPane.SOUTHWEST);
+    _borderSplitPane.add(_detailsPane, BorderSplitPane.SOUTH);
+    _borderSplitPane.add(_navPane, BorderSplitPane.WEST);
+    _borderSplitPane.add(_multiPane);
 
-    _botSplit.setDividerSize(2);
-    _botSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, DEFAULT_VSPLIT));
 
-    _mainSplit.setDividerSize(2);
-    _mainSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_HSPLIT, DEFAULT_HSPLIT));
+    //_topSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _navPane, _multiPane);
+    //_botSplit = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, _toDoPane, _detailsPane);
+    //_mainSplit = new JSplitPane(JSplitPane.VERTICAL_SPLIT, _topSplit, _botSplit);
+    //_topSplit.setDividerSize(2);
+    //_topSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_VSPLITTOP, DEFAULT_VSPLIT));
+
+    //_botSplit.setDividerSize(2);
+    //_botSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_VSPLITBOTTOM, DEFAULT_VSPLIT));
+
+    //_mainSplit.setDividerSize(2);
+    //_mainSplit.setDividerLocation(Configuration.getInteger(Argo.KEY_SCREEN_HSPLIT, DEFAULT_HSPLIT));
 
     //_botSplit.setOneTouchExpandable(true);
 
@@ -538,7 +547,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     // _botSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, this);
     // _mainSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, this);
 
-    return _mainSplit;
+    return _borderSplitPane;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -802,6 +811,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	  * @param     visible  true to make the navigator pane visible.
 	  */
 	public void setNavigatorPaneVisible(boolean visible) {
+        /*
 		if (_navPane.isVisible() != visible) {
 			if (!visible) {
 				_topSplit.setLastDividerLocation(_topSplit.getDividerLocation());
@@ -816,6 +826,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 				_topSplit.setDividerLocation(_topSplit.getLastDividerLocation());
 			}
 		}
+        */
 	}
 
 	/**
@@ -823,7 +834,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	  * @param     visible  true to make the todo pane visible.
 	  */
 	public void setToDoPaneVisible(boolean visible) {
-	  setLowerPaneVisible(_toDoPane, visible);
+	  //setLowerPaneVisible(_toDoPane, visible);
 	}
 
 	/**
@@ -831,8 +842,10 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	  * @param     visible  true to make the details pane visible.
 	  */
 	public void setDetailsPaneVisible(boolean visible) {
+        /*
 		_showDetailsMenuItem.setSelected(visible);
 		setLowerPaneVisible(_detailsPane, visible);
+        */
 	}
 
 	/**
@@ -842,6 +855,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	  * @param     visible  true to make the <code>pane</code> visible.
 	  */
 	private void setLowerPaneVisible(JPanel pane, boolean visible) {
+        /*
 		// Only process if the visible state is changing from its existing state.
 		if (pane.isVisible() == visible) return;
 
@@ -882,6 +896,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 			_mainSplit.setDividerSize(2);
 			_mainSplit.setDividerLocation(_mainSplit.getLastDividerLocation());
 		}
+        */
 	}
 
 	/**
@@ -931,7 +946,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
     private int currentTheme = -1;
     public int getCurrentTheme() { return currentTheme; }
-    public void setCurrentTheme(int t) { 
+    public void setCurrentTheme(int t) {
 	if (t == 0) {
 	    t = Configuration.getInteger(Argo.KEY_SCREEN_THEME, ThemeNormal);
 	}
@@ -956,7 +971,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	}
 	try {
 	    UIManager.setLookAndFeel(new MetalLookAndFeel());
-	} 
+	}
 	catch (UnsupportedLookAndFeelException e) {
 	}
 	SwingUtilities.updateComponentTreeUI(this);
@@ -991,7 +1006,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     }
 
 
-	    
+
   public void moduleUnloaded(ArgoModuleEvent event) {
       // needs-more-work:  Disable menu
   }
