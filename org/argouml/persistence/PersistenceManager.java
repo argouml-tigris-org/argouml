@@ -51,7 +51,7 @@ import org.tigris.gef.util.UnexpectedException;
  * @author mvw@tigris.org
  */
 public class PersistenceManager {
-    private static final PersistenceManager SINGLETON =
+    private static final PersistenceManager INSTANCE =
         new PersistenceManager();
 
     private AbstractFilePersister defaultPersister;
@@ -59,10 +59,16 @@ public class PersistenceManager {
     private UmlFilePersister quickViewDump;
 
     /**
+     * Create the default diagram persister.
+     */
+    private DiagramMemberFilePersister diagramMemberFilePersister
+        = new DiagramMemberFilePersister();
+    
+    /**
      * @return returns the singleton
      */
     public static PersistenceManager getInstance() {
-        return SINGLETON;
+        return INSTANCE;
     }
 
     /**
@@ -188,5 +194,21 @@ public class PersistenceManager {
             e.printStackTrace(new PrintStream(stream));
         }
         return stream.toString();
+    }
+    
+    /**
+     * Get the file persister for diagrams
+     * @return the diagram file persister.
+     */
+    DiagramMemberFilePersister getDiagramMemberFilePersister() {
+    	return diagramMemberFilePersister;
+    }
+    
+    /**
+     * Set an alternative file persister for diagrams
+     * @param persister the persister to use instead of the default
+     */
+    public void setDiagramMemberFilePersister(DiagramMemberFilePersister persister) {
+    	diagramMemberFilePersister = persister;
     }
 }
