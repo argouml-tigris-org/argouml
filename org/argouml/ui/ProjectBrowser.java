@@ -69,12 +69,26 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
   protected static Action _actionCreateMultiple = Actions.CreateMultiple;
   // ----- diagrams
+  /** this fires the Class Diagram view
+   */  
   protected static Action _actionClassDiagram = ActionClassDiagram.SINGLETON;
+  /** this fires the use case Diagram view
+   */  
   protected static Action _actionUseCaseDiagram = ActionUseCaseDiagram.SINGLETON;
+  /** this fires the state Diagram view
+   */  
   protected static Action _actionStateDiagram = ActionStateDiagram.SINGLETON;
+  /** this fires the activity view
+   */  
   protected static Action _actionActivityDiagram = ActionActivityDiagram.SINGLETON;
+  /** this fires the Collaboration Diagram view
+   */  
   protected static Action _actionCollaborationDiagram = ActionCollaborationDiagram.SINGLETON;
+  /** this fires the deployment Diagram view
+   */  
   protected static Action _actionDeploymentDiagram = ActionDeploymentDiagram.SINGLETON;
+  /** this fires the sequence Diagram view
+   */  
   protected static Action _actionSequenceDiagram = ActionSequenceDiagram.SINGLETON;
 
   // ----- model elements
@@ -88,24 +102,57 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   protected Project _project = null;
 
   protected NavigatorPane _navPane;
+  /** The toDoPane currently does not remember todos
+   * nor is there a way of exporting todos to anothter
+   * format
+   */  
   public ToDoPane _toDoPane;
   protected MultiEditorPane _multiPane;
   protected DetailsPane _detailsPane;
   protected JMenuBar _menuBar = new JMenuBar();
   protected JMenu _edit = null;
+  /** unknown where this appears in the UI
+   */  
   protected JMenu _select = null;
+  /** toobar: view under which is the goto diagram/ find
+   * zoom!!! this should be activated as a right click command.
+   * editor tabs/details tabs/ adjust grid etc.*
+   */  
   protected Menu _view = null;
+  /** Toolbar:create diagram
+   */  
   protected JMenu _createDiagrams = null;
+  /** currently disactivated
+   */  
   protected JMenu _tools = null;
+  /** currently supports rudimentary java generation,
+   * new modules for php and html/javadocs are planned
+   * feel free to contribute here!
+   */  
   protected JMenu _generate = null;
+  /** this should be invoked automatically when
+   * importing sources.
+   */  
   protected JMenu _arrange = null;
+  /** currently undergoing significant testing
+   */  
   protected Menu _critique = null;
+  /** It needs it. Currently there is only an
+   * about text. hyperlinking to online docs at
+   * argouml.org considered basic improvement.
+   */  
   protected JMenu _help = null;
+  /** partially implemented. needs work to display
+   * import of source and saving of zargo
+   */  
   protected StatusBar _statusBar = new StatusBar();
   //protected JToolBar _toolBar = new JToolBar();
 
   protected ComponentResizer _componentResizer = null;
 
+  /** this needs work so that users can set the font
+   * size through a gui preference window
+   */  
   public Font defaultFont = new Font("Dialog", Font.PLAIN, 10);
   //  public static JFrame _Frame;
 
@@ -178,6 +225,12 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     return Localizer.getShortcut("CoreMenu",key);
   }
 
+  /** This should be a user specified option. New laws
+   * for handicapped people who cannot use the
+   * mouse require software developers in US to
+   * make all components of User interface accessible
+   * through keyboard
+   */  
   static final protected void setMnemonic(JMenuItem item,String key,char defMnemonic) {
     String localMnemonic = Localizer.localize("CoreMenu","Mnemonic_" + key);
     char mnemonic = defMnemonic;
@@ -557,7 +610,10 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
   /**
    * Set the diagram on which the user is currently working. This is called from
-   * {@link #setTarget}.
+   * When importing sources this should call the name of the folder from
+   *which the classes were imported.
+   *It should also default the model name as well.
+   *{@link #setTarget}.
    */
   protected void setActiveDiagram (ArgoDiagram ad) {
     _activeDiagram = ad;
