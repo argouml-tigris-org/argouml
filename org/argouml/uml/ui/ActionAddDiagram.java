@@ -49,7 +49,8 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
 
     /**
      * Constructor for ActionAddDiagram.
-     * @param s
+     * 
+     * @param s the name for this action
      */
     public ActionAddDiagram(String s) {
         super(s);

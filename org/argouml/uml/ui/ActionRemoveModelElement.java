@@ -40,7 +40,10 @@ import org.argouml.kernel.ProjectManager;
  */
 public class ActionRemoveModelElement extends AbstractActionRemoveElement {
     
-    public final static ActionRemoveModelElement SINGLETON =
+    /**
+     * The singleton.
+     */
+    public static final ActionRemoveModelElement SINGLETON =
 	new ActionRemoveModelElement();
     
     /**
@@ -56,7 +59,8 @@ public class ActionRemoveModelElement extends AbstractActionRemoveElement {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Project p = ProjectManager.getManager().getCurrentProject();
-        if (getObjectToRemove() != null && ActionRemoveFromModel.sureRemove(getObjectToRemove()))
+        if (getObjectToRemove() != null 
+                && ActionRemoveFromModel.sureRemove(getObjectToRemove()))
             p.moveToTrash(getObjectToRemove());
         setObjectToRemove(null);
     }

@@ -24,7 +24,6 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -36,6 +35,9 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  */
 public class ActionActivityDiagram extends ActionStateDiagram {
 
+    /**
+     * The singleton.
+     */
     public static final ActionActivityDiagram SINGLETON = 
         new ActionActivityDiagram();
 

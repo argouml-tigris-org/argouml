@@ -41,10 +41,13 @@ import org.argouml.ui.ProjectBrowser;
  */
 public abstract class AbstractActionAddModelElement extends UMLChangeAction {
 
-    private Object/*MModelElement*/ _target;
-    private boolean _multiSelect = true;
-    private boolean _exclusive = true;
+    private Object/*MModelElement*/ target;
+    private boolean multiSelect = true;
+    private boolean exclusive = true;
     
+    /**
+     * The constructor.
+     */
     protected AbstractActionAddModelElement() {
         super(Translator.localize("Add"), true, NO_ICON);
     }
@@ -55,15 +58,15 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
      * @return MModelElement
      */
     protected Object/*MModelElement*/ getTarget() {
-        return _target;
+        return target;
     }
 
     /**
      * Sets the target.
-     * @param target The target to set
+     * @param theTarget The target to set
      */
-    public void setTarget(Object/*MModelElement*/ target) {
-        _target = target;
+    public void setTarget(Object/*MModelElement*/ theTarget) {
+        target = theTarget;
     }
 
     /**
@@ -115,7 +118,7 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
      * @return boolean
      */
     public boolean isExclusive() {
-        return _exclusive;
+        return exclusive;
     }
 
     /**
@@ -123,23 +126,23 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
      * @return boolean
      */
     public boolean isMultiSelect() {
-        return _multiSelect;
+        return multiSelect;
     }
 
     /**
      * Sets the exclusive.
-     * @param exclusive The exclusive to set
+     * @param theExclusive The exclusive to set
      */
-    public void setExclusive(boolean exclusive) {
-        _exclusive = exclusive;
+    public void setExclusive(boolean theExclusive) {
+        exclusive = theExclusive;
     }
 
     /**
      * Sets the multiSelect.
-     * @param multiSelect The multiSelect to set
+     * @param theMultiSelect The multiSelect to set
      */
-    public void setMultiSelect(boolean multiSelect) {
-        _multiSelect = multiSelect;
+    public void setMultiSelect(boolean theMultiSelect) {
+        multiSelect = theMultiSelect;
     }
 
     /**

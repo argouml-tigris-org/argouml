@@ -42,11 +42,17 @@ public class ActionGenerateOne extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * The singleton.
+     */
     public static ActionGenerateOne SINGLETON = new ActionGenerateOne();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     */
     protected ActionGenerateOne() {
         super("action.generate-selected-classes", NO_ICON);
     }
@@ -54,6 +60,9 @@ public class ActionGenerateOne extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Vector classes = new Vector();
@@ -92,6 +101,9 @@ public class ActionGenerateOne extends UMLAction {
         cgd.show();
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
         if (!super.shouldBeEnabled())
             return false;
@@ -118,7 +130,8 @@ public class ActionGenerateOne extends UMLAction {
             while (figs.hasMoreElements()) {
         	Fig f = (Fig) figs.nextElement();
         	Object owner = f.getOwner();
-        	if (!(owner instanceof MClass) && !(owner instanceof MInterface))
+        	if (!(owner instanceof MClass) 
+        	    && !(owner instanceof MInterface))
         	    continue;
         	MClassifier cls = (MClassifier) owner;
         	String name = cls.getName();

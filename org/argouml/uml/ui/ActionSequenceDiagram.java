@@ -49,6 +49,9 @@ public class ActionSequenceDiagram extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * The singleton.
+     */
     public static ActionSequenceDiagram SINGLETON = new ActionSequenceDiagram();
 
     ////////////////////////////////////////////////////////////////

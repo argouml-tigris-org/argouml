@@ -43,6 +43,9 @@ public class ActionImportFromSources extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * The singleton.
+     */
     public static ActionImportFromSources SINGLETON =
         new ActionImportFromSources(); 
 
@@ -50,6 +53,9 @@ public class ActionImportFromSources extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     *  The constructor.
+     */
     protected ActionImportFromSources() {
         super("action.import-sources");
     }
@@ -58,6 +64,9 @@ public class ActionImportFromSources extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent event) {
     	new Import();
     }

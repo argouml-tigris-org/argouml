@@ -49,7 +49,7 @@ public class ActionCopy extends AbstractAction implements CaretListener {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    private static ActionCopy _Instance = new ActionCopy();
+    private static ActionCopy instance = new ActionCopy();
 
     private static final String LOCALIZE_KEY = "action.copy";
 
@@ -71,18 +71,23 @@ public class ActionCopy extends AbstractAction implements CaretListener {
 		 Translator.localize(LOCALIZE_KEY) + " ");
     }
 
+    /**
+     * @return the singleton
+     */
     public static ActionCopy getInstance() {
-        return _Instance;
+        return instance;
     }
 
-    private JTextComponent _textSource;
+    private JTextComponent textSource;
 
     /**
      * Copies some text or a fig
+     *
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-        if (_textSource != null) {
-            _textSource.copy();
+        if (textSource != null) {
+            textSource.copy();
             Globals.clipBoard = null;            
         } else {
             CmdCopy cmd = new CmdCopy();
@@ -104,10 +109,10 @@ public class ActionCopy extends AbstractAction implements CaretListener {
     public void caretUpdate(CaretEvent e) {
         if (e.getMark() != e.getDot()) { // there is a selection        
             setEnabled(true);
-            _textSource = (JTextComponent) e.getSource();
+            textSource = (JTextComponent) e.getSource();
         } else {
             setEnabled(false);
-            _textSource = null;
+            textSource = null;
         }
     }
 

@@ -89,17 +89,17 @@ public abstract class PropPanel
 {
     ////////////////////////////////////////////////////////////////
     // instance vars
-    private Object _target;
-    private Object _modelElement;
-    private static Profile _profile;
+    private Object target;
+    private Object modelElement;
+    private static Profile profile;
 
-    private ResourceBundle _bundle = null;
+    private ResourceBundle bundle = null;
 
-    private Vector _panels = new Vector();
+    private Vector panels = new Vector();
 
     private int lastRow;
 
-    private EventListenerList _listenerList;
+    private EventListenerList listenerList;
 
     /**
      * The metaclass/property pairs for the third party listener (if we have
@@ -111,7 +111,7 @@ public abstract class PropPanel
     protected JToolBar buttonPanel;
     private JPanel buttonPanelWithFlowLayout = new JPanel();
 
-    private JLabel _titleLabel;
+    private JLabel titleLabel;
 
     private JPanel captionPanel = new JPanel();
 
@@ -129,6 +129,8 @@ public abstract class PropPanel
      *
      * @param icon The icon to display for the panel
      * @param title The title of the panel
+     *
+     * @param orientation the orientation
      */
     public PropPanel(String title, ImageIcon icon, Orientation orientation) {
         super(title);
@@ -141,7 +143,8 @@ public abstract class PropPanel
         setLayout(new LabelledLayout(orientation == Vertical.getInstance()));
 
         if (icon != null) {
-            setTitleLabel(new JLabel(localize(title), icon, SwingConstants.LEFT));
+            setTitleLabel(new JLabel(localize(title), icon, 
+                    SwingConstants.LEFT));
         }
         else {
             setTitleLabel(new JLabel(localize(title)));
@@ -165,7 +168,8 @@ public abstract class PropPanel
 
     /**
      * Set the orientation of the panel
-     * @param orientation
+     *
+     * @see org.argouml.swingext.Orientable#setOrientation(org.argouml.swingext.Orientation)
      */
     public void setOrientation(Orientation orientation) {
         super.setOrientation(orientation);
@@ -176,6 +180,7 @@ public abstract class PropPanel
      *
      * @param label the label for the component
      * @param component the component
+     * @return the label added
      */
     public JLabel addField(String label, Component component) {
         JLabel jlabel = new JLabel(localize(label));
@@ -193,6 +198,9 @@ public abstract class PropPanel
      *
      * @param label the label for the component
      * @param component the component
+     *
+     * @param afterComponent the component before
+     * @return the newly added label
      */
     public JLabel addFieldAfter(String label, Component component,
 				Component afterComponent) {
@@ -218,6 +226,8 @@ public abstract class PropPanel
      * @param label the label for the component
      * @param component the component
      * @param beforeComponent the component
+     *
+     * @return the newly added component
      */
     public JLabel addFieldBefore(String label, Component component,
 				 Component beforeComponent) {
@@ -250,14 +260,17 @@ public abstract class PropPanel
         addField(label, component);
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#localize(java.lang.String)
+     */
     public final String localize(String key) {
         String localized = key;
-        if (_bundle == null) {
-            _bundle = getResourceBundle();
+        if (bundle == null) {
+            bundle = getResourceBundle();
         }
-        if (_bundle != null) {
+        if (bundle != null) {
             try {
-                localized = _bundle.getString(key);
+                localized = bundle.getString(key);
             } catch (MissingResourceException e) {
             }
             if (localized == null) {
@@ -275,11 +288,14 @@ public abstract class PropPanel
         return null;
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
+     */
     public Profile getProfile() {
-        if (_profile == null) {
-            _profile = ProfileJava.getInstance();
+        if (profile == null) {
+            profile = ProfileJava.getInstance();
         }
-        return _profile;
+        return profile;
     }
 
     /**
@@ -287,11 +303,11 @@ public abstract class PropPanel
        prop panel wants to monitor additional objects.
        ONLY use it if the target is a NSUML modelelement
 
-       @param target target of prop panel
+       @param theTarget target of prop panel
 
     */
-    protected void removeMElementListener(Object target) {
-        UmlModelEventPump.getPump().removeModelEventListener(this, target);
+    protected void removeMElementListener(Object theTarget) {
+        UmlModelEventPump.getPump().removeModelEventListener(this, theTarget);
     }
 
     /**
@@ -299,10 +315,10 @@ public abstract class PropPanel
        prop panel wants to monitor additional objects.  This method
        is public only since it is called from a Runnable object.
 
-       @param target target of prop panel
+       @param theTarget target of prop panel
     */
-    public void addMElementListener(Object target) {
-        UmlModelEventPump.getPump().addModelEventListener(this, target);
+    public void addMElementListener(Object theTarget) {
+        UmlModelEventPump.getPump().addModelEventListener(this, theTarget);
     }
 
     /**
@@ -321,18 +337,18 @@ public abstract class PropPanel
         // exists and dispatch a new NSUML element listener to
         // ourself. Otherwise dispatch a target reasserted to ourself.
         Runnable dispatch = null;
-        if (t != _target) {
+        if (t != target) {
 
             // Set up the target and its model element variant.
 
-            _target = t;
-            _modelElement = null;
-            if (_listenerList == null) {
-                _listenerList = registrateTargetListeners(this);
+            target = t;
+            modelElement = null;
+            if (listenerList == null) {
+                listenerList = registrateTargetListeners(this);
             }
 
-            if (ModelFacade.isAModelElement(_target)) {
-                _modelElement = _target;
+            if (ModelFacade.isAModelElement(target)) {
+                modelElement = target;
             }
 
             // This will add a new MElement listener after update is complete
@@ -391,53 +407,83 @@ public abstract class PropPanel
         return list;
     }
 
+    /**
+     * @see org.argouml.ui.TabTarget#getTarget()
+     */
     public final Object getTarget() {
-        return _target;
+        return target;
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getModelElement()
+     */
     public final Object getModelElement() {
-        return _modelElement;
+        return modelElement;
     }
 
+    /**
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
     public void refresh() {
         SwingUtilities.invokeLater(new UMLChangeDispatch(this, 0));
     }
 
+    /**
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
+     */
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
         return ModelFacade.isAModelElement(target);
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(MElementEvent mee) {
         UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.propertySet(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(MElementEvent mee) {
         UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.listRoleItemSet(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(MElementEvent mee) {
         UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.recovered(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(MElementEvent mee) {
         UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.removed(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(MElementEvent mee) {
         UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.roleAdded(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(MElementEvent mee) {
         UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.roleRemoved(mee);
@@ -448,48 +494,38 @@ public abstract class PropPanel
      * This method can be overriden in derived Panels where the
      * appropriate namespace for display may not be the same as
      * the namespace of the target
+     *
+     * @return the namespace
      */
     protected Object getDisplayNamespace() {
         Object ns = null;
-        Object target = getTarget();
-        if (ModelFacade.isAModelElement(target)) {
-            ns = ModelFacade.getNamespace(target);
+        Object theTarget = getTarget();
+        if (ModelFacade.isAModelElement(theTarget)) {
+            ns = ModelFacade.getNamespace(theTarget);
         }
         return ns;
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatElement(java.lang.Object)
+     */
     public String formatElement(/*MModelElement*/Object element) {
         return getProfile().formatElement(element, getDisplayNamespace());
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatNamespace(java.lang.Object)
+     */
     public String formatNamespace(/*MNamespace*/Object namespace) {
         return getProfile().formatElement(namespace, null);
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceContainer#formatCollection(java.util.Iterator)
+     */
     public String formatCollection(Iterator iter) {
         Object namespace = getDisplayNamespace();
         return getProfile().formatCollection(iter, namespace);
-    }
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     * {@link TargetManager#setTarget(Object)
-     * TargetManager.getInstance().setTarget(Object target)}.
-     */
-    public void navigateTo(Object element) {
-        TargetManager.getInstance().setTarget(element);
-    }
-
-
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     * {@link org.argouml.ui.targetmanager.TargetManager#navigateBackward()
-     * TargetManager.getInstance().navigateBackward()}
-     */
-    public boolean navigateBack(boolean attempt) {
-	TargetManager.getInstance().navigateBackward();
-	return true;
     }
 
     /**
@@ -498,42 +534,6 @@ public abstract class PropPanel
      */
     public void navigateBackAction() {
         TargetManager.getInstance().navigateBackward();
-    }
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5, replaced by
-     * {@link TargetManager#navigateForward()}
-     */
-    public boolean navigateForward(boolean attempt) {
-        TargetManager.getInstance().navigateForward();
-        return true;
-    }
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     * {@link org.argouml.ui.targetmanager.TargetManager#navigateForward()
-     * TargetManager.getInstance().navigateForward()}
-     */
-    public void navigateForwardAction() {
-        TargetManager.getInstance().navigateForward();
-    }
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5, replaced by
-     * {@link TargetManager#navigateForwardPossible()
-     * TargetManager.getInstance().navigateForwardPossible()}
-     */
-    public boolean isNavigateForwardEnabled() {
-        return TargetManager.getInstance().navigateForwardPossible();
-    }
-
-    /**
-     * @deprecated As of ArgoUml version 0.13.5,replaced by
-     * {@link org.argouml.ui.targetmanager.TargetManager#navigateBackPossible()
-     * TargetManager.getInstance().navigateBackPossible()}
-     */
-    public boolean isNavigateBackEnabled() {
-        return TargetManager.getInstance().navigateBackPossible();
     }
 
     /**
@@ -604,10 +604,10 @@ public abstract class PropPanel
     }
 
     public void removeElement() {
-        Object target = getTarget();
-        if (ModelFacade.isABase(target)) {
-            Object newTarget = ModelFacade.getModelElementContainer(target);
-            Object base = target;
+        Object theTarget = getTarget();
+        if (ModelFacade.isABase(theTarget)) {
+            Object newTarget = ModelFacade.getModelElementContainer(theTarget);
+            Object base = theTarget;
             TargetManager.getInstance().setTarget(base);
             ActionEvent event = new ActionEvent(this, 1, "delete");
             new ActionRemoveFromModel().actionPerformed(event);
@@ -623,6 +623,7 @@ public abstract class PropPanel
      * ArgoUML does not like that.
      *
      * @since 0.13.2
+     * @return whether this element can be deleted
      */
     public boolean isRemovableElement() {
         return ((getTarget() != null)
@@ -664,7 +665,7 @@ public abstract class PropPanel
 
     private void fireTargetSet(TargetEvent targetEvent) {
 	//          Guaranteed to return a non-null array
-	Object[] listeners = _listenerList.getListenerList();
+	Object[] listeners = listenerList.getListenerList();
 	for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    if (listeners[i] == TargetListener.class) {
 		// Lazily create the event:
@@ -675,7 +676,7 @@ public abstract class PropPanel
 
     private void fireTargetAdded(TargetEvent targetEvent) {
 	// Guaranteed to return a non-null array
-	Object[] listeners = _listenerList.getListenerList();
+	Object[] listeners = listenerList.getListenerList();
 
 	for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    if (listeners[i] == TargetListener.class) {
@@ -687,7 +688,7 @@ public abstract class PropPanel
 
     private void fireTargetRemoved(TargetEvent targetEvent) {
 	// Guaranteed to return a non-null array
-	Object[] listeners = _listenerList.getListenerList();
+	Object[] listeners = listenerList.getListenerList();
 	for (int i = listeners.length - 2; i >= 0; i -= 2) {
 	    if (listeners[i] == TargetListener.class) {
 		// Lazily create the event:
@@ -696,174 +697,11 @@ public abstract class PropPanel
 	}
     }
 
-    /**
-     * Constructs the PropPanel.
-     * @param title Title of panel
-     * @param panelCount number of horizontal panels
-     * @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
-     *             {@link #PropPanel(String, ImageIcon, Orientation)}
-     *             I propose to remove this by version 0.15 (Bob Tarling)
-     */
-    public PropPanel(String title, int panelCount) {
-        this(title, null, panelCount);
-    }
-
-    /**
-     * Constructs the PropPanel - DO NOT USE.
-     *
-     * @param title Title of panel
-     * @param panelCount number of horizontal panels
-     *
-     * @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
-     *             {@link #PropPanel(String, ImageIcon, Orientation)}.
-     *             Use of GridBagLayout is being dropped in favour of
-     *             {@link org.argouml.swingext.LabelledLayout}
-     *             Done by Bob Tarling.
-     */
-    public PropPanel(String title, ImageIcon icon, int panelCount) {
-        super(title);
-        setLayout(new BorderLayout());
-        center = new JPanel();
-        center.setLayout(new GridLayout(1, 0));
-
-        JPanel panel;
-        for (long i = 0; i < panelCount; i++) {
-            panel = new JPanel(new GridBagLayout());
-            _panels.add(panel);
-            center.add(panel);
-        }
-        add(center, BorderLayout.CENTER);
-
-        //add caption panel and button panel
-        if (icon != null) {
-            captionPanel.add(new JLabel(icon));
-        }
-        captionPanel.add(new JLabel(localize(title)));
-        addCaption(captionPanel, 0, 0, 0);
-
-        buttonPanel = new ToolBar();
-        buttonPanel.putClientProperty("JToolBar.isRollover",  Boolean.TRUE);
-        // TODO: buttonPanelWithFlowLayout shouldn't exist any more
-        // It's just another useless layer
-        buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
-        buttonPanelWithFlowLayout.add(buttonPanel);
-        addField(buttonPanelWithFlowLayout, 0, 0, 0);
-    }
-
-    /**
-     *   Adds a component to the captions of the specified panel.
-     *   @param component Component to be added (typically a JLabel)
-     *   @param row row index, zero-based.
-     *   @param panel panel index, zero-based.
-     *   @param weighty specifies how to distribute extra vertical space,
-     *      see GridBagConstraint for details on usage.
-     *
-     * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
-     * GridBagConstraints is no longer used as a prop panel layout,
-     * replaced by {@link #addField(String, Component)} - Labelled
-     * layout method.  I propose to remove this by version 0.15 (Bob
-     * Tarling)
-     */
-    public void addCaption(Component component, int row, int panel,
-			   double weighty) {
-        if (orientation == Vertical.getInstance()) {
-            row = lastRow;
-            panel = 0;
-        }
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridy = row;
-        gbc.weighty = weighty;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.gridheight = 1;
-        gbc.gridwidth = 1;
-        gbc.gridx = 0;
-        gbc.weightx = 0;
-        gbc.fill = GridBagConstraints.NONE;
-
-        JPanel pane = (JPanel) _panels.elementAt(panel);
-        GridBagLayout layout = (GridBagLayout) pane.getLayout();
-        layout.setConstraints(component, gbc);
-        pane.add(component);
-    }
-
-    /**
-     * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
-     * GridBagConstraints is no longer used as a prop panel layout,
-     * replaced by {@link #addField(String, Component)} - Labelled
-     * layout method I propose to remove this by version 0.15 (Bob
-     * Tarling)
-     */
-    public void addCaption(String label, int row, int panel, double weighty) {
-        addCaption(new JLabel(localize(label)), row, panel, weighty);
-    }
-
-    /**
-     *   Adds a component to the fields of the specified panel.
-     *   @param component Component to be added
-     *   @param row row index, zero-based.
-     *   @param panel panel index, zero-based.
-     *   @param weighty specifies how to distribute extra vertical space,
-     *      see GridBagConstraint for details on usage.
-     *
-     * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
-     * GridBagConstraints is no longer used as a prop panel layout,
-     * replaced by {@link #addField(String, Component)} - Labelled
-     * layout method.  I propose to remove this by version 0.15 (Bob
-     * Tarling)
-     */
-    public void addField(Component component, int row, int panel,
-			 double weighty) {
-        if (orientation == Vertical.getInstance()) {
-            row = lastRow;
-            panel = 0;
-            ++lastRow;
-        }
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridy = row;
-        gbc.weighty = weighty;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.gridheight = 1;
-        gbc.gridwidth = 1;
-        gbc.gridx = 1;
-        gbc.weightx = 1;
-        if (weighty == 0)
-            gbc.fill = GridBagConstraints.HORIZONTAL;
-        else
-            gbc.fill = GridBagConstraints.BOTH;
-
-        JPanel pane = (JPanel) _panels.elementAt(panel);
-        GridBagLayout layout = (GridBagLayout) pane.getLayout();
-        layout.setConstraints(component, gbc);
-        pane.add(component);
-    }
-
-    /**
-     *   Adds a component to the fields of the specified panel
-     *     and sets the background and color to indicate
-     *     the field is a link.
-     *   @param component Component to be added
-     *   @param row row index, zero-based.
-     *   @param panel panel index, zero-based.
-     *   @param weighty specifies how to distribute extra vertical space,
-     *      see GridBagConstraint for details on usage.
-     *
-     * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
-     * GridBagConstraints is no longer used as a prop panel layout,
-     * replaced by {@link #addLinkField(String, JComponent)} - Labelled
-     * layout method.  The method will be removed in release 0.15
-     */
-    public final void addLinkField(Component component, int row, int panel,
-				   double weighty) {
-        component.setBackground(getBackground());
-        component.setForeground(Color.blue);
-        addField(component, row, panel, weighty);
-    }
-
-    protected void setTitleLabel(JLabel _titleLabel) {
-        this._titleLabel = _titleLabel;
+    protected void setTitleLabel(JLabel theTitleLabel) {
+        this.titleLabel = theTitleLabel;
     }
 
     protected JLabel getTitleLabel() {
-        return _titleLabel;
+        return titleLabel;
     }
 } /* end class PropPanel */

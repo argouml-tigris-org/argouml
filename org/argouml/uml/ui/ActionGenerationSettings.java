@@ -36,12 +36,18 @@ public class ActionGenerationSettings extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /**
+     * The singleton.
+     */
     public static ActionGenerationSettings SINGLETON =
 	new ActionGenerationSettings();
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     *  The constructor.
+     */
     protected ActionGenerationSettings() {
 	super("action.settings-for-project-code-generation", NO_ICON);
     }
@@ -49,15 +55,21 @@ public class ActionGenerationSettings extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	SourcePathDialog cgd = new SourcePathDialog();
 	cgd.show();
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() {
 	org.argouml.ui.ArgoDiagram activeDiagram =
 	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-	return super.shouldBeEnabled() &&
-	    (activeDiagram instanceof UMLDiagram);
+	return super.shouldBeEnabled() 
+	    && (activeDiagram instanceof UMLDiagram);
     }
 } /* end class ActionGenerationSettings */
