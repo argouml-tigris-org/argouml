@@ -44,6 +44,7 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MActionSequence;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
@@ -198,6 +199,15 @@ public class ModelFacade {
      */
     public static boolean isAAction(Object handle) {
         return handle instanceof MAction;
+    }
+    
+    /**
+     * Recognizer for ActionSequence
+     * @param handle
+     * @return
+     */
+    public static boolean isAActionSequence(Object handle) {
+        return handle instanceof MActionSequence;
     }
 
     /** Recognizer for Association.
