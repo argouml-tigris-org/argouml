@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2002-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui;
 
 import java.awt.Dimension;
@@ -78,7 +78,10 @@ public class PropPanelButton2 extends JButton implements UMLUserInterfaceCompone
         setEnabled((a!=null?a.isEnabled():true));
         setToolTipText((a!=null?(String)a.getValue(Action.SHORT_DESCRIPTION):null));    
         if (a != null)  {
-            Integer i = (Integer)a.getValue(Action.MNEMONIC_KEY);
+ 	    // TODO: When no longer requiring support for JDK1.2 this constant
+	    // can be changed to Action.MNEMONIC_KEY.
+	    final String MNEMONIC_KEY = "MnemonicKey";
+            Integer i = (Integer)a.getValue(MNEMONIC_KEY);
             if (i != null)
                 setMnemonic(i.intValue());
         }
