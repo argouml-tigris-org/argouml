@@ -204,15 +204,11 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      
      
     /**
-     * Build an extension point for a use case.<p>
+     * Builds an extension point for a use case.
      *
-     * Set the namespace to that of the use case if possible.<p>
-     *
-     * @param modelElement  The owning use case for the extension point. May be
-     *                      <code>null</code>.
-     *
-     * @return         The new extension point or <code>null</code> if it
-     *                 can't be created.
+     * @param modelElement The owning use case for the extension point.
+     * @return The new extension point.
+     * @throws IllegalArgumentException if modelElement isn't a use-case.
      */
     public MExtensionPoint buildExtensionPoint(Object modelElement) {
         if (!(modelElement instanceof MUseCase)) 
@@ -225,20 +221,17 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
 
         // Set the owning use case if there is one given.
 
-        if (useCase != null) {
+        extensionPoint.setUseCase(useCase);
 
-            extensionPoint.setUseCase(useCase);
-
-            // Set the namespace to that of the useCase if possible.
+        // Set the namespace to that of the useCase if possible.
              
-            // the usecase itself is a namespace...
-            extensionPoint.setNamespace(useCase);
-	    /*
-	      if (useCase.getNamespace() != null) {
-	      extensionPoint.setNamespace(useCase.getNamespace());
-	      }
-	    */
-        }
+        // the usecase itself is a namespace...
+        extensionPoint.setNamespace(useCase);
+	/*
+	if (useCase.getNamespace() != null) {
+	extensionPoint.setNamespace(useCase.getNamespace());
+	}
+	*/
 
         // For consistency with attribute and operation, give it a default
         // name and location
