@@ -37,6 +37,17 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 
 /**
+ * The dialog that allows the user to go to any diagram in the project 
+ * by doubleclicking on it.<p>
+ * 
+ * This dialog is not modal, and can stay open while the user 
+ * is working on the model. It is even possible to open multiple 
+ * of these dialogs, although the purpose of such useraction eludes me.<p>
+ * 
+ * TODO: This dialog should have multiple tabs named "Help", "Diagram",
+ * "Classifier", "StateVertex", etc. Which would allow the user to go to other 
+ * things than diagrams.
+ * 
  * @author MVW
  *
  */
@@ -48,7 +59,7 @@ public class GotoDialog extends ArgoDialog {
      * The constructor.
      */
     public GotoDialog() {
-        super(ProjectBrowser.getInstance(), 
+        super(ProjectBrowser.getInstance(), // the parent frame
                 Translator.localize("dialog.gotodiagram.title"), 
                 ArgoDialog.OK_CANCEL_OPTION, false);
         
