@@ -44,7 +44,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.MissingResourceException;
@@ -72,6 +71,7 @@ import org.argouml.ui.NavigationListener;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileJava;
 import org.tigris.gef.presentation.Fig;
@@ -84,12 +84,15 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
+ *   <p>
  *   This abstract class provides the basic layout and event dispatching
  *   support for all Property Panels.  The property panel is layed out
  *   as a number (specified in the constructor) of equally sized panels
  *   that split the available space.  Each panel has a column of
  *   "captions" and matching column of "fields" which are laid out
  *   indepently from the other panels.
+ *   </p>
+ *  
  */
 abstract public class PropPanel extends TabSpawnable implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     ////////////////////////////////////////////////////////////////
@@ -433,12 +436,13 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
             // This will add a new MElement listener after update is complete
 
             dispatch = new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_CHANGED_ADD);
-            SwingUtilities.invokeLater(dispatch);
+           
         } 
         else {
             dispatch = new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_REASSERTED);  
-            SwingUtilities.invokeLater(dispatch);                    
+                    
         }
+        SwingUtilities.invokeLater(dispatch);
         
         
         // update the titleLabel 
@@ -454,8 +458,11 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         
     }
 
+    /**
+     * @deprecated use TargetManager.getInstance().getModelTarget() instead
+     */
     public final Object getTarget() {
-        return _target;
+        return TargetManager.getInstance().getModelTarget();
     }
 
     public final MModelElement getModelElement() {

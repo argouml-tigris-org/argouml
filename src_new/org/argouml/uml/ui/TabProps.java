@@ -39,6 +39,7 @@ import java.util.LinkedList;
 import java.util.ListIterator;
 
 import javax.swing.JPanel;
+import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
@@ -162,6 +163,21 @@ import ru.novosoft.uml.foundation.core.MOperationImpl;
 import ru.novosoft.uml.foundation.core.MParameterImpl;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotypeImpl;
 
+/**
+ * <p>
+ * This is the tab on the details panel (DetailsPane) that holds the property
+ * panel. On change of target, the property panel in TabProps is changed. 
+ * </p>
+ * <p>
+ * With the introduction of the TargetManager, this class holds its original power
+ * of controlling its target. The property panels (subclasses of PropPanel) for
+ * which this class is the container are being registrated as TargetListeners in
+ * the setTarget method of this class. They are not registrated with TargetManager
+ * but with this class to prevent race-conditions while firing TargetEvents from
+ * TargetManager.
+ *</p>
+ * @author unknown
+ */
 public class TabProps
     extends TabSpawnable
     implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
@@ -174,6 +190,12 @@ public class TabProps
     protected JPanel _lastPanel = null;
     protected String _panelClassBaseName = "";
     private LinkedList _navListeners = new LinkedList();
+
+    /**
+    * The list with targetlisteners, this are the property panels managed by TabProps
+    * It should only contain one listener at a time.
+    */
+    private EventListenerList _listenerList = new EventListenerList();
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -362,13 +384,11 @@ public class TabProps
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
         if (!(ModelFacade.isABase(t) || t instanceof ArgoDiagram))
             return;
-        
 
         if (_lastPanel != null) {
             remove(_lastPanel);
             if (_lastPanel instanceof TargetListener)
-                TargetManager.getInstance().removeTargetListener(
-                    (TargetListener) _lastPanel);
+                removeTargetListener((TargetListener) _lastPanel);
         }
         if (t == null) {
             add(_blankPanel, BorderLayout.CENTER);
@@ -385,7 +405,7 @@ public class TabProps
                     break;
             }
             if (newPanel != null) {
-                TargetManager.getInstance().addTargetListener(newPanel);
+                addTargetListener(newPanel);
                 // TODO remove next call as soon as possible
                 newPanel.setTarget(t);
             }
@@ -481,7 +501,7 @@ public class TabProps
      * @deprecated use TargetManager.getInstance().getTarget() instead
      */
     public Object getTarget() {
-        return TargetManager.getInstance().getTarget();
+        return TargetManager.getInstance().getModelTarget();
     }
 
     /**
@@ -534,6 +554,7 @@ public class TabProps
         // we can neglect this, the TabProps allways selects the first target
         // in a set of targets. The first target can only be 
         // changed in a targetRemoved or a TargetSet event
+        fireTargetAdded(e);
 
     }
 
@@ -544,6 +565,7 @@ public class TabProps
         // how to handle empty target lists?
         // probably the TabProps should only show an empty pane in that case
         setTarget(e.getNewTargets()[0]);
+        fireTargetRemoved(e);
 
     }
 
@@ -552,7 +574,58 @@ public class TabProps
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
+        fireTargetSet(e);
 
+    }
+
+    /**
+     * Adds a listener.
+     * @param listener the listener to add
+     */
+    private void addTargetListener(TargetListener listener) {
+        _listenerList.add(TargetListener.class, listener);
+    }
+
+    /**
+     * Removes a target listener.
+     * @param listener the listener to remove
+     */
+    private void removeTargetListener(TargetListener listener) {
+        _listenerList.remove(TargetListener.class, listener);
+    }
+
+    private void fireTargetSet(TargetEvent targetEvent) {
+//      Guaranteed to return a non-null array
+             Object[] listeners = _listenerList.getListenerList();       
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == TargetListener.class) {
+                // Lazily create the event:                     
+                 ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
+            }
+        }
+    }
+
+    private void fireTargetAdded(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = _listenerList.getListenerList();       
+
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == TargetListener.class) {
+                // Lazily create the event:                     
+                 ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
+            }
+        }
+    }
+
+    private void fireTargetRemoved(TargetEvent targetEvent) {
+        // Guaranteed to return a non-null array
+        Object[] listeners = _listenerList.getListenerList();
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == TargetListener.class) {
+                // Lazily create the event:                     
+                ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
+            }
+        }
     }
 
 } /* end class TabProps */

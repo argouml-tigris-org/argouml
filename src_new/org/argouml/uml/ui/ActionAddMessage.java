@@ -26,7 +26,7 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -61,9 +61,8 @@ public class ActionAddMessage extends UMLChangeAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-    	ProjectBrowser pb = ProjectBrowser.getInstance();
-    	Object target = pb.getDetailsTarget();
-    	Object d = pb.getTarget();
+    	Object target =  TargetManager.getInstance().getModelTarget();
+    
     	
     	if (!(target instanceof MAssociationRole) && ((MAssociationRole)target).getNamespace() instanceof MCollaboration) return;
     	MAssociationRole ar = (MAssociationRole) target;
@@ -91,8 +90,7 @@ public class ActionAddMessage extends UMLChangeAction {
     }
 
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Object target = pb.getDetailsTarget();
+	Object target =  TargetManager.getInstance().getModelTarget();
 	return super.shouldBeEnabled() && target instanceof MAssociationRole;
     }
     
