@@ -254,18 +254,24 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
     /**
      * updates next level of the explorer tree for a given tree path.
+     * 
+     * @param path the path to the node whose children to update.
+     * @throws IllegalArgumentException if node has a child that is not a
+     *         (descendant of) DefaultMutableTreeNode.
      */
     public void updateChildren(TreePath path) {
 	ExplorerTreeNode node = (ExplorerTreeNode) path.getLastPathComponent();
         Object modelElement = node.getUserObject();
 
 	// Avoid doing this too early in the initialization process
-	if (rules == null)
+	if (rules == null) {
 	    return;
+	}
 
 	// Avoid recursively updating the same child
-	if (updatingChildren.contains(node))
+	if (updatingChildren.contains(node)) {
 	    return;
+	}
 	updatingChildren.add(node);
 
 	Vector children = reorderChildren(node);
@@ -423,7 +429,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * @param newChildren is the list of expected children.
      * @return the Set of current children to remove.
      * @throws UnsupportedOperationException if newChildren doesn't support
-     * remove or removeAll.
+     *         remove or removeAll.
      * @throws NullPointerException if either argument is null.
      */
     private Set prepareAddRemoveSets(List children, List newChildren) {
@@ -486,8 +492,8 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * @param children the current child UserObjects, in order.
      * @param newChildren the expected child UserObjects, in order.
      * @throws UnsupportedOperationException if the Iterator returned by
-     * newChildren doesn't support the remove operation, or if newChildren
-     * itself doesn't support remove or removeAll.
+     *         newChildren doesn't support the remove operation, or if
+     *         newChildren itself doesn't support remove or removeAll.
      * @throws NullPointerException if node, children or newChildren are null.
      */
     private void mergeChildren(ExplorerTreeNode node, List children,
