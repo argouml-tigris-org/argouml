@@ -1186,6 +1186,14 @@ on to the current diagram in the drawing pane.
               <!-- See issue 3120 to remove this. -->
             </para>
           </listitem>
+          
+          <listitem>
+            <para><literal>Reload last saved project on startup</literal> 
+              (clear by default). 
+              Check this item if you always work on the same project, 
+              and wish to load it automatically when you start up &argouml;.
+            </para>
+          </listitem>
         </itemizedlist>
       </sect3>
 
@@ -1297,54 +1305,68 @@ on to the current diagram in the drawing pane.
         </figure>
 
         <itemizedlist>
-          <listitem><para><literal>Use only UML notation</literal> 
-            (clear by default). This feature is for future use.
-            One possibility is that a designer may create a diagram and indicate
-            that the notation of the diagram is Java. Someone viewing the
-            diagram with strict UML notation checked will
-            <emphasis>only</emphasis> see UML notation in the classes no matter
-            what notation the designer has used. See also <xref
-            linkend="s2.ref.menu_notation"/>).</para>
-<!-- TODO: How is this working in cooperation with the View-Notation-... menu?
-It has been discussed somewhere before...
--->
-          <warning><para>This is not currently (V0.14) supported and there is no
-            commitment to the feature of assigning a notation to a diagram
-            either.</para></warning></listitem>
+          <listitem>
+            <para><literal>Use only UML notation</literal> 
+              (clear by default). 
+              This feature allows changing the notation 
+              (i.e. language: UML, Java,...) used on the diagrams 
+              and in the source tab of the details pane.
+              Suppose that a designer creates a diagram and indicates
+              that the notation of the diagram is Java. Someone viewing the
+              diagram with "Use only UML notation" checked will
+              <emphasis>only</emphasis> see UML notation 
+              in the classes and source tab no matter
+              what notation the designer has used. See also <xref
+              linkend="s2.ref.menu_notation"/>).
+            </para>
+            <warning>
+              <para>If this setting is checkmarked, 
+              then the language selector combobox on the source tab of the 
+              details pane does not appear. On the other hand, the menuitem 
+              View->Notation remains available, but changing it has no effect.
+              </para>
+            </warning>
+          </listitem>
 
-          <listitem><para><literal>Use guillemots</literal> (&laquo; &raquo;) for
-            stereotypes (clear by default). By default &argouml; uses
-            pairs of <emphasis>less than</emphasis> and <emphasis>greater than</emphasis>
-            (&lt;&lt; &gt;&gt;) characters for stereotypes. If this box is
-            checked stereotypes on diagrams are shown between true guillemots
-            (&laquo; &raquo;).</para>
-<!-- TODO: Why do we have this feature? Is there any reason not to use
-guillemots? -->
-<!-- TODO: The change is not updated on the visible diagram. See issue ... -->
+          <listitem>
+            <para><literal>Use guillemots</literal> (&laquo; &raquo;) 
+              for stereotypes (clear by default). By default &argouml; uses
+              pairs of <emphasis>less than</emphasis> and 
+              <emphasis>greater than</emphasis>
+              (&lt;&lt; &gt;&gt;) characters for stereotypes. If this box is
+              checked stereotypes on diagrams are shown between true guillemots
+              (&laquo; &raquo;).
+            </para>
+            <para>
+              This feature is presumably added to &argouml; because 
+              guillemots are poorly supported by various fonts, 
+              and if they are present, 
+              then they are quite small and poorly visible.
+            </para>
           </listitem>
           
           <listitem><para><literal>Show visibility</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
+			(clear by default) (To be written)
           </para></listitem>
           
           <listitem><para><literal>Show multiplicity</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
+    	    (clear by default) (To be written)
           </para></listitem>
           
           <listitem><para><literal>Show initial value</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
+            (clear by default) (To be written)
           </para></listitem>
           
           <listitem><para><literal>Show properties</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
+            (clear by default) (To be written)
           </para></listitem>
           
           <listitem><para><literal>Show stereotypes in explorer</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
+            (clear by default) (To be written)
           </para></listitem>
           
           <listitem><para><literal>Default shadow width</literal>
-<!-- TODO: fill in ...           (clear/set by default) -->(To be written)
+            (set to 1 by default) (To be written)
           </para></listitem>
         </itemizedlist>
       </sect3>
@@ -1354,7 +1376,8 @@ guillemots? -->
       <sect3 id="s3.ref.menu_settings_appearance">
         <title>Appearance Tab</title>
 
-        <para>This tab allows the user to specify the LAF (Look And Feel) and theme,
+        <para>This tab allows the user to specify the LAF (Look And Feel) 
+          and theme,
           i.e. what the complete &argouml; UI looks like. 
           It comprises the following settings.</para>
 
@@ -1404,6 +1427,7 @@ guillemots? -->
         <para>This tab shows a list of modules that are installed,
         which may be enabled or disabled. 
         Since this is a new concept for &argouml;, it currently contains
+        either nothing, or
         a module named ArgoTestLoadableModules, 
         which is just a module that allows to test the concept. 
         It adds a useless button on the Tools menu, nothing else.</para>
@@ -1440,17 +1464,13 @@ guillemots? -->
 
     <sect2>
       <title>Goto Diagram&hellip;</title>
-      <!-- TODO: There is a new icon (?). See issue 2156. -->
+      <!-- TODO: There is no icon. Add one. -->
 
       <para>This menu entry brings up a dialog box, describing all the diagrams
-        in the current project under &argouml; (see
-        <xref linkend="fig.ref.menu_goto_diagram"/>).</para>
-
-      <!-- Example of the goto diagram dialog -->
+        in the current project under &argouml;.</para>
 
       <figure id="fig.ref.menu_goto_diagram" float="1">
         <title>The dialog for <literal>Goto Diagram&hellip;</literal>.</title>
-
         <screenshot><mediaobject>
           <imageobject>
             <imagedata format="PNG" align="center"
@@ -1459,11 +1479,11 @@ guillemots? -->
         </mediaobject></screenshot>
       </figure>
 
-      <para>The dialog box contains a table with four
+      <para>The dialog box contains a table with three
         columns and one row for each diagram in the current project. A scroll
         bar gives access if the table is too long for the box. Double
         &button1; click on any row will select that diagram in the editing
-        pane. The four columns are as follows.</para> 
+        pane. The three columns are as follows.</para> 
 
       <itemizedlist>
         <listitem><para><literal>Type</literal>. Lists the type of
@@ -1473,31 +1493,19 @@ guillemots? -->
         <listitem><para><literal>Name</literal>. Lists the name given to the
           diagram.</para></listitem>
 
-        <listitem><para><literal>In Diagram</literal>. This shows the diagram
-          in which the diagram is contained. Since diagrams cannot be contained
-          within other diagrams, this always shows the entry
-          <literal>N/A</literal>. 
-          This column is present, because this menu item reuses the
-          code for the more general <literal>Find</literal>
-          menu.</para>
-          <!-- TODO: Get rid of this column. See issue ... -->
-        </listitem>
-
         <listitem><para><literal>Description</literal>. Shows how many nodes
           and edges there are on the diagrams. 
-          <!-- TODO: What does the next sentence mean?
-          The number of <quote>2-D</quote>
-          artifacts and the number of connector artifacts
-          respectively. -->
+          A node is a <quote>2-D</quote>
+          artifact and an edge is a connector artifact.
         </para></listitem>
       </itemizedlist>
       
       <para>This dialog box is not modal, which allows it to remain open while
-        editing the model for easy navigation.
+        editing the model for easy navigation. 
       </para>
       
       <warning><para>
-        But the V0.14 imlementation of
+        The V0.18 imlementation of
         &argouml; does not inmediately update the dialog box with changes made 
         to diagrams: change of name, addition of diagrams, deletion of diagrams.
         <!-- TODO: See issue 2475. -->
@@ -1512,14 +1520,10 @@ guillemots? -->
         </imageobject></inlinemediaobject></guiicon> Find&hellip;</title>
 
       <para>This menu entry brings up a non-modal 
-        dialog box for the &argouml; search engine (see
-        <xref linkend="fig.ref.menu_find"/>).</para>
-
-      <!-- Example of the find dialog -->
+        dialog box for the &argouml; search engine.</para>
 
       <figure id="fig.ref.menu_find" float="1">
         <title>The dialog for <literal>Find&hellip;</literal>.</title>
-
         <screenshot><mediaobject>
           <imageobject>
             <imagedata format="PNG" align="center"
@@ -1536,7 +1540,7 @@ not on any diagram. See issue 2500. -->
         <literal>Last&nbsp;Modified</literal>,
         <literal>Tagged&nbsp;Values</literal> and
         <literal>Constraints</literal>. Of these all but the first are grayed
-        out in the V0.14 version of &argouml;
+        out in the V0.18 version of &argouml;
 <!-- TODO: See enhancement issue 2501. -->
         (because they are not imlemented yet),
         so the first tab is always selected.</para>
@@ -1577,7 +1581,6 @@ not on any diagram. See issue 2500. -->
             When opened, a list of all the search result tabs appears. 
           </para>
         </listitem>
-<!-- TODO: There is still an empty box at the right. See issue 2502. -->
         <listitem>
           <para>
             Beneath these boxes is the button 
@@ -1587,7 +1590,6 @@ not on any diagram. See issue 2500. -->
             <literal>Help</literal> tab.
           </para>
         </listitem>
-
         <listitem>
           <para>
             And finally, there is the button
@@ -1630,17 +1632,12 @@ not on any diagram. See issue 2500. -->
           visible on a diagram, this lists the name of the diagram, otherwise
           it shows
           <literal>N/A</literal>.</para>
+		</listitem>
 
-        <warning><para>The behavior of &argouml; V0.14 
-          when an item is on more than one diagram
-          is not completely correct.
-          <!-- TODO: It lists all diagrams, 
-          not only the ones that contain the item. See issue ... -->
-        </para></warning></listitem>
-
-        <listitem><para><literal>Description</literal>. Contains a description
-          of the element (artifact). In &argouml; V0.14 this seems to be restricted to
-          <!-- TODO: What should this be? See issue ... -->
+        <listitem><para><literal>Description</literal>. 
+          Contains a description of the element (artifact). 
+          In &argouml; V0.18 this seems to be restricted to
+          <!-- TODO: What should this be? Documentation? See issue ... -->
           the single entry <literal>docs</literal>.</para></listitem>
       </itemizedlist>
 
@@ -1656,17 +1653,18 @@ not on any diagram. See issue 2500. -->
         elements.
         <!-- TODO: This does not seem to work too well either... See issue ... -->
       </para>
-        <!-- TODO: Sizing the dialog shows that the "Related Items" part 
+      <tip><para>Enlarging the dialog vertically shows that the "Related Items" part 
         changes in size, but not the Search results part. 
-        They should size both equally. 
-        Also, when hovering over the line between these fields, 
+        However, between them is a divider line and
+        when hovering over this line, 
         the mouse pointer changes into a sizing icon, 
-        but the border between these 2 areas can not be moved. 
-        See issue ... -->
+        and the border between these 2 areas can be moved up or down
+        to redistribute the space in the window. 
+      </para></tip>
         
       <warning><para>
         This dialog box is not modal, which allows it to remain open while
-        editing the model for easy navigation. But the V0.14 imlementation of
+        editing the model for easy navigation. But the V0.18 imlementation of
         &argouml; does not inmediately update the dialog box with changes made 
         to the found artifacts: change of artifact name, change of diagram name.
         Deletion of a diagram does not stop the possibility to navigate to it.
@@ -1681,9 +1679,9 @@ not on any diagram. See issue 2500. -->
       <title>Zoom</title>
 
       <para>This entry brings up a sub-entry, which allows scaling the view of
-      all diagrams to a factor of its normal size.</para>
-<!-- TODO: Is this setting saved per projct of for all projects? Or is it not
-saved at all? -->
+        all diagrams to a factor of its normal size. 
+        This setting is not saved persistently. </para>
+      
       <para>The sub-menu items that can be selected are:
       </para>
 
@@ -1696,7 +1694,7 @@ saved at all? -->
         </listitem>
         <listitem><para>
           <literal>Zoom Reset</literal>. Returns to the default zoom
-          ratio.</para>
+          ratio (i.e. 100%).</para>
         </listitem>
         <listitem><para>
           <literal>Zoom In</literal>. Shortcut (Ctrl-=). Makes the items on the
@@ -1706,12 +1704,12 @@ saved at all? -->
         </listitem>
       </itemizedlist>
 
-      <warning><para>The current version of &argouml; has a known problem,
-        where zoom may not work on some diagrams.
+      <!--warning><para>The current version of &argouml; has a known problem,
+        where zoom may not work on some diagrams. -->
         <!-- TODO: Is this still true? See issue ... -->
         <!-- TODO: Also, zooming in very much makes many small drawing errors
         visible. See issue ...-->
-      </para></warning>
+      <!--/para></warning-->
     </sect2>
 
     <!-- Alter the grid spacing -->
@@ -1769,7 +1767,7 @@ saved at all? -->
       <note><para>There is no option to turn off snap to grid
         altogether</para></note>
 
-      <caution><para>In the V0.14 version of &argouml; this is not actually a
+      <caution><para>In the V0.18 version of &argouml; this is not actually a
         true snap to grid. It just defines the increments by which artifacts
         are moved around. Thus if an item has an X coordinate of 4 and Grid
         Snap is set to 8, moving will take it to X coordinates of 12, 20, 28
@@ -1797,7 +1795,7 @@ saved at all? -->
       <para>This toggles whether page breaks are shown on the diagram (as white
         dotted lines).</para>
 
-      <warning><para>This menu-item is incorrectly implemented in the V0.14
+      <warning><para>This menu-item is incorrectly implemented in the V0.18
         version of &argouml;, since it 
         should be a tick box toggle<!--labeled
         <literal>Page&nbsp;Breaks&nbsp;Visible</literal-->.</para></warning>
@@ -1809,7 +1807,7 @@ saved at all? -->
     </sect2>
 
     <!-- This controls whether handles are placed on artifacts -->
-
+<!-- See issue 3091: Give me back the buttons on selection...
     <sect2>
       <title>Buttons on Selection</title>
 
@@ -1821,11 +1819,11 @@ saved at all? -->
         artifacts. See for an example of such buttons on selection 
         <xref linkend="fig.ref.menu_buttons_on_selection"/> below.
       </para>
-      <!-- TODO: Why do we have this possibility to switch them off? Is there
+-->   <!-- TODO: Why do we have this possibility to switch them off? Is there
       any reason to do so? It is one of our main features!
       I (MVW) propose to remove this menuitem completely, and not allow the user to
       switch them off. See issue 2492. -->
-
+<!--
         <figure id="fig.ref.menu_buttons_on_selection" float="1">
         <title>An example of buttons on selection for a Class.</title>
 
@@ -1836,7 +1834,7 @@ saved at all? -->
           </imageobject>
         </mediaobject></screenshot>
       </figure>
-
+-->
       <!--caution><para>The label is somewhat misleading. It is better thought of
         as <literal>Handles&nbsp;On&nbsp;Selection</literal>. 
       </para></caution-->
@@ -1844,20 +1842,46 @@ saved at all? -->
       I do not want to bother the user with our struggle to find the best name
       for these things.
         Maybe we should name them consistently according one of these...-->
-    </sect2>
+<!-- </sect2>
+-->
+
 
     <!-- Choose whether UML or Java notation -->
 
     <sect2 id="s2.ref.menu_notation">
       <title>Notation</title>
 
-      <para>This sub-menu presents a radio button selection for notation. 
+      <para>This sub-menu presents a radio button selection for notation, 
+        i.e. the language in which all textual adornments 
+        are shown on the diagrams. 
         See also <xref linkend="s3.ref.menu_settings_notations"/>).</para>
 
       <para>This feature defines the user's default
         notation.  &argouml; allows defining a class in a
         diagram as being represented using a specific notation.</para>
-
+        
+      <para>There are 3 ways to set the notation for a figure on a diagram:
+      </para>
+      <itemizedlist>
+        <listitem><para>In the settings dialog, by choosing 
+          "Use only UML notation" which overrides 
+          the other 2 for all figures.</para>
+        </listitem>
+        <listitem><para>In the View menu, item Notation. 
+          This overrides the settings made for all figures 
+          on all diagrams! So, changing this radio button is really an action,
+          <!-- TODO: Which is against all usability rules. Make issue. -->
+          which resets all individually made choices, 
+          as described in the next method:</para>
+        </listitem>
+        <listitem><para>In the details pane, in the source tab, 
+          by directly selecting the language for the selected figure 
+          in the combobox for the language. 
+          This setting is not saved persistently.</para>
+          <!-- TODO: Find a better / simpeler way. -->
+        </listitem>
+	  </itemizedlist>
+	  
       <para>For example a class <literal>Able</literal> which is represented in
         Java, and class <literal>Baker</literal> which is represented in C++,
         with class <literal>Able</literal> using class <literal>Baker</literal>
@@ -1877,7 +1901,7 @@ saved at all? -->
             format="GIF" align="center"
             fileref="images/icons/uml_notation.gif"/>
           </imageobject></inlinemediaobject></guiicon>
-          <literal>Uml.1.3</literal>. Uses UML notation as the default
+          <literal>UML 1.3</literal>. Uses UML notation as the default
           notation for classes.</para></listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
@@ -1887,7 +1911,7 @@ saved at all? -->
           <literal>Java</literal>. Uses Java notation as the default notation
           for classes.</para></listitem> 
       </itemizedlist>
-      
+
       <para>
         The following choices are only  available if the corresponding plugin
         languages are installed.
@@ -1922,6 +1946,31 @@ saved at all? -->
     <para>This menu provides for creating the various types of UML diagrams
       supported by &argouml;.</para>
 
+    <!-- Create a New Use Case Diagram -->
+
+    <sect2 id="s2.ref.create.diagram.use_case_diagram">
+      <title><guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center"
+          fileref="images/icons/use_case_diagram.gif"/>
+        </imageobject></inlinemediaobject></guiicon> New Use Case
+        Diagram</title> 
+
+      <para>This menu entry creates a blank use case diagram, and selects that
+        diagram in the editing pane. If a package is currently selected, the
+        use case diagram will be created within that package, it will be shown
+        within the package on the explorer hierarchy (under
+        Package-centric view) and artifacts created on the diagram will be
+        created within the namespace of the package.
+        This does not only apply to a package, but also to a class, 
+        interface, use case, etc.
+      </para>
+
+      <tip><para>This does not prevent artifacts from other namespaces/packages
+        appearing on the diagram. They can be added from the explorer
+        using <literal>Add to Diagram</literal> from the &button2; pop-up
+        menu.</para></tip>
+    </sect2>
+
     <!-- Create a New Class Diagram -->
 
     <sect2 id="s2.ref.create.diagram.class_diagram">
@@ -1950,29 +1999,58 @@ saved at all? -->
         menu.</para></tip>
     </sect2>
 
-    <!-- Create a New Use Case Diagram -->
+    <!-- Create a New Sequence Diagram -->
 
-    <sect2 id="s2.ref.create.diagram.use_case_diagram">
+    <sect2 id="s2.ref.create.diagram.sequence_diagram">
       <title><guiicon><inlinemediaobject><imageobject><imagedata
           format="GIF" align="center"
-          fileref="images/icons/use_case_diagram.gif"/>
-        </imageobject></inlinemediaobject></guiicon> New Use Case
+          fileref="images/icons/sequence_diagram.gif"/>
+        </imageobject></inlinemediaobject></guiicon> New Sequence
         Diagram</title> 
 
-      <para>This menu entry creates a blank use case diagram, and selects that
+      <warning>
+        <para>
+          Sequence diagrams are not supported in &argouml; V0.18. hence this
+          menuitem is downlighted all the time.
+        </para>
+      </warning>
+      <!--para>This menu entry creates a blank sequence diagram, and selects that
         diagram in the editing pane. If a package is currently selected, the
-        use case diagram will be created within that package, it will be shown
+        sequence diagram will be created within that package, it will be shown
         within the package on the explorer hierarchy (under
         Package-centric view) and artifacts created on the diagram will be
-        created within the namespace of the package.
-        This does not only apply to a package, but also to a class, 
-        interface, use case, etc.
-      </para>
+        created within the namespace of the package.</para>
 
-      <tip><para>This does not prevent artifacts from other namespaces/packages
-        appearing on the diagram. They can be added from the explorer
-        using <literal>Add to Diagram</literal> from the &button2; pop-up
-        menu.</para></tip>
+      <tip><para>This does not prevent artifacts from other
+        namespaces/packages appearing on the diagram. They can added from the
+        explorer using <literal>Add to Diagram</literal> from the
+        &button2; pop-up menu.</para></tip-->
+    </sect2>
+
+    <!-- Create a New Collaboration Diagram -->
+
+    <sect2 id="s2.ref.create.diagram.collaboration_diagram">
+      <title><guiicon><inlinemediaobject><imageobject><imagedata
+          format="GIF" align="center"
+          fileref="images/icons/collaboration_diagram.gif"/>
+        </imageobject></inlinemediaobject></guiicon> New Collaboration
+        Diagram</title>
+
+      <para>This menu entry creates a blank collaboration diagram, and selects
+        that. Within the package hierarchy, collaboration diagrams are always
+        created within a <literal>Collaboration</literal>, within the package
+        or model, rather than within the package or model directly itself. If a
+        package is currently selected, the collaboration diagram will be
+        created within a collaboration within that package, it will be shown
+        within the collaboration within the package on the explorer
+        hierarchy (under Package-centric view) and artifacts created on the
+        diagram will be created within the namespace of the collaboration
+        within the package.</para>
+
+      <tip><para>This does not prevent artifacts from other
+        namespaces/packages appearing on the diagram. They can added from the
+        explorer using <literal>Add to Diagram</literal> from the
+        &button2; pop-up menu.</para></tip>
     </sect2>
 
     <!-- Create a New Statechart Diagram -->
@@ -2022,32 +2100,6 @@ saved at all? -->
       </para></tip> 
     </sect2>
 
-    <!-- Create a New Collaboration Diagram -->
-
-    <sect2 id="s2.ref.create.diagram.collaboration_diagram">
-      <title><guiicon><inlinemediaobject><imageobject><imagedata
-          format="GIF" align="center"
-          fileref="images/icons/collaboration_diagram.gif"/>
-        </imageobject></inlinemediaobject></guiicon> New Collaboration
-        Diagram</title>
-
-      <para>This menu entry creates a blank collaboration diagram, and selects
-        that. Within the package hierarchy, collaboration diagrams are always
-        created within a <literal>Collaboration</literal>, within the package
-        or model, rather than within the package or model directly itself. If a
-        package is currently selected, the collaboration diagram will be
-        created within a collaboration within that package, it will be shown
-        within the collaboration within the package on the explorer
-        hierarchy (under Package-centric view) and artifacts created on the
-        diagram will be created within the namespace of the collaboration
-        within the package.</para>
-
-      <tip><para>This does not prevent artifacts from other
-        namespaces/packages appearing on the diagram. They can added from the
-        explorer using <literal>Add to Diagram</literal> from the
-        &button2; pop-up menu.</para></tip>
-    </sect2>
-
     <!-- Create a New Deployment Diagram -->
 
     <sect2 id="s2.ref.create.diagram.deployment_diagram">
@@ -2072,35 +2124,8 @@ saved at all? -->
         explorer using <literal>Add to Diagram</literal> from the
         &button2; pop-up menu.</para></tip>
     </sect2>
-
-    <!-- Create a New Sequence Diagram -->
-
-    <sect2 id="s2.ref.create.diagram.sequence_diagram">
-      <title><guiicon><inlinemediaobject><imageobject><imagedata
-          format="GIF" align="center"
-          fileref="images/icons/sequence_diagram.gif"/>
-        </imageobject></inlinemediaobject></guiicon> New Sequence
-        Diagram</title> 
-
-      <warning>
-        <para>
-          Sequence diagrams are not supported in &argouml; V0.14. hence this
-          menuitem is downlighted all the time.
-        </para>
-      </warning>
-      <!--para>This menu entry creates a blank sequence diagram, and selects that
-        diagram in the editing pane. If a package is currently selected, the
-        sequence diagram will be created within that package, it will be shown
-        within the package on the explorer hierarchy (under
-        Package-centric view) and artifacts created on the diagram will be
-        created within the namespace of the package.</para>
-
-      <tip><para>This does not prevent artifacts from other
-        namespaces/packages appearing on the diagram. They can added from the
-        explorer using <literal>Add to Diagram</literal> from the
-        &button2; pop-up menu.</para></tip-->
-    </sect2>
   </sect1>
+
 
   <!-- The Arrange menu entries -->
 
@@ -2314,7 +2339,7 @@ saved at all? -->
     <sect2>
       <title>Set Preferred Size</title>
       <!-- TODO: This is a discutable name for this feature. 
-      Would it not better be "Resize" or something? 
+      Would it not better be "Refit" or something? 
       See issue ... -->
       <para>
         This menu-item acts on all selected items on the current diagram. It
@@ -2336,44 +2361,16 @@ saved at all? -->
       </para>
     </sect2>
     
-    <!-- The Layout sub-menu entries -->
+    <!-- The Layout menu-item -->
 
     <sect2>
       <title>Layout</title>
-          <!-- TODO: That is not a well chosen title. 
-          Because it acts as a "Arrange diagram" function, 
-          i.e. when activated, this menuitem simply rearranges 
-          everything on the current diagram. 
-          Maybe rename "Layout" into "Auto Arrange Diagram" 
-          and both items named after the algorithm.
-          I do not know the names for the algorithms yet...
-          See issue 2480. -->
           
-      <para>This sub-menu provides automatic diagram layout functions,
-        i.e. when activating this menu-item, all items on class diagrams are
+      <para>This menu-item provides an automatic diagram layout function,
+        i.e. when activating this menu-item, all items on the current 
+        class diagram are
         rearranged according a certain layout algorithm.
-        Currently, it provides two arranging algorithmes:
       </para>
-
-      <itemizedlist>
-        <listitem>
-          <para><literal>Automatic</literal>. Automated layout.
-          <!-- TODO: A description of the algorithm here would be nice... -->
-          </para>
-          <caution><para>For all except class diagrams, this menu entry is
-            grayed out and unavailable. So the utility of
-            this menu entry is somewhat limited.</para></caution>
-        </listitem>
-
-        <listitem>
-          <para><literal>Incremental</literal>. Incremental layout.
-          </para>
-          <!-- TODO: A description of the algorithm here would be nice... -->
-          <warning><para>In V0.14 of &argouml;, this menu entry is always
-            grayed out and unavailable.</para></warning>
-        </listitem>
-      </itemizedlist>
-
     </sect2>
   </sect1>
 
