@@ -39,6 +39,7 @@ public class UMLVisibilityPanel extends JPanel {
       setLayout(new GridLayout(0,columns));
       ButtonGroup group = new ButtonGroup();
       UMLRadioButton publicButton = new UMLRadioButton("public",container,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null));
+      publicButton.setSelected(true);
       add(publicButton);
       group.add(publicButton);
     
