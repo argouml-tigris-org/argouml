@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,212 +21,166 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigState.java
-// Classes: FigState
-// Original Author: ics 125b silverbullet team
 // $Id$
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Rectangle;
-import java.beans.PropertyVetoException;
-import java.util.Vector;
+import java.util.Iterator;
 
-import org.apache.log4j.Category;
 import org.argouml.application.api.Notation;
-import org.argouml.uml.generator.ParserDisplay;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.FigLine;
-import org.tigris.gef.presentation.FigRRect;
-import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
 
-/** Class to display graphics for a UML MState in a diagram. */
+/**
+ * The fig hierarchy should comply as much as possible to the hierarchy of the
+ * UML metamodel. Reason for this is to make sure that events from the model are
+ * not missed by the figs. 
+ * The hierarchy of the states was not compliant to this. This resulted in a
+ * number of issues (issue 1430 for example). Therefore introduced a FigState
+ * and made FigCompositeState and FigSimpleState subclasses of this state.
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Dec 30, 2002
+ */
+public abstract class FigState extends FigStateVertex {
 
-public class FigState extends FigStateVertex {
-    protected static Category cat = Category.getInstance(FigState.class);
+    protected FigText _internal;
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-
-  public final int MARGIN = 2;
-  public final int X = 0;
-  public final int Y = 0;
-  public final int W = 70;
-  public final int H = 40;
-
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-
-  /** UML does not really use ports, so just define one big one so
-   *  that users can drag edges to or from any point in the icon. */
-
-  FigRect _bigPort;
-  FigRect _cover;
-  FigText _internal;
-  FigLine _divider;
-
-
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
-  public FigState() {
-    _bigPort = new FigRRect(X+1, Y+1, W-2, H-2, Color.cyan, Color.cyan);
-    _cover = new FigRRect(X, Y, W, H, Color.black, Color.white);
-
-    _bigPort.setLineWidth(0);
-    _name.setLineWidth(0);
-    _name.setBounds(X+2, Y+2, W-4, _name.getBounds().height);
-    _name.setFilled(false);
-
-    _divider = new FigLine(X,  Y+2 + _name.getBounds().height + 1,
-			   W-1,  Y+2 + _name.getBounds().height + 1,
-			   Color.black);
-
-    _internal = new FigText(X+2, Y+2 + _name.getBounds().height + 4,
-			    W-4, H - (Y+2 + _name.getBounds().height + 4));
-    _internal.setFont(LABEL_FONT);
-    _internal.setTextColor(Color.black);
-    _internal.setLineWidth(0);
-    _internal.setFilled(false);
-    _internal.setExpandOnly(true);
-    _internal.setMultiLine(true);
-    _internal.setJustification(FigText.JUSTIFY_LEFT);
-
-    // add Figs to the FigNode in back-to-front order
-    addFig(_bigPort);
-    addFig(_cover);
-    addFig(_name);
-    addFig(_divider);
-    addFig(_internal);
-
-    //setBlinkPorts(false); //make port invisble unless mouse enters
-    Rectangle r = getBounds();
-    setBounds(r.x, r.y, r.width, r.height);
-  }
-
-  public FigState(GraphModel gm, Object node) {
-    this();
-    setOwner(node);
-  }
-
-  public String placeString() { return "new MState"; }
-
-  public Object clone() {
-    FigState figClone = (FigState) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._bigPort = (FigRect) v.elementAt(0);
-    figClone._cover = (FigRect) v.elementAt(1);
-    figClone._name = (FigText) v.elementAt(2);
-    figClone._divider = (FigLine) v.elementAt(3);
-    figClone._internal = (FigText) v.elementAt(4);
-    return figClone;
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public Selection makeSelection() {
-    return new SelectionState(this);
-  }
-
-
-  public void setOwner(Object node) {
-    super.setOwner(node);
-    bindPort(node, _bigPort);
-  }
-
-  public Dimension getMinimumSize() {
-    Dimension nameDim = _name.getMinimumSize();
-    Dimension internalDim = _internal.getMinimumSize();
-
-    int h = nameDim.height + 4 + internalDim.height;
-    int w = Math.max(nameDim.width + 4, internalDim.width + 4);
-    return new Dimension(w, h);
-  }
-
-  /* Override setBounds to keep shapes looking right */
-  public void setBounds(int x, int y, int w, int h) {
-    if (_name == null) return;
-    Rectangle oldBounds = getBounds();
-    Dimension nameDim = _name.getMinimumSize();
-
-    _name.setBounds(x+2, y+2, w-4,  nameDim.height);
-    _divider.setShape(x, y + nameDim.height + 1, x + w - 1,  y + nameDim.height + 1);
-
-    _internal.setBounds(x+2, y + nameDim.height + 4,
-			w-4, h - nameDim.height - 6);
-
-    _bigPort.setBounds(x, y, w, h);
-    _cover.setBounds(x, y, w, h);
-
-    calcBounds(); //_x = x; _y = y; _w = w; _h = h;
-    updateEdges();
-    firePropChange("bounds", oldBounds, getBounds());
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // Fig accessors
-
-  public void setLineColor(Color col) {
-    _cover.setLineColor(col);
-    _divider.setLineColor(col);
-  }
- public Color getLineColor() { return _cover.getLineColor(); }
-
-  public void setFillColor(Color col) { _cover.setFillColor(col); }
-  public Color getFillColor() { return _cover.getFillColor(); }
-
-  public void setFilled(boolean f) { _cover.setFilled(f); }
-  public boolean getFilled() { return _cover.getFilled(); }
-
-  public void setLineWidth(int w) {
-    _cover.setLineWidth(w);
-    _divider.setLineWidth(w);
-  }
-  public int getLineWidth() { return _cover.getLineWidth(); }
-
-
-  ////////////////////////////////////////////////////////////////
-  // event processing
-
-  /** Update the text labels */
-  protected void modelChanged(MElementEvent mee) {
-    if (mee == null || mee.getName().equals("classifierInState") || mee.getName().equals("classifierInState") ||
-        mee.getName().equals("deferrableEvent") || mee.getName().equals("internalTransition") ||
-        mee.getName().equals("doActivity") || mee.getName().equals("entry") || mee.getName().equals("exit") ||
-        mee.getName().equals("stateMachine") ||
-        mee.getName().equals("incoming") || mee.getName().equals("outgoing")) {
-        updateInternal();
+    /**
+     * Constructor for FigState.
+     */
+    public FigState() {
+        super();
+        _internal = new FigText(getInitialX() + 2, getInitialY() + 2 + 21 + 4,
+        getInitialWidth()-4, getInitialHeight() - (getInitialY() + 2 + 21 + 4));
+        _internal.setFont(LABEL_FONT);
+        _internal.setTextColor(Color.black);
+        _internal.setLineWidth(0);
+        _internal.setFilled(false);
+        _internal.setExpandOnly(true);
+        _internal.setMultiLine(true);
+        _internal.setJustification(FigText.JUSTIFY_LEFT);
     }
-     super.modelChanged(mee);
-  }
 
-  public void textEdited(FigText ft) throws PropertyVetoException {
-    super.textEdited(ft);
-    if (ft == _internal) {
-      MState st = (MState) getOwner();
-      if (st == null) return;
-      String s = ft.getText();
-      ParserDisplay.SINGLETON.parseStateBody(st, s);
+    /**
+     * Constructor for FigState.
+     * @param gm
+     * @param node
+     */
+    public FigState(GraphModel gm, Object node) {
+        this();
+        setOwner(node);
     }
-  }
-  
-  protected void updateInternal() {
-    MState s = (MState) getOwner();
-    if (s == null) return;
-    String newText = Notation.generateStateBody(this, s);
-    _internal.setText(newText);
 
-    calcBounds();
-    Rectangle rect = getBounds();
-    setBounds(rect.x, rect.y, rect.width, rect.height);
-  }
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     */
+    protected void modelChanged(MElementEvent mee) {
+        super.modelChanged(mee);
+        if (mee.getSource().equals(getOwner())) { // the events concerning the MState
+            if (mee.getName().equals("classifierInState")
+                || mee.getName().equals("deferrableEvent")
+                || mee.getName().equals("internalTransition")
+                || mee.getName().equals("doActivity")
+                || mee.getName().equals("entry")
+                || mee.getName().equals("exit")) {
+                updateInternal();
+                // register this fig as a listener if the event is about adding modelelements to the state
+                updateListeners(getOwner());
+                damage();
+            }
+            // we don't have to act on incoming and outgoing transitions since that doesn't 
+            // change the fig.
+        } else if (
+            ((MState) getOwner()).getInternalTransitions().contains(mee.getSource())
+            || // the internal transitions
+         ((MState) getOwner()).getEntry().equals(mee.getSource())
+            || // the entry
+         ((MState) getOwner()).getExit().equals(mee.getSource())
+            || // the exit
+         ((MState) getOwner()).getDoActivity().equals(mee.getSource())
+            || // the doacitivity
+         ((MState) getOwner()).getDeferrableEvents().contains(mee.getSource())) { // the defered events
+            updateInternal();
+            updateListeners(getOwner());
+            damage();
+        }
 
+    }
 
-} /* end class FigState */
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateListeners(java.lang.Object)
+     */
+    protected void updateListeners(Object newOwner) {
+        super.updateListeners(newOwner);
+        if (newOwner != null) {
+            // register for events from all internal transitions
+            MState state = (MState) newOwner;
+            Iterator it = state.getInternalTransitions().iterator();
+            while (it.hasNext()) {
+                UmlModelEventPump.getPump().addModelEventListener(this, (MBase) it.next());
+            }
+            // register for the doactivity etc.
+            if (state.getDoActivity() != null) {
+                UmlModelEventPump.getPump().addModelEventListener(this, (MBase) state.getDoActivity());
+            }
+            if (state.getEntry() != null) {
+                UmlModelEventPump.getPump().addModelEventListener(this, (MBase) state.getEntry());
+            }
+            if (state.getExit() != null) {
+                UmlModelEventPump.getPump().addModelEventListener(this, (MBase) state.getExit());
+            }
+        } else {
+            // lets remove all registrations
+            // since this is called BEFORE the owner is changed (I hope nobody is going to change that...)
+            // the owner is the oldOwner
+            MState state = (MState) getOwner();
+            if (state != null) {
+                Iterator it = state.getInternalTransitions().iterator();
+                while (it.hasNext()) {
+                    UmlModelEventPump.getPump().removeModelEventListener(this, (MBase) it.next());
+                }
+                if (state.getDoActivity() != null) {
+                    UmlModelEventPump.getPump().removeModelEventListener(this, (MBase) state.getDoActivity());
+                }
+                if (state.getEntry() != null) {
+                    UmlModelEventPump.getPump().removeModelEventListener(this, (MBase) state.getEntry());
+                }
+                if (state.getExit() != null) {
+                    UmlModelEventPump.getPump().removeModelEventListener(this, (MBase) state.getExit());
+                }
+            }
+
+        }
+    }
+
+    /**
+     * Updates the text inside the state
+     */
+    protected void updateInternal() {
+        MState s = (MState) getOwner();
+        if (s == null)
+            return;
+        String newText = Notation.generateStateBody(this, s);
+        _internal.setText(newText);
+
+        calcBounds();
+        setBounds(getBounds());
+    }
+    
+    protected abstract int getInitialX();
+    protected abstract int getInitialY();
+    protected abstract int getInitialWidth();
+    protected abstract int getInitialHeight();
+    
+    public Selection makeSelection() {
+       return new SelectionState(this);
+    }
+
+}
