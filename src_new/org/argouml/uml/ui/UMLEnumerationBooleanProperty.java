@@ -34,7 +34,9 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
     private Class _enumClass;
     
     /** Creates new BooleanChangeListener */
-    public UMLEnumerationBooleanProperty(String propertyName,Class elementClass,String getMethod,String setMethod,Class enumClass,Object trueValue,Object falseValue) {
+    public UMLEnumerationBooleanProperty(String propertyName,Class elementClass,
+                                         String getMethod,String setMethod,Class enumClass,
+                                         Object trueValue,Object falseValue) {
         super(propertyName);
 
         _enumClass = enumClass;
