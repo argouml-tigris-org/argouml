@@ -52,23 +52,15 @@ import org.tigris.gef.presentation.Handle;
  * @author 5eichler@informatik.uni-hamburg.de
  */
 public class SelectionComponentInstance extends SelectionWButtons {
-    /**
-     * @deprecated by Linus Tolke as of 0.15.7. Will be removed.
-     *             Use your own Logger!
-     */
-    protected static Logger cat = 
-        Logger.getLogger(SelectionComponentInstance.class);
 
     private static final Logger LOG =
         Logger.getLogger(SelectionComponentInstance.class);
     ////////////////////////////////////////////////////////////////
     // constants
-    public static Icon dep =
-	ResourceLoaderWrapper.getResourceLoaderWrapper()
-	    .lookupIconResource("Dependency");
-    public static Icon depRight = 
-	ResourceLoaderWrapper.getResourceLoaderWrapper()
-	    .lookupIconResource("DependencyRight");
+    private static Icon dep =
+	ResourceLoaderWrapper.lookupIconResource("Dependency");
+    private static Icon depRight = 
+	ResourceLoaderWrapper.lookupIconResource("DependencyRight");
 
 
     ////////////////////////////////////////////////////////////////
@@ -81,15 +73,19 @@ public class SelectionComponentInstance extends SelectionWButtons {
      */
     public SelectionComponentInstance(Fig f) { super(f); }
 
+    /**
+     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle, 
+     * org.tigris.gef.presentation.Handle)
+     */
     public void hitHandle(Rectangle r, Handle h) {
 	super.hitHandle(r, h);
 	if (h.index != -1) return;
-	if (!_paintButtons) return;
+	if (!isPaintButtons()) return;
 	Editor ce = Globals.curEditor();
 	SelectionManager sm = ce.getSelectionManager();
 	if (sm.size() != 1) return;
 	ModeManager mm = ce.getModeManager();
-	if (mm.includes(ModeModify.class) && _pressedButton == -1) return;
+	if (mm.includes(ModeModify.class) && getPressedButton() == -1) return;
 	int cx = _content.getX();
 	int cy = _content.getY();
 	int cw = _content.getWidth();
@@ -134,9 +130,13 @@ public class SelectionComponentInstance extends SelectionWButtons {
     }
 
 
+    /**
+     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int, 
+     * org.tigris.gef.presentation.Handle)
+     */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
 	if (hand.index < 10) {
-	    _paintButtons = false;
+	    setPaintButtons(false);
 	    super.dragHandle(mX, mY, anX, anY, hand);
 	    return;
 	}
