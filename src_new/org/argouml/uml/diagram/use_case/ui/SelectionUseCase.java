@@ -90,14 +90,14 @@ public class SelectionUseCase extends SelectionWButtons {
         super.hitHandle(r, h);
         if (h.index != -1)
             return;
-        if (!_paintButtons)
+        if (!isPaintButtons())
             return;
         Editor ce = Globals.curEditor();
         SelectionManager sm = ce.getSelectionManager();
         if (sm.size() != 1)
             return;
         ModeManager mm = ce.getModeManager();
-        if (mm.includes(ModeModify.class) && _pressedButton == -1)
+        if (mm.includes(ModeModify.class) && getPressedButton() == -1)
             return;
         int cx = _content.getX();
         int cy = _content.getY();
@@ -145,7 +145,7 @@ public class SelectionUseCase extends SelectionWButtons {
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
         if (hand.index < 10) {
-            _paintButtons = false;
+            setPaintButtons(false);
             super.dragHandle(mX, mY, anX, anY, hand);
             return;
         }

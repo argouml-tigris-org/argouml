@@ -34,12 +34,19 @@ import java.awt.Graphics;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+/**
+ *
+ *
+ */
 public class SelectionNodeClarifiers extends SelectionResize {
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    /** Construct a new SelectionNodeClarifiers for the given Fig */
+    /** Construct a new SelectionNodeClarifiers for the given Fig 
+     * 
+     * @param f the given Fig
+     */
     public SelectionNodeClarifiers(Fig f) {
         super(f);
     }
@@ -47,6 +54,8 @@ public class SelectionNodeClarifiers extends SelectionResize {
     /**
      * Paint the handles at the four corners and midway along each edge of the
      * bounding box.
+     *
+     * @see org.tigris.gef.base.Selection#paint(java.awt.Graphics)
      */
     public void paint(Graphics g) {
         ((FigNodeModelElement) _content).paintClarifiers(g);

@@ -34,16 +34,26 @@ import java.awt.Graphics;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
+/**
+ * 
+ *
+ */
 public class SelectionEdgeClarifiers extends SelectionReshape {
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    /** Construct a new SelectionEdgeClarifiers for the given Fig */
+    /** Construct a new SelectionEdgeClarifiers for the given Fig 
+     *
+     * @param f the given fig
+     */
     public SelectionEdgeClarifiers(Fig f) { super(f); }
 
     /** Paint the handles at the four corners and midway along each edge
-     * of the bounding box.  */
+     * of the bounding box.
+     * 
+     * @see org.tigris.gef.base.Selection#paint(java.awt.Graphics)
+     */
     public void paint(Graphics g) {
 	((FigEdgeModelElement) _content).paintClarifiers(g);
 	super.paint(g);
