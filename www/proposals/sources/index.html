@@ -1,130 +1,180 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-    <title>ArgoUML Directory Structure</title>
+    <title>ArgoUML Source Directory Structure</title>
   </head>
   
   <body>
     <table cellpadding=0 cellspacing=0>
       <tr bgcolor="#CCCCCC">
         <td>
-Proposed structure of ArgoUML including non-CVS directories.
+Proposed restructuring of ArgoUML sources.
 <p/>
-Directories are prefixed with a slash (/),
-files are prefixed with a minus (-).
-<br/>
-Files and directories followed by an asterisk
-are not included in CVS.
-
+The purpose of the restructuring would be
+to allow tight component building as a foundation for ArgoUML.
+By separating source files into basic components,
+we could minimize the possibility
+that changes to source files have unexpected impact
+on other areas of the application.
+<hr align="center"/>
+<p/>
+The component directories shown below are for discussion only,
+and do not attempt to show a final split to different components.
+The comments also do not attempt to document a split proposal.
+They simply provide suggestions of how to logically decide how to split.
+Some other obvious components such as critics, reverse engineering,
+and code generation are intentionally not included
+to ensure that the split provided below
+is not considered to be a solution but an example.
+<p/>
 <p/>
 <pre>
      /argouml
-             /build
-                   -.cvsignore
-                   -build.xml  (Master build, would call all other build.xml)
-                   -build.bat
-                   -build.sh
-                   -argouml.default.properties
-                   -argouml.build.properties * (developer can create for customization)
-                   -argouml.version.properties
-                   /target *
-                          /dist *
-                          /documentation *
-                          /runtime *
-                                  -argouml.jar *
-			          /bin *
-                                      -argouml.sh *
-                                      -argouml.bat *
-                                  /ext *
-                                      -dummylanguage.jar
-                                      -jscheme.jar
-                                      -junit.jar
-                                      -menutest.jar
-                                      -php.jar
-             /conf
-             /documentation
-                           -build.xml
-                           -build.bat
-                           -build.sh
-                           /cookbook
-                           /faq
-                           /images
-                           /manual
-                           /quick-guide
-             /extra
-             /lib
-                 -antlrall.jar
-                 -gef-0.9.5.jar
-                 -jh-1.1.jar
-                 -log4j-1.1.3.jar
-                 -nsuml-0.4.19.jar
-                 -ocl-argo.jar
-                 -xerces-1.2.3.jar
-             /modules
-                     -build.xml
-                     -build.bat
-                     -build.sh
-                     /dummylanguage 
-                                   -build.xml
-                                   -build.bat
-                                   -build.sh
-                                   /lib
-                                   /src
-                     /jscheme
-                             -build.xml
-                             -build.bat
-                             -build.sh
-                             /lib
-                             /src
-                     /junit
-                           -build.xml
-                           -build.bat
-                           -build.sh
-                           /lib
-                           /src
-                     /menutest
-                              -build.xml
-                              -build.bat
-                              -build.sh
-                              /lib
-                              /src
-                     /php
-                         -build.xml
-                         -build.bat
-                         -build.sh
-                         /lib
-                         /src
-             /src_new
-	             -build.xml
-	             -build.bat
-	             -build.bat
-	             /org
-		         /argouml
-             /tools
-                   /ant-1.4.1
-                             /bin
-                                 -ant
-                                 -ant.bat
-                                 -lcp.bat
-                             /lib
-                                 -ant.jar
-                                 -crimson.jar
-                                 -jaxp.jar
-                                 -optional.jar
-                   /docbook (moved from argouml/documentation/docbook-setup)
-                   /fop-0.20.3
-                              /build
-                                    -fop.jar
-                                    -fop-0.20.3-with-jimi.jar
-                              /lib
-                                    -avalon-framework-4.0.jar
-                                    -batik-1.1.jar
-                                    -logkit-1.0.jar
-                                    -xalan-2.0.0.jar
-                                    -xalanj1compat.jar
-                   /lib
-             /www (unchanged)
+             /build (Unchanged as part of this.)
+             /documentation (Unchanged as part of this.)
+             /lib (Unchanged as part of this.)
+             /modules (Basically unchanged as part of this.  Some of the
+	               test sources will be moved to the component test
+		       directories.)
+	     /src_new (all files removed after moving to src and src/appl.)
+             /src
+	             /core (component containing basic API definitions,
+		            which would primarily be interfaces,
+			    abstract classes, and factory classes.  
+		            This would be the only set of classes required
+			    to compile a pluggable module against.)
+
+	                     /src
+	                             /org
+		                             /argouml
+				                     /application
+				                             /api
+	                     /tests/org/argouml/????
+
+	             /foundation (component containing the basic implementation
+		                of the user interface, including menu handling,
+				module and plugin loading, and look-and-feel.
+				It would <b>not</b> include any UML specific
+				code.)
+
+	                     /src
+	                             /org
+		                             /argouml
+		                                     /????? (whatever necessary)
+	                     /tests/org/argouml/????
+
+	             /uml_model (component containing the implementation
+		                of the UML model.)
+
+	                     /src
+	                             /org
+		                             /argouml
+		                                     /model
+						             /uml
+	                     /tests/org/argouml/model/uml
+
+	             /notation (component containing the basic implementation
+		                of notation.  This component would include
+				the implementation of UML notation.)
+
+	                     /src
+	                             /org
+		                             /argouml
+		                                     /????? (whatever necessary)
+	                     /tests/org/argouml/????
+
+	             /java (component which implements Java notation.
+		            Notations must be completely pluggable
+			    for this approach to work.)
+
+	                     /src
+	                             /org
+		                             /argouml
+		                                     /language
+		                                             /java
+	                     /tests/org/argouml/language/java
+
+	             /appl (component which provides run-time necessities
+		            such as a class which implements main()
+			    or an ant task definition.)
+	                     /src
+	                             /org
+		                             /argouml
+		                                     /application
+
+	                     /tests/org/argouml/application
+
+             /tests (all files removed after moving to src/?????/tests)
+             /tools (unchanged as part of this)
+             /www (unchanged as part of this)
 </pre>
+<p/>
+<ul>
+  <li>
+    Each component directory would contain its own build.xml file.
+    The component build.xml would be only responsible for its own
+    set of component sources and tests.
+  </li>
+  <li>
+    Each component directory would be built separately,
+    starting with the most basic component.
+    This component would be built into a jar file.
+    Dependent components would reference the jar file
+    in their compile classpaths.
+  </li>
+  <li>
+    Components would compile their classes
+    into a <code>build/classes</code> within their component directory,
+    and package those classes into a build directory in the src directory
+    for easy sharing of components.
+    This way, it would not be necessary
+    to maintain all of the sources for lower-level components
+    in every local sandbox
+    when working on changes in a specific component.
+  </li>
+  <li>
+    The src/appl component would build the argouml.jar file.
+    This could either be a jar containing only the component classes,
+    or it could be a complete argouml.jar which includes the content
+    of all of the lower level components.
+    The latter approach would provide a single jar file
+    equivalent to the current build process.
+  </li>
+  <li>
+    The src directory would contain a master build.xml
+    with a reasonable subset of the current targets.
+    The component build.xml files would, for example,
+    not contain the <code>dist</code> target,
+    as this would not be necessary at a component level.
+    The master build.xml would not contain a <code>compile</code> target,
+    as the only shared output of the components would be jar files.
+    A target such as <code>package</code> in the master build.xml
+    would simply execute the ant command <code>package</code>
+    in each of the component directories,
+    in the necessary sequence to ensure that dependencies are fulfilled.
+    The targets <code>test</code> and <code>clean</code>
+    would behave similarly.
+    The target <code>javadoc</code> would <b>not</b> behave this way -
+    it would be more reasonable for the component javadocs to build
+    the javadocs for that component, but the master javadocs to
+    build a consolidated javadoc directory.
+  </li>
+  <li>
+    The master build.xml would build a consolidated argouml.jar file
+    if necessary from the individual component jars.
+  </li>
+  <li>
+    build.properties and default.properties would only exist in src,
+    not in the component directories.
+    The component build.xml files would refer to the those property files
+    found in src.
+  </li>
+  <li>
+    Initially, source would be migrated from src_new into src/appl.
+    As ArgoUML sources become more modularized,
+    they would be migrated into a component directory.
+  </li>
+</ul>
 
 <p/>
        </td>
