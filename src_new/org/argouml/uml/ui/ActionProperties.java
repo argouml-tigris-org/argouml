@@ -24,8 +24,11 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.i18n.Translator;
 import org.argouml.ui.*;
 import java.awt.event.*;
+
+import javax.swing.Action;
 
 /** Action to select the properties tab.
  * @stereotype singleton
@@ -41,7 +44,13 @@ public class ActionProperties extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected ActionProperties() { super("action.properties", NO_ICON); }
+    protected ActionProperties() { 
+        super(Translator.localize("action.properties"), HAS_ICON);
+        String localMnemonic = Translator.localize("action.properties.mnemonic");
+        if (localMnemonic != null && localMnemonic.length() == 1) {
+            putValue(Action.MNEMONIC_KEY, new Integer((int) localMnemonic.charAt(0)));
+        }        
+    }
 
 
     ////////////////////////////////////////////////////////////////

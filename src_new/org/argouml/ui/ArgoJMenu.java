@@ -24,16 +24,14 @@
 
 package org.argouml.ui;
 
-//import java.awt.*;
 import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
-//import javax.swing.border.*;
-//import javax.swing.event.*;
-//import org.argouml.uml.ui.*;
+import javax.swing.JMenuItem;
 
+import org.argouml.application.api.Argo;
 
 /**
  * An extension of the standard swing JMenu class which provides
@@ -43,12 +41,47 @@ import javax.swing.JMenu;
 public class ArgoJMenu extends JMenu {
 
     /**
+     * Constructs a new ArgoJMenu.
+     */
+    public ArgoJMenu() { super(); }
+
+    /**
      * Constructs a new ArgoJMenu with the supplied string as its text.
      *
      * @param     s      the text for the menu label
      */
     public ArgoJMenu(String s) { super(s); }
 
+    /**
+     * Constructs a new ArgoJMenu.
+     * Sets this menu's text and mnemonic values using the specified resource
+     * key.
+     * 
+     * @param   bundle      the localization bundle name to use
+     * @param   key         the resource string to find
+     */
+    public ArgoJMenu(String bundle, String key) {
+        super();
+        ArgoJMenu.localize(this, bundle, key);
+    }
+    
+    /**
+     * Sets a menu item's text and mnemonic values using the specified resource
+     * key.
+     * 
+     * @param   menuItem    the menu or menu item to localize
+     * @param   bundle      the localization bundle name to use
+     * @param   key         the resource string to find
+     */
+    public static final void localize(JMenuItem menuItem, String bundle, String key) {
+        menuItem.setText(Argo.localize(bundle, key));
+
+        String localMnemonic = Argo.localize(bundle, key + ".mnemonic");
+        if (localMnemonic != null && localMnemonic.length() == 1) {
+            menuItem.setMnemonic(localMnemonic.charAt(0));
+        }
+    }
+    
     /**
      * Creates a new checkbox menu item attached to the specified
      * Action object and appends it to the end of this menu.

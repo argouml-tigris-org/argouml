@@ -254,21 +254,21 @@ public class FigInterface extends FigNodeModelElement {
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        JMenu addMenu = new JMenu("Add");
+        ArgoJMenu addMenu = new ArgoJMenu(BUNDLE, "menu.popup.add");
         addMenu.add(ActionAddOperation.SINGLETON);
         addMenu.add(ActionAddNote.SINGLETON);
-        popUpActions.insertElementAt(addMenu, popUpActions.size() - 1);
-        JMenu showMenu = new JMenu("Show");
+        popUpActions.insertElementAt(addMenu, popUpActions.size() - 2);
+        ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
         if (_operVec.isDisplayed())
             showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
         else
             showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
 
-        popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
+        popUpActions.insertElementAt(showMenu, popUpActions.size() - 2);
 
         // Block added by BobTarling 7-Jan-2001
         Object minterface = /*(MInterface)*/ getOwner();
-        ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
+        ArgoJMenu modifierMenu = new ArgoJMenu(BUNDLE, "menu.popup.modifiers");
 
         modifierMenu.addCheckItem(
 		new ActionModifier("Public",
@@ -289,7 +289,7 @@ public class FigInterface extends FigNodeModelElement {
 		new ActionModifier("Root",
 				   "isRoot", "isRoot", "setRoot", (MInterface)minterface));
 
-        popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
+        popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 2);
         // end of block
 
         return popUpActions;
