@@ -30,6 +30,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.JScrollPane;
+import javax.swing.JList;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
@@ -38,6 +40,7 @@ import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MClass;
@@ -46,7 +49,15 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class PropPanelClass extends PropPanelClassifier {
 
-
+    private JScrollPane _attributeScroll;
+    private JScrollPane _operationScroll;
+    
+    private static UMLClassAttributeListModel attributeListModel =
+        new UMLClassAttributeListModel();
+    
+    private static UMLClassOperationListModel operationListModel =
+        new UMLClassOperationListModel();
+    
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelClass() { 
@@ -68,9 +79,9 @@ public class PropPanelClass extends PropPanelClassifier {
     
     add(LabelledLayout.getSeperator());
      
+    addField(Argo.localize("UMLMenu", "label.attributes"), getAttributeScroll());
     addField(Argo.localize("UMLMenu", "label.association-ends"), getAssociationEndScroll());
-    addField(Argo.localize("UMLMenu", "label.operations"), getFeatureScroll());
-    addField(Argo.localize("UMLMenu", "label.attributes"), getStructuralFeatureScroll());
+    addField(Argo.localize("UMLMenu", "label.operations"), getOperationScroll());
     addField(Argo.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
     
   
@@ -107,9 +118,29 @@ public class PropPanelClass extends PropPanelClassifier {
        
     }
 
-    
+    /**
+     * Returns the operationScroll.
+     * @return JScrollPane
+     */
+    public JScrollPane getOperationScroll() {
+        if (_operationScroll == null) {
+            JList list = new UMLLinkedList(operationListModel);
+            _operationScroll = new JScrollPane(list);
+        }
+        return _operationScroll;
+    }
 
-
+    /**
+     * Returns the attributeScroll.
+     * @return JScrollPane
+     */
+    public JScrollPane getAttributeScroll() {
+        if (_attributeScroll == null) {
+            JList list = new UMLLinkedList(attributeListModel);
+            _attributeScroll = new JScrollPane(list);
+        }
+        return _attributeScroll;
+    }
     
 
 } /* end class PropPanelClass */
