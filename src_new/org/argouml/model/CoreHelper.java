@@ -400,8 +400,6 @@ public interface CoreHelper {
      *
      * This method also works to get the source of a Link.<p>
      *
-     * This method also works for CommentEdge.<p>
-     *
      * TODO: move this method to a generic ModelHelper
      *
      * @param relationship is the relation
@@ -421,8 +419,6 @@ public interface CoreHelper {
      * the connections list.<p>
      *
      * This method also works for links.<p>
-     *
-     * This method also works for CommentEdge<p>
      *
      * TODO: move this method to a generic ModelHelper
      *
