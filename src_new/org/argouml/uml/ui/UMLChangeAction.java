@@ -41,7 +41,9 @@ public class UMLChangeAction extends UMLAction {
       Project p = ProjectManager.getManager().getCurrentProject();
       if (p != null) {      
         markNeedsSave();
-        Actions.updateAllEnabled();
+        // next line commented out to prevent unnecessary updates of actions
+        // 10-6-2003 Jaap Branderhorst
+        // Actions.updateAllEnabled();
       }
     
   }

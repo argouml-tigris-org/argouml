@@ -27,6 +27,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ArgoDiagram;
@@ -42,51 +43,74 @@ import org.tigris.gef.presentation.FigNode;
 import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
-
-
 /** Action to add a note.
  *  @stereotype singleton
  */
 public class ActionAddNote extends UMLChangeAction {
-    
+
     protected static final int DISTANCE = 80;
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    public static ActionAddNote SINGLETON = new ActionAddNote(); 
 
+    public static ActionAddNote SINGLETON = new ActionAddNote();
+
+    /**
+     * Enables the action if a fignode is selected.
+     * @see org.argouml.uml.ui.UMLAction#updateEnabled(java.lang.Object)
+     */
+    public void updateEnabled(Object target) {
+        boolean enabled = super.shouldBeEnabled();
+        if (target == null || ProjectManager.getManager().getCurrentProject().getActiveDiagram()
+            == null)
+            enabled = false;
+        if (ModelFacade.isAModelElement(target)
+            && !ModelFacade.isAComment(target)
+            && (ProjectManager
+                .getManager()
+                .getCurrentProject()
+                .getActiveDiagram()
+                .presentationFor(target)
+                instanceof FigNode))
+            enabled = true;
+        setEnabled(enabled);
+    }
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    public ActionAddNote() { super("Note"); }
-
+    public ActionAddNote() {
+        super("Note");
+    }
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-        Object target =  TargetManager.getInstance().getModelTarget();
-       
-            if (target == null || !(target instanceof MModelElement)) return;
+        Object target = TargetManager.getInstance().getModelTarget();
+
+        if (target == null || !(target instanceof MModelElement))
+            return;
         MModelElement elem = (MModelElement)target;
         MComment comment = CoreFactory.getFactory().buildComment(elem);
-        
+
         // calculate the position of the comment
-        ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+        ArgoDiagram diagram =
+            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
         Fig elemFig = diagram.presentationFor(elem);
-        if (elemFig == null) return;
+        if (elemFig == null)
+            return;
         int x = 0;
-        int y = 0;       
+        int y = 0;
         Layer lay = diagram.getLayer();
-        Rectangle drawingArea = ProjectBrowser.getInstance().getEditorPane().getBounds();
+        Rectangle drawingArea =
+            ProjectBrowser.getInstance().getEditorPane().getBounds();
         FigComment fig = new FigComment(diagram.getGraphModel(), comment);
         if (elemFig instanceof FigNode) {
             x = elemFig.getX() + elemFig.getWidth() + DISTANCE;
             y = elemFig.getY();
             if (x + fig.getWidth() > drawingArea.getX()) {
-                x = elemFig.getX() - fig.getWidth() - DISTANCE ;
+                x = elemFig.getX() - fig.getWidth() - DISTANCE;
                 if (x < 0) {
                     x = elemFig.getX();
                     y = elemFig.getY() - fig.getHeight() - DISTANCE;
@@ -99,8 +123,7 @@ public class ActionAddNote extends UMLChangeAction {
                     }
                 }
             }
-        } else
-        if (elemFig instanceof FigEdge) {
+        } else if (elemFig instanceof FigEdge) {
             // we cannot do this yet since we have to modify all our edges probably
             /*
             Point startPoint = new Point(elemFig.getX(), elemFig.getY());
@@ -118,21 +141,27 @@ public class ActionAddNote extends UMLChangeAction {
         edge.damage();
         fig.damage();
         elemFig.damage();
-        
-                          
-      
-	super.actionPerformed(ae);
-    TargetManager.getInstance().setTarget(fig.getOwner()); 
-    
+
+        super.actionPerformed(ae);
+        TargetManager.getInstance().setTarget(fig.getOwner());
+
     }
 
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	Object target =  TargetManager.getInstance().getModelTarget();;
-    if (ProjectManager.getManager().getCurrentProject().getActiveDiagram() == null) return false;
-	return super.shouldBeEnabled() && 
-        (target instanceof MModelElement) && 
-        (!(target instanceof MComment)) &&
-        (ProjectManager.getManager().getCurrentProject().getActiveDiagram().presentationFor(target) instanceof FigNode);
+        ProjectBrowser pb = ProjectBrowser.getInstance();
+        Object target = TargetManager.getInstance().getModelTarget();
+        ;
+        if (ProjectManager.getManager().getCurrentProject().getActiveDiagram()
+            == null)
+            return false;
+        return super.shouldBeEnabled()
+            && (target instanceof MModelElement)
+            && (!(target instanceof MComment))
+            && (ProjectManager
+                .getManager()
+                .getCurrentProject()
+                .getActiveDiagram()
+                .presentationFor(target)
+                instanceof FigNode);
     }
 } /* end class ActionAddNote */
