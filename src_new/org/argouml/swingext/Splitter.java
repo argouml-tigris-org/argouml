@@ -6,6 +6,12 @@ package org.argouml.swingext;
 import java.awt.*;
 import java.awt.event.*;
 
+import javax.swing.JComponent;
+import javax.swing.JSplitPane;
+import javax.swing.plaf.SplitPaneUI;
+import javax.swing.plaf.basic.BasicSplitPaneDivider;
+import javax.swing.plaf.basic.BasicSplitPaneUI;
+
 /**
  * Acts as a seperator between components and will automatically resize those components
  * when the splitter is moved by dragging the mouse across it.
@@ -14,11 +20,10 @@ import java.awt.event.*;
  *
  * @todo Bring splitter to top when not dynamic resize
  * @todo Add constructor and getter/setter for dynamic resize
- * @todo Implement plafs other than metal plaf
  * @todo Implement the setLocation method, anything currently calling setLocation
  * should then call super.setLocation.
  */
-public class Splitter extends MetalBumpComponent {
+public class Splitter extends JComponent {
 
     final static public Orientation HORIZONTAL_SPLIT = Horizontal.getInstance();
     final static public Orientation VERTICAL_SPLIT = Vertical.getInstance();
@@ -72,6 +77,22 @@ public class Splitter extends MetalBumpComponent {
      */
     ArrowButton buttonNorth = null;
     ArrowButton buttonSouth = null;
+    
+    /**
+     * Component which knows how to paint the split divider.
+    **/
+    private BasicSplitPaneDivider _divider = null;
+    
+    /**
+     * Padding around the JSplitPane that is not included in the divider
+    **/
+    private static final int DIVIDER_PADDING = 4;
+    
+    /**
+     * Minimum size of the splitter in pixels. Must be at least this size
+     * to properly display the toggle buttons.
+    **/
+    private static final int MIN_SPLITTER_SIZE = 5;
 
     /**
      * The constructor
@@ -85,15 +106,35 @@ public class Splitter extends MetalBumpComponent {
         
         this.orientation = orientation;
 
-        setCursor(orientation.getCursor());
-        
+        // Create a JSplitPane for the purpose of extracting the
+        // divider UI and determining the splitter size.
+        JSplitPane splitpane;
+        if (orientation == HORIZONTAL_SPLIT) {
+            splitpane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, true);
+            splitterSize = Math.max(splitpane.getPreferredSize().width - DIVIDER_PADDING, MIN_SPLITTER_SIZE);
+        } else {
+            splitpane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, true);
+            splitterSize = Math.max(splitpane.getPreferredSize().height - DIVIDER_PADDING, MIN_SPLITTER_SIZE);
+        }
+
         setLayout(new SerialLayout(orientation.getPerpendicular()));
         setSize(splitterSize, splitterSize);
         setPreferredSize(this.getSize());
 
+        // Get the BasicSplitPaneDivider if the current look and feel
+        // is based on the Basic look and feel. If not, the splitter
+        // will still work, but the divider area will appear empty. 
+        SplitPaneUI ui = splitpane.getUI();
+        if (ui instanceof BasicSplitPaneUI)	{
+            _divider = ((BasicSplitPaneUI) ui).createDefaultDivider();
+            _divider.setSize(getSize());
+        }
+
+        setCursor(orientation.getCursor());
+        
         MyMouseListener myMouseListener = new MyMouseListener();
         addMouseListener(myMouseListener);
-        addMouseMotionListener(myMouseListener);
+        addMouseMotionListener(myMouseListener);       
     }
 
     /**
@@ -197,6 +238,36 @@ public class Splitter extends MetalBumpComponent {
         showButtons();
     }
 
+    /**
+     * Resizes the divider delegate when this component is resized.
+    **/
+    public void setSize(Dimension d) {
+        super.setSize(d);
+        if (_divider != null) {
+            _divider.setSize(d);
+        }
+    }
+
+    /**
+     * Resizes the divider delegate when this component is resized.
+    **/
+    public void setSize(int width, int height) {
+        super.setSize(width, height);
+        if (_divider != null) {
+            _divider.setSize(width, height);
+        }
+    }
+
+    /**
+     * Delegates painting to the UI component responsible for the split pane
+     * divider.
+    **/
+    public void paintComponent(Graphics g) {
+        if (_divider != null) {
+            _divider.paint(g);
+        }
+    }	
+	
     /*
      * Attempt to move the splitter by a given amount. It may not be possible to move
      * the splitter as far as requested because it may result in one of the components
@@ -207,8 +278,7 @@ public class Splitter extends MetalBumpComponent {
      *
      * @return the actual number of pixels the splitter was moved.
      */
-    private int moveSplitter(int movement)
-    {
+    private int moveSplitter(int movement) {
         if (sideComponent[WEST] != null && sideComponent[EAST] != null) {
 
             int restrictedMovement = 0;
