@@ -137,6 +137,20 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		return modelElement;
 	}
 
+	/** Create an empty but initialized instance of a UML Abstraction
+	 *  with a given name.
+	 *
+	 *  @param parent The superclass.
+	 *  @return an initialized UML Abstraction instance.
+	 */
+	public Object createAbstraction(String name) {
+		MAbstraction modelElement =
+			MFactory.getDefaultFactory().createAbstraction();
+		super.initialize(modelElement);
+		modelElement.setName(name);
+		return modelElement;
+	}
+
 	/** Create an empty but initialized instance of a UML Association.
 	 *
 	 *  @return an initialized UML Association instance.
@@ -489,6 +503,24 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
+     * Builds a default binary association with two default association ends
+     * and a given name.
+     *
+     * @param c1 The first classifier to connect to
+     * @param nav1 The navigability of the Associaton end
+     * @param c2 The second classifier to connect to
+     * @param nav2 The navigability of the second Associaton end
+     * @param name
+     * @return association
+     */
+    public Object buildAssociation(Object c1, boolean nav1, Object c2, boolean nav2, String name) {
+        MAssociation assoc = buildAssociation((MClassifier)c1, nav1, MAggregationKind.NONE, (MClassifier)c2, nav2, MAggregationKind.NONE);
+        if (assoc != null)
+            assoc.setName(name);
+        return assoc;
+    }
+
+    /**
      * Builds a default binary association with two default association ends.
      * @param c1 The first classifier to connect to
      * @param agg1 The aggregation type of the second Associaton end
@@ -752,6 +784,19 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	}
 
 	/**
+     * Builds a default attribute with a given name.
+     *
+     * @param name
+     * @return attribute
+     */
+    public Object buildAttribute(String name) {
+        MAttribute attr = buildAttribute();
+        if (attr != null)
+            attr.setName(name);
+        return attr;
+    }
+
+	/**
 	 * Builds an attribute owned by some classifier cls. I don't know if this is
 	 * legal for an interface (purely UML speaking). In this method it is.
 	 * @param cls
@@ -992,6 +1037,22 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		return per;
 	}
 
+    /**
+     * Builds a generalization between a parent and a child with a given name.
+     * @param child
+     * @param parent
+     * @param name
+     * @return generalization
+     */
+    public Object buildGeneralization(Object child, Object parent, String name) {
+        if (child == null || parent == null || !(child instanceof MGeneralizableElement) || !(parent instanceof MGeneralizableElement))
+            return null;
+        Object gen = buildGeneralization((MGeneralizableElement)child, (MGeneralizableElement)parent);
+        if (gen != null)
+            ((MGeneralization)gen).setName(name);
+        return gen;
+    }
+
 	/**
 	 * Builds a generalization between a parent and a child. Does not check if
 	 * multiple inheritance is allowed for the current notation.
@@ -1071,6 +1132,19 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	}
 
 	/**
+     * Builds a method with a given name.
+     *
+     * @param name
+     * @return method
+     */
+    public MMethod buildMethod(String name) {
+        MMethod method = createMethod();
+        if (method != null)
+            method.setName(name);
+        return method;
+	}
+
+	/**
 	 * Builds an operation for classifier cls.
 	 * @param cls
 	 * @return MOperation
@@ -1103,6 +1177,19 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		}
 		return oper;
 	}
+
+    /**
+     * Builds an operation with a given name for classifier cls.
+     * @param cls
+     * @param name
+     * @return MOperation
+     */
+    public Object buildOperation(Object cls, String name) {
+        MOperation oper = buildOperation((MClassifier)cls);
+        if (oper != null)
+            oper.setName(name);
+        return oper;
+    }
 
 	/**
 	 * Constructs a default parameter.
@@ -1467,7 +1554,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
          * A namespace deletes its owned elements.
          */
 	public void deleteNamespace(MNamespace elem) {
-            
+
             List ownedElements = new ArrayList();
             ownedElements.addAll(elem.getOwnedElements());
             Iterator it = ownedElements.iterator();
