@@ -222,6 +222,9 @@ public class ActionOpenProject extends UMLAction {
                     + url.toString()
                     + "\n"
                     + "Project file probably corrupted.\n"
+                    + "\n"
+                    + io.getMessage()+"\n"
+                    + "\n"
                     + "Please file a bug report at argouml.tigris.org including"
                     + " the corrupted project file.");
             p = oldProject;
