@@ -84,13 +84,13 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   // instance variables
 
   protected FigRect _bigPort;
-  protected FigText _name;
-  protected FigText _stereo;
+  public FigText _name;
+  public FigText _stereo;
   protected Vector _enclosedFigs = new Vector();
   protected Fig _encloser = null;
   protected boolean _readyToEdit = true;
   protected boolean suppressCalcBounds = false;
-  protected int _shadowSize = 1;
+  public int _shadowSize = 1;
 
   ////////////////////////////////////////////////////////////////
   // constructors
