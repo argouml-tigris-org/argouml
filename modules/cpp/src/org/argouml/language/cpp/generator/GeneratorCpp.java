@@ -47,6 +47,7 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
@@ -105,6 +106,9 @@ import ru.novosoft.uml.model_management.MPackage;
 public class GeneratorCpp extends Generator
     implements PluggableNotation, FileGenerator 
 {
+
+    /** logger */
+    private static Logger cat = Logger.getLogger(GeneratorCpp.class);
 
     /*
      * 2002-06-09
@@ -235,7 +239,7 @@ public class GeneratorCpp extends Generator
 	    File f = new File (path);
 	    if (!f.isDirectory()) {
 		if (!f.mkdir()) {
-		    Argo.log.error(" could not make directory " + path);
+		    cat.error(" could not make directory " + path);
 		    return null;
 		}
 	    }
@@ -252,7 +256,7 @@ public class GeneratorCpp extends Generator
 	} while (true);
 
 	String pathname = path + filename;
-	//Argo.log.info("-----" + pathname + "-----");
+	//cat.info("-----" + pathname + "-----");
 	return pathname;
     }
 
@@ -280,10 +284,10 @@ public class GeneratorCpp extends Generator
 	    // TODO: package, project basepath, tagged values to configure
 	    File f = new File(pathname);
 	    if (f.exists()) {
-		Argo.log.info("Generating (updated) " + f.getPath());
+		cat.info("Generating (updated) " + f.getPath());
 		sect.read(pathname);
 	    } else {
-		Argo.log.info("Generating (new) " + f.getPath());
+		cat.info("Generating (new) " + f.getPath());
 	    }
 	}
 
@@ -315,7 +319,7 @@ public class GeneratorCpp extends Generator
 		    if (fos != null) fos.close();
 		}
 		catch (IOException exp) {
-		    Argo.log.error("FAILED: " + f.getPath());
+		    cat.error("FAILED: " + f.getPath());
 		}
 	    }
 
@@ -328,7 +332,7 @@ public class GeneratorCpp extends Generator
 	    if ( GeneratorPass == header_pass )	sect.write(pathname, INDENT, false);
 	    else sect.write(pathname, INDENT, true);
 
-	    Argo.log.info("written: " + pathname);
+	    cat.info("written: " + pathname);
 
 
 	    File f1 = new File(pathname + ".bak");
@@ -346,7 +350,7 @@ public class GeneratorCpp extends Generator
 		f3.renameTo(new File(pathname));
 	    }
 
-	    Argo.log.info("----- end updating -----");
+	    cat.info("----- end updating -----");
 	}
    	return pathname;
     }
@@ -397,7 +401,7 @@ public class GeneratorCpp extends Generator
 	    TemplatePathName = TemplatePathName + "cpp_template";
 	    FileName = FileName + ".cpp";
 	}
-	// Argo.log.info("Try to read Template: " + TemplatePathName);
+	// cat.info("Try to read Template: " + TemplatePathName);
 	File TemplateFile = new File( TemplatePathName );
 	if ( TemplateFile.exists())
 	{
@@ -443,7 +447,7 @@ public class GeneratorCpp extends Generator
 		    if (TemplateFileReader != null) TemplateFileReader.close();
 		}
 		catch (IOException exp) {
-		    Argo.log.error("FAILED: " + TemplateFile.getPath());
+		    cat.error("FAILED: " + TemplateFile.getPath());
 		}
 	    }
 	}
@@ -475,7 +479,7 @@ public class GeneratorCpp extends Generator
      */
     private String generateHeaderImportLine4Item( MModelElement cls_depend )
     {
-	// Argo.log.info("generateHeaderImportLine4Item: fuer Item " + cls_depend.getName() + " in Namespace: " + cls_depend.getNamespace().getName() );
+	// cat.info("generateHeaderImportLine4Item: fuer Item " + cls_depend.getName() + " in Namespace: " + cls_depend.getNamespace().getName() );
 	StringBuffer sb = new StringBuffer(80);
 	String packagePath = cls_depend.getName();
 	MNamespace parent = cls_depend.getNamespace().getNamespace();
@@ -485,7 +489,7 @@ public class GeneratorCpp extends Generator
 		// ommit root package name; it's the model's root
 		if (parent.getNamespace() != null)
 		    packagePath = parent.getName() + "/" + packagePath;
-	    	// Argo.log.info("generateHeaderImportLine4Item: Runde mit Parent" + parent.getName() );
+	    	// cat.info("generateHeaderImportLine4Item: Runde mit Parent" + parent.getName() );
     		parent = parent.getNamespace();
 	    }
 	}
@@ -505,9 +509,9 @@ public class GeneratorCpp extends Generator
     private boolean checkInclude4UsageIndirection( boolean isIndirect, String usage_tag) {
 	boolean result = false;
 	/*
-	  if ( usage_tag.length() > 0 ) Argo.log.info("usage tag " + usage_tag + " gefunden");
-	  if ( isIndirect ) Argo.log.info("indirection tag gefunden");
-	  if ( GeneratorPass == header_pass ) Argo.log.info("Header pass");
+	  if ( usage_tag.length() > 0 ) cat.info("usage tag " + usage_tag + " gefunden");
+	  if ( isIndirect ) cat.info("indirection tag gefunden");
+	  if ( GeneratorPass == header_pass ) cat.info("Header pass");
 	*/
 
 	if (( GeneratorPass != header_pass ) && ( usage_tag.indexOf("source") != -1 ))
@@ -538,7 +542,7 @@ public class GeneratorCpp extends Generator
 		MTaggedValue tv = (MTaggedValue) iter.next();
 		String tag = tv.getTag();
 		if (tag.equals("usage")) usage_tag = tv.getValue();
-		// Argo.log.info("Tag fuer: " + cls.getName() + " mit Tag: " + tag + " mit Wert:" + tv.getValue() + ":");
+		// cat.info("Tag fuer: " + cls.getName() + " mit Tag: " + tag + " mit Wert:" + tv.getValue() + ":");
 
 		if (tag.indexOf("ref") != -1 || tag.equals("&")
 		    || tag.indexOf("pointer") != -1 || tag.equals("*"))
@@ -559,7 +563,7 @@ public class GeneratorCpp extends Generator
 		MTaggedValue tv = (MTaggedValue) iter.next();
 		String tag = tv.getTag();
 		if (tag.equals("usage")) usage_tag = tv.getValue();
-		// Argo.log.info("Tag fuer: " + cls.getName() + " mit Tag: " + tag + " mit Wert:" + tv.getValue() + ":");
+		// cat.info("Tag fuer: " + cls.getName() + " mit Tag: " + tag + " mit Wert:" + tv.getValue() + ":");
 
 		if (tag.indexOf("ref") != -1 || tag.equals("&")
 		    || tag.indexOf("pointer") != -1 || tag.equals("*"))
@@ -569,7 +573,7 @@ public class GeneratorCpp extends Generator
 	return checkInclude4UsageIndirection(predeclare_candidate, usage_tag);
     }
     private boolean checkIncludeNeeded4Element( MAttribute cls ) {
-	// Argo.log.info("checkIncludeNeeded4Element: fuer Item" + cls );
+	// cat.info("checkIncludeNeeded4Element: fuer Item" + cls );
 	if (!(((MAttribute) cls).getType() instanceof MClass)) return false;
 
 	String usage_tag = "";
@@ -583,7 +587,7 @@ public class GeneratorCpp extends Generator
 		MTaggedValue tv = (MTaggedValue) iter.next();
 		String tag = tv.getTag();
 		if (tag.equals("usage")) usage_tag = tv.getValue();
-		// Argo.log.info("Tag fuer: " + cls.getName() + " mit Tag: " + tag + " mit Wert:" + tv.getValue() + ":");
+		// cat.info("Tag fuer: " + cls.getName() + " mit Tag: " + tag + " mit Wert:" + tv.getValue() + ":");
 
 		if (tag.indexOf("ref") != -1 || tag.equals("&")
 		    || tag.indexOf("pointer") != -1 || tag.equals("*"))
@@ -663,10 +667,10 @@ public class GeneratorCpp extends Generator
 	    Collection col = UmlHelper.getHelper().getCore().getAttributes(cls);
 	    if (col != null) {
 		Iterator itr = col.iterator();
-    		// Argo.log.info("Attribut gefunden" );
+    		// cat.info("Attribut gefunden" );
 		while (itr.hasNext()) {
 		    MAttribute attr = (MAttribute) itr.next();
-		    // Argo.log.info("untersuche name " + attr.getName() + " mit Typ: " + attr.getType() );
+		    // cat.info("untersuche name " + attr.getName() + " mit Typ: " + attr.getType() );
 		    if (attr.getType() instanceof MClass ) {
 			String name = attr.getName();
 			if ( checkIncludeNeeded4Element( attr ) ) {
@@ -686,7 +690,7 @@ public class GeneratorCpp extends Generator
 
 	{
 	    Collection col = cls.getClientDependencies();
-	    // Argo.log.info("col: " + col);
+	    // cat.info("col: " + col);
 	    if (col != null) {
 		Iterator itr = col.iterator();
 		while (itr.hasNext()) {
@@ -721,7 +725,7 @@ public class GeneratorCpp extends Generator
 
     private String generateHeaderPackageStartSingle( MNamespace pkg )
     {
-	// Argo.log.info("generateHeaderPackageStartSingle: " + pkg.getName() );
+	// cat.info("generateHeaderPackageStartSingle: " + pkg.getName() );
 	StringBuffer sb = new StringBuffer(30);
 	StringTokenizer st = new StringTokenizer(pkg.getName(), ".");
 	String token = "";
@@ -739,7 +743,7 @@ public class GeneratorCpp extends Generator
 
     private String generateHeaderPackageEndSingle( MNamespace pkg )
     {
-	// Argo.log.info("generateHeaderPackageEndSingle: " + pkg.getName() );
+	// cat.info("generateHeaderPackageEndSingle: " + pkg.getName() );
 	StringBuffer sb = new StringBuffer(30);
 	StringTokenizer st = new StringTokenizer(pkg.getName(), ".");
 	String token = "";
@@ -763,7 +767,7 @@ public class GeneratorCpp extends Generator
 
     private String generatePackageAbsoluteName( MNamespace pkg )
     {
-	// Argo.log.info("generatePackageAbsoluteName: " + pkg.getName() );
+	// cat.info("generatePackageAbsoluteName: " + pkg.getName() );
 	StringBuffer sb = new StringBuffer(30);
 	String token = "";
 	for ( MNamespace actual = pkg; actual != null; actual = actual.getNamespace() )
@@ -783,10 +787,10 @@ public class GeneratorCpp extends Generator
 
     private String generateNameWithPkgSelection( MModelElement item, MNamespace local_pkg ) {
 	if ( item == null ) {
-	    // Argo.log.info("generateNameWithPkgSelection: zu void" );
+	    // cat.info("generateNameWithPkgSelection: zu void" );
 	    return "void ";
 	}
-	// Argo.log.info("generateNameWithPkgSelection: " + item.getName() );
+	// cat.info("generateNameWithPkgSelection: " + item.getName() );
 	MNamespace pkg = null;
 	if ( item instanceof MDataType ) return generateName( item.getName() );
 	else if ( item instanceof MParameter ) pkg = ((MParameter) item).getNamespace();
@@ -796,19 +800,19 @@ public class GeneratorCpp extends Generator
 
 	if ( pkg == null ) return generateName( item.getName() );
 	if (local_pkg == null )
-	    Argo.log.info("LOCAL NAMESPACE IS NULL" );
+	    cat.info("LOCAL NAMESPACE IS NULL" );
 
 	String localPkgName = generatePackageAbsoluteName( local_pkg );
 	String targetPkgName = generatePackageAbsoluteName( pkg );
-	// Argo.log.info("targetNamespace:" + targetPkgName + ":" );
-	// Argo.log.info("localNamespace:" + localPkgName + ":" );
+	// cat.info("targetNamespace:" + targetPkgName + ":" );
+	// cat.info("localNamespace:" + localPkgName + ":" );
 	int localPkgNameLen = localPkgName.length();
 	int targetPkgNameLen = targetPkgName.length();
 	if ( localPkgName.equals( targetPkgName ) ) return generateName( item.getName() );
 	else {
 	    if ( targetPkgName.indexOf( localPkgName ) != -1 ) {
 		/*
-		  Argo.log.info("target is subpackage of local with |"
+		  cat.info("target is subpackage of local with |"
 		  + targetPkgName.substring(localPkgNameLen, localPkgNameLen+2 ) + "|");
 		*/
 		if (targetPkgName.substring(localPkgNameLen, localPkgNameLen + 2 ).equals("::")) {
@@ -826,19 +830,19 @@ public class GeneratorCpp extends Generator
 
     private String generateHeaderPackageStart(MClassifier cls)
     {
-	// Argo.log.info("generateHeaderPackageStart: " + cls.getName() + " aus Namespace: " + cls.getNamespace().getName() );
+	// cat.info("generateHeaderPackageStart: " + cls.getName() + " aus Namespace: " + cls.getNamespace().getName() );
 	StringBuffer sb = new StringBuffer(80);
 
 	if ( ActualNamespace != null )
 	{
 	    for ( MNamespace FromSearch = ActualNamespace; FromSearch != null; FromSearch = FromSearch.getNamespace() )
 	    {
-		// Argo.log.info("FromSearch: " + FromSearch.getName() );
+		// cat.info("FromSearch: " + FromSearch.getName() );
 		StringBuffer ContPath = new StringBuffer(80);
 		MNamespace ToSearch = cls.getNamespace();
 		for (; ((ToSearch != null) && (ToSearch != FromSearch)); ToSearch = ToSearch.getNamespace() )
 		{
-		    // Argo.log.info("ToSearch: " + ToSearch.getName() );
+		    // cat.info("ToSearch: " + ToSearch.getName() );
 		    ContPath.insert(0, generateHeaderPackageStartSingle( ToSearch ));
 		}
 		if ( ToSearch == FromSearch)
@@ -947,10 +951,10 @@ public class GeneratorCpp extends Generator
      */
     private boolean generateOperationNameAndTestForConstructor(MOperation op, StringBuffer nameStr)
     {
-	// Argo.log.info("generate Operation for File" + GeneratorPass + " fuer Op: " + op.getName() );
+	// cat.info("generate Operation for File" + GeneratorPass + " fuer Op: " + op.getName() );
 	if ( GeneratorPass != header_pass )
 	{
-	    // Argo.log.info("generate Operation for CPP File");
+	    // cat.info("generate Operation for CPP File");
 	    nameStr.append( op.getOwner().getName() )
 		.append( "::" );
 	}
@@ -960,7 +964,7 @@ public class GeneratorCpp extends Generator
 	    nameStr.append( generateName (op.getOwner().getName()) );
 	    constructor = true;
 	} else {
-	    // Argo.log.info("generate Operation for File" + GeneratorPass + " fuer Op: " + op.getName() );
+	    // cat.info("generate Operation for File" + GeneratorPass + " fuer Op: " + op.getName() );
 	    nameStr.append( generateName (op.getName()) );
 	}
 	return constructor;
@@ -977,7 +981,7 @@ public class GeneratorCpp extends Generator
 	StringBuffer sb = new StringBuffer(80);
 	StringBuffer nameBuffer = new StringBuffer(20);
 	String OperationIndent = (GeneratorPass == header_pass ) ? INDENT : "";
-	// Argo.log.info("generate Operation for File" + GeneratorPass + " fuer Op: " + op.getName() );
+	// cat.info("generate Operation for File" + GeneratorPass + " fuer Op: " + op.getName() );
 	boolean constructor = SINGLETON.generateOperationNameAndTestForConstructor( op, nameBuffer );
 
 	sb.append('\n'); // begin with a blank line
@@ -1089,7 +1093,7 @@ public class GeneratorCpp extends Generator
 
 
 	sb.append(INDENT);
-	// Argo.log.info("generate Visibility for Attribute");
+	// cat.info("generate Visibility for Attribute");
 	sb.append(generateVisibility(attr));
 	sb.append(generateScope(attr));
 	sb.append(generateChangability(attr));
@@ -1777,8 +1781,8 @@ public class GeneratorCpp extends Generator
 		m = (MMethod) i.next();
 
 		if (m != null) {
-		    //Argo.log.info(", BODY of "+m.getName());
-		    //Argo.log.info("|"+m.getBody().getBody()+"|");
+		    //cat.info(", BODY of "+m.getName());
+		    //cat.info("|"+m.getBody().getBody()+"|");
 		    if (( m.getBody() != null) && ( !MethodFound ) ) {
 			sb.append( m.getBody().getBody() );
 			MethodFound = true;
@@ -1853,7 +1857,7 @@ public class GeneratorCpp extends Generator
     }
 
     public String generateTaggedValues(MModelElement e, int tag_selection) {
-	// Argo.log.info("generateTaggedValues for element: "  + e.getName() + " und selection " + tag_selection);
+	// cat.info("generateTaggedValues for element: "  + e.getName() + " und selection " + tag_selection);
 
 	Collection tvs = e.getTaggedValues();
 	if (tvs == null || tvs.size() == 0) return "";
@@ -1942,7 +1946,7 @@ public class GeneratorCpp extends Generator
     }
 
     public String generateTaggedValue(MTaggedValue tv, int tag_selection) {
-	// Argo.log.info("generateTaggedValue: "  + generateName(tv.getTag()) + " mit selection: " + tag_selection );
+	// cat.info("generateTaggedValue: "  + generateName(tv.getTag()) + " mit selection: " + tag_selection );
 	if (tv == null) return "";
 	String s = generateUninterpreted(tv.getValue());
 	if (s == null || s.length() == 0 || s.equals("/** */")
@@ -1987,34 +1991,34 @@ public class GeneratorCpp extends Generator
 
 
     private boolean isDocCommentTag( String tag_name ) {
-	// Argo.log.info("isDocCommentTag:"  + tag_name + ":");
+	// cat.info("isDocCommentTag:"  + tag_name + ":");
   	boolean result = false;
 	if (tag_name.equals ("inv")) {
-	    // Argo.log.info("yes it is doc-comment");
+	    // cat.info("yes it is doc-comment");
 	    result = true;
   	}
   	else if (tag_name.equals ("post")) {
-	    // Argo.log.info("yes it is doc-comment");
+	    // cat.info("yes it is doc-comment");
 	    result = true;
   	}
   	else if (tag_name.equals ("pre")) {
-	    // Argo.log.info("yes it is doc-comment");
+	    // cat.info("yes it is doc-comment");
 	    result = true;
   	}
   	else if (tag_name.equals ("author")) {
-	    // Argo.log.info("yes it is doc-comment");
+	    // cat.info("yes it is doc-comment");
 	    result = true;
   	}
   	else if (tag_name.equals ("version")) {
-	    // Argo.log.info("yes it is doc-comment");
+	    // cat.info("yes it is doc-comment");
 	    result = true;
   	}
   	else if (tag_name.equals ("see")) {
-	    // Argo.log.info("yes it is doc-comment");
+	    // cat.info("yes it is doc-comment");
 	    result = true;
 	}
   	else if (tag_name.equals ("param")) {
-	    // Argo.log.info("yes it is doc-comment");
+	    // cat.info("yes it is doc-comment");
 	    result = true;
 	}
 	return result;
@@ -2174,7 +2178,7 @@ public class GeneratorCpp extends Generator
 	String s = INDENT + "// constraints\n";
 	int size = cs.size();
 	// MConstraint[] csarray = (MConstraint[])cs.toArray();
-	// Argo.log.info("Got " + csarray.size() + " constraints.");
+	// cat.info("Got " + csarray.size() + " constraints.");
 	for (Iterator i = cs.iterator(); i.hasNext();) {
 	    MConstraint c = (MConstraint) i.next();
 	    String constrStr = generateConstraint(c);
@@ -2256,7 +2260,7 @@ public class GeneratorCpp extends Generator
 	// must be public or generate public navigation method!
 	//String s = INDENT + "public ";
 	StringBuffer sb = new StringBuffer(80);
-	// Argo.log.info("generate Visibility for Attribute");
+	// cat.info("generate Visibility for Attribute");
 
 	//    sb.append(INDENT).append(generateVisibility(ae.getVisibility()));
 
@@ -2370,7 +2374,7 @@ public class GeneratorCpp extends Generator
     }
 
     public String generateVisibility(MFeature f) {
-	// Argo.log.info("generate Visibility for MFeature");
+	// cat.info("generate Visibility for MFeature");
 	if (f instanceof MAttribute) return "";
 	MVisibilityKind vis = f.getVisibility();
 	if (MVisibilityKind.PUBLIC.equals(vis)) return "public ";
@@ -2471,7 +2475,7 @@ public class GeneratorCpp extends Generator
     public String generateMultiplicity(MModelElement item, String name, MMultiplicity m, String modifier) {
 	String type = null,
 	    container_type = null;
-	// Argo.log.info("generateMultiplicity mit item" + item.getName() + ", name: " + name + ", modifier: " + modifier);
+	// cat.info("generateMultiplicity mit item" + item.getName() + ", name: " + name + ", modifier: " + modifier);
 
 	MClassifier type_cls = null;
 	if ( item instanceof MAssociationEnd ) type_cls = ((MAssociationEnd) item).getType();
@@ -2479,15 +2483,15 @@ public class GeneratorCpp extends Generator
 	else if ( item instanceof MClassifier ) type = ((MClassifier) item).getName();
 	else type = "";
 	if ( type_cls != null ) type = generateNameWithPkgSelection(type_cls);
-	// Argo.log.info("resolved type_name: " + type );
+	// cat.info("resolved type_name: " + type );
 	if (m == null) { return (type + " " + modifier + name); }
 	StringBuffer sb = new StringBuffer(80);
 	int countUpper = m.getUpper(),
 	    countLower = m.getLower();
-	// Argo.log.info("resolved int upper/lower bounds" );
+	// cat.info("resolved int upper/lower bounds" );
 	Integer lower = new Integer(countLower);
 	Integer upper = new Integer(countUpper);
-	// Argo.log.info("resolved Integer upper/lower bounds" );
+	// cat.info("resolved Integer upper/lower bounds" );
 
 	if ( countUpper	== 1 ) {
 	    // simple generate identifier for default 0:1, 1:1 association
@@ -2564,7 +2568,7 @@ public class GeneratorCpp extends Generator
     }
 
     public String generateStateBody(MState m) {
-	// Argo.log.info("GeneratorCpp: generating state body");
+	// cat.info("GeneratorCpp: generating state body");
 	String s = "";
 	Object entry = ModelFacade.getEntry(m);
 	Object exit = ModelFacade.getExit(m);   
@@ -2658,7 +2662,7 @@ public class GeneratorCpp extends Generator
 			       File file)
 	throws Exception
     {
-	Argo.log.info("Parsing " + file.getPath());
+	cat.info("Parsing " + file.getPath());
 
         // read the existing file and store preserved sections
 
@@ -2674,7 +2678,7 @@ public class GeneratorCpp extends Generator
 
 	File origFile = new File(file.getAbsolutePath());
 	File newFile = new File(file.getAbsolutePath() + ".updated");
-	Argo.log.info("Generating " + newFile.getPath());
+	cat.info("Generating " + newFile.getPath());
 
         boolean eof = false;
         BufferedReader origFileReader = new BufferedReader(new FileReader(file.getAbsolutePath()));
@@ -2691,9 +2695,9 @@ public class GeneratorCpp extends Generator
         origFileReader.close();
 
 	// cpc.filter(file, newFile, mClassifier.getNamespace());
-	Argo.log.info("Backing up " + file.getPath());
+	cat.info("Backing up " + file.getPath());
 	file.renameTo(new File(file.getAbsolutePath() + ".backup"));
-	Argo.log.info("Updating " + file.getPath());
+	cat.info("Updating " + file.getPath());
 	newFile.renameTo(origFile);
     }
 
