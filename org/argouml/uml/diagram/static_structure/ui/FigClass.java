@@ -300,8 +300,8 @@ public class FigClass extends FigNodeModelElement {
             showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
         }
 
-        showMenu.add(ActionEdgesDisplay.ShowEdges);
-        showMenu.add(ActionEdgesDisplay.HideEdges);
+        showMenu.add(ActionEdgesDisplay.getShowEdges());
+        showMenu.add(ActionEdgesDisplay.getHideEdges());
 
         popUpActions.insertElementAt(showMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);

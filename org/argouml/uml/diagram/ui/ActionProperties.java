@@ -39,15 +39,19 @@ public class ActionProperties extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionProperties SINGLETON = new ActionProperties(); 
+    private static ActionProperties singleton = new ActionProperties(); 
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     */
     protected ActionProperties() { 
         super(Translator.localize("action.properties"), HAS_ICON);
-        String localMnemonic = Translator.localize("action.properties.mnemonic");
+        String localMnemonic = 
+            Translator.localize("action.properties.mnemonic");
         if (localMnemonic != null && localMnemonic.length() == 1) {
             putValue(Action.MNEMONIC_KEY, new Integer(localMnemonic.charAt(0)));
         }        
@@ -57,14 +61,28 @@ public class ActionProperties extends UMLAction {
     ////////////////////////////////////////////////////////////////
     // main methods
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	if (pb == null) return;
 	pb.selectTabNamed("action.properties");
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     */
     public boolean shouldBeEnabled() { 
 	return true; 
+    }
+
+
+    /**
+     * @return Returns the singleton.
+     */
+    public static ActionProperties getSingleton() {
+        return singleton;
     }
 } /* end class ActionProperties */
 
