@@ -86,7 +86,7 @@ public class PropPanelActor extends PropPanelClassifier {
         // The toolbar buttons that go at the top.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace",
+                            Argo.localize("UMLMenu", "button.go-up"), "navigateUp",
                             null);
         new PropPanelButton(this, buttonPanel, _navBackIcon,
                             Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction",

@@ -31,7 +31,7 @@ import ru.novosoft.uml.foundation.core.MAssociationEnd;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class UMLAssociationEndTypeComboBoxModel
-    extends UMLAttributeTypeComboBoxModel {
+    extends UMLStructuralFeatureTypeComboBoxModel {
 
     /**
      * Constructor for UMLAssociationEndTypeComboBoxModel.

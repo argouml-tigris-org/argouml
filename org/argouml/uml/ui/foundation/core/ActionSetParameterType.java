@@ -43,7 +43,7 @@ public class ActionSetParameterType extends UMLChangeAction {
     public static final ActionSetParameterType SINGLETON = new ActionSetParameterType();
     
     /**
-     * Constructor for ActionSetAttributeType.
+     * Constructor for ActionSetStructuralFeatureType.
      * @param s
      */
     protected ActionSetParameterType() {

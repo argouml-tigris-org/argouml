@@ -1,5 +1,4 @@
-// $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,170 +21,98 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PropPanelAttribute.java
 // Classes: PropPanelAttribute
 // Original Author: jrobbins@ics.uci.edu
+// Refactored by: jaap.branderhorst@xs4all.nl
 // $Id$
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.GridLayout;
-
-import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLCheckBox;
-import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
-import org.argouml.uml.ui.UMLInitialValueComboBox;
-import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLMultiplicityComboBox2;
-import org.argouml.uml.ui.UMLReflectionListModel;
-import org.argouml.uml.ui.UMLTaggedBooleanProperty;
-import org.argouml.uml.ui.UMLVisibilityPanel;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.data_types.MChangeableKind;
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
+public class PropPanelAttribute extends PropPanelStructuralFeature {
 
-public class PropPanelAttribute extends PropPanelModelElement {
+	public PropPanelAttribute() {
+		super("Attribute", ConfigLoader.getTabPropsOrientation());
 
-    public PropPanelAttribute() {
-        super("Attribute", _addAttrIcon, 2);
+		addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+		addField(
+			Argo.localize("UMLMenu", "label.stereotype"),
+			new UMLComboBoxNavigator(
+				this,
+				Argo.localize("UMLMenu", "tooltip.nav-stereo"),
+				getStereotypeBox()));
+		addField(Argo.localize("UMLMenu", "label.owner"), getOwnerScroll());
+		addField(
+			Argo.localize("UMLMenu", "label.multiplicity"),
+			getMultiplicityComboBox());
 
-        Class mclass = MAttribute.class;
+		add(LabelledLayout.getSeperator());
 
-        //
-        //   this will cause the components on this page to be notified
-        //      anytime a stereotype, namespace, operation, etc
-        //      has its name changed or is removed anywhere in the model
-        Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class, MAttribute.class };
-        setNameEventListening(namesToWatch);
+		addField(
+			Argo.localize("UMLMenu", "label.type"),
+			new UMLComboBoxNavigator(
+				this,
+				Argo.localize("UMLMenu", "tooltip.nav-class"),
+				getTypeComboBox()));
 
+		addField(Argo.localize("UMLMenu", "label.initial-value"), new JScrollPane(new UMLLinkedList(new UMLAttributeInitialValueListModel())));
+        add(new UMLModelElementVisibilityRadioButtonPanel(Argo.localize("UMLMenu", "label.visibility"), true));
+        add(getChangeabilityRadioButtonPanel());
+        add(getOwnerScopeCheckbox());
 
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(getNameTextField(),1,0,0);
+		new PropPanelButton(
+			this,
+			buttonPanel,
+			_navUpIcon,
+			Argo.localize("UMLMenu", "button.go-up"),
+			"navigateUp",
+			null);
+		new PropPanelButton(
+			this,
+			buttonPanel,
+			_navBackIcon,
+			Argo.localize("UMLMenu", "button.go-back"),
+			"navigateBackAction",
+			"isNavigateBackEnabled");
+		new PropPanelButton(
+			this,
+			buttonPanel,
+			_navForwardIcon,
+			Argo.localize("UMLMenu", "button.go-forward"),
+			"navigateForwardAction",
+			"isNavigateForwardEnabled");
+		new PropPanelButton(
+			this,
+			buttonPanel,
+			_addAttrIcon,
+			Argo.localize("UMLMenu", "button.add-attribute"),
+			"newAttribute",
+			null);
+		new PropPanelButton(
+			this,
+			buttonPanel,
+			_deleteIcon,
+			Argo.localize("UMLMenu", "button.delete-attribute"),
+			"removeElement",
+			null);
+	}	
 
-	addCaption(Argo.localize("UMLMenu", "label.multiplicity"),2,0,0);
-        addField(new UMLMultiplicityComboBox2(new UMLStructuralFeatureMultiplicityComboBoxModel(), ActionSetStructuralFeatureMultiplicity.SINGLETON),2,0,0);
+	public void newAttribute() {
+        ProjectBrowser.TheInstance.setTarget(UmlFactory.getFactory().getCore().buildAttribute(getTarget()));
+	}
 
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()),3,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.owner"),4,0,1);
-        JList ownerList = new UMLList(new UMLReflectionListModel(this,"owner",false,"getOwner",null,null,null),true);
-        JScrollPane ownerScroll=new JScrollPane(ownerList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-	addLinkField(ownerScroll,4,0,0);
-
-	addCaption(Argo.localize("UMLMenu", "label.type"),0,1,0);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),
-            new UMLComboBox2(new UMLAttributeTypeComboBoxModel(), ActionSetAttributeType.SINGLETON)),0,1,0);
-
-        addCaption("Initial Value:",1,1,0);
-        addField(new UMLInitialValueComboBox(this),1,1,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.visibility"),2,1,0);
-        addField(new UMLVisibilityPanel(this,mclass,3,false),2,1,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.modifiers"),3,1,1);
-        JPanel modPanel = new JPanel(new GridLayout(0,2));
-        modPanel.add(new UMLCheckBox(localize("static"),this,new UMLEnumerationBooleanProperty("ownerscope",mclass,"getOwnerScope","setOwnerScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)));
-        modPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability","setChangeability",MChangeableKind.class,MChangeableKind.FROZEN,MChangeableKind.CHANGEABLE)));
-        modPanel.add(new UMLCheckBox(localize("transient"),this,new UMLTaggedBooleanProperty("transient")));
-        modPanel.add(new UMLCheckBox(localize("volatile"),this,new UMLTaggedBooleanProperty("volatile")));
-        addField(modPanel,3,1,0);
-
-        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-        new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-        new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-        new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-attribute"),"newAttribute",null);
-        new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-attribute"),"removeElement",null);
-    }
-
-
-    /**
-     *    Gets the type of the current target.  This method is called
-     *    by UMLClassifierComboBox which invokes methods on the container
-     *    (not the target like most reflection models) so that PropPanelOperation
-     *    make return type look like a Operation property.
-     */
-    public MClassifier getType() {
-        MClassifier type = null;
-        Object target = getTarget();
-        if(target instanceof MAttribute) {
-            type = ((MAttribute) target).getType();
-        }
-        return type;
-    }
-
-    public void setType(MClassifier type) {
-        Object target = getTarget();
-        if(target instanceof MAttribute) {
-            ((MAttribute) target).setType(type);
-        }
-    }
-
-    public boolean isAcceptibleType(MModelElement element) {
-      return element instanceof MClassifier;
-    }
-
-    public Object getOwner() {
-        Object owner = null;
-        Object target = getTarget();
-        if(target instanceof MAttribute) {
-            owner = ((MAttribute) target).getOwner();
-        }
-        return owner;
-    }
-
-    public void newAttribute() {
-        Object target = getTarget();
-        if(target instanceof MAttribute) {
-            MClassifier owner = ((MAttribute) target).getOwner();
-            if(owner != null) {
-		MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(owner);
-                navigateTo(attr);
-            }
-        }
-    }
-
-    public void navigateUp() {
-        Object target = getTarget();
-        if(target instanceof MAttribute) {
-            MClassifier owner = ((MAttribute) target).getOwner();
-            if(owner != null) {
-                navigateTo(owner);
-            }
-        }
-    }
-
-    /**
-     *   Appropriate namespace is the namespace of our class,
-     *      not the class itself
-     */
-    protected MNamespace getDisplayNamespace() {
-      MNamespace ns = null;
-      Object target = getTarget();
-      if(target instanceof MAttribute) {
-        MAttribute attr = ((MAttribute) target);
-        MClassifier owner = attr.getOwner();
-        if(owner != null) {
-          ns = owner.getNamespace();
-        }
-      }
-      return ns;
-    }
 } /* end class PropPanelAttribute */
-

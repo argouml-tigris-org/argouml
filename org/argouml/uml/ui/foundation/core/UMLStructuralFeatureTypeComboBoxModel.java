@@ -34,9 +34,9 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.model_management.MModel;
 
 /**
@@ -44,15 +44,15 @@ import ru.novosoft.uml.model_management.MModel;
  * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLAttributeTypeComboBoxModel extends UMLComboBoxModel2 {
+public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 
     /**
-     * Constructor for UMLAttributeTypeComboBoxModel.
+     * Constructor for UMLStructuralFeatureTypeComboBoxModel.
      * @param container
      * @param propertySetName
      * @param clearable
      */
-    public UMLAttributeTypeComboBoxModel() {
+    public UMLStructuralFeatureTypeComboBoxModel() {
         super("type", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
     }
@@ -84,7 +84,7 @@ public class UMLAttributeTypeComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
          if (getTarget() != null) {
-            return ((MAttribute)getTarget()).getType();
+            return ((MStructuralFeature)getTarget()).getType();
         }
         return null;
     }

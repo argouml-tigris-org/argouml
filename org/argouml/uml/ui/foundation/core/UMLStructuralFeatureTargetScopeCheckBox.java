@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,34 +21,43 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import ru.novosoft.uml.foundation.core.MParameter;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.UMLCheckBox2;
+
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
 /**
- * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @since Jan 29, 2003
  */
-public class UMLParameterTypeComboBoxModel
-    extends UMLStructuralFeatureTypeComboBoxModel {
+public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
+    
 
-    /**
-     * Constructor for UMLParameterTypeComboBoxModel.
-     * @param container
-     */
-    public UMLParameterTypeComboBoxModel() {
-        super();
-    }
+	/**
+	 * Constructor for UMLStructuralFeatureTargetScopeCheckBox.
+	 * @param text
+	 * @param a
+	 * @param propertySetName
+	 */
+	public UMLStructuralFeatureTargetScopeCheckBox() {
+        super(Argo.localize("UMLMenu", "label.classifier"), 
+            ActionSetStructuralFeatureTargetScope.SINGLETON, 
+            "targetScope");
+	}
 
-    /**
-     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
-     */
-    protected Object getSelectedModelElement() {
-         if (getTarget() != null) {
-            return ((MParameter)getTarget()).getType();
+	/**
+	 * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
+	 */
+	public void buildModel() {
+        // repair action for possible NP after load
+        if (((MStructuralFeature)getTarget()).getTargetScope() == null) {
+            ((MStructuralFeature)getTarget()).setTargetScope(MScopeKind.INSTANCE);
         }
-        return null;
-    }
+        setSelected(((MStructuralFeature)getTarget()).getTargetScope().equals(MScopeKind.CLASSIFIER));
+	}
 
 }

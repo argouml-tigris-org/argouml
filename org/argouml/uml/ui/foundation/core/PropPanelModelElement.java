@@ -39,8 +39,10 @@ import javax.swing.JTextField;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.ArgoModule;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.model.uml.UmlHelper;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLButtonPanel;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -179,14 +181,15 @@ abstract public class PropPanelModelElement extends PropPanel {
         addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
     }
 
+    /**
+     * Calling this method navigates the target one level up, to the owner of
+     * the current target. In most cases this navigates to the owning namespace.
+     * In some cases it navigates to, for example, the owning composite state
+     * for some simple state.
+     */
     public void navigateUp() {
         Object target = getTarget();
-        if (target instanceof MModelElement) {
-            MNamespace namespace = ((MModelElement) target).getNamespace();
-            if (namespace != null) {
-                navigateTo(namespace);
-            }
-        }
+        ProjectBrowser.TheInstance.setTarget(UmlHelper.getHelper().getOwner(getTarget()));
     }
 
     public void navigateNamespace() {

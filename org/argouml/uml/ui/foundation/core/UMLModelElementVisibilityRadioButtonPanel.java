@@ -30,7 +30,7 @@ import java.util.Map;
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 
 /**
@@ -38,14 +38,14 @@ import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
  */
-public class UMLAssociationEndVisibilityRadioButtonPanel extends UMLRadioButtonPanel {
+public class UMLModelElementVisibilityRadioButtonPanel extends UMLRadioButtonPanel {
 
     private static Map labelTextsAndActionCommands = new HashMap();
 
     static {
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.visibility-public"), ActionSetAssociationEndVisibility.PUBLIC_COMMAND);
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.visibility-protected"), ActionSetAssociationEndVisibility.PROTECTED_COMMAND);
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.visibility-private"), ActionSetAssociationEndVisibility.PRIVATE_COMMAND);
+        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.visibility-public"), ActionSetModelElementVisibility.PUBLIC_COMMAND);
+        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.visibility-protected"), ActionSetModelElementVisibility.PROTECTED_COMMAND);
+        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.visibility-private"), ActionSetModelElementVisibility.PRIVATE_COMMAND);
     }
 
     /**
@@ -56,8 +56,8 @@ public class UMLAssociationEndVisibilityRadioButtonPanel extends UMLRadioButtonP
      * @param setAction
      * @param horizontal
      */
-    public UMLAssociationEndVisibilityRadioButtonPanel(String title, boolean horizontal) {
-        super(title, labelTextsAndActionCommands, "visibility", ActionSetAssociationEndVisibility.SINGLETON, horizontal);
+    public UMLModelElementVisibilityRadioButtonPanel(String title, boolean horizontal) {
+        super(title, labelTextsAndActionCommands, "visibility", ActionSetModelElementVisibility.SINGLETON, horizontal);
     }
 
     /**
@@ -65,18 +65,18 @@ public class UMLAssociationEndVisibilityRadioButtonPanel extends UMLRadioButtonP
      */
     public void buildModel() {
         if (getTarget() != null) {
-            MAssociationEnd target = (MAssociationEnd)getTarget();
+            MModelElement target = (MModelElement)getTarget();
             MVisibilityKind kind = target.getVisibility();
             if (kind == null || kind.equals(MVisibilityKind.PUBLIC)) {
-                setSelected(ActionSetAssociationEndVisibility.PUBLIC_COMMAND);
+                setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
             } else
             if (kind.equals(MVisibilityKind.PROTECTED)) {
-                setSelected(ActionSetAssociationEndVisibility.PROTECTED_COMMAND); 
+                setSelected(ActionSetModelElementVisibility.PROTECTED_COMMAND); 
             } else
             if (kind.equals(MVisibilityKind.PRIVATE)) {
-                setSelected(ActionSetAssociationEndVisibility.PRIVATE_COMMAND);
+                setSelected(ActionSetModelElementVisibility.PRIVATE_COMMAND);
             } else
-                setSelected(ActionSetAssociationEndVisibility.PUBLIC_COMMAND);
+                setSelected(ActionSetModelElementVisibility.PUBLIC_COMMAND);
         }
     }
 

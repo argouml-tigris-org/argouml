@@ -42,7 +42,7 @@ public class ActionSetAssociationEndType extends UMLChangeAction {
      public static final ActionSetAssociationEndType SINGLETON = new ActionSetAssociationEndType();
     
     /**
-     * Constructor for ActionSetAttributeType.
+     * Constructor for ActionSetStructuralFeatureType.
      * @param s
      */
     protected ActionSetAssociationEndType() {
