@@ -41,18 +41,14 @@ import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-//import ru.novosoft.uml.foundation.core.MAttribute;
-//import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
-//import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
 public abstract class Parser {
 
-    public abstract MExtensionPoint parseExtensionPoint(String s);
+    public abstract Object parseExtensionPoint(String s);
     public abstract void parseOperation(String s, Object op)
 	throws ParseException;
     public abstract void parseAttribute(String s, Object attr)
