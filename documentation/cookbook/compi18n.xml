@@ -41,14 +41,15 @@ The Internationalization is a Layer 0 subsystem.
 See <xref linkend="layer0"></xref>.
 </para>
 
-      <para>
-The internationalization is currently changing from ListResourceBundles
-to Property files. This chapter is not entirely updated to fit the change.
-Please read carefully.
-</para>
+      <indexterm>
+	<primary>ListResourceBundles</primary>
+      </indexterm>
+      <indexterm>
+	<primary>PropertyResourceBundles</primary>
+      </indexterm>
       <para>
 In ArgoUML internationalization (sometimes called i18n) is done using
-the property files.
+the property files i.e. PropertyResourceBundles.
 In some cases there are instead ListResourceBundle classes but they
 will be changed to property files as soon as the problems with the transition
 is overcome.
@@ -57,6 +58,12 @@ is overcome.
 	<title>Organizing translators</title>
 	<indexterm>
 	  <primary>Language teams</primary>
+	</indexterm>
+	<indexterm>
+	  <primary>Internationalization teams</primary>
+	</indexterm>
+	<indexterm>
+	  <primary>i18n teams</primary>
 	</indexterm>
 	<indexterm>
 	  <primary>Translators</primary>
@@ -87,7 +94,7 @@ gettext and cannot use the same tools.
 </para>
 	<para>
 To get things done, we organize our own Language Teams with ArgoUML.
-Each language teams are actually just one or several persons that
+Each language team is actually just one or several persons that
 know that language and are eager to work with translating ArgoUML.
 </para>
 	<para>
@@ -118,10 +125,10 @@ Help with the improvements on ArgoUML by pin-pointing where ArgoUML
 needs to be modified to allow for localization.
 </para>
 	      <para>
-As ArgoUML is originally built without localization we still have a
-big backlog of stuff in the GUI that is not localizable just by
+As ArgoUML is originally built without localization we still have
+places in the GUI that is not localizable just by
 modifying the resource bundles. 
-Each such thing is a Defect and shall be corrected.
+Each such place is a Defect and shall be corrected.
 </para>
 	    </listitem>
 	    <listitem>
@@ -165,7 +172,7 @@ Swahili, Polish, South African English, ...
 	    <para>
 This is the basic level of ambition that each Language Team should
 aim for.
-It means that in ArgoUML all strings are localized so that ArgoUML
+It means that within ArgoUML all strings are localized so that ArgoUML
 is giving a complete appearance of being a tool for that language.
 </para>
 	    <para>
@@ -250,7 +257,12 @@ directory even if the changes are supposed to be made in
 	    <listitem>
 	      <para>...start a new Language Team?</para>
 	      <para>
-The Language Teams are loosely defined by
+Contact the project leader to discuss this.
+He will create the team once he is convinced that
+you have understood the responsibilities.
+</para>
+              <para>
+The Language Teams are listed on
 the web page of language teams on the Tigris site.
 As soon as the language code and names (at least one) are in place
 the team is created.
@@ -267,11 +279,12 @@ your instance of ArgoUML is attempting to run with: en, es, en_GB,...
 </para>
 	      <para>
 The one you are currently using is shown in the log when ArgoUML starts.
-Search for lines looking like:
-<computeroutput>
+You will have to turn on the logging and 
+search for lines looking like:
+<programlisting>
 Language: sh
 Country: unknown
-</computeroutput>
+</programlisting>
 </para>
 	    </listitem>
 	    <listitem>
@@ -285,7 +298,7 @@ Look at the files in
 under <filename class="directory">argouml/src_new</filename>.
 </para>
 	      <para>
-Translate all the texts in each of these files.
+Translate all the values in each of these files.
 </para>
 	      <para>
 This is a lot of extremely qualified work including searching well-known
@@ -297,19 +310,11 @@ same native language to get it right.
 	      <para>
 Create the files with the translations and store them in
 <filename class="directory">argouml/src/i18n/<replaceable>language</replaceable>/src/org/argouml/i18n</filename>.
-They will have the names:
+They will have names like:
 <filename>action_<replaceable>language code</replaceable>.properties</filename>,
 <filename>button_<replaceable>language code</replaceable>.properties</filename>,
 <filename>checkbox_<replaceable>language code</replaceable>.properties</filename>,
-<filename>combobox_<replaceable>language code</replaceable>.properties</filename>,
-<filename>dialog_<replaceable>language code</replaceable>.properties</filename>, 
-<filename>filechooser_<replaceable>language code</replaceable>.properties</filename>,
-<filename>label_<replaceable>language code</replaceable>.properties</filename>,
-<filename>menu_<replaceable>language code</replaceable>.properties</filename>,
-<filename>misc_<replaceable>language code</replaceable>.properties</filename>,
-<filename>optionpane_<replaceable>language code</replaceable>.properties</filename>,
-<filename>statusmsg_<replaceable>language code</replaceable>.properties</filename>, and
-<filename>tab_<replaceable>language code</replaceable>.properties</filename>.
+<filename>combobox_<replaceable>language code</replaceable>.properties</filename>, ...
 </para>
 	      <para>
 The java files in
@@ -322,23 +327,26 @@ shall be stored in
 <filename class="directory">argouml/src_new/org/argouml/i18n</filename>.
 </para>
 	      <para>
-This completes the first iteration of the Tool translation.
+When this is done the first iteration of the Tool translation is completed.
 The work will probably be more maintenance-like from here on.
 </para>
 	    </listitem>
 	    <listitem>
 	      <para>...join an existing Language Team</para>
 	      <para>
-Discuss with the Language Team on where the team is in its work
-and what you can do.
+Discuss with the Language Team in question by mailing the members.
+They will hopefully have work prepared for you and greet you with open arms.
 </para>
 	    </listitem>
 	    <listitem>
 	      <para>...add or modify code with localized things?</para>
+              <para>
+This is only applicable for developers working with the ArgoUML Java source.
+</para>
 	      <orderedlist>
 		<listitem>
 		  <para>
-Everywhere you would output a string in the GUI you should instead 
+Everywhere the user would see a string in the GUI you should
 localize a key.
 </para>
 		  <para>
@@ -346,10 +354,7 @@ This means that instead of writing a string you write a call to a
 localizer method with a "key" ("label" or "tag") as argument and
 the localizer method finds
 the resolution of the "key" is in one of the property files.
-Which property file it uses depends on the current localization settings
-of your running ArgoUML instance.
-While developing you should use en_US or some language
-that does not exist at all.
+You select one of the files for you key and name the key accordingly.
 </para>
 		  <para>
 The key is a string.
@@ -381,12 +386,22 @@ import org.argouml.i18n.Translator;
 		<listitem>
 		  <para>
 Add your "key" and resolution in English (U.S.) in the non-localized 
-properties file.
+properties file in
+<filename>argouml/src_new/org/argouml/i18n</filename>
+and test that the GUI looks good for the default language.
+</para>
+		  <para>
+Which property file ArgoUML will eventually use
+depends on the localization settings
+of the running ArgoUML instance.
+While developing you should use en_US or some language
+that does not have a translation so that you can work with 
+the default language.
 </para>
 		</listitem>
 		<listitem>
 		  <para>
-Contact the language-teams so that they can update their files.
+Contact all language-teams so that they can update their files.
 </para>
                   <para>
 Currently (November 2003) there is a great confusion as to where
@@ -401,7 +416,8 @@ If you have strings that are sentences where you have dynamic values
 like a file name, a class name, or some property to enter at a certain place,
 remember that all languages would not write it exactly like that.
 Use <classname>MessageFormat</classname> to build every such sentence!
-There is a convenience function in <classname>Translator</classname>
+There is a convenience function for this 
+in <classname>Translator</classname>
 called <methodname>messageFormat</methodname>.
 </para>
 		</listitem>
@@ -417,6 +433,20 @@ spot the modification.
 There allegedly are tools in the java world to spot this kind of changes.
 Until we have the tools and processes in place to handle them
 it is better to rely on this simpler mechanism to guarantee correctness.
+</para>
+	      <para>
+Notice also that you shouldn't localize 
+log entries,
+comments,
+exception names,
+names of environment variables, and
+tags and tokens used in save files.
+This is because
+the development project of ArgoUML is a one-language community (en_US) and
+the users of ArgoUML would want to be able to run an ArgoUML localized
+differently with 
+otherwise the exact same settings,
+loading and saving the same files, ...
 </para>
 	    </listitem>
 	  </itemizedlist>
