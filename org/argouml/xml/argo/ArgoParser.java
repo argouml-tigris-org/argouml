@@ -36,12 +36,13 @@ import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
 import org.xml.sax.SAXException;
 
-/** @stereotype singleton
+/**
+ * @stereotype singleton
  */
 public class ArgoParser extends SAXParserBase {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(ArgoParser.class);
+    private static final Logger LOG = Logger.getLogger(ArgoParser.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -51,13 +52,14 @@ public class ArgoParser extends SAXParserBase {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
+    /** @deprecated in 0.17.1 by Bob Tarling use getter/setter */
     protected Project _proj = null;
 
-    private ArgoTokenTable _tokens = new ArgoTokenTable();
+    private ArgoTokenTable tokens = new ArgoTokenTable();
 
-    private boolean _addMembers = true;
+    private boolean addMembers = true;
 
-    private URL _url = null;
+    private URL url = null;
 
     private boolean lastLoadStatus = true;
 
@@ -76,118 +78,119 @@ public class ArgoParser extends SAXParserBase {
     // TODO: should be able to merge an existing project into
     // the current one.
 
-    public synchronized void readProject(URL url) throws IOException, ParserConfigurationException, SAXException {
+    public synchronized void readProject(URL url) throws IOException,
+            ParserConfigurationException, SAXException {
         readProject(url, true);
     }
 
     public synchronized void readProject(URL url, boolean addMembers)
-        throws IOException, ParserConfigurationException, SAXException {
-        _url = url;
-        readProject(url.openStream(), addMembers);
+            throws IOException, ParserConfigurationException, SAXException {
+        this.url = url;
+        readProject(this.url.openStream(), addMembers);
     }
 
     public void setURL(URL url) {
-        _url = url;
+        this.url = url;
     }
 
-    public synchronized void readProject(InputStream is, boolean addMembers) throws IOException, SAXException, ParserConfigurationException {
+    public synchronized void readProject(InputStream is, boolean addMembers)
+            throws IOException, SAXException, ParserConfigurationException {
 
         lastLoadStatus = true;
         lastLoadMessage = "OK";
 
-        _addMembers = addMembers;
+        this.addMembers = addMembers;
 
-        if ((_url == null) && _addMembers) {
-            cat.info(
-			  "URL not set! Won't be able to add members! Aborting...");
+        if ((url == null) && addMembers) {
+            LOG.info("URL not set! Won't be able to add members! Aborting...");
             lastLoadMessage = "URL not set!";
             return;
         }
 
         try {
-            cat.info("=======================================");
-            cat.info("== READING PROJECT " + _url);
-            _proj = new Project(_url);
+            LOG.info("=======================================");
+            LOG.info("== READING PROJECT " + url);
+            _proj = new Project(url);
             parse(is);
         } catch (SAXException saxEx) {
             lastLoadStatus = false;
-            cat.error("Exception reading project================");
-            cat.error(is.toString());
+            LOG.error("Exception reading project================");
+            LOG.error(is.toString());
             lastLoadMessage = saxEx.toString();
             throw saxEx;
 
         } catch (IOException e) {
             lastLoadStatus = false;
-            cat.error("Exception reading project================");
-            cat.error(is.toString());
+            LOG.error("Exception reading project================");
+            LOG.error(is.toString());
             lastLoadMessage = e.toString();
             throw e;
         } catch (ParserConfigurationException e) {
             lastLoadStatus = false;
-            cat.error("Exception reading project================");
-            cat.error(is.toString());
+            LOG.error("Exception reading project================");
+            LOG.error(is.toString());
             lastLoadMessage = e.toString();
             throw e;
-        }        
+        }
     }
 
     public Project getProject() {
         Project returnValue = _proj;
         return _proj;
     }
-    
+
     public void setProject(Project newProj) {
         _proj = newProj;
     }
 
     public void handleStartElement(XMLElement e) {
         if (_dbg)
-            cat.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
+            LOG.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
         try {
-            switch (_tokens.toToken(e.getName(), true)) {
-	    case ArgoTokenTable.TOKEN_argo :
-		handleArgo(e);
-		break;
-	    case ArgoTokenTable.TOKEN_documentation :
-		handleDocumentation(e);
-		break;
-	    default :
-		if (_dbg)
-		    cat.warn("WARNING: unknown tag:" + e.getName());
-		break;
+            switch (tokens.toToken(e.getName(), true)) {
+            case ArgoTokenTable.TOKEN_argo:
+                handleArgo(e);
+                break;
+            case ArgoTokenTable.TOKEN_documentation:
+                handleDocumentation(e);
+                break;
+            default:
+                if (_dbg)
+                    LOG.warn("WARNING: unknown tag:" + e.getName());
+                break;
             }
         } catch (Exception ex) {
-            cat.error(ex);
+            LOG.error(ex);
         }
     }
 
     public void handleEndElement(XMLElement e) {
         if (_dbg)
-            cat.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
+            LOG.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
         try {
-            switch (_tokens.toToken(e.getName(), false)) {
-	    case ArgoTokenTable.TOKEN_authorname :
-		handleAuthorname(e);
-		break;
-	    case ArgoTokenTable.TOKEN_version :
-		handleVersion(e);
-		break;
-	    case ArgoTokenTable.TOKEN_description :
-		handleDescription(e);
-		break;
-	    case ArgoTokenTable.TOKEN_searchpath :
-		handleSearchpath(e);
-		break;
-	    case ArgoTokenTable.TOKEN_member :
-		handleMember(e);
-		break;
-	    case ArgoTokenTable.TOKEN_historyfile :
-		handleHistoryfile(e);
-		break;
-	    default :
-		if (_dbg)
-		    cat.warn("WARNING: unknown end tag:" + e.getName());
-		break;
+            switch (tokens.toToken(e.getName(), false)) {
+            case ArgoTokenTable.TOKEN_authorname:
+                handleAuthorname(e);
+                break;
+            case ArgoTokenTable.TOKEN_version:
+                handleVersion(e);
+                break;
+            case ArgoTokenTable.TOKEN_description:
+                handleDescription(e);
+                break;
+            case ArgoTokenTable.TOKEN_searchpath:
+                handleSearchpath(e);
+                break;
+            case ArgoTokenTable.TOKEN_member:
+                handleMember(e);
+                break;
+            case ArgoTokenTable.TOKEN_historyfile:
+                handleHistoryfile(e);
+                break;
+            default:
+                if (_dbg)
+                    LOG.warn("WARNING: unknown end tag:" + e.getName());
+                break;
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -223,7 +226,7 @@ public class ArgoParser extends SAXParserBase {
     }
 
     protected void handleMember(XMLElement e) {
-        if (_addMembers) {
+        if (addMembers) {
             String name = e.getAttribute("name").trim();
             String type = e.getAttribute("type").trim();
             _proj.addMember(name, type);
@@ -237,30 +240,30 @@ public class ArgoParser extends SAXParserBase {
         _proj.setHistoryFile(historyfile);
     }
 
-    /** return the status of the last load attempt.
-        Used for junit tests.
-    */
+    /**
+     * return the status of the last load attempt. Used for junit tests.
+     */
     public boolean getLastLoadStatus() {
         return lastLoadStatus;
     }
 
-    /** set the status of the last load attempt. 
-        Used for junit tests.
-    */
+    /**
+     * set the status of the last load attempt. Used for junit tests.
+     */
     public void setLastLoadStatus(boolean status) {
         lastLoadStatus = status;
     }
 
-    /** get the last message which caused loading to fail. 
-        Used for junit tests.
-    */
+    /**
+     * get the last message which caused loading to fail. Used for junit tests.
+     */
     public String getLastLoadMessage() {
         return lastLoadMessage;
     }
 
-    /** set the last load message.
-        Used for junit tests.
-    */
+    /**
+     * set the last load message. Used for junit tests.
+     */
     public void setLastLoadMessage(String msg) {
         lastLoadMessage = msg;
     }
