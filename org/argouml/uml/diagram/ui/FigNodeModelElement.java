@@ -36,6 +36,7 @@ import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.*;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -49,10 +50,14 @@ import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
+import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.generator.*;
 import org.argouml.util.*;
 
@@ -189,9 +194,23 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     super.setEnclosingFig(f);
     if (_encloser instanceof FigNodeModelElement)
       ((FigNodeModelElement)_encloser)._enclosedFigs.removeElement(this);
+      if (_encloser != null && f == null && getOwner() != null) {
+        // moved it from some package into the free wild
+        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        UMLDiagram diagram = (UMLDiagram)pb.getActiveDiagram();
+        MNamespace ns = diagram.getNamespace();
+        ns.addOwnedElement((MModelElement)getOwner());
+      }
     _encloser = f;
-    if (_encloser instanceof FigNodeModelElement)
+    if (_encloser instanceof FigNodeModelElement) {
       ((FigNodeModelElement)_encloser)._enclosedFigs.addElement(this);
+      if (_encloser.getOwner() != null && _encloser.getOwner() instanceof MNamespace) {
+        if (CoreHelper.getHelper().isValidNamespace((MModelElement)getOwner(), (MNamespace)_encloser.getOwner())) {
+            ((MNamespace)_encloser.getOwner()).addOwnedElement((MModelElement)getOwner());
+        }
+      }
+    }
+   
   }
 
   public Vector getEnclosedFigs() { return _enclosedFigs; }
@@ -377,7 +396,6 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       MModelElement me = (MModelElement) getOwner();
       if (me == null) return;
       me.setName(ft.getText());
-      // ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
   }
 

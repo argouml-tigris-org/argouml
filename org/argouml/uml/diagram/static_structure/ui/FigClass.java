@@ -568,47 +568,7 @@ public class FigClass extends FigNodeModelElement {
     super.keyPressed(ke);
   }
 
-  public void setEnclosingFig(Fig encloser) {
-    Fig oldEncloser = getEnclosingFig();
-    super.setEnclosingFig(encloser);
-    if (!(getOwner() instanceof MModelElement)) return;
-    MModelElement me = (MModelElement) getOwner();
-    MNamespace m = null;
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-
-    try {
-        // If moved into an Package
-        if (encloser != null && oldEncloser != encloser &&
-	    encloser.getOwner() instanceof MPackage) {
-            me.setNamespace((MNamespace) encloser.getOwner());
-        }
-
-        // If default Namespace is not already set
-        if (me.getNamespace() == null &&
-	    pb.getTarget() instanceof UMLDiagram) {
-	  m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
-          me.setNamespace(m);
-        }
-    }
-    catch (Exception e) {
-        cat.error("could not set package due to:" + e + "' at "+ encloser, e);
-    }
-
-    // The next if-clause is important for the Deployment-diagram
-    // it detects if the enclosing fig is a component, in this case
-    // the ImplementationLocation will be set for the owning MClass
-    if (encloser != null && (encloser.getOwner() instanceof MComponent)) {
-      MComponent component = (MComponent) encloser.getOwner();
-      MClass cl = (MClass) getOwner();
-      resident.setImplementationLocation(component);
-      resident.setResident(cl);
-    }
-    else {
-      resident.setImplementationLocation(null);
-      resident.setResident(null);
-    }
-  }
-
+ 
   ////////////////////////////////////////////////////////////////
   // internal methods
 
