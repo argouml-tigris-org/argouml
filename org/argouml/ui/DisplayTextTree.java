@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: DisplayTextTree.java
-// Classes: DisplayTextTree, DipslayTextTreeRun
-
 package org.argouml.ui;
 
 import java.util.Enumeration;
@@ -41,8 +38,8 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
 
 /**
- * This is the JTree that is the gui component view of the model
- * navigation and todo list.
+ * This is the JTree that is the GUI component view of the UML model
+ * navigation (the explorer) and the todo list.
  */
 public class DisplayTextTree extends JTree {
     private static final Logger LOG = Logger.getLogger(DisplayTextTree.class);
@@ -59,8 +56,9 @@ public class DisplayTextTree extends JTree {
 
     private boolean reexpanding;
 
-    /** Sets the label renderer, line style angled, enable tooltips,
-     *  sets row height to 18 pixels.
+    /** 
+     * Sets the label renderer, line style angled, enable tooltips,
+     * sets row height to 18 pixels.
      */
     public DisplayTextTree() {
 
@@ -165,7 +163,7 @@ public class DisplayTextTree extends JTree {
     // ------------- other methods ------------------
 
     /**
-     * called in reexpand()
+     * Called in reexpand().
      *
      * @return a Vector containing all expanded paths
      */
@@ -182,7 +180,7 @@ public class DisplayTextTree extends JTree {
     }
 
     /** 
-     * we re-expand the ones
+     * We re-expand the ones
      * that were open before to maintain the same viewable tree.
      *
      * called by doForceUpdate(), setModel()
