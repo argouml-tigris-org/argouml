@@ -1200,7 +1200,6 @@ public class FigClass extends FigNodeModelElement {
     public void renderingChanged() {
         updateAttributes();
         updateOperations();
-        updateAbstract();
         super.renderingChanged();
     }
 
