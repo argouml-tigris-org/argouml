@@ -9,44 +9,43 @@
 <book>
   <title>Frequently asked questions for ArgoUML and Poseidon for UML</title>
 	<chapter>
-		<title>Introduction</title>
-    <sect1>
-      <title>About this FAQ...</title>
-      <para>
+    <title>About this FAQ...</title>
+    <para>
 This FAQ is provided with the hopes to be helpful for users using
 ArgoUML or Poseidon for their projects.
 </para>
-      <para>
+    <para>
 It is a collection of tips and tricks from the mailing lists and
 from other persons that have made experiences using ArgoUML that
 they want to share for the benefit of the community. It is by no means
 a complete overview but does rather reflect the interest and problems
 that the users have.
 </para>
-      <para>
+    <para>
 The information is updated as the questions and answers becomes
 appearant to the FAQ moderator. A certain version of the FAQ is
 only loosely connected to a specific version of ArgoUML or Poseidon
 but can rather elaborate on how a problem is solved differently in the
 different versions.
 </para>
-      <sect2>
-	<title>In this FAQ, you will find...</title>
-	<para>
+    <sect1>
+      <title>In this FAQ, you will find...</title>
+      <para>
 The information is layed out as Question and Answers and sorted on subject.
 </para>
-      </sect2>
-      <sect2>
-	<title>In this guide, you will not find...</title>
-	<para>
+    </sect1>
+    <sect1>
+      <title>In this FAQ, you will not find...</title>
+      <para>
 Any information that is exactly the same as in the last frosen version
 of the Users' manual. If it is in the manual, the answer does not need
 to be in the FAQ also. The FAQ might still contain the question but the
 answer is merely a reference.
 </para>
-      </sect2>
     </sect1>
-
+  </chapter>
+  <chapter>
+    <title>Introduction</title>
 		<qandaset defaultlabel="none">
 			<qandadiv>
 				<title>Introduction</title>
