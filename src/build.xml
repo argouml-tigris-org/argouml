@@ -23,7 +23,9 @@ Installing the build tools
 
 Ant is a little but very handy tool that uses a build file written in XML
 (this file) as building instructions. For more information refer to
-"http://jakarta.apache.org/ant/".
+"http://jakarta.apache.org/ant/". (Essentially this is just setting ANT_HOME
+to the directory where you extracted the ant-distribution, and adding
+ANT_HOME/bin to your PATH.)
 
 Additionaly you have to make sure, that the "JAVA_HOME" environment
 property should be set to match the JVM you want to use. That's it.
@@ -33,15 +35,27 @@ Building instructions
 =====================
 
 First, make sure your current working directory is where this very file is 
-located. Then type
+located. Then just type
 
-  ./build.sh (unix)
-  .\build.bat (win32)
+ant 
 
 if everything is right and all the required packages are visible, this action
-will generate a file called "argouml.jar" in the "./build" directory. Note, that
-if you do further development, compilation time is reduced since Ant is able
-to detect which files have changed an to recompile them at need.
+will show you a usage message.
+
+You can have a ".ant.properties" file in your home directory (for Windows users:
+this is "c:\") using which you can change certain properties, most notably the
+compiler you want to use. Just add the line
+
+build.compiler=jikes
+(without a blank after "jikes"!)
+
+to this .ant.properties file and you'll use jikes.
+
+If you want to compile ArgoUML, you need to have following:
+- your compiler in your PATH
+- JAVA_HOME correcty set to where Java2 is installed
+- ANT_HOME correctly set to where ANT is installed
+- the additional libraries (nsuml.jar, ocl-argo.jar, xml4j.jar) in argouml/lib
 
 If something went wrong, go to the FAQ section below.
 
@@ -56,12 +70,12 @@ Build targets
 
 These are the meaningful targets for this build file:
 
- - package [default] -> creates ./build/argouml.jar
+ - compile -> compiles your source code to ../build/classes
+ - package -> creates ../build/argouml.jar
  - usage -> shows a help screen
  - dist -> generates the ArgoUML distribution
- - clean -> restores the distribution to its original and clean state 
-            (excepting dist files)
- - distclean -> restores the distribution to its original and clean state
+ - clean -> restores the distribution to its original and clean state
+ - run -> runs ArgoUML from your compiled code
 
 ====================================== FAQ =====================================
 
@@ -77,7 +91,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
 ============================================================================ -->
 
-<project default="package" basedir=".">
+<project default="usage" basedir=".">
 
   <!-- =================================================================== -->
   <!-- Initialization target                                               -->
@@ -91,15 +105,15 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
 
-    <property name="build.compiler" value="jikes"/>
     <property name="debug" value="off"/>
     <property name="optimize" value="on"/>
     <property name="deprecation" value="off"/>
 
     <property name="src.dir" value="../src"/>
-    <property name="src.codegen" value="../src/codegen"/>
     <property name="docs.dir" value="../docs"/>
-    <property name="lib.dir" value="../lib"/>
+    <property name="lib.dir" value="../lib"/> 
+
+    <property name="classpath" value="${lib.dir}/nsuml.jar:${lib.dir}/ocl-argo.jar:${lib.dir}/xml4j.jar"/> 
     <property name="packages" value="uci.* Acme.*"/>
 
     <property name="manifest" value="./uci/argouml.mf"/>
@@ -108,6 +122,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <property name="build.src" value="../src"/>
     <property name="build.dest" value="../build/classes"/>
 
+    <property file="${user.home}/.ant.properties" />
     <property name="ignore_this" value="ignore_this.java"/>
 
     <filter token="${replacestring}" value="${build.src}/${replacestring}"/>
@@ -124,11 +139,12 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <echo message=""/>
     <echo message=" available targets are:"/>
     <echo message=""/>
-    <echo message="   package   --> generates the ${name}.jar file (default)"/>
+    <echo message="   package   --> generates the ${name}.jar file"/>
     <echo message="   compile   --> compiles the source code"/>
     <echo message="   dist      --> generates the ${Name} distribution as .tar.gz and .zip"/>
-    <echo message="   clean     --> cleans up the directory (except for the dist files)"/>
-    <echo message="   distclean --> cleans up the directory"/>
+    <echo message="   clean --> cleans up the directory"/>
+    <echo message="   run       --> runs ArgoUML from compiled source"/>
+    <echo message="   usage     --> show this message (default)"/>
     <echo message=""/>
     <echo message=" See the comments inside the build.xml file for more details."/>
     <echo message="-------------------------------------------------------------"/>
@@ -143,39 +159,33 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <!-- create directories -->
     <echo message="Preparing the build directories"/>
     <mkdir dir="${build.dir}"/>
-    <!-- <mkdir dir="${build.src}"/> -->
   </target>
 
   <!-- =================================================================== -->
-  <!-- Prepares the build directory                                        -->
+  <!-- Update from CVS                                                     -->
   <!-- =================================================================== -->
-  <target name="prepare-xt" depends="prepare" if="xt.present">
-    <copydir src="${src.dir}"
-             dest="${build.src}"
-             includes="uci/** **/*.dtd **/*.tee" />
-  </target>
+  <!-- <target name="compile" depends="prepare"> -->
 
-  <!-- =================================================================== -->
-  <!-- Prepares the source code                                            -->
-  <!-- =================================================================== -->
-  <target name="prepare-src" depends="prepare">
-    <!-- copy src files -->
-    <copydir src="${src.dir}"
-             dest="${build.src}"
-             excludes="**/Makefile* **/NMakefile **/Sources.list uci/docs/** **/INSTALL.txt **/argouml.mf"/>
+  <target name="update" depends="prepare">
+    <echo message="Updating from CVS "/>
+    <cvs dest="${src.dir}"
+	 command="update"
+    />
   </target>
 
   <!-- =================================================================== -->
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
-  <!-- <target name="compile" depends="prepare-src"> -->
+  <!-- <target name="compile" depends="prepare"> -->
+
   <target name="compile" depends="prepare">
-    <echo message="Compiling the sources "/>
+    <echo message="Compiling the sources using ${build.compiler}"/>
     <!-- create directories -->
     <mkdir dir="${build.dest}"/>
 
     <javac srcdir="${build.src}"
            destdir="${build.dest}"
+	   classpath="${classpath}" 
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}"
@@ -187,7 +197,7 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <target name="package" depends="compile">
     <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
-    <jar jarfile="${build.dir}/${name}.jar"
+    <jar jarfile="${lib.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="uci/** Acme/**"
          manifest="${manifest}"/>
@@ -206,9 +216,6 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
     <mkdir dir="${dist.dir}"/>
-    <copyfile src="${basedir}/build.sh" dest="${dist.dir}/build.sh" />
-    <chmod src="${dist.dir}/build.sh" perm="ugo+rx" />
-    <copyfile src="${basedir}/build.bat" dest="${dist.dir}/build.bat" />
     <copydir src="${build.dir}" dest="${dist.dir}" 
         excludes="**/classes/**, **/${ignore_this}"/>
     <zip zipfile="${Name}-${version}.zip" basedir="${dist.dir}" includes="**"/>
@@ -227,6 +234,17 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
   <target name="distclean" depends="clean">
     <deltree dir="${dist.dir}"/>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Run ArgoUML from compiled sources                                   -->
+  <!-- =================================================================== -->
+  <target name="run" depends="compile">
+    <echo message="--- Executing ArgoUML ---"/>
+    <java classname="uci.uml.Main"
+          fork="yes"
+          classpath="${build.dest};${classpath}"/>
   </target>
 
 </project>
