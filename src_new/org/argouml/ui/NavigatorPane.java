@@ -199,12 +199,6 @@ public class NavigatorPane
         toolbarPanel.add(_toolbar, BorderLayout.WEST);
         add(toolbarPanel, BorderLayout.NORTH);
         add(new JScrollPane(_tree), BorderLayout.CENTER);
-        setPreferredSize(
-            new Dimension(
-                Configuration.getInteger(
-                    Argo.KEY_SCREEN_WEST_WIDTH,
-                    ProjectBrowser.DEFAULT_COMPONENTWIDTH),
-                0));
 
         Configuration.addListener(Notation.KEY_USE_GUILLEMOTS, this);
         Configuration.addListener(Notation.KEY_SHOW_STEREOTYPES, this);

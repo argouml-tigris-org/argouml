@@ -131,15 +131,40 @@ public class Argo
     public static final ConfigurationKey KEY_SCREEN_SOUTHWEST_WIDTH =
 	Configuration.makeKey("screen", "southwest", "width");
 
+    /** Key for northwest pane width
+     */
+    public static final ConfigurationKey KEY_SCREEN_NORTHWEST_WIDTH =
+	Configuration.makeKey("screen", "northwest", "width");
+
+    /** Key for southeast pane width
+     */
+    public static final ConfigurationKey KEY_SCREEN_SOUTHEAST_WIDTH =
+	Configuration.makeKey("screen", "southeast", "width");
+
+    /** Key for northeast pane width
+     */
+    public static final ConfigurationKey KEY_SCREEN_NORTHEAST_WIDTH =
+	Configuration.makeKey("screen", "northeast", "width");
+
     /** Key for west pane width
      */
     public static final ConfigurationKey KEY_SCREEN_WEST_WIDTH =
 	Configuration.makeKey("screen", "west", "width");
 
+    /** Key for east pane width
+     */
+    public static final ConfigurationKey KEY_SCREEN_EAST_WIDTH =
+	Configuration.makeKey("screen", "east", "width");
+
     /** Key for south pane height
      */
     public static final ConfigurationKey KEY_SCREEN_SOUTH_HEIGHT =
 	Configuration.makeKey("screen", "south", "height");
+
+    /** Key for north pane height
+     */
+    public static final ConfigurationKey KEY_SCREEN_NORTH_HEIGHT =
+	Configuration.makeKey("screen", "north", "height");
 
     /** Key for theme
      */

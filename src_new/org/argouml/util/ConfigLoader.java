@@ -95,7 +95,7 @@ public class ConfigLoader {
                                 String className = tabClass.getName();
                                 String shortClassName = className.substring(className.lastIndexOf('.')+1).toLowerCase();
                                 ConfigurationKey key = Configuration.makeKey("layout", shortClassName);
-                                if (position == null || position.equals(Configuration.getString(key, "south"))) {
+                                if (position == null || position.equalsIgnoreCase(Configuration.getString(key, "South"))) {
                                     if (className.equals("org.argouml.uml.ui.TabProps")) {
                                         tabPropsOrientation = orientation;
                                     }
