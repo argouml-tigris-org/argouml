@@ -34,7 +34,6 @@ import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -89,12 +88,6 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 		 getGeneralizationScroll());
 	addField(Translator.localize("label.specializations"),
 		 getSpecializationScroll());
-
-	JList connectList =
-	    new UMLList(new UMLClassifierRoleAssociationRoleListModel(this,
-								      null,
-								      true),
-			true);
 	addField(Translator.localize("label.associationrole-ends"),
 		 getAssociationEndScroll());
 
