@@ -35,7 +35,8 @@ public abstract class FigCompartment extends FigGroup {
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
-        // For the moment we access deprecated variables in GEF in order to get over a nasty
+        // For the moment we access deprecated variables in GEF 
+        // in order to get over a nasty
         // side effect in the getLineWidth() method of GEF.
         // This will be resolved in GEF 0.10.9
         return _lineWidth;
@@ -45,7 +46,8 @@ public abstract class FigCompartment extends FigGroup {
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
-        // For the moment we access deprecated variables in GEF in order to get over a nasty
+        // For the moment we access deprecated variables in GEF
+        // in order to get over a nasty
         // side effect in the setLineWidth(int) method of GEF.
         // This will be resolved in GEF 0.10.9
         _lineWidth = w;
