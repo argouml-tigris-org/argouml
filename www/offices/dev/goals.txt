@@ -1,3 +1,0 @@
-Lay foundations for later development
-Release new versions
-Fix bugs as they arise

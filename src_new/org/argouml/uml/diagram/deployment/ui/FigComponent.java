@@ -80,10 +80,6 @@ public class FigComponent extends FigNodeModelElement {
     addFig(_name);
     addFig(_upperRect);
     addFig(_lowerRect);
-
-    Rectangle r = getBounds();
-    setBounds(r.x, r.y, r.width, r.height);
-
   }
 
   // Why not just super( gm, node ) instead?? (ChL)
@@ -279,12 +275,6 @@ public class FigComponent extends FigNodeModelElement {
     else {
         _stereo.setText(Notation.generateStereotype(this, stereo));
     }
-
-    Rectangle oldBounds = getBounds();
-    _stereo.calcBounds();
-    calcBounds();
-    firePropChange("bounds", oldBounds, getBounds());
-
   }
 
 

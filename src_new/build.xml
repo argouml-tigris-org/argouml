@@ -138,7 +138,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
   <!-- These cannot be changed in .ant.properties -->
   <target name="setversion">
-    <property name="thisversion" value="0.9.9"/>
+    <property name="thisversion" value="0.10.1"/>
   </target>
 
 

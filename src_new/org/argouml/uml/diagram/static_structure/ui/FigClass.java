@@ -168,8 +168,13 @@ public class FigClass extends FigNodeModelElement {
      *   change it to 19 pixels, 1 more than ({@link #STEREOHEIGHT} here. The
      *   attribute and operations boxes are created at 19 pixels, 2 more than
      *   {@link #ROWHEIGHT}.</p>
+     *
+     * <p>CAUTION: This constructor (with no arguments) is the only one
+     *   that does enableSizeChecking(false), all others must set it true.
+     *   This is because this constructor is the only one called when loading
+     *   a project. In this case, the parsed size must be maintained.</p>
      */
-    
+
     public FigClass() {
 
         // Set name box. Note the upper line will be blanked out if there is
@@ -246,6 +251,7 @@ public class FigClass extends FigNodeModelElement {
         // Put all the bits together, suppressing bounds calculations until
         // we're all done for efficiency.
 
+        enableSizeChecking(false);
         suppressCalcBounds = true;
 
         addFig(_bigPort);
@@ -254,7 +260,7 @@ public class FigClass extends FigNodeModelElement {
         addFig(_stereoLineBlinder);
         addFig(_attrVec);
         addFig(_operVec);
-        
+
         suppressCalcBounds = false;
 
         // Set the bounds of the figure to the total of the above (hardcoded)
@@ -281,6 +287,7 @@ public class FigClass extends FigNodeModelElement {
     public FigClass(GraphModel gm, Object node) {
 
         this();
+        enableSizeChecking(true);
         setOwner(node);
 
         if ((node instanceof MClassifier) &&
@@ -371,11 +378,11 @@ public class FigClass extends FigNodeModelElement {
    * Returns the status of the attribute field.
    * @return true if the attributes are visible, false otherwise
    */
-  public boolean isAttributeVisible() {  return _attrVec.isDisplayed(); }
+  public boolean isAttributeVisible() { return _attrVec.isDisplayed(); }
 
   public void setAttributeVisible(boolean isVisible) {
     Rectangle rect = getBounds();
-    int h = (ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+2) * rect.height / getMinimumSize().height;
+    int h = checkSize ? (ROWHEIGHT*Math.max(1,_attrVec.getFigs().size()-1)+2) * rect.height / getMinimumSize().height : 0;
     if ( _attrVec.isDisplayed() ) {
       if ( !isVisible ) {
         damage();
@@ -400,7 +407,7 @@ public class FigClass extends FigNodeModelElement {
 
   public void setOperationVisible(boolean isVisible) {
     Rectangle rect = getBounds();
-    int h = (ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1)+2) * rect.height / getMinimumSize().height;
+    int h = checkSize ? (ROWHEIGHT*Math.max(1,_operVec.getFigs().size()-1)+2) * rect.height / getMinimumSize().height : 0;
     if ( _operVec.isDisplayed() ) {
       if ( !isVisible ) {
         damage();
@@ -477,8 +484,8 @@ public class FigClass extends FigNodeModelElement {
 
             // Height allows one row for each attribute (remember to ignore the
             // first element.
-                                       
-            aSize.height += ROWHEIGHT * 
+
+            aSize.height += ROWHEIGHT *
                             Math.max(1, _attrVec.getFigs().size() -1 ) + 1;
         }
 
@@ -495,7 +502,7 @@ public class FigClass extends FigNodeModelElement {
             while (enum.hasMoreElements()) {
                 int elemWidth =
                     ((FigText)enum.nextElement()).getMinimumSize().width + 2;
-                
+
                     aSize.width = Math.max(aSize.width, elemWidth);
             }
 
@@ -541,7 +548,7 @@ public class FigClass extends FigNodeModelElement {
     //display attr/op properties if necessary:
     Rectangle r = new Rectangle(me.getX() - 1, me.getY() - 1, 2, 2);
 	Fig f = hitFig(r);
-    if (f == _attrVec) {
+    if (f == _attrVec && _attrVec.getHeight() > 0) {
 	  Vector v = _attrVec.getFigs();
 	  i = (v.size()-1) * (me.getY() - f.getY() - 3) / _attrVec.getHeight();
 	  if (i >= 0 && i < v.size()-1) {
@@ -551,7 +558,7 @@ public class FigClass extends FigNodeModelElement {
 		highlightedFigText = (CompartmentFigText)f;
 	  }
 	}
-    else if (f == _operVec) {
+    else if (f == _operVec && _operVec.getHeight() > 0) {
 	  Vector v = _operVec.getFigs();
 	  i = (v.size()-1) * (me.getY() - f.getY() - 3) / _operVec.getHeight();
 	  if (i >= 0 && i < v.size()-1) {
@@ -884,9 +891,9 @@ public class FigClass extends FigNodeModelElement {
     }
 
 
-    /** 
+    /**
      * <p>Sets the bounds, but the size will be at least the one returned by
-     *   {@link #getMinimunSize()}.</p> 
+     *   {@link #getMinimunSize()}.</p>
      *
      * <p>If the required height is bigger, then the additional height is
      *   equally distributed among all figs (i.e. compartments), such that the
@@ -894,7 +901,7 @@ public class FigClass extends FigNodeModelElement {
      *
      * <p>Some of this has "magic numbers" hardcoded in. In particular there is
      *   a knowledge that the minimum height of a name compartment is 21
-     *   pixels.</p> 
+     *   pixels.</p>
      *
      * @param x  Desired X coordinate of upper left corner
      *
@@ -917,7 +924,7 @@ public class FigClass extends FigNodeModelElement {
         // compartment
 
 	Rectangle oldBounds = getBounds();
-	Dimension aSize = getMinimumSize();
+	Dimension aSize = checkSize ? getMinimumSize() : new Dimension(w,h);
 
 	int newW = Math.max(w,aSize.width);
 	int newH = h;
@@ -990,12 +997,19 @@ public class FigClass extends FigNodeModelElement {
         // displayed.
 
         currentY += height-1;  // -1 for 1 pixel overlap
-   	aSize     = getUpdatedSize(_attrVec, x, currentY, newW,
-                                   ROWHEIGHT *
-                                   Math.max(1, _attrVec.getFigs().size() - 1) +
-                                   2 + extra_each);
 
-   	if (_attrVec.isDisplayed()) {
+        int na = (_attrVec.isDisplayed()) ? Math.max(1,_attrVec.getFigs().size()-1) : 0;
+        int no = (_operVec.isDisplayed()) ? Math.max(1,_operVec.getFigs().size()-1) : 0;
+        if (checkSize) {
+            height = ROWHEIGHT * na + 2 + extra_each;
+		} else if (newH > currentY-y && na+no > 0) {
+            height = (newH+y-currentY) * na / (na+no) + 1;
+		} else {
+            height = 1;
+		}
+        aSize = getUpdatedSize(_attrVec, x, currentY, newW, height);
+
+        if (_attrVec.isDisplayed()) {
             currentY += aSize.height - 1;  // -1 for 1 pixel overlap
         }
 
@@ -1016,5 +1030,5 @@ public class FigClass extends FigNodeModelElement {
         updateEdges();
         firePropChange("bounds", oldBounds, getBounds());
     }
-    
+
 } /* end class FigClass */
