@@ -26,6 +26,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.DefaultComboBoxModel;
 
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -77,13 +78,22 @@ public class TestUMLFlowSourceComboBoxModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Tests if it is reflected that a new modelelement that is added to the NSUML
+     * model is shown in the list with possible sources.
+     */
    public void testElementAdded() {
-        MModelElement m = new MClassImpl();
+        MModelElement m = CoreFactory.getFactory().createClass();
         elem.addSource(m);
         assert(model.getSize() == 1);
         assert(model.getElementAt(0) == m);
     }
     
+    /**
+     * Tests if it is reflected in the model that a modelelement that is programmaticaly
+     * deselected as source element for some modelelement, no longer is shown
+     * as the selected item
+     */
     public void testElementRemoved() {
         MModelElement m = new MClassImpl();
         elem.addSource(m);
@@ -95,16 +105,26 @@ public class TestUMLFlowSourceComboBoxModel extends TestCase {
         assertNull(model.getSelectedItem());
     }
     
+    /**
+     * Tests if the model really is empty if there is no target etc.
+     */
     public void testNoElements() {
         assertNull(model.getElementAt(0));
         assert(model.getSize() == 0);
         assert(elem.getSources().isEmpty());
     }
     
+    /**
+     * Tests if null is the selected object if there is no element selected
+     */
     public void testSelectNull() {
         assertNull(model.getSelectedItem());
     }
     
+    /**
+     * Fills the model with 10 elements, next is tested if it is possible to 
+     * select the fifth element from the list.
+     */
     public void testSelectWithMultiList() {
         MModelElement[] m = new MModelElement[10];
         for (int i = 0; i < m.length; i++) {
