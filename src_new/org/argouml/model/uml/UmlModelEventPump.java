@@ -25,6 +25,7 @@
 package org.argouml.model.uml;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -33,11 +34,13 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Category;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  * This class implements an event pump for all modelevents (MEvents with the current
@@ -169,7 +172,12 @@ public final class UmlModelEventPump implements MElementListener {
     private synchronized void executeAddClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
         // first register the listener for all elements allready in the model
         cat.debug("Registring listener " + listener + " to class " + modelClass.getName() + " and event " + eventName);
-        Iterator it = ModelManagementHelper.getHelper().getAllModelElementsOfKind(modelClass).iterator();
+        Collection col = ModelManagementHelper.getHelper().getAllModelElementsOfKind(modelClass);
+        MModel root = ProjectManager.getManager().getCurrentProject().getRoot();
+        if (modelClass.isAssignableFrom(root.getClass())) {
+            col.add(root);
+        }
+        Iterator it = col.iterator();
         while (it.hasNext()) {
             executeAddModelEventListener(listener, (MBase) it.next(), eventName);
         }
