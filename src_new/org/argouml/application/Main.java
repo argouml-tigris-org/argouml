@@ -45,6 +45,7 @@ import org.argouml.cognitive.ui.*;
 import org.argouml.uml.cognitive.critics.*;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.uml.ui.UMLAction;
+import org.argouml.util.logging.*;
 
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
@@ -93,8 +94,9 @@ public class Main {
         String projectName = null;
         URL urlToOpen = null;
         
-        long start, phase0, phase1, phase2, phase3, phase4, phase5, now;
-        
+	SimpleTimer st = new SimpleTimer();
+        st.mark("arguments");
+
         /* set properties for application behaviour */
         System.setProperty("gef.imageLocation","/org/argouml/Images");
         
@@ -189,6 +191,7 @@ public class Main {
         //  do some initialization work before anything is drawn
         //  sets locale for menus
         //
+	st.mark("locales");
         
         Locale.setDefault(new Locale(System.getProperty("user.language","en"),
         System.getProperty("user.country","CA")));
@@ -214,13 +217,14 @@ public class Main {
         Localizer.addResource("Actions",
         "org.argouml.i18n.ActionResourceBundle");
         
-        start = System.currentTimeMillis();
+	st.mark("splash");
         SplashScreen splash = new SplashScreen("Loading ArgoUML...", "Splash");
         splash.getStatusBar().showStatus("Making Project Browser");
         splash.getStatusBar().showProgress(10);
         
         splash.setVisible(doSplash);
-        phase0 = System.currentTimeMillis();
+
+	st.mark("projectbrowser");
         
         // Register the default notation.
         Object dgd = org.argouml.uml.generator.GeneratorDisplay.getInstance();
@@ -228,8 +232,6 @@ public class Main {
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         ProjectBrowser pb = new ProjectBrowser("ArgoUML", splash.getStatusBar(),
         themeMemory);
-        
-        phase1 = System.currentTimeMillis();
         
         JOptionPane.setRootFrame(pb);
         
@@ -254,17 +256,18 @@ public class Main {
             splash.getStatusBar().showProgress(40);
         }
         
-        phase2 = System.currentTimeMillis();
+	st.mark("make empty project");
         
         if (urlToOpen == null) p = Project.makeEmptyProject();
         else {
             p = Project.loadProject(urlToOpen);
         }
         
-        phase3 = System.currentTimeMillis();
+	st.mark("set project");
         
         pb.setProject(p);
-        phase4 = System.currentTimeMillis();
+
+	st.mark("perspectives");
         
         if (urlToOpen == null) pb.setTitle("Untitled");
         
@@ -286,9 +289,12 @@ public class Main {
             splash.getStatusBar().showStatus("Loading modules");
             splash.getStatusBar().showProgress(75);
         }
+
         // Initialize the module loader.
+	st.mark("modules");
         Argo.initializeModules();
         
+	st.mark("open window");
         
         if (splash != null) {
             splash.getStatusBar().showStatus("Opening Project Browser");
@@ -300,13 +306,13 @@ public class Main {
         Object diag = p.getDiagrams().elementAt(0);
         //pb.setTarget(diag);
         pb.getNavPane().setSelection(model, diag);
+
+	st.mark("close splash");
         if (splash != null) {
             splash.setVisible(false);
             splash.dispose();
             splash = null;
         }
-        
-        phase5 = System.currentTimeMillis();
         
         Class c = null;
         c = org.tigris.gef.base.ModePlace.class;
@@ -348,10 +354,13 @@ public class Main {
         //  splash.getStatusBar().showProgress(70);
         //}
         
+	st.mark("start critics");
+
         Runnable startCritics = new StartCritics();
         Main.addPostLoadAction(startCritics);
         
         
+	st.mark("start preloader");
         if (preload) {
             Runnable preloader = new PreloadClasses();
             Main.addPostLoadAction(preloader);
@@ -362,22 +371,14 @@ public class Main {
         pl.setThread(postLoadThead);
         postLoadThead.start();
         
-        now = System.currentTimeMillis();
-        
         if (profileLoad) {
             Argo.log.info("");
-            Argo.log.info("profile of load time ################");
-            Argo.log.info("phase 0    " + (phase0 - start));
-            Argo.log.info("phase 1    " + (phase1 - phase0));
-            Argo.log.info("phase 2    " + (phase2 - phase1));
-            Argo.log.info("phase 3    " + (phase3 - phase2));
-            Argo.log.info("phase 4    " + (phase4 - phase3));
-            Argo.log.info("phase 5    " + (phase5 - phase4));
-            Argo.log.info("================");
-            Argo.log.info("total      " + (now - start));
-            Argo.log.info("time to show " + (phase5 - start));
+            Argo.log.info("profile of load time ############");
+	    for(Enumeration i = st.result(); i.hasMoreElements();) {
+		Argo.log.info(i.nextElement());
+	    }
             
-            Argo.log.info("#######################");
+            Argo.log.info("#################################");
             Argo.log.info("");
         }
         
