@@ -33,6 +33,7 @@ import org.argouml.i18n.Translator;
 
 
 /**
+ * Test the ActionAddAttribute.
  * 
  * @author mkl
  *
@@ -40,10 +41,16 @@ import org.argouml.i18n.Translator;
 public class GUITestActionAddAttribute extends TestCase {
 
     
+    /**
+     * The constructor.
+     * 
+     * @param arg0 the test name
+     */
     public GUITestActionAddAttribute(String arg0) {
         super(arg0);
     }
-    /*
+    
+    /**
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -51,8 +58,11 @@ public class GUITestActionAddAttribute extends TestCase {
         Translator.init();
     }
     
+    /**
+     * Test if the action has an icon. 
+     */
     public void testHasIcon() {
-        ActionAddAttribute action = ActionAddAttribute.getSingleton();
+        ActionAddAttribute action = new ActionAddAttribute();
         assertNotNull(action.getValue(Action.SMALL_ICON));
     }
 

@@ -34,17 +34,23 @@ import org.argouml.i18n.Translator;
 
 
 /**
+ * Test for the ActionNewReception.
  * 
  * @author mkl
  *
  */
 public class GUITestActionNewReception extends TestCase {
     
+    /**
+     * The constructor.
+     * 
+     * @param arg0 the name of the test
+     */
     public GUITestActionNewReception(String arg0) {
         super(arg0);
     }
 
-    /*
+    /**
      * @see TestCase#setUp()
      */
     protected void setUp() throws Exception {
@@ -52,7 +58,8 @@ public class GUITestActionNewReception extends TestCase {
         Translator.init();
     }
     
-    /** test whether the icon of this action can be found 
+    /** 
+     * Test whether the icon of this action can be found. 
      * 
      */
     public void testHasIcon() {
