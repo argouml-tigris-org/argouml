@@ -66,7 +66,7 @@ public class Dependency extends ModelElementImpl {
     _description = x;
   }
 
-  public Vector getSupplier() { return (Vector) _supplier.clone(); }
+  public Vector getSupplier() { return (Vector) _supplier;}
   public void setSupplier(Vector x) {
     _supplier = x;
   }
@@ -79,7 +79,7 @@ public class Dependency extends ModelElementImpl {
     _supplier.removeElement(x);
   }
 
-  public Vector getClient() { return (Vector) _client.clone(); }
+  public Vector getClient() { return (Vector) _client;}
   public void setClient(Vector x) {
     _client = x;
   }
@@ -91,7 +91,7 @@ public class Dependency extends ModelElementImpl {
     _client.removeElement(x);
   }
 
-  public Vector getSubDependency() { return (Vector) _subDependency.clone(); }
+  public Vector getSubDependency() { return (Vector) _subDependency;}
   public void setSubDependency(Vector x) {
     _subDependency = x;
   }

@@ -53,7 +53,7 @@ public abstract class BehavioralFeature extends Feature {
     _isQuery = x;
   }
   
-  public Vector getParameter() { return (Vector) _parameter.clone(); }
+  public Vector getParameter() { return (Vector) _parameter;}
   public void setParameter(Vector x) throws PropertyVetoException {
     if (_parameter == null) _parameter = new Vector();
     fireVetoableChange("parameter", _parameter, x);
@@ -76,7 +76,7 @@ public abstract class BehavioralFeature extends Feature {
     _parameter.removeElement(x);
   }
 
-  public Vector getRaisedException() { return (Vector) _raisedException.clone(); }
+  public Vector getRaisedException() { return (Vector) _raisedException;}
   public void setRaisedException(Vector x) throws PropertyVetoException {
     if (_raisedException == null) _raisedException = new Vector();
     fireVetoableChange("raisedException", _raisedException, x);

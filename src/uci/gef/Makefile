@@ -114,6 +114,7 @@ CLASSES = \
 	PaletteFig.class \
 	PathConv.class \
 	PathConvPercent.class \
+	PathConvPercentPlusConst.class \
 	PredFigInRect.class \
 	Prefs.class \
 	PrefsEditor.class \

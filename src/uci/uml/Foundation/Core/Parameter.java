@@ -87,7 +87,7 @@ public class Parameter extends ModelElementImpl {
   }
   
   public Vector getAvailability() {
-    return (Vector) _availability.clone();
+    return (Vector) _availability;
   }
   public void setAvailability(Vector x) {
     _availability = x;

@@ -39,18 +39,42 @@ import uci.util.*;
 import uci.argo.kernel.*;
 
 
-public class WizDescription extends JPanel implements TabToDoTarget {
+public class WizDescription extends WizStep {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
   JTextArea _description = new JTextArea();
-  JButton _backButton = new JButton("< Back");
-  JButton _nextButton = new JButton("Next >");
-  JButton _finishButton = new JButton("Finish");
-  JButton _moreInfoButton = new JButton("More Info");
 
-  
-  
-  
+
+  public WizDescription() {
+    super();
+    System.out.println("making WizDescription");
+
+    _description.setLineWrap(true);
+    _description.setWrapStyleWord(true);
+
+    _mainPanel.setLayout(new BorderLayout());
+    _mainPanel.add(new JScrollPane(_description), BorderLayout.CENTER);
+  }
+
+  public void setTarget(Object item) {
+    super.setTarget(item);
+    if (_target == null) {
+      _description.setText("No ToDoItem selected");
+    }
+    else if (_target instanceof ToDoItem) {
+      ToDoItem tdi = (ToDoItem) _target;
+      _description.setEnabled(true);
+      _description.setText(tdi.getDescription());
+      _description.setCaretPosition(0);
+    }
+    else {
+      _description.setText("needs-more-work");
+      return;
+    }
+  }
+
+
+
 } /* end class WizDescription */

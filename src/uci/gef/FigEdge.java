@@ -213,11 +213,21 @@ implements PropertyChangeListener {
   protected void calcBounds() {
     _fig.calcBounds();
     Rectangle res = _fig.getBounds();
-    Enumeration enum = _pathItems.elements();
-    while (enum.hasMoreElements()) {
-      Fig f = ((PathItem) enum.nextElement()).getFig();
+    Vector pathVec = getPathItemsRaw();
+
+    Point loc = new Point();
+    for (int i = 0; i < pathVec.size(); i++) {
+      PathItem element = (PathItem) pathVec.elementAt(i);
+      PathConv path = element.getPath();
+      Fig f = element.getFig();
+      int halfWidth = f.getWidth() / 2;
+      int halfHeight = f.getHeight() / 2;
+      path.stuffPoint(loc);
+      f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
       res = res.union(f.getBounds());
-    }    
+    }
+
+
     _x = res.x;
     _y = res.y;
     _w = res.width;
@@ -256,8 +266,8 @@ implements PropertyChangeListener {
 
   public int getPerimeterLength() { return _fig.getPerimeterLength(); }
 
-  public Point pointAlongPerimeter(int dist) {
-    return _fig.pointAlongPerimeter(dist);
+  public void stuffPointAlongPerimeter(int dist, Point res) {
+    _fig.stuffPointAlongPerimeter(dist, res);
   }
 
   public void setPoints(Point[] ps) { _fig.setPoints(ps); calcBounds(); }
@@ -303,19 +313,19 @@ implements PropertyChangeListener {
 
     for (int i = 0; i < pathVec.size(); i++) {
       PathItem element = (PathItem) pathVec.elementAt(i);
-      PathConv path = element.getPath();
+//       PathConv path = element.getPath();
       Fig f = element.getFig();
-      int halfWidth = f.getWidth() / 2;
-      int halfHeight = f.getHeight() / 2;
-      Point loc = path.getPoint();
-      f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
+//       int halfWidth = f.getWidth() / 2;
+//       int halfHeight = f.getHeight() / 2;
+//       Point loc = path.getPoint();
+//       f.setLocation(loc.x - halfWidth, loc.y - halfHeight);
       f.paint(g);
-    } 
+    }
   }
 
   /** Paint this FigEdge.  Needs-more-work: take Highlight into account */
   public void paint(Graphics g) {
-    computeRoute();
+    //computeRoute();
     _fig.paint(g);
     paintArrowHeads(g);
     paintPathItems(g);

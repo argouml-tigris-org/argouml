@@ -132,6 +132,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** The AWT window or panel that the Editor draws to. */
   private transient Component _awt_component;
 
+  /** The ancestor of _awt_component that has a peer that can create
+   *  an image. */
+  private transient Component _peer_component = null;
+
   /** Each Editor has a RedrawManager that executes in a separate
    *  thread of control to update damaged regions of the display. */
   protected transient RedrawManager _redrawer = new RedrawManager(this);
@@ -417,7 +421,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   // Frame and panel related methods
 
   public Component getAwtComponent() { return _awt_component; }
-  public void setAwtComponent(Component c) { _awt_component = c; }
+  public void setAwtComponent(Component c) {
+    _awt_component = c;
+    _peer_component = null;
+  }
 
   public void setActiveTextEditor(FigTextEditor fte) {
     if (_activeTextEditor != null)
@@ -453,12 +460,17 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  flicker in redrawing. */
   public Image createImage(int w, int h) {
     if (_awt_component == null) return null;
-    try { if (_awt_component.getPeer() == null) _awt_component.addNotify(); }
-    catch (java.lang.NullPointerException ignore) { }
+    if (_peer_component == null) {
+      _peer_component = _awt_component;
+      while (_peer_component.getPeer() instanceof java.awt.peer.LightweightPeer)
+	_peer_component = _peer_component.getParent();
+    }
+//     try { if (_awt_component.getPeer() == null) _awt_component.addNotify(); }
+//     catch (java.lang.NullPointerException ignore) { }
     // This catch works around a bug:
     // Sometimes there is an exception in the AWT peer classes,
     // but the next line should still work, despite the exception
-    return _awt_component.createImage(w, h);
+    return _peer_component.createImage(w, h);
   }
 
   /** Get the backgrund color of the Editor.  Often, none of the

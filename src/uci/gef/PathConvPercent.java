@@ -32,32 +32,31 @@ import java.util.*;
  *  example, a label can be placed in the middle of a FigEdge by using 50%. */
 
 public class PathConvPercent extends PathConv {
-  float percent = 0;
+  int percent = 0;
   int offset = 0;
 
-  public PathConvPercent(Fig theFig, float newPercent, int newOffset) {
+  public PathConvPercent(Fig theFig, int newPercent, int newOffset) {
     super(theFig);
     setPercentOffset(newPercent, newOffset);
   }
 
-  public Point getPoint() {
+  public void stuffPoint(Point res) {
     int figLength = _pathFigure.getPerimeterLength();
-    int pointToGet = (int) (figLength * percent);
+    if (figLength < 10) { res.setLocation(_pathFigure.getLocation()); return; }
+    int pointToGet = (figLength * percent) / 100;
 
-    Point linePoint = _pathFigure.pointAlongPerimeter(pointToGet);
+    _pathFigure.stuffPointAlongPerimeter(pointToGet, res);
 
     //System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
     //" figLen=" + figLength);
 
-    Point offsetAmount =
-      getOffsetAmount(_pathFigure.pointAlongPerimeter(pointToGet + 5),
-		      _pathFigure.pointAlongPerimeter(pointToGet - 5), offset);
-
-    return new Point(linePoint.x + offsetAmount.x,
-		     linePoint.y + offsetAmount.y);
+    applyOffsetAmount(_pathFigure.pointAlongPerimeter(pointToGet + 5),
+		      _pathFigure.pointAlongPerimeter(pointToGet - 5),
+		      offset,
+		      res);
   }
 
-  public void setPercentOffset(float newPercent, int newOffset) {
+  public void setPercentOffset(int newPercent, int newOffset) {
     percent = newPercent;
     offset = newOffset;
   }

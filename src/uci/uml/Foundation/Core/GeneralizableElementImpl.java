@@ -69,7 +69,7 @@ implements GeneralizableElement {
   }
   
   public Vector getGeneralization() {
-    return (Vector) _generalization.clone();
+    return (Vector) _generalization;
   }
   public void setGeneralization(Vector x) throws PropertyVetoException {
     if (_generalization == null) _generalization = new Vector();
@@ -95,7 +95,7 @@ implements GeneralizableElement {
   }
   
   public Vector getSpecialization() {
-    return (Vector) _specialization.clone();
+    return (Vector) _specialization;
   }
   public void setSpecialization(Vector x) throws PropertyVetoException {
     if (_specialization == null) _specialization = new Vector();

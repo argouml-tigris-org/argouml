@@ -101,7 +101,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     }
   }
 
-  public Vector getConstraint() { return (Vector) _constraint.clone(); }
+  public Vector getConstraint() { return (Vector) _constraint;}
   public void setConstraint(Vector x)
   throws PropertyVetoException {
     if (_constraint == null) _constraint = new Vector();
@@ -127,7 +127,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     _constraint.removeElement(x);
   }
 
-  public Vector getProvision() { return (Vector) _provision.clone(); }
+  public Vector getProvision() { return (Vector) _provision;}
   public void setProvision(Vector x)
   throws PropertyVetoException {
     if (_provision == null) _provision = new Vector();
@@ -147,7 +147,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     _provision.removeElement(x);
   }
 
-  public Vector getRequirement() { return (Vector) _requirement.clone(); }
+  public Vector getRequirement() { return (Vector) _requirement;}
   public void setRequirement(Vector x)
   throws PropertyVetoException {
     if (_requirement == null) _requirement = new Vector();
@@ -168,7 +168,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   }
 
   public Vector getTemplateParameter() {
-    return (Vector) _templateParameter.clone();
+    return (Vector) _templateParameter;
   }
   public void setTemplateParameter(Vector x)
   throws PropertyVetoException {
@@ -207,7 +207,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
   //-   public void removePackage(Package x) {
   //-     _package.removeElement(x);
   //-   }
-  public Vector getElementReference() { return (Vector) _elementReference.clone(); }
+  public Vector getElementReference() { return (Vector) _elementReference;}
   public void setElementReference(Vector x)
   throws PropertyVetoException {
     if (_elementReference == null) _elementReference = new Vector();
@@ -227,7 +227,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     _elementReference.removeElement(x);
   }
 
-  public Vector getStereotype() { return (Vector) _stereotype.clone(); }
+  public Vector getStereotype() { return (Vector) _stereotype;}
   public void setStereotype(Vector x)
   throws PropertyVetoException {
     if (_stereotype == null) _stereotype = new Vector();
@@ -251,7 +251,7 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     return _stereotype.contains(x);
   }
   
-  public Vector getBehavior() { return (Vector) _behavior.clone(); }
+  public Vector getBehavior() { return (Vector) _behavior;}
   public void setBehavior(Vector x)
   throws PropertyVetoException {
     if (_behavior == null) _behavior = new Vector();

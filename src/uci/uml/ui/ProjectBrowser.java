@@ -170,6 +170,7 @@ implements IStatusBar {
     getContentPane().add(createPanels(), BorderLayout.CENTER);
     getContentPane().add(_statusBar, BorderLayout.SOUTH);
     _toDoPane.setRoot(uci.argo.kernel.Designer.TheDesigner.getToDoList());
+    addWindowListener(new WindowCloser());
   }
 
 
@@ -411,7 +412,7 @@ implements IStatusBar {
   }
 
   public StatusBar getStatusBar() { return _statusBar; }
-  
+
 
   public ToDoPane getToDoPane() { return _toDoPane; }
   public NavigatorPane getNavPane() { return _navPane; }
@@ -419,63 +420,16 @@ implements IStatusBar {
   public DetailsPane getDetailsPane() { return _detailsPane; }
 
 
-//   ////////////////////////////////////////////////////////////////
-//   // window operations
+  ////////////////////////////////////////////////////////////////
+  // window operations
   public void setVisible(boolean b) {
     super.setVisible(b);
     if (b) uci.gef.Globals.setStatusBar(this);
   }
 
-//   public void panelHack() {
-//     _topSplit.setDividerLocation(251);
-//     _botSplit.setDividerLocation(151);
-//     _toDoPane.validate();
-//   }
-
-  
   ////////////////////////////////////////////////////////////////
   // IStatusBar
   public void showStatus(String s) { _statusBar.showStatus(s); }
-  
-  
-  ////////////////////////////////////////////////////////////////
-  // event handlers
-
-
-//  public void actionPerformed(ActionEvent e) {
-//    if (e,getSource() == _quitItem)
-//      System.exit(0);
-//  }
-
-  ////////////////////////////////////////////////////////////////
-  // notifications and updates
-
-
-  ////////////////////////////////////////////////////////////////
-  // testing
-
-//   public static void main(String args[]) {
-//     _Frame = new JFrame("ProjectBrowser");
-//     _Frame.addWindowListener(new WindowCloser());
-//     JOptionPane.setRootFrame(_Frame);
-//     _Frame.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
-//     Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-//     _Frame.setLocation(scrSize.width/2 - INITIAL_WIDTH/2,
-// 		      scrSize.height/2 - INITIAL_HEIGHT/2);
-//     _Frame.setVisble(true);
-//     _Frame.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-//     ProjectBrowser pb = new ProjectBrowser("ProjectBrowser");
-//     _Frame.getContentPane().removeAll();
-//     _Frame.getContentPane().setLayout(new BorderLayout());
-//     _Frame.getContentPane().add(pb, BorderLayout.CENTER);
-//     _Frame.setLocation(scrSize.width/2 - WIDTH/2,
-// 		       scrSize.height/2 - HEIGHT/2);
-//     _Frame.setSize(WIDTH, HEIGHT);
-//     _Frame.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-//     _Frame.validate();
-//     _Frame.repaint();
-//     pb.requestDefaultFocus();
-//   }
 
 
 } /* end class ProjectBrowser */
@@ -483,15 +437,8 @@ implements IStatusBar {
 
 
 
+class WindowCloser extends WindowAdapter {
+  public WindowCloser() { }
+  public void windowClosing(WindowEvent e) { System.exit(0); }
+};
 
-////////////////////////////////////////////////////////////////
-
-
-// class DelayedPanelHack implements Runnable {
-//   ProjectBrowser _pb;
-
-//   public DelayedPanelHack(ProjectBrowser pb) { _pb = pb; }
-
-//   public void run() { _pb.panelHack(); }
-
-// } /* end class DelayedPanelHack */

@@ -61,7 +61,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   
   public Vector getBehavioralFeature() {
     if (_behavioralFeature == null) return null;
-    return (Vector) _behavioralFeature.clone();
+    return (Vector) _behavioralFeature;
   }
   public void setBehavioralFeature(Vector x)
   throws PropertyVetoException {
@@ -91,7 +91,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
 
   public Vector getStructuralFeature() {
-    return (Vector) _structuralFeature.clone();
+    return (Vector) _structuralFeature;
   }
   public void setStructuralFeature(Vector x)
   throws PropertyVetoException {
@@ -120,7 +120,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     _structuralFeature.removeElement(x);
   }
 
-  public Vector getSpecification() { return (Vector) _specification.clone(); }
+  public Vector getSpecification() { return (Vector) _specification;}
   public void setSpecification(Vector x)
   throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
@@ -140,7 +140,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     _specification.removeElement(x);
   }
 
-  public Vector getRealization() { return (Vector) _realization.clone(); }
+  public Vector getRealization() { return (Vector) _realization;}
   public void setRealization(Vector x)
   throws PropertyVetoException {
     if (_realization == null) _realization = new Vector();
@@ -161,7 +161,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
 
   public Vector getAssociationEnd() {
-    return (Vector) _associationEnd.clone();
+    return (Vector) _associationEnd;
   }
   public void setAssociationEnd(Vector x)
   throws PropertyVetoException {
@@ -189,7 +189,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
 
   // needs-more-work: what are paricipants?
-  public Vector getParticipant() { return (Vector) _participant.clone(); }
+  public Vector getParticipant() { return (Vector) _participant;}
   public void setParticipant(Vector x)
   throws PropertyVetoException {
     if (_participant == null) _participant = new Vector();
@@ -227,8 +227,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   // transitive accessors
 
   public Vector getInheritedBehavioralFeatures() {
-    Vector res = getBehavioralFeature();
-    if (res == null) res = new Vector();
+    Vector res = (Vector) getBehavioralFeature().clone();
     Vector supers = getGeneralization();
     if (supers == null || supers.size() == 0) return res;
 
@@ -246,8 +245,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
 
   public Vector getInheritedStructuralFeatures() {
-    Vector res = getStructuralFeature();
-    if (res == null) res = new Vector();
+    Vector res = (Vector) getStructuralFeature().clone();
     Vector supers = getGeneralization();
     if (supers == null || supers.size() == 0) return res;
 
@@ -265,8 +263,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
 
   public Vector getInheritedAssociationEnds() {
-    Vector res = getAssociationEnd();
-    if (res == null) res = new Vector();
+    Vector res = (Vector) getAssociationEnd().clone();
     Vector supers = getGeneralization();
     if (supers == null || supers.size() == 0) return res;
 
@@ -284,8 +281,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   }
 
   public Vector getInheritedRealizations() {
-    Vector res = getRealization();
-    if (res == null) res = new Vector();
+    Vector res = (Vector) getRealization().clone();
     Vector supers = getGeneralization();
     if (supers == null || supers.size() == 0) return res;
 

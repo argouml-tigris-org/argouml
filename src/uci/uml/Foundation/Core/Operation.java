@@ -104,7 +104,7 @@ public class Operation extends BehavioralFeature {
     _concurrency = x;
   }
   
-  public Vector getMethod() { return (Vector) _method.clone(); }
+  public Vector getMethod() { return (Vector) _method;}
   public void setMethod(Vector x) throws PropertyVetoException {
     if (_method == null) _method = new Vector();
     fireVetoableChange("method", _method, x);

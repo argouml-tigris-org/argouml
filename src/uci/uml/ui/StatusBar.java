@@ -68,7 +68,7 @@ public class StatusBar extends JPanel implements Runnable {
 
   public synchronized void doFakeProgress(String s, int work) {
     _statusText = s;
-    showStatus(_statusText + "...");
+    showStatus(_statusText + "... not implemented yet ...");
     _progress.setMaximum(work);
     _progress.setValue(0);
     Thread t = new Thread(this);

@@ -87,7 +87,7 @@ implements IAssociation {
     catch (PropertyVetoException pce) { }
   }
 
-  public Vector getConnection() { return (Vector) _connection.clone(); }
+  public Vector getConnection() { return (Vector) _connection; }
   public void setConnection(Vector x) throws PropertyVetoException {
     if (_connection == null) _connection = new Vector();    
     fireVetoableChange("connection", _connection, x);
@@ -117,7 +117,7 @@ implements IAssociation {
   //-   AssociationRole = x;
   //- }
 
-  public Vector getLink() { return (Vector) _link.clone(); }
+  public Vector getLink() { return (Vector) _link;}
   public void setLink(Vector x) throws PropertyVetoException {
     if (_link == null) _link = new Vector();
     fireVetoableChange("link", _link, x);

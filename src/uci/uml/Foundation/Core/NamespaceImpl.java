@@ -43,7 +43,7 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
   public NamespaceImpl(Name name) { super(name); }
   public NamespaceImpl(String nameStr) { super(new Name(nameStr)); }
 
-  public Vector getOwnedElement() { return (Vector) _ownedElement.clone(); }
+  public Vector getOwnedElement() { return (Vector) _ownedElement;}
   public void setOwnedElement(Vector x) throws PropertyVetoException {
     if (_ownedElement == null) _ownedElement = new Vector();
     fireVetoableChange("ownedElement", _ownedElement, x);

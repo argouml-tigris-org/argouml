@@ -183,12 +183,12 @@ public class FigLine extends Fig {
   }
 
   /** return a point that is dist pixels along the path */
-  public Point pointAlongPerimeter(int dist) {
+  public void stuffPointAlongPerimeter(int dist, Point res) {
     int len = getPerimeterLength();
-    if (len == 0) return new Point(_x1, _y1);
-    int p = Math.min(dist, len);
-    return new Point(_x1 + ((_x2 - _x1) * p) / len,
-		     _y1 + ((_y2 - _y1) * p) / len);
+    if (dist <= 0) { res.x = _x1; res.y = _y1; return; }
+    if (dist >= len) { res.x = _x2; res.y = _y2; return; }
+    res.x = _x1 + ((_x2 - _x1) * dist) / len;
+    res.y = _y1 + ((_y2 - _y1) * dist) / len;
   }
 
   /** Sets the bounds of the line.  The line is scaled to fit within

@@ -121,7 +121,7 @@ public class AssociationEnd extends ModelElementImpl {
     _association = x;
   }
 
-  public Vector getQualifier() { return (Vector) _qualifier.clone(); }
+  public Vector getQualifier() { return (Vector) _qualifier;}
   public void setQualifier(Vector x) throws PropertyVetoException {
     if (_qualifier == null) _qualifier = new Vector();
     fireVetoableChange("qualifier", _qualifier, x);    
@@ -148,7 +148,7 @@ public class AssociationEnd extends ModelElementImpl {
     if (_type != null) _type.addAssociationEnd(this);
   }
 
-  public Vector getSpecification() { return (Vector) _specification.clone(); }
+  public Vector getSpecification() { return (Vector) _specification;}
   public void setSpecification(Vector x) throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
     fireVetoableChange("specification", _specification, x);    
@@ -172,7 +172,7 @@ public class AssociationEnd extends ModelElementImpl {
   //-   associationEndRole = x;
   //- }
   
-  public Vector getLinkEnd() { return (Vector) _linkEnd.clone(); }
+  public Vector getLinkEnd() { return (Vector) _linkEnd;}
   public void setLinkEnd(Vector x) throws PropertyVetoException {
     if (_linkEnd == null) _linkEnd = new Vector();
     fireVetoableChange("linkEnd", _linkEnd, x);    

@@ -377,5 +377,15 @@ implements MouseListener, PropertyChangeListener, Serializable {
   /** Do nothing when mouse is clicked in FigNode. */
   public void mouseClicked(MouseEvent me) { }
 
+
+  public void translate(int dx, int dy) {
+    super.translate(dx, dy);
+    Enumeration arcPers = _figEdges.elements();
+    while (arcPers.hasMoreElements()) {
+      FigEdge fe = (FigEdge) arcPers.nextElement();
+      fe.computeRoute();
+    }
+  }
+
 } /* end class FigNode */
 

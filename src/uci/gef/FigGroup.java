@@ -134,12 +134,14 @@ public class FigGroup extends Fig {
 
   /** Translate all the Fig in the list by the given offset. */
   public void translate(int dx, int dy) {
+    Rectangle oldBounds = getBounds();
     Enumeration figs = _figs.elements();
     while (figs.hasMoreElements()) {
       Fig f = (Fig) figs.nextElement();
       f.translate(dx, dy);
     }
     _x += dx; _y += dy; // no need to call calcBounds();
+    firePropChange("bounds", oldBounds, getBounds());
   }
 
   /** Set the bounding box to the given rect. Figs in the group are

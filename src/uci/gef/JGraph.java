@@ -279,6 +279,7 @@ class JGraphInternalPane extends JPanel {
   public JGraphInternalPane(Editor e) {
     _editor = e;
     setLayout(null);
+    setDoubleBuffered(false);
     // setAutoscrolls(true); // needs-more-work: no effect...
     //addFocusListener(this);
   }

@@ -387,7 +387,6 @@ public class Fig implements java.io.Serializable  {
     firePropChange("bounds", oldBounds, getBounds());
   }
 
-
   /** Move the Fig to the given position. */
   public final void setLocation(Point p) { setLocation(p.x, p.y); }
 
@@ -421,7 +420,7 @@ public class Fig implements java.io.Serializable  {
    *  size. Subclasses must override to return something useful. */
   public Dimension getPreferedSize() { return new Dimension(_w, _h); }
 
-  
+
   // needs-more-work: property change events?
   public void setX(int x) { setBounds(x, _y, _w, _h); }
   public int getX() { return _x; }
@@ -463,16 +462,32 @@ public class Fig implements java.io.Serializable  {
    *  Fig. By default, uses perimeter of the Fig's bounding
    *  box. Subclasses like FigPoly have more specific logic. */
   public Point pointAlongPerimeter(int dist) {
-    if (dist < _w && dist >= 0)
-      return new Point(_x + (dist), _y);
-    else if (dist < _w + _h)
-      return new Point(_x + _w, _y + (dist - _w));
-    else if (dist < _w + _h + _w)
-      return new Point(_x + _w - (dist - _w - _h), _y + _h);
-    else if (dist < _w + _h + _w + _h)
-      return new Point(_x, _y + (_w + _h + _w + _h - dist));
-    else
-      return new Point(_x, _y);
+    Point res = new Point();
+    stuffPointAlongPerimeter(dist, res);
+    return res;
+  }
+
+  public void stuffPointAlongPerimeter(int dist, Point res) {
+    if (dist < _w && dist >= 0) {
+      res.x = _x + (dist);
+      res.y = _y;
+    }
+    else if (dist < _w + _h) {
+      res.x = _x + _w;
+      res.y = _y + (dist - _w);
+    }
+    else if (dist < _w + _h + _w) {
+      res.x = _x + _w - (dist - _w - _h);
+      res.y = _y + _h;
+    }
+    else if (dist < _w + _h + _w + _h) {
+      res.x = _x;
+      res.y = _y + (_w + _h + _w + _h - dist);
+    }
+    else {
+      res.x = _x;
+      res.y = _y;
+    }
   }
 
   /** Align this Fig with the given rectangle. Some subclasses may

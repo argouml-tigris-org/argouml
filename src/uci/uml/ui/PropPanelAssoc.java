@@ -94,7 +94,7 @@ implements DocumentListener, ItemListener, ChangeListener {
     GridBagLayout gb = (GridBagLayout) getLayout();
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
-    c.weightx = 1.0;
+    c.weightx = 0.0;
     c.ipadx = 0; c.ipady = 0;
 
 
@@ -125,6 +125,7 @@ implements DocumentListener, ItemListener, ChangeListener {
     c.gridx = 1;
     c.gridwidth = 1;
     c.gridy = 5;
+    c.weightx = 1.0;
     gb.setConstraints(_roleAField, c);
     add(_roleAField);
     c.gridy = 6;
@@ -149,7 +150,7 @@ implements DocumentListener, ItemListener, ChangeListener {
     add(_spacer);
     
 
-    c.weightx = 1.0;
+    c.weightx = 0.0;
     c.gridx = 3;
     c.gridwidth = 1;
     c.gridy = 5;
@@ -171,6 +172,7 @@ implements DocumentListener, ItemListener, ChangeListener {
     c.gridx = 4;
     c.gridwidth = 1;
     c.gridy = 5;
+    c.weightx = 1.0;
     gb.setConstraints(_roleBField, c);
     add(_roleBField);
     c.gridy = 6;

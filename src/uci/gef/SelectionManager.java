@@ -230,14 +230,12 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
   }
 
   public Rectangle getBounds() {
-    Rectangle r = null;
-    Enumeration sels = _selections.elements();
-    if (sels.hasMoreElements())
-      r = ((Selection) sels.nextElement()).getBounds();
-    else return new Rectangle(0, 0, 0, 0);
+    int size = _selections.size();
+    if (size == 0) return new Rectangle(0, 0, 0, 0);
 
-    while(sels.hasMoreElements()) {
-      Selection sel = (Selection) sels.nextElement();
+    Rectangle r = ((Selection) _selections.elementAt(0)).getBounds();
+    for (int i = 1; i < size; ++i) {
+      Selection sel = (Selection) _selections.elementAt(i);
       r.add(sel.getBounds());
     }
     return r;
@@ -281,8 +279,9 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 
   /** When Manager selections are moved, each of them is moved */
   public void translate(int dx, int dy) {
-    Enumeration ss = _selections.elements();
-    while(ss.hasMoreElements())((Selection)ss.nextElement()).translate(dx, dy);
+    int size = _selections.size();
+    for (int i =0; i < size; ++i)
+      ((Selection)_selections.elementAt(i)).translate(dx, dy);
   }
 
   /** If only one thing is selected, then it is possible to mouse on

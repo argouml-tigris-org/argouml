@@ -81,7 +81,6 @@ public class Main {
     }
     
     ProjectBrowser pb = new ProjectBrowser("Argo/UML");
-    pb.addWindowListener(new WindowCloser());
     JOptionPane.setRootFrame(pb);
     //pb.setSize(INITIAL_WIDTH, INITIAL_HEIGHT);
     Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -149,10 +148,6 @@ public class Main {
 } /* end Class Main */
 
 
-class WindowCloser extends WindowAdapter {
-  public WindowCloser() { }
-  public void windowClosing(WindowEvent e) { System.exit(0); }
-};
 
 class MockProject extends Project {
 
@@ -197,7 +192,7 @@ class MockProject extends Project {
 class EmptyProject extends Project {
 
   public EmptyProject() {
-    super("Untitiled");
+    super("Untitled");
     Model m1 = new Model("UntitledPackage");
     try {
       addDiagram(makeDiagram(m1));

@@ -39,7 +39,8 @@ import uci.util.*;
 import uci.argo.kernel.*;
 
 
-public class WizStep extends JPanel implements ActionListener {
+public class WizStep extends JPanel
+implements TabToDoTarget, ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -50,6 +51,8 @@ public class WizStep extends JPanel implements ActionListener {
   JButton _finishButton = new JButton("Finish");
   JButton _helpButton = new JButton("Help");
   JPanel  _buttonPanel = new JPanel();
+
+  Object _target;
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -62,9 +65,15 @@ public class WizStep extends JPanel implements ActionListener {
     _buttonPanel.setLayout(new GridLayout(1, 5));
     _buttonPanel.add(_backButton);
     _buttonPanel.add(_nextButton);
+    _buttonPanel.add(new SpacerPanel());
     _buttonPanel.add(_finishButton);
     _buttonPanel.add(new SpacerPanel());
     _buttonPanel.add(_helpButton);
+
+    _backButton.setMargin(new Insets(0, 0, 0, 0));
+    _nextButton.setMargin(new Insets(0, 0, 0, 0));
+    _finishButton.setMargin(new Insets(0, 0, 0, 0));
+    _helpButton.setMargin(new Insets(0, 0, 0, 0));
 
     JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
     southPanel.add(_buttonPanel);
@@ -80,6 +89,33 @@ public class WizStep extends JPanel implements ActionListener {
   }
 
   ////////////////////////////////////////////////////////////////
+  // accessors
+
+  public void setTarget(Object item) {
+    _target = item;
+    if (_target == null) {
+      _backButton.setEnabled(false);
+      _nextButton.setEnabled(false);
+      _finishButton.setEnabled(false);
+      _helpButton.setEnabled(false);
+    }
+    else if (_target instanceof ToDoItem) {
+      ToDoItem tdi = (ToDoItem) _target;
+      _backButton.setEnabled(false);
+      _nextButton.setEnabled(false);
+      _finishButton.setEnabled(false);
+      _helpButton.setEnabled(true);
+    }
+    else {
+      //_description.setText("needs-more-work");
+      return;
+    }
+  }
+
+  public Object getTarget() { return _target; }
+
+
+  ////////////////////////////////////////////////////////////////
   // actions
 
   public void doBack() { }
@@ -90,12 +126,12 @@ public class WizStep extends JPanel implements ActionListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  public void actionPreformed(ActionEvent ae) {
+  public void actionPerformed(ActionEvent ae) {
     Object src = ae.getSource();
     if (src == _backButton) doBack();
     else if (src == _nextButton) doNext();
     else if (src == _finishButton) doFinsh();
     else if (src == _helpButton) doHelp();
   }
-  
-} /* end class WizDescription */
+
+} /* end class WizStep */

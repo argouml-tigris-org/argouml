@@ -52,7 +52,7 @@ implements IAssociation {
   public Vector _connection = new Vector();
   public Vector _link = new Vector();
     
-  public Vector getConnection() { return (Vector) _connection.clone(); }
+  public Vector getConnection() { return (Vector) _connection;}
   public void setConnection(Vector x) {
     _connection = x;
   }
@@ -66,7 +66,7 @@ implements IAssociation {
   }
  
 
-  public Vector getLink() { return (Vector) _link.clone(); }
+  public Vector getLink() { return (Vector) _link;}
   public void setLink(Vector x) {
     _link = x;
   }

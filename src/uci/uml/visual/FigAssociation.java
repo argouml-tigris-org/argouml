@@ -65,7 +65,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     _name.setFilled(false);
     _name.setLineWidth(0);
 
-    addPathItem(_name, new PathConvPercent(this, (float).50, 10));
+    addPathItem(_name, new PathConvPercent(this, 50, 10));
 
     _srcMult = new FigText(10, 30, 90, 20);
     _srcMult.setFont(labelFont);
@@ -74,7 +74,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     _srcMult.setFilled(false);
     _srcMult.setLineWidth(0);
     addPathItem(_srcMult,
-		new PathConvPercentPlusConst(this, (float).0, 20, 10));
+		new PathConvPercentPlusConst(this, 0, 10, 10));
 
     _srcRole = new FigText(10, 30, 90, 20);
     _srcRole.setFont(labelFont);
@@ -83,7 +83,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     _srcRole.setFilled(false);
     _srcRole.setLineWidth(0);
     addPathItem(_srcRole,
-		new PathConvPercentPlusConst(this, (float).0, 35, -15));
+		new PathConvPercentPlusConst(this, 0, 35, -15));
 
     _destMult = new FigText(10, 30, 90, 20);
     _destMult.setFont(labelFont);
@@ -92,7 +92,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     _destMult.setFilled(false);
     _destMult.setLineWidth(0);
     addPathItem(_destMult,
-		new PathConvPercentPlusConst(this, (float)1.00, -20, 10));
+		new PathConvPercentPlusConst(this, 100, -10, 10));
 
     _destRole = new FigText(10, 30, 90, 20);
     _destRole.setFont(labelFont);
@@ -101,7 +101,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     _destRole.setFilled(false);
     _destRole.setLineWidth(0);
     addPathItem(_destRole,
-		new PathConvPercentPlusConst(this, (float)1.00, -35, -15));
+		new PathConvPercentPlusConst(this, 100, -35, -15));
     setBetweenNearestPoints(true);
     updateText();
 
@@ -119,7 +119,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     p.moveToTrash(asc);
     super.dispose();
   }
-  
+
 
   public void vetoableChange(PropertyChangeEvent pce) {
     // throws PropertyVetoException 
@@ -211,17 +211,21 @@ implements VetoableChangeListener, DelayedVetoableChangeListener,
     startTrans();
     _name.setText(asNameStr);
 
-    AssociationEnd ae1 = ((AssociationEnd)(as.getConnection().elementAt(0)));
-    AssociationEnd ae2 = ((AssociationEnd)(as.getConnection().elementAt(1)));
+    AssociationEnd ae0 = ((AssociationEnd)(as.getConnection().elementAt(0)));
+    AssociationEnd ae1 = ((AssociationEnd)(as.getConnection().elementAt(1)));
 
-    _srcMult.setText(GeneratorDisplay.Generate(ae1.getMultiplicity()));
-    _destMult.setText(GeneratorDisplay.Generate(ae2.getMultiplicity()));
+    Multiplicity mult0 = ae0.getMultiplicity();
+    Multiplicity mult1 = ae1.getMultiplicity();
+    _srcMult.setText(GeneratorDisplay.Generate(mult0));
+    if (Multiplicity.ONE.equals(mult0)) _srcMult.setText("");
+    _destMult.setText(GeneratorDisplay.Generate(mult1));
+    if (Multiplicity.ONE.equals(mult1)) _destMult.setText("");
 
-    _srcRole.setText(GeneratorDisplay.Generate(ae1.getName()));
-    _destRole.setText(GeneratorDisplay.Generate(ae2.getName()));
+    _srcRole.setText(GeneratorDisplay.Generate(ae0.getName()));
+    _destRole.setText(GeneratorDisplay.Generate(ae1.getName()));
 
-    setSourceArrowHead(chooseArrowHead(ae1.getAggregation()));
-    setDestArrowHead(chooseArrowHead(ae2.getAggregation()));
+    setSourceArrowHead(chooseArrowHead(ae0.getAggregation()));
+    setDestArrowHead(chooseArrowHead(ae1.getAggregation()));
     
     Rectangle bbox = getBounds();
     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);

@@ -43,30 +43,36 @@ public abstract class PathConv {
     _pathFigure = theFig;
   }
 
-  abstract public Point getPoint();
+  public Point getPoint() {
+    Point res = new Point();
+    stuffPoint(res);
+    return res;
+  }
+  abstract public void stuffPoint(Point res);
   abstract public void setClosestPoint(Point newPoint);
 
   protected Point getOffsetAmount(Point p1, Point p2, int offset) {
+    Point res = new Point(0, 0);
+    applyOffsetAmount(p1, p2, offset, res);
+    return res;
+  }
+
+  protected void applyOffsetAmount(Point p1, Point p2, int offset,
+				   Point res) {
     // slope of the line we're finding the normal to
     // is slope, and the normal is the negative reciprocal
     // slope is (p1.y - p2.y) / (p1.x - p2.x)
     // so recip is - (p1.x - p2.x) / (p1.y - p2.y)
-
     int recipnumerator = (p1.x - p2.x) * -1;
     int recipdenominator = (p1.y - p2.y);
 
     // find the point offset on the line that gives a 
     // correct offset
 
-    double a = offset / Math.sqrt(recipnumerator * recipnumerator +
-				  recipdenominator * recipdenominator);
-    Point newPoint = new Point((int) (recipdenominator * a),
-			       (int) (recipnumerator * a));
+    double len = Math.sqrt(recipnumerator * recipnumerator +
+			   recipdenominator * recipdenominator);
+    res.x += (int) ((recipdenominator * offset) / len);
+    res.y += (int) ((recipnumerator * offset) / len);
 
-    //System.out.println("p1=" + p1 + " p2=" + p2 + " off=" + offset);
-    //System.out.println("a=" + a + " rn=" + recipnumerator +
-    //" rd=" + recipdenominator + " nP=" + newPoint);
-
-    return newPoint;
   }
 } /* end class PathConv */

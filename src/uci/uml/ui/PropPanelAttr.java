@@ -85,7 +85,6 @@ implements DocumentListener, ItemListener {
     GridBagLayout gb = (GridBagLayout) getLayout();
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
     c.ipadx = 0; c.ipady = 0;
 
 
@@ -99,6 +98,7 @@ implements DocumentListener, ItemListener {
     c.gridx = 0;
     c.gridwidth = 1;
     c.gridy = 1;
+    c.weightx = 0.0;
     gb.setConstraints(_visLabel, c);
     add(_visLabel);
     c.gridy = 2;
@@ -139,8 +139,9 @@ implements DocumentListener, ItemListener {
     add(_initLabel);
     c.gridy = 1;
     c.gridheight = GridBagConstraints.REMAINDER;
-    gb.setConstraints(_initText, c);
-    add(_initText);
+    JScrollPane initScroll = new JScrollPane(_initText);
+    gb.setConstraints(initScroll, c);
+    add(initScroll);
 
     Component ed = _typeField.getEditor().getEditorComponent();
     Document typeDoc = ((JTextField)ed).getDocument();

@@ -217,7 +217,7 @@ public class RedrawManager implements Runnable {
    *  damage is old enough. */
   public void run() {
     while (true) {
-      try { _repairThread.sleep(_timeDelay * 10); }
+      try { _repairThread.sleep(_timeDelay * 20); }
       catch (InterruptedException ignore) { }
       repairDamage();
     }
@@ -238,8 +238,8 @@ public class RedrawManager implements Runnable {
   private void paint(Editor ed, Graphics g) {
     long startTime = System.currentTimeMillis();
     if (startTime > deadline) {
-      if (Globals.getPrefs().shouldPaintOffScreen()) paintOffscreen(ed, g);
-      else paintOnscreen(ed, g);
+       if (Globals.getPrefs().shouldPaintOffScreen()) paintOffscreen(ed, g);
+       else paintOnscreen(ed, g);
       Globals.getPrefs().lastRedrawTime(System.currentTimeMillis() - startTime);
       deadline = 0;
     }
@@ -278,13 +278,13 @@ public class RedrawManager implements Runnable {
       Rectangle r = _rects[i];
       r.setBounds(r.x-F, r.y-F, r.width+F*2, r.height+F*2);
       offscreen = findReusedImage(r.width, r.height, ed);
-      r.width = offscreen.getWidth(null);
-      r.height = offscreen.getHeight(null);
       if (offscreen == null) {
 	System.out.println("failed to alloc image!!!");
 	paintOnscreen(ed, g);
 	return;
       }
+      r.width = offscreen.getWidth(null);
+      r.height = offscreen.getHeight(null);
       Graphics offG = offscreen.getGraphics();
       offG.translate(-r.x, -r.y);
       offG.setColor(ed.getBackground());
@@ -339,6 +339,11 @@ public class RedrawManager implements Runnable {
     else if (x < 512 && y < 512) {
       if (image512x512 == null) image512x512 = ed.createImage(512, 512);
       return image512x512;
+    }
+    else if (x > 1024 || y > 1024) {
+      System.out.println("very large repaint request, probably an error: "+
+			 x + ", " + y + ".");
+      return null;
     }
     else return ed.createImage(x, y);
   }

@@ -132,7 +132,9 @@ CLASSES = \
 	TreeModelComposite.class \
 	TreeModelPrereqs.class \
 	UMLListCellRenderer.class \
-	UMLTreeCellRenderer.class
+	UMLTreeCellRenderer.class \
+	WizStep.class \
+	WizDescription.class 
 
 
 all: $(GEN) $(CLASSES)

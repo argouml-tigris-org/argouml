@@ -76,7 +76,6 @@ implements ItemListener, DocumentListener {
     GridBagLayout gb = (GridBagLayout) getLayout();    
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
     c.ipadx = 0; c.ipady = 0;
 
 
@@ -101,6 +100,7 @@ implements ItemListener, DocumentListener {
     c.gridx = 0;
     c.gridwidth = 1;
     c.gridy = 1;
+    c.weightx = 0.0;
     gb.setConstraints(_visLabel, c);
     add(_visLabel);
     c.gridy = 2;

@@ -413,23 +413,29 @@ public class FigPoly extends Fig {
 
   /** Returns a point along the perimeter at distance dist from the
    *  start of the polygon. */
-  public Point pointAlongPerimeter(int dist) {
+  public void stuffPointAlongPerimeter(int dist, Point res) {
     for (int i = 0; i < _npoints - 1; ++i) {
       int dx = _xpoints[i+1] - _xpoints[i];
       int dy = _ypoints[i+1] - _ypoints[i];
       int segLen = (int)Math.sqrt(dx*dx + dy*dy);
       if (dist < segLen) {
-        if (segLen != 0)
-	  return new Point(_xpoints[i] + (dx * dist) / segLen,
-			   _ypoints[i] + (dy * dist) / segLen);
-	else
-	  return new Point(_xpoints[i], _ypoints[i]);
+        if (segLen != 0) {
+	  res.x = _xpoints[i] + (dx * dist) / segLen;
+	  res.y = _ypoints[i] + (dy * dist) / segLen;
+	  return;
+	}
+	else {
+	  res.x = _xpoints[i];
+	  res.y = _ypoints[i];
+	  return;
+	}
       }
       else
         dist -= segLen;
     }
     // what if there are 0 points?
-    return new Point(_xpoints[0], _ypoints[0]);
+    res.x = _xpoints[0];
+    res.y = _ypoints[0];
   }
 
   /** FigPolys are resizeable and reshapable, but not rotatable (yet). */

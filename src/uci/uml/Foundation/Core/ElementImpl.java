@@ -65,7 +65,7 @@ public class ElementImpl implements Element, Highlightable {
     catch (PropertyVetoException ex) { }
   }
 
-  public Vector getCharacteristic() { return (Vector) _characteristic.clone(); }
+  public Vector getCharacteristic() { return (Vector) _characteristic;}
   public void setCharacteristic(Vector x) throws PropertyVetoException {
     if (_characteristic == null) _characteristic = new Vector();
     fireVetoableChange("characteristic", _characteristic, x);
@@ -94,7 +94,7 @@ public class ElementImpl implements Element, Highlightable {
     _name = x;
   }
 
-  public Vector getTaggedValue() { return (Vector) _taggedValue.clone(); }
+  public Vector getTaggedValue() { return (Vector) _taggedValue;}
   public void setTaggedValue(Vector x) throws PropertyVetoException {
     if (_taggedValue == null) _taggedValue = new Vector();
     fireVetoableChange("taggedValue", _taggedValue, x);

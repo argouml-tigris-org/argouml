@@ -47,7 +47,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   public static UMLAction _actionNewToDoItem = Actions.NewToDoItem;
   public static UMLAction _actionResolve = Actions.Resolve;
   public static UMLAction _actionEmailExpert = Actions.EmailExpert;
-  public static UMLAction _actionMoreInfo = Actions.MoreInfo;
+  //public static UMLAction _actionMoreInfo = Actions.MoreInfo;
   public static UMLAction _actionHush = Actions.Hush;
   public static UMLAction _actionRecordFix = Actions.RecordFix;
   public static UMLAction _actionReplayFix = Actions.ReplayFix;
@@ -64,7 +64,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
 //   JButton _moreInfoButton = new JButton("More Info"); //html
 //   JButton _emailExpertButton = new JButton("Email Expert"); //html
 //   JButton _hushButton = new JButton("Hush");
-  JTextArea _description = new JTextArea();
+  //JTextArea _description = new JTextArea();
+  WizDescription _description = new WizDescription();
   
 
   ////////////////////////////////////////////////////////////////
@@ -95,7 +96,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     toolBar.add(_actionNewToDoItem);
     toolBar.add(_actionResolve);
     toolBar.add(_actionEmailExpert);
-    toolBar.add(_actionMoreInfo);
+    //toolBar.add(_actionMoreInfo);
     toolBar.add(_actionHush);
     toolBar.addSeparator();
     
@@ -114,12 +115,13 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     //     addTool(toolBar, "Hush");
     //     //_description.setFont(new Font("Dialog", Font.PLAIN, 9));
     add(toolBar, BorderLayout.WEST);
-    _description.setLineWrap(true);
-    _description.setWrapStyleWord(true);
+//     _description.setLineWrap(true);
+//     _description.setWrapStyleWord(true);
 
     //Font userFont = MetalLookAndFeel.getUserTextFont();
     //_description.setFont(userFont);
-    add(new JScrollPane(_description), BorderLayout.CENTER);
+    //add(new JScrollPane(_description), BorderLayout.CENTER);
+    add(_description, BorderLayout.CENTER);
     setTarget(null);
   }
 
@@ -142,20 +144,21 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   public void setTarget(Object item) {  //ToDoItem
     _target = item;
     updateActionsEnabled();
-    if (_target == null) {
-      //_description.setEnabled(false);
-      _description.setText("No ToDoItem selected");
-    }
-    else if (_target instanceof ToDoItem) {
-      ToDoItem tdi = (ToDoItem) _target;
-      _description.setEnabled(true);
-      _description.setText(tdi.getDescription());
-      _description.setCaretPosition(0);
-    }
-    else {
-      _description.setText("needs-more-work");
-      return;
-    }
+    _description.setTarget(_target);
+//     if (_target == null) {
+//       //_description.setEnabled(false);
+//       _description.setText("No ToDoItem selected");
+//     }
+//     else if (_target instanceof ToDoItem) {
+//       ToDoItem tdi = (ToDoItem) _target;
+//       _description.setEnabled(true);
+//       _description.setText(tdi.getDescription());
+//       _description.setCaretPosition(0);
+//     }
+//     else {
+//       _description.setText("needs-more-work");
+//       return;
+//     }
 
   }
   public Object getTarget() { return _target; }
@@ -163,7 +166,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   protected void updateActionsEnabled() {
     _actionResolve.updateEnabled(_target);
     _actionEmailExpert.updateEnabled(_target);
-    _actionMoreInfo.updateEnabled(_target);
+    //_actionMoreInfo.updateEnabled(_target);
     _actionHush.updateEnabled(_target);
     _actionRecordFix.updateEnabled(_target);
     _actionReplayFix.updateEnabled(_target);
